@@ -3,7 +3,7 @@
         <div :class="['toggler', direction === 'vertical' && {'icon-left': visible, 'icon-right': !visible}, direction === 'horizontal' && {'icon-down': visible, 'icon-up': !visible}]" v-if="showToggler && !submenu.visible" @click="handleVisibility"></div>
         <div ref="menu" class="menu">
             
-            <div :class="['item', {'active': item.active}]" v-for="item in items" :key="item.title" :style="item.style" @mouseover="onMouseOver" @click.stop="handleRoute($event, item)">
+            <div :class="['item', {'active': item.active}]" v-for="item in items" :key="item.title" :style="item.style" @mouseover="handleMouseRoute($event, item)" @click.stop="handleRoute($event, item)">
                 <router-link 
                     :to="{name: item.route.name}" v-if="!item.children">
                     <i :class="['icon', item.icon]"></i>
@@ -16,8 +16,8 @@
             </div>
             
         </div>
-        <div ref="submenu" class="submenu" :style="{'width': `${submenu.width}px`}">
-            <div :class="['item', {'active': item.active}]" v-for="item in submenu.items" :key="item.title" @mouseover="handleMouseRoute($event, item)" @click.stop="handleRoute($event, item)">
+        <div ref="submenu" class="submenu" :style="{'width': `${submenu.width}px`}" @mouseleave="hideSubmenu">
+            <div :class="['item', {'active': item.active}]" v-for="item in submenu.items" :key="item.title" @click.stop="handleRoute($event, item)">
                 <router-link 
                     :to="{name: item.route.name}" >
                 <i :class="['icon', item.icon]"></i>
@@ -53,8 +53,8 @@
         data () {
             return {
                 origin: {
-                    x: 0,
-                    y: 0
+                    x: 50,
+                    y: 127
                 },
                 items: [],
                 submenu: {
@@ -75,45 +75,22 @@
 
                 localStorage.setItem('sidebar:visibility', this.visible)
             },
+            hideSubmenu() {
+                console.log('hideSubmenu called')
+                this.submenu.visible = false
+            },
             handleMouseRoute (e, item) {
-                console.log('handleMouseRoute')
-                let i, items
-
-                if (item.key.includes('.')) {
-                    i = this.submenu.items.length
-                    items = this.submenu.items
-                } else {
-                    i = this.items.length
-                    items = this.items
-                }
-
-                while (i--) {
-                    if (items[i].key !== item.key) {
-                        if (items[i].active) {
-                            items[i].active = false
-
-                            if (items[i].children) {
-                                if (items[i].children.some(({route}) => route && route.name === this.$route.name)) {
-                                    let j = items[i].children.length
-
-                                    while (j--) {
-                                        if (items[i].children[j].active) {
-                                            items[i].children[j].active = false
-
-                                            break
-                                        }
-                                    }
-                                }
-
-                                this.submenu.items = []
-                            }
-
-                            break
-                        }
+                if (!this.submenu.visible) {
+                    if (this.direction === 'horizontal') {
+                        this.origin.x = 50
+                    } else if (this.direction === 'vertical') {
+                        this.origin.y = 127
                     }
                 }
+                
 
                 if (item.children) {
+                    console.log('item.children')
                     item.active = true
 
                     if (Object.is(item.children, this.submenu.items)) {
@@ -126,17 +103,13 @@
 
                     if (item.children.every(({route}) => route.name !== this.$route.name)) {
                         item.active = true
-                        item.children[0].active = true
-
-//                        this.$router.push(item.children[0].route)
                     }
                 } else {
+                    console.log('not item.children')
                     this.submenu.visible = false
 
                     if (item.route) {
                         item.active = true
-
-//                        this.$router.push(item.route)
                     }
                 }
             },
@@ -191,7 +164,7 @@
 
                     if (item.children.every(({route}) => route.name !== this.$route.name)) {
                         item.active = true
-                        item.children[0].active = true
+//                        item.children[0].active = true
 
 //                        this.$router.push(item.children[0].route)
                     }
@@ -206,6 +179,7 @@
                 }
             },
             onMouseOver (e) {
+                console.log('onMouseOver');
                 if (!this.submenu.visible) {
                     const bound = e.target.getBoundingClientRect()
                     
@@ -410,12 +384,12 @@
         },
         mounted () {
             this.doAnimeOnDirection(this.direction)
-            this.onSiblingElementClickHandler = () => this.submenu.visible = false
+//            this.onSiblingElementClickHandler = () => this.submenu.visible = false
 
-            this.$el.nextElementSibling.addEventListener('click', this.onSiblingElementClickHandler)
+//            this.$el.nextElementSibling.addEventListener('click', this.onSiblingElementClickHandler)
         },
         beforeDestroy () {
-            this.$el.nextElementSibling.removeEventListener('click', this.onSiblingElementClickHandler)
+//            this.$el.nextElementSibling.removeEventListener('click', this.onSiblingElementClickHandler)
         }
     }
 </script>
