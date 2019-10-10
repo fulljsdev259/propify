@@ -303,7 +303,7 @@
                 constants: 'constants'
             }),
             requestStatusConstants() {
-                return this.constants.serviceRequests.status
+                return this.constants.requests.status
             }
         }
     }

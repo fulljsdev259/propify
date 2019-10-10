@@ -373,10 +373,10 @@ export default (config = {}) => {
             },
             getLanguageI18n() {
 
-                this.locations = Object.entries(this.$constants.serviceRequests.location).map(([value, label]) => ({value: +value, name: this.$t(`models.request.location.${label}`)}))
-                this.rooms = Object.entries(this.$constants.serviceRequests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
-                this.acquisitions = Object.entries(this.$constants.serviceRequests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
-                this.costs = Object.entries(this.$constants.serviceRequests.payer).map(([value, label]) => ({value: +value, name: this.$t(`models.request.payer.${label}`)}))
+                this.locations = Object.entries(this.$constants.requests.location).map(([value, label]) => ({value: +value, name: this.$t(`models.request.location.${label}`)}))
+                this.rooms = Object.entries(this.$constants.requests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
+                this.acquisitions = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
+                this.costs = Object.entries(this.$constants.requests.payer).map(([value, label]) => ({value: +value, name: this.$t(`models.request.payer.${label}`)}))
                 
             },
             async deleteTag(tag) {

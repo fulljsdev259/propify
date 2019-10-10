@@ -804,7 +804,7 @@
                 constants: 'constants'
             }),
             requestStatusConstants() {
-                return this.constants.serviceRequests.status
+                return this.constants.requests.status
             },
             tenantStatusConstants() {
                 return this.constants.tenants.status

@@ -427,7 +427,7 @@
                 return this.model.media[this.model.media.length - 1];
             },
             requestStatusConstants() {
-                return this.constants.serviceRequests.status
+                return this.constants.requests.status
             },
             
         }
