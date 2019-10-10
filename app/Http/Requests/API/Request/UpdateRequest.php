@@ -27,8 +27,8 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         $user = Auth::user();
-        if ($user->can('edit-request_tenant')) {
-            return Request::$rulesPutTenant;
+        if ($user->can('edit-request_resident')) {
+            return Request::$rulesPutResident;
         }
 
         if ($user->can('edit-request_service')) {

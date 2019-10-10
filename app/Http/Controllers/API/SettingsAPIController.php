@@ -138,7 +138,7 @@ class SettingsAPIController extends AppBaseController
         // image upload
         $logoFileData = base64_decode($request->get('logo_upload', ''));
         $circleLogoFileData = base64_decode($request->get('circle_logo_upload', ''));
-        $tenantLogoFileData = base64_decode($request->get('tenant_logo_upload', ''));
+        $residentLogoFileData = base64_decode($request->get('resident_logo_upload', ''));
         $faviconIconFileData = base64_decode($request->get('favicon_icon_upload', ''));
 
         try {
@@ -149,9 +149,9 @@ class SettingsAPIController extends AppBaseController
                 $fileName = Str::slug(sprintf('%s-%d', $settings->name, $settings->id)) . '-circle-logo.png';
                 $input['circle_logo'] = $this->settingsRepository->uploadImage($circleLogoFileData, $settings, $fileName);
             }
-            if ($tenantLogoFileData) {
-                $fileName = Str::slug(sprintf('%s-%d', $settings->name, $settings->id)) . '-tenant-logo.png';
-                $input['tenant_logo'] = $this->settingsRepository->uploadImage($tenantLogoFileData, $settings, $fileName);
+            if ($residentLogoFileData) {
+                $fileName = Str::slug(sprintf('%s-%d', $settings->name, $settings->id)) . '-resident-logo.png';
+                $input['resident_logo'] = $this->settingsRepository->uploadImage($residentLogoFileData, $settings, $fileName);
             }
             if ($faviconIconFileData) {
                 $fileName = Str::slug(sprintf('%s-%d', $settings->name, $settings->id)) . '-favicon-icon.png';

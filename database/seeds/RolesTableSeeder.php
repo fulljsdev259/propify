@@ -14,7 +14,7 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         $allPermissions = Permission::get();
-        $tenantPermissions = $allPermissions->whereIn('name', config('permissions.tenant'));
+        $residentPermissions = $allPermissions->whereIn('name', config('permissions.resident'));
         $managerPermissions = $allPermissions->whereIn('name', config('permissions.manager'));
         $providerPermissions = $allPermissions->whereIn('name', config('permissions.provider'));
 
@@ -41,10 +41,10 @@ class RolesTableSeeder extends Seeder
         $RLCService->attachPermissions($providerPermissions);
 
         $RLCUser = new Role();
-        $RLCUser->name = 'tenant';
-        $RLCUser->display_name = 'Users (tenants)';
+        $RLCUser->name = 'resident';
+        $RLCUser->display_name = 'Users (residents)';
         $RLCUser->description = '';
         $RLCUser->save();
-        $RLCUser->attachPermissions($tenantPermissions);
+        $RLCUser->attachPermissions($residentPermissions);
     }
 }

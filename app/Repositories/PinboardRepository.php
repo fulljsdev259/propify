@@ -6,12 +6,12 @@ use App\Models\Building;
 use App\Models\Model;
 use App\Models\Quarter;
 use App\Models\Pinboard;
-use App\Models\RentContract;
-use App\Models\Tenant;
+use App\Models\Contract;
+use App\Models\Resident;
 use App\Models\Settings;
 use App\Models\User;
-use App\Notifications\NewTenantInNeighbour;
-use App\Notifications\NewTenantPinboard;
+use App\Notifications\NewResidentInNeighbour;
+use App\Notifications\NewResidentPinboard;
 use App\Notifications\AnnouncementPinboardPublished;
 use App\Notifications\PinboardPublished;
 use Carbon\Carbon;
@@ -63,16 +63,16 @@ class PinboardRepository extends BaseRepository
         $atts['building_ids'] = $atts['building_ids'] ?? [];
         $atts['quarter_ids'] = $atts['quarter_ids'] ?? [];
         $u = \Auth::user();
-        if ($u->tenant()->exists()) {
-            $rentContracts = $u->tenant->active_rent_contracts_with_building()->get(['building_id']);
-            if ($rentContracts->isEmpty()) {
-                throw new \Exception("Your tenant account does not have any active rent contract");
+        if ($u->resident()->exists()) {
+            $contracts = $u->resident->active_contracts_with_building()->get(['building_id']);
+            if ($contracts->isEmpty()) {
+                throw new \Exception("Your resident account does not have any active contract");
             }
 
-            $rentContracts->load('building:id,quarter_id');
-            $atts['building_ids'] = $rentContracts->pluck('building_id')->unique()->toArray();
+            $contracts->load('building:id,quarter_id');
+            $atts['building_ids'] = $contracts->pluck('building_id')->unique()->toArray();
             if (!empty($atts['visibility']) && Pinboard::VisibilityQuarter == $atts['visibility']) {
-                $quarterIds = $rentContracts->where('building.quarter_id', '!=', null)->pluck('building.quarter_id');
+                $quarterIds = $contracts->where('building.quarter_id', '!=', null)->pluck('building.quarter_id');
                 $atts['quarter_ids'] = $quarterIds->unique()->toArray();
             } else {
                 $atts['quarter_ids'] = [];
@@ -109,7 +109,7 @@ class PinboardRepository extends BaseRepository
         if (Pinboard::StatusPublished == $atts['status']) {
             $notificationsData = $this->notify($model);
         }
-        $adminNotificationsData = $this->notifyAdminNewTenantPinboard($model);
+        $adminNotificationsData = $this->notifyAdminNewResidentPinboard($model);
         $notificationsData = $notificationsData->merge($adminNotificationsData);
         $this->saveNotificationAuditsAndLogs($model, $notificationsData);
 //        $this->notifyAdminActions($model);
@@ -122,8 +122,8 @@ class PinboardRepository extends BaseRepository
         $announcementPinboardPublishedUsers = $notificationsData[$announcementPinboardPublished] ?? collect();
         if ($announcementPinboardPublishedUsers->isNotEmpty()) {
             $pinboard->announcement_email_receptionists()->create([
-                'tenant_ids' => $announcementPinboardPublishedUsers->pluck('tenant.id'),
-                'failed_tenant_ids' => []
+                'resident_ids' => $announcementPinboardPublishedUsers->pluck('resident.id'),
+                'failed_resident_ids' => []
             ]);
         }
 
@@ -205,22 +205,22 @@ class PinboardRepository extends BaseRepository
             return collect();
         }
 
-        $usersToNotify = $this->getNotifiedTenantUsers($pinboard);
+        $usersToNotify = $this->getNotifiedResidentUsers($pinboard);
 
         $announcementPinboardPublished = get_morph_type_of(AnnouncementPinboardPublished::class);
         $pinboardPublished = get_morph_type_of(PinboardPublished::class);
-        $pinboardNewTenantNeighbor = get_morph_type_of(NewTenantInNeighbour::class);
+        $pinboardNewResidentNeighbor = get_morph_type_of(NewResidentInNeighbour::class);
         $notificationsData = collect([
             $announcementPinboardPublished => collect(),
             $pinboardPublished => collect(),
-            $pinboardNewTenantNeighbor => collect(),
+            $pinboardNewResidentNeighbor => collect(),
         ]);
 
         if ($usersToNotify->isEmpty()) {
             return $notificationsData;
         }
 
-        $usersToNotify->load('settings:user_id,admin_notification,pinboard_notification', 'tenant:id,user_id,first_name,last_name');
+        $usersToNotify->load('settings:user_id,admin_notification,pinboard_notification', 'resident:id,user_id,first_name,last_name');
         $i = 0;
         foreach ($usersToNotify as $u) {
             $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
@@ -237,8 +237,8 @@ class PinboardRepository extends BaseRepository
                     $u->notify(new PinboardPublished($pinboard));
                 }
                 if ($pinboard->type == Pinboard::TypeNewNeighbour) {
-                    $notificationsData[$pinboardNewTenantNeighbor]->push($u);
-                    $u->notify((new NewTenantInNeighbour($pinboard))->delay($pinboard->published_at));
+                    $notificationsData[$pinboardNewResidentNeighbor]->push($u);
+                    $u->notify((new NewResidentInNeighbour($pinboard))->delay($pinboard->published_at));
                 }
             }
         }
@@ -250,11 +250,11 @@ class PinboardRepository extends BaseRepository
      * @param Pinboard $pinboard
      * @return Collection
      */
-    protected function getNotifiedTenantUsers(Pinboard $pinboard)
+    protected function getNotifiedResidentUsers(Pinboard $pinboard)
     {
         if ($pinboard->visibility == Pinboard::VisibilityAll) {
-            return User::whereHas('tenant', function ($q) {
-                    $q->whereNull('tenants.deleted_at');
+            return User::whereHas('resident', function ($q) {
+                    $q->whereNull('residents.deleted_at');
                 })
                 ->where('id', '!=', $pinboard->user_id)
                 ->get();
@@ -272,12 +272,12 @@ class PinboardRepository extends BaseRepository
             return $pinboard->newCollection();
         }
 
-        return User::whereHas('tenant', function ($q) use ($quarterIds, $buildingIds) {
-            $q->whereNull('tenants.deleted_at')
-                ->where('tenants.status', Tenant::StatusActive)
-                ->whereHas('rent_contracts', function ($q) use ($quarterIds, $buildingIds) {
+        return User::whereHas('resident', function ($q) use ($quarterIds, $buildingIds) {
+            $q->whereNull('residents.deleted_at')
+                ->where('residents.status', Resident::StatusActive)
+                ->whereHas('contracts', function ($q) use ($quarterIds, $buildingIds) {
 
-                    $q->where('status', RentContract::StatusActive)
+                    $q->where('status', Contract::StatusActive)
                         ->when(
                             ! empty($quarterIds) && !empty($buildingIds),
                             function ($q)  use ($quarterIds, $buildingIds) {
@@ -317,11 +317,11 @@ class PinboardRepository extends BaseRepository
         // @TODO
     }
 
-    public function notifyAdminNewTenantPinboard(Pinboard $pinboard)
+    public function notifyAdminNewResidentPinboard(Pinboard $pinboard)
     {
-        $newTenantPinboard = get_morph_type_of(NewTenantPinboard::class);
-        if (empty($pinboard->user->tenant)) {
-            return collect([$newTenantPinboard => collect()]);
+        $newResidentPinboard = get_morph_type_of(NewResidentPinboard::class);
+        if (empty($pinboard->user->resident)) {
+            return collect([$newResidentPinboard => collect()]);
         }
 
         $settings = Settings::firstOrFail();
@@ -331,22 +331,22 @@ class PinboardRepository extends BaseRepository
             $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
             $admin->redirect = '/admin/pinboard';
 
-            $notif = (new NewTenantPinboard($pinboard, $admin))->delay(now()->addSeconds($delay));
+            $notif = (new NewResidentPinboard($pinboard, $admin))->delay(now()->addSeconds($delay));
             $admin->notify($notif);
         }
 
-        return collect([$newTenantPinboard => $admins]);
+        return collect([$newResidentPinboard => $admins]);
     }
 
     /**
-     * @param Tenant $tenant
+     * @param Resident $resident
      * @return Pinboard|bool|mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function newTenantPinboard(Tenant $tenant)
+    public function newResidentPinboard(Resident $resident)
     {
-        if ($tenant->homeless()) {
+        if ($resident->homeless()) {
             return false;
         }
 
@@ -355,13 +355,13 @@ class PinboardRepository extends BaseRepository
             'status' => Pinboard::StatusNew,
             'type' => Pinboard::TypeNewNeighbour,
             'content' => "New neighbour",
-            'user_id' => $tenant->user->id,
-            'building_ids' => [$tenant->building->id],
+            'user_id' => $resident->user->id,
+            'building_ids' => [$resident->building->id],
             'needs_approval' => false,
             'notify_email' => true,
         ]);
 
-        $publishStart = $tenant->rent_start ?? Carbon::now();
+        $publishStart = $resident->rent_start ?? Carbon::now();
         if ($publishStart->isBefore(Carbon::now())) {
             $publishStart = Carbon::now();
         }
@@ -371,14 +371,14 @@ class PinboardRepository extends BaseRepository
     }
 
     /**
-     * @param RentContract $rentContract
+     * @param Contract $contract
      * @return Pinboard|bool|mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function newRentContractPinboard(RentContract $rentContract)
+    public function newContractPinboard(Contract $contract)
     {
-        if (empty($rentContract->building_id)) {
+        if (empty($contract->building_id)) {
             return false;
         }
 
@@ -387,13 +387,13 @@ class PinboardRepository extends BaseRepository
             'status' => Pinboard::StatusNew,
             'type' => Pinboard::TypeNewNeighbour,
             'content' => "New neighbour",
-            'user_id' => $rentContract->tenant->user->id,
-            'building_ids' => [$rentContract->building_id],
+            'user_id' => $contract->resident->user->id,
+            'building_ids' => [$contract->building_id],
             'needs_approval' => false,
             'notify_email' => true,
         ]);
 
-        $publishStart = $rentContract->start_date ?? Carbon::now();
+        $publishStart = $contract->start_date ?? Carbon::now();
         if ($publishStart->isBefore(Carbon::now())) {
             $publishStart = Carbon::now();
         }

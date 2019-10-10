@@ -21,7 +21,7 @@ class ListRequest extends BaseRequest
         }
 
         if (
-            $u->tenant
+            $u->resident
             && !empty($this->auditable_type)
             && !empty(Relation::$morphMap[$this->auditable_type])
             && Relation::$morphMap[$this->auditable_type] == Request::class

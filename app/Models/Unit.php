@@ -179,25 +179,25 @@ class Unit extends AuditableModel
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      **/
-    public function tenant()
+    public function resident()
     {
-        return $this->hasOne(Tenant::class, 'unit_id', 'id');
+        return $this->hasOne(Resident::class, 'unit_id', 'id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function tenants()
+    public function residents()
     {
-        return $this->hasMany(Tenant::class, 'unit_id', 'id');
+        return $this->hasMany(Resident::class, 'unit_id', 'id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function rent_contracts()
+    public function contracts()
     {
-        return $this->hasMany(RentContract::class);
+        return $this->hasMany(Contract::class);
     }
 
     public function getSqMeterAttribute($attribute)

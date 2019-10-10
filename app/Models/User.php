@@ -194,9 +194,9 @@ class User extends Authenticatable implements LikerContract, Commentator, Audita
     /**
     * @return \Illuminate\Database\Eloquent\Relations\HasOne
     **/
-    public function tenant()
+    public function resident()
     {
-        return $this->hasOne(Tenant::class);
+        return $this->hasOne(Resident::class);
     }
 
     /**

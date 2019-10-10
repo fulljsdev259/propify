@@ -45,7 +45,7 @@ class FilterByLocationCriteria implements CriteriaInterface
             return $model;
         }
 
-        $t = $u->tenant;
+        $t = $u->resident;
         if (!$t) {
             return $model;
         }
@@ -60,7 +60,7 @@ class FilterByLocationCriteria implements CriteriaInterface
             Pinboard::VisibilityAll,
             $t->building_id,
         ];
-        // If the tenant building is in a quarter, show the announcement pinboard from that quarter
+        // If the resident building is in a quarter, show the announcement pinboard from that quarter
         if ($t->building && $t->building->quarter_id) {
             $conds[] = "pinboard_quarter.quarter_id = ?";
             $args[] = $t->building->quarter_id;

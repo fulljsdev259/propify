@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\API\Tenant;
+namespace App\Http\Requests\API\Resident;
 
 use App\Http\Requests\BaseRequest;
 

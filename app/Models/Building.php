@@ -224,36 +224,36 @@ class Building extends AuditableModel implements HasMedia
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function tenants()
+    public function residents()
     {
-        return $this->hasMany(Tenant::class);
+        return $this->hasMany(Resident::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function activeTenants()
+    public function activeResidents()
     {
-        return $this->tenants()
-            ->where('tenants.status', Tenant::StatusActive);
+        return $this->residents()
+            ->where('residents.status', Resident::StatusActive);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function inActiveTenants()
+    public function inActiveResidents()
     {
-        return $this->tenants()
-            ->where('tenants.status', Tenant::StatusNotActive);
+        return $this->residents()
+            ->where('residents.status', Resident::StatusNotActive);
     }
 
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function lastTenants()
+    public function lastResidents()
     {
-        return $this->hasMany(Tenant::class)->orderBy('id', 'DESC');
+        return $this->hasMany(Resident::class)->orderBy('id', 'DESC');
     }
 
     /**
@@ -261,7 +261,7 @@ class Building extends AuditableModel implements HasMedia
      */
     public function requests()
     {
-        return $this->hasManyThrough(Request::class, Tenant::class);
+        return $this->hasManyThrough(Request::class, Resident::class);
     }
 
     public function registerMediaCollections()

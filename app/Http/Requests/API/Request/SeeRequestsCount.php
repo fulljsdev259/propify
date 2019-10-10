@@ -13,7 +13,7 @@ class SeeRequestsCount extends BaseRequest
      */
     public function authorize()
     {
-        if ($this->user()->tenant()->exists()) {
+        if ($this->user()->resident()->exists()) {
             return false;
         }
         

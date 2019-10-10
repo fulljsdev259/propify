@@ -55,7 +55,7 @@ class UserRepository extends BaseRepository
 
         //add user role
         if (!isset($attributes['role'])) {
-            $attributes['role'] = 'tenant';
+            $attributes['role'] = 'resident';
         }
 
         $role = (new RoleRepository(app()))->getRoleByName($attributes['role']);

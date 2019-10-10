@@ -18,7 +18,7 @@ class CommentsTableSeeder extends Seeder
         }
         $us = [
             User::where('deleted_at', null)->first(),
-            User::where('email', 'tenant@example.com')->first(),
+            User::where('email', 'resident@example.com')->first(),
         ];
 
         $ps = Pinboard::all();

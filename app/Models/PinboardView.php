@@ -20,8 +20,8 @@ namespace App\Models;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="tenant_id",
- *          description="tenant_id",
+ *          property="resident_id",
+ *          description="resident_id",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -50,7 +50,7 @@ class PinboardView extends Model
     public $table = 'pinboard_view';
 
     public $fillable = [
-        'tenant_id',
+        'resident_id',
         'pinboard_id',
         'views'
     ];
