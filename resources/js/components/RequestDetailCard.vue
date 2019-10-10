@@ -5,7 +5,7 @@
                 <el-col :span="3" class="request-aside">
                    <h4>{{ item.request_format }}</h4>
                 </el-col>
-                <el-col :span="15" class="request-title">
+                <el-col :span="17" class="request-title">
                     <h3>{{ item.title }}</h3>
                 </el-col>
                 <el-col :span="3" class="request-tail">
@@ -24,7 +24,7 @@
                         </el-option>
                     </el-select>
                 </el-col>
-                <el-col :span="3" class='request-action'>
+                <el-col :span="1" class='request-action'>
                     <router-link
                             :to="{name: 'adminRequestsEdit',  params: { id:item.id}}">
                         <el-button
@@ -59,29 +59,29 @@
                                     class="item"
                                     effect="light" placement="top">
                                     <template v-if="user.user">
-                                        <avatar :size="30"
+                                        <avatar :size="33"
                                                 :username="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
                                                 backgroundColor="rgb(205, 220, 57)"
                                                 color="#fff"
                                                 v-if="!user.user.avatar"></avatar>
-                                        <avatar :size="30" :src="`/${user.user.avatar}`" v-else></avatar>
+                                        <avatar :size="33" :src="`/${user.user.avatar}`" v-else></avatar>
                                     </template>
                                     <template v-else>
-                                        <avatar :size="30"
+                                        <avatar :size="33"
                                                 :username="user.first_name ? `${user.first_name} ${user.last_name}`: `${user.name}`"
                                                 backgroundColor="rgb(205, 220, 57)"
                                                 color="#fff"
                                                 v-if="!user.avatar"></avatar>
-                                        <avatar :size="30" :src="`/${user.avatar}`" v-else></avatar>
+                                        <avatar :size="33" :src="`/${user.avatar}`" v-else></avatar>
                                     </template>
                                 </el-tooltip>
                         </span>
-                        <avatar class="avatar-count" :size="30" :username="`+ ${item.assignedUsersCount}`"
+                        <avatar class="avatar-count" :size="33" :username="`+ ${item.assignedUsersCount}`"
                                 color="#fff"
                                 v-if="item.assignedUsers.length>2"></avatar>
                     </div>
                 </el-col>
-                <el-col :span="5">
+                <el-col :span="4">
                     <span>{{ $t('models.request.created_by') }}</span>
                     <div class="created-by">
                         <p>
@@ -90,7 +90,7 @@
                                 class="item"
                                 effect="light" placement="top">
                         
-                                <table-avatar :src="item.tenant.user.avatar" :name="item.tenant_name" :size="30" />
+                                <table-avatar :src="item.tenant.user.avatar" :name="item.tenant_name" :size="33" />
                             </el-tooltip>
                         </p>
                         <div>
@@ -224,14 +224,8 @@ export default {
             .request-aside {
                 padding: 0 !important;
                 text-align: center;
-                h4 {
-                    margin: 0;
-                }
             }
             .request-title {
-                h3 {
-                    margin: 14px 0 !important;
-                }
             }
         }
         .request-footer {
@@ -255,9 +249,12 @@ export default {
                     overflow: hidden;
                 }
             }
+            .el-col-1 {
+                width: 60px !important;
+            }
             .el-col {
                 border-right: 1px solid darken(#ebeef5, 10%);
-                padding: 0px 15px !important;
+                padding: 0 15px 3px !important;
                 &:last-child {
                     border-right: none;
                 }
@@ -283,17 +280,7 @@ export default {
                         }
                     }
                 } 
-                &:nth-of-type(4),
-                &:nth-of-type(5),
-                &:nth-of-type(6) {
-                    display: flex;
-                    justify-content: center;
-                    flex-direction: column;
-
-                    span {
-                        line-height: 16px;
-                    }
-                }
+                
             }
         }
     }

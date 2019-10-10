@@ -276,7 +276,7 @@
                                             </el-form-item>
                                         </el-card>
                                     </el-col>
-                                    <el-col :md="8">
+                                    <!-- <el-col :md="8">
                                         <el-card class="listing-card card-boxs">
                                             <span @click="Gocaution_drawer" class="icon-cog" style="display:none"></span>
                                             <el-form-item :label="$t('models.settings.gocaution.label')" class="switcher switcher-block">
@@ -299,7 +299,7 @@
                                                 
                                             </el-form-item>
                                         </el-card>
-                                    </el-col>
+                                    </el-col> -->
                                 </el-row>
                             </el-form>
                         </el-tab-pane>
