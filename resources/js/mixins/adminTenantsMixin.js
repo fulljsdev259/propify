@@ -42,11 +42,11 @@ export default (config = {}) => {
                         language: '',
                     },
                     nation: '',
-                    rent_contracts: [],
+                    contracts: [],
                 },
                 visibleDrawer: false,
-                editingRentContract: null,
-                editingRentContractIndex: -1,
+                editingContract: null,
+                editingContractIndex: -1,
                 validationRules: {
                     first_name: [{
                         required: true,
@@ -105,27 +105,27 @@ export default (config = {}) => {
                 const ext = file.name.split('.').pop()
                 return ['.pdf'].includes(ext);
             },
-            addRentContract (data) {
-                this.model.rent_contracts.push(data);
+            addContract (data) {
+                this.model.contracts.push(data);
             },
-            editRentContract(index) {
-                this.editingRentContract = this.model.rent_contracts[index];
-                this.editingRentContractIndex = index;
+            editContract(index) {
+                this.editingContract = this.model.contracts[index];
+                this.editingContractIndex = index;
                 this.visibleDrawer = true;
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
-            updateRentContract(index, params) {
-                this.model.rent_contracts[index] = params;
+            updateContract(index, params) {
+                this.model.contracts[index] = params;
             },
-            deleteRentContract(index) {
+            deleteContract(index) {
 
-                this.$confirm(this.$t(`general.swal.delete_rentcontract.text`), this.$t(`general.swal.delete_rentcontract.title`), {
+                this.$confirm(this.$t(`general.swal.delete_contract.text`), this.$t(`general.swal.delete_contract.title`), {
                     type: 'warning'
                 }).then(async () => {
                     if(config.mode == "edit" ) {
-                        await this.$store.dispatch('rentContracts/delete', {id: this.model.rent_contracts[index].id})
+                        await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
                     }
-                    this.model.rent_contracts.splice(index, 1)
+                    this.model.contracts.splice(index, 1)
                 }).catch(() => {
                 });
             },
@@ -145,7 +145,7 @@ export default (config = {}) => {
                 return this.$refs.form;
             },
             used_units() {
-                return this.model.rent_contracts.map(item => item.unit_id)
+                return this.model.contracts.map(item => item.unit_id)
             },
             ...mapGetters(['countries'])
         },
@@ -155,7 +155,7 @@ export default (config = {}) => {
                 handler (state) {
                     // TODO - auto blur container if visible is true first
                     if (!state) {
-                        this.editingRentContract = null
+                        this.editingContract = null
                         document.getElementsByTagName('footer')[0].style.display = "block";
                     }
                 }
@@ -177,8 +177,8 @@ export default (config = {}) => {
 
                             this.loading.state = true;
                             
-                            this.model.rent_contracts.forEach(rent_contract => {
-                                rent_contract.monthly_rent_gross = Number(rent_contract.monthly_rent_net) + Number(rent_contract.monthly_maintenance)
+                            this.model.contracts.forEach(contract => {
+                                contract.monthly_rent_gross = Number(contract.monthly_rent_net) + Number(contract.monthly_maintenance)
                             })
 
                             let {email, password, password_confirmation, ...tenant} = this.model;

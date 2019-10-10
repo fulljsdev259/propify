@@ -155,7 +155,7 @@ return [
     "monthly_rent" => "Monthly rent",
     "rent_date" => "Rent date",
     "start_date" => "Start date",
-    "rent_contract_file" => "Rent contract file",
+    "contract_file" => "Contract file",
     "my_documents" => "My documents",
     "doc_list" => "A list with all building and unit's documents.",
     "doc_available" => ":num documents available",

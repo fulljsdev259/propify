@@ -154,7 +154,7 @@ return [
                 'unlimited' => 'Unlimited',
                 'limited' => 'Limited',
             ],
-            'contract_pdf' => 'Rent contract pdf',
+            'contract_pdf' => 'Contract PDF',
             'deposit_amount' => 'Deposit amount',
             'type_of_deposit' => 'Type of deposit',
             'deposit_types' => [
@@ -169,16 +169,23 @@ return [
                 'yes' => 'Yes',
                 'no' => 'No',
             ],
-            'contract_id' => 'Rent Contract ID',
+            'contract_id' => 'Contract ID',
             'rent_status' => [
                 'active' => 'Active',
                 'inactive' => 'Inactive',
             ],
             'filename' => 'Filename',
+            'add' => 'Add new contract',
+            'delete' => 'Delete contract', 
+            'pdf_only_desc' => 'Please note that only PDF files can be uploaded',
+            'saved' => 'Tenant rent contract saved',
+            'deleted' => 'Tenant rent contract deleted',
+            'errors' => [
+                'not_found' => 'Tenant rent contract not found',
+                'create' => 'Tenant rent contract create error: ',
+                'deleted' => 'Tenant rent contract Delete error: ',
+            ],
         ],
-        
-
-        
         'contact' => [
             'category' => 'Category',
         ],
@@ -215,16 +222,6 @@ return [
             'your_sincerely' => 'Yours sincerely',
             'your_administration' => 'your administration'
         ],
-    ],
-    'rent_contract' => [
-        'saved' => 'Tenant rent contract saved',
-        'deleted' => 'Tenant rent contract deleted',
-        'errors' => [
-            'not_found' => 'Tenant rent contract not found',
-            'create' => 'Tenant rent contract create error: ',
-            'deleted' => 'Tenant rent contract Delete error: ',
-        ],
-        'filename' => 'Filename',
     ],
     'building' => [
         'title' => 'Buildings',
@@ -687,9 +684,6 @@ return [
         'active_reminder_switcher' => 'Active Reminder',
         'days_left' => 'How many days before should the email be sent?',
         'send_person' => 'Which person should be notified?',
-        'add_rent_contract' => 'Add new rent contract',
-        'delete_rent_contract' => 'Delete rent contract', 
-        'pdf_only_desc' => 'Please note that only PDF files can be uploaded',
         'sort' => 'Sort',
         'reset_sort' => 'Reset Sort',
         'creation_date' => 'Creation Date',

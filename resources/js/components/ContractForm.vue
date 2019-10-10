@@ -28,7 +28,7 @@
                     <el-select :placeholder="$t('models.tenant.search_unit')" 
                             style="display: block"
                             v-model="model.unit_id"
-                            @change="changeRentContractUnit">
+                            @change="changeContractUnit">
                         <el-option
                                 :key="unit.id"
                                 :label="unit.name"
@@ -44,7 +44,7 @@
                     <el-select :placeholder="$t('models.tenant.search_unit')" 
                             style="display: block"
                             v-model="model.unit_id"
-                            @change="changeRentContractUnit">
+                            @change="changeContractUnit">
                         <el-option-group
                             v-for="group in units"
                             :key="group.label"
@@ -136,7 +136,7 @@
                 <el-form-item :label="$t('models.tenant.contract.contract_id')"
                                 class="label-block">
                     <el-input
-                        v-model="model.rent_contract_format"
+                        v-model="model.contract_format"
                         :disabled="true">
                     </el-input>
                 </el-form-item> 
@@ -149,7 +149,7 @@
                                 :key="status.value"
                                 :label="status.name"
                                 :value="status.value"
-                                v-for="status in rentcontract_statuses">
+                                v-for="status in contract_statuses">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -327,7 +327,7 @@
                 </el-table>
 
                 <el-alert
-                    :title="$t('models.request.pdf_only_desc')"
+                    :title="$t('models.tenant.contract.pdf_only_desc')"
                     type="info"
                     show-icon
                     :closable="false"
@@ -393,7 +393,7 @@
                 options: [],
                 rent_durations: [],
                 deposit_statuses: [],
-                rentcontract_statuses: [],
+                contract_statuses: [],
                 deposit_types: [],
                 loading: false,
                 model: {
@@ -468,29 +468,39 @@
 
                         if (this.tenant_id == undefined || this.tenant_id == 0) 
                         {
-                            params.unit = this.units.find(item => item.id == this.model.unit_id)
+
+                            this.units.forEach(group => {
+                                let found = group.options.find(item => item.id == this.model.unit_id)
+                                if(found)
+                                    params.unit = found
+                            })
                             params.building = this.buildings.find(item => item.id == this.model.building_id)
+
                             if (this.mode == "add") {
-                                this.$emit('add-rent-contract', params)
+                                this.$emit('add-contract', params)
                             }
                             else {
-                                this.$emit('update-rent-contract', this.edit_index, params)
+                                this.$emit('update-contract', this.edit_index, params)
                             }
                             
                         }
                         else {
                             
                             params.tenant_id = this.tenant_id
-                            params.unit = this.units.find(item => item.id == this.model.unit_id)
+                            this.units.forEach(group => {
+                                let found = group.options.find(item => item.id == this.model.unit_id)
+                                if(found)
+                                    params.unit = found
+                            })
                             params.building = this.buildings.find(item => item.id == this.model.building_id)
 
                             if (this.mode == "add") {
-                                const resp = await this.$store.dispatch('rentContracts/create', params);
-                                this.$emit('add-rent-contract', resp.data)
+                                const resp = await this.$store.dispatch('contracts/create', params);
+                                this.$emit('add-contract', resp.data)
                             }
                             else {
-                                const resp = await this.$store.dispatch('rentContracts/update', params);
-                                this.$emit('update-rent-contract', this.edit_index, params)
+                                const resp = await this.$store.dispatch('contracts/update', params);
+                                this.$emit('update-contract', this.edit_index, params)
                             }
                         }
 
@@ -545,7 +555,7 @@
                     // this.units = resp.data
 
                     const resp1 = await this.getUnits({
-                        show_rent_contract_counts: true,
+                        show_contract_counts: true,
                         group_by_floor: true,
                         building_id: this.model.building_id
                     });
@@ -591,13 +601,23 @@
                     this.remoteLoading = false;
                 }
             },
-            changeRentContractUnit() {
-                let unit = this.units.find(item => item.id == this.model.unit_id)
-                this.model.monthly_rent_net = unit.monthly_rent_net
-                this.model.monthly_maintenance = unit.monthly_maintenance
-                this.model.monthly_rent_gross = unit.monthly_rent_gross
-                this.model.type = unit.type
-                this.model.duration = 1
+            changeContractUnit() {
+
+                let unit = null
+                this.units.forEach(group => {
+                    let found = group.options.find(item => item.id == this.model.unit_id)
+                    if(found)
+                        unit = found
+                })
+
+                if(unit)
+                {
+                    this.model.monthly_rent_net = unit.monthly_rent_net
+                    this.model.monthly_maintenance = unit.monthly_maintenance
+                    this.model.monthly_rent_gross = unit.monthly_rent_gross
+                    this.model.type = unit.type
+                    this.model.duration = 1
+                }
             },
             addPDFtoContract(file) {
                 //let toUploadContractFile = {...file, url: URL.createObjectURL(file.raw)}
@@ -611,10 +631,10 @@
         },
         async created () {
             let parent_obj = this
-            this.deposit_types = Object.entries(this.$constants.rentContracts.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.contract.deposit_types.${label}`)}))
-            this.rent_durations = Object.entries(this.$constants.rentContracts.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.contract.rent_durations.${label}`)}))
-            this.deposit_statuses = Object.entries(this.$constants.rentContracts.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.contract.deposit_status.${label}`)}));
-            this.rentcontract_statuses = Object.entries(this.$constants.rentContracts.status).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.contract.rent_status.${label}`)}));
+            this.deposit_types = Object.entries(this.$constants.contracts.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.contract.deposit_types.${label}`)}))
+            this.rent_durations = Object.entries(this.$constants.contracts.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.contract.rent_durations.${label}`)}))
+            this.deposit_statuses = Object.entries(this.$constants.contracts.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.contract.deposit_status.${label}`)}));
+            this.contract_statuses = Object.entries(this.$constants.contracts.status).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.contract.rent_status.${label}`)}));
 
             if(this.mode == "edit") {
                 this.model = this.data

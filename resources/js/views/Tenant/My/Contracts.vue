@@ -50,7 +50,7 @@
                 </el-tag>
             </template>
             <template v-if="contract.file">
-                <el-divider content-position="left">{{$t('tenant.rent_contract_file')}}</el-divider>
+                <el-divider content-position="left">{{$t('tenant.contract_file')}}</el-divider>
                 <el-image :src="contract.file.url" v-if="isFileImage(contract.file)" />
                 <embed :src="contract.file.url" v-else />
             </template>

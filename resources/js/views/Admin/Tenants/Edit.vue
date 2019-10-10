@@ -210,21 +210,21 @@
                                         <h3 class="chart-card-header">
                                             <i class="icon-handshake-o ti-user icon "/>
                                                 &nbsp;{{ $t('models.tenant.contract.title') }}
-                                            <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.request.add_rent_contract')}}</el-button>    
+                                            <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.tenant.contract.add')}}</el-button>    
                                         </h3>
                                         
                                     </el-row>
                                     <el-table
-                                        :data="model.rent_contracts"
+                                        :data="model.contracts"
                                         style="width: 100%"
-                                        class="rentcontract-table"
+                                        class="contract-table"
                                         >
                                         <el-table-column
                                             :label="$t('models.tenant.contract.contract_id')"
                                             prop="id"
                                         >
                                             <template slot-scope="scope">
-                                                <span class="clickable" @click="editRentContract(scope.$index)">{{scope.row.rent_contract_format}}</span>
+                                                <span class="clickable" @click="editContract(scope.$index)">{{scope.row.contract_format}}</span>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -245,13 +245,13 @@
                                                     :content="$t('general.actions.edit')"
                                                     class="item" effect="light" 
                                                     placement="top-end">
-                                                        <el-button @click="editRentContract(scope.$index)" icon="ti-pencil" size="mini" type="success"/>
+                                                        <el-button @click="editContract(scope.$index)" icon="ti-pencil" size="mini" type="success"/>
                                                 </el-tooltip>
                                                 <el-tooltip
                                                     :content="$t('general.actions.delete')"
                                                     class="item" effect="light" 
                                                     placement="top-end">
-                                                        <el-button @click="deleteRentContract(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
+                                                        <el-button @click="deleteContract(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
                                                 </el-tooltip>
                                             </template>
                                         </el-table-column>
@@ -269,8 +269,8 @@
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.tenant.contract.title') }}</ui-divider>
                 
                 <div class="content" v-if="visibleDrawer">
-                    <contract-form v-if="editingRentContract" mode="edit" :data="editingRentContract" :tenant_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingRentContractIndex" @update-rent-contract="updateRentContract" :used_units="used_units"/>
-                    <contract-form v-else mode="add" :tenant_id="model.id" :visible.sync="visibleDrawer" @add-rent-contract="addRentContract" :used_units="used_units"/>
+                    <contract-form v-if="editingContract" mode="edit" :data="editingContract" :tenant_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
+                    <contract-form v-else mode="add" :tenant_id="model.id" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
                 </div>
             </ui-drawer>
         </div>
@@ -575,7 +575,7 @@
             }
         }
 
-        .rentcontract-table {
+        .contract-table {
             .clickable {
                 display: block;
                 width: 100%;

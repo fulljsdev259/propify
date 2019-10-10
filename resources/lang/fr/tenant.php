@@ -155,7 +155,7 @@ return [
     "monthly_rent" => "Loyer mensuel",
     "rent_date" => "Date de location",
     "start_date" => "Date de début",
-    "rent_contract_file" => "Dossier du contrat de location",
+    "contract_file" => "Dossier du contrat",
     "my_documents" => "Mes documents",
     "doc_list" => "Une liste avec tous les documents du bâtiment et de l'unité.",
     "doc_available" => ":num documents disponibles",

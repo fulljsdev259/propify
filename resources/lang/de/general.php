@@ -201,9 +201,9 @@ return [
             'title' => 'Inserat löschen',
             'text' => 'Soll das Inserat wirklich gelöscht werden?',
         ],
-        'delete_rentcontract' => [
-            'title' => 'Mietvertrag löschen',
-            'text' => 'Möchten Sie wirklich den Mietvertrag löschen?',
+        'delete_contract' => [
+            'title' => 'Vertrag löschen',
+            'text' => 'Möchten Sie den Vertrag wirklich löschen?',
         ],
         'add' => [
             'added' => 'Erfolgreich hinzugefügt',

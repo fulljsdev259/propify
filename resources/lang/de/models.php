@@ -154,7 +154,7 @@ return [
                 'unlimited' => 'Unbefristet',
                 'limited' => 'Befristet',
             ],
-            'contract_pdf' => 'Mietvertrag im PDF-Format',
+            'contract_pdf' => 'Vertrags-PDF',
             'deposit_amount' => 'Kautionsbetrag',
             'type_of_deposit' => 'Art der Sicherheitsleistung',
             'deposit_types' => [
@@ -168,16 +168,23 @@ return [
                 'yes' => 'Ja',
                 'no' => 'Nein',
             ],
-            'contract_id' => 'Mietvertrags-ID',
+            'contract_id' => 'Vertrags-ID',
             'rent_status' => [
                 'active' => 'Aktiv',
                 'inactive' => 'Inaktiv',
             ],
             'filename' => 'Dateiname',
+            'add' => 'Neuen Vertrag hinzufügen',
+            'delete' => 'Vertrag löschen',
+            'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',
+            'saved' => 'Mietvertrag wurde gespeichert.',
+            'deleted' => 'Mietvertrag wurde gelöscht.',
+            'errors' => [
+                'not_found' => 'Mieter Mietvertrag nicht gefunden.',
+                'create' => 'Mietvertrag des Mieters erstellt Fehler: ',
+                'deleted' => 'Mietvertrag Löschfehler: ',
+            ],
         ],
-        
-
-        
         'contact' => [
             'category' => 'Kategorie',
         ],
@@ -214,16 +221,6 @@ return [
             'your_sincerely' => 'Mit freundlichen Grüssen',
             'your_administration' => 'Ihre Verwaltung'
         ]
-    ],
-    'rent_contract' => [
-        'saved' => 'Mietvertrag wurde gespeichert.',
-        'deleted' => 'Mietvertrag wurde gelöscht.',
-        'errors' => [
-            'not_found' => 'Mieter Mietvertrag nicht gefunden.',
-            'create' => 'Mietvertrag des Mieters erstellt Fehler: ',
-            'deleted' => 'Mietvertrag Löschfehler: ',
-        ],
-        'filename' => 'Dateiname',
     ],
     'building' => [
         'title' => 'Liegenschaften',
@@ -691,9 +688,6 @@ return [
         'active_reminder_switcher' => 'Erinnerung',
         'days_left' => 'Wie viele Tage vorher?',
         'send_person' => 'Wer soll benachrichtigt werden?',
-        'add_rent_contract' => 'Mietvertrag hinzufügen',
-        'delete_rent_contract' => 'Mietvertrag löschen',
-        'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',
         'sort' => 'Sortierung',
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',

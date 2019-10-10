@@ -154,7 +154,7 @@ return [
     "floor" => "Etage",
     "rent_date" => "Mietbeginn",
     "start_date" => "Mietbeginn",
-    "rent_contract_file" => "Mietvertrag",
+    "contract_file" => "Vertragsakte",
     "my_documents" => "Liegenschaft Dokumentation",
     "doc_list" => "Eine Liste mit allen Dokumenten des Gebäudes und der Einheit.",
     "doc_available" => ":num verfügbare Dokumente",

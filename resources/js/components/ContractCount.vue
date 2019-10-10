@@ -28,17 +28,17 @@
             return {
                 counts: [
                 {
-                    prop: 'total_rent_contracts_count',
+                    prop: 'total_contracts_count',
                     background: '#aaa',
                     color: '#fff',
                     label: this.$t('models.tenant.status.total')
                 }, {
-                    prop: 'active_rent_contracts_count',
+                    prop: 'active_contracts_count',
                     background: '#5fad64',
                     color: '#fff',
                     label: this.$t('models.tenant.status.active')
                 }, {
-                    prop: 'inactive_rent_contracts_count',
+                    prop: 'inactive_contracts_count',
                     background: '#dd6161',
                     color: '#fff',
                     label: this.$t('models.tenant.status.not_active')

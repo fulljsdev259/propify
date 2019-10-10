@@ -154,7 +154,7 @@ return [
                 'unlimited' => 'Illimitato',
                 'limited' => 'Limitato',
             ],
-            'contract_pdf' => "Contratto d'affitto pdf",
+            'contract_pdf' => "Contratto PDF",
             'deposit_amount' => 'Importo del deposito',
             'type_of_deposit' => 'Tipo di deposito',
             'deposit_types' => [
@@ -169,16 +169,23 @@ return [
                 'yes' => 'Sì',
                 'no' => 'No',
             ],
-            'contract_id' => 'ID del contratto di affitto',
+            'contract_id' => 'ID contratto',
             'rent_status' => [
                 'active' => 'Attivo',
                 'inactive' => 'Inattivo',
             ],
             'filename' => 'Nome del file',
+            'add' => 'Aggiungere un nuovo contratto',
+            'delete' => 'Cancellare il contratto',
+            'pdf_only_desc' => 'Si prega di notare che solo i file PDF possono essere caricati',
+            'saved' => 'Contratto d\'affitto d\'affitto salvato',
+            'deleted' => 'Contratto d\'affitto del locatario soppresso',
+            'errors' => [
+                'not_found' => 'Contratto di locazione non trovato',
+                'create' => 'Contratto di affitto inquilino creare errore: ',
+                'deleted' => 'Contratto di locazione dell\'inquilino Cancella errore: ',
+            ],
         ],
-        
-
-        
         'contact' => [
             "category" => "Categoria",
         ],
@@ -215,16 +222,6 @@ return [
             'your_sincerely' => 'La vostra sinceramente',
             'your_administration' => 'la sua amministrazione'
         ],
-    ],
-    'rent_contract' => [
-        'saved' => 'Contratto d\'affitto d\'affitto salvato',
-        'deleted' => 'Contratto d\'affitto del locatario soppresso',
-        'errors' => [
-            'not_found' => 'Contratto di locazione non trovato',
-            'create' => 'Contratto di affitto inquilino creare errore: ',
-            'deleted' => 'Contratto di locazione dell\'inquilino Cancella errore: ',
-        ],
-        'filename' => 'Nome del file',
     ],
     'building' => [
         "title" => "Edifici",
@@ -691,9 +688,6 @@ return [
         'active_reminder_switcher' => 'Promemoria attivo',
         'days_left' => "Quanti giorni prima dovrebbe essere inviata l'e-mail?",
         'send_person' => 'Quale persona deve essere informata?',
-        'add_rent_contract' => 'Aggiungere un nuovo contratto di affitto',
-        'delete_rent_contract' => 'Cancellare il contratto di affitto',
-        'pdf_only_desc' => 'Si prega di notare che solo i file PDF possono essere caricati',
         'sort' => 'In scadenza il',
         'reset_sort' => 'Ripristina ordinamento',
         'creation_date' => 'Data di creazione',

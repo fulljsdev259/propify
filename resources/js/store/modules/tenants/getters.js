@@ -13,11 +13,10 @@ export default {
                 tenant.building_address_zip = `${tenant.building.address.zip} ${tenant.building.address.city}`;
             }
 
-
-            tenant.building_names = tenant.rent_contracts.map(item => item.building && item.address ? { 
+            tenant.building_names = tenant.contracts.map(item => item.building && item.address ? { 
                             row : item.address.street + " " + item.address.house_num ,  
                             zip : item.address.zip + " " + item.address.city  } : { row : '', zip : ''} )
-            tenant.unit_names = tenant.rent_contracts.map(item => item.unit ? item.unit.name : '')
+            tenant.unit_names = tenant.contracts.map(item => item.unit ? item.unit.name : '')
 
 
             return tenant;

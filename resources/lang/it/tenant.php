@@ -155,7 +155,7 @@ return [
     "monthly_rent" => "Affitto mensile",
     "rent_date" => "Data d'affitto",
     "start_date" => "Data d'inizio",
-    "rent_contract_file" => "Fascicolo del contratto di affitto",
+    "contract_file" => "Fascicolo contrattuale",
     "my_documents" => "I miei documenti",
     "doc_list" => "Una lista con tutti i documenti dell'edificio e dell'unita'.",
     "doc_available" => ":num documenti disponibili",

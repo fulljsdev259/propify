@@ -154,7 +154,7 @@ return [
                 'unlimited' => 'Illimité',
                 'limited' => 'Limitée',
             ],
-            'contract_pdf' => 'Contrat de location pdf',
+            'contract_pdf' => 'Contrat PDF',
             'deposit_amount' => 'Montant du dépôt',
             'type_of_deposit' => 'Type de dépôt',
             'deposit_types' => [
@@ -169,16 +169,23 @@ return [
                 'yes' => 'Oui',
                 'no' => 'Non',
             ],
-            'contract_id' => 'ID du contrat de location',
+            'contract_id' => 'ID du contrat',
             'rent_status' => [
                 'active' => 'Actif',
                 'inactive' => 'Inactif',
             ],
             'filename' => 'Nom de fichier',
+            'add' => 'Ajouter un nouveau contrat',
+            'delete' => 'Supprimer contrat',
+            'pdf_only_desc' => 'Veuillez noter que seuls les fichiers PDF peuvent être téléchargés.',
+            'saved' => 'Contrat de location du locataire sauvegardé',
+            'deleted' => 'Loyer du locataire Contrat de location supprimé',
+            'errors' => [
+                'not_found' => 'Le contrat de location du locataire n\'a pas été trouvé',
+                'create' => 'Le contrat de location du locataire crée une erreur : ',
+                'deleted' => 'Contrat de location du locataire Supprimer erreur : ',
+            ],
         ],
-        
-
-        
         'contact' => [
             "category" => "Catégorie",
         ],
@@ -215,16 +222,6 @@ return [
             'your_sincerely' => 'Sincèrement vôtre',
             'your_administration' => 'votre administration'
         ]
-    ],
-    'rent_contract' => [
-        'saved' => 'Contrat de location du locataire sauvegardé',
-        'deleted' => 'Loyer du locataire Contrat de location supprimé',
-        'errors' => [
-            'not_found' => 'Le contrat de location du locataire n\'a pas été trouvé',
-            'create' => 'Le contrat de location du locataire crée une erreur : ',
-            'deleted' => 'Contrat de location du locataire Supprimer erreur : ',
-        ],
-        'filename' => 'Nom de fichier',
     ],
     'building' => [
         "title" => "Bâtiments",
@@ -691,9 +688,6 @@ return [
         'active_reminder_switcher' => 'Rappel actif',
         'days_left' => "Combien de jours avant l'envoi de l'email ?",
         'send_person' => 'Quelle personne doit être notifiée ?',
-        'add_rent_contract' => 'Ajouter un nouveau contrat de location',
-        'delete_rent_contract' => 'Supprimer le contrat de location',
-        'pdf_only_desc' => 'Veuillez noter que seuls les fichiers PDF peuvent être téléchargés.',
         'sort' => 'Trier',
         'reset_sort' => 'Réinitialiser le tri',
         'creation_date' => 'Date de création',

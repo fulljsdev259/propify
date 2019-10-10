@@ -43,7 +43,7 @@ export default {
             }
         },
         async create ({state, commit}, params) {
-            const {data} = await this._vm.axios.post('rent-contracts', params, {showMessage: true})
+            const {data} = await this._vm.axios.post('contracts', params, {showMessage: true})
             const newData = state
 
             newData.data.unshift(data.data)
@@ -52,11 +52,11 @@ export default {
             return data;
         },
         async update ({commit}, {id, ...params}) {
-            const {data} = await this._vm.axios.put(`rent-contracts/${id}`, params, {showMessage: true})
+            const {data} = await this._vm.axios.put(`contracts/${id}`, params, {showMessage: true})
             return data;
         },
         async delete ({commit}, {id}) {
-            await this._vm.axios.delete(`rent-contracts/${id}`, {showMessage: true})
+            await this._vm.axios.delete(`contracts/${id}`, {showMessage: true})
         },
         
         async addMedia({ commit}, {id, media}) {
