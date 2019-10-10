@@ -76,42 +76,21 @@
                 localStorage.setItem('sidebar:visibility', this.visible)
             },
             hideSubmenu() {
-                console.log('hideSubmenu called')
                 this.submenu.visible = false
             },
             handleMouseRoute (e, item) {
-                if (!this.submenu.visible) {
-                    if (this.direction === 'horizontal') {
-                        this.origin.x = 50
-                    } else if (this.direction === 'vertical') {
-                        this.origin.y = 127
-                    }
-                }
+                // if (!this.submenu.visible) {
+                //     if (this.direction === 'horizontal') {
+                //         this.origin.x = 50
+                //     } else if (this.direction === 'vertical') {
+                //         this.origin.y = 127
+                //     }
+                // }
                 
+                this.submenu.visible = item.children ? true : false
 
-                if (item.children) {
-                    console.log('item.children')
-                    item.active = true
-
-                    if (Object.is(item.children, this.submenu.items)) {
-                        this.submenu.visible = !this.submenu.visible
-                    } else {
-                        this.submenu.visible = true
-                    }
-
+                if(item.children)
                     this.submenu.items = item.children
-
-                    if (item.children.every(({route}) => route.name !== this.$route.name)) {
-                        item.active = true
-                    }
-                } else {
-                    console.log('not item.children')
-                    this.submenu.visible = false
-
-                    if (item.route) {
-                        item.active = true
-                    }
-                }
             },
             handleRoute (e, item) {
                 
@@ -179,7 +158,6 @@
                 }
             },
             onMouseOver (e) {
-                console.log('onMouseOver');
                 if (!this.submenu.visible) {
                     const bound = e.target.getBoundingClientRect()
                     
@@ -285,7 +263,7 @@
                     if (state) {
                         this.$anime({
                             targets: this.$refs.submenu,
-                            translateY: ['100%', '-108px'],
+                            translateY: ['100%', '-98px'],
                             translateX: this.origin.x,
                             translateZ: 0,
                             opacity: [0, 1],
@@ -296,7 +274,7 @@
                     } else {
                         this.$anime({
                             targets: this.$refs.submenu,
-                            translateY: ['-108px', '100%'],
+                            translateY: ['-98px', '100%'],
                             translateX: this.origin.x,
                             translateZ: 0,
                             opacity: [1, 0],
@@ -567,7 +545,7 @@
 
             .submenu {
                 bottom: 0;
-                padding-bottom: 16px;
+                // padding-bottom: 16px;
 
                 .item {
 

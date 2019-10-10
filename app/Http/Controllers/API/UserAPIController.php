@@ -276,7 +276,7 @@ class UserAPIController extends AppBaseController
     {
         /** @var User $user */
         $user = $request->user();
-        $user->load(['settings', 'roles.perms', 'tenant.media', 'tenant.building:id,contact_enable', 'propertyManager:id,user_id', 'serviceProvider:id,user_id']);
+        $user->load(['settings', 'roles.perms', 'resident.media', 'resident.building:id,contact_enable', 'propertyManager:id,user_id', 'serviceProvider:id,user_id']);
         if ($user->propertyManager) {
             $user->property_manager_id = $user->propertyManager->id;
         }
@@ -288,10 +288,10 @@ class UserAPIController extends AppBaseController
         unset($user->serviceProvider);
         unset($user->propertyManager);
         $user->unread_notifications_count = $user->unreadNotifications()->count();
-        $tenant = $user->tenant;
+        $resident = $user->resident;
 
-        if ($tenant) {
-            $tenant->contact_enable = (bool) $this->getTenantContactEnable($tenant);
+        if ($resident) {
+            $resident->contact_enable = (bool) $this->getResidentContactEnable($resident);
         }
 
         return $this->sendResponse($user->toArray(), 'User retrieved successfully');
@@ -721,13 +721,13 @@ class UserAPIController extends AppBaseController
     }
 
     /**
-     * @param $tenant
+     * @param $resident
      * @return bool
      */
-    protected function getTenantContactEnable($tenant)
+    protected function getResidentContactEnable($resident)
     {
         $default = true;
-        $building = $tenant->building;
+        $building = $resident->building;
 
         if ( ! $building || Building::ContactEnablesBasedSettings == $building->contact_enable) {
             $settings = Settings::first('contact_enable');

@@ -188,7 +188,7 @@
                             </tr>
                             <tr>
                                 <td style="background-color: transparent; font-size: 18px;color: white;padding: 0">
-                                    <h3 style="padding: 0; margin: 0;color: #ffffff" class="email-header">&emsp;&emsp;@lang('template.tenant_portal', [], $lang)&emsp;&emsp;</h3>
+                                    <h3 style="padding: 0; margin: 0;color: #ffffff" class="email-header">&emsp;&emsp;@lang('template.resident_portal', [], $lang)&emsp;&emsp;</h3>
                                 </td>
                             </tr>
                             <tr>

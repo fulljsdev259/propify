@@ -9,21 +9,21 @@ use App\Http\Requests\API\Dashboard\DonutChartStatisticRequest;
 use App\Http\Requests\API\Dashboard\HeatMapStatisticRequest;
 use App\Http\Requests\API\Dashboard\PieChartStatisticRequest;
 use App\Http\Requests\API\Dashboard\SRequestStatisticRequest;
-use App\Http\Requests\API\Dashboard\TenantStatisticRequest;
+use App\Http\Requests\API\Dashboard\ResidentStatisticRequest;
 use App\Models\Building;
 use App\Models\LoginDevice;
-use App\Models\RentContract;
+use App\Models\Contract;
 use App\Models\Request;
 use App\Models\RequestCategory;
 use App\Models\State;
-use App\Models\Tenant;
+use App\Models\Resident;
 use App\Models\Listing;
 use App\Models\Pinboard;
 use App\Models\Unit;
 use App\Models\UserSettings;
 use App\Repositories\BuildingRepository;
 use App\Repositories\RequestRepository;
-use App\Repositories\TenantRepository;
+use App\Repositories\ResidentRepository;
 use App\Repositories\UnitRepository;
 use Carbon\CarbonInterval;
 use Carbon\CarbonPeriod;
@@ -173,8 +173,8 @@ class DashboardAPIController extends AppBaseController
                 'status'
             ]
         ],
-        'tenants' => [
-            'class' => Tenant::class,
+        'residents' => [
+            'class' => Resident::class,
             'columns' => [
                 'status',
                 'title' => [
@@ -184,11 +184,15 @@ class DashboardAPIController extends AppBaseController
                 ],
             ]
         ],
-        'products' => [ // @TODO delete
-            'class' => Listing::class,
+        'tenants' => [ // @TODO delete
+            'class' => Resident::class,
             'columns' => [
                 'status',
-                'type'
+                'title' => [
+                    'mr' => 'mr',
+                    'mrs' => 'mrs',
+                    'company' => 'company',
+                ],
             ]
         ],
         'listings' => [
@@ -211,20 +215,20 @@ class DashboardAPIController extends AppBaseController
      *
      */
     const PERMITTED_TABLES_FOR_CREATED_DATE = [
-        'products' => [ // @TODO delete
-            'class' => Listing::class,
-            'columns' => [
-                'status',
-            ]
-        ],
         'listings' => [
             'class' => Listing::class,
             'columns' => [
                 'status',
             ]
         ],
-        'tenants' => [
-            'class' => Tenant::class,
+        'tenants' => [ // @TODO delete
+            'class' => Resident::class,
+            'columns' => [
+                'status',
+            ]
+        ],
+        'residents' => [
+            'class' => Resident::class,
             'columns' => [
                 'status',
             ]
@@ -243,8 +247,8 @@ class DashboardAPIController extends AppBaseController
     /** @var  UnitRepository */
     private $unitRepo;
 
-    /** @var  TenantRepository */
-    private $tenantRepo;
+    /** @var  ResidentRepository */
+    private $residentRepo;
 
     /** @var  RequestRepository */
     private $requestRepository;
@@ -253,19 +257,19 @@ class DashboardAPIController extends AppBaseController
      * DashboardAPIController constructor.
      * @param BuildingRepository $br
      * @param UnitRepository $ur
-     * @param TenantRepository $tr
+     * @param ResidentRepository $tr
      * @param RequestRepository $srr
      */
     public function __construct(
         BuildingRepository $br,
         UnitRepository $ur,
-        TenantRepository $tr,
+        ResidentRepository $tr,
         RequestRepository $srr
     )
     {
         $this->buildingRepo = $br;
         $this->unitRepo = $ur;
-        $this->tenantRepo = $tr;
+        $this->residentRepo = $tr;
         $this->requestRepository = $srr;
     }
 
@@ -318,10 +322,10 @@ class DashboardAPIController extends AppBaseController
             return $this->sendError(__('models.building.errors.not_found'));
         }
 
-        $tenants = $this->tenantRepo->getTotalTenantsFromBuilding($building->id);
+        $residents = $this->residentRepo->getTotalResidentsFromBuilding($building->id);
         $units = Unit::where('building_id', $id)->count();
-        $occupiedUnitsCount = Unit::where('building_id', $id)->whereHas('rent_contracts', function ($q) {
-            $q->where('status', RentContract::StatusActive);
+        $occupiedUnitsCount = Unit::where('building_id', $id)->whereHas('contracts', function ($q) {
+            $q->where('status', Contract::StatusActive);
         })->count();
 
         if ($units) {
@@ -333,7 +337,8 @@ class DashboardAPIController extends AppBaseController
         }
 
         $response = [
-            'total_tenants' => $this->thousandsFormat($tenants),
+            'total_residents' => $this->thousandsFormat($residents),
+            'total_tenants' => $this->thousandsFormat($residents),  // @TODO delete
             'total_units' => $this->thousandsFormat($units),
             'occupied_units' => $this->thousandsFormat($occupiedUnits),
             'free_units' => $this->thousandsFormat($freeUnit),
@@ -348,7 +353,7 @@ class DashboardAPIController extends AppBaseController
     protected function allBuildingStatistics()
     {
         $unitCount = Unit::count();
-        $occupiedUnitsCount = Unit::has('tenant')->count();
+        $occupiedUnitsCount = Unit::has('resident')->count();
 
         if ($unitCount) {
             $occupiedUnits = round($occupiedUnitsCount * 100 / $unitCount);
@@ -359,14 +364,15 @@ class DashboardAPIController extends AppBaseController
         }
 
 
-        $tenantCount = $this->tenantRepo->count();
+        $residentCount = $this->residentRepo->count();
         $unitCount = $this->unitRepo->count();
 
         /**
          * @TODO adjust response for frontend
          */
         $response = [
-            'total_tenants' => $this->thousandsFormat($tenantCount),
+            'total_residents' => $this->thousandsFormat($residentCount),
+            'total_tenants' => $this->thousandsFormat($residentCount),      // @TODO delete
             'total_units' => $this->thousandsFormat($unitCount),
 //            'occupied_units' => $occupiedUnits,
 //            'free_units' => $freeUnit,
@@ -389,14 +395,14 @@ class DashboardAPIController extends AppBaseController
 
     /**
      * @SWG\Get(
-     *      path="/tenants/{id}/statistics",
-     *      summary="Display the specified Tenant statistics",
+     *      path="/residents/{id}/statistics",
+     *      summary="Display the specified Resident statistics",
      *      tags={"Building"},
-     *      description="Get Tenants statistics",
+     *      description="Get Residents statistics",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of Tenant",
+     *          description="id of Resident",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -412,7 +418,7 @@ class DashboardAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Tenant"
+     *                  ref="#/definitions/Resident"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -423,45 +429,45 @@ class DashboardAPIController extends AppBaseController
      * )
      *
      * @param int $id
-     * @param TenantStatisticRequest $tenantStatisticRequest
+     * @param ResidentStatisticRequest $residentStatisticRequest
      * @return Response
      *
      */
-    public function tenantStatistics(int $id, TenantStatisticRequest $tenantStatisticRequest)
+    public function residentStatistics(int $id, ResidentStatisticRequest $residentStatisticRequest)
     {
-        /** @var Tenant $tenant */
-        $tenant = $this->tenantRepo
+        /** @var Resident $resident */
+        $resident = $this->residentRepo
             ->scope('allRequestStatusCount')
             ->withCount('requests')
             ->findWithoutFail($id);
 
-        if (empty($tenant)) {
-            return $this->sendError(__('models.tenant.errors.not_found'));
+        if (empty($resident)) {
+            return $this->sendError(__('models.resident.errors.not_found'));
         }
 
         $response = [
-            'requests_count' => $this->thousandsFormat($tenant->requests_count),
-            'opened_requests_count' => $this->thousandsFormat($tenant->requests_received_count),
-            'pending_requests_count' => $this->thousandsFormat($tenant->requests_in_processing_count),
-            'done_requests_count' => $this->thousandsFormat($tenant->requests_done_count),
-            'archived_requests_count' => $this->thousandsFormat($tenant->requests_archived_count),
+            'requests_count' => $this->thousandsFormat($resident->requests_count),
+            'opened_requests_count' => $this->thousandsFormat($resident->requests_received_count),
+            'pending_requests_count' => $this->thousandsFormat($resident->requests_in_processing_count),
+            'done_requests_count' => $this->thousandsFormat($resident->requests_done_count),
+            'archived_requests_count' => $this->thousandsFormat($resident->requests_archived_count),
 
-            'requests' => $this->thousandsFormat($tenant->requests),
-            'opened_requests' => $this->thousandsFormat($tenant->requestsReceived),
-            'pending_requests' => $this->thousandsFormat($tenant->requestsInProcessing),
-            'done_requests' => $this->thousandsFormat($tenant->requestsDone),
-            'archived_requests' => $this->thousandsFormat($tenant->requestsArchived),
+            'requests' => $this->thousandsFormat($resident->requests),
+            'opened_requests' => $this->thousandsFormat($resident->requestsReceived),
+            'pending_requests' => $this->thousandsFormat($resident->requestsInProcessing),
+            'done_requests' => $this->thousandsFormat($resident->requestsDone),
+            'archived_requests' => $this->thousandsFormat($resident->requestsArchived),
         ];
 
-        return $this->sendResponse($response, 'Tenant statistics retrieved successfully');
+        return $this->sendResponse($response, 'Resident statistics retrieved successfully');
     }
 
     /**
      * @SWG\Get(
-     *      path="/tenants/gender-statistics",
-     *      summary="Tenants gender statistics for Donut Chart",
-     *      tags={"Tenant", "Donut"},
-     *      description="Get tenants gender statistics",
+     *      path="/residents/gender-statistics",
+     *      summary="Residents gender statistics for Donut Chart",
+     *      tags={"Resident", "Donut"},
+     *      description="Get residents gender statistics",
      *      produces={"application/json"},
      *      @SWG\Response(
      *          response=200,
@@ -528,17 +534,17 @@ class DashboardAPIController extends AppBaseController
      *      )
      * )
      *
-     * @param TenantStatisticRequest $request
+     * @param ResidentStatisticRequest $request
      * @return mixed
      */
-    public function tenantsGenderStatistics(TenantStatisticRequest $request)
+    public function residentsGenderStatistics(ResidentStatisticRequest $request)
     {
-        $tenants = Tenant::selectRaw('count(id) as count, title')
+        $residents = Resident::selectRaw('count(id) as count, title')
             ->whereIn('title', ['mr', 'mrs'])
             ->groupBy('title')
             ->get();
-        $manCount = $tenants->where('title', 'mr')->first()->count ?? 0;
-        $femaleCount = $tenants->where('title', 'mrs')->first()->count ?? 0;
+        $manCount = $residents->where('title', 'mr')->first()->count ?? 0;
+        $femaleCount = $residents->where('title', 'mrs')->first()->count ?? 0;
         if ($manCount + $femaleCount == 0) {
             $response = [
                 'labels' => [
@@ -559,23 +565,23 @@ class DashboardAPIController extends AppBaseController
                     'both' => 0
                 ]
             ];
-            return $this->sendResponse($response, 'Tenants gender statistics retrieved successfully');
+            return $this->sendResponse($response, 'Residents gender statistics retrieved successfully');
         }
 
 
         $femalePercentage = round($femaleCount * 100 / ($femaleCount + $manCount));
 
 
-        $tenantsAge = Tenant::selectRaw('FROM_UNIXTIME(AVG(UNIX_TIMESTAMP(birth_date))) AS duration, title')
+        $residentsAge = Resident::selectRaw('FROM_UNIXTIME(AVG(UNIX_TIMESTAMP(birth_date))) AS duration, title')
             ->whereIn('title', ['mr', 'mrs'])
             ->groupBy('title')
             ->get();
-        $bothTenants = Tenant::selectRaw('FROM_UNIXTIME(AVG(UNIX_TIMESTAMP(birth_date))) AS duration')
+        $bothResidents = Resident::selectRaw('FROM_UNIXTIME(AVG(UNIX_TIMESTAMP(birth_date))) AS duration')
             ->whereIn('title', ['mr', 'mrs'])
             ->value('duration');
 
-        $femaleAvgAge = $tenantsAge->where('title', 'mrs')->first()->duration ?? 0;
-        $manAvgAge = $tenantsAge->where('title', 'mr')->first()->duration ?? 0;
+        $femaleAvgAge = $residentsAge->where('title', 'mrs')->first()->duration ?? 0;
+        $manAvgAge = $residentsAge->where('title', 'mr')->first()->duration ?? 0;
 
         $response = [
             'labels' => [
@@ -593,18 +599,18 @@ class DashboardAPIController extends AppBaseController
             'average_age' => [
                 'mr' => Carbon::parse($manAvgAge)->age,
                 'mrs' => Carbon::parse($femaleAvgAge)->age,
-                'both' => Carbon::parse($bothTenants)->age
+                'both' => Carbon::parse($bothResidents)->age
             ]
         ];
 
-        return $this->sendResponse($response, 'Tenants gender statistics retrieved successfully');
+        return $this->sendResponse($response, 'Residents gender statistics retrieved successfully');
     }
 
     /**
-     * @param TenantStatisticRequest $tenantStatisticRequest
+     * @param ResidentStatisticRequest $residentStatisticRequest
      * @return mixed
      */
-    public function tenantsAgeStatistics(TenantStatisticRequest $tenantStatisticRequest)
+    public function residentsAgeStatistics(ResidentStatisticRequest $residentStatisticRequest)
     {
         // @TODO check permission in request
         $ageConfig = [
@@ -634,7 +640,7 @@ class DashboardAPIController extends AppBaseController
 
 
         $query = $this->getQueryForAge($ageConfig);
-        $result = \App\Models\Tenant::selectRaw($query)->first();
+        $result = \App\Models\Resident::selectRaw($query)->first();
         $columnValues = array_combine(array_keys($ageConfig), array_keys($ageConfig));
 
         $statistics = collect();
@@ -647,7 +653,7 @@ class DashboardAPIController extends AppBaseController
 
 
         $response = $this->formatForDonutChart($statistics, 'age', $columnValues, true);
-        return $this->sendResponse($response, 'Tenants gender statistics retrieved successfully');
+        return $this->sendResponse($response, 'Residents gender statistics retrieved successfully');
     }
 
     /**
@@ -673,13 +679,13 @@ class DashboardAPIController extends AppBaseController
     /**
      * @SWG\Get(
      *      path="/requests/{id}/statistics",
-     *      summary="Display the specified Tenant statistics",
+     *      summary="Display the specified Resident statistics",
      *      tags={"Building"},
      *      description="Get Request statistics",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of Tenant",
+     *          description="id of Resident",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -695,7 +701,7 @@ class DashboardAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Tenant"
+     *                  ref="#/definitions/Resident"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -742,7 +748,7 @@ class DashboardAPIController extends AppBaseController
      * @SWG\Get(
      *      path="/admin/statistics",
      *      summary="statistics for request, building, pinboard, listing",
-     *      tags={"Request", "Pinboard", "Tenant", "Listing"},
+     *      tags={"Request", "Pinboard", "Resident", "Listing"},
      *      description="statistics for request, building, pinboard, listing",
      *      produces={"application/json"},
      *      @SWG\Response(
@@ -788,12 +794,12 @@ class DashboardAPIController extends AppBaseController
      *                      ),
      *                  ),
      *                  @SWG\Property(
-     *                      property="total_tenants",
+     *                      property="total_residents",
      *                      type="string",
      *                      example="200"
      *                  ),
      *                  @SWG\Property(
-     *                      property="tenants_per_status",
+     *                      property="residents_per_status",
      *                      ref="#/definitions/Donut"
      *                  ),
      *                  @SWG\Property(
@@ -832,7 +838,7 @@ class DashboardAPIController extends AppBaseController
      *                          example="01.01.2019"
      *                      ),
      *                      @SWG\Property(
-     *                          property="tenants",
+     *                          property="residents",
      *                          type="string",
      *                          example="01.01.2019"
      *                      ),
@@ -875,9 +881,9 @@ class DashboardAPIController extends AppBaseController
         $timeDifInSeconds = Request::where('status', Request::StatusDone)->avg('resolution_time');
         $allStartDates = [
             'requests' => $this->timeFormat(Request::min('created_at')),
-            'tenants' => $this->timeFormat(Tenant::min('created_at')),
+            'residents' => $this->timeFormat(Resident::min('created_at')),
+            'tenants' => $this->timeFormat(Resident::min('created_at')), // @TODO delete
             'buildings' => $this->timeFormat(Building::min('created_at')),
-            'products' => $this->timeFormat(Listing::min('created_at')), // @TODO delete
             'listings' => $this->timeFormat(Listing::min('created_at')),
             'pinboard' => $this->timeFormat(Pinboard::min('created_at')),
         ];
@@ -889,9 +895,11 @@ class DashboardAPIController extends AppBaseController
             'requests_per_status' => $this->donutChartByTable($request, $optionalArgs, 'requests'),
             'requests_per_category' => $this->_donutChartRequestByCategory($request, $optionalArgs),
 
-            // all time total tenants count and total tenants count of per status
-            'total_tenants' => $this->thousandsFormat(Tenant::count('id')),
-            'tenants_per_status' => $this->donutChartByTable($request, $optionalArgs, 'tenants'),
+            // all time total residents count and total residents count of per status
+            'total_residents' => $this->thousandsFormat(Resident::count('id')),
+            'residents_per_status' => $this->donutChartByTable($request, $optionalArgs, 'residents'),
+            'total_tenants' => $this->thousandsFormat(Resident::count('id')),                                   // @TODO delete
+            'tenants_per_status' => $this->donutChartByTable($request, $optionalArgs, 'residents'),     // @TODO delete
 
             // all time total buildings count and total buildings count of per status
             'total_buildings' => $this->thousandsFormat(Building::count('id')),
@@ -1008,9 +1016,9 @@ class DashboardAPIController extends AppBaseController
     /**
      * @SWG\Get(
      *      path="/admin/chartByCreationDate",
-     *      summary="get statistics for Grouped Report by listings:status | tenants:status | pinboard:status ",
-     *      tags={"Tenant", "Listing", "Pinboard", "CreationDate"},
-     *      description="get statistics for Grouped Report by listings:status | tenants:status | pinboard:status",
+     *      summary="get statistics for Grouped Report by listings:status | residents:status | pinboard:status ",
+     *      tags={"Resident", "Listing", "Pinboard", "CreationDate"},
+     *      description="get statistics for Grouped Report by listings:status | residents:status | pinboard:status",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="table",
@@ -1018,7 +1026,7 @@ class DashboardAPIController extends AppBaseController
      *          description="The table used for get statistic data based db table",
      *          type="string",
      *          default="listings",
-     *          enum={"listings", "tenants", "pinboard"}
+     *          enum={"listings", "residents", "pinboard"}
      *      ),
      *      @SWG\Parameter(
      *          name="column",
@@ -1190,9 +1198,9 @@ class DashboardAPIController extends AppBaseController
     /**
      * @SWG\Get(
      *      path="/admin/donutChart",
-     *      summary="requests, listings, tenants,  pinboard statistics for Donut Chart",
-     *      tags={"Tenant", "Request", "Pinboard", "Listing", "Donut"},
-     *      description="requests:status | tenants:status,title | listings:status,type |  pinboard:status,type statistics for Donut Chart",
+     *      summary="requests, listings, residents,  pinboard statistics for Donut Chart",
+     *      tags={"Resident", "Request", "Pinboard", "Listing", "Donut"},
+     *      description="requests:status | residents:status,title | listings:status,type |  pinboard:status,type statistics for Donut Chart",
      *      produces={"application/json"},
      *     @SWG\Parameter(
      *          name="table",
@@ -1200,12 +1208,12 @@ class DashboardAPIController extends AppBaseController
      *          description="The table used for get statistic data based db table",
      *          type="string",
      *          default="requests",
-     *          enum={"requests", "tenants", "listings", "pinboard"}
+     *          enum={"requests", "residents", "listings", "pinboard"}
      *      ),
      *      @SWG\Parameter(
      *          name="column",
      *          in="query",
-     *          description="The column used for get statistic according that column | permitted values for each table [requests:status | tenants:status,title | listings:status,type |  pinboard:status,type]",
+     *          description="The column used for get statistic according that column | permitted values for each table [requests:status | residents:status,title | listings:status,type |  pinboard:status,type]",
      *          type="string",
      *          default="status",
      *          enum={"status", "type", "title"}
@@ -1487,10 +1495,10 @@ class DashboardAPIController extends AppBaseController
     /**
 
      * @SWG\Get(
-     *      path="/admin/donutChartTenantsByDateAndStatus",
-     *      summary="Tenants statistics for Donut Chart by requests status",
-     *      tags={"Tenant", "Donut"},
-     *      description="Tenants statistics for Donut Chart by requests status",
+     *      path="/admin/donutChartResidentsByDateAndStatus",
+     *      summary="Residents statistics for Donut Chart by requests status",
+     *      tags={"Resident", "Donut"},
+     *      description="Residents statistics for Donut Chart by requests status",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="start_date",
@@ -1543,23 +1551,23 @@ class DashboardAPIController extends AppBaseController
      *              @SWG\Property(
      *                  property="message",
      *                  type="string",
-     *                  example="Admin statistics retrieved successfully for tenants by request status"
+     *                  example="Admin statistics retrieved successfully for residents by request status"
      *              )
      *          )
      *      )
      * )
      *
      *
-     * @param TenantStatisticRequest $request
+     * @param ResidentStatisticRequest $request
      * @param array $optionalArgs
      * @return mixed
      */
-    public function donutChartTenantsByDateAndStatus(TenantStatisticRequest $request, $optionalArgs = [])
+    public function donutChartResidentsByDateAndStatus(ResidentStatisticRequest $request, $optionalArgs = [])
     {
         [$startDate, $endDate] = $this->getStartDateEndDate($request, $optionalArgs);
 
-        $rsPerStatus = Tenant::selectRaw('`requests`.`status`, count(`tenants`.`id`) `count`')
-            ->join('requests', 'requests.tenant_id', 'tenants.id')
+        $rsPerStatus = Resident::selectRaw('`requests`.`status`, count(`residents`.`id`) `count`')
+            ->join('requests', 'requests.resident_id', 'residents.id')
             ->whereDate('requests.created_at', '>=', $startDate->format('Y-m-d'))
             ->whereDate('requests.created_at', '<=', $endDate->format('Y-m-d'))
             ->groupBy('status')
@@ -1571,7 +1579,7 @@ class DashboardAPIController extends AppBaseController
 
         $isConvertResponse = $optionalArgs['isConvertResponse'] ?? true;
         return $isConvertResponse
-            ? $this->sendResponse($response, 'Admin statistics retrieved successfully for tenants by request status')
+            ? $this->sendResponse($response, 'Admin statistics retrieved successfully for residents by request status')
             : $response;
     }
 
@@ -1887,10 +1895,10 @@ class DashboardAPIController extends AppBaseController
     /**
      *
      * @SWG\Get(
-     *      path="/admin/chartTenantLanguage",
-     *      summary="Tenants statistics for Donut Chart by language",
-     *      tags={"Tenant", "Donut"},
-     *      description="Tenants statistics for Donut Chart by language",
+     *      path="/admin/chartResidentLanguage",
+     *      summary="Residents statistics for Donut Chart by language",
+     *      tags={"Resident", "Donut"},
+     *      description="Residents statistics for Donut Chart by language",
      *      produces={"application/json"},
      *
      *      @SWG\Response(
@@ -1937,26 +1945,26 @@ class DashboardAPIController extends AppBaseController
      *              @SWG\Property(
      *                  property="message",
      *                  type="string",
-     *                  example="Tenants statistics by language retrieved successfully"
+     *                  example="Residents statistics by language retrieved successfully"
      *              )
      *          )
      *      )
      * )
      *
-     * @param TenantStatisticRequest $request
+     * @param ResidentStatisticRequest $request
      * @return mixed
      */
-    public function chartTenantLanguage(TenantStatisticRequest $request)
+    public function chartResidentLanguage(ResidentStatisticRequest $request)
     {
         $languages = config('app.locales');
 //        $languages[null] = 'Unknown'; @TODO need or not
 
-        $tenants = UserSettings::has('tenant')->selectRaw('count(id) as count, language')
+        $residents = UserSettings::has('resident')->selectRaw('count(id) as count, language')
             ->groupBy('language')
             ->get();
 
-        $response = $this->formatForDonutChart($tenants, 'language', $languages, true);
-        return $this->sendResponse($response, 'Tenants statistics by language retrieved successfully');
+        $response = $this->formatForDonutChart($residents, 'language', $languages, true);
+        return $this->sendResponse($response, 'Residents statistics by language retrieved successfully');
     }
 
     /**
@@ -2230,8 +2238,7 @@ class DashboardAPIController extends AppBaseController
         $table = $optionalArgs['table'] ?? null;
         $table = $table ?? $request->{self::QUERY_PARAMS['table']};
         $table = key_exists($table, $permissions) ? $table : Arr::first(array_keys($permissions));
-        $table = 'products' == $table ? 'listings' : $table;  // @TODO delete
-        $table = 'service_requests' == $table ? 'requests' : $table; // @TODO delete
+        $table = 'tenants' == $table ? 'residents' : $table;  // @TODO delete
 
         $class = $permissions[$table]['class'];
 

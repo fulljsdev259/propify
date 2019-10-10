@@ -26,10 +26,10 @@
                                     </p>
                                     <p style="margin:7px 0 0;">
                                         <b>@lang('models.address.name',[],$language):</b>
-                                        {{ @$tenant->address->street }}
-                                        {{ @$tenant->address->house_num }},
-                                        {{ @$tenant->address->zip }}
-                                        {{ @$tenant->address->city }}
+                                        {{ @$resident->address->street }}
+                                        {{ @$resident->address->house_num }},
+                                        {{ @$resident->address->zip }}
+                                        {{ @$resident->address->city }}
 
                                     </p>
                                 </td>
@@ -149,10 +149,10 @@
                                 <tbody>
                                 <tr>
                                     <td class="no_border"><strong>@lang('general.name',[],$language):</strong></td>
-                                    <td class="no_border" width="163px">{{ $tenant->user->name }}</td>
+                                    <td class="no_border" width="163px">{{ $resident->user->name }}</td>
 
                                     <td class="no_border" ><strong>@lang('general.email',[],$language):</strong></td>
-                                    <td  class="no_border">{{ $tenant->user->email }}</td>
+                                    <td  class="no_border">{{ $resident->user->email }}</td>
                                     <td class="no_border"></td>
 
                                 </tr>
@@ -167,12 +167,12 @@
                                 </tr>--}}
 
                                 <tr>
-                                    @if($tenant->mobile != null)
-                                        <td class="border_btm"><strong>@lang('models.tenant.mobile_phone',[],$language):</strong></td>
-                                        <td class="border_btm">{{ $tenant->mobile }}</td>
+                                    @if($resident->mobile != null)
+                                        <td class="border_btm"><strong>@lang('models.resident.mobile_phone',[],$language):</strong></td>
+                                        <td class="border_btm">{{ $resident->mobile }}</td>
                                     @else
-                                        <td class="border_btm"><strong>@lang('models.tenant.private_phone',[],$language):</strong></td>
-                                        <td class="border_btm">{{ $tenant->private_phone }}</td>
+                                        <td class="border_btm"><strong>@lang('models.resident.private_phone',[],$language):</strong></td>
+                                        <td class="border_btm">{{ $resident->private_phone }}</td>
                                     @endif
 
                                         <td class="border_btm"></td>

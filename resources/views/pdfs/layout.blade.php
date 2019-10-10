@@ -23,7 +23,7 @@
         padding-left: 148px;
         padding-top: 8px;
     }
-    #tenant-header {
+    #resident-header {
         padding-top: 70px;
     }
     ul.offer {

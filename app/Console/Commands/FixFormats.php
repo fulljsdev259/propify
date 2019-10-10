@@ -7,7 +7,7 @@ use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\ServiceProvider;
 use App\Models\Request;
-use App\Models\Tenant;
+use App\Models\Resident;
 use App\Models\Unit;
 use Illuminate\Console\Command;
 
@@ -49,9 +49,9 @@ class FixFormats extends Command
             $serviceProvider->service_provider_format  = $serviceProvider->getUniqueIDFormat($serviceProvider->id);
             $serviceProvider->save();
         });
-        Tenant::get(['id', 'created_at'])->each(function (Tenant $tenant) {
-            $tenant->tenant_format  = $tenant->getUniqueIDFormat($tenant->id);
-            $tenant->save();
+        Resident::get(['id', 'created_at'])->each(function (Resident $resident) {
+            $resident->resident_format  = $resident->getUniqueIDFormat($resident->id);
+            $resident->save();
         });
         Building::get(['id', 'created_at'])->each(function (Building $building) {
             $building->building_format  = $building->getUniqueIDFormat($building->id);

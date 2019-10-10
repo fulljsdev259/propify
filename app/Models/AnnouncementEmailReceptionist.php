@@ -20,16 +20,16 @@ namespace App\Models;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="tenant_ids",
- *          description="tenant_ids",
+ *          property="resident_ids",
+ *          description="resident_ids",
  *          type="array",
  *          @SWG\Items(
  *              type="integer"
  *          )
  *      ),
  *      @SWG\Property(
- *          property="failed_tenant_ids",
- *          description="failed_tenant_ids",
+ *          property="failed_resident_ids",
+ *          description="failed_resident_ids",
  *          type="array",
  *          @SWG\Items(
  *              type="integer"
@@ -53,8 +53,8 @@ class AnnouncementEmailReceptionist extends Model
 {
     public $fillable = [
         'pinboard_id',
-        'tenant_ids',
-        'failed_tenant_ids'
+        'resident_ids',
+        'failed_resident_ids'
     ];
 
     /**
@@ -64,8 +64,8 @@ class AnnouncementEmailReceptionist extends Model
      */
     protected $casts = [
         'pinboard_id' => 'integer',
-        'tenant_ids' => 'array',
-        'failed_tenant_ids' => 'array'
+        'resident_ids' => 'array',
+        'failed_resident_ids' => 'array'
     ];
 
     /**

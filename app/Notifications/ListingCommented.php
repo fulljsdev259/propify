@@ -4,7 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Comment;
 use App\Models\Listing;
-use App\Models\Tenant;
+use App\Models\Resident;
 use App\Repositories\TemplateRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -26,7 +26,7 @@ class ListingCommented extends Notification implements ShouldQueue
      */
     protected $listing;
     /**
-     * @var Tenant
+     * @var Resident
      */
     protected $commenter;
     /**
@@ -37,10 +37,10 @@ class ListingCommented extends Notification implements ShouldQueue
     /**
      * ListingCommented constructor.
      * @param Listing $listing
-     * @param Tenant $commenter
+     * @param Resident $commenter
      * @param Comment $comment
      */
-    public function __construct(Listing $listing, Tenant $commenter, Comment $comment)
+    public function __construct(Listing $listing, Resident $commenter, Comment $comment)
     {
         $this->listing = $listing;
         $this->commenter = $commenter;
@@ -89,7 +89,7 @@ class ListingCommented extends Notification implements ShouldQueue
     {
         return [
             'listing_id' => $this->listing->id,
-            'tenant' => $this->commenter->name,
+            'resident' => $this->commenter->name,
             'comment' => $this->comment->comment,
             'fragment' => Str::limit($this->listing->title, 128),
         ];

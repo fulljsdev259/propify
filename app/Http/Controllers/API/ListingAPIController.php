@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Criteria\Common\RequestCriteria;
-use App\Criteria\Listing\FilterByTenantCriteria;
+use App\Criteria\Listing\FilterByResidentCriteria;
 use App\Criteria\Listing\FilterByTypeCriteria;
 use App\Criteria\Listing\FilterByUserCriteria;
 use App\Criteria\Listing\FilterByStatusCriteria;
@@ -103,7 +103,7 @@ class ListingAPIController extends AppBaseController
     {
         $this->listingRepository->pushCriteria(new RequestCriteria($request));
         $this->listingRepository->pushCriteria(new LimitOffsetCriteria($request));
-        $this->listingRepository->pushCriteria(new FilterByTenantCriteria($request));
+        $this->listingRepository->pushCriteria(new FilterByResidentCriteria($request));
         $this->listingRepository->pushCriteria(new FilterByUserCriteria($request));
         $this->listingRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->listingRepository->pushCriteria(new FilterByStatusCriteria($request));
@@ -112,7 +112,7 @@ class ListingAPIController extends AppBaseController
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $listings = $this->listingRepository->with([
             'media',
-            'user.tenant',
+            'user.resident',
             'likesCounter',
             'likes',
             'likes.user',
@@ -225,7 +225,7 @@ class ListingAPIController extends AppBaseController
         /** @var Listing $listing */
         $listing = $this->listingRepository->with([
             'media',
-            'user.tenant',
+            'user.resident',
             'likesCounter',
             'likes',
             'likes.user',
@@ -423,11 +423,11 @@ class ListingAPIController extends AppBaseController
         $u = \Auth::user();
         $u->like($listing);
 
-        // if logged in user is tenant and
-        // author of listing is tenant and
+        // if logged in user is resident and
+        // author of listing is resident and
         // author of listing is different than liker
-        if ($u->tenant && $listing->user->tenant && $u->id != $listing->user_id) {
-            $listing->user->notify(new ListingLiked($listing, $u->tenant));
+        if ($u->resident && $listing->user->resident && $u->id != $listing->user_id) {
+            $listing->user->notify(new ListingLiked($listing, $u->resident));
         }
         return $this->sendResponse($this->uTransformer->transform($u),
         __('models.listing.liked'));

@@ -41,22 +41,22 @@ class FilterByPermissionsCriteria implements CriteriaInterface
     {
         $u = $this->request->user();
 
-        if ($u->tenant) {
+        if ($u->resident) {
 
             $qs = [
-                '(requests.visibility = ? and requests.tenant_id = ?)',
+                '(requests.visibility = ? and requests.resident_id = ?)',
                 '(requests.visibility = ? and buildings.quarter_id = ?)',
             ];
             $model->select('requests.*')
                 ->join('units', 'units.id', '=', 'requests.unit_id')
                 ->join('buildings', 'units.building_id', '=', 'buildings.id');
             $vs = [
-                Request::VisibilityTenant, $u->tenant->id,
-                Request::VisibilityBuilding, $u->tenant->building_id,
+                Request::VisibilityResident, $u->resident->id,
+                Request::VisibilityBuilding, $u->resident->building_id,
             ];
-            if ($u->tenant->building) {
+            if ($u->resident->building) {
                 $vs[] = Request::VisibilityQuarter;
-                $vs[] = $u->tenant->building->quarter_id;
+                $vs[] = $u->resident->building->quarter_id;
                 $qs[] = '(requests.visibility = ? and units.building_id = ?)';
             }
             return $model->whereRaw('(' . implode(' or ', $qs) . ')', $vs);

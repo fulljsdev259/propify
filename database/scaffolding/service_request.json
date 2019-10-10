@@ -17,10 +17,10 @@
         "relation": "1t1,ServiceRequestCategory,category_id,id"
     },
     {
-        "name": "tenant_id",
-        "dbType": "integer:unsigned:default,0:foreign,tenants,id",
+        "name": "resident_id",
+        "dbType": "integer:unsigned:default,0:foreign,residents,id",
         "htmlType": "text",
-        "relation": "1t1,Tenant,tenant_id,id"
+        "relation": "1t1,Resident,resident_id,id"
     },
     {
         "name": "agent_id",

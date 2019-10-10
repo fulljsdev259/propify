@@ -41,7 +41,7 @@ class FilterByOpenRequestsCriteria implements CriteriaInterface
     {
         $request = $this->request->get('request', null);
         if ($request == 1) {
-            return $model->whereHas('tenant.requests', function ($query) {
+            return $model->whereHas('resident.requests', function ($query) {
                 $query->where('status', '<', Request::StatusDone);
             });
         }
