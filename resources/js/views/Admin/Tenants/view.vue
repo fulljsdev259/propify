@@ -132,10 +132,10 @@
                    <el-card class="chart-card left-card-data-section">
                         <h3 class="right-card">
                             <i class="ti-user"/>
-                            {{$t('models.tenant.rent_contract')}}
+                            {{$t('models.tenant.contract.title')}}
                         </h3>
                         <el-row :gutter="20">
-                            <el-col :sm="8" :xs="12">{{$t('models.tenant.rent_start')}}:</el-col>
+                            <el-col :sm="8" :xs="12">{{$t('models.tenant.contract.rent_start')}}:</el-col>
                             <el-col :sm="16" :xs="12" class="text-secondary" v-if="model.rent_start">
                                 {{new Date(model.rent_start) | formatDate }}
                             </el-col>
@@ -143,7 +143,7 @@
                                &#8203;
                             </el-col>
 
-                            <el-col :sm="8" :xs="12">{{$t('models.tenant.rent_end')}}:</el-col>
+                            <el-col :sm="8" :xs="12">{{$t('models.tenant.contract.rent_end')}}:</el-col>
                             <el-col :sm="16" :xs="12" class="text-secondary" v-if="model.rent_end">
                                 {{  new Date(model.rent_end) | formatDate }}
                             </el-col>

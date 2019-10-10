@@ -262,5 +262,7 @@ return [
     'to_homepage' => 'Zur Startseite',
     'assignment' => 'Zugewiesene Liegenschaften',
     'status_changed' => 'Status geändert',
-    'monthly_rent_net' => 'Monatsmiete',    
+    'monthly_rent_net' => 'Monatsmiete', 
+    'maintenance' => 'Heiz- und Nebenkosten',
+    'gross_rent' => 'Bruttomiete',
 ];

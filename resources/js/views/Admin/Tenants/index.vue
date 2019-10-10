@@ -79,7 +79,7 @@
                     width: 150,
                     props: ['unit_names']
                 }, {
-                    label: 'models.tenant.rent_contract',
+                    label: 'models.tenant.contract.title',
                     withCounts: true,
                     width: 150,
                     counts: [

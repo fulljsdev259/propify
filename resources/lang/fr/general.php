@@ -263,4 +263,6 @@ return [
     "assignment" => "Affectation",
     'status_changed' => "Changement de statut",
     "monthly_rent_net" => "Loyer mensuel",
+    'maintenance' => 'Maintenance',
+    'gross_rent' => 'Loyer brut',
 ];

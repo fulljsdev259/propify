@@ -143,7 +143,7 @@
                         <card class="mt15 rentcontract-box">
                             <template slot="header">
                                 
-                                {{ $t('models.tenant.rent_contract') }}
+                                {{ $t('models.tenant.contract.title') }}
                                 <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.request.add_rent_contract')}}</el-button>    
                             
                             </template>
@@ -154,7 +154,7 @@
                                     class="rentcontract-table"
                                     >
                                     <el-table-column
-                                        :label="$t('models.tenant.rentcontract_id')"
+                                        :label="$t('models.tenant.contract.contract_id')"
                                         prop="id"
                                     >
                                         <template slot-scope="scope">
@@ -198,7 +198,7 @@
         </div>
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-            <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.tenant.rent_contract') }}</ui-divider>
+            <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.tenant.contract.title') }}</ui-divider>
             <div class="content" v-if="visibleDrawer">
                 <contract-form v-if="editingRentContract" mode="edit" :data="editingRentContract" :tenant_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingRentContractIndex" @update-rent-contract="updateRentContract" :used_units="used_units"/>
                 <contract-form v-else mode="add" :tenant_id="model.id" :visible.sync="visibleDrawer" @add-rent-contract="addRentContract" :used_units="used_units"/>

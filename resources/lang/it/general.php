@@ -263,4 +263,6 @@ return [
     "assignment" => "Assegnazione",
     'status_changed' => "Stato cambiato",
     "monthly_rent_net" => "Affitto mensile",  
+    'maintenance' => 'Manutenzione',
+    'gross_rent' => 'Affitto lordo',
 ];

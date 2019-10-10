@@ -263,4 +263,6 @@ return [
     'assignment' => 'Assignment',
     'status_changed' => 'Status changed',
     'monthly_rent_net' => 'Monthly rent',    
+    'maintenance' => 'Maintenance',
+    'gross_rent' => 'Gross rent',
 ];

@@ -65,7 +65,7 @@
         </el-row>
         <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
-                <el-form-item :label="$t('models.tenant.rent_type')"
+                <el-form-item :label="$t('models.tenant.contract.rent_type')"
                             prop="type"
                             class="label-block">
                     <!-- <el-select placeholder="Select" style="display: block" 
@@ -89,7 +89,7 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12" v-if="model.unit_id">
-                <el-form-item :label="$t('models.tenant.rent_duration')"
+                <el-form-item :label="$t('models.tenant.contract.rent_duration')"
                             prop="duration"
                             class="label-block">
                     <el-select placeholder="Select" style="display: block" 
@@ -106,11 +106,11 @@
         </el-row>
         <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
-                <el-form-item :label="$t('models.tenant.rent_start')"
+                <el-form-item :label="$t('models.tenant.contract.rent_start')"
                         prop="start_date">
                     <el-date-picker
                             :picker-options="{disabledDate: disabledRentStart}"
-                            :placeholder="$t('models.tenant.rent_start')"
+                            :placeholder="$t('models.tenant.contract.rent_start')"
                             format="dd.MM.yyyy"
                             style="width: 100%;"
                             type="date"
@@ -119,10 +119,10 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12" v-if="model.unit_id && model.duration == 2">
-                <el-form-item :label="$t('models.tenant.rent_end')">
+                <el-form-item :label="$t('models.tenant.contract.rent_end')">
                     <el-date-picker
                         :picker-options="{disabledDate: disabledRentEnd}"
-                        :placeholder="$t('models.tenant.rent_end')"
+                        :placeholder="$t('models.tenant.contract.rent_end')"
                         format="dd.MM.yyyy"
                         style="width: 100%;"
                         type="date"
@@ -133,13 +133,13 @@
         </el-row>
         <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
-                <el-form-item :label="$t('models.tenant.rentcontract_id')"
+                <el-form-item :label="$t('models.tenant.contract.contract_id')"
                                 class="label-block">
                     <el-input
                         v-model="model.rent_contract_format"
                         :disabled="true">
                     </el-input>
-                </el-form-item>
+                </el-form-item> 
             </el-col>
             <el-col :md="12">
                 <el-form-item :label="$t('models.tenant.status.label')" prop="status" class="label-block">
@@ -156,12 +156,12 @@
             </el-col>
         </el-row>
         <ui-divider v-if="model.unit_id" content-position="left">
-            {{ $t('models.tenant.deposit_amount') }}
+            {{ $t('models.tenant.contract.deposit_amount') }}
         </ui-divider>
 
         <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
-                <el-form-item :label="$t('models.tenant.deposit_amount')"
+                <el-form-item :label="$t('models.tenant.contract.deposit_amount')"
                                 prop="deposit_amount">
                     <el-input type="text"
                             v-model="model.deposit_amount"
@@ -169,7 +169,7 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12">
-                <el-form-item :label="$t('models.tenant.type_of_deposit')"
+                <el-form-item :label="$t('models.tenant.contract.type_of_deposit')"
                             prop="deposit_type">
                     <el-select placeholder="Select" style="display: block" 
                                 v-model="model.deposit_type">
@@ -200,13 +200,13 @@
                                 <div class="cell"></div>
                             </th>
                             <th class="data is-leaf">
-                                <div class="cell">{{$t('models.tenant.maintenance')}}</div>
+                                <div class="cell">{{$t('general.maintenance')}}</div>
                             </th>
                             <th class="symbol is-leaf">
                                 <div class="cell"></div>
                             </th>
                             <th class="data is-leaf">
-                                <div class="cell">{{$t('models.tenant.gross_rent')}}</div>
+                                <div class="cell">{{$t('general.gross_rent')}}</div>
                             </th>
                         </tr>
                     </thead>
@@ -276,7 +276,7 @@
         </el-row>
         <!-- <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
-                <el-form-item :label="$t('models.tenant.deposit_status.label')"
+                <el-form-item :label="$t('models.tenant.contract.deposit_status.label')"
                                 class="label-block">
                     <el-radio-group v-model="model.deposit_status">
                         <el-radio-button 
@@ -291,7 +291,7 @@
             </el-col>
         </el-row> -->
         <ui-divider v-if="model.unit_id" content-position="left">
-            {{ $t('models.tenant.rent_contract_pdf') }}
+            {{ $t('models.tenant.contract.contract_pdf') }}
         </ui-divider>
         <el-row :gutter="20"  v-if="model.unit_id">
             <el-col :md="24">
@@ -301,10 +301,10 @@
                     :data="model.media"
                     style="width: 100%"
                     v-if="model.media.length"
-                    class="rentcontract-file-table"
+                    class="contract-file-table"
                     >
                     <el-table-column
-                        :label="$t('models.rent_contract.filename')"
+                        :label="$t('models.contract.filename')"
                         prop="name"
                     >
                         <template slot-scope="scope">
@@ -320,7 +320,7 @@
                                 :content="$t('general.actions.delete')"
                                 class="item" effect="light" 
                                 placement="top-end">
-                                    <el-button @click="deletePDFfromRentContract(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
+                                    <el-button @click="deletePDFfromContract(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
                             </el-tooltip>
                         </template>
                     </el-table-column>
@@ -334,7 +334,7 @@
                 >
                 </el-alert>
 
-                <rent-contract @fileUploaded="addPDFtoRentContract" class="upload-custom" acceptType=".pdf" drag multiple/>
+                <upload-contract @fileUploaded="addPDFtoContract" class="upload-custom" acceptType=".pdf" drag multiple/>
                 
                 </el-form-item>
             </el-col>
@@ -342,7 +342,7 @@
         </el-row>
         
         <ui-divider></ui-divider>
-        <div class="rentcontract-actions">
+        <div class="contract-form-actions">
             <el-button type="primary" @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
         </div>
         
@@ -599,22 +599,22 @@
                 this.model.type = unit.type
                 this.model.duration = 1
             },
-            addPDFtoRentContract(file) {
+            addPDFtoContract(file) {
                 //let toUploadContractFile = {...file, url: URL.createObjectURL(file.raw)}
                 let toUploadContractFile = {media : file.src, name: file.raw.name}
                 this.model.media.push(toUploadContractFile)
             },
-            deletePDFfromRentContract(index) {
+            deletePDFfromContract(index) {
                 this.model.media.splice(index, 1)
             },
             ...mapActions(['getBuildings', 'getUnits']),
         },
         async created () {
             let parent_obj = this
-            this.deposit_types = Object.entries(this.$constants.rentContracts.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.deposit_types.${label}`)}))
-            this.rent_durations = Object.entries(this.$constants.rentContracts.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.rent_durations.${label}`)}))
-            this.deposit_statuses = Object.entries(this.$constants.rentContracts.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.deposit_status.${label}`)}));
-            this.rentcontract_statuses = Object.entries(this.$constants.rentContracts.status).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.rent_status.${label}`)}));
+            this.deposit_types = Object.entries(this.$constants.rentContracts.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.contract.deposit_types.${label}`)}))
+            this.rent_durations = Object.entries(this.$constants.rentContracts.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.contract.rent_durations.${label}`)}))
+            this.deposit_statuses = Object.entries(this.$constants.rentContracts.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.contract.deposit_status.${label}`)}));
+            this.rentcontract_statuses = Object.entries(this.$constants.rentContracts.status).map(([value, label]) => ({value: +value, name: this.$t(`models.tenant.contract.rent_status.${label}`)}));
 
             if(this.mode == "edit") {
                 this.model = this.data
@@ -764,7 +764,7 @@
         margin-bottom: 10px;
     }
 
-    /deep/ .rentcontract-actions {
+    /deep/ .contract-form-actions {
         width: 100%;
         button {
             width: 100%;
@@ -774,7 +774,7 @@
         }
     }
 
-    /deep/ .rentcontract-file-table {
+    /deep/ .contract-file-table {
         margin-bottom: 10px;
     }
 
