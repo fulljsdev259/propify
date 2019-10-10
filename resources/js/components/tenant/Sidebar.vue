@@ -76,7 +76,6 @@
                 localStorage.setItem('sidebar:visibility', this.visible)
             },
             hideSubmenu() {
-                console.log('hideSubmenu called')
                 this.submenu.visible = false
             },
             handleMouseRoute (e, item) {
