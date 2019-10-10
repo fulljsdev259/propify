@@ -182,7 +182,7 @@ class Contract extends AuditableModel implements HasMedia
         'deposit_amount' => 'numeric',
     ];
 
-    protected $table = 'resident_contracts';
+    protected $table = 'contracts';
 
     /**
      * @var array

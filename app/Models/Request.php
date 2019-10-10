@@ -388,7 +388,7 @@ class Request extends AuditableModel implements HasMedia
      */
     public static $rulesPost = [
         'resident_id' => 'required|exists:residents,id',
-        'contract_id' => 'exists:resident_contracts,id',
+        'contract_id' => 'exists:contracts,id',
         'title' => 'required|string',
         'description' => 'required|string',
         'priority' => 'required|integer',
@@ -406,7 +406,7 @@ class Request extends AuditableModel implements HasMedia
      */
     public static $rulesPostResident = [
         'resident_id' => 'exists:residents,id',
-        'contract_id' => 'exists:resident_contracts,id',
+        'contract_id' => 'exists:contracts,id',
         'title' => 'required|string',
         'description' => 'required|string',
         'category_id' => 'required|integer',
@@ -422,7 +422,7 @@ class Request extends AuditableModel implements HasMedia
      */
     public static $rulesPut = [
         'resident_id' => 'exists:residents,id',
-        'contract_id' => 'exists:resident_contracts,id',
+        'contract_id' => 'exists:contracts,id',
         'title' => 'string',
         'description' => 'string',
         'priority' => 'integer',
@@ -442,7 +442,7 @@ class Request extends AuditableModel implements HasMedia
      */
     public static $rulesPutResident = [
         'resident_id' => 'exists:residents,id',
-        'contract_id' => 'exists:resident_contracts,id',
+        'contract_id' => 'exists:contracts,id',
         'title' => 'string',
         'description' => 'string',
         'status' => 'integer',

@@ -158,7 +158,7 @@ class Resident extends AuditableModel implements HasMedia
      * @var array
      */
     public static $rules = [
-        'default_contract_id' => 'exists:resident_contracts,id',// @TODO check own or not
+        'default_contract_id' => 'exists:contracts,id',// @TODO check own or not
         'title' => 'required|string',
         'first_name' => 'required|string',
         'last_name' => 'required|string',
@@ -335,15 +335,15 @@ class Resident extends AuditableModel implements HasMedia
     public function homeless()
     {
         return ! $this->contracts()
-            ->where('resident_contracts.status', Contract::StatusActive)
-            ->whereNotNull('resident_contracts.building_id')->count();
+            ->where('contracts.status', Contract::StatusActive)
+            ->whereNotNull('contracts.building_id')->count();
     }
 
     public function active_contracts_with_building()
     {
         return $this->contracts()
-            ->where('resident_contracts.status', Contract::StatusActive)
-            ->whereNotNull('resident_contracts.building_id');
+            ->where('contracts.status', Contract::StatusActive)
+            ->whereNotNull('contracts.building_id');
     }
 
     /**

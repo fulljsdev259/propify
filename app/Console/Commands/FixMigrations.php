@@ -108,7 +108,7 @@ class FixMigrations extends Command
             (47, '2019_10_07_130952_create_tags_table', 1),
             (48, '2019_10_07_130952_create_template_categories_table', 1),
             (49, '2019_10_07_130952_create_templates_table', 1),
-            (50, '2019_10_07_130952_create_resident_contracts_table', 1),
+            (50, '2019_10_07_130952_create_contracts_table', 1),
             (51, '2019_10_07_130952_create_resident_unit_table', 1),
             (52, '2019_10_07_130952_create_residents_table', 1),
             (53, '2019_10_07_130952_create_translations_table', 1),
