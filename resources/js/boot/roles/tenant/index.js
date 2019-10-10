@@ -54,7 +54,7 @@ export default {
         requestTenant: 'edit-request_tenant',
         user: 'edit-user',
         userSettings: 'edit-user_setting',
-        tenant: 'edit-tenant',
+        resident: 'edit-resident',
         comment: 'edit-comment',
         pinboard: 'edit-pinboard',
         listing: 'edit-listing',
@@ -73,7 +73,7 @@ export default {
     },
     delete: {
         user: 'delete-user',
-        tenant: 'delete-tenant',
+        resident: 'delete-resident',
         pinboard: 'delete-pinboard',
         listing: 'delete-listing',
         provider: 'delete-provider',

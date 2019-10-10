@@ -1,11 +1,11 @@
 <template>
     <div class="tenants">
         <heading :title="$t('pages.tenant.title')" icon="icon-group" shadow="heavy">
-            <template v-if="$can($permissions.create.tenant)">
+            <template v-if="$can($permissions.create.resident)">
                 <el-button @click="add" icon="ti-plus" round size="mini" type="primary">{{$t('models.tenant.add')}}
                 </el-button>
             </template>
-            <template v-if="$can($permissions.delete.tenant)">
+            <template v-if="$can($permissions.delete.resident)">
                 <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"
                            type="danger">
                     {{$t('general.actions.delete')}}
@@ -132,7 +132,7 @@
                         title: 'models.tenant.view',
                         onClick: this.view,
                         permissions: [
-                            this.$permissions.view.tenant
+                            this.$permissions.view.resident
                         ]
                     }]
                 }],

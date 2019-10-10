@@ -11,7 +11,7 @@ export default [{
         name: 'adminTenants',
         path: '/',
         component: () => import ( /* webpackChunkName: "admin/tenants/index" */ 'views/Admin/Tenants'),
-        beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.list.tenant)]),
+        beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.list.resident)]),
         meta: {
             title: 'Tenants'
         }
@@ -19,34 +19,34 @@ export default [{
         name: 'adminTenantsAdd',
         path: 'add',
         component: () => import ( /* webpackChunkName: "admin/tenants/add" */ 'views/Admin/Tenants/Add'),
-        beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.create.tenant)]),
+        beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.create.resident)]),
         props: {
-            title: 'Add tenant'
+            title: 'Add resident'
         },
         meta: {
-            title: 'Add Tenant'
+            title: 'Add resident'
         }
     }, {
         name: 'adminTenantsEdit',
         path: ':id',
         component: () => import ( /* webpackChunkName: "admin/tenants/editNew" */ 'views/Admin/Tenants/Edit'),
-        beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.update.tenant)]),
+        beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.update.resident)]),
         props: {
-            title: 'Edit tenant'
+            title: 'Edit resident'
         },
         meta: {
-            title: 'Edit Tenant'
+            title: 'Edit resident'
         }
     }, {
         path: ':id/view',
         name: 'adminTenantsView',
         component: () => import ( /* webpackChunkName: "admin/tenants/view" */ 'views/Admin/Tenants/view'),
-        beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.view.tenant)]),
+        beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.view.resident)]),
         props: {
-            title: 'View tenant'
+            title: 'View resident'
         },
         meta: {
-            title: 'View Tenant'
+            title: 'View resident'
         }
     }]
 }]

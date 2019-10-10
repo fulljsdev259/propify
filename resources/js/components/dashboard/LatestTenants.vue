@@ -60,7 +60,7 @@
                             title: 'models.tenant.view',
                             editUrl: 'adminTenantsView',
                             permissions: [
-                                this.$permissions.update.tenant
+                                this.$permissions.update.resident
                             ]
                         }
                     ]
