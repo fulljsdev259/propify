@@ -687,7 +687,7 @@
 
             :global(td) {
                 background-color: transparent;
-                padding: 5px 0;
+                padding: 1px 0;
                 border-bottom: none;
             
             }
