@@ -717,7 +717,6 @@
             ...mapActions(['getSettings', 'updateSettings', 'getStates']),
             handleEditClick(id) {
                 this.templateEditMode = true;
-                console.log(id);
             },
             goToTab(tabName) {
                 this.activeName = tabName;
@@ -807,7 +806,6 @@
                 this.drawerTabsModel = 'gocaution'
             },
             openCleanifyDrawer(val) {
-                console.log('switch val', val);
                 if (!this.visibleDrawer || this.drawerTabsModel === 'gocaution') {
                     this.toggleDrawer()
                 }

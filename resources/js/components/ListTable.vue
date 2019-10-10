@@ -566,7 +566,6 @@
         },
         methods: {
             rowClicked(row) {
-                console.log('clicked');
                 this.$refs.tableData.toggleRowExpansion(row);
             },
             selectChanged(e, row, column) {
