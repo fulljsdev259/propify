@@ -253,7 +253,7 @@
                     "tenants": {
                         title: this.$t('menu.tenants'),
                         icon: 'icon-group',
-                        permission: this.$permissions.list.tenant,
+                        permission: this.$permissions.list.resident,
                         route: {
                             name: 'adminTenants'
                         }
