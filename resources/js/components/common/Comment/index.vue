@@ -10,7 +10,7 @@
         <div ref="container" class="container">
             <el-input ref="content" :class="{'is-focused': idState.focused}" type="textarea" resize="none" v-if="idState.editing" v-model="comment" autosize :disabled="idState.loading._isVue && idState.loading.visible" :validate-event="false" @blur="idState.focused = false" @focus="idState.focused = true" @keydown.native.enter="$emit('size-hanged')" @keydown.native.alt.enter.exact="update" @keydown.native.stop.esc.exact="cancelEdit" />
             <div class="content" :class="{'empty': !comment, 'disabled': idState.loading._isVue && idState.loading.visible}" v-else>
-                <div class="text">{{comment || $t('components.common.comment.deletedCommentPlaceholder')}}<div class="tag"></div></div>                
+                <div class="text">{{comment || $t('components.common.comment.deletedCommentPlaceholder')}}<div class="tag"></div><div class="border"></div></div>                
                 <div class="actions" v-if="hasActions">                                    
                     <el-button type="text" @click="enterEdit" v-if="data.comment">
                         <i class="icon-pencil"></i>
@@ -507,8 +507,8 @@
                         }
 
                         &:after {
-                            right: -4px;
-                            bottom: 0;
+                            right: -5px;
+                            bottom: -1px;
                             border-left-color: var(--primary-color-lighter);
                         }
 
@@ -527,11 +527,20 @@
                                 border-width: 8px 0 0 6px;
                             }
 
-                            &:before {
-                                right: -12px;
-                                bottom: -8px;
+                            &:after {
+                                right: -13px;
+                                bottom: -9px;
                                 border-left-color: #fff;
                             }
+                        }
+
+                        .border {
+                            position: absolute;
+                            height: 100%;
+                            width: 80%;
+                            top: 0;
+                            right: -5px;
+                            border-bottom: 1px solid var(--primary-color);
                         }
                     }
                 }
