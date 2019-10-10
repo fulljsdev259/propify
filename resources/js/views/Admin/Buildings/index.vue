@@ -215,7 +215,7 @@
         computed: {
             ...mapState("application", {
                 requestConstants(state) {
-                    return state.constants.serviceRequests;
+                    return state.constants.requests;
                 }
             }),
             filters() {

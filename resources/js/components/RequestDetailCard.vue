@@ -253,7 +253,7 @@ export default {
             }
         },
         selectData() {                        
-            const storeConstants = this.$constants.serviceRequests;
+            const storeConstants = this.$constants.requests;
             if (storeConstants) {
                 const constants = storeConstants['status'];
                 var data = Object.keys(constants).map((id) => {

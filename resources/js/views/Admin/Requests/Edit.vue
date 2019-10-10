@@ -122,7 +122,7 @@
                                                 :key="k"
                                                 :label="$t(`models.request.qualification.${qualification}`)"
                                                 :value="parseInt(k)"
-                                                v-for="(qualification, k) in constants.serviceRequests.qualification">
+                                                v-for="(qualification, k) in constants.requests.qualification">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
@@ -199,12 +199,12 @@
                             <el-row :gutter="20" class="summary-row">
                                 <el-col :md="8" class="summary-item">
                                     <el-form-item :label="$t('models.request.priority.label')">
-                                        <strong v-if="$constants.serviceRequests.priority[model.priority]">{{$t(`models.request.priority.${$constants.serviceRequests.priority[model.priority]}`)}}</strong>
+                                        <strong v-if="$constants.requests.priority[model.priority]">{{$t(`models.request.priority.${$constants.requests.priority[model.priority]}`)}}</strong>
                                     </el-form-item>
                                 </el-col>
                                 <!-- <el-col :md="8" class="summary-item">
                                     <el-form-item :label="$t('models.request.visibility.label')">
-                                        <strong>{{$constants.serviceRequests.visibility[model.visibility]}}</strong>
+                                        <strong>{{$constants.requests.visibility[model.visibility]}}</strong>
                                     </el-form-item>
                                 </el-col> -->
                             </el-row>
@@ -317,7 +317,7 @@
                                                         :key="k"
                                                         :label="$t(`models.request.status.${status}`)"
                                                         :value="parseInt(k)"
-                                                        v-for="(status, k) in constants.serviceRequests.status">
+                                                        v-for="(status, k) in constants.requests.status">
                                                     </el-option>
                                                 </el-select>
                                             </el-form-item>
@@ -332,7 +332,7 @@
                                                         :key="k"
                                                         :label="$t(`models.request.internal_priority.${priority}`)"
                                                         :value="parseInt(k)"
-                                                        v-for="(priority, k) in $constants.serviceRequests.internal_priority">
+                                                        v-for="(priority, k) in $constants.requests.internal_priority">
                                                     </el-option>
                                                 </el-select>
                                             </el-form-item>
@@ -412,7 +412,7 @@
                                         </label>
                                         <div>
                                             <el-select v-model="model.visibility">
-                                                <el-option :key="k" :label="$t(`models.request.visibility.${visibility}`)" :value="parseInt(k)" v-for="(visibility, k) in $constants.serviceRequests.visibility">
+                                                <el-option :key="k" :label="$t(`models.request.visibility.${visibility}`)" :value="parseInt(k)" v-for="(visibility, k) in $constants.requests.visibility">
                                                 </el-option>
                                             </el-select>
                                         </div>
@@ -575,12 +575,12 @@
         computed: {
             visibilities() {
                 if (this.model.tenant && this.model.tenant.building && this.model.tenant.building.quarter_id) {
-                    return this.constants.serviceRequests.visibility;
+                    return this.constants.requests.visibility;
                 } else {
-                    return Object.keys(this.constants.serviceRequests.visibility)
+                    return Object.keys(this.constants.requests.visibility)
                         .filter(key => key != 3)
                         .reduce((obj, key) => {
-                            obj[key] = this.constants.serviceRequests.visibility[key];
+                            obj[key] = this.constants.requests.visibility[key];
                             return obj;
                         }, {});
                 }
@@ -634,7 +634,7 @@
                 return this.$t(`models.request.userType.${type}`);
             },
             isDisabled(status) {
-                return _.indexOf(this.constants.serviceRequests.statusByAgent[this.model.status], parseInt(status)) < 0
+                return _.indexOf(this.constants.requests.statusByAgent[this.model.status], parseInt(status)) < 0
             },
             notifyUnassignment(provider) {
                 this.$confirm(this.$t(`general.swal.confirmChange.title`), this.$t('general.swal.confirmChange.warning'), {
