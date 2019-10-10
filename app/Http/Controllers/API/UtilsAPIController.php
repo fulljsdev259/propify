@@ -117,7 +117,8 @@ class UtilsAPIController extends AppBaseController
             'units' => $this->getUnitConstants(),
             'residents' => $this->getResidentConstants(),
             'tenants' => $this->getResidentConstants(), // @TODO delete
-            'rentContracts' => $this->getRentContractConstants(),
+            'rentContracts' => $this->getContractConstants(), // @TODO delete
+            'contracts' => $this->getContractConstants(),
             'serviceProviders' => $this->getServiceProviderConstants(),
             'requests' => $this->getRequestsConstants(),
             'propertyManager' => $this->getPropertyManagerConstants(),
@@ -159,14 +160,14 @@ class UtilsAPIController extends AppBaseController
     /**
      * @return array
      */
-    protected function getRentContractConstants()
+    protected function getContractConstants()
     {
         $result = [
-            //'type' => App\Models\RentContract::Type,
-            'duration' => App\Models\RentContract::Duration,
-            'status' => App\Models\RentContract::Status,
-            'deposit_type' => App\Models\RentContract::DepositType,
-            'deposit_status' => App\Models\RentContract::DepositStatus,
+            //'type' => App\Models\Contract::Type,
+            'duration' => App\Models\Contract::Duration,
+            'status' => App\Models\Contract::Status,
+            'deposit_type' => App\Models\Contract::DepositType,
+            'deposit_status' => App\Models\Contract::DepositStatus,
         ];
 
         return $result;

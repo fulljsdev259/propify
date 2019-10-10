@@ -3,15 +3,15 @@
 namespace App\Repositories;
 
 use App\Models\Model;
-use App\Models\RentContract;
+use App\Models\Contract;
 use App\Models\Unit;
 use App\Traits\SaveMediaUploads;
 
 /**
- * Class RentContractRepository
+ * Class ContractRepository
  * @package App\Repositories
  */
-class RentContractRepository extends BaseRepository
+class ContractRepository extends BaseRepository
 {
     use  SaveMediaUploads;
 
@@ -29,7 +29,7 @@ class RentContractRepository extends BaseRepository
      **/
     public function model()
     {
-        return RentContract::class;
+        return Contract::class;
     }
 
     /**

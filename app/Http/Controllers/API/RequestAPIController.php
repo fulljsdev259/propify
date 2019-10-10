@@ -141,10 +141,10 @@ class RequestAPIController extends AppBaseController
                 'media',
                 'resident.user',
                 'resident.building.address',
-                'resident.rent_contracts' => function ($q) {
+                'resident.contracts' => function ($q) {
                     $q->with('building.address', 'unit');
                 },
-                'rent_contract',
+                'contract',
                 'category',
                 'comments.user',
                 'providers.address:id,country_id,state_id,city,street,zip',
@@ -229,7 +229,7 @@ class RequestAPIController extends AppBaseController
             'media',
             'resident.user',
             'resident.building.address',
-            'rent_contract',
+            'contract',
             'category',
             'comments.user',
             'providers.address:id,country_id,state_id,city,street,zip',
@@ -293,9 +293,9 @@ class RequestAPIController extends AppBaseController
         $request->load([
             'media', 'resident.user', 'resident.building', 'category', 'managers', 'users', 'remainder_user',
             'comments.user', 'providers.address:id,country_id,state_id,city,street,zip', 'providers',
-            'resident.rent_contracts' => function ($q) {
+            'resident.contracts' => function ($q) {
                 $q->with('building.address', 'unit');
-            }, 'rent_contract',
+            }, 'contract',
         ]);
         $response = (new RequestTransformer)->transform($request);
         return $this->sendResponse($response, 'Service Request retrieved successfully');
@@ -372,7 +372,7 @@ class RequestAPIController extends AppBaseController
         $updatedRequest = $this->requestRepository->updateExisting($request, $input);
 
         $updatedRequest->load([
-            'media', 'resident.user', 'rent_contract', 'category', 'managers.user', 'users', 'remainder_user',
+            'media', 'resident.user', 'contract', 'category', 'managers.user', 'users', 'remainder_user',
             'comments.user', 'providers.address:id,country_id,state_id,city,street,zip', 'providers.user',
         ]);
         $response = (new RequestTransformer)->transform($updatedRequest);

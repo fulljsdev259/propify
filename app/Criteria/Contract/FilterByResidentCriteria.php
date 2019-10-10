@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Criteria\ResidentsRentContract;
+namespace App\Criteria\Contract;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -9,10 +9,10 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FilterByBuildingCriteria
- * @package Prettus\Repository\Criteria
+ * Class FilterByResidentCriteria
+ * @package App\Criteria\ResidentsContract
  */
-class FilterByUnitCriteria implements CriteriaInterface
+class FilterByResidentCriteria implements CriteriaInterface
 {
     /**
      * @var \Illuminate\Http\Request
@@ -35,9 +35,9 @@ class FilterByUnitCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {      
-        $unit_id = $this->request->get('unit_id', null);
+        $unit_id = $this->request->get('resident_id', null);
         if ($unit_id) {
-            return $model->where('unit_id', (int)$unit_id);
+            return $model->where('resident_id', (int)$unit_id);
         }
         
         return $model;     

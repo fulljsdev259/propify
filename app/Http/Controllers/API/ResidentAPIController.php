@@ -128,8 +128,8 @@ class ResidentAPIController extends AppBaseController
             'user',
             'building.address',
             'unit',
-            'default_rent_contract',
-            'rent_contracts' => function ($q) {
+            'default_contract',
+            'contracts' => function ($q) {
                 $q->with('building.address', 'unit');
             }])->paginate($perPage);
         $this->fixCreatedBy($residents);
@@ -206,8 +206,8 @@ class ResidentAPIController extends AppBaseController
         // @TODO CONTRACT is need? address. I think not need because many
         $residents = $this->residentRepository->with([
             'address:id,street,house_num',
-            'default_rent_contract',
-            'rent_contracts' => function ($q) {
+            'default_contract',
+            'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }])
             ->get(['id', 'address_id', 'first_name', 'last_name', 'status', 'created_at']);
@@ -302,8 +302,8 @@ class ResidentAPIController extends AppBaseController
             'unit',
             'address',
             'media',
-            'default_rent_contract',
-            'rent_contracts' => function ($q) {
+            'default_contract',
+            'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
@@ -368,8 +368,8 @@ class ResidentAPIController extends AppBaseController
             'unit',
             'address',
             'media',
-            'default_rent_contract',
-            'rent_contracts' => function ($q) {
+            'default_contract',
+            'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
@@ -425,8 +425,8 @@ class ResidentAPIController extends AppBaseController
             'unit',
             'address',
             'media',
-            'default_rent_contract',
-            'rent_contracts' => function ($q) {
+            'default_contract',
+            'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
@@ -534,8 +534,8 @@ class ResidentAPIController extends AppBaseController
             'unit',
             'address',
             'media',
-            'default_rent_contract',
-            'rent_contracts' => function ($q) {
+            'default_contract',
+            'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
@@ -628,8 +628,8 @@ class ResidentAPIController extends AppBaseController
             'unit',
             'address',
             'media',
-            'default_rent_contract',
-            'rent_contracts' => function ($q) {
+            'default_contract',
+            'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
@@ -717,8 +717,8 @@ class ResidentAPIController extends AppBaseController
             'unit',
             'address',
             'media',
-            'default_rent_contract',
-            'rent_contracts' => function ($q) {
+            'default_contract',
+            'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
         ]);

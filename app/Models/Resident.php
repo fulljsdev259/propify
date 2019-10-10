@@ -30,8 +30,8 @@ use Illuminate\Support\Facades\Storage;
  *          format="int32"
  *      ),
  *     @SWG\Property(
- *          property="default_rent_contract_id",
- *          description="default_rent_contract_id",
+ *          property="default_contract_id",
+ *          description="default_contract_id",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -158,7 +158,7 @@ class Resident extends AuditableModel implements HasMedia
      * @var array
      */
     public static $rules = [
-        'default_rent_contract_id' => 'exists:resident_rent_contracts,id',// @TODO check own or not
+        'default_contract_id' => 'exists:resident_contracts,id',// @TODO check own or not
         'title' => 'required|string',
         'first_name' => 'required|string',
         'last_name' => 'required|string',
@@ -178,7 +178,7 @@ class Resident extends AuditableModel implements HasMedia
      */
     public $fillable = [
         'user_id',
-        'default_rent_contract_id',
+        'default_contract_id',
         'address_id',
         'building_id',
         'unit_id',
@@ -319,31 +319,31 @@ class Resident extends AuditableModel implements HasMedia
     /**
      * @return HasMany
      */
-    public function rent_contracts()
+    public function contracts()
     {
-        return $this->hasMany(RentContract::class);
+        return $this->hasMany(Contract::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function default_rent_contract()
+    public function default_contract()
     {
-        return $this->belongsTo(RentContract::class);
+        return $this->belongsTo(Contract::class);
     }
 
     public function homeless()
     {
-        return ! $this->rent_contracts()
-            ->where('resident_rent_contracts.status', RentContract::StatusActive)
-            ->whereNotNull('resident_rent_contracts.building_id')->count();
+        return ! $this->contracts()
+            ->where('resident_contracts.status', Contract::StatusActive)
+            ->whereNotNull('resident_contracts.building_id')->count();
     }
 
-    public function active_rent_contracts_with_building()
+    public function active_contracts_with_building()
     {
-        return $this->rent_contracts()
-            ->where('resident_rent_contracts.status', RentContract::StatusActive)
-            ->whereNotNull('resident_rent_contracts.building_id');
+        return $this->contracts()
+            ->where('resident_contracts.status', Contract::StatusActive)
+            ->whereNotNull('resident_contracts.building_id');
     }
 
     /**

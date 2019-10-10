@@ -14,7 +14,7 @@ use App\Http\Requests\API\Unit\ListRequest;
 use App\Http\Requests\API\Unit\UpdateRequest;
 use App\Http\Requests\API\Unit\ViewRequest;
 use App\Models\Building;
-use App\Models\RentContract;
+use App\Models\Contract;
 use App\Models\Unit;
 use App\Repositories\PinboardRepository;
 use App\Repositories\ResidentRepository;
@@ -86,20 +86,20 @@ class UnitAPIController extends AppBaseController
         $this->unitRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->unitRepository->pushCriteria(new LimitOffsetCriteria($request));
 
-        if ($request->show_rent_contract_counts) {
+        if ($request->show_contract_counts) {
             $this->unitRepository->withCount([
-                'rent_contracts as total_rent_contracts_count',
-                'rent_contracts as active_rent_contracts_count' => function ($q) {
-                    $q->where('status', RentContract::StatusActive);
+                'contracts as total_contracts_count',
+                'contracts as active_contracts_count' => function ($q) {
+                    $q->where('status', Contract::StatusActive);
                 }
             ]);
         }
 
         if ($request->group_by_floor) {
             $units = $this->unitRepository->get();
-            if ($request->show_rent_contract_counts) {
+            if ($request->show_contract_counts) {
                 $units->each(function ($unit) {
-                    $unit->inactive_rent_contracts_count = $unit->total_rent_contracts_count - $unit->active_rent_contracts_count;
+                    $unit->inactive_contracts_count = $unit->total_contracts_count - $unit->active_contracts_count;
                 });
             }
             $units = $units->sortByDesc('name')->groupBy('floor')->sortKeys()->toArray();
@@ -119,9 +119,9 @@ class UnitAPIController extends AppBaseController
         if ($getAll) {
 
             $units = $this->unitRepository->get();
-            if ($request->show_rent_contract_counts) {
+            if ($request->show_contract_counts) {
                 $units->each(function ($unit) {
-                    $unit->inactive_rent_contracts_count = $unit->total_rent_contracts_count - $unit->active_rent_contracts_count;
+                    $unit->inactive_contracts_count = $unit->total_contracts_count - $unit->active_contracts_count;
                 });
             }
 

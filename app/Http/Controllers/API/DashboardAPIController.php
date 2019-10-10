@@ -12,7 +12,7 @@ use App\Http\Requests\API\Dashboard\SRequestStatisticRequest;
 use App\Http\Requests\API\Dashboard\ResidentStatisticRequest;
 use App\Models\Building;
 use App\Models\LoginDevice;
-use App\Models\RentContract;
+use App\Models\Contract;
 use App\Models\Request;
 use App\Models\RequestCategory;
 use App\Models\State;
@@ -324,8 +324,8 @@ class DashboardAPIController extends AppBaseController
 
         $residents = $this->residentRepo->getTotalResidentsFromBuilding($building->id);
         $units = Unit::where('building_id', $id)->count();
-        $occupiedUnitsCount = Unit::where('building_id', $id)->whereHas('rent_contracts', function ($q) {
-            $q->where('status', RentContract::StatusActive);
+        $occupiedUnitsCount = Unit::where('building_id', $id)->whereHas('contracts', function ($q) {
+            $q->where('status', Contract::StatusActive);
         })->count();
 
         if ($units) {

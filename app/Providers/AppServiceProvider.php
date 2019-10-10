@@ -12,7 +12,7 @@ use App\Models\Request;
 use App\Models\Template;
 use App\Models\Conversation;
 use App\Models\Resident;
-use App\Models\RentContract;
+use App\Models\Contract;
 use App\Models\Unit;
 use App\Models\User;
 use App\Notifications\NewResidentInNeighbour;
@@ -61,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
             'manager' => PropertyManager::class,
             'translation' => \App\Models\Translation::class,
             'provider' => \App\Models\ServiceProvider::class,
-            'rent_contract' => RentContract::class,
+            'contract' => Contract::class,
             'conversation' => Conversation::class,
 
             'pinboard_published' => PinboardPublished::class,

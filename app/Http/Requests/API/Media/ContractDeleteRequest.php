@@ -5,10 +5,10 @@ namespace App\Http\Requests\API\Media;
 use App\Http\Requests\BaseRequest;
 
 /**
- * Class RentContractUploadRequest
+ * Class ContractDeleteRequest
  * @package App\Http\Requests\API\Media
  */
-class RentContractUploadRequest extends BaseRequest
+class ContractDeleteRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,17 +18,5 @@ class RentContractUploadRequest extends BaseRequest
     public function authorize()
     {
         return $this->can('edit-resident'); // @TODO correct permission
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            'media' => 'required|string',
-        ];
     }
 }

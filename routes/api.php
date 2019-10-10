@@ -63,15 +63,25 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::post('/tenants/deletewithids', 'TenantAPIController@destroyWithIds')->name('tenants.destroyWithIds');
     Route::delete('/tenants/{id}/media/{media_id}', 'MediaAPIController@tenantDestroy')->name('tenants.media.destroy');
 
-    //Tenant rent contract
-    Route::get('/rent-contracts', 'RentContractAPIController@index')->name('rent-contracts');
-    Route::get('/rent-contracts/{id}', 'RentContractAPIController@show')->name('rent-contracts.show');
-    Route::post('/rent-contracts', 'RentContractAPIController@store')->name('rent-contracts.store');
-    Route::post('/rent-contracts/{id}/media', 'MediaAPIController@rentContractUpload')->name('rent-contracts.media.upload');
-    Route::put('/rent-contracts/{id}', 'RentContractAPIController@update')->name('rent-contracts.update');
-    Route::delete('/rent-contracts/{id}', 'RentContractAPIController@destroy')->name('rent-contracts.destroy');
-    Route::post('/rent-contracts/deletewithids', 'RentContractAPIController@destroyWithIds')->name('rent-contracts.destroyWithIds');
-    Route::delete('/rent-contracts/{id}/media/{media_id}', 'MediaAPIController@rentContractDestroy')->name('rent-contracts.media.destroy');
+    //Contract
+    Route::get('/contracts', 'ContractAPIController@index')->name('contracts');
+    Route::get('/contracts/{id}', 'ContractAPIController@show')->name('contracts.show');
+    Route::post('/contracts', 'ContractAPIController@store')->name('contracts.store');
+    Route::post('/contracts/{id}/media', 'MediaAPIController@contractUpload')->name('contracts.media.upload');
+    Route::put('/contracts/{id}', 'ContractAPIController@update')->name('contracts.update');
+    Route::delete('/contracts/{id}', 'ContractAPIController@destroy')->name('contracts.destroy');
+    Route::post('/contracts/deletewithids', 'ContractAPIController@destroyWithIds')->name('contracts.destroyWithIds');
+    Route::delete('/contracts/{id}/media/{media_id}', 'MediaAPIController@contractDestroy')->name('contracts.media.destroy');
+
+    //Contract // @TODO delete
+    Route::get('/rent-contracts', 'ContractAPIController@index')->name('contracts');
+    Route::get('/rent-contracts/{id}', 'ContractAPIController@show')->name('contracts.show');
+    Route::post('/rent-contracts', 'ContractAPIController@store')->name('contracts.store');
+    Route::post('/rent-contracts/{id}/media', 'MediaAPIController@contractUpload')->name('contracts.media.upload');
+    Route::put('/rent-contracts/{id}', 'ContractAPIController@update')->name('contracts.update');
+    Route::delete('/rent-contracts/{id}', 'ContractAPIController@destroy')->name('contracts.destroy');
+    Route::post('/rent-contracts/deletewithids', 'ContractAPIController@destroyWithIds')->name('contracts.destroyWithIds');
+    Route::delete('/rent-contracts/{id}/media/{media_id}', 'MediaAPIController@contractDestroy')->name('contracts.media.destroy');
 
     // Location
     Route::get('/states', 'StateAPIController@index')->name('states');

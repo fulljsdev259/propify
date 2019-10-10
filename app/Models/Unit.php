@@ -195,9 +195,9 @@ class Unit extends AuditableModel
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function rent_contracts()
+    public function contracts()
     {
-        return $this->hasMany(RentContract::class);
+        return $this->hasMany(Contract::class);
     }
 
     public function getSqMeterAttribute($attribute)

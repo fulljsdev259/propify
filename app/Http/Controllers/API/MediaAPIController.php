@@ -12,8 +12,8 @@ use App\Http\Requests\API\Media\ListingUploadRequest;
 use App\Http\Requests\API\Media\RequestDeleteRequest;
 use App\Http\Requests\API\Media\RequestUploadRequest;
 use App\Http\Requests\API\Media\ResidentDeleteRequest;
-use App\Http\Requests\API\Media\RentContractDeleteRequest;
-use App\Http\Requests\API\Media\RentContractUploadRequest;
+use App\Http\Requests\API\Media\ContractDeleteRequest;
+use App\Http\Requests\API\Media\ContractUploadRequest;
 use App\Http\Requests\API\Media\ResidentUploadRequest;
 use App\Models\Building;
 use App\Repositories\AddressRepository;
@@ -21,7 +21,7 @@ use App\Repositories\BuildingRepository;
 use App\Repositories\PinboardRepository;
 use App\Repositories\ListingRepository;
 use App\Repositories\RequestRepository;
-use App\Repositories\RentContractRepository;
+use App\Repositories\ContractRepository;
 use App\Repositories\ResidentRepository;
 use App\Transformers\MediaTransformer;
 use Illuminate\Http\Response;
@@ -48,9 +48,9 @@ class MediaAPIController extends AppBaseController
     private $residentRepository;
 
     /**
-     * @var RentContractRepository
+     * @var ContractRepository
      */
-    private $rentContractRepository;
+    private $contractRepository;
 
     /** @var  RequestRepository */
     private $requestRepository;
@@ -62,7 +62,7 @@ class MediaAPIController extends AppBaseController
      * @param PinboardRepository $pinboardRepo
      * @param ListingRepository $listingRepo
      * @param ResidentRepository $residentRepo
-     * @param RentContractRepository $rentContractRepository
+     * @param ContractRepository $contractRepository
      * @param RequestRepository $requestRepo
      */
     public function __construct(
@@ -71,7 +71,7 @@ class MediaAPIController extends AppBaseController
         PinboardRepository $pinboardRepo,
         ListingRepository $listingRepo,
         ResidentRepository $residentRepo,
-        RentContractRepository $rentContractRepository,
+        ContractRepository $contractRepository,
         RequestRepository $requestRepo
     )
     {
@@ -81,7 +81,7 @@ class MediaAPIController extends AppBaseController
         $this->listingRepository = $listingRepo;
         $this->residentRepository = $residentRepo;
         $this->requestRepository = $requestRepo;
-        $this->rentContractRepository = $rentContractRepository;
+        $this->contractRepository = $contractRepository;
     }
 
     /**
@@ -367,14 +367,14 @@ class MediaAPIController extends AppBaseController
         }
 
         //@TODO tmp solution
-        $resident->load('rent_contracts');
-        $rentContract = $resident->rent_contracts->first();
-        if (empty($rentContract)) {
-            $rentContract = $this->rentContractRepository->create(['resident_id' => $resident->id]);
+        $resident->load('contracts');
+        $contract = $resident->contracts->first();
+        if (empty($contract)) {
+            $contract = $this->contractRepository->create(['resident_id' => $resident->id]);
         }
 
         $data = $request->get('media', '');
-        if (!$media = $this->rentContractRepository->uploadFile('media', $data, $rentContract, $request->merge_in_audit)) {
+        if (!$media = $this->contractRepository->uploadFile('media', $data, $contract, $request->merge_in_audit)) {
             return $this->sendError(__('general.upload_error'));
         }
 
@@ -447,9 +447,9 @@ class MediaAPIController extends AppBaseController
 
     /**
      * @SWG\Post(
-     *      path="/rent-contracts/{id}/media",
-     *      summary="Store a newly created RentContract Media in storage",
-     *      tags={"RentContract"},
+     *      path="/contracts/{id}/media",
+     *      summary="Store a newly created Contract Media in storage",
+     *      tags={"Contract"},
      *      description="Store Media",
      *      produces={"application/json"},
      *      @SWG\Parameter(
@@ -470,7 +470,7 @@ class MediaAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/RentContract"
+     *                  ref="#/definitions/Contract"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -481,18 +481,18 @@ class MediaAPIController extends AppBaseController
      * )
      *
      * @param int $id
-     * @param RentContractUploadRequest $request
+     * @param ContractUploadRequest $request
      * @return Response
      */
-    public function rentContractUpload(int $id, RentContractUploadRequest $request)
+    public function contractUpload(int $id, ContractUploadRequest $request)
     {
-        $rentContract = $this->rentContractRepository->findWithoutFail($id);
-        if (empty($rentContract)) {
-            return $this->sendError(__('models.rent_contract.errors.not_found'));
+        $contract = $this->contractRepository->findWithoutFail($id);
+        if (empty($contract)) {
+            return $this->sendError(__('models.contract.errors.not_found'));
         }
 
         $data = $request->get('media', '');
-        if (!$media = $this->rentContractRepository->uploadFile('media', $data, $rentContract, $request->merge_in_audit)) {
+        if (!$media = $this->contractRepository->uploadFile('media', $data, $contract, $request->merge_in_audit)) {
             return $this->sendError(__('general.upload_error'));
         }
 
@@ -502,9 +502,9 @@ class MediaAPIController extends AppBaseController
 
     /**
      * @SWG\Delete(
-     *      path="/rent-contracts/{id}/media/{media_id}",
+     *      path="/contracts/{id}/media/{media_id}",
      *      summary="Remove the specified Media from storage",
-     *      tags={"RentContract"},
+     *      tags={"Contract"},
      *      description="Delete Media",
      *      produces={"application/json"},
      *      @SWG\Parameter(
@@ -537,17 +537,17 @@ class MediaAPIController extends AppBaseController
      *
      * @param int $id
      * @param int $media_id
-     * @param RentContractDeleteRequest $r
+     * @param ContractDeleteRequest $r
      * @return Response
      */
-    public function rentContractDestroy(int $id, int $media_id, RentContractDeleteRequest $r)
+    public function contractDestroy(int $id, int $media_id, ContractDeleteRequest $r)
     {
-        $rentContract = $this->rentContractRepository->findWithoutFail($id);
-        if (empty($rentContract)) {
-            return $this->sendError(__('models.rent_contract.errors.not_found'));
+        $contract = $this->contractRepository->findWithoutFail($id);
+        if (empty($contract)) {
+            return $this->sendError(__('models.contract.errors.not_found'));
         }
 
-        $media = $rentContract->media->find($media_id);
+        $media = $contract->media->find($media_id);
         if (empty($media)) {
             return $this->sendError(__('general.media_not_found'));
         }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\API\RentContract;
+namespace App\Http\Requests\API\Contract;
 
-use App\Models\RentContract;
+use App\Models\Contract;
 use App\Http\Requests\BaseRequest;
 
-class CreateRequest extends BaseRequest
+class UpdateRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class CreateRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('add-resident'); // @TODO use correct permission
+        return $this->can('edit-resident'); // @TODO use correct permission
     }
 
     /**
@@ -24,6 +24,6 @@ class CreateRequest extends BaseRequest
      */
     public function rules()
     {
-        return RentContract::$rules;
+        return Contract::$rules;
     }
 }

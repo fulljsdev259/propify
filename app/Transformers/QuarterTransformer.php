@@ -44,12 +44,12 @@ class QuarterTransformer extends BaseTransformer
         $buildings = $model->buildings;
         $units = $buildings->pluck('units')->collapse();
         $occupiedUnits = $units->filter(function ($unit) {
-            return $unit->rent_contracts->isNotEmpty();
+            return $unit->contracts->isNotEmpty();
         });
 
         $response['buildings_count'] = $buildings->count();
-        $response['active_tenants_count'] = $units->pluck('rent_contracts.*.resident_id')->collapse()->unique()->count(); // @TODO delete
-        $response['active_residents_count'] = $units->pluck('rent_contracts.*.resident_id')->collapse()->unique()->count();
+        $response['active_tenants_count'] = $units->pluck('contracts.*.resident_id')->collapse()->unique()->count(); // @TODO delete
+        $response['active_residents_count'] = $units->pluck('contracts.*.resident_id')->collapse()->unique()->count();
         $response['total_units_count'] = $units->count();
         $response['occupied_units_count'] = $occupiedUnits->count();
         $response['free_units_count'] = $units->count() - $occupiedUnits->count();

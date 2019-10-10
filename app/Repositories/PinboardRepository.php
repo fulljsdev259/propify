@@ -6,7 +6,7 @@ use App\Models\Building;
 use App\Models\Model;
 use App\Models\Quarter;
 use App\Models\Pinboard;
-use App\Models\RentContract;
+use App\Models\Contract;
 use App\Models\Resident;
 use App\Models\Settings;
 use App\Models\User;
@@ -64,15 +64,15 @@ class PinboardRepository extends BaseRepository
         $atts['quarter_ids'] = $atts['quarter_ids'] ?? [];
         $u = \Auth::user();
         if ($u->resident()->exists()) {
-            $rentContracts = $u->resident->active_rent_contracts_with_building()->get(['building_id']);
-            if ($rentContracts->isEmpty()) {
-                throw new \Exception("Your resident account does not have any active rent contract");
+            $contracts = $u->resident->active_contracts_with_building()->get(['building_id']);
+            if ($contracts->isEmpty()) {
+                throw new \Exception("Your resident account does not have any active contract");
             }
 
-            $rentContracts->load('building:id,quarter_id');
-            $atts['building_ids'] = $rentContracts->pluck('building_id')->unique()->toArray();
+            $contracts->load('building:id,quarter_id');
+            $atts['building_ids'] = $contracts->pluck('building_id')->unique()->toArray();
             if (!empty($atts['visibility']) && Pinboard::VisibilityQuarter == $atts['visibility']) {
-                $quarterIds = $rentContracts->where('building.quarter_id', '!=', null)->pluck('building.quarter_id');
+                $quarterIds = $contracts->where('building.quarter_id', '!=', null)->pluck('building.quarter_id');
                 $atts['quarter_ids'] = $quarterIds->unique()->toArray();
             } else {
                 $atts['quarter_ids'] = [];
@@ -275,9 +275,9 @@ class PinboardRepository extends BaseRepository
         return User::whereHas('resident', function ($q) use ($quarterIds, $buildingIds) {
             $q->whereNull('residents.deleted_at')
                 ->where('residents.status', Resident::StatusActive)
-                ->whereHas('rent_contracts', function ($q) use ($quarterIds, $buildingIds) {
+                ->whereHas('contracts', function ($q) use ($quarterIds, $buildingIds) {
 
-                    $q->where('status', RentContract::StatusActive)
+                    $q->where('status', Contract::StatusActive)
                         ->when(
                             ! empty($quarterIds) && !empty($buildingIds),
                             function ($q)  use ($quarterIds, $buildingIds) {
@@ -371,14 +371,14 @@ class PinboardRepository extends BaseRepository
     }
 
     /**
-     * @param RentContract $rentContract
+     * @param Contract $contract
      * @return Pinboard|bool|mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function newRentContractPinboard(RentContract $rentContract)
+    public function newContractPinboard(Contract $contract)
     {
-        if (empty($rentContract->building_id)) {
+        if (empty($contract->building_id)) {
             return false;
         }
 
@@ -387,13 +387,13 @@ class PinboardRepository extends BaseRepository
             'status' => Pinboard::StatusNew,
             'type' => Pinboard::TypeNewNeighbour,
             'content' => "New neighbour",
-            'user_id' => $rentContract->resident->user->id,
-            'building_ids' => [$rentContract->building_id],
+            'user_id' => $contract->resident->user->id,
+            'building_ids' => [$contract->building_id],
             'needs_approval' => false,
             'notify_email' => true,
         ]);
 
-        $publishStart = $rentContract->start_date ?? Carbon::now();
+        $publishStart = $contract->start_date ?? Carbon::now();
         if ($publishStart->isBefore(Carbon::now())) {
             $publishStart = Carbon::now();
         }

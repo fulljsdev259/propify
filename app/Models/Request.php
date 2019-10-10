@@ -34,8 +34,8 @@ use Storage;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="rent_contract_id",
- *          description="rent_contract_id",
+ *          property="contract_id",
+ *          description="contract_id",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -303,7 +303,7 @@ class Request extends AuditableModel implements HasMedia
         'category_id',
         'subject_id',
         'resident_id',
-        'rent_contract_id',
+        'contract_id',
         'unit_id',
         'title',
         'description',
@@ -344,7 +344,7 @@ class Request extends AuditableModel implements HasMedia
         'category_id' => 'integer',
         'reminder_user_id' => 'integer',
         'resident_id' => 'integer',
-        'rent_contract_id' => 'integer',
+        'contract_id' => 'integer',
         'title' => 'string',
         'description' => 'string',
         'status' => 'integer',
@@ -388,7 +388,7 @@ class Request extends AuditableModel implements HasMedia
      */
     public static $rulesPost = [
         'resident_id' => 'required|exists:residents,id',
-        'rent_contract_id' => 'exists:resident_rent_contracts,id',
+        'contract_id' => 'exists:resident_contracts,id',
         'title' => 'required|string',
         'description' => 'required|string',
         'priority' => 'required|integer',
@@ -406,7 +406,7 @@ class Request extends AuditableModel implements HasMedia
      */
     public static $rulesPostResident = [
         'resident_id' => 'exists:residents,id',
-        'rent_contract_id' => 'exists:resident_rent_contracts,id',
+        'contract_id' => 'exists:resident_contracts,id',
         'title' => 'required|string',
         'description' => 'required|string',
         'category_id' => 'required|integer',
@@ -422,7 +422,7 @@ class Request extends AuditableModel implements HasMedia
      */
     public static $rulesPut = [
         'resident_id' => 'exists:residents,id',
-        'rent_contract_id' => 'exists:resident_rent_contracts,id',
+        'contract_id' => 'exists:resident_contracts,id',
         'title' => 'string',
         'description' => 'string',
         'priority' => 'integer',
@@ -442,7 +442,7 @@ class Request extends AuditableModel implements HasMedia
      */
     public static $rulesPutResident = [
         'resident_id' => 'exists:residents,id',
-        'rent_contract_id' => 'exists:resident_rent_contracts,id',
+        'contract_id' => 'exists:resident_contracts,id',
         'title' => 'string',
         'description' => 'string',
         'status' => 'integer',
@@ -680,8 +680,8 @@ class Request extends AuditableModel implements HasMedia
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function rent_contract()
+    public function contract()
     {
-        return $this->belongsTo(RentContract::class);
+        return $this->belongsTo(Contract::class);
     }
 }

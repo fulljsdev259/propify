@@ -13,7 +13,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 /**
  * @SWG\Definition(
- *      definition="RentContract",
+ *      definition="Contract",
  *      required={"first_name", "birthdate"},
  *      @SWG\Property(
  *          property="id",
@@ -55,8 +55,8 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
  *          type="integer"
  *      ),
  *     @SWG\Property(
- *          property="rent_contract_format",
- *          description="rent_contract_format",
+ *          property="contract_format",
+ *          description="contract_format",
  *          type="integer"
  *      ),
  *     @SWG\Property(
@@ -118,7 +118,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
  *      )
  * )
  */
-class RentContract extends AuditableModel implements HasMedia
+class Contract extends AuditableModel implements HasMedia
 {
     use HasMediaTrait, UniqueIDFormat;
 
@@ -182,7 +182,7 @@ class RentContract extends AuditableModel implements HasMedia
         'deposit_amount' => 'numeric',
     ];
 
-    protected $table = 'resident_rent_contracts';
+    protected $table = 'resident_contracts';
 
     /**
      * @var array
@@ -194,7 +194,7 @@ class RentContract extends AuditableModel implements HasMedia
         'type',
         'duration',
         'status',
-        'rent_contract_format',
+        'contract_format',
         'deposit_type',
         'deposit_status',
         'deposit_amount',
@@ -222,7 +222,7 @@ class RentContract extends AuditableModel implements HasMedia
         'type' => 'integer',
         'duration' => 'integer',
         'status' => 'integer',
-        'rent_contract_formats' => 'string',
+        'contract_formats' => 'string',
         'deposit_type' => 'integer',
         'deposit_status' => 'integer',
         'deposit_amount' => 'integer',
@@ -264,15 +264,15 @@ class RentContract extends AuditableModel implements HasMedia
 
     protected function getFormatColumnName()
     {
-        $colName = Cache::rememberForever('rent_contract_format', function () {
-                return Schema::hasColumn($this->getTable(),'rent_contract_format')
-                    ? 'rent_contract_format'
-                    : 'resident_rent_contract_format';
+        $colName = Cache::rememberForever('contract_format', function () {
+                return Schema::hasColumn($this->getTable(),'contract_format')
+                    ? 'contract_format'
+                    : 'resident_contract_format';
             });
-        if ('resident_rent_contract_format' == $colName) {
-            $colName = Schema::hasColumn($this->getTable(),'rent_contract_format')
-                ? 'rent_contract_format'
-                : 'resident_rent_contract_format';
+        if ('resident_contract_format' == $colName) {
+            $colName = Schema::hasColumn($this->getTable(),'contract_format')
+                ? 'contract_format'
+                : 'resident_contract_format';
         }
 
         return $colName;

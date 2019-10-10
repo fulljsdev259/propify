@@ -7,7 +7,7 @@ use App\Mails\NotifyServiceProvider;
 use App\Models\Comment;
 use App\Models\Model;
 use App\Models\PropertyManager;
-use App\Models\RentContract;
+use App\Models\Contract;
 use App\Models\ServiceProvider;
 use App\Models\Request;
 use App\Models\RequestCategory;
@@ -83,7 +83,7 @@ class RequestRepository extends BaseRepository
             }
         }
 
-        $attributes = $this->fixRentContractRelated($attributes);
+        $attributes = $this->fixContractRelated($attributes);
         $model = parent::create($attributes);
         if ($model)  {
             $model = $this->saveMediaUploads($model, $attributes);
@@ -191,7 +191,7 @@ class RequestRepository extends BaseRepository
     {
         $attributes = $this->getPutAttributes($attributes, $model);
         $attributes = $this->getStatusRelatedAttributes($attributes, $model);
-        $attributes = $this->fixRentContractRelated($attributes);
+        $attributes = $this->fixContractRelated($attributes);
         $oldModel = clone $model;
         $updatedModel =  parent::updateExisting($model, $attributes);
 
@@ -210,12 +210,12 @@ class RequestRepository extends BaseRepository
      * @param $attributes
      * @return mixed
      */
-    protected function fixRentContractRelated($attributes)
+    protected function fixContractRelated($attributes)
     {
-        if (!empty($attributes['rent_contract_id'])) {
+        if (!empty($attributes['contract_id'])) {
             // already validated and it must be exists
-            $rentContract = RentContract::find($attributes['rent_contract_id'], ['id', 'resident_id']);
-            $attributes['resident_id'] = $rentContract->id;
+            $contract = Contract::find($attributes['contract_id'], ['id', 'resident_id']);
+            $attributes['resident_id'] = $contract->id;
         }
 
         return $attributes;

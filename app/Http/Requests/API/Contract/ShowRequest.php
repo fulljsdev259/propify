@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\API\RentContract;
+namespace App\Http\Requests\API\Contract;
 
 use App\Http\Requests\BaseRequest;
 
@@ -13,6 +13,6 @@ class ShowRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('view-resident'); // @TODO add new rule list-rent_contract
+        return $this->can('view-resident'); // @TODO add new rule list-contract
     }
 }

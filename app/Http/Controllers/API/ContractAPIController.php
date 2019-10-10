@@ -4,44 +4,44 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Pinboard\FilterByResidentCriteria;
-use App\Criteria\ResidentsRentContract\FilterByBuildingCriteria;
-use App\Criteria\ResidentsRentContract\FilterByUnitCriteria;
+use App\Criteria\Contract\FilterByBuildingCriteria;
+use App\Criteria\Contract\FilterByUnitCriteria;
 use App\Http\Controllers\AppBaseController;
-use App\Http\Requests\API\RentContract\ShowRequest;
-use App\Http\Requests\API\RentContract\DeleteRequest;
-use App\Http\Requests\API\RentContract\UpdateRequest;
-use App\Http\Requests\API\RentContract\CreateRequest;
-use App\Http\Requests\API\RentContract\ListRequest;
-use App\Models\RentContract;
-use App\Repositories\RentContractRepository;
-use App\Transformers\RentContractTransformer;
+use App\Http\Requests\API\Contract\ShowRequest;
+use App\Http\Requests\API\Contract\DeleteRequest;
+use App\Http\Requests\API\Contract\UpdateRequest;
+use App\Http\Requests\API\Contract\CreateRequest;
+use App\Http\Requests\API\Contract\ListRequest;
+use App\Models\Contract;
+use App\Repositories\ContractRepository;
+use App\Transformers\ContractTransformer;
 use Illuminate\Http\Response;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 
 /**
- * Class RentContractController
+ * Class ContractController
  * @package App\Http\Controllers\API
  */
-class RentContractAPIController extends AppBaseController
+class ContractAPIController extends AppBaseController
 {
-    /** @var  RentContractRepository */
-    private $rentContractRepository;
+    /** @var  ContractRepository */
+    private $contractRepository;
 
     /**
-     * RentContractAPIController constructor.
-     * @param RentContractRepository $rentContractRepo
+     * ContractAPIController constructor.
+     * @param ContractRepository $contractRepo
      */
-    public function __construct(RentContractRepository $rentContractRepo)
+    public function __construct(ContractRepository $contractRepo)
     {
-        $this->rentContractRepository = $rentContractRepo;
+        $this->contractRepository = $contractRepo;
     }
 
     /**
      * @SWG\Get(
-     *      path="/rent-contracts",
-     *      summary="Get a listing of the RentContracts.",
-     *      tags={"RentContract"},
-     *      description="Get all RentContracts",
+     *      path="/contracts",
+     *      summary="Get a listing of the Contracts.",
+     *      tags={"Contract"},
+     *      description="Get all Contracts",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="building_id",
@@ -76,7 +76,7 @@ class RentContractAPIController extends AppBaseController
      *              @SWG\Property(
      *                  property="data",
      *                  type="array",
-     *                  @SWG\Items(ref="#/definitions/RentContract")
+     *                  @SWG\Items(ref="#/definitions/Contract")
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -93,41 +93,41 @@ class RentContractAPIController extends AppBaseController
     public function index(ListRequest $request)
     {
         $request->merge([
-            'model' => (new RentContract)->getTable(),
+            'model' => (new Contract)->getTable(),
         ]);
 
-        $this->rentContractRepository->pushCriteria(new RequestCriteria($request));
-        $this->rentContractRepository->pushCriteria(new LimitOffsetCriteria($request));
-        $this->rentContractRepository->pushCriteria(new FilterByBuildingCriteria($request));
-        $this->rentContractRepository->pushCriteria(new FilterByUnitCriteria($request));
-        $this->rentContractRepository->pushCriteria(new FilterByResidentCriteria($request));
+        $this->contractRepository->pushCriteria(new RequestCriteria($request));
+        $this->contractRepository->pushCriteria(new LimitOffsetCriteria($request));
+        $this->contractRepository->pushCriteria(new FilterByBuildingCriteria($request));
+        $this->contractRepository->pushCriteria(new FilterByUnitCriteria($request));
+        $this->contractRepository->pushCriteria(new FilterByResidentCriteria($request));
 
         $getAll = $request->get('get_all', false);
         if ($getAll) {
             $request->merge(['limit' => env('APP_PAGINATE', 10)]);
-            $this->rentContractRepository->pushCriteria(new LimitOffsetCriteria($request));
-            $rentContracts = $this->rentContractRepository->get();
-            $response = (new RentContractTransformer())->transformCollection($rentContracts);
-            return $this->sendResponse($response, 'RentContracts retrieved successfully');
+            $this->contractRepository->pushCriteria(new LimitOffsetCriteria($request));
+            $contracts = $this->contractRepository->get();
+            $response = (new ContractTransformer())->transformCollection($contracts);
+            return $this->sendResponse($response, 'Contracts retrieved successfully');
         }
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         // @TODO CONTRACT is need? building, address, unit . I think not need because many
-        $rentContracts = $this->rentContractRepository->with(['resident', 'building.address', 'unit'])->paginate($perPage);
-        $response = (new RentContractTransformer())->transformPaginator($rentContracts);
-        return $this->sendResponse($response, 'RentContracts retrieved successfully');
+        $contracts = $this->contractRepository->with(['resident', 'building.address', 'unit'])->paginate($perPage);
+        $response = (new ContractTransformer())->transformPaginator($contracts);
+        return $this->sendResponse($response, 'Contracts retrieved successfully');
     }
 
     /**
      * @SWG\Get(
-     *      path="/rent-contracts/{id}",
-     *      summary="Display the specified Resident Rent Contract",
-     *      tags={"RentContract"},
-     *      description="Get Resident Rent Contract",
+     *      path="/contracts/{id}",
+     *      summary="Display the specified Resident Contract",
+     *      tags={"Contract"},
+     *      description="Get Resident Contract",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of Resident Rent Contract",
+     *          description="id of Resident Contract",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -143,7 +143,7 @@ class RentContractAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/RentContract"
+     *                  ref="#/definitions/Contract"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -160,30 +160,30 @@ class RentContractAPIController extends AppBaseController
      */
     public function show($id, ShowRequest $request)
     {
-        /** @var RentContract $rentContract */
-        $rentContract = $this->rentContractRepository->findWithoutFail($id);
-        if (empty($rentContract)) {
-            return $this->sendError(__('models.rent_contract.errors.not_found'));
+        /** @var Contract $contract */
+        $contract = $this->contractRepository->findWithoutFail($id);
+        if (empty($contract)) {
+            return $this->sendError(__('models.contract.errors.not_found'));
         }
 
-        $rentContract->load(['resident', 'building.address', 'unit']);
-        $response = (new RentContractTransformer())->transform($rentContract);
-        return $this->sendResponse($response, 'Resident Rent Contract retrieved successfully');
+        $contract->load(['resident', 'building.address', 'unit']);
+        $response = (new ContractTransformer())->transform($contract);
+        return $this->sendResponse($response, 'Resident Contract retrieved successfully');
     }
 
     /**
      * @SWG\Post(
-     *      path="/rent-contracts",
+     *      path="/contracts",
      *      summary="Store a newly created Resident renat Contract in storage",
-     *      tags={"RentContract"},
-     *      description="Store Resident Rent Contract",
+     *      tags={"Contract"},
+     *      description="Store Resident Contract",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="body",
      *          in="body",
      *          description="Resident that should be stored",
      *          required=false,
-     *          @SWG\Schema(ref="#/definitions/RentContract")
+     *          @SWG\Schema(ref="#/definitions/Contract")
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -196,7 +196,7 @@ class RentContractAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/RentContract"
+     *                  ref="#/definitions/Contract"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -214,28 +214,28 @@ class RentContractAPIController extends AppBaseController
     {
         $input = $request->all();
         try {
-            $rentContract = $this->rentContractRepository->create($input);
+            $contract = $this->contractRepository->create($input);
         } catch (\Exception $e) {
-            return $this->sendError(__('models.rent_contract.errors.create') . $e->getMessage());
+            return $this->sendError(__('models.contract.errors.create') . $e->getMessage());
         }
 
 
-        $rentContract->load(['resident', 'building.address', 'unit']);
+        $contract->load(['resident', 'building.address', 'unit']);
 
-        $response = (new RentContractTransformer())->transform($rentContract);
-        return $this->sendResponse($response, __('models.rent_contract.saved'));
+        $response = (new ContractTransformer())->transform($contract);
+        return $this->sendResponse($response, __('models.contract.saved'));
     }
 
     /**
      * @SWG\Put(
-     *      path="/rent-contracts/{id}",
-     *      summary="Update the specified Resident Rent Contract in storage",
-     *      tags={"RentContract"},
-     *      description="Update Resident Rent Contract",
+     *      path="/contracts/{id}",
+     *      summary="Update the specified Resident Contract in storage",
+     *      tags={"Contract"},
+     *      description="Update Resident Contract",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of Resident Rent Contract",
+     *          description="id of Resident Contract",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -245,7 +245,7 @@ class RentContractAPIController extends AppBaseController
      *          in="body",
      *          description="Resident that should be updated",
      *          required=false,
-     *          @SWG\Schema(ref="#/definitions/RentContract")
+     *          @SWG\Schema(ref="#/definitions/Contract")
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -258,7 +258,7 @@ class RentContractAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/RentContract"
+     *                  ref="#/definitions/Contract"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -276,33 +276,33 @@ class RentContractAPIController extends AppBaseController
     public function update($id, UpdateRequest $request)
     {
         $input =  $input = $request->all();
-        /** @var RentContract $rentContract */
-        $rentContract = $this->rentContractRepository->findWithoutFail($id);
-        if (empty($rentContract)) {
-            return $this->sendError(__('models.rent_contract.errors.not_found'));
+        /** @var Contract $contract */
+        $contract = $this->contractRepository->findWithoutFail($id);
+        if (empty($contract)) {
+            return $this->sendError(__('models.contract.errors.not_found'));
         }
 
         try {
-            $resident = $this->rentContractRepository->updateExisting($rentContract, $input);
+            $resident = $this->contractRepository->updateExisting($contract, $input);
         } catch (\Exception $e) {
             return $this->sendError(__('models.resident.errors.create') . $e->getMessage());
         }
 
-        $rentContract->load(['resident', 'building.address', 'unit']);
-        $response = (new RentContractTransformer())->transform($rentContract);
+        $contract->load(['resident', 'building.address', 'unit']);
+        $response = (new ContractTransformer())->transform($contract);
         return $this->sendResponse($response, __('models.resident.saved'));
     }
 
     /**
      * @SWG\Delete(
-     *      path="/rent-contracts/{id}",
-     *      summary="Remove the specified Resident Rent Contract from storage",
-     *      tags={"RentContract"},
-     *      description="Delete RentContract",
+     *      path="/contracts/{id}",
+     *      summary="Remove the specified Resident Contract from storage",
+     *      tags={"Contract"},
+     *      description="Delete Contract",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of RentContract",
+     *          description="id of Contract",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -335,24 +335,24 @@ class RentContractAPIController extends AppBaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $this->rentContractRepository->delete($id);
+            $this->contractRepository->delete($id);
         } catch (\Exception $e) {
             return $this->sendError('Delete error: ' . $e->getMessage());
         }
 
-        return $this->sendResponse($id, __('models.rent_contract.deleted'));
+        return $this->sendResponse($id, __('models.contract.deleted'));
     }
 
     /**
      * @SWG\Post(
-     *      path="/rent-contracts/deletewithids",
-     *      summary="Remove multiple Resident Rent Contract from storage",
-     *      tags={"RentContract"},
-     *      description="Delete multiple RentContract",
+     *      path="/contracts/deletewithids",
+     *      summary="Remove multiple Resident Contract from storage",
+     *      tags={"Contract"},
+     *      description="Delete multiple Contract",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="ids",
-     *          description="id of RentContract",
+     *          description="id of Contract",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -384,11 +384,11 @@ class RentContractAPIController extends AppBaseController
     public function destroyWithIds(DeleteRequest $request){
         $ids = $request->get('ids');
         try{
-            RentContract::destroy($ids);
+            Contract::destroy($ids);
         }
         catch (\Exception $e) {
-            return $this->sendError(__('models.rent_contract.errors.deleted') . $e->getMessage());
+            return $this->sendError(__('models.contract.errors.deleted') . $e->getMessage());
         }
-        return $this->sendResponse($ids, __('models.rent_contract.deleted'));
+        return $this->sendResponse($ids, __('models.contract.deleted'));
     }
 }

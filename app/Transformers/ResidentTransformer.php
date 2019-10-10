@@ -3,7 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Building;
-use App\Models\RentContract;
+use App\Models\Contract;
 use App\Models\Resident;
 
 /**
@@ -43,8 +43,9 @@ class ResidentTransformer extends BaseTransformer
             $response['settings'] = $model->settings;
         }
 
-        if ($model->relationExists('default_rent_contract')) {
-            $response['default_rent_contract'] = (new RentContractTransformer())->transform($model->default_rent_contract);
+        if ($model->relationExists('default_contract')) {
+            $response['default_rent_contract'] = (new ContractTransformer())->transform($model->default_contract); // @TODO delete
+            $response['default_contract'] = (new ContractTransformer())->transform($model->default_contract);
         }
 
         if ($model->relationExists('user')) {
@@ -58,28 +59,33 @@ class ResidentTransformer extends BaseTransformer
         }
 
         $response['media'] = [];
-        if ($model->rent_contracts || $model->relationExists('rent_contracts')) { // @TODO delete reloading
-            $response['rent_contracts'] = (new RentContractTransformer())->transformCollection($model->rent_contracts);
+        if ($model->contracts || $model->relationExists('contracts')) { // @TODO delete reloading
+            $response['rent_contracts'] = (new ContractTransformer())->transformCollection($model->contracts); // @TODO delete
+            $response['contracts'] = (new ContractTransformer())->transformCollection($model->contracts);
 
-            if (!empty($response['rent_contracts'][0]['building'])) {
-                $response['building'] = $response['rent_contracts'][0]['building'];
+            if (!empty($response['contracts'][0]['building'])) {
+                $response['building'] = $response['contracts'][0]['building'];
             }
 
-            if (!empty($response['rent_contracts'][0]['unit'])) {
-                $response['unit'] = $response['rent_contracts'][0]['unit'];
+            if (!empty($response['contracts'][0]['unit'])) {
+                $response['unit'] = $response['contracts'][0]['unit'];
             }
 
-            if (!empty($response['rent_contracts'][0]['media'])) {
-                $response['media'] = $response['rent_contracts'][0]['media'];
+            if (!empty($response['contracts'][0]['media'])) {
+                $response['media'] = $response['contracts'][0]['media'];
             }
 
-            if (!empty($response['rent_contracts'][0]['address'])) {
-                $response['address'] = $response['rent_contracts'][0]['address'];
+            if (!empty($response['contracts'][0]['address'])) {
+                $response['address'] = $response['contracts'][0]['address'];
             }
 
-            $allCount = $model->rent_contracts->count();
-            $activeCount = $model->rent_contracts->where('status', RentContract::StatusActive)->count();
+            $allCount = $model->contracts->count();
+            $activeCount = $model->contracts->where('status', Contract::StatusActive)->count();
 
+            $response['active_contracts_count'] = $activeCount;
+            $response['inactive_contracts_count'] = $allCount - $activeCount;
+            $response['total_contracts_count'] = $allCount;
+            // @TODO delete
             $response['active_rent_contracts_count'] = $activeCount;
             $response['inactive_rent_contracts_count'] = $allCount - $activeCount;
             $response['total_rent_contracts_count'] = $allCount;

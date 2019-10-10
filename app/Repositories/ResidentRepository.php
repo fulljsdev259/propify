@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Media;
 use App\Models\Model;
-use App\Models\RentContract;
+use App\Models\Contract;
 use App\Models\Request;
 use App\Models\Resident;
 use App\Models\Unit;
@@ -90,7 +90,7 @@ class ResidentRepository extends BaseRepository
         $attributes['status'] = Resident::StatusActive;
         $model = parent::create($attributes);
         if ($model) {
-            $model = $this->saveRentContracts($model, $attributes);
+            $model = $this->saveContracts($model, $attributes);
         }
         return $model;
     }
@@ -102,53 +102,53 @@ class ResidentRepository extends BaseRepository
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    protected function saveRentContracts(Resident $resident, $data)
+    protected function saveContracts(Resident $resident, $data)
     {
-        $rentContracts =  $resident->rent_contracts; // TODO check created or updated
-        if (empty($data['rent_contracts']) || ! is_array($data['rent_contracts']) || Arr::isAssoc($data['rent_contracts'])) {
-            $rentContracts->each(function ($renContract) {
+        $contracts =  $resident->contracts; // TODO check created or updated
+        if (empty($data['contracts']) || ! is_array($data['contracts']) || Arr::isAssoc($data['contracts'])) {
+            $contracts->each(function ($renContract) {
                 $renContract->delete();
             });
             return $resident;
         }
 
         /**
-         * @var $rentContractRepo RentContractRepository
+         * @var $contractRepo ContractRepository
          */
-        $rentContractRepo = App::make(RentContractRepository::class);
-        $rentContractSavedData = collect();
+        $contractRepo = App::make(ContractRepository::class);
+        $contractSavedData = collect();
 
-        RentContract::disableAuditing();
+        Contract::disableAuditing();
         Media::disableAuditing();
 
         // @TODO make good auditing
-        $deleteRentContracts = $rentContracts->whereNotIn('id', collect($data['rent_contracts'])->pluck('id'));
-        $deleteRentContracts->each(function ($rentContract) {
-            $rentContract->delete();
+        $deleteContracts = $contracts->whereNotIn('id', collect($data['contracts'])->pluck('id'));
+        $deleteContracts->each(function ($contract) {
+            $contract->delete();
         });
 
-        foreach ($data['rent_contracts'] as $rentContractData) {
+        foreach ($data['contracts'] as $contractData) {
             // @TODO if need validate this data
-            if (!is_array($rentContractData)) {
+            if (!is_array($contractData)) {
                 continue;
             }
-            if (!isset($rentContractData['id'])) {
-                $rentContractData['resident_id'] = $resident->id;
-                $rentContractSavedData->push($rentContractRepo->create($rentContractData));
+            if (!isset($contractData['id'])) {
+                $contractData['resident_id'] = $resident->id;
+                $contractSavedData->push($contractRepo->create($contractData));
                 continue;
             }
-            $existingRentContract = $rentContracts->where('id', $rentContractData['id'])->first();
-            if (empty($existingRentContract)) {
+            $existingContract = $contracts->where('id', $contractData['id'])->first();
+            if (empty($existingContract)) {
                 continue;
             }
-            $rentContractRepo->updateExisting($existingRentContract, $rentContractData);
+            $contractRepo->updateExisting($existingContract, $contractData);
         }
-        RentContract::enableAuditing();
+        Contract::enableAuditing();
         Media::enableAuditing();
 
-        $resident->setRelation('rent_contracts', $rentContractSavedData);
-        $auditData = $resident->getModelRelationAuditData($rentContractSavedData);
-        $resident->addDataInAudit('rent_contracts', $auditData);
+        $resident->setRelation('contracts', $contractSavedData);
+        $auditData = $resident->getModelRelationAuditData($contractSavedData);
+        $resident->addDataInAudit('contracts', $auditData);
         return $resident;
     }
 
@@ -229,14 +229,14 @@ class ResidentRepository extends BaseRepository
         }
 
         if (! empty($attributes['status']) && $attributes['status'] != $model->status && $attributes['status'] == Resident::StatusNotActive) {
-            $model->rent_contracts()
-                ->where('status', RentContract::StatusActive)
-                ->update(['status' =>  RentContract::StatusInactive]);
+            $model->contracts()
+                ->where('status', Contract::StatusActive)
+                ->update(['status' =>  Contract::StatusInactive]);
         }
 
         $model =  parent::updateExisting($model, $attributes); // TODO: Change the autogenerated stub
 //        if ($model) {
-//            $model = $this->saveRentContracts($model, $attributes);
+//            $model = $this->saveContracts($model, $attributes);
 //        }
         return $model;
     }

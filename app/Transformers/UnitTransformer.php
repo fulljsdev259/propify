@@ -44,14 +44,17 @@ class UnitTransformer extends BaseTransformer
         ];
 
         $attributes = $model->attributesToArray();
-        if (key_exists('total_rent_contracts_count', $attributes)) {
-            $response['total_rent_contracts_count'] = $attributes['total_rent_contracts_count'];
+        if (key_exists('total_contracts_count', $attributes)) {
+            $response['total_rent_contracts_count'] = $attributes['total_contracts_count']; // @TODO delete
+            $response['total_contracts_count'] = $attributes['total_contracts_count'];
         }
 
-        if (key_exists('active_rent_contracts_count', $attributes)) {
-            $response['active_rent_contracts_count'] = $attributes['active_rent_contracts_count'];
-            if (key_exists('total_rent_contracts_count', $attributes)) {
-                $response['inactive_rent_contracts_count'] = $attributes['total_rent_contracts_count'] - $attributes['active_rent_contracts_count'];
+        if (key_exists('active_contracts_count', $attributes)) {
+            $response['active_rent_contracts_count'] = $attributes['active_contracts_count']; // @TODO delete
+            $response['active_contracts_count'] = $attributes['active_contracts_count'];
+            if (key_exists('total_contracts_count', $attributes)) {
+                $response['inactive_rent_contracts_count'] = $attributes['total_contracts_count'] - $attributes['active_contracts_count']; // @TODO delete
+                $response['inactive_contracts_count'] = $attributes['total_contracts_count'] - $attributes['active_contracts_count'];
             }
         }
 
