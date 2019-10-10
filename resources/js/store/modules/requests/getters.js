@@ -3,9 +3,9 @@ import {format} from 'date-fns'
 export default {
     requests(state, getters, rootState) {
         const {application: {constants: {requests}}} = rootState;
-        const requests = state.requests.data ? state.requests.data : [];
+        const storerequests = state.requests.data ? state.requests.data : [];
 
-        return requests.map((request) => {
+        return storerequests.map((request) => {
             request.priority_label = requests.priority[request.priority];
             request.internal_priority_label = requests.internal_priority[request.internal_priority];
             request.status_label = requests.status[request.status];
