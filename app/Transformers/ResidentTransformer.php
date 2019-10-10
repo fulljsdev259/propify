@@ -36,7 +36,7 @@ class ResidentTransformer extends BaseTransformer
             'tenant_format' => $model->resident_format, // @TODO delete
             'resident_format' => $model->resident_format,
             'nation' => $model->nation,
-            'client_type' => $model->client_type,
+            'type' => $model->type,
         ];
 
         if ($model->relationExists('settings')) {

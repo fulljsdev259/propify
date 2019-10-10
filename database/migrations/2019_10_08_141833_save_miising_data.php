@@ -13,9 +13,9 @@ class SaveMiisingData extends Migration
      */
     public function up()
     {
-        \App\Models\Tenant::whereNull('nation')->get()->each(function ($tenant) {
-            $tenant->nation =  \App\Models\Country::inRandomOrder()->first()->id;
-            $tenant->save();
+        \App\Models\Resident::whereNull('nation')->get()->each(function ($resident) {
+            $resident->nation =  \App\Models\Country::inRandomOrder()->first()->id;
+            $resident->save();
         });
         \App\Models\Building::where('contact_enable', 0)->get()->each(function ($building) {
             $building->contact_enable =  array_rand(\App\Models\Building::BuildingContactEnables);

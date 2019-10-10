@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Tenant;
+use App\Models\Resident;
 use Faker\Generator as Faker;
 
-$factory->define(App\Models\Tenant::class, function (Faker $faker) {
-    $title = Tenant::Title[$faker->numberBetween(0, count(Tenant::Title) - 1)];
+$factory->define(App\Models\Resident::class, function (Faker $faker) {
+    $title = Resident::Title[$faker->numberBetween(0, count(Resident::Title) - 1)];
 
     $company = null;
     if ($title == 'company') {
@@ -21,7 +21,7 @@ $factory->define(App\Models\Tenant::class, function (Faker $faker) {
         'mobile_phone' => $faker->phoneNumber,
         'private_phone' => $faker->phoneNumber,
         'work_phone' => $faker->phoneNumber,
-        'status' => $faker->numberBetween(Tenant::StatusActive, Tenant::StatusNotActive),
+        'status' => $faker->numberBetween(Resident::StatusActive, Resident::StatusNotActive),
         'nation' => \App\Models\Country::inRandomOrder()->first()->id
     ];
 });

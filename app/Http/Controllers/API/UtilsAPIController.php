@@ -116,13 +116,12 @@ class UtilsAPIController extends AppBaseController
             'buildings' => [], // @TODO is need return building related constants
             'units' => $this->getUnitConstants(),
             'residents' => $this->getResidentConstants(),
+            'tenants' => $this->getResidentConstants(), // @TODO delete
             'rentContracts' => $this->getRentContractConstants(),
             'serviceProviders' => $this->getServiceProviderConstants(),
             'requests' => $this->getRequestsConstants(),
-            'serviceRequests' => $this->getRequestsConstants(), // @TODO delete
             'propertyManager' => $this->getPropertyManagerConstants(),
             'pinboard' => $this->getPinboardConstants(),
-            'products' => $this->getListingConstants(), // @TODO delete
             'listings' => $this->getListingConstants(),
             'templates' => $this->getTemplateConstants(),
             'audits' => $this->getAuditConstants(),
@@ -151,7 +150,7 @@ class UtilsAPIController extends AppBaseController
         $result = [
             'title' => Resident::Title,
             'status' => Resident::Status,
-            'client_type' => Resident::ClientType,
+            'type' => Resident::Type,
         ];
 
         return $result;

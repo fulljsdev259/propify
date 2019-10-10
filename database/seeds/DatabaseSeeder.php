@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(ServiceProvidersTableSeeder::class);
         $this->call(PropertyManagerTableSeeder::class);
-        $this->call(TenantsTableSeeder::class);
+        $this->call(ResidentsTableSeeder::class);
 
         $this->call(PinboardTableSeeder::class);
         $this->call(CommentsTableSeeder::class);

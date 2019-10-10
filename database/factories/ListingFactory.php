@@ -7,7 +7,7 @@ use App\Models\User;
 $factory->define(Listing::class, function (Faker $f) {
     $u = [
         User::where('deleted_at', null)->inRandomOrder()->first(),
-        User::where('email', 'tenant@example.com')->first(),
+        User::where('email', 'resident@example.com')->first(),
     ][rand(0, 1)];
     $t = [Listing::TypeSell, Listing::TypeLend][rand(0, 1)];
 
@@ -30,9 +30,9 @@ $factory->define(Listing::class, function (Faker $f) {
         'updated_at' => $now,
     ];
 
-    if ($u->tenant && $u->tenant->building) {
-        $ret['address_id'] = $u->tenant->building->address_id;
-        $ret['quarter_id'] = $u->tenant->building->quarter_id;
+    if ($u->resident && $u->resident->building) {
+        $ret['address_id'] = $u->resident->building->address_id;
+        $ret['quarter_id'] = $u->resident->building->quarter_id;
     }
 
     return $ret;

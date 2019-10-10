@@ -1,14 +1,14 @@
 <?php
 
 use App\Models\Role;
-use App\Models\Tenant;
+use App\Models\Resident;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\UserSettings;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
-class TenantsTableSeeder extends Seeder
+class ResidentsTableSeeder extends Seeder
 {
     use \Traits\TimeTrait;
 
@@ -23,30 +23,30 @@ class TenantsTableSeeder extends Seeder
             return;
         }
 
-        $totalTenants = 200;
+        $totalResidents = 200;
         $faker = Faker::create();
-        $units = Unit::inRandomOrder()->with('building')->limit($totalTenants)->get();
+        $units = Unit::inRandomOrder()->with('building')->limit($totalResidents)->get();
 
-        for($i = 0; $i < $totalTenants; $i++) {
+        for($i = 0; $i < $totalResidents; $i++) {
 
             $email = $faker->safeEmail;
             if ($i == 0) {
-                $email = 'tenant@example.com';
+                $email = 'resident@example.com';
             }
 
-            $data = factory(App\Models\Tenant::class)->make()->toArray();
+            $data = factory(App\Models\Resident::class)->make()->toArray();
             $date = $this->getRandomTime();
 
-            if ($email == 'tenant@example.com' || rand(0, 1)) {
+            if ($email == 'resident@example.com' || rand(0, 1)) {
                 $unit = $units->random();
                 $building = $unit->building;
                 $data['address_id'] = $building->address_id;
                 $data['building_id'] = $building->id;
                 $data['unit_id'] = $unit->id;
-                $data['status'] = Tenant::StatusActive;
+                $data['status'] = Resident::StatusActive;
                 $date = $this->getRandomTime($unit->created_at);
 
-                if ($email == 'tenant@example.com') {
+                if ($email == 'resident@example.com') {
 //                    $services = ServiceProvider::select('id')->limit(4)->inRandomOrder()->get();
 //                    $building->serviceProviders()->attach($services);
                 }
@@ -60,9 +60,9 @@ class TenantsTableSeeder extends Seeder
             ];
             $userData = array_merge($userData, $this->getDateColumns($date));
 
-            $tenantRole = Role::where('name', 'tenant')->first();
+            $residentRole = Role::where('name', 'resident')->first();
             $user = factory(User::class)->create($userData);
-            $user->attachRole($tenantRole);
+            $user->attachRole($residentRole);
             $settings = $this->getSettings();
             $user->settings()->save($settings->replicate());
 
@@ -71,15 +71,15 @@ class TenantsTableSeeder extends Seeder
             $data['title'] = $user->title;
 
             $data = array_merge($data, $this->getDateColumns($date));
-            $tenant = factory(App\Models\Tenant::class)->create($data);
-            $this->saveRentContracts($tenant->id);
-            $tenant->setCredentialsPDF();
+            $resident = factory(App\Models\Resident::class)->create($data);
+            $this->saveRentContracts($resident->id);
+            $resident->setCredentialsPDF();
         }
     }
 
-    protected function saveRentContracts($tenantId)
+    protected function saveRentContracts($residentId)
     {
-        $data['tenant_id'] = $tenantId;
+        $data['resident_id'] = $residentId;
         $data['status'] = \App\Models\RentContract::StatusActive;
 
         factory(App\Models\RentContract::class)->create($data);

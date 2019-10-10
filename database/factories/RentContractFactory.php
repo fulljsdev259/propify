@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Tenant;
+use App\Models\Resident;
 use Faker\Generator as Faker;
 
 $factory->define(App\Models\RentContract::class, function (Faker $faker) {
@@ -11,7 +11,7 @@ $factory->define(App\Models\RentContract::class, function (Faker $faker) {
     $endDate = (\App\Models\RentContract::DurationLimited == $duration) ? now()->subSeconds(random_int(1, $randSec)) : null;
 
     return [
-        'tenant_id' => \App\Models\Tenant::inRandomOrder()->value('id'),
+        'resident_id' => \App\Models\Resident::inRandomOrder()->value('id'),
         'building_id' => $unit->building->id,
         'unit_id' => $unit->id,
         'type' => array_rand(\App\Models\RentContract::Type),

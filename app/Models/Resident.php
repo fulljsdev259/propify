@@ -54,8 +54,8 @@ use Illuminate\Support\Facades\Storage;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="client_type",
- *          description="client_type",
+ *          property="type",
+ *          description="type",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -146,11 +146,11 @@ class Resident extends AuditableModel implements HasMedia
         self::StatusNotActive => 'not_active',
     ];
 
-    const ClientTypeResident = 1;
-    const ClientTypeOwner = 2;
-    const ClientType = [
-        self::ClientTypeResident => 'resident',
-        self::ClientTypeOwner => 'owner',
+    const TypeResident = 1;
+    const TypeOwner = 2;
+    const Type = [
+        self::TypeResident => 'resident',
+        self::TypeOwner => 'owner',
     ];
     /**
      * Validation rules
@@ -198,7 +198,7 @@ class Resident extends AuditableModel implements HasMedia
         'rating',
         'nation',
         'country_id',
-        'client_type',
+        'type',
     ];
 
     protected $dates = ['deleted_at', 'rent_start', 'rent_end'];
@@ -228,7 +228,7 @@ class Resident extends AuditableModel implements HasMedia
         'resident_format' => 'string',
         'review' => 'string',
         'rating' => 'integer',
-        'client_type' => 'integer',
+        'type' => 'integer',
         'nation' => 'string',
     ];
 
