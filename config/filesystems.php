@@ -110,10 +110,10 @@ return [
             'url' => env('APP_URL') . '/storage/tenants/media',
             'visibility' => 'public',
         ],
-        'tenant_rent_contracts_media' => [
+        'contracts_media' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/rent-contracts/media'),
-            'url' => env('APP_URL') . '/storage/rent-contracts/media',
+            'root' => storage_path('app/public/contracts/media'),
+            'url' => env('APP_URL') . '/storage/contracts/media',
             'visibility' => 'public',
         ],
         'tenant_credentials' => [

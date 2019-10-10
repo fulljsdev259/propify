@@ -72,17 +72,17 @@ class ResidentsTableSeeder extends Seeder
 
             $data = array_merge($data, $this->getDateColumns($date));
             $resident = factory(App\Models\Resident::class)->create($data);
-            $this->saveRentContracts($resident->id);
+            $this->saveContracts($resident->id);
             $resident->setCredentialsPDF();
         }
     }
 
-    protected function saveRentContracts($residentId)
+    protected function saveContracts($residentId)
     {
         $data['resident_id'] = $residentId;
-        $data['status'] = \App\Models\RentContract::StatusActive;
+        $data['status'] = \App\Models\Contract::StatusActive;
 
-        factory(App\Models\RentContract::class)->create($data);
+        factory(App\Models\Contract::class)->create($data);
     }
 
 
