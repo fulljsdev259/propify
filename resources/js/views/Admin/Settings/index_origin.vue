@@ -385,9 +385,7 @@
 <!--                            <CategoriesListing/>-->
 <!--                        </el-tab-pane>-->
                         <el-tab-pane :label="$t('models.settings.templates')" name="templates">
-                            <TemplatesListing v-if="!templateEditMode" :onClick="handleEditClick"/>
-                            
-                            <TemplateEdit v-else />
+                            <TemplatesListing/>
                         </el-tab-pane>
                     </el-tabs>
                 </div>
@@ -515,9 +513,8 @@
     import {mapActions} from 'vuex';
     import {displayError, displaySuccess} from 'helpers/messages';
     import CategoriesListing from './Categories'
+    import TemplatesListing from '../Templates'
     import globalFunction from "helpers/globalFunction";
-    import TemplatesListing from '../TemplatesNew'
-    import TemplateEdit from '../TemplatesNew/Edit';
 
     export default {
         name: 'AdminProfile',
@@ -527,8 +524,7 @@
             Cropper,
             UploadDocument,
             CategoriesListing,
-            TemplatesListing,
-            TemplateEdit
+            TemplatesListing
         },
         data() {
             return {
@@ -599,7 +595,6 @@
                 activeSettingsName: 'settings_settings',
                 activeRequestName: 'templates',
                 activeTenantsName: 'login_variations',
-                templateEditMode: false,
                 states: [],
                 mail_powered_by: [
                     {
@@ -715,10 +710,6 @@
         },
         methods: {
             ...mapActions(['getSettings', 'updateSettings', 'getStates']),
-            handleEditClick(id) {
-                this.templateEditMode = true;
-                console.log(id);
-            },
             goToTab(tabName) {
                 this.activeName = tabName;
             },
@@ -863,18 +854,6 @@
                     if (!state) {
                         document.getElementsByTagName('footer')[0].style.display = "block";
                     }
-                }
-            },
-            "$route.query": {
-                immediate: true,
-                handler({page, per_page}, prevQuery) {
-                    if(this.$route.name == "login") {
-                        return;
-                    }
-                    
-                    if(this.$route.query.template == undefined)
-                        this.templateEditMode = false;
-                    
                 }
             }
         }
