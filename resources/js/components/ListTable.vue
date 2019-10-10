@@ -327,7 +327,7 @@
                         v-for="action in column.actions">
                         <template
                             v-if="(!action.permissions || ( action.permissions && $can(action.permissions))) && (!action.hidden || (action.hidden && !action.hidden(scope.row)))">
-                            <template v-if="action.title.indexOf('edit') !== -1">
+                            <template v-if="action.title.indexOf('edit') !== -1 && action.isTemplateEdit == undefined">
                                 <router-link
                                         :to="{
                                             name: action.editUrl,
@@ -353,7 +353,11 @@
                                 @click="action.onClick(scope.row)"
                                 size="mini"
                             >
-                                <template v-if="action.title.indexOf('edit') !== -1">
+                                <template v-if="action.isTemplateEdit != undefined">
+                                    <i class="ti-pencil"></i>
+                                    <span>{{ $t('general.actions.edit') }}</span>    
+                                </template>
+                                <template v-else-if="action.title.indexOf('edit') !== -1">
                                     <router-link :to="{name: 'adminPropertyManagersEdit',  params: { id:scope.row['id']}}" class="el-menu-item-link">
                                         <i class="ti-pencil"></i>
                                         <span>{{ $t('general.actions.edit') }}</span>
@@ -562,7 +566,6 @@
         },
         methods: {
             rowClicked(row) {
-                console.log('clicked');
                 this.$refs.tableData.toggleRowExpansion(row);
             },
             selectChanged(e, row, column) {
