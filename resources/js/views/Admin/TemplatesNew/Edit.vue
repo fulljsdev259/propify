@@ -1,8 +1,7 @@
 <template>
     <div class="templates-edit">
-        <heading :title="$t('general.actions.edit')" icon="ti-user" shadow="heavy" style="margin-bottom: 20px;">
-            <edit-actions :queryParams="{tab: 'requests'}" :saveAction="submit" route="adminSettings"/>
-        </heading>
+        <edit-actions :queryParams="{tab: 'requests'}" :saveAction="submit" route="adminSettings"/>
+      
         <el-row :gutter="20" class="crud-view">
             <el-form :model="model" label-width="100px" ref="form">
                 <el-col :md="12">
@@ -84,5 +83,11 @@
     }
 </script>
 
-<style>
+<style lang="scss" scoped>
+    .action-group {
+        display: inline-block;
+        position: absolute;
+        top: -50px;
+        right: 40px;
+    }
 </style>
