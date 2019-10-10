@@ -90,8 +90,9 @@ class RequestTransformer extends BaseTransformer
             $response['remainder_user'] = (new UserTransformer())->transform($model->remainder_user);
         }
 
-        if ($model->relationExists('tenant')) {
-            $response['tenant'] = (new TenantTransformer)->transform($model->tenant);
+        if ($model->relationExists('resident')) {
+            $response['tenant'] = (new ResidentTransformer)->transform($model->resident);  // @TODO delete
+            $response['resident'] = (new ResidentTransformer)->transform($model->resident);
         }
 
         if ($model->relationExists('rent_contract')) {

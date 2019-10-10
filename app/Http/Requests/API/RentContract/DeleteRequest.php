@@ -13,6 +13,6 @@ class DeleteRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('delete-tenant'); // @TODO add new rule list-rent_contract
+        return $this->can('delete-resident'); // @TODO add new rule list-rent_contract
     }
 }

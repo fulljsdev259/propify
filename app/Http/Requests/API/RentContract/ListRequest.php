@@ -13,6 +13,6 @@ class ListRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('list-tenant'); // @TODO add new rule list-rent_contract
+        return $this->can('list-resident'); // @TODO add new rule list-rent_contract
     }
 }

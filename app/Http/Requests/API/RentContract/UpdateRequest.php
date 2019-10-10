@@ -14,7 +14,7 @@ class UpdateRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('edit-tenant'); // @TODO use correct permission
+        return $this->can('edit-resident'); // @TODO use correct permission
     }
 
     /**

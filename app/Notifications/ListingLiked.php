@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Listing;
-use App\Models\Tenant;
+use App\Models\Resident;
 use App\Repositories\TemplateRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,16 +22,16 @@ class ListingLiked extends Notification implements ShouldQueue
     protected $listing;
 
     /**
-     * @var Tenant
+     * @var Resident
      */
     protected $liker;
 
     /**
      * ListingLiked constructor.
      * @param Listing $listing
-     * @param Tenant $liker
+     * @param Resident $liker
      */
-    public function __construct(Listing $listing, Tenant $liker)
+    public function __construct(Listing $listing, Resident $liker)
     {
         $this->listing = $listing;
         $this->liker = $liker;
@@ -79,7 +79,7 @@ class ListingLiked extends Notification implements ShouldQueue
     {
         return [
             'listing_id' => $this->listing->id,
-            'tenant' => $this->liker->name,
+            'resident' => $this->liker->name,
             'fragment' => Str::limit($this->listing->content, 128),
         ];
     }

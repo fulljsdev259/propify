@@ -10,9 +10,9 @@ use App\Models\PropertyManager;
 use App\Models\ServiceProvider;
 use App\Models\Request;
 use App\Models\TemplateCategory;
-use App\Models\Tenant;
+use App\Models\Resident;
 use App\Repositories\BuildingRepository;
-use App\Repositories\TenantRepository;
+use App\Repositories\ResidentRepository;
 use App\Repositories\UnitRepository;
 use Illuminate\Http\Response;
 
@@ -28,20 +28,20 @@ class UtilsAPIController extends AppBaseController
     /** @var  UnitRepository */
     private $unitRepository;
 
-    /** @var  TenantRepository */
-    private $tenantRepository;
+    /** @var  ResidentRepository */
+    private $residentRepository;
 
     /**
      * UtilsAPIController constructor.
      * @param BuildingRepository $buildingRepo
      * @param UnitRepository $unitRepo
-     * @param TenantRepository $tenantRepo
+     * @param ResidentRepository $residentRepo
      */
-    public function __construct(BuildingRepository $buildingRepo, UnitRepository $unitRepo, TenantRepository $tenantRepo)
+    public function __construct(BuildingRepository $buildingRepo, UnitRepository $unitRepo, ResidentRepository $residentRepo)
     {
         $this->buildingRepository = $buildingRepo;
         $this->unitRepository = $unitRepo;
-        $this->tenantRepository = $tenantRepo;
+        $this->residentRepository = $residentRepo;
     }
 
     /**
@@ -85,11 +85,11 @@ class UtilsAPIController extends AppBaseController
             'languages' => $languages,
         ];
 
-        $settings = App\Models\Settings::first(['login_variation', 'login_variation_2_slider', 'primary_color', 'primary_color_lighter', 'accent_color', 'logo', 'circle_logo', 'tenant_logo', 'favicon_icon']);
+        $settings = App\Models\Settings::first(['login_variation', 'login_variation_2_slider', 'primary_color', 'primary_color_lighter', 'accent_color', 'logo', 'circle_logo', 'resident_logo', 'favicon_icon']);
 
         if ($settings) {
             $colors = $settings->only(['primary_color', 'accent_color', 'primary_color_lighter']);
-            $logo = $settings->only(['logo', 'circle_logo', 'favicon_icon', 'tenant_logo']);
+            $logo = $settings->only(['logo', 'circle_logo', 'favicon_icon', 'resident_logo']);
             $login = [
                 'variation' => $settings->login_variation,
                 'variation_2_slider' => (bool) $settings->login_variation_2_slider,
@@ -104,7 +104,7 @@ class UtilsAPIController extends AppBaseController
                 'logo' => null,
                 'circle_logo' => null,
                 'favicon_icon' => null,
-                'tenant_logo' => null,
+                'resident_logo' => null,
             ];
             $login = [
                 'variation' => 1,
@@ -115,7 +115,7 @@ class UtilsAPIController extends AppBaseController
             'app' => $app,
             'buildings' => [], // @TODO is need return building related constants
             'units' => $this->getUnitConstants(),
-            'tenants' => $this->getTenantConstants(),
+            'residents' => $this->getResidentConstants(),
             'rentContracts' => $this->getRentContractConstants(),
             'serviceProviders' => $this->getServiceProviderConstants(),
             'requests' => $this->getRequestsConstants(),
@@ -146,12 +146,12 @@ class UtilsAPIController extends AppBaseController
     /**
      * @return array
      */
-    protected function getTenantConstants()
+    protected function getResidentConstants()
     {
         $result = [
-            'title' => Tenant::Title,
-            'status' => Tenant::Status,
-            'client_type' => Tenant::ClientType,
+            'title' => Resident::Title,
+            'status' => Resident::Status,
+            'client_type' => Resident::ClientType,
         ];
 
         return $result;
@@ -207,7 +207,7 @@ class UtilsAPIController extends AppBaseController
             'priority' => Request::Priority,
             'internal_priority' => Request::Priority,
             'qualification' => Request::Qualification,
-            'statusByTenant' => Request::StatusByTenant,
+            'statusByResident' => Request::StatusByResident,
             'statusByService' => Request::StatusByService,
             'statusByAgent' => Request::StatusByAgent,
             'visibility' => Request::Visibility,

@@ -11,13 +11,13 @@ use App\Models\Settings;
 use App\Models\Request;
 use App\Models\Template;
 use App\Models\Conversation;
-use App\Models\Tenant;
+use App\Models\Resident;
 use App\Models\RentContract;
 use App\Models\Unit;
 use App\Models\User;
-use App\Notifications\NewTenantInNeighbour;
-use App\Notifications\NewTenantPinboard;
-use App\Notifications\NewTenantRequest;
+use App\Notifications\NewResidentInNeighbour;
+use App\Notifications\NewResidentPinboard;
+use App\Notifications\NewResidentRequest;
 use App\Notifications\AnnouncementPinboardPublished;
 use App\Notifications\PinboardPublished;
 use App\Notifications\ListingPublished;
@@ -51,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
             'unit' => Unit::class,
             'user' => User::class,
             'pinboard' => Pinboard::class,
-            'tenant' => Tenant::class,
+            'resident' => Resident::class,
             'listing' => Listing::class,
             'quarter' => Quarter::class,
             'building' => Building::class,
@@ -65,11 +65,11 @@ class AppServiceProvider extends ServiceProvider
             'conversation' => Conversation::class,
 
             'pinboard_published' => PinboardPublished::class,
-            'new_tenant_pinboard' => NewTenantPinboard::class,
+            'new_resident_pinboard' => NewResidentPinboard::class,
             'announcement_pinboard_published' => AnnouncementPinboardPublished::class,
-            'new_tenant_in_neighbour' => NewTenantInNeighbour::class,
+            'new_resident_in_neighbour' => NewResidentInNeighbour::class,
             'listing_published' => ListingPublished::class,
-            'new_tenant_request' => NewTenantRequest::class,
+            'new_resident_request' => NewResidentRequest::class,
             'status_change_request' => StatusChangedRequest::class,
         ]);
 

@@ -28,8 +28,8 @@ use Storage;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="tenant_id",
- *          description="tenant_id",
+ *          property="resident_id",
+ *          description="resident_id",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -142,7 +142,7 @@ class Request extends AuditableModel implements HasMedia
     const StatusReactivated = 5;
     const StatusArchived = 6;
 
-    const VisibilityTenant = 1;
+    const VisibilityResident = 1;
     const VisibilityBuilding = 2;
     const VisibilityQuarter = 3;
 
@@ -167,7 +167,7 @@ class Request extends AuditableModel implements HasMedia
         self::StatusArchived => 'archived',
     ];
 
-    const StatusByTenant = [
+    const StatusByResident = [
         self::StatusReceived => [self::StatusDone],
         self::StatusAssigned => [self::StatusDone, self::StatusArchived],
         self::StatusInProcessing => [self::StatusDone, self::StatusArchived],
@@ -195,7 +195,7 @@ class Request extends AuditableModel implements HasMedia
     ];
 
     const Visibility = [
-        self::VisibilityTenant => 'tenant',
+        self::VisibilityResident => 'resident',
         self::VisibilityBuilding => 'building',
         self::VisibilityQuarter => 'quarter',
     ];
@@ -289,12 +289,12 @@ class Request extends AuditableModel implements HasMedia
     ];
 
     const PayerLandlord = 1;
-    const PayerTenant = 2;
-    const PayerTenantLandlord = 3;
+    const PayerResident = 2;
+    const PayerResidentLandlord = 3;
     const Payer = [
         self::PayerLandlord => 'landlord',
-        self::PayerTenant => 'tenant',
-        self::PayerTenantLandlord => 'tenant/landlord',
+        self::PayerResident => 'resident',
+        self::PayerResidentLandlord => 'resident/landlord',
     ];
 
 
@@ -302,7 +302,7 @@ class Request extends AuditableModel implements HasMedia
         'reminder_user_id',
         'category_id',
         'subject_id',
-        'tenant_id',
+        'resident_id',
         'rent_contract_id',
         'unit_id',
         'title',
@@ -343,7 +343,7 @@ class Request extends AuditableModel implements HasMedia
     protected $casts = [
         'category_id' => 'integer',
         'reminder_user_id' => 'integer',
-        'tenant_id' => 'integer',
+        'resident_id' => 'integer',
         'rent_contract_id' => 'integer',
         'title' => 'string',
         'description' => 'string',
@@ -375,7 +375,7 @@ class Request extends AuditableModel implements HasMedia
         'description' => 'request.description',
         'priority' => 'request.priorityStr',
         'autologinUrl' => '',
-        'tenant' => '',
+        'resident' => '',
         'category' => '',
         'unit' => '',
         'building' => '',
@@ -387,8 +387,8 @@ class Request extends AuditableModel implements HasMedia
      * @var array
      */
     public static $rulesPost = [
-        'tenant_id' => 'required|exists:tenants,id',
-        'rent_contract_id' => 'exists:tenant_rent_contracts,id',
+        'resident_id' => 'required|exists:residents,id',
+        'rent_contract_id' => 'exists:resident_rent_contracts,id',
         'title' => 'required|string',
         'description' => 'required|string',
         'priority' => 'required|integer',
@@ -404,9 +404,9 @@ class Request extends AuditableModel implements HasMedia
      *
      * @var array
      */
-    public static $rulesPostTenant = [
-        'tenant_id' => 'exists:tenants,id',
-        'rent_contract_id' => 'exists:tenant_rent_contracts,id',
+    public static $rulesPostResident = [
+        'resident_id' => 'exists:residents,id',
+        'rent_contract_id' => 'exists:resident_rent_contracts,id',
         'title' => 'required|string',
         'description' => 'required|string',
         'category_id' => 'required|integer',
@@ -421,8 +421,8 @@ class Request extends AuditableModel implements HasMedia
      * @var array
      */
     public static $rulesPut = [
-        'tenant_id' => 'exists:tenants,id',
-        'rent_contract_id' => 'exists:tenant_rent_contracts,id',
+        'resident_id' => 'exists:residents,id',
+        'rent_contract_id' => 'exists:resident_rent_contracts,id',
         'title' => 'string',
         'description' => 'string',
         'priority' => 'integer',
@@ -440,9 +440,9 @@ class Request extends AuditableModel implements HasMedia
      *
      * @var array
      */
-    public static $rulesPutTenant = [
-        'tenant_id' => 'exists:tenants,id',
-        'rent_contract_id' => 'exists:tenant_rent_contracts,id',
+    public static $rulesPutResident = [
+        'resident_id' => 'exists:residents,id',
+        'rent_contract_id' => 'exists:resident_rent_contracts,id',
         'title' => 'string',
         'description' => 'string',
         'status' => 'integer',
@@ -523,9 +523,9 @@ class Request extends AuditableModel implements HasMedia
     /**
      * @ret1urn \Illuminate\Database\Eloquent\Relations\HasOne
      **/
-    public function tenant()
+    public function resident()
     {
-        return $this->hasOne(Tenant::class, 'id', 'tenant_id');
+        return $this->hasOne(Resident::class, 'id', 'resident_id');
     }
 
     /**
@@ -642,7 +642,7 @@ class Request extends AuditableModel implements HasMedia
             return $p->user;
         });
         return array_merge([
-            $this->tenant->user,
+            $this->resident->user,
         ], $providers->all(), $this->users->all()) ;
     }
 
@@ -651,8 +651,8 @@ class Request extends AuditableModel implements HasMedia
        $data = [
             'category' => $this->category,
             'request' => $this,
-            'tenant' => $this->tenant,
-            'language'  => $this->tenant->settings->language
+            'resident' => $this->resident,
+            'language'  => $this->resident->settings->language
         ];
 
         $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('pdfs.request.requestDownload', $data);
@@ -667,9 +667,9 @@ class Request extends AuditableModel implements HasMedia
 
     public function pdfFileName()
     {
-        $language  = $this->tenant->settings->language;
+        $language  = $this->resident->settings->language;
 
-        return $this->id . '-'. $this->tenant->id .'-' . $language . '.pdf';
+        return $this->id . '-'. $this->resident->id .'-' . $language . '.pdf';
     }
 
     public function remainder_user()

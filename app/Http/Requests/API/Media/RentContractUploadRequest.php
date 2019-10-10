@@ -17,7 +17,7 @@ class RentContractUploadRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('edit-tenant'); // @TODO correct permission
+        return $this->can('edit-resident'); // @TODO correct permission
     }
 
     /**

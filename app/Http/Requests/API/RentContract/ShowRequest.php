@@ -13,6 +13,6 @@ class ShowRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('view-tenant'); // @TODO add new rule list-rent_contract
+        return $this->can('view-resident'); // @TODO add new rule list-rent_contract
     }
 }

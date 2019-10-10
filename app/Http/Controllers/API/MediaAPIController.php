@@ -11,10 +11,10 @@ use App\Http\Requests\API\Media\ListingDeleteRequest;
 use App\Http\Requests\API\Media\ListingUploadRequest;
 use App\Http\Requests\API\Media\RequestDeleteRequest;
 use App\Http\Requests\API\Media\RequestUploadRequest;
-use App\Http\Requests\API\Media\TenantDeleteRequest;
+use App\Http\Requests\API\Media\ResidentDeleteRequest;
 use App\Http\Requests\API\Media\RentContractDeleteRequest;
 use App\Http\Requests\API\Media\RentContractUploadRequest;
-use App\Http\Requests\API\Media\TenantUploadRequest;
+use App\Http\Requests\API\Media\ResidentUploadRequest;
 use App\Models\Building;
 use App\Repositories\AddressRepository;
 use App\Repositories\BuildingRepository;
@@ -22,7 +22,7 @@ use App\Repositories\PinboardRepository;
 use App\Repositories\ListingRepository;
 use App\Repositories\RequestRepository;
 use App\Repositories\RentContractRepository;
-use App\Repositories\TenantRepository;
+use App\Repositories\ResidentRepository;
 use App\Transformers\MediaTransformer;
 use Illuminate\Http\Response;
 
@@ -44,8 +44,8 @@ class MediaAPIController extends AppBaseController
     /** @var  ListingRepository */
     private $listingRepository;
 
-    /** @var  TenantRepository */
-    private $tenantRepository;
+    /** @var  ResidentRepository */
+    private $residentRepository;
 
     /**
      * @var RentContractRepository
@@ -61,7 +61,7 @@ class MediaAPIController extends AppBaseController
      * @param AddressRepository $addrRepo
      * @param PinboardRepository $pinboardRepo
      * @param ListingRepository $listingRepo
-     * @param TenantRepository $tenantRepo
+     * @param ResidentRepository $residentRepo
      * @param RentContractRepository $rentContractRepository
      * @param RequestRepository $requestRepo
      */
@@ -70,7 +70,7 @@ class MediaAPIController extends AppBaseController
         AddressRepository $addrRepo,
         PinboardRepository $pinboardRepo,
         ListingRepository $listingRepo,
-        TenantRepository $tenantRepo,
+        ResidentRepository $residentRepo,
         RentContractRepository $rentContractRepository,
         RequestRepository $requestRepo
     )
@@ -79,7 +79,7 @@ class MediaAPIController extends AppBaseController
         $this->addressRepository = $addrRepo;
         $this->pinboardRepository = $pinboardRepo;
         $this->listingRepository = $listingRepo;
-        $this->tenantRepository = $tenantRepo;
+        $this->residentRepository = $residentRepo;
         $this->requestRepository = $requestRepo;
         $this->rentContractRepository = $rentContractRepository;
     }
@@ -321,9 +321,9 @@ class MediaAPIController extends AppBaseController
 
     /**
      * @SWG\Post(
-     *      path="/tenants/{tenant_id}/media",
-     *      summary="Store a newly created Tenant Media in storage",
-     *      tags={"Tenant"},
+     *      path="/residents/{resident_id}/media",
+     *      summary="Store a newly created Resident Media in storage",
+     *      tags={"Resident"},
      *      description="Store Media",
      *      produces={"application/json"},
      *      @SWG\Parameter(
@@ -344,7 +344,7 @@ class MediaAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Tenant"
+     *                  ref="#/definitions/Resident"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -355,22 +355,22 @@ class MediaAPIController extends AppBaseController
      * )
      *
      * @param int $id
-     * @param TenantUploadRequest $request
+     * @param ResidentUploadRequest $request
      * @return mixed
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function tenantUpload(int $id, TenantUploadRequest $request)
+    public function residentUpload(int $id, ResidentUploadRequest $request)
     {
-        $tenant = $this->tenantRepository->findWithoutFail($id);
-        if (empty($tenant)) {
-            return $this->sendError(__('models.tenant.errors.not_found'));
+        $resident = $this->residentRepository->findWithoutFail($id);
+        if (empty($resident)) {
+            return $this->sendError(__('models.resident.errors.not_found'));
         }
 
         //@TODO tmp solution
-        $tenant->load('rent_contracts');
-        $rentContract = $tenant->rent_contracts->first();
+        $resident->load('rent_contracts');
+        $rentContract = $resident->rent_contracts->first();
         if (empty($rentContract)) {
-            $rentContract = $this->rentContractRepository->create(['tenant_id' => $tenant->id]);
+            $rentContract = $this->rentContractRepository->create(['resident_id' => $resident->id]);
         }
 
         $data = $request->get('media', '');
@@ -379,7 +379,7 @@ class MediaAPIController extends AppBaseController
         }
 
         $data = $request->get('media', '');
-        if (!$media = $this->tenantRepository->uploadFile('media', $data, $tenant)) {
+        if (!$media = $this->residentRepository->uploadFile('media', $data, $resident)) {
             return $this->sendError(__('general.upload_error'));
         }
 
@@ -390,9 +390,9 @@ class MediaAPIController extends AppBaseController
 
     /**
      * @SWG\Delete(
-     *      path="/tenants/{id}/media/{media_id}",
+     *      path="/residents/{id}/media/{media_id}",
      *      summary="Remove the specified Media from storage",
-     *      tags={"Tenant"},
+     *      tags={"Resident"},
      *      description="Delete Media",
      *      produces={"application/json"},
      *      @SWG\Parameter(
@@ -425,17 +425,17 @@ class MediaAPIController extends AppBaseController
      *
      * @param int $id
      * @param int $media_id
-     * @param TenantDeleteRequest $r
+     * @param ResidentDeleteRequest $r
      * @return Response
      */
-    public function tenantDestroy(int $id, int $media_id, TenantDeleteRequest $r)
+    public function residentDestroy(int $id, int $media_id, ResidentDeleteRequest $r)
     {
-        $tenant = $this->tenantRepository->findWithoutFail($id);
-        if (empty($tenant)) {
+        $resident = $this->residentRepository->findWithoutFail($id);
+        if (empty($resident)) {
             return $this->sendError(__('models.pinboard.errors.not_found'));
         }
 
-        $media = $tenant->media->find($media_id);
+        $media = $resident->media->find($media_id);
         if (empty($media)) {
             return $this->sendError(__('general.media_not_found'));
         }

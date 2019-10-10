@@ -109,7 +109,7 @@ class QuarterAPIController extends AppBaseController
                         $q ->select('id', 'building_id')
                             ->with([
                                 'rent_contracts' => function ($q) {
-                                    $q->where('status', RentContract::StatusActive)->select('unit_id', 'tenant_id');
+                                    $q->where('status', RentContract::StatusActive)->select('unit_id', 'resident_id');
                                 }
                             ]);
                     }

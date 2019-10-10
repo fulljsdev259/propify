@@ -22,8 +22,8 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="tenant_id",
- *          description="tenant_id",
+ *          property="resident_id",
+ *          description="resident_id",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -169,7 +169,7 @@ class RentContract extends AuditableModel implements HasMedia
      * @var array
      */
     public static $rules = [
-        'tenant_id' => 'required|integer|exists:tenants,id',
+        'resident_id' => 'required|integer|exists:residents,id',
         'building_id' => 'integer|exists:buildings,id',
         'unit_id' => 'integer|exists:units,id',
         'start_date' => 'date',
@@ -182,13 +182,13 @@ class RentContract extends AuditableModel implements HasMedia
         'deposit_amount' => 'numeric',
     ];
 
-    protected $table = 'tenant_rent_contracts';
+    protected $table = 'resident_rent_contracts';
 
     /**
      * @var array
      */
     public $fillable = [
-        'tenant_id',
+        'resident_id',
         'building_id',
         'unit_id',
         'type',
@@ -216,7 +216,7 @@ class RentContract extends AuditableModel implements HasMedia
      * @var array
      */
     protected $casts = [
-        'tenant_id' => 'integer',
+        'resident_id' => 'integer',
         'building_id' => 'integer',
         'unit_id' => 'integer',
         'type' => 'integer',
@@ -241,9 +241,9 @@ class RentContract extends AuditableModel implements HasMedia
     /**
      * @return BelongsTo
      **/
-    public function tenant()
+    public function resident()
     {
-        return $this->belongsTo(Tenant::class, 'tenant_id', 'id');
+        return $this->belongsTo(Resident::class, 'resident_id', 'id');
     }
 
     /**
@@ -267,12 +267,12 @@ class RentContract extends AuditableModel implements HasMedia
         $colName = Cache::rememberForever('rent_contract_format', function () {
                 return Schema::hasColumn($this->getTable(),'rent_contract_format')
                     ? 'rent_contract_format'
-                    : 'tenant_rent_contract_format';
+                    : 'resident_rent_contract_format';
             });
-        if ('tenant_rent_contract_format' == $colName) {
+        if ('resident_rent_contract_format' == $colName) {
             $colName = Schema::hasColumn($this->getTable(),'rent_contract_format')
                 ? 'rent_contract_format'
-                : 'tenant_rent_contract_format';
+                : 'resident_rent_contract_format';
         }
 
         return $colName;

@@ -20,7 +20,8 @@ class RentContractTransformer extends BaseTransformer
     {
         $response = [
             'id' => $model->id,
-            'tenant_id' => $model->tenant_id,
+            'tenant_id' => $model->resident_id,   // @TODO delete
+            'resident_id' => $model->resident_id,
             'building_id' => $model->building_id,
             'unit_id' => $model->unit_id,
             'type' => $model->type,
@@ -45,8 +46,9 @@ class RentContractTransformer extends BaseTransformer
             $response['end_date'] = $model->end_date->format('Y-m-d');
         }
 
-        if ($model->relationExists('tenant')) {
-            $response['tenant'] = (new TenantTransformer())->transform($model->tenant);
+        if ($model->relationExists('resident')) {
+            $response['resident'] = (new ResidentTransformer())->transform($model->resident);
+            $response['tenant'] = (new ResidentTransformer())->transform($model->resident);   // @TODO delete
         }
 
         if ($model->relationExists('building')) {

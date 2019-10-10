@@ -46,9 +46,9 @@ class ListingRepository extends BaseRepository
     public function create(array $atts)
     {
         $u = \Auth::user();
-        if ($u->tenant()->exists() && !$u->tenant->homeless()) {
-            $atts['address_id'] = $u->tenant->building->address_id;
-            $atts['quarter_id'] = $u->tenant->building->quarter_id;
+        if ($u->resident()->exists() && !$u->resident->homeless()) {
+            $atts['address_id'] = $u->resident->building->address_id;
+            $atts['quarter_id'] = $u->resident->building->quarter_id;
         }
 
         if ($atts['visibility'] != Listing::VisibilityAll &&
@@ -91,15 +91,15 @@ class ListingRepository extends BaseRepository
         }
         if ($listing->visibility == Listing::VisibilityQuarter) {
             $users = User::select('users.*')
-                ->join('tenants', 'tenants.user_id', '=', 'users.id')
-                ->join('buildings', 'buildings.id', '=', 'tenants.building_id')
+                ->join('residents', 'residents.user_id', '=', 'users.id')
+                ->join('buildings', 'buildings.id', '=', 'residents.building_id')
                 ->where('buildings.quarter_id', $listing->quarter_id)
                 ->get();
         }
         if ($listing->visibility == Listing::VisibilityAddress) {
             $users = User::select('users.*')
-                ->join('tenants', 'tenants.user_id', '=', 'users.id')
-                ->join('buildings', 'buildings.id', '=', 'tenants.building_id')
+                ->join('residents', 'residents.user_id', '=', 'users.id')
+                ->join('buildings', 'buildings.id', '=', 'residents.building_id')
                 ->where('buildings.address_id', $listing->address_id)
                 ->get();
         }

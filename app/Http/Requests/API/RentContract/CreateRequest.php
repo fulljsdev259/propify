@@ -14,7 +14,7 @@ class CreateRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('add-tenant'); // @TODO use correct permission
+        return $this->can('add-resident'); // @TODO use correct permission
     }
 
     /**

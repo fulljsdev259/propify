@@ -11,9 +11,9 @@ use App\Models\RentContract;
 use App\Models\ServiceProvider;
 use App\Models\Request;
 use App\Models\RequestCategory;
-use App\Models\Tenant;
+use App\Models\Resident;
 use App\Models\User;
-use App\Notifications\NewTenantRequest;
+use App\Notifications\NewResidentRequest;
 use App\Notifications\RequestCommented;
 use App\Notifications\RequestDue;
 use App\Notifications\RequestMedia;
@@ -98,7 +98,7 @@ class RequestRepository extends BaseRepository
     private static function getPostAttributes($attributes)
     {
         $user = Auth::user(); // @TODO @TODO
-        if ($user->tenant) {
+        if ($user->resident) {
             $attr = [];
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
@@ -106,8 +106,8 @@ class RequestRepository extends BaseRepository
             $attr['visibility'] = $attributes['visibility'];
             $attr['priority'] = $attributes['priority'];
             $attr['internal_priority'] = $attributes['internal_priority'] ?? $attributes['priority'];
-            $attr['tenant_id'] = $user->tenant->id;
-            $attr['unit_id'] = $user->tenant->unit_id;
+            $attr['resident_id'] = $user->resident->id;
+            $attr['unit_id'] = $user->resident->unit_id;
             $attr['status'] = Request::StatusReceived;
             $attr['qualification'] = array_flip(Request::Qualification)['none'];
 
@@ -119,14 +119,14 @@ class RequestRepository extends BaseRepository
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
             $attr['category_id'] = $attributes['category_id'];
-            $attr['tenant_id'] = $user->tenant->id;
-            $attr['unit_id'] = $user->tenant->unit_id;
+            $attr['resident_id'] = $user->resident->id;
+            $attr['unit_id'] = $user->resident->unit_id;
             $attr['status'] = Request::StatusReceived;
 
             return $attr;
         }
 
-        $t = Tenant::find($attributes['tenant_id'] ?? 0);
+        $t = Resident::find($attributes['resident_id'] ?? 0);
         $attributes['unit_id'] = $t->unit_id;
         $attributes['assignee_ids'] = [Auth::user()->id]; // @TODO where used
         $attributes['status'] = Request::StatusReceived;
@@ -143,7 +143,7 @@ class RequestRepository extends BaseRepository
     public static function getPutAttributes($attributes, $request)
     {
         $user = Auth::user();
-        if ($user->can('edit-request_tenant')) {
+        if ($user->can('edit-request_resident')) {
             $attr = [];
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
@@ -166,7 +166,7 @@ class RequestRepository extends BaseRepository
             $attr['qualification'] = $attributes['qualification'];
             $attr['status'] = $attributes['status'];
             $attr['category_id'] = $attributes['category_id'];
-            $attr['tenant_id'] = $attributes['tenant_id'];
+            $attr['resident_id'] = $attributes['resident_id'];
 
             return $attr;
         }
@@ -214,8 +214,8 @@ class RequestRepository extends BaseRepository
     {
         if (!empty($attributes['rent_contract_id'])) {
             // already validated and it must be exists
-            $rentContract = RentContract::find($attributes['rent_contract_id'], ['id', 'tenant_id']);
-            $attributes['tenant_id'] = $rentContract->id;
+            $rentContract = RentContract::find($attributes['rent_contract_id'], ['id', 'resident_id']);
+            $attributes['resident_id'] = $rentContract->id;
         }
 
         return $attributes;
@@ -248,8 +248,8 @@ class RequestRepository extends BaseRepository
         }
         return true;
         $user = Auth::user();
-        if ($user->can('edit-request_tenant')) {
-            if (!in_array($attributes['status'], Request::StatusByTenant[$currentStatus])) {
+        if ($user->can('edit-request_resident')) {
+            if (!in_array($attributes['status'], Request::StatusByResident[$currentStatus])) {
                 return false;
             }
         }
@@ -274,7 +274,7 @@ class RequestRepository extends BaseRepository
     public function notifyStatusChangeIfNeed(Request $originalRequest, Request $request)
     {
         if ($originalRequest->status != $request->status) {
-            $user = $request->tenant->user;
+            $user = $request->resident->user;
             $user->notify(new StatusChangedRequest($request, $originalRequest, $user));
         }
     }
@@ -284,12 +284,12 @@ class RequestRepository extends BaseRepository
      */
     public function notifyNewRequest(Request $request)
     {
-        if (!$request->tenant->building) {
+        if (!$request->resident->building) {
             return;
         }
 
         $propertyManagers = PropertyManager::whereHas('buildings', function ($q) use ($request) {
-            $q->where('buildings.id', $request->tenant->building->id);
+            $q->where('buildings.id', $request->resident->building->id);
         })->get();
 
         $i = 0;
@@ -298,7 +298,7 @@ class RequestRepository extends BaseRepository
             $propertyManager->user->redirect = "/admin/requests/" . $request->id;
 
             $propertyManager->user
-                ->notify((new NewTenantRequest($request, $propertyManager->user, $request->tenant->user))
+                ->notify((new NewResidentRequest($request, $propertyManager->user, $request->resident->user))
                     ->delay(now()->addSeconds($delay)));
         }
     }

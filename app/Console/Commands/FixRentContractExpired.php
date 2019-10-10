@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\RentContract;
-use App\Models\Tenant;
+use App\Models\Resident;
 use Illuminate\Console\Command;
 
 class FixRentContractExpired extends Command
@@ -44,13 +44,13 @@ class FixRentContractExpired extends Command
             ->where('end_date', '<', now()->format('Y-m-d'));
 
         // get all expired rent contract
-        $rentContracts = $query->get(['id', 'tenant_id']);
+        $rentContracts = $query->get(['id', 'resident_id']);
         // make inactive expired rent contracts
         $query->update(['status' => RentContract::StatusInactive]);
 
-        $tenantIds = $rentContracts->pluck('tenant_id')->unique()->toArray();
-        // make inactive tenants how all rent contracts expired
-        Tenant::whereIn('id', $tenantIds)->whereDoesntHave('rent_contracts', function ($q) {
+        $residentIds = $rentContracts->pluck('resident_id')->unique()->toArray();
+        // make inactive residents how all rent contracts expired
+        Resident::whereIn('id', $residentIds)->whereDoesntHave('rent_contracts', function ($q) {
             $q->where('status', RentContract::StatusActive);
         })->update(['status' => RentContract::StatusInactive]);
     }

@@ -127,8 +127,8 @@ class UserSettings extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function tenant()
+    public function resident()
     {
-        return $this->belongsTo(Tenant::class, 'user_id', 'user_id');
+        return $this->belongsTo(Resident::class, 'user_id', 'user_id');
     }
 }

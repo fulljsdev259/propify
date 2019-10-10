@@ -17,7 +17,7 @@ use App\Models\Building;
 use App\Models\RentContract;
 use App\Models\Unit;
 use App\Repositories\PinboardRepository;
-use App\Repositories\TenantRepository;
+use App\Repositories\ResidentRepository;
 use App\Repositories\UnitRepository;
 use App\Transformers\UnitTransformer;
 use Illuminate\Http\Response;
@@ -32,18 +32,18 @@ class UnitAPIController extends AppBaseController
     /** @var  UnitRepository */
     private $unitRepository;
 
-    /** @var  TenantRepository */
-    private $tenantRepository;
+    /** @var  ResidentRepository */
+    private $residentRepository;
 
     /**
      * UnitAPIController constructor.
      * @param UnitRepository $unitRepo
-     * @param TenantRepository $tenantRepo
+     * @param ResidentRepository $residentRepo
      */
-    public function __construct(UnitRepository $unitRepo, TenantRepository $tenantRepo)
+    public function __construct(UnitRepository $unitRepo, ResidentRepository $residentRepo)
     {
         $this->unitRepository = $unitRepo;
-        $this->tenantRepository = $tenantRepo;
+        $this->residentRepository = $residentRepo;
     }
 
     /**
@@ -131,7 +131,7 @@ class UnitAPIController extends AppBaseController
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
 
         $units = $this->unitRepository->with([
-            'building', 'tenants.user'
+            'building', 'residents.user'
         ])->paginate($perPage);
 
         $response = (new UnitTransformer)->transformPaginator($units);
@@ -191,19 +191,19 @@ class UnitAPIController extends AppBaseController
             return $this->sendError(__('models.unit.errors.create') . $e->getMessage());
         }
 
-        if (isset($input['tenant_id'])) {
+        if (isset($input['resident_id'])) {
             try {
                 $attr = [
                     'unit_id' => $unit->id,
                 ];
-                $tenant = $this->tenantRepository->update($attr, $input['tenant_id']);
-                $pr->newTenantPinboard($tenant);
+                $resident = $this->residentRepository->update($attr, $input['resident_id']);
+                $pr->newResidentPinboard($resident);
             } catch (\Exception $e) {
-                return $this->sendError(__('models.unit.errors.tenant_assign') . $e->getMessage());
+                return $this->sendError(__('models.unit.errors.resident_assign') . $e->getMessage());
             }
         }
 
-        $unit->load(['building', 'tenants.user']);
+        $unit->load(['building', 'residents.user']);
         $response = (new UnitTransformer)->transform($unit);
         return $this->sendResponse($response, __('models.unit.saved'));
     }
@@ -255,7 +255,7 @@ class UnitAPIController extends AppBaseController
             return $this->sendError(__('models.unit.errors.not_found'));
         }
 
-        $unit->load(['building', 'tenants.user']);
+        $unit->load(['building', 'residents.user']);
         $response = (new UnitTransformer)->transform($unit);
         return $this->sendResponse($response, 'Unit retrieved successfully');
     }
@@ -321,8 +321,8 @@ class UnitAPIController extends AppBaseController
         if (empty($unit)) {
             return $this->sendError(__('models.unit.errors.not_found'));
         }
-        $shouldPinboard = isset($input['tenant_id']) &&
-            (!$unit->tenant || ($unit->tenant && $unit->tenant->id != $input['tenant_id']));
+        $shouldPinboard = isset($input['resident_id']) &&
+            (!$unit->resident || ($unit->resident && $unit->resident->id != $input['resident_id']));
 
         try {
             $unit = $this->unitRepository->update($input, $id);
@@ -330,18 +330,18 @@ class UnitAPIController extends AppBaseController
             return $this->sendError(__('models.unit.errors.update') . $e->getMessage());
         }
 
-        $currentTenant = $unit->tenan ? $unit->tenant->id : 0;
-        if (isset($input['tenant_id']) && $input['tenant_id'] != $currentTenant) {
+        $currentResident = $unit->tenan ? $unit->resident->id : 0;
+        if (isset($input['resident_id']) && $input['resident_id'] != $currentResident) {
             try {
-                $this->tenantRepository->moveTenantInUnit($input['tenant_id'], $unit);
+                $this->residentRepository->moveResidentInUnit($input['resident_id'], $unit);
             } catch (\Exception $e) {
                 return $this->sendError(__('models.unit.errors.create') . $e->getMessage());
             }
         }
 
-        $unit->load('building', 'tenants.user');
+        $unit->load('building', 'residents.user');
         if ($shouldPinboard) {
-            $pr->newTenantPinboard($unit->tenant);
+            $pr->newResidentPinboard($unit->resident);
         }
 
         $response = (new UnitTransformer)->transform($unit);
@@ -397,7 +397,7 @@ class UnitAPIController extends AppBaseController
             return $this->sendError(__('models.unit.errors.not_found'));
         }
 
-        // TODO: unassign Tenant from deleted Unit
+        // TODO: unassign Resident from deleted Unit
         $unit->delete();
 
         return $this->sendResponse($id, __('models.unit.deleted'));
@@ -421,9 +421,9 @@ class UnitAPIController extends AppBaseController
     /**
      * @SWG\Post(
      *      path="/units/{id}/assignees/{assignee_id}",
-     *      summary="Assign the tenant to unit",
-     *      tags={"Unit", "Tenant"},
-     *      description="Assign the tenant to unit",
+     *      summary="Assign the resident to unit",
+     *      tags={"Unit", "Resident"},
+     *      description="Assign the resident to unit",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
@@ -436,7 +436,7 @@ class UnitAPIController extends AppBaseController
      *          name="assignee_id",
      *          in="path",
      *          required=true,
-     *          description="tenant id",
+     *          description="resident id",
      *          type="integer",
      *      ),
      *      @SWG\Response(
@@ -452,7 +452,7 @@ class UnitAPIController extends AppBaseController
      *              @SWG\Property(
      *                  property="message",
      *                  type="string",
-     *                  example="Incorrect tenant"
+     *                  example="Incorrect resident"
      *              )
      *          )
      *      ),
@@ -472,43 +472,43 @@ class UnitAPIController extends AppBaseController
      *              @SWG\Property(
      *                  property="message",
      *                  type="string",
-     *                  example="tenant assigned unit successfully"
+     *                  example="resident assigned unit successfully"
      *              )
      *          )
      *      )
      * )
      *
      * @param $unitId
-     * @param $tenantId
+     * @param $residentId
      * @param AssignRequest $r
      * @return mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function assignTenant($unitId, $tenantId, AssignRequest $r)
+    public function assignResident($unitId, $residentId, AssignRequest $r)
     {
         $unit = $this->unitRepository->find($unitId, ['id']);
         if (empty($unit)) {
             return $this->sendError(__('models.unit.errors.not_found'));
         }
 
-        $tenant = $this->tenantRepository->find($tenantId, ['id']);
-        if (empty($tenant)) {
+        $resident = $this->residentRepository->find($residentId, ['id']);
+        if (empty($resident)) {
             return $this->sendError(__('models.unit.errors.not_found'));
         }
 
         $data = [
             'unit_id' => $unit->id,
         ];
-        $this->tenantRepository->update($data, $tenantId);
-        return $this->sendResponse($unitId, __('models.unit.tenant_assigned'));
+        $this->residentRepository->update($data, $residentId);
+        return $this->sendResponse($unitId, __('models.unit.resident_assigned'));
     }
 
     /**
      * @SWG\Delete(
      *      path="/units/{id}/assignees/{assignee_id}",
-     *      summary="Un assign the tenant to unit",
-     *      tags={"Unit", "Tenant"},
-     *      description="Un assign the tenant to unit",
+     *      summary="Un assign the resident to unit",
+     *      tags={"Unit", "Resident"},
+     *      description="Un assign the resident to unit",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
@@ -521,7 +521,7 @@ class UnitAPIController extends AppBaseController
      *          name="assignee_id",
      *          in="path",
      *          required=true,
-     *          description="tenant id",
+     *          description="resident id",
      *          type="integer",
      *      ),
      *      @SWG\Response(
@@ -537,7 +537,7 @@ class UnitAPIController extends AppBaseController
      *              @SWG\Property(
      *                  property="message",
      *                  type="string",
-     *                  example="Incorrect tenant"
+     *                  example="Incorrect resident"
      *              )
      *          )
      *      ),
@@ -557,27 +557,27 @@ class UnitAPIController extends AppBaseController
      *              @SWG\Property(
      *                  property="message",
      *                  type="string",
-     *                  example="tenant un assigned unit successfully"
+     *                  example="resident un assigned unit successfully"
      *              )
      *          )
      *      )
      * )
      *
      * @param $unitId
-     * @param $tenantId
-     * @param UnAssignRequest $r$tenantId
+     * @param $residentId
+     * @param UnAssignRequest $r$residentId
      * @return mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function unassignTenant($unitId, $tenantId, UnAssignRequest $r)
+    public function unassignResident($unitId, $residentId, UnAssignRequest $r)
     {
-        $tenant = $this->tenantRepository->find($tenantId, ['id', 'unit_id']);
-        if (empty($tenant)) {
-            return $this->sendError(__('models.unit.errors.tenant_not_found'));
+        $resident = $this->residentRepository->find($residentId, ['id', 'unit_id']);
+        if (empty($resident)) {
+            return $this->sendError(__('models.unit.errors.resident_not_found'));
         }
 
-        if ($tenant->unit_id !=  $unitId) {
-            return $this->sendError(__('models.unit.errors.tenant_not_assign'));
+        if ($resident->unit_id !=  $unitId) {
+            return $this->sendError(__('models.unit.errors.resident_not_assign'));
         }
 
         $data = [
@@ -585,8 +585,8 @@ class UnitAPIController extends AppBaseController
             'building_id' => null,
             'address_id' => null,
         ];
-        $this->tenantRepository->update($data, $tenantId);
+        $this->residentRepository->update($data, $residentId);
 
-        return $this->sendResponse($unitId, __('models.unit.tenant_unassigned'));
+        return $this->sendResponse($unitId, __('models.unit.resident_unassigned'));
     }
 }
