@@ -121,7 +121,6 @@ class UtilsAPIController extends AppBaseController
             'contracts' => $this->getContractConstants(),
             'serviceProviders' => $this->getServiceProviderConstants(),
             'requests' => $this->getRequestsConstants(),
-            'serviceRequests' => $this->getRequestsConstants(),
             'propertyManager' => $this->getPropertyManagerConstants(),
             'pinboard' => $this->getPinboardConstants(),
             'listings' => $this->getListingConstants(),
