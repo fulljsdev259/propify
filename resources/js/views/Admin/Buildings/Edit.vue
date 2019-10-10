@@ -267,7 +267,19 @@
                         <span slot="label">
                             <el-badge :value="serviceCount" :max="99" class="admin-layout">{{ $t('models.building.companies') }}</el-badge>
                         </span>                        
-                    
+                        <!-- <label class="card-label">{{$t('settings.contact_enable.label')}}</label>
+                        <el-select
+                                placeholder="Chose"
+                                style="width: 100%;"
+                                v-model="model.contact_enable"
+                        >
+                            <el-option
+                                    :key="contactEnableValue.id"
+                                    :label="contactEnableValue.label"
+                                    :value="contactEnableValue.value"
+                                    v-for="contactEnableValue in contactEnableValues"/>
+                        </el-select>
+                        <el-divider class="mt15" /> -->
                         <el-row :gutter="10">
                             <el-col :lg="18" :xl="20">
                                 <el-select
