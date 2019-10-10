@@ -183,7 +183,7 @@
                             clearable: true,
                             size: 'small'
                         },
-                        children: Object.entries(this.$store.getters['application/constants'].serviceRequests.status).map(([value, label]) => ({
+                        children: Object.entries(this.$store.getters['application/constants'].requests.status).map(([value, label]) => ({
                             type: 'el-option',
                             props: {
                                 label: `models.request.status.${label}`,
@@ -199,7 +199,7 @@
                             clearable: true,
                             size: 'small'
                         },
-                        children: Object.entries(this.$store.getters['application/constants'].serviceRequests.priority).map(([value, label]) => ({
+                        children: Object.entries(this.$store.getters['application/constants'].requests.priority).map(([value, label]) => ({
                             type: 'el-option',
                             props: {
                                 label: `models.request.priority.${label}`,

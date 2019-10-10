@@ -68,7 +68,7 @@
         </el-form-item>
         <!-- <el-form-item prop="visibility" :label="$t('tenant.visibility')" required>
             <el-select v-model="model.visibility" :placeholder="$t('tenant.choose_visibility')">
-                <el-option :key="k" :label="$t(`models.request.visibility.${visibility}`)" :value="parseInt(k)" v-for="(visibility, k) in $constants.serviceRequests.visibility">
+                <el-option :key="k" :label="$t(`models.request.visibility.${visibility}`)" :value="parseInt(k)" v-for="(visibility, k) in $constants.requests.visibility">
                 </el-option>
             </el-select>
         </el-form-item> -->
@@ -216,8 +216,8 @@
             },
             getLanguageI18n() {
 
-                this.building_locations = Object.entries(this.$constants.serviceRequests.location).map(([value, label]) => ({value: +value, name: this.$t(`models.request.location.${label}`)}))
-                this.apartment_rooms = Object.entries(this.$constants.serviceRequests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
+                this.building_locations = Object.entries(this.$constants.requests.location).map(([value, label]) => ({value: +value, name: this.$t(`models.request.location.${label}`)}))
+                this.apartment_rooms = Object.entries(this.$constants.requests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
                 
             },
             submit () {
@@ -280,7 +280,7 @@
             }
         },
         async mounted () {
-            this.priorities = Object.entries(this.$constants.serviceRequests.priority).map(([value, label]) => ({value: +value, label}));
+            this.priorities = Object.entries(this.$constants.requests.priority).map(([value, label]) => ({value: +value, label}));
             try {
                 const {data} = await this.$store.dispatch('getRequestCategoriesTree', {get_all: true})
 

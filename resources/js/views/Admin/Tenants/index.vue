@@ -237,7 +237,7 @@
                     return state.constants.tenants;
                 },
                 requestConstants(state) {
-                    return state.constants.serviceRequests;
+                    return state.constants.requests;
                 }
             }),
             filters() {

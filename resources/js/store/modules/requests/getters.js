@@ -2,16 +2,16 @@ import {format} from 'date-fns'
 
 export default {
     requests(state, getters, rootState) {
-        const {application: {constants: {serviceRequests}}} = rootState;
-        const requests = state.requests.data ? state.requests.data : [];
+        const {application: {constants: {requests}}} = rootState;
+        const storerequests = state.requests.data ? state.requests.data : [];
 
-        return requests.map((request) => {
-            request.priority_label = serviceRequests.priority[request.priority];
-            request.internal_priority_label = serviceRequests.internal_priority[request.internal_priority];
-            request.status_label = serviceRequests.status[request.status];
+        return storerequests.map((request) => {
+            request.priority_label = requests.priority[request.priority];
+            request.internal_priority_label = requests.internal_priority[request.internal_priority];
+            request.status_label = requests.status[request.status];
             
 
-            request.qualification_label = request.qualification > 0 && request.qualification <= 5 ? serviceRequests.qualification[request.qualification] : "";
+            request.qualification_label = request.qualification > 0 && request.qualification <= 5 ? requests.qualification[request.qualification] : "";
             request.tenant_name = request.tenant ? `${request.tenant.first_name} ${request.tenant.last_name}` : '';
             request.category_name = request.category.name;
             request.parent_category_name = request.category.parent_id ? request.category.parentCategory.name : '';
