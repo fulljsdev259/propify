@@ -408,6 +408,7 @@
                     background-color: darken(#fff, 1%);
                     white-space: pre-line;
                     word-break: break-word;
+                    margin: 2px 0;
 
                     &:before,
                     &:after {
@@ -493,7 +494,6 @@
                         border-color: var(--primary-color);
                         background-color: var(--primary-color-lighter);
                         border-bottom-right-radius: 0;
-                        margin: 2px 0;
 
                         &:before,
                         &:after {
@@ -537,10 +537,9 @@
                         .border {
                             position: absolute;
                             height: 100%;
-                            width: calc( 100% + 5px );
+                            width: 80%;
                             top: 0;
-                            left: 0;
-                            border-radius: 12px 12px 0 12px;
+                            right: -5px;
                             border-bottom: 1px solid var(--primary-color);
                         }
                     }
