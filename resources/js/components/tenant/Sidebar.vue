@@ -91,7 +91,7 @@
 
                 if (item.children) {
                     console.log('item.children')
-                    item.active = true
+                    // item.active = true
 
                     if (Object.is(item.children, this.submenu.items)) {
                         this.submenu.visible = !this.submenu.visible
@@ -108,9 +108,9 @@
                     console.log('not item.children')
                     this.submenu.visible = false
 
-                    if (item.route) {
-                        item.active = true
-                    }
+                    // if (item.route) {
+                    //     item.active = true
+                    // }
                 }
             },
             handleRoute (e, item) {
@@ -285,7 +285,7 @@
                     if (state) {
                         this.$anime({
                             targets: this.$refs.submenu,
-                            translateY: ['100%', '-108px'],
+                            translateY: ['100%', '-98px'],
                             translateX: this.origin.x,
                             translateZ: 0,
                             opacity: [0, 1],
@@ -296,7 +296,7 @@
                     } else {
                         this.$anime({
                             targets: this.$refs.submenu,
-                            translateY: ['-108px', '100%'],
+                            translateY: ['-98px', '100%'],
                             translateX: this.origin.x,
                             translateZ: 0,
                             opacity: [1, 0],
@@ -567,7 +567,7 @@
 
             .submenu {
                 bottom: 0;
-                padding-bottom: 16px;
+                // padding-bottom: 16px;
 
                 .item {
 

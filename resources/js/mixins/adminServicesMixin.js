@@ -35,7 +35,11 @@ export default (config = {}) => {
                     name: '',
                     phone: '',
                     category: null,
-                    settings: []
+                    settings: [],
+                    password: '',
+                    password_confirmation: '',
+                    avatar: '',
+                    id: '',
                 },
                 statistics: {
                     raw: [{
@@ -236,7 +240,6 @@ export default (config = {}) => {
         switch (config.mode) {
             case 'add':
                 mixin.mixins = [PasswordValidatorMixin({
-                    nestedModel: 'user'
                 }), UploadUserAvatarMixin];
 
                 mixin.methods = {
@@ -248,6 +251,10 @@ export default (config = {}) => {
                             this.loading.state = true;
                             try {
 
+                                this.model.user.password = this.model.password
+                                this.model.user.password_confirmation = this.model.password_confirmation
+                                this.model.user.avatar = this.model.avatar
+                                this.model.user.email = this.model.email
                                 const resp = await this.createService(this.model);
 
 
@@ -283,7 +290,6 @@ export default (config = {}) => {
             case 'edit':
                 mixin.mixins = [PasswordValidatorMixin({
                     required: false,
-                    nestedModel: 'user'
                 }), UploadUserAvatarMixin];
 
                 mixin.methods = {
@@ -299,6 +305,11 @@ export default (config = {}) => {
                                 this.isFormSubmission = false;
                                 this.loading.state = true;
                                 let {...params} = this.model;
+
+                                params.user.password = params.password
+                                params.user.password_confirmation = params.password_confirmation
+                                params.user.avatar = params.avatar
+                                params.user.email = params.email
 
                                 if (params.user.password === '') {
                                     params = _.omit(params, ['user'])
@@ -341,9 +352,12 @@ export default (config = {}) => {
                         this.model.email = data.email;
                         this.model.phone = data.phone;
                         this.model.category = +data.category;
+                        
                         this.model.user.avatar = data.user.avatar;
                         this.model.user.id = data.user.id;
                         this.model.service_provider_format = data.service_provider_format;
+
+                        this.model.avatar = data.user.avatar;
 
                         this.model.settings = data.settings;
 
