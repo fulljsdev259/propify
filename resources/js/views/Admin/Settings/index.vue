@@ -276,7 +276,7 @@
                                             </el-form-item>
                                         </el-card>
                                     </el-col>
-                                    <el-col :md="8">
+                                    <!-- <el-col :md="8">
                                         <el-card class="listing-card card-boxs">
                                             <span @click="Gocaution_drawer" class="icon-cog" style="display:none"></span>
                                             <el-form-item :label="$t('models.settings.gocaution.label')" class="switcher switcher-block">
@@ -299,7 +299,7 @@
                                                 
                                             </el-form-item>
                                         </el-card>
-                                    </el-col>
+                                    </el-col> -->
                                 </el-row>
                             </el-form>
                         </el-tab-pane>
@@ -385,7 +385,9 @@
 <!--                            <CategoriesListing/>-->
 <!--                        </el-tab-pane>-->
                         <el-tab-pane :label="$t('models.settings.templates')" name="templates">
-                            <TemplatesListing/>
+                            <TemplatesListing v-if="!templateEditMode" :onClick="handleEditClick"/>
+                            
+                            <TemplateEdit v-else />
                         </el-tab-pane>
                     </el-tabs>
                 </div>
@@ -513,8 +515,9 @@
     import {mapActions} from 'vuex';
     import {displayError, displaySuccess} from 'helpers/messages';
     import CategoriesListing from './Categories'
-    import TemplatesListing from '../Templates'
     import globalFunction from "helpers/globalFunction";
+    import TemplatesListing from '../TemplatesNew'
+    import TemplateEdit from '../TemplatesNew/Edit';
 
     export default {
         name: 'AdminProfile',
@@ -524,7 +527,8 @@
             Cropper,
             UploadDocument,
             CategoriesListing,
-            TemplatesListing
+            TemplatesListing,
+            TemplateEdit
         },
         data() {
             return {
@@ -595,6 +599,7 @@
                 activeSettingsName: 'settings_settings',
                 activeRequestName: 'templates',
                 activeTenantsName: 'login_variations',
+                templateEditMode: false,
                 states: [],
                 mail_powered_by: [
                     {
@@ -710,6 +715,9 @@
         },
         methods: {
             ...mapActions(['getSettings', 'updateSettings', 'getStates']),
+            handleEditClick(id) {
+                this.templateEditMode = true;
+            },
             goToTab(tabName) {
                 this.activeName = tabName;
             },
@@ -798,7 +806,6 @@
                 this.drawerTabsModel = 'gocaution'
             },
             openCleanifyDrawer(val) {
-                console.log('switch val', val);
                 if (!this.visibleDrawer || this.drawerTabsModel === 'gocaution') {
                     this.toggleDrawer()
                 }
@@ -854,6 +861,18 @@
                     if (!state) {
                         document.getElementsByTagName('footer')[0].style.display = "block";
                     }
+                }
+            },
+            "$route.query": {
+                immediate: true,
+                handler({page, per_page}, prevQuery) {
+                    if(this.$route.name == "login") {
+                        return;
+                    }
+                    
+                    if(this.$route.query.template == undefined)
+                        this.templateEditMode = false;
+                    
                 }
             }
         }

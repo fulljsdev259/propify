@@ -31,8 +31,8 @@ class CreateRequest extends BaseRequest
     public function rules()
     {
         $user = Auth::user();
-        if ($user->tenant) { // @TODO @TODO
-            return Request::$rulesPostTenant;
+        if ($user->resident) { // @TODO @TODO
+            return Request::$rulesPostResident;
         }
 
         $rules = Request::$rulesPost;

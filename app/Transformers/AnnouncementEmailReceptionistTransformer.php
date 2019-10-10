@@ -3,7 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\AnnouncementEmailReceptionist;
-use App\Models\Tenant;
+use App\Models\Resident;
 
 /**
  * Class AnnouncementEmailReceptionistTransformer.
@@ -25,12 +25,15 @@ class AnnouncementEmailReceptionistTransformer extends BaseTransformer
     {
         $response = [
             'pinboard_id' => $model->pinboard_id,
-            'tenant_ids' => $model->tenant_ids,
-            'failed_tenant_ids' => $model->failed_tenant_ids,
+            'tenant_ids' => $model->resident_ids,           // @TODO delete
+            'failed_tenant_ids' => $model->failed_resident_ids,  // @TODO delete
+            'resident_ids' => $model->resident_ids,
+            'failed_resident_ids' => $model->failed_resident_ids,
         ];
-        // @TODO improve load tenant data other place
-        $tenants = Tenant::whereIn('id', $model->tenant_ids)->get(['id', 'first_name', 'last_name']);
-        $response['tenants'] = $tenants->toArray();
+        // @TODO improve load resident data other place
+        $residents = Resident::whereIn('id', $model->resident_ids)->get(['id', 'first_name', 'last_name']);
+        $response['tenants'] = $residents->toArray();       // @TODO delete
+        $response['residents'] = $residents->toArray();
         return $response;
     }
 }

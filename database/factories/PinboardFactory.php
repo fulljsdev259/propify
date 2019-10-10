@@ -7,7 +7,7 @@ use App\Models\User;
 $factory->define(App\Models\Pinboard::class, function (Faker $faker) {
     $us = [
         User::where('deleted_at', null)->inRandomOrder()->first(),
-        User::where('email', 'tenant@example.com')->first(),
+        User::where('email', 'resident@example.com')->first(),
     ];
     $u = $us[rand(0, 1)];
     $statDate = $u->created_at;

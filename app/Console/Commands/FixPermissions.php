@@ -39,7 +39,7 @@ class FixPermissions extends Command
     public function handle()
     {
         $allPermissions = \App\Models\Permission::get();
-        $tenantPermissions = $allPermissions->whereIn('name', config('permissions.tenant'));
+        $residentPermissions = $allPermissions->whereIn('name', config('permissions.resident'));
         $managerPermissions = $allPermissions->whereIn('name', config('permissions.manager'));
         $providerPermissions = $allPermissions->whereIn('name', config('permissions.provider'));
 
@@ -49,9 +49,9 @@ class FixPermissions extends Command
             $role->savePermissions($allPermissions);
         }
 
-        $role = \App\Models\Role::whereName('tenant')->first();
+        $role = \App\Models\Role::whereName('resident')->first();
         if ($role) {
-            $role->savePermissions($tenantPermissions);
+            $role->savePermissions($residentPermissions);
         }
 
         $role = \App\Models\Role::whereName('manager')->first();

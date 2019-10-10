@@ -8,7 +8,7 @@ class LoginDevice extends Model
 
     public $fillable = [
         'user_id',
-        'tenant_id',
+        'resident_id',
         'mobile',
         'desktop',
         'tablet',

@@ -1,9 +1,9 @@
 @extends('mails.layout')
 
 @section('title')
-    {{__("New service request from tenant")}}
+    {{__("New service request from resident")}}
 @endsection
 
 @section('body')
-    <p>{{$tenant->first_name}} {{$tenant->last_name}} made a new service request.</p>
+    <p>{{$resident->first_name}} {{$resident->last_name}} made a new service request.</p>
 @endsection

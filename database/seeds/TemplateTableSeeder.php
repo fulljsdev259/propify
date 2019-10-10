@@ -24,7 +24,7 @@ class TemplateTableSeeder extends Seeder
         return;
 
         $this->setupEmailTemplates();
-        $this->setupCommunicationTenantTemplates();
+        $this->setupCommunicationResidentTemplates();
         $this->setupCommunicationServiceTemplates();
     }
 
@@ -49,11 +49,11 @@ class TemplateTableSeeder extends Seeder
         }
     }
 
-    private function setupCommunicationTenantTemplates()
+    private function setupCommunicationResidentTemplates()
     {
         $templateCategory = (new TemplateCategory)->where('parent_id', '>', 0)
             ->where('type', TemplateCategory::TypeCommunication)
-            ->where('name', 'communication_tenant')
+            ->where('name', 'communication_resident')
             ->with('parentCategory')
             ->first();
 

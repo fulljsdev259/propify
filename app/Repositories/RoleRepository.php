@@ -39,7 +39,7 @@ class RoleRepository extends BaseRepository
     {
         $role = $this->model::where('name',  $name)->first();
         if (!$role) {
-            return  $this->model::where('name',  'tenant')->first();
+            return  $this->model::where('name',  'resident')->first();
         }
 
         return $role;

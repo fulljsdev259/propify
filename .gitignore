@@ -23,7 +23,7 @@ yarn-error.log
 /public/images
 /public/js
 /public/admin
-/public/tenant
+/public/resident
 /public/vendors*
 /public/*.js
 

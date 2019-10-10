@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('fix-rent-contract-expired')->daily();
+        $schedule->command('fix-contract-expired')->daily();
     }
 
     /**

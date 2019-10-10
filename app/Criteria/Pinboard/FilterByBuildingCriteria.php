@@ -41,8 +41,8 @@ class FilterByBuildingCriteria implements CriteriaInterface
         }
 
         $u = \Auth::user();
-        if (!$u->can('list-pinboard') && $u->tenant) {
-            $building_id = $u->tenant->building_id;
+        if (!$u->can('list-pinboard') && $u->resident) {
+            $building_id = $u->resident->building_id;
         }
 
         $model->whereHas('buildings', function ($query) use ($building_id) {

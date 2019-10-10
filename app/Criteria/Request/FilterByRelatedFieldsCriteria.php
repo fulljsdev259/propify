@@ -43,9 +43,9 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
             $model->whereIn('category_id', $categoryIds);
         }
 
-        $tenantId = $this->request->get('tenant_id', null);
-        if ($tenantId) {
-            $model->where('tenant_id', $tenantId);
+        $residentId = $this->request->get('resident_id', null);
+        if ($residentId) {
+            $model->where('resident_id', $residentId);
         }
 
         $unitId = $this->request->get('unit_id', null);
@@ -95,14 +95,14 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
 
         $buildingId = $this->request->get('building_id', null);
         if ($buildingId) {
-            $model->whereHas('tenant', function ($query) use ($buildingId) {
+            $model->whereHas('resident', function ($query) use ($buildingId) {
                 $query->where('building_id', $buildingId);
             });
         }
 
         $quarterId = $this->request->get('quarter_id', null);
         if ($quarterId) {
-            $model->whereHas('tenant.building', function ($query) use ($quarterId) {
+            $model->whereHas('resident.building', function ($query) use ($quarterId) {
                 $query->where('quarter_id', $quarterId);
             });
         }

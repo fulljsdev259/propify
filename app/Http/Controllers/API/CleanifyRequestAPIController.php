@@ -74,7 +74,7 @@ class CleanifyRequestAPIController extends AppBaseController
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $reqs = $this->repo->with([
-            'user.tenant',
+            'user.resident',
         ])->paginate($perPage);
 
         $out = $this->transformer->transformPaginator($reqs);

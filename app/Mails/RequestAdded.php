@@ -35,8 +35,8 @@ class RequestAdded extends Mailable
         return $this->view('mails.requestAdded')
             ->subject(__("A new request was added"))
             ->with([
-                'tenant' => $this->request->tenant,
-                'lang' => $this->request->tenant->settings->language ?? App::getLocale()
+                'resident' => $this->request->resident,
+                'lang' => $this->request->resident->settings->language ?? App::getLocale()
             ]);
     }
 }

@@ -15,8 +15,11 @@ Route::group([
 
 // Constants
 Route::get('/constants', 'UtilsAPIController@constants')->name('constants');
-Route::put('/tenants/resetpassword', 'TenantAPIController@resetPassword');
-Route::post('/tenants/activateTenant', 'TenantAPIController@activateTenant');
+Route::put('/residents/resetpassword', 'ResidentAPIController@resetPassword');
+Route::post('/residents/activateResident', 'ResidentAPIController@activateResident');
+// @TODO delete
+Route::put('/tenants/resetpassword', 'ResidentAPIController@resetPassword');
+Route::post('/tenants/activateTenant', 'ResidentAPIController@activateResident');
 
 // private routes
 Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
@@ -40,38 +43,72 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::delete('/users/{id}', 'UserAPIController@destroy')->name('users.destroy');
     Route::post('/users/deletewithids', 'UserAPIController@destroyWithIds')->name('users.destroyWithIds');
 
-    // Tenants
-    Route::get('/tenants', 'TenantAPIController@index')->name('tenants');
-    Route::get('/tenants/gender-statistics', 'DashboardAPIController@tenantsGenderStatistics')->name('tenants.gender-statistics');
-    Route::get('/tenants/age-statistics', 'DashboardAPIController@tenantsAgeStatistics')->name('tenants.age-statistics');
-    Route::get('/tenants/latest', 'TenantAPIController@latest')->name('tenants.latest');
-    Route::get('/tenants/me', 'TenantAPIController@showLoggedIn')->name('tenants.me');
-    Route::get('/tenants/{id}', 'TenantAPIController@show')->name('tenants.show');
-    Route::get('/tenants/{id}/statistics', 'DashboardAPIController@tenantStatistics')->name('tenants.statistics.show');
+    // Residents
+    Route::get('/residents', 'ResidentAPIController@index')->name('residents');
+    Route::get('/residents/gender-statistics', 'DashboardAPIController@residentsGenderStatistics')->name('residents.gender-statistics');
+    Route::get('/residents/age-statistics', 'DashboardAPIController@residentsAgeStatistics')->name('residents.age-statistics');
+    Route::get('/residents/latest', 'ResidentAPIController@latest')->name('residents.latest');
+    Route::get('/residents/me', 'ResidentAPIController@showLoggedIn')->name('residents.me');
+    Route::get('/residents/{id}', 'ResidentAPIController@show')->name('residents.show');
+    Route::get('/residents/{id}/statistics', 'DashboardAPIController@residentStatistics')->name('residents.statistics.show');
 
-    Route::post('/tenants', 'TenantAPIController@store')->name('tenants.store');
-    Route::post('/addReview', 'TenantAPIController@addReview');
-    Route::post('/tenants/{id}/media', 'MediaAPIController@tenantUpload')->name('tenants.media.upload');
-    Route::post('/tenants/{id}/send-credentials', 'TenantAPIController@sendCredentials');
-    Route::post('/tenants/{id}/download-credentials', 'TenantAPIController@downloadCredentials');
+    Route::post('/residents', 'ResidentAPIController@store')->name('residents.store');
+    Route::post('/addReview', 'ResidentAPIController@addReview');
+    Route::post('/residents/{id}/media', 'MediaAPIController@residentUpload')->name('residents.media.upload');
+    Route::post('/residents/{id}/send-credentials', 'ResidentAPIController@sendCredentials');
+    Route::post('/residents/{id}/download-credentials', 'ResidentAPIController@downloadCredentials');
 
-    Route::put('/tenants/me', 'TenantAPIController@updateLoggedIn')->name('tenants.me.update');
-    Route::put('/tenants/{id}', 'TenantAPIController@update')->name('tenants.update');
-    Route::put('/tenants/{id}/status', 'TenantAPIController@changeStatus')->name('tenants.changeStatus');
+    Route::put('/residents/me', 'ResidentAPIController@updateLoggedIn')->name('residents.me.update');
+    Route::put('/residents/{id}', 'ResidentAPIController@update')->name('residents.update');
+    Route::put('/residents/{id}/status', 'ResidentAPIController@changeStatus')->name('residents.changeStatus');
 
-    Route::delete('/tenants/{id}', 'TenantAPIController@destroy')->name('tenants.destroy');
-    Route::post('/tenants/deletewithids', 'TenantAPIController@destroyWithIds')->name('tenants.destroyWithIds');
-    Route::delete('/tenants/{id}/media/{media_id}', 'MediaAPIController@tenantDestroy')->name('tenants.media.destroy');
+    Route::delete('/residents/{id}', 'ResidentAPIController@destroy')->name('residents.destroy');
+    Route::post('/residents/deletewithids', 'ResidentAPIController@destroyWithIds')->name('residents.destroyWithIds');
+    Route::delete('/residents/{id}/media/{media_id}', 'MediaAPIController@residentDestroy')->name('residents.media.destroy');
 
-    //Tenant rent contract
-    Route::get('/rent-contracts', 'RentContractAPIController@index')->name('rent-contracts');
-    Route::get('/rent-contracts/{id}', 'RentContractAPIController@show')->name('rent-contracts.show');
-    Route::post('/rent-contracts', 'RentContractAPIController@store')->name('rent-contracts.store');
-    Route::post('/rent-contracts/{id}/media', 'MediaAPIController@rentContractUpload')->name('rent-contracts.media.upload');
-    Route::put('/rent-contracts/{id}', 'RentContractAPIController@update')->name('rent-contracts.update');
-    Route::delete('/rent-contracts/{id}', 'RentContractAPIController@destroy')->name('rent-contracts.destroy');
-    Route::post('/rent-contracts/deletewithids', 'RentContractAPIController@destroyWithIds')->name('rent-contracts.destroyWithIds');
-    Route::delete('/rent-contracts/{id}/media/{media_id}', 'MediaAPIController@rentContractDestroy')->name('rent-contracts.media.destroy');
+
+    // Residents // @TODO delete
+    Route::get('/tenants', 'ResidentAPIController@index')->name('residents');
+    Route::get('/tenants/gender-statistics', 'DashboardAPIController@residentsGenderStatistics')->name('residents.gender-statistics');
+    Route::get('/tenants/age-statistics', 'DashboardAPIController@residentsAgeStatistics')->name('residents.age-statistics');
+    Route::get('/tenants/latest', 'ResidentAPIController@latest')->name('residents.latest');
+    Route::get('/tenants/me', 'ResidentAPIController@showLoggedIn')->name('residents.me');
+    Route::get('/tenants/{id}', 'ResidentAPIController@show')->name('residents.show');
+    Route::get('/tenants/{id}/statistics', 'DashboardAPIController@residentStatistics')->name('residents.statistics.show');
+
+    Route::post('/tenants', 'ResidentAPIController@store')->name('residents.store');
+    Route::post('/addReview', 'ResidentAPIController@addReview');
+    Route::post('/tenants/{id}/media', 'MediaAPIController@residentUpload')->name('residents.media.upload');
+    Route::post('/tenants/{id}/send-credentials', 'ResidentAPIController@sendCredentials');
+    Route::post('/tenants/{id}/download-credentials', 'ResidentAPIController@downloadCredentials');
+
+    Route::put('/tenants/me', 'ResidentAPIController@updateLoggedIn')->name('residents.me.update');
+    Route::put('/tenants/{id}', 'ResidentAPIController@update')->name('residents.update');
+    Route::put('/tenants/{id}/status', 'ResidentAPIController@changeStatus')->name('residents.changeStatus');
+
+    Route::delete('/tenants/{id}', 'ResidentAPIController@destroy')->name('residents.destroy');
+    Route::post('/tenants/deletewithids', 'ResidentAPIController@destroyWithIds')->name('residents.destroyWithIds');
+    Route::delete('/tenants/{id}/media/{media_id}', 'MediaAPIController@residentDestroy')->name('residents.media.destroy');
+
+    //Contract
+    Route::get('/contracts', 'ContractAPIController@index')->name('contracts');
+    Route::get('/contracts/{id}', 'ContractAPIController@show')->name('contracts.show');
+    Route::post('/contracts', 'ContractAPIController@store')->name('contracts.store');
+    Route::post('/contracts/{id}/media', 'MediaAPIController@contractUpload')->name('contracts.media.upload');
+    Route::put('/contracts/{id}', 'ContractAPIController@update')->name('contracts.update');
+    Route::delete('/contracts/{id}', 'ContractAPIController@destroy')->name('contracts.destroy');
+    Route::post('/contracts/deletewithids', 'ContractAPIController@destroyWithIds')->name('contracts.destroyWithIds');
+    Route::delete('/contracts/{id}/media/{media_id}', 'MediaAPIController@contractDestroy')->name('contracts.media.destroy');
+
+    //Contract // @TODO delete
+    Route::get('/rent-contracts', 'ContractAPIController@index')->name('contracts');
+    Route::get('/rent-contracts/{id}', 'ContractAPIController@show')->name('contracts.show');
+    Route::post('/rent-contracts', 'ContractAPIController@store')->name('contracts.store');
+    Route::post('/rent-contracts/{id}/media', 'MediaAPIController@contractUpload')->name('contracts.media.upload');
+    Route::put('/rent-contracts/{id}', 'ContractAPIController@update')->name('contracts.update');
+    Route::delete('/rent-contracts/{id}', 'ContractAPIController@destroy')->name('contracts.destroy');
+    Route::post('/rent-contracts/deletewithids', 'ContractAPIController@destroyWithIds')->name('contracts.destroyWithIds');
+    Route::delete('/rent-contracts/{id}/media/{media_id}', 'MediaAPIController@contractDestroy')->name('contracts.media.destroy');
 
     // Location
     Route::get('/states', 'StateAPIController@index')->name('states');
@@ -122,8 +159,8 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::delete('/units/{id}', 'UnitAPIController@destroy')->name('units.destroy');
     Route::post('/units/deletewithids', 'UnitAPIController@destroyWithIds')->name('units.destroyWithIds');
 
-    Route::post('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@assignTenant');
-    Route::delete('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@unassignTenant');
+    Route::post('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@assignResident');
+    Route::delete('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@unassignResident');
 
     // Settings
     Route::get('/settings', 'SettingsAPIController@show')->name('settings.show');
@@ -293,12 +330,12 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     Route::get('/admin/donutChart', 'DashboardAPIController@donutChart');
     Route::get('/admin/donutChartRequestByCategory', 'DashboardAPIController@donutChartRequestByCategory');
-    Route::get('/admin/donutChartTenantsByDateAndStatus', 'DashboardAPIController@donutChartTenantsByDateAndStatus');
+    Route::get('/admin/donutChartResidentsByDateAndStatus', 'DashboardAPIController@donutChartResidentsByDateAndStatus');
     Route::get('/admin/pieChartBuildingByState', 'DashboardAPIController@pieChartBuildingByState');
 
     Route::get('/admin/heatMapByDatePeriod', 'DashboardAPIController@heatMapByDatePeriod');
     Route::get('/admin/chartLoginDevice', 'DashboardAPIController@chartLoginDevice');
-    Route::get('/admin/chartTenantLanguage', 'DashboardAPIController@chartTenantLanguage');
+    Route::get('/admin/chartResidentLanguage', 'DashboardAPIController@chartResidentLanguage');
 });
 
 

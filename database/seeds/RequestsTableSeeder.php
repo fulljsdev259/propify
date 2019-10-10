@@ -38,15 +38,15 @@ class RequestsTableSeeder extends Seeder
                 $requests[] = App\Models\Request::create($data);
             }
 
-            $user = App\Models\User::where('email', 'tenant@example.com')->first();
+            $user = App\Models\User::where('email', 'resident@example.com')->first();
             foreach ($requests as $key => $request) {
                 $this->addRequestComments($request);
                 if ($key < 3) {
                     continue;
                 }
 
-                $request->tenant_id = $user->tenant->id;
-                $request->unit_id = $user->tenant->unit_id;
+                $request->resident_id = $user->resident->id;
+                $request->unit_id = $user->resident->unit_id;
                 $request->status = array_rand(Request::Status);
                 if ($request->status == Request::StatusDone) {
                     $request->solved_date = now();
@@ -80,7 +80,7 @@ class RequestsTableSeeder extends Seeder
     {
         $totalComments = $this->faker->numberBetween(1, 2);
         $users = [
-            $request->tenant->user,
+            $request->resident->user,
         ];
 
         if ($request->agent) {
