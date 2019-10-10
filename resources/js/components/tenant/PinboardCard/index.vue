@@ -11,7 +11,7 @@
                 @delete-pinboard="$emit('delete-pinboard', $event, data)"
                 @hook:mounted="$emit('update-dynamic-scroller')"
             />
-            <div class="title" v-if="data.announcement && data.type == 3 &&  data.category">
+            <div class="title" v-if="data.announcement && data.type == 3 && data.category">
                 <small>{{$t('tenant.category')}}:
                     {{$t(`models.pinboard.category.${$store.getters['application/constants'].pinboard.category[data.category]}`)}}
                 </small>

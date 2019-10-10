@@ -20,7 +20,7 @@
     import UploadMixin from 'mixins/uploadMixin';
 
     export default {
-        name: "UploadRentContract",
+        name: "UploadContract",
         mixins: [UploadMixin],
         props: {
             multiple: {

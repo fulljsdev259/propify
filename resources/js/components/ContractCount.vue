@@ -23,7 +23,7 @@
     import {Avatar} from 'vue-avatar';
 
     export default {
-        name: 'RentContractCount',
+        name: 'ContractCount',
         data() {
             return {
                 counts: [

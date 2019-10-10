@@ -306,6 +306,7 @@
                 this.loading = false
             },
             async onFiltersChanged (filters) {
+                console.log('filter changed', filters);
                 await this.get(filters)
             },
             resetFilters () {

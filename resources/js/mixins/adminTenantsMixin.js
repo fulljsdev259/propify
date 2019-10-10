@@ -169,16 +169,6 @@ export default (config = {}) => {
                 mixin.mixins = [PasswordValidatorMixin(), EmailCheckValidatorMixin(), TenantTitleTypes, UploadUserAvatarMixin];
 
                 mixin.methods = {
-                    async rentContractUpl(id) {
-                        return await this.uploadMediaFile({
-                            id,
-                            media: this.toUploadRentContract.src
-                        }).then(r => {
-                            displaySuccess(r.data);
-                        }).catch(err => {
-                            displayError(err);
-                        });
-                    },
                     submit(afterValid = false) {
                         this.form.validate(async valid => {
                             if (!valid) {

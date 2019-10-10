@@ -7,8 +7,8 @@
                     <el-select
                             :loading="remoteLoading"
                             :placeholder="$t('models.tenant.search_building')"
-                            :remote-method="remoteRentContractdSearchBuildings"
-                            @change="searchRentContractUnits(false)"
+                            :remote-method="remoteContractSearchBuildings"
+                            @change="searchContractUnits(false)"
                             filterable
                             remote
                             reserve-keyword
@@ -55,7 +55,7 @@
                                 :label="item.name"
                                 :value="item.id">
                                 <span style="float: left">{{ item.name }}</span>
-                                <rent-contract-count :countsData="item" style="float: right;"></rent-contract-count>
+                                <contract-count :countsData="item" style="float: right;"></contract-count>
                             </el-option>
                         </el-option-group>
                         
@@ -334,7 +334,7 @@
                 >
                 </el-alert>
 
-                <upload-rent-contract @fileUploaded="addPDFtoRentContract" class="upload-custom" acceptType=".pdf" drag multiple/>
+                <rent-contract @fileUploaded="addPDFtoRentContract" class="upload-custom" acceptType=".pdf" drag multiple/>
                 
                 </el-form-item>
             </el-col>
@@ -354,15 +354,15 @@
 
 <script>
     import {displayError} from "../helpers/messages";
-    import UploadRentContract from 'components/UploadRentContract';
-    import RentContractCount from 'components/RentContractCount';
+    import UploadContract from 'components/UploadContract';
+    import ContractCount from 'components/ContractCount';
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
-        name: "RentContractForm",
+        name: "ContractForm",
         components: {
-            UploadRentContract,
-            RentContractCount
+            UploadContract,
+            ContractCount
         },
         props: {
             mode: {
@@ -511,19 +511,7 @@
                 const rentStart = new Date(this.model.start_date).getTime();
                 return d <= rentStart;
             },
-            rentContractUploaded(file) {
-                this.uploadMediaFile({
-                    id: this.model.id,
-                    media: file.src
-                }).then(r => {                    
-                    displaySuccess(r);
-
-                    this.model.media.push(r.data);
-                }).catch(err => {
-                    displayError(err);
-                });
-            },
-            async remoteRentContractdSearchBuildings(search) {
+            async remoteContractSearchBuildings(search) {
                 if (search === '') {
                     this.buildings = [];
                 } else {
@@ -539,7 +527,7 @@
                     }
                 }
             },
-            async searchRentContractUnits(shouldKeepValue) {
+            async searchContractUnits(shouldKeepValue) {
                 if(!shouldKeepValue)
                     this.model.unit_id = '';
                 try {
@@ -612,9 +600,9 @@
                 this.model.duration = 1
             },
             addPDFtoRentContract(file) {
-                //let toUploadRentContractFile = {...file, url: URL.createObjectURL(file.raw)}
-                let toUploadRentContractFile = {media : file.src, name: file.raw.name}
-                this.model.media.push(toUploadRentContractFile)
+                //let toUploadContractFile = {...file, url: URL.createObjectURL(file.raw)}
+                let toUploadContractFile = {media : file.src, name: file.raw.name}
+                this.model.media.push(toUploadContractFile)
             },
             deletePDFfromRentContract(index) {
                 this.model.media.splice(index, 1)
@@ -657,8 +645,8 @@
 
                 if(this.model.building) {
                     this.buildings.push(this.model.building)
-                    await this.remoteRentContractdSearchBuildings(this.model.building.name)
-                    await this.searchRentContractUnits(true)
+                    await this.remoteContractSearchBuildings(this.model.building.name)
+                    await this.searchContractUnits(true)
                 }
 
             }

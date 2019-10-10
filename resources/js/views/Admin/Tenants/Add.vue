@@ -200,8 +200,8 @@
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
             <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.tenant.rent_contract') }}</ui-divider>
             <div class="content" v-if="visibleDrawer">
-                <rent-contract-form v-if="editingRentContract" mode="edit" :data="editingRentContract" :tenant_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingRentContractIndex" @update-rent-contract="updateRentContract" :used_units="used_units"/>
-                <rent-contract-form v-else mode="add" :tenant_id="model.id" :visible.sync="visibleDrawer" @add-rent-contract="addRentContract" :used_units="used_units"/>
+                <contract-form v-if="editingRentContract" mode="edit" :data="editingRentContract" :tenant_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingRentContractIndex" @update-rent-contract="updateRentContract" :used_units="used_units"/>
+                <contract-form v-else mode="add" :tenant_id="model.id" :visible.sync="visibleDrawer" @add-rent-contract="addRentContract" :used_units="used_units"/>
             </div>
         </ui-drawer>
     </div>
@@ -214,7 +214,7 @@
     import Cropper from 'components/Cropper';
     import AddActions from 'components/EditViewActions';
     import SelectLanguage from 'components/SelectLanguage';
-    import RentContractForm from 'components/RentContractForm';
+    import ContractForm from 'components/ContractForm';
 
     export default {
         mixins: [AdminTenantsMixin({
@@ -224,7 +224,7 @@
             Heading,
             Card,
             Cropper,
-            RentContractForm,
+            ContractForm,
             AddActions,
             SelectLanguage,
         },
