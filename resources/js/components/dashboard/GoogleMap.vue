@@ -83,7 +83,7 @@
         const content = `
           <h3>${markerData.name}</h3>
           <p>${this.$t('dashboard.buildings.managers')}: <b>${markerData.property_managers_count}</b></p>
-          <p>${this.$t('dashboard.buildings.tenants')} : <b>${markerData.tenants_count}</b></p>
+          <p>${this.$t('dashboard.buildings.residents')} : <b>${markerData.residents_count}</b></p>
           <p>${this.$t('dashboard.buildings.requests')}: <b>${markerData.requests_archived_count +
                                                               markerData.requests_assigned_count +
                                                               markerData.requests_done_count +

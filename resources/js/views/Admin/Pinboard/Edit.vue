@@ -176,7 +176,7 @@
                         </template>                        
                     </el-card>
 
-                    <el-card :loading="loading" v-if="this.model.type != 3 && (!model.tenant)">
+                    <el-card :loading="loading" v-if="this.model.type != 3 && (!model.resident)">
                         <div slot="header" class="clearfix">
                             <span>{{$t('general.assignment')}}</span>
                         </div>
@@ -213,7 +213,7 @@
                                 </div>
                                 <div class="contact-info-content">
                                     <span v-if="model.user">
-                                        <router-link :to="{name: 'adminUsersEdit', params: {id: model.user.id}}" class="tenant-link">
+                                        <router-link :to="{name: 'adminUsersEdit', params: {id: model.user.id}}" class="resident-link">
                                             <avatar :size="30"
                                                     :src="'/' + model.user.avatar"
                                                     v-if="model.user.avatar"></avatar>
@@ -375,7 +375,7 @@
                         </el-form-item>
                     </el-card>
 
-                    <el-card :header="$t('models.pinboard.buildings')" :loading="loading" v-if="model.type == 3 && (!model.tenant)" class="mt15">
+                    <el-card :header="$t('models.pinboard.buildings')" :loading="loading" v-if="model.type == 3 && (!model.resident)" class="mt15">
                         <el-row :gutter="10">
                             <el-col :lg="6">
                                 <el-select @change="resetToAssignList"
@@ -711,7 +711,7 @@
         }
     }
 
-    .tenant-link {
+    .resident-link {
         display: flex;
         align-items: center;
         color: var(--primary-color);

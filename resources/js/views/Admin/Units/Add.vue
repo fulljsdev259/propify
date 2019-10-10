@@ -30,24 +30,24 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :md="12">
-                                <el-form-item :label="$t('models.unit.assigned_tenant')" 
-                                            :rules="validationRules.tenant_id"
-                                            prop="tenant_id">
+                                <el-form-item :label="$t('models.unit.assigned_resident')" 
+                                            :rules="validationRules.resident_id"
+                                            prop="resident_id">
                                     <el-select
                                         :loading="remoteLoading"
                                         :placeholder="$t('general.placeholders.search')"
-                                        :remote-method="remoteSearchTenants"
+                                        :remote-method="remoteSearchResidents"
                                         filterable
                                         remote
                                         clearable
                                         reserve-keyword
                                         style="width: 100%;"
-                                        v-model="model.tenant_id">
+                                        v-model="model.resident_id">
                                         <el-option
-                                            :key="tenant.id"
-                                            :label="tenant.name"
-                                            :value="tenant.id"
-                                            v-for="tenant in toAssignList"/>
+                                            :key="resident.id"
+                                            :label="resident.name"
+                                            :value="resident.id"
+                                            v-for="resident in toAssignList"/>
                                     </el-select>
                                 </el-form-item>
                             </el-col>

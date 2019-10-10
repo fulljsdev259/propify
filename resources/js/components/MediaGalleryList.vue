@@ -27,8 +27,8 @@
         </transition-group>
     </div>
     <placeholder :src="require('img/5c98a90bb5c05.png')" v-else-if="!media.length && usePlaceholder">
-        {{$t('tenant.no_data.media')}}
-        <small>{{$t('tenant.media_info')}}</small>
+        {{$t('resident.no_data.media')}}
+        <small>{{$t('resident.media_info')}}</small>
     </placeholder>
 </template>
 

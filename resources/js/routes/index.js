@@ -4,7 +4,7 @@ import {DEFAULT_FALLBACK_LOCALE} from 'config'
 
 import AuthRoutes from 'routes/auth'
 import AdminRoutes from 'routes/admin'
-import TenantRoutes from 'routes/tenant'
+import ResidentRoutes from 'routes/resident'
 import NotFound from 'routes/404'
 import Landing from 'views/Landing'
 import VueRouter from 'vue-router'
@@ -18,7 +18,7 @@ const Router = new VueRouter({
     routes: [{
         path: '/',
         component: Landing,
-    }, ...AuthRoutes, ...TenantRoutes, ...AdminRoutes, ...NotFound],
+    }, ...AuthRoutes, ...ResidentRoutes, ...AdminRoutes, ...NotFound],
     mode: 'history'
 })
 

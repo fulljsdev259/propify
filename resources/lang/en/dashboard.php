@@ -15,14 +15,14 @@ return [
     'latest_listings' => 'Latest listings',
     'listings_by_creation_date' => 'Listings by creation date',
     'listings_by_type' => 'Listes par type',
-    'tenants_by_creation_date' => 'Tenants by creation date',
-    'tenants_by_request_status' => 'Tenants by Requests status',
-    'tenants_by_status' => 'Tenants by status',
-    'tenants_by_language' => 'Tenants by language',
-    'tenants_by_title' => 'Tenants by title',
-    'tenants_by_device' => 'Tenants by device',
-    'tenants_by_gender' => 'Tenants by gender',
-    'tenants_by_age' => 'Tenants by age',
+    'residents_by_creation_date' => 'Residents by creation date',
+    'residents_by_request_status' => 'Residents by Requests status',
+    'residents_by_status' => 'Residents by status',
+    'residents_by_language' => 'Residents by language',
+    'residents_by_title' => 'Residents by title',
+    'residents_by_device' => 'Residents by device',
+    'residents_by_gender' => 'Residents by gender',
+    'residents_by_age' => 'Residents by age',
     'actions' => 'Actions',
     'requests' => [
         'total_request' => "Total requests",
@@ -42,18 +42,18 @@ return [
         'buildings_map' => 'Buildings map',
         'latest_buildings' => 'Latest buildings',
         'managers' => 'Managers',
-        'tenants' => 'Tenants',
+        'residents' => 'Residents',
         'requests' => 'Requests',
         'go_to_buildings' => 'go to buildings',
         'buildings_by_state' => 'Buildings by state',
         'go_to_building' => 'go to building'
     ],
-    'tenants' => [
-        'total_tenants' => 'Total Count',
+    'residents' => [
+        'total_residents' => 'Total Count',
         'average_age' => 'Average Age',
         'average_age_acr' => 'Avg. Age',
-        'latest_tenants' => 'Latest tenants',
-        'go_to_tenants' => 'go to tenants'
+        'latest_residents' => 'Latest residents',
+        'go_to_residents' => 'go to residents'
     ],
     'listing' => [
         'go_to_listing' => 'go to listing'

@@ -204,10 +204,10 @@
         data() {
             return {
                 requestColumns: [{
-                    type: 'requestTenantAvatar',
+                    type: 'requestResidentAvatar',
                     width: 75,
-                    prop: 'tenant',
-                    label: 'general.tenant'
+                    prop: 'resident',
+                    label: 'general.resident'
                 }, {
                     type: 'requestTitleWithDesc',
                     label: 'models.request.prop_title'

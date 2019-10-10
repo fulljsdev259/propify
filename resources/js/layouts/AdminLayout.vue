@@ -250,12 +250,12 @@
                             name: 'adminRequestsActivity'
                         }
                     },
-                    "tenants": {
-                        title: this.$t('menu.tenants'),
+                    "residents": {
+                        title: this.$t('menu.residents'),
                         icon: 'icon-group',
                         permission: this.$permissions.list.resident,
                         route: {
-                            name: 'adminTenants'
+                            name: 'adminResidents'
                         }
                     },
                     "propertyManagers": {
@@ -307,7 +307,7 @@
                             menu_items.buildings,
                             menu_items.requests, 
                             menu_items.activity,
-                            menu_items.tenants,
+                            menu_items.residents,
                             menu_items.propertyManagers,
                             menu_items.services,
                             menu_items.pinboard,

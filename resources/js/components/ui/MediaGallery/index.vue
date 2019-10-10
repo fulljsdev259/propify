@@ -20,10 +20,10 @@
         <div class="ui-media-gallery__placeholder" v-if="!files.length && usePlaceholder">
             <img class="ui-media-gallery__placeholder__image" :src="require('img/5c98a90bb5c05.png')" />
             <div class="ui-media-gallery__placeholder__title">
-                {{$t('tenant.no_data.media')}}
+                {{$t('resident.no_data.media')}}
             </div>
             <div class="ui-media-gallery__placeholder__description">
-                {{$t('tenant.media_info')}}
+                {{$t('resident.media_info')}}
             </div>
         </div>
         <slot name="after" />

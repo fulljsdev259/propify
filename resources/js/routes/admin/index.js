@@ -9,7 +9,7 @@ import Settings from 'views/Admin/Settings';
 
 import BuildingsRoutes from 'routes/admin/buildings';
 import UnitsRoutes from 'routes/admin/units';
-import TenantsRoutes from 'routes/admin/tenants';
+import ResidentsRoutes from 'routes/admin/residents';
 import UsersRoutes from 'routes/admin/users';
 import ServicesRoutes from 'routes/admin/services';
 import PinbordRoutes from 'routes/admin/pinboard';
@@ -58,7 +58,7 @@ export default [{
     },
         ...UsersRoutes,
         ...ServicesRoutes,
-        ...TenantsRoutes,
+        ...ResidentsRoutes,
         ...BuildingsRoutes,
         ...PinbordRoutes,
         ...UnitsRoutes,

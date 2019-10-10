@@ -194,10 +194,10 @@
                 <card class="mt15" :loading="loading" :header="$t('models.unit.assignment')">
                     <assignment
                             :toAssign.sync="toAssign"
-                            :assign="assignTenant"
+                            :assign="assignResident"
                             :toAssignList="toAssignList"
                             :remoteLoading="remoteLoading"
-                            :remoteSearch="remoteSearchTenants"
+                            :remoteSearch="remoteSearchResidents"
                             :multiple="multiple"
                     />
                     <relation-list
@@ -253,10 +253,10 @@
         data() {
             return {
                 requestColumns: [{
-                    type: 'requestTenantAvatar',
+                    type: 'requestResidentAvatar',
                     width: 75,
-                    prop: 'tenant',
-                    label: 'general.tenant'
+                    prop: 'resident',
+                    label: 'general.resident'
                 }, {
                     type: 'requestTitleWithDesc',
                     label: 'models.request.prop_title'
@@ -277,7 +277,7 @@
                 assigneesColumns: [{
                     prop: 'name',
                     label: 'general.name',
-                    type: 'tenantName'
+                    type: 'residentName'
                 }, {
                     prop: 'statusString',
                     label: 'models.request.userType.label',

@@ -464,7 +464,7 @@
             },
             filtersHeader: {
                 type: String,
-                default: () => (this.$t('tenant.filters'))
+                default: () => (this.$t('resident.filters'))
             },
             withSearch: {
                 type: Boolean,

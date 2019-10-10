@@ -71,8 +71,8 @@
                     label: 'models.quarter.occupied_units_count',
                     prop: 'occupied_units_count'
                 }, {
-                    label: 'models.quarter.active_tenants_count',
-                    prop: 'active_tenants_count'
+                    label: 'models.quarter.active_residents_count',
+                    prop: 'active_residents_count'
                 }, {
                     width: 120,
                     actions: [{

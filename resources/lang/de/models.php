@@ -14,7 +14,7 @@ return [
         'logo' => 'Firmenlogo',
         'circle_logo' => 'Rundes Logo',
         'favicon_icon' => 'Favicon-Symbol',
-        'tenant_logo' => 'Mieter-Portal Logo',
+        'resident_logo' => 'Mieter-Portal Logo',
         'blank_pdf' => 'PDF ohne Briefkopf verwenden',
         'blank_pdf_desc' => 'PDF-Dateien ohne Briefkopf generieren, damit diese auf das eigene Briefpapier gedruckt werden können.',
         'font_family' => 'Schriftfamilie',
@@ -44,15 +44,15 @@ return [
             ],
         ],
     ],
-    'tenant' => [
+    'resident' => [
         'view' => 'Mieter-Profil',
         'view_title' => 'Mieter-Profil',
         'edit_title' => 'Mieter bearbeiten',
         'download_credentials' => 'Zugangsdaten (pdf)',
         'send_credentials' => 'Zugangsdaten (email)',
         'credentials_sent' => 'Zugangsdaten wurden erfolgreich gesendet.',
-        'credentials_send_fail' => 'Credentials file not found. Try updating the tenant password to regenerate it',
-        'credentials_download_failed' => 'Credentials file not found. Try updating the tenant password to regenerate it',
+        'credentials_send_fail' => 'Credentials file not found. Try updating the resident password to regenerate it',
+        'credentials_download_failed' => 'Credentials file not found. Try updating the resident password to regenerate it',
         'add' => 'Mieter hinzufügen',
         'saved' => 'Mieter wurde gespeichert',
         'deleted' => 'Mieter wurde gelöscht',
@@ -177,12 +177,12 @@ return [
             'add' => 'Neuen Vertrag hinzufügen',
             'delete' => 'Vertrag löschen',
             'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',
-            'saved' => 'Mietvertrag wurde gespeichert.',
-            'deleted' => 'Mietvertrag wurde gelöscht.',
+            'saved' => 'Mietervertrag gespeichert',
+            'deleted' => 'Mandantenvertrag gelöscht',
             'errors' => [
-                'not_found' => 'Mieter Mietvertrag nicht gefunden.',
-                'create' => 'Mietvertrag des Mieters erstellt Fehler: ',
-                'deleted' => 'Mietvertrag Löschfehler: ',
+                'not_found' => 'Mietvertrag nicht gefunden',
+                'create' => 'Mietervertrag erzeugt Fehler: ',
+                'deleted' => 'Mietvertrag Fehler löschen: ',
             ],
         ],
         'contact' => [
@@ -195,7 +195,7 @@ return [
             'total' => 'Gesamt',
         ],
         'credentials_pdf' => [
-            "tenant_credentials" => "Anmeldedaten des Mieters",
+            "resident_credentials" => "Anmeldedaten des Mieters",
             'username' => 'Benutzername',
             'url' => 'URL',
             'code' => 'Persönlicher Freischaltcode',
@@ -325,9 +325,9 @@ return [
         'basement' => 'Untergeschoss',
         'attic' => 'Attikageschoss',
         'empty_requests' => 'Keine Anfragen',
-        'assigned_tenant' => 'Derzeitiger Mieter',
-        'tenant_assigned' => 'Mieter wurde erfolgreich zugewiesen',
-        'tenant_unassigned' => 'Mieter wurde erfolgreich entfernt',
+        'assigned_resident' => 'Derzeitiger Mieter',
+        'resident_assigned' => 'Mieter wurde erfolgreich zugewiesen',
+        'resident_unassigned' => 'Mieter wurde erfolgreich entfernt',
         'assignment' => 'Zugewiesene Mieter',
         'type' => [
             'label' => 'Typ',
@@ -361,7 +361,7 @@ return [
             'description' => [
                 'required' => 'Beschreibung ist obligatorisch',
             ],
-            'tenant' => [
+            'resident' => [
                 'required' => 'Mieter ist erforderlich',
             ]
         ],
@@ -369,9 +369,9 @@ return [
             'not_found' => "Einheit nicht gefunden",
             'create' => "Fehler beim Erstellen der Einheit: ",
             'update' => "Fehler beim Aktualisieren der Einheit: ",
-            'tenant_assign' => "Fehler beim Zuweisen des Mieters: ",
-            'tenant_not_assign' => "Fehler beim Zuweisen des Mieters",
-            'tenant_not_found' => "Mieter nicht gefunden",
+            'resident_assign' => "Fehler beim Zuweisen des Mieters: ",
+            'resident_not_assign' => "Fehler beim Zuweisen des Mieters",
+            'resident_not_found' => "Mieter nicht gefunden",
             'deleted' => "Fehler beim Löschen der Einheit: ",
         ],
     ],
@@ -537,7 +537,7 @@ return [
         'buildings_count' => 'Gebäude zählen',
         'total_units_count' => 'Gesamtzahl der Einheiten',
         'occupied_units_count' => 'Anzahl der belegten Einheiten',
-        'active_tenants_count' => 'Aktive Mieter zählen',
+        'active_residents_count' => 'Aktive Mieter zählen',
         'assignment' => 'Zugewiesene Personen/Administrator',
         'errors' => [
             'not_found' => "Überbauung nicht gefunden.",
@@ -548,7 +548,7 @@ return [
         'title' => 'App Einstellungen',
         'settings' => 'Einstellungen',
         'saved' => "Einstellung(en) gespeichert",
-        'tenants_portal' => 'Mieterportal',
+        'residents_portal' => 'Mieterportal',
         'iframe' => 'Freie Objekte',    
         'micro_apps' => 'Micro-Apps',
         'theme' => 'Design',
@@ -762,8 +762,8 @@ return [
         ],
         'payer' => [
             'landlord' => 'Vermieter',
-            'tenant' => 'Mieter',
-            'tenant/landlord' => 'Mieter u. Vermieter'
+            'resident' => 'Mieter',
+            'resident/landlord' => 'Mieter u. Vermieter'
         ],
         'status' => [
             'label' => 'Status',
@@ -794,7 +794,7 @@ return [
             'qualification' => 'Qualifikation wählen',
             'status' => 'Status wählen',
             'due_date' => 'Zu erledigen bis',
-            'tenant' => 'Mieter suchen',
+            'resident' => 'Mieter suchen',
             'service' => 'Dienstleister suchen',
             'propertyManagers' => 'Bewirtschafter suchen',
             'visibility' => 'Sichtbarkeit',
@@ -827,7 +827,7 @@ return [
         ],
         'visibility' => [
             'label' => 'Sichtbarkeit',
-            'tenant' => 'Nur ich',
+            'resident' => 'Nur ich',
             'quarter' => 'Überbauung',
             'building' => 'Liegenschaft',
         ],

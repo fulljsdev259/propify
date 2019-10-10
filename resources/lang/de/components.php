@@ -148,7 +148,7 @@ return [
                 'description' => 'Verfassen Sie die erste Nachricht.',
             ],
         ],
-        'tenantconversationsList' => [
+        'residentconversationsList' => [
             'loadMore' => 'Lade {count} weitere Nachrichten',
             'emptyPlaceholder' => [
                 'title' => 'Es wurden keine Nachrichten mit dem Mieter ausgetauscht.',
@@ -207,7 +207,7 @@ return [
             ],
         ],
     ],
-    'tenant' => [
+    'resident' => [
         'weatherWidget' => [
             'minTemp' => 'min',
             'maxTemp' => 'max',

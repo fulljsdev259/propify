@@ -20,7 +20,7 @@ return [
     'registered' => 'Registered',
     'about' => 'About',
     'feedback' => 'Feedback',
-    'tenants' => 'Tenants',
+    'residents' => 'Residents',
     'buildings' => 'Buildings',
     'all_buildings' => 'All buildings',
     'units' => 'Units',

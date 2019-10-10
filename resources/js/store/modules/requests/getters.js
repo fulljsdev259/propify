@@ -12,7 +12,7 @@ export default {
             
 
             request.qualification_label = request.qualification > 0 && request.qualification <= 5 ? requests.qualification[request.qualification] : "";
-            request.tenant_name = request.tenant ? `${request.tenant.first_name} ${request.tenant.last_name}` : '';
+            request.resident_name = request.resident ? `${request.resident.first_name} ${request.resident.last_name}` : '';
             request.category_name = request.category.name;
             request.parent_category_name = request.category.parent_id ? request.category.parentCategory.name : '';
 
@@ -26,9 +26,9 @@ export default {
                 }
             }
 
-            if (request.tenant && request.tenant.building && request.tenant.building.address) {
-                request.address = `${request.tenant.building.address.street} ${request.tenant.building.address.house_num}`;
-                request.zip = `${request.tenant.building.address.zip} ${request.tenant.building.address.city}`;
+            if (request.resident && request.resident.building && request.resident.building.address) {
+                request.address = `${request.resident.building.address.street} ${request.resident.building.address.house_num}`;
+                request.zip = `${request.resident.building.address.zip} ${request.resident.building.address.city}`;
             }
 
             return request;

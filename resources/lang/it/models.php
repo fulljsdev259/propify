@@ -14,7 +14,7 @@ return [
         "logo" => "Logo",
         "circle_logo" => "Logo del cerchio",
         "favicon_icon" => "Icona Favicon",
-        "tenant_logo" => "Logo dell'inquilino",
+        "resident_logo" => "Logo dell'inquilino",
         "blank_pdf" => "PDF in bianco",
         'blank_pdf_desc' => 'Genera file PDF senza carta intestata in modo che possano essere stampati sulla tua carta intestata.',
         'font_family' => 'Famiglia di font',
@@ -44,7 +44,7 @@ return [
             ],
         ],
     ],
-    'tenant' => [
+    'resident' => [
         "view" => "Vista",
         "view_title" => "Vedi inquilino",
         "edit_title" => "Modifica inquilino",
@@ -178,12 +178,12 @@ return [
             'add' => 'Aggiungere un nuovo contratto',
             'delete' => 'Cancellare il contratto',
             'pdf_only_desc' => 'Si prega di notare che solo i file PDF possono essere caricati',
-            'saved' => 'Contratto d\'affitto d\'affitto salvato',
-            'deleted' => 'Contratto d\'affitto del locatario soppresso',
+            'saved' => 'Contratto di locazione salvato',
+            'deleted' => 'Contratto di locazione cancellato',
             'errors' => [
                 'not_found' => 'Contratto di locazione non trovato',
-                'create' => 'Contratto di affitto inquilino creare errore: ',
-                'deleted' => 'Contratto di locazione dell\'inquilino Cancella errore: ',
+                'create' => 'Contratto di locazione creare errore: ',
+                'deleted' => "Contratto di locazione Cancellare l'errore: ",
             ],
         ],
         'contact' => [
@@ -196,7 +196,7 @@ return [
             'total' => 'Totale',
         ],
         'credentials_pdf' => [
-            'tenant_credentials' => 'Le credenziali dell\'inquilino',
+            'resident_credentials' => 'Le credenziali dell\'inquilino',
             'username' => 'Nome utente',
             'url' => 'URL',
             'code' => 'Codice di sblocco personale',
@@ -326,9 +326,9 @@ return [
         "basement" => "Nel seminterrato",
         "attic" => "In soffitta",
         "empty_requests" => "Nessuna richiesta",
-        "assigned_tenant" => "Assegnato inquilino",
-        "tenant_assigned" => "L'inquilino assegnato",
-        "tenant_unassigned" => "Un inquilino non assegnato",
+        "assigned_resident" => "Assegnato inquilino",
+        "resident_assigned" => "L'inquilino assegnato",
+        "resident_unassigned" => "Un inquilino non assegnato",
         'assignment' => 'Affittuari assegnati',
         'type' => [
             "label" => "Tipo",
@@ -362,7 +362,7 @@ return [
             'description' => [
                 "required" => "È necessaria una descrizione",
             ],
-            'tenant' => [
+            'resident' => [
                 "required" => "È necessaria una descrizione",
             ]
         ],
@@ -370,9 +370,9 @@ return [
             'not_found' => "Unità non trovata",
             'create' => "Unità crea errore: ",
             'update' => "Errore di aggiornamento dell'unità: ",
-            'tenant_assign' => "L'inquilino assegna un errore: ",
-            'tenant_not_assign' => "Affittuario non assegnato a questa unità",
-            'tenant_not_found' => "L'inquilino non trovato",
+            'resident_assign' => "L'inquilino assegna un errore: ",
+            'resident_not_assign' => "Affittuario non assegnato a questa unità",
+            'resident_not_found' => "L'inquilino non trovato",
             'deleted' => "Unità cancellata errore: ",
         ],
     ],
@@ -538,7 +538,7 @@ return [
         'buildings_count' => 'Conteggio edifici',
         'total_units_count' => 'Totale unità di misura',
         'occupied_units_count' => 'Le unità occupate contano',
-        'active_tenants_count' => 'Gli inquilini attivi contano',
+        'active_residents_count' => 'Gli inquilini attivi contano',
         'assignment' => "Assegnazione di manager/amministratore",
         'errors' => [
             'not_found' => "Quartiere non trovato",
@@ -549,7 +549,7 @@ return [
         "title" => "Impostazioni immobiliari",
         "settings" => "Impostazioni",
         'saved' => "impostazioni utente salvate",
-        'tenants_portal' => 'Portale inquilini',
+        'residents_portal' => 'Portale inquilini',
         'iframe' => 'Iframe',
         'micro_apps' => 'Micro-Apps',
         'theme' => 'Tema',
@@ -765,8 +765,8 @@ return [
         ],
         'payer' => [
             'landlord' => 'Padrone di casa',
-            'tenant' => 'Affittuario',
-            'tenant/landlord' => 'Affittuario/Padrone di casa'
+            'resident' => 'Affittuario',
+            'resident/landlord' => 'Affittuario/Padrone di casa'
         ],
         'status' => [
             "label" => "Situazione",
@@ -797,7 +797,7 @@ return [
             "qualification" => "Selezionare la qualifica",
             "status" => "Selezionare lo stato",
             "due_date" => "Scegli la data di scadenza",
-            "tenant" => "Cercate un inquilino",
+            "resident" => "Cercate un inquilino",
             "service" => "Cerca un servizio",
             "propertyManagers" => "Ricerca di manager",
             "visibility" => "Selezionare la visibilità",
@@ -830,7 +830,7 @@ return [
         ],
         'visibility' => [
             "label" => "Visibilità",
-            "tenant" => "Soldato",
+            "resident" => "Soldato",
             "quarter" => "Quartiere",
             "building" => "Edificio",
         ],

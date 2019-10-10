@@ -18,7 +18,7 @@ export default (config = {}) => {
                 buildingId: '',
                 buildingName: '',
                 model: {
-                    tenant_id: '',
+                    resident_id: '',
                     name: '',
                     type: null,
                     room_no: '',
@@ -29,13 +29,13 @@ export default (config = {}) => {
                     sq_meter: '',
                     attic: false,
                     building_id: this.$route.params.id,
-                    selected_tenant: '',
-                    tenants: []
+                    selected_resident: '',
+                    residents: []
                 },
                 validationRules: {
-                    tenant_id: [{
+                    resident_id: [{
                         required: false,
-                        message: this.$t("models.unit.validation.tenant.required")
+                        message: this.$t("models.unit.validation.resident.required")
                     }],
                     name: [{
                         required: true,
@@ -86,7 +86,7 @@ export default (config = {}) => {
             }
         },
         methods: {
-            ...mapActions(['getTenants', 'getBuildings']),
+            ...mapActions(['getResidents', 'getBuildings']),
             requestEditView(row) {
                 return this.$router.push({
                     name: 'adminRequestsEdit',
@@ -112,19 +112,19 @@ export default (config = {}) => {
                     }
                 }
             },
-            async remoteSearchTenants(search) {
+            async remoteSearchResidents(search) {
                 if (search === '') {
                     this.toAssignList = [];
                 } else {
                     this.remoteLoading = true;
 
                     try {
-                        const {data} = await this.getTenants({get_all: true, search});
+                        const {data} = await this.getResidents({get_all: true, search});
 
                         this.toAssignList = data;
                         this.toAssignList.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
-                        this.toAssignList = this.toAssignList.filter((tenant) => {
-                            return this.addedAssigmentList.filter(obj => obj.id === tenant.id).length === 0;
+                        this.toAssignList = this.toAssignList.filter((resident) => {
+                            return this.addedAssigmentList.filter(obj => obj.id === resident.id).length === 0;
                         });
                     } catch (err) {
                         displayError(err);
@@ -133,14 +133,14 @@ export default (config = {}) => {
                     }
                 }
             },
-            async assignTenant(newTenant) {
+            async assignResident(newResident) {
                 if (!this.toAssign || !this.model.id) {
                     return false;
                 }
                 let resp; 
                 try {
                     resp = await axios.post(`units/`+ this.model.id + `/assignees/` + this.toAssign);
-                    this.addedAssigmentList.push(newTenant);
+                    this.addedAssigmentList.push(newResident);
                     this.addedAssigmentList.map((user) => {
                         if (user.status == 1) {
                             user.statusString = 'Active';
@@ -161,7 +161,7 @@ export default (config = {}) => {
                     displaySuccess(resp.data)
                 }
             },
-            notifyUnassignment(tenant) {
+            notifyUnassignment(resident) {
                 this.$confirm(this.$t(`general.swal.confirmChange.title`), this.$t('general.swal.confirmChange.warning'), {
                     confirmButtonText: this.$t(`general.swal.confirmChange.confirmBtnText`),
                     cancelButtonText: this.$t(`general.swal.confirmChange.cancelBtnText`),
@@ -173,9 +173,9 @@ export default (config = {}) => {
                         let resp;
 
                         try {
-                            resp = await axios.delete(`units/`+ this.model.id + `/assignees/` + tenant.id);
+                            resp = await axios.delete(`units/`+ this.model.id + `/assignees/` + resident.id);
                             this.addedAssigmentList.forEach(element => {
-                                if(element.id === tenant.id) {
+                                if(element.id === resident.id) {
                                     let index = this.addedAssigmentList.indexOf(element);
                                     this.addedAssigmentList.splice(index, 1);
                                 }
@@ -290,7 +290,7 @@ export default (config = {}) => {
 
                         this.model = await this.getUnit({id: this.$route.params.id});
                         this.addedAssigmentList = [];
-                        this.addedAssigmentList = this.model.tenants;
+                        this.addedAssigmentList = this.model.residents;
 
                         this.addedAssigmentList.map((user) => {
                             if (user.status == 1) {
@@ -302,9 +302,9 @@ export default (config = {}) => {
                             return user;
                         });
 
-                        // if (this.model.tenant) {
-                        //     this.$set(this.model, 'tenant_id', this.model.tenant.id);
-                        //     this.remoteSearchTenants(`${this.model.tenant.first_name}`);
+                        // if (this.model.resident) {
+                        //     this.$set(this.model, 'resident_id', this.model.resident.id);
+                        //     this.remoteSearchResidents(`${this.model.resident.first_name}`);
                         // }
                         
                         this.buildings.push(this.model.building);
