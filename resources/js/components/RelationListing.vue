@@ -40,7 +40,7 @@
                     </div>
 
                     <div v-else-if="column.type === 'requestStatus'">
-                        {{$t(`models.request.status.${$constants.serviceRequests.status[scope.row.status]}`)}}
+                        {{$t(`models.request.status.${$constants.requests.status[scope.row.status]}`)}}
                     </div>
 
                     <div v-else-if="column.type === 'requestTenantAvatar'">

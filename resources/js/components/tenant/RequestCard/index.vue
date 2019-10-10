@@ -11,19 +11,19 @@
                     <div class="item">
                         {{$t('tenant.status')}}:
                         <div class="label">
-                            {{$t(`models.request.status.${$constants.serviceRequests.status[data.status]}`)}}
+                            {{$t(`models.request.status.${$constants.requests.status[data.status]}`)}}
                         </div>
                     </div>
                     <div class="item">
                         {{$t('tenant.priority')}}:
                         <div class="label">
-                            {{$t(`models.request.priority.${$constants.serviceRequests.priority[data.priority]}`)}}
+                            {{$t(`models.request.priority.${$constants.requests.priority[data.priority]}`)}}
                         </div>
                     </div>
                     <div class="item" v-if="this.data.category.parent_id == 1 && this.data.qualification > 1" >
                         {{$t('tenant.qualification')}}:
                         <div class="label">
-                            {{$t(`models.request.qualification.${$constants.serviceRequests.qualification[data.qualification]}`)}}
+                            {{$t(`models.request.qualification.${$constants.requests.qualification[data.qualification]}`)}}
                         </div>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                     <div class="item">
                         {{$t('tenant.cost_impact')}}:
                         <div class="label">
-                            {{$t(`models.request.payer.${$constants.serviceRequests.payer[data.payer]}`)}}
+                            {{$t(`models.request.payer.${$constants.requests.payer[data.payer]}`)}}
                         </div>
                     </div>
                 </div>                  
@@ -64,7 +64,7 @@
                         {{data.tenant.user.name}}
                         <small>
                             {{splitDatetime(data.created_at)}}
-                            <!-- <template v-if="$constants.serviceRequests.status[data.status] === 'done'"> -->
+                            <!-- <template v-if="$constants.requests.status[data.status] === 'done'"> -->
                                 <!-- and solved on {{formatDatetime(data.solved_date)}} -->
                             <!-- </template> -->
                         </small>

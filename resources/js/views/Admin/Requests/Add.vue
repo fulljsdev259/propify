@@ -107,7 +107,7 @@
                                         :key="k"
                                         :label="$t(`models.request.qualification.${qualification}`)"
                                         :value="parseInt(k)"
-                                        v-for="(qualification, k) in $constants.serviceRequests.qualification">
+                                        v-for="(qualification, k) in $constants.requests.qualification">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -138,7 +138,7 @@
                                         :key="k"
                                         :label="$t(`models.request.priority.${priority}`)"
                                         :value="parseInt(k)"
-                                        v-for="(priority, k) in $constants.serviceRequests.priority">
+                                        v-for="(priority, k) in $constants.requests.priority">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -152,7 +152,7 @@
                                         :key="k"
                                         :label="$t(`models.request.status.${status}`)"
                                         :value="parseInt(k)"
-                                        v-for="(status, k) in $constants.serviceRequests.status">
+                                        v-for="(status, k) in $constants.requests.status">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -177,7 +177,7 @@
                                         :key="k"
                                         :label="$t(`models.request.visibility.${visibility}`)"
                                         :value="parseInt(k)"
-                                        v-for="(visibility, k) in $constants.serviceRequests.visibility">
+                                        v-for="(visibility, k) in $constants.requests.visibility">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
