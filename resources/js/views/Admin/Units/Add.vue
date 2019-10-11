@@ -241,7 +241,7 @@
                     this.model.sq_meter = '';
                 }
             },
-            "model.buildings_id" () {
+            "model.building_id" () {
                 if(this.buildings[this.model.building_id].attic == false) 
                     this.model.attic = false;
             }
