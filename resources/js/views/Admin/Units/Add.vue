@@ -188,7 +188,7 @@
                                     <el-input autocomplete="off" type="number" v-model="model.sq_meter"></el-input>
                                 </el-form-item>
                             </el-col>
-                            <el-col :md="8" v-if="model.type == 1 || model.type == 2">
+                            <el-col :md="8" v-if="hasAttic(model.building_id) && (model.type == 1 || model.type == 2)">
                                 <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic" class="switch-wrapper">
                                     <el-switch v-model="model.attic">
                                     </el-switch>
@@ -217,6 +217,15 @@
             Card,
             AddActions
         },
+        methods: {
+            hasAttic(id) {
+                this.buildings.forEach(building => {
+                    if(building.id == this.model.buildings_id)
+                        return building.attic;
+                });
+                return false;
+            }
+        },
         watch: {
             "model.floor" () {
                 if(this.model.floor < -3)
@@ -229,6 +238,10 @@
                 if(this.model.type >= 5) {
                     this.model.sq_meter = '';
                 }
+            },
+            "model.buildings_id" () {
+                if(this.buildings[this.model.building_id].attic == false) 
+                    this.model.attic = false;
             }
         },
     }

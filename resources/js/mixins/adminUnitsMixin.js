@@ -105,6 +105,7 @@ export default (config = {}) => {
                         const {data} = await this.getBuildings({get_all: true, search});
 
                         this.buildings = data;
+                        console.log(this.buildings);
                     } catch (err) {
                         displayError(err);
                     } finally {

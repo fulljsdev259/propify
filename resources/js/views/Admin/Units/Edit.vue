@@ -183,7 +183,7 @@
                                     </el-input>
                                 </el-form-item>
                             </el-col>
-                            <el-col :md="12" style="display: flex" v-if="model.type == 1 || model.type == 2">
+                            <el-col :md="12" style="display: flex" v-if="hasAttic(model.building_id) && (model.type == 1 || model.type == 2)">
                                 <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic"
                                               class="switch-wrapper">
                                     <el-switch v-model="model.attic">
@@ -303,7 +303,14 @@
         methods: {
             ...mapActions([
                 "deleteUnit"
-            ])
+            ]),
+            hasAttic(id) {
+                this.buildings.forEach(building => {
+                    if(building.id == this.model.buildings_id)
+                        return building.attic;
+                });
+                return false;
+            }
         },
         watch: {
             "model.floor" () {
@@ -317,7 +324,11 @@
                 if(this.model.type >= 5) {
                     this.model.sq_meter = '';
                 }
-            }
+            },
+            "model.buildings_id" () {
+                if(this.hasAttic(this.model.buildings_id) == false) 
+                    this.model.attic = false;
+            },
         }
         
        
