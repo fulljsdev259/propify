@@ -1,7 +1,6 @@
 <template>
     <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
         
-
         <el-row :gutter="20">
             <el-col :md="24">
                 <el-form-item class="switcher">
