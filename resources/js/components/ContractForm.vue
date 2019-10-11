@@ -462,7 +462,11 @@
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('general.maintenance')})
                     }],
-                }
+                },
+                upper_ground_floor_label: this.$t('models.unit.floor_title.upper_ground_floor'),
+                ground_floor_label: this.$t('models.unit.floor_title.ground_floor'),
+                under_ground_floor_label: this.$t('models.unit.floor_title.under_ground_floor'),
+                top_floor_label: this.$t('models.unit.floor_title.top_floor')
             }
         },
         methods: {
@@ -583,19 +587,19 @@
                         let group_label = "";
                         if(key > 0)
                         {
-                            group_label = key + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                            group_label = key + ". " + this.upper_ground_floor_label
                         }
                         else if(key == 0)
                         {
-                            group_label = this.$t('models.unit.floor_title.ground_floor')
+                            group_label = this.ground_floor_label
                         }
                         else if(key < 0)
                         {
-                            group_label = key + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                            group_label = key + ". " + this.under_ground_floor_label
                         }
                         else if(key == 'attic')
                         {
-                            group_label = this.$t('models.unit.floor_title.top_floor');
+                            group_label = this.top_floor_label
                         }
                         
                         var obj = resp1.data[key];
