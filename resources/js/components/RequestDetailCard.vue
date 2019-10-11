@@ -230,8 +230,8 @@ export default {
         }
         .request-footer {
             background-color: #f2f2f2;
-            border-bottom-right-radius: 10px;
-            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 5px;
+            border-bottom-left-radius: 5px;
             .request-actions {
                 display: flex;
                 justify-content: center;
