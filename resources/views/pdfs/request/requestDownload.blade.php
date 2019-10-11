@@ -25,7 +25,7 @@
                                         @lang('models.request.status.'.\App\Models\Request::Status[$request->status],[],$language) ({{ now()->format('d.m.Y, H:i') }})
                                     </p>
                                     <p style="margin:7px 0 0;">
-                                        <b>@lang('models.address.name',[],$language):</b>
+                                        <b>@lang('general.address',[],$language):</b>
                                         {{ @$tenant->address->street }}
                                         {{ @$tenant->address->house_num }},
                                         {{ @$tenant->address->zip }}
