@@ -105,7 +105,7 @@ class RequestTransformer extends BaseTransformer
         }
 
         if ($model->relationExists('creator')) {
-            $response['creator'] = (new UserTransformer())->transformCollection($model->creator);
+            $response['creator'] = (new UserTransformer())->transform($model->creator);
         }
 
         $response['media'] = [];
