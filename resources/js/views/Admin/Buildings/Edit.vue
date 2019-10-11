@@ -327,7 +327,7 @@
                         <span slot="label">
                             <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
                         </span>
-                        <!-- <el-button style="float:right" type="primary" @click="toggleDrawer" size="mini" round>Settings Drawer</el-button> -->
+                        <el-button style="float:right" type="primary" @click="toggleDrawer" size="mini" round>Settings Drawer</el-button>
                         <relation-list
                             :actions="requestActions"
                             :columns="requestColumns"
@@ -465,7 +465,7 @@
                 }],
                 requestColumns: [{
                     type: 'requestResidentAvatar',
-                    width: 75,
+                    width: 100,
                     prop: 'resident',
                     label: 'general.resident'
                 }, {

@@ -102,7 +102,6 @@
 
 <script>
     import {MEDIA_UPLOAD_MAX_SIZE} from '@/config'
-    import MediaUpload from 'components/MediaUpload'
     import ServicesTypes from 'mixins/methods/servicesTypes'
     import {displaySuccess, displayError} from 'helpers/messages'
     import PQueue from 'p-queue'
@@ -121,9 +120,6 @@
                 type: Boolean,
                 default: true
             }
-        },
-        components: {
-            MediaUpload
         },
         data () {
             return {
