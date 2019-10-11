@@ -176,15 +176,19 @@
                         <el-row class="last-form-row" :gutter="20">
                             <el-col :md="8">
                                 <el-form-item :label="$t('models.unit.floor')" :rules="validationRules.floor" prop="floor">
-                                    <el-input autocomplete="off" type="number" v-model="model.floor"></el-input>
+                                    <el-input autocomplete="off" type="number" min="-3" v-model="model.floor"></el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :md="8">
-                                <el-form-item :label="$t('models.unit.sq_meter')" prop="sq_meter">
+                                <el-form-item
+                                     v-if="model.type >=1 && model.type <= 4"
+                                     :label="$t('models.unit.sq_meter')" 
+                                     prop="sq_meter">
+
                                     <el-input autocomplete="off" type="number" v-model="model.sq_meter"></el-input>
                                 </el-form-item>
                             </el-col>
-                            <el-col :md="8">
+                            <el-col :md="8" v-if="model.type == 1 || model.type == 2">
                                 <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic" class="switch-wrapper">
                                     <el-switch v-model="model.attic">
                                     </el-switch>
@@ -212,7 +216,21 @@
             Heading,
             Card,
             AddActions
-        }
+        },
+        watch: {
+            "model.floor" () {
+                if(this.model.floor < -3)
+                    this.model.floor = -3; 
+            },
+            "model.type" () {
+                if(this.model.type >= 3)
+                    this.model.attic = false;
+
+                if(this.model.type >= 5) {
+                    this.model.sq_meter = '';
+                }
+            }
+        },
     }
 </script>
 
