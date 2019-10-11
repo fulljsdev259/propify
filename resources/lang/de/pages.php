@@ -14,6 +14,6 @@ return [
         'title' => 'Aktivitäten Tracking',
     ],
     'resident' => [
-        'title' => 'Mieter',
+        'title' => 'Einwohner',
     ],
 ];

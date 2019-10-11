@@ -417,43 +417,43 @@
                 validationRules: {
                     building_id: [{
                         required: true,
-                        message: this.$t('models.resident.validation.building.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.building.name')})
                     }],
                     unit_id: [{
                         required: true,
-                        message: this.$t('models.resident.validation.unit.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.unit.name')})
                     }],
                     deposit_amount: [{
                         required: true,
-                        message: this.$t('models.resident.validation.deposit_amount.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.deposit_amount')})
                     }],
                     deposit_type: [{
                         required: true,
-                        message: this.$t('models.resident.validation.deposit_type.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.type_of_deposit')})
                     }],
                     start_date: [{
                         required: true,
-                        message: this.$t('models.resident.validation.start_date.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.rent_start')})
                     }],
                     type: [{
                         required: true,
-                        message: this.$t('models.resident.validation.rent_type.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.rent_type')})
                     }],
                     duration: [{
                         required: true,
-                        message: this.$t('models.resident.validation.rent_duration.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.rent_duration')})
                     }],
                     status: [{
                         required: true,
-                        message: this.$t('models.resident.validation.status.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.status.label')})
                     }],
                     monthly_rent_net: [{
                         required: true,
-                        message: this.$t("models.unit.validation.monthly_rent_net.required")
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.gross_rent')})
                     }],
                     monthly_maintenance: [{
                         required: true,
-                        message: this.$t("models.unit.validation.monthly_maintenance.required")
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.maintenance')})
                     }],
                 }
             }

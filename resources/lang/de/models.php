@@ -14,7 +14,7 @@ return [
         'logo' => 'Firmenlogo',
         'circle_logo' => 'Rundes Logo',
         'favicon_icon' => 'Favicon-Symbol',
-        'resident_logo' => 'Mieter-Portal Logo',
+        'resident_logo' => 'Resident Logo',
         'blank_pdf' => 'PDF ohne Briefkopf verwenden',
         'blank_pdf_desc' => 'PDF-Dateien ohne Briefkopf generieren, damit diese auf das eigene Briefpapier gedruckt werden können.',
         'font_family' => 'Schriftfamilie',
@@ -34,30 +34,22 @@ return [
             'email_not_exists' => "Die E-Mail [:email] existiert nicht in unserer Datenbank.",
             'password_reset_token_invalid' => "Das Token zum Zurücksetzen des Passworts ist ungültig.",
             'deleted' => "Fehler beim Löschen durch den Benutzer: ",
-        ],
-        'validation' => [
-            'name' => [
-                'required' => 'Name ist obligatorisch',
-            ],
-            'role' => [
-                'required' => 'Rolle ist obligatorisch',
-            ],
-        ],
+        ],        
     ],
     'resident' => [
         'view' => 'Mieter-Profil',
-        'view_title' => 'Mieter-Profil',
-        'edit_title' => 'Mieter bearbeiten',
+        'view_title' => 'Resident anzeigen',
+        'edit_title' => 'Resident bearbeiten',
         'download_credentials' => 'Zugangsdaten (pdf)',
         'send_credentials' => 'Zugangsdaten (email)',
         'credentials_sent' => 'Zugangsdaten wurden erfolgreich gesendet.',
-        'credentials_send_fail' => 'Credentials file not found. Try updating the resident password to regenerate it',
-        'credentials_download_failed' => 'Credentials file not found. Try updating the resident password to regenerate it',
-        'add' => 'Mieter hinzufügen',
-        'saved' => 'Mieter wurde gespeichert',
-        'deleted' => 'Mieter wurde gelöscht',
+        'credentials_send_fail' => 'Anmeldedaten-Datei nicht gefunden. Versuchen Sie, das residente Passwort zu aktualisieren, um es neu zu generieren',
+        'credentials_download_failed' => 'Anmeldedaten-Datei nicht gefunden. Versuchen Sie, das residente Passwort zu aktualisieren, um es neu zu generieren',
+        'add' => 'Aggiungi Residente',
+        'saved' => 'Residente wurde gespeichert',
+        'deleted' => 'Residente wurde gelöscht',
         'status_changed' => 'Status wurde geändert',
-        'password_reset' => 'Passwort erfolgreich zurückgesetzt',
+        'password_reset' => 'Residentes Passwort erfolgreich zurückgesetzt',
         'update' => 'Update',
         'first_name' => 'Vorname',
         'last_name' => 'Name',
@@ -79,54 +71,13 @@ return [
             'name' => 'Einheit',
         ],
         'search_building' => 'Liegenschaft suchen',
-        'search_unit' => 'Einheit suchen',
-        'validation' => [
-            'first_name' => [
-                'required' => 'Vorname ist obligatorisch',
-            ],
-            'last_name' => [
-                'required' => 'Name ist obligatorisch',
-            ],
-            'birth_date' => [
-                'required' => 'Geburtsdatum ist obligatorisch',
-            ],
-            'building' => [
-                'required' => 'Liegenschaft ist obligatorisch',
-            ],
-            'unit' => [
-                'required' => 'Einheit ist obligatorisch',
-            ],
-            'title' => [
-                'required' => 'Anrede ist obligatorisch',
-            ],
-            'language' => [
-                'required' => 'Sprache ist obligatorisch',
-            ],
-            'deposit_amount' => [
-                'required' => "Der Einzahlungsbetrag ist erforderlich.",
-            ],
-            'deposit_type' => [
-                'required' => "Die Einzahlungsart ist erforderlich.",
-            ],
-            'start_date' => [
-                'required' => "Startdatum ist erforderlich",
-            ],
-            'rent_type' => [
-                'required' => "Mietart ist erforderlich",
-            ],
-            'rent_duration' => [
-                'required' => "Mietdauer ist erforderlich",
-            ],
-            'status' => [
-                'required' => "Status ist erforderlich",
-            ],
-        ],
+        'search_unit' => 'Einheit suchen',        
         'errors' => [
-            'not_found' => "Mieter nicht gefunden",
+            'not_found' => "Bewohner nicht gefunden",
             'incorrect_email' => "Falsche E-Mail Adresse",
-            'create' => "Fehler beim Erstellen des Mieters: ",
-            'update' => "Fehler bei der Aktualisierung des Mieters: ",
-            'deleted' => "Fehler beim Löschen des Mieters: ",
+            'create' => "Resident erstellt Fehler: ",
+            'update' => "Fehler bei der Aktualisierung des Residenten: ",
+            'deleted' => "Resident Löschfehler: ",
             'not_allowed_change_status' => 'Sie können den Status nicht ändern.',
         ],
         'building_card' => 'Liegenschaft zuweisen',
@@ -177,12 +128,12 @@ return [
             'add' => 'Neuen Vertrag hinzufügen',
             'delete' => 'Vertrag löschen',
             'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',
-            'saved' => 'Mietervertrag gespeichert',
-            'deleted' => 'Mandantenvertrag gelöscht',
+            'saved' => 'Vertrag gespeichert',
+            'deleted' => 'Vertrag gelöscht',
             'errors' => [
-                'not_found' => 'Mietvertrag nicht gefunden',
-                'create' => 'Mietervertrag erzeugt Fehler: ',
-                'deleted' => 'Mietvertrag Fehler löschen: ',
+                'not_found' => 'Vertrag nicht gefunden',
+                'create' => 'Vertragserstellung Fehler: ',
+                'deleted' => 'Fehler beim Löschen des Vertrages: ',
             ],
         ],
         'contact' => [
@@ -195,7 +146,7 @@ return [
             'total' => 'Gesamt',
         ],
         'credentials_pdf' => [
-            "resident_credentials" => "Anmeldedaten des Mieters",
+            "resident_credentials" => "Anmeldedaten für Einwohner",
             'username' => 'Benutzername',
             'url' => 'URL',
             'code' => 'Persönlicher Freischaltcode',
@@ -203,11 +154,11 @@ return [
             'your_email' => 'Ihre E-Mail Adresse',
             'email' => 'E-Mail',
             'born' => 'Bern',
-            'welcome' => 'Willkommen im Mieterportal der',
-            'content_1' => 'Wir freuen uns, Ihnen mitzuteilen, dass für Sie ein Konto im Mieterpotal eingerichtet wurde und übermitteln Ihnen den Aktivierungscode',
+            'welcome' => 'Willkommen auf dem Resident Portal des',
+            'content_1' => 'Wir freuen uns, Ihnen mitteilen zu können, dass für Sie ein Konto in der Summe der Bewohner eingerichtet wurde. und senden Ihnen den Aktivierungscode zu.',
             'offer' => 'Was bietet die Applikation',
             'offers' => '
-                <li>Mit dem digitalen Mieterdossier habe Sie Zugriff auf alle relevanten Dokumente, wie Mietvertrag, Hausordnung oder sonstige Unterlagen zur Liegenschaft</li>
+                <li>Mit dem digitalen Einwohnerdossier haben Sie Zugriff auf alle relevanten Dokumente wie Mietvertrag, Hausordnung oder andere Dokumente rund um die Immobilie.</li>
                 <li>Über das Ticketing-System wickeln Sie Ihre Anfragen einfach und unkompliziert ab – Anliegen zeit- und ortsungebunden an die Verwaltung mitteilen</li>
                 <li>Auf dem Markt- und Leihplatz können Sie Gegenstände an Ihre Nachbarschaft verkaufen oder verleihen.</li>
                 <li>Teilen Sie Neuigkeiten mit Ihren Nachbarn indem Sie einen Beitrag publizieren. Die Pinnwand wird ebenfalls durch die Verwaltung für die Kommunikation genutzt, so sind alle stets auf dem Laufenden.</li>
@@ -267,23 +218,6 @@ return [
         'service' => [
             'deleted' => 'Dienstleister entfernt',
         ],
-        'validation' => [
-            'name' => [
-                'required' => 'Name ist obligatorisch',
-            ],
-            'floor_nr' => [
-                'required' => 'Etage ist obligatorisch',
-            ],
-            'description' => [
-                'required' => 'Beschreibung ist obligatorisch',
-            ],
-            'label' => [
-                'required' => 'Label ist obligatorisch',
-            ],
-            'address_id' => [
-                'required' => 'Adresse ist obligatorisch',
-            ],
-        ],
         'errors' => [
             'not_found' => "Liegenschaft nicht gefunden.",
             'manager_not_found' => "Bewirtschafter nicht gefunden",
@@ -325,10 +259,10 @@ return [
         'basement' => 'Untergeschoss',
         'attic' => 'Attikageschoss',
         'empty_requests' => 'Keine Anfragen',
-        'assigned_resident' => 'Derzeitiger Mieter',
-        'resident_assigned' => 'Mieter wurde erfolgreich zugewiesen',
-        'resident_unassigned' => 'Mieter wurde erfolgreich entfernt',
-        'assignment' => 'Zugewiesene Mieter',
+        'assigned_resident' => 'Zugewiesener Einwohner',
+        'resident_assigned' => 'Resident zugewiesen',
+        'resident_unassigned' => 'Resident nicht zugeordnet',
+        'assignment' => 'Zugeordnete Bewohner',
         'type' => [
             'label' => 'Typ',
             'apartment' => 'Wohnung',
@@ -339,71 +273,16 @@ return [
             'outdoor_parking' => 'Aussenparkplatz',
             'motorbike_pitch' => 'Motorradplatz'
         ],
-        'validation' => [
-            'name' => [
-                'required' => 'Name ist obligatorisch',
-            ],
-            'building' => [
-                'required' => 'Liegenschaft ist obligatorisch',
-            ],
-            'monthly_rent_net' => [
-                'required' => 'Monatsmiete ist obligatorisch',
-            ],
-            'monthly_maintenance' => [
-                'required' => 'Eine monatliche Wartung ist erforderlich.',
-            ],
-            'floor' => [
-                'required' => 'Etage ist obligatorisch',
-            ],
-            'room_no' => [
-                'required' => 'Nummer der Einheit ist obligatorisch',
-            ],
-            'description' => [
-                'required' => 'Beschreibung ist obligatorisch',
-            ],
-            'resident' => [
-                'required' => 'Mieter ist erforderlich',
-            ]
-        ],
         'errors' => [
             'not_found' => "Einheit nicht gefunden",
             'create' => "Fehler beim Erstellen der Einheit: ",
             'update' => "Fehler beim Aktualisieren der Einheit: ",
-            'resident_assign' => "Fehler beim Zuweisen des Mieters: ",
-            'resident_not_assign' => "Fehler beim Zuweisen des Mieters",
-            'resident_not_found' => "Mieter nicht gefunden",
+            'resident_assign' => "Fehler bei der Zuweisung von Residenten: ",
+            'resident_not_assign' => "Einwohner, der dieser Einheit nicht zugeordnet ist.",
+            'resident_not_found' => "Bewohner nicht gefunden",
             'deleted' => "Fehler beim Löschen der Einheit: ",
         ],
-    ],
-    'address' => [
-        'add' => 'Adresse hinzufügen',
-        'name' => 'Address',
-        'country' => 'Kanton',
-        'street' => 'Strasse',
-        'house_num' => 'Hausnummer',
-        'not_found' => 'Adresse nicht gefunden',
-        'saved' => 'Adresse gespeichert',
-        'state' => [
-            'label' => 'Kanton',
-        ],
-        'validation' => [
-            'state' => [
-                'required' => 'Kanton ist obligatorisch',
-            ],
-            'city' => [
-                'required' => 'Ort ist obligatorisch',
-            ],
-            'street' => [
-                'required' => 'Strasse ist obligatorisch',
-            ],
-            'house_num' => [
-                'required' => 'Hausnummer ist obligatorisch',
-            ],
-            'zip' => [
-                'required' => 'Postleitzahl ist obligatorisch',
-            ],
-        ],
-    ],
+    ],   
     'pinboard' => [
         'title' => 'Pinnwand',
         'title_label' => 'Betreff',
@@ -537,7 +416,7 @@ return [
         'buildings_count' => 'Gebäude zählen',
         'total_units_count' => 'Gesamtzahl der Einheiten',
         'occupied_units_count' => 'Anzahl der belegten Einheiten',
-        'active_residents_count' => 'Aktive Mieter zählen',
+        'active_residents_count' => 'Anzahl der aktiven Einwohner',
         'assignment' => 'Zugewiesene Personen/Administrator',
         'errors' => [
             'not_found' => "Überbauung nicht gefunden.",
@@ -548,7 +427,7 @@ return [
         'title' => 'App Einstellungen',
         'settings' => 'Einstellungen',
         'saved' => "Einstellung(en) gespeichert",
-        'residents_portal' => 'Mieterportal',
+        'residents_portal' => 'Bewohnerportal',
         'iframe' => 'Freie Objekte',    
         'micro_apps' => 'Micro-Apps',
         'theme' => 'Design',
@@ -576,9 +455,9 @@ return [
         'categories' => 'Kategorien',
         'templates' => 'Vorlagen',
         'contact_enable' => 'Dienstleister-Kontakte für Mieter aktivieren',
-        'contact_enable_desc' => 'Mieter können die Kontaktdaten der involvierten Dienstleister im Mieterportal sehen.',
+        'contact_enable_desc' => 'Die Bewohner sehen die Kontaktdaten der im Bewohnerportal beteiligten Servicepartner.',
         'iframe_enable' => 'Freie Mietobjekte',
-        'iframe_enable_desc' => 'Im Mieterportal wird eine Rubrik mit Ihren freien Mietobjekten angezeigt. Hintelegen Sie hier die URL mit Ihren Objekten, beispielsweise von ImmoScou24 oder Homegate.',
+        'iframe_enable_desc' => 'Nel portale dei residenti è indicata una colonna con i vostri oggetti in affitto gratuito. Inserisci qui l\'URL con i tuoi oggetti, ad esempio da ImmoScou24 o Homegate.',
         'mail_encryption' => 'Verschlüsselung',
         'primary_color' => 'Primärfarbe',
         'accent_color' => 'Akzentfarbe',
@@ -593,7 +472,7 @@ return [
         ],
         'gocaution' => [
             'label' => 'goCaution',
-            'description' => 'Mit der Kautionsbürgschaft entfällt die Hinterlegung einer Mietkaution. Sowohl Mieter als auch Vermieter profitieren von der bargeldlosen Mietkaution von goCaution.',
+            'description' => 'Die Einlagensicherung erfordert keine Kaution. Sowohl Bewohner als auch Vermieter profitieren von der bargeldlosen Mietkaution von goCaution.',
         ],
         'iframe_url' => [
             'label' => 'URL mit Ihren Objekten',
@@ -651,15 +530,15 @@ return [
         'public_title' => 'Anfrage öffentlich machen',
         'public_desc' => 'Sie können diese Anfrage als öffentlich markieren und für weitere Personen in der Liegenschaft oder Überbauung sichtbar machen.',
         'visibility_title' => 'Für wen sichtbar machen?',
-        'visibility_desc' => 'Geben Sie an, ob diese Anfrage von Mietern innerhalb der Liegenschaft oder sogar innerhalb der Überbauung eingesehen werden kann. ',
-        'send_notification_title' => 'Mieter benachrichtigen',
-        'send_notification_desc' => 'Sie können die betroffenen Mieter via Email über diese öffentliche Anfrage informieren.',
+        'visibility_desc' => 'Geben Sie an, ob die Bewohner innerhalb eines Gebäudes oder sogar innerhalb des Quartiers sehen können.',
+        'send_notification_title' => 'Benachrichtigung der Bewohner',
+        'send_notification_desc' => 'Sie können die betroffenen Bewohner per E-Mail über diese öffentliche Anfrage informieren.',
         'comments' => 'Mieter-Chat',
         'assigned_to' => 'Zuständig',
         'assign_providers' => 'Zuweisen',
         'assign_managers' => 'Zuweisen',
         'notify' => 'Kommunikation',
-        'public_legend' => 'Aktivieren Sie diese Option, um dies Anliegen allen Bewohnern einer Liegenschaft / Überbauung zu zeigen.',
+        'public_legend' => 'Setzen Sie diese Option, um die Anfrage für alle ansässigen Nachbarn sichtbar zu machen.',
         'conversation' => 'Chat-Mitteilungen',
         'conversation_created' => "Nachricht wurde übermittelt.",
         'internal_notice_saved' => "Interne Notiz wurde gespeichert.",
@@ -762,8 +641,8 @@ return [
         ],
         'payer' => [
             'landlord' => 'Vermieter',
-            'resident' => 'Mieter',
-            'resident/landlord' => 'Mieter u. Vermieter'
+            'resident' => 'Resident',
+            'resident/landlord' => 'Resident u. Vermieter'
         ],
         'status' => [
             'label' => 'Status',
@@ -794,7 +673,7 @@ return [
             'qualification' => 'Qualifikation wählen',
             'status' => 'Status wählen',
             'due_date' => 'Zu erledigen bis',
-            'resident' => 'Mieter suchen',
+            'resident' => 'Suche nach einem Bewohner',
             'service' => 'Dienstleister suchen',
             'propertyManagers' => 'Bewirtschafter suchen',
             'visibility' => 'Sichtbarkeit',
@@ -851,7 +730,7 @@ return [
             'customer_signature'=> 'Kundenunterschrift',
             'service_request' => 'Serviceanfrage',
             'contact_details' => 'Kontaktdaten',
-            'contact_text' => 'Dies sind die Kontaktdaten des aktuellen Mieters/Eigentümers der Wohneinheit.',
+            'contact_text' => 'Dies sind die Kontaktdaten des aktuellen Bewohners/Besitzers der Wohneinheit.',
         ]
     ],
     'requestCategory' => [

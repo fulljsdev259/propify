@@ -14,7 +14,7 @@ return [
         "logo" => "Logo",
         'circle_logo' => "Logo du cercle",
         'favicon_icon' => "Icône Favicon",
-        "resident_logo" => "Logo du locataire",
+        "resident_logo" => "Logo du résident",
         "blank_pdf" => "PDF vierge",
         'blank_pdf_desc' => 'Générez des fichiers PDF sans papier à en-tête afin qu\'ils puissent être imprimés sur votre propre papeterie.',
         'font_family' => 'Font family',
@@ -34,30 +34,22 @@ return [
             'email_not_exists' => "Ce [:email] email n'existe pas",
             'password_reset_token_invalid' => "Ce jeton de réinitialisation de mot de passe n'est pas valide.",
             'deleted' => "Erreur de suppression par l'utilisateur : ",
-        ],
-        'validation' => [
-            'name' => [
-                'required' => 'Nom est obligatoire',
-            ],
-            'role' => [
-                'required' => 'Le rôle est requis',
-            ],
-        ],
+        ],        
     ],
     'resident' => [
         "view" => "Vue",
-        "view_title" => "Afficher locataire",
-        "edit_title" => "Traiter locataire",
+        "view_title" => "Voir résident",
+        "edit_title" => "Modifier Résident",
         "download_credentials" => "Télécharger les informations d'identification",
         "send_credentials" => "Envoyez les papiers d'identité",
         "credentials_sent" => "Lettres de créance envoyées",
-        "credentials_send_fail" => "Fichier d'authentification introuvable. Essayez de mettre à jour le mot de passe du locataire pour le régénérer",
-        "credentials_download_failed" => "Fichier d'authentification introuvable. Essayez de mettre à jour le mot de passe du locataire pour le régénérer",
-        "add" => "Ajouter un locataire",
-        "saved" => "Locataire sauvé",
-        "deleted" => "Locataire supprimé",
+        "credentials_send_fail" => "Fichier d'authentification introuvable. Essayez de mettre à jour le mot de passe résident pour le régénérer",
+        "credentials_download_failed" => "Fichier d'authentification introuvable. Essayez de mettre à jour le mot de passe résident pour le régénérer",
+        "add" => "Ajouter Résident",
+        "saved" => "Résident sauvé",
+        "deleted" => "Résident supprimé",
         "status_changed" => "Le statut a changé",
-        "password_reset" => "Le mot de passe du locataire a été réinitialisé avec succès",
+        "password_reset" => "Réinitialisation réussie du mot de passe résident",
         "update" => "Mise à jour",
         "first_name" => "Prénom",
         "last_name" => "Nom de famille",
@@ -80,53 +72,12 @@ return [
         ],
         'search_building' => 'Rechercher un bâtiment',
         'search_unit' => 'Unité de recherche',
-        'validation' => [
-            'first_name' => [
-                'required' => "Prénom est obligatoire",
-            ],
-            'last_name' => [
-                'required' => "Nom de famille est obligatoire",
-            ],
-            'birth_date' => [
-                'required' => "La date de naissance est requise",
-            ],
-            'building' => [
-                'required' => "Un bâtiment est nécessaire",
-            ],
-            'unit' => [
-                'required' => "L'unité est nécessaire",
-            ],
-            'title' => [
-                'required' => "Le titre est requis",
-            ],
-            'language' => [
-                'required' => "La langue est obligatoire",
-            ],
-            'deposit_amount' => [
-                'required' => "Le montant du dépôt est requis",
-            ],
-            'deposit_type' => [
-                'required' => "Le type de dépôt est requis",
-            ],
-            'start_date' => [
-                'required' => "La date de début est requise",
-            ],
-            'rent_type' => [
-                'required' => "Le type de location est requis",
-            ],
-            'rent_duration' => [
-                'required' => "La durée de location est requise",
-            ],
-            'status' => [
-                'required' => "Le statut est requis",
-            ],
-        ],
         'errors' => [
-            'not_found' => "Locataire introuvable",
+            'not_found' => "Résident introuvable",
             'incorrect_email' => "Adresse e-mail incorrecte",
-            'create' => "Le locataire crée l'erreur : ",
-            'update' => "Erreur de mise à jour locataire : ",
-            'deleted' => "Erreur de suppression du locataire : ",
+            'create' => "Le résident crée l'erreur : ",
+            'update' => "Erreur de mise à jour résidente : ",
+            'deleted' => "Résident Supprimer erreur : ",
             'not_allowed_change_status' => "Vous n'êtes pas autorisé à changer de statut.",
         ],
         "building_card" => "Affecter unité",
@@ -178,12 +129,12 @@ return [
             'add' => 'Ajouter un nouveau contrat',
             'delete' => 'Supprimer contrat',
             'pdf_only_desc' => 'Veuillez noter que seuls les fichiers PDF peuvent être téléchargés.',
-            'saved' => 'Sauvegarde du contrat du locataire',
-            'deleted' => 'Contrat de location supprimé',
+            'saved' => 'Contrat sauvegardé',
+            'deleted' => 'Contrat supprimé',
             'errors' => [
-                'not_found' => "Le contrat de location n'a pas été trouvé",
-                'create' => 'Le contrat du locataire crée une erreur : ',
-                'deleted' => "Contrat locataire Supprimer erreur : ",
+                'not_found' => "Contrat non trouvé",
+                'create' => 'Le contrat crée l\'erreur : ',
+                'deleted' => "Erreur de suppression de contrat : ",
             ],
         ],
         'contact' => [
@@ -196,7 +147,7 @@ return [
             'total' => 'Total',
         ],
         'credentials_pdf' => [
-            'resident_credentials' => 'Accréditation des locataires',
+            'resident_credentials' => 'Titres de compétences des résidents',
             'username' => 'Nom d\'utilisateur',
             'url' => 'URL',
             'code' => 'Code de déverrouillage personnel',
@@ -204,11 +155,11 @@ return [
             'your_email' => 'Votre adresse e-mail',
             'email' => 'courriel',
             'born' => 'Berne',
-            'welcome' => 'Bienvenue sur le portail des locataires de la',
-            'content_1' => 'Nous avons le plaisir de vous informer qu\'un compte a été créé pour vous dans le total du locataire et de vous envoyer le code d\'activation.',
+            'welcome' => 'Bienvenue sur le portail des résidents de l\'Institut de la santé publique et des populations des',
+            'content_1' => 'Nous avons le plaisir de vous informer qu\'un compte a été créé pour vous dans le total du résident et de vous envoyer le code d\'activation.',
             'offer' => 'Qu\'offre l\'application ?',
             'offers' => '
-                <li>Avec le dossier locatif numérique, vous avez accès à tous les documents pertinents, tels que le contrat de location, le règlement intérieur ou d\'autres documents relatifs à la propriété . </li>
+                <li>Avec le dossier de résident numérique, vous avez accès à tous les documents pertinents, tels que le contrat de location, le règlement intérieur ou d\'autres documents relatifs à la propriété.</li>
                 <li>Le système de billetterie vous permet de traiter vos demandes facilement et sans complications - vous pouvez communiquer vos préoccupations à l\'administration à tout moment et de n\'importe quel endroit.</li>
                 <li>Vous pouvez vendre ou prêter des objets à votre quartier sur la place du marché et dans la zone de prêt.</li>
                 <li>Partagez les nouvelles avec vos voisins en publiant une contribution. Le tableau d\'affichage est également utilisé par l\'administration pour la communication, de sorte que tout le monde est toujours à jour.</li>
@@ -268,23 +219,6 @@ return [
         'service' => [
             "deleted" => "Service enlevé de ce bâtiment",
         ],
-        'validation' => [
-            'name' => [
-                "required" => "Le nom est obligatoire",
-            ],
-            'floor_nr' => [
-                "required" => "Le numéro d'étage est requis",
-            ],
-            'description' => [
-                "required" => "Une description est requise",
-            ],
-            'label' => [
-                "required" => "Une étiquette est requise",
-            ],
-            'address_id' => [
-                "required" => "L'adresse est requise",
-            ],
-        ],
         'errors' => [
             'not_found' => "Bâtiment non trouvé",
             'manager_not_found' => "Gestionnaire immobilier introuvable",
@@ -326,10 +260,10 @@ return [
         "basement" => "Sous-sol",
         "attic" => "Grenier aménageable",
         "empty_requests" => "Aucune demande",
-        "assigned_resident" => "Locataire affecté",
-        "resident_assigned" => "Locataire affecté",
-        "resident_unassigned" => "Locataire non affecté",
-        'assignment' => 'Locataires affectés',
+        "assigned_resident" => "Résident affecté",
+        "resident_assigned" => "Résident affecté",
+        "resident_unassigned" => "Résident non affecté",
+        'assignment' => 'Résidents assignés',
         'type' => [
             "label" => "Type",
             "apartment" => "Appartement",
@@ -339,72 +273,17 @@ return [
             'underground_parking_space' => 'Place de parking souterrain',
             'outdoor_parking' => 'Parking extérieur',
             'motorbike_pitch' => 'Emplacement moto'
-        ],
-        'validation' => [
-            'name' => [
-                "required" => "Le nom est obligatoire",
-            ],
-            'building' => [
-                "required" => "Un bâtiment est nécessaire",
-            ],
-            'monthly_rent_net' => [
-                "required" => "Un loyer mensuel est exigé",
-            ],
-            'monthly_maintenance' => [
-                'required' => 'Un entretien mensuel est nécessaire',
-            ],
-            'floor' => [
-                "required" => "Un plancher est requis",
-            ],
-            'room_no' => [
-                "required" => "Le numéro de chambre est requis",
-            ],
-            'description' => [
-                "required" => "Une description est requise",
-            ],
-            'resident' => [
-                "required" => "Un locataire est requis",
-            ]
-        ],
+        ],        
         'errors' => [
             'not_found' => "Unité non trouvée",
             'create' => "L'unité crée l'erreur : ",
             'update' => "Erreur de mise à jour de l'unité : ",
-            'resident_assign' => "Erreur d'affectation locataire : ",
-            'resident_not_assign' => "Locataire non affecté à cette unité",
-            'resident_not_found' => "Locataire introuvable",
+            'resident_assign' => "Erreur d'affectation des résidents : ",
+            'resident_not_assign' => "Résident non affecté à cette unité",
+            'resident_not_found' => "Résident introuvable",
             'deleted' => "Erreur d'effacement de l'unité : ",
         ],
-    ],
-    'address' => [
-        "add" => "Ajouter une adresse",
-        "name" => "Adresse",
-        "country" => "Pays",
-        "street" => "Rue",
-        "house_num" => "Rue Nr..",
-        "not_found" => "Adresse non trouvée",
-        "saved" => "Adresse enregistrée",
-        'state' => [
-            "label" => "État",
-        ],
-        'validation' => [
-            'state' => [
-                "required" => "L'État est requis",
-            ],
-            'city' => [
-                "required" => "Ville est obligatoire",
-            ],
-            'street' => [
-                "required" => "La rue est obligatoire",
-            ],
-            'house_num' => [
-                "required" => "Le numéro de rue est requis",
-            ],
-            'zip' => [
-                "required" => "Zip est obligatoire",
-            ],
-        ],
-    ],
+    ],    
     'pinboard' => [
         "title" => "Panneau d'affichage",
         "title_label" => "Titre",
@@ -538,7 +417,7 @@ return [
         'buildings_count' => 'Nombre de bâtiments',
         'total_units_count' => "Nombre total d'unités",
         'occupied_units_count' => 'Nombre de logements occupés',
-        'active_residents_count' => 'Nombre de locataires actifs',
+        'active_residents_count' => 'Nombre de résidents actifs',
         'assignment' => "Affectation des gestionnaires/administrateurs",
         'errors' => [
             'not_found' => "Trimestre non trouvé",
@@ -549,7 +428,7 @@ return [
         "title" => "Réglages de l'immobilier",
         "settings" => "Réglages",
         'saved' => "réglage utilisateur sauvegardé",
-        'residents_portal' => 'Portail locataires',
+        'residents_portal' => 'Portail des résidents',
         'iframe' => 'Iframe',
         'micro_apps' => 'Micro-Applications',
         'theme' => 'Thème',
@@ -577,12 +456,12 @@ return [
         "categories" => "Catégories",
         "templates" => "Modèles",
         "contact_enable" => "Activez'Mes contacts'",
-        'contact_enable_desc' => 'Les locataires peuvent voir les coordonnées des partenaires de service impliqués dans le portail des locataires.',
+        'contact_enable_desc' => 'Les résidents peuvent consulter les coordonnées des partenaires de service impliqués dans le portail résident.',
         "mail_encryption" => "Cryptage",
         'primary_color' => 'Couleur primaire',
         'accent_color' => 'Couleur d\'accent',
         'iframe_enable' => 'Activation de l\'iframe',
-        'iframe_enable_desc' => 'Dans le portail des locataires, une page avec vos objets de location gratuits est indiquée.',
+        'iframe_enable_desc' => 'Dans le portail des résidents, une colonne avec vos objets de location gratuits est indiquée. Mettez ici l\'URL avec vos objets, par exemple de ImmoScou24 ou Homegate.',
         'cleanify_email' => [
             'label' => 'Nettoyer les courriels',
             'description' => 'Cleanify permet de comparer et de chiffrer gratuitement les entreprises de nettoyage.',
@@ -594,15 +473,11 @@ return [
         ],
         'gocaution' => [
             'label' => 'Gocaution',
-            'description' => "La garantie de dépôt n'exige pas le dépôt d'un dépôt de garantie de loyer. Les locataires et les propriétaires bénéficient du dépôt de garantie de loyer sans numéraire de goCaution.",
+            'description' => "La garantie de dépôt n'exige pas le dépôt d'un dépôt de garantie de loyer. Les résidents et les propriétaires bénéficient du dépôt de garantie de loyer sans numéraire de goCaution.",
         ],
         'iframe_url' => [
             "label" => "URL Iframe",
             "validation" => "Iframe URL dovrebbe essere un URL valido",
-        ],
-        'iframe_url' => [
-            "label" => "URL de l'iframe",
-            "validation" => "L'URL de l'iframe doit être une URL valide",
         ],
         "mail_from_name" => [
             "label" => "Du nom",
@@ -656,15 +531,15 @@ return [
         'public_title' => 'Rendre la demande publique',
         'public_desc' => "Vous pouvez marquer cette demande comme publique et la rendre visible aux autres personnes dans le bâtiment ou le quartier.",
         'visibility_title' => "Pour qui rendre visible ?",
-        'visibility_desc' => "Indiquez si les locataires peuvent voir à l'intérieur d'un immeuble ou même dans le quartier. ",
-        'send_notification_title' => 'Aviser les locataires',
-        'send_notification_desc' => "Vous pouvez informer les locataires concernés par e-mail de cette demande publique.",
+        'visibility_desc' => "Indiquez si les résidents peuvent voir à l'intérieur d'un bâtiment ou même dans le quartier.",
+        'send_notification_title' => 'Aviser les résidents',
+        'send_notification_desc' => "Vous pouvez informer les résidents concernés par courriel de cette demande publique.",
         "comments" => "Commentaires",
         "assigned_to" => "Affecté à",
         "assign_providers" => "Affecter fournisseurs",
         "assign_managers" => "Affectez des gestionnaires",
         "notify" => "Avertissez",
-        "public_legend" => "Définissez cette option pour rendre la demande visible à tous les voisins locataires",
+        "public_legend" => "Définissez cette option pour rendre la demande visible à tous les voisins résidents.",
         "conversation" => "Conversation",
         'conversation_created' => "Création d'un commentaire de conversation",
         'internal_notice_saved' => "Avis interne sauvegardé",
@@ -768,8 +643,8 @@ return [
         ],
         'payer' => [
             'landlord' => 'Propriétaire',
-            'resident' => 'Locataire',
-            'resident/landlord' => 'Locataire/Propriétaire'
+            'resident' => 'Résident',
+            'resident/landlord' => 'Résident/Propriétaire'
         ],
         'status' => [
             "label" => "Statut",
@@ -800,7 +675,7 @@ return [
             "qualification" => "Sélectionnez Compétence",
             "status" => "Sélectionnez le statut",
             "due_date" => "Choisir la date d'échéance",
-            "resident" => "Recherche d'un locataire",
+            "resident" => "Rechercher un résident",
             "service" => "Rechercher un service",
             "propertyManagers" => "Recherche de cadres",
             "visibility" => "Sélectionner la visibilité",
@@ -833,7 +708,7 @@ return [
         ],
         'visibility' => [
             "label" => "Visibilité",
-            "resident" => "Soldat",
+            "resident" => "Privé",
             "quarter" => "Trimestre",
             "building" => "Bâtiment",
         ],
@@ -857,7 +732,7 @@ return [
             'customer_signature'=> 'Signature du client',
             'service_request' => 'Service Request',
             'contact_details' => 'Contact Details',
-            'contact_text' => 'Ce sont les coordonnées du locataire/propriétaire actuel du logement',
+            'contact_text' => 'Voici les coordonnées du résident/propriétaire actuel du logement.',
         ]
     ],
     'requestCategory' => [

@@ -34,15 +34,7 @@ return [
             'email_not_exists' => "This [:email] email not exist",
             'password_reset_token_invalid' => "This password reset token is invalid.",
             'deleted' => "User deleted error: ",
-        ],
-        'validation' => [
-            'name' => [
-                'required' => 'Name is required',
-            ],
-            'role' => [
-                'required' => 'Role is required',
-            ],
-        ],
+        ],        
     ],
     'resident' => [
         'view' => 'View',
@@ -79,48 +71,7 @@ return [
             'name' => 'Unit',
         ],
         'search_building' => 'Search building',
-        'search_unit' => 'Search unit',
-        'validation' => [
-            'first_name' => [
-                'required' => 'First name is required',
-            ],
-            'last_name' => [
-                'required' => 'Last name is required',
-            ],
-            'birth_date' => [
-                'required' => 'Birth date is required',
-            ],
-            'building' => [
-                'required' => 'Building is required',
-            ],
-            'unit' => [
-                'required' => 'Unit is required',
-            ],
-            'title' => [
-                'required' => 'Title is required',
-            ],
-            'language' => [
-                'required' => 'Language is required',
-            ],
-            'deposit_amount' => [
-                'required' => "Deposit amount is required",
-            ],
-            'deposit_type' => [
-                'required' => "Deposit type is required",
-            ],
-            'start_date' => [
-                'required' => "Start date is required",
-            ],
-            'rent_type' => [
-                'required' => "Rent type is required",
-            ],
-            'rent_duration' => [
-                'required' => "Rent duration is required",
-            ],
-            'status' => [
-                'required' => "Status is required",
-            ],
-        ],
+        'search_unit' => 'Search unit',        
         'errors' => [
             'not_found' => "Resident not found",
             'incorrect_email' => "Incorrect email address",
@@ -178,12 +129,12 @@ return [
             'add' => 'Add new contract',
             'delete' => 'Delete contract', 
             'pdf_only_desc' => 'Please note that only PDF files can be uploaded',
-            'saved' => 'Resident contract saved',
-            'deleted' => 'Resident contract deleted',
+            'saved' => 'Contract saved',
+            'deleted' => 'Contract deleted',
             'errors' => [
-                'not_found' => 'Resident contract not found',
-                'create' => 'Resident contract create error: ',
-                'deleted' => 'Resident contract Delete error: ',
+                'not_found' => 'Contract not found',
+                'create' => 'Contract create error: ',
+                'deleted' => 'Contract Delete error: ',
             ],
         ],
         'contact' => [
@@ -268,23 +219,6 @@ return [
         'service' => [
             'deleted' => 'Service removed from this building',
         ],
-        'validation' => [
-            'name' => [
-                'required' => 'Name is required',
-            ],
-            'floor_nr' => [
-                'required' => 'Floor number is required',
-            ],
-            'description' => [
-                'required' => 'Description is required',
-            ],
-            'label' => [
-                'required' => 'Label is required',
-            ],
-            'address_id' => [
-                'required' => 'Address is required',
-            ],
-        ],
         'errors' => [
             'not_found' => "Building not found",
             'manager_not_found' => "Property manager not found",
@@ -340,32 +274,6 @@ return [
             'outdoor_parking' => 'Outdoor parking',
             'motorbike_pitch' => 'Motorbike pitch'
         ],
-        'validation' => [
-            'name' => [
-                'required' => 'Name is required',
-            ],
-            'building' => [
-                'required' => 'Building is required',
-            ],
-            'monthly_rent_net' => [
-                'required' => 'Monthly rent is required',
-            ],
-            'monthly_maintenance' => [
-                'required' => 'Monthly maintenance is required',
-            ],
-            'floor' => [
-                'required' => 'Floor is required',
-            ],
-            'room_no' => [
-                'required' => 'Room number is required',
-            ],
-            'description' => [
-                'required' => 'Description is required',
-            ],
-            'resident' => [
-                'required' => 'Resident is required',
-            ]
-        ],
         'errors' => [
             'not_found' => "Unit not found",
             'create' => "Unit create error: ",
@@ -375,36 +283,7 @@ return [
             'resident_not_found' => "Resident not found",
             'deleted' => "Unit deleted error: ",
         ],
-    ],
-    'address' => [
-        'add' => 'Add address',
-        'name' => 'Address',
-        'country' => 'Country',
-        'street' => 'Street',
-        'house_num' => 'House Nr.',
-        'not_found' => 'Address not found',
-        'saved' => 'Address saved',
-        'state' => [
-            'label' => 'State',
-        ],
-        'validation' => [
-            'state' => [
-                'required' => 'State is required',
-            ],
-            'city' => [
-                'required' => 'City is required',
-            ],
-            'street' => [
-                'required' => 'Street is required',
-            ],
-            'house_num' => [
-                'required' => 'Street number is required',
-            ],
-            'zip' => [
-                'required' => 'Zip is required',
-            ],
-        ],
-    ],
+    ],   
     'pinboard' => [
         'title' => 'Pinboard',
         'title_label' => 'Title',
@@ -582,7 +461,7 @@ return [
         'primary_color' => 'Primary color',
         'accent_color' => 'Accent color',
         'iframe_enable' => 'Iframe enable',
-        'iframe_enable_desc' => 'In the resident portal a page with your free renting objects is indicated.',
+        'iframe_enable_desc' => 'In the resident portal a column with your free renting objects is indicated. Put here the URL with your objects, for example from ImmoScou24 or Homegate.',
         'cleanify_email' => [
             'label' => 'Cleanify Email',
             'description' => 'Cleanify allows cleaning companies to be compared and quoted free of charge.',
@@ -652,7 +531,7 @@ return [
         'public_title' => 'Make request public',
         'public_desc' => 'You can mark this request as public and make it visible to other persons in the building or quarter.',
         'visibility_title' => 'For whom to make visible?',
-        'visibility_desc' => 'Indicate whether residents can see within a building or even within the quarter. ',
+        'visibility_desc' => 'Indicate whether residents can see within a building or even within the quarter.',
         'send_notification_title' => 'Notify residents',
         'send_notification_desc' => 'You can inform the concerned residents via email about this public request.',
         'comments' => 'Comments',

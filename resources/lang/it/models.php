@@ -14,7 +14,7 @@ return [
         "logo" => "Logo",
         "circle_logo" => "Logo del cerchio",
         "favicon_icon" => "Icona Favicon",
-        "resident_logo" => "Logo dell'inquilino",
+        "resident_logo" => "Logo residente",
         "blank_pdf" => "PDF in bianco",
         'blank_pdf_desc' => 'Genera file PDF senza carta intestata in modo che possano essere stampati sulla tua carta intestata.',
         'font_family' => 'Famiglia di font',
@@ -34,30 +34,22 @@ return [
             'email_not_exists' => "Questa [:email] email non esiste",
             'password_reset_token_invalid' => "Questo token per la reimpostazione della password non è valido.",
             'deleted' => "Errore cancellato dall'utente: ",
-        ],
-        'validation' => [
-            'name' => [
-                'required' => 'Il nome è obbligatorio',
-            ],
-            'role' => [
-                'required' => 'Il ruolo è richiesto',
-            ],
-        ],
+        ],        
     ],
     'resident' => [
         "view" => "Vista",
-        "view_title" => "Vedi inquilino",
-        "edit_title" => "Modifica inquilino",
+        "view_title" => "Visualizza residente",
+        "edit_title" => "Modifica Residente",
         "download_credentials" => "Scarica le credenziali",
         "send_credentials" => "Mandare le credenziali",
         "credentials_sent" => "Invio delle credenziali",
-        "credentials_send_fail" => "File delle credenziali non trovato. Prova ad aggiornare la password dell'inquilino per rigenerarla",
-        "credentials_download_failed" => "File delle credenziali non trovato. Prova ad aggiornare la password dell'inquilino per rigenerarla",
-        "add" => "Aggiungi inquilino",
-        "saved" => "L'inquilino salvato",
-        "deleted" => "L'inquilino è stato cancellato",
+        "credentials_send_fail" => "File delle credenziali non trovato. Prova ad aggiornare la password residente per rigenerarla",
+        "credentials_download_failed" => "File delle credenziali non trovato. Prova ad aggiornare la password residente per rigenerarla",
+        "add" => "Aggiungi Residente",
+        "saved" => "Residente salvato",
+        "deleted" => "Residente cancellato",
         "status_changed" => "Stato cambiato",
-        "password_reset" => "Il reset della password dell'inquilino ha avuto successo",
+        "password_reset" => "Reset della password residente con successo",
         "update" => "Aggiornamento",
         "first_name" => "Nome",
         "last_name" => "Cognome",
@@ -80,53 +72,12 @@ return [
         ],
         'search_building' => 'Ricerca edificio',
         'search_unit' => 'Unità di ricerca',
-        'validation' => [
-            'first_name' => [
-                'required' => "Il nome è obbligatorio",
-            ],
-            'last_name' => [
-                'required' => "Il cognome è obbligatorio",
-            ],
-            'birth_date' => [
-                'required' => "La data di nascita è obbligatoria",
-            ],
-            'building' => [
-                'required' => "L'edificio è richiesto",
-            ],
-            'unit' => [
-                'required' => "L'unità è richiesta",
-            ],
-            'title' => [
-                'required' => "Il titolo è richiesto",
-            ],
-            'language' => [
-                'required' => "La lingua è richiesta",
-            ],
-            'deposit_amount' => [
-                'required' => "L'importo del deposito è richiesto",
-            ],
-            'deposit_type' => [
-                'required' => "Il tipo di deposito è richiesto",
-            ],
-            'start_date' => [
-                'required' => "La data d'inizio è obbligatoria",
-            ],
-            'rent_type' => [
-                'required' => "Il tipo di affitto è richiesto",
-            ],
-            'rent_duration' => [
-                'required' => "La durata dell'affitto è richiesta",
-            ],
-            'status' => [
-                'required' => "Lo stato è richiesto",
-            ],
-        ],
         'errors' => [
-            'not_found' => "L'inquilino non trovato",
+            'not_found' => "Residente non trovato",
             'incorrect_email' => "Indirizzo e-mail errato",
-            'create' => "L'inquilino crea un errore: ",
-            'update' => "Errore di aggiornamento dell'inquilino: ",
-            'deleted' => "Errore di cancellazione dell'inquilino: ",
+            'create' => "Residente crea errore: ",
+            'update' => "Errore nell'aggiornamento del residente: ",
+            'deleted' => "Residente Cancella errore: ",
             'not_allowed_change_status' => "Non è consentito modificare lo stato.",
         ],
         "building_card" => "Assegnare l'unità",
@@ -178,12 +129,12 @@ return [
             'add' => 'Aggiungere un nuovo contratto',
             'delete' => 'Cancellare il contratto',
             'pdf_only_desc' => 'Si prega di notare che solo i file PDF possono essere caricati',
-            'saved' => 'Contratto di locazione salvato',
-            'deleted' => 'Contratto di locazione cancellato',
+            'saved' => 'Contratto salvato',
+            'deleted' => 'Contratto cancellato',
             'errors' => [
-                'not_found' => 'Contratto di locazione non trovato',
-                'create' => 'Contratto di locazione creare errore: ',
-                'deleted' => "Contratto di locazione Cancellare l'errore: ",
+                'not_found' => 'Contratto non trovato',
+                'create' => 'Il contratto crea errore: ',
+                'deleted' => "Contratto Cancellare l'errore: ",
             ],
         ],
         'contact' => [
@@ -196,7 +147,7 @@ return [
             'total' => 'Totale',
         ],
         'credentials_pdf' => [
-            'resident_credentials' => 'Le credenziali dell\'inquilino',
+            'resident_credentials' => 'Credenziali di residenza',
             'username' => 'Nome utente',
             'url' => 'URL',
             'code' => 'Codice di sblocco personale',
@@ -204,11 +155,11 @@ return [
             'your_email' => 'Il tuo indirizzo e-mail',
             'email' => 'messaggio di posta elettronica',
             'born' => 'Berna',
-            'welcome' => 'Benvenuti nel portale degli inquilini della',
-            'content_1' => 'Siamo lieti di informarvi che è stato creato un account per voi nel totale dell\'inquilino e vi invieremo il codice di attivazione.',
+            'welcome' => 'Benvenuti nel portale dei residenti della',
+            'content_1' => 'Siamo lieti di informarvi che è stato creato un account per voi nel totale dei residenti e vi invieremo il codice di attivazione.',
             'offer' => 'Cosa offre l\'applicazione?',
             'offers' => '
-                <li>Con il dossier digitale dell\'inquilino avete accesso a tutti i documenti rilevanti, come il contratto di locazione, il regolamento interno o altri documenti relativi alla proprietà.</li>
+                <li>Con il dossier del residente digitale si ha accesso a tutti i documenti rilevanti, come il contratto di locazione, il regolamento interno o altri documenti relativi alla proprietà.</li>
                 <li>Il sistema di ticketing vi permette di elaborare le vostre richieste in modo semplice e senza complicazioni - potete comunicare le vostre preoccupazioni all\'amministrazione in qualsiasi momento e da qualsiasi luogo . </li>
                 <li>Puoi vendere o prestare oggetti al tuo quartiere sulla piazza del mercato e sull\'area di prestito . </li>
                 <li>Condividi le notizie con i tuoi vicini pubblicando un contributo. La bacheca è utilizzata anche dall\'amministrazione per la comunicazione, in modo che tutti siano sempre aggiornati .</li>
@@ -268,23 +219,6 @@ return [
         'service' => [
             "deleted" => "Servizio rimosso da questo edificio",
         ],
-        'validation' => [
-            'name' => [
-                "required" => "Il nome è obbligatorio",
-            ],
-            'floor_nr' => [
-                "required" => "Il numero di piano è obbligatorio",
-            ],
-            'description' => [
-                "required" => "È necessaria una descrizione",
-            ],
-            'label' => [
-                "required" => "L'etichetta è obbligatoria",
-            ],
-            'address_id' => [
-                "required" => "L'indirizzo è obbligatorio",
-            ],
-        ],
         'errors' => [
             'not_found' => "Edificio non trovato",
             'manager_not_found' => "Property manager non trovato",
@@ -326,10 +260,10 @@ return [
         "basement" => "Nel seminterrato",
         "attic" => "In soffitta",
         "empty_requests" => "Nessuna richiesta",
-        "assigned_resident" => "Assegnato inquilino",
-        "resident_assigned" => "L'inquilino assegnato",
-        "resident_unassigned" => "Un inquilino non assegnato",
-        'assignment' => 'Affittuari assegnati',
+        "assigned_resident" => "Residente assegnato",
+        "resident_assigned" => "Residente assegnato",
+        "resident_unassigned" => "Residente non assegnato",
+        'assignment' => 'Residenti assegnati',
         'type' => [
             "label" => "Tipo",
             "apartment" => "Appartamento",
@@ -339,72 +273,17 @@ return [
             'underground_parking_space' => 'Parcheggio sotterraneo',
             'outdoor_parking' => 'Parcheggio esterno',
             'motorbike_pitch' => 'Passo moto'
-        ],
-        'validation' => [
-            'name' => [
-                "required" => "Il nome è obbligatorio",
-            ],
-            'building' => [
-                "required" => "L'edificio è obbligatorio",
-            ],
-            'monthly_rent_net' => [
-                "required" => "L'affitto mensile è richiesto",
-            ],
-            'monthly_maintenance' => [
-                'required' => 'La manutenzione mensile è richiesta',
-            ],
-            'floor' => [
-                "required" => "Il pavimento è obbligatorio",
-            ],
-            'room_no' => [
-                "required" => "Il numero della camera è obbligatorio",
-            ],
-            'description' => [
-                "required" => "È necessaria una descrizione",
-            ],
-            'resident' => [
-                "required" => "È necessaria una descrizione",
-            ]
-        ],
+        ],        
         'errors' => [
             'not_found' => "Unità non trovata",
             'create' => "Unità crea errore: ",
             'update' => "Errore di aggiornamento dell'unità: ",
-            'resident_assign' => "L'inquilino assegna un errore: ",
-            'resident_not_assign' => "Affittuario non assegnato a questa unità",
-            'resident_not_found' => "L'inquilino non trovato",
+            'resident_assign' => "Errore nell'assegnazione dei residenti: ",
+            'resident_not_assign' => "Residente non assegnato a questa unità",
+            'resident_not_found' => "Residente non trovato",
             'deleted' => "Unità cancellata errore: ",
         ],
-    ],
-    'address' => [
-        "add" => "Aggiungi indirizzo",
-        "name" => "Indirizzo",
-        "country" => "Paese",
-        "street" => "Strada",
-        "house_num" => "Via Nr...",
-        "not_found" => "Indirizzo non trovato",
-        "saved" => "Indirizzo salvato",
-        'state' => [
-            "label" => "Stato",
-        ],
-        'validation' => [
-            'state' => [
-                "required" => "Lo stato è obbligatorio",
-            ],
-            'city' => [
-                "required" => "La città è obbligatoria",
-            ],
-            'street' => [
-                "required" => "La strada è obbligatoria",
-            ],
-            'house_num' => [
-                "required" => "Il numero civico è obbligatorio",
-            ],
-            'zip' => [
-                "required" => "E' richiesta la chiusura lampo",
-            ],
-        ],
-    ],
+    ],    
     'pinboard' => [
         "title" => "Bacheca",
         "title_label" => "Titolo",
@@ -538,7 +417,7 @@ return [
         'buildings_count' => 'Conteggio edifici',
         'total_units_count' => 'Totale unità di misura',
         'occupied_units_count' => 'Le unità occupate contano',
-        'active_residents_count' => 'Gli inquilini attivi contano',
+        'active_residents_count' => 'Nombre de résidents actifs',
         'assignment' => "Assegnazione di manager/amministratore",
         'errors' => [
             'not_found' => "Quartiere non trovato",
@@ -549,7 +428,7 @@ return [
         "title" => "Impostazioni immobiliari",
         "settings" => "Impostazioni",
         'saved' => "impostazioni utente salvate",
-        'residents_portal' => 'Portale inquilini',
+        'residents_portal' => 'Portale dei residenti',
         'iframe' => 'Iframe',
         'micro_apps' => 'Micro-Apps',
         'theme' => 'Tema',
@@ -577,12 +456,12 @@ return [
         "categories" => "Categorie",
         "templates" => "Modelli",
         "contact_enable" => "Attivare 'I miei contatti'",
-        'contact_enable_desc' => 'Gli inquilini possono vedere i dati di contatto dei partner di servizio coinvolti nel portale degli inquilini.',
+        'contact_enable_desc' => 'I residenti possono vedere i dati di contatto dei partner di servizio coinvolti nel portale residenti.',
         "mail_encryption" => "Crittografia",
         'primary_color' => 'Colore primario',
         'accent_color' => 'Colore d\'accento',
         'iframe_enable' => 'Attivare Iframe',
-        'iframe_enable_desc' => 'Nel portale degli affittuari è indicata una pagina con i vostri oggetti in affitto gratuito.',
+        'iframe_enable_desc' => 'Nel portale dei residenti è indicata una colonna con i vostri oggetti in affitto gratuito. Inserisci qui l\'URL con i tuoi oggetti, ad esempio da ImmoScou24 o Homegate.',
         'cleanify_email' => [
             'label' => "Pulire l'e-mail",
             'description' => "Cleanify consente alle imprese di pulizia di essere confrontate e quotate gratuitamente.",
@@ -594,11 +473,7 @@ return [
         ],
         'gocaution' => [
             'label' => 'Gocauzione',
-            'description' => "Il deposito cauzionale non richiede il deposito di un deposito cauzionale. Sia gli inquilini che i proprietari beneficiano del deposito cauzionale senza contanti di goCaution.",
-        ],
-        'iframe_url' => [
-            "label" => "URL Iframe",
-            "validation" => "Iframe URL dovrebbe essere un URL valido",
+            'description' => "Il deposito cauzionale non richiede il deposito di un deposito cauzionale. Sia i residenti che i proprietari beneficiano del deposito cauzionale senza contanti di goCaution.",
         ],
         'iframe_url' => [
             "label" => "URL Iframe",
@@ -656,15 +531,15 @@ return [
         'public_title' => 'Rendere pubblica la richiesta',
         'public_desc' => "È possibile contrassegnare questa richiesta come pubblica e renderla visibile ad altre persone nell'edificio o nel quartiere.",
         'visibility_title' => "Per chi rendere visibile?",
-        'visibility_desc' => "Indicare se gli inquilini possono vedere all'interno di un edificio o addirittura all'interno del quartiere. ",
-        'send_notification_title' => 'Informare gli inquilini',
-        'send_notification_desc' => "È possibile informare gli inquilini interessati via e-mail su questa richiesta pubblica.",
+        'visibility_desc' => "Indicare se i residenti possono vedere all'interno di un edificio o anche all'interno del quartiere.",
+        'send_notification_title' => 'Informare i residenti',
+        'send_notification_desc' => "È possibile informare i residenti interessati via e-mail su questa richiesta pubblica.",
         "comments" => "Commenti",
         "assigned_to" => "Assegnato a",
         "assign_providers" => "Assegnare i fornitori",
         "assign_managers" => "Assegnare i manager",
         "notify" => "Avvisare",
-        "public_legend" => "Impostare questa opzione per rendere la richiesta visibile a tutti i vicini inquilini",
+        "public_legend" => "Imposta questa opzione per rendere la richiesta visibile a tutti i vicini residenti",
         "conversation" => "Conversazione",
         'conversation_created' => "Commento alla conversazione creato",
         'internal_notice_saved' => "Avviso interno salvato",
@@ -765,8 +640,8 @@ return [
         ],
         'payer' => [
             'landlord' => 'Padrone di casa',
-            'resident' => 'Affittuario',
-            'resident/landlord' => 'Affittuario/Padrone di casa'
+            'resident' => 'Residente',
+            'resident/landlord' => 'Residente/Padrone di casa'
         ],
         'status' => [
             "label" => "Situazione",
@@ -797,7 +672,7 @@ return [
             "qualification" => "Selezionare la qualifica",
             "status" => "Selezionare lo stato",
             "due_date" => "Scegli la data di scadenza",
-            "resident" => "Cercate un inquilino",
+            "resident" => "Ricerca di un residente",
             "service" => "Cerca un servizio",
             "propertyManagers" => "Ricerca di manager",
             "visibility" => "Selezionare la visibilità",
@@ -830,7 +705,7 @@ return [
         ],
         'visibility' => [
             "label" => "Visibilità",
-            "resident" => "Soldato",
+            "resident" => "Privato",
             "quarter" => "Quartiere",
             "building" => "Edificio",
         ],
@@ -854,7 +729,7 @@ return [
             'customer_signature'=> 'Firma del cliente',
             'service_request' => 'Service Request',
             'contact_details' => 'Contact Details',
-            'contact_text' => 'Questi sono i dati di contatto dell\'attuale inquilino/proprietario dell\'unità abitativa',
+            'contact_text' => "Questi sono i dati di contatto dell'attuale residente/proprietario dell'unità abitativa.",
         ]
     ],
     'requestCategory' => [

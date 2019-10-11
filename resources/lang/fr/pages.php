@@ -14,6 +14,6 @@ return [
         "title" => "Demander des activités",
     ],
     'resident' => [
-        "title" => "Locataires",
+        "title" => "Résidents",
     ],
 ]; 

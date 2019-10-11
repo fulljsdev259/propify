@@ -89,8 +89,8 @@ return [
         "status_change_requeset" => "Qui è possibile modificare lo stato della richiesta.",
     ],
     "descriptions" => [
-        "address" => "La tua bacheca sarà visibile agli inquilini solo sul tuo indirizzo.",
-        "quarter" => "La tua bacheca sarà visibile solo agli inquilini del tuo quartiere.",
+        "address" => "La tua bacheca sarà visibile ai residenti solo sul tuo indirizzo.",
+        "quarter" => "La tua bacheca sarà visibile solo ai residenti all'interno del tuo quartiere.",
         "all" => "La tua bacheca sarà visibile a tutti.",
     ],
     "heading_info" => [
