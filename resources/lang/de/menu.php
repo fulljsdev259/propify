@@ -20,7 +20,7 @@ return [
     'registered' => 'Registriert',
     'about' => 'Über',
     'feedback' => 'Feedback',
-    'residents' => 'Mieter',
+    'residents' => 'Einwohner',
     'buildings' => 'Liegenschaften',
     'all_buildings' => 'Objekte',
     'units' => 'Einheiten',

@@ -148,10 +148,10 @@ return [
             ],
         ],
         'residentconversationsList' => [
-            'loadMore' => 'Charger {count} plus conversations avec les locataires',
+            'loadMore' => 'Charger {count} plus de conversations résidentes',
             'emptyPlaceholder' => [
-                'title' => "Il n'y a pas de conversation avec le locataire.",
-                'description' => "Ajouter un message au locataire à l'aide du formulaire ci-dessous et appuyez sur Entrée.",
+                'title' => "Il n'y a pas de conversation avec les résidents.",
+                'description' => "Ajouter un message au résident en utilisant le formulaire ci-dessous et appuyez sur Entrée.",
             ],
         ],
         'listingcommentsList' => [
