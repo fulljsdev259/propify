@@ -14,6 +14,7 @@ $factory->define(App\Models\Request::class, function (Faker $faker) {
     $solvedDate = ($status == Request::StatusDone) ? now() : null;
 
     return [
+        'creator_user_id' => App\Models\User::withRole('administrator')->inRandomOrder()->first()->id ?? null,
         'category_id' => $category->id,
         'resident_id' => $resident->id,
         'unit_id' => $resident->unit_id,
