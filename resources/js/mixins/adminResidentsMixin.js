@@ -50,11 +50,11 @@ export default (config = {}) => {
                 validationRules: {
                     first_name: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.tenant.first_name')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.first_name')})
                     }],
                     last_name: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.tenant.last_name')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.last_name')})
                     }],
                     language: [{
                         required: true,
@@ -80,7 +80,7 @@ export default (config = {}) => {
                     }],
                     birth_date: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.tenant.birth_date')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.birth_date')})
                     }],
                     title: [{
                         required: true,

@@ -69,7 +69,7 @@
                 validationRules: {
                     phone_number: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.tenant.mobile_phone')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.mobile_phone')})
                     }],
                 }
             }
