@@ -174,7 +174,7 @@
 
                             <el-col :md="6">
                                 <el-form-item
-                                    v-if="model.type <= 4" 
+                                    v-if="model.type >=1 && model.type <= 4" 
                                     :label="$t('models.unit.sq_meter')" 
                                     prop="sq_meter">
 
@@ -313,6 +313,10 @@
             "model.type" () {
                 if(this.model.type >= 3)
                     this.model.attic = false;
+                    
+                if(this.model.type >= 5) {
+                    this.model.sq_meter = '';
+                }
             }
         }
         
