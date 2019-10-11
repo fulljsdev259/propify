@@ -176,7 +176,7 @@
                         <el-row class="last-form-row" :gutter="20">
                             <el-col :md="8">
                                 <el-form-item :label="$t('models.unit.floor')" :rules="validationRules.floor" prop="floor">
-                                    <el-input autocomplete="off" type="number" v-model="model.floor"></el-input>
+                                    <el-input autocomplete="off" type="number" min="-3" v-model="model.floor"></el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :md="8">
@@ -212,6 +212,12 @@
             Heading,
             Card,
             AddActions
+        },
+        watch: {
+            "model.floor" () {
+                if(this.model.floor < -3)
+                    this.model.floor = -3; 
+            }
         }
     }
 </script>
