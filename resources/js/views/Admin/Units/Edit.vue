@@ -305,11 +305,13 @@
                 "deleteUnit"
             ]),
             hasAttic(id) {
-                this.buildings.forEach(building => {
-                    if(building.id == this.model.buildings_id)
-                        return building.attic;
+                let hasAttic = false;
+                this.buildings.map(building => {
+                    if(building.id == this.model.building_id) {
+                        hasAttic = building.attic;
+                    }
                 });
-                return false;
+                return hasAttic;
             }
         },
         watch: {
@@ -326,7 +328,7 @@
                 }
             },
             "model.buildings_id" () {
-                if(this.hasAttic(this.model.buildings_id) == false) 
+                if(this.hasAttic(this.model.building_id) == false) 
                     this.model.attic = false;
             },
         }

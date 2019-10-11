@@ -307,7 +307,8 @@ export default (config = {}) => {
                         //     this.$set(this.model, 'resident_id', this.model.resident.id);
                         //     this.remoteSearchResidents(`${this.model.resident.first_name}`);
                         // }
-                        
+                        if(this.model.building.attic == false)
+                            this.model.attic = false;
                         this.buildings.push(this.model.building);
                         // if (config.withRelation && this.model.building_id) {
                         //     const building = await this.getBuilding({id: this.model.building_id});
