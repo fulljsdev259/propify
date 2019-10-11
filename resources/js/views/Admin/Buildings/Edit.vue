@@ -23,7 +23,7 @@
                         <el-form :model="model" label-position="top" label-width="192px" ref="form">
                             <el-row :gutter="20">
                                 <el-col :md="10">
-                                    <el-form-item :label="$t('models.address.street')" :rules="validationRules.street"
+                                    <el-form-item :label="$t('general.street')" :rules="validationRules.street"
                                                   prop="street"
                                                   style="max-width: 512px;">
                                         <el-input type="text" v-model="model.street" v-on:change="setBuildingName"></el-input>
@@ -60,10 +60,10 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.address.state.label')"
+                                    <el-form-item :label="$t('general.state')"
                                                   :rules="validationRules.state_id"
                                                   prop="state_id" style="max-width: 512px;">
-                                        <el-select :placeholder="$t('models.address.state.label')"
+                                        <el-select :placeholder="$t('general.state')"
                                                    style="display: block"
                                                    v-model="model.state_id">
                                             <el-option :key="state.id" :label="state.name" :value="state.id"

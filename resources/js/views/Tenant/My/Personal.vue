@@ -86,15 +86,15 @@
                 validationRules: {
                     first_name: [{
                         required: true,
-                        message: this.$t('models.tenant.validation.first_name.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.tenant.first_name')})
                     }],
                     last_name: [{
                         required: true,
-                        message: this.$t('models.tenant.validation.last_name.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.tenant.last_name')})
                     }],
                     birth_date: [{
                         required: true,
-                        message: this.$t('models.tenant.validation.birth_date.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.tenant.birth_date')})
                     }]
                 }
             }

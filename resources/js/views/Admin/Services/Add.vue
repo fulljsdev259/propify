@@ -74,7 +74,7 @@
                         <card :loading="loading" :header="$t('models.service.contact_details')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.address.street')" :rules="validationRules.street" prop="address.street">
+                                    <el-form-item :label="$t('general.street')" :rules="validationRules.street" prop="address.street">
                                         <el-input type="text" v-model="model.address.street"></el-input>
                                     </el-form-item>
                                 </el-col>
@@ -93,8 +93,8 @@
                             </el-row>
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item class="label-block" :label="$t('models.address.state.label')" :rules="validationRules.state_id" prop="address.state_id">
-                                        <el-select :placeholder="$t('models.address.state.label')" style="display: block"
+                                    <el-form-item class="label-block" :label="$t('general.state')" :rules="validationRules.state_id" prop="address.state_id">
+                                        <el-select :placeholder="$t('general.state')" style="display: block"
                                                    v-model="model.address.state_id">
                                             <el-option :key="state.id" :label="state.name" :value="state.id"
                                                        v-for="state in states"></el-option>

@@ -60,7 +60,7 @@ export default (config = {}) => {
                 validationRules: {
                     name: [{
                         required: true,
-                        message: this.$t("models.building.validation.name.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.name')})
                     }],
                     // description: [{
                     //     required: true,
@@ -68,31 +68,31 @@ export default (config = {}) => {
                     // }],
                     floor_nr: [{
                         required: true,
-                        message: this.$t("models.building.validation.floor_nr.required")
+                        message: this.$t('validation.required',{attribute: this.$t('models.building.floor_nr')})
                     }],
                     floor: [{
                         required: true,
-                        message: this.$t("models.unit.validation.floor.required")
+                        message: this.$t('validation.required',{attribute: this.$t('models.building.floors')})
                     }],
                     state_id: [{
                         required: true,
-                        message: this.$t('models.address.validation.state.required')
+                        message: this.$t('validation.required',{attribute: this.$t('general.state')})
                     }],
                     city: [{
                         required: true,
-                        message: this.$t('models.address.validation.city.required')
+                        message: this.$t('validation.required',{attribute: this.$t('general.city')})
                     }],
                     street: [{
                         required: true,
-                        message: this.$t('models.address.validation.street.required')
+                        message: this.$t('validation.required',{attribute: this.$t('general.street')})
                     }],
                     house_num: [{
                         required: true,
-                        message: this.$t('models.address.validation.house_num.required')
+                        message: this.$t('validation.required',{attribute: this.$t('general.house_num')})
                     }],
                     zip: [{
                         required: true,
-                        message: this.$t('models.address.validation.zip.required')
+                        message: this.$t('validation.required',{attribute: this.$t('general.zip')})
                     }],
                 },
                 loading: {

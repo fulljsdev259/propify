@@ -34,15 +34,7 @@ return [
             'email_not_exists' => "This [:email] email not exist",
             'password_reset_token_invalid' => "This password reset token is invalid.",
             'deleted' => "User deleted error: ",
-        ],
-        'validation' => [
-            'name' => [
-                'required' => 'Name is required',
-            ],
-            'role' => [
-                'required' => 'Role is required',
-            ],
-        ],
+        ],        
     ],
     'tenant' => [
         'view' => 'View',
@@ -80,48 +72,7 @@ return [
             'name' => 'Unit',
         ],
         'search_building' => 'Search building',
-        'search_unit' => 'Search unit',
-        'validation' => [
-            'first_name' => [
-                'required' => 'First name is required',
-            ],
-            'last_name' => [
-                'required' => 'Last name is required',
-            ],
-            'birth_date' => [
-                'required' => 'Birth date is required',
-            ],
-            'building' => [
-                'required' => 'Building is required',
-            ],
-            'unit' => [
-                'required' => 'Unit is required',
-            ],
-            'title' => [
-                'required' => 'Title is required',
-            ],
-            'language' => [
-                'required' => 'Language is required',
-            ],
-            'deposit_amount' => [
-                'required' => "Deposit amount is required",
-            ],
-            'deposit_type' => [
-                'required' => "Deposit type is required",
-            ],
-            'start_date' => [
-                'required' => "Start date is required",
-            ],
-            'rent_type' => [
-                'required' => "Rent type is required",
-            ],
-            'rent_duration' => [
-                'required' => "Rent duration is required",
-            ],
-            'status' => [
-                'required' => "Status is required",
-            ],
-        ],
+        'search_unit' => 'Search unit',        
         'errors' => [
             'not_found' => "Tenant not found",
             'incorrect_email' => "Incorrect email address",
@@ -270,23 +221,6 @@ return [
         'service' => [
             'deleted' => 'Service removed from this building',
         ],
-        'validation' => [
-            'name' => [
-                'required' => 'Name is required',
-            ],
-            'floor_nr' => [
-                'required' => 'Floor number is required',
-            ],
-            'description' => [
-                'required' => 'Description is required',
-            ],
-            'label' => [
-                'required' => 'Label is required',
-            ],
-            'address_id' => [
-                'required' => 'Address is required',
-            ],
-        ],
         'errors' => [
             'not_found' => "Building not found",
             'manager_not_found' => "Property manager not found",
@@ -342,32 +276,6 @@ return [
             'outdoor_parking' => 'Outdoor parking',
             'motorbike_pitch' => 'Motorbike pitch'
         ],
-        'validation' => [
-            'name' => [
-                'required' => 'Name is required',
-            ],
-            'building' => [
-                'required' => 'Building is required',
-            ],
-            'monthly_rent_net' => [
-                'required' => 'Monthly rent is required',
-            ],
-            'monthly_maintenance' => [
-                'required' => 'Monthly maintenance is required',
-            ],
-            'floor' => [
-                'required' => 'Floor is required',
-            ],
-            'room_no' => [
-                'required' => 'Room number is required',
-            ],
-            'description' => [
-                'required' => 'Description is required',
-            ],
-            'tenant' => [
-                'required' => 'Tenant is required',
-            ]
-        ],
         'errors' => [
             'not_found' => "Unit not found",
             'create' => "Unit create error: ",
@@ -377,36 +285,7 @@ return [
             'tenant_not_found' => "Tenant not found",
             'deleted' => "Unit deleted error: ",
         ],
-    ],
-    'address' => [
-        'add' => 'Add address',
-        'name' => 'Address',
-        'country' => 'Country',
-        'street' => 'Street',
-        'house_num' => 'House Nr.',
-        'not_found' => 'Address not found',
-        'saved' => 'Address saved',
-        'state' => [
-            'label' => 'State',
-        ],
-        'validation' => [
-            'state' => [
-                'required' => 'State is required',
-            ],
-            'city' => [
-                'required' => 'City is required',
-            ],
-            'street' => [
-                'required' => 'Street is required',
-            ],
-            'house_num' => [
-                'required' => 'Street number is required',
-            ],
-            'zip' => [
-                'required' => 'Zip is required',
-            ],
-        ],
-    ],
+    ],   
     'pinboard' => [
         'title' => 'Pinboard',
         'title_label' => 'Title',

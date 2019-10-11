@@ -34,15 +34,7 @@ return [
             'email_not_exists' => "Die E-Mail [:email] existiert nicht in unserer Datenbank.",
             'password_reset_token_invalid' => "Das Token zum Zurücksetzen des Passworts ist ungültig.",
             'deleted' => "Fehler beim Löschen durch den Benutzer: ",
-        ],
-        'validation' => [
-            'name' => [
-                'required' => 'Name ist obligatorisch',
-            ],
-            'role' => [
-                'required' => 'Rolle ist obligatorisch',
-            ],
-        ],
+        ],        
     ],
     'tenant' => [
         'view' => 'Mieter-Profil',
@@ -80,48 +72,7 @@ return [
             'name' => 'Einheit',
         ],
         'search_building' => 'Liegenschaft suchen',
-        'search_unit' => 'Einheit suchen',
-        'validation' => [
-            'first_name' => [
-                'required' => 'Vorname ist obligatorisch',
-            ],
-            'last_name' => [
-                'required' => 'Name ist obligatorisch',
-            ],
-            'birth_date' => [
-                'required' => 'Geburtsdatum ist obligatorisch',
-            ],
-            'building' => [
-                'required' => 'Liegenschaft ist obligatorisch',
-            ],
-            'unit' => [
-                'required' => 'Einheit ist obligatorisch',
-            ],
-            'title' => [
-                'required' => 'Anrede ist obligatorisch',
-            ],
-            'language' => [
-                'required' => 'Sprache ist obligatorisch',
-            ],
-            'deposit_amount' => [
-                'required' => "Der Einzahlungsbetrag ist erforderlich.",
-            ],
-            'deposit_type' => [
-                'required' => "Die Einzahlungsart ist erforderlich.",
-            ],
-            'start_date' => [
-                'required' => "Startdatum ist erforderlich",
-            ],
-            'rent_type' => [
-                'required' => "Mietart ist erforderlich",
-            ],
-            'rent_duration' => [
-                'required' => "Mietdauer ist erforderlich",
-            ],
-            'status' => [
-                'required' => "Status ist erforderlich",
-            ],
-        ],
+        'search_unit' => 'Einheit suchen',        
         'errors' => [
             'not_found' => "Mieter nicht gefunden",
             'incorrect_email' => "Falsche E-Mail Adresse",
@@ -269,23 +220,6 @@ return [
         'service' => [
             'deleted' => 'Dienstleister entfernt',
         ],
-        'validation' => [
-            'name' => [
-                'required' => 'Name ist obligatorisch',
-            ],
-            'floor_nr' => [
-                'required' => 'Etage ist obligatorisch',
-            ],
-            'description' => [
-                'required' => 'Beschreibung ist obligatorisch',
-            ],
-            'label' => [
-                'required' => 'Label ist obligatorisch',
-            ],
-            'address_id' => [
-                'required' => 'Adresse ist obligatorisch',
-            ],
-        ],
         'errors' => [
             'not_found' => "Liegenschaft nicht gefunden.",
             'manager_not_found' => "Bewirtschafter nicht gefunden",
@@ -341,32 +275,6 @@ return [
             'outdoor_parking' => 'Aussenparkplatz',
             'motorbike_pitch' => 'Motorradplatz'
         ],
-        'validation' => [
-            'name' => [
-                'required' => 'Name ist obligatorisch',
-            ],
-            'building' => [
-                'required' => 'Liegenschaft ist obligatorisch',
-            ],
-            'monthly_rent_net' => [
-                'required' => 'Monatsmiete ist obligatorisch',
-            ],
-            'monthly_maintenance' => [
-                'required' => 'Eine monatliche Wartung ist erforderlich.',
-            ],
-            'floor' => [
-                'required' => 'Etage ist obligatorisch',
-            ],
-            'room_no' => [
-                'required' => 'Nummer der Einheit ist obligatorisch',
-            ],
-            'description' => [
-                'required' => 'Beschreibung ist obligatorisch',
-            ],
-            'tenant' => [
-                'required' => 'Mieter ist erforderlich',
-            ]
-        ],
         'errors' => [
             'not_found' => "Einheit nicht gefunden",
             'create' => "Fehler beim Erstellen der Einheit: ",
@@ -376,36 +284,7 @@ return [
             'tenant_not_found' => "Mieter nicht gefunden",
             'deleted' => "Fehler beim Löschen der Einheit: ",
         ],
-    ],
-    'address' => [
-        'add' => 'Adresse hinzufügen',
-        'name' => 'Address',
-        'country' => 'Kanton',
-        'street' => 'Strasse',
-        'house_num' => 'Hausnummer',
-        'not_found' => 'Adresse nicht gefunden',
-        'saved' => 'Adresse gespeichert',
-        'state' => [
-            'label' => 'Kanton',
-        ],
-        'validation' => [
-            'state' => [
-                'required' => 'Kanton ist obligatorisch',
-            ],
-            'city' => [
-                'required' => 'Ort ist obligatorisch',
-            ],
-            'street' => [
-                'required' => 'Strasse ist obligatorisch',
-            ],
-            'house_num' => [
-                'required' => 'Hausnummer ist obligatorisch',
-            ],
-            'zip' => [
-                'required' => 'Postleitzahl ist obligatorisch',
-            ],
-        ],
-    ],
+    ],   
     'pinboard' => [
         'title' => 'Pinnwand',
         'title_label' => 'Betreff',

@@ -34,15 +34,7 @@ return [
             'email_not_exists' => "Questa [:email] email non esiste",
             'password_reset_token_invalid' => "Questo token per la reimpostazione della password non è valido.",
             'deleted' => "Errore cancellato dall'utente: ",
-        ],
-        'validation' => [
-            'name' => [
-                'required' => 'Il nome è obbligatorio',
-            ],
-            'role' => [
-                'required' => 'Il ruolo è richiesto',
-            ],
-        ],
+        ],        
     ],
     'tenant' => [
         "view" => "Vista",
@@ -81,47 +73,6 @@ return [
         ],
         'search_building' => 'Ricerca edificio',
         'search_unit' => 'Unità di ricerca',
-        'validation' => [
-            'first_name' => [
-                'required' => "Il nome è obbligatorio",
-            ],
-            'last_name' => [
-                'required' => "Il cognome è obbligatorio",
-            ],
-            'birth_date' => [
-                'required' => "La data di nascita è obbligatoria",
-            ],
-            'building' => [
-                'required' => "L'edificio è richiesto",
-            ],
-            'unit' => [
-                'required' => "L'unità è richiesta",
-            ],
-            'title' => [
-                'required' => "Il titolo è richiesto",
-            ],
-            'language' => [
-                'required' => "La lingua è richiesta",
-            ],
-            'deposit_amount' => [
-                'required' => "L'importo del deposito è richiesto",
-            ],
-            'deposit_type' => [
-                'required' => "Il tipo di deposito è richiesto",
-            ],
-            'start_date' => [
-                'required' => "La data d'inizio è obbligatoria",
-            ],
-            'rent_type' => [
-                'required' => "Il tipo di affitto è richiesto",
-            ],
-            'rent_duration' => [
-                'required' => "La durata dell'affitto è richiesta",
-            ],
-            'status' => [
-                'required' => "Lo stato è richiesto",
-            ],
-        ],
         'errors' => [
             'not_found' => "L'inquilino non trovato",
             'incorrect_email' => "Indirizzo e-mail errato",
@@ -270,23 +221,6 @@ return [
         'service' => [
             "deleted" => "Servizio rimosso da questo edificio",
         ],
-        'validation' => [
-            'name' => [
-                "required" => "Il nome è obbligatorio",
-            ],
-            'floor_nr' => [
-                "required" => "Il numero di piano è obbligatorio",
-            ],
-            'description' => [
-                "required" => "È necessaria una descrizione",
-            ],
-            'label' => [
-                "required" => "L'etichetta è obbligatoria",
-            ],
-            'address_id' => [
-                "required" => "L'indirizzo è obbligatorio",
-            ],
-        ],
         'errors' => [
             'not_found' => "Edificio non trovato",
             'manager_not_found' => "Property manager non trovato",
@@ -341,33 +275,7 @@ return [
             'underground_parking_space' => 'Parcheggio sotterraneo',
             'outdoor_parking' => 'Parcheggio esterno',
             'motorbike_pitch' => 'Passo moto'
-        ],
-        'validation' => [
-            'name' => [
-                "required" => "Il nome è obbligatorio",
-            ],
-            'building' => [
-                "required" => "L'edificio è obbligatorio",
-            ],
-            'monthly_rent_net' => [
-                "required" => "L'affitto mensile è richiesto",
-            ],
-            'monthly_maintenance' => [
-                'required' => 'La manutenzione mensile è richiesta',
-            ],
-            'floor' => [
-                "required" => "Il pavimento è obbligatorio",
-            ],
-            'room_no' => [
-                "required" => "Il numero della camera è obbligatorio",
-            ],
-            'description' => [
-                "required" => "È necessaria una descrizione",
-            ],
-            'tenant' => [
-                "required" => "È necessaria una descrizione",
-            ]
-        ],
+        ],        
         'errors' => [
             'not_found' => "Unità non trovata",
             'create' => "Unità crea errore: ",
@@ -377,36 +285,7 @@ return [
             'tenant_not_found' => "L'inquilino non trovato",
             'deleted' => "Unità cancellata errore: ",
         ],
-    ],
-    'address' => [
-        "add" => "Aggiungi indirizzo",
-        "name" => "Indirizzo",
-        "country" => "Paese",
-        "street" => "Strada",
-        "house_num" => "Via Nr...",
-        "not_found" => "Indirizzo non trovato",
-        "saved" => "Indirizzo salvato",
-        'state' => [
-            "label" => "Stato",
-        ],
-        'validation' => [
-            'state' => [
-                "required" => "Lo stato è obbligatorio",
-            ],
-            'city' => [
-                "required" => "La città è obbligatoria",
-            ],
-            'street' => [
-                "required" => "La strada è obbligatoria",
-            ],
-            'house_num' => [
-                "required" => "Il numero civico è obbligatorio",
-            ],
-            'zip' => [
-                "required" => "E' richiesta la chiusura lampo",
-            ],
-        ],
-    ],
+    ],    
     'pinboard' => [
         "title" => "Bacheca",
         "title_label" => "Titolo",

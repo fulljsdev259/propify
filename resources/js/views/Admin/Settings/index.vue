@@ -37,7 +37,7 @@
                                                     </el-form-item>
                                                 </el-col>
                                                 <el-col :md="12">
-                                                    <el-form-item :label="$t('models.address.street')" :rules="validationRules.street"
+                                                    <el-form-item :label="$t('general.street')" :rules="validationRules.street"
                                                                   prop="address.street">
                                                         <el-input autocomplete="off" type="text" v-model="model.address.street"></el-input>
                                                     </el-form-item>
@@ -58,8 +58,8 @@
                                                 <el-col :md="12">
                                                     <el-form-item :rules="validationRules.state_id"
                                                                   prop="address.state.id">
-                                                        <label class="card-label">{{$t('models.address.state.label')}}</label>
-                                                        <el-select :placeholder="$t('models.address.state.label')" style="display: block"
+                                                        <label class="card-label">{{$t('general.state')}}</label>
+                                                        <el-select :placeholder="$t('general.state')" style="display: block"
                                                                    v-model="model.address.state.id">
                                                             <el-option :key="state.id" :label="state.name" :value="state.id"
                                                                        v-for="state in states"></el-option>
@@ -243,7 +243,7 @@
                                                     <el-form-item :rules="validationRules.mail_powered_by"
                                                                   prop="email_powered_by">
                                                         <label class="card-label">{{$t('models.settings.mail_powered_by.label')}}</label>
-                                                        <el-select :placeholder="$t('models.address.state.label')" style="display: block"
+                                                        <el-select :placeholder="$t('general.state')" style="display: block"
                                                                    v-model="model.email_powered_by">
                                                             <el-option :label="$t('general.placeholders.select')" value=""></el-option>
                                                             <el-option :key="item.label+item.value" :label="$t('models.settings.powered_by')+' '+item.label" :value="item.value"
@@ -662,7 +662,7 @@
                     ],
                     name: [{
                         required: true,
-                        message: this.$t("models.user.validation.name.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.name')})
                     }],
                     iframe_url: [{
                         type: 'url',
