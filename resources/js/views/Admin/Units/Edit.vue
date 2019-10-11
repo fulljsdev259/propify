@@ -179,7 +179,7 @@
                                     </el-input>
                                 </el-form-item>
                             </el-col>
-                            <el-col :md="12" style="display: flex">
+                            <el-col :md="12" style="display: flex" v-if="model.type == 1 || model.type == 2">
                                 <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic"
                                               class="switch-wrapper">
                                     <el-switch v-model="model.attic">
@@ -305,6 +305,10 @@
             "model.floor" () {
                 if(this.model.floor < -3)
                     this.model.floor = -3; 
+            },
+            "model.type" () {
+                if(this.model.type >= 3)
+                    this.model.attic = false;
             }
         }
         
