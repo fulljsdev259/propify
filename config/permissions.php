@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'tenant' => [
+    'resident' => [
         'list-pinboard',
         'list-listing',
         'list-request',
@@ -9,16 +9,16 @@ return [
         'add-listing',
         'add-comment',
         'add-request',
-        'add-request_tenant',
+        'add-request_resident',
         'add-cleanify_request',
         'view-settings',
-        'view-tenants_statistics',
+        'view-residents_statistics',
         'edit-request',
         'delete-comment',
         'add_media_upload-pinboard',
         'add_media_upload-listing',
-        'add_media_upload-tenant',
-        'delete_media_upload-tenant',
+        'add_media_upload-resident',
+        'delete_media_upload-resident',
         'add_media_upload-request',
         'delete_media_upload-request',
         'view-pinboard',
@@ -32,11 +32,11 @@ return [
     ],
     'manager' => [
         'list-user',
-        'list-tenant',
-        'view-tenant',
-        'add-tenant',
-        'edit-tenant',
-        'delete-tenant',
+        'list-resident',
+        'view-resident',
+        'add-resident',
+        'edit-resident',
+        'delete-resident',
         'add-comment',
         'edit-comment',
         'delete-comment',
@@ -100,8 +100,8 @@ return [
         'delete_media_upload-pinboard',
         'add_media_upload-listing',
         'delete_media_upload-listing',
-        'add_media_upload-tenant',
-        'delete_media_upload-tenant',
+        'add_media_upload-resident',
+        'delete_media_upload-resident',
         'add_media_upload-request',
         'delete_media_upload-request',
         'view-property_manager',
@@ -112,12 +112,12 @@ return [
         ['add-user', 'Add User', 'add user'],
         ['edit-user', 'Edit User', 'edit existing user'],
         ['delete-user', 'Delete User', 'delete existing user'],
-        // Tenant
-        ['list-tenant', 'List Tenants', 'list tenants'],
-        ['view-tenant', 'View Tenant', 'view tenant'],
-        ['add-tenant', 'Add Tenant', 'add tenant'],
-        ['edit-tenant', 'Edit Tenant', 'edit existing tenant'],
-        ['delete-tenant', 'Delete Tenant', 'delete existing tenant'],
+        // Resident
+        ['list-resident', 'List Residents', 'list residents'],
+        ['view-resident', 'View Resident', 'view resident'],
+        ['add-resident', 'Add Resident', 'add resident'],
+        ['edit-resident', 'Edit Resident', 'edit existing resident'],
+        ['delete-resident', 'Delete Resident', 'delete existing resident'],
         // Comment
         ['add-comment', 'Add Comment', 'add comment'],
         ['edit-comment', 'Edit Comment', 'edit existing comment'],
@@ -203,7 +203,7 @@ return [
         ['add-cleanify_request', 'Add cleanify requests', 'add cleanify requests'],
 
         //statistics
-        ['view-tenants_statistics', 'View tenants statistics', 'view tenants statistics'],
+        ['view-residents_statistics', 'View residents statistics', 'view residents statistics'],
         ['view-requests_statistics', 'View requests statistics', 'view requests statistics'],
         ['view-buildings_statistics', 'View buildings statistics', 'view buildings statistics'],
         ['view-all_statistics', 'View all statistics', 'view all statistics'],
@@ -239,8 +239,8 @@ return [
         ['delete_media_upload-pinboard', 'Add media upload pinboard', 'add media upload pinboard'],
         ['add_media_upload-listing', 'Add media upload listing', 'add media upload listing'],
         ['delete_media_upload-listing', 'Add media upload listing', 'add media upload listing'],
-        ['add_media_upload-tenant', 'Add media upload tenant', 'add media upload tenant'],
-        ['delete_media_upload-tenant', 'Add media upload tenant', 'add media upload tenant'],
+        ['add_media_upload-resident', 'Add media upload resident', 'add media upload resident'],
+        ['delete_media_upload-resident', 'Add media upload resident', 'add media upload resident'],
         ['add_media_upload-request', 'Add media upload request', 'add media upload request'],
         ['delete_media_upload-request', 'Add media upload request', 'add media upload request'],
     ]
