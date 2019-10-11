@@ -89,8 +89,8 @@ return [
         "status_change_requeset" => "Hier können Sie den Status der Anfrage ändern.",
     ],
     "descriptions" => [
-        "address" => "Ihre Pinnwand ist nur für Mieter auf Ihrer Adresse sichtbar.",
-        "quarter" => "Ihre Pinnwand ist nur für Mieter auf Ihrem Quartier sichtbar.",
+        "address" => "Ihre Pinnwand ist nur für Bewohner Ihrer Adresse sichtbar.",
+        "quarter" => "Ihre Pinnwand ist nur für die Bewohner Ihres Quartiers sichtbar.",
         "all" => "Deine Pinnwand wird von jedem gesehen werden können.",
     ],
     "heading_info" => [

@@ -89,8 +89,8 @@ return [
         "status_change_requeset" => "Vous pouvez modifier ici le statut de la demande.",
     ],
     "descriptions" => [
-        "address" => "Votre tableau d'affichage sera visible pour les locataires sur votre adresse seulement.",
-        "quarter" => "Votre tableau d'affichage ne sera visible que pour les locataires de votre quartier.",
+        "address" => "Votre panneau d'affichage sera visible pour les résidents sur votre adresse seulement.",
+        "quarter" => "Votre panneau d'affichage ne sera visible que pour les résidents de votre quartier.",
         "all" => "Votre tableau d'affichage pourra être vu par tout le monde.",
     ],
     "heading_info" => [
