@@ -180,7 +180,11 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :md="8">
-                                <el-form-item :label="$t('models.unit.sq_meter')" prop="sq_meter">
+                                <el-form-item
+                                     v-if="model.type <= 4"
+                                     :label="$t('models.unit.sq_meter')" 
+                                     prop="sq_meter">
+
                                     <el-input autocomplete="off" type="number" v-model="model.sq_meter"></el-input>
                                 </el-form-item>
                             </el-col>

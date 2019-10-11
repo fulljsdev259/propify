@@ -173,7 +173,11 @@
                             </el-col>
 
                             <el-col :md="6">
-                                <el-form-item :label="$t('models.unit.sq_meter')" prop="sq_meter">
+                                <el-form-item
+                                    v-if="model.type <= 4" 
+                                    :label="$t('models.unit.sq_meter')" 
+                                    prop="sq_meter">
+
                                     <el-input autocomplete="off" type="number" v-model="model.sq_meter">
                                         <template slot="prepend">m2</template>
                                     </el-input>
