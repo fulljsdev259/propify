@@ -58,10 +58,12 @@
                     label: 'general.name',
                     width: 230,
                     prop: 'name'
-                }, {
-                    label: 'models.quarter.count_of_buildings',
-                    prop: 'count_of_buildings'
-                }, {
+                }, 
+                // {
+                //     label: 'models.quarter.count_of_buildings',
+                //     prop: 'count_of_buildings'
+                // }, 
+                {
                     label: 'models.quarter.buildings_count',
                     prop: 'buildings_count'
                 }, {

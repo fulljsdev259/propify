@@ -14,7 +14,7 @@
                                     <el-input type="text" v-model="model.name"/>
                                 </el-form-item>
                             </el-col>
-                            <el-col :md="12">
+                            <!-- <el-col :md="12">
                                 <el-form-item class="label-block" :label="$t('models.quarter.count_of_buildings')"
                                               prop="title">
                                     <el-select style="display: block" 
@@ -27,9 +27,9 @@
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
-                            </el-col>
+                            </el-col> -->
                             <el-col :md="12">
-                                <el-row :gutter="10">
+                                <el-row :gutter="20">
                                     <el-col :md="8">
                                         <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
                                                       prop="zip">

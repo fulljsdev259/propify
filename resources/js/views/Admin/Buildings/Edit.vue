@@ -112,6 +112,20 @@
                                         <el-input type="text" v-model="model.internal_building_id"></el-input>
                                     </el-form-item>
                                 </el-col>
+                                <!-- <el-col :span="12">
+                                    <el-form-item :label="$t('models.building.under_floor')"
+                                                  :rules="validationRules.floor"
+                                                  :prop="'floor.' + 0">
+                                        <el-input type="number"
+                                                  :min="0"
+                                                  v-model.number="model.floor"></el-input>
+                                    </el-form-item>
+                                </el-col> -->
+                                <el-col :span="4">
+                                    <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic" class="switch-wrapper">
+                                        <el-switch v-model="model.attic"/>
+                                    </el-form-item>
+                                </el-col>
                             </el-row>
                         </el-form>
                     </el-tab-pane>
@@ -855,6 +869,22 @@
 <style lang="scss" scoped>
     .last-form-row {
         margin-bottom: -22px;
+    }
+    .switch-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 40px;
+        .el-form-item__content {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+        .el-form-item__label {
+            text-align: left;
+            float: none;
+            line-height: 1.4em;
+        }
     }
 
     .mt15 {
