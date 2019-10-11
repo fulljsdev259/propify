@@ -34,15 +34,7 @@ return [
             'email_not_exists' => "Ce [:email] email n'existe pas",
             'password_reset_token_invalid' => "Ce jeton de réinitialisation de mot de passe n'est pas valide.",
             'deleted' => "Erreur de suppression par l'utilisateur : ",
-        ],
-        'validation' => [
-            'name' => [
-                'required' => 'Nom est obligatoire',
-            ],
-            'role' => [
-                'required' => 'Le rôle est requis',
-            ],
-        ],
+        ],        
     ],
     'resident' => [
         "view" => "Vue",
@@ -80,47 +72,6 @@ return [
         ],
         'search_building' => 'Rechercher un bâtiment',
         'search_unit' => 'Unité de recherche',
-        'validation' => [
-            'first_name' => [
-                'required' => "Prénom est obligatoire",
-            ],
-            'last_name' => [
-                'required' => "Nom de famille est obligatoire",
-            ],
-            'birth_date' => [
-                'required' => "La date de naissance est requise",
-            ],
-            'building' => [
-                'required' => "Un bâtiment est nécessaire",
-            ],
-            'unit' => [
-                'required' => "L'unité est nécessaire",
-            ],
-            'title' => [
-                'required' => "Le titre est requis",
-            ],
-            'language' => [
-                'required' => "La langue est obligatoire",
-            ],
-            'deposit_amount' => [
-                'required' => "Le montant du dépôt est requis",
-            ],
-            'deposit_type' => [
-                'required' => "Le type de dépôt est requis",
-            ],
-            'start_date' => [
-                'required' => "La date de début est requise",
-            ],
-            'rent_type' => [
-                'required' => "Le type de location est requis",
-            ],
-            'rent_duration' => [
-                'required' => "La durée de location est requise",
-            ],
-            'status' => [
-                'required' => "Le statut est requis",
-            ],
-        ],
         'errors' => [
             'not_found' => "Résident introuvable",
             'incorrect_email' => "Adresse e-mail incorrecte",
@@ -268,23 +219,6 @@ return [
         'service' => [
             "deleted" => "Service enlevé de ce bâtiment",
         ],
-        'validation' => [
-            'name' => [
-                "required" => "Le nom est obligatoire",
-            ],
-            'floor_nr' => [
-                "required" => "Le numéro d'étage est requis",
-            ],
-            'description' => [
-                "required" => "Une description est requise",
-            ],
-            'label' => [
-                "required" => "Une étiquette est requise",
-            ],
-            'address_id' => [
-                "required" => "L'adresse est requise",
-            ],
-        ],
         'errors' => [
             'not_found' => "Bâtiment non trouvé",
             'manager_not_found' => "Gestionnaire immobilier introuvable",
@@ -339,33 +273,7 @@ return [
             'underground_parking_space' => 'Place de parking souterrain',
             'outdoor_parking' => 'Parking extérieur',
             'motorbike_pitch' => 'Emplacement moto'
-        ],
-        'validation' => [
-            'name' => [
-                "required" => "Le nom est obligatoire",
-            ],
-            'building' => [
-                "required" => "Un bâtiment est nécessaire",
-            ],
-            'monthly_rent_net' => [
-                "required" => "Un loyer mensuel est exigé",
-            ],
-            'monthly_maintenance' => [
-                'required' => 'Un entretien mensuel est nécessaire',
-            ],
-            'floor' => [
-                "required" => "Un plancher est requis",
-            ],
-            'room_no' => [
-                "required" => "Le numéro de chambre est requis",
-            ],
-            'description' => [
-                "required" => "Une description est requise",
-            ],
-            'resident' => [
-                "required" => "Résident obligatoire",
-            ]
-        ],
+        ],        
         'errors' => [
             'not_found' => "Unité non trouvée",
             'create' => "L'unité crée l'erreur : ",
@@ -375,36 +283,7 @@ return [
             'resident_not_found' => "Résident introuvable",
             'deleted' => "Erreur d'effacement de l'unité : ",
         ],
-    ],
-    'address' => [
-        "add" => "Ajouter une adresse",
-        "name" => "Adresse",
-        "country" => "Pays",
-        "street" => "Rue",
-        "house_num" => "Rue Nr..",
-        "not_found" => "Adresse non trouvée",
-        "saved" => "Adresse enregistrée",
-        'state' => [
-            "label" => "État",
-        ],
-        'validation' => [
-            'state' => [
-                "required" => "L'État est requis",
-            ],
-            'city' => [
-                "required" => "Ville est obligatoire",
-            ],
-            'street' => [
-                "required" => "La rue est obligatoire",
-            ],
-            'house_num' => [
-                "required" => "Le numéro de rue est requis",
-            ],
-            'zip' => [
-                "required" => "Zip est obligatoire",
-            ],
-        ],
-    ],
+    ],    
     'pinboard' => [
         "title" => "Panneau d'affichage",
         "title_label" => "Titre",

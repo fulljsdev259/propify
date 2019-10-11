@@ -53,7 +53,7 @@
                     name: [
                         {
                             required: true,
-                            message: this.$t("models.user.validation.name.required")
+                            message: this.$t('validation.required',{attribute: this.$t('general.name')})
                         }
                     ],
                 },

@@ -35,34 +35,34 @@ export default (config = {}) => {
                 validationRules: {
                     resident_id: [{
                         required: false,
-                        message: this.$t("models.unit.validation.resident.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.tenant')})
                     }],
                     name: [{
                         required: true,
-                        message: this.$t("models.unit.validation.name.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.name')})
                     }],
                     type: [{
                         required: true
                     }],
                     room_no: [{
                         required: true,
-                        message: this.$t("models.unit.validation.room_no.required")
+                        message: this.$t('validation.required',{attribute: this.$t('models.unit.room_no')})
                     }],
                     monthly_rent_net: [{
                         required: true,
-                        message: this.$t("models.unit.validation.monthly_rent_net.required")
+                        message: this.$t('validation.required',{attribute: this.$t('models.tenant.gross_rent')})
                     }],
                     monthly_maintenance: [{
                         required: true,
-                        message: this.$t("models.unit.validation.monthly_maintenance.required")
+                        message: this.$t('validation.required',{attribute: this.$t('models.tenant.maintenance')})
                     }],
                     floor: [{
                         required: true,
-                        message: this.$t("models.unit.validation.floor.required")
+                        message: this.$t('validation.required',{attribute: this.$t('models.unit.floor')})
                     }],
                     building_id: [{
                         required: true,
-                        message: this.$t("models.unit.validation.building.required")
+                        message: this.$t('validation.required',{attribute: this.$t('models.unit.building')})
                     }]
                 },
                 loading: {

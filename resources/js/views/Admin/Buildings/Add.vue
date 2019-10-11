@@ -10,7 +10,7 @@
                         <card :header="$t('models.propertyManager.details_card')" :loading="loading">
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.address.street')" :rules="validationRules.street" prop="street">
+                                    <el-form-item :label="$t('general.street')" :rules="validationRules.street" prop="street">
                                         <el-input type="text" v-model="model.street" v-on:change="setBuildingName"></el-input>
                                     </el-form-item>
                                 </el-col>
@@ -31,17 +31,17 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.address.house_num')" :rules="validationRules.house_num"
+                                    <el-form-item :label="$t('general.house_num')" :rules="validationRules.house_num"
                                                   prop="house_num">
                                         <el-input type="text" v-model="model.house_num" v-on:change="setBuildingName"></el-input>
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.address.state.label')"
+                                    <el-form-item :label="$t('general.state')"
                                                   class="label-block"
                                                   :rules="validationRules.state_id"
                                                   prop="state_id">
-                                        <el-select :placeholder="$t('models.address.state.label')" style="display: block"
+                                        <el-select :placeholder="$t('general.state')" style="display: block"
                                                    v-model="model.state_id">
                                             <el-option :key="state.id" :label="state.name" :value="state.id"
                                                        v-for="state in states"></el-option>
