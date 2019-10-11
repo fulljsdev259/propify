@@ -28,6 +28,12 @@ use Storage;
  *          format="int32"
  *      ),
  *      @SWG\Property(
+ *          property="creator_user_id",
+ *          description="creator_user_id",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
  *          property="resident_id",
  *          description="resident_id",
  *          type="integer",
@@ -299,6 +305,7 @@ class Request extends AuditableModel implements HasMedia
 
 
     const Fillable = [
+        'creator_user_id',
         'reminder_user_id',
         'category_id',
         'subject_id',
@@ -342,6 +349,7 @@ class Request extends AuditableModel implements HasMedia
      */
     protected $casts = [
         'category_id' => 'integer',
+        'creator_user_id' => 'integer',
         'reminder_user_id' => 'integer',
         'resident_id' => 'integer',
         'contract_id' => 'integer',
@@ -572,6 +580,11 @@ class Request extends AuditableModel implements HasMedia
     public function registerMediaCollections()
     {
         $this->addMediaCollection('media');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_user_id', 'id');
     }
 
     public function conversationFor($u1, $u2)

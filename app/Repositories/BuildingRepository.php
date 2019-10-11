@@ -104,22 +104,39 @@ class BuildingRepository extends BaseRepository
             return $building;
         }
 
+        if ($building->attic) {
+            $atticFloor = array_key_last($floorData);
+            $floorCount = array_pop($floorData);
+        }
         $data = [];
         foreach ($floorData as $floor => $count) {
             if (! is_integer($count)) {
                 continue;
             }
-            for ($i = 1; $i <= $count; $i++) {
-                $data[] = [
-                    'floor' => $floor,
-                    'unit_number' => $i,
-                    'name' => $this->formatUnitName($preText, $floor, $i)
-                ];
-            }
+            $data = $this->getAtticData($floor, $count, $preText, $data);
         }
+
+        if ($building->attic) {
+            $data = $this->getAtticData($atticFloor, $floorCount, $preText, $data, ['attic' => true]);
+        }
+        
         $units = $building->units()->createMany($data);
         $building->setRelation('units', $units);
         return $building;
+    }
+
+    protected function getAtticData($floor, $count, $preText, $data, $additional = [])
+    {
+        for ($i = 1; $i <= $count; $i++) {
+            $floorData = [
+                'floor' => $floor,
+                'unit_number' => $i,
+                'name' => $this->formatUnitName($preText, $floor, $i)
+            ];
+            $floorData = array_merge($floorData, $additional);
+            $data[] = $floorData;
+        }
+        return $data;
     }
 
     /**

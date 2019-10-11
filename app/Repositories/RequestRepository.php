@@ -84,6 +84,7 @@ class RequestRepository extends BaseRepository
         }
 
         $attributes = $this->fixContractRelated($attributes);
+        $attributes['creator_user_id'] = Auth::id();
         $model = parent::create($attributes);
         if ($model)  {
             $model = $this->saveMediaUploads($model, $attributes);

@@ -150,7 +150,8 @@ class RequestAPIController extends AppBaseController
                 'providers.address:id,country_id,state_id,city,street,zip',
                 'providers.user',
                 'managers.user',
-                'users'
+                'users',
+                'creator'
             ])->paginate($perPage);
 
         $requests->getCollection()->loadCount('allComments');
@@ -235,7 +236,8 @@ class RequestAPIController extends AppBaseController
             'providers.address:id,country_id,state_id,city,street,zip',
             'providers.user',
             'managers.user',
-            'users'
+            'users',
+            'creator'
         ]);
         $response = (new RequestTransformer)->transform($request);
         return $this->sendResponse($response, __('models.request.saved'));
@@ -291,11 +293,21 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'resident.user', 'resident.building', 'category', 'managers', 'users', 'remainder_user',
-            'comments.user', 'providers.address:id,country_id,state_id,city,street,zip', 'providers',
+            'media',
+            'resident.user',
+            'resident.building',
+            'category',
+            'managers',
+            'users',
+            'remainder_user',
+            'comments.user',
+            'providers.address:id,country_id,state_id,city,street,zip',
+            'providers',
             'resident.contracts' => function ($q) {
                 $q->with('building.address', 'unit');
-            }, 'contract',
+            },
+            'contract',
+            'creator'
         ]);
         $response = (new RequestTransformer)->transform($request);
         return $this->sendResponse($response, 'Service Request retrieved successfully');
@@ -372,8 +384,17 @@ class RequestAPIController extends AppBaseController
         $updatedRequest = $this->requestRepository->updateExisting($request, $input);
 
         $updatedRequest->load([
-            'media', 'resident.user', 'contract', 'category', 'managers.user', 'users', 'remainder_user',
-            'comments.user', 'providers.address:id,country_id,state_id,city,street,zip', 'providers.user',
+            'media',
+            'resident.user',
+            'contract',
+            'category',
+            'managers.user',
+            'users',
+            'remainder_user',
+            'comments.user',
+            'providers.address:id,country_id,state_id,city,street,zip',
+            'providers.user',
+            'creator'
         ]);
         $response = (new RequestTransformer)->transform($updatedRequest);
         return $this->sendResponse($response, __('models.request.saved'));

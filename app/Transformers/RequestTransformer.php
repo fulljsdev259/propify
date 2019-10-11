@@ -104,6 +104,10 @@ class RequestTransformer extends BaseTransformer
             $response['comments'] = (new CommentTransformer)->transformCollection($model->comments);
         }
 
+        if ($model->relationExists('creator')) {
+            $response['creator'] = (new UserTransformer())->transform($model->creator);
+        }
+
         $response['media'] = [];
         if ($model->relationExists('media')) {
             $response['media'] = (new MediaTransformer)->transformCollection($model->media);
