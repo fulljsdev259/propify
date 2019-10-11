@@ -268,4 +268,10 @@ return [
     "monthly_rent_net" => "Loyer mensuel",
     'maintenance' => 'Maintenance',
     'gross_rent' => 'Loyer brut',
+    'emergency' => [
+        'activate_title' => 'Activer la boîte d\'urgence',
+        'activate_desc' => 'Vous pouvez activer la boîte d\'urgence',
+        'phone_number' => 'Numéro de téléphone',
+        'time_schedule' => 'Calendrier Horaire',
+    ]
 ];

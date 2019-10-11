@@ -268,4 +268,10 @@ return [
     "monthly_rent_net" => "Affitto mensile",  
     'maintenance' => 'Manutenzione',
     'gross_rent' => 'Affitto lordo',
+    'emergency' => [
+        'activate_title' => 'Attivare il box di emergenza',
+        'activate_desc' => 'È possibile attivare la casella di emergenza',
+        'phone_number' => 'Numero di telefono',
+        'time_schedule' => 'Orario',
+    ]
 ];

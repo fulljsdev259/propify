@@ -6,8 +6,8 @@
             <el-col :md="24">
                 <el-form-item class="switcher">
                     <label class="switcher__label">
-                        Activate Emergency Box
-                        <span class="switcher__desc">{{$t('models.request.public_desc')}}</span>
+                        {{$t('general.emergency.activate_title')}}
+                        <span class="switcher__desc">{{$t('general.emergency.activate_desc')}}</span>
                     </label>
                     <el-switch v-model="model.activate_emergency"/>
                 </el-form-item>
@@ -15,7 +15,7 @@
         </el-row>
         <el-row>
             <el-col :md="24">
-                <el-form-item prop="phone_number" label="Phone Number"
+                <el-form-item prop="phone_number" :label="$t('general.emergency.phone_number')"
                             class="label-block">
                     <el-input v-model="model.phone_number"></el-input>                    
                 </el-form-item>
@@ -24,7 +24,7 @@
 
         <el-row>
             <el-col :md="24">
-                <el-form-item prop="phone_number" label="Time Schedule"
+                <el-form-item prop="time_schedule" :label="$t('general.emergency.time_schedule')"
                             class="label-block">
                     <el-input v-model="model.time_schedule"></el-input>                    
                 </el-form-item>
@@ -35,8 +35,6 @@
         <div class="drawer-actions">
             <el-button type="primary" @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
         </div>
-        
-
         
 
     </el-form>
@@ -69,7 +67,11 @@
                 validationRules: {
                     phone_number: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.mobile_phone')})
+                        message: this.$t('validation.required',{attribute: this.$t('general.emergency.phone_number')})
+                    }],
+                    time_schedule: [{
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('general.emergency.time_schedule')})
                     }],
                 }
             }

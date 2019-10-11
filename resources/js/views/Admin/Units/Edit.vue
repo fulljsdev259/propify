@@ -220,6 +220,10 @@
             </el-col>
             <el-col :md="12">
                 <card :loading="loading" :header="$t('general.requests')">
+                    <div slot="header" style="width: 100%;">
+                        {{$t('general.requests')}}
+                        <span style="float:right" class="icon-cog" @click="toggleDrawer"></span>
+                    </div>
                     <relation-list
                         :actions="requestActions"
                         :columns="requestColumns"
@@ -230,16 +234,6 @@
                     />
                 </card>
             </el-col>
-
-            <!-- <el-col :md="12">
-                <card class="listing-card card-boxs">
-                    
-                    <el-form-item :label="$t('settings.iframe_enable')" class="switcher switcher-block" prop="contact_enable">
-                        <el-button style="float:right" type="primary" @click="toggleDrawer" size="mini" round>Settings Drawer</el-button>
-                        
-                    </el-form-item>
-                </card>
-            </el-col> -->
         </el-row>
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
@@ -260,6 +254,7 @@
     import UnitsMixin from 'mixins/adminUnitsMixin';
     import RelationList from 'components/RelationListing';
     import Assignment from 'components/Assignment';
+    import EmergencySettingsForm from 'components/EmergencySettingsForm';
 
     export default {
         mixins: [UnitsMixin({
@@ -271,7 +266,8 @@
             Card,
             EditActions,
             RelationList,
-            Assignment
+            Assignment,
+            EmergencySettingsForm
         },
         data() {
             return {
@@ -316,7 +312,8 @@
                         onClick: this.notifyUnassignment
                     }]
                 }],
-                multiple: false
+                multiple: false,
+                visibleDrawer: false
             }
         },
         methods: {
@@ -331,7 +328,11 @@
                     }
                 });
                 return hasAttic;
-            }
+            },
+            toggleDrawer() {
+                this.visibleDrawer = true;
+                document.getElementsByTagName('footer')[0].style.display = "none";
+            },
         },
         watch: {
             "model.floor" () {
@@ -460,39 +461,44 @@
             }
         }
 
-        .ui-drawer {
-                .ui-divider {
-                    margin: 32px 16px 0 16px;
-                    i {
-                        padding-right: 0;
-                    }
+        span.icon-cog {
+            cursor: pointer;
+        }
 
-                    /deep/ .ui-divider__content {
-                        left: 0;
-                        z-index: 1;
-                        padding-left: 0;
-                        font-size: 16px;
-                        font-weight: 700;
-                        color: var(--color-primary);
-                    }
-                }
-
-                .content {
-                    height: calc(100% - 70px);
-                    display: -webkit-box;
-                    display: -ms-flexbox;
-                    display: flex;
-                    padding: 16px;
-                    overflow-x: hidden;
-                    overflow-y: auto;
-                    -webkit-box-orient: vertical;
-                    -webkit-box-direction: normal;
-                    -ms-flex-direction: column;
-                    flex-direction: column;
-                    position: relative;
-
-                }
-            }
+        
     }
 
+    .ui-drawer {
+        .ui-divider {
+            margin: 32px 16px 0 16px;
+            i {
+                padding-right: 0;
+            }
+
+            /deep/ .ui-divider__content {
+                left: 0;
+                z-index: 1;
+                padding-left: 0;
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--color-primary);
+            }
+        }
+
+        .content {
+            height: calc(100% - 70px);
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            padding: 16px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            position: relative;
+
+        }
+    }
 </style>
