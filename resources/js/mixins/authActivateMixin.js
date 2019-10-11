@@ -66,7 +66,7 @@ export default  {
             this.$refs.form.validate(async valid => {
                 if (valid) {
                     try {
-                        const resp = await axios.post(`tenants/activateTenant?code=` + this.model.act_code +
+                        const resp = await axios.post(`residents/activateResident?code=` + this.model.act_code +
                             `&email=` + this.model.email + `&password=` + this.model.password);                            
                         displaySuccess(resp.data);
                     } catch (err) {

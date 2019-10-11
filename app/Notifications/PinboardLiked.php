@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Pinboard;
-use App\Models\Tenant;
+use App\Models\Resident;
 use App\Repositories\TemplateRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -25,16 +25,16 @@ class PinboardLiked extends Notification implements ShouldQueue
      */
     protected $pinboard;
     /**
-     * @var Tenant
+     * @var Resident
      */
     protected $liker;
 
     /**
      * PinboardLiked constructor.
      * @param Pinboard $pinboard
-     * @param Tenant $liker
+     * @param Resident $liker
      */
-    public function __construct(Pinboard $pinboard, Tenant $liker)
+    public function __construct(Pinboard $pinboard, Resident $liker)
     {
         $this->pinboard = $pinboard;
         $this->liker = $liker;
@@ -82,7 +82,7 @@ class PinboardLiked extends Notification implements ShouldQueue
     {
         return [
             'pinboard_id' => $this->pinboard->id,
-            'tenant' => $this->liker->name,
+            'resident' => $this->liker->name,
             'fragment' => Str::limit($this->pinboard->content, 128),
         ];
     }

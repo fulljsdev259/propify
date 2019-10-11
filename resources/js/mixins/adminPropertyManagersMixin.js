@@ -24,7 +24,12 @@ export default (config = {}) => {
                     },
                     settings: {
                         language: ''
-                    }
+                    },
+                    email: '',
+                    password: '',
+                    password_confirmation: '',
+                    name: '',
+                    phone: '',
                 },
                 addedAssigmentList: [],
                 statistics: {
@@ -281,7 +286,6 @@ export default (config = {}) => {
         switch (config.mode) {
             case 'add':
                 mixin.mixins = [PasswordValidatorMixin({
-                    nestedModel: 'user'
                 }), UploadUserAvatarMixin, PropertyManagerTitlesMixin];
 
                 mixin.methods = {
@@ -292,6 +296,13 @@ export default (config = {}) => {
                         if (valid) {
                             this.loading.state = true;
                             try {
+
+                                this.model.user.password = this.model.password
+                                this.model.user.password_confirmation = this.model.password_confirmation
+                                this.model.user.email = this.model.email
+                                this.model.user.name = this.model.name
+                                this.model.user.phone = this.model.phone
+
                                 const resp = await this.createPropertyManager(this.model);
 
                                 if (resp.data.user && resp.data.user.id) {
@@ -327,7 +338,6 @@ export default (config = {}) => {
             case 'edit':
                 mixin.mixins = [PasswordValidatorMixin({
                     required: false,
-                    nestedModel: 'user'
                 }), UploadUserAvatarMixin, PropertyManagerTitlesMixin];
 
                 mixin.methods = {
@@ -341,6 +351,13 @@ export default (config = {}) => {
                                 }
                                 this.isFormSubmission = false;
                                 this.loading.state = true;
+
+                                this.model.user.password = this.model.password
+                                this.model.user.password_confirmation = this.model.password_confirmation
+                                this.model.user.email = this.model.email
+                                this.model.user.name = this.model.name
+                                this.model.user.phone = this.model.phone
+
                                 let {...params} = this.model;
 
                                 if (params.password === '') {
@@ -373,6 +390,10 @@ export default (config = {}) => {
                         const resp = await this.getPropertyManager({id: this.$route.params.id});
                         const data = resp.data;
                         this.model = Object.assign({}, this.model, data);
+
+                        this.model.email = this.model.user.email
+                        this.model.name = this.model.user.name
+                        this.model.phone = this.model.user.phone
 
                         this.alreadyAssigned.buildings = this.model.buildings.map((building) => building.id);
                         this.alreadyAssigned.quarters = this.model.quarters.map((quarter) => quarter.id);

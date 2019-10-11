@@ -40,9 +40,12 @@ class BuildingTransformer extends BaseTransformer
             'internal_building_id' => $model->internal_building_id,
 
             'units_count' => $model->units_count,
-            'tenants_count' => 0,
-            'active_tenants_count' => 0,
-            'in_active_tenants_count' => 0,
+            'tenants_count' => 0,               // @TODO delete
+            'active_tenants_count' => 0,        // @TODO delete
+            'in_active_tenants_count' => 0,     // @TODO delete
+            'residents_count' => 0,
+            'active_residents_count' => 0,
+            'in_active_residents_count' => 0,
             'property_managers_count' => 0
         ];
 
@@ -58,22 +61,21 @@ class BuildingTransformer extends BaseTransformer
             $response['quarter'] = (new QuarterTransformer)->transform($model->quarter);
         }
 
-        if(! is_null($model->getAttribute('active_tenants_count'))) {
-            $response['active_tenants_count'] = $model->getAttribute('active_tenants_count');
+        if(! is_null($model->getAttribute('active_residents_count'))) {
+            $response['active_residents_count'] = $model->getAttribute('active_residents_count');
+            $response['active_tenants_count'] = $model->getAttribute('active_residents_count'); // @TODO delete
         }
 
-        if(! is_null($model->getAttribute('in_active_tenants_count'))) {
-            $response['in_active_tenants_count'] = $model->getAttribute('in_active_tenants_count');
+        if(! is_null($model->getAttribute('in_active_residents_count'))) {
+            $response['in_active_tenants_count'] = $model->getAttribute('in_active_residents_count'); // @TODO delete
+            $response['in_active_residents_count'] = $model->getAttribute('in_active_residents_count');
         }
 
-        if ($model->relationExists('tenants')) {
-            $response['tenants'] = (new TenantSimpleTransformer)->transformCollection($model->tenants);
-            $response['tenants_last'] = (new TenantSimpleTransformer)->transformCollection($model->lastTenants);
-
-           // @TODO discuss why used this
-            if ($model->tenants_count > 2) {
-                $response['tenants_count'] = $model->tenants_count - 2;
-            }
+        if ($model->relationExists('residents')) {
+            $response['tenants'] = (new ResidentSimpleTransformer)->transformCollection($model->residents);
+            $response['tenants_last'] = (new ResidentSimpleTransformer)->transformCollection($model->lastResidents);
+            $response['residents'] = (new ResidentSimpleTransformer)->transformCollection($model->residents);
+            $response['residents_last'] = (new ResidentSimpleTransformer)->transformCollection($model->lastResidents);
         }
 
         if ($model->relationExists('serviceProviders')) {

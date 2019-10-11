@@ -16,7 +16,7 @@ class RequestDeleteRequest extends BaseRequest
     {
         $user = Auth::user();
 
-        if (!$user->can(['edit-request_tenant', 'edit-request_service', 'edit-request'])) {
+        if (!$user->can(['edit-request_resident', 'edit-request_service', 'edit-request'])) {
             return false;
         }
 

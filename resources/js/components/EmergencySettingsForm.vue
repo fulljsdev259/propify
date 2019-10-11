@@ -47,7 +47,7 @@
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
-        name: "RentContractForm",
+        name: "EmergencySettingsForm",
         props: {
             data: {
                 type: Object

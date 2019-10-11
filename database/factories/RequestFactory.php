@@ -6,7 +6,7 @@ use Faker\Generator as Faker;
 $factory->define(App\Models\Request::class, function (Faker $faker) {
 
     $category = (new App\Models\RequestCategory)->where('id', '!=', 1)->inRandomOrder()->first();
-    $tenant = (new App\Models\Tenant)->where('unit_id', '>', 0)->inRandomOrder()->first();
+    $resident = (new App\Models\Resident)->where('unit_id', '>', 0)->inRandomOrder()->first();
 
     $status = $faker->randomElement(array_keys(Request::Status));
     $priority = $faker->randomElement(array_keys(Request::Priority));
@@ -14,9 +14,10 @@ $factory->define(App\Models\Request::class, function (Faker $faker) {
     $solvedDate = ($status == Request::StatusDone) ? now() : null;
 
     return [
+        'creator_user_id' => App\Models\User::withRole('administrator')->inRandomOrder()->first()->id ?? null,
         'category_id' => $category->id,
-        'tenant_id' => $tenant->id,
-        'unit_id' => $tenant->unit_id,
+        'resident_id' => $resident->id,
+        'unit_id' => $resident->unit_id,
         'title' => $faker->sentence(4),
         'description' => $faker->text,
         'status' => $status,

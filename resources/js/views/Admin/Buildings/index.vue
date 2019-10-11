@@ -130,10 +130,10 @@
                     },
                     props: ['units_count']
                 }, {
-                    label: 'general.tenants',
+                    label: 'general.residents',
                     withUsers: true,
-                    count: 'tenantscount',
-                    prop: 'tenants'
+                    count: 'residentscount',
+                    prop: 'residents'
                 }, {
                     label: 'models.building.managers',
                     withUsers: true,
@@ -215,7 +215,7 @@
         computed: {
             ...mapState("application", {
                 requestConstants(state) {
-                    return state.constants.serviceRequests;
+                    return state.constants.requests;
                 }
             }),
             filters() {

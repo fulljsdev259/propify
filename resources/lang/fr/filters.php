@@ -15,7 +15,7 @@ return [
     'created_from' => 'Créé à partir de',
     'created_to' => 'Créé pour',
     'services' => 'Prestations de services',
-    'tenant' => 'Locataire',
+    'resident' => 'Résident',
     'roles' => 'Roles',
     'type' => 'Type',
     'language' => 'Langue',

@@ -46,7 +46,7 @@ export default  {
                             this.$i18n.locale = language;
                         }                            
                         this.$router.push({
-                            name: 'tenantDashboard'
+                            name: 'residentDashboard'
                         });
 
                         displaySuccess(rest);

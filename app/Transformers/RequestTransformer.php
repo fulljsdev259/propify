@@ -90,16 +90,22 @@ class RequestTransformer extends BaseTransformer
             $response['remainder_user'] = (new UserTransformer())->transform($model->remainder_user);
         }
 
-        if ($model->relationExists('tenant')) {
-            $response['tenant'] = (new TenantTransformer)->transform($model->tenant);
+        if ($model->relationExists('resident')) {
+            $response['tenant'] = (new ResidentTransformer)->transform($model->resident);  // @TODO delete
+            $response['resident'] = (new ResidentTransformer)->transform($model->resident);
         }
 
-        if ($model->relationExists('rent_contract')) {
-            $response['rent_contract'] = (new RentContractTransformer())->transform($model->rent_contract);
+        if ($model->relationExists('contract')) {
+            $response['rent_contract'] = (new ContractTransformer())->transform($model->contract);
+            $response['contract'] = (new ContractTransformer())->transform($model->contract);
         }
 
         if ($model->relationExists('comments')) {
             $response['comments'] = (new CommentTransformer)->transformCollection($model->comments);
+        }
+
+        if ($model->relationExists('creator')) {
+            $response['creator'] = (new UserTransformer())->transform($model->creator);
         }
 
         $response['media'] = [];

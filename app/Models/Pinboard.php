@@ -397,12 +397,12 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
         if ('notifications' == $key) {
             $_value = [];
             foreach ($value as $morph => $data) {
-                if ($data->pluck('tenant.id')->isEmpty()) {
+                if ($data->pluck('resident.id')->isEmpty()) {
                     continue;
                 }
                 $_value[$morph] = [
-                    'tenant_ids' => $data->pluck('tenant.id')->all(),
-                    'failed_tenant_ids' => []
+                    'resident_ids' => $data->pluck('resident.id')->all(),
+                    'failed_resident_ids' => []
                 ];
             }
         } else {

@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 // These wil be depracated soon - awful structure - yet keeping to not cause breaking changes
 import UsersStore from 'store/modules/users'
 import UnitsStore from 'store/modules/units'
-import TenantsStore from 'store/modules/tenants'
+import ResidentsStore from 'store/modules/residents'
 import TemplatesStore from 'store/modules/templates'
 import ServicesStore from 'store/modules/services'
 import RequestsStore from 'store/modules/requests'
@@ -27,7 +27,7 @@ import TagsStore from 'store/modules/tags'
 import NewPinboardStore from 'store/modules/newPinboard'
 import NewRequestsStore from 'store/modules/newRequests'
 import NewListingsStore from 'store/modules/newListings'
-import rentContractsStore from 'store/modules/rentContracts'
+import contractsStore from 'store/modules/contracts'
 
 import createPersistedState from 'vuex-persistedstate'
 
@@ -48,7 +48,7 @@ export default new Vuex.Store({
     },
     modules: {
         users: UsersStore,
-        tenants: TenantsStore,
+        residents: ResidentsStore,
         buildings: BuildingsStore,
         units: UnitsStore,
         addresses: AddressesStore,
@@ -77,7 +77,7 @@ export default new Vuex.Store({
         newPinboard: NewPinboardStore,
         newListings: NewListingsStore,
         newRequests: NewRequestsStore,
-        rentContracts: rentContractsStore
+        contracts: contractsStore
     },
     plugins: [createPersistedState({
         key: 'state',

@@ -18,11 +18,11 @@ export default {
                  .then(({data: r}) => resolve(r.data))
                  .catch(({response: {data: err}}) => reject(err)));
     },
-    getTenantAssignees(_, payload) {
+    getResidentAssignees(_, payload) {
         return new Promise((resolve, reject) => 
             axios.get(buildFetchUrl(`units/${payload.unit_id}`))
                 .then(({data: r}) => {
-                    let tenants = r.data.tenants;
+                    let residents = r.data.residents;
                     let res = {
                         data: {
                             data : []
@@ -30,7 +30,7 @@ export default {
                     }
                     
 
-                    res.data.data = tenants
+                    res.data.data = residents
 
                     res.data.data = res.data.data.map((user) => {
                         if (user.status == 1) {

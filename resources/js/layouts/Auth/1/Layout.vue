@@ -7,8 +7,8 @@
         </div>    
         <el-aside width="30%">
             <router-link to="/login" class="logo">
-                <img src="~img/logo5.png" v-show="!tenant_logo_src"/>
-                <img :src="tenant_logo_src" v-show="tenant_logo_src"/>
+                <img src="~img/logo5.png" v-show="!resident_logo_src"/>
+                <img :src="resident_logo_src" v-show="resident_logo_src"/>
             </router-link>
             <router-view></router-view>
         </el-aside>
@@ -66,14 +66,14 @@
     export default {
         data() {
             return {
-                tenant_logo_src: '',
+                resident_logo_src: '',
             }
         },
         beforeCreate() {
             document.getElementById('viewport').setAttribute('content', 'width=device-width, initial-scale=1.0');
         },
         mounted () {
-            this.tenant_logo_src = "/" + this.$constants.logo.tenant_logo;
+            this.resident_logo_src = "/" + this.$constants.logo.resident_logo;
         }
     }
 </script>

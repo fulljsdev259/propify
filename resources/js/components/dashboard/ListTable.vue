@@ -46,7 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="column.type == 'tenant-details'" class="user-details">
+                    <div v-if="column.type == 'resident-details'" class="user-details">
                         <div class="image">
                             <table-avatar :src="scope.row['image_url']" :name="scope.row['name']" :size="33" />
                         </div>

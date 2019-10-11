@@ -7,7 +7,7 @@ use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\ServiceProvider;
 use App\Models\Request;
-use App\Models\Tenant;
+use App\Models\Resident;
 use App\Models\Unit;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -108,9 +108,9 @@ class FixMigrations extends Command
             (47, '2019_10_07_130952_create_tags_table', 1),
             (48, '2019_10_07_130952_create_template_categories_table', 1),
             (49, '2019_10_07_130952_create_templates_table', 1),
-            (50, '2019_10_07_130952_create_tenant_rent_contracts_table', 1),
-            (51, '2019_10_07_130952_create_tenant_unit_table', 1),
-            (52, '2019_10_07_130952_create_tenants_table', 1),
+            (50, '2019_10_07_130952_create_contracts_table', 1),
+            (51, '2019_10_07_130952_create_resident_unit_table', 1),
+            (52, '2019_10_07_130952_create_residents_table', 1),
             (53, '2019_10_07_130952_create_translations_table', 1),
             (54, '2019_10_07_130952_create_units_table', 1),
             (55, '2019_10_07_130952_create_user_settings_table', 1),
@@ -146,9 +146,9 @@ class FixMigrations extends Command
             (85, '2019_10_07_130953_add_foreign_keys_to_settings_table', 1),
             (86, '2019_10_07_130953_add_foreign_keys_to_template_categories_table', 1),
             (87, '2019_10_07_130953_add_foreign_keys_to_templates_table', 1),
-            (88, '2019_10_07_130953_add_foreign_keys_to_tenant_rent_contracts_table', 1),
-            (89, '2019_10_07_130953_add_foreign_keys_to_tenant_unit_table', 1),
-            (90, '2019_10_07_130953_add_foreign_keys_to_tenants_table', 1),
+            (88, '2019_10_07_130953_add_foreign_keys_to_resident_contracts_table', 1),
+            (89, '2019_10_07_130953_add_foreign_keys_to_resident_unit_table', 1),
+            (90, '2019_10_07_130953_add_foreign_keys_to_residents_table', 1),
             (91, '2019_10_07_130953_add_foreign_keys_to_units_table', 1),
             (92, '2019_10_07_130953_add_foreign_keys_to_user_settings_table', 1);
         ");

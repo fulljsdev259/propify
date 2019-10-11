@@ -4,7 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Comment;
 use App\Models\Pinboard;
-use App\Models\Tenant;
+use App\Models\Resident;
 use App\Repositories\TemplateRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -26,7 +26,7 @@ class PinboardCommented extends Notification implements ShouldQueue
      */
     protected $pinboard;
     /**
-     * @var Tenant
+     * @var Resident
      */
     protected $commenter;
     /**
@@ -37,10 +37,10 @@ class PinboardCommented extends Notification implements ShouldQueue
     /**
      * PinboardCommented constructor.
      * @param Pinboard $pinboard
-     * @param Tenant $commenter
+     * @param Resident $commenter
      * @param Comment $comment
      */
-    public function __construct(Pinboard $pinboard, Tenant $commenter, Comment $comment)
+    public function __construct(Pinboard $pinboard, Resident $commenter, Comment $comment)
     {
         $this->pinboard = $pinboard;
         $this->commenter = $commenter;
@@ -89,7 +89,7 @@ class PinboardCommented extends Notification implements ShouldQueue
     {
         return [
             'pinboard_id' => $this->pinboard->id,
-            'tenant' => $this->commenter->name,
+            'resident' => $this->commenter->name,
             'comment' => $this->comment->comment,
             'fragment' => Str::limit($this->pinboard->content, 128),
         ];

@@ -36,8 +36,8 @@ return [
         'sunday' => 'Sonntag',
     ],
     'user' => 'Benutzer',
-    'tenant' => 'Mieter',
-    'tenants' => 'Mieter',
+    'resident' => 'Einwohner',
+    'residents' => 'Einwohner',
     'recipients' => 'Empfänger',
     'date' => 'Datum',
     'title' => 'Titel',
@@ -60,7 +60,7 @@ return [
         'building' => 'Liegenschaft wurde zugewiesen.',
         'quarter' => 'Überbauung wurde zugewiesen.',
         'provider' => 'Dienstleister wurde zugewiesen.',
-        'tenant' => "Mieter wurde zugewiesen.",
+        'resident' => "Resident wurde zugewiesen.",
         'service' => 'Dienstleister wurde zugewiesen.',
         'manager' => 'Bewirtschafter wurde zugewiesen.',
         'user' => 'Tag erfolgreich zugewiesen.',
@@ -70,7 +70,7 @@ return [
         'building' => 'Liegenschaft wurde entfernt',
         'quarter' => 'Überbauung wurde entfernt',
         'provider' => 'Dienstleister wurde wurde entfernt',
-        'tenant' => "Mieter wurde entfernt.",
+        'resident' => "Resident wurde entfernt.",
         'service' => 'Dienstleister wurde entfernt.',
         'manager' => 'Bewirtschafter wurde entfernt.',
         'user' => 'Administrator wurde entfernt.',
@@ -204,9 +204,9 @@ return [
             'title' => 'Inserat löschen',
             'text' => 'Soll das Inserat wirklich gelöscht werden?',
         ],
-        'delete_rentcontract' => [
-            'title' => 'Mietvertrag löschen',
-            'text' => 'Möchten Sie wirklich den Mietvertrag löschen?',
+        'delete_contract' => [
+            'title' => 'Vertrag löschen',
+            'text' => 'Möchten Sie den Vertrag wirklich löschen?',
         ],
         'add' => [
             'added' => 'Erfolgreich hinzugefügt',
@@ -251,12 +251,12 @@ return [
         'week' => 'Woche',
         'peek_week' => 'Wählen wählen',
     ],
-    'tenant_detail' => [
+    'resident_detail' => [
         'activate_required_credentials' => 'Avktivierungscode, E-Mail, Passwort sind erforderlich.',
         'incorrect_email' => 'Falsche E-Mail-Adresse',
-        'user_not_tenant' => 'Dieser Benutzer ist keinem Mieterdossier zugewiesen.',
+        'user_not_resident' => 'Dieser Benutzer ist keinem Bewohner zugeordnet.',
         'invalid_code' => 'Der Avktivierungscode ist ungültig',
-        'not_active_tenant' => 'Das Mieterkonto ist inaktiv und kann nicht bearbeitet werden.',
+        'not_active_resident' => 'Resident ist nicht aktiv und kann das Passwort nicht ändern.',
     ],
     'page_not_found' => [
         'title' => "Hmm… hier stimmt etwas nicht.",
@@ -265,5 +265,7 @@ return [
     'to_homepage' => 'Zur Startseite',
     'assignment' => 'Zugewiesene Liegenschaften',
     'status_changed' => 'Status geändert',
-    'monthly_rent_net' => 'Monatsmiete',    
+    'monthly_rent_net' => 'Monatsmiete', 
+    'maintenance' => 'Heiz- und Nebenkosten',
+    'gross_rent' => 'Bruttomiete',
 ];

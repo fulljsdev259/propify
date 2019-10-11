@@ -24,7 +24,7 @@ class TemplateCategoriesTableSeeder extends Seeder
 
         $this->createParentCategories();
         $this->createUserCategories();
-        $this->createTenantCategories();
+        $this->createResidentCategories();
         $this->createPostCategories();
         $this->createProductCategories();
         $this->createRequestCategories();
@@ -43,7 +43,7 @@ class TemplateCategoriesTableSeeder extends Seeder
             ],
             [
                 'parent_id' => null,
-                'name' => 'tenant',
+                'name' => 'resident',
                 'description' => '',
             ],
             [
@@ -154,25 +154,25 @@ HTML
         }
     }
 
-    private function createTenantCategories()
+    private function createResidentCategories()
     {
         $templates = [
             [
                 'parent_id' => 2,
                 'system' => 1,
-                'name' => 'tenant_credentials',
-                'description' => 'Email sent to tenant, containing the PDF with the credentials and tenancy details.',
+                'name' => 'resident_credentials',
+                'description' => 'Email sent to resident, containing the PDF with the credentials and tenancy details.',
                 'tag_map' => [
                     'name' => 'user.name',
-                    'birthDate' => 'tenant.birthDate',
-                    'mobilePhone' => 'tenant.mobile_phone',
-                    'privatePhone' => 'tenant.private_phone',
-                    'email' => 'tenant.email',
-                    'phone' => 'tenant.phone',
-                    'title' => 'constant.tenant.title',
-                    'tenantCredentials' => 'tenantCredentials',
+                    'birthDate' => 'resident.birthDate',
+                    'mobilePhone' => 'resident.mobile_phone',
+                    'privatePhone' => 'resident.private_phone',
+                    'email' => 'resident.email',
+                    'phone' => 'resident.phone',
+                    'title' => 'constant.resident.title',
+                    'residentCredentials' => 'residentCredentials',
                     'activationUrl' => 'activationUrl',
-                    'activationCode' => 'tenant.activation_code'
+                    'activationCode' => 'resident.activation_code'
                 ],
                 'subject' => 'Account created',
                 'body' => <<<HTML
@@ -195,7 +195,7 @@ HTML
                 'parent_id' => 3,
                 'system' => 1,
                 'name' => 'announcement_pinboard',
-                'description' => 'Email sent to tenants when admin publishes a announcement pinboard',
+                'description' => 'Email sent to residents when admin publishes a announcement pinboard',
                 'tag_map' => [
                     'salutation' => 'user.title',
                     'name' => 'user.name',
@@ -221,7 +221,7 @@ HTML
                 'parent_id' => 3,
                 'system' => 1,
                 'name' => 'pinboard_published',
-                'description' => 'Email sent to neighbour tenants when admin publishes a pinboard, or the pinboard is automatically published',
+                'description' => 'Email sent to neighbour residents when admin publishes a pinboard, or the pinboard is automatically published',
                 'tag_map' => [
                     'authorSalutation' => 'pinboard.user.title',
                     'authorName' => 'pinboard.user.name',
@@ -242,7 +242,7 @@ HTML
                 'parent_id' => 3,
                 'system' => 1,
                 'name' => 'new_pinboard',
-                'description' => 'Email sent to admins when tenant creates a new pinboard',
+                'description' => 'Email sent to admins when resident creates a new pinboard',
                 'tag_map' => [
                     'salutation' => 'user.title',
                     'name' => 'user.name',
@@ -252,10 +252,10 @@ HTML
                     'type' => 'pinboard.type',
                     'autologin' => 'user.autologinUrl',
                 ],
-                'subject' => 'New tenant pinboard',
+                'subject' => 'New resident pinboard',
                 'body' => <<<HTML
 <p>Hello {{salutation}} {{name}},</p>
-<p>Tenant {{subjectSalutation}} {{subjectName}} added a new pinboard</p>
+<p>Resident {{subjectSalutation}} {{subjectName}} added a new pinboard</p>
 <p>{{content}}.</p>
 <p>Use <a href="{{autologin}}">this link</a> to view the published pinboard.</p>
 HTML
@@ -264,7 +264,7 @@ HTML
                 'parent_id' => 3,
                 'system' => 1,
                 'name' => 'pinboard_liked',
-                'description' => 'Email sent to pinboard author when tenant liked the pinboard',
+                'description' => 'Email sent to pinboard author when resident liked the pinboard',
                 'tag_map' => [
                     'salutation' => 'pinboard.user.title',
                     'name' => 'pinboard.user.name',
@@ -276,7 +276,7 @@ HTML
                 'subject' => '{{likerSalutation}} {{likerName}} liked your pinboard',
                 'body' => <<<HTML
 <p>Hello {{salutation}} {{name}},</p>
-<p>Tenant {{likerSalutation}} {{likerName}} liked your pinboard:</p>
+<p>Resident {{likerSalutation}} {{likerName}} liked your pinboard:</p>
 <p>{{content}}.</p>
 <p>Use <a href="{{autologin}}">this link</a> to view the liked pinboard.</p>
 HTML
@@ -285,7 +285,7 @@ HTML
                 'parent_id' => 3,
                 'system' => 1,
                 'name' => 'pinboard_commented',
-                'description' => 'Email sent to pinboard author when tenant comments on the pinboard',
+                'description' => 'Email sent to pinboard author when resident comments on the pinboard',
                 'tag_map' => [
                     'salutation' => 'pinboard.user.title',
                     'name' => 'pinboard.user.name',
@@ -298,7 +298,7 @@ HTML
                 'subject' => '{{commenterSalutation}} {{commenterName}} commented on your pinboard',
                 'body' => <<<HTML
 <p>Hello {{salutation}} {{name}},</p>
-<p>Tenant {{commenterSalutation}} {{commenterName}} commented on your pinboard:</p>
+<p>Resident {{commenterSalutation}} {{commenterName}} commented on your pinboard:</p>
 <p><em>{{comment}}</em>.</p>
 <p>Use <a href="{{autologin}}">this link</a> to view the pinboard.</p>
 HTML
@@ -306,8 +306,8 @@ HTML
             [
                 'parent_id' => 3,
                 'system' => 1,
-                'name' => 'pinboard_new_tenant_in_neighbour',
-                'description' => 'Email sent to neighbour tenants when new neighbour moves in the neighbourhood',
+                'name' => 'pinboard_new_resident_in_neighbour',
+                'description' => 'Email sent to neighbour residents when new neighbour moves in the neighbourhood',
                 'tag_map' => [
                     'subjectSalutation' => 'pinboard.user.title',
                     'subjectName' => 'pinboard.user.name',
@@ -316,7 +316,7 @@ HTML
                     'content' => 'pinboard.content',
                     'autologin' => 'receiver.autologinUrl',
                 ],
-                'subject' => 'New tenant in the neighbour',
+                'subject' => 'New resident in the neighbour',
                 'body' => <<<HTML
 <p>Hello {{salutation}} {{name}},</p>
 <p>You got a new neighbour: {{subjectSalutation}} {{subjectName}}.</p>
@@ -336,7 +336,7 @@ HTML
             [
                 'parent_id' => 4,
                 'name' => 'listing_liked',
-                'description' => 'Email sent to listing author when tenant liked the listing in marketplace',
+                'description' => 'Email sent to listing author when resident liked the listing in marketplace',
                 'tag_map' => [
                     'salutation' => 'user.title',
                     'name' => 'user.name',
@@ -349,7 +349,7 @@ HTML
                 'subject' => '{{salutation}} {{name}} liked your pinboard',
                 'body' => <<<HTML
 <p>Hello {{authorSalutation}} {{authorName}},</p>
-<p>Tenant {{salutation}} {{name}} liked your listing:</p>
+<p>Resident {{salutation}} {{name}} liked your listing:</p>
 <p>{{title}}.</p>
 <p>Use <a href="{{autologin}}">this link</a> to view the listing.</p>
 HTML
@@ -357,7 +357,7 @@ HTML
             [
                 'parent_id' => 4,
                 'name' => 'listing_commented',
-                'description' => 'Email sent to listing author when tenant comments on the listing',
+                'description' => 'Email sent to listing author when resident comments on the listing',
                 'tag_map' => [
                     'salutation' => 'user.title',
                     'name' => 'user.name',
@@ -371,7 +371,7 @@ HTML
                 'subject' => '{{salutation}} {{name}} commented on your pinboard',
                 'body' => <<<HTML
 <p>Hello {{authorSalutation}} {{authorName}},</p>
-<p>Tenant {{salutation}} {{name}} commented on  your listing:</p>
+<p>Resident {{salutation}} {{name}} commented on  your listing:</p>
 <p><em>{{title}}</em>.</p>
 <p>Comment:</p>
 <p><em>{{comment}}</em>.</p>
@@ -392,8 +392,8 @@ HTML
                 'parent_id' => 5,
                 'system' => 0,
                 'type' => TemplateCategory::TypeCommunication,
-                'name' => 'communication_tenant',
-                'description' => 'Request Tenant communication templates',
+                'name' => 'communication_resident',
+                'description' => 'Request Resident communication templates',
                 'tag_map' => [
                     'salutation' => 'user.title',
                     'name' => 'user.name',
@@ -432,7 +432,7 @@ HTML
                 'parent_id' => 5,
                 'system' => 1,
                 'name' => 'new_request',
-                'description' => 'Email sent to property managers when tenant creates a new request.',
+                'description' => 'Email sent to property managers when resident creates a new request.',
                 'tag_map' => [
                     'salutation' => 'user.title',
                     'name' => 'user.name',
@@ -445,10 +445,10 @@ HTML
                     'building' => 'request.unit.building.name',
                     'autologin' => 'user.autologinUrl',
                 ],
-                'subject' => 'New Tenant request: {{title}}',
+                'subject' => 'New Resident request: {{title}}',
                 'body' => <<<HTML
 <p>Hello {{salutation}} {{name}},</p>
-<p>Tenant {{subjectSalutation}} {{subjectName}} created a new request</p>
+<p>Resident {{subjectSalutation}} {{subjectName}} created a new request</p>
 <p>Unit: {{category}}.</p>
 <p>Category: {{category}}.</p>
 <p>Title: {{title}}.</p>
@@ -482,7 +482,7 @@ HTML
             [
                 'parent_id' => 5,
                 'name' => 'request_comment',
-                'description' => 'When any party adds a new comment (tenant, property manager, service partner, admin or super admin) we notify all assigned people',
+                'description' => 'When any party adds a new comment (resident, property manager, service partner, admin or super admin) we notify all assigned people',
                 'tag_map' => [
                     'salutation' => 'user.title',
                     'name' => 'user.name',
@@ -527,16 +527,16 @@ HTML
             [
                 'parent_id' => 5,
                 'name' => 'request_admin_change_status',
-                'description' => 'When the Property Manager, Admin or Service partner change the status we notify the tenant, each time when status is changed from X to XY',
+                'description' => 'When the Property Manager, Admin or Service partner change the status we notify the resident, each time when status is changed from X to XY',
                 'tag_map' => [
-                    'salutation' => 'request.tenant.title',
-                    'name' => 'request.tenant.user.name',
+                    'salutation' => 'request.resident.title',
+                    'name' => 'request.resident.user.name',
                     'title' => 'request.title',
                     'description' => 'request.description',
                     'category' => 'request.category.name',
                     'status' => 'constant.request.status',
                     'originalStatus' => 'constant.originalRequest.status',
-                    'autologin' => 'request.tenant.user.autologinUrl',
+                    'autologin' => 'request.resident.user.autologinUrl',
                 ],
                 'subject' => 'Status changed for request: {{title}}',
                 'body' => <<<HTML
@@ -623,7 +623,7 @@ HTML
             [
                 'parent_id' => 8,
                 'name' => 'cleanify_request_email',
-                'description' => 'Email sent to Cleanify when the tenant makes a request.',
+                'description' => 'Email sent to Cleanify when the resident makes a request.',
                 'tag_map' => [
                     'salutation' => 'form.title',
                     'firstName' => 'form.first_name',

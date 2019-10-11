@@ -10,7 +10,7 @@ use App\Criteria\Pinboard\FilterByAnnouncementCriteria;
 use App\Criteria\Pinboard\FilterByStatusCriteria;
 use App\Criteria\Pinboard\FilterByTypeCriteria;
 use App\Criteria\Pinboard\FilterByUserCriteria;
-use App\Criteria\Pinboard\FilterByTenantCriteria;
+use App\Criteria\Pinboard\FilterByResidentCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Pinboard\AssignRequest;
 use App\Http\Requests\API\Pinboard\CreateRequest;
@@ -113,12 +113,12 @@ class PinboardAPIController extends AppBaseController
         $this->pinboardRepository->pushCriteria(new FilterByQuarterCriteria($request));
         $this->pinboardRepository->pushCriteria(new FilterByBuildingCriteria($request));
         $this->pinboardRepository->pushCriteria(new FilterByAnnouncementCriteria($request));
-        $this->pinboardRepository->pushCriteria(new FilterByTenantCriteria($request));
+        $this->pinboardRepository->pushCriteria(new FilterByResidentCriteria($request));
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $pinboard = $this->pinboardRepository->with([
             'media',
-            'user.tenant',
+            'user.resident',
             'likesCounter',
             'likes',
             'likes.user',
@@ -211,7 +211,7 @@ class PinboardAPIController extends AppBaseController
         $pinboard = $this->pinboardRepository->create($input);
         $pinboard->load([
             'media',
-            'user.tenant',
+            'user.resident',
             'likesCounter',
             'likes',
             'likes.user',
@@ -273,7 +273,7 @@ class PinboardAPIController extends AppBaseController
         /** @var Pinboard $pinboard */
         $pinboard = $this->pinboardRepository->with([
             'media',
-            'user.tenant',
+            'user.resident',
             'likesCounter',
             'likes',
             'likes.user',
@@ -302,11 +302,11 @@ class PinboardAPIController extends AppBaseController
      */
     protected function fixPinboardViews($pinboard)
     {
-        $tenantId = Auth::user()->tenant->id ?? null;
-        if ($tenantId) {
-            $pinboardView = $pinboard->views->where('tenant_id', $tenantId)->first();
+        $residentId = Auth::user()->resident->id ?? null;
+        if ($residentId) {
+            $pinboardView = $pinboard->views->where('resident_id', $residentId)->first();
             if (empty($pinboardView)) {
-                $pinboardView = $pinboard->views()->create(['tenant_id' => Auth::user()->tenant->id, 'views' => 1]);
+                $pinboardView = $pinboard->views()->create(['resident_id' => Auth::user()->resident->id, 'views' => 1]);
                 $pinboard->views->push($pinboardView);
             } else {
                 $pinboardView->update(['views' => $pinboardView->views + 1]);
@@ -383,7 +383,7 @@ class PinboardAPIController extends AppBaseController
         $this->pinboardRepository->updateExisting($pinboard, $input);
         $pinboard = $this->pinboardRepository->with([
             'media',
-            'user.tenant',
+            'user.resident',
             'likesCounter',
             'likes',
             'likes.user',
@@ -580,11 +580,11 @@ class PinboardAPIController extends AppBaseController
         $u = \Auth::user();
         $u->like($pinboard);
 
-        // if logged in user is tenant and
-        // author of pinboard is tenant and
+        // if logged in user is resident and
+        // author of pinboard is resident and
         // author of pinboard is different than liker
-        if ($u->tenant && $pinboard->user->tenant && $u->id != $pinboard->user_id) {
-            $pinboard->user->notify(new PinboardLiked($pinboard, $u->tenant));
+        if ($u->resident && $pinboard->user->resident && $u->id != $pinboard->user_id) {
+            $pinboard->user->notify(new PinboardLiked($pinboard, $u->resident));
         }
         return $this->sendResponse($this->uTransformer->transform($u),
         __('models.pinboard.liked'));
@@ -691,7 +691,7 @@ class PinboardAPIController extends AppBaseController
         $p->buildings()->sync($b, false);
         $p = $this->pinboardRepository->with([
             'media',
-            'user.tenant',
+            'user.resident',
             'likesCounter',
             'likes',
             'likes.user',
@@ -753,7 +753,7 @@ class PinboardAPIController extends AppBaseController
         $p->buildings()->detach($b);
         $p = $this->pinboardRepository->with([
             'media',
-            'user.tenant',
+            'user.resident',
             'likesCounter',
             'likes',
             'likes.user',
@@ -816,7 +816,7 @@ class PinboardAPIController extends AppBaseController
         $p->quarters()->sync($d, false);
         $p = $this->pinboardRepository->with([
             'media',
-            'user.tenant',
+            'user.resident',
             'likesCounter',
             'likes',
             'likes.user',
@@ -879,7 +879,7 @@ class PinboardAPIController extends AppBaseController
         $p->quarters()->detach($d);
         $p = $this->pinboardRepository->with([
             'media',
-            'user.tenant',
+            'user.resident',
             'likesCounter',
             'likes',
             'likes.user',
@@ -988,7 +988,7 @@ class PinboardAPIController extends AppBaseController
         $p->providers()->sync($provider, false);
         $p = $this->pinboardRepository->with([
             'media',
-            'user.tenant',
+            'user.resident',
             'likesCounter',
             'likes',
             'likes.user',
@@ -1052,7 +1052,7 @@ class PinboardAPIController extends AppBaseController
         $p->providers()->detach($provider);
         $p = $this->pinboardRepository->with([
             'media',
-            'user.tenant',
+            'user.resident',
             'likesCounter',
             'likes',
             'likes.user',
@@ -1220,8 +1220,8 @@ class PinboardAPIController extends AppBaseController
     private function getZip($settingRepository)
     {
         $u = \Auth::user();
-        if ($u->tenant && $u->tenant->address && $u->tenant->address->zip) {
-            return $u->tenant->address->zip;
+        if ($u->resident && $u->resident->address && $u->resident->address->zip) {
+            return $u->resident->address->zip;
         }
         $defaultZip = 3172;
         $settings = $settingRepository->first();

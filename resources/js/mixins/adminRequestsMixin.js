@@ -90,7 +90,7 @@ export default (config = {}) => {
                 remoteLoading: false,
                 categories: [],
                 defect_subcategories: [],
-                tenants: [],
+                residents: [],
                 toAssignList: [],
                 media: [],
                 assignmentTypes: ['managers', 'administrator', 'services'],
@@ -129,17 +129,17 @@ export default (config = {}) => {
             }
         },
         methods: {
-            ...mapActions(['getRequestCategoriesTree', 'getTenants', 'getServices', 'uploadRequestMedia', 'deleteRequestMedia', 'getPropertyManagers', 'assignProvider', 'assignManager', 'getUsers', 'assignAdministrator','getAssignees']),
-            async remoteSearchTenants(search) {
+            ...mapActions(['getRequestCategoriesTree', 'getResidents', 'getServices', 'uploadRequestMedia', 'deleteRequestMedia', 'getPropertyManagers', 'assignProvider', 'assignManager', 'getUsers', 'assignAdministrator','getAssignees']),
+            async remoteSearchResidents(search) {
                 if (search === '') {
-                    this.tenants = [];
+                    this.residents = [];
                 } else {
                     this.remoteLoading = true;
 
                     try {
-                        const {data} = await this.getTenants({get_all: true, has_building: true,search});
-                        this.tenants = data;
-                        this.tenants.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
+                        const {data} = await this.getResidents({get_all: true, has_building: true,search});
+                        this.residents = data;
+                        this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -373,10 +373,10 @@ export default (config = {}) => {
             },
             getLanguageI18n() {
 
-                this.locations = Object.entries(this.$constants.serviceRequests.location).map(([value, label]) => ({value: +value, name: this.$t(`models.request.location.${label}`)}))
-                this.rooms = Object.entries(this.$constants.serviceRequests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
-                this.acquisitions = Object.entries(this.$constants.serviceRequests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
-                this.costs = Object.entries(this.$constants.serviceRequests.payer).map(([value, label]) => ({value: +value, name: this.$t(`models.request.payer.${label}`)}))
+                this.locations = Object.entries(this.$constants.requests.location).map(([value, label]) => ({value: +value, name: this.$t(`models.request.location.${label}`)}))
+                this.rooms = Object.entries(this.$constants.requests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
+                this.acquisitions = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
+                this.costs = Object.entries(this.$constants.requests.payer).map(([value, label]) => ({value: +value, name: this.$t(`models.request.payer.${label}`)}))
                 
             },
             async deleteTag(tag) {
@@ -502,7 +502,7 @@ export default (config = {}) => {
                 mixin.created = async function () {
                     this.loading.state = true;
 
-                    this.validationRules.tenant_id = [{
+                    this.validationRules.resident_id = [{
                         required: true,
                         message: this.$t('validation.general.required')
                     }];
@@ -524,7 +524,7 @@ export default (config = {}) => {
             case 'edit':
                 mixin.methods = {
                     ...mixin.methods,
-                    ...mapActions(['getRequest', 'updateRequest', 'getTenant', 'getRequestConversations', 'getAddress', 'getRequestTags',
+                    ...mapActions(['getRequest', 'updateRequest', 'getResident', 'getRequestConversations', 'getAddress', 'getRequestTags',
                 'createRequestTags', 'getTags', 'deleteRequestTag']),
                     async fetchCurrentRequest() {
                         this.getLanguageI18n();
@@ -563,13 +563,13 @@ export default (config = {}) => {
                             this.$set(this.model, 'defect', data.category.id);
                         }
                         this.$set(this.model, 'created_by', data.created_by);
-                        this.$set(this.model, 'building', data.tenant.building.name);
+                        this.$set(this.model, 'building', data.resident.building.name);
 
                         await this.getConversations();
                         
-                        if (data.tenant) {
-                            this.model.tenant_id = data.tenant.id;
-                            await this.getBuildingAddress(data.tenant.building.address_id);
+                        if (data.resident) {
+                            this.model.resident_id = data.resident.id;
+                            await this.getBuildingAddress(data.resident.building.address_id);
                         }
                     },
                     submit() {

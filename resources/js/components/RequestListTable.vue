@@ -258,7 +258,7 @@
             },
             filtersHeader: {
                 type: String,
-                default: () => (this.$t('tenant.filters'))
+                default: () => (this.$t('resident.filters'))
             },
             withSearch: {
                 type: Boolean,
@@ -687,7 +687,7 @@
 
             :global(td) {
                 background-color: transparent;
-                padding: 5px 0;
+                padding: 3px 0;
                 border-bottom: none;
             
             }

@@ -15,7 +15,7 @@ return [
     'created_from' => 'Creato da',
     'created_to' => 'Creato per',
     'services' => 'Servizi',
-    'tenant' => 'Inquilino',
+    'resident' => 'Residente',
     'roles' => 'Roles',
     'type' => 'Modello',
     'language' => 'Lingua',

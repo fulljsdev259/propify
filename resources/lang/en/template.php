@@ -10,9 +10,9 @@ return [
     'user_title_mrs' => 'Mrs',
     'user_title_company' => 'Company',
 
-    'tenant_title_mr' => 'Mr',
-    'tenant_title_mrs' => 'Mrs',
-    'tenant_title_company' => 'Company',
+    'resident_title_mr' => 'Mr',
+    'resident_title_mrs' => 'Mrs',
+    'resident_title_company' => 'Company',
 
     //Request
     'request_status_1' => 'Received',
@@ -38,8 +38,8 @@ return [
 
     // email new layout
     'activate_account' => 'Activate Account',
-    'tenant_portal' => 'Tenant portal',
+    'resident_portal' => 'Resident portal',
     'generated_email_for_user' => 'This email was automatically generated for :userName.',
-    'generated_email_for_company' => 'You will receive this automatically generated e-mail as a user of the :companyName tenant portal. The tenant portal is operated by Propify AG.',
+    'generated_email_for_company' => 'You will receive this automatically generated e-mail as a user of the :companyName resident portal. The resident portal is operated by Propify AG.',
     'links' => '<a href="#" style="color: #000000 ">Imprint </a>&ensp; | &ensp;<a href="#" style="color: #000000 ">Conditions of use</a>&ensp; | &ensp;<a href="#" style="color: #000000 ">Privacy statement</a>'
 ];

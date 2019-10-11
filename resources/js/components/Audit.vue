@@ -7,9 +7,9 @@
                     placement="bottom"
                     width="200"
                     trigger="click">
-                        <el-button type="success" icon="icon-filter" size="mini" slot="reference" plain round>{{$t('tenant.filters')}}</el-button>
+                        <el-button type="success" icon="icon-filter" size="mini" slot="reference" plain round>{{$t('resident.filters')}}</el-button>
                         <filters ref="filters" :data="filters.data" :schema="filters.schema" @changed="filtersChanged" @update:data="filterReset" />
-                        <el-button size="mini" icon="icon-eraser" @click="filterReset" type="success">{{$t('tenant.reset_filters')}}</el-button>
+                        <el-button size="mini" icon="icon-eraser" @click="filterReset" type="success">{{$t('resident.reset_filters')}}</el-button>
                   </el-popover>
             </el-divider>
         </el-col>
@@ -93,7 +93,7 @@
                 schema_children.push({
                             type: 'el-option',
                             props: {
-                                label: this.$t('tenant.all'),
+                                label: this.$t('resident.all'),
                                 value: null
                             }
                         });
@@ -130,7 +130,7 @@
                 }
                 this.filters.schema.push({
                     type: 'el-select',
-                    title: this.$t('tenant.type'),
+                    title: this.$t('resident.type'),
                     name: filter_name,
                     props: {
                         size: 'mini'
@@ -216,7 +216,7 @@
                 
                 let constant_variables = {}
                 switch (auditable_type) {
-                    case 'request': constant_variables = this.$constants.serviceRequests
+                    case 'request': constant_variables = this.$constants.requests
                     break;
                     case 'pinboard': constant_variables = this.$constants.pinboard;
                     break;

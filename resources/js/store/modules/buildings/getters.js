@@ -8,12 +8,12 @@ export default {
                 building.address_zip = `${building.address.zip} ${building.address.city}`;
             }
 
-            const tenants = [...building.tenants];
-            building.tenantscount = 0;
-            if(tenants.length) {
-                building.tenants = building.tenants.splice(0, 2);
-                if(tenants.length > 2) {
-                    building.tenantscount = tenants.length - 2;
+            const residents = [...building.residents];
+            building.residentscount = 0;
+            if(residents.length) {
+                building.residents = building.residents.splice(0, 2);
+                if(residents.length > 2) {
+                    building.residentscount = residents.length - 2;
                 }
             }
 

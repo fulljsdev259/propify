@@ -40,12 +40,12 @@
                     </div>
 
                     <div v-else-if="column.type === 'requestStatus'">
-                        {{$t(`models.request.status.${$constants.serviceRequests.status[scope.row.status]}`)}}
+                        {{$t(`models.request.status.${$constants.requests.status[scope.row.status]}`)}}
                     </div>
 
-                    <div v-else-if="column.type === 'requestTenantAvatar'">
-                        <router-link v-if="column.prop" :to="{name: 'adminTenantsEdit', params: {id: scope.row[column.prop].id}}"
-                                     class="tenant-link">
+                    <div v-else-if="column.type === 'requestResidentAvatar'">
+                        <router-link v-if="column.prop" :to="{name: 'adminResidentsEdit', params: {id: scope.row[column.prop].id}}"
+                                     class="resident-link">
                             <el-tooltip
                                     :content="`${scope.row[column.prop].first_name} ${scope.row[column.prop].last_name}`"
                                     class="item"
@@ -77,27 +77,27 @@
                         </el-tooltip>
                     </div>
 
-                    <div v-else-if="column.type === 'buildingTenantAvatars'" class="avatars-wrapper">
-                        <span class="tenant-item" :key="uuid()" v-for="(tenant) in scope.row[column.prop].slice(0, column.propLimit)">
+                    <div v-else-if="column.type === 'buildingResidentAvatars'" class="avatars-wrapper">
+                        <span class="resident-item" :key="uuid()" v-for="(resident) in scope.row[column.prop].slice(0, column.propLimit)">
                               <el-tooltip
-                                      :content="tenant.first_name ? `${tenant.first_name} ${tenant.last_name}`: (tenant.user ? `${tenant.user.name}`:`${tenant.name}`)"
+                                      :content="resident.first_name ? `${resident.first_name} ${resident.last_name}`: (resident.user ? `${resident.user.name}`:`${resident.name}`)"
                                       class="item"
                                       effect="light" placement="top">
-                                  <template v-if="tenant.user">
+                                  <template v-if="resident.user">
                                       <avatar :size="28"
-                                              :username="tenant.first_name ? `${tenant.first_name} ${tenant.last_name}`: (tenant.user ? `${tenant.user.name}`:`${tenant.name}`)"
+                                              :username="resident.first_name ? `${resident.first_name} ${resident.last_name}`: (resident.user ? `${resident.user.name}`:`${resident.name}`)"
                                               backgroundColor="rgb(205, 220, 57)"
                                               color="#fff"
-                                              v-if="!tenant.user.avatar"></avatar>
-                                      <avatar :size="28" :src="`/${tenant.user.avatar}`" v-else></avatar>
+                                              v-if="!resident.user.avatar"></avatar>
+                                      <avatar :size="28" :src="`/${resident.user.avatar}`" v-else></avatar>
                                   </template>
                                   <template v-else>
                                       <avatar :size="28"
-                                              :username="tenant.first_name ? `${tenant.first_name} ${tenant.last_name}`: `${tenant.name}`"
+                                              :username="resident.first_name ? `${resident.first_name} ${resident.last_name}`: `${resident.name}`"
                                               backgroundColor="rgb(205, 220, 57)"
                                               color="#fff"
-                                              v-if="!tenant.avatar"></avatar>
-                                      <avatar :size="28" :src="`/${tenant.avatar}`" v-else></avatar>
+                                              v-if="!resident.avatar"></avatar>
+                                      <avatar :size="28" :src="`/${resident.avatar}`" v-else></avatar>
                                   </template>
                               </el-tooltip>
                         </span>
@@ -145,8 +145,8 @@
                             {{scope.row.name}}
                         </router-link>                        
                     </div>
-                    <div v-else-if="column.type === 'tenantName'" class="normal">                        
-                        <router-link :to="{name: 'adminTenantsView', params: {id: scope.row.id}}">
+                    <div v-else-if="column.type === 'residentName'" class="normal">                        
+                        <router-link :to="{name: 'adminResidentsView', params: {id: scope.row.id}}">
                             {{scope.row.name}}
                         </router-link>                        
                     </div>
@@ -359,18 +359,18 @@
     }
     .avatars-wrapper {
         display: inline-flex;
-        .tenant-item,
+        .resident-item,
         .avatar-count{
             &:not(:first-child) {
                 margin-left: 2px;
             }
         }
     }
-    .tenant-link {
+    .resident-link {
         display: inline-block;
         text-decoration: none;
     }
-    .tenant-item {
+    .resident-item {
         display: inline-block;
     }
     .badge {

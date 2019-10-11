@@ -20,9 +20,7 @@ class PinboardTransformer extends BaseTransformer
     public function transform(Pinboard $model)
     {
         $ut = new UserTransformer();
-        $tt = new TenantTransformer();
-
-
+        $tt = new ResidentTransformer();
 
         $ret = [
             'id' => $model->id,
@@ -40,7 +38,8 @@ class PinboardTransformer extends BaseTransformer
             'published_at' => $model->published_at ? $model->published_at->toDateTimeString() : null,
             'user_id' => $model->user_id,
             'user' => $ut->transform($model->user),
-            'tenant' => $model->user->tenant ? $tt->transform($model->user->tenant) : null,
+            'tenant' => $model->user->resident ? $tt->transform($model->user->resident) : null,  // @TODO delete
+            'resident' => $model->user->resident ? $tt->transform($model->user->resident) : null,
             'liked' => $model->liked,
             'likes_count' => $model->likesCount,
             'comments_count' => $model->all_comments_count,

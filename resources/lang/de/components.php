@@ -148,11 +148,11 @@ return [
                 'description' => 'Verfassen Sie die erste Nachricht.',
             ],
         ],
-        'tenantconversationsList' => [
-            'loadMore' => 'Lade {count} weitere Nachrichten',
+        'residentconversationsList' => [
+            'loadMore' => 'Laden von {count} mehr residuelle Gespräche.',
             'emptyPlaceholder' => [
-                'title' => 'Es wurden keine Nachrichten mit dem Mieter ausgetauscht.',
-                'description' => 'Verfassen Sie die erste Nachricht.',
+                'title' => 'Es gibt kein Gespräch mit dem Bewohner.',
+                'description' => 'Fügen Sie mit dem untenstehenden Formular eine Nachricht an den Bewohner hinzu und drücken Sie die Eingabetaste.',
             ],
         ],
         'listingcommentsList' => [
@@ -207,7 +207,7 @@ return [
             ],
         ],
     ],
-    'tenant' => [
+    'resident' => [
         'weatherWidget' => [
             'minTemp' => 'min',
             'maxTemp' => 'max',

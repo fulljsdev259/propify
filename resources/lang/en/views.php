@@ -1,6 +1,6 @@
 <?php
 return [
-    'tenant' => [
+    'resident' => [
         'my' => [
             'personal' => [
                 'title' => 'Personal data',

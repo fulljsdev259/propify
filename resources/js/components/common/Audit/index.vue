@@ -7,15 +7,15 @@
                     placement="bottom"
                     width="200"
                     trigger="click">
-                        <el-button type="success" icon="icon-filter" size="mini" slot="reference" plain round>{{$t('tenant.filters')}}</el-button>
+                        <el-button type="success" icon="icon-filter" size="mini" slot="reference" plain round>{{$t('resident.filters')}}</el-button>
                         <filters ref="filters" :data="filters.data" :schema="filters.schema" @changed="filtersChanged" @update:data="filterReset" />
-                        <el-button size="mini" icon="icon-eraser" @click="filterReset" type="success">{{$t('tenant.reset_filters')}}</el-button>
+                        <el-button size="mini" icon="icon-eraser" @click="filterReset" type="success">{{$t('resident.reset_filters')}}</el-button>
                   </el-popover>
             </el-divider>
         </el-col>
         <placeholder :src="require('img/5ce8f4e279cb2.png')" v-if="isEmpty">
-            {{$t('tenant.no_data.activity')}}
-            <small>{{$t('tenant.no_data_info.activity')}}</small>
+            {{$t('resident.no_data.activity')}}
+            <small>{{$t('resident.no_data_info.activity')}}</small>
         </placeholder>
             <el-timeline v-else>
                 <template v-for="(audit, date) in audits.data">
@@ -24,7 +24,7 @@
                     </el-timeline-item>
                 </template>
                 <el-timeline-item v-if="loading">
-                    {{$t('tenant.loading')}}
+                    {{$t('resident.loading')}}
                 </el-timeline-item>
             </el-timeline>
     </div>
@@ -90,7 +90,7 @@
                 schema_children.push({
                             type: 'el-option',
                             props: {
-                                label: 'tenant.all',
+                                label: 'resident.all',
                                 value: null
                             }
                         });
@@ -126,7 +126,7 @@
                 }
                 this.filters.schema.push({
                     type: 'el-select',
-                    title: 'tenant.type',
+                    title: 'resident.type',
                     name: filter_name,
                     props: {
                         size: 'mini'
@@ -212,7 +212,7 @@
 
                 let constant_variables = {}
                 switch (auditable_type) {
-                    case 'request': constant_variables = this.$constants.serviceRequests
+                    case 'request': constant_variables = this.$constants.requests
                     break;
                     case 'pinboard': constant_variables = this.$constants.pinboard;
                     break;

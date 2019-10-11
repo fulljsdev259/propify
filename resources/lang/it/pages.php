@@ -13,7 +13,7 @@ return [
     'request_activities' => [
         "title" => "Richiedi attività",
     ],
-    'tenant' => [
-        "title" => "Gli inquilini",
+    'resident' => [
+        "title" => "Residenti",
     ],
 ];

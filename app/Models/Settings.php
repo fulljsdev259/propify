@@ -51,8 +51,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          type="string"
  *      ),
  *      @SWG\Property(
- *          property="tenant_logo",
- *          description="tenant_logo",
+ *          property="resident_logo",
+ *          description="resident_logo",
  *          type="string"
  *      ),
  *      @SWG\Property(
@@ -151,7 +151,7 @@ class Settings extends AuditableModel
         'language',
         'logo',
         'circle_logo',
-        'tenant_logo',
+        'resident_logo',
         'favicon_icon',
         'pdf_font_family',
         'blank_pdf',
@@ -197,7 +197,7 @@ class Settings extends AuditableModel
         'language' => 'string',
         'logo' => 'string',
         'circle_logo' => 'string',
-        'tenant_logo' => 'string',
+        'resident_logo' => 'string',
         'favicon_icon' => 'string',
         'pdf_font_family' => 'string',
         'blank_pdf' => 'boolean',

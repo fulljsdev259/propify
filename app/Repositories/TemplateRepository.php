@@ -11,7 +11,7 @@ use App\Models\Settings;
 use App\Models\Request;
 use App\Models\Template;
 use App\Models\TemplateCategory;
-use App\Models\Tenant;
+use App\Models\Resident;
 use App\Models\User;
 use Illuminate\Container\Container as Application;
 use Illuminate\Support\Facades\App;
@@ -98,7 +98,7 @@ class TemplateRepository extends BaseRepository
         $language = $language ?? App::getLocale();
         $tags = [];
         foreach ($tagMap as $tag => $val) {
-            if (in_array($tag, ['autologinUrl', 'passwordResetUrl', 'tenantCredentials', 'activationUrl'])) {
+            if (in_array($tag, ['autologinUrl', 'passwordResetUrl', 'residentCredentials', 'activationUrl'])) {
                 $tags[$tag] = $this->getStaticTagValue($tag, $val, $context, $language);
                 continue;
             }
@@ -144,7 +144,7 @@ class TemplateRepository extends BaseRepository
         $language = $language ?? App::getLocale();
         $user = $context['user'] ?? null;
         $pwReset = $context['pwReset'] ?? null;
-        $tenant = $context['tenant'] ?? null;
+        $resident = $context['resident'] ?? null;
 
         if ($tag == 'autologinUrl' && $user) {
             $linkText = __('See pinboard', [], $language);
@@ -157,15 +157,15 @@ class TemplateRepository extends BaseRepository
             return $this->button($linkHref, $linkText);
         }
 
-        if ($tag == 'tenantCredentials' && $tenant) {
-            $linkHref = env('APP_URL') . Storage::url($tenant->pdfXFileName());
+        if ($tag == 'residentCredentials' && $resident) {
+            $linkHref = env('APP_URL') . Storage::url($resident->pdfXFileName());
             $linkText = __('Download Credentials', [], $language);
             return $this->button($linkHref, $linkText);
         }
 
-        if ($tag == 'activationUrl' && $tenant) {
+        if ($tag == 'activationUrl' && $resident) {
             // @TODO hard code query params
-            $linkHref = url(sprintf('/activate?&code=%s', $tenant->activation_code));
+            $linkHref = url(sprintf('/activate?&code=%s', $resident->activation_code));
             $linkText = __('template.activate_account', [], $language);
             return $this->ahref($linkHref, $linkText);
         }
@@ -361,29 +361,29 @@ class TemplateRepository extends BaseRepository
     }
 
     /**
-     * @param Tenant $tenant
+     * @param Resident $resident
      * @return array
      */
-    public function getTenantCredentialsParsedTemplate(Tenant $tenant): array
+    public function getResidentCredentialsParsedTemplate(Resident $resident): array
     {
-        $template = $this->getByCategoryName('tenant_credentials');
+        $template = $this->getByCategoryName('resident_credentials');
 
         $context = [
-            'tenant' => $tenant,
-            'user' => $tenant->user,
+            'resident' => $resident,
+            'user' => $resident->user,
         ];
-        $language = $tenant->settings->language ?? App::getLocale();
+        $language = $resident->settings->language ?? App::getLocale();
         $tags = $this->getTags($template->category->tag_map, $context, $language);
 
         if (!empty($tags['salutation'])) {
-            if(\App\Models\Tenant::TitleCompany == $tags['salutation']) {
-                $tags['salutation'] = __('general.pdf_salutation.' . $tenant->title, [], $language);
+            if(\App\Models\Resident::TitleCompany == $tags['salutation']) {
+                $tags['salutation'] = __('general.pdf_salutation.' . $resident->title, [], $language);
             } else {
-                $tags['salutation'] = __('general.pdf_salutation.' . $tenant->title, ['name' => $tenant->last_name], $language);
+                $tags['salutation'] = __('general.pdf_salutation.' . $resident->title, ['name' => $resident->last_name], $language);
             }
         }
 
-        return $this->getParsedTemplateData($template, $tags, $tenant->user->settings->language);
+        return $this->getParsedTemplateData($template, $tags, $resident->user->settings->language);
     }
 
     /**
@@ -431,9 +431,9 @@ class TemplateRepository extends BaseRepository
      * @param User $receiver
      * @return array
      */
-    public function getPinboardNewTenantInNeighbourParsedTemplate(Pinboard $pinboard, User $receiver): array
+    public function getPinboardNewResidentInNeighbourParsedTemplate(Pinboard $pinboard, User $receiver): array
     {
-        $template = $this->getByCategoryName('pinboard_new_tenant_in_neighbour');
+        $template = $this->getByCategoryName('pinboard_new_resident_in_neighbour');
 
         $receiver->redirect = '/news/' . $pinboard->id;
         $context = [
@@ -563,7 +563,7 @@ class TemplateRepository extends BaseRepository
         $template = $this->getByCategoryName('request_comment');
 
         $user->redirect = '/admin/requests/' . $request->id;
-        if ($user->hasRole('tenant')) {
+        if ($user->hasRole('resident')) {
             $user->redirect = '/requests';
         }
         $context = [
@@ -613,7 +613,7 @@ class TemplateRepository extends BaseRepository
         $template = $this->getByCategoryName('request_upload');
 
         $receiver->redirect = '/admin/requests/' . $request->id;
-        if ($receiver->hasRole('tenant')) {
+        if ($receiver->hasRole('resident')) {
             $receiver->redirect = '/requests';
         }
         $context = [
@@ -640,7 +640,7 @@ class TemplateRepository extends BaseRepository
     {
         $template = $this->getByCategoryName('request_admin_change_status');
 
-        $request->tenant->user->redirect = '/requests';
+        $request->resident->user->redirect = '/requests';
         $context = [
             'request' => $request,
             'originalRequest' => $originalRequest,
@@ -706,13 +706,13 @@ class TemplateRepository extends BaseRepository
     {
         $templates = (new Template())->whereHas('category', function ($q) {
             $q->where('type', TemplateCategory::TypeCommunication)
-                ->where('name', 'communication_tenant');
+                ->where('name', 'communication_resident');
         })->get();
 
         foreach ($templates as $template) {
             $context = [
                 'user' => $user,
-                'subject' => $request->tenant->user,
+                'subject' => $request->resident->user,
                 'request' => $request,
             ];
 
@@ -737,7 +737,7 @@ class TemplateRepository extends BaseRepository
         foreach ($templates as $template) {
             $context = [
                 'user' => $user,
-                'subject' => $request->tenant->user,
+                'subject' => $request->resident->user,
                 'request' => $request,
             ];
             $template = self::getTemplate($template, $context);
@@ -761,7 +761,7 @@ class TemplateRepository extends BaseRepository
         foreach ($templates as $template) {
             $context = [
                 'user' => $user,
-                'subject' => $request->tenant->user,
+                'subject' => $request->resident->user,
                 'request' => $request,
             ];
             $template = self::getTemplate($template, $context);

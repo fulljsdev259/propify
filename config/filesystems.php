@@ -104,21 +104,21 @@ return [
             'visibility' => 'public',
         ],
 
-        'tenants_media' => [
+        'residents_media' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/tenants/media'),
-            'url' => env('APP_URL') . '/storage/tenants/media',
+            'root' => storage_path('app/public/residents/media'),
+            'url' => env('APP_URL') . '/storage/residents/media',
             'visibility' => 'public',
         ],
-        'tenant_rent_contracts_media' => [
+        'contracts_media' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/rent-contracts/media'),
-            'url' => env('APP_URL') . '/storage/rent-contracts/media',
+            'root' => storage_path('app/public/contracts/media'),
+            'url' => env('APP_URL') . '/storage/contracts/media',
             'visibility' => 'public',
         ],
-        'tenant_credentials' => [
+        'resident_credentials' => [
             'driver' => 'local',
-            'root' => storage_path('app/private/tenants/credentials'),
+            'root' => storage_path('app/private/residents/credentials'),
             'visibility' => 'public',
         ],
 

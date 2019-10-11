@@ -129,12 +129,12 @@ class CommentAPIController extends AppBaseController
         $comment->load('user');
 
 
-        // if logged in user is tenant and
-        // author of pinboard is tenant and
+        // if logged in user is resident and
+        // author of pinboard is resident and
         // author of pinboard is different than liker
         $u = \Auth::user();
-        if ($u->tenant && $pinboard->user->tenant && $u->id != $pinboard->user_id) {
-            $pinboard->user->notify(new PinboardCommented($pinboard, $u->tenant, $comment));
+        if ($u->resident && $pinboard->user->resident && $u->id != $pinboard->user_id) {
+            $pinboard->user->notify(new PinboardCommented($pinboard, $u->resident, $comment));
         }
         $out = $this->transformer->transform($comment);
         return $this->sendResponse($out, __('general.comment_created'));
@@ -243,12 +243,12 @@ class CommentAPIController extends AppBaseController
         $comment = $listing->comment($createRequest->comment, $createRequest->parent_id);
         $comment->load('user');
 
-        // if logged in user is tenant and
-        // author of pinboard is tenant and
+        // if logged in user is resident and
+        // author of pinboard is resident and
         // author of pinboard is different than liker
         $u = \Auth::user();
-        if ($u->tenant && $listing->user->tenant && $u->id != $listing->user_id) {
-            $listing->user->notify(new ListingCommented($listing, $u->tenant, $comment));
+        if ($u->resident && $listing->user->resident && $u->id != $listing->user_id) {
+            $listing->user->notify(new ListingCommented($listing, $u->resident, $comment));
         }
         $out = $this->transformer->transform($comment);
         return $this->sendResponse($out, __('models.listing.comment_created'));

@@ -22,7 +22,7 @@ use App\Http\Requests\API\Request\SeeRequestsCount;
 use App\Http\Requests\API\Request\UnAssignRequest;
 use App\Http\Requests\API\Request\UpdateRequest;
 use App\Http\Requests\API\Request\ViewRequest;
-use App\Http\Requests\API\Tenant\DownloadPdfRequest;
+use App\Http\Requests\API\Resident\DownloadPdfRequest;
 use App\Models\PropertyManager;
 use App\Models\ServiceProvider;
 use App\Models\Request;
@@ -139,18 +139,19 @@ class RequestAPIController extends AppBaseController
         $requests = $this->requestRepository
             ->with([
                 'media',
-                'tenant.user',
-                'tenant.building.address',
-                'tenant.rent_contracts' => function ($q) {
+                'resident.user',
+                'resident.building.address',
+                'resident.contracts' => function ($q) {
                     $q->with('building.address', 'unit');
                 },
-                'rent_contract',
+                'contract',
                 'category',
                 'comments.user',
                 'providers.address:id,country_id,state_id,city,street,zip',
                 'providers.user',
                 'managers.user',
-                'users'
+                'users',
+                'creator'
             ])->paginate($perPage);
 
         $requests->getCollection()->loadCount('allComments');
@@ -227,15 +228,16 @@ class RequestAPIController extends AppBaseController
         }
         $request->load([
             'media',
-            'tenant.user',
-            'tenant.building.address',
-            'rent_contract',
+            'resident.user',
+            'resident.building.address',
+            'contract',
             'category',
             'comments.user',
             'providers.address:id,country_id,state_id,city,street,zip',
             'providers.user',
             'managers.user',
-            'users'
+            'users',
+            'creator'
         ]);
         $response = (new RequestTransformer)->transform($request);
         return $this->sendResponse($response, __('models.request.saved'));
@@ -291,11 +293,21 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'tenant.user', 'tenant.building', 'category', 'managers', 'users', 'remainder_user',
-            'comments.user', 'providers.address:id,country_id,state_id,city,street,zip', 'providers',
-            'tenant.rent_contracts' => function ($q) {
+            'media',
+            'resident.user',
+            'resident.building',
+            'category',
+            'managers',
+            'users',
+            'remainder_user',
+            'comments.user',
+            'providers.address:id,country_id,state_id,city,street,zip',
+            'providers',
+            'resident.contracts' => function ($q) {
                 $q->with('building.address', 'unit');
-            }, 'rent_contract',
+            },
+            'contract',
+            'creator'
         ]);
         $response = (new RequestTransformer)->transform($request);
         return $this->sendResponse($response, 'Service Request retrieved successfully');
@@ -372,8 +384,17 @@ class RequestAPIController extends AppBaseController
         $updatedRequest = $this->requestRepository->updateExisting($request, $input);
 
         $updatedRequest->load([
-            'media', 'tenant.user', 'rent_contract', 'category', 'managers.user', 'users', 'remainder_user',
-            'comments.user', 'providers.address:id,country_id,state_id,city,street,zip', 'providers.user',
+            'media',
+            'resident.user',
+            'contract',
+            'category',
+            'managers.user',
+            'users',
+            'remainder_user',
+            'comments.user',
+            'providers.address:id,country_id,state_id,city,street,zip',
+            'providers.user',
+            'creator'
         ]);
         $response = (new RequestTransformer)->transform($updatedRequest);
         return $this->sendResponse($response, __('models.request.saved'));
@@ -689,7 +710,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $sr->providers()->sync([$pid => ['created_at' => now()]], false);
-        $sr->load('media', 'tenant.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
 
         foreach ($sr->managers as $manager) {
@@ -792,7 +813,7 @@ class RequestAPIController extends AppBaseController
         // @TODO check admin or super admin
 
         $sr->users()->sync([$uid => ['created_at' => now()]], false);
-        $sr->load('media', 'tenant.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
 
         foreach ($sr->providers as $p) {
@@ -904,7 +925,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $sr->managers()->sync([$pmid => ['created_at' => now()]], false);
-        $sr->load('media', 'tenant.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
 
         foreach ($sr->providers as $p) {
@@ -1050,7 +1071,7 @@ class RequestAPIController extends AppBaseController
 
         $sr->tags()->sync($tag, false);
         $sr->touch();
-        $sr->load('media', 'tenant.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
 
         return $this->sendResponse($sr, __('general.attached.tag'));
@@ -1136,7 +1157,7 @@ class RequestAPIController extends AppBaseController
             $sr->touch();
         }
 
-        $sr->load('media', 'tenant.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
 
         return $this->sendResponse($sr, __('general.attached.tag'));
@@ -1214,7 +1235,7 @@ class RequestAPIController extends AppBaseController
             $sr->touch();
         }
 
-        $sr->load('media', 'tenant.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
 
         return $this->sendResponse($sr, __('general.detached.tag'));
@@ -1268,7 +1289,7 @@ class RequestAPIController extends AppBaseController
 
         $sr->tags()->detach($tag);
         $sr->touch();
-        $sr->load('media', 'tenant.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
 
         return $this->sendResponse($sr, __('general.detached.tag'));
@@ -1431,7 +1452,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'tenant.user', 'tenant.building', 'category',
+            'media', 'resident.user', 'resident.building', 'category',
         ]);
 
         $templates = $tempRepo->getParsedCommunicationTemplates($request, Auth::user());
@@ -1491,7 +1512,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'tenant.user', 'tenant.building', 'category',
+            'media', 'resident.user', 'resident.building', 'category',
         ]);
 
         $templates = $tempRepo->getParsedServiceCommunicationTemplates($request, Auth::user());
@@ -1551,7 +1572,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'tenant.user', 'tenant.building', 'category',
+            'media', 'resident.user', 'resident.building', 'category',
         ]);
 
         $templates = $tempRepo->getParsedServiceEmailTemplates($request, Auth::user());

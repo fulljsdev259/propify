@@ -226,15 +226,15 @@
             </el-col>
             <el-col :md="12">
                 <el-tabs type="border-card" v-model="activeRightTab">
-                    <el-tab-pane name="tenants" v-loading="loading.state">                        
+                    <el-tab-pane name="residents" v-loading="loading.state">                        
                         <span slot="label">
-                            <el-badge :value="tenantCount" :max="99" class="admin-layout">{{ $t('general.tenants') }}</el-badge>
+                            <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.residents') }}</el-badge>
                         </span>
                         <relation-list
-                            :actions="tenantActions"
-                            :columns="tenantColumns"
+                            :actions="residentActions"
+                            :columns="residentColumns"
                             :filterValue="model.id"
-                            fetchAction="getTenants"
+                            fetchAction="getResidents"
                             filter="building_id"
                             v-if="model.id"
                         />
@@ -267,7 +267,7 @@
                         <span slot="label">
                             <el-badge :value="serviceCount" :max="99" class="admin-layout">{{ $t('models.building.companies') }}</el-badge>
                         </span>                        
-                        <label class="card-label">{{$t('settings.contact_enable.label')}}</label>
+                        <!-- <label class="card-label">{{$t('settings.contact_enable.label')}}</label>
                         <el-select
                                 placeholder="Chose"
                                 style="width: 100%;"
@@ -279,7 +279,7 @@
                                     :value="contactEnableValue.value"
                                     v-for="contactEnableValue in contactEnableValues"/>
                         </el-select>
-                        <el-divider class="mt15" />
+                        <el-divider class="mt15" /> -->
                         <el-row :gutter="10">
                             <el-col :lg="18" :xl="20">
                                 <el-select
@@ -397,25 +397,25 @@
             return {
                 selectedFileCategory: 'house_rules',
                 activeTab: 'details',
-                activeRightTab: 'tenants',
+                activeRightTab: 'residents',
                 activeRequestTab: 'requests',
-                tenantColumns: [{
-                    type: 'requestTenantAvatar',
+                residentColumns: [{
+                    type: 'requestResidentAvatar',
                     width: 70                    
                 }, {
                     prop: 'name',
                     label: 'general.name',
-                    type: 'tenantName'
+                    type: 'residentName'
                 }, {
                     prop: 'status',
-                    i18n: this.tenantStatusLabel,
-                    withBadge: this.tenantStatusBadge,
-                    label: 'models.tenant.status.label'
+                    i18n: this.residentStatusLabel,
+                    withBadge: this.residentStatusBadge,
+                    label: 'models.resident.status.label'
                 }],
-                tenantActions: [{
+                residentActions: [{
                     buttons: [{
-                        title: 'models.tenant.view',
-                        onClick: this.tenantEditView,
+                        title: 'models.resident.view',
+                        onClick: this.residentEditView,
                         icon: 'el-icon-user',
                         tooltipMode: true
                     }]
@@ -464,10 +464,10 @@
                     }]
                 }],
                 requestColumns: [{
-                    type: 'requestTenantAvatar',
+                    type: 'requestResidentAvatar',
                     width: 75,
-                    prop: 'tenant',
-                    label: 'general.tenant'
+                    prop: 'resident',
+                    label: 'general.resident'
                 }, {
                     type: 'requestTitleWithDesc',
                     label: 'models.request.prop_title'
@@ -506,7 +506,7 @@
                 delBuildingStatus: -1, // 0: unit, 1: request, 2: both
                 contactUseGlobalAddition: '',
                 fileCount: 0,                
-                tenantCount: 0,
+                residentCount: 0,
                 assigneeCount: 0,
                 unitCount: 0,
                 requestCount: 0,
@@ -563,9 +563,9 @@
                 })
 
             },
-            tenantEditView(row) {
+            residentEditView(row) {
                 this.$router.push({
-                    name: 'adminTenantsView',
+                    name: 'adminResidentsView',
                     params: {
                         id: row.id
                     }
@@ -636,7 +636,7 @@
                     displayError(error);
                 })
             },
-            tenantStatusBadge(status) {
+            residentStatusBadge(status) {
                 const classObject = {
                     1: 'icon-success',
                     2: 'icon-danger'
@@ -644,8 +644,8 @@
 
                 return classObject[status];
             },
-            tenantStatusLabel(status) {
-                return this.$t(`models.tenant.status.${this.tenantStatusConstants[status]}`)
+            residentStatusLabel(status) {
+                return this.$t(`models.resident.status.${this.residentStatusConstants[status]}`)
             },
             setOrder() {
                 _.each(this.model.media, (file, i) => {
@@ -785,8 +785,8 @@
             EventBus.$on('file-get-counted', file_count => {
                 this.fileCount = file_count;
             });
-            EventBus.$on('tenant-get-counted', tenant_count => {
-                this.tenantCount = tenant_count;
+            EventBus.$on('resident-get-counted', resident_count => {
+                this.residentCount = resident_count;
             });
             EventBus.$on('assignee-get-counted', assignee_count => {                
                 this.assigneeCount = assignee_count;
@@ -804,10 +804,10 @@
                 constants: 'constants'
             }),
             requestStatusConstants() {
-                return this.constants.serviceRequests.status
+                return this.constants.requests.status
             },
-            tenantStatusConstants() {
-                return this.constants.tenants.status
+            residentStatusConstants() {
+                return this.constants.residents.status
             },
             contactEnableValues() {
                 this.fetchSettings();
@@ -848,7 +848,7 @@
         }
     }
     
-    #tab-files, #tab-companies, #tab-requests, #tab-tenants, #tab-managers, #tab-units{
+    #tab-files, #tab-companies, #tab-requests, #tab-residents, #tab-managers, #tab-units{
         padding-right: 40px;
     }
 </style>

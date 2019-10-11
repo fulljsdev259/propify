@@ -22,7 +22,7 @@ use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
 use App\Models\Settings;
-use App\Models\RentContract;
+use App\Models\Contract;
 use App\Models\Role;
 use App\Models\ServiceProvider;
 use App\Models\Request;
@@ -264,7 +264,7 @@ class CleanDB extends Command
             Quarter::class,
             QuarterAssignee::class,
             Settings::class,
-            RentContract::class,
+            Contract::class,
             Role::class,
             ServiceProvider::class,
             Request::class,

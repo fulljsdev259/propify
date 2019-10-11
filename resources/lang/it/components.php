@@ -147,11 +147,11 @@ return [
                 'description' => "Aggiungere una conversazione al fornitore di servizi utilizzando il modulo sottostante e premere Invio.",
             ],
         ],
-        'tenantconversationsList' => [
-            'loadMore' => 'Carico {count} altri conversazioni degli inquilini',
+        'residentconversationsList' => [
+            'loadMore' => 'Carica {contare} più conversazioni residenti',
             'emptyPlaceholder' => [
-                'title' => "Non ci sono conversazioni fatte con l'inquilino.",
-                'description' => "Aggiungere un messaggio all'inquilino utilizzando il modulo sottostante e premere Invio.",
+                'title' => "Non ci sono conversazioni fatte con i residenti.",
+                'description' => "Aggiungere un messaggio al residente utilizzando il modulo sottostante e premere Invio.",
             ],
         ],
         'listingcommentsList' => [
@@ -206,7 +206,7 @@ return [
             ],
         ],
     ],
-    'tenant' => [
+    'resident' => [
         'weatherWidget' => [
             'minTemp' => 'min',
             'maxTemp' => 'massimo',

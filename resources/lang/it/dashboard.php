@@ -15,14 +15,14 @@ return [
     'latest_listings' => 'Ultimi prodotti',
     'listings_by_creation_date' => 'Annunci per data di creazione',
     'listings_by_type' => 'Annunci per tipo',
-    'tenants_by_creation_date' => 'Gli inquilini per data di creazione',
-    'tenants_by_request_status' => 'Situazione degli inquilini in base alle richieste',
-    'tenants_by_status' => 'Affittuari per stato',
-    'tenants_by_language' => 'Affittuari per lingua',
-    'tenants_by_title' => 'Affittuari per titolo',
-    'tenants_by_device' => 'Affittuari per dispositivo',
-    'tenants_by_gender' => 'Affittuari per sesso',
-    'tenants_by_age' => 'Tenants by age',
+    'residents_by_creation_date' => 'Residenti per data di creazione',
+    'residents_by_request_status' => 'Stato dei residenti in base alle richieste',
+    'residents_by_status' => 'Residenti per stato',
+    'residents_by_language' => 'Residenti per lingua',
+    'residents_by_title' => 'Residenti per titolo',
+    'residents_by_device' => 'Residenti per dispositivo',
+    'residents_by_gender' => 'Residenti per sesso',
+    'residents_by_age' => 'Residenti per età',
     'actions' => 'Azioni',
     'requests' => [
         'total_request' => "Totale richieste",
@@ -42,18 +42,18 @@ return [
         'buildings_map' => 'Mappa degli edifici',
         'latest_buildings' => 'Ultimi edifici',
         'managers' => 'manager',
-        'tenants' => 'inquilini',
+        'residents' => 'Residenti',
         'requests' => 'richieste',
         'go_to_buildings' => 'vai agli edifici',
         'buildings_by_state' => 'Edifici per stato',
         'go_to_building' => 'vai al palazzo'
     ],
-    'tenants' => [
-        'total_tenants' => 'Totale',
+    'residents' => [
+        'total_residents' => 'Totale',
         'average_age' => 'Età media',
         'average_age_acr' => 'Media Età',
-        'latest_tenants' => 'Ultimi inquilini',
-        'go_to_tenants' => 'andare dagli inquilini'
+        'latest_residents' => 'Ultimi residenti',
+        'go_to_residents' => 'vai ai residenti'
     ],
     'listing' => [
         'go_to_listing' => 'vai al mercato'

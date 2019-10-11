@@ -17,7 +17,7 @@ use App\Models\Address;
 use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
-use App\Models\RentContract;
+use App\Models\Contract;
 use App\Models\User;
 use App\Repositories\AddressRepository;
 use App\Repositories\QuarterRepository;
@@ -108,8 +108,8 @@ class QuarterAPIController extends AppBaseController
                     'units' => function ($q) {
                         $q ->select('id', 'building_id')
                             ->with([
-                                'rent_contracts' => function ($q) {
-                                    $q->where('status', RentContract::StatusActive)->select('unit_id', 'tenant_id');
+                                'contracts' => function ($q) {
+                                    $q->where('status', Contract::StatusActive)->select('unit_id', 'resident_id');
                                 }
                             ]);
                     }

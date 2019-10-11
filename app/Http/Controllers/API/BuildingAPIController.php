@@ -138,14 +138,14 @@ class BuildingAPIController extends AppBaseController
         $buildings = $this->buildingRepository->with([
                 'address.state',
                 'serviceProviders',
-                'tenants.user',
+                'residents.user',
                 'propertyManagers',
                 'lastPropertyManagers.user',
                 'users'
             ])->withCount([
                 'units',
                 'propertyManagers',
-                'tenants',
+                'residents',
                 'users'
             ])
             ->scope('allRequestStatusCount')
@@ -158,7 +158,7 @@ class BuildingAPIController extends AppBaseController
     /**
      * @SWG\Get(
      *      path="/buildings/latest",
-     *      summary="Get latest buildings 5 Tenants",
+     *      summary="Get latest buildings 5 Residents",
      *      tags={"Building"},
      *      description="Get a latest 5(limit) Buildings",
      *      produces={"application/json"},
@@ -196,7 +196,7 @@ class BuildingAPIController extends AppBaseController
      *                          type="integer"
      *                      ),
      *                      @SWG\Property(
-     *                          property="tenants_count",
+     *                          property="residents_count",
      *                          type="integer"
      *                      )
      *                  )
@@ -219,7 +219,7 @@ class BuildingAPIController extends AppBaseController
         $model = $this->buildingRepository->getModel();
         $buildings = $model->select(['id', 'name'])->orderByDesc('id')->limit($limit)->withCount([
             'units',
-            'tenants',
+            'residents',
         ])->get();
         return $this->sendResponse($buildings->toArray(), 'Buildings retrieved successfully');
     }
@@ -247,7 +247,7 @@ class BuildingAPIController extends AppBaseController
             ])->withCount([
                 'units',
                 'propertyManagers',
-                'tenants',
+                'residents',
                 'users'
             ])->allRequestStatusCount()
             ->get();
@@ -365,9 +365,9 @@ class BuildingAPIController extends AppBaseController
         }
 
         $building
-            ->load('address.state', 'serviceProviders', 'tenants.user', 'propertyManagers',
+            ->load('address.state', 'serviceProviders', 'residents.user', 'propertyManagers',
                 'lastPropertyManagers.user', 'media', 'quarter', 'users')
-            ->loadCount('activeTenants', 'inActiveTenants');
+            ->loadCount('activeResidents', 'inActiveResidents');
         $response = (new BuildingTransformer)->transform($building);
         $response['media_category'] = Building::BuildingMediaCategories;
 

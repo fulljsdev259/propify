@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\LoginDevice;
 use App\Models\User;
-use App\Models\Tenant;
+use App\Models\Resident;
 use App\Models\Autologin;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -134,7 +134,7 @@ class AuthController extends Controller
         }
 
         $userData = $request->user();
-        if ($userData->tenant && $userData->tenant->status == Tenant::StatusNotActive) {
+        if ($userData->resident && $userData->resident->status == Resident::StatusNotActive) {
             return response()->json([
                 'message' => 'Your account has been disabled'
             ], 401);
@@ -168,7 +168,7 @@ class AuthController extends Controller
      */
     protected function saveLoginDevice($user)
     {
-        if (empty($user->tenant->id)) {
+        if (empty($user->resident->id)) {
             return;
         }
 
@@ -179,7 +179,7 @@ class AuthController extends Controller
             'desktop' => $agent->isDesktop() ? 1 : 0,
             'tablet' => $agent->isTablet() ? 1 : 0,
             'user_id' => $user->id,
-            'tenant_id' => $user->tenant->id ?? null
+            'resident_id' => $user->resident->id ?? null
         ];
         $user->last_login_at = now();
         $user->save();

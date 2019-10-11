@@ -122,7 +122,7 @@
                                                 :key="k"
                                                 :label="$t(`models.request.qualification.${qualification}`)"
                                                 :value="parseInt(k)"
-                                                v-for="(qualification, k) in constants.serviceRequests.qualification">
+                                                v-for="(qualification, k) in constants.requests.qualification">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
@@ -166,22 +166,22 @@
                                 </el-col>
                             </el-row>
                             <el-row :gutter="20" class="summary-row" style="margin-bottom: 0;padding-bottom: 0;">
-                                <el-col :md="8" class="summary-item" id="tenant">
-                                    <el-form-item v-if="model.tenant">
+                                <el-col :md="8" class="summary-item" id="resident">
+                                    <el-form-item v-if="model.resident">
                                         <label slot="label">
-                                            {{$t('general.tenant')}}
+                                            {{$t('general.resident')}}
                                         </label>
-                                        <router-link :to="{name: 'adminTenantsView', params: {id: model.tenant.id}}"
-                                                     class="tenant-link">
+                                        <router-link :to="{name: 'adminResidentsView', params: {id: model.resident.id}}"
+                                                     class="resident-link">
                                             <avatar :size="30"
-                                                    :src="'/' + model.tenant.user.avatar"
-                                                    v-if="model.tenant.user.avatar"></avatar>
+                                                    :src="'/' + model.resident.user.avatar"
+                                                    v-if="model.resident.user.avatar"></avatar>
                                             <avatar :size="28"
-                                                    :username="model.tenant.user.first_name ? `${model.tenant.user.first_name} ${model.tenant.user.last_name}`: `${model.tenant.user.name}`"
+                                                    :username="model.resident.user.first_name ? `${model.resident.user.first_name} ${model.resident.user.last_name}`: `${model.resident.user.name}`"
                                                     backgroundColor="rgb(205, 220, 57)"
                                                     color="#fff"
-                                                    v-if="!model.tenant.user.avatar"></avatar>
-                                            <span>{{model.tenant.first_name}} {{model.tenant.last_name}}</span>
+                                                    v-if="!model.resident.user.avatar"></avatar>
+                                            <span>{{model.resident.first_name}} {{model.resident.last_name}}</span>
                                         </router-link>
                                     </el-form-item>
                                 </el-col>
@@ -199,12 +199,12 @@
                             <el-row :gutter="20" class="summary-row">
                                 <el-col :md="8" class="summary-item">
                                     <el-form-item :label="$t('models.request.priority.label')">
-                                        <strong v-if="$constants.serviceRequests.priority[model.priority]">{{$t(`models.request.priority.${$constants.serviceRequests.priority[model.priority]}`)}}</strong>
+                                        <strong v-if="$constants.requests.priority[model.priority]">{{$t(`models.request.priority.${$constants.requests.priority[model.priority]}`)}}</strong>
                                     </el-form-item>
                                 </el-col>
                                 <!-- <el-col :md="8" class="summary-item">
                                     <el-form-item :label="$t('models.request.visibility.label')">
-                                        <strong>{{$constants.serviceRequests.visibility[model.visibility]}}</strong>
+                                        <strong>{{$constants.requests.visibility[model.visibility]}}</strong>
                                     </el-form-item>
                                 </el-col> -->
                             </el-row>
@@ -317,7 +317,7 @@
                                                         :key="k"
                                                         :label="$t(`models.request.status.${status}`)"
                                                         :value="parseInt(k)"
-                                                        v-for="(status, k) in constants.serviceRequests.status">
+                                                        v-for="(status, k) in constants.requests.status">
                                                     </el-option>
                                                 </el-select>
                                             </el-form-item>
@@ -332,7 +332,7 @@
                                                         :key="k"
                                                         :label="$t(`models.request.internal_priority.${priority}`)"
                                                         :value="parseInt(k)"
-                                                        v-for="(priority, k) in $constants.serviceRequests.internal_priority">
+                                                        v-for="(priority, k) in $constants.requests.internal_priority">
                                                     </el-option>
                                                 </el-select>
                                             </el-form-item>
@@ -405,14 +405,14 @@
                                         </label>
                                         <el-switch v-model="model.is_public"/>
                                     </el-form-item>
-                                    <el-form-item class="switcher" prop="visibility" v-if="model.is_public && model.tenant.building && model.tenant.building.quarter_id > 0">
+                                    <el-form-item class="switcher" prop="visibility" v-if="model.is_public && model.resident.building && model.resident.building.quarter_id > 0">
                                         <label class="switcher__label">
                                             {{$t('models.request.visibility_title')}}
                                             <span class="switcher__desc">{{$t('models.request.visibility_desc')}}</span>
                                         </label>
                                         <div>
                                             <el-select v-model="model.visibility">
-                                                <el-option :key="k" :label="$t(`models.request.visibility.${visibility}`)" :value="parseInt(k)" v-for="(visibility, k) in $constants.serviceRequests.visibility">
+                                                <el-option :key="k" :label="$t(`models.request.visibility.${visibility}`)" :value="parseInt(k)" v-for="(visibility, k) in $constants.requests.visibility">
                                                 </el-option>
                                             </el-select>
                                         </div>
@@ -574,20 +574,20 @@
         },
         computed: {
             visibilities() {
-                if (this.model.tenant && this.model.tenant.building && this.model.tenant.building.quarter_id) {
-                    return this.constants.serviceRequests.visibility;
+                if (this.model.resident && this.model.resident.building && this.model.resident.building.quarter_id) {
+                    return this.constants.requests.visibility;
                 } else {
-                    return Object.keys(this.constants.serviceRequests.visibility)
+                    return Object.keys(this.constants.requests.visibility)
                         .filter(key => key != 3)
                         .reduce((obj, key) => {
-                            obj[key] = this.constants.serviceRequests.visibility[key];
+                            obj[key] = this.constants.requests.visibility[key];
                             return obj;
                         }, {});
                 }
             },
             selectedRequestData() {
                 return {
-                    tenant: this.model.tenant,
+                    resident: this.model.resident,
                     request_format: this.model.request_format,
                     category: (this.model.category.parent_id == null)? this.model.category.name : this.model.category.parentCategory.name + " > " + this.model.category.name
                 }
@@ -634,7 +634,7 @@
                 return this.$t(`models.request.userType.${type}`);
             },
             isDisabled(status) {
-                return _.indexOf(this.constants.serviceRequests.statusByAgent[this.model.status], parseInt(status)) < 0
+                return _.indexOf(this.constants.requests.statusByAgent[this.model.status], parseInt(status)) < 0
             },
             notifyUnassignment(provider) {
                 this.$confirm(this.$t(`general.swal.confirmChange.title`), this.$t('general.swal.confirmChange.warning'), {
@@ -732,7 +732,7 @@
         display: block;
     }
 
-    .tenant-link {
+    .resident-link {
         display: flex;
         align-items: center;
         color: var(--primary-color);
@@ -824,7 +824,7 @@
     $min-width: 991px;
     $max-width: 1228px;
     @media only screen and (min-width: $min-width) and (max-width: $max-width) {
-        #tenant {
+        #resident {
             .el-form-item {
                 .el-form-item__label {
                     min-height: 50px;
@@ -847,7 +847,7 @@
         }
     }
     @media only screen and (max-width: $min-width) {
-        #tenant {
+        #resident {
             .el-form-item {
                 .el-form-item__label {
                     min-height: 40px !important;
