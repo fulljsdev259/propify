@@ -535,7 +535,14 @@
                     this.remoteLoading = true;
 
                     try {
-                        const resp = await this.getBuildings({get_all: true, search});
+                        let resp = null
+                        if(this.quarter_id) {
+                            resp = await this.getBuildings({get_all: true, quarter_id: this.quarter_id, search});
+                        }
+                        else {
+                            resp = await this.getBuildings({get_all: true, search});
+                        }
+
                         this.buildings = resp.data;
                     } catch (err) {
                         displayError(err);
