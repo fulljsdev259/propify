@@ -1,7 +1,7 @@
 <template>
     <span class="btn-wrap">
         <el-tooltip
-            :content="$t('models.tenant.status.label')"
+            :content="$t('models.resident.status.label')"
             class="item"
             effect="light" placement="top">
             <template >

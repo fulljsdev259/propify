@@ -39,7 +39,7 @@ export default {
         pinboardToAnyLocation: 'add-located-pinboard',
         listing: 'add-listing',
         provider: 'add-provider',
-        tenantRequest: 'add-request_tenant',
+        residentRequest: 'add-request_resident',
         serviceRequest: 'add-request_service',
         request: 'add-request',
         building: 'add-building',
@@ -51,7 +51,7 @@ export default {
         requestCategory: 'add-service_request_category'
     },
     update: {
-        requestTenant: 'edit-request_tenant',
+        requestResident: 'edit-request_resident',
         user: 'edit-user',
         userSettings: 'edit-user_setting',
         resident: 'edit-resident',
@@ -60,7 +60,7 @@ export default {
         listing: 'edit-listing',
         provider: 'edit-provider',
         request: 'edit-request',
-        tenantRequest: 'edit-request_tenant',
+        residentRequest: 'edit-request_resident',
         serviceRequest: 'edit-request_service',
         building: 'edit-building',
         address: 'edit-address',

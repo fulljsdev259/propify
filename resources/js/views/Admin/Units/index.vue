@@ -83,9 +83,9 @@
                     label: 'general.monthly_rent_net',
                     prop: 'monthly_rent_net'
                 }, {
-                    label: 'general.tenant',
+                    label: 'general.resident',
                     withUsers: true,
-                    prop: 'tenants'
+                    prop: 'residents'
                 }, {
                     width: 120,
                     actions: [{

@@ -8,7 +8,7 @@ import App from '@/App.vue'
 
 import axios from 'boot/axios'
 import {DEFAULT_FALLBACK_LOCALE} from 'config'
-import {AdminPermissions, TenantPermissions} from 'boot/roles'
+import {AdminPermissions, ResidentPermissions} from 'boot/roles'
 
 import store from 'store'
 import router from 'routes'
@@ -16,7 +16,7 @@ import messages from 'lang/index'
 import hasPermission from 'helpers/hasPermission'
 import UIComponents from 'components/ui'
 import CommonComponents from 'components/common'
-import TenantComponents from 'components/tenant'
+import ResidentComponents from 'components/resident'
 
 import Vue from 'vue'
 import VueUid from 'vue-uid'
@@ -42,7 +42,7 @@ Vue.use(VueDebounce)
 Vue.use(UIComponents)
 Vue.use(VueAxios, axios)
 Vue.use(CommonComponents)
-Vue.use(TenantComponents)
+Vue.use(ResidentComponents)
 Vue.use(VueVirtualScroller)
 Vue.use(VueLocalStorage, {name: 'localStorage', bind: true})
 Vue.use(VueSweetalert2, {confirmButtonColor: '#3085d6', cancelButtonColor: '#d33'})

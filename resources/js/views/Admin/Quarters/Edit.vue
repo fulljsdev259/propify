@@ -12,7 +12,7 @@
                     <el-form :model="model" ref="form">
                         <el-row :gutter="20">
                             <el-col :md="12">
-                                <el-form-item :label="$t('tenant.name')" :rules="validationRules.name"
+                                <el-form-item :label="$t('resident.name')" :rules="validationRules.name"
                                               prop="name">
                                     <el-input type="text" v-model="model.name"/>
                                 </el-form-item>
@@ -142,10 +142,10 @@
         data() {
             return {
                 requestColumns: [{
-                    type: 'requestTenantAvatar',
+                    type: 'requestResidentAvatar',
                     width: 75,
-                    prop: 'tenant',
-                    label: 'general.tenant'
+                    prop: 'resident',
+                    label: 'general.resident'
                 }, {
                     type: 'requestTitleWithDesc',
                     label: 'models.request.prop_title'
@@ -194,12 +194,12 @@
                     prop: 'units_count',
                     label: 'dashboard.buildings.total_units'
                 }, {
-                    type: 'buildingTenantAvatars',
+                    type: 'buildingResidentAvatars',
                     align: 'center',
-                    prop: 'tenants',
+                    prop: 'residents',
                     propLimit: 2,
-                    count: 'tenants_count',
-                    label: 'general.tenants'
+                    count: 'residents_count',
+                    label: 'general.residents'
                 }],
                 quarterActions: [{
                     width: '90px',

@@ -1,5 +1,5 @@
 <template>
-    <div class="tenants-by-device-chart">
+    <div class="residents-by-device-chart">
         <el-row type="flex">
             <el-col :span="24">
                 <apexchart type="donut" :options="chartOptions" :series="series" />
@@ -111,13 +111,13 @@ export default {
 </script>
 <style lang="scss">
   .chart-card {
-    .tenants-by-device-chart .apexcharts-canvas {
+    .residents-by-device-chart .apexcharts-canvas {
       margin-top: 25px;
       @media screen and (max-width: 1650px) {
         margin-top: 30px;
       }
     }
-    .tenants-by-device-chart {
+    .residents-by-device-chart {
       position: relative;
 
       .apexcharts-canvas {

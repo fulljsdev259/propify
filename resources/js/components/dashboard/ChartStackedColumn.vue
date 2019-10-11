@@ -59,9 +59,9 @@ export default {
         url = 'admin/chartByCreationDate?table=listings';
         langPrefix = 'models.listing.status.';
       }
-      else if (this.type === 'tenants_by_creation_date') {
-        url = 'admin/chartByCreationDate?table=tenants';
-        langPrefix = 'models.tenant.status.';
+      else if (this.type === 'residents_by_creation_date') {
+        url = 'admin/chartByCreationDate?table=residents';
+        langPrefix = 'models.resident.status.';
       }
       let params = {
         period: that.period

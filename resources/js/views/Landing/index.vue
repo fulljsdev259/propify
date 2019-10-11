@@ -8,8 +8,8 @@
                          :background-color="header.menu.background"
                          v-on:scroll="handleScroll">
                     <el-menu-item index="1" route="/" class="logo">
-                        <img src="~img/logo3.png" v-show="!tenant_logo_src"/>
-                        <img :src="tenant_logo_src" v-show="tenant_logo_src"/>
+                        <img src="~img/logo3.png" v-show="!resident_logo_src"/>
+                        <img :src="resident_logo_src" v-show="resident_logo_src"/>
                     </el-menu-item>
                     <el-menu-item index="2" route="/"  class="spacer"></el-menu-item>
                     <el-menu-item index="3" route="login">
@@ -252,7 +252,7 @@
                         background: 'transparent'
                     }
                 },
-                tenant_logo_src: '',
+                resident_logo_src: '',
             }
         },
         methods: {
@@ -275,7 +275,7 @@
             window.removeEventListener('scroll', this.handleScroll);
         },
         mounted () {
-            this.tenant_logo_src = "/" + this.$constants.logo.tenant_logo;
+            this.resident_logo_src = "/" + this.$constants.logo.resident_logo;
         }
     }
 </script>

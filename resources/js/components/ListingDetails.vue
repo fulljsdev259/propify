@@ -3,9 +3,9 @@
         <el-row :gutter="10">
             <el-col :md="6" :sm="12">
                 <p class="listing-label">{{$t('general.name')}}</p>
-                <p v-if="listing.tenant">
-                    <router-link :to="{name: 'adminTenantsEdit', params: {id: listing.tenant.id}}">
-                        {{listing.tenant.name}}
+                <p v-if="listing.resident">
+                    <router-link :to="{name: 'adminResidentsEdit', params: {id: listing.resident.id}}">
+                        {{listing.resident.name}}
                     </router-link>
                 </p>
                 <p v-else>

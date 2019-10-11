@@ -20,7 +20,7 @@ return [
     'registered' => 'Registrato',
     'about' => 'A proposito di',
     'feedback' => 'Feedback',
-    'tenants' => 'Gli inquilini',
+    'residents' => 'Gli inquilini',
     'buildings' => 'Edifici',
     'all_buildings' => 'Tutti gli edifici',
     'units' => 'Unità',

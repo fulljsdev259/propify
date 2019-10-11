@@ -1,2 +1,2 @@
 export {default as AdminPermissions} from './admin'
-export {default as TenantPermissions} from './tenant'
+export {default as ResidentPermissions} from './resident'

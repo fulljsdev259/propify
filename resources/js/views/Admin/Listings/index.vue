@@ -109,7 +109,7 @@
                 }],
                 listing: {},
                 listingDetailsVisible: false,
-                tenants: {},
+                residents: {},
                 quarters: {},
                 isLoadingFilters: false,
             };
@@ -151,12 +151,12 @@
                         data: this.quarters
                     },
                     {
-                        name: this.$t('filters.tenant'),
+                        name: this.$t('filters.resident'),
                         type: 'remote-select',
-                        key: 'tenant_id',
-                        data: this.tenants,
+                        key: 'resident_id',
+                        data: this.residents,
                         remoteLoading: false,
-                        fetch: this.fetchRemoteTenants
+                        fetch: this.fetchRemoteResidents
                     }
                 ];
             },
@@ -166,7 +166,7 @@
 
         },
         methods: {
-            ...mapActions(['changeListingPublish', 'getBuildings', 'getTenants']),
+            ...mapActions(['changeListingPublish', 'getBuildings', 'getResidents']),
             async getFilterBuildings() {
                 this.loading = true;
                 const buildings = await this.getBuildings({
@@ -176,13 +176,13 @@
 
                 return buildings.data;
             },
-            async fetchRemoteTenants(search) {
-                const tenants = await this.getTenants({get_all: true, search});
+            async fetchRemoteResidents(search) {
+                const residents = await this.getResidents({get_all: true, search});
 
-                return tenants.data.map((tenant) => {
+                return residents.data.map((resident) => {
                     return {
-                        name: `${tenant.first_name} ${tenant.last_name}`,
-                        id: tenant.id
+                        name: `${resident.first_name} ${resident.last_name}`,
+                        id: resident.id
                     };
                 });
             },
@@ -223,7 +223,7 @@
         },
         async created(){
             this.isLoadingFilters = true;
-            this.tenants = await this.fetchRemoteTenants();
+            this.residents = await this.fetchRemoteResidents();
             const quarters = await this.axios.get('quarters')
             this.quarters = quarters.data.data.data;
             this.isLoadingFilters = false;

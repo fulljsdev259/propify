@@ -14,8 +14,8 @@ export default {
     loggedInUser ({loggedInUser}) {
         return loggedInUser;
     },
-    isTenant({loggedInUser}) {
-        return !!loggedInUser.tenant;
+    isResident({loggedInUser}) {
+        return !!loggedInUser.resident;
     },
     Settings({Settings}) {
         return Settings;

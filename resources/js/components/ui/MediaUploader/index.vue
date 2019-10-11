@@ -31,7 +31,7 @@
             </div>
         </draggable>
         <!-- <el-button type="primary" round @click="$refs.uploader.active = true">Upload</el-button> -->
-        <el-button class="ui-media-uploader__btn" icon="el-icon-upload" type="primary" round @click="startUploading()">{{$t('tenant.actions.upload')}}</el-button>
+        <el-button class="ui-media-uploader__btn" icon="el-icon-upload" type="primary" round @click="startUploading()">{{$t('resident.actions.upload')}}</el-button>
         <div v-if="$refs.uploader && $refs.uploader.dropActive" class="ui-media-uploader--drop--active">
             <i class="icon-upload-cloud"></i>
             Drop your files here..

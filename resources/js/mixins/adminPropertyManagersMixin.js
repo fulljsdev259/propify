@@ -106,7 +106,7 @@ export default (config = {}) => {
                     }],
                     title: [{
                         required: true,
-                        message: this.$t('models.tenant.validation.title.required')
+                        message: this.$t('models.resident.validation.title.required')
                     }]
                 },
                 loading: {

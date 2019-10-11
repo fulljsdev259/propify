@@ -47,7 +47,7 @@
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
-        name: "RentContractForm",
+        name: "EmergencySettingsForm",
         props: {
             data: {
                 type: Object
@@ -69,7 +69,7 @@
                 validationRules: {
                     phone_number: [{
                         required: true,
-                        message: this.$t('models.tenant.validation.building.required')
+                        message: this.$t('models.resident.validation.building.required')
                     }],
                 }
             }

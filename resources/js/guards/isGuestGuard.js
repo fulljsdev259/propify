@@ -1,1 +1,1 @@
-export default (to, from, next) => !localStorage.token ? next() : next({name: 'tenantDashboard'})
+export default (to, from, next) => !localStorage.token ? next() : next({name: 'residentDashboard'})

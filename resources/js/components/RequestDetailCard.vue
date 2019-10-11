@@ -42,8 +42,8 @@
                     <el-checkbox @change="handleSelectionChanged"></el-checkbox>
                 </el-col> 
                 <el-col :span="1" class="request-actions">
-                    <!--<el-tooltip v-if="item.tenant.building.id" :content="$t('dashboard.buildings.go_to_building')" placement="top" effect="light">
-                        <router-link :to="{name: 'adminBuildingsEdit', params: {id:item.tenant.building.id}}" class="listing-link">
+                    <!--<el-tooltip v-if="item.resident.building.id" :content="$t('dashboard.buildings.go_to_building')" placement="top" effect="light">
+                        <router-link :to="{name: 'adminBuildingsEdit', params: {id:item.resident.building.id}}" class="listing-link">
                              <i class="icon icon-commerical-building"></i>
                         </router-link>
                     </el-tooltip>-->
@@ -86,15 +86,15 @@
                     <div class="created-by">
                         <p>
                             <el-tooltip
-                                :content="item.tenant_name"
+                                :content="item.resident_name"
                                 class="item"
                                 effect="light" placement="top">
                         
-                                <table-avatar :src="item.tenant.user.avatar" :name="item.tenant_name" :size="33" />
+                                <table-avatar :src="item.resident.user.avatar" :name="item.resident_name" :size="33" />
                             </el-tooltip>
                         </p>
                         <div>
-                            <p>{{ item.tenant_name }}</p>
+                            <p>{{ item.resident_name }}</p>
                             <p>{{formatDate(item.created_at)}}</p>
                         </div>
                     </div>

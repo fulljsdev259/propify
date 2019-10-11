@@ -1,6 +1,6 @@
 <?php
 return [
-    'tenant' => [
+    'resident' => [
         'menu' => [
             'logout' => 'Déconnexion',
         ],

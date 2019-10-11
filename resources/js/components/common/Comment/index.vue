@@ -247,7 +247,7 @@
                 }
             },
             hasActions() {
-                if((this.$store.getters.loggedInUser.hasOwnProperty('tenant')) && (this.$store.getters.loggedInUser.tenant)){
+                if((this.$store.getters.loggedInUser.hasOwnProperty('resident')) && (this.$store.getters.loggedInUser.resident)){
                     return false;
                 }
                 else{

@@ -147,7 +147,7 @@ return [
                 'description' => "Aggiungere una conversazione al fornitore di servizi utilizzando il modulo sottostante e premere Invio.",
             ],
         ],
-        'tenantconversationsList' => [
+        'residentconversationsList' => [
             'loadMore' => 'Carico {count} altri conversazioni degli inquilini',
             'emptyPlaceholder' => [
                 'title' => "Non ci sono conversazioni fatte con l'inquilino.",
@@ -206,7 +206,7 @@ return [
             ],
         ],
     ],
-    'tenant' => [
+    'resident' => [
         'weatherWidget' => [
             'minTemp' => 'min',
             'maxTemp' => 'massimo',

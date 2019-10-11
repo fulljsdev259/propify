@@ -27,17 +27,17 @@ export default (config = {}) => {
                         icon: 'ti-user',
                         color: '#003171',
                         value: 0,
-                        description: 'dashboard.tenants.total_tenants'
+                        description: 'dashboard.residents.total_residents'
                     }, {
                         icon: 'ti-plus',
                         color: '#26A65B',
                         value: 0,
-                        description: 'models.tenant.status.active'
+                        description: 'models.resident.status.active'
                     },{
                         icon: 'ti-plus',
                         color: '#26A65B',
                         value: 0,
-                        description: 'models.tenant.status.not_active'
+                        description: 'models.resident.status.not_active'
                     }],
                     percentage: {
                         occupied_units: 0,
@@ -372,14 +372,14 @@ export default (config = {}) => {
                            
                             ...restData
                         } = await this.getBuilding({id: this.$route.params.id});
-                        this.statistics.raw[0].value = restData.active_tenants_count + restData.in_active_tenants_count;
-                        this.statistics.raw[1].value = restData.active_tenants_count;
-                        this.statistics.raw[2].value = restData.in_active_tenants_count;                        
+                        this.statistics.raw[0].value = restData.active_residents_count + restData.in_active_residents_count;
+                        this.statistics.raw[1].value = restData.active_residents_count;
+                        this.statistics.raw[2].value = restData.in_active_residents_count;                        
 
                         this.model = {state_id, ...restAddress, ...restData, service_providers_ids: []};
                         EventBus.$emit('service-get-counted', this.model.service_providers.length);
                         EventBus.$emit('file-get-counted', this.model.media.length);                        
-                        EventBus.$emit('tenant-get-counted', this.model.tenants.length);
+                        EventBus.$emit('resident-get-counted', this.model.residents.length);
 
                         if (this.model.quarter) {
                             this.$set(this.model, 'quarter_id', this.model.quarter.id);
@@ -390,7 +390,7 @@ export default (config = {}) => {
                             data: {
                                 free_units,
                                 occupied_units,
-                                total_tenants,
+                                total_residents,
                                 total_units
                             }
                         } = await this.getBuildingStatistics({id: this.$route.params.id});

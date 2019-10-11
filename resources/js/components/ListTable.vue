@@ -243,7 +243,7 @@
                 v-for="(column, key) in headerWithCounts">
                 <template slot-scope="scope">
                     <request-count :countsData="items[scope.$index]" ></request-count>
-                    <rent-contract-count :countsData="items[scope.$index]" ></rent-contract-count>
+                    <contract-count :countsData="items[scope.$index]" ></contract-count>
                 </template>
             </el-table-column>
 
@@ -393,7 +393,7 @@
     import {Avatar} from 'vue-avatar'
     import uuid from 'uuid/v1'
     import RequestCount from 'components/RequestCount'
-    import RentContractCount from 'components/RentContractCount'
+    import ContractCount from 'components/ContractCount'
     import tableAvatar from 'components/Avatar';
     import RequestDetailCard from 'components/RequestDetailCard';
     import SelectLanguage from 'components/SelectLanguage';
@@ -404,7 +404,7 @@
         components: {
             Avatar,
             RequestCount,
-            RentContractCount,
+            ContractCount,
             'table-avatar': tableAvatar,
             RequestDetailCard,
             SelectLanguage,
@@ -464,7 +464,7 @@
             },
             filtersHeader: {
                 type: String,
-                default: () => (this.$t('tenant.filters'))
+                default: () => (this.$t('resident.filters'))
             },
             withSearch: {
                 type: Boolean,

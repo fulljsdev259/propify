@@ -36,8 +36,8 @@ return [
         'sunday' => 'dimanche',
     ],
     "user" => "Utilisateur",
-    "tenant" => "Locataire",
-    "tenants" => "Locataires",
+    "resident" => "Locataire",
+    "residents" => "Locataires",
     'recipients' => 'Récipiendaires',
     'date' => 'Date',
     'title' => "intitulé",
@@ -60,7 +60,7 @@ return [
         "building" => "Bâtiment affecté",
         "quarter" => "Trimestre assigné",
         "provider" => "Prestataire désigné",
-        'tenant' => "Locataire attaché avec succès",
+        'resident' => "Locataire attaché avec succès",
         "service" => "Le prestataire s'est attaché avec succès",
         "manager" => "Gestionnaire attaché avec succès",
         "user" => "Utilisateur affecté avec succès",
@@ -70,7 +70,7 @@ return [
         "building" => "Bâtiment non assigné",
         "quarter" => "Trimestre non attribué",
         "provider" => "Prestataire non assigné",
-        'tenant' => "Locataire détaché avec succès",
+        'resident' => "Locataire détaché avec succès",
         "service" => "Le prestataire s'est détaché avec succès",
         "manager" => "Gestionnaire détaché avec succès",
         "user" => "Utilisateur non affecté avec succès",
@@ -201,9 +201,9 @@ return [
             'title' => 'supprimer la liste',
             'text' => "Voulez-vous vraiment supprimer l'annonce ?",
         ],
-        'delete_rentcontract' => [
-            'title' => 'Supprimer le contrat de location',
-            'text' => 'Voulez-vous vraiment supprimer le contrat de location ?',
+        'delete_contract' => [
+            'title' => 'Vertrag löschen',
+            'text' => 'Vuoi davvero cancellare il contratto?',
         ],
         'add' => [
             'added' => 'Ajouté avec succès',
@@ -248,12 +248,12 @@ return [
         'week' => 'Semaine',
         'peek_week' => 'Choisir une semaine',
     ],
-    'tenant_detail' => [
+    'resident_detail' => [
         'activate_required_credentials' => 'code, email, mot de passe requis',
         'incorrect_email' => 'Adresse e-mail incorrecte',
-        'user_not_tenant' => 'Cet utilisateur n\'est pas locataire',
+        'user_not_resident' => 'Cet utilisateur n\'est pas locataire',
         'invalid_code' => 'Le code n\'est pas valide',
-        'not_active_tenant' => 'Le locataire n\'est pas actif et ne peut pas changer de mot de passe',
+        'not_active_resident' => 'Le locataire n\'est pas actif et ne peut pas changer de mot de passe',
     ],
     'page_not_found' => [
         'title' => "Hmm... Quelque chose ne va pas ici.",
@@ -263,4 +263,6 @@ return [
     "assignment" => "Affectation",
     'status_changed' => "Changement de statut",
     "monthly_rent_net" => "Loyer mensuel",
+    'maintenance' => 'Maintenance',
+    'gross_rent' => 'Loyer brut',
 ];
