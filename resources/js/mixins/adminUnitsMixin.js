@@ -50,11 +50,11 @@ export default (config = {}) => {
                     }],
                     monthly_rent_net: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.tenant.gross_rent')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.gross_rent')})
                     }],
                     monthly_maintenance: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.tenant.maintenance')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.maintenance')})
                     }],
                     floor: [{
                         required: true,
