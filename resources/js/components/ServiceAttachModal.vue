@@ -176,25 +176,25 @@
                     subject: [
                         {
                             required: true,
-                            message: this.$t("models.request.mail.validation.required")
+                            message: this.$t('validation.required',{attribute: this.$t('models.request.mail.subject')})
                         }
                     ],
                     body: [
                         {
                             required: true,
-                            message: this.$t('models.request.mail.validation.required')
+                            message: this.$t('validation.required',{attribute: this.$t('models.request.mail.body')})
                         }
                     ],
                     provider: [
                         {
                             required: true,
-                            message: this.$t('models.request.mail.validation.required')
+                            message: this.$t('validation.required',{attribute: this.$t('models.request.mail.provider')})
                         }
                     ],
                     to: [
                         {
                             type: 'email',
-                            message: this.$t('models.request.mail.validation.email')
+                            message: this.$t('validation.email',{attribute: this.$t('models.request.mail.to')})
                         }
                     ]
                 },
