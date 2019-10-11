@@ -362,7 +362,7 @@
         />
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-            <ui-divider content-position="left"><i class="icon-tools"></i> &nbsp;&nbsp;Emergency</ui-divider>
+            <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;Emergency</ui-divider>
             
             <div class="content" v-if="visibleDrawer">
                 <emergency-settings-form :visible.sync="visibleDrawer"/>
