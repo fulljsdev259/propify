@@ -109,8 +109,7 @@ return [
             'deposit_amount' => 'Deposit amount',
             'type_of_deposit' => 'Type of deposit',
             'deposit_types' => [
-                'bank_deposit' => 'Bank Deposit',
-                'bank_deposit' => 'Bank Deposit',
+                'bank_deposit' => 'Bank Deposit',                
                 'bank_guarantee' => 'Bank Guarantee',
                 'insurance' => 'Insurance',
                 'other' => 'Other',
@@ -424,95 +423,6 @@ return [
             'deleted' => "Quarter deleted error: ",
         ],
     ],
-    'settings' => [
-        'title' => 'Settings real estate',
-        'settings' => 'Settings',
-        'saved' => "user setting saved",
-        'residents_portal' => 'Residents portal',
-        'iframe' => 'Iframe',
-        'micro_apps' => 'Micro-Apps',
-        'theme' => 'Theme',
-        'smtp' => 'SMTP',
-        'email' => 'EMAIL',
-        'pdf' => 'PDF',
-        'login_variations' => 'Login variations',
-        'login_variation' => 'Login variation',
-        'login_variation_slider' => 'Do you want to show slider?',
-        'quarter_enable' => 'Quarter',
-        'listing_approval_enable' => 'Enable Market',
-        'blank_pdf' => 'Blank pdf',
-        'blank_pdf_desc' => 'Generate PDF files without letterhead so that they can be printed on your own stationery.',
-        'font_family' => 'Font family',
-        'pinboard_approval_enable' => 'Pinboard approval',
-        'pinboard_approval_enable_desc' => 'Pinboard posts are first checked by the admin and then activated.',
-        'comment_update_timeout' => 'Comment update timeout',
-        'closed' => 'Closed',
-        'saved' => 'Real estate saved',
-        'schedule' => 'Schedule',
-        'endTime' => 'End time',
-        'startTime' => 'Start time',
-        'powered_by' => 'Powered by',
-        'to' => 'To',
-        'categories' => 'Categories',
-        'templates' => 'Templates',
-        'contact_enable' => 'Enable \'My contacts\'',
-        'contact_enable_desc' => 'Residents can see the contact data of the service partners involved in the resident portal.',
-        'mail_encryption' => 'Encryption',
-        'primary_color' => 'Primary color',
-        'accent_color' => 'Accent color',
-        'iframe_enable' => 'Iframe enable',
-        'iframe_enable_desc' => 'In the resident portal a column with your free renting objects is indicated. Put here the URL with your objects, for example from ImmoScou24 or Homegate.',
-        'cleanify_email' => [
-            'label' => 'Cleanify Email',
-            'description' => 'Cleanify allows cleaning companies to be compared and quoted free of charge.',
-            'validation' => 'Cleanify Email should be valid',
-        ],
-        'cleanify_url' => [
-            'label' => 'Cleanify Email URL',
-            'validation' => 'Cleanify Email URL should be a valid URL',
-        ],
-        'gocaution' => [
-            'label' => 'Gocaution',
-            'description' => 'The deposit guarantee does not require the deposit of a rental deposit. Both residents and landlords benefit from the cashless rental deposit from goCaution.',
-        ],
-        'iframe_url' => [
-            'label' => 'Iframe URL',
-            'validation' => 'Iframe URL should be a valid URL',
-        ],
-        "mail_from_name" => [
-            "label" => "From Name",
-            "validation" => "Enter from Name"
-        ],
-        "mail_from_address" => [
-            "label" => "From address",
-            "required" => "Enter from email address",
-            "email" => "Please enter a valid Email"
-        ],
-        "mail_host" => [
-            "label" => "Host",
-            "validation" => "Enter email host"
-        ],
-        "mail_port" => [
-            "label" => "Port",
-            "validation" => "Enter email port"
-        ],
-        "mail_username" => [
-            "label" => "Username",
-            "validation" => "Enter email username"
-        ],
-        "mail_password" => [
-            "label" => "Password",
-            "validation" => "Enter email password"
-        ],
-        "mail_powered_by" => [
-            "label" => "Email Footer",
-            "validation" => "Enter email"
-        ],
-        'errors' => [
-            'not_found' => "Real Estate not found",
-            'update' => "Real Estate update error: ",
-        ],
-    ],
     'request' => [
         'audits' => 'Audits',
         'deleted' => 'Request deleted',
@@ -554,24 +464,13 @@ return [
         'internal_notices' => 'Internal notices',
         'status_changed' => 'Status changed',
         'priority_changed' => 'Priority changed',
-        'assignment' => 'Assignment of managers/services providers',
-        'last_updated' => 'Last updated',
-        'due_in' => 'Due in',
-        'was_due_on' => 'Was due on',
-        'due_on' => 'Due on',
-        'solved_on' => 'Solved on',
+        'assignment' => 'Assignment of managers/services providers',        
         'active_reminder_switcher' => 'Active Reminder',
         'days_left' => 'How many days before should the email be sent?',
         'send_person' => 'Which person should be notified?',
         'sort' => 'Sort',
         'reset_sort' => 'Reset Sort',
-        'creation_date' => 'Creation Date',
-        'ago' => 'ago',
-        'not_set' => 'Not set',
-        'today' => 'Today',
-        'yesterday' => 'Yesterday',
-        'tomorrow' => 'Tomorrow',
-        'just_now' => 'Just now',
+        'creation_date' => 'Creation Date',        
         'media'  => [
             'added' => 'Document added',
             'removed' => 'Document removed',
@@ -695,10 +594,6 @@ return [
             'cc' => 'CC',
             'bcc' => 'BCC',
             'success' => 'Notification mail sent successfully',
-            'validation' => [
-                'required' => 'This field is required',
-                'email' => 'This field should be a valid email',
-            ],
             'fail_cc' => 'CC/BCC/TO fields must be valid emails',
         ],
         'userType' => [

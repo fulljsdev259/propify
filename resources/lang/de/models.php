@@ -423,95 +423,6 @@ return [
             'deleted' => "Fehler beim Löschen der Überbauung: ",
         ],
     ],
-    'settings' => [
-        'title' => 'App Einstellungen',
-        'settings' => 'Einstellungen',
-        'saved' => "Einstellung(en) gespeichert",
-        'residents_portal' => 'Bewohnerportal',
-        'iframe' => 'Freie Objekte',    
-        'micro_apps' => 'Micro-Apps',
-        'theme' => 'Design',
-        'smtp' => 'SMTP',
-        'email' => 'EMAIL',
-        'pdf' => 'PDF',
-        'login_variations' => 'Login-Varianten',
-        'login_variation' => 'Login-Variante',
-        'login_variation_slider' => 'Möchten Sie den Slider it Vorteilen anzeigen?',
-        'quarter_enable' => 'Überbauungen aktivieren',
-        'listing_approval_enable' => 'Marktplatz aktivieren',
-        'blank_pdf' => 'PDF ohne Briefkopf verwenden',
-        'blank_pdf_desc' => 'PDF-Dateien ohne Briefkopf generieren, damit diese auf das eigene Briefpapier gedruckt werden können.',
-        'font_family' => 'Schriftfamilie',
-        'pinboard_approval_enable' => 'Pinnwand-Beiträge zuerst prüfen',
-        'pinboard_approval_enable_desc' => 'Beiträge werden zuerst durch den Admin geprüft und dann freigeschaltet.',
-        'comment_update_timeout' => 'Comment update timeout',
-        'closed' => 'Geschlossen',
-        'saved' => 'Gespeichert!',
-        'schedule' => 'Terminplanung',
-        'endTime' => 'Ende',
-        'startTime' => 'Start',
-        'powered_by' => 'Powered by',
-        'to' => 'An',
-        'categories' => 'Kategorien',
-        'templates' => 'Vorlagen',
-        'contact_enable' => 'Dienstleister-Kontakte für Mieter aktivieren',
-        'contact_enable_desc' => 'Die Bewohner sehen die Kontaktdaten der im Bewohnerportal beteiligten Servicepartner.',
-        'iframe_enable' => 'Freie Mietobjekte',
-        'iframe_enable_desc' => 'Nel portale dei residenti è indicata una colonna con i vostri oggetti in affitto gratuito. Inserisci qui l\'URL con i tuoi oggetti, ad esempio da ImmoScou24 o Homegate.',
-        'mail_encryption' => 'Verschlüsselung',
-        'primary_color' => 'Primärfarbe',
-        'accent_color' => 'Akzentfarbe',
-        'cleanify_email' => [
-            'label' => 'E-Mail bereinigen',
-            'description' => 'Über Cleanify können Reinigungsfirmen kostenlose Offerten und verglichen werden.',
-            'validation' => 'Cleanify Email sollte gültig sein',
-        ],
-        'cleanify_url' => [
-            'label' => 'E-Mail-URL bereinigen',
-            'validation' => 'E-Mail-URL bereinigen sollte eine gültige URL sein',
-        ],
-        'gocaution' => [
-            'label' => 'goCaution',
-            'description' => 'Die Einlagensicherung erfordert keine Kaution. Sowohl Bewohner als auch Vermieter profitieren von der bargeldlosen Mietkaution von goCaution.',
-        ],
-        'iframe_url' => [
-            'label' => 'URL mit Ihren Objekten',
-            'validation' => 'Bitte geben Sie eine korrekte URL ein.',
-        ],
-        "mail_from_name" => [
-            "label" => "Absender Name",
-            "validation" => "Bitte den gewünschen Absender eingeben."
-        ],
-        "mail_from_address" => [
-            "label" => "Absender E-Mail",
-            "required" => "Bitte eine E-Mail-Adresse eingeben.",
-            "email" => "Bitte geben Sie eine gültige E-Mail-Adresse ein."
-        ],
-        "mail_host" => [
-            "label" => "Host",
-            "validation" => "Der Host sollte eine gültige URL sein."
-        ],
-        "mail_port" => [
-            "label" => "Port",
-            "validation" => "E-Mail-Port eingeben"
-        ],
-        "mail_username" => [
-            "label" => "Benutzername",
-            "validation" => "E-Mail-Benutzernamen eingeben"
-        ],
-        "mail_password" => [
-            "label" => "Passwort",
-            "validation" => "E-Mail-Passwort eingeben"
-        ],
-        "mail_powered_by" => [
-            "label" => "E-Mail-Fußzeile",
-            "validation" => "Email eingeben"
-        ],
-        'errors' => [
-            'not_found' => "Liegenschaften nicht gefunden",
-            'update' => "Fehler beim aktualisieren der Liegenschaft(en):",
-        ],
-    ],
     'request' => [
         'audits' => 'History',
         'deleted' => 'Anfrage gelöscht',
@@ -553,17 +464,7 @@ return [
         'internal_notices' => 'Interne Notizen',
         'status_changed' => 'Status wurde geändert',
         'priority_changed' => 'Priorität wurde geändert',
-        'assignment' => 'Zugewiesene Personen/Firmen',
-        'last_updated' => 'Zuletzt bearbeitet',
-        'was_due_on' => 'In Verzug seit',
-        'due_on' => 'Zu erledigen bis',
-        'solved_on' => 'Gelöst am',
-        'ago' => 'zuvor',
-        'not_set' => 'Nicht gesetzt',
-        'today' => 'Heute',
-        'yesterday' => 'Gestern',
-        'tomorrow' => 'Morgen',
-        'just_now' => 'soeben',
+        'assignment' => 'Zugewiesene Personen/Firmen',        
         'active_reminder_switcher' => 'Erinnerung',
         'days_left' => 'Wie viele Tage vorher?',
         'send_person' => 'Wer soll benachrichtigt werden?',
@@ -677,6 +578,7 @@ return [
             'service' => 'Dienstleister suchen',
             'propertyManagers' => 'Bewirtschafter suchen',
             'visibility' => 'Sichtbarkeit',
+            'person' => 'Nach einer Person suchen',
         ],
         'mail' => [
             'body' => 'Inhalt',
@@ -691,11 +593,7 @@ return [
             'send' => 'Senden',
             'cc' => 'CC',
             'bcc' => 'BCC',
-            'success' => 'E-Mail wurde erfolgreich gesendet',
-            'validation' => [
-                'required' => 'Dies ist ein Pflichfeld',
-                'email' => 'Bitte eine gültige E-Mail Adresse eingeben',
-            ],
+            'success' => 'E-Mail wurde erfolgreich gesendet',            
             'fail_cc' => 'CC/BCC/TO müssen korrekte Email Adressen enthalten.',
         ],
         'userType' => [
