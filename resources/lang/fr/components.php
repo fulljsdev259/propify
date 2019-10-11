@@ -147,7 +147,7 @@ return [
                 'description' => "Ajoutez la conversation au fournisseur de services en utilisant le formulaire ci-dessous et appuyez sur Entrée.",
             ],
         ],
-        'tenantconversationsList' => [
+        'residentconversationsList' => [
             'loadMore' => 'Charger {count} plus conversations avec les locataires',
             'emptyPlaceholder' => [
                 'title' => "Il n'y a pas de conversation avec le locataire.",
@@ -206,7 +206,7 @@ return [
             ],
         ],
     ],
-    'tenant' => [
+    'resident' => [
         'weatherWidget' => [
             'minTemp' => 'minute',
             'maxTemp' => 'maximum',

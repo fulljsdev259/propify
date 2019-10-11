@@ -213,11 +213,11 @@
                     macros.title = 'components.common.serviceproviderconversationsList.emptyPlaceholder.title';
                     macros.description = 'components.common.serviceproviderconversationsList.emptyPlaceholder.description';                    
                 }
-                else if((this.type === 'request') && (this.$store.getters.loggedInUser.roles.findIndex(({name}) => name === 'tenant') == -1)){ 
-                    macros.title = 'components.common.tenantconversationsList.emptyPlaceholder.title';
-                    macros.description = 'components.common.tenantconversationsList.emptyPlaceholder.description';                    
+                else if((this.type === 'request') && (this.$store.getters.loggedInUser.roles.findIndex(({name}) => name === 'resident') == -1)){ 
+                    macros.title = 'components.common.residentconversationsList.emptyPlaceholder.title';
+                    macros.description = 'components.common.residentconversationsList.emptyPlaceholder.description';                    
                 }
-                else if((this.type === 'listing') && (this.$store.getters.loggedInUser.roles.findIndex(({name}) => name === 'tenant') > -1)){
+                else if((this.type === 'listing') && (this.$store.getters.loggedInUser.roles.findIndex(({name}) => name === 'resident') > -1)){
                     macros.title = 'components.common.listingcommentsList.emptyPlaceholder.title';
                     macros.description = 'components.common.listingcommentsList.emptyPlaceholder.description';                    
                 }

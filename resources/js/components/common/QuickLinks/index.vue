@@ -4,7 +4,7 @@
         <el-dropdown-menu class="quick-links" slot="dropdown">
             <div class="content">
                 <i class="icon icon-link"></i>
-                {{$t('tenant.quick_links')}}
+                {{$t('resident.quick_links')}}
                 <div class="description">A quicker way to get to the specific links.</div>
             </div>
             <el-dropdown-item v-for="link in data" :key="link.title" :icon="link.icon">

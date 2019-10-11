@@ -36,8 +36,8 @@ return [
         'sunday' => 'domenicale',
     ],
     "user" => "Utente",
-    "tenant" => "Un inquilino",
-    "tenants" => "Gli inquilini",
+    "resident" => "Un inquilino",
+    "residents" => "Gli inquilini",
     'recipients' => 'Destinatari',
     'date' => 'Data',
     'title' => "denominazione",
@@ -60,7 +60,7 @@ return [
         "building" => "Edificio assegnato",
         "quarter" => "Trimestre assegnato",
         "provider" => "Fornitore assegnato",
-        'tenant' => "L'inquilino attaccato con successo",
+        'resident' => "L'inquilino attaccato con successo",
         "service" => "Fornitore collegato con successo",
         "manager" => "Manager attaccato con successo",
         "user" => "Utente assegnato con successo",
@@ -70,7 +70,7 @@ return [
         "building" => "Costruire senza assegnazione",
         "quarter" => "Quartiere non assegnato",
         "provider" => "Fornitore non assegnato",
-        'tenant' => "L'inquilino si è staccato con successo",
+        'resident' => "L'inquilino si è staccato con successo",
         "service" => "Fornitore staccato con successo",
         "manager" => "Manager staccato con successo",
         "user" => "Utente non assegnato con successo",
@@ -201,9 +201,9 @@ return [
             'title' => "Cancellare l'annuncio",
             'text' => "Vuoi davvero cancellare l'annuncio?",
         ],
-        'delete_rentcontract' => [
-            'title' => 'Cancellare contratto di locazione',
-            'text' => "Vuoi davvero cancellare il contratto d'affitto?",
+        'delete_contract' => [
+            'title' => 'Cancellare il contratto',
+            'text' => "Vuoi davvero cancellare il contratto?",
         ],
         'add' => [
             'added' => 'Aggiunto con successo',
@@ -248,12 +248,12 @@ return [
         'week' => 'Settimana',
         'peek_week' => 'Scegli una settimana',
     ],
-    'tenant_detail' => [
+    'resident_detail' => [
         'activate_required_credentials' => 'codice, e-mail, password richiesta',
         'incorrect_email' => 'Indirizzo e-mail errato',
-        'user_not_tenant' => 'Questo utente non è inquilino',
+        'user_not_resident' => 'Questo utente non è inquilino',
         'invalid_code' => 'Il codice non è valido',
-        'not_active_tenant' => 'L\'inquilino non è attivo e non può cambiare la password',
+        'not_active_resident' => 'L\'inquilino non è attivo e non può cambiare la password',
     ],
     'page_not_found' => [
         'title' => "C'e' qualcosa che non va qui.",
@@ -263,4 +263,6 @@ return [
     "assignment" => "Assegnazione",
     'status_changed' => "Stato cambiato",
     "monthly_rent_net" => "Affitto mensile",  
+    'maintenance' => 'Manutenzione',
+    'gross_rent' => 'Affitto lordo',
 ];

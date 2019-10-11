@@ -20,7 +20,7 @@
                 </div>
                 <slot name="trigger" :mediaItemStyle="mediaItemStyle" :triggerSelect="triggerSelect" v-if="!hideTrigger">
                     <el-button key="trigger" class="trigger" icon="el-icon-plus" :disabled="loading" @click="triggerSelect">
-                        {{$t('tenant.drag_drop_file')}}
+                        {{$t('resident.drag_drop_file')}}
                     </el-button>
                 </slot>
             </transition-group>

@@ -36,8 +36,8 @@ return [
         'sunday' => 'Sunday',
     ],
     'user' => 'User',
-    'tenant' => 'Tenant',
-    'tenants' => 'Tenants',
+    'resident' => 'Resident',
+    'residents' => 'Residents',
     'recipients' => 'Recipients',
     'date' => 'Date',
     'title' => 'Title',
@@ -60,7 +60,7 @@ return [
         'building' => 'Building assigned',
         'quarter' => 'Quarter assigned',
         'provider' => 'Provider assigned',
-        'tenant' => 'Tenant attached',
+        'resident' => 'Resident attached',
         'service' => 'Provider attached successfully',
         'manager' => 'Manager attached successfully',
         'user' => 'User assigned successfully',
@@ -70,7 +70,7 @@ return [
         'building' => 'Buiding unassigned',
         'quarter' => 'Quarter unassigned',
         'provider' => 'Provider unassigned',
-        'tenant' => 'Tenant detached',
+        'resident' => 'Resident detached',
         'service' => 'Provider detached successfully',
         'manager' => 'Manager detached successfully',
         'user' => 'User unassigned successfully',
@@ -201,9 +201,9 @@ return [
             'title' => 'Delete Listing',
             'text' => 'Do you really want to delete the listing?',
         ],
-        'delete_rentcontract' => [
-            'title' => 'Delete Rent contract',
-            'text' => 'Do you really want to delete the rent contract?',
+        'delete_contract' => [
+            'title' => 'Delete contract',
+            'text' => 'Do you really want to delete the contract?',
         ],
         'add' => [
             'added' => 'Added successfully',
@@ -248,12 +248,12 @@ return [
         'week' => 'Week',
         'peek_week' => 'Pick a week',
     ],
-    'tenant_detail' => [
+    'resident_detail' => [
         'activate_required_credentials' => 'code, email, password required',
         'incorrect_email' => 'Incorrect email address',
-        'user_not_tenant' => 'This user is not tenant',
+        'user_not_resident' => 'This user is not resident',
         'invalid_code' => 'Code is invalid',
-        'not_active_tenant' => 'Tenant is not active and can not change password',
+        'not_active_resident' => 'Resident is not active and can not change password',
     ],
     'page_not_found' => [
         'title' => "Hmm... something's wrong here.",
@@ -263,4 +263,6 @@ return [
     'assignment' => 'Assignment',
     'status_changed' => 'Status changed',
     'monthly_rent_net' => 'Monthly rent',    
+    'maintenance' => 'Maintenance',
+    'gross_rent' => 'Gross rent',
 ];

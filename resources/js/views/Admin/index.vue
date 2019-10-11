@@ -107,60 +107,60 @@
                             </el-col>
                         </el-row>
                     </el-tab-pane>
-                    <el-tab-pane :label="$t('menu.tenants')" name="tenants">
+                    <el-tab-pane :label="$t('menu.residents')" name="residents">
                         <el-row type="flex">
                             <el-col :span="24">
-                                <tenants-statistics-card :data="tenantsStatistics" :animationTrigger="activeName"></tenants-statistics-card>
+                                <residents-statistics-card :data="residentsStatistics" :animationTrigger="activeName"></residents-statistics-card>
                             </el-col>
                         </el-row>
                         <el-row style="margin-bottom: 24px;" :gutter="20" type="flex">
                             <el-col :span="24">
-                                <el-card class="chart-card" :header="$t('dashboard.tenants_by_creation_date')">
-                                    <chart-stacked-column type="tenants_by_creation_date" :startDate="startDates.tenants"></chart-stacked-column>
+                                <el-card class="chart-card" :header="$t('dashboard.residents_by_creation_date')">
+                                    <chart-stacked-column type="residents_by_creation_date" :startDate="startDates.residents"></chart-stacked-column>
                                 </el-card>
                             </el-col>
                         </el-row>
                         <el-row :gutter="20" style="margin-bottom: 24px;" type="flex">
                             <el-col :span="8">
-                                <el-card class="chart-card col-3" :header="$t('dashboard.tenants_by_request_status')">
-                                    <chart-pie-and-donut type="tenants_by_request_status" :colNum="3" :centered="true" :startDate="startDates.tenants"></chart-pie-and-donut>
+                                <el-card class="chart-card col-3" :header="$t('dashboard.residents_by_request_status')">
+                                    <chart-pie-and-donut type="residents_by_request_status" :colNum="3" :centered="true" :startDate="startDates.residents"></chart-pie-and-donut>
                                 </el-card>
                             </el-col>
                             <el-col :span="8">
-                                <el-card class="chart-card col-3" :header="$t('dashboard.tenants_by_status')">
-                                    <chart-pie-and-donut type="tenants_by_status" :colNum="3" :startDate="startDates.tenants"></chart-pie-and-donut>
+                                <el-card class="chart-card col-3" :header="$t('dashboard.residents_by_status')">
+                                    <chart-pie-and-donut type="residents_by_status" :colNum="3" :startDate="startDates.residents"></chart-pie-and-donut>
                                 </el-card>
                             </el-col>
                             <el-col :span="8">
-                                <el-card class="chart-card col-3" :header="$t('dashboard.tenants_by_language')">
-                                    <chart-pie-and-donut type="tenants_by_language" :colNum="3" :startDate="startDates.tenants"></chart-pie-and-donut>
+                                <el-card class="chart-card col-3" :header="$t('dashboard.residents_by_language')">
+                                    <chart-pie-and-donut type="residents_by_language" :colNum="3" :startDate="startDates.residents"></chart-pie-and-donut>
                                 </el-card>
                             </el-col>
                         </el-row>
                         <el-row style="margin-bottom: 24px;" :gutter="20" type="flex">
                             <el-col :span="16">
-                                <el-card class="chart-card" :header="$t('dashboard.tenants.latest_tenants')">
-                                    <latest-tenants type="tenants"></latest-tenants>
+                                <el-card class="chart-card" :header="$t('dashboard.residents.latest_residents')">
+                                    <latest-residents type="residents"></latest-residents>
                                 </el-card>
                                 <el-row style="margin-top: 24px" :gutter="20" tyle="flex">
                                     <el-col :span="12">
-                                        <el-card class="chart-card col-3" :header="$t('dashboard.tenants_by_title')">
-                                            <chart-pie-and-donut type="tenants_by_title" :colNum="3" :startDate="startDates.tenants" :centered="true"></chart-pie-and-donut>
+                                        <el-card class="chart-card col-3" :header="$t('dashboard.residents_by_title')">
+                                            <chart-pie-and-donut type="residents_by_title" :colNum="3" :startDate="startDates.residents" :centered="true"></chart-pie-and-donut>
                                         </el-card>
                                     </el-col>
                                     <el-col :span="12">
-                                        <el-card class="chart-card col-3" :header="$t('dashboard.tenants_by_gender')">
-                                            <chart-tenants-by-gender type="tenants_by_gender" :startDate="startDates.tenants"></chart-tenants-by-gender>
+                                        <el-card class="chart-card col-3" :header="$t('dashboard.residents_by_gender')">
+                                            <chart-residents-by-gender type="residents_by_gender" :startDate="startDates.residents"></chart-residents-by-gender>
                                         </el-card>
                                     </el-col>
                                 </el-row>
                             </el-col>
                              <el-col :span="8">
-                                <el-card class="chart-card col-3" :header="$t('dashboard.tenants_by_device')">
-                                    <chart-users-by-device type="tenants_by_device" :colNum="3" :startDate="startDates.tenants"></chart-users-by-device>
+                                <el-card class="chart-card col-3" :header="$t('dashboard.residents_by_device')">
+                                    <chart-users-by-device type="residents_by_device" :colNum="3" :startDate="startDates.residents"></chart-users-by-device>
                                 </el-card>
-                                <el-card class="chart-card col-3 mt-24" :header="$t('dashboard.tenants_by_age')">
-                                    <chart-tenants-by-age type="tenants_by_age" :colNum="3" :startDate="startDates.tenants"></chart-tenants-by-age>
+                                <el-card class="chart-card col-3 mt-24" :header="$t('dashboard.residents_by_age')">
+                                    <chart-residents-by-age type="residents_by_age" :colNum="3" :startDate="startDates.residents"></chart-residents-by-age>
                                 </el-card>
                             </el-col>
                         </el-row>
@@ -236,14 +236,14 @@
     import BuildingsStatisticsCard from 'components/BuildingsStatisticsCard';
     import ChartColumnLine from 'components/dashboard/ChartColumnLine';
     import ChartUsersByDevice from 'components/dashboard/ChartUsersByDevice';
-    import ChartTenantsByGender from 'components/dashboard/ChartTenantsByGender';
-    import TenantsStatisticsCard from 'components/dashboard/TenantsStatisticsCard';
-    import ChartTenantsByAge from 'components/dashboard/ChartTenantsByAge';
+    import ChartResidentsByGender from 'components/dashboard/ChartResidentsByGender';
+    import ResidentsStatisticsCard from 'components/dashboard/ResidentsStatisticsCard';
+    import ChartResidentsByAge from 'components/dashboard/ChartResidentsByAge';
 
     import LatestListings from 'components/dashboard/LatestListings';
     import GoogleMap from 'components/dashboard/GoogleMap';
     import LatestBuildings from 'components/dashboard/LatestBuildings';
-    import LatestTenants from 'components/dashboard/LatestTenants';
+    import LatestResidents from 'components/dashboard/LatestResidents';
     import ManagersList from 'components/dashboard/ManagersList';
     import ServicesList from 'components/dashboard/ServicesList';
     import LatestPinboard from 'components/dashboard/LatestPinboard';
@@ -262,18 +262,18 @@
             ChartHeatMap,
             BuildingsStatisticsCard,
             ChartColumnLine,
-            ChartTenantsByGender,
+            ChartResidentsByGender,
             ChartUsersByDevice,
-            TenantsStatisticsCard,
+            ResidentsStatisticsCard,
             LatestListings,
             GoogleMap,
             LatestBuildings,
-            LatestTenants,
+            LatestResidents,
             ManagersList,
             ServicesList,
             LatestPinboard,
             BuildingsByState,
-            ChartTenantsByAge
+            ChartResidentsByAge
         },
         data() {
             return {
@@ -286,7 +286,7 @@
                 chartOptionsTotalReqByCreationDate: {},
                 reqStatusCount: {},
                 buildingStatistics: {},
-                tenantsStatistics: {},
+                residentsStatistics: {},
                 statistics: [{
                     icon: 'ti-shopping-cart',
                     color: '#f06292',
@@ -328,7 +328,7 @@
                     buildings: '',
                     pinboard: '',
                     listings: '',
-                    tenants: ''
+                    residents: ''
                 },
             }
         },
@@ -350,9 +350,9 @@
                         card_data: response.data.data.buildings_per_status
                     };
 
-                    that.tenantsStatistics = {
-                        total_tenants: response.data.data.total_tenants,
-                        card_data: response.data.data.tenants_per_status
+                    that.residentsStatistics = {
+                        total_residents: response.data.data.total_residents,
+                        card_data: response.data.data.residents_per_status
                     };
                     that.startDates = response.data.data.all_start_dates;
                 }).catch(function (error) {
@@ -366,7 +366,7 @@
                     'buildings': 'icon-commerical-building',
                     'pinboard': 'icon-megaphone-1',
                     'listing': 'icon-basket',
-                    'tenants': 'icon-group'
+                    'residents': 'icon-group'
                 };
                 this.headingIcon = icons[tab.name];
             },

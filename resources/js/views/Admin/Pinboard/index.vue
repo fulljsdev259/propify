@@ -122,7 +122,7 @@
                 pinboardDetailsVisible: false,
                 quarters:{},
                 buildings:{},
-                tenants:{},
+                residents:{},
                 isLoadingFilters: false,
             };
         },
@@ -178,18 +178,18 @@
                         data: this.buildings,
                     },
                     {
-                        name: this.$t('filters.tenant'),
+                        name: this.$t('filters.resident'),
                         type: 'remote-select',
-                        key: 'tenant_id',
-                        data: this.tenants,
+                        key: 'resident_id',
+                        data: this.residents,
                         remoteLoading: false,
-                        fetch: this.fetchRemoteTenants
+                        fetch: this.fetchRemoteResidents
                     },
                 ];
             }
         },
         methods: {
-            ...mapActions(['changePinboardPublish', 'updatePinboard', 'getBuildings', 'getTenants']),
+            ...mapActions(['changePinboardPublish', 'updatePinboard', 'getBuildings', 'getResidents']),
             async getFilterBuildings() {
                 const buildings = await this.getBuildings({
                     get_all: true
@@ -251,14 +251,14 @@
                     };
                 });
             },
-            async fetchRemoteTenants(search) {
+            async fetchRemoteResidents(search) {
                 if(search) {
-                    const tenants = await this.getTenants({get_all: true, search});
+                    const residents = await this.getResidents({get_all: true, search});
 
-                    return tenants.data.map((tenant) => {
+                    return residents.data.map((resident) => {
                         return {
-                            name: `${tenant.first_name} ${tenant.last_name}`,
-                            id: tenant.id
+                            name: `${resident.first_name} ${resident.last_name}`,
+                            id: resident.id
                         };
                     });
                 }
@@ -267,7 +267,7 @@
         async created(){
             this.isLoadingFilters = true;
             this.buildings = await this.getFilterBuildings();
-            this.tenants = this.fetchRemoteTenants();
+            this.residents = this.fetchRemoteResidents();
             const quarters = await this.axios.get('quarters')
             this.quarters = quarters.data.data.data;
             this.isLoadingFilters = false;

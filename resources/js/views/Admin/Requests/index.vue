@@ -71,7 +71,7 @@
                 quarters:{},
                 buildings:{},
                 propertyManagers:{},
-                tenants: {},
+                residents: {},
                 services: {},
                 isLoadingFilters: false
             }
@@ -143,12 +143,12 @@
                         data: this.services,
                     },
                     {
-                        name: this.$t('filters.tenant'),
+                        name: this.$t('filters.resident'),
                         type: 'remote-select',
-                        key: 'tenant_id',
-                        data: this.tenants,
+                        key: 'resident_id',
+                        data: this.residents,
                         remoteLoading: false,
-                        fetch: this.fetchRemoteTenants
+                        fetch: this.fetchRemoteResidents
                     },
                     {
                         name: this.$t('filters.created_from'),
@@ -187,7 +187,7 @@
             }
         },
         methods: {
-            ...mapActions(['updateRequest', 'getRequestCategoriesTree', 'getServices', 'getBuildings', 'getTenants']),
+            ...mapActions(['updateRequest', 'getRequestCategoriesTree', 'getServices', 'getBuildings', 'getResidents']),
             async getFilterBuildings() {
                 const buildings = await this.getBuildings({
                     get_all: true
@@ -209,13 +209,13 @@
 
                 return services.data;
             },
-            async fetchRemoteTenants(search) {
-                const tenants = await this.getTenants({get_all: true, search});
+            async fetchRemoteResidents(search) {
+                const residents = await this.getResidents({get_all: true, search});
 
-                return tenants.data.map((tenant) => {
+                return residents.data.map((resident) => {
                     return {
-                        name: `${tenant.first_name} ${tenant.last_name}`,
-                        id: tenant.id
+                        name: `${resident.first_name} ${resident.last_name}`,
+                        id: resident.id
                     };
                 });
             },
@@ -302,7 +302,7 @@
             this.buildings = await this.getFilterBuildings()
             this.categories = await this.getFilterCategories()
             this.services = await this.getFilterServices()
-            this.tenants = await this.fetchRemoteTenants()
+            this.residents = await this.fetchRemoteResidents()
 
             this.isLoadingFilters = false;
 

@@ -276,7 +276,7 @@
                                             </el-form-item>
                                         </el-card>
                                     </el-col>
-                                    <el-col :md="8">
+                                    <!-- <el-col :md="8">
                                         <el-card class="listing-card card-boxs">
                                             <span @click="Gocaution_drawer" class="icon-cog" style="display:none"></span>
                                             <el-form-item :label="$t('models.settings.gocaution.label')" class="switcher switcher-block">
@@ -299,7 +299,7 @@
                                                 
                                             </el-form-item>
                                         </el-card>
-                                    </el-col>
+                                    </el-col> -->
                                 </el-row>
                             </el-form>
                         </el-tab-pane>
@@ -345,13 +345,13 @@
                                                      v-show="SettingsFaviconIcon && !favicon_icon_upload_img"
                                                     >
                                             </el-form-item> -->
-                                            <el-form-item :label="$t('models.user.tenant_logo')">
-                                                <upload-document @fileUploaded="setTenantLogoUpload" class="drag-custom" drag/>
-                                                <img :src="tenant_logo_upload_img"
-                                                     v-show="tenant_logo_upload_img"
+                                            <el-form-item :label="$t('models.user.resident_logo')">
+                                                <upload-document @fileUploaded="setResidentLogoUpload" class="drag-custom" drag/>
+                                                <img :src="resident_logo_upload_img"
+                                                     v-show="resident_logo_upload_img"
                                                     >
-                                                <img :src="SettingsTenantLogo" ref="SettingsTenantLogo"
-                                                     v-show="SettingsTenantLogo && !tenant_logo_upload_img"
+                                                <img :src="SettingsResidentLogo" ref="SettingsResidentLogo"
+                                                     v-show="SettingsResidentLogo && !resident_logo_upload_img"
                                                      >
                                             </el-form-item>
                                             <el-form-item :label="$t('models.settings.primary_color')">
@@ -385,24 +385,26 @@
 <!--                            <CategoriesListing/>-->
 <!--                        </el-tab-pane>-->
                         <el-tab-pane :label="$t('models.settings.templates')" name="templates">
-                            <TemplatesListing/>
+                            <TemplatesListing v-if="!templateEditMode" :onClick="handleEditClick"/>
+                            
+                            <TemplateEdit v-else />
                         </el-tab-pane>
                     </el-tabs>
                 </div>
             </el-tab-pane>
-            <el-tab-pane name="tenants">
-                <template slot="label"><i class="icon icon-group"></i>{{$t('models.settings.tenants_portal')}}</template>
+            <el-tab-pane name="residents">
+                <template slot="label"><i class="icon icon-group"></i>{{$t('models.settings.residents_portal')}}</template>
 
                 <div class="dashboard-tabpanel dashboard-tabpanel_left">
-                    <el-tabs type="border-card" v-model="activeTenantsName">
+                    <el-tabs type="border-card" v-model="activeResidentsName">
                         <el-tab-pane :label="$t('models.settings.login_variations')" name="login_variations">
-                            <el-button class="save-tab" @click="saveSettings('tenantsLoginVariationsForm')" icon="ti-save"
+                            <el-button class="save-tab" @click="saveSettings('residentsLoginVariationsForm')" icon="ti-save"
                                        type="primary">
                                 {{$t('general.actions.save')}}
                             </el-button>
 
                             <el-form :model="model" :rules="validationRules"
-                                     ref="tenantsLoginVariationsForm">
+                                     ref="residentsLoginVariationsForm">
 
                                 <el-row :gutter="20">
                                     <el-col :md="12">
@@ -513,8 +515,9 @@
     import {mapActions} from 'vuex';
     import {displayError, displaySuccess} from 'helpers/messages';
     import CategoriesListing from './Categories'
-    import TemplatesListing from '../Templates'
     import globalFunction from "helpers/globalFunction";
+    import TemplatesListing from '../TemplatesNew'
+    import TemplateEdit from '../TemplatesNew/Edit';
 
     export default {
         name: 'AdminProfile',
@@ -524,7 +527,8 @@
             Cropper,
             UploadDocument,
             CategoriesListing,
-            TemplatesListing
+            TemplatesListing,
+            TemplateEdit
         },
         data() {
             return {
@@ -537,13 +541,13 @@
                     logo: '',
                     circle_logo: '',
                     favicon_icon: '',
-                    tenant_logo: '',
+                    resident_logo: '',
                     logo_upload: '',
-                    tenant_logo: '',
+                    resident_logo: '',
                     circle_logo_upload: '',
                     favicon_icon_upload: '',
-                    tenant_logo_upload: '',
-                    tenant_logo_upload: '',
+                    resident_logo_upload: '',
+                    resident_logo_upload: '',
                     listing_approval_enable: true,
                     pinboard_approval_enable: false,
                     comment_update_timeout: 60,
@@ -590,11 +594,12 @@
                 logo_upload_img: '',
                 circle_logo_upload_img: '',
                 favicon_icon_upload_img: '',
-                tenant_logo_upload_img: '',
+                resident_logo_upload_img: '',
                 activeName: 'settings',
                 activeSettingsName: 'settings_settings',
                 activeRequestName: 'templates',
-                activeTenantsName: 'login_variations',
+                activeResidentsName: 'login_variations',
+                templateEditMode: false,
                 states: [],
                 mail_powered_by: [
                     {
@@ -645,8 +650,8 @@
             SettingsFaviconIcon() {
                 return this.model.favicon_icon ? `/${this.model.favicon_icon}?${Date.now()}` : '';
             },
-            SettingsTenantLogo() {
-                return this.model.tenant_logo ? `/${this.model.tenant_logo}?${Date.now()}` : '';
+            SettingsResidentLogo() {
+                return this.model.resident_logo ? `/${this.model.resident_logo}?${Date.now()}` : '';
             },
             validationRules() {
                 setTimeout(() => {this.validateForm('SettingsSettingsForm')}, 0);
@@ -710,6 +715,9 @@
         },
         methods: {
             ...mapActions(['getSettings', 'updateSettings', 'getStates']),
+            handleEditClick(id) {
+                this.templateEditMode = true;
+            },
             goToTab(tabName) {
                 this.activeName = tabName;
             },
@@ -775,9 +783,9 @@
                 this.model.favicon_icon_upload = image.src;
                 this.favicon_icon_upload_img = "data:image/png;base64," + image.src;
             },
-            setTenantLogoUpload(image) {
-                this.model.tenant_logo_upload = image.src;
-                this.tenant_logo_upload_img = "data:image/png;base64," + image.src;
+            setResidentLogoUpload(image) {
+                this.model.resident_logo_upload = image.src;
+                this.resident_logo_upload_img = "data:image/png;base64," + image.src;
             },
             toggleDrawer () {
                 this.visibleDrawer = !this.visibleDrawer
@@ -798,7 +806,6 @@
                 this.drawerTabsModel = 'gocaution'
             },
             openCleanifyDrawer(val) {
-                console.log('switch val', val);
                 if (!this.visibleDrawer || this.drawerTabsModel === 'gocaution') {
                     this.toggleDrawer()
                 }
@@ -854,6 +861,18 @@
                     if (!state) {
                         document.getElementsByTagName('footer')[0].style.display = "block";
                     }
+                }
+            },
+            "$route.query": {
+                immediate: true,
+                handler({page, per_page}, prevQuery) {
+                    if(this.$route.name == "login") {
+                        return;
+                    }
+                    
+                    if(this.$route.query.template == undefined)
+                        this.templateEditMode = false;
+                    
                 }
             }
         }

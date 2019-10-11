@@ -14,7 +14,7 @@ return [
         "logo" => "Logo",
         'circle_logo' => "Logo du cercle",
         'favicon_icon' => "Icône Favicon",
-        "tenant_logo" => "Logo du locataire",
+        "resident_logo" => "Logo du locataire",
         "blank_pdf" => "PDF vierge",
         'blank_pdf_desc' => 'Générez des fichiers PDF sans papier à en-tête afin qu\'ils puissent être imprimés sur votre propre papeterie.',
         'font_family' => 'Font family',
@@ -44,7 +44,7 @@ return [
             ],
         ],
     ],
-    'tenant' => [
+    'resident' => [
         "view" => "Vue",
         "view_title" => "Afficher locataire",
         "edit_title" => "Traiter locataire",
@@ -68,7 +68,6 @@ return [
         "personal_phone" => "Téléphone personnel",
         "private_phone" => "Téléphone personnel",
         "created_date" => "Date de création",
-        "contract" => "Contrat",
         "pinboard" => "Panneau d'affichage",
         "listings" => "Produits",
         "company" => "Nom de l'entreprise",
@@ -139,44 +138,53 @@ return [
         "my_contract" => "Mon contrat",
         "contact_persons" => "Mes contacts",
         "no_contacts" => "Aucun contact disponible",
-        "rent_end" => "Fin du loyer",
-        "rent_start" => "Début du loyer",
-        "rent_contract" => "Contrat de location",
-        'rent_type' => 'Type de loyer',
-        'rent_types' => [
-            'private' => 'Privé',
-            'business' => 'Affaires',
-            'parking_lot' => 'Terrain de stationnement',
-            'parking_slot' => 'Emplacement de stationnement',
-        ],
-        'rent_duration' => 'Durée du loyer',
-        'rent_durations' => [
-            'unlimited' => 'Illimité',
-            'limited' => 'Limitée',
-        ],
-        'rent_contract_pdf' => 'Contrat de location pdf',
-        'deposit_amount' => 'Montant du dépôt',
-        'type_of_deposit' => 'Type de dépôt',
-        'deposit_types' => [
-            'bank_deposit' => 'Dépôt bancaire',
-            'bank_deposit' => 'Dépôt bancaire',
-            'bank_guarantee' => 'Garantie bancaire',
-            'insurance' => 'Assurance',
-            'other' => 'Autre',
-        ],
-        'heating_operating_costs_installment' => "Versement des frais de chauffage et d'exploitation",
-        'maintenance' => 'Maintenance',
-        'parking_price' => 'Prix Parking',
-        'gross_rent' => 'Loyer brut',
-        'deposit_status' => [
-            'label' => 'Statut des dépôts',
-            'yes' => 'Oui',
-            'no' => 'Non',
-        ],
-        'rentcontract_id' => 'ID du contrat de location',
-        'rent_status' => [
-            'active' => 'Actif',
-            'inactive' => 'Inactif',
+        "contract" => [
+            "title" => "Contrat",
+            "rent_end" => "Fin du loyer",
+            "rent_start" => "Début du loyer",
+            'rent_type' => 'Type de loyer',
+            'rent_types' => [
+                'private' => 'Privé',
+                'business' => 'Affaires',
+                'parking_lot' => 'Terrain de stationnement',
+                'parking_slot' => 'Emplacement de stationnement',
+            ],
+            'rent_duration' => 'Durée du loyer',
+            'rent_durations' => [
+                'unlimited' => 'Illimité',
+                'limited' => 'Limitée',
+            ],
+            'contract_pdf' => 'Contrat PDF',
+            'deposit_amount' => 'Montant du dépôt',
+            'type_of_deposit' => 'Type de dépôt',
+            'deposit_types' => [
+                'bank_deposit' => 'Dépôt bancaire',
+                'bank_deposit' => 'Dépôt bancaire',
+                'bank_guarantee' => 'Garantie bancaire',
+                'insurance' => 'Assurance',
+                'other' => 'Autre',
+            ],
+            'deposit_status' => [
+                'label' => 'Statut des dépôts',
+                'yes' => 'Oui',
+                'no' => 'Non',
+            ],
+            'contract_id' => 'ID du contrat',
+            'rent_status' => [
+                'active' => 'Actif',
+                'inactive' => 'Inactif',
+            ],
+            'filename' => 'Nom de fichier',
+            'add' => 'Ajouter un nouveau contrat',
+            'delete' => 'Supprimer contrat',
+            'pdf_only_desc' => 'Veuillez noter que seuls les fichiers PDF peuvent être téléchargés.',
+            'saved' => 'Sauvegarde du contrat du locataire',
+            'deleted' => 'Contrat de location supprimé',
+            'errors' => [
+                'not_found' => "Le contrat de location n'a pas été trouvé",
+                'create' => 'Le contrat du locataire crée une erreur : ',
+                'deleted' => "Contrat locataire Supprimer erreur : ",
+            ],
         ],
         'contact' => [
             "category" => "Catégorie",
@@ -188,7 +196,7 @@ return [
             'total' => 'Total',
         ],
         'credentials_pdf' => [
-            'tenant_credentials' => 'Accréditation des locataires',
+            'resident_credentials' => 'Accréditation des locataires',
             'username' => 'Nom d\'utilisateur',
             'url' => 'URL',
             'code' => 'Code de déverrouillage personnel',
@@ -214,16 +222,6 @@ return [
             'your_sincerely' => 'Sincèrement vôtre',
             'your_administration' => 'votre administration'
         ]
-    ],
-    'rent_contract' => [
-        'saved' => 'Contrat de location du locataire sauvegardé',
-        'deleted' => 'Loyer du locataire Contrat de location supprimé',
-        'errors' => [
-            'not_found' => 'Le contrat de location du locataire n\'a pas été trouvé',
-            'create' => 'Le contrat de location du locataire crée une erreur : ',
-            'deleted' => 'Contrat de location du locataire Supprimer erreur : ',
-        ],
-        'filename' => 'Nom de fichier',
     ],
     'building' => [
         "title" => "Bâtiments",
@@ -328,9 +326,9 @@ return [
         "basement" => "Sous-sol",
         "attic" => "Grenier aménageable",
         "empty_requests" => "Aucune demande",
-        "assigned_tenant" => "Locataire affecté",
-        "tenant_assigned" => "Locataire affecté",
-        "tenant_unassigned" => "Locataire non affecté",
+        "assigned_resident" => "Locataire affecté",
+        "resident_assigned" => "Locataire affecté",
+        "resident_unassigned" => "Locataire non affecté",
         'assignment' => 'Locataires affectés',
         'type' => [
             "label" => "Type",
@@ -364,7 +362,7 @@ return [
             'description' => [
                 "required" => "Une description est requise",
             ],
-            'tenant' => [
+            'resident' => [
                 "required" => "Un locataire est requis",
             ]
         ],
@@ -372,9 +370,9 @@ return [
             'not_found' => "Unité non trouvée",
             'create' => "L'unité crée l'erreur : ",
             'update' => "Erreur de mise à jour de l'unité : ",
-            'tenant_assign' => "Erreur d'affectation locataire : ",
-            'tenant_not_assign' => "Locataire non affecté à cette unité",
-            'tenant_not_found' => "Locataire introuvable",
+            'resident_assign' => "Erreur d'affectation locataire : ",
+            'resident_not_assign' => "Locataire non affecté à cette unité",
+            'resident_not_found' => "Locataire introuvable",
             'deleted' => "Erreur d'effacement de l'unité : ",
         ],
     ],
@@ -540,7 +538,7 @@ return [
         'buildings_count' => 'Nombre de bâtiments',
         'total_units_count' => "Nombre total d'unités",
         'occupied_units_count' => 'Nombre de logements occupés',
-        'active_tenants_count' => 'Nombre de locataires actifs',
+        'active_residents_count' => 'Nombre de locataires actifs',
         'assignment' => "Affectation des gestionnaires/administrateurs",
         'errors' => [
             'not_found' => "Trimestre non trouvé",
@@ -551,7 +549,7 @@ return [
         "title" => "Réglages de l'immobilier",
         "settings" => "Réglages",
         'saved' => "réglage utilisateur sauvegardé",
-        'tenants_portal' => 'Portail locataires',
+        'residents_portal' => 'Portail locataires',
         'iframe' => 'Iframe',
         'micro_apps' => 'Micro-Applications',
         'theme' => 'Thème',
@@ -690,9 +688,6 @@ return [
         'active_reminder_switcher' => 'Rappel actif',
         'days_left' => "Combien de jours avant l'envoi de l'email ?",
         'send_person' => 'Quelle personne doit être notifiée ?',
-        'add_rent_contract' => 'Ajouter un nouveau contrat de location',
-        'delete_rent_contract' => 'Supprimer le contrat de location',
-        'pdf_only_desc' => 'Veuillez noter que seuls les fichiers PDF peuvent être téléchargés.',
         'sort' => 'Trier',
         'reset_sort' => 'Réinitialiser le tri',
         'creation_date' => 'Date de création',
@@ -773,8 +768,8 @@ return [
         ],
         'payer' => [
             'landlord' => 'Propriétaire',
-            'tenant' => 'Locataire',
-            'tenant/landlord' => 'Locataire/Propriétaire'
+            'resident' => 'Locataire',
+            'resident/landlord' => 'Locataire/Propriétaire'
         ],
         'status' => [
             "label" => "Statut",
@@ -805,7 +800,7 @@ return [
             "qualification" => "Sélectionnez Compétence",
             "status" => "Sélectionnez le statut",
             "due_date" => "Choisir la date d'échéance",
-            "tenant" => "Recherche d'un locataire",
+            "resident" => "Recherche d'un locataire",
             "service" => "Rechercher un service",
             "propertyManagers" => "Recherche de cadres",
             "visibility" => "Sélectionner la visibilité",
@@ -838,7 +833,7 @@ return [
         ],
         'visibility' => [
             "label" => "Visibilité",
-            "tenant" => "Soldat",
+            "resident" => "Soldat",
             "quarter" => "Trimestre",
             "building" => "Bâtiment",
         ],

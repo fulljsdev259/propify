@@ -46,8 +46,8 @@
                     
                 }, {
                     type: 'users',
-                    label: 'general.tenants',
-                    prop: 'tenants',
+                    label: 'general.residents',
+                    prop: 'residents',
                 }, {
                     type: 'actions',
                     label: 'dashboard.actions',

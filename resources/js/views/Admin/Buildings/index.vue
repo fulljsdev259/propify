@@ -130,10 +130,10 @@
                     },
                     props: ['units_count']
                 }, {
-                    label: 'general.tenants',
+                    label: 'general.residents',
                     withUsers: true,
-                    count: 'tenantscount',
-                    prop: 'tenants'
+                    count: 'residentscount',
+                    prop: 'residents'
                 }, {
                     label: 'models.building.managers',
                     withUsers: true,

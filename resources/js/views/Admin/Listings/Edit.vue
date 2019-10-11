@@ -107,7 +107,7 @@
                                 <i class="icon-user"></i>&nbsp;{{$t('general.user')}}
                             </span>
                             <span class="custom-value" v-if="model.user">
-                                <router-link :to="{name: 'adminUsersEdit', params: {id: model.user.id}}" class="tenant-link">
+                                <router-link :to="{name: 'adminUsersEdit', params: {id: model.user.id}}" class="resident-link">
                                     <avatar :size="30"
                                             :src="'/' + model.user.avatar"
                                             v-if="model.user.avatar"></avatar>
@@ -312,7 +312,7 @@
         line-height: 28px;
     }
 
-    .tenant-link {
+    .resident-link {
         display: flex;
         align-items: center;
         color: var(--primary-color);

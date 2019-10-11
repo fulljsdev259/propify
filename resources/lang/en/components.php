@@ -147,11 +147,11 @@ return [
                 'description' => 'Add conversation to service provider by using the below form and press enter.',
             ],
         ],
-        'tenantconversationsList' => [
-            'loadMore' => 'Load {count} more tenant conversations',
+        'residentconversationsList' => [
+            'loadMore' => 'Load {count} more resident conversations',
             'emptyPlaceholder' => [
-                'title' => 'There are no conversation made with tenant.',
-                'description' => 'Add message to tenant using the below form and press enter.',
+                'title' => 'There are no conversation made with resident.',
+                'description' => 'Add message to resident using the below form and press enter.',
             ],
         ],
         'listingcommentsList' => [
@@ -206,7 +206,7 @@ return [
             ],
         ],
     ],
-    'tenant' => [
+    'resident' => [
         'weatherWidget' => [
             'minTemp' => 'min',
             'maxTemp' => 'max',

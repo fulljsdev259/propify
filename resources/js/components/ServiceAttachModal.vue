@@ -229,9 +229,9 @@
                 return foundConversation.id;
             },
             selectedTitle () {
-                if(this.requestData.tenant && this.address) {
-                    return this.requestData.tenant.first_name + " " 
-                        + this.requestData.tenant.last_name 
+                if(this.requestData.resident && this.address) {
+                    return this.requestData.resident.first_name + " " 
+                        + this.requestData.resident.last_name 
                         + ", " + this.address.street 
                         + " " + this.address.house_num
                         + " " + this.address.city

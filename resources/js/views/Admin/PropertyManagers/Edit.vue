@@ -61,15 +61,15 @@
 
                                 <el-row class="last-form-row" :gutter="20">
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('general.phone')" prop="user.phone">
-                                            <el-input type="text" v-model="model.user.phone"/>
+                                        <el-form-item :label="$t('general.phone')" prop="phone">
+                                            <el-input type="text" v-model="model.phone"/>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="12">
                                         <el-form-item :label="$t('general.email')"
                                                       :rules="validationRules.email"
-                                                      prop="user.email">
-                                            <el-input type="email" v-model="model.user.email"/>
+                                                      prop="email">
+                                            <el-input type="email" v-model="model.email"/>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -81,9 +81,9 @@
                                         <el-form-item :label="$t('models.propertyManager.password')"
                                                       :rules="validationRules.password"
                                                       autocomplete="off"
-                                                      prop="user.password">
+                                                      prop="password">
                                             <el-input type="password"
-                                                      v-model="model.user.password"
+                                                      v-model="model.password"
                                                       class="dis-autofill"
                                                       readonly
                                                       onfocus="this.removeAttribute('readonly');"
@@ -93,8 +93,8 @@
                                     <el-col :md="12">
                                         <el-form-item :label="$t('models.propertyManager.confirm_password')"
                                                       :rules="validationRules.password_confirmation"
-                                                      prop="user.password_confirmation">
-                                            <el-input type="password" v-model="model.user.password_confirmation"/>
+                                                      prop="password_confirmation">
+                                            <el-input type="password" v-model="model.password_confirmation"/>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -216,10 +216,10 @@
             return {
                 activeTab: "details",
                 requestColumns: [{
-                    type: 'requestTenantAvatar',
+                    type: 'requestResidentAvatar',
                     width: 75,
-                    prop: 'tenant',
-                    label: 'general.tenant'
+                    prop: 'resident',
+                    label: 'general.resident'
                 }, {
                     type: 'requestTitleWithDesc',
                     label: 'models.request.prop_title'

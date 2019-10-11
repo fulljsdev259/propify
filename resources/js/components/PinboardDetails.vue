@@ -1,19 +1,19 @@
 <template>
     <div class="pinboard-details" v-if="!_.isEmpty(pinboard)">
         <el-row :gutter="10">
-            <template v-if="pinboard.tenant">
+            <template v-if="pinboard.resident">
                 <el-col :md="6" :sm="12">
                     <p class="pinboard-label">{{$t('general.name')}}</p>
-                    <p v-if="pinboard.tenant">
-                        <router-link :to="{name: 'adminTenantsEdit', params: {id: pinboard.tenant.id}}">
-                            {{pinboard.tenant.first_name}} {{pinboard.tenant.last_name}}
+                    <p v-if="pinboard.resident">
+                        <router-link :to="{name: 'adminResidentsEdit', params: {id: pinboard.resident.id}}">
+                            {{pinboard.resident.first_name}} {{pinboard.resident.last_name}}
                         </router-link>
                     </p>
                 </el-col>
-                <el-col :md="6" :sm="12" v-if="pinboard.tenant.building">
-                    <p class="pinboard-label">{{$t('models.tenant.building.name')}}</p>
+                <el-col :md="6" :sm="12" v-if="pinboard.resident.building">
+                    <p class="pinboard-label">{{$t('models.resident.building.name')}}</p>
                     <p>
-                        {{pinboard.tenant.building.name}}
+                        {{pinboard.resident.building.name}}
                     </p>
                 </el-col>
             </template>

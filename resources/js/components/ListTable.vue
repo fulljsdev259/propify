@@ -243,7 +243,7 @@
                 v-for="(column, key) in headerWithCounts">
                 <template slot-scope="scope">
                     <request-count :countsData="items[scope.$index]" ></request-count>
-                    <rent-contract-count :countsData="items[scope.$index]" ></rent-contract-count>
+                    <contract-count :countsData="items[scope.$index]" ></contract-count>
                 </template>
             </el-table-column>
 
@@ -327,7 +327,7 @@
                         v-for="action in column.actions">
                         <template
                             v-if="(!action.permissions || ( action.permissions && $can(action.permissions))) && (!action.hidden || (action.hidden && !action.hidden(scope.row)))">
-                            <template v-if="action.title.indexOf('edit') !== -1">
+                            <template v-if="action.title.indexOf('edit') !== -1 && action.isTemplateEdit == undefined">
                                 <router-link
                                         :to="{
                                             name: action.editUrl,
@@ -353,7 +353,11 @@
                                 @click="action.onClick(scope.row)"
                                 size="mini"
                             >
-                                <template v-if="action.title.indexOf('edit') !== -1">
+                                <template v-if="action.isTemplateEdit != undefined">
+                                    <i class="ti-pencil"></i>
+                                    <span>{{ $t('general.actions.edit') }}</span>    
+                                </template>
+                                <template v-else-if="action.title.indexOf('edit') !== -1">
                                     <router-link :to="{name: 'adminPropertyManagersEdit',  params: { id:scope.row['id']}}" class="el-menu-item-link">
                                         <i class="ti-pencil"></i>
                                         <span>{{ $t('general.actions.edit') }}</span>
@@ -389,7 +393,7 @@
     import {Avatar} from 'vue-avatar'
     import uuid from 'uuid/v1'
     import RequestCount from 'components/RequestCount'
-    import RentContractCount from 'components/RentContractCount'
+    import ContractCount from 'components/ContractCount'
     import tableAvatar from 'components/Avatar';
     import RequestDetailCard from 'components/RequestDetailCard';
     import SelectLanguage from 'components/SelectLanguage';
@@ -400,7 +404,7 @@
         components: {
             Avatar,
             RequestCount,
-            RentContractCount,
+            ContractCount,
             'table-avatar': tableAvatar,
             RequestDetailCard,
             SelectLanguage,
@@ -460,7 +464,7 @@
             },
             filtersHeader: {
                 type: String,
-                default: () => (this.$t('tenant.filters'))
+                default: () => (this.$t('resident.filters'))
             },
             withSearch: {
                 type: Boolean,
@@ -562,7 +566,6 @@
         },
         methods: {
             rowClicked(row) {
-                console.log('clicked');
                 this.$refs.tableData.toggleRowExpansion(row);
             },
             selectChanged(e, row, column) {

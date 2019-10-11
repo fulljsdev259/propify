@@ -15,8 +15,8 @@ return [
 	'failed' => 'These credentials do not match our records.',
 	'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 	'login_welcome' => 'Welcome back, please login to your account.',
-	'title' => 'Everything is easier with our tenant app',
-	'intro' => 'In order to process the concerns of our tenants even faster, our tenants receive access to a protected area with which the tenancy can be digitally managed. Through the digital processing we can act even faster and create transparency for all parties involved.',
+	'title' => 'Everything is easier with our resident app',
+	'intro' => 'In order to process the concerns of our residents even faster, our residents receive access to a protected area with which the tenancy can be digitally managed. Through the digital processing we can act even faster and create transparency for all parties involved.',
 	'benefit_1' => [
 		'title' => 'All data and documents can be viewed online',
 		'description' => 'You can download all information about the tenancy and documents such as the rental agreement in PDF format at any time.'
@@ -36,7 +36,7 @@ return [
 	'login' => [
 		'activate_account' => [
 			'title' => 'First login (account activation)',
-			'description' => 'After receiving the activation code, you can log into the tenant portal for the first time and activate your account.'
+			'description' => 'After receiving the activation code, you can log into the resident portal for the first time and activate your account.'
 		]
 	]
 ];

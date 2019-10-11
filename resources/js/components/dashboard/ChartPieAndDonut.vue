@@ -208,29 +208,29 @@ export default {
                 url = 'admin/donutChart?table=listings&column=type';
                 langPrefix = 'models.listing.type.';
             }
-            else if (this.type === 'tenants_by_request_status') {
+            else if (this.type === 'residents_by_request_status') {
                 this.chartType = 'donut';
-                url = 'admin/donutChartTenantsByDateAndStatus';
+                url = 'admin/donutChartResidentsByDateAndStatus';
                 langPrefix = 'models.request.status.';
             }
-            else if (this.type === 'tenants_by_status') {
+            else if (this.type === 'residents_by_status') {
                 this.chartType = 'donut';
-                url = 'admin/donutChart?table=tenants&column=status';
-                langPrefix = 'models.tenant.status.';
+                url = 'admin/donutChart?table=residents&column=status';
+                langPrefix = 'models.resident.status.';
             }
-            else if (this.type === 'tenants_by_language') {
+            else if (this.type === 'residents_by_language') {
                 this.chartType = 'donut';
-                url = 'admin/chartTenantLanguage';
+                url = 'admin/chartResidentLanguage';
                 langPrefix = '';
             }
-            else if (this.type === 'tenants_by_title') {
+            else if (this.type === 'residents_by_title') {
                 this.chartType = 'donut';
-                url = 'admin/donutChart?table=tenants&column=title';
+                url = 'admin/donutChart?table=residents&column=title';
                 langPrefix = 'general.salutation_option.';
             }
-            else if (this.type === 'tenants_by_age') {
+            else if (this.type === 'residents_by_age') {
                 this.chartType = 'donut';
-                url = 'tenants/age-statistics';
+                url = 'residents/age-statistics';
                 langPrefix = '';
             }
 

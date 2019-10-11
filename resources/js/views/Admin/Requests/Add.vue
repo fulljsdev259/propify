@@ -204,32 +204,32 @@
                                 </el-date-picker>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="12" v-if="model.tenant">
+                        <el-col :md="12" v-if="model.resident">
                             <el-form-item>
                                 <label slot="label">
-                                    {{$t('general.tenant')}}
+                                    {{$t('general.resident')}}
                                 </label>
-                                <router-link :to="{name: 'adminTenantsEdit', params: {id: model.tenant.id}}">
-                                    {{model.tenant.first_name}} {{model.tenant.last_name}}
+                                <router-link :to="{name: 'adminResidentsEdit', params: {id: model.resident.id}}">
+                                    {{model.resident.first_name}} {{model.resident.last_name}}
                                 </router-link>
                             </el-form-item>
                         </el-col>
                         <el-col :md="12" v-else>
-                            <el-form-item :label="$t('general.tenant')" :rules="validationRules.tenant_id" prop="tenant_id">
+                            <el-form-item :label="$t('general.resident')" :rules="validationRules.resident_id" prop="resident_id">
                                 <el-select
                                     :loading="remoteLoading"
-                                    :placeholder="$t('models.request.placeholders.tenant')"
-                                    :remote-method="remoteSearchTenants"
+                                    :placeholder="$t('models.request.placeholders.resident')"
+                                    :remote-method="remoteSearchResidents"
                                     filterable
                                     remote
                                     reserve-keyword
                                     style="width: 100%;"
-                                    v-model="model.tenant_id">
+                                    v-model="model.resident_id">
                                     <el-option
-                                        :key="tenant.id"
-                                        :label="tenant.name"
-                                        :value="tenant.id"
-                                        v-for="tenant in tenants"/>
+                                        :key="resident.id"
+                                        :label="resident.name"
+                                        :value="resident.id"
+                                        v-for="resident in residents"/>
                                 </el-select>
                             </el-form-item>
                         </el-col>
