@@ -35,7 +35,7 @@ export default (config = {}) => {
                 validationRules: {
                     resident_id: [{
                         required: false,
-                        message: this.$t('validation.required',{attribute: this.$t('general.tenant')})
+                        message: this.$t('validation.required',{attribute: this.$t('general.resident')})
                     }],
                     name: [{
                         required: true,
@@ -50,11 +50,11 @@ export default (config = {}) => {
                     }],
                     monthly_rent_net: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.gross_rent')})
+                        message: this.$t('validation.required',{attribute: this.$t('general.gross_rent')})
                     }],
                     monthly_maintenance: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.maintenance')})
+                        message: this.$t('validation.required',{attribute: this.$t('general.maintenance')})
                     }],
                     floor: [{
                         required: true,

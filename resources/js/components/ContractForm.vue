@@ -1,7 +1,7 @@
 <template>
     <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
 
-        <el-row :gutter="20">
+        <el-row :gutter="20" v-if="!hideBuildingAndUnits">
             <el-col :md="12">
                 <el-form-item prop="building_id" :label="$t('models.resident.building.name')" class="label-block">
                     <el-select
@@ -383,7 +383,14 @@
             },
             used_units: {
                 type: Array
-            }
+            },
+            hideBuildingAndUnits: {
+                type: Boolean,
+                default: false
+            },
+            quarter_id: {
+                type: Number
+            },
         },
         data () {
             return {
@@ -425,23 +432,23 @@
                     }],
                     deposit_amount: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.deposit_amount')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.deposit_amount')})
                     }],
                     deposit_type: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.type_of_deposit')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.type_of_deposit')})
                     }],
                     start_date: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.rent_start')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.rent_start')})
                     }],
                     type: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.rent_type')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.rent_type')})
                     }],
                     duration: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.rent_duration')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.rent_duration')})
                     }],
                     status: [{
                         required: true,
@@ -449,11 +456,11 @@
                     }],
                     monthly_rent_net: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.gross_rent')})
+                        message: this.$t('validation.required',{attribute: this.$t('general.monthly_rent_net')})
                     }],
                     monthly_maintenance: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.maintenance')})
+                        message: this.$t('validation.required',{attribute: this.$t('general.maintenance')})
                     }],
                 }
             }
@@ -639,34 +646,36 @@
             if(this.mode == "edit") {
                 this.model = this.data
 
+                if( !this.hideBuildingAndUnits ) {
                 
-                if( this.model.unit )
-                {
-                    let key = this.model.unit.floor
-                    let group_label = ""
-                    if(key > 0)
+                    if( this.model.unit )
                     {
-                        group_label = key + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                        let key = this.model.unit.floor
+                        let group_label = ""
+                        if(key > 0)
+                        {
+                            group_label = key + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                        }
+                        else if(key == 0)
+                        {
+                            group_label = this.$t('models.unit.floor_title.ground_floor')
+                        }
+                        else if(key < 0)
+                        {
+                            group_label = key + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                        }
+                        else if(key == 'attic')
+                        {
+                            group_label = this.$t('models.unit.floor_title.top_floor');
+                        }
+                        this.units.push({ label: group_label, options : [this.model.unit]})
                     }
-                    else if(key == 0)
-                    {
-                        group_label = this.$t('models.unit.floor_title.ground_floor')
-                    }
-                    else if(key < 0)
-                    {
-                        group_label = key + ". " + this.$t('models.unit.floor_title.under_ground_floor')
-                    }
-                    else if(key == 'attic')
-                    {
-                        group_label = this.$t('models.unit.floor_title.top_floor');
-                    }
-                    this.units.push({ label: group_label, options : [this.model.unit]})
-                }
 
-                if(this.model.building) {
-                    this.buildings.push(this.model.building)
-                    await this.remoteContractSearchBuildings(this.model.building.name)
-                    await this.searchContractUnits(true)
+                    if(this.model.building) {
+                        this.buildings.push(this.model.building)
+                        await this.remoteContractSearchBuildings(this.model.building.name)
+                        await this.searchContractUnits(true)
+                    }
                 }
 
             }
