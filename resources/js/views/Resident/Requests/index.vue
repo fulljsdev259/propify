@@ -306,7 +306,13 @@
                 this.loading = false
             },
             async onFiltersChanged (filters) {
-                console.log('filter changed', filters);
+                
+                let status = filters.status
+                filters.status = [status]
+
+                filters.current_page = 0
+
+                await this.$store.dispatch('newRequests/reset')
                 await this.get(filters)
             },
             resetFilters () {
