@@ -183,7 +183,6 @@
                         const fileExtension = newFile.type.substring(newFile.type.lastIndexOf('/') + 1)
 
                         this.$message.closeAll()
-                        console.log(this.uploadOptions.extensions.constructor)
                         switch (this.uploadOptions.extensions.constructor) {
                             case String:
                                 if (!this.uploadOptions.extensions.split(',').includes(fileExtension)) {

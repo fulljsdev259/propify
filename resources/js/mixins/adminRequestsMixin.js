@@ -326,7 +326,6 @@ export default (config = {}) => {
                 }
             },
             async deleteMediaByIndex(index) {
-                
                 const resp = await this.deleteRequestMedia({
                     id: this.model.id,
                     media_id: this.model.media[index].id
@@ -334,7 +333,6 @@ export default (config = {}) => {
 
                 this.model.media.splice(index, 1)
                 displaySuccess(resp);
-                
             },
             changeCategory() {
                 this.showsubcategory = this.model.category_id == 1 ? true : false;
