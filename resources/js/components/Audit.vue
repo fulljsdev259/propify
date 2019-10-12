@@ -235,15 +235,13 @@
                             Object.values(current.new_values).map((new_value, new_idx) => {
                                 audit_replacer[Object.keys(current.new_values)[new_idx]] = []
                                 const type = Object.keys(current.new_values)[new_idx];
-                                console.log('constant_variables',constant_variables)
-                                console.log('auditable_type',auditable_type)
                                 if(type in constant_variables){
                                     audit_replacer[type]['new'] = this.$t(`models.${auditable_type}.${type}.${constant_variables[type][new_value]}`)
                                 }else{
                                     switch (type) {
                                         case 'category_id':
                                             // audit_replacer[type]['new'] = this.$t(`models.${auditable_type}.category_options.${this.categories[new_value]}`);
-                                            audit_replacer[type]['old'] = this.categories[new_value].name;
+                                            audit_replacer[type]['new'] = this.categories[new_value].name;
                                         break;
                                         case 'due_date':
                                             audit_replacer[type]['new'] = this.formatDatetime(new_value);
@@ -346,7 +344,9 @@
             const flattenCategories = categories => categories.reduce((obj, category) => {
                 obj[category.id] = category
                 obj[category.id].linked_name = category.name_en.toLowerCase().replace(/ /g,"_");
-                obj[category.id].name = category['name_'+$i18n.locale]
+                
+                obj[category.id].name = category['name_'+ this.$i18n.locale]
+                //obj[category.id].name = this.$i18n.locale ? category.name_en : category.name_de
 
 
                 if (category.categories) {
