@@ -13,7 +13,7 @@
                     >
                         <el-row :gutter="10">
                             <el-col :md="8">
-                                <el-form-item :label="$t('models.cleanify.title')" prop="title">
+                                <el-form-item :label="$t('general.salutation')" prop="title">
                                     <el-select placeholder="Select" style="display: block" v-model="model.title">
                                         <el-option
                                             :key="title"
@@ -25,12 +25,12 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :md="8">
-                                <el-form-item :label="$t('models.cleanify.lastName')" prop="lastName">
+                                <el-form-item :label="$t('general.lastName')" prop="lastName">
                                     <el-input type="text" v-model="model.lastName"/>
                                 </el-form-item>
                             </el-col>
                             <el-col :md="8">
-                                <el-form-item :label="$t('models.cleanify.firstName')" prop="firstName">
+                                <el-form-item :label="$t('general.firstName')" prop="firstName">
                                     <el-input type="text" v-model="model.firstName"/>
                                 </el-form-item>
                             </el-col>

@@ -62,11 +62,11 @@ export default (config = {}) => {
                 validationRules: {
                     first_name: [{
                         required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('models.propertyManager.firstName')})
+                        message: this.$t('validation.required', {attribute: this.$t('general.firstName')})
                     }],
                     last_name: [{
                         required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('models.propertyManager.lastName')})
+                        message: this.$t('validation.required', {attribute: this.$t('general.lastName')})
                     }],
                     language: [{
                         required: true,

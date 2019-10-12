@@ -77,6 +77,8 @@ return [
         'tag' => 'Tag unassigned successfully',
     ],
     'no' => 'No',
+    'firstName' => 'First name',
+    'lastName' => 'Last name',
     'name' => "Name",
     'phone' => 'Phone',
     'id' => "ID",

@@ -77,6 +77,8 @@ return [
         "tag" => "Étiquette non attribuée avec succès",
     ],
     'no' => 'Non',
+    "firstName" => "Prénom",
+    "lastName" => "Nom de famille",
     "name" => "Nom",
     'phone' => "Téléphone",
     'id' => "ID",

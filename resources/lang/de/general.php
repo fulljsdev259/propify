@@ -77,6 +77,8 @@ return [
         'tag' => 'Tag wurde entfernt',
     ],
     'no' => 'Nein',
+    'firstName' => 'Vorname',
+    'lastName' => 'Name',    
     'name' => "Name",
     'phone' => 'Telefon',
     'id' => "ID",

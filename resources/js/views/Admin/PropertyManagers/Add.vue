@@ -40,14 +40,14 @@
 
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.propertyManager.firstName')"
+                                    <el-form-item :label="$t('general.firstName')"
                                                   :rules="validationRules.first_name"
                                                   prop="first_name">
                                         <el-input type="text" v-model="model.first_name"/>
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.propertyManager.lastName')" :rules="validationRules.last_name"
+                                    <el-form-item :label="$t('general.lastName')" :rules="validationRules.last_name"
                                                   prop="last_name">
                                         <el-input type="text" v-model="model.last_name"/>
                                     </el-form-item>

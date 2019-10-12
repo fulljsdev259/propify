@@ -77,6 +77,8 @@ return [
         "tag" => "Tag non assegnato con successo",
     ],
     "no" => "No",
+    "firstName" => "Nome",
+    "lastName" => "Cognome",
     "name" => "Nome",
     'phone' => "Telefono",
     'id' => "ID",
