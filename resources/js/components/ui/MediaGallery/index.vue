@@ -5,7 +5,7 @@
         
             <div class="ui-media-gallery__item__content">
                 <template v-if="isFileImage(file)">
-                    <ui-image ref="ui-image" :src="file" :src-list="files">
+                    <ui-image ref="ui-image" :src="file" :src-list="files" :index="index" @delete-image="deleteImage">
                         <div slot="error" class="error" style="color: red;">
                             <i class="el-icon-document-delete" />
                         </div>
@@ -52,6 +52,9 @@
             },
             openViewer (index) {
                 this.$refs['ui-image'][index].openViewer()
+            },
+            deleteImage (index) {
+                this.$emit('delete-media', index)
             }
         },
     }

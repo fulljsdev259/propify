@@ -509,6 +509,12 @@
       "css": "eq",
       "code": 59428,
       "src": "typicons"
+    },
+    {
+      "uid": "f761c3bbe16ba2d332914ecb28e7a042",
+      "css": "file-excel",
+      "code": 61891,
+      "src": "fontawesome"
     }
   ]
 }

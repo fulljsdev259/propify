@@ -44,6 +44,7 @@ export default (config = {}) => {
                     keywords: [],
                     payer: '',
                     property_managers: [],
+                    media: [],
                 },
                 validationRules: {
                     category: [{
@@ -113,6 +114,16 @@ export default (config = {}) => {
                 tags: [],
                 alltags: [],
                 persons: [],
+                uploadOptions: {
+                    drop: true,
+                    multiple: true,
+                    draggable: true,
+                    hideUploadButton: true,
+                    extensions: 'png,jpg,jpeg',
+                    hideSelectFilesButton: false
+                },
+                request_id: null,
+                audit_id: null
             };
         },
         computed: {
@@ -288,7 +299,7 @@ export default (config = {}) => {
                         const image = this.media[i];
                         await this.uploadRequestMedia({
                             id,
-                            media: image.url.split('base64,')[1],
+                            media: image.file.src,
                             merge_in_audit : audit_id
                         });
                     }
@@ -313,6 +324,17 @@ export default (config = {}) => {
                     });
                     displaySuccess(resp);
                 }
+            },
+            async deleteMediaByIndex(index) {
+                
+                const resp = await this.deleteRequestMedia({
+                    id: this.model.id,
+                    media_id: this.model.media[index].id
+                });
+
+                this.model.media.splice(index, 1)
+                displaySuccess(resp);
+                
             },
             changeCategory() {
                 this.showsubcategory = this.model.category_id == 1 ? true : false;
@@ -454,15 +476,30 @@ export default (config = {}) => {
                         
                         let requestId = resp.data.id;
 
-                        let audit_id = resp.data.audit_id;
+                        
 
                         await this.createRequestTags({
                             id: requestId,
                             tags: this.model.keywords
                         });
 
-                        await this.uploadNewMedia(resp.data.id, audit_id);
 
+                        // @TODO there is a upload feature in media uploader and it's using newRequests module. 
+                        // And there is a uploader in requests module. Need to check and remove one uploader
+
+                        // if (resp && resp.data) {                            
+                        //     if (this.media.length) {
+                        //     // TODO - make await for this   
+                        //         this.request_id = resp.data.id;            
+                        //         this.audit_id = resp.data.audit_id;
+                        //         this.$refs.media.startUploading();
+                        //     }
+                        // }
+
+
+                        let audit_id = resp.data.audit_id;
+                        await this.uploadNewMedia(resp.data.id, audit_id);
+    
                         this.media = [];
 
                         this.form.resetFields();
@@ -485,7 +522,7 @@ export default (config = {}) => {
                                 } else {
                                     this.$router.push({
                                         name: 'adminRequestsEdit',
-                                        params: {id: response.data.id}
+                                        params: {id: resp.data.id}
                                     })
                                 }
                                 
@@ -565,6 +602,8 @@ export default (config = {}) => {
                         this.$set(this.model, 'created_by', data.created_by);
                         this.$set(this.model, 'building', data.resident.building.name);
 
+
+                        console.log('model', this.model)
                         await this.getConversations();
                         
                         if (data.resident) {
@@ -626,10 +665,13 @@ export default (config = {}) => {
 
                                     await this.uploadNewMedia(params.id, null);
                                     
+                                    //this.model.media = [...this.model.media, ...this.media]
                                     this.media = [];
-                                    this.$set(this.model, 'service_providers', resp.data.service_providers);
-                                    this.$set(this.model, 'media', resp.data.media);
-                                    this.$set(this.model, 'property_managers', resp.data.property_managers);
+
+                                    await this.fetchCurrentRequest();
+                                    //this.$set(this.model, 'service_providers', resp.data.service_providers);
+                                    //this.$set(this.model, 'media', resp.data.media);
+                                    //this.$set(this.model, 'property_managers', resp.data.property_managers);
                                     displaySuccess(resp);
                                     resolve(true);
                                 } catch (err) {
@@ -683,6 +725,7 @@ export default (config = {}) => {
                         this.model.keywords.push(item.name);
                     })
 
+                    
                     await this.fetchCurrentRequest();
 
                     this.loading.state = false;
