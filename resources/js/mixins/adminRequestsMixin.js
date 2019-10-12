@@ -119,7 +119,7 @@ export default (config = {}) => {
                     multiple: true,
                     draggable: true,
                     hideUploadButton: true,
-                    extensions: 'png,jpg,jpeg',
+                    extensions: 'vnd.openxmlformats-officedocument.wordprocessingml.document,vnd.openxmlformats-officedocument.spreadsheetml.sheet,pdf,png,jpeg,jpg',
                     hideSelectFilesButton: false
                 },
                 request_id: null,

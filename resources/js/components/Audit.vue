@@ -359,7 +359,6 @@
 
             this.categories = flattenCategories(data)
             
-            console.log(this.categories)
             await this.filterReset();
         }
     }
