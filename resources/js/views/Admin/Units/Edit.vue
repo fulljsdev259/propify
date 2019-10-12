@@ -1,5 +1,6 @@
 <template>
     <div class="units-edit">
+        <div class="main-content">
         <heading :title="$t('general.actions.edit')" icon="icon-unit" style="margin-bottom: 20px;" shadow="heavy">
             <template slot="description" v-if="model.unit_format">
                 <div class="subtitle">{{model.unit_format}}</div>
@@ -219,6 +220,10 @@
             </el-col>
             <el-col :md="12">
                 <card :loading="loading" :header="$t('general.requests')">
+                    <div slot="header" style="width: 100%;">
+                        {{$t('general.requests')}}
+                        <span style="float:right" class="icon-cog" @click="toggleDrawer"></span>
+                    </div>
                     <relation-list
                         :actions="requestActions"
                         :columns="requestColumns"
@@ -230,6 +235,14 @@
                 </card>
             </el-col>
         </el-row>
+        </div>
+        <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
+            <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;Emergency</ui-divider>
+            
+            <div class="content" v-if="visibleDrawer">
+                <emergency-settings-form :visible.sync="visibleDrawer"/>
+            </div>
+        </ui-drawer>
     </div>
 </template>
 
@@ -241,6 +254,7 @@
     import UnitsMixin from 'mixins/adminUnitsMixin';
     import RelationList from 'components/RelationListing';
     import Assignment from 'components/Assignment';
+    import EmergencySettingsForm from 'components/EmergencySettingsForm';
 
     export default {
         mixins: [UnitsMixin({
@@ -252,13 +266,14 @@
             Card,
             EditActions,
             RelationList,
-            Assignment
+            Assignment,
+            EmergencySettingsForm
         },
         data() {
             return {
                 requestColumns: [{
                     type: 'requestResidentAvatar',
-                    width: 75,
+                    width: 100,
                     prop: 'resident',
                     label: 'general.resident'
                 }, {
@@ -297,7 +312,8 @@
                         onClick: this.notifyUnassignment
                     }]
                 }],
-                multiple: false
+                multiple: false,
+                visibleDrawer: false
             }
         },
         methods: {
@@ -312,7 +328,11 @@
                     }
                 });
                 return hasAttic;
-            }
+            },
+            toggleDrawer() {
+                this.visibleDrawer = true;
+                document.getElementsByTagName('footer')[0].style.display = "none";
+            },
         },
         watch: {
             "model.floor" () {
@@ -366,78 +386,119 @@
     .last-form-row {
         margin-bottom: -22px;
     }
-    /deep/ .monthly-rent-data {
-        background: transparent;
-        table {
-            width: 100%;
-            cursor: initial;
+    .main-content {
+        /deep/ .monthly-rent-data {
             background: transparent;
-            thead, tbody {
+            table {
                 width: 100%;
+                cursor: initial;
                 background: transparent;
-                tr {
-                    display: flex;
+                thead, tbody {
                     width: 100%;
                     background: transparent;
-
-                    
-                    .data {
-                        flex: 1;
+                    tr {
                         display: flex;
-                        align-items: center;
+                        width: 100%;
                         background: transparent;
-                        .cell {
-                            width: 100%;
+
+                        
+                        .data {
+                            flex: 1;
+                            display: flex;
+                            align-items: center;
+                            background: transparent;
+                            .cell {
+                                width: 100%;
+                                text-align: left;
+                                
+                                .el-form-item {
+                                    margin-bottom: 0;
+
+                                    &.is-error {
+                                        // margin-bottom: 27px;
+                                    }
+                                }
+
+                                /deep/ .el-input.el-input-group {
+                                    .el-input-group__prepend {
+                                        padding: 2px 8px 0;
+                                        font-weight: 600;
+                                    }
+                                    .el-input__inner {
+                                        padding: 5px;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        .symbol {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 20px;
+                            background: transparent;
+                            .cell {
+                                text-overflow: initial;
+                                font-size: 16px;
+                                padding: 0;
+                            }
+                        }
+
+                        td {
+                            padding: 25px 0;
+
+                            .cell {
+                                overflow: visible;
+                            }
+                        }
+
+                        td:last-child .cell {
+                            padding-left: 10px !important;
                             text-align: left;
-                            
-                            .el-form-item {
-                                margin-bottom: 0;
-
-                                &.is-error {
-                                    // margin-bottom: 27px;
-                                }
-                            }
-
-                            /deep/ .el-input.el-input-group {
-                                .el-input-group__prepend {
-                                    padding: 2px 8px 0;
-                                    font-weight: 600;
-                                }
-                                .el-input__inner {
-                                    padding: 5px;
-                                }
-                            }
                         }
-                    }
-                    
-                    .symbol {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        width: 20px;
-                        background: transparent;
-                        .cell {
-                            text-overflow: initial;
-                            font-size: 16px;
-                            padding: 0;
-                        }
-                    }
-
-                    td {
-                        padding: 25px 0;
-
-                        .cell {
-                            overflow: visible;
-                        }
-                    }
-
-                    td:last-child .cell {
-                        padding-left: 10px !important;
-                        text-align: left;
                     }
                 }
             }
         }
+
+        span.icon-cog {
+            cursor: pointer;
+        }
+
+        
     }
 
+    .ui-drawer {
+        .ui-divider {
+            margin: 32px 16px 0 16px;
+            i {
+                padding-right: 0;
+            }
+
+            /deep/ .ui-divider__content {
+                left: 0;
+                z-index: 1;
+                padding-left: 0;
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--color-primary);
+            }
+        }
+
+        .content {
+            height: calc(100% - 70px);
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            padding: 16px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            position: relative;
+
+        }
+    }
 </style>

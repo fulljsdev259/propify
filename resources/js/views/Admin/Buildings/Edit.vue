@@ -341,7 +341,7 @@
                         <span slot="label">
                             <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
                         </span>
-                        <!-- <el-button style="float:right" type="primary" @click="toggleDrawer" size="mini" round>Settings Drawer</el-button> -->
+                        
                         <relation-list
                             :actions="requestActions"
                             :columns="requestColumns"
@@ -350,6 +350,10 @@
                             filter="building_id"
                             v-if="model.id"
                         />
+                    </el-tab-pane>
+                    <el-tab-pane name="settings" :disabled="true">
+                        <span slot="label" class="icon-cog" @click="toggleDrawer">
+                        </span>
                     </el-tab-pane>
                 </el-tabs>
             </el-col>
@@ -362,7 +366,7 @@
         />
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-            <ui-divider content-position="left"><i class="icon-tools"></i> &nbsp;&nbsp;Emergency</ui-divider>
+            <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;Emergency</ui-divider>
             
             <div class="content" v-if="visibleDrawer">
                 <emergency-settings-form :visible.sync="visibleDrawer"/>
@@ -479,7 +483,7 @@
                 }],
                 requestColumns: [{
                     type: 'requestResidentAvatar',
-                    width: 75,
+                    width: 100,
                     prop: 'resident',
                     label: 'general.resident'
                 }, {
@@ -931,42 +935,60 @@
                 }
             }
 
-            .ui-drawer {
-                .ui-divider {
-                    margin: 32px 16px 0 16px;
-                    i {
-                        padding-right: 0;
+            /deep/ .el-tabs__nav.is-top {
+                width: 100%;
+                display: flex;
+
+                #tab-settings {
+                    flex-grow: 1;
+                    span.icon-cog {
+                        cursor: pointer;
+                        float: right;
                     }
-
-                    /deep/ .ui-divider__content {
-                        left: 0;
-                        z-index: 1;
-                        padding-left: 0;
-                        font-size: 16px;
-                        font-weight: 700;
-                        color: var(--color-primary);
-                    }
-                }
-
-                .content {
-                    height: calc(100% - 70px);
-                    display: -webkit-box;
-                    display: -ms-flexbox;
-                    display: flex;
-                    padding: 16px;
-                    overflow-x: hidden;
-                    overflow-y: auto;
-                    -webkit-box-orient: vertical;
-                    -webkit-box-direction: normal;
-                    -ms-flex-direction: column;
-                    flex-direction: column;
-                    position: relative;
-
                 }
             }
+
+            
+            
+
+            
         }
     }
 
+    .ui-drawer {
+        .ui-divider {
+            margin: 32px 16px 0 16px;
+            i {
+                padding-right: 0;
+            }
+
+            /deep/ .ui-divider__content {
+                left: 0;
+                z-index: 1;
+                padding-left: 0;
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--color-primary);
+            }
+        }
+
+        .content {
+            height: calc(100% - 70px);
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            padding: 16px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            position: relative;
+
+        }
+    }
+    
     .list-complete-item {
         transition: all 1s;
         display: flex;

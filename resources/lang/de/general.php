@@ -268,4 +268,10 @@ return [
     'monthly_rent_net' => 'Monatsmiete', 
     'maintenance' => 'Heiz- und Nebenkosten',
     'gross_rent' => 'Bruttomiete',
+    'emergency' => [
+        'activate_title' => 'Notfallkasten aktivieren',
+        'activate_desc' => 'Sie können die Notfallbox aktivieren.',
+        'phone_number' => 'Telefonnummer',
+        'time_schedule' => 'Zeitplan',
+    ]
 ];

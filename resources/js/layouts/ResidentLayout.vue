@@ -171,12 +171,6 @@
                         name: 'residentRequests'
                     }
                 }, {
-                    icon: 'icon-basket',
-                    title: 'layouts.resident.sidebar.listings',
-                    route: {
-                        name: 'residentListing'
-                    }
-                }, {
                     icon: 'icon-water',
                     title: 'Cleanify',
                     route: {

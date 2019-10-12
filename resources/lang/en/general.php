@@ -268,4 +268,10 @@ return [
     'monthly_rent_net' => 'Monthly rent',    
     'maintenance' => 'Maintenance',
     'gross_rent' => 'Gross rent',
+    'emergency' => [
+        'activate_title' => 'Activate Emergency Box',
+        'activate_desc' => 'You can activate emergency box',
+        'phone_number' => 'Phone Number',
+        'time_schedule' => 'Time Schedule',
+    ]
 ];

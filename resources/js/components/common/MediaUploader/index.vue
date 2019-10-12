@@ -1,6 +1,7 @@
 <template>
     <div :class="['media', {[`media-${layout}-layout`]: true}]">
         <uploader ref="uploader" class="media-uploader" v-bind="uploaderProps" :value="value" :input-id="`upload-${$_uid}`" :headers="headers" :custom-action="customAction" @input="value => $emit('input', value)" @input-filter="onUploadFilter" />
+        <gallery :images="galleryImages" :index="galleryIndex" :options="galleryOptions" />
         <draggable class="media-list" tag="transition-group" :componentData="{type: 'transition', name: 'flip-list', mode: 'out-in'}" ghost-class="is-ghost" :list="value" :handle="draggableHandler" :animation="240" :disabled="isDraggableDisabled" :move="onDraggableMove">
             <div :class="['media-item', {'is-draggable': uploadOptions.draggable && value.length && !$refs.uploader.uploaded}, $refs.uploader.active && {'is-active': +file.progress && !file.success, 'is-pending': !+file.progress}, {'is-success': file.success, 'is-failed': file.error}]" v-for="(file, idx) in value" :key="file.id" :style="{'transition-delay': `calc(0.16 * ${idx}s)`}">
                 <div class="media-content">
@@ -76,7 +77,7 @@
 
 <script>
     import {API_BASE_URL} from '@/config'
-    // import Gallery from './MediaGallery'
+    import Gallery from './../../MediaGallery'
     import Draggable from 'vuedraggable'
     import Uploader from 'vue-upload-component'
     import {displaySuccess, displayError} from 'helpers/messages'
@@ -118,7 +119,7 @@
             }
         },
         components: {
-            // Gallery,
+            Gallery,
             Uploader,
             Draggable
         },
@@ -145,10 +146,13 @@
                 return type.includes('image/')
             },
             previewFile (file, idx) {
+                console.log('prevFile')
                 if (this.isFileImage(file)) {
                     this.galleryIndex = idx
+                    console.log('is')
                 } else if (this.canFileBePreviewed(file)) {
                     window.open(file.file.blob)
+                    console.log('can')
                 } else {
                     this.$message.warning(this.$t('components.common.media.messages.preview'), {
                         duration: 2400
@@ -360,6 +364,7 @@
             },
         },
         mounted () {
+            console.log('common Media uploader')
             if (this.uploadOptions.auto || this.uploadOptions.clear) {
                 this.$watch(() => this.value, media => {
                     if (media.length) {
