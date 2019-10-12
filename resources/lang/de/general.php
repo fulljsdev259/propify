@@ -58,8 +58,7 @@ return [
     ],
     'attached' => [
         'building' => 'Liegenschaft wurde zugewiesen.',
-        'quarter' => 'Überbauung wurde zugewiesen.',
-        'provider' => 'Dienstleister wurde zugewiesen.',
+        'quarter' => 'Überbauung wurde zugewiesen.',        
         'resident' => "Resident wurde zugewiesen.",
         'service' => 'Dienstleister wurde zugewiesen.',
         'manager' => 'Bewirtschafter wurde zugewiesen.',
@@ -68,8 +67,7 @@ return [
     ],
     'detached' => [
         'building' => 'Liegenschaft wurde entfernt',
-        'quarter' => 'Überbauung wurde entfernt',
-        'provider' => 'Dienstleister wurde wurde entfernt',
+        'quarter' => 'Überbauung wurde entfernt',        
         'resident' => "Resident wurde entfernt.",
         'service' => 'Dienstleister wurde entfernt.',
         'manager' => 'Bewirtschafter wurde entfernt.',
@@ -222,7 +220,7 @@ return [
     'roles' => [
         'label' => 'Rolle',
         'administrator' => 'Administrator',
-        'homeowner' => 'Eigentümer',
+        'resident' => 'Einwohner',
         'manager' => 'Bewirtschafter',
         'registered' => 'Registriert',
         'service' => 'Externe Diensteister',

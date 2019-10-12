@@ -58,8 +58,7 @@ return [
     ],
     'attached' => [
         "building" => "Edificio assegnato",
-        "quarter" => "Trimestre assegnato",
-        "provider" => "Fornitore assegnato",
+        "quarter" => "Trimestre assegnato",        
         'resident' => "Residente attaccato con successo",
         "service" => "Fornitore collegato con successo",
         "manager" => "Manager attaccato con successo",
@@ -68,8 +67,7 @@ return [
     ],
     'detached' => [
         "building" => "Costruire senza assegnazione",
-        "quarter" => "Quartiere non assegnato",
-        "provider" => "Fornitore non assegnato",
+        "quarter" => "Quartiere non assegnato",        
         'resident' => "Residente distaccato con successo",
         "service" => "Fornitore staccato con successo",
         "manager" => "Manager staccato con successo",
@@ -222,7 +220,7 @@ return [
     'roles' => [
         'label' => 'Ruolo',
         'administrator' => 'Amministratore',
-        'homeowner' => 'Proprietario',
+        'resident' => 'Residente',
         'manager' => 'Manager',
         'registered' => 'Registrato',
         'service' => 'Servizio',
