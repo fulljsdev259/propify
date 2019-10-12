@@ -181,28 +181,7 @@ return [
     'price' => [
         'valid' => 'Bitte geben Sie einen gültigen Preis ein.',
         'required' => 'Bitte geben Sie den Preis an.',
-    ],
-    'firstName' => [
-        'required' => 'Vorname ist obligatorisch.',
-    ],
-    'lastName' => [
-        'required' => 'Name ist obligatorisch.',
-    ],
-    'phone' => [
-        'required' => 'Telefon ist obligatorisch.',
-    ],
-    'address' => [
-        'required' => 'Adresse ist obligatorisch.',
-    ],
-    'zip' => [
-        'required' => 'Postleitzahl ist obligatorisch.',
-    ],
-    'city' => [
-        'required' => 'Die Ortschaft ist obligatorisch.',
-    ],
-    'title' => [
-        'required' => 'Anrede ist obligatorisch.',
-    ],
+    ],   
     'terms' => [
         'required' => 'Sie müssen die allgemeinen Geschäftsbedingungen akzeptieren.',
     ],

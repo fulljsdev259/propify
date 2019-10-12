@@ -126,31 +126,31 @@
                     ],
                     lastName: [{
                         required: true,
-                        message: this.$t("validation.lastName.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.lastName')})
                     }],
                     firstName: [{
                         required: true,
-                        message: this.$t("validation.firstName.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.firstName')})
                     }],
                     phone: [{
                         required: true,
-                        message: this.$t("validation.phone.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.phone')})
                     }],
                     address: [{
                         required: true,
-                        message: this.$t("validation.address.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.address')})
                     }],
                     zip: [{
                         required: true,
-                        message: this.$t("validation.zip.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.zip')})
                     }],
                     city: [{
                         required: true,
-                        message: this.$t("validation.city.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.city')})
                     }],
                     title: [{
                         required: true,
-                        message: this.$t("validation.title.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.salutation')})
                     }],
                     terms: [{
                         trigger: 'blue',
