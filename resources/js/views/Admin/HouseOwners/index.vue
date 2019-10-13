@@ -239,7 +239,7 @@
                     this.remoteLoading = true;
 
                     try {
-                        const resp = await this.getPropertyManagers({
+                        const resp = await this.getHouseOwners({
                             get_all: true,
                             search,
                             disableCommit: true

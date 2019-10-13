@@ -120,7 +120,7 @@
                                 <cropper :resize="false" :viewportType="'circle'" @cropped="cropped"/>
                             </el-form-item>
 
-                            <el-form-item :label="$t('models.propertyManager.slogan')" :rules="validationRules.slogan"
+                            <el-form-item :label="$t('models.houseOwner.slogan')" :rules="validationRules.slogan"
                                           prop="slogan">
                                 <el-input type="text" v-model="model.slogan"/>
                             </el-form-item>
@@ -186,7 +186,7 @@
                     label: 'general.title'
                 }, {
                     prop: 'type',
-                    label: 'models.propertyManager.assignType',
+                    label: 'models.houseOwner.assignType',
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{
