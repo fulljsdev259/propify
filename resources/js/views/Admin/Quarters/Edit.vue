@@ -141,7 +141,7 @@
             return {
                 requestColumns: [{
                     type: 'requestResidentAvatar',
-                    width: 75,
+                    width: 100,
                     prop: 'resident',
                     label: 'general.resident'
                 }, {
