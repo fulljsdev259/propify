@@ -89,9 +89,6 @@
                 }
 
                 image.src = this.src
-            },
-            deleteImage () {
-
             }
         },
         watch: {
