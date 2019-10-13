@@ -32,5 +32,6 @@ return [
     'services' => 'Partenaires de service',
     'activity' => 'Activité',
     'propertyManagers' => 'Gestionnaires immobiliers',
+    'houseOwners' => 'Propriétaires de maison',
     'templates' => 'Modèles'
 ];

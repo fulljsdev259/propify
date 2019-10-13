@@ -266,6 +266,14 @@
                             name: 'adminPropertyManagers'
                         }
                     },
+                    "houseOwners": {
+                        icon: 'icon-users',
+                        title: this.$t('menu.houseOwners'),
+                        permission: this.$permissions.list.propertyManager,
+                        route: {
+                            name: 'adminHouseOwners'
+                        }
+                    },
                     "services": {
                         icon: 'icon-tools',
                         title: this.$t('menu.services'),

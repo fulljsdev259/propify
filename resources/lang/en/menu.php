@@ -32,5 +32,6 @@ return [
     'services' => 'Service Partners',
     'activity' => 'Activity',
     'propertyManagers' => 'Property managers',
+    'houseOwners' => 'House owners',
     'templates' => 'Templates'
 ];

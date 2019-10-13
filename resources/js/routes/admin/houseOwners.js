@@ -3,42 +3,42 @@ import hasPermissionGuard from 'guards/hasPermissionGuard'
 import VueRouterMultiguard from 'vue-router-multiguard'
 
 export default [{
-    path: 'property-managers',
+    path: 'house-owners',
     component: {
         template: '<router-view />'
     },
     children: [{
-        name: 'adminPropertyManagers',
+        name: 'adminHouseOwners',
         path: '/',
-        component: () => import ( /* : "admin/propertyManagers/index" */ 'views/Admin/PropertyManagers'),
+        component: () => import ( /* : "admin/houseOwners/index" */ 'views/Admin/HouseOwners'),
         beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.list.propertyManager)]),
         props: {
-            title: 'List property manager'
+            title: 'List house owner'
         },
         meta: {
-            title: 'List Property Manager'
+            title: 'List House Owner'
         }
     }, {
-        name: 'adminPropertyManagersAdd',
+        name: 'adminHouseOwnersAdd',
         path: 'add',
-        component: () => import ( /* : "admin/propertyManagers/add" */ 'views/Admin/PropertyManagers/Add'),
+        component: () => import ( /* : "admin/houseOwners/add" */ 'views/Admin/HouseOwners/Add'),
         beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.create.propertyManager)]),
         props: {
-            title: 'Add property manager'
+            title: 'Add house owner'
         },
         meta: {
-            title: 'Add Property Manager'
+            title: 'Add House Owner'
         }
     }, {
-        name: 'adminPropertyManagersEdit',
+        name: 'adminHouseOwnersEdit',
         path: ':id',
-        component: () => import ( /* : "admin/propertyManagers/edit" */ 'views/Admin/PropertyManagers/Edit'),
+        component: () => import ( /* : "admin/houseOwners/edit" */ 'views/Admin/HouseOwners/Edit'),
         beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.update.propertyManager)]),
         props: {
-            title: 'Edit property manager'
+            title: 'Edit house owner'
         },
         meta: {
-            title: 'Edit Property Manager'
+            title: 'Edit House Owner'
         }
     }]
 }];
