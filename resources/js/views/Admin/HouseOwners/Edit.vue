@@ -1,17 +1,17 @@
 <template>
     <div class="services-edit">
-        <heading :title="$t('models.propertyManager.edit_title')" icon="icon-users" shadow="heavy">
+        <heading :title="$t('models.houseOwner.edit_title')" icon="icon-users" shadow="heavy">
             <template slot="description" v-if="model.property_manager_format">
                 <div class="subtitle">{{model.property_manager_format}}</div>
             </template>
-            <edit-actions :saveAction="submit" :deleteAction="deletePropertyManager" route="adminPropertyManagers"/>
+            <edit-actions :saveAction="submit" :deleteAction="deleteHouseOwner" route="adminHouseOwners"/>
         </heading>
         <div class="crud-view">
             <el-form :model="model" label-position="top" label-width="192px" ref="form">
                 <el-row :gutter="20">
                     <el-col :md="12">
                         <el-tabs type="border-card" v-model="activeTab">
-                            <el-tab-pane :label="$t('models.propertyManager.details_card')" name="details">
+                            <el-tab-pane :label="$t('models.houseOwner.details_card')" name="details">
                                 <el-row :gutter="20">
                                     <el-col :md="8">
                                         <el-form-item :label="$t('general.salutation')" :rules="validationRules.title"
@@ -33,7 +33,7 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="8">
-                                        <el-form-item :label="$t('models.propertyManager.profession')"
+                                        <el-form-item :label="$t('models.houseOwner.profession')"
                                                       :rules="validationRules.profession"
                                                       prop="profession">
                                             <el-input type="text" v-model="model.profession"/>
@@ -43,14 +43,14 @@
 
                                 <el-row :gutter="20">
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.propertyManager.firstName')"
+                                        <el-form-item :label="$t('models.houseOwner.firstName')"
                                                     :rules="validationRules.first_name"
                                                     prop="first_name">
                                             <el-input type="text" v-model="model.first_name"/>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.propertyManager.lastName')"
+                                        <el-form-item :label="$t('models.houseOwner.lastName')"
                                                     :rules="validationRules.last_name"
                                                     prop="last_name">
                                             <el-input type="text" v-model="model.last_name"/>
@@ -75,10 +75,10 @@
                                 </el-row>
 
                             </el-tab-pane>
-                            <el-tab-pane :label="$t('models.propertyManager.profile_card')" name="profile">
+                            <el-tab-pane :label="$t('models.houseOwner.profile_card')" name="profile">
                                 <el-row :gutter="20">
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.propertyManager.password')"
+                                        <el-form-item :label="$t('models.houseOwner.password')"
                                                       :rules="validationRules.password"
                                                       autocomplete="off"
                                                       prop="password">
@@ -91,7 +91,7 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.propertyManager.confirm_password')"
+                                        <el-form-item :label="$t('models.houseOwner.confirm_password')"
                                                       :rules="validationRules.password_confirmation"
                                                       prop="password_confirmation">
                                             <el-input type="password" v-model="model.password_confirmation"/>
@@ -106,17 +106,17 @@
                                          v-if="!avatar.length && model.user.avatar">
                                 </el-form-item>
 
-                                <el-form-item style="margin-bottom: 0;" :label="$t('models.propertyManager.slogan')"
+                                <el-form-item style="margin-bottom: 0;" :label="$t('models.houseOwner.slogan')"
                                               :rules="validationRules.slogan"
                                               prop="slogan">
                                     <el-input type="text" v-model="model.slogan"/>
                                 </el-form-item>
                             </el-tab-pane>
-                            <el-tab-pane :label="$t('models.propertyManager.social_card')" name="social">
+                            <el-tab-pane :label="$t('models.houseOwner.social_card')" name="social">
                                 <el-row class="last-form-row" :gutter="20">
 
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.propertyManager.linkedin_url')"
+                                        <el-form-item :label="$t('models.houseOwner.linkedin_url')"
                                                       :rules="validationRules.linkedin_url"
                                                       prop="linkedin_url">
                                             <el-input type="text" v-model="model.linkedin_url">
@@ -125,7 +125,7 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.propertyManager.xing_url')"
+                                        <el-form-item :label="$t('models.houseOwner.xing_url')"
                                                       :rules="validationRules.xing_url"
                                                       prop="xing_url">
                                             <el-input type="text"
@@ -187,7 +187,7 @@
 <script>
     import Heading from 'components/Heading';
     import Card from 'components/Card';
-    import PropertyManagersMixin from 'mixins/adminPropertyManagersMixin';
+    import HouseOwnersMixin from 'mixins/adminHouseOwnersMixin';
     import Cropper from 'components/Cropper';
     import RelationList from 'components/RelationListing';
     import EditActions from 'components/EditViewActions';
@@ -198,8 +198,8 @@
     import SelectLanguage from 'components/SelectLanguage';
 
     export default {
-        name: 'AdminPropertyManagersEdit',
-        mixins: [globalFunction, PropertyManagersMixin({
+        name: 'AdminHouseOwnersEdit',
+        mixins: [globalFunction, HouseOwnersMixin({
             mode: 'edit'
         })],
         components: {
@@ -217,7 +217,7 @@
                 activeTab: "details",
                 requestColumns: [{
                     type: 'requestResidentAvatar',
-                    width: 75,
+                    width: 90,
                     prop: 'resident',
                     label: 'general.resident'
                 }, {
@@ -242,7 +242,7 @@
                     label: 'general.name'
                 }, {
                     prop: 'type',
-                    label: 'models.propertyManager.assignType',
+                    label: 'models.houseOwner.assignType',
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{
@@ -258,7 +258,7 @@
             }
         },
         methods: {
-            ...mapActions(['deletePropertyManager']),
+            ...mapActions(['deleteHouseOwner']),
             requestEditView(row) {
                 this.$router.push({
                     name: 'adminRequestsEdit',

@@ -112,10 +112,6 @@
                 }, {
                     label: 'general.phone',
                     prop: 'user.phone'
-                },  {
-                    label: 'general.requests',
-                    withCounts: true,
-                    
                 }, 
                 {
                     width: 120,
@@ -123,7 +119,7 @@
                         type: '',
                         icon: 'ti-pencil',
                         title: 'general.actions.edit',
-                        editUrl: 'adminPropertyManagersEdit',
+                        editUrl: 'adminHouseOwnersEdit',
                         onClick: this.edit,
                         permissions: [
                             this.$permissions.update.propertyManager
@@ -170,7 +166,7 @@
             }
         },
         methods: {
-            ...mapActions(["remoteSearchManagers", "batchDeletePropertyManagers", "getBuildings", "getIDsAssignmentsCount"]),
+            ...mapActions(["remoteSearchManagers", "batchDeleteHouseOwners", "getBuildings", "getIDsAssignmentsCount"]),
             async getFilterBuildings() {
                 const buildings = await this.getBuildings({
                     get_all: true
@@ -180,12 +176,12 @@
             },
             add() {
                 this.$router.push({
-                    name: 'adminPropertyManagersAdd'
+                    name: 'adminHouseOwnersAdd'
                 });
             },
             edit({id}) {
                 this.$router.push({
-                    name: 'adminPropertyManagersEdit',
+                    name: 'adminHouseOwnersEdit',
                     params: {
                         id
                     }
@@ -216,7 +212,7 @@
             },
             async batchDelete(withReassign) {
                 try {                    
-                    const resp = await this.batchDeletePropertyManagers({
+                    const resp = await this.batchDeleteHouseOwners({
                         managerIds: _.map(this.selectedItems, 'id'),
                         assignee: (this.toAssign && withReassign) ? this.toAssign : 0
                     });
