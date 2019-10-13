@@ -290,14 +290,14 @@
                             name: 'adminPinboard'
                         }
                     },
-                    "listings": {
-                        title: this.$t('menu.listings'),
-                        icon: 'icon-basket',
-                        permission: this.$permissions.list.listing,
-                        route: {
-                            name: 'adminListings'
-                        }
-                    },
+                    // "listings": {
+                    //     title: this.$t('menu.listings'),
+                    //     icon: 'icon-basket',
+                    //     permission: this.$permissions.list.listing,
+                    //     route: {
+                    //         name: 'adminListings'
+                    //     }
+                    // },
                     "admins": {
                         icon: 'icon-user',
                         title: this.$t('menu.admins'),
@@ -319,7 +319,7 @@
                             menu_items.propertyManagers,
                             menu_items.services,
                             menu_items.pinboard,
-                            menu_items.listings,
+                            // menu_items.listings,
                        ];
                 }
                 else if (this.rolename == 'service') {
