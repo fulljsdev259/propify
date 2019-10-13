@@ -59,6 +59,8 @@ export default (config = {}) => {
                     floor: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.unit.floor')})
+                    }, {
+                        validator: this.validateFloor
                     }],
                     building_id: [{
                         required: true,
@@ -198,6 +200,12 @@ export default (config = {}) => {
                     this.loading.status = false;
                 });
             },
+            validateFloor(rule, value, callback) {
+                if(this.model.floor <= -4) {
+                    callback(new Error(this.$t('validation.gte.numeric',{attribute: this.$t('models.unit.floor'), value: '-3'})));
+                }
+                callback();
+            }
         },
         computed: {
             form() {

@@ -179,7 +179,7 @@
                                     :label="$t('models.unit.sq_meter')" 
                                     prop="sq_meter">
 
-                                    <el-input autocomplete="off" type="number" v-model="model.sq_meter">
+                                    <el-input autocomplete="off" type="number" min="0" v-model="model.sq_meter">
                                         <template slot="prepend">m2</template>
                                     </el-input>
                                 </el-form-item>
@@ -335,10 +335,6 @@
             },
         },
         watch: {
-            "model.floor" () {
-                if(this.model.floor < -3)
-                    this.model.floor = -3; 
-            },
             "model.type" () {
                 if(this.model.type >= 3)
                     this.model.attic = false;
