@@ -1,9 +1,9 @@
 <template>
     <div class="services">
-        <heading :title="$t('models.propertyManager.title')" icon="icon-users" shadow="heavy">
+        <heading :title="$t('models.houseOwner.title')" icon="icon-users" shadow="heavy">
             <template v-if="$can($permissions.create.propertyManager)">            
                 <el-button @click="add" icon="ti-plus" round size="mini" type="primary">
-                    {{$t('models.propertyManager.add')}}
+                    {{$t('models.houseOwner.add')}}
                 </el-button>
             </template>
             <template v-if="$can($permissions.delete.propertyManager)">
@@ -28,12 +28,12 @@
         >
         </list-table>
         <el-dialog  class="delete_width_reassign_modal" 
-                    :close-on-click-modal="false" :title="$t('models.propertyManager.delete_with_reassign_modal.title')"
+                    :close-on-click-modal="false" :title="$t('models.houseOwner.delete_with_reassign_modal.title')"
                     :visible.sync="assignManagersVisible"
                     v-loading="processAssignment" width="30%">
             <el-row>
                 <el-col :span="24">
-                    <p class="description">{{$t('models.propertyManager.delete_with_reassign_modal.description')}}</p>
+                    <p class="description">{{$t('models.houseOwner.delete_with_reassign_modal.description')}}</p>
                     <el-select
                         :loading="remoteLoading"
                         :placeholder="$t('general.placeholders.search')"
@@ -63,13 +63,13 @@
                         @click="batchDelete(true)" 
                         size="mini" 
                         type="primary">
-                        {{$t('models.propertyManager.delete_with_reassign_modal.title')}}
+                        {{$t('models.houseOwner.delete_with_reassign_modal.title')}}
                     </el-button>
                 </el-col>
             </el-row> 
             <span class="dialog-footer" slot="footer">
                 <el-button @click="closeModal" size="mini">{{$t('models.building.cancel')}}</el-button>                
-                <el-button @click="batchDelete(false)" size="mini" type="danger">{{$t('models.propertyManager.delete_without_reassign')}}</el-button>
+                <el-button @click="batchDelete(false)" size="mini" type="danger">{{$t('models.houseOwner.delete_without_reassign')}}</el-button>
             </span>
         </el-dialog>
     </div>
