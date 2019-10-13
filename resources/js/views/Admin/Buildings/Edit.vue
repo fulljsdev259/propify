@@ -213,7 +213,8 @@
                                 </el-option>
                             </el-select>
                             <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple
-                                             v-if="selectedFileCategory"/>
+                                             v-if="selectedFileCategory"/><!-- @TODO this is uploading file on the spot, is it okay? need to confirm -->
+                            
                         </div>
                     </el-tab-pane>
                     

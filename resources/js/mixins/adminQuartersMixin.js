@@ -16,6 +16,7 @@ export default (config = {}) => {
                     zip: '',    
                     street: 'street',
                     house_num: 'house_num',
+                    media: []
                 },
                 quarter_format: '',
                 validationRules: {
