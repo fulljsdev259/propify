@@ -17,7 +17,8 @@ class MoveAdminUsersInPm extends Migration
             $nameParts = explode(' ' ,$user->name);
             $firstName = array_shift($nameParts);
             $lastName = implode(' ',$nameParts);
-            $manager = \App\Models\PropertyManager::create([
+            $manager = \App\Models\PropertyManager::where('user_id', $user->id)->first();
+            $manager = $manager ?? \App\Models\PropertyManager::create([
                 'first_name'  => $firstName,
                 'lsat_name' => $lastName,
                 'title' => $user->title,
