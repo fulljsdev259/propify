@@ -22,6 +22,7 @@ class QuarterTransformer extends BaseTransformer
             'id' => $model->id,
             'name' => $model->name,
             'quarter_format' => $model->quarter_format,
+            'internal_quarter_id' => $model->internal_quarter_id,
             'description' => $model->description,
             'count_of_buildings' => $model->count_of_buildings,
         ];
