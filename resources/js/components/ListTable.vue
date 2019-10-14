@@ -608,6 +608,7 @@
                 } else if (this.withSearch) {
                     delete query.search;
                 }
+
                 /*if(this.$route.name=='adminUsers') {
                     query = {roles: ['administrator'], ...query};
                     if(query.role)
@@ -617,12 +618,12 @@
                 }*/
                 
                 try {
-                    this.$router.replace({name: this.$route.name, query, params})
+                    this.$router.replace({name: this.$route.name, query, params}).catch(err => {})
                 }
                 catch (err) {
-                    
+
                 }
-            },
+            },  
             updatePage(page, size) {
                 let {currPage, currSize} = this.page;
 
@@ -912,6 +913,10 @@
                     line-height: 25px;
                     border-top: 1px solid var(--color-text-placeholder);
                 }
+            }
+
+            :global(.el-collapse-item__content) {
+                padding-bottom: 0;
             }
         }
 
