@@ -26,6 +26,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="int32"
  *      ),
  *      @SWG\Property(
+ *          property="type",
+ *          description="type",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
  *          property="title",
  *          description="title",
  *          type="string"
@@ -97,9 +103,18 @@ class PropertyManager extends AuditableModel
         'mrs',
     ];
 
+    const TypeAdministrator = 1;
+    const TypeManager = 2;
+
+    const Type = [
+        self::TypeAdministrator => 'administrator',
+        self::TypeManager => 'manager',
+    ];
+
     public $fillable = [
         'description',
         'user_id',
+        'type',
         'title',
         'first_name',
         'last_name',
@@ -133,6 +148,7 @@ class PropertyManager extends AuditableModel
     protected $casts = [
         'description' => 'string',
         'user_id' => 'integer',
+        'type' => 'integer',
         'title' => 'string',
         'first_name' => 'string',
         'last_name' => 'string',
