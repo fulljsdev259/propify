@@ -184,12 +184,15 @@
                                     </el-input>
                                 </el-form-item>
                             </el-col>
-                            <el-col :md="12" style="display: flex" v-if="hasAttic(model.building_id) && (model.type == 1 || model.type == 2)">
-                                <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic"
-                                              class="switch-wrapper">
-                                    <el-switch v-model="model.attic">
-                                    </el-switch>
-                                </el-form-item>
+                            <el-col :md="12" v-if="hasAttic(model.building_id) && (model.type == 1 || model.type == 2)">
+                                <div class="switch-wrapper">
+                                    <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic">
+                                        <el-switch v-model="model.attic"/>
+                                    </el-form-item>
+                                    <div>
+                                        {{$t('resident.notifications.service')}}
+                                    </div>
+                                </div>
                             </el-col>
 
                         </el-row>
@@ -368,6 +371,7 @@
             }
         }
     }
+    
 </style>
 <style lang="scss" scoped>
     .el-tabs--border-card {

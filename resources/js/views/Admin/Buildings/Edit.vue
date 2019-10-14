@@ -105,7 +105,17 @@
                                         <el-input type="number" v-model="model.floor_nr"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="8">
+                                <el-col :span="8">
+                                    <div class="switch-wrapper">
+                                        <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic">
+                                            <el-switch v-model="model.attic"/>
+                                        </el-form-item>
+                                        <div>
+                                            {{$t('resident.notifications.service')}}
+                                        </div>
+                                    </div>
+                                </el-col>
+                                <el-col :md="12">
                                     <el-form-item :label="$t('models.building.internal_building_id')"
                                                   :rules="validationRules.internal_building_id"
                                                   prop="internal_building_id" style="max-width: 512px;">
@@ -121,11 +131,7 @@
                                                   v-model.number="model.floor"></el-input>
                                     </el-form-item>
                                 </el-col> -->
-                                <el-col :span="4">
-                                    <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic" class="switch-wrapper">
-                                        <el-switch v-model="model.attic"/>
-                                    </el-form-item>
-                                </el-col>
+                                
                             </el-row>
                         </el-form>
                     </el-tab-pane>
@@ -874,22 +880,7 @@
     .last-form-row {
         margin-bottom: -22px;
     }
-    .switch-wrapper {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        min-height: 40px;
-        .el-form-item__content {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-        }
-        .el-form-item__label {
-            text-align: left;
-            float: none;
-            line-height: 1.4em;
-        }
-    }
+
 
     .mt15 {
         margin-top: 15px;
