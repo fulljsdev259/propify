@@ -50,15 +50,15 @@ export default (config = {}) => {
                 validationRules: {
                     first_name: [{
                         required: true,
-                        message: this.$t('models.resident.validation.first_name.required')
+                        message: this.$t('validation.required',{attribute: this.$t('general.firstName')})
                     }],
                     last_name: [{
                         required: true,
-                        message: this.$t('models.resident.validation.last_name.required')
+                        message: this.$t('validation.required',{attribute: this.$t('general.lastName')})
                     }],
                     language: [{
                         required: true,
-                        message: this.$t('models.resident.validation.language.required')
+                        message: this.$t('validation.required',{attribute: this.$t('general.language')})
                     }],
                     email: [{
                         required: true,
@@ -80,11 +80,11 @@ export default (config = {}) => {
                     }],
                     birth_date: [{
                         required: true,
-                        message: this.$t('models.resident.validation.birth_date.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.birth_date')})
                     }],
                     title: [{
                         required: true,
-                        message: this.$t('models.resident.validation.title.required')
+                        message: this.$t('validation.required',{attribute: this.$t('general.salutation')})
                     }]
                 },
                 loading: {

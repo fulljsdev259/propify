@@ -23,7 +23,7 @@
                         <el-form :model="model" label-position="top" label-width="192px" ref="form">
                             <el-row :gutter="20">
                                 <el-col :md="10">
-                                    <el-form-item :label="$t('models.address.street')" :rules="validationRules.street"
+                                    <el-form-item :label="$t('general.street')" :rules="validationRules.street"
                                                   prop="street"
                                                   style="max-width: 512px;">
                                         <el-input type="text" v-model="model.street" v-on:change="setBuildingName"></el-input>
@@ -60,10 +60,10 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.address.state.label')"
+                                    <el-form-item :label="$t('general.state')"
                                                   :rules="validationRules.state_id"
                                                   prop="state_id" style="max-width: 512px;">
-                                        <el-select :placeholder="$t('models.address.state.label')"
+                                        <el-select :placeholder="$t('general.state')"
                                                    style="display: block"
                                                    v-model="model.state_id">
                                             <el-option :key="state.id" :label="state.name" :value="state.id"
@@ -105,13 +105,33 @@
                                         <el-input type="number" v-model="model.floor_nr"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="8">
+                                <el-col :span="8">
+                                    <div class="switch-wrapper">
+                                        <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic">
+                                            <el-switch v-model="model.attic"/>
+                                        </el-form-item>
+                                        <div>
+                                            {{$t('resident.notifications.service')}}
+                                        </div>
+                                    </div>
+                                </el-col>
+                                <el-col :md="12">
                                     <el-form-item :label="$t('models.building.internal_building_id')"
                                                   :rules="validationRules.internal_building_id"
                                                   prop="internal_building_id" style="max-width: 512px;">
                                         <el-input type="text" v-model="model.internal_building_id"></el-input>
                                     </el-form-item>
                                 </el-col>
+                                <!-- <el-col :span="12">
+                                    <el-form-item :label="$t('models.building.under_floor')"
+                                                  :rules="validationRules.floor"
+                                                  :prop="'floor.' + 0">
+                                        <el-input type="number"
+                                                  :min="0"
+                                                  v-model.number="model.floor"></el-input>
+                                    </el-form-item>
+                                </el-col> -->
+                                
                             </el-row>
                         </el-form>
                     </el-tab-pane>
@@ -199,7 +219,8 @@
                                 </el-option>
                             </el-select>
                             <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple
-                                             v-if="selectedFileCategory"/>
+                                             v-if="selectedFileCategory"/><!-- @TODO this is uploading file on the spot, is it okay? need to confirm -->
+                            
                         </div>
                     </el-tab-pane>
                     
@@ -327,7 +348,7 @@
                         <span slot="label">
                             <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
                         </span>
-                        <!-- <el-button style="float:right" type="primary" @click="toggleDrawer" size="mini" round>Settings Drawer</el-button> -->
+                        
                         <relation-list
                             :actions="requestActions"
                             :columns="requestColumns"
@@ -336,6 +357,10 @@
                             filter="building_id"
                             v-if="model.id"
                         />
+                    </el-tab-pane>
+                    <el-tab-pane name="settings" :disabled="true">
+                        <span slot="label" class="icon-cog" @click="toggleDrawer">
+                        </span>
                     </el-tab-pane>
                 </el-tabs>
             </el-col>
@@ -348,7 +373,7 @@
         />
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-            <ui-divider content-position="left"><i class="icon-tools"></i> &nbsp;&nbsp;Emergency</ui-divider>
+            <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;Emergency</ui-divider>
             
             <div class="content" v-if="visibleDrawer">
                 <emergency-settings-form :visible.sync="visibleDrawer"/>
@@ -465,7 +490,7 @@
                 }],
                 requestColumns: [{
                     type: 'requestResidentAvatar',
-                    width: 75,
+                    width: 90,
                     prop: 'resident',
                     label: 'general.resident'
                 }, {
@@ -857,6 +882,7 @@
         margin-bottom: -22px;
     }
 
+
     .mt15 {
         margin-top: 15px;
     }
@@ -901,42 +927,61 @@
                 }
             }
 
-            .ui-drawer {
-                .ui-divider {
-                    margin: 32px 16px 0 16px;
-                    i {
-                        padding-right: 0;
+            /deep/ .el-tabs__nav.is-top {
+                width: 100%;
+                display: flex;
+
+                #tab-settings {
+                    flex-grow: 1;
+                    span.icon-cog {
+                        cursor: pointer;
+                        color: var(--color-text-primary);
+                        float: right;
                     }
-
-                    /deep/ .ui-divider__content {
-                        left: 0;
-                        z-index: 1;
-                        padding-left: 0;
-                        font-size: 16px;
-                        font-weight: 700;
-                        color: var(--color-primary);
-                    }
-                }
-
-                .content {
-                    height: calc(100% - 70px);
-                    display: -webkit-box;
-                    display: -ms-flexbox;
-                    display: flex;
-                    padding: 16px;
-                    overflow-x: hidden;
-                    overflow-y: auto;
-                    -webkit-box-orient: vertical;
-                    -webkit-box-direction: normal;
-                    -ms-flex-direction: column;
-                    flex-direction: column;
-                    position: relative;
-
                 }
             }
+
+            
+            
+
+            
         }
     }
 
+    .ui-drawer {
+        .ui-divider {
+            margin: 32px 16px 0 16px;
+            i {
+                padding-right: 0;
+            }
+
+            /deep/ .ui-divider__content {
+                left: 0;
+                z-index: 1;
+                padding-left: 0;
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--color-primary);
+            }
+        }
+
+        .content {
+            height: calc(100% - 70px);
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            padding: 16px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            position: relative;
+
+        }
+    }
+    
     .list-complete-item {
         transition: all 1s;
         display: flex;

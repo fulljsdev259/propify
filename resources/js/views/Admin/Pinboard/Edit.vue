@@ -141,13 +141,16 @@
                                             height="50%"/>  
                                     </el-row>  
                                 </el-form-item>  -->
-                                <el-form-item :label="model.type == 3 ? $t('models.pinboard.attachments') : $t('models.pinboard.images')">
+                                <!-- <el-form-item :label="model.type == 3 ? $t('models.pinboard.attachments') : $t('models.pinboard.images')">
                                     <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple />   
                                     <div class="mt15" v-if="media.length || (model.media && model.media.length)">
                                         <request-media :data="[...model.media, ...media]" @deleteMedia="deleteMedia"
                                                        v-if="media.length || (model.media && model.media.length)"></request-media>
                                     </div>
-                                </el-form-item>
+                                </el-form-item> -->
+                                <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex"/>
+                                <media-uploader ref="media" :id="pinboard_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
+                                
                             </el-tab-pane>
                             <el-tab-pane name="comments">
                                 <span slot="label">
@@ -167,11 +170,13 @@
                             </el-form-item>
                             <el-form-item :label="$t('models.pinboard.images')"
                             >
-                                <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple/>
+                                <!-- <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple/>
                                 <div class="mt15" v-if="media.length || (model.media && model.media.length)">
                                     <request-media :data="[...model.media, ...media]" @deleteMedia="deleteMedia"
                                                        v-if="media.length || (model.media && model.media.length)"></request-media>
-                                </div>
+                                </div> -->
+                                <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex"/>
+                                <media-uploader ref="media" :id="pinboard_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
                             </el-form-item>
                         </template>                        
                     </el-card>
@@ -314,18 +319,18 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :md="12">
-                                <el-form-item class="switcher">
-                                    <label class="switcher__label">
-                                        <span class="switcher__label-title">{{$t('models.pinboard.specify_time_question')}}</span>
-                                        <span class="switcher__label-desc">Lorem ipsum dolor sit amet.</span>
-                                    </label>
-                                    <el-switch v-model="model.is_execution_time"
-                                               @change="() => {
+                                <div class="switch-wrapper">
+                                    <el-form-item :label="$t('models.pinboard.specify_time_question')">
+                                        <el-switch v-model="model.is_execution_time"
+                                                   @change="() => {
                                                     !model.is_execution_time ? resetExecutionTime() : '';
                                                     reinitDatePickers();
-                                                   }"
-                                    />
-                                </el-form-item>
+                                                   }"/>
+                                    </el-form-item>
+                                    <div>
+                                        {{$t('resident.notifications.service')}}
+                                    </div>
+                                </div>
                             </el-col>
                         </el-row>
                         <el-row :gutter="20">
@@ -365,14 +370,18 @@
                                     </el-date-picker>
                                 </el-form-item>
                             </el-col>
+                            <el-col :md="12">
+                                <div class="switch-wrapper">
+                                    <el-form-item :label="$t('models.pinboard.notify_email')" prop="notify_email">
+                                        <el-switch v-model="model.notify_email"/>
+                                    </el-form-item>
+                                    <div>
+                                        {{$t('resident.notifications.service')}}
+                                    </div>
+                                </div>
+                            </el-col>
                         </el-row>
-                        <el-form-item class="switcher" prop="notify_email" v-if="model.notify_email == false">
-                            <label class="switcher__label">
-                                <span class="switcher__label-title">{{$t('models.pinboard.notify_email')}}</span>
-                                <span class="switcher__label-desc">Lorem ipsum dolor sit amet, consectetur adipisicing.</span>
-                            </label>
-                            <el-switch v-model="model.notify_email"/>
-                        </el-form-item>
+                        
                     </el-card>
 
                     <el-card :header="$t('models.pinboard.buildings')" :loading="loading" v-if="model.type == 3 && (!model.resident)" class="mt15">

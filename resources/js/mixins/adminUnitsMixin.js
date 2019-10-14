@@ -30,39 +30,42 @@ export default (config = {}) => {
                     attic: false,
                     building_id: this.$route.params.id,
                     selected_resident: '',
-                    residents: []
+                    residents: [],
+                    media: []
                 },
                 validationRules: {
                     resident_id: [{
                         required: false,
-                        message: this.$t("models.unit.validation.resident.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.resident')})
                     }],
                     name: [{
                         required: true,
-                        message: this.$t("models.unit.validation.name.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.name')})
                     }],
                     type: [{
                         required: true
                     }],
                     room_no: [{
                         required: true,
-                        message: this.$t("models.unit.validation.room_no.required")
+                        message: this.$t('validation.required',{attribute: this.$t('models.unit.room_no')})
                     }],
                     monthly_rent_net: [{
                         required: true,
-                        message: this.$t("models.unit.validation.monthly_rent_net.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.gross_rent')})
                     }],
                     monthly_maintenance: [{
                         required: true,
-                        message: this.$t("models.unit.validation.monthly_maintenance.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.maintenance')})
                     }],
                     floor: [{
                         required: true,
-                        message: this.$t("models.unit.validation.floor.required")
+                        message: this.$t('validation.required',{attribute: this.$t('models.unit.floor')})
+                    }, {
+                        validator: this.validateFloor
                     }],
                     building_id: [{
                         required: true,
-                        message: this.$t("models.unit.validation.building.required")
+                        message: this.$t('validation.required',{attribute: this.$t('models.unit.building')})
                     }]
                 },
                 loading: {
@@ -83,6 +86,7 @@ export default (config = {}) => {
                 }],
                 toAssign: '',
                 addedAssigmentList: [],
+                media: [],
             }
         },
         methods: {
@@ -198,6 +202,12 @@ export default (config = {}) => {
                     this.loading.status = false;
                 });
             },
+            validateFloor(rule, value, callback) {
+                if(this.model.floor <= -4) {
+                    callback(new Error(this.$t('validation.gte.numeric',{attribute: this.$t('models.unit.floor'), value: '-3'})));
+                }
+                callback();
+            }
         },
         computed: {
             form() {
@@ -289,6 +299,10 @@ export default (config = {}) => {
                         this.loading.state = true;
 
                         this.model = await this.getUnit({id: this.$route.params.id});
+
+                        if(!this.model.media)
+                            this.model.media = []
+                            
                         this.addedAssigmentList = [];
                         this.addedAssigmentList = this.model.residents;
 
@@ -306,7 +320,8 @@ export default (config = {}) => {
                         //     this.$set(this.model, 'resident_id', this.model.resident.id);
                         //     this.remoteSearchResidents(`${this.model.resident.first_name}`);
                         // }
-                        
+                        if(this.model.building.attic == false)
+                            this.model.attic = false;
                         this.buildings.push(this.model.building);
                         // if (config.withRelation && this.model.building_id) {
                         //     const building = await this.getBuilding({id: this.model.building_id});

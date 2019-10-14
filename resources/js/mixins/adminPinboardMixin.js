@@ -79,6 +79,16 @@ export default (config = {}) => {
                 rolename: '',
                 datePickerKey: 0,
                 justBlurred: '',
+                uploadOptions: {
+                    drop: true,
+                    multiple: true,
+                    draggable: true,
+                    hideUploadButton: true,
+                    extensions: 'vnd.openxmlformats-officedocument.wordprocessingml.document,vnd.openxmlformats-officedocument.spreadsheetml.sheet,pdf,png,jpeg,jpg',
+                    hideSelectFilesButton: false
+                },
+                pinboard_id: null,
+                audit_id: null
             }
         },
         computed: {
@@ -122,7 +132,7 @@ export default (config = {}) => {
                         const image = this.media[i];
                         await this.uploadPinboardMedia({
                             id,
-                            media: image.url.split('base64,')[1]
+                            media: image.file.src
                         });
                     }
                 }
@@ -146,6 +156,14 @@ export default (config = {}) => {
                     });                    
                     displaySuccess(resp);
                 }
+            },
+            async deleteMediaByIndex(index) {
+                const resp = await this.deletePinboardMedia({
+                    id: this.model.id,
+                    media_id: this.model.media[index].id
+                });
+                this.model.media.splice(index, 1)                 
+                displaySuccess(resp);
             },
             async remoteSearchBuildings(search) {
                 if (search === '') {

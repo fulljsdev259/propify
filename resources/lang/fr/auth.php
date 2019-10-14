@@ -15,8 +15,8 @@ return [
 	'failed'   => 'Ces identifiants ne correspondent pas à nos enregistrements',
 	'throttle' => 'Tentatives de connexion trop nombreuses. Veuillez essayer de nouveau dans :seconds secondes.',
 	'login_welcome' => 'Bienvenue, veuillez vous connecter à votre compte.',
-	'title' =>'Tout est plus facile avec notre application locataire',
-	'intro' =>"Afin de traiter encore plus rapidement les préoccupations de nos locataires, nos locataires ont accès à une zone protégée avec laquelle la location peut être gérée de manière numérique. Grâce au traitement numérique, nous pouvons agir encore plus rapidement et créer de la transparence pour toutes les parties concernées.",
+	'title' =>'Tout est plus facile avec notre application résidente',
+	'intro' =>"Afin de traiter encore plus rapidement les préoccupations de nos résidents, ces derniers ont accès à une zone protégée avec laquelle la location peut être gérée numériquement. Grâce au traitement numérique, nous pouvons agir encore plus rapidement et créer de la transparence pour toutes les parties concernées.",
 	'benefit_1' => [
 		'title' =>'Toutes les données et documents sont disponibles en ligne',
 		'description' =>'Vous pouvez à tout moment télécharger toutes les informations sur le bail et les documents tels que le contrat de location au format PDF.'
@@ -36,7 +36,7 @@ return [
 	'login' => [
 		'activate_account' => [
 			'title' => 'Première connexion (activation du compte)',
-			'description' => "Après avoir reçu le code d'activation, vous pouvez vous connecter pour la première fois au portail locataire et activer votre compte."
+			'description' => "Après avoir reçu le code d'activation, vous pouvez vous connecter pour la première fois au portail résident et activer votre compte."
 		]
 	]
 ];

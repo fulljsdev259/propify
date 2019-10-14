@@ -1,7 +1,7 @@
 <template>
     <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
 
-        <el-row :gutter="20">
+        <el-row :gutter="20" v-if="!hideBuildingAndUnits">
             <el-col :md="12">
                 <el-form-item prop="building_id" :label="$t('models.resident.building.name')" class="label-block">
                     <el-select
@@ -383,7 +383,14 @@
             },
             used_units: {
                 type: Array
-            }
+            },
+            hideBuildingAndUnits: {
+                type: Boolean,
+                default: false
+            },
+            quarter_id: {
+                type: Number
+            },
         },
         data () {
             return {
@@ -417,45 +424,49 @@
                 validationRules: {
                     building_id: [{
                         required: true,
-                        message: this.$t('models.resident.validation.building.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.building.name')})
                     }],
                     unit_id: [{
                         required: true,
-                        message: this.$t('models.resident.validation.unit.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.unit.name')})
                     }],
                     deposit_amount: [{
                         required: true,
-                        message: this.$t('models.resident.validation.deposit_amount.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.deposit_amount')})
                     }],
                     deposit_type: [{
                         required: true,
-                        message: this.$t('models.resident.validation.deposit_type.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.type_of_deposit')})
                     }],
                     start_date: [{
                         required: true,
-                        message: this.$t('models.resident.validation.start_date.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.rent_start')})
                     }],
                     type: [{
                         required: true,
-                        message: this.$t('models.resident.validation.rent_type.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.rent_type')})
                     }],
                     duration: [{
                         required: true,
-                        message: this.$t('models.resident.validation.rent_duration.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.rent_duration')})
                     }],
                     status: [{
                         required: true,
-                        message: this.$t('models.resident.validation.status.required')
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.status.label')})
                     }],
                     monthly_rent_net: [{
                         required: true,
-                        message: this.$t("models.unit.validation.monthly_rent_net.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.monthly_rent_net')})
                     }],
                     monthly_maintenance: [{
                         required: true,
-                        message: this.$t("models.unit.validation.monthly_maintenance.required")
+                        message: this.$t('validation.required',{attribute: this.$t('general.maintenance')})
                     }],
-                }
+                },
+                upper_ground_floor_label: this.$t('models.unit.floor_title.upper_ground_floor'),
+                ground_floor_label: this.$t('models.unit.floor_title.ground_floor'),
+                under_ground_floor_label: this.$t('models.unit.floor_title.under_ground_floor'),
+                top_floor_label: this.$t('models.unit.floor_title.top_floor')
             }
         },
         methods: {
@@ -528,7 +539,14 @@
                     this.remoteLoading = true;
 
                     try {
-                        const resp = await this.getBuildings({get_all: true, search});
+                        let resp = null
+                        if(this.quarter_id) {
+                            resp = await this.getBuildings({get_all: true, quarter_id: this.quarter_id, search});
+                        }
+                        else {
+                            resp = await this.getBuildings({get_all: true, search});
+                        }
+
                         this.buildings = resp.data;
                     } catch (err) {
                         displayError(err);
@@ -569,19 +587,19 @@
                         let group_label = "";
                         if(key > 0)
                         {
-                            group_label = key + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                            group_label = key + ". " + this.upper_ground_floor_label
                         }
                         else if(key == 0)
                         {
-                            group_label = this.$t('models.unit.floor_title.ground_floor')
+                            group_label = this.ground_floor_label
                         }
                         else if(key < 0)
                         {
-                            group_label = key + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                            group_label = key + ". " + this.under_ground_floor_label
                         }
                         else if(key == 'attic')
                         {
-                            group_label = this.$t('models.unit.floor_title.top_floor');
+                            group_label = this.top_floor_label
                         }
                         
                         var obj = resp1.data[key];
@@ -639,34 +657,36 @@
             if(this.mode == "edit") {
                 this.model = this.data
 
+                if( !this.hideBuildingAndUnits ) {
                 
-                if( this.model.unit )
-                {
-                    let key = this.model.unit.floor
-                    let group_label = ""
-                    if(key > 0)
+                    if( this.model.unit )
                     {
-                        group_label = key + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                        let key = this.model.unit.floor
+                        let group_label = ""
+                        if(key > 0)
+                        {
+                            group_label = key + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                        }
+                        else if(key == 0)
+                        {
+                            group_label = this.$t('models.unit.floor_title.ground_floor')
+                        }
+                        else if(key < 0)
+                        {
+                            group_label = key + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                        }
+                        else if(key == 'attic')
+                        {
+                            group_label = this.$t('models.unit.floor_title.top_floor');
+                        }
+                        this.units.push({ label: group_label, options : [this.model.unit]})
                     }
-                    else if(key == 0)
-                    {
-                        group_label = this.$t('models.unit.floor_title.ground_floor')
-                    }
-                    else if(key < 0)
-                    {
-                        group_label = key + ". " + this.$t('models.unit.floor_title.under_ground_floor')
-                    }
-                    else if(key == 'attic')
-                    {
-                        group_label = this.$t('models.unit.floor_title.top_floor');
-                    }
-                    this.units.push({ label: group_label, options : [this.model.unit]})
-                }
 
-                if(this.model.building) {
-                    this.buildings.push(this.model.building)
-                    await this.remoteContractSearchBuildings(this.model.building.name)
-                    await this.searchContractUnits(true)
+                    if(this.model.building) {
+                        this.buildings.push(this.model.building)
+                        await this.remoteContractSearchBuildings(this.model.building.name)
+                        await this.searchContractUnits(true)
+                    }
                 }
 
             }

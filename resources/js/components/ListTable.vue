@@ -615,8 +615,13 @@
                     else
                         delete query.role;
                 }*/
-
-                this.$router.replace({name: this.$route.name, query, params});
+                
+                try {
+                    this.$router.replace({name: this.$route.name, query, params})
+                }
+                catch (err) {
+                    
+                }
             },
             updatePage(page, size) {
                 let {currPage, currSize} = this.page;

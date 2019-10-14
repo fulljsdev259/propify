@@ -10,6 +10,7 @@ import ServicesStore from 'store/modules/services'
 import RequestsStore from 'store/modules/requests'
 import RequestCategoriesStore from 'store/modules/requestCategories'
 import PropertyManagersStore from 'store/modules/propertyManagers'
+import HouseOwnersStore from 'store/modules/houseOwners'
 import ListingsStore from 'store/modules/listings'
 import PinboardStore from 'store/modules/pinboard'
 import NotificationsStore from 'store/modules/notifications'
@@ -58,6 +59,7 @@ export default new Vuex.Store({
         requests: RequestsStore,
         requestCategories: RequestCategoriesStore,
         propertyManagers: PropertyManagersStore,
+        houseOwners: HouseOwnersStore,
         listings: ListingsStore,
         templates: TemplatesStore,
         cleanify: CleanifyStore,

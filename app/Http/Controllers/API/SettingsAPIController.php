@@ -73,7 +73,7 @@ class SettingsAPIController extends AppBaseController
         /** @var Settings $settings */
         $settings = $this->settingsRepository->first();
         if (empty($settings)) {
-            return $this->sendError(__('models.settings.errors.not_found'));
+            return $this->sendError(__('settings.errors.not_found'));
         }
 
         $pinboardReceiverIds = $settings->pinboard_receiver_ids ?? [];
@@ -132,7 +132,7 @@ class SettingsAPIController extends AppBaseController
         /** @var Settings $settings */
         $settings = $this->settingsRepository->first();
         if (empty($settings)) {
-            return $this->sendError(__('models.settings.errors.not_found'));
+            return $this->sendError(__('settings.errors.not_found'));
         }
 
         // image upload
@@ -174,11 +174,11 @@ class SettingsAPIController extends AppBaseController
             // brings info from the new location
             Cache::forget('weather_json');
         } catch (\Exception $e) {
-            return $this->sendError(__('models.settings.errors.update'));
+            return $this->sendError(__('settings.errors.update'));
         }
         $settings->pinboard_receivers = User::whereIn('id', $settings->pinboard_receiver_ids)->get();
 
         $response = (new SettingsTransformer)->transform($settings);
-        return $this->sendResponse($response, __('models.settings.saved'));
+        return $this->sendResponse($response, __('settings.saved'));
     }
 }

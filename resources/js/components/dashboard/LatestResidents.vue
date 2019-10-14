@@ -41,7 +41,7 @@
                     minWidth: '100px'
                 }, {
                     type: 'plain',
-                    label: 'models.address.name',
+                    label: 'general.address',
                     prop: 'address',
                     width: 300,
                 },{

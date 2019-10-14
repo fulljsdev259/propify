@@ -5,12 +5,25 @@
         
             <div class="ui-media-gallery__item__content">
                 <template v-if="isFileImage(file)">
-                    <ui-image ref="ui-image" :src="file" :src-list="files">
+                    <ui-image ref="ui-image" :src="file" :src-list="files" :index="index" @delete-image="deleteImage">
                         <div slot="error" class="error" style="color: red;">
                             <i class="el-icon-document-delete" />
                         </div>
                         <div slot="placeholder" class="placeholder el-icon-loading"></div>
                     </ui-image>
+                </template>
+                <template v-else-if="isFilePDF(file)">
+                    <i class="ui-media-gallery__item__content__icon icon-file-pdf" />
+                    <div class="file__actions">
+                        <div class="el-icon-zoom-in" @click="openFile"></div>
+                        <div class="icon-trash-empty" @click="deleteImage(index)"></div>
+                    </div>
+                </template>
+                <template v-else-if="isFileDoc(file)">
+                    <i class="ui-media-gallery__item__content__icon icon-doc-text-1" />
+                </template>
+                <template v-else-if="isFileExcel(file)">
+                    <i class="ui-media-gallery__item__content__icon icon-file-excel" />
                 </template>
                 <template v-else>
                     <i class="ui-media-gallery__item__content__icon ti-file" />
@@ -50,8 +63,29 @@
 
                 return ['jpg', 'jpeg', 'gif', 'bmp', 'png'].includes(extension)
             },
+            isFilePDF (file) {
+                const extension = file.split('.').pop()
+
+                return ['pdf'].includes(extension)
+            },
+            isFileDoc (file) {
+                const extension = file.split('.').pop()
+
+                return ['doc', 'docx'].includes(extension)
+            },
+            isFileExcel (file) {
+                const extension = file.split('.').pop()
+
+                return ['xls', 'xlsx'].includes(extension)
+            },
             openViewer (index) {
                 this.$refs['ui-image'][index].openViewer()
+            },
+            openFile (index) {
+                console.log('openFile')
+            },
+            deleteImage (index) {
+                this.$emit('delete-media', index)
             }
         },
     }
@@ -90,6 +124,14 @@
                     width: 100%
                     height: 100%
 
+                .file__actions
+                    position: absolute
+                    width: 100%
+                    height: 100%
+                    display: flex
+                    align-items: center
+                    justify-content: center
+
         &__placeholder
             grid-column: 1 / -1
             display: flex
@@ -112,4 +154,5 @@
                 font-weight: 600
                 word-break: break-word
                 color: var(--color-text-placeholder)
+                
 </style>

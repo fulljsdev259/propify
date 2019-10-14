@@ -9,9 +9,21 @@
                     <el-col :md="12">
                         <card :header="$t('models.propertyManager.details_card')" :loading="loading">
                             <el-row :gutter="20">
-                                <el-col :md="12">
-                                    <el-form-item :label="$t('models.address.street')" :rules="validationRules.street" prop="street">
+                                <el-col :md="10">
+                                    <el-form-item :label="$t('general.street')" :rules="validationRules.street" prop="street">
                                         <el-input type="text" v-model="model.street" v-on:change="setBuildingName"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="4">
+                                    <el-form-item :label="$t('general.house_num')" :rules="validationRules.house_num"
+                                                  prop="house_num">
+                                        <el-input type="text" v-model="model.house_num" v-on:change="setBuildingName"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="10">
+                                    <el-form-item :label="$t('general.name')" :rules="validationRules.name" prop="name"
+                                                  ref="name">
+                                        <el-input type="text" v-model="model.name"></el-input>
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="4">
@@ -25,23 +37,11 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('general.name')" :rules="validationRules.name" prop="name"
-                                                  ref="name">
-                                        <el-input type="text" v-model="model.name"></el-input>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :md="12">
-                                    <el-form-item :label="$t('models.address.house_num')" :rules="validationRules.house_num"
-                                                  prop="house_num">
-                                        <el-input type="text" v-model="model.house_num" v-on:change="setBuildingName"></el-input>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :md="12">
-                                    <el-form-item :label="$t('models.address.state.label')"
+                                    <el-form-item :label="$t('general.state')"
                                                   class="label-block"
                                                   :rules="validationRules.state_id"
                                                   prop="state_id">
-                                        <el-select :placeholder="$t('models.address.state.label')" style="display: block"
+                                        <el-select :placeholder="$t('general.state')" style="display: block"
                                                    v-model="model.state_id">
                                             <el-option :key="state.id" :label="state.name" :value="state.id"
                                                        v-for="state in states"></el-option>
@@ -68,6 +68,13 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
+                                <el-col :md="12">
+                                    <el-form-item :label="$t('models.building.internal_building_id')"
+                                                  :rules="validationRules.internal_building_id"
+                                                  prop="internal_building_id" style="max-width: 512px;">
+                                        <el-input type="text" v-model="model.internal_building_id"></el-input>
+                                    </el-form-item>
+                                </el-col>
                             </el-row>
                         </card>
                     </el-col>
@@ -79,7 +86,7 @@
                     <!--<el-form-item prop="description" :label="$t('general.description')" :rules="validationRules.description" style="max-width: 512px;">-->
                     <!--<el-input type="textarea" v-model="model.description"></el-input>-->
                     <!--</el-form-item>-->
-                            <el-row type="flex" :gutter="20" align="bottom">
+                            <el-row type="flex" :gutter="20">
                                 <el-col :span="12">
                                     <el-form-item :label="$t('models.building.floor_nr')" :rules="validationRules.floor_nr" prop="floor_nr">
                                         <el-input type="number"
@@ -89,10 +96,14 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="12">
-                                    <el-form-item :label="$t('models.unit.auto_create_question')" class="switch-wrapper" v-if="model.floor_nr > 0">
-                                        <el-switch v-model="unitAutoCreate">
-                                        </el-switch>
-                                    </el-form-item>
+                                    <div class="switch-wrapper">
+                                        <el-form-item :label="$t('models.unit.auto_create_question')" v-if="model.floor_nr > 0">
+                                            <el-switch v-model="unitAutoCreate"/>
+                                        </el-form-item>
+                                        <div>
+                                            {{$t('resident.notifications.service')}}
+                                        </div>
+                                    </div>
                                 </el-col>
                             </el-row>
                             <el-row :gutter="20">
@@ -110,11 +121,16 @@
                                 </el-col>
                             </el-row>
 
-                            <el-row type="flex" :gutter="20" align="bottom">
+                            <el-row type="flex" :gutter="20">
                                 <el-col :span="12">
-                                    <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic" class="switch-wrapper">
-                                        <el-switch v-model="model.attic"/>
-                                    </el-form-item>
+                                    <div class="switch-wrapper">
+                                        <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic">
+                                            <el-switch v-model="model.attic"/>
+                                        </el-form-item>
+                                        <div>
+                                            {{$t('resident.notifications.service')}}
+                                        </div>
+                                    </div>
                                 </el-col>
                                 <el-col :span="12">
                                     <el-form-item :label="$t('models.building.under_floor')"
@@ -198,21 +214,6 @@
         display: block;
         float: none;
         text-align: left;
-    }
-    .switch-wrapper {
-        display: flex;
-        align-items: center;
-        min-height: 40px;
-        .el-form-item__content {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-        }
-        .el-form-item__label {
-            text-align: left;
-            float: none;
-            line-height: 1.4em;
-        }
     }
 </style>
 

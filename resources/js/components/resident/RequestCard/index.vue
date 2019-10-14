@@ -41,7 +41,7 @@
                         {{ categories[data.category.id] == undefined? '':categories[data.category.id][$i18n.locale]}}
                 </div>                
                 <div class="title" @click="$emit('toggle-drawer')">{{data.title}}</div>
-                <ui-readmore class="description" @click="$emit('toggle-drawer')" :text="data.description" :max="512" />
+                <ui-readmore class="description" :text="data.description" :max="512" />
                 <div class="assignees" v-if="assignees.length">
                     {{$t('resident.assignees')}}
                     <div :key="assignee.id" class="assignee" v-for="assignee in visibleAssignees">
@@ -233,6 +233,7 @@
                             text-overflow: ellipsis
                             overflow: hidden
                             white-space: nowrap
+                            cursor: pointer
 
                         .category
                             font-size: 15px

@@ -76,6 +76,30 @@ body {
         min-width: 70px;
         margin: 0 !important;
     }
+    .switch-wrapper {
+        margin-bottom: 22px;
+        .el-form-item {
+            display: flex;
+            align-items: center;
+            min-height: 40px;
+            margin-bottom: 0 !important;
+            .el-form-item__content {
+                margin-left: auto;
+                display: flex;
+                align-items: center;
+            }
+            .el-form-item__label {
+                text-align: left;
+                float: none;
+                line-height: 1.4em;
+            }
+        }
+        div {
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+        }
+    }
 }
 .crud-view {
     padding: 0 20px;

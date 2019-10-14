@@ -107,7 +107,7 @@ export default (config = {}) => {
                     }],
                     state_id: [{
                         required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('models.address.state.label')})
+                        message: this.$t('validation.required', {attribute: this.$t('general.state')})
                     }],
                     city: [{
                         required: true,
@@ -115,7 +115,7 @@ export default (config = {}) => {
                     }],
                     street: [{
                         required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('models.address.street')})
+                        message: this.$t('validation.required', {attribute: this.$t('general.street')})
                     }],
                     house_num: [{
                         required: true,

@@ -43,14 +43,14 @@
 
                                 <el-row :gutter="20">
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.propertyManager.firstName')"
+                                        <el-form-item :label="$t('general.firstName')"
                                                     :rules="validationRules.first_name"
                                                     prop="first_name">
                                             <el-input type="text" v-model="model.first_name"/>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.propertyManager.lastName')"
+                                        <el-form-item :label="$t('general.lastName')"
                                                     :rules="validationRules.last_name"
                                                     prop="last_name">
                                             <el-input type="text" v-model="model.last_name"/>
@@ -78,7 +78,7 @@
                             <el-tab-pane :label="$t('models.propertyManager.profile_card')" name="profile">
                                 <el-row :gutter="20">
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.propertyManager.password')"
+                                        <el-form-item :label="$t('general.password')"
                                                       :rules="validationRules.password"
                                                       autocomplete="off"
                                                       prop="password">
@@ -91,7 +91,7 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.propertyManager.confirm_password')"
+                                        <el-form-item :label="$t('general.confirm_password')"
                                                       :rules="validationRules.password_confirmation"
                                                       prop="password_confirmation">
                                             <el-input type="password" v-model="model.password_confirmation"/>
@@ -217,7 +217,7 @@
                 activeTab: "details",
                 requestColumns: [{
                     type: 'requestResidentAvatar',
-                    width: 75,
+                    width: 90,
                     prop: 'resident',
                     label: 'general.resident'
                 }, {

@@ -240,7 +240,8 @@
                                 }else{
                                     switch (type) {
                                         case 'category_id':
-                                            audit_replacer[type]['new'] = this.$t(`models.${auditable_type}.category_options.${this.categories[new_value]}`);
+                                            // audit_replacer[type]['new'] = this.$t(`models.${auditable_type}.category_options.${this.categories[new_value]}`);
+                                            audit_replacer[type]['new'] = this.categories[new_value].name;
                                         break;
                                         case 'due_date':
                                             audit_replacer[type]['new'] = this.formatDatetime(new_value);
@@ -262,7 +263,8 @@
                                 }else{
                                     switch (type) {
                                         case 'category_id':
-                                            audit_replacer[type]['old'] = this.$t(`models.${auditable_type}.category_options.${this.categories[old_value]}`);
+                                        //    audit_replacer[type]['old'] = this.$t(`models.${auditable_type}.category_options.${this.categories[old_value]}`);
+                                            audit_replacer[type]['old'] = this.categories[old_value].name;
                                         break;
                                         case 'due_date':
                                             audit_replacer[type]['old'] = this.formatDatetime(old_value);
@@ -338,11 +340,13 @@
         async mounted () {
             const {data:{data}} = await this.axios.get('requestCategories/tree?get_all=true');
             // Get filter options from translation file and add the to filter object
-            
-
+          
             const flattenCategories = categories => categories.reduce((obj, category) => {
-
-                obj[category.id] = category.name_en.toLowerCase().replace(/ /g,"_");
+                obj[category.id] = category
+                obj[category.id].linked_name = category.name_en.toLowerCase().replace(/ /g,"_");
+                
+                obj[category.id].name = category['name_'+ this.$i18n.locale]
+                //obj[category.id].name = this.$i18n.locale ? category.name_en : category.name_de
 
 
                 if (category.categories) {
@@ -354,7 +358,7 @@
             }, {})
 
             this.categories = flattenCategories(data)
-
+            
             await this.filterReset();
         }
     }

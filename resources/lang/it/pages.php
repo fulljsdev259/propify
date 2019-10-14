@@ -14,6 +14,6 @@ return [
         "title" => "Richiedi attività",
     ],
     'resident' => [
-        "title" => "Gli inquilini",
+        "title" => "Residenti",
     ],
 ];

@@ -16,7 +16,7 @@ export default [{
             title: 'List property manager'
         },
         meta: {
-            title: 'Users'
+            title: 'List Property Manager'
         }
     }, {
         name: 'adminPropertyManagersAdd',

@@ -1,5 +1,6 @@
 <template>
     <div class="units-edit">
+        <div class="main-content">
         <heading :title="$t('general.actions.edit')" icon="icon-unit" style="margin-bottom: 20px;" shadow="heavy">
             <template slot="description" v-if="model.unit_format">
                 <div class="subtitle">{{model.unit_format}}</div>
@@ -70,7 +71,7 @@
 
                             <el-col :md="6">
                                 <el-form-item :label="$t('models.unit.floor')" :rules="validationRules.floor" prop="floor">
-                                    <el-input autocomplete="off" type="number" v-model="model.floor"></el-input>
+                                    <el-input autocomplete="off" type="number" v-model="model.floor" min="-3"></el-input>
                                 </el-form-item>
                             </el-col>
 
@@ -173,18 +174,25 @@
                             </el-col>
 
                             <el-col :md="6">
-                                <el-form-item :label="$t('models.unit.sq_meter')" prop="sq_meter">
-                                    <el-input autocomplete="off" type="number" v-model="model.sq_meter">
+                                <el-form-item
+                                    v-if="model.type >=1 && model.type <= 4" 
+                                    :label="$t('models.unit.sq_meter')" 
+                                    prop="sq_meter">
+
+                                    <el-input autocomplete="off" type="number" min="0" v-model="model.sq_meter">
                                         <template slot="prepend">m2</template>
                                     </el-input>
                                 </el-form-item>
                             </el-col>
-                            <el-col :md="12" style="display: flex">
-                                <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic"
-                                              class="switch-wrapper">
-                                    <el-switch v-model="model.attic">
-                                    </el-switch>
-                                </el-form-item>
+                            <el-col :md="12" v-if="hasAttic(model.building_id) && (model.type == 1 || model.type == 2)">
+                                <div class="switch-wrapper">
+                                    <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic">
+                                        <el-switch v-model="model.attic"/>
+                                    </el-form-item>
+                                    <div>
+                                        {{$t('resident.notifications.service')}}
+                                    </div>
+                                </div>
                             </el-col>
 
                         </el-row>
@@ -212,9 +220,72 @@
                             v-if="addedAssigmentList"
                     />
                 </card>
+
+                <card :loading="loading" :header="$t('models.building.files')" class="mt15">
+
+                   <draggable @sort="sortFiles" v-model="model.media">
+                        <transition-group name="list-complete">
+                            <div key="list-complete-item" class="list-complete-item">
+                                <el-table
+                                    :data="model.media"
+                                    style="width: 100%"
+                                    v-if="model.media && model.media.length"
+                                    :show-header="false"
+                                    >
+                                    <el-table-column
+                                        prop="collection_name"
+                                    >
+                                        <template slot-scope="scope">
+                                            <strong>{{$t(`models.building.${scope.row.collection_name}`)}}</strong>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        align="right"
+                                    >
+                                        <template slot-scope="scope">
+                                            <a :href="scope.row.url" class="file-name" target="_blank">
+                                                {{scope.row.name}}
+                                            </a>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        align="right"
+                                    >
+                                        <template slot-scope="scope">
+                                            <el-button :style="{color: 'red'}" @click="deleteDocument('media', scope.$index)"
+                                                icon="ti-close" size="mini" type="text"
+                                            />
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+
+                        </transition-group>
+                    </draggable>
+                    <div class="mt15">
+                        <label class="card-label">{{$t('models.building.add_files')}}</label>
+                        <el-select :placeholder="$t('models.building.select_media_category')"
+                                    class="category-select"
+                                    v-model="selectedFileCategory">
+                            <el-option
+                                :key="item"
+                                :label="$t('models.building.' + item)"
+                                :value="item"
+                                v-for="item in model.media_category">
+                            </el-option>
+                        </el-select>
+                        <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple
+                                            v-if="selectedFileCategory"/><!-- @TODO this is uploading file on the spot, is it okay? need to confirm -->
+                        
+                    </div>
+                </card>
             </el-col>
             <el-col :md="12">
                 <card :loading="loading" :header="$t('general.requests')">
+                    <div slot="header" style="width: 100%;">
+                        {{$t('general.requests')}}
+                        <span style="float:right" class="icon-cog" @click="toggleDrawer"></span>
+                    </div>
                     <relation-list
                         :actions="requestActions"
                         :columns="requestColumns"
@@ -226,6 +297,14 @@
                 </card>
             </el-col>
         </el-row>
+        </div>
+        <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
+            <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;Emergency</ui-divider>
+            
+            <div class="content" v-if="visibleDrawer">
+                <emergency-settings-form :visible.sync="visibleDrawer"/>
+            </div>
+        </ui-drawer>
     </div>
 </template>
 
@@ -237,6 +316,10 @@
     import UnitsMixin from 'mixins/adminUnitsMixin';
     import RelationList from 'components/RelationListing';
     import Assignment from 'components/Assignment';
+    import EmergencySettingsForm from 'components/EmergencySettingsForm';
+    import UploadDocument from 'components/UploadDocument';
+    import draggable from 'vuedraggable';
+    import {displayError, displaySuccess} from "helpers/messages";
 
     export default {
         mixins: [UnitsMixin({
@@ -248,13 +331,17 @@
             Card,
             EditActions,
             RelationList,
-            Assignment
+            Assignment,
+            EmergencySettingsForm,
+            UploadDocument,
+            draggable,
         },
         data() {
             return {
+                selectedFileCategory: 'house_rules',
                 requestColumns: [{
                     type: 'requestResidentAvatar',
-                    width: 75,
+                    width: 100,
                     prop: 'resident',
                     label: 'general.resident'
                 }, {
@@ -293,13 +380,87 @@
                         onClick: this.notifyUnassignment
                     }]
                 }],
-                multiple: false
+                multiple: false,
+                visibleDrawer: false
             }
         },
         methods: {
             ...mapActions([
-                "deleteUnit"
-            ])
+                "deleteUnit",
+                "uploadUnitFile", 
+                "deleteUnitFile",
+            ]),
+            hasAttic(id) {
+                let hasAttic = false;
+                this.buildings.map(building => {
+                    if(building.id == this.model.building_id) {
+                        hasAttic = building.attic;
+                    }
+                });
+                return hasAttic;
+            },
+            toggleDrawer() {
+                this.visibleDrawer = true;
+                document.getElementsByTagName('footer')[0].style.display = "none";
+            },
+
+            setOrder() {
+                _.each(this.model.media, (file, i) => {
+                    file.order = i + 1;
+                });
+                this.$forceUpdate();
+            },
+            sortFiles() {
+                this.setOrder();
+            },
+            uploadFiles(file) {
+                this.insertDocument(this.selectedFileCategory, file);
+                if(this.fileCount){
+                    this.fileCount++;
+                } else {
+                    this.fileCount = 1;
+                }
+            },
+            insertDocument(prop, file) {
+                console.log('media', this.model)
+                file.order = this.model.media.length + 1;
+                this.uploadUnitFile({
+                    id: this.model.id,
+                    [`${prop}_upload`]: file.src
+                }).then((resp) => {
+                    displaySuccess(resp);
+                    this.model.media.push(resp.media);
+                }).catch((err) => {
+                    displayError(err);
+                });
+            },
+            deleteDocument(prop, index) {
+                this.deleteUnitFile({
+                    id: this.model.id,
+                    media_id: this.model[prop][index].id
+                }).then((resp) => {
+                    displaySuccess(resp);
+                    this.fileCount--;
+                    this.model[prop].splice(index, 1);
+                    this.setOrder(prop);
+                }).catch((error) => {
+                    displayError(error);
+                })
+            },
+        },
+        watch: {
+            "model.type" () {
+                if(this.model.type >= 3)
+                    this.model.attic = false;
+                    
+                if(this.model.type >= 5) {
+                    this.model.sq_meter = '';
+                }
+            },
+            "model.building_id" () {
+                if(this.hasAttic(this.model.building_id) == false) 
+                    this.model.attic = false;
+            },
         }
         
        
@@ -321,6 +482,7 @@
             }
         }
     }
+    
 </style>
 <style lang="scss" scoped>
     .el-tabs--border-card {
@@ -335,78 +497,164 @@
     .last-form-row {
         margin-bottom: -22px;
     }
-    /deep/ .monthly-rent-data {
-        background: transparent;
-        table {
-            width: 100%;
-            cursor: initial;
+    .main-content {
+        /deep/ .monthly-rent-data {
             background: transparent;
-            thead, tbody {
+            table {
                 width: 100%;
+                cursor: initial;
                 background: transparent;
-                tr {
-                    display: flex;
+                thead, tbody {
                     width: 100%;
                     background: transparent;
-
-                    
-                    .data {
-                        flex: 1;
+                    tr {
                         display: flex;
-                        align-items: center;
+                        width: 100%;
                         background: transparent;
-                        .cell {
-                            width: 100%;
+
+                        
+                        .data {
+                            flex: 1;
+                            display: flex;
+                            align-items: center;
+                            background: transparent;
+                            .cell {
+                                width: 100%;
+                                text-align: left;
+                                
+                                .el-form-item {
+                                    margin-bottom: 0;
+
+                                    &.is-error {
+                                        // margin-bottom: 27px;
+                                    }
+                                }
+
+                                /deep/ .el-input.el-input-group {
+                                    .el-input-group__prepend {
+                                        padding: 2px 8px 0;
+                                        font-weight: 600;
+                                    }
+                                    .el-input__inner {
+                                        padding: 5px;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        .symbol {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 20px;
+                            background: transparent;
+                            .cell {
+                                text-overflow: initial;
+                                font-size: 16px;
+                                padding: 0;
+                            }
+                        }
+
+                        td {
+                            padding: 25px 0;
+
+                            .cell {
+                                overflow: visible;
+                            }
+                        }
+
+                        td:last-child .cell {
+                            padding-left: 10px !important;
                             text-align: left;
-                            
-                            .el-form-item {
-                                margin-bottom: 0;
-
-                                &.is-error {
-                                    // margin-bottom: 27px;
-                                }
-                            }
-
-                            /deep/ .el-input.el-input-group {
-                                .el-input-group__prepend {
-                                    padding: 2px 8px 0;
-                                    font-weight: 600;
-                                }
-                                .el-input__inner {
-                                    padding: 5px;
-                                }
-                            }
                         }
-                    }
-                    
-                    .symbol {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        width: 20px;
-                        background: transparent;
-                        .cell {
-                            text-overflow: initial;
-                            font-size: 16px;
-                            padding: 0;
-                        }
-                    }
-
-                    td {
-                        padding: 25px 0;
-
-                        .cell {
-                            overflow: visible;
-                        }
-                    }
-
-                    td:last-child .cell {
-                        padding-left: 10px !important;
-                        text-align: left;
                     }
                 }
             }
         }
+
+        span.icon-cog {
+            cursor: pointer;
+        }
+
+        
     }
 
+    .ui-drawer {
+        .ui-divider {
+            margin: 32px 16px 0 16px;
+            i {
+                padding-right: 0;
+            }
+
+            /deep/ .ui-divider__content {
+                left: 0;
+                z-index: 1;
+                padding-left: 0;
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--color-primary);
+            }
+        }
+
+        .content {
+            height: calc(100% - 70px);
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            padding: 16px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            position: relative;
+
+        }
+    }
+
+    .list-complete-item {
+        transition: all 1s;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #eee;
+
+        & > .el-col {
+            border-left: 1px solid #eee;
+            padding-top: 10px;
+            min-height: 50px;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+
+            &:last-child {
+                border-right: 1px solid #eee;
+                justify-content: center;
+            }
+        }
+
+        &:last-child {
+            border-bottom: 1px solid #eee;
+        }
+    }
+
+    .list-complete-enter, .list-complete-leave-active {
+        opacity: 0;
+    }
+
+    .card-label {
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .file-name {
+        max-width: 75%;
+        word-wrap: break-word;
+        color: #333;
+    }
+
+    .category-select {
+        margin-bottom: 30px;
+        width: 100%;
+    }
 </style>

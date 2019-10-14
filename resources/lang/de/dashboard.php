@@ -15,14 +15,14 @@ return [
     'latest_listings' => 'Neueste Produkte',
     'listings_by_creation_date' => 'Marktplatz-Produkte nach Erstellungsdatum',
     'listings_by_type' => 'Marktplatz-Produkte nach Typ',
-    'residents_by_creation_date' => 'Mieter nach Erstellungsdatum',
-    'residents_by_request_status' => 'Mieter nach Anfrage-Status',
-    'residents_by_status' => 'Mieter nach Status',
-    'residents_by_language' => 'Mieter nach Sprache',
-    'residents_by_title' => 'Mieter nach Anrede',
-    'residents_by_device' => 'Geräte',
+    'residents_by_creation_date' => 'Einwohner nach Erstellungsdatum',
+    'residents_by_request_status' => 'Status der Einwohner nach Anfragen',
+    'residents_by_status' => 'Einwohner nach Status',
+    'residents_by_language' => 'Einwohner nach Sprache',
+    'residents_by_title' => 'Einwohner nach Anrede',
+    'residents_by_device' => 'Einwohner nach Geräte',
     'residents_by_gender' => 'Demografische Merkmale',
-    'residents_by_age' => 'Mieter nach Altersgruppen',
+    'residents_by_age' => 'Einwohner nach Altersgruppen',
     'actions' => 'Aktionen',
     'requests' => [
         'total_request' => "Total Anfragen",
@@ -42,7 +42,7 @@ return [
         'buildings_map' => 'Liegenschften auf der Karte',
         'latest_buildings' => 'Neueste Liegenschaften',
         'managers' => 'Bewirtschafter',
-        'residents' => 'Mieter',
+        'residents' => 'Einwohner',
         'requests' => 'Anfragen',
         'go_to_buildings' => 'zu den Liegenschaften',
         'buildings_by_state' => 'Liegenschaften nach Kanton',
@@ -52,8 +52,8 @@ return [
         'total_residents' => 'Total Mieter',
         'average_age' => 'Durchschnittsalter:',
         'average_age_acr' => 'Ø Alter',
-        'latest_residents' => 'Neueste Mieter',
-        'go_to_residents' => 'zu den Mietern gehen'
+        'latest_residents' => 'Neueste Einwohner',
+        'go_to_residents' => 'zu den Bewohnern gehen'
     ],
     'listing' => [
         'go_to_listing' => 'zum Marktplatz gehen'

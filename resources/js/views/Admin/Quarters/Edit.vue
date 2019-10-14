@@ -17,7 +17,7 @@
                                     <el-input type="text" v-model="model.name"/>
                                 </el-form-item>
                             </el-col>
-                            <el-col :md="12">
+                            <!-- <el-col :md="12">
                                 <el-form-item class="label-block" :label="$t('models.quarter.count_of_buildings')"
                                               prop="title">
                                     <el-select style="display: block" 
@@ -30,9 +30,7 @@
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
-                            </el-col>
-                        </el-row>
-                        <el-row :gutter="20"  class="last-form-row">
+                            </el-col> -->
                              <el-col :md="12">
                                 <el-row :gutter="10">
                                     <el-col :md="8">
@@ -50,11 +48,11 @@
                                 </el-row>
                             </el-col>
                             <el-col :md="12">
-                                <el-form-item :label="$t('models.address.state.label')"
+                                <el-form-item :label="$t('general.state')"
                                               :rules="validationRules.state_id"
                                               prop="state_id"
                                               class="label-block">
-                                    <el-select :placeholder="$t('models.address.state.label')" style="display: block"
+                                    <el-select :placeholder="$t('general.state')" style="display: block"
                                                v-model="model.state_id">
                                         <el-option :key="state.id" :label="state.name" :value="state.id"
                                                    v-for="state in states"></el-option>
@@ -75,6 +73,65 @@
                             filter="quarter_id"
                             v-if="model.id"
                     />
+                </card>
+
+                <card :loading="loading" :header="$t('models.building.files')" class="mt15">
+
+                   <draggable @sort="sortFiles" v-model="model.media">
+                        <transition-group name="list-complete">
+                            <div key="list-complete-item" class="list-complete-item">
+                                <el-table
+                                    :data="model.media"
+                                    style="width: 100%"
+                                    v-if="model.media && model.media.length"
+                                    :show-header="false"
+                                    >
+                                    <el-table-column
+                                        prop="collection_name"
+                                    >
+                                        <template slot-scope="scope">
+                                            <strong>{{$t(`models.building.${scope.row.collection_name}`)}}</strong>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        align="right"
+                                    >
+                                        <template slot-scope="scope">
+                                            <a :href="scope.row.url" class="file-name" target="_blank">
+                                                {{scope.row.name}}
+                                            </a>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        align="right"
+                                    >
+                                        <template slot-scope="scope">
+                                            <el-button :style="{color: 'red'}" @click="deleteDocument('media', scope.$index)"
+                                                icon="ti-close" size="mini" type="text"
+                                            />
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+
+                        </transition-group>
+                    </draggable>
+                    <div class="mt15">
+                        <label class="card-label">{{$t('models.building.add_files')}}</label>
+                        <el-select :placeholder="$t('models.building.select_media_category')"
+                                    class="category-select"
+                                    v-model="selectedFileCategory">
+                            <el-option
+                                :key="item"
+                                :label="$t('models.building.' + item)"
+                                :value="item"
+                                v-for="item in model.media_category">
+                            </el-option>
+                        </el-select>
+                        <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple
+                                            v-if="selectedFileCategory"/><!-- @TODO this is uploading file on the spot, is it okay? need to confirm -->
+                        
+                    </div>
                 </card>
             </el-col>
             <el-col :md="12">
@@ -120,11 +177,13 @@
     import Heading from 'components/Heading';
     import Card from 'components/Card';
     import QuartersMixin from 'mixins/adminQuartersMixin';
-    import {displayError} from "helpers/messages";
+    import {displayError, displaySuccess} from "helpers/messages";
     import EditActions from 'components/EditViewActions';
     import {mapActions} from 'vuex';
     import RelationList from 'components/RelationListing';
     import AssignmentByType from 'components/AssignmentByType';
+    import UploadDocument from 'components/UploadDocument';
+    import draggable from 'vuedraggable';
 
     export default {
         name: 'AdminRequestsEdit',
@@ -137,13 +196,16 @@
             Card,
             EditActions,
             RelationList,
-            AssignmentByType
+            AssignmentByType,
+            UploadDocument,
+            draggable,
         },
         data() {
             return {
+                selectedFileCategory: 'house_rules',
                 requestColumns: [{
                     type: 'requestResidentAvatar',
-                    width: 75,
+                    width: 100,
                     prop: 'resident',
                     label: 'general.resident'
                 }, {
@@ -213,7 +275,13 @@
             }
         },
         methods: {
-            ...mapActions(['deleteQuarter','getQuarterAssignees','getBuildings']),
+            ...mapActions([
+                'deleteQuarter',
+                'getQuarterAssignees',
+                'getBuildings',
+                "uploadQuarterFile", 
+                "deleteQuarterFile",
+            ]),
 
             requestEditView(row) {
                 this.$router.push({
@@ -230,6 +298,49 @@
                     params: {
                         id: row.id
                     }
+                })
+            },
+
+            setOrder() {
+                _.each(this.model.media, (file, i) => {
+                    file.order = i + 1;
+                });
+                this.$forceUpdate();
+            },
+            sortFiles() {
+                this.setOrder();
+            },
+            uploadFiles(file) {
+                this.insertDocument(this.selectedFileCategory, file);
+                if(this.fileCount){
+                    this.fileCount++;
+                } else {
+                    this.fileCount = 1;
+                }
+            },
+            insertDocument(prop, file) {
+                file.order = this.model.media.length + 1;
+                this.uploadQuarterFile({
+                    id: this.model.id,
+                    [`${prop}_upload`]: file.src
+                }).then((resp) => {
+                    displaySuccess(resp);
+                    this.model.media.push(resp.media);
+                }).catch((err) => {
+                    displayError(err);
+                });
+            },
+            deleteDocument(prop, index) {
+                this.deleteQuarterFile({
+                    id: this.model.id,
+                    media_id: this.model[prop][index].id
+                }).then((resp) => {
+                    displaySuccess(resp);
+                    this.fileCount--;
+                    this.model[prop].splice(index, 1);
+                    this.setOrder(prop);
+                }).catch((error) => {
+                    displayError(error);
                 })
             },
         },
@@ -270,5 +381,50 @@
         .crud-view {
             margin-top: 1%;
         }
+    }
+
+    .list-complete-item {
+        transition: all 1s;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #eee;
+
+        & > .el-col {
+            border-left: 1px solid #eee;
+            padding-top: 10px;
+            min-height: 50px;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+
+            &:last-child {
+                border-right: 1px solid #eee;
+                justify-content: center;
+            }
+        }
+
+        &:last-child {
+            border-bottom: 1px solid #eee;
+        }
+    }
+
+    .list-complete-enter, .list-complete-leave-active {
+        opacity: 0;
+    }
+
+    .card-label {
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .file-name {
+        max-width: 75%;
+        word-wrap: break-word;
+        color: #333;
+    }
+
+    .category-select {
+        margin-bottom: 30px;
+        width: 100%;
     }
 </style>

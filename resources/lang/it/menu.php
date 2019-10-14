@@ -20,7 +20,7 @@ return [
     'registered' => 'Registrato',
     'about' => 'A proposito di',
     'feedback' => 'Feedback',
-    'residents' => 'Gli inquilini',
+    'residents' => 'Residenti',
     'buildings' => 'Edifici',
     'all_buildings' => 'Tutti gli edifici',
     'units' => 'Unità',
@@ -32,5 +32,6 @@ return [
     'services' => 'Partner di servizio',
     'activity' => 'Attività',
     'propertyManagers' => 'Gestori',
+    'houseOwners' => 'Proprietari',
     'templates' => 'Modelli'    
 ];

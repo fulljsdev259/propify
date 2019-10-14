@@ -31,7 +31,8 @@ export default (config = {}) => {
                     content: '',
                     title: '',
                     price: 0,
-                    contact: ''
+                    contact: '',
+                    media: []
                 },
                 validationRules: {
                     title: [{
@@ -50,7 +51,17 @@ export default (config = {}) => {
                 price: {
                     integer: 0,
                     decimals: '00'
-                }
+                },
+                uploadOptions: {
+                    drop: true,
+                    multiple: true,
+                    draggable: true,
+                    hideUploadButton: true,
+                    extensions: 'vnd.openxmlformats-officedocument.wordprocessingml.document,vnd.openxmlformats-officedocument.spreadsheetml.sheet,pdf,png,jpeg,jpg',
+                    hideSelectFilesButton: false
+                },
+                listing_id: null,
+                audit_id: null
             };
         },
         computed: {
@@ -93,7 +104,7 @@ export default (config = {}) => {
                         const image = this.media[i];
                         await this.uploadListingMedia({
                             id,
-                            media: image.url.split('base64,')[1]
+                            media: image.file.src
                         });
                     }
                 }
@@ -117,6 +128,15 @@ export default (config = {}) => {
                     });
                     displaySuccess(resp);
                 }
+            },
+            async deleteMediaByIndex(index) {
+                const resp = await this.deleteListingMedia({
+                    id: this.model.id,
+                    media_id: this.model.media[index].id
+                });
+                
+                this.model.media.splice(index, 1)
+                displaySuccess(resp);
             },
             validatePrice(rule, value, callback) {
                 if (this.model.type !== 4) {

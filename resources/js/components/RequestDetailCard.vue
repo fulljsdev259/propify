@@ -86,15 +86,15 @@
                     <div class="created-by">
                         <p>
                             <el-tooltip
-                                :content="item.resident_name"
+                                :content="item.creator.name"
                                 class="item"
                                 effect="light" placement="top">
                         
-                                <table-avatar :src="item.resident.user.avatar" :name="item.resident_name" :size="33" />
+                                <table-avatar :src="item.creator.avatar" :name="item.creator.name" :size="33" />
                             </el-tooltip>
                         </p>
                         <div>
-                            <p>{{ item.resident_name }}</p>
+                            <p>{{ item.creator.name }}</p>
                             <p>{{formatDate(item.created_at)}}</p>
                         </div>
                     </div>

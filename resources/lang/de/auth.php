@@ -15,8 +15,8 @@ return [
 	'failed'   => 'Diese Kombination aus Zugangsdaten wurde nicht in unserer Datenbank gefunden.',
 	'throttle' => 'Zu viele Loginversuche. Versuchen Sie es bitte in :seconds Sekunden nochmal.',
 	'login_welcome' => 'Willkommen zurück, bitte melden Sie sich mit Ihrem Konto an.',
-	'title' => 'Mit unserer Mieter-App geht alles einfacher',
-	'intro' => 'Um die Anliegen der Mieterschaft noch schneller zu verarbeiten, erhalten unsere Mieter Zugang zu einem geschützten Bereich mit welchen das Mietverhältnis digital verwaltet werden kann.',
+	'title' => 'Mit unserer residenten App ist alles einfacher.',
+	'intro' => 'Um die Anliegen unserer Bewohner noch schneller zu bearbeiten, erhalten unsere Bewohner Zugang zu einem geschützten Bereich, mit dem das Mietverhältnis digital verwaltet werden kann. Durch die digitale Verarbeitung können wir noch schneller handeln und Transparenz für alle Beteiligten schaffen.',
 	'benefit_1' => [
 		'title' => 'Daten und Dokumente online einsehbar',
 		'description' => 'Sie können alle Angaben zum Mietverhältnis und Unterlagen wie z.B. den Mietvertrag, jederzeit im PDF Format herunterladen.'
@@ -36,7 +36,7 @@ return [
 	'login' => [
 		'activate_account' => [
 			'title' => 'Erster Login (Aktivierung des Kontos)',
-			'description' => 'Nach Erhalt des Aktivierungscodes können Sie sich zum ersten Mal im Mieterportal einloggen und Ihr Konto aktivieren.'
+			'description' => 'Nach Erhalt des Aktivierungscodes können Sie sich zum ersten Mal in das Resident Portal einloggen und Ihren Account aktivieren.'
 		]
 	]
 ];

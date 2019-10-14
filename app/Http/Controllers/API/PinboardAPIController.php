@@ -1001,7 +1001,7 @@ class PinboardAPIController extends AppBaseController
         $p->likers = $p->collectLikers();
 
 
-        return $this->sendResponse($p, __('general.attached.provider'));
+        return $this->sendResponse($p, __('general.attached.service'));
     }
 
     /**
@@ -1064,7 +1064,7 @@ class PinboardAPIController extends AppBaseController
         ])->withCount('allComments')->findWithoutFail($id);
         $p->likers = $p->collectLikers();
 
-        return $this->sendResponse($p, __('general.detached.provider'));
+        return $this->sendResponse($p, __('general.detached.service'));
     }
 
     /**

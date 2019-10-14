@@ -282,10 +282,11 @@
             </el-col>
             <el-col :md="12">
                 <card :header="$t('models.request.images')">
-                    <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple/>
+                    <!-- <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple/>
                     <div class="mt15">
                         <request-media :data="media" @deleteMedia="deleteMedia" v-if="media.length"></request-media>
-                    </div>
+                    </div> -->
+                    <media-uploader ref="media" :id="request_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
                 </card>
             </el-col>
         </el-row>

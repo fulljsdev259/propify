@@ -58,8 +58,7 @@ return [
     ],
     'attached' => [
         'building' => 'Building assigned',
-        'quarter' => 'Quarter assigned',
-        'provider' => 'Provider assigned',
+        'quarter' => 'Quarter assigned',        
         'resident' => 'Resident attached',
         'service' => 'Provider attached successfully',
         'manager' => 'Manager attached successfully',
@@ -68,8 +67,7 @@ return [
     ],
     'detached' => [
         'building' => 'Buiding unassigned',
-        'quarter' => 'Quarter unassigned',
-        'provider' => 'Provider unassigned',
+        'quarter' => 'Quarter unassigned',        
         'resident' => 'Resident detached',
         'service' => 'Provider detached successfully',
         'manager' => 'Manager detached successfully',
@@ -77,11 +75,16 @@ return [
         'tag' => 'Tag unassigned successfully',
     ],
     'no' => 'No',
+    'firstName' => 'First name',
+    'lastName' => 'Last name',
     'name' => "Name",
     'phone' => 'Phone',
     'id' => "ID",
     'address' => "Address",
     'city' => 'City',
+    'state' => 'State',
+    'street' => 'Street',
+    'house_num' => 'House Nr.',
     'zip' => 'Zip',
     'content' => 'Content',
     'none' => 'None',
@@ -217,10 +220,10 @@ return [
     'roles' => [
         'label' => 'Role',
         'administrator' => 'Administrator',
-        'homeowner' => 'Home Owner',
+        'resident' => 'Resident',
         'manager' => 'Manager',
         'registered' => 'Registered',
-        'service' => 'Service',
+        'provider' => 'Service',
         'super_admin' => 'Super Admin',
     ],
     'placeholders' => [
@@ -265,4 +268,10 @@ return [
     'monthly_rent_net' => 'Monthly rent',    
     'maintenance' => 'Maintenance',
     'gross_rent' => 'Gross rent',
+    'emergency' => [
+        'activate_title' => 'Activate Emergency Box',
+        'activate_desc' => 'You can activate emergency box',
+        'phone_number' => 'Phone Number',
+        'time_schedule' => 'Time Schedule',
+    ]
 ];
