@@ -663,13 +663,4 @@
         width: 100%;
     }
 
-    .el-alert {
-        align-items: flex-start;
-        padding-right: 0;
-        line-height: 18px;
-        
-        /deep/ .el-alert__icon {
-            padding-top: 2px;
-        }
-    }
 </style>

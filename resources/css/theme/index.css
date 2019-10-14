@@ -4649,9 +4649,12 @@
     display:flex;
     -webkit-box-align:center;
     -ms-flex-align:center;
-    align-items:center;
+    /* align-items:center; */
     -webkit-transition:opacity .2s;
-    transition:opacity .2s
+    transition:opacity .2s;
+    align-items: flex-start;
+    padding-right: 0;
+    line-height: 18px
 }
 .el-alert.is-light .el-alert__closebtn{
     color:var(--color-text-placeholder)
@@ -4714,7 +4717,8 @@
 }
 .el-alert__icon{
     font-size:16px;
-    width:16px
+    width:16px;
+    padding-top: 2px
 }
 .el-alert__icon.is-big{
     font-size:28px;

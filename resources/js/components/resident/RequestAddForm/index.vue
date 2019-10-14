@@ -381,15 +381,6 @@
         
         .upload-description {
             padding: 0;
-
-            .el-alert {
-                align-items: flex-start;
-                padding-right: 0;
-
-                /deep/ .el-alert__icon {
-                    padding-top: 2px;
-                }
-            }
         }
 
         .submitBtnDiv {

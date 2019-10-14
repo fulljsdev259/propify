@@ -349,6 +349,8 @@
         }
         .el-alert--info.is-light{
             padding-left: 35%;
+            align-items: center;
+            line-height: inherit;
         }
 
     }    

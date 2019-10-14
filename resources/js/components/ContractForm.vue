@@ -799,9 +799,6 @@
         
     }
     
-    .el-alert {
-        line-height: 18px;
-    }
 
     /deep/ .contract-form-actions {
         width: 100%;

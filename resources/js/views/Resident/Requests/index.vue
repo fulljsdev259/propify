@@ -528,11 +528,6 @@
                         .upload-description
                             margin: 16px;
                             padding: 0
-                            .el-alert
-                                align-items: flex-start
-                                padding-right: 0
-                                .el-alert__icon
-                                    padding-top: 2px
                         
                         .ui-media-uploader 
                             flex-grow: 1
