@@ -617,10 +617,10 @@
                 }*/
                 
                 try {
-                    this.$router.replace({name: this.$route.name, query, params})
+                    this.$router.replace({name: this.$route.name, query, params}).catch(err => {})
                 }
                 catch (err) {
-                    
+
                 }
             },
             updatePage(page, size) {
