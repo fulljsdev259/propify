@@ -181,28 +181,7 @@ return [
     'price' => [
         "valid" => "Veuillez entrer un prix valide",
         "required" => "Le prix est exigé",
-    ],
-    'firstName' => [
-        "required" => "Le prénom est obligatoire",
-    ],
-    'lastName' => [
-        "required" => "Le nom de famille est obligatoire",
-    ],
-    'phone' => [
-        "required" => "Un téléphone est requis",
-    ],
-    'address' => [
-        "required" => "L'adresse est requise",
-    ],
-    'zip' => [
-        "required" => "Zip est obligatoire",
-    ],
-    'city' => [
-        "required" => "Ville est obligatoire",
-    ],
-    'title' => [
-        "required" => "Le titre est requis",
-    ],
+    ],   
     'terms' => [
         "required" => "S'il vous plaît approuver avec les termes et conditions",
     ]
