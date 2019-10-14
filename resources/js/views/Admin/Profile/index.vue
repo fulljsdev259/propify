@@ -1,15 +1,15 @@
 <template>
     <div class="profile">
-        <heading :title="$t('pages.profile.pageTitle')" class="custom-heading" icon="ti-user" shadow="heavy" />
+        <heading :title="$t('general.profile.pageTitle')" class="custom-heading" icon="ti-user" shadow="heavy" />
         <div class="crud-view">
             <el-tabs v-model="active">
-                <el-tab-pane :label="$t('pages.profile.profile')" :lazy="true" name="profile">
+                <el-tab-pane :label="$t('general.profile.profile')" :lazy="true" name="profile">
                     <profile/>
                 </el-tab-pane>
-                <el-tab-pane :label="$t('pages.profile.account')" :lazy="true" name="account">
+                <el-tab-pane :label="$t('general.account')" :lazy="true" name="account">
                     <accounts/>
                 </el-tab-pane>
-                <el-tab-pane :label="$t('pages.profile.notifications')" :lazy="true" name="notifications">
+                <el-tab-pane :label="$t('general.notifications')" :lazy="true" name="notifications">
                     <notifications/>
                 </el-tab-pane>
             </el-tabs>

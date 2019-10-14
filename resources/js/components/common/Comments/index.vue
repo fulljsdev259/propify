@@ -31,7 +31,7 @@
         </template>
         <template v-else>
             <el-button type="text" @click="fetch" :loading="loading" v-if="!data && comments.current_page !== comments.last_page">
-                {{$t('components.common.commentsList.loadMore', {count: comments.total - comments.data.length})}}
+                {{$t('general.components.common.commentsList.loadMore', {count: comments.total - comments.data.length})}}
             </el-button>            
             <comment v-bind="commentComponentProps" :show-children="showChildren" v-for="comment in comments.data" :key="comment.id" :data="comment" :reversed="isCommentReversed(comment)" />
         </template>
@@ -202,28 +202,28 @@
             },
             no_data_info(){
                 let macros = {
-                    title: 'components.common.commentsList.emptyPlaceholder.title',
-                    description: 'components.common.commentsList.emptyPlaceholder.description'
+                    title: 'general.components.common.commentsList.emptyPlaceholder.title',
+                    description: 'general.components.common.commentsList.emptyPlaceholder.description'
                 }
                 if(this.type === 'internalNotices'){                    
-                    macros.title = 'components.common.internalnoticesList.emptyPlaceholder.title';
-                    macros.description = 'components.common.internalnoticesList.emptyPlaceholder.description';                    
+                    macros.title = 'general.components.common.internalnoticesList.emptyPlaceholder.title';
+                    macros.description = 'general.components.common.internalnoticesList.emptyPlaceholder.description';                    
                 }
                 else if(this.type === 'conversation'){                    
-                    macros.title = 'components.common.serviceproviderconversationsList.emptyPlaceholder.title';
-                    macros.description = 'components.common.serviceproviderconversationsList.emptyPlaceholder.description';                    
+                    macros.title = 'general.components.common.serviceproviderconversationsList.emptyPlaceholder.title';
+                    macros.description = 'general.components.common.serviceproviderconversationsList.emptyPlaceholder.description';                    
                 }
                 else if((this.type === 'request') && (this.$store.getters.loggedInUser.roles.findIndex(({name}) => name === 'resident') == -1)){ 
-                    macros.title = 'components.common.residentconversationsList.emptyPlaceholder.title';
-                    macros.description = 'components.common.residentconversationsList.emptyPlaceholder.description';                    
+                    macros.title = 'general.components.common.residentconversationsList.emptyPlaceholder.title';
+                    macros.description = 'general.components.common.residentconversationsList.emptyPlaceholder.description';                    
                 }
                 else if((this.type === 'listing') && (this.$store.getters.loggedInUser.roles.findIndex(({name}) => name === 'resident') > -1)){
-                    macros.title = 'components.common.listingcommentsList.emptyPlaceholder.title';
-                    macros.description = 'components.common.listingcommentsList.emptyPlaceholder.description';                    
+                    macros.title = 'general.components.common.listingcommentsList.emptyPlaceholder.title';
+                    macros.description = 'general.components.common.listingcommentsList.emptyPlaceholder.description';                    
                 }
                 else if((this.type === 'pinboard')){
-                    macros.title = 'components.common.pinboardcommentsList.emptyPlaceholder.title';
-                    macros.description = 'components.common.pinboardcommentsList.emptyPlaceholder.description';
+                    macros.title = 'general.components.common.pinboardcommentsList.emptyPlaceholder.title';
+                    macros.description = 'general.components.common.pinboardcommentsList.emptyPlaceholder.description';
                 }
                 return macros;
             } 

@@ -286,7 +286,7 @@
                 selectedItems: [],
                 Sorters: [
                     {
-                        name: this.$t('filters.search'),
+                        name: this.$t('general.placeholders.search'),
                         type: 'el-radio',
                         icon: 'el-icon-search',
                         key: 'orderBy',

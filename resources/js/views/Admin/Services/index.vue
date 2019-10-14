@@ -91,34 +91,34 @@
             filters() {
                 return [
                     {
-                        name: this.$t('filters.search'),
+                        name: this.$t('general.placeholders.search'),
                         type: 'text',
                         icon: 'el-icon-search',
                         key: 'search'
                     }, {
-                        name: this.$t('filters.states'),
+                        name: this.$t('general.filters.states'),
                         type: 'select',
                         key: 'state_id',
                         data: this.states,
                     }, {
-                        name: this.$t('filters.buildings'),
+                        name: this.$t('general.filters.buildings'),
                         type: 'select',
                         key: 'building_id',
                         data: this.buildings,
                     }, {
-                        name: this.$t('filters.categories'),
+                        name: this.$t('general.filters.categories'),
                         type: 'select',
                         key: 'category',
                         data: this.categories,
                     },
                     // {
-                    //     name: this.$t('filters.quarters'),
+                    //     name: this.$t('general.filters.quarters'),
                     //     type: 'select',
                     //     key: 'quarter_id',
                     //     data: this.quarters,
                     // },
                     {
-                        name: this.$t('filters.language'),
+                        name: this.$t('general.filters.language'),
                         type: 'language',
                         key: 'language'
                     }

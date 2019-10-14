@@ -10,7 +10,7 @@
         <div ref="container" class="container">
             <el-input ref="content" :class="{'is-focused': idState.focused}" type="textarea" resize="none" v-if="idState.editing" v-model="comment" autosize :disabled="idState.loading._isVue && idState.loading.visible" :validate-event="false" @blur="idState.focused = false" @focus="idState.focused = true" @keydown.native.enter="$emit('size-hanged')" @keydown.native.alt.enter.exact="update" @keydown.native.stop.esc.exact="cancelEdit" />
             <div class="content" :class="{'empty': !comment, 'disabled': idState.loading._isVue && idState.loading.visible}" v-else>
-                <div class="text">{{comment || $t('components.common.comment.deletedCommentPlaceholder')}}<div class="tag"></div><div class="border"></div></div>                
+                <div class="text">{{comment || $t('general.components.common.comment.deletedCommentPlaceholder')}}<div class="tag"></div><div class="border"></div></div>                
                 <div class="actions" v-if="hasActions">                                    
                     <el-button type="text" @click="enterEdit" v-if="data.comment">
                         <i class="icon-pencil"></i>
@@ -22,24 +22,24 @@
             </div>
         </div>
         <template v-if="idState.editing">
-            <i18n path="components.common.comment.updateOrCancel" tag="div" class="extra">
-                <el-tooltip :content="$t('components.common.comment.updateShortcut', {shortcut: updateKeysShortcut})" placement="bottom-start" place="update">
+            <i18n path="general.components.common.comment.updateOrCancel" tag="div" class="extra">
+                <el-tooltip :content="$t('general.components.common.comment.updateShortcut', {shortcut: updateKeysShortcut})" placement="bottom-start" place="update">
                     <el-button type="text" :disabled="idState.loading._isVue && idState.loading.visible" @click="update">
-                        {{$t('components.common.comment.update')}}
+                        {{$t('general.components.common.comment.update')}}
                     </el-button>
                 </el-tooltip>
-                <el-tag size="mini" place="esc">{{$t('components.common.comment.esc')}}</el-tag>
+                <el-tag size="mini" place="esc">{{$t('general.components.common.comment.esc')}}</el-tag>
                 <el-button type="text" :disabled="idState.loading._isVue && idState.loading.visible" @click="cancelEdit" place="cancel">
-                    {{$t('components.common.comment.cancel')}}
+                    {{$t('general.components.common.comment.cancel')}}
                 </el-button>
             </i18n>
         </template>
         <el-button type="text" @click="showAddComment" v-else-if="!parentId && showChildren">
-            {{$t('components.common.comment.addChildComment')}}
+            {{$t('general.components.common.comment.addChildComment')}}
         </el-button>
         <div class="children" v-if="showChildren && (idState.visibleAddComment || data.children_count)">
             <el-button type="text" size="small" :loading="idState.loading.visible" @click="getChildren" v-if="data.children_count !== data.children.data.length">
-                {{$tc('components.common.comment.loadMore', data.children_count - data.children.data.length)}}
+                {{$tc('general.components.common.comment.loadMore', data.children_count - data.children.data.length)}}
             </el-button>
             <comments :id="id" :parent-id="data.id" :type="type" :data="data.children" :use-placeholder="false" v-if="data.children.data.length" />
             <add-comment ref="addComment" :id="id" :parent-id="data.id" :type="type" :reversed="reversed" />
