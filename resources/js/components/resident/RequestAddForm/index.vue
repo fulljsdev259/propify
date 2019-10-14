@@ -386,7 +386,7 @@
                 align-items: flex-start;
                 padding-right: 0;
 
-                .el-alert__icon {
+                /deep/ .el-alert__icon {
                     padding-top: 2px;
                 }
             }

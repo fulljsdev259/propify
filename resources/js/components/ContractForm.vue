@@ -775,7 +775,7 @@
                     }
 
                     td {
-                        padding: 25px 0;
+                        padding: 27px 0;
 
                         .cell {
                             overflow: visible;

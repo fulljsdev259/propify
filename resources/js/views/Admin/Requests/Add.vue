@@ -286,6 +286,13 @@
                     <div class="mt15">
                         <request-media :data="media" @deleteMedia="deleteMedia" v-if="media.length"></request-media>
                     </div> -->
+                    <el-alert
+                        :title="$t('general.upload_all_desc')"
+                        type="info"
+                        show-icon
+                        :closable="false"
+                    >
+                    </el-alert>
                     <media-uploader ref="media" :id="request_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
                 </card>
             </el-col>
@@ -378,6 +385,16 @@
         }
         .el-select__tags {
             top: 70% !important;
+        }
+    }
+
+    .el-alert {
+        align-items: flex-start;
+        padding-right: 0;
+        line-height: 18px;
+
+        /deep/ .el-alert__icon {
+            padding-top: 2px;
         }
     }
 </style>

@@ -149,6 +149,13 @@
                                     </div>
                                 </el-form-item> -->
                                 <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex"/>
+                                <el-alert
+                                    :title="$t('general.upload_all_desc')"
+                                    type="info"
+                                    show-icon
+                                    :closable="false"
+                                >
+                                </el-alert>
                                 <media-uploader ref="media" :id="pinboard_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
                                 
                             </el-tab-pane>
@@ -176,6 +183,13 @@
                                                        v-if="media.length || (model.media && model.media.length)"></request-media>
                                 </div> -->
                                 <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex"/>
+                                <el-alert
+                                    :title="$t('general.upload_all_desc')"
+                                    type="info"
+                                    show-icon
+                                    :closable="false"
+                                >
+                                </el-alert>
                                 <media-uploader ref="media" :id="pinboard_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
                             </el-form-item>
                         </template>                        
@@ -732,6 +746,20 @@
 
         & > span {
             margin-left: 5px;
+        }
+    }
+
+    .ui-media-gallery {
+        margin-bottom: 10px;
+    }
+
+    .el-alert {
+        align-items: flex-start;
+        padding-right: 0;
+        line-height: 18px;
+
+        /deep/ .el-alert__icon {
+            padding-top: 2px;
         }
     }
 </style>
