@@ -144,23 +144,6 @@
                         type: 'text',
                         icon: 'el-icon-search',
                         key: 'search'
-                    },
-                    {
-                        name: this.$t('filters.quarters'),
-                        type: 'select',
-                        key: 'quarter_id',
-                        data: this.quarters,
-                    },
-                    {
-                        name: this.$t('filters.buildings'),
-                        type: 'select',
-                        key: 'building_id',
-                        data: this.buildings,
-                    },
-                    {
-                        name: this.$t('filters.language'),
-                        type: 'language',
-                        key: 'language'
                     }
                 ];
             }

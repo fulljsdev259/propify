@@ -935,6 +935,7 @@
                     flex-grow: 1;
                     span.icon-cog {
                         cursor: pointer;
+                        color: var(--color-text-primary);
                         float: right;
                     }
                 }
