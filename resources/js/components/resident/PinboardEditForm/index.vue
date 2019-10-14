@@ -135,4 +135,20 @@
 
                 .el-button i
                     padding-right: 5px
+        
+        .submitBtnDiv
+            // position: absolute
+            width: 100%
+            display: flex
+            flex-direction: column
+            flex-grow: 1
+            justify-content: flex-end
+
+        .el-button.submit
+            margin-top: 1em
+            width: 100%
+            /deep/ i 
+                padding-right: 5px
+            
+        
 </style>
