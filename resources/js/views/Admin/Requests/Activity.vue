@@ -1,6 +1,6 @@
 <template>
     <div class="activity">
-        <heading :title="$t('pages.request_activities.title')" icon="icon-chat-empty" shadow="heavy" />
+        <heading :title="$t('general.activities.request')" icon="icon-chat-empty" shadow="heavy" />
         <el-row :gutter="20" class="crud-view">
             <el-col :md="16">
                 <el-card class="mt15">

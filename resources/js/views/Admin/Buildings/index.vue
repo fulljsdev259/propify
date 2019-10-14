@@ -221,31 +221,31 @@
             filters() {
                 return [
                     {
-                        name: this.$t('filters.search'),
+                        name: this.$t('general.placeholders.search'),
                         type: 'text',
                         icon: 'el-icon-search',
                         key: 'search'
                     },
                     {
-                        name: this.$t('filters.states'),
+                        name: this.$t('general.filters.states'),
                         type: 'select',
                         key: 'state_id',
                         data: this.states
                     },
                     {
-                        name: this.$t('filters.quarters'),
+                        name: this.$t('general.filters.quarters'),
                         type: 'select',
                         key: 'quarter_id',
                         data: this.quarters
                     },
                     {
-                        name: this.$t('filters.propertyManagers'),
+                        name: this.$t('general.filters.propertyManagers'),
                         type: 'select',
                         key: 'manager_id',
                         data: this.propertyManagers
                     },
                     {
-                        name: this.$t('filters.requestStatus'),
+                        name: this.$t('general.filters.requestStatus'),
                         type: 'select',
                         key: 'request_status',
                         data: this.prepareFilters("status")

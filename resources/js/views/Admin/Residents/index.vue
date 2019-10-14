@@ -1,6 +1,6 @@
 <template>
     <div class="residents">
-        <heading :title="$t('pages.resident.title')" icon="icon-group" shadow="heavy">
+        <heading :title="$t('general.resident')" icon="icon-group" shadow="heavy">
             <template v-if="$can($permissions.create.resident)">
                 <el-button @click="add" icon="ti-plus" round size="mini" type="primary">{{$t('models.resident.add')}}
                 </el-button>
@@ -243,43 +243,43 @@
             filters() {
                 return [
                     {
-                        name: this.$t('filters.search'),
+                        name: this.$t('general.placeholders.search'),
                         type: 'text',
                         icon: 'el-icon-search',
                         key: 'search'
                     }, {
-                        name: this.$t('filters.states'),
+                        name: this.$t('general.filters.states'),
                         type: 'select',
                         key: 'state_id',
                         data: this.states,
                     }, {
-                        name: this.$t('filters.buildings'),
+                        name: this.$t('general.filters.buildings'),
                         type: 'select',
                         key: 'building_id',
                         data: this.buildings,
                     }, {
-                        name: this.$t('filters.units'),
+                        name: this.$t('general.filters.units'),
                         type: 'select',
                         key: 'unit_id',
                         data: this.units,
                     }, {
-                        name: this.$t('filters.quarters'),
+                        name: this.$t('general.filters.quarters'),
                         type: 'select',
                         key: 'quarter_id',
                         data: this.quarters,
                     }, {
-                        name: this.$t('filters.requestStatus'),
+                        name: this.$t('general.filters.requestStatus'),
                         type: 'select',
                         key: 'request_status',
                         data: this.prepareRequestFilters("status")
                     }, {
-                        name: this.$t('filters.status'),
+                        name: this.$t('general.filters.status'),
                         type: 'select',
                         key: 'status',
                         data: this.prepareFilters('status'),
                     },
                     {
-                        name: this.$t('filters.language'),
+                        name: this.$t('general.filters.language'),
                         type: 'language',
                         key: 'language'
                     }
