@@ -15,7 +15,7 @@
                 <template v-else-if="isFilePDF(file)">
                     <i class="ui-media-gallery__item__content__icon icon-file-pdf" />
                     <div class="file__actions">
-                        <div class="el-icon-zoom-in" @click="openFile"></div>
+                        <div class="el-icon-zoom-in" @click="openFile(file)"></div>
                         <div class="icon-trash-empty" @click="deleteImage(index)"></div>
                     </div>
                 </template>
@@ -81,8 +81,8 @@
             openViewer (index) {
                 this.$refs['ui-image'][index].openViewer()
             },
-            openFile (index) {
-                console.log('openFile')
+            openFile (file) {
+                window.open(file, "_blank")
             },
             deleteImage (index) {
                 this.$emit('delete-media', index)
@@ -125,12 +125,41 @@
                     height: 100%
 
                 .file__actions
+                    background-color: rgba(0,0,0,0.5)
                     position: absolute
                     width: 100%
                     height: 100%
                     display: flex
                     align-items: center
                     justify-content: center
+                    transition: filter .32s, -webkit-filter .32s
+                    filter: opacity(0);
+
+                    &:hover
+                        filter: opacity(1)
+
+                    div
+                        color: #fff
+                        font-size: 18px
+                        margin: 4px
+                        -webkit-filter: opacity(0.64)
+                        filter: opacity(0.64)
+                        -webkit-transition: -webkit-filter .32s
+                        transition: -webkit-filter .32s
+                        transition: filter .32s
+                        transition: filter .32s, -webkit-filter .32s
+                        cursor: pointer
+                        filter: opacity(0.64);
+
+                        &:hover
+                            filter: opacity(1)
+                    
+                    .icon-trash-empty
+                        color: var(--color-danger)
+                        border-color: #fbc4c4
+
+                        &:hover
+                            color: white
 
         &__placeholder
             grid-column: 1 / -1
