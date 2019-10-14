@@ -223,7 +223,7 @@ return [
         'resident' => 'Einwohner',
         'manager' => 'Bewirtschafter',
         'registered' => 'Registriert',
-        'service' => 'Externe Diensteister',
+        'provider' => 'Externe Diensteister',
         'super_admin' => 'Super Administrator',
     ],
     'placeholders' => [

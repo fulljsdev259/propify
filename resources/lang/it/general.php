@@ -223,7 +223,7 @@ return [
         'resident' => 'Residente',
         'manager' => 'Manager',
         'registered' => 'Registrato',
-        'service' => 'Servizio',
+        'provider' => 'Servizio',
         'super_admin' => 'Super Admin',
     ],
     'placeholders' => [
