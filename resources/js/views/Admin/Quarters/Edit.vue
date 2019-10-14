@@ -205,7 +205,7 @@
                 selectedFileCategory: 'house_rules',
                 requestColumns: [{
                     type: 'requestResidentAvatar',
-                    width: 90,
+                    width: 100,
                     prop: 'resident',
                     label: 'general.resident'
                 }, {

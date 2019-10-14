@@ -243,18 +243,18 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
-                                    <el-form-item class="switcher">
-                                        <label class="switcher__label">
-                                            <span class="switcher__label-title">{{$t('models.pinboard.specify_time_question')}}</span>
-                                            <span class="switcher__label-desc">Lorem ipsum dolor sit amet.</span>
-                                        </label>
-                                        <el-switch v-model="model.is_execution_time"
-                                                   @change="() => {
-                                                    !model.is_execution_time ? resetExecutionTime() : '';
-                                                    reinitDatePickers();
-                                                   }"
-                                        />
-                                    </el-form-item>
+                                    <div class="switch-wrapper">
+                                        <el-form-item :label="$t('models.pinboard.specify_time_question')">
+                                            <el-switch v-model="model.is_execution_time"
+                                                    @change="() => {
+                                                        !model.is_execution_time ? resetExecutionTime() : '';
+                                                        reinitDatePickers();
+                                                    }"/>
+                                        </el-form-item>
+                                        <div>
+                                            {{$t('resident.notifications.service')}}
+                                        </div>
+                                    </div>
                                 </el-col>
                             </el-row>
                             <el-row :gutter="20">
@@ -295,13 +295,14 @@
                                     </el-form-item>
                                 </el-col>
                             </el-row>
-                            <el-form-item class="switcher" prop="notify_email">
-                                <label class="switcher__label">
-                                    <span class="switcher__label-title">{{$t('models.pinboard.notify_email')}}</span>
-                                    <span class="switcher__label-desc">Lorem ipsum dolor sit amet, consectetur adipisicing.</span>
-                                </label>
-                                <el-switch v-model="model.notify_email"/>
-                            </el-form-item>
+                            <div class="switch-wrapper">
+                                <el-form-item :label="$t('models.pinboard.notify_email')" prop="notify_email">
+                                    <el-switch v-model="model.notify_email"/>
+                                </el-form-item>
+                                <div>
+                                    {{$t('resident.notifications.service')}}
+                                </div>
+                            </div>
                         </card>
                     </template>
 
@@ -359,6 +360,7 @@
 
 
 <style lang="scss">
+
     .switcher {
         .el-form-item__content {
             display: flex;
@@ -378,7 +380,6 @@
             font-size: 0.9em;
         }
         .el-switch {
-            margin-top: 10px;
             margin-left: auto;
         }
     }

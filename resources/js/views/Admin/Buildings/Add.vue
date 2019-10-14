@@ -86,7 +86,7 @@
                     <!--<el-form-item prop="description" :label="$t('general.description')" :rules="validationRules.description" style="max-width: 512px;">-->
                     <!--<el-input type="textarea" v-model="model.description"></el-input>-->
                     <!--</el-form-item>-->
-                            <el-row type="flex" :gutter="20" align="bottom">
+                            <el-row type="flex" :gutter="20">
                                 <el-col :span="12">
                                     <el-form-item :label="$t('models.building.floor_nr')" :rules="validationRules.floor_nr" prop="floor_nr">
                                         <el-input type="number"
@@ -96,10 +96,14 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="12">
-                                    <el-form-item :label="$t('models.unit.auto_create_question')" class="switch-wrapper" v-if="model.floor_nr > 0">
-                                        <el-switch v-model="unitAutoCreate">
-                                        </el-switch>
-                                    </el-form-item>
+                                    <div class="switch-wrapper">
+                                        <el-form-item :label="$t('models.unit.auto_create_question')" v-if="model.floor_nr > 0">
+                                            <el-switch v-model="unitAutoCreate"/>
+                                        </el-form-item>
+                                        <div>
+                                            {{$t('resident.notifications.service')}}
+                                        </div>
+                                    </div>
                                 </el-col>
                             </el-row>
                             <el-row :gutter="20">
@@ -117,11 +121,16 @@
                                 </el-col>
                             </el-row>
 
-                            <el-row type="flex" :gutter="20" align="bottom">
+                            <el-row type="flex" :gutter="20">
                                 <el-col :span="12">
-                                    <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic" class="switch-wrapper">
-                                        <el-switch v-model="model.attic"/>
-                                    </el-form-item>
+                                    <div class="switch-wrapper">
+                                        <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic">
+                                            <el-switch v-model="model.attic"/>
+                                        </el-form-item>
+                                        <div>
+                                            {{$t('resident.notifications.service')}}
+                                        </div>
+                                    </div>
                                 </el-col>
                                 <el-col :span="12">
                                     <el-form-item :label="$t('models.building.under_floor')"
@@ -205,21 +214,6 @@
         display: block;
         float: none;
         text-align: left;
-    }
-    .switch-wrapper {
-        display: flex;
-        align-items: center;
-        min-height: 40px;
-        .el-form-item__content {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-        }
-        .el-form-item__label {
-            text-align: left;
-            float: none;
-            line-height: 1.4em;
-        }
     }
 </style>
 
