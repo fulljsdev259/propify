@@ -70,13 +70,14 @@
                                         </el-card>
 
                                         <el-card :header="$t('settings.pdf')">
-                                            <el-form-item class="switcher" prop="blank_pdf">
-                                                <label class="switcher__label">
-                                                    <span class="switcher__label-title">{{$t('settings.blank_pdf')}}</span>
-                                                    <span class="switcher__label-desc">{{$t('settings.blank_pdf_desc')}}</span>
-                                                </label>
-                                                <el-switch v-model="model.blank_pdf"/>
-                                            </el-form-item>
+                                            <div class="switch-wrapper">
+                                                <el-form-item :label="$t('settings.blank_pdf')" prop="blank_pdf">
+                                                    <el-switch v-model="model.blank_pdf"/>
+                                                </el-form-item>
+                                                <div>
+                                                    {{ $t('settings.blank_pdf_desc') }}
+                                                </div>
+                                            </div>
                                             <el-form-item prop="pdf_font_family">
                                                 <label class="card-label">
                                                     {{$t('settings.font_family')}}
@@ -129,22 +130,22 @@
                                                       prop="listing_approval_enable">
                                             <el-switch v-model="model.listing_approval_enable"/>
                                         </el-form-item> -->
-                                        <el-form-item class="switcher"
-                                                      prop="pinboard_approval_enable">
-                                            <label class="switcher__label">
-                                                <span class="switcher__label-title">{{$t('settings.pinboard_approval_enable')}}</span>
-                                                <span class="switcher__label-desc">{{$t('settings.pinboard_approval_enable_desc')}}</span>
-                                            </label>
-                                            <el-switch v-model="model.pinboard_approval_enable"/>
-                                        </el-form-item>
-                                        <el-form-item class="switcher"
-                                                      prop="contact_enable">
-                                            <label class="switcher__label">
-                                                <span class="switcher__label-title">{{$t('settings.contact_enable')}}</span>
-                                                <span class="switcher__label-desc">{{$t('settings.contact_enable_desc')}}</span>
-                                            </label>
-                                            <el-switch v-model="model.contact_enable"/>
-                                        </el-form-item>
+                                        <div class="switch-wrapper">
+                                            <el-form-item :label="$t('settings.pinboard_approval_enable')" prop="pinboard_approval_enable">
+                                                <el-switch v-model="model.pinboard_approval_enable"/>
+                                            </el-form-item>
+                                            <div>
+                                                {{ $t('settings.pinboard_approval_enable_desc') }}
+                                            </div>
+                                        </div>
+                                        <div class="switch-wrapper">
+                                            <el-form-item :label="$t('settings.contact_enable')" prop="contact_enable">
+                                                <el-switch v-model="model.contact_enable"/>
+                                            </el-form-item>
+                                            <div>
+                                                {{ $t('settings.contact_enable_desc')}}
+                                            </div>
+                                        </div>
                                         <el-row :gutter="20">
                                             <el-col :md="12">
                                                 <el-form-item :label="$t('settings.comment_update_timeout')"

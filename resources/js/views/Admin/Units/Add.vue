@@ -73,7 +73,7 @@
                             </el-col>
                         </el-row>
                         <el-row class="last-form-row" :gutter="20">
-                            <el-col :md="12" v-if="model.type === 1">
+                            <el-col :md="12" v-if="model.type === 1 || model.type === 2">
                                 <el-form-item :label="$t('models.unit.room_no')" :rules="validationRules.room_no" prop="room_no"
                                             >
                                     <el-select :placeholder="$t('general.placeholders.select')" class="w100p" style="width: 100%;"
@@ -185,14 +185,20 @@
                                      :label="$t('models.unit.sq_meter')" 
                                      prop="sq_meter">
 
-                                    <el-input autocomplete="off" type="number" v-model="model.sq_meter"></el-input>
+                                    <el-input autocomplete="off" type="number" min="0" v-model="model.sq_meter">
+                                        <template slot="prepend">m2</template>
+                                    </el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :md="8" v-if="hasAttic(model.building_id) && (model.type == 1 || model.type == 2)">
-                                <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic" class="switch-wrapper">
-                                    <el-switch v-model="model.attic">
-                                    </el-switch>
-                                </el-form-item>
+                                <div class="switch-wrapper">
+                                    <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic">
+                                        <el-switch v-model="model.attic"/>
+                                    </el-form-item>
+                                    <div>
+                                        {{$t('resident.notifications.service')}}
+                                    </div>
+                                </div>
                             </el-col>
                         </el-row>
                     </el-form>
@@ -229,10 +235,6 @@
             }
         },
         watch: {
-            "model.floor" () {
-                if(this.model.floor < -3)
-                    this.model.floor = -3; 
-            },
             "model.type" () {
                 if(this.model.type >= 3)
                     this.model.attic = false;
@@ -248,6 +250,10 @@
         },
     }
 </script>
+
+<style lang="scss">
+
+</style>
 
 <style lang="scss" scoped>
     
