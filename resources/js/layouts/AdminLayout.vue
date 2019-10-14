@@ -298,14 +298,14 @@
                     //         name: 'adminListings'
                     //     }
                     // },
-                    "admins": {
-                        icon: 'icon-user',
-                        title: this.$t('menu.admins'),
-                        permission: this.$permissions.list.user,
-                        route: {
-                            name: 'adminUsers'
-                        }
-                    }
+                    // "admins": {
+                    //     icon: 'icon-user',
+                    //     title: this.$t('menu.admins'),
+                    //     permission: this.$permissions.list.user,
+                    //     route: {
+                    //         name: 'adminUsers'
+                    //     }
+                    // }
                 }                
                 if (this.rolename == 'administrator') {
                    links = Object.values(menu_items);
