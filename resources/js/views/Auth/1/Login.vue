@@ -8,6 +8,7 @@
                     autocomplete="off"
                     prefix-icon="el-icon-user"
                     :placeholder="$t('general.email')"
+                    @keyup.enter.native="submit"
                 ></el-input>
 
             </el-form-item>
@@ -18,6 +19,7 @@
                     autocomplete="off"
                     prefix-icon="el-icon-lock"
                     :placeholder="$t('general.password')"
+                    @keyup.enter.native="submit"
                 ></el-input>
 
             </el-form-item>
