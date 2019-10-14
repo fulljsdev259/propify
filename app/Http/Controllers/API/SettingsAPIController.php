@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 /**
- * Class RealEstateController
+ * Class SettingsController
  * @package App\Http\Controllers\API
  */
 class SettingsAPIController extends AppBaseController
@@ -26,7 +26,7 @@ class SettingsAPIController extends AppBaseController
     private $addressRepository;
 
     /**
-     * RealEstateAPIController constructor.
+     * SettingsAPIController constructor.
      * @param SettingsRepository $settingsRepo
      * @param AddressRepository $addressRepo
      */
