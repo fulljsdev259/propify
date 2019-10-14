@@ -26,7 +26,7 @@ class AddTypeColumnInPropertyManagersTable extends Migration
     public function down()
     {
         Schema::table('property_managers', function (Blueprint $table) {
-            //
+            $table->dropColumn('type');
         });
     }
 }
