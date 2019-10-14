@@ -621,7 +621,7 @@
                     this.$router.replace({name: this.$route.name, query, params}).catch(err => {})
                 }
                 catch (err) {
-                    
+
                 }
             },  
             updatePage(page, size) {
@@ -913,6 +913,10 @@
                     line-height: 25px;
                     border-top: 1px solid var(--color-text-placeholder);
                 }
+            }
+
+            :global(.el-collapse-item__content) {
+                padding-bottom: 0;
             }
         }
 
