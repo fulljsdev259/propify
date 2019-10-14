@@ -40,11 +40,7 @@ trait UniqueIDFormat
      */
     public function getUniqueIDFormat($id)
     {
-        $format = $this->getTable();
-        $format = Str::singular($format);
-        $format = strtoupper($format);
-        $format .= '_FORMAT';
-        $format = env($format, 'TE-ID');
+        $template = $this->getUniqueIDTemplate();
 
         $len = strlen($id);
         if ($len < 6) {
@@ -53,6 +49,19 @@ trait UniqueIDFormat
             }
         }
 
-        return str_replace('ID', $id, $format);
+        return str_replace('ID', $id, $template);
     }
+
+    /**
+     * @return mixed
+     */
+    protected function getUniqueIDTemplate()
+    {
+        $format = $this->getTable();
+        $format = Str::singular($format);
+        $format = strtoupper($format);
+        $format .= '_FORMAT';
+        return env($format, 'TE-ID');
+    }
+
 }
