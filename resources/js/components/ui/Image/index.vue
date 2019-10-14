@@ -16,6 +16,7 @@
         <div class="ui-image__actions" v-if="srcList.length">
             <slot name="actions">
                 <div class="el-icon-zoom-in" @click="openViewer"></div>
+                <div class="icon-trash-empty" @click="$emit('delete-image', index)"></div>
             </slot>
         </div>
         <ui-viewer :current-image="src" :images="srcList" :z-index="zIndex" v-if="showViewer && srcList.length" @close="closeViewer" />
@@ -44,6 +45,9 @@
             zIndex: {
                 type: Number,
                 default: 999999
+            },
+            index: {
+                type: Number
             }
         },
         data () {
@@ -147,6 +151,12 @@
 
                 &:hover
                     filter: opacity(1)
+
+            .icon-trash-empty
+                color: var(--color-danger)
+                border-color: #fbc4c4
+                &:hover
+                    color: white
 
         .el-icon-loading
             height: 15px

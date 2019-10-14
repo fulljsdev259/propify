@@ -146,13 +146,13 @@
                 return type.includes('image/')
             },
             previewFile (file, idx) {
-                console.log('prevFile')
+                console.log('prevFile called')
                 if (this.isFileImage(file)) {
                     this.galleryIndex = idx
-                    console.log('is')
+                    console.log('is image file')
                 } else if (this.canFileBePreviewed(file)) {
                     window.open(file.file.blob)
-                    console.log('can')
+                    console.log('can file be previewed')
                 } else {
                     this.$message.warning(this.$t('components.common.media.messages.preview'), {
                         duration: 2400
@@ -183,7 +183,6 @@
                         const fileExtension = newFile.type.substring(newFile.type.lastIndexOf('/') + 1)
 
                         this.$message.closeAll()
-
                         switch (this.uploadOptions.extensions.constructor) {
                             case String:
                                 if (!this.uploadOptions.extensions.split(',').includes(fileExtension)) {
@@ -364,7 +363,7 @@
             },
         },
         mounted () {
-            console.log('common Media uploader')
+            
             if (this.uploadOptions.auto || this.uploadOptions.clear) {
                 this.$watch(() => this.value, media => {
                     if (media.length) {

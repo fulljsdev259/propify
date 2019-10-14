@@ -39,6 +39,26 @@ export default {
             }).catch(({response: {data: err}}) => reject(err))
         });
     },
+    uploadQuarterFile(_, payload) {
+        return new Promise((resolve, reject) => {
+            axios.post(`quarters/${payload.id}/media`, {...payload})
+                .then((resp) => {
+                    resolve({
+                        success: true,
+                        message: resp.data.message,
+                        media: resp.data.data
+                    });
+                }).catch(({response: {data: err}}) => reject(err))
+        })
+    },
+    deleteQuarterFile(_, payload) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`quarters/${payload.id}/media/${payload.media_id}`)
+                .then((resp) => {
+                    resolve(resp.data);
+                }).catch(({response: {data: err}}) => reject(err))
+        });
+    },
     assignManagerToQuarter({}, payload) {
         return new Promise((resolve, reject) => {
             axios.post(`quarters/${payload.id}/managers`, {managerIds: [payload.toAssignId]})

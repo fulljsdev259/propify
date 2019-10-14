@@ -298,8 +298,12 @@
                         per_page: 5,
                         page
                     });
+
                     this.meta = _.omit(resp.data, 'data');
-                    if (page === 1) {
+                    if(!resp.data) {
+                        this.list = []
+                    }
+                    else if (page === 1) {
                         this.list = resp.data.data;
                         if(this.fetchAction == 'getUnits') {
                             this.unitsTypeLabelMap();
@@ -311,6 +315,7 @@
                         }
                     }
                 } catch (e) {
+                    this.list = []
                     console.log(e);
                 } finally {
                     this.loading = false;
