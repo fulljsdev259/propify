@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Building;
 use App\Models\Model;
+use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\Pinboard;
 use App\Models\Contract;
@@ -96,6 +97,9 @@ class PinboardRepository extends BaseRepository
             $atts['published_at'] = now();
         }
 
+        /**
+         * @var $model Pinboard
+         */
         $model = parent::create($atts);
         if (!empty($atts['quarter_ids'])) {
             $model->quarters()->sync($atts['quarter_ids']);
@@ -103,6 +107,10 @@ class PinboardRepository extends BaseRepository
 
         if (!empty($atts['building_ids'])) {
             $model->buildings()->sync($atts['building_ids']);
+        }
+
+        if (!empty($atts['provider_ids'])) {
+            $model->providers()->sync($atts['provider_ids']);
         }
 
         $notificationsData = collect();
