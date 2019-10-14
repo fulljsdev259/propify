@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Criteria\Common\FilterFullnameCriteria;
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\PropertyManager\FilterByRelatedFieldsCriteria;
+use App\Criteria\PropertyManager\FilterByTypeCriteria;
 use App\Criteria\PropertyManager\HasRequestCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\PropertyManager\AssignRequest;
@@ -89,6 +90,7 @@ class PropertyManagerAPIController extends AppBaseController
         $this->propertyManagerRepository->pushCriteria(new FilterFullnameCriteria($request));
         $this->propertyManagerRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->propertyManagerRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
+        $this->propertyManagerRepository->pushCriteria(new FilterByTypeCriteria($request));
 
         $hasRequest = $request->get('has_req', false);
         if ($hasRequest) {
