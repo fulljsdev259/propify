@@ -484,6 +484,32 @@ class Request extends AuditableModel implements HasMedia
         AuditableModel::EventProviderNotified => 'getProviderNotifiedEventAttributes'
     ];
 
+    protected function getUniqueIDTemplate()
+    {
+        $this->load(['contract' => function ($q) {
+            $q->with('unit', 'building.quarter:id,internal_quarter_id');
+        }]);
+        $contract = $this->contract;
+        if (empty($contract)) {
+            $this->load(['resident' => function ($q) {
+                $q->with([
+                    'contracts' => function ($q) {
+                        $q->with('unit', 'building.quarter:id,internal_quarter_id')->first();
+                    }
+                ]);
+            }]);
+            $contract = $this->resident->contracts->first() ?? null;
+        }
+        if ($contract) {
+            $internalQuarterId = $contract->building->quarter->internal_quarter_id ?? '';
+//            $unit = $contract->unit->name ?? '';
+            $unit = ($contract->building->address->house_num ?? '') . '-' . $contract->unit_id;
+            return $internalQuarterId .'_' . $unit. '__ID';
+        }
+        return 'RE_ID';
+    }
+
+
     /**
      * @return array
      */

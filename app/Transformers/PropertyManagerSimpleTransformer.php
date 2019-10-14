@@ -26,6 +26,7 @@ class PropertyManagerSimpleTransformer extends BaseTransformer
     {
         $response = [
             'id' => $model->id,
+            'type' => $model->type,
             'property_manager_format' => $model->property_manager_format,
             'slogan' => $model->slogan,
         ];
