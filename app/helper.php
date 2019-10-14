@@ -86,3 +86,12 @@ function update_notifications_data_value($replace, $to)
         $notification->save();
     }
 }
+
+function get_type_correspond_role($type)
+{
+    // @TODO cache
+    $roleName = \App\Models\PropertyManager::Type[$type] ?? \App\Models\PropertyManager::TypeManager;
+    return \Illuminate\Support\Facades\Cache::remember('role_' . $roleName, 3000, function () use ($roleName) {
+        return \App\Models\Role::whereName($roleName)->first();
+    });
+}

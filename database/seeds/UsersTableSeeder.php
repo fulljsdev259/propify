@@ -14,6 +14,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        // @TODO make correspond PM-s , and fix in _assignees table
         $superAdminRole = Role::where('name', 'administrator')->first();
 
         $attr = [
@@ -23,6 +24,7 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('dev@example.com'),
         ];
         $user = factory(User::class, 1)->create($attr)->first();
+        $this->saveManager($user);
 
         $settings = $this->getSettings();
         $user->settings()->save($settings->replicate());
@@ -35,6 +37,7 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('adprop19-1'),
         ];
         $user = factory(User::class, 1)->create($attr)->first();
+        $this->saveManager($user);
 
         $settings = $this->getSettings();
         $user->settings()->save($settings->replicate());
@@ -49,6 +52,20 @@ class UsersTableSeeder extends Seeder
                 $user->attachRole($roles->random());
             });
         }
+    }
+
+    protected function saveManager($user)
+    {
+        $nameParts = explode(' ' ,$user->name);
+        $firstName = array_shift($nameParts);
+        $lastName = implode(' ',$nameParts);
+        $manager = \App\Models\PropertyManager::create([
+                'first_name'  => $firstName,
+                'lsat_name' => $lastName,
+                'title' => $user->title,
+                'type' => \App\Models\PropertyManager::TypeAdministrator,
+                'user_id' => $user->id,
+            ]);
     }
 
     private function getSettings()

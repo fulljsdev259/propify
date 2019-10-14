@@ -103,12 +103,12 @@ class PropertyManager extends AuditableModel
         'mrs',
     ];
 
-    const TypeAdministrator = 1;
-    const TypeManager = 2;
+    const TypeManager = 1;
+    const TypeAdministrator = 2;
 
     const Type = [
-        self::TypeAdministrator => 'administrator',
         self::TypeManager => 'manager',
+        self::TypeAdministrator => 'administrator',
     ];
 
     public $fillable = [
