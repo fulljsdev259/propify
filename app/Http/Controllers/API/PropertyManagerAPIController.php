@@ -17,6 +17,7 @@ use App\Http\Requests\API\PropertyManager\UnAssignRequest;
 use App\Http\Requests\API\PropertyManager\UpdateRequest;
 use App\Http\Requests\API\PropertyManager\ViewRequest;
 use App\Models\PropertyManager;
+use App\Models\Role;
 use App\Models\User;
 use App\Repositories\BuildingRepository;
 use App\Repositories\QuarterRepository;
@@ -153,7 +154,7 @@ class PropertyManagerAPIController extends AppBaseController
     public function store(CreateRequest $request)
     {
         $input = $request->all();
-        $input['user']['role'] = 'manager';
+        $input['user']['role'] = (PropertyManager::TypeAdministrator == $request->type) ? 'administrator' : 'manager';
 
         $input['user']['name'] = sprintf('%s %s', $input['first_name'], $input['last_name']);
         $validator = Validator::make($input['user'], User::$rules);
@@ -298,6 +299,12 @@ class PropertyManagerAPIController extends AppBaseController
 
         if (isset($input['user'])) {
             $input['user']['name'] = sprintf('%s %s', $input['first_name'], $input['last_name']);;
+            if (empty($input['user']['password'])) {
+                unset($input['user']['password']);
+            }
+            if (empty($input['user']['password_confirmation'])) {
+                unset($input['user']['password_confirmation']);
+            }
             $validator = Validator::make($input['user'], User::$rulesUpdate);
             if ($validator->fails()) {
                 return $this->sendError($validator->errors());
@@ -307,7 +314,11 @@ class PropertyManagerAPIController extends AppBaseController
         $input['user']['settings'] = Arr::pull($input, 'settings', []);
         try {
             User::disableAuditing();
-            $this->userRepository->update($input['user'], $propertyManager->user_id);
+            $user = $this->userRepository->update($input['user'], $propertyManager->user_id);
+            if (isset($input['type']) && $input['type'] != $propertyManager->type) {
+                $role = get_type_correspond_role($input['type']);
+                $user->roles()->sync($role);
+            }
             User::enableAuditing();
         } catch (\Exception $e) {
             return $this->sendError(__('models.propertyManager.errors.update') . $e->getMessage());
