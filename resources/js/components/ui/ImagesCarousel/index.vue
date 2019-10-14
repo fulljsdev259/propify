@@ -6,7 +6,7 @@
         </template>
         <template v-if="images.length">
             <div :class="['ui-images-carousel__item', {'ui-images-carousel__item--active': index === activeIndex}]" v-for="(src, index) in images" :key="index" :style="{'transform': `translate3d(${getPosition(index) * 100}%, 0, 0)`}">
-                <ui-image ref="ui-image" :src="src" :src-list="images" />
+                <ui-image ref="ui-image" :src="src" :src-list="images" :show-delete-button="false" />
             </div>
             <div class="ui-images-carousel__indicators" v-if="showIndicator">
                 <div :class="['ui-images-carousel__indicator', {'ui-images-carousel__indicator--active': index - 1 === activeIndex}]" v-for="index in images.length" :key="index" @click="activeIndex = index - 1"></div>

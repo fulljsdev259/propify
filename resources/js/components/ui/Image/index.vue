@@ -16,7 +16,7 @@
         <div class="ui-image__actions" v-if="srcList.length">
             <slot name="actions">
                 <div class="el-icon-zoom-in" @click="openViewer"></div>
-                <div class="icon-trash-empty" @click="$emit('delete-image', index)"></div>
+                <div class="icon-trash-empty" v-if="showDeleteButton" @click="$emit('delete-image', index)"></div>
             </slot>
         </div>
         <ui-viewer :current-image="src" :images="srcList" :z-index="zIndex" v-if="showViewer && srcList.length" @close="closeViewer" />
@@ -48,6 +48,10 @@
             },
             index: {
                 type: Number
+            },
+            showDeleteButton: {
+                type: Boolean,
+                default: true
             }
         },
         data () {
