@@ -181,6 +181,7 @@ class PinboardAPIController extends AppBaseController
         $input['user_id'] = \Auth::id();
 	    $input['building_ids'] = $request->building_ids ?? [];
         $input['quarter_ids'] = $request->quarter_ids ?? [];
+        $input['provider_ids'] = $request->provider_ids ?? [];
 
         if (! Auth::user()->hasRole('administrator')) {
             $input['status'] = Pinboard::StatusNew;
