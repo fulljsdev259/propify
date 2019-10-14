@@ -205,11 +205,8 @@
                 selectedFileCategory: 'house_rules',
                 requestColumns: [{
                     type: 'requestResidentAvatar',
-<<<<<<< HEAD
                     width: 100,
-=======
                     width: 90,
->>>>>>> 95e44148a340f985fd21914a98a5d52d37788313
                     prop: 'resident',
                     label: 'general.resident'
                 }, {
