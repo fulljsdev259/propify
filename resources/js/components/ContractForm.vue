@@ -800,8 +800,7 @@
     }
     
     .el-alert {
-        line-height: 19px;
-        margin-bottom: 10px;
+        line-height: 18px;
     }
 
     /deep/ .contract-form-actions {
