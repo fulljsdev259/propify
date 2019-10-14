@@ -206,7 +206,6 @@
                 requestColumns: [{
                     type: 'requestResidentAvatar',
                     width: 100,
-                    width: 90,
                     prop: 'resident',
                     label: 'general.resident'
                 }, {
