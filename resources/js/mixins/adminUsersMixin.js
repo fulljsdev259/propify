@@ -22,7 +22,7 @@ export default (config = {}) => {
                     role: '',
                     settings: {
                         language: ''
-                    }
+                    },
                 },
                 validationRules: {
                     name: [{

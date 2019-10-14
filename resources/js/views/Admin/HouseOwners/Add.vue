@@ -1,13 +1,13 @@
 <template>
     <div class="services-add">
-        <heading :title="$t('models.propertyManager.add')" icon="icon-users" shadow="heavy">
-            <add-actions :saveAction="submit" route="adminPropertyManagers" editRoute="adminPropertyManagersEdit"/>
+        <heading :title="$t('models.houseOwner.add')" icon="icon-users" shadow="heavy">
+            <add-actions :saveAction="submit" route="adminHouseOwners" editRoute="adminHouseOwnerssEdit"/>
         </heading>
         <div class="crud-view">
             <el-form :model="model" ref="form">
                 <el-row :gutter="20">
                     <el-col :md="12">
-                        <card :loading="loading" :header="$t('models.propertyManager.details_card')">
+                        <card :loading="loading" :header="$t('models.houseOwner.details_card')">
 
                             <el-row :gutter="20">
                                 <el-col :md="8">
@@ -30,7 +30,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="8">
-                                    <el-form-item :label="$t('models.propertyManager.profession')"
+                                    <el-form-item :label="$t('models.houseOwner.profession')"
                                                   :rules="validationRules.profession"
                                                   prop="profession">
                                         <el-input type="text" v-model="model.profession"/>
@@ -40,14 +40,14 @@
 
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('general.firstName')"
+                                    <el-form-item :label="$t('models.houseOwner.firstName')"
                                                   :rules="validationRules.first_name"
                                                   prop="first_name">
                                         <el-input type="text" v-model="model.first_name"/>
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('general.lastName')" :rules="validationRules.last_name"
+                                    <el-form-item :label="$t('models.houseOwner.lastName')" :rules="validationRules.last_name"
                                                   prop="last_name">
                                         <el-input type="text" v-model="model.last_name"/>
                                     </el-form-item>
@@ -68,10 +68,10 @@
                             </el-row>
                         </card>
 
-                        <card class="mt15" :loading="loading" :header="$t('models.propertyManager.social_card')">
+                        <card class="mt15" :loading="loading" :header="$t('models.houseOwner.social_card')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.propertyManager.linkedin_url')"
+                                    <el-form-item :label="$t('models.houseOwner.linkedin_url')"
                                                   :rules="validationRules.linkedin_url"
                                                   prop="linkedin_url">
                                         <el-input type="text" v-model="model.linkedin_url">
@@ -80,7 +80,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.propertyManager.xing_url')" :rules="validationRules.xing_url"
+                                    <el-form-item :label="$t('models.houseOwner.xing_url')" :rules="validationRules.xing_url"
                                                   prop="xing_url">
                                         <el-input type="text"
                                                   v-model="model.xing_url"
@@ -95,7 +95,7 @@
                         </card>
                     </el-col>
                     <el-col :md="12">
-                        <card :loading="loading" :header="$t('models.propertyManager.profile_card')">
+                        <card :loading="loading" :header="$t('models.houseOwner.profile_card')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item :label="$t('general.password')" :rules="validationRules.password" autocomplete="off"
@@ -120,7 +120,7 @@
                                 <cropper :resize="false" :viewportType="'circle'" @cropped="cropped"/>
                             </el-form-item>
 
-                            <el-form-item :label="$t('models.propertyManager.slogan')" :rules="validationRules.slogan"
+                            <el-form-item :label="$t('models.houseOwner.slogan')" :rules="validationRules.slogan"
                                           prop="slogan">
                                 <el-input type="text" v-model="model.slogan"/>
                             </el-form-item>
@@ -158,7 +158,7 @@
 <script>
     import Heading from 'components/Heading';
     import Card from 'components/Card';
-    import PropertyManagersMixin from 'mixins/adminPropertyManagersMixin';
+    import HouseOwnersMixin from 'mixins/adminHouseOwnersMixin';
     import Cropper from 'components/Cropper';
     import AddActions from 'components/EditViewActions';
     import SelectLanguage from 'components/SelectLanguage';
@@ -166,8 +166,8 @@
     import AssignmentByType from 'components/AssignmentByType';
 
     export default {
-        name: 'AdminPropertyManagersAdd',
-        mixins: [PropertyManagersMixin({
+        name: 'AdminHouseOwnersAdd',
+        mixins: [HouseOwnersMixin({
             mode: 'add'
         })],
         components: {
@@ -186,7 +186,7 @@
                     label: 'general.title'
                 }, {
                     prop: 'type',
-                    label: 'models.propertyManager.assignType',
+                    label: 'models.houseOwner.assignType',
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{

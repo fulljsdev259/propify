@@ -70,5 +70,25 @@ export default {
                 resolve(resp.data);
             }).catch(({response: {data: err}}) => reject(err))
         });
-    }
+    },
+    uploadUnitFile(_, payload) {
+        return new Promise((resolve, reject) => {
+            axios.post(`units/${payload.id}/media`, {...payload})
+                .then((resp) => {
+                    resolve({
+                        success: true,
+                        message: resp.data.message,
+                        media: resp.data.data
+                    });
+                }).catch(({response: {data: err}}) => reject(err))
+        })
+    },
+    deleteUnitFile(_, payload) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`units/${payload.id}/media/${payload.media_id}`)
+                .then((resp) => {
+                    resolve(resp.data);
+                }).catch(({response: {data: err}}) => reject(err))
+        });
+    },
 }

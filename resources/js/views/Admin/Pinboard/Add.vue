@@ -145,11 +145,12 @@
                             </el-row>  
                         </el-form-item> 
                         <el-form-item :label="model.type == 3 ? $t('models.pinboard.attachments') : $t('models.pinboard.images')">
-                            <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple/>
+                            <!-- <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple/>
                             <div class="mt15">
                                 <media :data="mediaFiles" @deleteMedia="deleteMedia"
                                        v-if="media.length || (model.media && model.media.length)"></media>
-                            </div>
+                            </div> -->
+                            <media-uploader ref="media" :id="pinboard_id" :audit_id="audit_id" type="pinboard" layout="grid" v-model="media" :upload-options="uploadOptions" />
                         </el-form-item>
 
                     </card>

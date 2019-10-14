@@ -58,8 +58,7 @@ return [
     ],
     'attached' => [
         "building" => "Bâtiment affecté",
-        "quarter" => "Trimestre assigné",
-        "provider" => "Prestataire désigné",
+        "quarter" => "Trimestre assigné",        
         'resident' => "Résident attaché avec succès",
         "service" => "Le prestataire s'est attaché avec succès",
         "manager" => "Gestionnaire attaché avec succès",
@@ -68,8 +67,7 @@ return [
     ],
     'detached' => [
         "building" => "Bâtiment non assigné",
-        "quarter" => "Trimestre non attribué",
-        "provider" => "Prestataire non assigné",
+        "quarter" => "Trimestre non attribué",        
         'resident' => "Résident détaché avec succès",
         "service" => "Le prestataire s'est détaché avec succès",
         "manager" => "Gestionnaire détaché avec succès",
@@ -77,6 +75,8 @@ return [
         "tag" => "Étiquette non attribuée avec succès",
     ],
     'no' => 'Non',
+    "firstName" => "Prénom",
+    "lastName" => "Nom de famille",
     "name" => "Nom",
     'phone' => "Téléphone",
     'id' => "ID",
@@ -220,10 +220,10 @@ return [
     'roles' => [
         'label' => 'Rôle',
         'administrator' => 'Administrateur',
-        'homeowner' => 'Propriétaire de maison',
+        'resident' => 'Résident',
         'manager' => 'Directeur',
         'registered' => 'Enregistré',
-        'service' => 'Service après-vente',
+        'provider' => 'Service après-vente',
         'super_admin' => 'Super Admin',
     ],
     'placeholders' => [

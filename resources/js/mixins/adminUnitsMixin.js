@@ -30,7 +30,8 @@ export default (config = {}) => {
                     attic: false,
                     building_id: this.$route.params.id,
                     selected_resident: '',
-                    residents: []
+                    residents: [],
+                    media: []
                 },
                 validationRules: {
                     resident_id: [{
@@ -85,6 +86,7 @@ export default (config = {}) => {
                 }],
                 toAssign: '',
                 addedAssigmentList: [],
+                media: [],
             }
         },
         methods: {
@@ -297,6 +299,10 @@ export default (config = {}) => {
                         this.loading.state = true;
 
                         this.model = await this.getUnit({id: this.$route.params.id});
+
+                        if(!this.model.media)
+                            this.model.media = []
+                            
                         this.addedAssigmentList = [];
                         this.addedAssigmentList = this.model.residents;
 

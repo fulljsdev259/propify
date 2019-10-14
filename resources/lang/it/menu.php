@@ -32,5 +32,6 @@ return [
     'services' => 'Partner di servizio',
     'activity' => 'Attività',
     'propertyManagers' => 'Gestori',
+    'houseOwners' => 'Proprietari',
     'templates' => 'Modelli'    
 ];

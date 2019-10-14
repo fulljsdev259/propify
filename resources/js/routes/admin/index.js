@@ -16,6 +16,7 @@ import PinbordRoutes from 'routes/admin/pinboard';
 import QuartersRoutes from 'routes/admin/quarters';
 import RequestsRoutes from 'routes/admin/requests';
 import PropertyManagersRoutes from 'routes/admin/propertyManagers';
+import HouseOwnersRoutes from 'routes/admin/houseOwners';
 import ListingsRoutes from 'routes/admin/listings';
 import TemplatesRoutes from 'routes/admin/templates';
 
@@ -65,6 +66,7 @@ export default [{
         ...QuartersRoutes,
         ...RequestsRoutes,
         ...PropertyManagersRoutes,
+        ...HouseOwnersRoutes,
         ...ListingsRoutes,
         ...TemplatesRoutes,
     ],

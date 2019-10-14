@@ -2,7 +2,7 @@ import {mapActions} from 'vuex';
 import {displayError, displaySuccess} from 'helpers/messages';
 import PasswordValidatorMixin from './passwordValidatorMixin';
 import UploadUserAvatarMixin from './adminUploadUserAvatarMixin';
-import PropertyManagerTitlesMixin from './methods/propertyManagerTitleTypes';
+import HouseOwnerTitlesMixin from './methods/houseOwnerTitleTypes';
 import axios from '@/axios';
 export default (config = {}) => {
     let mixin = {
@@ -62,11 +62,11 @@ export default (config = {}) => {
                 validationRules: {
                     first_name: [{
                         required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('general.firstName')})
+                        message: this.$t('validation.required', {attribute: this.$t('models.houseOwner.firstName')})
                     }],
                     last_name: [{
                         required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('general.lastName')})
+                        message: this.$t('validation.required', {attribute: this.$t('models.houseOwner.lastName')})
                     }],
                     language: [{
                         required: true,
@@ -98,11 +98,11 @@ export default (config = {}) => {
                     }],
                     linkedin_url: [{
                         type: 'url',
-                        message: this.$t('validation.url', {attribute: this.$t('models.propertyManager.linkedin_url')})
+                        message: this.$t('validation.url', {attribute: this.$t('models.houseOwner.linkedin_url')})
                     }],
                     xing_url: [{
                         type: 'url',
-                        message: this.$t('validation.url', {attribute: this.$t('models.propertyManager.xing_url')})
+                        message: this.$t('validation.url', {attribute: this.$t('models.houseOwner.xing_url')})
                     }],
                     title: [{
                         required: true,
@@ -286,7 +286,7 @@ export default (config = {}) => {
         switch (config.mode) {
             case 'add':
                 mixin.mixins = [PasswordValidatorMixin({
-                }), UploadUserAvatarMixin, PropertyManagerTitlesMixin];
+                }), UploadUserAvatarMixin, HouseOwnerTitlesMixin];
 
                 mixin.methods = {
                     async submit(afterValid = false) {
@@ -303,7 +303,7 @@ export default (config = {}) => {
                                 this.model.user.name = this.model.name
                                 this.model.user.phone = this.model.phone
 
-                                const resp = await this.createPropertyManager(this.model);
+                                const resp = await this.createHouseOwner(this.model);
 
                                 if (resp.data.user && resp.data.user.id) {
                                     await this.uploadAvatarIfNeeded(resp.data.user.id);
@@ -318,7 +318,7 @@ export default (config = {}) => {
                                     afterValid(resp);
                                 } else {
                                     this.$router.push({
-                                        name: 'adminPropertyManagersEdit',
+                                        name: 'adminHouseOwnersEdit',
                                         params: {id: resp.data.id}
                                     })
                                 }
@@ -332,13 +332,13 @@ export default (config = {}) => {
                     },
 
                     ...mixin.methods,
-                    ...mapActions(['createPropertyManager'])
+                    ...mapActions(['createHouseOwner'])
                 };
                 break;
             case 'edit':
                 mixin.mixins = [PasswordValidatorMixin({
                     required: false,
-                }), UploadUserAvatarMixin, PropertyManagerTitlesMixin];
+                }), UploadUserAvatarMixin, HouseOwnerTitlesMixin];
 
                 mixin.methods = {
                     submit() {
@@ -367,7 +367,7 @@ export default (config = {}) => {
                                 try {
                                     params.buildings = params.building_ids;
                                     this.model.building_ids = params.building_ids;
-                                    const resp = await this.updatePropertyManager(params);
+                                    const resp = await this.updateHouseOwner(params);
 
                                     if (resp.data.user && resp.data.user.id) {
                                         await this.uploadAvatarIfNeeded(resp.data.user.id);
@@ -387,7 +387,7 @@ export default (config = {}) => {
                     },
 
                     async fetchCurrentManager() {
-                        const resp = await this.getPropertyManager({id: this.$route.params.id});
+                        const resp = await this.getHouseOwner({id: this.$route.params.id});
                         const data = resp.data;
                         this.model = Object.assign({}, this.model, data);
 
@@ -402,7 +402,7 @@ export default (config = {}) => {
                     },
 
                     ...mixin.methods,
-                    ...mapActions(['getPropertyManager', 'updatePropertyManager', 'getRequests'])
+                    ...mapActions(['getHouseOwner', 'updateHouseOwner', 'getRequests'])
                 };
 
                 mixin.created = async function () {
@@ -421,7 +421,7 @@ export default (config = {}) => {
                         data: {
                             ...restData
                         }
-                    } = await this.getPropertyManager({id: this.$route.params.id});
+                    } = await this.getHouseOwner({id: this.$route.params.id});
 
                     this.statistics.raw[0].value = restData.requests_count;
                     this.statistics.raw[1].value = restData.solved_requests_count;

@@ -141,13 +141,16 @@
                                             height="50%"/>  
                                     </el-row>  
                                 </el-form-item>  -->
-                                <el-form-item :label="model.type == 3 ? $t('models.pinboard.attachments') : $t('models.pinboard.images')">
+                                <!-- <el-form-item :label="model.type == 3 ? $t('models.pinboard.attachments') : $t('models.pinboard.images')">
                                     <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple />   
                                     <div class="mt15" v-if="media.length || (model.media && model.media.length)">
                                         <request-media :data="[...model.media, ...media]" @deleteMedia="deleteMedia"
                                                        v-if="media.length || (model.media && model.media.length)"></request-media>
                                     </div>
-                                </el-form-item>
+                                </el-form-item> -->
+                                <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex"/>
+                                <media-uploader ref="media" :id="pinboard_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
+                                
                             </el-tab-pane>
                             <el-tab-pane name="comments">
                                 <span slot="label">
@@ -167,11 +170,13 @@
                             </el-form-item>
                             <el-form-item :label="$t('models.pinboard.images')"
                             >
-                                <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple/>
+                                <!-- <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple/>
                                 <div class="mt15" v-if="media.length || (model.media && model.media.length)">
                                     <request-media :data="[...model.media, ...media]" @deleteMedia="deleteMedia"
                                                        v-if="media.length || (model.media && model.media.length)"></request-media>
-                                </div>
+                                </div> -->
+                                <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex"/>
+                                <media-uploader ref="media" :id="pinboard_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
                             </el-form-item>
                         </template>                        
                     </el-card>

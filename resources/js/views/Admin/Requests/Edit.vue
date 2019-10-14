@@ -238,7 +238,7 @@
                                         :closable="false"
                                     >
                                     </el-alert>
-                                    <upload-document
+                                    <!-- <upload-document
                                         @fileUploaded="uploadFiles"
                                         class="drag-custom mt15"
                                         drag
@@ -247,7 +247,9 @@
                                     <div class="mt15">
                                         <request-media :data="[...model.media, ...media]" @deleteMedia="deleteMedia"
                                                        v-if="media.length || (model.media && model.media.length)"></request-media>
-                                    </div>
+                                    </div> -->
+                                    <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex"/>
+                                    <media-uploader ref="media" :id="request_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
                                 </el-tab-pane>
 
                             </el-tabs>

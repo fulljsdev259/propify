@@ -220,6 +220,65 @@
                             v-if="addedAssigmentList"
                     />
                 </card>
+
+                <card :loading="loading" :header="$t('models.building.files')" class="mt15">
+
+                   <draggable @sort="sortFiles" v-model="model.media">
+                        <transition-group name="list-complete">
+                            <div key="list-complete-item" class="list-complete-item">
+                                <el-table
+                                    :data="model.media"
+                                    style="width: 100%"
+                                    v-if="model.media && model.media.length"
+                                    :show-header="false"
+                                    >
+                                    <el-table-column
+                                        prop="collection_name"
+                                    >
+                                        <template slot-scope="scope">
+                                            <strong>{{$t(`models.building.${scope.row.collection_name}`)}}</strong>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        align="right"
+                                    >
+                                        <template slot-scope="scope">
+                                            <a :href="scope.row.url" class="file-name" target="_blank">
+                                                {{scope.row.name}}
+                                            </a>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        align="right"
+                                    >
+                                        <template slot-scope="scope">
+                                            <el-button :style="{color: 'red'}" @click="deleteDocument('media', scope.$index)"
+                                                icon="ti-close" size="mini" type="text"
+                                            />
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+
+                        </transition-group>
+                    </draggable>
+                    <div class="mt15">
+                        <label class="card-label">{{$t('models.building.add_files')}}</label>
+                        <el-select :placeholder="$t('models.building.select_media_category')"
+                                    class="category-select"
+                                    v-model="selectedFileCategory">
+                            <el-option
+                                :key="item"
+                                :label="$t('models.building.' + item)"
+                                :value="item"
+                                v-for="item in model.media_category">
+                            </el-option>
+                        </el-select>
+                        <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple
+                                            v-if="selectedFileCategory"/><!-- @TODO this is uploading file on the spot, is it okay? need to confirm -->
+                        
+                    </div>
+                </card>
             </el-col>
             <el-col :md="12">
                 <card :loading="loading" :header="$t('general.requests')">
@@ -258,6 +317,9 @@
     import RelationList from 'components/RelationListing';
     import Assignment from 'components/Assignment';
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
+    import UploadDocument from 'components/UploadDocument';
+    import draggable from 'vuedraggable';
+    import {displayError, displaySuccess} from "helpers/messages";
 
     export default {
         mixins: [UnitsMixin({
@@ -270,10 +332,13 @@
             EditActions,
             RelationList,
             Assignment,
-            EmergencySettingsForm
+            EmergencySettingsForm,
+            UploadDocument,
+            draggable,
         },
         data() {
             return {
+                selectedFileCategory: 'house_rules',
                 requestColumns: [{
                     type: 'requestResidentAvatar',
                     width: 100,
@@ -321,7 +386,9 @@
         },
         methods: {
             ...mapActions([
-                "deleteUnit"
+                "deleteUnit",
+                "uploadUnitFile", 
+                "deleteUnitFile",
             ]),
             hasAttic(id) {
                 let hasAttic = false;
@@ -335,6 +402,50 @@
             toggleDrawer() {
                 this.visibleDrawer = true;
                 document.getElementsByTagName('footer')[0].style.display = "none";
+            },
+
+            setOrder() {
+                _.each(this.model.media, (file, i) => {
+                    file.order = i + 1;
+                });
+                this.$forceUpdate();
+            },
+            sortFiles() {
+                this.setOrder();
+            },
+            uploadFiles(file) {
+                this.insertDocument(this.selectedFileCategory, file);
+                if(this.fileCount){
+                    this.fileCount++;
+                } else {
+                    this.fileCount = 1;
+                }
+            },
+            insertDocument(prop, file) {
+                console.log('media', this.model)
+                file.order = this.model.media.length + 1;
+                this.uploadUnitFile({
+                    id: this.model.id,
+                    [`${prop}_upload`]: file.src
+                }).then((resp) => {
+                    displaySuccess(resp);
+                    this.model.media.push(resp.media);
+                }).catch((err) => {
+                    displayError(err);
+                });
+            },
+            deleteDocument(prop, index) {
+                this.deleteUnitFile({
+                    id: this.model.id,
+                    media_id: this.model[prop][index].id
+                }).then((resp) => {
+                    displaySuccess(resp);
+                    this.fileCount--;
+                    this.model[prop].splice(index, 1);
+                    this.setOrder(prop);
+                }).catch((error) => {
+                    displayError(error);
+                })
             },
         },
         watch: {
@@ -500,5 +611,50 @@
             position: relative;
 
         }
+    }
+
+    .list-complete-item {
+        transition: all 1s;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #eee;
+
+        & > .el-col {
+            border-left: 1px solid #eee;
+            padding-top: 10px;
+            min-height: 50px;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+
+            &:last-child {
+                border-right: 1px solid #eee;
+                justify-content: center;
+            }
+        }
+
+        &:last-child {
+            border-bottom: 1px solid #eee;
+        }
+    }
+
+    .list-complete-enter, .list-complete-leave-active {
+        opacity: 0;
+    }
+
+    .card-label {
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .file-name {
+        max-width: 75%;
+        word-wrap: break-word;
+        color: #333;
+    }
+
+    .category-select {
+        margin-bottom: 30px;
+        width: 100%;
     }
 </style>

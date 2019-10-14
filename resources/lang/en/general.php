@@ -58,8 +58,7 @@ return [
     ],
     'attached' => [
         'building' => 'Building assigned',
-        'quarter' => 'Quarter assigned',
-        'provider' => 'Provider assigned',
+        'quarter' => 'Quarter assigned',        
         'resident' => 'Resident attached',
         'service' => 'Provider attached successfully',
         'manager' => 'Manager attached successfully',
@@ -68,8 +67,7 @@ return [
     ],
     'detached' => [
         'building' => 'Buiding unassigned',
-        'quarter' => 'Quarter unassigned',
-        'provider' => 'Provider unassigned',
+        'quarter' => 'Quarter unassigned',        
         'resident' => 'Resident detached',
         'service' => 'Provider detached successfully',
         'manager' => 'Manager detached successfully',
@@ -77,6 +75,8 @@ return [
         'tag' => 'Tag unassigned successfully',
     ],
     'no' => 'No',
+    'firstName' => 'First name',
+    'lastName' => 'Last name',
     'name' => "Name",
     'phone' => 'Phone',
     'id' => "ID",
@@ -220,10 +220,10 @@ return [
     'roles' => [
         'label' => 'Role',
         'administrator' => 'Administrator',
-        'homeowner' => 'Home Owner',
+        'resident' => 'Resident',
         'manager' => 'Manager',
         'registered' => 'Registered',
-        'service' => 'Service',
+        'provider' => 'Service',
         'super_admin' => 'Super Admin',
     ],
     'placeholders' => [
