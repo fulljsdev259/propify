@@ -98,13 +98,13 @@
                     // If there is type then only show event options
                     // Get type options from translation files
                     filter_name = 'event'
-                    const filter_event_translations = this.$t(`components.common.audit.filter.${this.type}`);
+                    const filter_event_translations = this.$t(`general.components.common.audit.filter.${this.type}`);
                     const filter_event_options = Object.keys(filter_event_translations).map((key, index) => {
                         // Push to schema array
                         schema_children.push({
                             type: 'el-option',
                             props: {
-                                label: `components.common.audit.filter.${this.type}.${key}`,
+                                label: `general.components.common.audit.filter.${this.type}.${key}`,
                                 value: key
                             }
                         })
@@ -113,7 +113,7 @@
                     // If there is no type prop on audit component then show type select
                     // Get filter translations from file
                     filter_name = 'auditable_type'
-                    const filter_type_translations = this.$t(`components.common.audit.filter.type`);
+                    const filter_type_translations = this.$t(`general.components.common.audit.filter.type`);
                     const filter_type_options = Object.keys(filter_type_translations).map((key, index) => {
                     schema_children.push({
                         type: 'el-option',
@@ -138,7 +138,7 @@
                     // If type filter is set search for second select
                     if(filters.auditable_type && filters.auditable_type != ''){
                         let schema_children = [];
-                        const filter_event_translations = this.$t(`components.common.audit.filter.${filters.auditable_type}`);
+                        const filter_event_translations = this.$t(`general.components.common.audit.filter.${filters.auditable_type}`);
                         const filter_event_options = Object.keys(filter_event_translations).map((key, index) => {
                             // Push to schema array
                             schema_children.push({
@@ -223,7 +223,7 @@
                 const audits = data.data.reduce((obj, current, idx) => {
                     let audit_replacer = [];
                     let content = [];
-                    const translated_auditable_type = this.$t(`components.common.audit.type.${current.auditable_type}`);
+                    const translated_auditable_type = this.$t(`general.components.common.audit.type.${current.auditable_type}`);
                     switch(current.event){
                         //  If audit event is updated
                         case 'updated':
@@ -273,26 +273,26 @@
                             //  then replace the old and new values
 
                             content = Object.values(audit_replacer).map(( current_line, index) => {
-                                return this.$t(`components.common.audit.content.${translation_with_id}.${current.auditable_type}.updated.${Object.keys(audit_replacer)[index]}`,{old: current_line.old, new: current_line.new, auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
+                                return this.$t(`general.components.common.audit.content.${translation_with_id}.${current.auditable_type}.updated.${Object.keys(audit_replacer)[index]}`,{old: current_line.old, new: current_line.new, auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
                             })
 
                             //  Build audit object
                             obj[current.created_at] = {id:current.id, event:current.event, content:content, userName:current.user.name}
                         break;
                         case 'created':
-                            content[0] = this.$t(`components.common.audit.content.${translation_with_id}.${current.auditable_type}.created`,{userName: current.user.name, auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
+                            content[0] = this.$t(`general.components.common.audit.content.${translation_with_id}.${current.auditable_type}.created`,{userName: current.user.name, auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
                             obj[current.created_at] = {id:current.id, event:current.event, content:content, userName:current.user.name}
                         break;
                         case 'user_assigned':
-                            content[0] = this.$t(`components.common.audit.content.${translation_with_id}.${current.auditable_type}.user_assigned`,{userName: current.new_values.user_name, auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
+                            content[0] = this.$t(`general.components.common.audit.content.${translation_with_id}.${current.auditable_type}.user_assigned`,{userName: current.new_values.user_name, auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
                             obj[current.created_at] = {id:current.id, event:current.event, content:content, userName:current.user.name}
                         break;
                         case 'provider_assigned':
-                            content[0] = this.$t(`components.common.audit.content.${translation_with_id}.${current.auditable_type}.provider_assigned`,{providerName: current.new_values.provider_name, auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
+                            content[0] = this.$t(`general.components.common.audit.content.${translation_with_id}.${current.auditable_type}.provider_assigned`,{providerName: current.new_values.provider_name, auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
                             obj[current.created_at] = {id:current.id, event:current.event, content:content, userName:current.user.name}
                         break;
                         default:
-                            content[0] = this.$t(`components.common.audit.content.${translation_with_id}.${current.auditable_type}.${current.event}`,{ auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
+                            content[0] = this.$t(`general.components.common.audit.content.${translation_with_id}.${current.auditable_type}.${current.event}`,{ auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
                              obj[current.created_at] = {id:current.id, event:current.event, content:content, userName:current.user.name}
                         break;
                     }

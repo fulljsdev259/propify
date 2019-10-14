@@ -5,9 +5,9 @@
             <ui-avatar :name="user.name" :size="32" :src="user.avatar" />
         </el-tooltip>
         <div class="content">
-            <el-input autosize ref="content" :class="{'is-focused': focused}" type="textarea" resize="none" v-model="content" :placeholder="$t('components.common.addComment.placeholder')" :disabled="loading" :validate-event="false" @blur="focused = false" @focus="focused = true" @keydown.native.alt.enter.exact="save" />
+            <el-input autosize ref="content" :class="{'is-focused': focused}" type="textarea" resize="none" v-model="content" :placeholder="$t('general.components.common.addComment.placeholder')" :disabled="loading" :validate-event="false" @blur="focused = false" @focus="focused = true" @keydown.native.alt.enter.exact="save" />
             <el-dropdown class="templates" size="small" placement="top-end" trigger="click" @command="onTemplateSelected" @visible-change="onDropdownVisibility" v-if="showTemplates">
-                <el-tooltip ref="templates-button-tooltip" :content="type == 'internalNotices' ? 'Choose Property maneger and Admin' : $t('components.common.addComment.tooltipTemplates')" placement="top-end">
+                <el-tooltip ref="templates-button-tooltip" :content="type == 'internalNotices' ? 'Choose Property maneger and Admin' : $t('general.components.common.addComment.tooltipTemplates')" placement="top-end">
                     <el-button ref="templates-button" type="text" class="el-dropdown-link" :disabled="loading">
                         <i class="icon-ellipsis-vert"></i>
                     </el-button>
@@ -20,15 +20,15 @@
                         </small>
                     </el-dropdown-item>
                     <el-dropdown-item disabled v-if="loadingTemplates">
-                        {{$t('components.common.addComment.loadingTemplates')}}
+                        {{$t('general.components.common.addComment.loadingTemplates')}}
                     </el-dropdown-item>
                     <el-dropdown-item disabled v-else-if="!loadingTemplates && !templates.length">
-                        {{$t('components.common.addComment.emptyTemplatesPlaceholder')}}
+                        {{$t('general.components.common.addComment.emptyTemplatesPlaceholder')}}
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
-        <el-tooltip :content="$t('components.common.addComment.saveShortcut', {shortcut: saveKeysShortcut})" placement="top-end">
+        <el-tooltip :content="$t('general.components.common.addComment.saveShortcut', {shortcut: saveKeysShortcut})" placement="top-end">
             <el-button circle icon="icon-paper-plane" size="small" :disabled="!content" :loading="loading" @click="save" />
         </el-tooltip>
     </div>

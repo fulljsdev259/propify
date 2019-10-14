@@ -106,12 +106,12 @@
             filters() {
                 return [
                     {
-                        name: this.$t('filters.search'),
+                        name: this.$t('general.placeholders.search'),
                         type: 'text',
                         icon: 'el-icon-search',
                         key: 'search'
                     }, {
-                        name: this.$t('filters.states'),
+                        name: this.$t('general.filters.states'),
                         type: 'select',
                         key: 'state_id',
                         data: this.states,

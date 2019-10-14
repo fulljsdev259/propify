@@ -307,8 +307,8 @@
             },
             async onFiltersChanged (filters) {
                 
-                let status = filters.status
-                filters.status = [status]
+                let status = general.filters.status
+                general.filters.status = [status]
 
                 filters.current_page = 0
 

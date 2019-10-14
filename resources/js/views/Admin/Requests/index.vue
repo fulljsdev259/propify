@@ -95,13 +95,13 @@
                 
                 let filters = [
                     {
-                        name: this.$t('filters.search'),
+                        name: this.$t('general.placeholders.search'),
                         type: 'text',
                         icon: 'el-icon-search',
                         key: 'search'
                     },
                     {
-                        name: this.$t('filters.categories'),
+                        name: this.$t('general.filters.categories'),
                         type: 'select',
                         key: 'category_id',
                         data: this.categories,
@@ -119,31 +119,31 @@
                         data: this.prepareFilters("internal_priority"),
                     },
                     {
-                        name: this.$t('filters.quarters'),
+                        name: this.$t('general.filters.quarters'),
                         type: 'select',
                         key: 'quarter_id',
                         data: this.quarters,
                     },
                     {
-                        name: this.$t('filters.buildings'),
+                        name: this.$t('general.filters.buildings'),
                         type: 'select',
                         key: 'building_id',
                         data: this.buildings,
                     },
                     {
-                        name: this.$t('filters.propertyManagers'),
+                        name: this.$t('general.filters.propertyManagers'),
                         type: 'select',
                         key: 'property_manager_id',
                         data: this.propertyManagers,
                     },
                     {
-                        name: this.$t('filters.services'),
+                        name: this.$t('general.filters.services'),
                         type: 'select',
                         key: 'service_provider_id',
                         data: this.services,
                     },
                     {
-                        name: this.$t('filters.resident'),
+                        name: this.$t('general.filters.resident'),
                         type: 'remote-select',
                         key: 'resident_id',
                         data: this.residents,
@@ -151,13 +151,13 @@
                         fetch: this.fetchRemoteResidents
                     },
                     {
-                        name: this.$t('filters.created_from'),
+                        name: this.$t('general.filters.created_from'),
                         type: 'date',
                         key: 'created_from',
                         format: 'dd.MM.yyyy'
                     },
                     {
-                        name: this.$t('filters.created_to'),
+                        name: this.$t('general.filters.created_to'),
                         type: 'date',
                         key: 'created_to',
                         format: 'dd.MM.yyyy'
