@@ -276,7 +276,6 @@
                         name: this.$t(`general.roles.${this.$constants.propertyManager.type[role]}`),
                     })
                 }
-                console.log(this.roles);
             }
             
         },
