@@ -11,7 +11,8 @@
                             width: 250,
                             height: 250
                         }"
-                        :resize="true"
+                        :resize="false"
+                        :defaultAvatarSrc="user.avatar"
                         @upload="upload"
                         @cropped="cropped"/>
             </el-form-item>
@@ -24,7 +25,7 @@
 
 <script>
     import Cropper from 'components/Cropper';
-    import {mapActions} from 'vuex';
+    import {mapActions, mapState} from 'vuex';
     import {displayError, displaySuccess} from 'helpers/messages';
 
     export default {
@@ -50,6 +51,11 @@
                     })
                     .catch(err => displayError(err));
             }
+        },
+        computed: {
+            ...mapState({
+                user: ({users}) => users.loggedInUser
+            }),
         }
     }
 </script>
