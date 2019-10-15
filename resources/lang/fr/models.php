@@ -253,7 +253,7 @@ return [
         "notify_email" => "Prévenez par courriel",
         "announcement_to" => "Annonce",
         "comments" => "Commentaires",
-        "images" => "Images",
+        "images" => "Photos et documents",
         'attachments' => 'Pièces jointes',
         'category_default_image_label' => 'Voulez-vous utiliser cette image?',
         'placeholders' => [            
@@ -402,7 +402,7 @@ return [
         "open_conversation" => "Ouvrez",
         "other_recipients" => "Autres bénéficiaires",
         "recipients" => "Destinataires",
-        "images" => "Images",
+        "images" => "Photos et documents",
         "no_images_message" => "Aucun fichier téléchargé",
         "request_details" => "Demande de détails",
         "internal_notices" => "Avis internes",

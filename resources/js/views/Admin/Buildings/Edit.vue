@@ -217,7 +217,7 @@
                                 </el-option>
                             </el-select>
                             <el-alert
-                                :title="$t('general.upload_all_desc')"
+                                :title="$t('general.upload_file_desc')"
                                 type="info"
                                 show-icon
                                 :closable="false"
