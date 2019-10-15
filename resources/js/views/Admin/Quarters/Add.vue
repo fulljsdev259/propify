@@ -56,6 +56,12 @@
                                     </el-select>
                                 </el-form-item>
                             </el-col>
+                             <el-col :md="12">
+                                <el-form-item :label="$t('general.internal_quarter_id')" :rules="validationRules.internal_quarter_id"
+                                                prop="internal_quarter_id">
+                                    <el-input type="text" v-model="model.internal_quarter_id"></el-input>
+                                </el-form-item>
+                            </el-col>
                         </el-row>
                     </el-form>
                 </card>

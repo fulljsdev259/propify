@@ -628,10 +628,6 @@ class ResidentAPIController extends AppBaseController
             'unit',
             'address',
             'media',
-            'default_contract',
-            'contracts' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
-            }
         ]);
         $response = (new ResidentTransformer)->transform($resident);
         return $this->sendResponse($response, __('models.resident.saved'));

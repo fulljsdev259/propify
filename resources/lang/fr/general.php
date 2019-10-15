@@ -103,6 +103,7 @@ return [
     "state" => "État",
     "street" => "Rue",
     "house_num" => "Rue Nr..",
+    'internal_quarter_id' => 'ID trimestre interne',
     "zip" => "Zip",
     "content" => "Contenu",
     'none' => 'Aucun',

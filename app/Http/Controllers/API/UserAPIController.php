@@ -276,7 +276,20 @@ class UserAPIController extends AppBaseController
     {
         /** @var User $user */
         $user = $request->user();
-        $user->load(['settings', 'roles.perms', 'resident.media', 'resident.building:id,contact_enable', 'propertyManager:id,user_id', 'serviceProvider:id,user_id']);
+        $user->load([
+            'settings',
+            'roles.perms',
+            'resident' => function ($q) {
+                $q->with([
+                    'contracts' => function ($q) {
+                        $q->with('building.address', 'unit', 'media');
+                    },
+                    'building:id,contact_enable'
+                ]);
+            },
+            'propertyManager:id,user_id',
+            'serviceProvider:id,user_id'
+        ]);
         if ($user->propertyManager) {
             $user->property_manager_id = $user->propertyManager->id;
         }
