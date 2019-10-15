@@ -52,7 +52,9 @@ function update_db_fields($class, $fields, $replace, $to, $isUcFirst = true)
     foreach ($items as $item) {
         foreach ($fields as $field) {
             $oldValue = $item->{$field};
-            if (is_array($oldValue)) {
+            $isAssoc = false;
+            if (is_array($oldValue) && \Illuminate\Support\Arr::isAssoc($oldValue)) {
+                $isAssoc = true;
                 $oldValue = json_encode($oldValue);
             }
 
@@ -63,8 +65,6 @@ function update_db_fields($class, $fields, $replace, $to, $isUcFirst = true)
             }
 
             if ($oldValue != $value) {
-                $item->{$field} = $value;
-                echo 'In filed: ' . $field . ' of ' . $model->getTable() . ': ' . $item->id .   PHP_EOL;
                 if (is_array($oldValue)) {
                     foreach ($oldValue as $i => $_val) {
                         echo '[' . $_val  . "] replaced to [" . ($value[$i] ?? '') . ']' . PHP_EOL;
@@ -73,6 +73,10 @@ function update_db_fields($class, $fields, $replace, $to, $isUcFirst = true)
                     echo '[' . $oldValue  . "] replaced to [" . $value . ']'. PHP_EOL;
                 }
                 echo  '------------------------' .  PHP_EOL;
+                if ($isAssoc) {
+                    $value = json_decode($value, JSON_PRETTY_PRINT);
+                }
+                $item->{$field} = $value;
                 $item->save();
             }
         }
