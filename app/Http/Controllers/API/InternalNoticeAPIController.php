@@ -9,6 +9,7 @@ use App\Http\Requests\API\InternalNotice\ListRequest;
 use App\Http\Requests\API\InternalNotice\UpdateRequest;
 use App\Http\Requests\API\InternalNotice\ViewRequest;
 use App\Models\InternalNotice;
+use App\Models\PropertyManager;
 use App\Repositories\InternalNoticeRepository;
 use App\Transformers\InternalNotesTransformer;
 use App\Http\Controllers\AppBaseController;
@@ -88,9 +89,11 @@ class InternalNoticeAPIController extends AppBaseController
         $getAll = $request->get('get_all', false);
         if ($getAll) {
             $internalNotices = $this->internalNoticeRepository->get();
-            $response = $internalNotices->toArray();
+            $this->loadPropertyManagersForMany($internalNotices);
+            $response = (new InternalNotesTransformer())->transformCollection($internalNotices);
         } else {
             $internalNotices = $this->internalNoticeRepository->with('user')->paginate($perPage);
+            $this->loadPropertyManagersForMany($internalNotices);
             $response = (new InternalNotesTransformer())->transformPaginator($internalNotices);
         }
 
@@ -140,11 +143,15 @@ class InternalNoticeAPIController extends AppBaseController
     public function store(CreateRequest $request)
     {
         $input = $request->all();
-
         $input['user_id'] = Auth::id();
+        $input['manager_ids'] = $request->manager_ids ?? $request->selectedManagerLists ?? '';
+
         $internalNotice = $this->internalNoticeRepository->create($input);
         $internalNotice->load('user');
-        return $this->sendResponse($internalNotice->toArray(), __('models.request.internal_notice_saved'));
+        $this->loadPropertyManagersForSingle($internalNotice);
+        $response = (new InternalNotesTransformer())->transform($internalNotice);
+
+        return $this->sendResponse($response, __('models.request.internal_notice_saved'));
     }
 
     /**
@@ -194,8 +201,11 @@ class InternalNoticeAPIController extends AppBaseController
         if (empty($internalNotice)) {
             return $this->sendError(__('models.request.errors.internal_notice_not_found'));
         }
+
         $internalNotice->load('user');
+        $this->loadPropertyManagersForSingle($internalNotice);
         $response = (new InternalNotesTransformer())->transform($internalNotice);
+
         return $this->sendResponse($response, 'Internal Notice retrieved successfully');
     }
 
@@ -259,6 +269,8 @@ class InternalNoticeAPIController extends AppBaseController
 
         $internalNotice = $this->internalNoticeRepository->update($input, $id);
         $internalNotice->load('user');
+        $this->loadPropertyManagersForSingle($internalNotice);
+
         return $this->sendResponse($internalNotice->toArray(), __('models.request.internal_notice_updated'));
     }
 
@@ -314,5 +326,27 @@ class InternalNoticeAPIController extends AppBaseController
         $internalNotice->delete();
 
         return $this->sendResponse($internalNotice->only('id', 'request_id', 'user_id', 'comment'), __('models.request.internal_notice_deleted'));
+    }
+
+    /**
+     * @param $internalNotices
+     */
+    protected function loadPropertyManagersForSingle($internalNotice)
+    {
+        $managers = PropertyManager::whereIn('id', $internalNotice->manager_ids)->with('user')->get();
+        $internalNotice->setRelation('managers', $managers);
+    }
+
+    /**
+     * @param $internalNotices
+     */
+    protected function loadPropertyManagersForMany($internalNotices)
+    {
+        $managerIds = $internalNotices->pluck('manager_ids')->collapse()->unique();
+        $managers = PropertyManager::whereIn('id', $managerIds)->with('user')->get();
+        $internalNotices->each(function ($internalNotice) use ($managers) {
+            $_managers = $managers->whereIn('id', $internalNotice->manager_ids);
+            $internalNotice->setRelation('managers', $_managers);
+        });
     }
 }

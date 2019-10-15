@@ -173,7 +173,7 @@
                         user_id: this.user.id,
                         comment: this.content,
                         commentable: this.type,
-                        selectedManagerLists: this.selectedManagerLists
+                        manager_ids: this.selectedManagerLists
                     }
 
                     await this.$store.dispatch('comments/create', body);                    

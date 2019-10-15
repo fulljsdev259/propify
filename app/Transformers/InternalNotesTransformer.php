@@ -29,6 +29,9 @@ class InternalNotesTransformer extends BaseTransformer
         if ($model->relationExists('user')) {
             $response['user'] = (new UserTransformer())->transform($model->user);
         }
+        if ($model->relationExists('managers')) {
+            $response['managers'] = (new PropertyManagerTransformer())->transformCollection($model->managers);
+        }
 
         return $response;
     }
