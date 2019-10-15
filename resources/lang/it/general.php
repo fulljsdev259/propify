@@ -104,6 +104,7 @@ return [
     "street" => "Strada",
     "house_num" => "Via Nr...",
     'zip' => "cerniera",
+    'internal_quarter_id' => 'ID del trimestre interno',
     "content" => "Contenuto",
     'none' => 'Nessuna',
     'all' => 'Tutti',
