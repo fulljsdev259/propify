@@ -10,7 +10,7 @@
     </el-upload>
     <el-upload
             v-else
-            class="avatar-uploader"
+            class="avatar-box__btn"
             :action="''"
             :show-file-list="false"
             :before-upload="beforeAvatarUpload"
