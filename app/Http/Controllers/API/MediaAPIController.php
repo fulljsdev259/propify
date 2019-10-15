@@ -488,7 +488,7 @@ class MediaAPIController extends AppBaseController
     {
         $contract = $this->contractRepository->findWithoutFail($id);
         if (empty($contract)) {
-            return $this->sendError(__('models.contract.errors.not_found'));
+            return $this->sendError(__('models.resident.contract.errors.not_found'));
         }
 
         $data = $request->get('media', '');
@@ -544,7 +544,7 @@ class MediaAPIController extends AppBaseController
     {
         $contract = $this->contractRepository->findWithoutFail($id);
         if (empty($contract)) {
-            return $this->sendError(__('models.contract.errors.not_found'));
+            return $this->sendError(__('models.resident.contract.errors.not_found'));
         }
 
         $media = $contract->media->find($media_id);
