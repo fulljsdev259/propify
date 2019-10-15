@@ -30,8 +30,13 @@ export default (config = {}) => {
                     password_confirmation: '',
                     name: '',
                     phone: '',
-                    role: ''
                 },
+                roles: [{
+                        id:1, name:'manager'
+                    }, {
+                        id:2, name:'administrator'
+                    }
+                ],
                 addedAssigmentList: [],
                 statistics: {
                     raw: [{
@@ -73,7 +78,7 @@ export default (config = {}) => {
                         required: true,
                         message: this.$t('validation.required', {attribute: this.$t('general.language')})
                     }],
-                    role: [{
+                    type: [{
                         required: true,
                         message: this.$t('validation.required', {attribute: this.$t('general.roles.label')})
                     }],
@@ -402,7 +407,6 @@ export default (config = {}) => {
 
                         this.alreadyAssigned.buildings = this.model.buildings.map((building) => building.id);
                         this.alreadyAssigned.quarters = this.model.quarters.map((quarter) => quarter.id);
-                        console.log(this.model);
 
                         return resp.data;
                     },
