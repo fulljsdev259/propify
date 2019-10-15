@@ -480,7 +480,7 @@
                             </el-form-item>
                         </el-form>    
                         <div class="drawer-btn-sec"> 
-                            <el-button class="save-tab" @click="saveSettings('microAppsSettingsForm_iframe')" icon="ti-save"
+                            <el-button class="save-tab is-round" @click="saveSettings('microAppsSettingsForm_iframe')" icon="ti-save"
                                     type="primary">
                                 {{$t('general.actions.save')}}
                             </el-button> 
@@ -493,14 +493,14 @@
                         </el-form-item>
                     </el-form>
                     <div class="drawer-btn-sec"> 
-                        <el-button class="save-tab" @click="saveSettings('microAppsSettingsForm_cleanify')" icon="ti-save"
+                        <el-button class="save-tab is-round" @click="saveSettings('microAppsSettingsForm_cleanify')" icon="ti-save"
                                 type="primary">
                             {{$t('general.actions.save')}}
                         </el-button> 
                     </div> 
                 </div> 
                 <!-- <div class="drawer-btn-sec"> 
-                    <el-button class="save-tab" @click="saveSettings('microAppsSettingsForm')" icon="ti-save"
+                    <el-button class="save-tab is-round" @click="saveSettings('microAppsSettingsForm')" icon="ti-save"
                             type="primary">
                         {{$t('general.actions.save')}}
                     </el-button> 
@@ -1414,6 +1414,9 @@
         width: 94%;
         bottom: 20px;
         text-align: center;
+        button {
+            width: 100%;
+        }
     }
     .ui-drawer.ui-drawer i.icon-cog {
         margin-right: 7px;

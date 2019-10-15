@@ -131,11 +131,6 @@
             
         }
         
-        .el-alert {
-            line-height: 19px;
-            margin-bottom: 10px;
-        }
-
         .switcher {
             /deep/ .el-form-item__content {
                 display: flex;

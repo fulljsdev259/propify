@@ -21,7 +21,7 @@
                                             </h3>
                                         </el-row>
                                         <el-row :gutter="20">
-                                            <el-col :md="4" class="resident_avatar">
+                                            <el-col :md="8" :lg="6" class="resident_avatar">
                                                 <cropper :resize="false" :viewportType="'circle'" @cropped="cropped"/>
                                                 <img
                                                     src="~img/man.png"
@@ -40,7 +40,7 @@
                                                     v-if="avatar.length == 0 && user.avatar">
 
                                             </el-col>
-                                            <el-col :md="20">
+                                            <el-col :md="16" :lg="18">
                                                     <el-col :md="6">
                                                         <el-form-item :label="$t('general.salutation')" :rules="validationRules.title"
                                                                     prop="title">

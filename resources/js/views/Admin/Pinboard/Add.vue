@@ -144,12 +144,20 @@
                                     height="50%"/>  
                             </el-row>  
                         </el-form-item> 
+                        
                         <el-form-item :label="model.type == 3 ? $t('models.pinboard.attachments') : $t('models.pinboard.images')">
                             <!-- <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple/>
                             <div class="mt15">
                                 <media :data="mediaFiles" @deleteMedia="deleteMedia"
                                        v-if="media.length || (model.media && model.media.length)"></media>
                             </div> -->
+                            <el-alert
+                                :title="$t('general.upload_all_desc')"
+                                type="info"
+                                show-icon
+                                :closable="false"
+                            >
+                            </el-alert>
                             <media-uploader ref="media" :id="pinboard_id" :audit_id="audit_id" type="pinboard" layout="grid" v-model="media" :upload-options="uploadOptions" />
                         </el-form-item>
 
@@ -385,7 +393,7 @@
     }
 </style>
 
-<style scoped>
+<style lang="scss" scoped>
     .custom-select {
         display: block;
     }
@@ -397,4 +405,5 @@
     .mb20 {
         margin-bottom: 20px;
     }
+
 </style>

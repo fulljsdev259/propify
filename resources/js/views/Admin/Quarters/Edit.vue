@@ -106,9 +106,7 @@
                                         align="right"
                                     >
                                         <template slot-scope="scope">
-                                            <el-button :style="{color: 'red'}" @click="deleteDocument('media', scope.$index)"
-                                                icon="ti-close" size="mini" type="text"
-                                            />
+                                            <el-button icon="el-icon-close" type="danger" @click="deleteDocument('media', scope.$index)" size="mini"/>
                                         </template>
                                     </el-table-column>
                                 </el-table>
@@ -128,6 +126,13 @@
                                 v-for="item in model.media_category">
                             </el-option>
                         </el-select>
+                        <el-alert
+                            :title="$t('general.upload_all_desc')"
+                            type="info"
+                            show-icon
+                            :closable="false"
+                        >
+                        </el-alert>
                         <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple
                                             v-if="selectedFileCategory"/><!-- @TODO this is uploading file on the spot, is it okay? need to confirm -->
                         
@@ -424,7 +429,8 @@
     }
 
     .category-select {
-        margin-bottom: 30px;
+        margin-bottom: 10px;
         width: 100%;
     }
+
 </style>

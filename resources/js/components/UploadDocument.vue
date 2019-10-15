@@ -87,6 +87,7 @@
         grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
         grid-auto-rows: -webkit-min-content;
         grid-auto-rows: min-content;
+        padding-top: 10px;
         
         .el-upload {
             border: none;
