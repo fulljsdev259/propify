@@ -45,7 +45,7 @@ export default (config = {}) => {
                 remoteLoading: false,
                 toAssign: '',
                 toAssignList: [],
-                assignmentTypes: ['managers', 'administrator'],
+                assignmentTypes: ['managers'],
                 assignmentType: 'managers',
             }
         },
