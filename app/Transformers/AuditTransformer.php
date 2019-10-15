@@ -25,14 +25,12 @@ class AuditTransformer extends BaseTransformer
      */
     public function transform(Audit $model)
     {
-        $ut = new UserTransformer();
-        return [
+        $response = [
             'id' => $model->id,
             'event' => $model->event,
             'auditable_type' => $model->auditable_type,
             'auditable_id' => $model->auditable_id,
             'user_id' => $model->user_id,
-            'user' => $ut->transform($model->user),
             'url' => $model->url,
             'message' => $this->getMessage($model),
             'old_values' => $model->old_values,
@@ -41,6 +39,19 @@ class AuditTransformer extends BaseTransformer
             'created_at' => $model->created_at->toDateTimeString(),
             'updated_at' => $model->updated_at->toDateTimeString(),
         ];
+        if ($model->user) {
+            $response['user'] = (new UserTransformer())->transform($model->user);
+        } else {
+            $response['user'] = [
+                'id' => $model->user_id,
+                'name' => 'Deleted user',
+                'email' => 'dummy@email.com',
+                'phone' => '',
+                'avatar' => '',
+            ];
+        }
+
+        return $response;
     }
 
     /**

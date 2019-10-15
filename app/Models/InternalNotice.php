@@ -27,6 +27,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="int32"
  *      ),
  *      @SWG\Property(
+ *          property="manager_ids",
+ *          description="manager_ids",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
  *          property="comment",
  *          description="comment",
  *          type="string"
@@ -58,6 +63,7 @@ class InternalNotice extends Model
     public $fillable = [
         'request_id',
         'user_id',
+        'manager_ids',
         'comment'
     ];
 
@@ -70,7 +76,8 @@ class InternalNotice extends Model
         'id' => 'integer',
         'request_id' => 'integer',
         'user_id' => 'integer',
-        'comment' => 'string'
+        'comment' => 'string',
+        'manager_ids' => 'array'
     ];
 
     /**
