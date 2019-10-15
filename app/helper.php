@@ -37,9 +37,12 @@ function get_translation_attribute_name($attribute)
     return $attribute;
 }
 
-function update_db_fields($class, $fields, $replace, $to, $isUcFirst = false)
+function update_db_fields($class, $fields, $replace, $to, $isUcFirst = true)
 {
     $model = new $class();
+    if (method_exists($class, 'disableAuditing')) {
+        $class::disableAuditing();
+    }
     $query = $model->newQuery();
     $fields = \Illuminate\Support\Arr::wrap($fields);
     foreach ($fields as $field) {
@@ -48,15 +51,16 @@ function update_db_fields($class, $fields, $replace, $to, $isUcFirst = false)
     $items = $query->select($fields)->addSelect('id')->get();
     foreach ($items as $item) {
         foreach ($fields as $field) {
-
             $oldValue = $item->{$field};
-            if ($isUcFirst) {
-                $value = str_ireplace(ucfirst($replace), ucfirst($to), $oldValue);
-            } else {
-                $value = $oldValue;
+            if (is_array($oldValue)) {
+                $oldValue = json_encode($oldValue);
             }
 
+            $value = $oldValue;
             $value = str_replace($replace, $to, $value);
+            if ($isUcFirst) {
+                $value = str_replace(ucfirst($replace), ucfirst($to), $value);
+            }
 
             if ($oldValue != $value) {
                 $item->{$field} = $value;
@@ -72,6 +76,9 @@ function update_db_fields($class, $fields, $replace, $to, $isUcFirst = false)
                 $item->save();
             }
         }
+    }
+    if (method_exists($class, 'disableAuditing')) {
+        $class::enableAuditing();
     }
 }
 
