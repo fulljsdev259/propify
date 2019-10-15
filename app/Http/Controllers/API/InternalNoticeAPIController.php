@@ -142,6 +142,7 @@ class InternalNoticeAPIController extends AppBaseController
         $input = $request->all();
 
         $input['user_id'] = Auth::id();
+        $input['manager_ids'] = $request->manager_ids ?? $request->selectedManagerLists ?? '';
         $internalNotice = $this->internalNoticeRepository->create($input);
         $internalNotice->load('user');
         return $this->sendResponse($internalNotice->toArray(), __('models.request.internal_notice_saved'));
