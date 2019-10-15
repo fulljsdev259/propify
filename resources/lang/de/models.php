@@ -195,6 +195,7 @@ return [
         'add' => 'Einheit hinzufügen',
         'name' => 'Einheit-ID',
         'auto_create_question' => 'Möchten Sie eine Einheit automatisch erstellen?',
+        'auto_create_description' => 'Mit dieser Option können Sie die Anzahl der Einheiten im Stockwerk eingeben und diese Einheiten werden automatisch beim Speichern des Gebäudes erstellt.',
         'deleted' => 'Einheit gelöscht',
         'saved' => 'Einheit gespeichert',
         'floor' => 'Etage',
@@ -251,6 +252,7 @@ return [
         'buildings' => 'Liegenschaften',
         'announcement' => 'Ankündigung an',
         'notify_email' => 'Mieter benachrichtigen',
+        'notify_email_description' => "Mit dieser Option können Sie die E-Mail-Benachrichtigung aktivieren.",
         'announcement_to' => 'Ankündigung',
         'comments' => 'Kommentare',
         'images' => 'Fotos und Dokumente',
@@ -299,6 +301,7 @@ return [
             'many_day' => 'Mehrtägig',
         ],
         'specify_time_question' => 'Möchten Sie die Zeit angeben?',
+        'specify_time_description' => "Mit dieser Option können Sie die Ankündigungszeit festlegen.",
         'execution_interval' => [
             'label' => 'Datum der Durchführung',
             'date' => 'Datum',
