@@ -283,10 +283,10 @@
                 </el-col>
                 <el-col :md="12">
                     <card :loading="loading" :header="$t('general.requests')">
-                        <div slot="header" style="width: 100%;">
+                        <!-- <div slot="header" style="width: 100%;">
                             {{$t('general.requests')}}
                             <span style="float:right" class="icon-cog" @click="toggleDrawer"></span>
-                        </div>
+                        </div> -->
                         <relation-list
                             :actions="requestActions"
                             :columns="requestColumns"

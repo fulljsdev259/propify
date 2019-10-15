@@ -98,7 +98,8 @@ return [
                 'inactive' => 'Inaktiv',
             ],            
             'add' => 'Neuen Vertrag hinzufügen',            
-            'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',            
+            'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',
+            'saved' => 'Vertrag gespeichert',
         ],
         'status' => [
             'label' => 'Status',

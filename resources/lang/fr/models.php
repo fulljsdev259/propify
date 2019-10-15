@@ -98,7 +98,8 @@ return [
                 'inactive' => 'Inactif',
             ],
             'add' => 'Ajouter un nouveau contrat',
-            'pdf_only_desc' => 'Veuillez noter que seuls les fichiers PDF peuvent être téléchargés.',            
+            'pdf_only_desc' => 'Veuillez noter que seuls les fichiers PDF peuvent être téléchargés.',
+            'saved' => 'Contrat sauvegardé',
         ],       
         'status' => [
             "label" => "Statut",
