@@ -16,7 +16,8 @@ export default (config = {}) => {
                     zip: '',    
                     street: 'street',
                     house_num: 'house_num',
-                    media: []
+                    media: [],
+                    internal_quarter_id: ''
                 },
                 quarter_format: '',
                 validationRules: {
@@ -35,6 +36,10 @@ export default (config = {}) => {
                     zip: [{
                         required: true,
                         message: this.$t('validation.required', {attribute: this.$t('general.zip')})
+                    }],
+                    internal_quarter_id: [{
+                        required: true,
+                        message: this.$t('validation.required', {attribute: this.$t('general.internal_quarter_id')})
                     }],
                 },
                 loading: {
@@ -225,6 +230,7 @@ export default (config = {}) => {
                         this.model.name = resp.name;
                         this.model.description = resp.description;
                         this.model.count_of_buildings = resp.count_of_buildings;
+                        this.model.internal_quarter_id = resp.internal_quarter_id;
                         if(resp.address != undefined) {
                             this.model.zip = resp.address.zip;
                             this.model.city = resp.address.city;

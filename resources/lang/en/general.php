@@ -103,6 +103,7 @@ return [
     'state' => 'State',
     'street' => 'Street',
     'house_num' => 'House Nr.',
+    'internal_quarter_id' => 'Internal Quarter ID',
     'zip' => 'Zip',
     'content' => 'Content',
     'none' => 'None',
