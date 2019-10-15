@@ -195,6 +195,7 @@ return [
         "add" => "Ajouter une unité",
         "name" => "Numéro d'unité",
         'auto_create_question' => 'Voulez-vous créer l\'unité automatiquement ?',
+        'auto_create_description' => "Avec cette option, vous pourrez entrer le nombre d'unités dans l'étage et ces unités seront créées automatiquement lors de l'enregistrement du bâtiment.",
         "deleted" => "Unité supprimée",
         "saved" => "Unité sauvegardée",
         "floor" => "L'étage",
@@ -251,6 +252,7 @@ return [
         "buildings" => "Bâtiments",
         "announcement" => "Annonce à l'intention de",
         "notify_email" => "Prévenez par courriel",
+        'notify_email_description' => "Avec cette option, vous serez en mesure d'activer la notification par e-mail",
         "announcement_to" => "Annonce",
         "comments" => "Commentaires",
         "images" => "Images",
@@ -299,6 +301,7 @@ return [
             'many_day' => 'Plusieurs jours',
         ],
         'specify_time_question' => 'Voulez-vous spécifier l\'heure ?',
+        'specify_time_description' => "Avec cette option, vous pourrez spécifier l'heure de l'annonce",
         'execution_interval' => [
             "label" => "Intervalle d'exécution",
             "date" => "Date d'exécution",

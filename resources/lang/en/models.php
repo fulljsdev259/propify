@@ -195,6 +195,7 @@ return [
         'add' => 'Add Unit',
         'name' => 'Unit number',
         'auto_create_question' => 'Do you want to create unit automatically?',
+        'auto_create_description' => 'With this option, you will be able to input number of units in floor and such units will be created automatically on saving of building',
         'deleted' => 'Unit deleted',
         'saved' => 'Unit saved',
         'floor' => 'Floor',
@@ -251,6 +252,7 @@ return [
         'buildings' => 'Buildings',
         'announcement' => 'Announcement',
         'notify_email' => 'Notify email',
+        'notify_email_description' => 'With this option, you will be able to enable email notifiation',
         'announcement_to' => 'Announcement to',
         'comments' => 'Comments',
         'images' => 'Images',
@@ -299,6 +301,7 @@ return [
             'many_day' => 'Multiple days',
         ],
         'specify_time_question' => 'Do you want to specify time?',
+        'specify_time_description' => 'With this option, you will be able to specify time of announcement',
         'execution_interval' => [
             'label' => 'Execution interval',
             'date' => 'Execution Date',
