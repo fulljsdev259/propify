@@ -131,6 +131,11 @@ return [
             'your_sincerely' => 'La vostra sinceramente',
             'your_administration' => 'la sua amministrazione'
         ],
+        'type' => [
+            'label' => 'Tipo',
+            'resident' => 'Residente',
+            'owner' => 'Proprietario',
+        ],
     ],
     'building' => [
         "title" => "Edifici",

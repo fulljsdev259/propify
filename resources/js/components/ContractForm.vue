@@ -88,7 +88,7 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-            <el-col :md="12" v-if="model.unit_id">
+            <el-col :md="12" v-if="model.unit_id && resident_type == 1">
                 <el-form-item :label="$t('models.resident.contract.rent_duration')"
                             prop="duration"
                             class="label-block">
@@ -118,7 +118,7 @@
                             value-format="yyyy-MM-dd"/>
                 </el-form-item>
             </el-col>
-            <el-col :md="12" v-if="model.unit_id && model.duration == 2">
+            <el-col :md="12" v-if="model.unit_id && model.duration == 2 && resident_type == 1">
                 <el-form-item :label="$t('models.resident.contract.rent_end')">
                     <el-date-picker
                         :picker-options="{disabledDate: disabledRentEnd}"
@@ -141,7 +141,7 @@
                     </el-input>
                 </el-form-item> 
             </el-col>
-            <el-col :md="12">
+            <el-col :md="12" v-if="resident_type == 1">
                 <el-form-item :label="$t('models.resident.status.label')" prop="status" class="label-block">
                     <el-select placeholder="Select" style="display: block" 
                                 v-model="model.status">
@@ -155,6 +155,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
+        <template v-if="resident_type == 1">
         <ui-divider v-if="model.unit_id" content-position="left">
             {{ $t('models.resident.contract.deposit_amount') }}
         </ui-divider>
@@ -340,7 +341,7 @@
             </el-col>
         
         </el-row>
-        
+        </template>
         <ui-divider></ui-divider>
         <div class="contract-form-actions">
             <el-button type="primary" @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
@@ -367,6 +368,9 @@
         props: {
             mode: {
                 type: String
+            },
+            resident_type: {
+                type: Number
             },
             resident_id: {
                 type: Number
@@ -699,6 +703,12 @@
 
 <style lang="scss" scoped>
 
+    .el-form {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+        
     /deep/ .ui-divider {
         margin: 32px 16px 16px 0;
         
@@ -804,7 +814,13 @@
     
 
     /deep/ .contract-form-actions {
+        // position: absolute;
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: flex-end;
+
         button {
             width: 100%;
             i {

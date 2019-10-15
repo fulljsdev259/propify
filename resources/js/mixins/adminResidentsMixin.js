@@ -42,6 +42,7 @@ export default (config = {}) => {
                         language: '',
                     },
                     nation: '',
+                    type: '',
                     contracts: [],
                 },
                 visibleDrawer: false,

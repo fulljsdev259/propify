@@ -108,6 +108,27 @@
                                                             </el-select>
                                                         </el-form-item>
                                                     </el-col>
+                                                    <el-col :md="6">
+                                                        <el-form-item :label="$t('models.resident.type.label')"
+                                                                    prop="type">
+                                                            
+                                                            <el-select placeholder="Select" style="display: block" v-model="model.type">
+                                                                <!-- <el-option
+                                                                        :key="type"
+                                                                        :label="$t(`models.resident.type.${title}`)"
+                                                                        :value="type"
+                                                                        v-for="type in types">
+                                                                </el-option> -->
+                                                                <el-option
+                                                                    :key="k"
+                                                                    :label="$t(`models.resident.type.${type}`)"
+                                                                    :value="parseInt(k)"
+                                                                    v-for="(type, k) in constants.residents.type">
+                                                                </el-option>
+                                                            </el-select>
+                                                        </el-form-item>
+                                                        
+                                                    </el-col>
                                             </el-col>
                                         </el-row>
                                 </el-card>
@@ -269,8 +290,8 @@
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
                 
                 <div class="content" v-if="visibleDrawer">
-                    <contract-form v-if="editingContract" :hide-building-and-units="false" mode="edit" :data="editingContract" :resident_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
-                    <contract-form v-else mode="add" :quarter_id="1" :resident_id="model.id" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
+                    <contract-form v-if="editingContract" :hide-building-and-units="false" mode="edit" :data="editingContract" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
+                    <contract-form v-else mode="add" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
                 </div>
             </ui-drawer>
         </div>

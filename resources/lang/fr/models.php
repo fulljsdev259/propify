@@ -130,7 +130,12 @@ return [
             'content_4' => 'Si vous avez besoin d\'aide pour l\'enregistrement, nous sommes à votre disposition.',
             'your_sincerely' => 'Sincèrement vôtre',
             'your_administration' => 'votre administration'
-        ]
+        ],
+        'type' => [
+            'label' => 'Type',
+            'resident' => 'Résident',
+            'owner' => 'Propriétaire',
+        ],
     ],
     'building' => [
         "title" => "Bâtiments",

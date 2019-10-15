@@ -130,7 +130,12 @@ return [
             'content_4' => 'Sollten Sie Hilfe bei der Anmeldung benötigen, so stehen wir Ihnen gerne zur Verfügung.',
             'your_sincerely' => 'Mit freundlichen Grüssen',
             'your_administration' => 'Ihre Verwaltung'
-        ]
+        ],
+        'type' => [
+            'label' => 'Typ',
+            'resident' => 'Resident',
+            'owner' => 'Eigentümer',
+        ],
     ],
     'building' => [
         'title' => 'Liegenschaften',

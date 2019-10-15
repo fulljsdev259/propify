@@ -250,7 +250,6 @@
         .submitBtnDiv 
             // position: absolute
             width: 100%
-            grid-column: span 6 / auto
             display: flex
             flex-direction: column
             flex-grow: 1

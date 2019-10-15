@@ -78,6 +78,21 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
+                                <el-col :md="12">
+                                    <el-form-item class="label-block"
+                                                  :label="$t('models.resident.type.label')"
+                                                  prop="type">
+                                        <el-select style="display: block"
+                                                   v-model="model.type">
+                                            <el-option
+                                                :key="k"
+                                                :label="$t(`models.resident.type.${type}`)"
+                                                :value="parseInt(k)"
+                                                v-for="(type, k) in constants.residents.type">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
                             </el-row>
                         </card>
                         <card class="mt15" :loading="loading" :header="$t('models.resident.contact_info_card')">
@@ -200,8 +215,8 @@
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
             <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
             <div class="content" v-if="visibleDrawer">
-                <contract-form v-if="editingContract" mode="edit" :data="editingContract" :resident_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
-                <contract-form v-else mode="add" :resident_id="model.id" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
+                <contract-form v-if="editingContract" mode="edit" :data="editingContract" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
+                <contract-form v-else mode="add" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
             </div>
         </ui-drawer>
     </div>
@@ -215,6 +230,7 @@
     import AddActions from 'components/EditViewActions';
     import SelectLanguage from 'components/SelectLanguage';
     import ContractForm from 'components/ContractForm';
+    import {mapActions, mapGetters} from 'vuex';
 
     export default {
         mixins: [AdminResidentsMixin({
@@ -230,6 +246,11 @@
         },
         mounted() {
             this.$root.$on('changeLanguage', () => this.getCountries());
+        },
+        computed: {
+            ...mapGetters('application', {
+                constants: 'constants'
+            })
         }
     }
 </script>
