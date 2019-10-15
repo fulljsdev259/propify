@@ -260,7 +260,7 @@
                                                     }"/>
                                         </el-form-item>
                                         <div>
-                                            {{$t('resident.notifications.service')}}
+                                            {{$t('models.pinboard.specify_time_description')}}
                                         </div>
                                     </div>
                                 </el-col>
@@ -308,7 +308,7 @@
                                     <el-switch v-model="model.notify_email"/>
                                 </el-form-item>
                                 <div>
-                                    {{$t('resident.notifications.service')}}
+                                    {{$t('models.pinboard.notify_email_description')}}
                                 </div>
                             </div>
                         </card>

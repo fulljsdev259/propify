@@ -106,14 +106,10 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="8">
-                                    <div class="switch-wrapper">
-                                        <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic">
-                                            <el-switch v-model="model.attic"/>
-                                        </el-form-item>
-                                        <div>
-                                            {{$t('resident.notifications.service')}}
-                                        </div>
-                                    </div>
+                                    <el-form-item :rules="validationRules.attic">
+                                        <label class="attic-label">{{ $t('models.unit.attic') }}</label>
+                                        <el-switch v-model="model.attic"/>
+                                    </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.building.internal_building_id')"
