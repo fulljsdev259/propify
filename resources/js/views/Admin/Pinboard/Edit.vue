@@ -149,6 +149,13 @@
                                     </div>
                                 </el-form-item> -->
                                 <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex"/>
+                                <el-alert
+                                    :title="$t('general.upload_all_desc')"
+                                    type="info"
+                                    show-icon
+                                    :closable="false"
+                                >
+                                </el-alert>
                                 <media-uploader ref="media" :id="pinboard_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
                                 
                             </el-tab-pane>
@@ -176,6 +183,13 @@
                                                        v-if="media.length || (model.media && model.media.length)"></request-media>
                                 </div> -->
                                 <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex"/>
+                                <el-alert
+                                    :title="$t('general.upload_all_desc')"
+                                    type="info"
+                                    show-icon
+                                    :closable="false"
+                                >
+                                </el-alert>
                                 <media-uploader ref="media" :id="pinboard_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
                             </el-form-item>
                         </template>                        
@@ -328,7 +342,7 @@
                                                    }"/>
                                     </el-form-item>
                                     <div>
-                                        {{$t('resident.notifications.service')}}
+                                        {{$t('models.pinboard.specify_time_description')}}
                                     </div>
                                 </div>
                             </el-col>
@@ -376,7 +390,7 @@
                                         <el-switch v-model="model.notify_email"/>
                                     </el-form-item>
                                     <div>
-                                        {{$t('resident.notifications.service')}}
+                                        {{$t('models.pinboard.notify_email_description')}}
                                     </div>
                                 </div>
                             </el-col>
@@ -734,6 +748,11 @@
             margin-left: 5px;
         }
     }
+
+    .ui-media-gallery {
+        margin-bottom: 10px;
+    }
+
 </style>
 
 <style lang="scss">

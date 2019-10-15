@@ -103,6 +103,7 @@ return [
     'state' => 'State',
     'street' => 'Street',
     'house_num' => 'House Nr.',
+    'internal_quarter_id' => 'Internal Quarter ID',
     'zip' => 'Zip',
     'content' => 'Content',
     'none' => 'None',
@@ -530,4 +531,6 @@ return [
         'pageTitle' => 'Profile',
         'profile' => 'Profile',
     ],
+    'upload_all_desc' => 'Please note that .pdf, .doc, .docx, .xls, .xlsx, .png, .jpg and .jpeg files can be uploaded',
+    'upload_file_desc' => 'Please note that only .pdf, .doc, .docx, .xls, and .xlsx files can be uploaded'
 ];

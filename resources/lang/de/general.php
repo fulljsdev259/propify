@@ -103,6 +103,7 @@ return [
     'state' => 'Kanton',
     'street' => 'Strasse',
     'house_num' => 'Hausnummer',
+    'internal_quarter_id' => 'Interne Quartals-ID',
     'zip' => 'PLZ',
     'content' => 'Inhalt',
     'none' => 'Nichts gewählt',
@@ -531,4 +532,6 @@ return [
         'pageTitle' => 'Profil-Einstellungen',
         'profile' => 'Profil',                
     ],
+    'upload_all_desc' => 'Bitte beachten Sie, dass .pdf,.doc,.docx,.xls,.xlsx,.png,.jpg und.jpeg Dateien hochgeladen werden können',
+    'upload_file_desc' => 'Please note that only .pdf, .doc, .docx, .xls, and .xlsx files can be uploaded'
 ];

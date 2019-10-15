@@ -104,6 +104,7 @@ return [
     "street" => "Strada",
     "house_num" => "Via Nr...",
     'zip' => "cerniera",
+    'internal_quarter_id' => 'ID del trimestre interno',
     "content" => "Contenuto",
     'none' => 'Nessuna',
     'all' => 'Tutti',
@@ -530,4 +531,6 @@ return [
         "pageTitle" => "Profilo",
         "profile" => "Profilo",
     ],
+    'upload_all_desc' => 'Si prega di notare che i file .pdf, .doc, .doc, .docx, .xlsx, .xlsx, .png, .jpg e .jpeg possono essere caricati.',
+    'upload_file_desc' => 'Please note that only .pdf, .doc, .docx, .xls, and .xlsx files can be uploaded'
 ];

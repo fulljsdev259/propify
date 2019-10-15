@@ -5,7 +5,7 @@
         <el-tabs v-model="active">
             <el-tab-pane label="Personal Informations" name="personal_informations">
                 <el-row>
-                    <el-col :span="12">
+                    <el-col :span="12" :xs="24">
                         <card>
                             <el-form :model="loggedInUser" label-width="120px" ref="accform">
                                 <el-form-item :label="$t('models.user.profile_image')">
@@ -27,7 +27,7 @@
             </el-tab-pane>
             <el-tab-pane :label="$t('resident.security')" name="security">
                 <el-row>
-                    <el-col :span="12">
+                    <el-col :span="12" :xs="24">
                         <card>
                             <el-form :model="changePassword" label-width="210px" ref="changePasswordForm" size="medium">
                                 <el-form-item :label="$t('resident.old_password')" :rules="passwordValidationRules.password_old"

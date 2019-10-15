@@ -103,6 +103,7 @@ return [
     "state" => "État",
     "street" => "Rue",
     "house_num" => "Rue Nr..",
+    'internal_quarter_id' => 'ID trimestre interne',
     "zip" => "Zip",
     "content" => "Contenu",
     'none' => 'Aucun',
@@ -530,4 +531,6 @@ return [
         "pageTitle" => "Profil",
         "profile" => "Profil",
     ],
+    'upload_all_desc' => 'Veuillez noter que les fichiers.pdf,.doc,.docx,.xls,.xlsx,.png,.jpg et.jpeg peuvent être chargés',
+    'upload_file_desc' => 'Please note that only .pdf, .doc, .docx, .xls, and .xlsx files can be uploaded'
 ];

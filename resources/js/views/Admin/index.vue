@@ -194,7 +194,7 @@
                             </el-col>
                         </el-row>
                     </el-tab-pane>
-                    <el-tab-pane :label="$t('menu.listing')" name="listing">
+                    <!-- <el-tab-pane :label="$t('menu.listing')" name="listing">
                         <el-row style="margin-bottom: 24px;" :gutter="20" type="flex">
                             <el-col :span="24">
                                 <el-card class="chart-card" :header="$t('dashboard.listings_by_creation_date')">
@@ -214,7 +214,7 @@
                                 </el-card>
                             </el-col>
                         </el-row>
-                    </el-tab-pane>
+                    </el-tab-pane> -->
                 </el-tabs>
             </el-col>
         </el-row>

@@ -775,7 +775,7 @@
                     }
 
                     td {
-                        padding: 25px 0;
+                        padding: 27px 0;
 
                         .cell {
                             overflow: visible;
@@ -799,10 +799,6 @@
         
     }
     
-    .el-alert {
-        line-height: 19px;
-        margin-bottom: 10px;
-    }
 
     /deep/ .contract-form-actions {
         width: 100%;

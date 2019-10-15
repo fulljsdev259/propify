@@ -94,7 +94,7 @@
         <media-uploader ref="media" :id="request_id" :audit_id="audit_id" type="requests" layout="grid" v-model="model.media" :upload-options="uploadOptions" />
 
         <!-- <media-upload ref="upload" v-model="model.media" :size="mediaUploadMaxSize" :allowed-types="['image/jpg', 'image/jpeg', 'image/png', 'application/pdf']" :cols="4" /> -->
-        <el-form-item class="submitBtnDiv" v-if="showSubmit" style="grid-column: span 6">
+        <el-form-item class="submitBtnDiv" v-if="showSubmit">
             <el-button class="submit is-round" icon="ti-save" type="primary" :disabled="loading" @click="submit">{{$t('resident.actions.save')}}</el-button>
         </el-form-item>
     </el-form>
@@ -381,21 +381,11 @@
         
         .upload-description {
             padding: 0;
-
-            .el-alert {
-                align-items: flex-start;
-                padding-right: 0;
-
-                .el-alert__icon {
-                    padding-top: 2px;
-                }
-            }
         }
 
         .submitBtnDiv {
             // position: absolute;
             width: 100%;
-            grid-column: span 6 / auto;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
