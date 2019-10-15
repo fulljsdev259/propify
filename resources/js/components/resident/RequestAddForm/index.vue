@@ -1,5 +1,19 @@
 <template>
     <el-form ref="form" class="request-add" :model="model" label-position="top" :rules="validationRules" v-loading="loading">
+        
+        <el-form-item prop="contract_id" :label="$t('resident.contract')" required>
+            <el-select v-model="model.contract_id" 
+                        :placeholder="$t('resident.placeholder.contract')"
+                        value-key="default_contract_id"
+                        class="custom-select"
+                        @change="showSubcategory">
+                <el-option v-for="contract in contracts" 
+                            :key="contract.id" 
+                            :label="contract.building_unit" 
+                            :value="contract.id" />
+            </el-select>
+        </el-form-item>
+            
         <el-row type="flex" :gutter="16">
             <el-col>
                 <el-form-item prop="category_id" :label="$t('resident.category')" required>
@@ -124,6 +138,7 @@
         data () {
             return {
                 model: {
+                    contract_id: '',
                     title: '',
                     category_id: '',
                     priority: '',
@@ -140,6 +155,10 @@
                     payer: '',
                 },
                 validationRules: {
+                    contract_id: {
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('resident.contract')})
+                    },
                     title: {
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('resident.title')})
@@ -172,7 +191,7 @@
                 address: {},
                 building_locations: [],
                 apartment_rooms: [],
-
+                contracts: [],
                 mediaUploadMaxSize: MEDIA_UPLOAD_MAX_SIZE,
                 showsubcategory: false,
                 showpayer: false,
@@ -181,7 +200,8 @@
                 showacquisition: false,
                 showWohnung: false,
                 request_id: null,
-                audit_id: null
+                audit_id: null,
+                default_contract_id: ''
             }
         },
         methods: {
@@ -277,6 +297,16 @@
         },
         async mounted () {
             this.priorities = Object.entries(this.$constants.requests.priority).map(([value, label]) => ({value: +value, label}));
+            this.contracts = this.$store.getters.loggedInUser.resident.contracts
+
+            this.contracts.forEach(contract => {
+                contract.building_unit = contract.building.name + " " +  contract.unit.name
+            })
+
+            this.default_contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
+
+            console.log('default_contract_id', this.default_contract_id)
+
             try {
                 const {data} = await this.$store.dispatch('getRequestCategoriesTree', {get_all: true})
 
@@ -356,6 +386,10 @@
             :global(.el-input__inner),
             :global(.el-textarea__inner) {
                 background-color: transparentize(#fff, .44);
+            }
+
+            .custom-select {
+                display: block;
             }
         }
         > .el-form-item:last-child :global(.el-form-item__content) {

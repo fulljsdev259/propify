@@ -270,7 +270,7 @@
                 
                 <div class="content" v-if="visibleDrawer">
                     <contract-form v-if="editingContract" :hide-building-and-units="false" mode="edit" :data="editingContract" :resident_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
-                    <contract-form v-else mode="add" :resident_id="model.id" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
+                    <contract-form v-else mode="add" :quarter_id="1" :resident_id="model.id" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
                 </div>
             </ui-drawer>
         </div>
