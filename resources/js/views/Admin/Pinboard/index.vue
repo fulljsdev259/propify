@@ -148,7 +148,7 @@
             filters() {
                 return [
                     {
-                        name: this.$t('filters.search'),
+                        name: this.$t('general.placeholders.search'),
                         type: 'text',
                         icon: 'el-icon-search',
                         key: 'search'
@@ -166,19 +166,19 @@
                         data: this.prepareFilters("type"),
                     },
                     {
-                        name: this.$t('filters.quarters'),
+                        name: this.$t('general.filters.quarters'),
                         type: 'select',
                         key: 'quarter_id',
                         data: this.quarters,
                     },
                     {
-                        name: this.$t('filters.buildings'),
+                        name: this.$t('general.filters.buildings'),
                         type: 'select',
                         key: 'building_id',
                         data: this.buildings,
                     },
                     {
-                        name: this.$t('filters.resident'),
+                        name: this.$t('general.filters.resident'),
                         type: 'remote-select',
                         key: 'resident_id',
                         data: this.residents,

@@ -143,46 +143,46 @@
             filters() {
                 return [
                     {
-                        name: this.$t('filters.search'),
+                        name: this.$t('general.placeholders.search'),
                         type: 'text',
                         icon: 'el-icon-search',
                         key: 'search'
                     },
                     {
-                        name: this.$t('filters.states'),
+                        name: this.$t('general.filters.states'),
                         type: 'select',
                         key: 'state_id',
                         data: this.states,
                     },
                     {
-                        name: this.$t('filters.quarters'),
+                        name: this.$t('general.filters.quarters'),
                         type: 'select',
                         key: 'quarter_id',
                         data: this.quarters,
                     },
                     {
-                        name: this.$t('filters.buildings'),
+                        name: this.$t('general.filters.buildings'),
                         type: 'select',
                         key: 'building_id',
                         data: this.buildings,
                     },
                     {
-                        name: this.$t('filters.propertyManagers'),
+                        name: this.$t('general.filters.propertyManagers'),
                         type: 'select',
                         key: 'manager_id',
                         data: this.propertyManagers,
                     },
                     {
-                        name: this.$t('filters.requests'),
+                        name: this.$t('general.filters.requests'),
                         type: 'select',
                         key: 'request',
                         data: [{
                             id: 1,
-                            name: this.$t('filters.open_requests')
+                            name: this.$t('general.filters.open_requests')
                         }]
                     },
                     {
-                        name: this.$t('filters.type'),
+                        name: this.$t('general.filters.type'),
                         type: 'select',
                         key: 'type',
                         data: [{

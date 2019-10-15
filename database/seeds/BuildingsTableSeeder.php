@@ -32,12 +32,6 @@ class BuildingsTableSeeder extends Seeder
             $data = array_merge($data, $geoData);
 
             $building = factory(Building::class)->create($data);
-            $users = \App\Models\User::withRole('administrator')->inRandomOrder()->limit(random_int(1,5))->get();
-            $data = [];
-            foreach ($users as $user) {
-                $data[$user->id] = ['created_at' => now(),];
-            }
-            $building->users()->attach($data);
         }
     }
 

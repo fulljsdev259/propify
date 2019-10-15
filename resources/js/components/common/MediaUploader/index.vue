@@ -40,36 +40,36 @@
             <el-button-group slot="footer" key="footer" v-if="canShowButtonGroup">
                 <el-button class="media-trigger" icon="icon-plus" @click="selectFiles()" v-if="!uploadOptions.hideSelectFilesButton">
                     <template v-if="uploadOptions.drop">
-                        {{$t('components.common.media.buttons.selectFiles.withDrop')}}
+                        {{$t('general.components.common.media.buttons.selectFiles.withDrop')}}
                     </template>
                     <template v-else>
-                        {{$t('components.common.media.buttons.selectFiles.withoutDrop')}}
+                        {{$t('general.components.common.media.buttons.selectFiles.withoutDrop')}}
                     </template>
                 </el-button>
                 <el-button type="primary" icon="icon-upload-cloud" @click="startUploading()" v-if="canShowUploadButton">
-                    {{$t('components.common.media.buttons.upload')}}
+                    {{$t('general.components.common.media.buttons.upload')}}
                 </el-button>
             </el-button-group>
             <template slot="footer" v-else-if="isGridLayout">
                 <el-button key="media-trigger" class="media-upload-trigger" @click="selectFiles()" v-if="!uploadOptions.hideSelectFilesButton">
                     <div class="icon-plus"></div>
                     <!-- <template v-if="uploadOptions.drop">
-                        {{$t('components.common.media.buttons.selectFiles.withDrop')}}
+                        {{$t('general.components.common.media.buttons.selectFiles.withDrop')}}
                     </template>
                     <template v-else>
-                        {{$t('components.common.media.buttons.selectFiles.withoutDrop')}}
+                        {{$t('general.components.common.media.buttons.selectFiles.withoutDrop')}}
                     </template> -->
                 </el-button>
                 <el-button key="media-upload" type="primary" icon="icon-upload-cloud" @click="startUploading()" v-if="canShowUploadButton">
-                    {{$t('components.common.media.buttons.upload')}}
+                    {{$t('general.components.common.media.buttons.upload')}}
                 </el-button>
             </template>
         </draggable>
         <div v-if="$refs.uploader && $refs.uploader.dropActive" class="media-drop-active">
             <i class="icon-upload-cloud"></i>
-            {{$t('components.common.media.dropActive.title')}}
+            {{$t('general.components.common.media.dropActive.title')}}
             <div class="description">
-                {{$t('components.common.media.dropActive.description')}}
+                {{$t('general.components.common.media.dropActive.description')}}
             </div>
         </div>
     </div>
@@ -154,7 +154,7 @@
                     window.open(file.file.blob)
                     console.log('can file be previewed')
                 } else {
-                    this.$message.warning(this.$t('components.common.media.messages.preview'), {
+                    this.$message.warning(this.$t('general.components.common.media.messages.preview'), {
                         duration: 2400
                     })
                 }
@@ -168,7 +168,7 @@
                         if (this.uploadOptions.size < newFile.size) {
                             this.$message({
                                 type: 'warning',
-                                message: this.$t('components.common.media.messages.size', {
+                                message: this.$t('general.components.common.media.messages.size', {
                                     bytes: this.$options.filters.formatBytes(this.uploadOptions.size)
                                 }),
                                 duration: 8000,
@@ -188,7 +188,7 @@
                                 if (!this.uploadOptions.extensions.split(',').includes(fileExtension)) {
                                     this.$message({
                                         type: 'warning',
-                                        message: this.$t('components.common.media.messages.extensions'),
+                                        message: this.$t('general.components.common.media.messages.extensions'),
                                         duration: 8000,
                                         showClose: true
                                     })
@@ -201,7 +201,7 @@
                                 if (!this.uploadOptions.extensions.includes(fileExtension)) {
                                     this.$message({
                                         type: 'warning',
-                                        message: this.$t('components.common.media.messages.extensions'),
+                                        message: this.$t('general.components.common.media.messages.extensions'),
                                         duration: 8000,
                                         showClose: true
                                     })
@@ -214,7 +214,7 @@
                                 if (!this.uploadOptions.extensions.test(fileExtension)) {
                                     this.$message({
                                         type: 'warning',
-                                        message: this.$t('components.common.media.messages.extensions'),
+                                        message: this.$t('general.components.common.media.messages.extensions'),
                                         duration: 8000,
                                         showClose: true
                                     })
@@ -372,7 +372,7 @@
 
                             this.$message({
                                 type: 'info',
-                                message: this.$t('components.common.media.messages.uploading'),
+                                message: this.$t('general.components.common.media.messages.uploading'),
                                 duration: 8000,
                                 showClose: true
                             })
@@ -384,7 +384,7 @@
 
                                 this.$message({
                                     type: 'success',
-                                    message: this.$t('components.common.media.messages.uploaded'),
+                                    message: this.$t('general.components.common.media.messages.uploaded'),
                                     duration: 8000,
                                     showClose: true
                                 })

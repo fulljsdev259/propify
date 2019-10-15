@@ -140,7 +140,7 @@
             filters() {
                 return [
                     {
-                        name: this.$t('filters.search'),
+                        name: this.$t('general.placeholders.search'),
                         type: 'text',
                         icon: 'el-icon-search',
                         key: 'search'

@@ -19,12 +19,6 @@ class QuartersTableSeeder extends Seeder
             $quarter = factory(App\Models\Quarter::class)->create([
                 'name' => 'Quarter ' . $i,
             ]);
-            $users = \App\Models\User::withRole('administrator')->inRandomOrder()->limit(random_int(1,5))->get();
-            $data = [];
-            foreach ($users as $user) {
-                $data[$user->id] = ['created_at' => now(),];
-            }
-            $quarter->users()->attach($data);
         }
     }
 }
