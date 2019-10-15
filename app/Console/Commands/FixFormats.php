@@ -45,6 +45,10 @@ class FixFormats extends Command
     public function handle()
     {
         dump('start correct _formats of tables');
+        Request::get(['id', 'resident_id', 'contract_id', 'created_at'])->each(function (Request $request) {
+            $request->request_format  = $request->getUniqueIDFormat($request->id);
+            $request->save();
+        });
         ServiceProvider::get(['id', 'created_at'])->each(function (ServiceProvider $serviceProvider) {
             $serviceProvider->service_provider_format  = $serviceProvider->getUniqueIDFormat($serviceProvider->id);
             $serviceProvider->save();
@@ -64,10 +68,6 @@ class FixFormats extends Command
         Quarter::get(['id', 'created_at'])->each(function (Quarter $quarter) {
             $quarter->quarter_format  = $quarter->getUniqueIDFormat($quarter->id);
             $quarter->save();
-        });
-        Request::get(['id', 'created_at'])->each(function (Request $request) {
-            $request->request_format  = $request->getUniqueIDFormat($request->id);
-            $request->save();
         });
         PropertyManager::get(['id', 'created_at'])->each(function (PropertyManager $propertyManager) {
             $propertyManager->property_manager_format  = $propertyManager->getUniqueIDFormat($propertyManager->id);

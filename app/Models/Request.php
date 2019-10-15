@@ -555,11 +555,11 @@ class Request extends AuditableModel implements HasMedia
     }
 
     /**
-     * @ret1urn \Illuminate\Database\Eloquent\Relations\HasOne
-     **/
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function resident()
     {
-        return $this->hasOne(Resident::class, 'id', 'resident_id');
+        return $this->belongsTo(Resident::class);
     }
 
     /**

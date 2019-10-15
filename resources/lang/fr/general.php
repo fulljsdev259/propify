@@ -531,5 +531,6 @@ return [
         "pageTitle" => "Profil",
         "profile" => "Profil",
     ],
-    'upload_all_desc' => 'Veuillez noter que les fichiers PDF, DOC, DOCX, XLS, XLSX, PNG, JPEG, JPEG, JPG peuvent être téléchargés.'
+    'upload_all_desc' => 'Veuillez noter que les fichiers.pdf,.doc,.docx,.xls,.xlsx,.png,.jpg et.jpeg peuvent être chargés',
+    'upload_file_desc' => 'Please note that only .pdf, .doc, .docx, .xls, and .xlsx files can be uploaded'
 ];

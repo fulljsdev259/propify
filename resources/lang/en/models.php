@@ -255,7 +255,7 @@ return [
         'notify_email_description' => 'With this option, you will be able to enable email notifiation',
         'announcement_to' => 'Announcement to',
         'comments' => 'Comments',
-        'images' => 'Images',
+        'images' => 'Photos and documents',
         'attachments' => 'Attachments',
         'category_default_image_label' => 'Do want to use this image?',
         'placeholders' => [            
@@ -405,7 +405,7 @@ return [
         'open_conversation' => 'Open',
         'other_recipients' => 'Other recipients',
         'recipients' => 'Recipients',
-        'images' => 'Images',
+        'images' => 'Photos and documents',
         'no_images_message' => 'No files uploaded',
         'request_details' => 'Request details',
         'internal_notices' => 'Internal notices',

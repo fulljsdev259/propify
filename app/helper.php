@@ -37,9 +37,12 @@ function get_translation_attribute_name($attribute)
     return $attribute;
 }
 
-function update_db_fields($class, $fields, $replace, $to, $isUcFirst = false)
+function update_db_fields($class, $fields, $replace, $to, $isUcFirst = true)
 {
     $model = new $class();
+    if (method_exists($class, 'disableAuditing')) {
+        $class::disableAuditing();
+    }
     $query = $model->newQuery();
     $fields = \Illuminate\Support\Arr::wrap($fields);
     foreach ($fields as $field) {
@@ -48,19 +51,20 @@ function update_db_fields($class, $fields, $replace, $to, $isUcFirst = false)
     $items = $query->select($fields)->addSelect('id')->get();
     foreach ($items as $item) {
         foreach ($fields as $field) {
-
             $oldValue = $item->{$field};
-            if ($isUcFirst) {
-                $value = str_ireplace(ucfirst($replace), ucfirst($to), $oldValue);
-            } else {
-                $value = $oldValue;
+            $isAssoc = false;
+            if (is_array($oldValue) && \Illuminate\Support\Arr::isAssoc($oldValue)) {
+                $isAssoc = true;
+                $oldValue = json_encode($oldValue);
             }
 
+            $value = $oldValue;
             $value = str_replace($replace, $to, $value);
+            if ($isUcFirst) {
+                $value = str_replace(ucfirst($replace), ucfirst($to), $value);
+            }
 
             if ($oldValue != $value) {
-                $item->{$field} = $value;
-                echo 'In filed: ' . $field . ' of ' . $model->getTable() . ': ' . $item->id .   PHP_EOL;
                 if (is_array($oldValue)) {
                     foreach ($oldValue as $i => $_val) {
                         echo '[' . $_val  . "] replaced to [" . ($value[$i] ?? '') . ']' . PHP_EOL;
@@ -69,9 +73,16 @@ function update_db_fields($class, $fields, $replace, $to, $isUcFirst = false)
                     echo '[' . $oldValue  . "] replaced to [" . $value . ']'. PHP_EOL;
                 }
                 echo  '------------------------' .  PHP_EOL;
+                if ($isAssoc) {
+                    $value = json_decode($value, JSON_PRETTY_PRINT);
+                }
+                $item->{$field} = $value;
                 $item->save();
             }
         }
+    }
+    if (method_exists($class, 'disableAuditing')) {
+        $class::enableAuditing();
     }
 }
 
