@@ -41,6 +41,23 @@
                                         v-for="item in filter.data">
                                     </el-option>
                                 </el-select>
+                            </el-form-item> 
+                            <el-form-item
+                                v-if="filter.type === filterTypes.role && filter.data &&  filter.data.length">
+                                <el-select
+                                    :filterable="true"
+                                    :placeholder="filter.name"
+                                    @change="filterChanged(filter)"
+                                    class="filter-select"
+                                    v-model="filterModel[filter.key]">
+                                    <el-option :label="`${$t('general.placeholders.select') + ' ' + filter.name}`" value=""></el-option>
+                                    <el-option
+                                        :key="item.id + item.name"
+                                        :label="$t(`general.roles.${item.name}`)"
+                                        :value="+item.id"
+                                        v-for="item in filter.data">
+                                    </el-option>
+                                </el-select>
                             </el-form-item>
                             <el-form-item
                                 v-else-if="filter.type === filterTypes.text || filter.type === filterTypes.number">
@@ -486,7 +503,8 @@
                     text: 'text',
                     number: 'number',
                     date: 'date',
-                    language: 'language'
+                    language: 'language',
+                    role: 'role'
                 },
                 filterModel: {},
                 uuid,

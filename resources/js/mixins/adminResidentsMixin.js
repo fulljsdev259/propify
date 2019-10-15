@@ -229,6 +229,7 @@ export default (config = {}) => {
 
                 mixin.methods = {
                     submit() {
+                        console.log(this.model);
                         return new Promise((resolve, reject) => {
                             this.form.validate(async valid => {
                                 if (!valid) {

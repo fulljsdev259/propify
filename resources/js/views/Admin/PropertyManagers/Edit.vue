@@ -57,14 +57,14 @@
                                         </el-form-item>
                                     </el-col>
                                    <el-col :md="8">
-                                        <el-form-item class="label-block" :label="$t('general.roles.label')" :rules="validationRules.role"
+                                        <el-form-item class="label-block" :label="$t('general.roles.label')" :rules="validationRules.type"
                                                         prop="type">
                                             <el-select style="display: block" v-model="model.type" :placeholder="$t('general.placeholders.select')">
                                                 <el-option
-                                                        :key="role"
-                                                        :label="$t(`general.roles.${role}`)"
-                                                        :value="`${index}`"
-                                                        v-for="(role, index) in $constants.propertyManager.type">
+                                                        :key="item.name"
+                                                        :label="$t(`general.roles.${item.name}`)"
+                                                        :value="item.id"
+                                                        v-for="item in roles">
                                                 </el-option>
                                             </el-select>
                                         </el-form-item>
@@ -93,13 +93,14 @@
                                     <el-col :md="12">
                                         <el-form-item :label="$t('general.password')"
                                                       :rules="validationRules.password"
-                                                      autocomplete="off"
                                                       prop="password">
-                                            <el-input type="password"
-                                                      v-model="model.password"
-                                                      class="dis-autofill"
-                                                      readonly
-                                                      onfocus="this.removeAttribute('readonly');"
+                                            <el-input 
+                                                    type="password"
+                                                    autocomplete="off"
+                                                    v-model="model.password"
+                                                    class="dis-autofill"
+                                                    readonly
+                                                    onfocus="this.removeAttribute('readonly');"
                                             />
                                         </el-form-item>
                                     </el-col>
@@ -107,7 +108,13 @@
                                         <el-form-item :label="$t('general.confirm_password')"
                                                       :rules="validationRules.password_confirmation"
                                                       prop="password_confirmation">
-                                            <el-input type="password" v-model="model.password_confirmation"/>
+                                            <el-input 
+                                                type="password" 
+                                                v-model="model.password_confirmation"
+                                                autocomplete="off"
+                                                readonly
+                                                onfocus="this.removeAttribute('readonly');"
+                                            />
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -268,7 +275,6 @@
                         icon: 'el-icon-close',                        
                     }]
                 }],
-                roles: [ 'a', 'b']
             }
         },
         methods: {
