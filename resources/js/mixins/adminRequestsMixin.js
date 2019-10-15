@@ -94,7 +94,7 @@ export default (config = {}) => {
                 residents: [],
                 toAssignList: [],
                 media: [],
-                assignmentTypes: ['managers', 'administrator', 'services'],
+                assignmentTypes: ['managers', 'services'],
                 assignmentType: 'managers',
                 toAssign: '',
                 conversations: [],
