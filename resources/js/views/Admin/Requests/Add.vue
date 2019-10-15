@@ -354,8 +354,6 @@
                 required: true,
                 message: this.$t('validation.general.required')
             }];
-            // const {data: categories} = await this.getRequestCategoriesTree({get_all: true});
-            // this.categories = categories;
         }
         
     };
