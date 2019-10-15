@@ -137,7 +137,7 @@
                 :width="column.width"
                 v-for="column in headerWithRoles">
                 <template slot-scope="scope">
-                    {{$t(`general.roles.${scope.row[column.prop][0].name}`)}}
+                    {{$t(`general.roles.${$constants.propertyManager.type[scope.row[column.prop]]}`)}}
                 </template>
             </el-table-column>
 

@@ -42,18 +42,31 @@
                                 </el-row>
 
                                 <el-row :gutter="20">
-                                    <el-col :md="12">
+                                    <el-col :md="8">
                                         <el-form-item :label="$t('general.firstName')"
                                                     :rules="validationRules.first_name"
                                                     prop="first_name">
                                             <el-input type="text" v-model="model.first_name"/>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :md="12">
+                                    <el-col :md="8">
                                         <el-form-item :label="$t('general.lastName')"
                                                     :rules="validationRules.last_name"
                                                     prop="last_name">
                                             <el-input type="text" v-model="model.last_name"/>
+                                        </el-form-item>
+                                    </el-col>
+                                   <el-col :md="8">
+                                        <el-form-item class="label-block" :label="$t('general.roles.label')" :rules="validationRules.role"
+                                                        prop="type">
+                                            <el-select style="display: block" v-model="model.type" :placeholder="$t('general.placeholders.select')">
+                                                <el-option
+                                                        :key="role"
+                                                        :label="$t(`general.roles.${role}`)"
+                                                        :value="`${index}`"
+                                                        v-for="(role, index) in $constants.propertyManager.type">
+                                                </el-option>
+                                            </el-select>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -254,7 +267,8 @@
                         tooltipMode: true,
                         icon: 'el-icon-close',                        
                     }]
-                }]
+                }],
+                roles: [ 'a', 'b']
             }
         },
         methods: {

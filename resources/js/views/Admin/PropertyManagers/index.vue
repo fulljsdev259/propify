@@ -109,6 +109,10 @@
                 }, {
                     label: 'general.email',
                     prop: 'user.email'
+                },{
+                    label: 'general.roles.label',
+                    prop: 'type',
+                    roles: true
                 }, {
                     label: 'general.phone',
                     prop: 'user.phone'
@@ -137,6 +141,7 @@
                 remoteLoading: false,
                 quarters: {},
                 buildings:{},
+                roles: [],
                 isLoadingFilters: false,
             }
         },
@@ -160,6 +165,12 @@
                         type: 'select',
                         key: 'building_id',
                         data: this.buildings,
+                    },
+                    {
+                        name: this.$t('general.roles.label'),
+                        type: 'select',
+                        key: 'type',
+                        data: this.roles
                     },
                     {
                         name: this.$t('general.filters.language'),
@@ -257,17 +268,31 @@
                     }
                 }
             },
+            async getRoles() {
+                this.roles = [];
+                for(let role in this.$constants.propertyManager.type) {
+                    this.roles.push({
+                        id: role,
+                        name: this.$t(`general.roles.${this.$constants.propertyManager.type[role]}`),
+                    })
+                }
+            }
             
         },
         async created(){
             this.isLoadingFilters = true;
-            const quarters = await this.axios.get('quarters')
+            const quarters = await this.axios.get('quarters');
             this.quarters = quarters.data.data.data;
 
-            this.buildings = await this.getFilterBuildings()
+            this.buildings = await this.getFilterBuildings();
+            this.getRoles();
+            
             this.isLoadingFilters = false;
         
         },
+        mounted() {
+            this.$root.$on('changeLanguage', () => this.getRoles());
+        }
     }
 </script>
 
