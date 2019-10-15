@@ -281,7 +281,6 @@ class UserAPIController extends AppBaseController
             'roles.perms',
             'resident' => function ($q) {
                 $q->with([
-                    'default_contract',
                     'contracts' => function ($q) {
                         $q->with('building.address', 'unit', 'media');
                     },
