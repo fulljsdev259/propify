@@ -531,5 +531,5 @@ return [
         'pageTitle' => 'Profil-Einstellungen',
         'profile' => 'Profil',                
     ],
-    'upload_all_desc' => 'Bitte beachten Sie, dass PDF, DOC, DOCX, XLS, XLSX, PNG, JPEG, JPG Dateien hochgeladen werden können'
+    'upload_all_desc' => 'Bitte beachten Sie, dass .pdf,.doc,.docx,.xls,.xlsx,.png,.jpg und.jpeg Dateien hochgeladen werden können'
 ];

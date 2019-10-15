@@ -530,5 +530,5 @@ return [
         'pageTitle' => 'Profile',
         'profile' => 'Profile',
     ],
-    'upload_all_desc' => 'Please note that PDF, DOC, DOCX, XLS, XLSX, PNG, JPEG, JPG files can be uploaded'
+    'upload_all_desc' => 'Please note that .pdf, .doc, .docx, .xls, .xlsx, .png, .jpg and .jpeg files can be uploaded'
 ];
