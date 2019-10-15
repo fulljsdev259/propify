@@ -475,7 +475,10 @@
                 this.$refs.form.validate(async valid => {
                     if (valid) {
                         this.loading = true;
+                        this.model.monthly_rent_gross = this.model.monthly_rent_net + this.model.monthly_maintenance
                         const {...params} = this.model
+
+                        
 
                         if (this.resident_id == undefined || this.resident_id == 0) 
                         {
