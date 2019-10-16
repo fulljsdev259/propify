@@ -31,6 +31,7 @@ yarn-error.log
 /resources/js/lang/i18n/en.js
 /resources/js/lang/i18n/fr.js
 /resources/js/lang/i18n/it.js
+/resources/js/lang/vue-i18n-locales.generated.js
 
 .DS_Store
 .idea/

@@ -51,7 +51,7 @@
                 <el-col :span="1" class="request-actions">
                 </el-col>
                 <el-col :span="4">
-                    <span>{{ $t('models.request.status.assigned') + ' ' + $t('menu.propertyManagers') }}</span>
+                    <span>{{ $t('models.request.status.assigned') + ' ' + $t('general.admin_menu.property_managers') }}</span>
                         <div class="avatars-wrapper">
                         <span :key="index" v-for="(user, index) in item.property_managers">
                                 <el-tooltip
@@ -83,7 +83,7 @@
                     </div>
                 </el-col>
                 <el-col :span="4">
-                    <span>{{ $t('models.request.status.assigned') + ' ' + $t('menu.services') }}</span>
+                    <span>{{ $t('models.request.status.assigned') + ' ' + $t('general.admin_menu.services') }}</span>
                         <div class="avatars-wrapper">
                         <span :key="index" v-for="(user, index) in item.service_providers">
                                 <el-tooltip

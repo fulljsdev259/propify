@@ -6,7 +6,7 @@
         <el-row :gutter="20" class="crud-view">
             <el-form :model="model" label-position="top" label-width="192px" ref="form">
                 <el-col :md="12">
-                    <card :header="$t('models.propertyManager.details_card')" :loading="loading" class="mb20">
+                    <card :header="$t('models.property_manager.details_card')" :loading="loading" class="mb20">
                         <el-row :gutter="20">
                             <el-col :lg="model.announcement? 12 : 8">
                                 <el-form-item :label="$t('models.pinboard.type.label')">
