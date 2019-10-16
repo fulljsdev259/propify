@@ -42,11 +42,11 @@
                     <el-checkbox @change="handleSelectionChanged"></el-checkbox>
                 </el-col> 
                 <el-col :span="1" class="request-actions">
-                    <!--<el-tooltip v-if="item.resident.building.id" :content="$t('dashboard.buildings.go_to_building')" placement="top" effect="light">
+                    <el-tooltip v-if="item.resident.building.id" :content="$t('dashboard.buildings.go_to_building')" placement="top" effect="light">
                         <router-link :to="{name: 'adminBuildingsEdit', params: {id:item.resident.building.id}}" class="listing-link">
                              <i class="icon icon-commerical-building"></i>
                         </router-link>
-                    </el-tooltip>-->
+                    </el-tooltip>
                 </el-col>
                 <el-col :span="1" class="request-actions">
                 </el-col>
@@ -224,8 +224,13 @@ export default {
             .request-aside {
                 padding: 0 !important;
                 text-align: center;
+                width: 180px !important;
             }
             .request-title {
+                width: calc(87% - 250px) !important;
+            }
+            .request-action {
+                width: 70px !important;
             }
         }
         .request-footer {
