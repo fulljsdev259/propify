@@ -8,7 +8,7 @@
             <template>
                 <div class="action-group">
                     <el-button @click="submit" size="small" type="primary" round> {{this.$t('general.actions.save')}}</el-button>
-                    <el-button @click="saveAndClose" size="small" type="primary" round> {{this.$t('general.actions.saveAndClose')}}
+                    <el-button @click="saveAndClose" size="small" type="primary" round> {{this.$t('general.actions.save_and_close')}}
                     </el-button>
                     <el-button @click="batchDeleteBuilding" size="small" type="danger" round icon="ti-trash"> {{this.$t('general.actions.delete')}}</el-button>
                     <el-button @click="goToListing" size="small" type="warning" round> {{this.$t('general.actions.close')}}
@@ -565,9 +565,9 @@
                 });
             },
             unassignBuilding(assignee) {
-                this.$confirm(this.$t(`general.swal.confirmChange.title`), this.$t('general.swal.confirmChange.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirmChange.confirmBtnText`),
-                    cancelButtonText: this.$t(`general.swal.confirmChange.cancelBtnText`),
+                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
+                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
+                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
                     type: 'warning'
                 }).then(async () => {
                     try {                        
@@ -772,9 +772,9 @@
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
              notifyProviderUnassignment(row) {
-                this.$confirm(this.$t(`general.swal.confirmChange.title`), this.$t('general.swal.confirmChange.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirmChange.confirmBtnText`),
-                    cancelButtonText: this.$t(`general.swal.confirmChange.cancelBtnText`),
+                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
+                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
+                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
                     type: 'warning'
                 }).then(async () => {
                     try {

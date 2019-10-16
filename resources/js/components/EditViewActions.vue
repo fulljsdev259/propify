@@ -1,7 +1,7 @@
 <template>
     <div class="action-group">
         <el-button @click="SaveAndEdit" size="mini" type="primary" round> {{this.$t('general.actions.save')}}</el-button>
-        <el-button @click="saveAndClose" size="mini" type="primary" round> {{this.$t('general.actions.saveAndClose')}}
+        <el-button @click="saveAndClose" size="mini" type="primary" round> {{this.$t('general.actions.save_and_close')}}
         </el-button>
         <el-button v-if="deleteAction || undefined"  @click="deleteAndClose" size="mini" type="danger" round icon="ti-trash"> {{this.$t('general.actions.delete')}}</el-button>
         <el-button @click="goToListing" size="mini" type="warning" round> {{this.$t('general.actions.close')}}

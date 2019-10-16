@@ -6,7 +6,7 @@
         <div class="actions" :style="[model.content && {'width': '100%', 'justify-content': 'flex-end'}]">
             <el-tag size="mini">
                 <i class="icon-eye"></i>
-                {{$t(`general.components.resident.pinboardAdd.visibility.${model.visibility.name}`)}}
+                {{$t(`general.components.resident.pinboard_add.visibility.${model.visibility.name}`)}}
             </el-tag>
             <el-dropdown size="small" trigger="click" placement="bottom-end" @command="onVisibilityChoosen" @visible-change="onDropdownVisibility">
                 <el-tooltip ref="visibility-button-tooltip" :content="$t('resident.choose_visibility')">
@@ -16,7 +16,7 @@
                 </el-tooltip>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item v-for="(visibility, index) in visibilityTypes" :key="visibility.key" :command="visibility" :divided="!! index">
-                        {{$t(`general.components.resident.pinboardAdd.visibility.${visibility.name}`)}}
+                        {{$t(`general.components.resident.pinboard_add.visibility.${visibility.name}`)}}
                         <small style="display: block;color: #A9A9A9;">{{visibility.description}}</small>
                     </el-dropdown-item>
                 </el-dropdown-menu>

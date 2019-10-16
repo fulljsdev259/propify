@@ -194,9 +194,9 @@
                 return units.data;
             },
             listingSelectChangedNotify(row) {
-                this.$confirm(this.$t(`general.swal.confirmChange.title`), this.$t('general.swal.confirmChange.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirmChange.confirmBtnText`),
-                    cancelButtonText: this.$t(`general.swal.confirmChange.cancelBtnText`),
+                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
+                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
+                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
                     type: 'warning'
                 }).then(async () => {
                     try {
@@ -269,7 +269,7 @@
                         key: 'quarter_id',
                         data: this.quarters,
                     }, {
-                        name: this.$t('general.filters.requestStatus'),
+                        name: this.$t('general.filters.request_status'),
                         type: 'select',
                         key: 'request_status',
                         data: this.prepareRequestFilters("status")

@@ -10,7 +10,7 @@
                     </div>
                     <div class="language-check-box">
                         <div class="language-check-box-title">
-                            {{$t('general.chooseLanguage')}}
+                            {{$t('general.choose_language')}}
                         </div>
                         <div class="language-check-box-body">
                             <ul class="language-check-box-body-item" v-for='language in this.languages' :key="language.symbol" @click='itemClicked(language.symbol, language.flag)'>
@@ -38,26 +38,26 @@
                                 <router-link  v-if="this.user.roles[0].name != 'manager'" :to="{name: 'adminProfile'}" class="el-menu-item-link">
                                     <el-dropdown-item>
                                         <i class="icon-user"/>
-                                        {{$t('menu.profile')}}
+                                        {{$t('general.admin_menu.profile')}}
                                     </el-dropdown-item>
                                 </router-link>
                                 <router-link  v-if="this.user.roles[0].name == 'manager'" :to="{name: 'adminPropertyManagersEdit', params: {id: this.user.property_manager_id}}" class="el-menu-item-link">
                                     <el-dropdown-item>
                                         <i class="icon-user"/>
-                                        {{$t('menu.profile')}}
+                                        {{$t('general.admin_menu.profile')}}
                                     </el-dropdown-item>
                                 </router-link>
                                 <template v-if="$can($permissions.view.settings) && this.user.roles[0].name != 'manager'">
                                     <router-link :to="{name: 'adminSettings'}" class="el-menu-item-link">
                                         <el-dropdown-item>
                                             <i class="icon-cog"/>
-                                            {{$t('menu.settings')}}
+                                            {{$t('general.admin_menu.settings')}}
                                         </el-dropdown-item>
                                     </router-link>
                                 </template>
                                 <el-dropdown-item id="logout" @click.native="handleLogout">
                                     <i class="icon-logout"/>
-                                    {{$t('menu.logout')}}
+                                    {{$t('general.admin_menu.logout')}}
                                 </el-dropdown-item>
                         </el-dropdown-menu>
                     </div>
@@ -171,30 +171,30 @@
                 let menu_items = {
                     "dashboard": {
                         icon: 'icon-chart-bar',
-                        title: 'Dashboard',
+                        title: this.$t('general.admin_menu.dashboard'),
                         route: {
                             name: 'adminDashboard'
                         }
                     },
                     "buildings": {
                         icon: 'icon-commerical-building',
-                        title: this.$t('menu.buildings'),
+                        title: this.$t('general.admin_menu.buildings'),
                         permission: this.$permissions.list.user,
                         children: [
                         {
-                            title: this.$t('menu.quarters'),
+                            title: this.$t('general.admin_menu.quarters'),
                             permission: this.$permissions.list.quarter,
                             route: {
                                 name: 'adminQuarters'
                             }
                         }, {
-                            title: this.$t('menu.all_buildings'),
+                            title: this.$t('general.admin_menu.all_buildings'),
                             permission: this.$permissions.list.building,
                             route: {
                                 name: 'adminBuildings'
                             }
                         }, {
-                            title: this.$t('menu.units'),
+                            title: this.$t('general.admin_menu.units'),
                             permission: this.$permissions.list.unit,
                             route: {
                                 name: 'adminUnits'
@@ -203,38 +203,38 @@
                     },
                     "requests": {
                         icon: 'icon-chat-empty',
-                        title: this.$t('menu.requests'),
+                        title: this.$t('general.admin_menu.requests'),
                         permission: this.$permissions.list.request,
                         children: [{
-                            title: this.$t('menu.all_requests'),
+                            title: this.$t('general.admin_menu.all_requests'),
                             permission: this.$permissions.list.request,
                             value: this.all_request_count,
                             route: {
                                 name: 'adminRequests'
                             }
                         },  {
-                            title: this.$t('menu.myRequests'),
+                            title: this.$t('general.admin_menu.my_requests'),
                             permission: this.$permissions.list.request,
                             value: this.my_request_count,
                             route: {
                                 name: 'adminMyRequests'
                             }
                         },  {
-                            title: this.$t('menu.myPendingRequests'),
+                            title: this.$t('general.admin_menu.my_pending_requests'),
                             permission: this.$permissions.list.request,
                             value: this.my_pending_count,
                             route: {
                                 name: 'adminMypendingRequests'
                             }
                         },  {
-                            title: this.$t('menu.notAssigned'),
+                            title: this.$t('general.admin_menu.not_assigned'),
                             permission: this.$permissions.list.request,
                             value: this.all_unassigned_count,
                             route: {
                                 name: 'adminUnassignedRequests'
                             }
                         },  {
-                            title: this.$t('menu.allPendingRequests'),
+                            title: this.$t('general.admin_menu.all_pending_requests'),
                             permission: this.$permissions.list.request,
                             value: this.all_pending_count,
                             route: {
@@ -244,14 +244,14 @@
                     },
                     "activity": {
                         icon: 'icon-gauge-1',
-                        title: this.$t('menu.activity'),
+                        title: this.$t('general.admin_menu.activity'),
                         permission: this.$permissions.list.audit,
                         route: {
                             name: 'adminRequestsActivity'
                         }
                     },
                     "residents": {
-                        title: this.$t('menu.residents'),
+                        title: this.$t('general.admin_menu.residents'),
                         icon: 'icon-group',
                         permission: this.$permissions.list.resident,
                         route: {
@@ -260,7 +260,7 @@
                     },
                     "propertyManagers": {
                         icon: 'icon-users',
-                        title: this.$t('menu.propertyManagers'),
+                        title: this.$t('general.admin_menu.property_managers'),
                         permission: this.$permissions.list.propertyManager,
                         route: {
                             name: 'adminPropertyManagers'
@@ -268,7 +268,7 @@
                     },
                     "houseOwners": {
                         icon: 'icon-users',
-                        title: this.$t('menu.houseOwners'),
+                        title: this.$t('general.admin_menu.house_owners'),
                         permission: this.$permissions.list.propertyManager,
                         route: {
                             name: 'adminHouseOwners'
@@ -276,14 +276,14 @@
                     },
                     "services": {
                         icon: 'icon-tools',
-                        title: this.$t('menu.services'),
+                        title: this.$t('general.admin_menu.services'),
                         permission: this.$permissions.list.provider,
                         route: {
                             name: 'adminServices'
                         }
                     },
                     "pinboard": {
-                        title: this.$t('menu.pinboard'),
+                        title: this.$t('general.admin_menu.pinboard'),
                         icon: 'icon-megaphone-1',
                         permission: this.$permissions.list.pinboard,
                         route: {
@@ -291,7 +291,7 @@
                         }
                     },
                     // "listings": {
-                    //     title: this.$t('menu.listings'),
+                    //     title: this.$t('general.admin_menu.listings'),
                     //     icon: 'icon-basket',
                     //     permission: this.$permissions.list.listing,
                     //     route: {
@@ -300,7 +300,7 @@
                     // },
                     // "admins": {
                     //     icon: 'icon-user',
-                    //     title: this.$t('menu.admins'),
+                    //     title: this.$t('general.admin_menu.admins'),
                     //     permission: this.$permissions.list.user,
                     //     route: {
                     //         name: 'adminUsers'

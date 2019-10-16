@@ -25,12 +25,12 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :md="8">
-                                <el-form-item :label="$t('general.lastName')" prop="lastName">
+                                <el-form-item :label="$t('general.last_name')" prop="lastName">
                                     <el-input type="text" v-model="model.lastName"/>
                                 </el-form-item>
                             </el-col>
                             <el-col :md="8">
-                                <el-form-item :label="$t('general.firstName')" prop="firstName">
+                                <el-form-item :label="$t('general.first_name')" prop="firstName">
                                     <el-input type="text" v-model="model.firstName"/>
                                 </el-form-item>
                             </el-col>
@@ -126,11 +126,11 @@
                     ],
                     lastName: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('general.lastName')})
+                        message: this.$t('validation.required',{attribute: this.$t('general.last_name')})
                     }],
                     firstName: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('general.firstName')})
+                        message: this.$t('validation.required',{attribute: this.$t('general.first_name')})
                     }],
                     phone: [{
                         required: true,
