@@ -13,7 +13,7 @@ return [
         'years' => 'Jahre',
         'day' => 'Day de'
     ],
-    'chooseLanguage' => 'Sprache auswählen',
+    'choose_language' => 'Sprache auswählen',
     'language' => "Sprache",
     'languages' => [
         'fr' => 'Français',
@@ -21,10 +21,10 @@ return [
         'de' => 'Deutsch',
         'en' => 'English',
     ],
-    'footerText' => [
-        'companyName' => 'Propify®',
-        'leftSideText' => 'Sie brauchen Unterstützung? Kontaktieren Sie unser Support-Team unter<br/>0800 000 000 oder via eine E-Mail an support@propify.ch.',
-        'allRightsSaved' => 'Alle Rechte vorbehalten',
+    'footer_text' => [
+        'company_name' => 'Propify®',
+        'left_side_text' => 'Sie brauchen Unterstützung? Kontaktieren Sie unser Support-Team unter<br/>0800 000 000 oder via eine E-Mail an support@propify.ch.',
+        'all_rights_saved' => 'Alle Rechte vorbehalten',
     ],
     'days' => [
         'monday' => 'Montag',
@@ -82,8 +82,8 @@ return [
         'units' => 'Einheiten',
         'states' => 'Kanton',
         'status' => 'Status',
-        'requestStatus' => 'Anfrage Status',
-        'propertyManagers' => 'Bewirtschafter',
+        'request_status' => 'Anfrage Status',
+        'property_managers' => 'Bewirtschafter',
         'categories' => 'Kategorien',
         'created_from' => 'Erstellt vom',
         'created_to' => 'Erstellt bis',
@@ -93,8 +93,8 @@ return [
         'language' => 'Sprache',
     ],
     'no' => 'Nein',
-    'firstName' => 'Vorname',
-    'lastName' => 'Name',    
+    'first_name' => 'Vorname',
+    'last_name' => 'Name',    
     'name' => "Name",
     'phone' => 'Telefon',
     'id' => "ID",
@@ -168,7 +168,7 @@ return [
         'old_password_min' => 'Das alte Passwort müsste aus mind. 6 Zeichen bestehen.',
         'old_password_required' => 'Das alte Passwort wird benötigt.',
     ],
-    'assignmentTypes' => [
+    'assignment_types' => [
         'building' => 'Liegenschaft',
         'quarter' => 'Überbauung',
         'services' => 'Dienstleister',
@@ -192,23 +192,23 @@ return [
         'view' => 'Details',
         'save' => 'Speichern',
         'close' => 'Schliessen',
-        'saveAndClose' => 'Speichern & schliessen',
+        'save_and_close' => 'Speichern & schliessen',
         'upload' => 'Herunterladen',
         'update' => 'Bearbeiten',
         'crop' => 'Zuschneiden',
         'upload_img' => 'Bild hochladen',
     ],
     'swal' => [
-        'confirmChange' => [
+        'confirm_change' => [
             'title' => 'Wollen Sie den Status wirklich ändern?',
             'warning' => 'Bitte bestätigen',
-            'confirmBtnText' => 'Ja',
-            'cancelBtnText' => 'Schliessen',
+            'confirm_btn_text' => 'Ja',
+            'cancel_btn_text' => 'Schliessen',
         ],
         'delete' => [
             'title' => 'Sind Sie sicher?',
             'text' => 'Dies kann nicht mehr rückgänging gemacht werden!',
-            'confirmText' => 'Ja, ich will löschen!',
+            'confirm_text' => 'Ja, ich will löschen!',
             'deleted' => 'Erfolgreich gelöscht!',
         ],
         'to_done' => [
@@ -253,7 +253,7 @@ return [
     'errors' => [
         'files_extension_images' => 'Nur Dateien in der Formaten .jpg und .png erlaubt.',
     ],
-    'dateTimeFormat' => '{date} um {time} Uhr',
+    'date_time_format' => '{date} um {time} Uhr',
     'date_range' => [
         'range_separator' => 'Bis',
         'start_date' => 'Startdatum',
@@ -333,7 +333,7 @@ return [
                     ]
                 ],
                 'content' => [
-                    'withId' => [
+                    'with_id' => [
                         'pinboard' => [
                             'created' => '{userName} hat diesen Beitrag erstellt.',
                             'updated' => [
@@ -379,7 +379,7 @@ return [
                             'media_deleted' => 'Mediendateien gelöscht',
                         ]
                     ],
-                    'withNoId' => [
+                    'with_no_id' => [
                         'pinboard' => [
                             'created' => '{userName} hat folgende Anfrage erstellt: {auditable_type} im {auditable_type} #{auditable_id}.',
                             'updated' => [
@@ -426,74 +426,74 @@ return [
                     ]
                 ],
             ],
-            'commentsList' => [                        
-                'loadMore' => 'Lade {count} weitere Kommentare',
-                'emptyPlaceholder' => [
+            'comments_list' => [                        
+                'load_more' => 'Lade {count} weitere Kommentare',
+                'empty_placeholder' => [
                     'title' => 'Bislang wurden keine Kommentare geteilt...',
                     'description' => 'Verfassen Sie den ersten Kommentar.',
                 ],
             ],
-            'internalnoticesList' => [            
-                'loadMore' => 'Lade {count} weitere interne Notizen',            
-                'emptyPlaceholder' => [
+            'internalnotices_list' => [            
+                'load_more' => 'Lade {count} weitere interne Notizen',            
+                'empty_placeholder' => [
                     'title' => 'Es existieren noch keine interne Notizen.',
                     'description' => 'Fügen Sie einen internen Notiz hinzu.',
                 ],
             ],
-            'serviceproviderconversationsList' => [            
-                'loadMore' => 'Lade {count} weitere Nachrichten',
-                'emptyPlaceholder' => [
+            'serviceproviderconversations_list' => [            
+                'load_more' => 'Lade {count} weitere Nachrichten',
+                'empty_placeholder' => [
                     'title' => 'Es gibt noch keine Nachrichten.',
                     'description' => 'Verfassen Sie die erste Nachricht.',
                 ],
             ],
-            'residentconversationsList' => [
-                'loadMore' => 'Laden von {count} mehr residuelle Gespräche.',
-                'emptyPlaceholder' => [
+            'residentconversations_list' => [
+                'load_more' => 'Laden von {count} mehr residuelle Gespräche.',
+                'empty_placeholder' => [
                     'title' => 'Es gibt kein Gespräch mit dem Bewohner.',
                     'description' => 'Fügen Sie mit dem untenstehenden Formular eine Nachricht an den Bewohner hinzu und drücken Sie die Eingabetaste.',
                 ],
             ],
-            'listingcommentsList' => [
-                'loadMore' => 'Lade {count} weitere Anfragen',
-                'emptyPlaceholder' => [
+            'listingcomments_list' => [
+                'load_more' => 'Lade {count} weitere Anfragen',
+                'empty_placeholder' => [
                     'title' => 'Es gibt keine Anfragen',
                     'description' => 'Übermitteln Sie die erste Anfrage.',
                 ],
             ],
-            'pinboardcommentsList' => [
-                'loadMore' => 'Lade {count} weitere Kommentare.',
-                'emptyPlaceholder' => [
+            'pinboardcomments_list' => [
+                'load_more' => 'Lade {count} weitere Kommentare.',
+                'empty_placeholder' => [
                     'title' => 'Es gibt keine Kommentare',
                     'description' => 'Verfassen Sie den ersten Kommentar',
                 ],
             ],
             'comment' => [
-                'updateShortcut' => 'oder Verwendung {shortcut} Abkürzung',
-                'updateOrCancel' => '{update} oder drücke {esc} um {cancel}',
+                'update_shortcut' => 'oder Verwendung {shortcut} Abkürzung',
+                'update_or_cancel' => '{update} oder drücke {esc} um {cancel}',
                 'update' => 'bearbeiten',
                 'esc' => 'ESC',
                 'cancel' => 'abzubrechen',
-                'addChildComment' => 'Kommentar',
-                'loadMore' => 'Lade 1 weiteren Kommentar | Lade {count} weitere Kommentare',
-                'deletedCommentPlaceholder' => 'Der Kommentar wurde gelöscht.',
+                'add_child_comment' => 'Kommentar',
+                'load_more' => 'Lade 1 weiteren Kommentar | Lade {count} weitere Kommentare',
+                'deleted_comment_placeholder' => 'Der Kommentar wurde gelöscht.',
             ],
-            'addComment' => [
+            'add_comment' => [
                 'placeholder' => 'Schreiben Sie einen Kommentar...',
-                'tooltipTemplates' => 'Wählen Sie eine Vorlage',
-                'loadingTemplates' => 'Vorlagen werden geladen...',
-                'saveShortcut' => 'oder verwende {shortcut} Abkürzung',
-                'emptyTemplatesPlaceholder' => 'Keine Vorlagen vorhanden',
+                'tooltip_templates' => 'Wählen Sie eine Vorlage',
+                'loading_templates' => 'Vorlagen werden geladen...',
+                'save_shortcut' => 'oder verwende {shortcut} Abkürzung',
+                'empty_templates_placeholder' => 'Keine Vorlagen vorhanden',
             ],
             'media' => [
                 'buttons' => [
-                    'selectFiles' => [
-                        'withDrop' => 'Schieben oder wählen Sie die Dateien...',
-                        'withoutDrop' => 'Datei wählen...',
+                    'select_files' => [
+                        'with_drop' => 'Schieben oder wählen Sie die Dateien...',
+                        'without_drop' => 'Datei wählen...',
                     ],
                     'upload' => 'Hinauflauden',
                 ],
-                'dropActive' => [
+                'drop_active' => [
                     'title' => 'Schieben Sie die Dateien hier hinein..',
                     'description' => 'Nur die Dateien mit eines bestimmten Typs sind erlaubt...',
                 ],
@@ -507,15 +507,15 @@ return [
             ],
         ],
         'resident' => [
-            'weatherWidget' => [
-                'minTemp' => 'min',
-                'maxTemp' => 'max',
+            'weather_widget' => [
+                'min_temp' => 'min',
+                'max_temp' => 'max',
                 'wind' => 'Wind',
                 'cloudiness' => 'Bewölkung',
                 'humidity' => 'Luftfeuchte',
                 'pressure' => 'Druck',
             ],
-            'pinboardAdd' => [
+            'pinboard_add' => [
                 'visibility' => [
                     'address' => 'Nachbarn',
                     'quarter' => 'Überbauung',
@@ -529,9 +529,44 @@ return [
     ],
     /* Should be removed this array as page will be removed in future*/
     'profile' => [
-        'pageTitle' => 'Profil-Einstellungen',
+        'page_title' => 'Profil-Einstellungen',
         'profile' => 'Profil',                
     ],
     'upload_all_desc' => 'Bitte beachten Sie, dass .pdf,.doc,.docx,.xls,.xlsx,.png,.jpg und.jpeg Dateien hochgeladen werden können',
-    'upload_file_desc' => 'Please note that only .pdf, .doc, .docx, .xls, and .xlsx files can be uploaded'
+    'upload_file_desc' => 'Please note that only .pdf, .doc, .docx, .xls, and .xlsx files can be uploaded',
+    'admin_menu' => [
+        'dashboard' => 'Dashboard',
+        'requests' => 'Service-Center',
+        'all_requests' => 'Alle Anfragen',
+        'my_requests' => 'Meine Anfragen',
+        'my_pending_requests' => 'Meine offenen Anfragen',
+        'not_assigned' => 'Nicht zugeordnet',
+        'all_pending_requests' => 'Alle offenen Anfragen',
+        'listing' => 'Marktplatz',
+        'settings' => 'Einstellungen',
+        'logout' => 'Abmelden',
+        'profile' => 'Profil',
+        'users' => 'Benutzer',
+        'employees' => 'Fortimo',
+        'companies' => 'Dienstleister',
+        'admins' => 'Administratoren',
+        'super_admins' => 'Super Administratoren',
+        'house_owners' => 'Eigentümer',
+        'registered' => 'Registriert',
+        'about' => 'Über',
+        'feedback' => 'Feedback',
+        'residents' => 'Bewohner',
+        'buildings' => 'Liegenschaften',
+        'all_buildings' => 'Objekte',
+        'units' => 'Einheiten',
+        'addresses' => 'Liegenschaften',
+        'pinboard' => 'Pinnwand',
+        'quarters' => 'Überbauungen',
+        'listings' => 'Marktplatz',
+        'request_categories' => 'Kategorien',
+        'services' => 'Dienstleister',
+        'activity' => 'Aktivität',
+        'property_managers' => 'Fortimo',
+        'templates' => 'Vorlagen'
+    ]
 ];

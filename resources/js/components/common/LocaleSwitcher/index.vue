@@ -6,7 +6,7 @@
         <el-dropdown-menu class="language-switcher" slot="dropdown">
             <div class="content">
                 <i class="icon icon-language"></i>
-                {{$t('general.chooseLanguage')}}
+                {{$t('general.choose_language')}}
             </div>
             <el-divider />
             <el-dropdown-item v-for="(name, iso) in $constants.app.languages" :key="iso" :command="iso">

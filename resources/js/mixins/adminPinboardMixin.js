@@ -106,7 +106,7 @@ export default (config = {}) => {
             ...mapActions(['uploadPinboardMedia', 'deletePinboardMedia', 'getBuildings', 'getQuarters', 'assignPinboardBuilding',
                 'assignPinboardQuarter', 'getServices', 'assignPinboardProvider']),
             translateType(type) {
-                return this.$t(`general.assignmentTypes.${type}`);
+                return this.$t(`general.assignment_types.${type}`);
             },
             uploadFiles(file) {
                 const allowedFiles = [

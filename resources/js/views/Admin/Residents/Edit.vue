@@ -62,14 +62,14 @@
                                                         </el-form-item>
                                                     </el-col>
                                                     <el-col :md="6">
-                                                        <el-form-item :label="$t('general.firstName')"
+                                                        <el-form-item :label="$t('general.first_name')"
                                                                     :rules="validationRules.first_name"
                                                                     prop="first_name">
                                                             <el-input autocomplete="off" type="text" v-model="model.first_name"></el-input>
                                                         </el-form-item>
                                                     </el-col>
                                                     <el-col :md="6">
-                                                        <el-form-item :label="$t('general.lastName')"
+                                                        <el-form-item :label="$t('general.last_name')"
                                                                     :rules="validationRules.last_name"
                                                                     prop="last_name">
                                                             <el-input autocomplete="off" type="text" v-model="model.last_name"></el-input>

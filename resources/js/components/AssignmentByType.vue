@@ -7,7 +7,7 @@
             >
                 <el-option
                     :key="type"
-                    :label="$t(`general.assignmentTypes.${type}`)"
+                    :label="$t(`general.assignment_types.${type}`)"
                     :value="type"
                     v-for="(type) in assignmentTypes">
                 </el-option>

@@ -13,7 +13,7 @@ return [
         'years' => 'Years',
         'day' => 'Day'
     ],
-    'chooseLanguage' => 'Choose Language',
+    'choose_language' => 'Choose Language',
     'language' => "Language",
     'languages' => [
         'fr' => 'Français',
@@ -21,10 +21,10 @@ return [
         'de' => 'Deutsch',
         'en' => 'English',
     ],
-    'footerText' => [
-        'companyName' => 'Propify',
-        'leftSideText' => 'You need support? Contact our support team at <br/>0800 000 000 or via email to support@propify.ch',
-        'allRightsSaved' => 'All rights reserved',
+    'footer_text' => [
+        'company_name' => 'Propify',
+        'left_side_text' => 'You need support? Contact our support team at <br/>0800 000 000 or via email to support@propify.ch',
+        'all_rights_saved' => 'All rights reserved',
     ],
     'days' => [
         'monday' => 'Monday',
@@ -82,8 +82,8 @@ return [
         'units' => 'Units',
         'states' => 'States',
         'status' => 'Status',
-        'requestStatus' => 'Request status',
-        'propertyManagers' => 'Property Manager',
+        'request_status' => 'Request status',
+        'property_managers' => 'Property Manager',
         'categories' => 'Categories',
         'created_from' => 'Created from',
         'created_to' => 'Created to',
@@ -93,8 +93,8 @@ return [
         'language' => 'Language',
     ],    
     'no' => 'No',
-    'firstName' => 'First name',
-    'lastName' => 'Last name',
+    'first_name' => 'First name',
+    'last_name' => 'Last name',
     'name' => "Name",
     'phone' => 'Phone',
     'id' => "ID",
@@ -168,7 +168,7 @@ return [
         'old_password_min' => 'Old password must be at least 6 characters',
         'old_password_required' => 'Old password is required',
     ],
-    'assignmentTypes' => [
+    'assignment_types' => [
         'building' => 'Building',
         'quarter' => 'Quarter',
         'services' => 'Services',
@@ -192,23 +192,23 @@ return [
         'view' => 'Details',
         'save' => 'Save',
         'close' => 'Close',
-        'saveAndClose' => 'Save & Close',
+        'save_and_close' => 'Save & Close',
         'upload' => 'Upload',
         'update' => 'Update',
         'crop' => 'Crop',
         'upload_img' => 'Upload image',
     ],
     'swal' => [
-        'confirmChange' => [
+        'confirm_change' => [
             'title' => 'Are you sure you want to continue?',
             'warning' => 'Warning',
-            'confirmBtnText' => 'Ok',
-            'cancelBtnText' => 'Cancel',
+            'confirm_btn_text' => 'Ok',
+            'cancel_btn_text' => 'Cancel',
         ],
         'delete' => [
             'title' => 'Are you sure?',
             'text' => 'You won\'t be able to revert this!',
-            'confirmText' => 'Yes, delete it!',
+            'confirm_text' => 'Yes, delete it!',
             'deleted' => 'Deleted successfully',
         ],
         'to_done' => [
@@ -253,7 +253,7 @@ return [
     'errors' => [
         'files_extension_images' => 'Only jpg and png files accepted',
     ],
-    'dateTimeFormat' => '{date} at {time}',
+    'date_time_format' => '{date} at {time}',
     'date_range' => [
         'range_separator' => 'To',
         'start_date' => 'Start date',
@@ -333,7 +333,7 @@ return [
                     ]
                 ],
                 'content' => [
-                    'withId' => [
+                    'with_id' => [
                         'pinboard' => [
                             'created' => '{userName} opened this {auditable_type} on {auditable_type} #{auditable_id}.',
                             'updated' => [
@@ -379,7 +379,7 @@ return [
                             'media_deleted' => 'Media deleted',
                         ]
                     ],
-                    'withNoId' => [
+                    'with_no_id' => [
                         'pinboard' => [
                             'created' => '{userName} opened this {auditable_type} on {auditable_type} #{auditable_id}.',
                             'updated' => [
@@ -425,74 +425,74 @@ return [
                     ]
                 ],
             ],
-            'commentsList' => [            
-                'loadMore' =>  'Load {count} more comments',            
-                'emptyPlaceholder' => [
+            'comments_list' => [            
+                'load_more' =>  'Load {count} more comments',            
+                'empty_placeholder' => [
                     'title' => 'There are no messages yet...',
                     'description' => 'Start messaging by using the below form and press enter.',
                 ],
             ],
-            'internalnoticesList' => [            
-                'loadMore' => 'Load {count} more internal notice',            
-                'emptyPlaceholder' => [
+            'internalnotices_list' => [            
+                'load_more' => 'Load {count} more internal notice',            
+                'empty_placeholder' => [
                     'title' => 'There are no internal notices yet...',
                     'description' => 'Add internal notice by using the below form and press enter.',
                 ],
             ],
-            'serviceproviderconversationsList' => [            
-                'loadMore' => 'Load {count} more service provider conversations',
-                'emptyPlaceholder' => [
+            'serviceproviderconversations_list' => [            
+                'load_more' => 'Load {count} more service provider conversations',
+                'empty_placeholder' => [
                     'title' => 'There are no conversations with service provider yet...',
                     'description' => 'Add conversation to service provider by using the below form and press enter.',
                 ],
             ],
-            'residentconversationsList' => [
-                'loadMore' => 'Load {count} more resident conversations',
-                'emptyPlaceholder' => [
+            'residentconversations_list' => [
+                'load_more' => 'Load {count} more resident conversations',
+                'empty_placeholder' => [
                     'title' => 'There are no conversation made with resident.',
                     'description' => 'Add message to resident using the below form and press enter.',
                 ],
             ],
-            'listingcommentsList' => [
-                'loadMore' => 'Load {count} more listing comments',
-                'emptyPlaceholder' => [
+            'listingcomments_list' => [
+                'load_more' => 'Load {count} more listing comments',
+                'empty_placeholder' => [
                     'title' => 'There are no comments for listing',
                     'description' => 'Ask about listing by sending messaging using the below form and press enter.',
                 ],
             ],
-            'pinboardcommentsList' => [
-                'loadMore' => 'Load {count} more pinboard comments',
-                'emptyPlaceholder' => [
+            'pinboardcomments_list' => [
+                'load_more' => 'Load {count} more pinboard comments',
+                'empty_placeholder' => [
                     'title' => 'There are no comments for pinboard',
                     'description' => 'Ask about pinboard by sending messaging using the below form and press enter.',
                 ],
             ],
             'comment' => [
-                'updateShortcut' => 'or use {shortcut} shortcut',
-                'updateOrCancel' => '{update} or press {esc} to {cancel}',
+                'update_shortcut' => 'or use {shortcut} shortcut',
+                'update_or_cancel' => '{update} or press {esc} to {cancel}',
                 'update' => 'update',
                 'esc' => 'ESC',
                 'cancel' => 'cancel',
-                'addChildComment' => 'Comment',
-                'loadMore' => 'Load 1 more comment | Load {count} more comments',
-                'deletedCommentPlaceholder' => 'This comment was deleted.',
+                'add_child_comment' => 'Comment',
+                'load_more' => 'Load 1 more comment | Load {count} more comments',
+                'deleted_comment_placeholder' => 'This comment was deleted.',
             ],
-            'addComment' => [
+            'add_comment' => [
                 'placeholder' => 'Type a comment...',
-                'tooltipTemplates' => 'Choose a template',
-                'loadingTemplates' => 'Loading templates...',
-                'saveShortcut' => 'or use {shortcut} shortcut',
-                'emptyTemplatesPlaceholder' => 'No templates available.',
+                'tooltip_templates' => 'Choose a template',
+                'loading_templates' => 'Loading templates...',
+                'save_shortcut' => 'or use {shortcut} shortcut',
+                'empty_templates_placeholder' => 'No templates available.',
             ],
             'media' => [
                 'buttons' => [
-                    'selectFiles' => [
-                        'withDrop' => 'Drop files or click to select...',
-                        'withoutDrop' => 'Click to select...',
+                    'select_files' => [
+                        'with_drop' => 'Drop files or click to select...',
+                        'without_drop' => 'Click to select...',
                     ],
                     'upload' => 'Upload',
                 ],
-                'dropActive' => [
+                'drop_active' => [
                     'title' => 'Drop your files here...',
                     'description' => 'Only the files with a certain extension are allowed.',
                 ],
@@ -506,15 +506,15 @@ return [
             ],
         ],
         'resident' => [
-            'weatherWidget' => [
-                'minTemp' => 'min',
-                'maxTemp' => 'max',
+            'weather_widget' => [
+                'min_temp' => 'min',
+                'max_temp' => 'max',
                 'wind' => 'wind',
                 'cloudiness' => 'cloudiness',
                 'humidity' => 'humidity',
                 'pressure' => 'pressure',
             ],
-            'pinboardAdd' => [
+            'pinboard_add' => [
                 'visibility' => [
                     'address' => 'Address',
                     'quarter' => 'Quarter',
@@ -528,9 +528,44 @@ return [
     ],
     /* Should be removed this array as page will be removed in future*/
     'profile' => [
-        'pageTitle' => 'Profile',
+        'page_title' => 'Profile',
         'profile' => 'Profile',
     ],
     'upload_all_desc' => 'Please note that .pdf, .doc, .docx, .xls, .xlsx, .png, .jpg and .jpeg files can be uploaded',
-    'upload_file_desc' => 'Please note that only .pdf, .doc, .docx, .xls, and .xlsx files can be uploaded'
+    'upload_file_desc' => 'Please note that only .pdf, .doc, .docx, .xls, and .xlsx files can be uploaded',
+    'admin_menu' => [
+        'dashboard' => 'Dashboard',
+        'requests' => 'Requests',
+        'all_requests' => 'All requests',
+        'my_requests' => 'My Requests',
+        'my_pending_requests' => 'My pending requests',
+        'not_assigned' => 'Not Assigned',
+        'all_pending_requests' => 'All pending requests',
+        'listing' => 'Listing',
+        'settings' => 'Settings',
+        'logout' => 'Logout',
+        'profile' => 'Profile',
+        'users' => 'Users',
+        'employees' => 'Managers',
+        'companies' => 'Services',
+        'admins' => 'Administrators',
+        'super_admins' => 'Super admins',
+        'house_owners' => 'House owners',
+        'registered' => 'Registered',
+        'about' => 'About',
+        'feedback' => 'Feedback',
+        'residents' => 'Residents',
+        'buildings' => 'Buildings',
+        'all_buildings' => 'All buildings',
+        'units' => 'Units',
+        'addresses' => 'Addresses',
+        'pinboard' => 'Pinboard',
+        'quarters' => 'Quarters',
+        'listings' => 'Listings',
+        'request_categories' => 'Request categories',
+        'services' => 'Service Partners',
+        'activity' => 'Activity',
+        'property_managers' => 'Property managers',
+        'templates' => 'Templates'
+    ]
 ];
