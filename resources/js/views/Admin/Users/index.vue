@@ -1,6 +1,6 @@
 <template>
     <div class="services">
-        <heading icon="icon-user" :title="$t('menu.admins')" shadow="heavy">            
+        <heading icon="icon-user" :title="$t('general.admin_menu.admins')" shadow="heavy">            
             <template v-if="$can($permissions.create.user)">
                 <el-button @click="add" icon="ti-plus" round size="mini" type="primary">{{$t('general.actions.add')}} {{ $t('general.roles.administrator') }}</el-button>
             </template>

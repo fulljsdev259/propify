@@ -98,7 +98,8 @@ return [
                 'inactive' => 'Inaktiv',
             ],            
             'add' => 'Neuen Vertrag hinzufügen',            
-            'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',            
+            'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',
+            'saved' => 'Vertrag gespeichert',
         ],
         'status' => [
             'label' => 'Status',
@@ -129,7 +130,12 @@ return [
             'content_4' => 'Sollten Sie Hilfe bei der Anmeldung benötigen, so stehen wir Ihnen gerne zur Verfügung.',
             'your_sincerely' => 'Mit freundlichen Grüssen',
             'your_administration' => 'Ihre Verwaltung'
-        ]
+        ],
+        'type' => [
+            'label' => 'Typ',
+            'resident' => 'Resident',
+            'owner' => 'Eigentümer',
+        ],
     ],
     'building' => [
         'title' => 'Liegenschaften',
@@ -195,6 +201,7 @@ return [
         'add' => 'Einheit hinzufügen',
         'name' => 'Einheit-ID',
         'auto_create_question' => 'Möchten Sie eine Einheit automatisch erstellen?',
+        'auto_create_description' => 'Mit dieser Option können Sie die Anzahl der Einheiten im Stockwerk eingeben und diese Einheiten werden automatisch beim Speichern des Gebäudes erstellt.',
         'deleted' => 'Einheit gelöscht',
         'saved' => 'Einheit gespeichert',
         'floor' => 'Etage',
@@ -251,6 +258,7 @@ return [
         'buildings' => 'Liegenschaften',
         'announcement' => 'Ankündigung an',
         'notify_email' => 'Mieter benachrichtigen',
+        'notify_email_description' => "Mit dieser Option können Sie die E-Mail-Benachrichtigung aktivieren.",
         'announcement_to' => 'Ankündigung',
         'comments' => 'Kommentare',
         'images' => 'Fotos und Dokumente',
@@ -299,6 +307,7 @@ return [
             'many_day' => 'Mehrtägig',
         ],
         'specify_time_question' => 'Möchten Sie die Zeit angeben?',
+        'specify_time_description' => "Mit dieser Option können Sie die Ankündigungszeit festlegen.",
         'execution_interval' => [
             'label' => 'Datum der Durchführung',
             'date' => 'Datum',

@@ -8,7 +8,7 @@
             <template>
                 <div class="action-group">
                     <el-button @click="submit" size="small" type="primary" round> {{this.$t('general.actions.save')}}</el-button>
-                    <el-button @click="saveAndClose" size="small" type="primary" round> {{this.$t('general.actions.saveAndClose')}}
+                    <el-button @click="saveAndClose" size="small" type="primary" round> {{this.$t('general.actions.save_and_close')}}
                     </el-button>
                     <el-button @click="batchDeleteBuilding" size="small" type="danger" round icon="ti-trash"> {{this.$t('general.actions.delete')}}</el-button>
                     <el-button @click="goToListing" size="small" type="warning" round> {{this.$t('general.actions.close')}}
@@ -106,14 +106,10 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="8">
-                                    <div class="switch-wrapper">
-                                        <el-form-item :label="$t('models.unit.attic')" :rules="validationRules.attic">
-                                            <el-switch v-model="model.attic"/>
-                                        </el-form-item>
-                                        <div>
-                                            {{$t('resident.notifications.service')}}
-                                        </div>
-                                    </div>
+                                    <el-form-item :rules="validationRules.attic">
+                                        <label class="attic-label">{{ $t('models.unit.attic') }}</label>
+                                        <el-switch v-model="model.attic"/>
+                                    </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.building.internal_building_id')"
@@ -217,7 +213,7 @@
                                 </el-option>
                             </el-select>
                             <el-alert
-                                :title="$t('general.upload_all_desc')"
+                                :title="$t('general.upload_file_desc')"
                                 type="info"
                                 show-icon
                                 :closable="false"
@@ -569,9 +565,9 @@
                 });
             },
             unassignBuilding(assignee) {
-                this.$confirm(this.$t(`general.swal.confirmChange.title`), this.$t('general.swal.confirmChange.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirmChange.confirmBtnText`),
-                    cancelButtonText: this.$t(`general.swal.confirmChange.cancelBtnText`),
+                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
+                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
+                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
                     type: 'warning'
                 }).then(async () => {
                     try {                        
@@ -776,9 +772,9 @@
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
              notifyProviderUnassignment(row) {
-                this.$confirm(this.$t(`general.swal.confirmChange.title`), this.$t('general.swal.confirmChange.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirmChange.confirmBtnText`),
-                    cancelButtonText: this.$t(`general.swal.confirmChange.cancelBtnText`),
+                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
+                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
+                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
                     type: 'warning'
                 }).then(async () => {
                     try {

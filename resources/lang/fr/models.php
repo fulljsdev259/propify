@@ -98,7 +98,8 @@ return [
                 'inactive' => 'Inactif',
             ],
             'add' => 'Ajouter un nouveau contrat',
-            'pdf_only_desc' => 'Veuillez noter que seuls les fichiers PDF peuvent être téléchargés.',            
+            'pdf_only_desc' => 'Veuillez noter que seuls les fichiers PDF peuvent être téléchargés.',
+            'saved' => 'Contrat sauvegardé',
         ],       
         'status' => [
             "label" => "Statut",
@@ -129,7 +130,12 @@ return [
             'content_4' => 'Si vous avez besoin d\'aide pour l\'enregistrement, nous sommes à votre disposition.',
             'your_sincerely' => 'Sincèrement vôtre',
             'your_administration' => 'votre administration'
-        ]
+        ],
+        'type' => [
+            'label' => 'Type',
+            'resident' => 'Résident',
+            'owner' => 'Propriétaire',
+        ],
     ],
     'building' => [
         "title" => "Bâtiments",
@@ -195,6 +201,7 @@ return [
         "add" => "Ajouter une unité",
         "name" => "Numéro d'unité",
         'auto_create_question' => 'Voulez-vous créer l\'unité automatiquement ?',
+        'auto_create_description' => "Avec cette option, vous pourrez entrer le nombre d'unités dans l'étage et ces unités seront créées automatiquement lors de l'enregistrement du bâtiment.",
         "deleted" => "Unité supprimée",
         "saved" => "Unité sauvegardée",
         "floor" => "L'étage",
@@ -251,9 +258,10 @@ return [
         "buildings" => "Bâtiments",
         "announcement" => "Annonce à l'intention de",
         "notify_email" => "Prévenez par courriel",
+        'notify_email_description' => "Avec cette option, vous serez en mesure d'activer la notification par e-mail",
         "announcement_to" => "Annonce",
         "comments" => "Commentaires",
-        "images" => "Images",
+        "images" => "Photos et documents",
         'attachments' => 'Pièces jointes',
         'category_default_image_label' => 'Voulez-vous utiliser cette image?',
         'placeholders' => [            
@@ -299,6 +307,7 @@ return [
             'many_day' => 'Plusieurs jours',
         ],
         'specify_time_question' => 'Voulez-vous spécifier l\'heure ?',
+        'specify_time_description' => "Avec cette option, vous pourrez spécifier l'heure de l'annonce",
         'execution_interval' => [
             "label" => "Intervalle d'exécution",
             "date" => "Date d'exécution",
@@ -402,7 +411,7 @@ return [
         "open_conversation" => "Ouvrez",
         "other_recipients" => "Autres bénéficiaires",
         "recipients" => "Destinataires",
-        "images" => "Images",
+        "images" => "Photos et documents",
         "no_images_message" => "Aucun fichier téléchargé",
         "request_details" => "Demande de détails",
         "internal_notices" => "Avis internes",

@@ -239,16 +239,16 @@
                         data: this.quarters
                     },
                     {
-                        name: this.$t('general.filters.propertyManagers'),
+                        name: this.$t('general.filters.property_managers'),
                         type: 'select',
                         key: 'manager_id',
                         data: this.propertyManagers
                     },
                     {
-                        name: this.$t('general.filters.requestStatus'),
+                        name: this.$t('general.filters.request_status'),
                         type: 'select',
                         key: 'request_status',
-                        data: this.prepareFilters("status")
+                        data: this.prepareRequestFilters("status")
                     }
                 ];
             },
@@ -256,7 +256,7 @@
         },
         methods: {
             ...mapActions(['getPropertyManagers', 'assignManagerToBuilding', 'deleteBuildingWithIds', 'checkUnitRequestWidthIds']),
-            prepareFilters(property) {
+            prepareRequestFilters(property) {
                 return Object.keys(this.requestConstants[property]).map((id) => {
                     return {
                         id: parseInt(id),

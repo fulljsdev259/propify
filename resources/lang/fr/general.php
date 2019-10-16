@@ -13,7 +13,7 @@ return [
         'years' => 'Années',
         'day' => 'Day fr'
     ],
-    'chooseLanguage' => 'Choisir la langue',
+    'choose_language' => 'Choisir la langue',
     'language' => "Langage",
     'languages' => [
         'fr' => 'Français',
@@ -21,10 +21,10 @@ return [
         'de' => 'Deutsch',
         'en' => 'English',
     ],
-    'footerText' => [
-        'companyName' => 'Propify',
-        'leftSideText' => 'Vous avez besoin d\'aide ? Contactez notre équipe de support au <br/>0800 000 000 000 ou par email à support@propify.ch',
-        'allRightsSaved' => 'Tous droits réservés',
+    'footer_text' => [
+        'company_name' => 'Propify',
+        'left_side_text' => 'Vous avez besoin d\'aide ? Contactez notre équipe de support au <br/>0800 000 000 000 ou par email à support@propify.ch',
+        'all_rights_saved' => 'Tous droits réservés',
     ],
     'days' => [
         'monday' => 'lundi',
@@ -82,8 +82,8 @@ return [
         'units' => 'Unités',
         'states' => 'États',
         'status' => 'Statut',
-        'requestStatus' => 'Statut de la demande',
-        'propertyManagers' => 'Gestionnaire immobilier',
+        'request_status' => 'Statut de la demande',
+        'property_managers' => 'Gestionnaire immobilier',
         'categories' => 'Catégories',
         'created_from' => 'Créé à partir de',
         'created_to' => 'Créé pour',
@@ -93,8 +93,8 @@ return [
         'language' => 'Langue',
     ],
     'no' => 'Non',
-    "firstName" => "Prénom",
-    "lastName" => "Nom de famille",
+    "first_name" => "Prénom",
+    "last_name" => "Nom de famille",
     "name" => "Nom",
     'phone' => "Téléphone",
     'id' => "ID",
@@ -103,6 +103,7 @@ return [
     "state" => "État",
     "street" => "Rue",
     "house_num" => "Rue Nr..",
+    'internal_quarter_id' => 'ID trimestre interne',
     "zip" => "Zip",
     "content" => "Contenu",
     'none' => 'Aucun',
@@ -167,7 +168,7 @@ return [
         'old_password_min' => 'L\'ancien mot de passe doit comporter au moins 6 caractères.',
         'old_password_required' => 'Ancien mot de passe requis',
     ],
-    'assignmentTypes' => [
+    'assignment_types' => [
         "building" => "Bâtiment",
         "quarter" => "Trimestre",
         "services" => "Services",
@@ -191,23 +192,23 @@ return [
         "view" => "Détails",
         "save" => "Sauvegarder",
         "close" => "Presque",
-        "saveAndClose" => "Enregistrer et fermer",
+        "save_and_close" => "Enregistrer et fermer",
         "upload" => "Télécharger",
         "update" => "Mise à jour",
         "crop" => "Coupage",
         "upload_img" => "Télécharger l'image",
     ],
     'swal' => [
-        'confirmChange' => [
+        'confirm_change' => [
             "title" => "Vous êtes sûr de vouloir continuer ?",
             "warning" => "Avertissement",
-            "confirmBtnText" => "Ok",
-            "cancelBtnText" => "Annuler",
+            "confirm_btn_text" => "Ok",
+            "cancel_btn_text" => "Annuler",
         ],
         'delete' => [
             'title' => "T'es sûr de toi ?",
             'text' => "Tu ne pourras pas revenir en arrière !",
-            'confirmText' => "Oui, effacez-le !",
+            'confirm_text' => "Oui, effacez-le !",
             'deleted' => "Supprimé avec succès",
         ],
         'to_done' => [
@@ -252,7 +253,7 @@ return [
     'errors' => [
         'files_extension_images' => 'Seuls les fichiers jpg et png sont acceptés',
     ],
-    'dateTimeFormat' => '{date} au {time}',
+    'date_time_format' => '{date} au {time}',
     'date_range' => [
         'range_separator' => 'Pour',
         'start_date' => 'Date de début',
@@ -332,7 +333,7 @@ return [
                     ]
                 ],
                 'content' => [
-                    'withId' => [
+                    'with_id' => [
                         'pinboard' => [
                             'created' => '{userName} a ouvert ce {auditable_type} à bord de {auditable_type} #{auditable_id}.',
                             'updated' => [
@@ -378,7 +379,7 @@ return [
                             'media_deleted' => 'Médias supprimés',
                         ]
                     ],
-                    'withNoId' => [
+                    'with_no_id' => [
                         'pinboard' => [
                             'created' => '{userName} a ouvert ce {auditable_type} à bord de {auditable_type} #{auditable_id}.',
                             'updated' => [
@@ -424,74 +425,74 @@ return [
                     ]
                 ],
             ],
-            'commentsList' => [            
-                'loadMore' => 'Charge {count} commentaires supplémentaires',
-                'emptyPlaceholder' => [
+            'comments_list' => [            
+                'load_more' => 'Charge {count} commentaires supplémentaires',
+                'empty_placeholder' => [
                     'title' => "Il n'y a pas encore de messages...",
                     'description' => 'Commencez la messagerie en utilisant le formulaire ci-dessous et appuyez sur Entrée.',
                 ],
             ],
-            'internalnoticesList' => [            
-                'loadMore' => "Charger {count} plus d'avis interne",            
-                'emptyPlaceholder' => [
+            'internalnotices_list' => [            
+                'load_more' => "Charger {count} plus d'avis interne",            
+                'empty_placeholder' => [
                     'title' => "Il n'y a pas encore d'avis internes",
                     'description' => "Ajoutez une résiliation interne en utilisant le formulaire ci-dessous et appuyez sur Entrée.",
                 ],
             ],
-            'serviceproviderconversationsList' => [            
-                'loadMore' => 'Charger {count} plus conversations avec les fournisseurs de services',
-                'emptyPlaceholder' => [
+            'serviceproviderconversations_list' => [            
+                'load_more' => 'Charger {count} plus conversations avec les fournisseurs de services',
+                'empty_placeholder' => [
                     'title' => "Il n'y a pas encore de conversations avec le fournisseur de services",
                     'description' => "Ajoutez la conversation au fournisseur de services en utilisant le formulaire ci-dessous et appuyez sur Entrée.",
                 ],
             ],
-            'residentconversationsList' => [
-                'loadMore' => 'Charger {count} plus de conversations résidentes',
-                'emptyPlaceholder' => [
+            'residentconversations_list' => [
+                'load_more' => 'Charger {count} plus de conversations résidentes',
+                'empty_placeholder' => [
                     'title' => "Il n'y a pas de conversation avec les résidents.",
                     'description' => "Ajouter un message au résident en utilisant le formulaire ci-dessous et appuyez sur Entrée.",
                 ],
             ],
-            'listingcommentsList' => [
-                'loadMore' => 'Charger {count} plus commentaires de listage',
-                'emptyPlaceholder' => [
+            'listingcomments_list' => [
+                'load_more' => 'Charger {count} plus commentaires de listage',
+                'empty_placeholder' => [
                     'title' => "Il n'y a pas de commentaires pour l'inscription",
                     'description' => "Renseignez-vous sur l'inscription en envoyant un message à l'aide du formulaire ci-dessous et appuyez sur Entrée.",
                 ],
             ],
-            'pinboardcommentsList' => [
-                'loadMore' => 'Télécharger {count} plus de commentaires sur le Mur.',
-                'emptyPlaceholder' => [
+            'pinboardcomments_list' => [
+                'load_more' => 'Télécharger {count} plus de commentaires sur le Mur.',
+                'empty_placeholder' => [
                     'title' => "Il n'y a aucun commentaire pour Pinnwand.",
                     'description' => "Demandez le tableau d'affichage en envoyant des messages à l'aide du formulaire ci-dessous et en appuyant sur Entrée.",
                 ],
             ],
             'comment' => [
-                'updateShortcut' => 'ou utiliser {shortcut} raccourci',
-                'updateOrCancel' => '{update} ou appuyez sur {esc} au {cancel}',
+                'update_shortcut' => 'ou utiliser {shortcut} raccourci',
+                'update_or_cancel' => '{update} ou appuyez sur {esc} au {cancel}',
                 'update' => 'mettre à jour',
                 'esc' => 'ESC',
                 'cancel' => 'résilier',
-                'addChildComment' => 'Comment',
-                'loadMore' => 'Load 1 more comment | Load {count} more comments',
-                'deletedCommentPlaceholder' => 'Ce commentaire a été supprimé',
+                'add_child_comment' => 'Comment',
+                'load_more' => 'Load 1 more comment | Load {count} more comments',
+                'deleted_comment_placeholder' => 'Ce commentaire a été supprimé',
             ],
-            'addComment' => [
+            'add_comment' => [
                 'placeholder' => 'Tapez un commentaire...',
-                'tooltipTemplates' => 'Choisissez un modèle',
-                'loadingTemplates' => 'Chargement des modèles...',
-                'saveShortcut' => 'ou utiliser {shortcut} raccourci',
-                'emptyTemplatesPlaceholder' => 'Aucun modèle disponible.',
+                'tooltip_templates' => 'Choisissez un modèle',
+                'loading_templates' => 'Chargement des modèles...',
+                'save_shortcut' => 'ou utiliser {shortcut} raccourci',
+                'empty_templates_placeholder' => 'Aucun modèle disponible.',
             ],
             'media' => [
                 'buttons' => [
-                    'selectFiles' => [
-                        'withDrop' => 'Lâcher les fichiers ou cliquer pour sélectionner...',
-                        'withoutDrop' => 'Cliquez pour sélectionner...',
+                    'select_files' => [
+                        'with_drop' => 'Lâcher les fichiers ou cliquer pour sélectionner...',
+                        'without_drop' => 'Cliquez pour sélectionner...',
                     ],
                     'upload' => 'Télécharger',
                 ],
-                'dropActive' => [
+                'drop_active' => [
                     'title' => 'Déposez vos fichiers ici...',
                     'description' => 'Seuls les fichiers avec une certaine extension sont autorisés.',
                 ],
@@ -505,15 +506,15 @@ return [
             ],
         ],
         'resident' => [
-            'weatherWidget' => [
-                'minTemp' => 'minute',
-                'maxTemp' => 'maximum',
+            'weather_widget' => [
+                'min_temp' => 'minute',
+                'max_temp' => 'maximum',
                 'wind' => 'essouffler',
                 'cloudiness' => 'essouffler',
                 'humidity' => 'nébulosité',
                 'pressure' => 'humidité',
             ],
-            'pinboardAdd' => [
+            'pinboard_add' => [
                 'visibility' => [
                     'address' => 'faire pression',
                     'quarter' => 'Trimestre',
@@ -527,8 +528,44 @@ return [
     ],
     /* Should be removed this array as page will be removed in future*/
     'profile' => [
-        "pageTitle" => "Profil",
+        "page_title" => "Profil",
         "profile" => "Profil",
     ],
-    'upload_all_desc' => 'Veuillez noter que les fichiers PDF, DOC, DOCX, XLS, XLSX, PNG, JPEG, JPEG, JPG peuvent être téléchargés.'
+    'upload_all_desc' => 'Veuillez noter que les fichiers.pdf,.doc,.docx,.xls,.xlsx,.png,.jpg et.jpeg peuvent être chargés',
+    'upload_file_desc' => 'Please note that only .pdf, .doc, .docx, .xls, and .xlsx files can be uploaded',
+    'admin_menu' => [
+        'dashboard' => 'Tableau de bord',
+        'requests' => 'Demandes',
+        'all_requests' => 'Toutes les demandes',
+        'my_requests' => 'Mes demandes',
+        'my_pending_requests' => 'Mes demandes en attente',
+        'not_assigned' => 'Non assigné',
+        'all_pending_requests' => 'Toutes les demandes en attente',
+        'listing' => 'Marché en ligne',
+        'settings' => 'Réglages',
+        'logout' => 'Déconnexion',
+        'profile' => 'Profil',
+        'users' => 'Utilisateurs',
+        'employees' => 'Gestionnaires',
+        'companies' => 'Prestations de services',
+        'admins' => 'Administrateurs',
+        'super_admins' => 'Super admins',
+        'house_owners' => 'Propriétaires de maison',
+        'registered' => 'Enregistré',
+        'about' => 'A propos de',
+        'feedback' => 'Rétroaction',
+        'residents' => 'Résidents',
+        'buildings' => 'Bâtiments',
+        'all_buildings' => 'Tous les bâtiments',
+        'units' => 'Unités',
+        'addresses' => 'Adresses',
+        'pinboard' => 'Panneau d\'affichage',
+        'quarters' => 'Trimestres',
+        'listings' => 'Produits',
+        'request_categories' => 'Catégories de demandes',
+        'services' => 'Partenaires de service',
+        'activity' => 'Activité',
+        'property_managers' => 'Gestionnaires immobiliers',
+        'templates' => 'Modèles'
+    ]
 ];

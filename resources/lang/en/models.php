@@ -98,7 +98,8 @@ return [
                 'inactive' => 'Inactive',
             ],
             'add' => 'Add new contract',
-            'pdf_only_desc' => 'Please note that only PDF files can be uploaded',            
+            'pdf_only_desc' => 'Please note that only PDF files can be uploaded',
+            'saved' => 'Contract saved',
         ],      
         'status' => [
             'label' => 'Status',
@@ -129,6 +130,11 @@ return [
             'content_4' => 'If you should need assistance with the registration, then we are gladly at your disposal.',
             'your_sincerely' => 'Yours sincerely',
             'your_administration' => 'your administration'
+        ],
+        'type' => [
+            'label' => 'Type',
+            'resident' => 'Resident',
+            'owner' => 'Owner',
         ],
     ],
     'building' => [
@@ -195,6 +201,7 @@ return [
         'add' => 'Add Unit',
         'name' => 'Unit number',
         'auto_create_question' => 'Do you want to create unit automatically?',
+        'auto_create_description' => 'With this option, you will be able to input number of units in floor and such units will be created automatically on saving of building',
         'deleted' => 'Unit deleted',
         'saved' => 'Unit saved',
         'floor' => 'Floor',
@@ -251,9 +258,10 @@ return [
         'buildings' => 'Buildings',
         'announcement' => 'Announcement',
         'notify_email' => 'Notify email',
+        'notify_email_description' => 'With this option, you will be able to enable email notifiation',
         'announcement_to' => 'Announcement to',
         'comments' => 'Comments',
-        'images' => 'Images',
+        'images' => 'Photos and documents',
         'attachments' => 'Attachments',
         'category_default_image_label' => 'Do want to use this image?',
         'placeholders' => [            
@@ -299,6 +307,7 @@ return [
             'many_day' => 'Multiple days',
         ],
         'specify_time_question' => 'Do you want to specify time?',
+        'specify_time_description' => 'With this option, you will be able to specify time of announcement',
         'execution_interval' => [
             'label' => 'Execution interval',
             'date' => 'Execution Date',
@@ -402,7 +411,7 @@ return [
         'open_conversation' => 'Open',
         'other_recipients' => 'Other recipients',
         'recipients' => 'Recipients',
-        'images' => 'Images',
+        'images' => 'Photos and documents',
         'no_images_message' => 'No files uploaded',
         'request_details' => 'Request details',
         'internal_notices' => 'Internal notices',

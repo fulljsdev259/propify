@@ -82,6 +82,7 @@
     import {displayError, displaySuccess} from "helpers/messages";
     import {mapActions} from 'vuex';
     import getFilterQuarters from 'mixins/methods/getFilterQuarters';
+    import PropertyManagersMixin from 'mixins/adminPropertyManagersMixin';
 
     const mixin = ListTableMixin({
         actions: {
@@ -96,7 +97,9 @@
 
     export default {
         name: 'AdminPropertyManagers',
-        mixins: [mixin, getFilterQuarters],
+        mixins: [mixin, getFilterQuarters, PropertyManagersMixin({
+            mode: 'add'
+        })],
         components: {
             Heading,
             RequestDetailCard
@@ -141,7 +144,6 @@
                 remoteLoading: false,
                 quarters: {},
                 buildings:{},
-                roles: [],
                 isLoadingFilters: false,
             }
         },
@@ -168,7 +170,7 @@
                     },
                     {
                         name: this.$t('general.roles.label'),
-                        type: 'select',
+                        type: 'role',
                         key: 'type',
                         data: this.roles
                     },
@@ -285,13 +287,11 @@
             this.quarters = quarters.data.data.data;
 
             this.buildings = await this.getFilterBuildings();
-            this.getRoles();
             
             this.isLoadingFilters = false;
         
         },
         mounted() {
-            this.$root.$on('changeLanguage', () => this.getRoles());
         }
     }
 </script>

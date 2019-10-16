@@ -3,9 +3,10 @@
             class="avatar-wrapper"
             placement="right"
             :width="boundary.width"
-            :disabled="!uploaded"
+            :disabled="!uploaded && !defaultAvatarSrc"
             trigger="click"
             :value="showPopover"
+            @show="!uploaded ? defaultBind(defaultAvatarSrc) : ''"
             @hide="showPopover = false"
             :open-delay="300">
         <div class="croppie-wrapper">
@@ -26,10 +27,22 @@
             <upload-avatar type="link" @file="upload"></upload-avatar>
         </div>
         <div slot="reference" class="avatar-box">
-            <el-avatar v-if="previewImg" shape="square" :size="250" :src="previewImg">
+            <el-avatar v-if="previewImg"
+                       shape="square"
+                       :size="250"
+                       :src="previewImg">
+            </el-avatar>
+            <el-avatar v-else-if="defaultAvatarSrc"
+                       shape="square"
+                       :size="250"
+                       :src="defaultAvatarSrc">
             </el-avatar>
             <i v-else class="el-icon-s-custom def-icon"></i>
-            <upload-avatar @file="upload"/>
+
+            <div v-if="uploaded || defaultAvatarSrc" class="avatar-box__btn">
+                <i class="ti-pencil"></i>
+            </div>
+            <upload-avatar v-else @file="upload"/>
         </div>
     </el-popover>
 </template>
@@ -79,6 +92,10 @@
             viewportType: {
                 type: String,
                 default: 'square'
+            },
+            defaultAvatarSrc: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -122,6 +139,13 @@
                     url
                 });
             },
+            defaultBind(src) {
+                let url = 'http://127.0.0.1:8000'+src;
+                this.$refs.croppieRef.bind({
+                    zoom: 0,
+                    url
+                });
+            },
         },
         computed: {
             computedViewport() {
@@ -161,12 +185,15 @@
             align-items: center;
             justify-content: center;
         }
-        .avatar-uploader {
+        &__btn {
+            cursor: pointer;
             z-index: 1;
             position: absolute;
             left: 0;
             bottom: 0;
             display: flex;
+            align-items: center;
+            justify-content: center;
             width: 40px;
             height: 40px;
             border-radius: 0 4px 0 4px;

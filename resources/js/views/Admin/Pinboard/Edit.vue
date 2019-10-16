@@ -342,7 +342,7 @@
                                                    }"/>
                                     </el-form-item>
                                     <div>
-                                        {{$t('resident.notifications.service')}}
+                                        {{$t('models.pinboard.specify_time_description')}}
                                     </div>
                                 </div>
                             </el-col>
@@ -390,7 +390,7 @@
                                         <el-switch v-model="model.notify_email"/>
                                     </el-form-item>
                                     <div>
-                                        {{$t('resident.notifications.service')}}
+                                        {{$t('models.pinboard.notify_email_description')}}
                                     </div>
                                 </div>
                             </el-col>
@@ -407,7 +407,7 @@
                                 >
                                     <el-option
                                         :key="type"
-                                        :label="$t(`general.assignmentTypes.${type}`)"
+                                        :label="$t(`general.assignment_types.${type}`)"
                                         :value="type"
                                         v-for="(type) in assignmentTypes">
                                     </el-option>
@@ -592,9 +592,9 @@
                 return d <= executionStart;
             },
             notifyUnassignment(row) {
-                this.$confirm(this.$t(`general.swal.confirmChange.title`), this.$t('general.swal.confirmChange.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirmChange.confirmBtnText`),
-                    cancelButtonText: this.$t(`general.swal.confirmChange.cancelBtnText`),
+                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
+                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
+                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
                     type: 'warning'
                 }).then(async () => {
                     try {
@@ -648,9 +648,9 @@
                 displaySuccess(resp)
             },
             notifyProviderUnassignment(row) {
-                this.$confirm(this.$t(`general.swal.confirmChange.title`), this.$t('general.swal.confirmChange.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirmChange.confirmBtnText`),
-                    cancelButtonText: this.$t(`general.swal.confirmChange.cancelBtnText`),
+                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
+                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
+                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
                     type: 'warning'
                 }).then(async () => {
                     try {

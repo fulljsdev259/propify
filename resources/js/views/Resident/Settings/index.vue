@@ -57,6 +57,34 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
+            <el-tab-pane :label="$t('resident.default_address')" name="default_address">
+                <el-row>
+                    <el-col :span="12" :xs="24">
+                        <card>
+                            <el-form :model="loggedInUser" label-width="140px" ref="defaultAddressForm" size="medium">
+                                <el-form-item :label="$t('resident.default_contract_id')" :rules="defaultAddressValidationRules.default_contract_id"
+                                              prop="default_contract_id">
+                                    <el-select v-model="loggedInUser.resident.default_contract_id" 
+                                                :placeholder="$t('resident.placeholder.contract')"
+                                                class="custom-select"
+                                                value-key="loggedInUser.resident.default_contract_id">
+                                        <el-option v-for="contract in contracts" 
+                                                    :key="contract.id" 
+                                                    :label="contract.building_unit" 
+                                                    :value="contract.id" />
+                                    </el-select>
+                                    <!-- <el-input type="input" v-model="loggedInUser.resident.default_contract_id"></el-input> -->
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button @click="submitDefaultAddressForm" icon="ti-save" type="primary">
+                                        {{$t('general.actions.save')}}
+                                    </el-button>
+                                </el-form-item>
+                            </el-form>
+                        </card>
+                    </el-col>
+                </el-row>
+            </el-tab-pane>
             <!-- <el-tab-pane :label="$t('settings.notifications')" name="language">
                 <card>
                     <el-form label-position="right" label-width="200px">
@@ -173,10 +201,18 @@
                         }
                     ],
                 },
+                defaultAddressValidationRules: {
+                    default_contract_id: [
+                        
+                    ],
+                },
                 changePassword: {
                     password_old: '',
                     password: '',
                     password_confirmation: ''
+                },
+                defaultAddress: {
+                    default_contract_id: '',
                 },
                 image: '',
                 summaryValues: [
@@ -188,6 +224,12 @@
             ...mapState({
                 loggedInUser: ({users}) => {
                     return users.loggedInUser;
+                },
+                contracts: ({users}) => {
+                    return users.loggedInUser.resident.contracts.map(contract => { 
+                        contract.building_unit = contract.building.name + " " +  contract.unit.name
+                        return contract
+                    });
                 }
             }),
             ...mapGetters(["getAllAvailableLanguages", "loggedInUser"])
@@ -239,6 +281,26 @@
                         });
                     } else {
                         return false;
+                    }
+                });
+            },
+            submitDefaultAddressForm() {
+                this.$refs.defaultAddressForm.validate(async (valid) => {
+                    if (!valid) {
+                        return false;
+                    }
+
+                    const payload = {
+                        default_contract_id: this.loggedInUser.resident.default_contract_id,
+                    };
+
+                    try {
+                        const resp = await this.changeDetails(payload);
+                        await this.upload();
+                        await this.me();
+                        displaySuccess(resp);
+                    } catch (e) {
+                        displayError(e);
                     }
                 });
             },
@@ -312,6 +374,10 @@
             margin-left: 8px;
         }
 
+        .custom-select {
+            width: 100%;
+        }
+        
         .el-tabs {
             :global(.el-tabs__content) {
                 padding: 2px;
@@ -323,7 +389,7 @@
                         }
                     }
 
-                    &:nth-of-type(3) .el-row .el-col {
+                    &:nth-of-type(4) .el-row .el-col {
                         .el-form {
                             .el-form-item {
                                 .el-radio-group {

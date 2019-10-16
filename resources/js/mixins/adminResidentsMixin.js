@@ -42,6 +42,7 @@ export default (config = {}) => {
                         language: '',
                     },
                     nation: '',
+                    type: '',
                     contracts: [],
                 },
                 visibleDrawer: false,
@@ -50,11 +51,11 @@ export default (config = {}) => {
                 validationRules: {
                     first_name: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('general.firstName')})
+                        message: this.$t('validation.required',{attribute: this.$t('general.first_name')})
                     }],
                     last_name: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('general.lastName')})
+                        message: this.$t('validation.required',{attribute: this.$t('general.last_name')})
                     }],
                     language: [{
                         required: true,
@@ -229,6 +230,7 @@ export default (config = {}) => {
 
                 mixin.methods = {
                     submit() {
+                        console.log(this.model);
                         return new Promise((resolve, reject) => {
                             this.form.validate(async valid => {
                                 if (!valid) {

@@ -1,60 +1,77 @@
 <template>
-    <placeholder :size="256" :src="require('img/5cf66b5b3c55f.png')" v-if="!loading.visible && !contract">
+    <placeholder :size="256" :src="require('img/5cf66b5b3c55f.png')" v-if="!loading.visible && !contracts">
         There is no contract available.
         <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</small>
     </placeholder>
-    <div class="contracts" v-else-if="contract">
+    <div class="contracts" v-else-if="contracts">
         <ui-heading icon="ti-book" :title="$t('resident.my_contract')" :description="$t('resident.heading_info.my_contract')">
         </ui-heading>
         <ui-divider />
-        <el-card>
-            <el-divider class="column-divider" content-position="left">{{$t('resident.building')}}</el-divider>
-            <div>
-                <b>{{$t('resident.name')}}: </b>
-                <div>{{contract.address.street}} {{contract.address.house_num}}</div>
-                <div>{{contract.address.zip}} {{contract.address.city}}</div>
-            </div>
-            <el-divider class="column-divider" content-position="left">{{$t('resident.unit')}}</el-divider>
-            <div>
-                <b>{{$t('resident.type')}}:</b>
-                {{$t('models.unit.type.' + $constants.units.type[contract.unit.type])}}
-            </div>
-            <div>
-                <b>{{$t('resident.unit_number')}}:</b>
-                {{contract.unit.room_no}}
-            </div>
-            <div>
-                <b>{{$t('resident.floor')}}:</b>
-                {{contract.unit.floor}}
-            </div>
-            <div v-if="contract.unit.basement">
-                <b>Basement:</b>
-                Yes
-            </div>
-            <div v-if="contract.unit.attic">
-                <b>Attic:</b>
-                Yes
-            </div>
-            <div>
-                <b>{{$t('resident.monthly_rent_net')}}:</b>
-                {{contract.unit.monthly_rent_net}}
-            </div>
-            <template v-if="contract.rent_start">
-                <el-divider content-position="left">{{$t('resident.rent_date')}}</el-divider>
-                <el-tag class="rent" type="warning" disable-transitions>
-                    {{$t('resident.start_date')}}:
-                    <el-tag type="warning" effect="plain" disable-transitions>{{contract.rent_start | formatDate}}</el-tag>
-                    <template v-if="contract.rent_end">
-                        End date: <el-tag type="warning" effect="plain" disable-transitions>{{contract.rent_end | formatDate}}</el-tag>
+        <el-row :gutter="12">
+            <el-col :md="12" :key="contract.id" v-for="contract in contracts">
+                <el-card>
+                    <el-divider class="column-divider" content-position="left">{{$t('resident.building')}}</el-divider>
+                    <div class="name-line">
+                        <b>{{$t('resident.name')}}: </b>
+                        <div>
+                            <div>{{contract.building.address.street}} {{contract.building.address.house_num}}</div>
+                            <div>{{contract.building.address.zip}} {{contract.building.address.city}}</div>
+                        </div>
+                    </div>
+                    <el-divider class="column-divider" content-position="left">{{$t('resident.unit')}}</el-divider>
+                    <div>
+                        <b>{{$t('resident.type')}}:</b>
+                        {{$t('models.unit.type.' + $constants.units.type[contract.unit.type])}}
+                    </div>
+                    <div>
+                        <b>{{$t('resident.unit_number')}}:</b>
+                        {{contract.unit.room_no}}
+                    </div>
+                    <div>
+                        <b>{{$t('resident.floor')}}:</b>
+                        {{contract.unit.floor}}
+                    </div>
+                    <div v-if="contract.unit.basement">
+                        <b>Basement:</b>
+                        Yes
+                    </div>
+                    <div v-if="contract.unit.attic">
+                        <b>Attic:</b>
+                        Yes
+                    </div>
+                    <div>
+                        <b>{{$t('resident.monthly_rent_net')}}:</b>
+                        {{contract.monthly_rent_net}}
+                    </div>
+                    <div>
+                        <b>{{$t('general.maintenance')}}:</b>
+                        {{contract.monthly_maintenance}}
+                    </div>
+                    <div>
+                        <b>{{$t('general.gross_rent')}}:</b>
+                        {{contract.monthly_rent_gross}}
+                    </div>
+                    <template v-if="contract.rent_start">
+                        <el-divider content-position="left">{{$t('resident.rent_date')}}</el-divider>
+                        <el-tag class="rent" type="warning" disable-transitions>
+                            {{$t('resident.start_date')}}:
+                            <el-tag type="warning" effect="plain" disable-transitions>{{contract.rent_start | formatDate}}</el-tag>
+                            <template v-if="contract.rent_end">
+                                End date: <el-tag type="warning" effect="plain" disable-transitions>{{contract.rent_end | formatDate}}</el-tag>
+                            </template>
+                        </el-tag>
                     </template>
-                </el-tag>
-            </template>
-            <template v-if="contract.file">
-                <el-divider content-position="left">{{$t('resident.contract_file')}}</el-divider>
-                <el-image :src="contract.file.url" v-if="isFileImage(contract.file)" />
-                <embed :src="contract.file.url" v-else />
-            </template>
-        </el-card>
+                    <template v-if="contract.media">
+                        <el-divider content-position="left">{{$t('resident.contract_file')}}</el-divider>
+                        <template  v-for="file in contract.media">
+                            
+                            <el-image :key="file.id" :src="file.url" v-if="isFileImage(file)" />
+                            <embed :key="file.id" :src="file.url" v-else />
+                        </template>
+                    </template>
+                </el-card>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -81,6 +98,7 @@
         data () {
             return {
                 contract: null,
+                contracts: null,
                 loading: {
                     visible: true
                 }
@@ -88,35 +106,40 @@
         },
         methods: {
             isFileImage (file) {
-                const ext = file.name.split('.').pop()
+                const ext = file.file_name.split('.').pop()
 
                 return ['jpg', 'jpeg', 'gif', 'bmp', 'png'].includes(ext);
             },
         },
         async mounted () {
-            this.loading = this.$loading({
-                target: this.$el.parentElement,
-                text: this.$t('resident.fetching_message.contract')
-            })
+            // this.loading = this.$loading({
+            //     target: this.$el.parentElement,
+            //     text: this.$t('resident.fetching_message.contract')
+            // })
 
-            try {
-                const {data: {unit, media, address, contract, rent_start, rent_end}} = await this.$store.dispatch('myTenancy')
+            this.contracts = this.$store.getters.loggedInUser.resident.contracts
 
-                this.contract = {unit, address, rent_start, rent_end}
+            // try {
+            //     const {data: {unit, media, address, rent_start, rent_end, }} = await this.$store.dispatch('myTenancy')
 
-                if (media.length) {
-                    this.contract.file = media[media.length - 1]
-                }
-            } catch (error) {
-                displayError(error)
-            } finally {
-                this.loading.close()
-            }
+            //     this.contract = {unit, address, rent_start, rent_end}
+
+            //     if (media.length) {
+            //         this.contract.file = media[media.length - 1]
+            //     }
+            // } catch (error) {
+            //     displayError(error)
+            // } finally {
+            //     this.loading.close()
+            // }
         }
     }
 </script>
 
 <style lang="scss" scoped>
+
+    
+
    .placeholder {
         height: 100% !important;
         font-size: 20px;
@@ -134,6 +157,18 @@
             
             .description {
                 color: darken(#fff, 40%);
+            }
+        }
+
+        .el-divider--horizontal {
+            margin: 20px 0;
+        }
+
+        .name-line {
+            display: flex;
+
+            b {
+                margin-right: 5px;
             }
         }
 
@@ -196,12 +231,22 @@
                 }
             }
         }
+        
+        
     }
 
     @media only screen and (max-width: 676px) {
         .contracts {
             /deep/ .ui-heading__content__description {
                 display: none
+            }
+        }
+    }
+
+    @media only screen and (max-width: 991px) {
+        .contracts {
+            .el-col:not(:last-child) {
+                margin-bottom: 10px;
             }
         }
     }
