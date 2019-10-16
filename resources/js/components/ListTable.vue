@@ -101,6 +101,7 @@
                                     :remote-method="data => remoteFilter(filter,data)"
                                     @change="filterChanged(filter)"
                                     filterable
+                                    clearable
                                     remote
                                     reserve-keyword
                                     style="width: 100%;"
