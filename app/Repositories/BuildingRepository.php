@@ -23,6 +23,9 @@ class BuildingRepository extends BaseRepository
         'description' => 'like',
         'label' => 'like',
         'floor_nr' => 'like',
+        'address.city' => 'like',
+        'address.zip' => 'like',
+
     ];
 
     protected $mimeToExtension = [
