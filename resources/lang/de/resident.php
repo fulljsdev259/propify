@@ -90,9 +90,9 @@ return [
         "status_change_requeset" => "Hier können Sie den Status der Anfrage ändern.",
     ],
     "descriptions" => [
-        "address" => "Ihre Pinnwand ist nur für Bewohner Ihrer Adresse sichtbar.",
-        "quarter" => "Ihre Pinnwand ist nur für die Bewohner Ihres Quartiers sichtbar.",
-        "all" => "Deine Pinnwand wird von jedem gesehen werden können.",
+        "address" => "Ihr Beitrag ist nur für Bewohner Ihrer Adresse sichtbar.",
+        "quarter" => "Ihr Beitrag ist nur für Bewohner Ihres Quartiers sichtbar.",
+        "all" => "Ihr Beitrag ist für jeden App-Nuetzer sichtbar.",
     ],
     "heading_info" => [
         "property_manager" => "Ansprechpartner für Ihre Anliegen",
