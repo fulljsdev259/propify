@@ -129,7 +129,7 @@ return [
     'my_tenancy' => 'My tenancy',
     'my_personal_data' => 'My personal data',
     'my_recent_contract' => 'My recent contract',
-    'my_documents' => 'Documents',
+    'documents' => 'Documents',
     'my_contact_persons' => 'Contact persons',
     "my_contacts" => "My contact",
     "good_morning" => "Good morning",

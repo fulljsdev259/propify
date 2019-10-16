@@ -129,7 +129,7 @@ return [
     'my_tenancy' => 'La mia locazione',
     'my_personal_data' => 'I miei dati personali',
     'my_recent_contract' => 'Il mio recente contratto',
-    'my_documents' => 'Documenti',
+    'documents' => 'Documenti',
     'my_contact_persons' => 'Persone di contatto',
     "my_contacts" => "Il mio contatto",
     "good_morning" => "Buongiorno",
