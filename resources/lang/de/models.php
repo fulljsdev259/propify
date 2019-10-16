@@ -401,6 +401,8 @@ return [
         'assigned_to' => 'Zuständig',
         'assign_providers' => 'Zuweisen',
         'assign_managers' => 'Zuweisen',
+        'assigned_service_providers' => 'Zugewiesene Dienstleister',
+        'assigned_property_managers' => 'Zugeordnete Hausverwalter',
         'notify' => 'Kommunikation',
         'public_legend' => 'Setzen Sie diese Option, um die Anfrage für alle ansässigen Nachbarn sichtbar zu machen.',
         'conversation' => 'Chat-Mitteilungen',

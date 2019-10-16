@@ -401,6 +401,8 @@ return [
         'assigned_to' => 'Assigned to',
         'assign_providers' => 'Assign providers',
         'assign_managers' => 'Assign managers',
+        'assigned_service_providers' => 'Assigned service providers',
+        'assigned_property_managers' => 'Assigned property managers',
         'notify' => 'Notify',
         'public_legend' => 'Set this option to make the request visible to all resident neighbours',
         'conversation' => 'Conversation',

@@ -401,6 +401,8 @@ return [
         "assigned_to" => "Assegnato a",
         "assign_providers" => "Assegnare i fornitori",
         "assign_managers" => "Assegnare i manager",
+        'assigned_service_providers' => 'Fornitori di servizi assegnati',
+        'assigned_property_managers' => 'Gestori di immobili assegnati',
         "notify" => "Avvisare",
         "public_legend" => "Imposta questa opzione per rendere la richiesta visibile a tutti i vicini residenti",
         "conversation" => "Conversazione",
