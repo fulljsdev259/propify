@@ -12,9 +12,9 @@ return [
         'circle_logo' => 'Circle Logo',
         'favicon_icon' => 'Favicon Icon',
         'resident_logo' => 'Resident Logo',                
-        'notificationSaved' => 'Notificatin setting saved',        
-        'requestCategorySaved' => 'Service request category saved',
-        'requestCategoryDeleted' => 'Service request category deleted',                
+        'notification_saved' => 'Notificatin setting saved',        
+        'request_category_saved' => 'Service request category saved',
+        'request_category_deleted' => 'Service request category deleted',                
         'errors' => [
             'not_found' => "User not found",            
             'image_upload' => "User image upload error :",
@@ -300,7 +300,7 @@ return [
             'quarter' => 'Quarter',
             'all' => 'All',
         ],
-        'assignType' => 'Type',        
+        'assign_type' => 'Type',        
         'execution_period' => [
             'label' => 'One day or multiple days',
             'single_day' => 'Single day',
@@ -343,7 +343,7 @@ return [
         'contact_details' => 'Contact details',
         'user_credentials' => 'User credentials',
         'company_details' => 'Company details',
-        'assignType' => 'Type',        
+        'assign_type' => 'Type',        
         'placeholders' => [
             'category' => 'Select category',
         ],
@@ -542,7 +542,7 @@ return [
             'bcc' => 'BCC',
             'success' => 'Notification mail sent successfully',            
         ],
-        'userType' => [
+        'user_type' => [
             'label' => 'Type',
             'provider' => 'Service',
             'manager' => 'Manager',
@@ -575,7 +575,7 @@ return [
             'contact_text' => 'These are the contact details of the current resident/owner of the housing unit.',
         ]
     ],
-    'requestCategory' => [
+    'request_category' => [
         'title' => 'Request categories',
         'add' => 'Add category',
         'cancel' => 'Cancel',
@@ -588,7 +588,7 @@ return [
             'used_by_request' => "Service Request Category it is used by a Service Request"
         ]
     ],
-    'propertyManager' => [
+    'property_manager' => [
         'title' => 'Property managers',
         'add' => 'Add Property Manager',
         'saved' => 'Property manager saved',
@@ -607,7 +607,7 @@ return [
         'delete_without_reassign' => 'Delete',
         'profile_card' => 'User Profile',
         'social_card' => 'Social Media',
-        'assignType' => 'Type',        
+        'assign_type' => 'Type',        
         'errors' => [
             'not_found' => "Property Manager not found",
             'create' => "Property Manager create error: ",
@@ -619,14 +619,14 @@ return [
             'deleted' => "Property Manager deleted error: ",
         ],
     ],
-    'houseOwner' => [
+    'house_owner' => [
         'title' => 'House Owners',
         'add' => 'Add House Owner',
         'saved' => 'House Owner Saved',
         'deleted' => 'House Owner Deleted',
         'edit_title' => 'Edit House Owner',
-        'firstName' => 'First name',
-        'lastName' => 'Last name',
+        'first_name' => 'First name',
+        'last_name' => 'Last name',
         'profession' => 'Profession',
         'slogan' => 'Slogan',
         'linkedin_url' => 'Linkedin URL',
@@ -647,8 +647,8 @@ return [
         'delete_without_reassign' => 'Delete',
         'profile_card' => 'User Profile',
         'social_card' => 'Social Media',
-        'assignType' => 'Type',
-        'buildingAlreadyAssigned' => 'Building is already inside on a quarter',
+        'assign_type' => 'Type',
+        'building_already_assigned' => 'Building is already inside on a quarter',
         'errors' => [
             'not_found' => "House Owner not found",
             'create' => "House Owner create error: ",
@@ -715,7 +715,7 @@ return [
         ]
     ],
     'cleanify' => [
-        'pageTitle' => 'Cleanify request',        
+        'page_title' => 'Cleanify request',        
         'address' => 'Address',
         'save' => 'Send request',
         'success' => 'Cleanify request sent successfully',
@@ -741,7 +741,7 @@ return [
         'aligncenter' => 'Align center',
         'alignright' => 'Align right',
         'link' => 'Insert link',
-        'linkTarget' => 'Open mode',
+        'link_target' => 'Open mode',
         'text' => 'Text',
         'submit' => 'Submit',
         'cancel' => 'Cancel',
@@ -749,25 +749,25 @@ return [
         'table' => 'Table',
         'emotion' => 'Emotions',
         'img' => 'Image',
-        'uploadImg' => 'Upload',
-        'linkImg' => 'Link',
+        'upload_img' => 'Upload',
+        'link_img' => 'Link',
         'video' => 'Video',
         'width' => 'width',
         'height' => 'height',
         'location' => 'Location',
         'loading' => 'Loading',
         'searchlocation' => 'search',
-        'dynamicMap' => 'Dynamic',
-        'clearLocation' => 'Clear',
-        'langDynamicOneLocation' => 'Only one location in dynamic map',
+        'dynamic_map' => 'Dynamic',
+        'clear_location' => 'Clear',
+        'lang_dynamic_one_location' => 'Only one location in dynamic map',
         'insertcode' => 'Insert Code',
         'undo' => 'Undo',
         'redo' => 'Redo',
         'fullscreen' => 'Full screnn',
-        'openLink' => 'open link',
-        'uploadPlaceTxt' => 'uploading__',
-        'uploadTimeoutPlaceTxt' => 'upload_timeout__',
-        'uploadErrorPlaceTxt' => 'upload_error__',
+        'open_link' => 'open link',
+        'upload_place_txt' => 'uploading__',
+        'upload_timeout_place_txt' => 'upload_timeout__',
+        'upload_error_place_txt' => 'upload_error__',
         'title' => 'Title',
         'in_format' => 'In format',
         'rows' => 'Rows',

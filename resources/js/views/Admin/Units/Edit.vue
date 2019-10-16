@@ -368,7 +368,7 @@
                     type: 'residentName'
                 }, {
                     prop: 'statusString',
-                    label: 'models.request.userType.label',
+                    label: 'models.request.user_type.label',
                     i18n: this.translateType
                 }],
                 assigneesActions: [{

@@ -108,11 +108,11 @@ export default (config = {}) => {
                     }],
                     linkedin_url: [{
                         type: 'url',
-                        message: this.$t('validation.url', {attribute: this.$t('models.propertyManager.linkedin_url')})
+                        message: this.$t('validation.url', {attribute: this.$t('models.property_manager.linkedin_url')})
                     }],
                     xing_url: [{
                         type: 'url',
-                        message: this.$t('validation.url', {attribute: this.$t('models.propertyManager.xing_url')})
+                        message: this.$t('validation.url', {attribute: this.$t('models.property_manager.xing_url')})
                     }],
                     title: [{
                         required: true,

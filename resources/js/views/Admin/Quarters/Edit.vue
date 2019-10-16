@@ -269,7 +269,7 @@
                     label: 'general.name'
                 }, {
                     prop: 'type',
-                    label: 'models.request.userType.label',
+                    label: 'models.request.user_type.label',
                     i18n: this.translateType
                 }],
                 quarterColumns: [{

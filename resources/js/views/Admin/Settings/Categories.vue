@@ -2,7 +2,7 @@
     <div class="requestCategories">
         <heading style="background: transparent;" title="" shadow="heavy">
             <el-button @click="openAdd" icon="ti-plus" round size="mini" type="primary">
-                {{$t('models.requestCategory.add')}}
+                {{$t('models.request_category.add')}}
             </el-button>
         </heading>
         <list-table
@@ -21,7 +21,7 @@
                 <el-form-item :label="$t('general.name')" :rules="validationRules.name" prop="name">
                     <el-input autocomplete="off" v-model="model.name"></el-input>
                 </el-form-item>
-                <el-form-item :label="$t('models.requestCategory.parent')" :rules="validationRules.parent_id"
+                <el-form-item :label="$t('models.request_category.parent')" :rules="validationRules.parent_id"
                               prop="parent_id">
                     <el-select class="custom-select" v-model="model.parent_id">
                         <el-option
@@ -34,7 +34,7 @@
                 </el-form-item>
             </el-form>
             <span class="dialog-footer" slot="footer">
-                <el-button @click="showModal = false">{{ $t('models.requestCategory.cancel') }}</el-button>
+                <el-button @click="showModal = false">{{ $t('models.request_category.cancel') }}</el-button>
                 <el-button @click="submitForm" type="primary">{{ modalText.button }}</el-button>
             </span>
         </el-dialog>
@@ -100,7 +100,7 @@
                 validationRules: {
                     name: [{
                         required: true,
-                        message: this.$t('models.requestCategory.required')
+                        message: this.$t('models.request_category.required')
                     }],
                 },
             };

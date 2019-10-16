@@ -1,6 +1,6 @@
 <template>
     <div class="services-edit">
-        <heading :title="$t('models.propertyManager.edit_title')" icon="icon-users" shadow="heavy">
+        <heading :title="$t('models.property_manager.edit_title')" icon="icon-users" shadow="heavy">
             <template slot="description" v-if="model.property_manager_format">
                 <div class="subtitle">{{model.property_manager_format}}</div>
             </template>
@@ -11,7 +11,7 @@
                 <el-row :gutter="20">
                     <el-col :md="12">
                         <el-tabs type="border-card" v-model="activeTab">
-                            <el-tab-pane :label="$t('models.propertyManager.details_card')" name="details">
+                            <el-tab-pane :label="$t('models.property_manager.details_card')" name="details">
                                 <el-row :gutter="20">
                                     <el-col :md="8">
                                         <el-form-item :label="$t('general.salutation')" :rules="validationRules.title"
@@ -33,7 +33,7 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="8">
-                                        <el-form-item :label="$t('models.propertyManager.profession')"
+                                        <el-form-item :label="$t('models.property_manager.profession')"
                                                       :rules="validationRules.profession"
                                                       prop="profession">
                                             <el-input type="text" v-model="model.profession"/>
@@ -88,7 +88,7 @@
                                 </el-row>
 
                             </el-tab-pane>
-                            <el-tab-pane :label="$t('models.propertyManager.profile_card')" name="profile">
+                            <el-tab-pane :label="$t('models.property_manager.profile_card')" name="profile">
                                 <el-row :gutter="20">
                                     <el-col :md="12">
                                         <el-form-item :label="$t('general.password')"
@@ -126,17 +126,17 @@
                                          v-if="!avatar.length && model.user.avatar">
                                 </el-form-item>
 
-                                <el-form-item style="margin-bottom: 0;" :label="$t('models.propertyManager.slogan')"
+                                <el-form-item style="margin-bottom: 0;" :label="$t('models.property_manager.slogan')"
                                               :rules="validationRules.slogan"
                                               prop="slogan">
                                     <el-input type="text" v-model="model.slogan"/>
                                 </el-form-item>
                             </el-tab-pane>
-                            <el-tab-pane :label="$t('models.propertyManager.social_card')" name="social">
+                            <el-tab-pane :label="$t('models.property_manager.social_card')" name="social">
                                 <el-row class="last-form-row" :gutter="20">
 
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.propertyManager.linkedin_url')"
+                                        <el-form-item :label="$t('models.property_manager.linkedin_url')"
                                                       :rules="validationRules.linkedin_url"
                                                       prop="linkedin_url">
                                             <el-input type="text" v-model="model.linkedin_url">
@@ -145,7 +145,7 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.propertyManager.xing_url')"
+                                        <el-form-item :label="$t('models.property_manager.xing_url')"
                                                       :rules="validationRules.xing_url"
                                                       prop="xing_url">
                                             <el-input type="text"
@@ -262,7 +262,7 @@
                     label: 'general.name'
                 }, {
                     prop: 'type',
-                    label: 'models.propertyManager.assignType',
+                    label: 'models.property_manager.assign_type',
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{
