@@ -1,5 +1,5 @@
 <template>
-    <div class="listing" v-loading="loading">
+    <div class="listing">
         <el-table
             :data="list"
             style="width: 100%"

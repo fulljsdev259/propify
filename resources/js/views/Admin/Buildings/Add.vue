@@ -41,8 +41,13 @@
                                                   class="label-block"
                                                   :rules="validationRules.state_id"
                                                   prop="state_id">
-                                        <el-select :placeholder="$t('general.state')" style="display: block"
-                                                   v-model="model.state_id">
+                                        <el-select  
+                                            clearable
+                                            filterable
+                                            :placeholder="$t('general.state')" 
+                                            style="display: block"
+                                            v-model="model.state_id"
+                                        >
                                             <el-option :key="state.id" :label="state.name" :value="state.id"
                                                        v-for="state in states"></el-option>
                                         </el-select>
@@ -56,7 +61,6 @@
                                                 :remote-method="remoteSearchQuarters"
                                                 filterable
                                                 remote
-                                                clearable
                                                 reserve-keyword
                                                 style="width: 100%;"
                                                 v-model="model.quarter_id">

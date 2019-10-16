@@ -39,7 +39,6 @@
                                         :remote-method="remoteSearchResidents"
                                         filterable
                                         remote
-                                        clearable
                                         reserve-keyword
                                         style="width: 100%;"
                                         v-model="model.resident_id">

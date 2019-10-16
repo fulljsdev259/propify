@@ -25,11 +25,13 @@
                                     <el-form-item :label="$t('models.request.category')"
                                                   :rules="validationRules.category"
                                                   prop="category_id">
-                                        <el-select :disabled="$can($permissions.update.serviceRequest)"
-                                                   :placeholder="$t('models.request.placeholders.category')"
-                                                   class="custom-select"
-                                                   v-model="model.category_id"
-                                                   @change="changeCategory">
+                                        <el-select
+                                            :disabled="$can($permissions.update.serviceRequest)"
+                                            :placeholder="$t('models.request.placeholders.category')"
+                                            class="custom-select"
+                                            v-model="model.category_id"
+                                            @change="changeCategory"
+                                        >
                                             <el-option
                                                 :key="category.id"
                                                 :label="category['name_'+$i18n.locale]"
@@ -42,11 +44,13 @@
                                 <el-col :md="12"
                                         v-if="this.showsubcategory == true">
                                     <el-form-item :label="$t('models.request.defect_location.label')">
-                                        <el-select :disabled="$can($permissions.update.serviceRequest)"
-                                                   :placeholder="$t(`general.placeholders.select`)"
-                                                   class="custom-select"
-                                                   v-model="model.defect"
-                                                   @change="changeSubCategory">
+                                        <el-select
+                                            :disabled="$can($permissions.update.serviceRequest)"
+                                            :placeholder="$t(`general.placeholders.select`)"
+                                            class="custom-select"
+                                            v-model="model.defect"
+                                            @change="changeSubCategory"
+                                        >
                                             <el-option
                                                 :key="category.id"
                                                 :label="category['name_'+$i18n.locale]"
@@ -59,10 +63,12 @@
                                 <el-col :md="12"
                                         v-if="this.showsubcategory == true && this.showLiegenschaft == true">
                                     <el-form-item :label="$t('models.request.category_options.range')">
-                                        <el-select :disabled="$can($permissions.update.serviceRequest)"
-                                                   :placeholder="$t(`general.placeholders.select`)"
-                                                   class="custom-select"
-                                                   v-model="model.location">
+                                        <el-select 
+                                            :disabled="$can($permissions.update.serviceRequest)"
+                                            :placeholder="$t(`general.placeholders.select`)"
+                                            class="custom-select"
+                                            v-model="model.location"
+                                        >
                                             <el-option
                                                 :key="location.value"
                                                 :label="location.name"
@@ -75,10 +81,12 @@
                                 <el-col :md="12"
                                         v-if="this.showsubcategory == true && this.showWohnung == true">
                                     <el-form-item :label="$t('models.request.category_options.room')">
-                                        <el-select :disabled="$can($permissions.update.serviceRequest)"
-                                                   :placeholder="$t(`general.placeholders.select`)"
-                                                   class="custom-select"
-                                                   v-model="model.room">
+                                        <el-select 
+                                            :disabled="$can($permissions.update.serviceRequest)"
+                                            :placeholder="$t(`general.placeholders.select`)"
+                                            class="custom-select"
+                                            v-model="model.room"
+                                        >
                                             <el-option
                                                 :key="room.value"
                                                 :value="room.value"
@@ -90,10 +98,12 @@
                                 </el-col>
                                 <el-col :md="12" v-if="this.showacquisition == true">
                                     <el-form-item :label="$t('models.request.category_options.acquisition')">
-                                        <el-select :disabled="$can($permissions.update.serviceRequest)"
-                                                   :placeholder="$t(`general.placeholders.select`)"
-                                                   class="custom-select"
-                                                   v-model="model.capture_phase">
+                                        <el-select 
+                                            :disabled="$can($permissions.update.serviceRequest)"
+                                            :placeholder="$t(`general.placeholders.select`)"
+                                            class="custom-select"
+                                            v-model="model.capture_phase"
+                                        >
                                             <el-option
                                                 :key="acquisition.value"
                                                 :label="acquisition.name"
@@ -131,7 +141,6 @@
                                     <el-form-item :label="$t('models.request.category_options.cost')">
                                         <el-select :disabled="$can($permissions.update.serviceRequest)"
                                                    :placeholder="$t(`general.placeholders.select`)"
-                                                   clearable
                                                    class="custom-select"
                                                    v-model="model.payer">
                                             <el-option
