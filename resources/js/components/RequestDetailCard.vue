@@ -50,11 +50,12 @@
                 </el-col>
                 <el-col :span="1" class="request-actions">
                 </el-col>
-                <el-col :span="3">
-                    <span>{{ $t('models.request.assigned_to') }}</span>
+                <el-col :span="4">
+                    <span>{{ $t('models.request.status.assigned') + ' ' + $t('menu.propertyManagers') }}</span>
                         <div class="avatars-wrapper">
-                        <span :key="index" v-for="(user, index) in item.assignedUsers">
+                        <span :key="index" v-for="(user, index) in item.property_managers">
                                 <el-tooltip
+                                    v-if="index < 2"
                                     :content="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
                                     class="item"
                                     effect="light" placement="top">
@@ -76,9 +77,41 @@
                                     </template>
                                 </el-tooltip>
                         </span>
-                        <avatar class="avatar-count" :size="33" :username="`+ ${item.assignedUsersCount}`"
+                        <avatar class="avatar-count" :size="33" :username="`+ ${item.property_managers.length-2}`"
                                 color="#fff"
-                                v-if="item.assignedUsers.length>2"></avatar>
+                                v-if="item.property_managers.length>2"></avatar>
+                    </div>
+                </el-col>
+                <el-col :span="4">
+                    <span>{{ $t('models.request.status.assigned') + ' ' + $t('menu.services') }}</span>
+                        <div class="avatars-wrapper">
+                        <span :key="index" v-for="(user, index) in item.service_providers">
+                                <el-tooltip
+                                    v-if="index < 2"
+                                    :content="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
+                                    class="item"
+                                    effect="light" placement="top">
+                                    <template v-if="user.user">
+                                        <avatar :size="33"
+                                                :username="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
+                                                backgroundColor="rgb(205, 220, 57)"
+                                                color="#fff"
+                                                v-if="!user.user.avatar"></avatar>
+                                        <avatar :size="33" :src="`/${user.user.avatar}`" v-else></avatar>
+                                    </template>
+                                    <template v-else>
+                                        <avatar :size="33"
+                                                :username="user.first_name ? `${user.first_name} ${user.last_name}`: `${user.name}`"
+                                                backgroundColor="rgb(205, 220, 57)"
+                                                color="#fff"
+                                                v-if="!user.avatar"></avatar>
+                                        <avatar :size="33" :src="`/${user.avatar}`" v-else></avatar>
+                                    </template>
+                                </el-tooltip>
+                        </span>
+                        <avatar class="avatar-count" :size="33" :username="`+ ${item.service_providers.length-2}`"
+                                color="#fff"
+                                v-if="item.service_providers.length > 2"></avatar>
                     </div>
                 </el-col>
                 <el-col :span="4">
@@ -106,7 +139,7 @@
                         {{ categories[item.category.id] == undefined? '':categories[item.category.id][$i18n.locale]}}
                     </p>
                 </el-col>
-                <el-col :span="9">
+                <el-col :span="4">
                 </el-col>
                 
             </el-row>    
@@ -272,7 +305,7 @@ export default {
                     margin: 0px;
                     padding-top: 4px;
                 }
-                &:nth-of-type(5) {
+                &:nth-of-type(6) {
                     p {
                         font-size: 12px;
                         padding-top: 0px;
