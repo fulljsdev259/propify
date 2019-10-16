@@ -45,6 +45,17 @@ class FixFormats extends Command
     public function handle()
     {
         dump('start correct _formats of tables');
+        Quarter::whereNull('internal_quarter_id')->get(['id'])->each(function (Quarter $quarter) {
+            $id = $quarter->id;
+            $len = strlen($id);
+            if ($len < 4) {
+                for ($i = 0; $i < (4 - $len); $i++) {
+                    $id = '0' . $id;
+                }
+            }
+            $quarter->internal_quarter_id  = $id;
+            $quarter->save();
+        });
         Request::get(['id', 'resident_id', 'contract_id', 'created_at'])->each(function (Request $request) {
             $request->request_format  = $request->getUniqueIDFormat($request->id);
             $request->save();
