@@ -6,6 +6,24 @@ export default {
         return new Promise((resolve, reject) => 
             axios.get(buildFetchUrl('units', payload))
                  .then(({data: r}) => {
+                    let units = r.data
+           
+                    units.data.forEach(unit => {
+
+                        unit.activeResidents = []
+                        unit.activeResidentsCount = 0
+                        unit.residents.forEach(resident => {
+                            if( resident.active_contracts_count > 0 ) {
+                                unit.activeResidents.push(resident)
+                            }
+                        })
+                        if ( unit.activeResidents.length > 2 )
+                        {
+                            unit.activeResidentsCount = unit.activeResidents.length - 2
+                            unit.activeResidents.length = 2
+                        }
+                        
+                    })
                     commit('SET_UNITS', r.data);                                        
                     EventBus.$emit('unit-get-counted', r.data.total);
                     resolve(r)

@@ -476,11 +476,12 @@
                     prop: 'typeLabel',
                     label: 'models.unit.type.label'
                 },{
-                    prop: 'floor',
-                    label: 'models.unit.floor'
+                    prop: 'activeResidents',
+                    label: 'general.resident',
+                    type: 'unitResidentAvatar',
                 }],
                 unitActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         title: 'general.actions.edit',
                         type: 'primary',

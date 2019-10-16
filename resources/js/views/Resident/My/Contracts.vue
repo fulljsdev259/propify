@@ -64,9 +64,9 @@
                     <template v-if="contract.media">
                         <el-divider content-position="left">{{$t('resident.contract_file')}}</el-divider>
                         <template  v-for="file in contract.media">
-                            
-                            <el-image :key="file.id" :src="file.url" v-if="isFileImage(file)" />
-                            <embed :key="file.id" :src="file.url" v-else />
+                            <embed :key="file.id" :src="file.url"/>
+                            <!-- <el-image :key="file.id" :src="file.url" v-if="isFileImage(file)" />
+                            <embed :key="file.id" :src="file.url" v-else /> -->
                         </template>
                     </template>
                 </el-card>

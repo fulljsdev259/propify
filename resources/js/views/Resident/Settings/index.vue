@@ -235,7 +235,7 @@
             ...mapGetters(["getAllAvailableLanguages", "loggedInUser"])
         },
         methods: {
-            ...mapActions(['updateUserSettings', 'changeUserPassword', 'changeDetails', 'uploadAvatar', 'me']),
+            ...mapActions(['updateUserSettings', 'changeUserPassword', 'changeDetails', 'uploadAvatar', 'me', 'updateMyTenancy']),
             cropped(e) {
                 this.image = e;
             },
@@ -295,7 +295,7 @@
                     };
 
                     try {
-                        const resp = await this.changeDetails(payload);
+                        const resp = await this.updateMyTenancy(payload);
                         await this.upload();
                         await this.me();
                         displaySuccess(resp);
