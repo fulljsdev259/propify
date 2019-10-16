@@ -502,8 +502,7 @@ class Request extends AuditableModel implements HasMedia
         }
         if ($contract) {
             $internalQuarterId = $contract->building->quarter->internal_quarter_id ?? '';
-//            $unit = $contract->unit->name ?? '';
-            $unit = ($contract->building->address->house_num ?? '') . '-' . $contract->unit_id;
+            $unit = $contract->unit->name ?? '';
             return $internalQuarterId .'_' . $unit. '__ID';
         }
         return 'RE_ID';
