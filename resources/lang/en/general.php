@@ -13,7 +13,7 @@ return [
         'years' => 'Years',
         'day' => 'Day'
     ],
-    'chooseLanguage' => 'Choose Language',
+    'choose_language' => 'Choose Language',
     'language' => "Language",
     'languages' => [
         'fr' => 'Français',
@@ -21,10 +21,10 @@ return [
         'de' => 'Deutsch',
         'en' => 'English',
     ],
-    'footerText' => [
-        'companyName' => 'Propify',
-        'leftSideText' => 'You need support? Contact our support team at <br/>0800 000 000 or via email to support@propify.ch',
-        'allRightsSaved' => 'All rights reserved',
+    'footer_text' => [
+        'company_name' => 'Propify',
+        'left_side_text' => 'You need support? Contact our support team at <br/>0800 000 000 or via email to support@propify.ch',
+        'all_rights_saved' => 'All rights reserved',
     ],
     'days' => [
         'monday' => 'Monday',

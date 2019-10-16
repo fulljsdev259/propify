@@ -10,7 +10,7 @@
                     </div>
                     <div class="language-check-box">
                         <div class="language-check-box-title">
-                            {{$t('general.chooseLanguage')}}
+                            {{$t('general.choose_language')}}
                         </div>
                         <div class="language-check-box-body">
                             <ul class="language-check-box-body-item" v-for='language in this.languages' :key="language.symbol" @click='itemClicked(language.symbol, language.flag)'>
@@ -213,28 +213,28 @@
                                 name: 'adminRequests'
                             }
                         },  {
-                            title: this.$t('menu.myRequests'),
+                            title: this.$t('menu.my_requests'),
                             permission: this.$permissions.list.request,
                             value: this.my_request_count,
                             route: {
                                 name: 'adminMyRequests'
                             }
                         },  {
-                            title: this.$t('menu.myPendingRequests'),
+                            title: this.$t('menu.my_pending_requests'),
                             permission: this.$permissions.list.request,
                             value: this.my_pending_count,
                             route: {
                                 name: 'adminMypendingRequests'
                             }
                         },  {
-                            title: this.$t('menu.notAssigned'),
+                            title: this.$t('menu.not_assigned'),
                             permission: this.$permissions.list.request,
                             value: this.all_unassigned_count,
                             route: {
                                 name: 'adminUnassignedRequests'
                             }
                         },  {
-                            title: this.$t('menu.allPendingRequests'),
+                            title: this.$t('menu.all_pending_requests'),
                             permission: this.$permissions.list.request,
                             value: this.all_pending_count,
                             route: {
@@ -260,7 +260,7 @@
                     },
                     "propertyManagers": {
                         icon: 'icon-users',
-                        title: this.$t('menu.propertyManagers'),
+                        title: this.$t('menu.property_managers'),
                         permission: this.$permissions.list.propertyManager,
                         route: {
                             name: 'adminPropertyManagers'
@@ -268,7 +268,7 @@
                     },
                     "houseOwners": {
                         icon: 'icon-users',
-                        title: this.$t('menu.houseOwners'),
+                        title: this.$t('menu.house_owners'),
                         permission: this.$permissions.list.propertyManager,
                         route: {
                             name: 'adminHouseOwners'
