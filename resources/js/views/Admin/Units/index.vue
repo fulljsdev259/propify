@@ -167,7 +167,7 @@
                         data: this.buildings,
                     },
                     {
-                        name: this.$t('general.filters.propertyManagers'),
+                        name: this.$t('general.filters.property_managers'),
                         type: 'select',
                         key: 'manager_id',
                         data: this.propertyManagers,

@@ -43,14 +43,14 @@
 
                                 <el-row :gutter="20">
                                     <el-col :md="8">
-                                        <el-form-item :label="$t('general.firstName')"
+                                        <el-form-item :label="$t('general.first_name')"
                                                     :rules="validationRules.first_name"
                                                     prop="first_name">
                                             <el-input type="text" v-model="model.first_name"/>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="8">
-                                        <el-form-item :label="$t('general.lastName')"
+                                        <el-form-item :label="$t('general.last_name')"
                                                     :rules="validationRules.last_name"
                                                     prop="last_name">
                                             <el-input type="text" v-model="model.last_name"/>
@@ -288,15 +288,15 @@
                 })
             },
             translateType(type) {
-                return this.$t(`general.assignmentTypes.${type}`);
+                return this.$t(`general.assignment_types.${type}`);
             },
             translateRequestStatus(status) {
                 return this.$t(`models.request.status.${this.requestStatusConstants[status]}`);
             },
             notifyUnassignment(row) {
-                this.$confirm(this.$t(`general.swal.confirmChange.title`), this.$t('general.swal.confirmChange.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirmChange.confirmBtnText`),
-                    cancelButtonText: this.$t(`general.swal.confirmChange.cancelBtnText`),
+                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
+                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
+                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
                     type: 'warning'
                 }).then(async () => {
                     try {

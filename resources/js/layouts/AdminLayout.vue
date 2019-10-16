@@ -171,7 +171,7 @@
                 let menu_items = {
                     "dashboard": {
                         icon: 'icon-chart-bar',
-                        title: 'Dashboard',
+                        title: this.$t('general.admin_menu.dashboard'),
                         route: {
                             name: 'adminDashboard'
                         }

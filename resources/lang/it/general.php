@@ -82,8 +82,8 @@ return [
         'units' => 'Unità',
         'states' => 'Stati',
         'status' => 'Stato',
-        'requestStatus' => 'Stato della richiesta',
-        'propertyManagers' => 'Proprietà Manager',
+        'request_status' => 'Stato della richiesta',
+        'property_managers' => 'Proprietà Manager',
         'categories' => 'Categorie',
         'created_from' => 'Creato da',
         'created_to' => 'Creato per',
@@ -93,8 +93,8 @@ return [
         'language' => 'Lingua',        
     ],    
     "no" => "No",
-    "firstName" => "Nome",
-    "lastName" => "Cognome",
+    "first_name" => "Nome",
+    "last_name" => "Cognome",
     "name" => "Nome",
     'phone' => "Telefono",
     'id' => "ID",
@@ -168,7 +168,7 @@ return [
         'old_password_min' => 'La vecchia password deve essere di almeno 6 caratteri',
         'old_password_required' => 'È richiesta una vecchia password',
     ],
-    'assignmentTypes' => [
+    'assignment_types' => [
         "building" => "Edificio",
         "quarter" => "Quartiere",
         "services" => "Servizi",
@@ -192,23 +192,23 @@ return [
         "view" => "Dettagli",
         "save" => "Risparmiate",
         "close" => "Chiuditi",
-        "saveAndClose" => "Salva & Chiudi",
+        "save_and_close" => "Salva & Chiudi",
         "upload" => "Carica",
         "update" => "Aggiorna",
         "crop" => "Taglio",
         "upload_img" => "Carica immagine",
     ],
     'swal' => [
-        'confirmChange' => [
+        'confirm_change' => [
             "title" => "Sei sicuro di voler continuare?",
             "warning" => "Attenzione",
-            "confirmBtnText" => "Ok",
-            "cancelBtnText" => "Annulla",
+            "confirm_btn_text" => "Ok",
+            "cancel_btn_text" => "Annulla",
         ],
         'delete' => [
             'title' => "Ne sei sicuro?",
             'text' => "Non sarai in grado di tornare indietro!",
-            'confirmText' => "Sì, cancellalo!",
+            'confirm_text' => "Sì, cancellalo!",
             'deleted' => "Eliminato con successo"
         ],
         'to_done' => [
@@ -253,7 +253,7 @@ return [
     'errors' => [
         'files_extension_images' => 'Si accettano solo file jpg e png',
     ],
-    'dateTimeFormat' => '{date} in {time}',
+    'date_time_format' => '{date} in {time}',
     'date_range' => [
         'range_separator' => "in",
         'start_date' => "Data d'inizio",
@@ -333,7 +333,7 @@ return [
                     ]
                 ],
                 'content' => [
-                    'withId' => [
+                    'with_id' => [
                         'pinboard' => [
                             'created' => '{userName} ha aperto questo {auditable_type} su {auditable_type} #{auditable_id}.',
                             'updated' => [
@@ -379,7 +379,7 @@ return [
                             'media_deleted' => 'Supporti cancellati',
                         ]
                     ],
-                    'withNoId' => [
+                    'with_no_id' => [
                         'pinboard' => [
                             'created' => '{userName} ha aperto questo {auditable_type} su {auditable_type} #{auditable_id}.',
                             'updated' => [
@@ -425,74 +425,74 @@ return [
                     ]
                 ],
             ],
-            'commentsList' => [            
-                'loadMore' => 'Carico {count} altri commenti',
-                'emptyPlaceholder' => [
+            'comments_list' => [            
+                'load_more' => 'Carico {count} altri commenti',
+                'empty_placeholder' => [
                     'title' => "Non ci sono ancora messaggi...",
                     'description' => 'Avviare la messaggistica utilizzando il modulo sottostante e premere Invio.',
                 ],
             ],
-            'internalnoticesList' => [            
-                'loadMore' => 'Carico {count} altri avviso interno',            
-                'emptyPlaceholder' => [
+            'internalnotices_list' => [            
+                'load_more' => 'Carico {count} altri avviso interno',            
+                'empty_placeholder' => [
                     'title' => "Non ci sono ancora avvisi interni",
                     'description' => "Aggiungere un avviso interno utilizzando il modulo sottostante e premere Invio.",
                 ],
             ],
-            'serviceproviderconversationsList' => [            
-                'loadMore' => 'Carico {count} altri conversazioni con i fornitori di servizi',
-                'emptyPlaceholder' => [
+            'serviceproviderconversations_list' => [            
+                'load_more' => 'Carico {count} altri conversazioni con i fornitori di servizi',
+                'empty_placeholder' => [
                     'title' => 'Non ci sono ancora conversazioni con il fornitore di servizi',
                     'description' => "Aggiungere una conversazione al fornitore di servizi utilizzando il modulo sottostante e premere Invio.",
                 ],
             ],
-            'residentconversationsList' => [
-                'loadMore' => 'Carica {contare} più conversazioni residenti',
-                'emptyPlaceholder' => [
+            'residentconversations_list' => [
+                'load_more' => 'Carica {contare} più conversazioni residenti',
+                'empty_placeholder' => [
                     'title' => "Non ci sono conversazioni fatte con i residenti.",
                     'description' => "Aggiungere un messaggio al residente utilizzando il modulo sottostante e premere Invio.",
                 ],
             ],
-            'listingcommentsList' => [
-                'loadMore' => "Carico {count} altri commenti all'elenco",
-                'emptyPlaceholder' => [
+            'listingcomments_list' => [
+                'load_more' => "Carico {count} altri commenti all'elenco",
+                'empty_placeholder' => [
                     'title' => "Non ci sono commenti per l'inserimento nell'elenco",
                     'description' => "Chiedere l'annuncio inviando messaggi utilizzando il modulo sottostante e premere Invio.",
                 ],
             ],
-            'pinboardcommentsList' => [
-                'loadMore' => 'Scarica {count} altri commenti sul Muro.',
-                'emptyPlaceholder' => [
+            'pinboardcomments_list' => [
+                'load_more' => 'Scarica {count} altri commenti sul Muro.',
+                'empty_placeholder' => [
                     'title' => "Non ci sono commenti per Pinnwand.",
                     'description' => "Richiedi la bacheca inviando messaggi utilizzando il modulo sottostante e premendo Invio.",
                 ],
             ],
             'comment' => [
-                'updateShortcut' => "o l'uso {shortcut} scorciatoia",
-                'updateOrCancel' => '{update} o premere {esc} al {cancel}',
+                'update_shortcut' => "o l'uso {shortcut} scorciatoia",
+                'update_or_cancel' => '{update} o premere {esc} al {cancel}',
                 'update' => 'attualizzazione',
                 'esc' => 'ESC',
                 'cancel' => 'stornare',
-                'addChildComment' => 'Commento',
-                'loadMore' => 'Carica 1 commento in più | Carica {count} più commenti',
-                'deletedCommentPlaceholder' => 'Questo commento è stato cancellato.',
+                'add_child_comment' => 'Commento',
+                'load_more' => 'Carica 1 commento in più | Carica {count} più commenti',
+                'deleted_comment_placeholder' => 'Questo commento è stato cancellato.',
             ],
-            'addComment' => [
+            'add_comment' => [
                 'placeholder' => 'Scrivi un commento...',
-                'tooltipTemplates' => 'Scegliere un modello',
-                'loadingTemplates' => 'Caricamento dei modelli...',
-                'saveShortcut' => "o l'uso {shortcut} scorciatoia",
-                'emptyTemplatesPlaceholder' => 'Nessun modello disponibile.',
+                'tooltip_templates' => 'Scegliere un modello',
+                'loading_templates' => 'Caricamento dei modelli...',
+                'save_shortcut' => "o l'uso {shortcut} scorciatoia",
+                'empty_templates_placeholder' => 'Nessun modello disponibile.',
             ],
             'media' => [
                 'buttons' => [
-                    'selectFiles' => [
-                        'withDrop' => 'Rilasciare i file o fare clic per selezionare...',
-                        'withoutDrop' => 'Fare clic per selezionare...',
+                    'select_files' => [
+                        'with_drop' => 'Rilasciare i file o fare clic per selezionare...',
+                        'without_drop' => 'Fare clic per selezionare...',
                     ],
                     'upload' => 'Carica',
                 ],
-                'dropActive' => [
+                'drop_active' => [
                     'title' => 'Lascia qui i tuoi file...',
                     'description' => 'Sono ammessi solo i file con una certa estensione.',
                 ],
@@ -506,15 +506,15 @@ return [
             ],
         ],
         'resident' => [
-            'weatherWidget' => [
-                'minTemp' => 'min',
-                'maxTemp' => 'massimo',
+            'weather_widget' => [
+                'min_temp' => 'min',
+                'max_temp' => 'massimo',
                 'wind' => 'eolico',
                 'cloudiness' => 'nebulosità',
                 'humidity' => 'umidità',
                 'pressure' => 'pressione',
             ],
-            'pinboardAdd' => [
+            'pinboard_add' => [
                 'visibility' => [
                     'address' => 'Indirizzo',
                     'quarter' => 'Quartiere',
@@ -528,7 +528,7 @@ return [
     ],
     /* Should be removed this array as page will be removed in future*/
     'profile' => [
-        "pageTitle" => "Profilo",
+        "page_title" => "Profilo",
         "profile" => "Profilo",
     ],
     'upload_all_desc' => 'Si prega di notare che i file .pdf, .doc, .doc, .docx, .xlsx, .xlsx, .png, .jpg e .jpeg possono essere caricati.',

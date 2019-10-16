@@ -51,11 +51,11 @@ export default (config = {}) => {
                 validationRules: {
                     first_name: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('general.firstName')})
+                        message: this.$t('validation.required',{attribute: this.$t('general.first_name')})
                     }],
                     last_name: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('general.lastName')})
+                        message: this.$t('validation.required',{attribute: this.$t('general.last_name')})
                     }],
                     language: [{
                         required: true,
