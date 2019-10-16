@@ -632,6 +632,7 @@ export default (config = {}) => {
                         this.$set(this.model, 'created_by', data.created_by);
                         this.$set(this.model, 'building', data.resident.building.name);
 
+                        this.contracts = resp.data.resident.contracts
 
                         await this.getConversations();
                         

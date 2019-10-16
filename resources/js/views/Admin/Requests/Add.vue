@@ -235,7 +235,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :md="12" v-if="model.resident_id">
-                            <el-form-item :label="$t('models.resident.contract.contract_id')" :rules="validationRules.contract_id"
+                            <el-form-item :label="$t('models.resident.contract.title')" :rules="validationRules.contract_id"
                                               prop="contract_id">
                                 <el-select v-model="model.contract_id" 
                                             :placeholder="$t('resident.placeholder.contract')"
