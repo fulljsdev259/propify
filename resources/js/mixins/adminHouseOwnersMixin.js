@@ -62,11 +62,11 @@ export default (config = {}) => {
                 validationRules: {
                     first_name: [{
                         required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('models.houseOwner.firstName')})
+                        message: this.$t('validation.required', {attribute: this.$t('models.house_owner.first_name')})
                     }],
                     last_name: [{
                         required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('models.houseOwner.lastName')})
+                        message: this.$t('validation.required', {attribute: this.$t('models.house_owner.last_name')})
                     }],
                     language: [{
                         required: true,
@@ -98,11 +98,11 @@ export default (config = {}) => {
                     }],
                     linkedin_url: [{
                         type: 'url',
-                        message: this.$t('validation.url', {attribute: this.$t('models.houseOwner.linkedin_url')})
+                        message: this.$t('validation.url', {attribute: this.$t('models.house_owner.linkedin_url')})
                     }],
                     xing_url: [{
                         type: 'url',
-                        message: this.$t('validation.url', {attribute: this.$t('models.houseOwner.xing_url')})
+                        message: this.$t('validation.url', {attribute: this.$t('models.house_owner.xing_url')})
                     }],
                     title: [{
                         required: true,

@@ -1,6 +1,6 @@
 <template>
     <div class="services-edit">
-        <heading :title="$t('models.houseOwner.edit_title')" icon="icon-users" shadow="heavy">
+        <heading :title="$t('models.house_owner.edit_title')" icon="icon-users" shadow="heavy">
             <template slot="description" v-if="model.property_manager_format">
                 <div class="subtitle">{{model.property_manager_format}}</div>
             </template>
@@ -11,7 +11,7 @@
                 <el-row :gutter="20">
                     <el-col :md="12">
                         <el-tabs type="border-card" v-model="activeTab">
-                            <el-tab-pane :label="$t('models.houseOwner.details_card')" name="details">
+                            <el-tab-pane :label="$t('models.house_owner.details_card')" name="details">
                                 <el-row :gutter="20">
                                     <el-col :md="8">
                                         <el-form-item :label="$t('general.salutation')" :rules="validationRules.title"
@@ -33,7 +33,7 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="8">
-                                        <el-form-item :label="$t('models.houseOwner.profession')"
+                                        <el-form-item :label="$t('models.house_owner.profession')"
                                                       :rules="validationRules.profession"
                                                       prop="profession">
                                             <el-input type="text" v-model="model.profession"/>
@@ -43,14 +43,14 @@
 
                                 <el-row :gutter="20">
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.houseOwner.firstName')"
+                                        <el-form-item :label="$t('models.house_owner.first_name')"
                                                     :rules="validationRules.first_name"
                                                     prop="first_name">
                                             <el-input type="text" v-model="model.first_name"/>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.houseOwner.lastName')"
+                                        <el-form-item :label="$t('models.house_owner.last_name')"
                                                     :rules="validationRules.last_name"
                                                     prop="last_name">
                                             <el-input type="text" v-model="model.last_name"/>
@@ -75,10 +75,10 @@
                                 </el-row>
 
                             </el-tab-pane>
-                            <el-tab-pane :label="$t('models.houseOwner.profile_card')" name="profile">
+                            <el-tab-pane :label="$t('models.house_owner.profile_card')" name="profile">
                                 <el-row :gutter="20">
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.houseOwner.password')"
+                                        <el-form-item :label="$t('models.house_owner.password')"
                                                       :rules="validationRules.password"
                                                       autocomplete="off"
                                                       prop="password">
@@ -91,7 +91,7 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.houseOwner.confirm_password')"
+                                        <el-form-item :label="$t('models.house_owner.confirm_password')"
                                                       :rules="validationRules.password_confirmation"
                                                       prop="password_confirmation">
                                             <el-input type="password" v-model="model.password_confirmation"/>
@@ -106,17 +106,17 @@
                                          v-if="!avatar.length && model.user.avatar">
                                 </el-form-item>
 
-                                <el-form-item style="margin-bottom: 0;" :label="$t('models.houseOwner.slogan')"
+                                <el-form-item style="margin-bottom: 0;" :label="$t('models.house_owner.slogan')"
                                               :rules="validationRules.slogan"
                                               prop="slogan">
                                     <el-input type="text" v-model="model.slogan"/>
                                 </el-form-item>
                             </el-tab-pane>
-                            <el-tab-pane :label="$t('models.houseOwner.social_card')" name="social">
+                            <el-tab-pane :label="$t('models.house_owner.social_card')" name="social">
                                 <el-row class="last-form-row" :gutter="20">
 
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.houseOwner.linkedin_url')"
+                                        <el-form-item :label="$t('models.house_owner.linkedin_url')"
                                                       :rules="validationRules.linkedin_url"
                                                       prop="linkedin_url">
                                             <el-input type="text" v-model="model.linkedin_url">
@@ -125,7 +125,7 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.houseOwner.xing_url')"
+                                        <el-form-item :label="$t('models.house_owner.xing_url')"
                                                       :rules="validationRules.xing_url"
                                                       prop="xing_url">
                                             <el-input type="text"
@@ -242,7 +242,7 @@
                     label: 'general.name'
                 }, {
                     prop: 'type',
-                    label: 'models.houseOwner.assignType',
+                    label: 'models.house_owner.assign_type',
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{
