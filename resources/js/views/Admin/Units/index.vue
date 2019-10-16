@@ -132,7 +132,7 @@
         },
         computed: {
             title() {
-                return `${this.building.name} - ${this.$t('menu.units')}`;
+                return `${this.building.name} - ${this.$t('general.admin_menu.units')}`;
             },
             formattedItems() {
                 return this.items.map((unit) => {
