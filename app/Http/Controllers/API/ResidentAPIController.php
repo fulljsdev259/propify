@@ -117,8 +117,9 @@ class ResidentAPIController extends AppBaseController
         if ($getAll) {
             $request->merge(['limit' => env('APP_PAGINATE', 10)]);
             $this->residentRepository->pushCriteria(new LimitOffsetCriteria($request));
-            $residents = $this->residentRepository->get();
+            $residents = $this->residentRepository->with('contracts')->get();
             $this->fixCreatedBy($residents);
+            // @TODO use transformer
             return $this->sendResponse($residents->toArray(), 'Residents retrieved successfully');
         }
 
