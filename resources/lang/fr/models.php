@@ -313,6 +313,7 @@ return [
             "date" => "Date d'exécution",
             "end" => "Fin de l'exécution",
             "start" => "Début d'exécution",
+            'from' => 'De',
             "separator" => "A",
         ],
         'category' => [

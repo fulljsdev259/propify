@@ -204,10 +204,24 @@
                                 </el-select>
                             </el-col>
                         </el-row>
+
+                        <el-divider></el-divider>
+
+                        <div class="switch-wrapper">
+                            <el-form-item :label="$t('models.pinboard.notify_email')" prop="notify_email">
+                                <el-switch v-model="model.notify_email"/>
+                            </el-form-item>
+                            <div>
+                                {{$t('models.pinboard.notify_email_description')}}
+                            </div>
+                        </div>
                     </card>
                     <template v-if="this.model.type == 3">
 
-                        <card :loading="loading" class="mt15" :header="$t('models.pinboard.placeholders.search_provider')">
+                        <card v-if="this.model.type == 3 && this.model.sub_type == 3"
+                              :loading="loading"
+                              class="mt15"
+                              :header="$t('models.pinboard.placeholders.search_provider')">
                             <el-row :gutter="10">
                                 <el-col :lg="24" :xl="24">
                                     <el-select
@@ -240,7 +254,7 @@
                                     <el-form-item :label="$t('models.pinboard.execution_period.label')">
                                         <el-select style="display: block"
                                                    v-model="model.execution_period"
-                                                   @change="model.execution_end = null">
+                                                   @change="executionPeriodChange()">
                                             <el-option
                                                     :key="key"
                                                     :label="$t(`models.pinboard.execution_period.${period}`)"
@@ -254,10 +268,7 @@
                                     <div class="switch-wrapper">
                                         <el-form-item :label="$t('models.pinboard.specify_time_question')">
                                             <el-switch v-model="model.is_execution_time"
-                                                    @change="() => {
-                                                        !model.is_execution_time ? resetExecutionTime() : '';
-                                                        reinitDatePickers();
-                                                    }"/>
+                                                    @change="isExecutionTimeChange()"/>
                                         </el-form-item>
                                         <div>
                                             {{$t('models.pinboard.specify_time_description')}}
@@ -265,9 +276,63 @@
                                     </div>
                                 </el-col>
                             </el-row>
-                            <el-row :gutter="20">
+                            <el-row :gutter="20" v-if="model.execution_period == 1">
                                 <el-col :md="12">
-                                    <el-form-item :label="model.execution_period == 2 ? $t('models.pinboard.execution_interval.start') : $t('models.pinboard.execution_interval.date')"
+                                    <el-form-item :label="$t('models.pinboard.execution_interval.date')"
+                                                  :rules="validationRules.execution_start"
+                                                  prop="execution_start">
+                                        <el-date-picker
+                                                :key="datePickerKey"
+                                                prefix-icon="el-icon-date"
+                                                format="dd.MM.yyyy"
+                                                style="width: 100%"
+                                                type="date"
+                                                v-model="model.execution_start"
+                                                @change="model.is_execution_time ? setExecutionDateTime() : ''"
+                                                value-format="yyyy-MM-dd HH:mm:ss"
+                                        >
+                                        </el-date-picker>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="12" v-if="model.is_execution_time">
+                                        <el-row :gutter="10">
+                                            <el-col :md="12">
+                                                <el-form-item :label="$t('models.pinboard.execution_interval.from')">
+                                                    <el-time-picker
+                                                            v-model="executionStartTime"
+                                                            @change="setExecutionDateTime()"
+                                                            style="width: 100%"
+                                                            :clearable="false"
+                                                            :picker-options="{
+                                                              selectableRange: '00:00:00 - '+executionEndTime
+                                                            }"
+                                                            :format="'HH:mm'"
+                                                            value-format="HH:mm:00">
+                                                    </el-time-picker>
+                                                </el-form-item>
+                                            </el-col>
+                                            <el-col :md="12">
+                                                <el-form-item :label="$t('models.pinboard.execution_interval.separator')">
+                                                    <el-time-picker
+                                                            v-model="executionEndTime"
+                                                            @change="setExecutionDateTime()"
+                                                            style="width: 100%"
+                                                            :clearable="false"
+                                                            :picker-options="{
+                                                              selectableRange: executionStartTime+' - 23:59:00'
+                                                            }"
+                                                            :format="'HH:mm'"
+                                                            value-format="HH:mm:00">
+                                                    </el-time-picker>
+                                                </el-form-item>
+                                            </el-col>
+                                        </el-row>
+                                </el-col>
+                            </el-row>
+                            <el-row :gutter="20" v-else-if="model.execution_period == 2">
+                                <el-col :md="12">
+                                    <el-form-item :label="$t('models.pinboard.execution_interval.start')"
+                                                  :rules="validationRules.execution_start"
                                                   prop="execution_start">
                                         <el-date-picker
                                             :key="datePickerKey"
@@ -284,8 +349,9 @@
                                         </el-date-picker>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12" v-if="model.execution_period == 2">
+                                <el-col :md="12">
                                     <el-form-item :label="$t('models.pinboard.execution_interval.end')"
+                                                  :rules="validationRules.execution_end"
                                                   prop="execution_end">
                                         <el-date-picker
                                             :key="datePickerKey"
@@ -303,14 +369,6 @@
                                     </el-form-item>
                                 </el-col>
                             </el-row>
-                            <div class="switch-wrapper">
-                                <el-form-item :label="$t('models.pinboard.notify_email')" prop="notify_email">
-                                    <el-switch v-model="model.notify_email"/>
-                                </el-form-item>
-                                <div>
-                                    {{$t('models.pinboard.notify_email_description')}}
-                                </div>
-                            </div>
                         </card>
                     </template>
 

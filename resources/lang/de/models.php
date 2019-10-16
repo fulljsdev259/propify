@@ -313,6 +313,7 @@ return [
             'date' => 'Datum',
             'end' => 'Ende',
             'start' => 'Start',
+            'from' => 'Von',
             'separator' => 'Bis',
         ],
         'category' => [
