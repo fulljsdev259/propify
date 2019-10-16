@@ -342,6 +342,8 @@ class Request extends AuditableModel implements HasMedia
      */
     protected $dates = ['deleted_at'];
 
+    protected $formatLength = 3;
+
     /**
      * The attributes that should be casted to native types.
      *
@@ -501,9 +503,12 @@ class Request extends AuditableModel implements HasMedia
             $contract = $this->resident->contracts->first() ?? null;
         }
         if ($contract) {
-            $internalQuarterId = $contract->building->quarter->internal_quarter_id ?? '';
+            $internalId = $contract->building->internal_building_id
+                ?? $contract->building->quarter->internal_quarter_id
+                ?? '';
+
             $unit = $contract->unit->name ?? '';
-            return $internalQuarterId .'_' . $unit. '__ID';
+            return $internalId .'_' . $unit. '_ID';
         }
         return 'RE_ID';
     }
