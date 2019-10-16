@@ -57,6 +57,7 @@ class RequestRepository extends BaseRepository
         "image/jpeg" => "jpg",
         "image/png" => "png",
         "application/pdf" => "pdf",
+        "application/octet-stream" => "docx",
     ];
 
     /**

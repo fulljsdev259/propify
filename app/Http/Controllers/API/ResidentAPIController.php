@@ -18,6 +18,7 @@ use App\Http\Requests\API\Resident\DownloadCredentialsRequest;
 use App\Http\Requests\API\Resident\ListRequest;
 use App\Http\Requests\API\Resident\SendCredentialsRequest;
 use App\Http\Requests\API\Resident\ShowRequest;
+use App\Http\Requests\API\Resident\UpdateDefaultContractRequest;
 use App\Http\Requests\API\Resident\UpdateLoggedInRequest;
 use App\Http\Requests\API\Resident\UpdateRequest;
 use App\Http\Requests\API\Resident\UpdateStatusRequest;
@@ -633,6 +634,62 @@ class ResidentAPIController extends AppBaseController
         $response = (new ResidentTransformer)->transform($resident);
         return $this->sendResponse($response, __('models.resident.saved'));
     }
+
+    /**
+     * @SWG\Put(
+     *      path="/residents/default-contract",
+     *      summary="Update the Logged In Resident default-contract-id",
+     *      tags={"Resident"},
+     *      description="Update the Logged In Resident default-contract-id",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="body",
+     *          in="body",
+     *          description="Resident that should be updated",
+     *          required=false,
+     *          @SWG\Schema(ref="#/definitions/Resident")
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  ref="#/definitions/Resident"
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     *
+     * @param UpdateLoggedInRequest $request
+     * @return mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function updateDefaultContract(UpdateDefaultContractRequest $request)
+    {
+        $resident = $request->user()->resident;
+        $resident->update($request->only('default_contract_id'));
+        $resident->load([
+            'user',
+            'settings',
+            'building',
+            'unit',
+            'address',
+            'media',
+        ]);
+        $response = (new ResidentTransformer)->transform($resident);
+        return $this->sendResponse($response, __('models.resident.saved'));
+    }
+
 
     /**
      * @SWG\Post(
