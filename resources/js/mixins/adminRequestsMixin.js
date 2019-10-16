@@ -123,12 +123,37 @@ export default (config = {}) => {
                     hideSelectFilesButton: false
                 },
                 request_id: null,
-                audit_id: null
+                audit_id: null,
+                contracts: [],
             };
         },
         computed: {
             form() {
                 return this.$refs.form;
+            },
+            dirtyContracts() {
+                return this.contracts.map(contract => { 
+                    // let floor_label;
+                    // if(contract.unitd.attic == 'attic')
+                    // {
+                    //     floor_label = this.$t('models.unit.floor_title.top_floor')
+                    // }
+                    // else if(contract.unit.floor > 0)
+                    // {
+                    //     floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                    // }
+                    // else if(contract.unit.floor == 0)
+                    // {
+                    //     floor_label = this.$t('models.unit.floor_title.ground_floor')
+                    // }
+                    // else if(contract.unit.floor < 0)
+                    // {
+                    //     floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                    // }
+                    // contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                    contract.building_room_floor_unit = contract.building_id + " -- " + contract.unit_id
+                    return contract
+                });
             },
         },
         watch: {
@@ -456,6 +481,13 @@ export default (config = {}) => {
                     }
                 }
             },
+            changeResident( resident_id ) {
+
+                this.resident = this.residents.find(resident => resident.id == resident_id)
+
+                this.contracts = this.resident.contracts
+                console.log(this.contracts)
+            }
         }
     };
 
@@ -601,7 +633,6 @@ export default (config = {}) => {
                         this.$set(this.model, 'building', data.resident.building.name);
 
 
-                        console.log('model', this.model)
                         await this.getConversations();
                         
                         if (data.resident) {

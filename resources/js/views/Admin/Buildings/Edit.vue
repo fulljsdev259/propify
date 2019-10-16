@@ -139,7 +139,7 @@
                             :actions="unitActions"
                             :columns="unitColumns"
                             :filterValue="model.id"
-                            fetchAction="getUnits"
+                            fetchAction="getUnitsWithResidents"
                             filter="building_id"
                             v-if="model.id"
                         />

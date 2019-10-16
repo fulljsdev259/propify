@@ -211,6 +211,7 @@ return [
             'upper_ground_floor' => "OG",
             'top_floor' => "Mansarda",
         ],
+        'rooms' => 'Camere',
         "sq_meter" => "Misuratore di mq",
         "room_no" => "Numero di camere",        
         "building" => "Edificio",

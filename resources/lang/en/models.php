@@ -211,6 +211,7 @@ return [
             'upper_ground_floor' => "OG",
             'top_floor' => "Attic",
         ],
+        'rooms' => 'Rooms',
         'sq_meter' => 'Sq Meter',
         'room_no' => 'Number of rooms',
         'building' => 'Building',

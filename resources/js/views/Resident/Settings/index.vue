@@ -61,19 +61,28 @@
                 <el-row>
                     <el-col :span="12" :xs="24">
                         <card>
-                            <el-form :model="loggedInUser" label-width="140px" ref="defaultAddressForm" size="medium">
+                            <el-form :model="defaultAddress" label-width="140px" ref="defaultAddressForm" size="medium">
+                                <el-alert                                     
+                                    :title="$t('resident.default_contract_expired')"
+                                    type="info"
+                                    show-icon
+                                    :closable="false"
+                                    v-if="expired"
+                                >
+                                </el-alert>
                                 <el-form-item :label="$t('resident.default_contract_id')" :rules="defaultAddressValidationRules.default_contract_id"
                                               prop="default_contract_id">
-                                    <el-select v-model="loggedInUser.resident.default_contract_id" 
+                                    <el-select v-model="defaultAddress.default_contract_id" 
                                                 :placeholder="$t('resident.placeholder.contract')"
                                                 class="custom-select"
+                                                filterable
+                                                clearable
                                                 value-key="loggedInUser.resident.default_contract_id">
-                                        <el-option v-for="contract in contracts" 
+                                        <el-option v-for="contract in dirtyContracts" 
                                                     :key="contract.id" 
-                                                    :label="contract.building_unit" 
+                                                    :label="contract.building_room_floor_unit" 
                                                     :value="contract.id" />
                                     </el-select>
-                                    <!-- <el-input type="input" v-model="loggedInUser.resident.default_contract_id"></el-input> -->
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button @click="submitDefaultAddressForm" icon="ti-save" type="primary">
@@ -203,7 +212,10 @@
                 },
                 defaultAddressValidationRules: {
                     default_contract_id: [
-                        
+                        {
+                            required: true,
+                            message: this.$t("models.quarter.required")
+                        },
                     ],
                 },
                 changePassword: {
@@ -217,7 +229,8 @@
                 image: '',
                 summaryValues: [
                     "daily", "monthly", "yearly"
-                ]
+                ],
+                expired: false
             };
         },
         computed: {
@@ -226,16 +239,37 @@
                     return users.loggedInUser;
                 },
                 contracts: ({users}) => {
-                    return users.loggedInUser.resident.contracts.map(contract => { 
-                        contract.building_unit = contract.building.name + " " +  contract.unit.name
-                        return contract
-                    });
+                    return users.loggedInUser.resident.contracts.filter(item => item.status == 1);
                 }
             }),
-            ...mapGetters(["getAllAvailableLanguages", "loggedInUser"])
+            ...mapGetters(["getAllAvailableLanguages", "loggedInUser"]),
+            dirtyContracts() {
+                return this.contracts.map(contract => { 
+                    let floor_label;
+                    if(contract.unit.attic == 'attic')
+                    {
+                        floor_label = this.$t('models.unit.floor_title.top_floor')
+                    }
+                    else if(contract.unit.floor > 0)
+                    {
+                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                    }
+                    else if(contract.unit.floor == 0)
+                    {
+                        floor_label = this.$t('models.unit.floor_title.ground_floor')
+                    }
+                    else if(contract.unit.floor < 0)
+                    {
+                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                    }
+                    contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                    return contract
+                });
+            },
+            
         },
         methods: {
-            ...mapActions(['updateUserSettings', 'changeUserPassword', 'changeDetails', 'uploadAvatar', 'me', 'updateMyTenancy']),
+            ...mapActions(['updateUserSettings', 'changeUserPassword', 'changeDetails', 'uploadAvatar', 'me', 'updateDefaultContract']),
             cropped(e) {
                 this.image = e;
             },
@@ -274,7 +308,7 @@
                 this.$refs.changePasswordForm.validate((valid) => {
                     if (valid) {
                         this.changeUserPassword(this.changePassword).then((response) => {
-                            displaySuccess(response);
+                            displaySuccess(response); 
                             this.resetForm();
                         }).catch((err) => {
                             displayError(err);
@@ -284,19 +318,18 @@
                     }
                 });
             },
-            submitDefaultAddressForm() {
+            submitDefaultAddressForm() { //@TODO need to check it again : said API is ready, but now working correctly.
                 this.$refs.defaultAddressForm.validate(async (valid) => {
                     if (!valid) {
                         return false;
                     }
 
                     const payload = {
-                        default_contract_id: this.loggedInUser.resident.default_contract_id,
+                        default_contract_id: this.defaultAddress.default_contract_id
                     };
 
                     try {
-                        const resp = await this.updateMyTenancy(payload);
-                        await this.upload();
+                        const resp = await this.updateDefaultContract(payload);
                         await this.me();
                         displaySuccess(resp);
                     } catch (e) {
@@ -344,6 +377,13 @@
                 this.dialogImageUrl = file.url;
                 this.dialogVisible = true;
             }
+        },
+        mounted () {
+            this.defaultAddress.default_contract_id = this.loggedInUser.resident.default_contract_id
+            if(!this.contracts.find(item => item.id == this.defaultAddress.default_contract_id)) {
+                this.expired = true
+                this.defaultAddress.default_contract_id = undefined
+            }
         }
     }
 </script>
@@ -376,6 +416,10 @@
 
         .custom-select {
             width: 100%;
+        }
+
+        .el-alert {
+            margin-bottom: 10px;
         }
         
         .el-tabs {

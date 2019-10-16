@@ -252,6 +252,14 @@
                                             >
                                             </el-table-column>
                                             <el-table-column
+                                                :label="$t('models.resident.status.label')"
+                                            >
+                                                <template slot-scope="scope">
+                                                    <i class="icon-dot-circled" :class="[constants.contracts.status[scope.row.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
+                                                    {{ constants.contracts.status[scope.row.status] ? $t('models.resident.contract.rent_status.' + constants.contracts.status[scope.row.status]) : ''}}
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
                                                 align="right"
                                             >
                                                 <template slot-scope="scope">
@@ -593,6 +601,12 @@
             .clickable {
                 display: block;
                 width: 100%;
+            }
+            .icon-success {
+                color: #5fad64;
+            }
+            .icon-danger {
+                color: #dd6161;
             }
         }
     }

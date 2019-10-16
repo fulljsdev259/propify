@@ -327,12 +327,12 @@
                     }
                     else if (page === 1) {
                         this.list = resp.data.data;
-                        if(this.fetchAction == 'getUnits') {
+                        if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
                             this.unitsTypeLabelMap();
                         }
                     } else {
                         this.list.push(...resp.data.data);
-                        if(this.fetchAction == 'getUnits') {
+                        if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
                             this.unitsTypeLabelMap();
                         }
                     }

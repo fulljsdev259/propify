@@ -256,4 +256,5 @@ return [
     ],
     "message" => "Message",
     "my_offerings" => "My offerings",
+    "default_contract_expired" => "Your last default contract is expired, You should select another contract."
 ];
