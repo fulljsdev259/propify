@@ -11,6 +11,11 @@ use Prettus\Repository\Events\RepositoryEntityUpdated;
 abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepository
 {
     /**
+     * @var array
+     */
+    protected $mimeToExtension = [];
+
+    /**
      * @param string $collectionName
      * @param string $dataBase64
      * @param Model $model
@@ -28,9 +33,11 @@ abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepositor
         $mimeType = finfo_buffer($file, $data, FILEINFO_MIME_TYPE);
         finfo_close($file);
 
-        if (!isset($this->mimeToExtension[$mimeType])) {
+        $extension = $this->mimeToExtension[$mimeType];
+        if (empty($extension)) {
             return false;
         }
+
         if ($mergeInAudit) {
             $audit = is_integer($mergeInAudit)
                 ? Audit::where('auditable_type', get_morph_type_of($model))->find($mergeInAudit)
@@ -45,7 +52,6 @@ abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepositor
             Media::disableAuditing();
         }
 
-        $extension = $this->mimeToExtension[$mimeType];
 
         $diskName = $model->getDiskPreName() . $collectionName;
         $media = $model->addMediaFromBase64($dataBase64)
@@ -117,5 +123,15 @@ abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepositor
             $data[$key] = $default;
         }
         return $data;
+    }
+
+    /**
+     * @param $model
+     * @param $mimeType
+     * @return mixed
+     */
+    protected function getExtension($model, $mimeType)
+    {
+        return $this->mimeToExtension[$mimeType];
     }
 }
