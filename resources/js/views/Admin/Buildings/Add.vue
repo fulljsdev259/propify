@@ -7,7 +7,7 @@
             <el-form :model="model" ref="form">
                 <el-row :gutter="20">
                     <el-col :md="12">
-                        <card :header="$t('models.propertyManager.details_card')" :loading="loading">
+                        <card :header="$t('models.property_manager.details_card')" :loading="loading">
                             <el-row :gutter="20">
                                 <el-col :md="10">
                                     <el-form-item :label="$t('general.street')" :rules="validationRules.street" prop="street">

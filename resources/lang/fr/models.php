@@ -12,9 +12,9 @@ return [
         'circle_logo' => "Logo du cercle",
         'favicon_icon' => "Icône Favicon",
         "resident_logo" => "Logo du résident",                
-        "notificationSaved" => "Réglage de la notification sauvegardé",        
-        "requestCategorySaved" => "Catégorie de demande de service sauvegardée",
-        "requestCategoryDeleted" => "Catégorie de demande de service supprimée",                
+        "notification_saved" => "Réglage de la notification sauvegardé",        
+        "request_category_saved" => "Catégorie de demande de service sauvegardée",
+        "request_category_deleted" => "Catégorie de demande de service supprimée",                
         'errors' => [
             'not_found' => "Utilisateur introuvable",            
             'image_upload' => "Erreur de téléchargement de l'image de l'utilisateur :",
@@ -300,7 +300,7 @@ return [
             "quarter" => "Trimestre",
             "all" => "Tous",
         ],
-        "assignType" => "Type",
+        "assign_type" => "Type",
         'execution_period' => [
             'label' => 'Un jour ou plusieurs jours',
             'single_day' => 'Une seule journée',
@@ -343,7 +343,7 @@ return [
         "contact_details" => "Coordonnées de contact",
         "user_credentials" => "Informations d'identification de l'utilisateur",
         "company_details" => "Coordonnées de l'entreprise",
-        "assignType" => "Type",        
+        "assign_type" => "Type",        
         'placeholders' => [
             "category" => "Sélectionnez une catégorie",
         ],
@@ -542,7 +542,7 @@ return [
             "bcc" => "BCC",
             "success" => "Envoi réussi du mail de notification",            
         ],
-        'userType' => [
+        'user_type' => [
             "label" => "Type",
             "provider" => "Service",
             "manager" => "Directeur",
@@ -575,7 +575,7 @@ return [
             'contact_text' => 'Voici les coordonnées du résident/propriétaire actuel du logement.',
         ]
     ],
-    'requestCategory' => [
+    'request_category' => [
         "title" => "Catégories de demandes",
         "add" => "Ajouter catégorie",
         "cancel" => "Annuler",
@@ -588,7 +588,7 @@ return [
             'used_by_request' => "Catégorie de demande de service utilisée par une demande de service",
         ]
     ],
-    'propertyManager' => [
+    'property_manager' => [
         "title" => "Gestionnaires immobiliers",
         "add" => "Ajouter un gestionnaire immobilier",
         "saved" => "Gestionnaire immobilier sauvé",
@@ -607,7 +607,7 @@ return [
         "delete_without_reassign" => "Supprimer",
         "profile_card" => "Profil de l'utilisateur",
         "social_card" => "Médias sociaux",
-        "assignType" => "Type",        
+        "assign_type" => "Type",        
         'errors' => [
             'not_found' => "Gestionnaire immobilier introuvable",
             'create' => "Le gestionnaire immobilier crée l'erreur : ",
@@ -619,14 +619,14 @@ return [
             'deleted' => "Le gestionnaire immobilier a supprimé l'erreur : ",
         ],
     ],
-    'houseOwner' => [
+    'house_owner' => [
         "title" => "Propriétaires de maison",
         "add" => "Ajouter un propriétaire",
         "saved" => "Propriétaire de maison sauvé",
         "deleted" => "Propriétaire de la maison supprimée",
         "edit_title" => "Modifier le propriétaire de la maison",
-        "firstName" => "Prénom",
-        "lastName" => "Nom de famille",
+        "first_name" => "Prénom",
+        "last_name" => "Nom de famille",
         "profession" => "Profession",
         "slogan" => "Slogan",
         "linkedin_url" => "URL Linkedin",
@@ -647,8 +647,8 @@ return [
         "delete_without_reassign" => "Supprimer",
         "profile_card" => "Profil de l'utilisateur",
         "social_card" => "Médias sociaux",
-        "assignType" => "Type",
-        "buildingAlreadyAssigned" => "Le bâtiment est déjà à l'intérieur sur un quart",
+        "assign_type" => "Type",
+        "building_already_assigned" => "Le bâtiment est déjà à l'intérieur sur un quart",
         'errors' => [
             'not_found' => "Propriétaire de maison non trouvé",
             'create' => "Le propriétaire de la maison crée l'erreur : ",
@@ -715,7 +715,7 @@ return [
         ]
     ],
     'cleanify' => [
-        "pageTitle" => "Nettoyer la demande",        
+        "page_title" => "Nettoyer la demande",        
         "address" => "Adresse",
         "save" => "Envoyer demande",
         "success" => "Nettoyer la demande envoyée avec succès",
@@ -741,7 +741,7 @@ return [
         'aligncenter' => 'Aligner le centre',
         'alignright' => 'Aligner à droite',
         'link' => 'Insérer un lien',
-        'linkTarget' => 'Mode ouvert',
+        'link_target' => 'Mode ouvert',
         'text' => 'Texte',
         'submit' => 'Soumettre',
         'cancel' => 'Annuler',
@@ -749,25 +749,25 @@ return [
         'table' => 'Table',
         'emotion' => 'Émotions',
         'img' => 'Image',
-        'uploadImg' => 'Télécharger',
-        'linkImg' => 'Lien',
+        'upload_img' => 'Télécharger',
+        'link_img' => 'Lien',
         'video' => 'Vidéo',
         'width' => 'largeur',
         'height' => 'apogée',
         'location' => 'Lieu',
         'loading' => 'Chargement',
         'searchlocation' => 'perquisition',
-        'dynamicMap' => 'Dynamique',
-        'clearLocation' => 'Clair',
-        'langDynamicOneLocation' => 'Un seul endroit sur la carte dynamique',
+        'dynamic_map' => 'Dynamique',
+        'clear_location' => 'Clair',
+        'lang_dynamic_one_location' => 'Un seul endroit sur la carte dynamique',
         'insertcode' => 'Insérer le code',
         'undo' => 'Annuler',
         'redo' => 'Refaire',
         'fullscreen' => 'Screnn complet',
-        'openLink' => 'lien ouvert',
-        'uploadPlaceTxt' => 'téléchargement__',
-        'uploadTimeoutPlaceTxt' => 'upload_timeout__',
-        'uploadErrorPlaceTxt' => 'upload_error__',
+        'open_link' => 'lien ouvert',
+        'upload_place_txt' => 'téléchargement__',
+        'upload_timeout_place_txt' => 'upload_timeout__',
+        'upload_error_place_txt' => 'upload_error__',
         'title' => 'Intitulé',
         'in_format' => 'En format',
         'rows' => 'Lignes',

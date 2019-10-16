@@ -1,13 +1,13 @@
 <template>
     <div class="services-add">
-        <heading :title="$t('models.houseOwner.add')" icon="icon-users" shadow="heavy">
+        <heading :title="$t('models.house_owner.add')" icon="icon-users" shadow="heavy">
             <add-actions :saveAction="submit" route="adminHouseOwners" editRoute="adminHouseOwnerssEdit"/>
         </heading>
         <div class="crud-view">
             <el-form :model="model" ref="form">
                 <el-row :gutter="20">
                     <el-col :md="12">
-                        <card :loading="loading" :header="$t('models.houseOwner.details_card')">
+                        <card :loading="loading" :header="$t('models.house_owner.details_card')">
 
                             <el-row :gutter="20">
                                 <el-col :md="8">
@@ -30,7 +30,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="8">
-                                    <el-form-item :label="$t('models.houseOwner.profession')"
+                                    <el-form-item :label="$t('models.house_owner.profession')"
                                                   :rules="validationRules.profession"
                                                   prop="profession">
                                         <el-input type="text" v-model="model.profession"/>
@@ -40,14 +40,14 @@
 
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.houseOwner.firstName')"
+                                    <el-form-item :label="$t('models.house_owner.first_name')"
                                                   :rules="validationRules.first_name"
                                                   prop="first_name">
                                         <el-input type="text" v-model="model.first_name"/>
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.houseOwner.lastName')" :rules="validationRules.last_name"
+                                    <el-form-item :label="$t('models.house_owner.last_name')" :rules="validationRules.last_name"
                                                   prop="last_name">
                                         <el-input type="text" v-model="model.last_name"/>
                                     </el-form-item>
@@ -68,10 +68,10 @@
                             </el-row>
                         </card>
 
-                        <card class="mt15" :loading="loading" :header="$t('models.houseOwner.social_card')">
+                        <card class="mt15" :loading="loading" :header="$t('models.house_owner.social_card')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.houseOwner.linkedin_url')"
+                                    <el-form-item :label="$t('models.house_owner.linkedin_url')"
                                                   :rules="validationRules.linkedin_url"
                                                   prop="linkedin_url">
                                         <el-input type="text" v-model="model.linkedin_url">
@@ -80,7 +80,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.houseOwner.xing_url')" :rules="validationRules.xing_url"
+                                    <el-form-item :label="$t('models.house_owner.xing_url')" :rules="validationRules.xing_url"
                                                   prop="xing_url">
                                         <el-input type="text"
                                                   v-model="model.xing_url"
@@ -95,7 +95,7 @@
                         </card>
                     </el-col>
                     <el-col :md="12">
-                        <card :loading="loading" :header="$t('models.houseOwner.profile_card')">
+                        <card :loading="loading" :header="$t('models.house_owner.profile_card')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item :label="$t('general.password')" :rules="validationRules.password" autocomplete="off"
@@ -120,7 +120,7 @@
                                 <cropper :resize="false" :viewportType="'circle'" @cropped="cropped"/>
                             </el-form-item>
 
-                            <el-form-item :label="$t('models.houseOwner.slogan')" :rules="validationRules.slogan"
+                            <el-form-item :label="$t('models.house_owner.slogan')" :rules="validationRules.slogan"
                                           prop="slogan">
                                 <el-input type="text" v-model="model.slogan"/>
                             </el-form-item>
@@ -186,7 +186,7 @@
                     label: 'general.title'
                 }, {
                     prop: 'type',
-                    label: 'models.houseOwner.assignType',
+                    label: 'models.house_owner.assign_type',
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{

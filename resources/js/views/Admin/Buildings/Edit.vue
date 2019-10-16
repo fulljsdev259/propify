@@ -455,7 +455,7 @@
                     label: 'general.name'
                 }, {
                     prop: 'type',
-                    label: 'models.request.userType.label',
+                    label: 'models.request.user_type.label',
                     i18n: this.translateType
                 }],
                 assigneesActions: [{
@@ -555,7 +555,7 @@
                 'checkUnitRequestWidthIds'
             ]),
             translateType(type) {
-                return this.$t(`models.request.userType.${type}`);
+                return this.$t(`models.request.user_type.${type}`);
             },
             fetchSettings() {
                 this.getSettings().then((resp) => {

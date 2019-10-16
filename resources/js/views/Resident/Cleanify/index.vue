@@ -1,7 +1,7 @@
 <template>
     <div>
         <heading
-            :title="$t('models.cleanify.pageTitle')"
+            :title="$t('models.cleanify.page_title')"
             class="custom-heading"
             icon="icon-water"
         />

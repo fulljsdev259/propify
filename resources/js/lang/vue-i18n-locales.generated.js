@@ -968,7 +968,7 @@ export default {
                     "quarter": "Überbauung",
                     "all": "Alle App-Nutzer"
                 },
-                "assignType": "Typ",
+                "assign_type": "Typ",
                 "execution_period": {
                     "label": "Ein Tag oder mehrere Tage",
                     "single_day": "Ein Tag",
@@ -1011,7 +1011,7 @@ export default {
                 "contact_details": "Kontaktdaten",
                 "user_credentials": "Logindaten",
                 "company_details": "Firmendaten",
-                "assignType": "Typ",
+                "assign_type": "Typ",
                 "placeholders": {
                     "category": "Gewerk wählen"
                 },
@@ -1275,7 +1275,7 @@ export default {
                 "delete_without_reassign": "Löschen",
                 "profile_card": "User Profile",
                 "social_card": "Social Media",
-                "assignType": "Typ",
+                "assign_type": "Typ",
                 "errors": {
                     "not_found": "Bewirtschafter nicht gefunden",
                     "create": "Fehler beim Erstellen des Bewirtschafters: ",
@@ -1315,7 +1315,7 @@ export default {
                 "delete_without_reassign": "Löschen",
                 "profile_card": "User Profile",
                 "social_card": "Social Media",
-                "assignType": "Typ",
+                "assign_type": "Typ",
                 "buildingAlreadyAssigned": "Das Gebäude ist bereits innen auf einem Viertel.",
                 "errors": {
                     "not_found": "Hausbesitzer nicht gefunden",
@@ -2961,7 +2961,7 @@ export default {
                     "quarter": "Quarter",
                     "all": "All"
                 },
-                "assignType": "Type",
+                "assign_type": "Type",
                 "execution_period": {
                     "label": "One day or multiple days",
                     "single_day": "Single day",
@@ -3004,7 +3004,7 @@ export default {
                 "contact_details": "Contact details",
                 "user_credentials": "User credentials",
                 "company_details": "Company details",
-                "assignType": "Type",
+                "assign_type": "Type",
                 "placeholders": {
                     "category": "Select category"
                 },
@@ -3268,7 +3268,7 @@ export default {
                 "delete_without_reassign": "Delete",
                 "profile_card": "User Profile",
                 "social_card": "Social Media",
-                "assignType": "Type",
+                "assign_type": "Type",
                 "errors": {
                     "not_found": "Property Manager not found",
                     "create": "Property Manager create error: ",
@@ -3308,7 +3308,7 @@ export default {
                 "delete_without_reassign": "Delete",
                 "profile_card": "User Profile",
                 "social_card": "Social Media",
-                "assignType": "Type",
+                "assign_type": "Type",
                 "buildingAlreadyAssigned": "Building is already inside on a quarter",
                 "errors": {
                     "not_found": "House Owner not found",
@@ -4955,7 +4955,7 @@ export default {
                     "quarter": "Trimestre",
                     "all": "Tous"
                 },
-                "assignType": "Type",
+                "assign_type": "Type",
                 "execution_period": {
                     "label": "Un jour ou plusieurs jours",
                     "single_day": "Une seule journée",
@@ -4998,7 +4998,7 @@ export default {
                 "contact_details": "Coordonnées de contact",
                 "user_credentials": "Informations d'identification de l'utilisateur",
                 "company_details": "Coordonnées de l'entreprise",
-                "assignType": "Type",
+                "assign_type": "Type",
                 "placeholders": {
                     "category": "Sélectionnez une catégorie"
                 },
@@ -5262,7 +5262,7 @@ export default {
                 "delete_without_reassign": "Supprimer",
                 "profile_card": "Profil de l'utilisateur",
                 "social_card": "Médias sociaux",
-                "assignType": "Type",
+                "assign_type": "Type",
                 "errors": {
                     "not_found": "Gestionnaire immobilier introuvable",
                     "create": "Le gestionnaire immobilier crée l'erreur : ",
@@ -5302,7 +5302,7 @@ export default {
                 "delete_without_reassign": "Supprimer",
                 "profile_card": "Profil de l'utilisateur",
                 "social_card": "Médias sociaux",
-                "assignType": "Type",
+                "assign_type": "Type",
                 "buildingAlreadyAssigned": "Le bâtiment est déjà à l'intérieur sur un quart",
                 "errors": {
                     "not_found": "Propriétaire de maison non trouvé",
@@ -6949,7 +6949,7 @@ export default {
                     "quarter": "Quartiere",
                     "all": "Tutti"
                 },
-                "assignType": "Tipo",
+                "assign_type": "Tipo",
                 "execution_period": {
                     "label": "Un giorno o più giorni",
                     "single_day": "Giorno singolo",
@@ -6992,7 +6992,7 @@ export default {
                 "contact_details": "Dati di contatto",
                 "user_credentials": "Credenziali utente",
                 "company_details": "Dettagli dell'azienda",
-                "assignType": "Tipo",
+                "assign_type": "Tipo",
                 "placeholders": {
                     "category": "Selezionare la categoria"
                 },
@@ -7256,7 +7256,7 @@ export default {
                 "delete_without_reassign": "Cancellare",
                 "profile_card": "Profilo utente",
                 "social_card": "Social Media",
-                "assignType": "Tipo",
+                "assign_type": "Tipo",
                 "errors": {
                     "not_found": "Property Manager non trovato",
                     "create": "Property Manager crea un errore: ",
@@ -7296,7 +7296,7 @@ export default {
                 "delete_without_reassign": "Cancellare",
                 "profile_card": "Profilo utente",
                 "social_card": "Social Media",
-                "assignType": "Tipo",
+                "assign_type": "Tipo",
                 "buildingAlreadyAssigned": "L'edificio e' gia' all'interno di un quarto di dollaro.",
                 "errors": {
                     "not_found": "Proprietario della casa non trovato",

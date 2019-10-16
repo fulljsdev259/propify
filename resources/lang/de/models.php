@@ -12,9 +12,9 @@ return [
         'circle_logo' => 'Rundes Logo',
         'favicon_icon' => 'Favicon-Symbol',
         'resident_logo' => 'Resident Logo',                
-        'notificationSaved' => 'Benachrichtigungseinstellung gespeichert',        
-        'requestCategorySaved' => 'Anfrage-Kategorie gespeichert',
-        'requestCategoryDeleted' => 'Anfrage-Kategorie gelöscht',                
+        'notification_saved' => 'Benachrichtigungseinstellung gespeichert',        
+        'request_category_saved' => 'Anfrage-Kategorie gespeichert',
+        'request_category_deleted' => 'Anfrage-Kategorie gelöscht',                
         'errors' => [
             'not_found' => "Benutzer nicht gefunden",            
             'image_upload' => "Fehler beim Hochladen des Profilbildes: ",
@@ -300,7 +300,7 @@ return [
             'quarter' => 'Überbauung',
             'all' => 'Alle App-Nutzer',
         ],
-        'assignType' => 'Typ',        
+        'assign_type' => 'Typ',        
         'execution_period' => [
             'label' => 'Ein Tag oder mehrere Tage',
             'single_day' => 'Ein Tag',
@@ -343,7 +343,7 @@ return [
         'contact_details' => 'Kontaktdaten',
         'user_credentials' => 'Logindaten',
         'company_details' => 'Firmendaten',
-        'assignType' => 'Typ',        
+        'assign_type' => 'Typ',        
         'placeholders' => [
             'category' => 'Gewerk wählen',
         ],
@@ -542,7 +542,7 @@ return [
             'bcc' => 'BCC',
             'success' => 'E-Mail wurde erfolgreich gesendet',                        
         ],
-        'userType' => [
+        'user_type' => [
             'label' => 'Typ',
             'provider' => 'Dienstleister',
             'manager' => 'Bewirtschafter',
@@ -575,7 +575,7 @@ return [
             'contact_text' => 'Dies sind die Kontaktdaten des aktuellen Bewohners/Besitzers der Wohneinheit.',
         ]
     ],
-    'requestCategory' => [
+    'request_category' => [
         'title' => 'Anfrage Kategorien',
         'add' => 'Kategorie hinzufügen',
         'cancel' => 'Schliessen',
@@ -588,7 +588,7 @@ return [
             'used_by_request' => "Diese Kategorie wird in Anfragen verwendet",
         ]
     ],
-    'propertyManager' => [
+    'property_manager' => [
         'title' => 'Bewirtschafter',
         'add' => 'Bewischafter hinzufügen',
         'saved' => 'Bewirtschafter wurde gespeichert',
@@ -607,7 +607,7 @@ return [
         'delete_without_reassign' => 'Löschen',
         'profile_card' => 'User Profile',
         'social_card' => 'Social Media',
-        'assignType' => 'Typ',        
+        'assign_type' => 'Typ',        
         'errors' => [
             'not_found' => "Bewirtschafter nicht gefunden",
             'create' => "Fehler beim Erstellen des Bewirtschafters: ",
@@ -619,14 +619,14 @@ return [
             'deleted' => "Bewirtschafter löschte Fehler: ",
         ],
     ],
-    'houseOwner' => [
+    'house_owner' => [
         'title' => 'Hausbesitzer',
         'add' => 'Hausbesitzer hinzufügen',
         'saved' => 'Hausbesitzer wurde gespeichert',
         'deleted' => 'Hausbesitzer wurde gelöscht',
         'edit_title' => 'Hausbesitzer bearbeiten',
-        'firstName' => 'Vorname',
-        'lastName' => 'Name',
+        'first_name' => 'Vorname',
+        'last_name' => 'Name',
         'profession' => 'Position',
         'slogan' => 'Slogan',
         'linkedin_url' => 'Linkedin',
@@ -647,8 +647,8 @@ return [
         'delete_without_reassign' => 'Löschen',
         'profile_card' => 'User Profile',
         'social_card' => 'Social Media',
-        'assignType' => 'Typ',
-        'buildingAlreadyAssigned' => 'Das Gebäude ist bereits innen auf einem Viertel.',
+        'assign_type' => 'Typ',
+        'building_already_assigned' => 'Das Gebäude ist bereits innen auf einem Viertel.',
         'errors' => [
             'not_found' => "Hausbesitzer nicht gefunden",
             'create' => "Hausbesitzer erstellen Fehler: ",
@@ -715,7 +715,7 @@ return [
         ]
     ],
     'cleanify' => [
-        'pageTitle' => 'Cleanify request',        
+        'page_title' => 'Cleanify request',        
         'address' => 'Strasse + Nr',
         'save' => 'Anfragen einsenden',
         'success' => 'Ihr Anfrage wurde erfolgreich an Cleanify übertragen.',
@@ -741,7 +741,7 @@ return [
         'aligncenter' => 'Mitte ausrichten',
         'alignright' => 'Rechtsbündig ausrichten',
         'link' => 'Link einfügen',
-        'linkTarget' => 'Öffnungsmodus',
+        'link_target' => 'Öffnungsmodus',
         'text' => 'Text',
         'submit' => 'Absenden',
         'cancel' => 'Abbrechen',
@@ -749,25 +749,25 @@ return [
         'table' => 'Tabelle',
         'emotion' => 'Emotionen',
         'img' => 'Bild',
-        'uploadImg' => 'Hochladen',
-        'linkImg' => 'Link',
+        'upload_img' => 'Hochladen',
+        'link_img' => 'Link',
         'video' => 'Video',
         'width' => 'Breite',
         'height' => 'Höhe',
         'location' => 'Ort',
         'loading' => 'Laden',
         'searchlocation' => 'Suche',
-        'dynamicMap' => 'Dynamisch',
-        'clearLocation' => 'Löschen',
-        'langDynamicOneLocation' => 'Nur ein Standort in der dynamischen Karte',
+        'dynamic_map' => 'Dynamisch',
+        'clear_location' => 'Löschen',
+        'lang_dynamic_one_location' => 'Nur ein Standort in der dynamischen Karte',
         'insertcode' => 'Code einfügen',
         'undo' => 'Rückgängig',
         'redo' => 'Wiederholen',
         'fullscreen' => 'Vollständige Sichtung',
-        'openLink' => 'Link öffnen',
-        'uploadPlaceTxt' => 'hochladen__',
-        'uploadTimeoutPlaceTxt' => 'upload_timeout__',
-        'uploadErrorPlaceTxt' => 'upload_error__',
+        'open_link' => 'Link öffnen',
+        'upload_place_txt' => 'hochladen__',
+        'upload_timeout_place_txt' => 'upload_timeout__',
+        'upload_error_place_txt' => 'upload_error__',
         'title' => 'Titel',
         'in_format' => 'Im Format',
         'rows' => 'Zeilen',

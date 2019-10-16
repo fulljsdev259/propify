@@ -231,7 +231,7 @@
                     type: 'assigneesName'
                 }, {
                     prop: 'type',
-                    label: 'models.service.assignType',
+                    label: 'models.service.assign_type',
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{
