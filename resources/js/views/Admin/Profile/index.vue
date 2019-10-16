@@ -1,6 +1,6 @@
 <template>
     <div class="profile">
-        <heading :title="$t('general.profile.pageTitle')" class="custom-heading" icon="ti-user" shadow="heavy" />
+        <heading :title="$t('general.profile.page_title')" class="custom-heading" icon="ti-user" shadow="heavy" />
         <div class="crud-view">
             <el-tabs v-model="active">
                 <el-tab-pane :label="$t('general.profile.profile')" :lazy="true" name="profile">

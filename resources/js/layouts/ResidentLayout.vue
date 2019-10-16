@@ -23,7 +23,7 @@
                 <user @avatar-click="openSettingsDrawer()" :only-avatar="el.is.md" />
             </div>
             <div class="item">
-                <el-tooltip :content="$t('layouts.resident.menu.logout')" effect="dark" placement="bottom">
+                <el-tooltip :content="$t('resident.logout')" effect="dark" placement="bottom">
                     <el-button size="small" type="danger" icon="ti-power-off" circle @click="logout" />
                 </el-tooltip>
             </div>
@@ -111,36 +111,36 @@
                 }],
                 routes: [{
                     icon: 'icon-th',
-                    title: 'layouts.resident.sidebar.dashboard',
+                    title: 'resident.dashboard',
                     route: {
                         name: 'residentDashboard'
                     }
                 }, 
                 {
                     icon: 'icon-vcard',
-                    title: 'layouts.resident.sidebar.myTenancy',
+                    title: 'resident.my_tenancy',
                     children: [{
                         icon: 'icon-user',
-                        title: 'layouts.resident.sidebar.myPersonalData',
+                        title: 'resident.my_personal_data',
                         route: {
                             name: 'residentMyPersonal'
                         }
                     }, {
                         icon: 'icon-handshake-o',
-                        title: 'layouts.resident.sidebar.myRecentContract',
+                        title: 'resident.my_recent_contract',
                         route: {
                             name: 'residentMyContracts'
                         }
                     }, {
                         icon: 'icon-doc-text',
-                        title: 'layouts.resident.sidebar.myDocuments',
+                        title: 'resident.my_documents',
                         route: {
                             name: 'residentMyDocuments'
                         }
                         // do not show if no documents
                     }, {
                         icon: 'icon-contacts',
-                        title: 'layouts.resident.sidebar.myContactPersons',
+                        title: 'resident.my_contact_persons',
                         route: {
                             name: 'residentMyContacts'
                         },
@@ -160,13 +160,13 @@
                     }]
                 }, {
                     icon: 'icon-megaphone-1',
-                    title: 'layouts.resident.sidebar.pinboard',
+                    title: 'resident.pinboard',
                     route: {
                         name: 'residentPinboards'
                     }
                 }, {
                     icon: 'icon-chat-empty',
-                    title: 'layouts.resident.sidebar.requests',
+                    title: 'resident.requests',
                     route: {
                         name: 'residentRequests'
                     }
@@ -178,7 +178,7 @@
                     },
                 }, {
                     icon: 'icon-cog',
-                    title: 'layouts.resident.sidebar.settings',
+                    title: 'resident.settings',
                     positionedBottom: true,
                     route: {
                         name: 'residentSettings'

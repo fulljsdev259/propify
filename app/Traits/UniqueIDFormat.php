@@ -43,8 +43,9 @@ trait UniqueIDFormat
         $template = $this->getUniqueIDTemplate();
 
         $len = strlen($id);
-        if ($len < 6) {
-            for ($i = 0; $i < (6 - $len); $i++) {
+        $formatLimit = (property_exists($this, 'formatLength')) ? $this->formatLength : 6;
+        if ($len < $formatLimit) {
+            for ($i = 0; $i < ($formatLimit - $len); $i++) {
                 $id = '0' . $id;
             }
         }
