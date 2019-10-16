@@ -68,7 +68,7 @@
                     label: 'models.resident.contact_info_card',
                     withMultipleProps: true,
                     props: ['user_email', 'private_phone']
-                }, {
+                }/*, {
                     label: 'models.resident.building.name',
                     withCollapsables: true,
                     width: 200,
@@ -78,7 +78,7 @@
                     withCollapsables: true,
                     width: 150,
                     props: ['unit_names']
-                }, {
+                }*/, {
                     label: 'models.resident.contract.title',
                     withCounts: true,
                     width: 150,
@@ -154,6 +154,7 @@
             this.buildings = await this.getStateBuildings()
             this.units = await this.getBuildingUnits();
             this.isLoadingFilters = false;
+
         },
         methods: {
             ...mapActions(['getBuildings', 'getUnits', 'changeResidentStatus']),
@@ -282,6 +283,12 @@
                         name: this.$t('general.filters.language'),
                         type: 'language',
                         key: 'language'
+                    },
+                    {
+                        name: this.$t('general.filters.type'),
+                        type: 'select',
+                        key: 'type',
+                        data: this.prepareFilters('type'),
                     }
                 ]
             }

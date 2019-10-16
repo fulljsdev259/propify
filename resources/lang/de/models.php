@@ -98,7 +98,8 @@ return [
                 'inactive' => 'Inaktiv',
             ],            
             'add' => 'Neuen Vertrag hinzufügen',            
-            'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',            
+            'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',
+            'saved' => 'Vertrag gespeichert',
         ],
         'status' => [
             'label' => 'Status',
@@ -129,7 +130,12 @@ return [
             'content_4' => 'Sollten Sie Hilfe bei der Anmeldung benötigen, so stehen wir Ihnen gerne zur Verfügung.',
             'your_sincerely' => 'Mit freundlichen Grüssen',
             'your_administration' => 'Ihre Verwaltung'
-        ]
+        ],
+        'type' => [
+            'label' => 'Typ',
+            'resident' => 'Resident',
+            'owner' => 'Eigentümer',
+        ],
     ],
     'building' => [
         'title' => 'Liegenschaften',

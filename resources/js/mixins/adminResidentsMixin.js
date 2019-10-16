@@ -42,6 +42,7 @@ export default (config = {}) => {
                         language: '',
                     },
                     nation: '',
+                    type: '',
                     contracts: [],
                 },
                 visibleDrawer: false,
@@ -229,6 +230,7 @@ export default (config = {}) => {
 
                 mixin.methods = {
                     submit() {
+                        console.log(this.model);
                         return new Promise((resolve, reject) => {
                             this.form.validate(async valid => {
                                 if (!valid) {

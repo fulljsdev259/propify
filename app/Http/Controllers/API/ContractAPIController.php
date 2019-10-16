@@ -163,7 +163,7 @@ class ContractAPIController extends AppBaseController
         /** @var Contract $contract */
         $contract = $this->contractRepository->findWithoutFail($id);
         if (empty($contract)) {
-            return $this->sendError(__('models.contract.errors.not_found'));
+            return $this->sendError(__('models.resident.contract.errors.not_found'));
         }
 
         $contract->load(['resident', 'building.address', 'unit']);
@@ -216,14 +216,14 @@ class ContractAPIController extends AppBaseController
         try {
             $contract = $this->contractRepository->create($input);
         } catch (\Exception $e) {
-            return $this->sendError(__('models.contract.errors.create') . $e->getMessage());
+            return $this->sendError(__('models.resident.contract.errors.create') . $e->getMessage());
         }
 
 
         $contract->load(['resident', 'building.address', 'unit']);
 
         $response = (new ContractTransformer())->transform($contract);
-        return $this->sendResponse($response, __('models.contract.saved'));
+        return $this->sendResponse($response, __('models.resident.contract.saved'));
     }
 
     /**
@@ -279,7 +279,7 @@ class ContractAPIController extends AppBaseController
         /** @var Contract $contract */
         $contract = $this->contractRepository->findWithoutFail($id);
         if (empty($contract)) {
-            return $this->sendError(__('models.contract.errors.not_found'));
+            return $this->sendError(__('models.resident.contract.errors.not_found'));
         }
 
         try {
@@ -340,7 +340,7 @@ class ContractAPIController extends AppBaseController
             return $this->sendError('Delete error: ' . $e->getMessage());
         }
 
-        return $this->sendResponse($id, __('models.contract.deleted'));
+        return $this->sendResponse($id, __('models.resident.contract.deleted'));
     }
 
     /**
@@ -387,8 +387,8 @@ class ContractAPIController extends AppBaseController
             Contract::destroy($ids);
         }
         catch (\Exception $e) {
-            return $this->sendError(__('models.contract.errors.deleted') . $e->getMessage());
+            return $this->sendError(__('models.resident.contract.errors.deleted') . $e->getMessage());
         }
-        return $this->sendResponse($ids, __('models.contract.deleted'));
+        return $this->sendResponse($ids, __('models.resident.contract.deleted'));
     }
 }

@@ -98,7 +98,8 @@ return [
                 'inactive' => 'Inattivo',
             ],
             'add' => 'Aggiungere un nuovo contratto',
-            'pdf_only_desc' => 'Si prega di notare che solo i file PDF possono essere caricati',            
+            'pdf_only_desc' => 'Si prega di notare che solo i file PDF possono essere caricati',
+            'saved' => 'Contratto salvato',
         ],        
         'status' => [
             "label" => "Situazione",
@@ -129,6 +130,11 @@ return [
             'content_4' => 'Se avete bisogno di assistenza per la registrazione, allora siamo a vostra disposizione.',
             'your_sincerely' => 'La vostra sinceramente',
             'your_administration' => 'la sua amministrazione'
+        ],
+        'type' => [
+            'label' => 'Tipo',
+            'resident' => 'Residente',
+            'owner' => 'Proprietario',
         ],
     ],
     'building' => [

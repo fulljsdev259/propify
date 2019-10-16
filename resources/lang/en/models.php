@@ -98,7 +98,8 @@ return [
                 'inactive' => 'Inactive',
             ],
             'add' => 'Add new contract',
-            'pdf_only_desc' => 'Please note that only PDF files can be uploaded',            
+            'pdf_only_desc' => 'Please note that only PDF files can be uploaded',
+            'saved' => 'Contract saved',
         ],      
         'status' => [
             'label' => 'Status',
@@ -129,6 +130,11 @@ return [
             'content_4' => 'If you should need assistance with the registration, then we are gladly at your disposal.',
             'your_sincerely' => 'Yours sincerely',
             'your_administration' => 'your administration'
+        ],
+        'type' => [
+            'label' => 'Type',
+            'resident' => 'Resident',
+            'owner' => 'Owner',
         ],
     ],
     'building' => [
