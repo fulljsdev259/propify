@@ -58,6 +58,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::post('/residents/{id}/send-credentials', 'ResidentAPIController@sendCredentials');
     Route::post('/residents/{id}/download-credentials', 'ResidentAPIController@downloadCredentials');
 
+    Route::put('/residents/default-contract', 'ResidentAPIController@updateDefaultContract')->name('residents.me.update.default-contract');
     Route::put('/residents/me', 'ResidentAPIController@updateLoggedIn')->name('residents.me.update');
     Route::put('/residents/{id}', 'ResidentAPIController@update')->name('residents.update');
     Route::put('/residents/{id}/status', 'ResidentAPIController@changeStatus')->name('residents.changeStatus');
