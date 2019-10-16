@@ -1,5 +1,5 @@
 <template>
-    <div class="services-edit mb20" v-if="constants">
+    <div class="services-edit mb20" v-if="constants" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.request.edit_title')" icon="icon-chat-empty" shadow="heavy">
             <template slot="description" v-if="model.request_format">
                 <div class="subtitle">{{model.request_format}}</div>
@@ -19,7 +19,7 @@
             <el-form :model="model" label-position="top" label-width="192px" ref="form">
                 <el-row :gutter="20">
                     <el-col :md="12">
-                        <card :loading="loading" :header="$t('models.request.request_details')" id="request_details">
+                        <card  :header="$t('models.request.request_details')" id="request_details">
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.request.category')"
@@ -312,8 +312,8 @@
                     <el-col :md="12">
                         <template v-if="$can($permissions.assign.request)">
  
-                            <el-tabs class="action-tabs" type="border-card" :loading="loading" v-model="activeActionTab">
-                                <el-tab-pane :label="$t('models.request.actions')" name="actions" v-loading="loading.state">
+                            <el-tabs class="action-tabs" type="border-card"  v-model="activeActionTab">
+                                <el-tab-pane :label="$t('models.request.actions')" name="actions" >
                                     <el-row :gutter="10">                                    
                                         <el-col :md="12">
                                             <el-form-item :label="$t('models.request.status.label')"
@@ -406,7 +406,7 @@
                                         </el-col>
                                     </el-row>
                                 </el-tab-pane>
-                                <el-tab-pane :label="$t('models.request.is_public')" name="is_public" v-loading="loading.state">
+                                <el-tab-pane :label="$t('models.request.is_public')" name="is_public">
                                     <div class="switch-wrapper">
                                         <el-form-item :label="$t('models.request.public_title')" prop="is_public">
                                             <el-switch v-model="model.is_public"/>
@@ -438,7 +438,7 @@
                                 </el-tab-pane>
                             </el-tabs>
                         
-                            <card class="mt15 request" :loading="loading" :header="$t('models.request.assignment')">
+                            <card class="mt15 request" :header="$t('models.request.assignment')">
                                 <assignment-by-type
                                     :resetToAssignList="resetToAssignList"
                                     :assignmentType.sync="assignmentType"
@@ -768,6 +768,10 @@
 </style>
 
 <style lang="scss">
+
+    .el-loading-mask.is-fullscreen {
+        z-index: 9 !important;
+    }
     .switch-item {
         display: flex;
         margin: 0;
