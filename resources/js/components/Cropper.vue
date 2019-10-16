@@ -140,7 +140,7 @@
                 });
             },
             defaultBind(src) {
-                let url = 'http://127.0.0.1:8000'+src;
+                let url = src;
                 this.$refs.croppieRef.bind({
                     zoom: 0,
                     url
