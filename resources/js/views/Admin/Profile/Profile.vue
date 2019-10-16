@@ -12,7 +12,7 @@
                             height: 250
                         }"
                         :resize="false"
-                        :defaultAvatarSrc="user.avatar"
+                        :defaultAvatarSrc="'../'+user.avatar"
                         @upload="upload"
                         @cropped="cropped"/>
             </el-form-item>
