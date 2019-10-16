@@ -40,10 +40,10 @@
             <el-button-group slot="footer" key="footer" v-if="canShowButtonGroup">
                 <el-button class="media-trigger" icon="icon-plus" @click="selectFiles()" v-if="!uploadOptions.hideSelectFilesButton">
                     <template v-if="uploadOptions.drop">
-                        {{$t('general.components.common.media.buttons.selectFiles.withDrop')}}
+                        {{$t('general.components.common.media.buttons.select_files.with_drop')}}
                     </template>
                     <template v-else>
-                        {{$t('general.components.common.media.buttons.selectFiles.withoutDrop')}}
+                        {{$t('general.components.common.media.buttons.select_files.without_drop')}}
                     </template>
                 </el-button>
                 <el-button type="primary" icon="icon-upload-cloud" @click="startUploading()" v-if="canShowUploadButton">
@@ -54,10 +54,10 @@
                 <el-button key="media-trigger" class="media-upload-trigger" @click="selectFiles()" v-if="!uploadOptions.hideSelectFilesButton">
                     <div class="icon-plus"></div>
                     <!-- <template v-if="uploadOptions.drop">
-                        {{$t('general.components.common.media.buttons.selectFiles.withDrop')}}
+                        {{$t('general.components.common.media.buttons.select_files.with_drop')}}
                     </template>
                     <template v-else>
-                        {{$t('general.components.common.media.buttons.selectFiles.withoutDrop')}}
+                        {{$t('general.components.common.media.buttons.select_files.without_drop')}}
                     </template> -->
                 </el-button>
                 <el-button key="media-upload" type="primary" icon="icon-upload-cloud" @click="startUploading()" v-if="canShowUploadButton">
@@ -67,9 +67,9 @@
         </draggable>
         <div v-if="$refs.uploader && $refs.uploader.dropActive" class="media-drop-active">
             <i class="icon-upload-cloud"></i>
-            {{$t('general.components.common.media.dropActive.title')}}
+            {{$t('general.components.common.media.drop_active.title')}}
             <div class="description">
-                {{$t('general.components.common.media.dropActive.description')}}
+                {{$t('general.components.common.media.drop_active.description')}}
             </div>
         </div>
     </div>

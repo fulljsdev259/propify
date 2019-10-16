@@ -18,6 +18,7 @@ use App\Models\Building;
 use App\Models\Settings;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use App\Transformers\MediaTransformer;
 use App\Transformers\UserTransformer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -305,6 +306,13 @@ class UserAPIController extends AppBaseController
 
         if ($resident) {
             $resident->contact_enable = (bool) $this->getResidentContactEnable($resident);
+            $resident->contracts->each(function ($contract) {
+                if ($contract->relationExists('media')) {
+                    $contract->setRelation('media', collect((new MediaTransformer)->transformCollection($contract->media)));
+                } else {
+                    $contract->media = [];
+                }
+            });
         }
 
         return $this->sendResponse($user->toArray(), 'User retrieved successfully');

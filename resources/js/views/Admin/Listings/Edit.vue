@@ -62,7 +62,7 @@
                             </el-col>
                         </el-row>
                         <el-tabs type="card" v-model="activeName">
-                            <el-tab-pane :label="$t('menu.requests')" name="description">    
+                            <el-tab-pane :label="$t('general.admin_menu.requests')" name="description">    
                                 <el-row>
                                     <el-col>
                                         <el-form-item :label="$t('models.listing.listing_title')" :rules="validationRules.title"

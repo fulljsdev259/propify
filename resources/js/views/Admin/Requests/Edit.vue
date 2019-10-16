@@ -186,7 +186,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="8" class="summary-item" id="building">
-                                    <el-form-item :label="$t('general.assignmentTypes.building')">
+                                    <el-form-item :label="$t('general.assignment_types.building')">
                                         <strong>{{this.model.building}}</strong>
                                     </el-form-item>
                                 </el-col>
@@ -648,9 +648,9 @@
                 return _.indexOf(this.constants.requests.statusByAgent[this.model.status], parseInt(status)) < 0
             },
             notifyUnassignment(provider) {
-                this.$confirm(this.$t(`general.swal.confirmChange.title`), this.$t('general.swal.confirmChange.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirmChange.confirmBtnText`),
-                    cancelButtonText: this.$t(`general.swal.confirmChange.cancelBtnText`),
+                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
+                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
+                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
                     type: 'warning'
                 }).then(async () => {
                     try {

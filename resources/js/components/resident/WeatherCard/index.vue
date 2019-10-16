@@ -10,26 +10,26 @@
                     {{data.main.temp | celsius}}
                 </div>
                 <div class="minmax">
-                    <div>{{$t('general.components.resident.weatherWidget.minTemp')}} {{data.main.temp_min | celsius}}</div>
-                    <div>{{$t('general.components.resident.weatherWidget.maxTemp')}} {{data.main.temp_max | celsius}}</div>
+                    <div>{{$t('general.components.resident.weather_widget.min_temp')}} {{data.main.temp_min | celsius}}</div>
+                    <div>{{$t('general.components.resident.weather_widget.max_temp')}} {{data.main.temp_max | celsius}}</div>
                 </div>
             </div>
             <div class="description">{{data.weather[0].description}}</div>
             <div class="extra">
                 <div class="content">
-                    <div class="title">{{$t('general.components.resident.weatherWidget.wind')}}</div>
+                    <div class="title">{{$t('general.components.resident.weather_widget.wind')}}</div>
                     {{data.wind.speed}}m/s
                 </div>
                 <div class="content">
-                    <div class="title">{{$t('general.components.resident.weatherWidget.cloudiness')}}</div>
+                    <div class="title">{{$t('general.components.resident.weather_widget.cloudiness')}}</div>
                     {{data.clouds.all}}%
                 </div>
                 <div class="content">
-                    <div class="title">{{$t('general.components.resident.weatherWidget.humidity')}}</div>
+                    <div class="title">{{$t('general.components.resident.weather_widget.humidity')}}</div>
                     {{data.main.humidity}}%
                 </div>
                 <div class="content">
-                    <div class="title">{{$t('general.components.resident.weatherWidget.pressure')}}</div>
+                    <div class="title">{{$t('general.components.resident.weather_widget.pressure')}}</div>
                     {{data.main.pressure}}hPa
                 </div>
             </div>

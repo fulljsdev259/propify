@@ -131,7 +131,7 @@
                         data: this.buildings,
                     },
                     {
-                        name: this.$t('general.filters.propertyManagers'),
+                        name: this.$t('general.filters.property_managers'),
                         type: 'select',
                         key: 'property_manager_id',
                         data: this.propertyManagers,
@@ -241,9 +241,9 @@
                 });
             },
             listingSelectChangedNotify(row) {
-                this.$confirm(this.$t(`general.swal.confirmChange.title`), this.$t('general.swal.confirmChange.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirmChange.confirmBtnText`),
-                    cancelButtonText: this.$t(`general.swal.confirmChange.cancelBtnText`),
+                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
+                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
+                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
                     type: 'warning'
                 }).then(async () => {
                     try {

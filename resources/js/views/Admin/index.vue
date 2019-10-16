@@ -1,10 +1,10 @@
 <template>
     <div style="flex-grow: 1;">
-        <heading class="custom-heading" :icon="headingIcon" :title="$t(`menu.${activeName}`)" shadow="heavy" />
+        <heading class="custom-heading" :icon="headingIcon" :title="$t(`general.admin_menu.${activeName}`)" shadow="heavy" />
         <el-row :gutter="20" class="dashboard" style="margin-bottom: 24px;" type="flex">
             <el-col class="dashboard-tabpanel">
                 <el-tabs type="border-card" @tab-click="handleTabClick" v-model="activeName">
-                    <el-tab-pane :label="$t('menu.requests')" name="requests">
+                    <el-tab-pane :label="$t('general.admin_menu.requests')" name="requests">
                         <el-row type="flex">
                             <el-col :span="24">
                                 <statistics-card :totalRequest="totalRequest" :data="reqStatusCount" :avgReqDuration="avgReqDuration" :animationTrigger="activeName"></statistics-card>
@@ -73,7 +73,7 @@
                         </el-row>
                      
                     </el-tab-pane>
-                    <el-tab-pane :label="$t('menu.buildings')" name="buildings">
+                    <el-tab-pane :label="$t('general.admin_menu.buildings')" name="buildings">
                         <el-row type="flex">
                             <el-col :span="24">
                                 <buildings-statistics-card :data="buildingStatistics" :animationTrigger="activeName"></buildings-statistics-card>
@@ -107,7 +107,7 @@
                             </el-col>
                         </el-row>
                     </el-tab-pane>
-                    <el-tab-pane :label="$t('menu.residents')" name="residents">
+                    <el-tab-pane :label="$t('general.admin_menu.residents')" name="residents">
                         <el-row type="flex">
                             <el-col :span="24">
                                 <residents-statistics-card :data="residentsStatistics" :animationTrigger="activeName"></residents-statistics-card>
@@ -166,7 +166,7 @@
                         </el-row>
                      
                     </el-tab-pane>
-                    <el-tab-pane :label="$t('menu.pinboard')" name="pinboard">
+                    <el-tab-pane :label="$t('general.admin_menu.pinboard')" name="pinboard">
                         <el-row style="margin-bottom: 24px;" :gutter="20" type="flex">
                             <el-col :span="24">
                                 <el-card class="chart-card" :header="$t('dashboard.pinboard_by_creation_date')">
@@ -194,7 +194,7 @@
                             </el-col>
                         </el-row>
                     </el-tab-pane>
-                    <!-- <el-tab-pane :label="$t('menu.listing')" name="listing">
+                    <!-- <el-tab-pane :label="$t('general.admin_menu.listing')" name="listing">
                         <el-row style="margin-bottom: 24px;" :gutter="20" type="flex">
                             <el-col :span="24">
                                 <el-card class="chart-card" :header="$t('dashboard.listings_by_creation_date')">

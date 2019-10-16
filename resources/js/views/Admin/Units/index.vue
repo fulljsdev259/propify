@@ -132,7 +132,7 @@
         },
         computed: {
             title() {
-                return `${this.building.name} - ${this.$t('menu.units')}`;
+                return `${this.building.name} - ${this.$t('general.admin_menu.units')}`;
             },
             formattedItems() {
                 return this.items.map((unit) => {
@@ -167,7 +167,7 @@
                         data: this.buildings,
                     },
                     {
-                        name: this.$t('general.filters.propertyManagers'),
+                        name: this.$t('general.filters.property_managers'),
                         type: 'select',
                         key: 'manager_id',
                         data: this.propertyManagers,
