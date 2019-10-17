@@ -254,7 +254,7 @@
                                         :key="item"
                                         :label="$t('models.building.media_category.' + item)"
                                         :value="item"
-                                        v-for="item in model.media_category">
+                                        v-for="item in $constants.file_categories">
                                     </el-option>
                                 </el-select>
                                 <el-alert
@@ -523,109 +523,117 @@
         margin-bottom: -22px;
     }
 
-    .main-content {
-        /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-residents {
-            padding-right: 40px;
-        }
+    .units-edit {
+        overflow: hidden;
+        flex: 1;
 
-        /deep/ .el-tabs--border-card {
-            border-radius: 6px;
-            .el-tabs__header {
-                border-radius: 6px 6px 0 0;
+        .main-content {
+            overflow-x: hidden;
+            overflow-y: scroll;
+            height: 100%;
+
+            /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-residents {
+                padding-right: 40px;
             }
-            .el-tabs__nav-wrap.is-top {
-                border-radius: 6px 6px 0 0;
+
+            /deep/ .el-tabs--border-card {
+                border-radius: 6px;
+                .el-tabs__header {
+                    border-radius: 6px 6px 0 0;
+                }
+                .el-tabs__nav-wrap.is-top {
+                    border-radius: 6px 6px 0 0;
+                }
             }
-        }
 
-        .crud-view.el-row > .el-col > .el-tabs {
+            .crud-view.el-row > .el-col > .el-tabs {
+                
+                margin-bottom: 1em;
+                
+            }
             
-            margin-bottom: 1em;
-            
-        }
-        
 
-        /deep/ .monthly-rent-data {
-            background: transparent;
-            table {
-                width: 100%;
-                cursor: initial;
+            /deep/ .monthly-rent-data {
                 background: transparent;
-                thead, tbody {
+                table {
                     width: 100%;
+                    cursor: initial;
                     background: transparent;
-                    tr {
-                        display: flex;
+                    thead, tbody {
                         width: 100%;
                         background: transparent;
-
-                        
-                        .data {
-                            flex: 1;
+                        tr {
                             display: flex;
-                            align-items: center;
+                            width: 100%;
                             background: transparent;
-                            .cell {
-                                width: 100%;
+
+                            
+                            .data {
+                                flex: 1;
+                                display: flex;
+                                align-items: center;
+                                background: transparent;
+                                .cell {
+                                    width: 100%;
+                                    text-align: left;
+                                    
+                                    .el-form-item {
+                                        margin-bottom: 0;
+
+                                        &.is-error {
+                                            // margin-bottom: 27px;
+                                        }
+                                    }
+
+                                    /deep/ .el-input.el-input-group {
+                                        .el-input-group__prepend {
+                                            padding: 2px 8px 0;
+                                            font-weight: 600;
+                                        }
+                                        .el-input__inner {
+                                            padding: 5px;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            .symbol {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                width: 20px;
+                                background: transparent;
+                                .cell {
+                                    text-overflow: initial;
+                                    font-size: 16px;
+                                    padding: 0;
+                                }
+                            }
+
+                            td {
+                                padding: 25px 0;
+
+                                .cell {
+                                    overflow: visible;
+                                }
+                            }
+
+                            td:last-child .cell {
+                                padding-left: 10px !important;
                                 text-align: left;
-                                
-                                .el-form-item {
-                                    margin-bottom: 0;
-
-                                    &.is-error {
-                                        // margin-bottom: 27px;
-                                    }
-                                }
-
-                                /deep/ .el-input.el-input-group {
-                                    .el-input-group__prepend {
-                                        padding: 2px 8px 0;
-                                        font-weight: 600;
-                                    }
-                                    .el-input__inner {
-                                        padding: 5px;
-                                    }
-                                }
                             }
-                        }
-                        
-                        .symbol {
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            width: 20px;
-                            background: transparent;
-                            .cell {
-                                text-overflow: initial;
-                                font-size: 16px;
-                                padding: 0;
-                            }
-                        }
-
-                        td {
-                            padding: 25px 0;
-
-                            .cell {
-                                overflow: visible;
-                            }
-                        }
-
-                        td:last-child .cell {
-                            padding-left: 10px !important;
-                            text-align: left;
                         }
                     }
                 }
             }
-        }
 
-        span.icon-cog {
-            cursor: pointer;
-        }
+            span.icon-cog {
+                cursor: pointer;
+            }
 
-        
+            
+        }
     }
-
     .ui-drawer {
         .ui-divider {
             margin: 32px 16px 0 16px;
