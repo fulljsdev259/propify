@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Criteria\Common\FilterFullnameCriteria;
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\PropertyManager\FilterByRelatedFieldsCriteria;
 use App\Criteria\PropertyManager\FilterByTypeCriteria;
@@ -87,8 +86,7 @@ class PropertyManagerAPIController extends AppBaseController
      */
     public function index(ListRequest $request)
     {
-        $this->propertyManagerRepository->pushCriteria(new RequestCriteria($request));
-        $this->propertyManagerRepository->pushCriteria(new FilterFullnameCriteria($request));
+        $this->propertyManagerRepository->pushCriteria(new RequestCriteria($request, 'concat(first_name, " ", last_name)'));
         $this->propertyManagerRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->propertyManagerRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
         $this->propertyManagerRepository->pushCriteria(new FilterByTypeCriteria($request));

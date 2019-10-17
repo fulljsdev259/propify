@@ -34,6 +34,7 @@ class ResidentRepository extends BaseRepository
         'private_phone' => 'like',
         'work_phone' => 'like',
         'user.email' => 'like',
+        'resident_format' => 'like',
     ];
 
     /**

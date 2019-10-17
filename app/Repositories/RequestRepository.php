@@ -48,6 +48,7 @@ class RequestRepository extends BaseRepository
         'due_date' => '=',
         'solved_date' => '>=',
         'created_at' => '>=',
+        'request_format' => 'like',
     ];
 
     /**
