@@ -4,6 +4,7 @@ namespace App\Http\Requests\API\Media;
 
 use App\Http\Requests\BaseRequest;
 use App\Models\Building;
+use Illuminate\Support\Facades\Validator;
 
 class BuildingUploadRequest extends BaseRequest
 {
@@ -24,12 +25,18 @@ class BuildingUploadRequest extends BaseRequest
      */
     public function rules()
     {
+        $permittedExtensions = (new Building())->getPermittedExtensions();
+
         $categories = Building::BuildingMediaCategories;
         $rules = [];
         foreach ($categories as $category) {
             $requiredWithout = implode('_upload,', array_diff($categories, [$category])) . '_upload';
-            $rules[$category . '_upload'] = sprintf('required_without_all:%s|string', $requiredWithout);
+            $rules[$category . '_upload'] = [
+                sprintf('required_without_all:%s|string', $requiredWithout),
+                'base_mimes:' . implode(',', $permittedExtensions)
+            ];
         }
+
 
         return $rules;
     }

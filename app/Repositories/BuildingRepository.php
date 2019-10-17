@@ -27,13 +27,6 @@ class BuildingRepository extends BaseRepository
         'address.zip' => 'like',
     ];
 
-    protected $mimeToExtension = [
-        "image/jpeg" =>  "jpg",
-        "application/pdf" =>  "pdf",
-        "image/png" =>  "png",
-        "application/msword" =>  "doc",
-    ];
-
     /**
      * Configure the Model
      **/

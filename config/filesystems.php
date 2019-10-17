@@ -146,4 +146,13 @@ return [
 
     ],
 
+    //https://www.freeformatter.com/mime-types-list.html
+    //https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
+    'mime_types' => [
+        'pdf' => 'application/pdf',
+        'doc' => 'application/msword',
+        'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'xls' => 'application/vnd.ms-excel',
+        'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    ]
 ];

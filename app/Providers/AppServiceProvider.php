@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use OwenIt\Auditing\Models\Audit;
@@ -80,6 +82,31 @@ class AppServiceProvider extends ServiceProvider
                 return $paginator->withPath(\Request::url());
             });
         }
+
+        // validate base64_encode text by extension
+        Validator::extend('base_mimes', function ($attribute, $value, $parameters, $validator) {
+            $mineTypes = config('filesystems.mime_types');
+            $permitted = [];
+            foreach ($parameters as $extension) {
+                $permitted[] = $mineTypes[$extension]; // must be already filled in config all cases
+            }
+
+            $file = finfo_open();
+            $base64Decode = base64_decode($value);
+            if (! $base64Decode) {
+                return false;
+            }
+
+            $mimeType = finfo_buffer($file, $base64Decode, FILEINFO_MIME_TYPE);
+            finfo_close($file);
+
+            return in_array($mimeType, $permitted);
+
+        });
+
+        Validator::replacer('base_mimes', function ($message, $attribute, $rule, $parameters) {
+            return str_replace([':attribute', ':values'], [$attribute, '.' . implode(', .', $parameters)], __('validation.mimes'));
+        });
     }
 
     /**

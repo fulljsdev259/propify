@@ -33,7 +33,7 @@ abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepositor
         $mimeType = finfo_buffer($file, $data, FILEINFO_MIME_TYPE);
         finfo_close($file);
 
-        $extension = $this->getExtension($mimeType, $model);
+        $extension = $model->getExtension($mimeType);
         if (empty($extension)) {
             return false;
         }
@@ -123,15 +123,5 @@ abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepositor
             $data[$key] = $default;
         }
         return $data;
-    }
-
-    /**
-     * @param $model
-     * @param $mimeType
-     * @return mixed
-     */
-    protected function getExtension($mimeType, $model)
-    {
-        return $this->mimeToExtension[$mimeType] ?? '';
     }
 }

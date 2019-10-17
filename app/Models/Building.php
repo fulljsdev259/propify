@@ -140,6 +140,14 @@ class Building extends AuditableModel implements HasMedia
         'internal_building_id' => 'string',
     ];
 
+    protected $permittedExtensions = [
+        'pdf',
+        'doc',
+        'docx',
+        'xls',
+        'xlsx'
+    ];
+
     /**
      * Validation rules
      *
