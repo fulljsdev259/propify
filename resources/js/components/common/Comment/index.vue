@@ -288,9 +288,6 @@
                 this.observer.disconnect()
             }
         },
-        mounted() {
-            console.log(this.data);
-        }
 
     }
 </script>
