@@ -518,6 +518,7 @@
                                     :remote-method="remoteSearchProviders"
                                     class="custom-remote-select"
                                     filterable
+                                     clearable
                                     remote
                                     reserve-keyword
                                     style="width: 100%;"

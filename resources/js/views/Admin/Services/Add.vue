@@ -94,8 +94,13 @@
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item class="label-block" :label="$t('general.state')" :rules="validationRules.state_id" prop="address.state_id">
-                                        <el-select :placeholder="$t('general.state')" style="display: block"
-                                                   v-model="model.address.state_id">
+                                        <el-select
+                                            filterable
+                                             clearable 
+                                            :placeholder="$t('general.state')" 
+                                            style="display: block"
+                                            v-model="model.address.state_id"
+                                        >
                                             <el-option :key="state.id" :label="state.name" :value="state.id"
                                                        v-for="state in states"></el-option>
                                         </el-select>
