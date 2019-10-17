@@ -10083,6 +10083,11 @@
     transition:border-color .2s cubic-bezier(.645,.045,.355,1);
     width:100%
 }
+
+input.el-input__inner[type=number]{
+    padding: 5px;
+}
+
 .el-button,.el-transfer-panel{
     -webkit-box-sizing:border-box
 }
