@@ -15,14 +15,6 @@ class ContractRepository extends BaseRepository
 {
     use  SaveMediaUploads;
 
-    /**
-     * @var array
-     */
-    protected $mimeToExtension = [
-        "application/pdf" => "pdf",
-        "image/png" => "png",
-        "image/jpeg" => "jpg",
-    ];
 
     /**
      * Configure the Model

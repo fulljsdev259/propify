@@ -8,7 +8,7 @@ use Cog\Laravel\Love\Likeable\Models\Traits\Likeable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use App\Traits\HasMediaTrait;
 
 /**
  * @SWG\Definition(
@@ -227,6 +227,20 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
     ];
 
     /**
+     * @var array
+     */
+    protected $permittedExtensions = [
+        'jpg',
+        'png',
+        'pdf',
+        'doc',
+        'docx',
+        'xls',
+        'xlsx',
+        'jpeg'
+    ];
+
+    /**
      * Validation rules
      *
      * @return array
@@ -306,22 +320,17 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
         return $this->hasMany(AnnouncementEmailReceptionist::class);
     }
 
-    public function registerMediaCollections()
-    {
-        $this->addMediaCollection('media');
-    }
-
     public function getExecutionStartStrAttribute()
     {
         if (!$this->execution_start) {
-            return "-";
+            return '-';
         }
         return $this->execution_start->format('d.m.Y H:i');
     }
     public function getExecutionEndStrAttribute()
     {
         if (!$this->execution_end) {
-            return "-";
+            return '-';
         }
         return $this->execution_end->format('d.m.Y H:i');
     }
@@ -329,7 +338,7 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
     public function getProvidersStrAttribute()
     {
         if (!count($this->providers)) {
-            return "-";
+            return '-';
         }
         $pNames = $this->providers->map(function($el) {
             return $el->name;
@@ -341,7 +350,7 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
     public function getBuildingsStrAttribute()
     {
         if (!count($this->buildings)) {
-            return "-";
+            return '-';
         }
         $pNames = $this->buildings->map(function($el) {
             return $el->name;
@@ -353,7 +362,7 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
     public function getQuartersStrAttribute()
     {
         if (!count($this->quarters)) {
-            return "-";
+            return '-';
         }
         $pNames = $this->quarters->map(function($el) {
             return $el->name;
@@ -365,7 +374,7 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
     public function getCategoryStrAttribute()
     {
         if (!$this->category) {
-            return "-";
+            return '-';
         }
 
         return self::Category[$this->category];

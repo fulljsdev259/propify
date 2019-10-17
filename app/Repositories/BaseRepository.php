@@ -10,10 +10,6 @@ use Prettus\Repository\Events\RepositoryEntityUpdated;
 
 abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepository
 {
-    /**
-     * @var array
-     */
-    protected $mimeToExtension = [];
 
     /**
      * @param string $collectionName
@@ -33,7 +29,7 @@ abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepositor
         $mimeType = finfo_buffer($file, $data, FILEINFO_MIME_TYPE);
         finfo_close($file);
 
-        $extension = $this->mimeToExtension[$mimeType];
+        $extension = $model->getExtension($mimeType);
         if (empty($extension)) {
             return false;
         }
@@ -123,15 +119,5 @@ abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepositor
             $data[$key] = $default;
         }
         return $data;
-    }
-
-    /**
-     * @param $model
-     * @param $mimeType
-     * @return mixed
-     */
-    protected function getExtension($model, $mimeType)
-    {
-        return $this->mimeToExtension[$mimeType];
     }
 }

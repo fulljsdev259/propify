@@ -1,5 +1,15 @@
 <?php
 
+class ConstFileCategories
+{
+    const MediaCategories = [
+        'house_rules',
+        'operating_instructions',
+        'care_instructions',
+        'other',
+    ];
+}
+
 function get_morph_type_of($class)
 {
     if (is_object($class)) {
