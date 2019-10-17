@@ -432,7 +432,8 @@
                 this.assigneeCount = assignee_count;
             });
 
-            EventBus.$on('building-get-counted', building_count => {                
+            EventBus.$on('building-get-counted', building_count => {
+                console.log(building_count)
                 this.buildingCount = building_count;
             });
             
