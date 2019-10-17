@@ -211,7 +211,7 @@
                                         <strong v-if="$constants.requests.priority[model.priority]">{{$t(`models.request.priority.${$constants.requests.priority[model.priority]}`)}}</strong>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="8" class="summary-item">
+                                <!-- <el-col :md="8" class="summary-item">
                                     <el-form-item :label="$t('models.resident.contract.title')" v-if="this.model.contract">
                                         {{this.model.contract.building_id + " -- " + this.model.contract.unit_id}}
                                     </el-form-item>
@@ -229,7 +229,7 @@
                                         </el-select>
                                     </el-form-item>
 
-                                </el-col>
+                                </el-col> -->
 
                                 <!-- <el-col :md="8" class="summary-item">
                                     <el-form-item :label="$t('models.request.visibility.label')">
