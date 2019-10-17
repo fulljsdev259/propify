@@ -480,11 +480,19 @@
     }
 
     .quarters-edit {
+        overflow: hidden;
+        flex: 1;
+
+        .main-content {
+            overflow-x: hidden;
+            overflow-y: scroll;
+            height: 100%;
+        }
         .crud-view {
             margin-top: 1%;
         }
 
-        /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-managers, /deep/ #tab-assignees, {
+        /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-managers, /deep/ #tab-assignees {
             padding-right: 40px;
         }
 
