@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Criteria\Common\FilterFullnameCriteria;
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Common\WhereCriteria;
 use App\Criteria\Resident\FilterByBuildingCriteria;
@@ -110,9 +109,8 @@ class ResidentAPIController extends AppBaseController
         $this->residentRepository->pushCriteria(new FilterByRequestCriteria($request));
         $this->residentRepository->pushCriteria(new FilterByUnitCriteria($request));
         $this->residentRepository->pushCriteria(new FilterByStatusCriteria($request));
-        $this->residentRepository->pushCriteria(new RequestCriteria($request));
+        $this->residentRepository->pushCriteria(new RequestCriteria($request, 'concat(first_name, " ", last_name)'));
         $this->residentRepository->pushCriteria(new LimitOffsetCriteria($request));
-        $this->residentRepository->pushCriteria(new FilterFullnameCriteria($request));
 
         $getAll = $request->get('get_all', false);
         if ($getAll) {

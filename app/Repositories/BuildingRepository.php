@@ -25,6 +25,7 @@ class BuildingRepository extends BaseRepository
         'floor_nr' => 'like',
         'address.city' => 'like',
         'address.zip' => 'like',
+        'building_format' => 'like',
     ];
 
     /**
