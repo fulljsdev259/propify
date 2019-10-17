@@ -432,6 +432,10 @@ return [
                     'description' => 'Avviare la messaggistica utilizzando il modulo sottostante e premere Invio.',
                 ],
             ],
+            'internalnotices' => [
+                'switch_confirm' => 'Vuoi selezionare il gestore/amministratore di proprietà?',
+                'input_placeholder' => 'Inserisci una parola chiave',
+            ],
             'internalnotices_list' => [            
                 'load_more' => 'Carico {count} altri avviso interno',            
                 'empty_placeholder' => [

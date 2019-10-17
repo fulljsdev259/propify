@@ -433,6 +433,10 @@ return [
                     'description' => 'Verfassen Sie den ersten Kommentar.',
                 ],
             ],
+            'internalnotices' => [
+                'switch_confirm' => 'Möchten Sie den Property Manager/Verwalter auswählen?',
+                'input_placeholder' => 'Bitte geben Sie ein Stichwort ein',
+            ],
             'internalnotices_list' => [            
                 'load_more' => 'Lade {count} weitere interne Notizen',            
                 'empty_placeholder' => [
