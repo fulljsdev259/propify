@@ -62,7 +62,15 @@ export default (config = {}) => {
                     published_at: [{
                         required: true,
                         message: this.$t('validation.general.required')
-                    }]
+                    }],
+                    execution_start: [{
+                        required: true,
+                        message: this.$t('validation.general.required')
+                    }],
+                    execution_end: [{
+                        required: true,
+                        message: this.$t('validation.general.required')
+                    }],
                 },
                 loading: {
                     state: false,
@@ -79,6 +87,8 @@ export default (config = {}) => {
                 rolename: '',
                 datePickerKey: 0,
                 justBlurred: '',
+                executionStartTime: '00:00:00',
+                executionEndTime: '23:59:00',
                 uploadOptions: {
                     drop: true,
                     multiple: true,
@@ -294,6 +304,39 @@ export default (config = {}) => {
                     ? this.model.execution_end = this.model.execution_end.split(' ')[0] + ' 00:00:00'
                     : '';
             },
+            executionPeriodChange() {
+                this.resetExecutionDateTime();
+                this.model.execution_end = null;
+            },
+            isExecutionTimeChange() {
+                if (this.model.execution_period == 1) {
+                    this.model.is_execution_time
+                        ? this.setExecutionDateTime()
+                        : (() => {
+                            this.resetExecutionDateTime();
+                            this.model.execution_end = null;
+                        })()
+                } else if (this.model.execution_period == 2) {
+                    this.model.is_execution_time
+                        ? ''
+                        : this.resetExecutionTime();
+                }
+                this.reinitDatePickers();
+            },
+            resetExecutionDateTime() {
+                this.executionStartTime = '00:00:00';
+                this.executionEndTime = '23:59:00';
+                this.setExecutionDateTime();
+            },
+            setExecutionDateTime() {
+                this.model.execution_end = this.model.execution_start;
+                this.model.execution_start
+                    ? this.model.execution_start = this.model.execution_start.split(' ')[0] + ' ' + this.executionStartTime
+                    : '';
+                this.model.execution_end
+                    ? this.model.execution_end = this.model.execution_start.split(' ')[0] + ' ' + this.executionEndTime
+                    : '';
+            },
             setJustBlurred(elementRef) {
                 this.justBlurred = elementRef;
                 setTimeout(() => {
@@ -425,6 +468,10 @@ export default (config = {}) => {
 
                             ...restData
                         };
+
+
+                        this.executionStartTime = this.model.execution_start.split(' ')[1];
+                        this.executionEndTime = this.model.execution_end.split(' ')[1];
 
                         return this.model;
                     }
