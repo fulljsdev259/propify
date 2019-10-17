@@ -431,6 +431,11 @@
             EventBus.$on('assignee-get-counted', assignee_count => {                
                 this.assigneeCount = assignee_count;
             });
+
+            EventBus.$on('building-get-counted', building_count => {                
+                this.buildingCount = building_count;
+            });
+            
         },
         watch: {
             'visibleDrawer': {
