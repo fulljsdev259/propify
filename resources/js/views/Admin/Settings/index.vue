@@ -240,7 +240,7 @@
                                                         ></el-input>
                                                     </el-form-item>
                                                 </el-col>
-                                                 <el-col :md="12">
+                                                 <!-- <el-col :md="12">
                                                     <el-form-item :rules="validationRules.mail_powered_by"
                                                                   prop="email_powered_by">
                                                         <label class="card-label">{{$t('settings.mail_powered_by.label')}}</label>
@@ -251,7 +251,7 @@
                                                                        v-for="item in mail_powered_by"></el-option>
                                                         </el-select>
                                                     </el-form-item>
-                                                </el-col>
+                                                </el-col> -->
                                             </el-row>
                                     </el-card>
                                 </el-col>
@@ -731,6 +731,8 @@
                 });
                 this.getSettings().then((resp) => {
                     this.model = Object.assign({}, this.model, resp.data);
+                    if(this.model.email_powered_by == '')
+                        this.model.email_powered_by = 1;
                     this.$root.$emit('fetch_logo', this.model.logo);
                     try {
                         this.$set(this.model, 'opening_hours', JSON.parse(this.model.opening_hours));

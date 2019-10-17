@@ -66,7 +66,17 @@
                                 />
                             </el-col>
                             <el-col :md="7">
-                                <h3 class="user-name">{{ model.first_name }} {{ model.last_name }}</h3>
+                                <h3 class="user-name">
+                                    {{ model.first_name }} {{ model.last_name }} 
+                                    <span 
+                                        v-if="model.settings.language=='en'"
+                                        class='flag-icon flag-icon-us'>
+                                    </span>
+                                    <span
+                                        v-else
+                                        :class="'flag-icon flag-icon-' + model.settings.language">
+                                    </span>
+                                </h3>
                                 <p class="user-info text-secondary" v-if="model.title === titles.company">{{model.company}}</p>
                                 <i class="icon-dot-circled" :class="[constants.residents.status[model.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
                                 {{ constants.residents.status[model.status] ? $t('models.resident.status.' + constants.residents.status[model.status]) : ''}}
@@ -456,6 +466,10 @@
                 .user-name {
                     margin-top: 5px;
                     margin-bottom: 0px;
+                    span {
+                        margin-left: 10px;
+                        font-size: 16px;
+                    }
                 }
 
                 .user-info {

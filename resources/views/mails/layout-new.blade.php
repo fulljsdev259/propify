@@ -323,8 +323,8 @@
                     <tr>
                         <td bgcolor="transparent" align="center" height="60"
                             style="color: #000000; font-size: 18px; font-weight: 400; line-height: 60px;z-index:999">
-                            <img src="http://dev.propify.ch/images/logo3.png?457809be3146f072c0b6f87bfea7cbf6"
-                                 width="100" height="30" alt="Creating Email Magic" style="display: block;"/>
+                            <img src="{{ $company->logo ? asset($company->logo) : asset('images/logo3.png') }}"
+                                 width="100" height="30" alt="{{$company->name}}" style="display: block;"/>
                         </td>
                     </tr>
                     <tr>
@@ -333,7 +333,7 @@
                     <tr>
                         <td bgcolor="transparent" align="center"
                             style="color: #000000; font-size: 14px; font-weight: 400; line-height: 1;">
-                            Lange Gasse 8, 4052 Basel, Schweiz
+                            Rorschacher Str. 302, 9016 St. Gallen
                         </td>
                     </tr>
                     <tr>
