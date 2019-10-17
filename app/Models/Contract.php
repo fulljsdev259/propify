@@ -175,8 +175,8 @@ class Contract extends AuditableModel implements HasMedia
      */
     public static $rules = [
         'resident_id' => 'required|integer|exists:residents,id',
-        'building_id' => 'integer|exists:buildings,id',
-        'unit_id' => 'integer|exists:units,id',
+        'building_id' => 'required|integer|exists:buildings,id',
+        'unit_id' => 'required|integer|exists:units,id',
         'start_date' => 'date',
         'end_date' => 'nullable|date|after_or_equal:start_date',
         'status' => 'digits_between:1,2|numeric',
