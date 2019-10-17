@@ -40,6 +40,6 @@ return [
     'activate_account' => 'Konto aktivieren',
     'resident_portal' => 'Resident Portal',
     'generated_email_for_user' => 'Diese E-Mail wurde automatisch für :userName generiert.',
-    'generated_email_for_company' => "You will receive this automatically generated e-mail as a user of the Fortimo AG residents' portal.",
+    'generated_email_for_company' => "Sie erhalten diese automatisch generierte E-Mail als User des Bewohnerportal der Fortimo AG.",
     'links' => '<a href="#" style="color: #000000 ">Impressum </a>&ensp; | &ensp;<a href="#" style="color: #000000 ">Nutzungsbedingungen</a>&ensp; | &ensp;<a href="#" style="color: #000000 ">Datenschutzerklärung</a>'
 ];
