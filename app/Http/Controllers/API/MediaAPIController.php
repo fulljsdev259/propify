@@ -131,16 +131,7 @@ class MediaAPIController extends AppBaseController
             return $this->sendError(__('models.building.not_found'));
         }
 
-        Building::BuildingMediaCategories;
-        $collectionName = '';
-        $data = '';
-        foreach (Building::BuildingMediaCategories as $mediaCategory) {
-            if ($request->has($mediaCategory . '_upload')) {
-                $collectionName = $mediaCategory;
-                $data = $request->get($mediaCategory . '_upload', '');
-            }
-        }
-
+        list($collectionName, $data) = $this->getFileRelated($request);
         if (!$media = $this->buildingRepository->uploadFile($collectionName, $data, $building, $request->merge_in_audit)) {
             return $this->sendError(__('general.upload_error'));
         }
@@ -781,5 +772,24 @@ class MediaAPIController extends AppBaseController
         $media->delete();
 
         return $this->sendResponse($media_id, __('general.swal.media.deleted'));
+    }
+
+    /**
+     * @param $request
+     * @return array
+     */
+    protected function getFileRelated($request)
+    {
+        $fileCategories = \ConstFileCategories::MediaCategories;
+        $collectionName = '';
+        $data = '';
+        foreach ($fileCategories as $mediaCategory) {
+            if ($request->has($mediaCategory . '_upload')) {
+                $collectionName = $mediaCategory;
+                $data = $request->get($mediaCategory . '_upload', '');
+            }
+        }
+
+        return [$collectionName, $data];
     }
 }

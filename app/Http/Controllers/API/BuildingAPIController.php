@@ -369,7 +369,7 @@ class BuildingAPIController extends AppBaseController
                 'lastPropertyManagers.user', 'media', 'quarter', 'users')
             ->loadCount('activeResidents', 'inActiveResidents');
         $response = (new BuildingTransformer)->transform($building);
-        $response['media_category'] = Building::BuildingMediaCategories;
+        $response['media_category'] = \ConstFileCategories::MediaCategories; // @TODO delete
 
         return $this->sendResponse($response, 'Building retrieved successfully');
     }

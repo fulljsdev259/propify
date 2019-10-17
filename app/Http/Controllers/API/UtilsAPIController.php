@@ -128,7 +128,8 @@ class UtilsAPIController extends AppBaseController
             'audits' => $this->getAuditConstants(),
             'colors' => $colors,
             'logo' => $logo,
-            'login' => $login
+            'login' => $login,
+            'file_categories' => \ConstFileCategories::MediaCategories
         ];
 
         return $this->sendResponse($response, 'App constants statistics retrieved successfully');

@@ -84,13 +84,6 @@ class Building extends AuditableModel implements HasMedia
         HasMorphedByManyEvents,
         RequestRelation;
 
-    const BuildingMediaCategories = [
-        'house_rules',
-        'operating_instructions',
-        'care_instructions',
-        'other',
-    ];
-
     const ContactEnablesBasedSettings = 1;
     const ContactEnablesShow = 2;
     const ContactEnablesHide = 3;
@@ -274,7 +267,7 @@ class Building extends AuditableModel implements HasMedia
 
     public function registerMediaCollections()
     {
-        foreach (self::BuildingMediaCategories as $category)  {
+        foreach (\ConstFileCategories::MediaCategories as $category)  {
             $this->addMediaCollection($category);
         }
     }

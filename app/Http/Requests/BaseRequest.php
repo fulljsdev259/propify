@@ -24,4 +24,25 @@ class BaseRequest extends APIRequest
     {
         return $this->user()->can($permission);
     }
+
+    /**
+     * @param $class
+     * @return array
+     */
+    protected function getFileCategoryRules($class)
+    {
+        $permittedExtensions = (new $class())->getPermittedExtensions();
+
+        $categories = \ConstFileCategories::MediaCategories;
+        $rules = [];
+        foreach ($categories as $category) {
+            $requiredWithout = implode('_upload,', array_diff($categories, [$category])) . '_upload';
+            $rules[$category . '_upload'] = [
+                'required_without_all:' . $requiredWithout,
+                'string',
+                'base_mimes:' . implode(',', $permittedExtensions)
+            ];
+        }
+        return $rules;
+    }
 }
