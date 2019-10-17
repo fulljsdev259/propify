@@ -142,7 +142,7 @@
                             :actions="unitActions"
                             :columns="unitColumns"
                             :filterValue="model.id"
-                            fetchAction="getUnits"
+                            fetchAction="getUnitsWithResidents"
                             filter="building_id"
                             v-if="model.id"
                         />
@@ -480,11 +480,12 @@
                     prop: 'typeLabel',
                     label: 'models.unit.type.label'
                 },{
-                    prop: 'floor',
-                    label: 'models.unit.floor'
+                    prop: 'activeResidents',
+                    label: 'general.resident',
+                    type: 'unitResidentAvatar',
                 }],
                 unitActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         title: 'general.actions.edit',
                         type: 'primary',

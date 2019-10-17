@@ -123,6 +123,28 @@
                         </el-tooltip>
                     </div>
 
+                    <div v-else-if="column.type === 'unitResidentAvatar'">
+                        <div class="avatars-wrapper">
+                            <span :key="uuid()" v-for="(resident) in scope.row.activeResidents">
+                                <el-tooltip
+                                    :content="resident.user.name"
+                                    class="item"
+                                    effect="light" placement="top">
+                                        <avatar :size="28"
+                                                :username="resident.user.name"
+                                                backgroundColor="rgb(205, 220, 57)"
+                                                color="#fff"
+                                                v-if="!resident.user.avatar"></avatar>
+                                        <avatar :size="28" :src="`/${resident.user.avatar}`" v-else></avatar>
+                                </el-tooltip>
+                            </span>
+                            <avatar class="avatar-count" :size="28" :username="`+ ${scope.row.activeResidentsCount}`"
+                                    color="#fff"
+                                    v-if="scope.row.activeResidentsCount"></avatar>
+                        </div>
+                        
+                    </div>
+
                     <div v-else-if="column.type === 'assigneesName'" class="normal">
                         <router-link v-if="scope.row.type === 'manager'" :to="{name: 'adminPropertyManagersEdit', params: {id: scope.row.edit_id}}">
                             {{scope.row.name}}
@@ -305,12 +327,12 @@
                     }
                     else if (page === 1) {
                         this.list = resp.data.data;
-                        if(this.fetchAction == 'getUnits') {
+                        if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
                             this.unitsTypeLabelMap();
                         }
                     } else {
                         this.list.push(...resp.data.data);
-                        if(this.fetchAction == 'getUnits') {
+                        if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
                             this.unitsTypeLabelMap();
                         }
                     }

@@ -211,6 +211,7 @@ return [
             'upper_ground_floor' => "OG",
             'top_floor' => "Grenier aménageable",
         ],
+        'rooms' => 'Chambres',
         "sq_meter" => "Mètre carré",
         "room_no" => "Nombre de pièces",
         "building" => "Bâtiment",

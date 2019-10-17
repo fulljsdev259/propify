@@ -211,6 +211,7 @@ return [
             'upper_ground_floor' => "OG",
             'top_floor' => "Attika",
         ],
+        'rooms' => 'Räume',
         'sq_meter' => 'Fläche',
         'room_no' => 'Anzahl Zimmer',
         'building' => 'Liegenschaft',
