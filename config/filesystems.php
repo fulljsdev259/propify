@@ -104,7 +104,9 @@ $config =  [
 $mediaCategories = ConstFileCategories::MediaCategories;
 $disks = $config['disks'];
 $categoryResources = [
-    'buildings'
+    'buildings',
+    'units',
+    'quarters',
 ];
 
 foreach ($mediaCategories as $category) {
