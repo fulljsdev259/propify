@@ -1,12 +1,17 @@
 <template>
     <el-select
+        clearable
         id="languageform" 
         :class="activeLanguage == '' || activeLanguage == undefined ? '' : ' selected'"
         style="display: block" :value="activeLanguage" @input="$emit('update:activeLanguage', $event)"
         :placeholder="$t(role)"
         @change="$emit('change')"
     >
-        <el-option v-if="this.isTable == true" :label="$t('general.placeholders.select') +' '+ $t('settings.language')" value=""></el-option>
+        <el-option 
+            v-if="this.isTable == true && activeLanguage!=='' && activeLanguage!==undefined" 
+            :label="$t('general.placeholders.select') +' '+ $t('settings.language')" 
+            value="">
+        </el-option>
         <template slot="prefix">
             <span id="languageflag" v-for="(language, index) in activeLanguages" :class="language.flag" :key="index"></span>
         </template>

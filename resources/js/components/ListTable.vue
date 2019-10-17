@@ -1,10 +1,12 @@
 <template>
     <div class="list-table">
         <el-form @submit.native.prevent="" label-position="top">
-            <el-input placeholder="Search..."
-                      prefix-icon="el-icon-search"
-                      v-if="withSearch"
-                      v-model="search"
+            <el-input
+                clearable 
+                placeholder="Search..."
+                prefix-icon="el-icon-search"
+                v-if="withSearch"
+                v-model="search"
             >
                 <template slot="suffix" v-if="search.length">
                     <el-button @click="clearSearch()"   
@@ -28,12 +30,17 @@
                             <el-form-item
                                 v-if="filter.type === filterTypes.select && filter.data &&  filter.data.length">
                                 <el-select
+                                    clearable
                                     :filterable="true"
                                     :placeholder="filter.name"
                                     @change="filterChanged(filter)"
                                     class="filter-select"
                                     v-model="filterModel[filter.key]">
-                                    <el-option :label="`${$t('general.placeholders.select') + ' ' + filter.name}`" value=""></el-option>
+                                    <el-option 
+                                        v-if="filterModel[filter.key]!=='' && filterModel[filter.key]!==undefined" 
+                                        :label="`${$t('general.placeholders.select') + ' ' + filter.name}`" 
+                                        value="">
+                                    </el-option>
                                     <el-option
                                         :key="item.id + item.name"
                                         :label="item.name"
@@ -45,12 +52,17 @@
                             <el-form-item
                                 v-if="filter.type === filterTypes.role && filter.data &&  filter.data.length">
                                 <el-select
+                                    clearable
                                     :filterable="true"
                                     :placeholder="filter.name"
                                     @change="filterChanged(filter)"
                                     class="filter-select"
                                     v-model="filterModel[filter.key]">
-                                    <el-option :label="`${$t('general.placeholders.select') + ' ' + filter.name}`" value=""></el-option>
+                                    <el-option 
+                                        v-if="filterModel[filter.key]!=='' && filterModel[filter.key]!==undefined" 
+                                        :label="`${$t('general.placeholders.select') + ' ' + filter.name}`" 
+                                        value="">
+                                    </el-option>
                                     <el-option
                                         :key="item.id + item.name"
                                         :label="$t(`general.roles.${item.name}`)"
@@ -62,6 +74,7 @@
                             <el-form-item
                                 v-else-if="filter.type === filterTypes.text || filter.type === filterTypes.number">
                                 <el-input
+                                    clearable
                                     :placeholder="filter.name"
                                     :prefix-icon="filter.icon"
                                     :type="filter.type"
@@ -88,6 +101,7 @@
                                     :remote-method="data => remoteFilter(filter,data)"
                                     @change="filterChanged(filter)"
                                     filterable
+                                    clearable
                                     remote
                                     reserve-keyword
                                     style="width: 100%;"

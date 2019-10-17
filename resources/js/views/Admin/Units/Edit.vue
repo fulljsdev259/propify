@@ -19,7 +19,7 @@
                                             :loading="remoteLoading"
                                             :placeholder="$t('general.placeholders.search')"
                                             :remote-method="remoteSearchBuildings"
-                                            filterable
+                                            filterable 
                                             remote
                                             reserve-keyword
                                             style="width: 100%;"
@@ -43,9 +43,13 @@
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.unit.type.label')" :rules="validationRules.type"
                                                 prop="type">
-                                        <el-select :placeholder="$t('models.unit.type.label')" class="w100p"
-                                                style="width: 100%;"
-                                                v-model="model.type">
+                                        <el-select
+                                            filterable 
+                                            :placeholder="$t('models.unit.type.label')" 
+                                            class="w100p"
+                                            style="width: 100%;"
+                                            v-model="model.type"
+                                        >
                                             <el-option
                                                     :key="key"
                                                     :label="$t('models.unit.type.' + value )"
@@ -62,8 +66,12 @@
                                     <el-form-item :label="$t('general.monthly_rent_net')"
                                                 :rules="validationRules.monthly_rent_net"
                                                 prop="monthly_rent_net">
-                                        <el-input autocomplete="off" step="0.01" type="number"
-                                                v-model="model.monthly_rent_net">
+                                        <el-input 
+                                            autocomplete="off" 
+                                            step="0.01" 
+                                            type="number"
+                                            v-model="model.monthly_rent_net" 
+                                        >
                                             <template slot="prepend">CHF</template>
                                         </el-input>
                                     </el-form-item>
@@ -110,8 +118,9 @@
                                                                 <el-form-item 
                                                                     :rules="validationRules.monthly_rent_net"
                                                                     prop="monthly_rent_net">
-                                                                    <el-input type="text"
-                                                                            v-model="model.monthly_rent_net"
+                                                                    <el-input 
+                                                                        type="text"
+                                                                        v-model="model.monthly_rent_net" 
                                                                     >
                                                                         <template slot="prepend">CHF</template>
                                                                     </el-input>
@@ -128,8 +137,9 @@
                                                                 <el-form-item 
                                                                     :rules="validationRules.monthly_maintenance"
                                                                     prop="monthly_maintenance">
-                                                                    <el-input type="text"
-                                                                            v-model="model.monthly_maintenance"
+                                                                    <el-input 
+                                                                        type="text"
+                                                                        v-model="model.monthly_maintenance" 
                                                                     >
                                                                         <template slot="prepend">CHF</template>
                                                                     </el-input>

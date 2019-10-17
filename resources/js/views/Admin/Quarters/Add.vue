@@ -49,8 +49,12 @@
                                               :rules="validationRules.state_id"
                                               prop="state_id"
                                               class="label-block">
-                                    <el-select :placeholder="$t('general.state')" style="display: block"
-                                               v-model="model.state_id">
+                                    <el-select 
+                                        filterable
+                                        clearable
+                                        :placeholder="$t('general.state')" 
+                                        style="display: block"
+                                        v-model="model.state_id">
                                         <el-option :key="state.id" :label="state.name" :value="state.id"
                                                    v-for="state in states"></el-option>
                                     </el-select>

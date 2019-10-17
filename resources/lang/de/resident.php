@@ -255,4 +255,5 @@ return [
     ],
     "message" => "Nachricht",
     "my_offerings" => "Meine Offerten",
+    "default_contract_expired" => "Ihr letzter Standardvertrag ist abgelaufen, Sie sollten einen anderen Vertrag auswählen."
 ];

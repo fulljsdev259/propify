@@ -6,7 +6,8 @@
                 :placeholder="$t('general.placeholders.search')"
                 :remote-method="remoteSearch"
                 class="custom-remote-select"
-                filterable
+                filterable 
+                clearable
                 :multiple="multiple"
                 remote
                 reserve-keyword

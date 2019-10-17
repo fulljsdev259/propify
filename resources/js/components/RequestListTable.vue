@@ -1,10 +1,12 @@
 <template>
     <div class="list-table">
         <el-form @submit.native.prevent="" label-position="top">
-            <el-input placeholder="Search..."
-                      prefix-icon="el-icon-search"
-                      v-if="withSearch"
-                      v-model="search"
+            <el-input
+                clearable 
+                placeholder="Search..."
+                prefix-icon="el-icon-search"
+                v-if="withSearch"
+                v-model="search"
             >
                 <template slot="suffix" v-if="search.length">
                     <el-button @click="clearSearch()"   
@@ -29,6 +31,7 @@
                                 v-if="filter.type === filterTypes.select && filter.data &&  filter.data.length">
                                 <el-select
                                     v-if="filter.key == 'category_id' || filter.key == 'status' || filter.key == 'internal_priority'"
+                                    clearable
                                     :filterable="true"
                                     :placeholder="filter.name"
                                     @change="filterChanged(filter)"
@@ -46,12 +49,17 @@
                                 </el-select>
                                 <el-select
                                     v-else
+                                    clearable
                                     :filterable="true"
                                     :placeholder="filter.name"
                                     @change="filterChanged(filter)"
                                     class="filter-select"
                                     v-model="filterModel[filter.key]">
-                                    <el-option :label="`${$t('general.placeholders.select')+' '+filter.name}`" value=""></el-option>
+                                    <el-option 
+                                        v-if="filterModel[filter.key]!=='' && filterModel[filter.key]!==undefined" 
+                                        :label="`${$t('general.placeholders.select')+' '+filter.name}`" 
+                                        value="">
+                                    </el-option>
                                     <el-option
                                         :key="item.id + item.name"
                                         :label="item.name"
@@ -65,6 +73,7 @@
                             <el-form-item
                                 v-else-if="filter.type === filterTypes.text || filter.type === filterTypes.number">
                                 <el-input
+                                    clearable
                                     :placeholder="filter.name"
                                     :prefix-icon="filter.icon"
                                     :type="filter.type"
@@ -86,6 +95,7 @@
                             </el-form-item>
                             <el-form-item v-else-if="filter.type === filterTypes.remoteSelect">
                                 <el-select
+                                    clearable
                                     :loading="filter.remoteLoading"
                                     :placeholder="filter.name"
                                     :remote-method="data => remoteFilter(filter,data)"

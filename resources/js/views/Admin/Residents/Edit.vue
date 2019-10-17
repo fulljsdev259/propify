@@ -98,9 +98,11 @@
                                                     <el-col :md="6">
                                                         <el-form-item :label="$t('models.resident.nation')"
                                                                     prop="nation">
-                                                            <el-select filterable
-                                                                    clearable
-                                                                    v-model="model.nation">
+                                                            <el-select 
+                                                                filterable
+                                                                clearable
+                                                                v-model="model.nation"
+                                                            >
                                                                 <el-option :key="country.id"
                                                                         :label="country.name"
                                                                         :value="country.id"
@@ -108,17 +110,11 @@
                                                             </el-select>
                                                         </el-form-item>
                                                     </el-col>
-                                                    <el-col :md="6">
+                                                    <!-- <el-col :md="6">
                                                         <el-form-item :label="$t('models.resident.type.label')"
                                                                     prop="type">
                                                             
                                                             <el-select placeholder="Select" style="display: block" v-model="model.type">
-                                                                <!-- <el-option
-                                                                        :key="type"
-                                                                        :label="$t(`models.resident.type.${title}`)"
-                                                                        :value="type"
-                                                                        v-for="type in types">
-                                                                </el-option> -->
                                                                 <el-option
                                                                     :key="k"
                                                                     :label="$t(`models.resident.type.${type}`)"
@@ -127,8 +123,7 @@
                                                                 </el-option>
                                                             </el-select>
                                                         </el-form-item>
-                                                        
-                                                    </el-col>
+                                                    </el-col> -->
                                             </el-col>
                                         </el-row>
                                 </el-card>
@@ -257,6 +252,14 @@
                                                 :label="$t('models.resident.unit.name')"
                                                 prop="unit.name"
                                             >
+                                            </el-table-column>
+                                            <el-table-column
+                                                :label="$t('models.resident.status.label')"
+                                            >
+                                                <template slot-scope="scope">
+                                                    <i class="icon-dot-circled" :class="[constants.contracts.status[scope.row.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
+                                                    {{ constants.contracts.status[scope.row.status] ? $t('models.resident.contract.rent_status.' + constants.contracts.status[scope.row.status]) : ''}}
+                                                </template>
                                             </el-table-column>
                                             <el-table-column
                                                 align="right"
@@ -600,6 +603,12 @@
             .clickable {
                 display: block;
                 width: 100%;
+            }
+            .icon-success {
+                color: #5fad64;
+            }
+            .icon-danger {
+                color: #dd6161;
             }
         }
     }
