@@ -433,8 +433,9 @@ return [
                 ],
             ],
             'internalnotices' => [
-                'switch_confirm' => 'Vuoi selezionare il gestore/amministratore di proprietà?',
+                'switch_confirm' => 'Coinvolgere e informare le persone',
                 'input_placeholder' => 'Inserisci una parola chiave',
+                'shared_with' => 'Condivisa con',
             ],
             'internalnotices_list' => [            
                 'load_more' => 'Carico {count} altri avviso interno',            

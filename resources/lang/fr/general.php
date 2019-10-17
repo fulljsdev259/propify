@@ -433,8 +433,9 @@ return [
                 ],
             ],
             'internalnotices' => [
-                'switch_confirm' => 'Souhaitez-vous sélectionner un gestionnaire/administrateur immobilier ?',
+                'switch_confirm' => 'Impliquer et informer les gens',
                 'input_placeholder' => 'Veuillez entrer un mot-clé',
+                'shared_with' => "Partagé avec",
             ],
             'internalnotices_list' => [            
                 'load_more' => "Charger {count} plus d'avis interne",            
