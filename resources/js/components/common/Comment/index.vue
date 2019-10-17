@@ -19,6 +19,23 @@
                         <i class="icon-trash-empty" style="color: red;"></i>
                     </el-button>
                 </div>
+                <div class="managers actions" v-if="data.managers !== undefined">
+                    <i class="el-icon-right"></i>
+                    <el-tooltip
+                        v-for="(item, index) in data.managers"
+                        :key="index" 
+                        :content="item.user.name" 
+                        placement="top" 
+                        effect="light"
+                    >
+                        <avatar :size="24"
+                                :username="item.user.name"
+                                backgroundColor="rgb(223, 200, 243)"
+                                color="#fff"
+                                v-if="!item.user.avatar"></avatar>
+                        <avatar :size="24" :src="`/${item.user.avatar}`" v-else></avatar>
+                    </el-tooltip>
+                </div>
             </div>
         </div>
         <template v-if="idState.editing">
@@ -53,6 +70,7 @@
     import {IdState} from 'vue-virtual-scroller'
     import {displaySuccess, displayError} from 'helpers/messages'
     import { EventBus } from '../../../event-bus.js';
+    import { Avatar } from 'vue-avatar';
 
     export default {
         mixins: [
@@ -61,6 +79,9 @@
                 idProp: vm => vm.data.id
             })
         ],
+        components: {
+            Avatar
+        },
         props: {
             id: {
                 type: Number,
@@ -266,7 +287,11 @@
             if (this.observer) {
                 this.observer.disconnect()
             }
+        },
+        mounted() {
+            console.log(this.data);
         }
+
     }
 </script>
 
@@ -436,6 +461,13 @@
                     &:last-of-type {
                         margin-right: 10px;
                     }
+                }
+            }
+            .managers {
+                display: flex;
+                align-items: center;
+                .el-tooltip {
+                    margin-right: 1px;
                 }
             }
 

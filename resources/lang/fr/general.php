@@ -432,6 +432,10 @@ return [
                     'description' => 'Commencez la messagerie en utilisant le formulaire ci-dessous et appuyez sur Entrée.',
                 ],
             ],
+            'internalnotices' => [
+                'switch_confirm' => 'Souhaitez-vous sélectionner un gestionnaire/administrateur immobilier ?',
+                'input_placeholder' => 'Veuillez entrer un mot-clé',
+            ],
             'internalnotices_list' => [            
                 'load_more' => "Charger {count} plus d'avis interne",            
                 'empty_placeholder' => [
