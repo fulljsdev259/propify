@@ -568,27 +568,7 @@
                     this.model.unit_id = '';
                 try {
                     
-                    // const resp = await this.getUnits({
-                    //     get_all: true,
-                    //     building_id: this.model.building_id
-                    // });
-
-                    // this.used_units.forEach(id => {
-                    //     if(!this.model.unit || this.model.unit.id != id)
-                    //         resp.data = resp.data.filter( item => item.id != id )
-                    // })
-
-                    // this.units = resp.data
-
-                    console.log('used_units', this.used_units)
-                    console.log(this.unit_id)
                     let filtered_used_units = this.used_units.filter( unit => unit != this.unit_id && unit != "")
-
-                    console.log('filtered_used_units', filtered_used_units)
-                    // this.used_units.forEach(id => {
-                    //     if(!this.model.unit || this.model.unit.id != id)
-                    //         resp.data = resp.data.filter( item => item.id != id )
-                    // })
 
                     const resp1 = await this.getUnits({
                         show_contract_counts: true,
