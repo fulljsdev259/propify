@@ -17,6 +17,13 @@ class ContractRepository extends BaseRepository
 
 
     /**
+     * @var array
+     */
+    protected $fieldSearchable = [
+        'contract_format' => 'like',
+    ];
+
+    /**
      * Configure the Model
      **/
     public function model()
