@@ -40,6 +40,6 @@ return [
     'activate_account' => 'Konto aktivieren',
     'resident_portal' => 'Resident Portal',
     'generated_email_for_user' => 'Diese E-Mail wurde automatisch für :userName generiert.',
-    'generated_email_for_company' => 'Diese automatisch generierte E-Mail erhalten Sie als Benutzer des :companyName Resident Portals. Das Resident Portal wird von der Propify AG betrieben.',
+    'generated_email_for_company' => "You will receive this automatically generated e-mail as a user of the Fortimo AG residents' portal.",
     'links' => '<a href="#" style="color: #000000 ">Impressum </a>&ensp; | &ensp;<a href="#" style="color: #000000 ">Nutzungsbedingungen</a>&ensp; | &ensp;<a href="#" style="color: #000000 ">Datenschutzerklärung</a>'
 ];
