@@ -7,11 +7,11 @@
             </template>
             <template>
                 <div class="action-group">
-                    <el-button @click="submit" size="small" type="primary" round> {{this.$t('general.actions.save')}}</el-button>
-                    <el-button @click="saveAndClose" size="small" type="primary" round> {{this.$t('general.actions.save_and_close')}}
+                    <el-button @click="submit" size="mini" type="primary" round> {{this.$t('general.actions.save')}}</el-button>
+                    <el-button @click="saveAndClose" size="mini" type="primary" round> {{this.$t('general.actions.save_and_close')}}
                     </el-button>
-                    <el-button @click="batchDeleteBuilding" size="small" type="danger" round icon="ti-trash"> {{this.$t('general.actions.delete')}}</el-button>
-                    <el-button @click="goToListing" size="small" type="warning" round> {{this.$t('general.actions.close')}}
+                    <el-button @click="batchDeleteBuilding" size="mini" type="danger" round icon="ti-trash"> {{this.$t('general.actions.delete')}}</el-button>
+                    <el-button @click="goToListing" size="mini" type="warning" round> {{this.$t('general.actions.close')}}
                     </el-button>
                 </div>
             </template>
@@ -899,6 +899,10 @@
         .main-content {
             .heading {
                 margin-bottom: 20px;
+            }
+
+            .action-group > .el-button:not(:first-child) {
+                margin-left: 0px;
             }
 
             > .el-row > .el-col {
