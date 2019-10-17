@@ -470,7 +470,8 @@
                 upper_ground_floor_label: this.$t('models.unit.floor_title.upper_ground_floor'),
                 ground_floor_label: this.$t('models.unit.floor_title.ground_floor'),
                 under_ground_floor_label: this.$t('models.unit.floor_title.under_ground_floor'),
-                top_floor_label: this.$t('models.unit.floor_title.top_floor')
+                top_floor_label: this.$t('models.unit.floor_title.top_floor'),
+                unit_id : 0,
             }
         },
         methods: {
@@ -479,7 +480,7 @@
                 this.$refs.form.validate(async valid => {
                     if (valid) {
                         this.loading = true;
-                        this.model.monthly_rent_gross = (this.model.monthly_rent_net + this.model.monthly_maintenance).toFixed(2)
+                        this.model.monthly_rent_gross = (Number(this.model.monthly_rent_net) + Number(this.model.monthly_maintenance)).toFixed(2)
                         const {...params} = this.model
 
                         
@@ -579,10 +580,21 @@
 
                     // this.units = resp.data
 
+                    console.log('used_units', this.used_units)
+                    console.log(this.unit_id)
+                    let filtered_used_units = this.used_units.filter( unit => unit != this.unit_id && unit != "")
+
+                    console.log('filtered_used_units', filtered_used_units)
+                    // this.used_units.forEach(id => {
+                    //     if(!this.model.unit || this.model.unit.id != id)
+                    //         resp.data = resp.data.filter( item => item.id != id )
+                    // })
+
                     const resp1 = await this.getUnits({
                         show_contract_counts: true,
                         group_by_floor: true,
-                        building_id: this.model.building_id
+                        building_id: this.model.building_id,
+                        exclude_ids: filtered_used_units
                     });
 
                     
@@ -663,6 +675,7 @@
 
             if(this.mode == "edit") {
                 this.model = this.data
+                this.unit_id = this.data.unit_id
 
                 if( !this.hideBuildingAndUnits ) {
                 
@@ -734,6 +747,12 @@
     }
     /deep/ .rent-data {
         background: transparent;
+        height: 270px;
+
+        .el-table__body-wrapper {
+            height: 100%;
+        }
+
         table {
             width: 100%;
             cursor: initial;
