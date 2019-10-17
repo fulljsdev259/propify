@@ -104,7 +104,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::replacer('base_mimes', function ($message, $attribute, $rule, $parameters) {
-            return str_replace([':attribute', ':values'], [$attribute, '.' . implode(', .', $parameters)], __('validation.mimes'));
+            return str_replace([':attribute', ':values'], ['file', '.' . implode(', .', $parameters)], __('validation.mimes'));
         });
     }
 
