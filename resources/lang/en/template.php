@@ -40,6 +40,6 @@ return [
     'activate_account' => 'Activate Account',
     'resident_portal' => 'Resident portal',
     'generated_email_for_user' => 'This email was automatically generated for :userName.',
-    'generated_email_for_company' => 'You will receive this automatically generated e-mail as a user of the :companyName resident portal. The resident portal is operated by Propify AG.',
+    'generated_email_for_company' => "You will receive this automatically generated e-mail as a user of the Fortimo AG residents' portal.",
     'links' => '<a href="#" style="color: #000000 ">Imprint </a>&ensp; | &ensp;<a href="#" style="color: #000000 ">Conditions of use</a>&ensp; | &ensp;<a href="#" style="color: #000000 ">Privacy statement</a>'
 ];

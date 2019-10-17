@@ -2,7 +2,6 @@
     <el-row :gutter="20" id="assignment_type">        
         <el-col id="type" v-if="(assignmentTypes.length > 1)">
             <el-select
-                clearable 
                 @change="resetToAssignList"
                 class="custom-select"
                 :value="assignmentType" @input="$emit('update:assignmentType', $event)"
