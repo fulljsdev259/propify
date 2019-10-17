@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Traits\AddressOwnerAudit;
+use App\Traits\HasCategoryMediaTrait;
 use App\Traits\RequestRelation;
 use App\Traits\UniqueIDFormat;
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 /**
  * @SWG\Definition(
@@ -77,7 +77,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 class Building extends AuditableModel implements HasMedia
 {
     use SoftDeletes,
-        HasMediaTrait,
+        HasCategoryMediaTrait,
         UniqueIDFormat,
         AddressOwnerAudit,
         HasBelongsToManyEvents,
@@ -263,12 +263,5 @@ class Building extends AuditableModel implements HasMedia
     public function requests()
     {
         return $this->hasManyThrough(Request::class, Resident::class);
-    }
-
-    public function registerMediaCollections()
-    {
-        foreach (\ConstFileCategories::MediaCategories as $category)  {
-            $this->addMediaCollection($category);
-        }
     }
 }

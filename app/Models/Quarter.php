@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Traits\HasCategoryMediaTrait;
 use App\Traits\UniqueIDFormat;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
 
 /**
  * @SWG\Definition(
@@ -56,9 +58,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Quarter extends AuditableModel
+class Quarter extends AuditableModel implements HasMedia
 {
-    use SoftDeletes, UniqueIDFormat;
+    use SoftDeletes, UniqueIDFormat, HasCategoryMediaTrait;
 
     /**
      * Validation rules
@@ -68,7 +70,15 @@ class Quarter extends AuditableModel
     public static $rules = [
         'name' => 'required|string',
     ];
+
+    /**
+     * @var string
+     */
     public $table = 'quarters';
+
+    /**
+     * @var array
+     */
     public $fillable = [
         'name',
         'description',
@@ -77,7 +87,11 @@ class Quarter extends AuditableModel
         'address_id',
         'internal_quarter_id',
     ];
+    /**
+     * @var array
+     */
     protected $dates = ['deleted_at'];
+
     /**
      * The attributes that should be casted to native types.
      *
@@ -90,6 +104,14 @@ class Quarter extends AuditableModel
         'quarter_format' => 'string',
         'internal_quarter_id' => 'string',
         'count_of_buildings' => 'integer',
+    ];
+
+    protected $permittedExtensions = [
+        'pdf',
+        'doc',
+        'docx',
+        'xls',
+        'xlsx'
     ];
 
     /**
