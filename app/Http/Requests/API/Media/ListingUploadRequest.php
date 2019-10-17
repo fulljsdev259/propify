@@ -29,8 +29,6 @@ class ListingUploadRequest extends BaseRequest
      */
     public function rules()
     {
-        return [
-            'media' => 'required|string',
-        ];
+        return $this->getMediaRules(Listing::class);
     }
 }

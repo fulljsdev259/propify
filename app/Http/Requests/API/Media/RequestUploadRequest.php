@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\API\Media;
 
+use App\Models\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\BaseRequest;
 
@@ -30,8 +31,6 @@ class RequestUploadRequest extends BaseRequest
      */
     public function rules()
     {
-        return [
-            'media' => 'required|string',
-        ];
+        return $this->getMediaRules(Request::class);
     }
 }
