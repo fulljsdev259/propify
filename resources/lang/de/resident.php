@@ -41,7 +41,7 @@ return [
     ],
     "placeholder" => [
         "publish" => "Was möchten Sie veröffentlichen?",
-        "rate" => "Wie würden Sie unser Mieter-App und den Service bewerten?",
+        "rate" => "Wie würden Sie unser Bewohner-App und den Service bewerten?",
         "media_upload" => "Laden Sie hier Medien hoch oder ziehen Sie Dateien per Drag & Drop.",
         "type_comment" => "Geben Sie einen Kommentar ein",
         "upload" => "Dateien hochladen",
@@ -90,13 +90,13 @@ return [
         "status_change_requeset" => "Hier können Sie den Status der Anfrage ändern.",
     ],
     "descriptions" => [
-        "address" => "Ihr Beitrag ist nur für Bewohner Ihrer Adresse sichtbar.",
-        "quarter" => "Ihr Beitrag ist nur für Bewohner Ihres Quartiers sichtbar.",
-        "all" => "Ihr Beitrag ist für jeden App-Nuetzer sichtbar.",
+        "address" => "Ihr Beitrag ist nur für Bewohner an Ihrer Adresse sichtbar.",
+        "quarter" => "Ihr Beitrag ist nur für Bewohner innerhalb der Überbauung sichtbar.",
+        "all" => "Ihr Beitrag ist für jeden App-Nutzer sichtbar.",
     ],
     "heading_info" => [
         "property_manager" => "Ansprechpartner für Ihre Anliegen",
-        "my_neighbour" => "Mieter aus der Nachbarschaft",
+        "my_neighbour" => "Personen aus der Nachbarschaft",
         "pinboard" => "Aktuelle News und Mitteilungen rund um die Liegenschaft",
         "request" => "Online Übermittlung und Abwicklung von Anfragen",
         "listing" => "Aktuelle Angebote in Ihrer Nachbarschaft",
