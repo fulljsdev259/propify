@@ -395,10 +395,14 @@ class Request extends AuditableModel implements HasMedia
      * @var array
      */
     protected $permittedExtensions = [
-        "image/jpeg" => "jpg",
-        "image/png" => "png",
-        "application/pdf" => "pdf",
-        "application/octet-stream" => "docx",
+        'pdf',
+        'doc',
+        'docx',
+        'xls',
+        'xlsx',
+        'png',
+        'jpg',
+        'jpeg'
     ];
 
     /**
