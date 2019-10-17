@@ -63,9 +63,13 @@
                                     <el-form-item :label="$t('general.state')"
                                                   :rules="validationRules.state_id"
                                                   prop="state_id" style="max-width: 512px;">
-                                        <el-select :placeholder="$t('general.state')"
-                                                   style="display: block"
-                                                   v-model="model.state_id">
+                                        <el-select
+                                            filterable
+                                            clearable 
+                                            :placeholder="$t('general.state')"
+                                            style="display: block"
+                                            v-model="model.state_id"
+                                        >
                                             <el-option :key="state.id" :label="state.name" :value="state.id"
                                                        v-for="state in states"></el-option>
                                         </el-select>
@@ -82,7 +86,6 @@
                                                 :remote-method="remoteSearchQuarters"
                                                 filterable
                                                 remote
-                                                clearable
                                                 reserve-keyword
                                                 style="width: 100%;"
                                                 v-model="model.quarter_id">
@@ -139,7 +142,7 @@
                             :actions="unitActions"
                             :columns="unitColumns"
                             :filterValue="model.id"
-                            fetchAction="getUnits"
+                            fetchAction="getUnitsWithResidents"
                             filter="building_id"
                             v-if="model.id"
                         />
@@ -305,6 +308,7 @@
                         <el-row :gutter="10">
                             <el-col :lg="18" :xl="20">
                                 <el-select
+                                    clearable
                                     :loading="remoteLoading"
                                     :placeholder="$t('models.building.add_companies')"
                                     :remote-method="remoteSearchProviders"
@@ -476,11 +480,12 @@
                     prop: 'typeLabel',
                     label: 'models.unit.type.label'
                 },{
-                    prop: 'floor',
-                    label: 'models.unit.floor'
+                    prop: 'activeResidents',
+                    label: 'general.resident',
+                    type: 'unitResidentAvatar',
                 }],
                 unitActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         title: 'general.actions.edit',
                         type: 'primary',

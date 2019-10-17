@@ -4,8 +4,8 @@
         <el-form-item prop="contract_id" :label="$t('resident.contract')" required>
             <el-select v-model="model.contract_id" 
                         :placeholder="$t('resident.placeholder.contract')"
-                        value-key="default_contract_id"
                         class="custom-select"
+                        filterable
                         @change="showSubcategory">
                 <el-option v-for="contract in contracts" 
                             :key="contract.id" 
@@ -13,38 +13,36 @@
                             :value="contract.id" />
             </el-select>
         </el-form-item>
-            
-        <el-row type="flex" :gutter="16">
-            <el-col>
-                <el-form-item prop="category_id" :label="$t('resident.category')" required>
-                    <el-select v-model="model.category_id" 
-                                :placeholder="$t('resident.placeholder.category')"
-                                @change="showSubcategory">
-                        <el-option v-for="category in categories" 
-                                    :key="category.id" 
-                                    :label="category['name_'+$i18n.locale]" 
-                                    :value="category.id" />
-                    </el-select>
-                </el-form-item>
-            </el-col>
-            <el-col v-if="this.showsubcategory == true">
-                <el-form-item prop="defect" :label="$t('resident.defect_location')" required>
-                    <el-select v-model="model.defect" 
-                                :placeholder="$t('resident.placeholder.defect_location')"
-                                @change="showLocationOrRoom">
-                        <el-option v-for="category in defect_subcategories" 
-                                    :key="category.id" 
-                                    :label="category['name_'+$i18n.locale]" 
-                                    :value="category.id" />
-                    </el-select>
-                </el-form-item>
-            </el-col>
 
-        </el-row>
+        <el-form-item prop="category_id" :label="$t('resident.category')" required>
+            <el-select v-model="model.category_id" 
+                        :placeholder="$t('resident.placeholder.category')"
+                        filterable
+                        @change="showSubcategory">
+                <el-option v-for="category in categories" 
+                            :key="category.id" 
+                            :label="category['name_'+$i18n.locale]" 
+                            :value="category.id" />
+            </el-select>
+        </el-form-item>
+
+        <el-form-item prop="defect" :label="$t('resident.defect_location')" v-if="this.showsubcategory == true" required>
+            <el-select v-model="model.defect" 
+                        :placeholder="$t('resident.placeholder.defect_location')"
+                        filterable
+                        @change="showLocationOrRoom">
+                <el-option v-for="category in defect_subcategories" 
+                            :key="category.id" 
+                            :label="category['name_'+$i18n.locale]" 
+                            :value="category.id" />
+            </el-select>
+        </el-form-item>
+
         <el-form-item :label="$t('models.request.category_options.range')" 
                     v-if="this.showsubcategory == true && this.showLiegenschaft == true && this.showWohnung == false">
             <el-select :disabled="$can($permissions.update.serviceRequest)"
                         :placeholder="$t(`general.placeholders.select`)"
+                        filterable
                         class="custom-select"
                         v-model="model.location">
                 <el-option
@@ -59,6 +57,7 @@
                     v-if="this.showsubcategory == true && this.showWohnung == true && this.showLiegenschaft == false">
             <el-select :disabled="$can($permissions.update.serviceRequest)"
                         :placeholder="$t(`general.placeholders.select`)"
+                        filterable
                         class="custom-select"
                         v-model="model.room">
                 <el-option
@@ -70,7 +69,7 @@
             </el-select>
         </el-form-item>
         <el-form-item prop="priority" :label="$t('resident.priority')" required>
-                    <el-select :placeholder="$t('resident.placeholder.priority')" v-model="model.priority">
+                    <el-select :placeholder="$t('resident.placeholder.priority')" filterable v-model="model.priority">
                         <el-option v-for="priority in priorities" :key="priority.value" :label="$t(`models.request.priority.${priority.label}`)" :value="priority.value" />
                     </el-select>
                 </el-form-item>
@@ -297,16 +296,18 @@
         },
         async mounted () {
             this.priorities = Object.entries(this.$constants.requests.priority).map(([value, label]) => ({value: +value, label}));
-            this.contracts = this.$store.getters.loggedInUser.resident.contracts
+            this.contracts = this.$store.getters.loggedInUser.resident.contracts.filter( contract => contract.status == 1)
 
             this.contracts.forEach(contract => {
                 contract.building_unit = contract.building.name + " " +  contract.unit.name
             })
 
             this.default_contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
-
-            console.log('default_contract_id', this.default_contract_id)
-
+            
+            if(this.contracts.find(item => item.id == this.default_contract_id)) {
+                this.model.contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
+            }
+            
             try {
                 const {data} = await this.$store.dispatch('getRequestCategoriesTree', {get_all: true})
 
