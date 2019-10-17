@@ -222,7 +222,7 @@
                                                 prop="collection_name"
                                             >
                                                 <template slot-scope="scope">
-                                                    <strong>{{$t(`models.building.${scope.row.collection_name}`)}}</strong>
+                                                    <strong>{{$t(`models.building.media_category.${scope.row.collection_name}`)}}</strong>
                                                 </template>
                                             </el-table-column>
                                             <el-table-column
@@ -252,7 +252,7 @@
                                         v-model="selectedFileCategory">
                                     <el-option
                                         :key="item"
-                                        :label="$t('models.building.' + item)"
+                                        :label="$t('models.building.media_category.' + item)"
                                         :value="item"
                                         v-for="item in model.media_category">
                                     </el-option>
@@ -276,7 +276,7 @@
                     <el-tabs type="border-card" v-model="activeRightTab">
                         <el-tab-pane name="residents">
                             <span slot="label">
-                                <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('models.unit.assignment') }}</el-badge>
+                                <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('models.unit.assignment') }}</el-badge>
                             </span>
                             <assignment
                                     :toAssign.sync="toAssign"
@@ -405,9 +405,8 @@
                 multiple: false,
                 visibleDrawer: false,
                 fileCount: 0,
-                residentCount: 0,
-                assigneeCount: 0,
                 requestCount: 0,
+                residentCount: 0,
                 activeTab1: 'details',
                 activeRightTab: 'residents',
                 activeRequestTab: 'requests',
@@ -477,20 +476,10 @@
                 })
             },
         },
-        mounted() {     
-            EventBus.$on('file-get-counted', file_count => {
-                this.fileCount = file_count;
-            });
-            EventBus.$on('resident-get-counted', resident_count => {
-                this.residentCount = resident_count;
-            });
-            EventBus.$on('assignee-get-counted', assignee_count => {                
-                this.assigneeCount = assignee_count;
-            });
+        mounted() {
              EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
             });
-            // this.fileCount = this.model.media.length;
         },
         watch: {
             "model.type" () {
@@ -549,16 +538,10 @@
             }
         }
 
-        .crud-view.el-row > .el-col {
-            /*min-width: 448px;*/
-            /*max-width: 576px;*/
-
-
-
-
-            > *:first-child, *:not(:last-of-type) {
-                margin-bottom: 1em;
-            }
+        .crud-view.el-row > .el-col > .el-tabs {
+            
+            margin-bottom: 1em;
+            
         }
         
 

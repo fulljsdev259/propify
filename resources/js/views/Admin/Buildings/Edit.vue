@@ -164,7 +164,7 @@
                                             prop="collection_name"
                                         >
                                             <template slot-scope="scope">
-                                                <strong>{{$t(`models.building.${scope.row.collection_name}`)}}</strong>
+                                                <strong>{{$t(`models.building.media_category.${scope.row.collection_name}`)}}</strong>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -210,7 +210,7 @@
                                        v-model="selectedFileCategory">
                                 <el-option
                                     :key="item"
-                                    :label="$t('models.building.' + item)"
+                                    :label="$t('models.building.media_category.' + item)"
                                     :value="item"
                                     v-for="item in model.media_category">
                                 </el-option>
@@ -810,22 +810,14 @@
         },
         mounted() {
             this.$root.$on('changeLanguage', () => this.getStates());            
-            EventBus.$on('service-get-counted', service_count => {
-                this.serviceCount = service_count;
-            });
-            EventBus.$on('file-get-counted', file_count => {
-                this.fileCount = file_count;
-            });
-            EventBus.$on('resident-get-counted', resident_count => {
-                this.residentCount = resident_count;
-            });
+
             EventBus.$on('assignee-get-counted', assignee_count => {                
                 this.assigneeCount = assignee_count;
             });
             EventBus.$on('unit-get-counted', unit_count => {
                 this.unitCount = unit_count;
             });
-             EventBus.$on('request-get-counted', request_count => {
+            EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
             });
             // this.fileCount = this.model.media.length;
@@ -852,7 +844,7 @@
                     value: 3,
                     label: this.$t('settings.contact_enable.hide'),
                 }]
-            }
+            },
         },
         watch: {
             'visibleDrawer': {

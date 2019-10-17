@@ -129,6 +129,7 @@ export default (config = {}) => {
                             });
                         }
                         this.toAssignList = resp.data;
+                        EventBus.$emit('assignee-get-counted', this.toAssignList.total);
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -237,6 +238,11 @@ export default (config = {}) => {
                             this.model.state_id = resp.address.state.id;
                         }
                         this.quarter_format = resp.quarter_format;
+
+                        this.buildingCount = resp.count_of_buildings
+                        this.fileCount = this.model.media.length
+                        //this.residentCount = this.model.residents.length
+
                     },
                     submit() {
                         return new Promise((resolve, reject) => {

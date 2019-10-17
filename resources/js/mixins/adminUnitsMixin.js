@@ -327,7 +327,9 @@ export default (config = {}) => {
                         //     const building = await this.getBuilding({id: this.model.building_id});
                         //     this.remoteSearchBuildings(`${building.name}`);
                         // }
-
+                        this.fileCount = this.model.media.length
+                        this.residentCount = this.addedAssigmentList.length
+                       
                     } catch (err) {
                         this.$router.replace({
                             name: 'adminUnits'
