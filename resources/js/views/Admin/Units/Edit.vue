@@ -120,7 +120,7 @@
                                                                         :rules="validationRules.monthly_rent_net"
                                                                         prop="monthly_rent_net">
                                                                         <el-input 
-                                                                            type="text"
+                                                                            type="number"
                                                                             v-model="model.monthly_rent_net" 
                                                                         >
                                                                             <template slot="prepend">CHF</template>
@@ -139,7 +139,7 @@
                                                                         :rules="validationRules.monthly_maintenance"
                                                                         prop="monthly_maintenance">
                                                                         <el-input 
-                                                                            type="text"
+                                                                            type="number"
                                                                             v-model="model.monthly_maintenance" 
                                                                         >
                                                                             <template slot="prepend">CHF</template>
@@ -156,7 +156,7 @@
                                                                 <div class="cell">
                                                                     <el-form-item 
                                                                         prop="monthly_rent_net">
-                                                                        {{Number(model.monthly_rent_net) + Number(model.monthly_maintenance)}}
+                                                                        {{( Number(model.monthly_rent_net) + Number(model.monthly_maintenance) ).toFixed(2)}}
                                                                     </el-form-item>
                                                                 </div>
                                                             </td>
@@ -475,6 +475,16 @@
                     displayError(error);
                 })
             },
+            isNumber: function(evt) {
+                console.log(evt)
+                evt = (evt) ? evt : window.event;
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+                    evt.preventDefault();;
+                } else {
+                    return true;
+                }
+            }
         },
         mounted() {
              EventBus.$on('request-get-counted', request_count => {

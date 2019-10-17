@@ -276,7 +276,7 @@ export default (config = {}) => {
                                 this.loading.state = true;
                                 try {
 
-                                    this.model.monthly_rent_gross = Number(this.model.monthly_rent_net) + Number(this.model.monthly_maintenance)
+                                    this.model.monthly_rent_gross = ( Number(model.monthly_rent_net) + Number(model.monthly_maintenance) ).toFixed(2)
                                     const resp = await this.updateUnit(this.model)
                                     displaySuccess(resp);
                                     resolve(true);

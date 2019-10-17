@@ -221,7 +221,7 @@
                                 <div class="cell">
                                     <el-form-item 
                                         prop="monthly_rent_net">
-                                        <el-input type="text"
+                                        <el-input type="number"
                                                 v-model="model.monthly_rent_net"
                                         >
                                             <template slot="prepend">CHF</template>
@@ -238,7 +238,7 @@
                                 <div class="cell">
                                     <el-form-item 
                                         prop="monthly_maintenance">
-                                        <el-input type="text"
+                                        <el-input type="number"
                                                 v-model="model.monthly_maintenance"
                                         >
                                             <template slot="prepend">CHF</template>
@@ -254,7 +254,7 @@
                             <td class="data">
                                 <div class="cell">
                                     <el-form-item >
-                                        {{Number(model.monthly_rent_net) + Number(model.monthly_maintenance)}}
+                                        {{( Number(model.monthly_rent_net) + Number(model.monthly_maintenance) ).toFixed(2)}}
                                     </el-form-item>
                                     
                                 </div>
@@ -479,7 +479,7 @@
                 this.$refs.form.validate(async valid => {
                     if (valid) {
                         this.loading = true;
-                        this.model.monthly_rent_gross = this.model.monthly_rent_net + this.model.monthly_maintenance
+                        this.model.monthly_rent_gross = (this.model.monthly_rent_net + this.model.monthly_maintenance).toFixed(2)
                         const {...params} = this.model
 
                         
