@@ -51,16 +51,6 @@ class RequestRepository extends BaseRepository
     ];
 
     /**
-     * @var array
-     */
-    protected $mimeToExtension = [
-        "image/jpeg" => "jpg",
-        "image/png" => "png",
-        "application/pdf" => "pdf",
-        "application/octet-stream" => "docx",
-    ];
-
-    /**
      * Configure the Model
      **/
     public function model()

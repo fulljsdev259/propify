@@ -4,12 +4,10 @@ namespace App\Models;
 
 use App\Traits\UniqueIDFormat;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
-use OwenIt\Auditing\AuditableObserver;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use App\Traits\HasMediaTrait;
 
 /**
  * @SWG\Definition(
@@ -161,6 +159,13 @@ class Contract extends AuditableModel implements HasMedia
     const DepositStatus = [
         self::DepositStatusYes => 'yes',
         self::DepositStatusNo => 'no',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $permittedExtensions = [
+        'pdf',
     ];
 
     /**

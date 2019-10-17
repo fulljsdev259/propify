@@ -7,7 +7,7 @@ use App\Traits\UniqueIDFormat;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use App\Traits\HasMediaTrait;
 use PDF;
 use Storage;
 
@@ -392,6 +392,16 @@ class Request extends AuditableModel implements HasMedia
     ];
 
     /**
+     * @var array
+     */
+    protected $permittedExtensions = [
+        "image/jpeg" => "jpg",
+        "image/png" => "png",
+        "application/pdf" => "pdf",
+        "application/octet-stream" => "docx",
+    ];
+
+    /**
      * Validation rules
      *
      * @var array
@@ -605,11 +615,6 @@ class Request extends AuditableModel implements HasMedia
     public function conversations()
     {
         return $this->morphMany(Conversation::class, 'conversationable');
-    }
-
-    public function registerMediaCollections()
-    {
-        $this->addMediaCollection('media');
     }
 
     public function creator()

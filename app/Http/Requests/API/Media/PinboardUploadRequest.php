@@ -29,8 +29,6 @@ class PinboardUploadRequest extends BaseRequest
      */
     public function rules()
     {
-        return [
-            'media' => 'required|string',
-        ];
+        return $this->getMediaRules(Pinboard::class);
     }
 }

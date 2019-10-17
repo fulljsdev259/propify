@@ -35,7 +35,10 @@ trait SaveMediaUploads
                 continue;
             }
             if (isset($mediaData['media']) && is_string($mediaData['media'])) {
-                $savedMedia[] = $this->uploadFile('media', $mediaData['media'], $model, $audit, $disableAuditing);
+                $saved =  $this->uploadFile('media', $mediaData['media'], $model, $audit, $disableAuditing);
+                if ($saved) {
+                    $savedMedia[] = $saved;
+                }
             }
         }
 

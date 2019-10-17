@@ -1,6 +1,5 @@
 <?php
-
-return [
+$config =  [
 
     /*
     |--------------------------------------------------------------------------
@@ -62,60 +61,6 @@ return [
             'visibility' => 'public',
         ],
 
-        'buildings_house_rules' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/buildings/house_rules'),
-            'url' => env('APP_URL').'/storage/buildings/house_rules',
-            'visibility' => 'public',
-        ],
-
-        'buildings_operating_instructions' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/buildings/operating_instructions'),
-            'url' => env('APP_URL').'/storage/buildings/operating_instructions',
-            'visibility' => 'public',
-        ],
-
-        'buildings_care_instructions' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/buildings/care_instructions'),
-            'url' => env('APP_URL').'/storage/buildings/care_instructions',
-            'visibility' => 'public',
-        ],
-
-        'buildings_other' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/buildings/other'),
-            'url' => env('APP_URL').'/storage/buildings/other',
-            'visibility' => 'public',
-        ],
-
-        'pinboard_media' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/pinboard/media'),
-            'url' => env('APP_URL').'/storage/pinboard/media',
-            'visibility' => 'public',
-        ],
-
-        'listings_media' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/listings/media'),
-            'url' => env('APP_URL').'/storage/listings/media',
-            'visibility' => 'public',
-        ],
-
-        'residents_media' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/residents/media'),
-            'url' => env('APP_URL') . '/storage/residents/media',
-            'visibility' => 'public',
-        ],
-        'contracts_media' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/contracts/media'),
-            'url' => env('APP_URL') . '/storage/contracts/media',
-            'visibility' => 'public',
-        ],
         'resident_credentials' => [
             'driver' => 'local',
             'root' => storage_path('app/private/residents/credentials'),
@@ -128,12 +73,6 @@ return [
             'visibility' => 'public',
         ],
 
-        'requests_media' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/requests/media'),
-            'url' => env('APP_URL') . '/storage/requests/media',
-            'visibility' => 'public',
-        ],
 
         's3' => [
             'driver' => 's3',
@@ -152,7 +91,52 @@ return [
         'pdf' => 'application/pdf',
         'doc' => 'application/msword',
         'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+//        "docx" => "application/octet-stream",
         'xls' => 'application/vnd.ms-excel',
-        'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'png' => 'image/png',
+        'jpeg' => 'image/jpeg',
+        'jpg' => 'image/jpeg',
+
     ]
 ];
+
+$mediaCategories = ConstFileCategories::MediaCategories;
+$disks = $config['disks'];
+$categoryResources = [
+    'buildings'
+];
+
+foreach ($mediaCategories as $category) {
+    foreach ($categoryResources as $resource) {
+        $disks[$resource . '_' . $category] = [
+            'driver' => 'local',
+            'root' => storage_path('app/public/' . $resource . '/' . $category),
+            'url' => env('APP_URL').'/storage/' . $resource . '/' . $category,
+            'visibility' => 'public',
+        ];
+    }
+}
+
+$simpleResources = [
+    'pinboard',
+    'listings',
+    'residents',
+    'contracts',
+    'requests'
+];
+
+foreach ($simpleResources as $resource) {
+    $disks[$resource . '_media'] = [
+        'driver' => 'local',
+        'root' => storage_path('app/public/' . $resource . '/media'),
+        'url' => env('APP_URL').'/storage/' . $resource . '/media',
+        'visibility' => 'public',
+    ];
+}
+
+$config['disks'] = $disks;
+
+
+
+return $config;

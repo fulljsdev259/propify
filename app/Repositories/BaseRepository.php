@@ -10,10 +10,6 @@ use Prettus\Repository\Events\RepositoryEntityUpdated;
 
 abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepository
 {
-    /**
-     * @var array
-     */
-    protected $mimeToExtension = [];
 
     /**
      * @param string $collectionName

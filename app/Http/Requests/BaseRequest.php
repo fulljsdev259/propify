@@ -45,4 +45,20 @@ class BaseRequest extends APIRequest
         }
         return $rules;
     }
+
+    /**
+     * @param $class
+     * @return array
+     */
+    protected function getMediaRules($class)
+    {
+        $permittedExtensions = (new $class())->getPermittedExtensions();
+        return [
+            'media' => [
+                'required',
+                'string',
+                'base_mimes:' . implode(',', $permittedExtensions)
+            ]
+        ];
+    }
 }

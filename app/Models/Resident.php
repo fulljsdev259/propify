@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\AuditableObserver;
 use PDF;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use App\Traits\HasMediaTrait;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -238,6 +238,16 @@ class Resident extends AuditableModel implements HasMedia
         'email' => 'user.email',
     ];
 
+
+    /**
+     * @var array
+     */
+    protected $permittedExtensions = [
+        'pdf',
+        'png',
+        'jpg',
+    ];
+
     public static function boot()
     {
         parent::boot();
@@ -289,6 +299,7 @@ class Resident extends AuditableModel implements HasMedia
 
     public function registerMediaCollections()
     {
+        // @TODO check used or not
         $this->addMediaCollection('documents');
     }
 
