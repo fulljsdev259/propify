@@ -426,7 +426,7 @@ return [
         "status_changed" => "Stato cambiato",
         "priority_changed" => "La priorità è cambiata",
         'assignment' => 'Assegnazione di manager/fornitori di servizi',
-        'active_reminder_switcher' => 'Promemoria attivo',
+        'active_reminder_switcher' => 'Promemoria',
         'days_left' => "Quanti giorni prima dovrebbe essere inviata l'e-mail?",
         'send_person' => 'Quale persona deve essere informata?',
         'sort' => 'In scadenza il',

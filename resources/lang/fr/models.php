@@ -426,7 +426,7 @@ return [
         "status_changed" => "Le statut a changé",
         "priority_changed" => "Priorité modifiée",
         'assignment' => 'Affectation de gestionnaires/fournisseurs de services',        
-        'active_reminder_switcher' => 'Rappel actif',
+        'active_reminder_switcher' => 'Rappel',
         'days_left' => "Combien de jours avant l'envoi de l'email ?",
         'send_person' => 'Quelle personne doit être notifiée ?',
         'sort' => 'Trier',
