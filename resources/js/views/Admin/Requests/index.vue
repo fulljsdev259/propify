@@ -94,6 +94,7 @@
                         request.unit = request.contract.unit
                     }
                     else {
+                        
                         request.building = request.resident.contracts[0].building
                         request.unit = request.resident.contracts[0].unit
                     }

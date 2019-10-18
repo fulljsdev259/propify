@@ -41,11 +41,6 @@
                     <el-checkbox @change="handleSelectionChanged"></el-checkbox>
                 </el-col> 
                 <el-col :span="1" class="request-actions">
-                    <!-- <el-tooltip v-if="item.resident.building.id" :content="$t('dashboard.buildings.go_to_building')" placement="top" effect="light">
-                        <router-link :to="{name: 'adminBuildingsEdit', params: {id:item.resident.building.id}}" class="listing-link">
-                             <i class="icon icon-commerical-building"></i>
-                        </router-link>
-                    </el-tooltip> -->
                     <el-tooltip v-if="item.contract.building.id" :content="$t('dashboard.buildings.go_to_building')" placement="top" effect="light">
                         <router-link :to="{name: 'adminBuildingsEdit', params: {id:item.contract.building.id}}" class="listing-link">
                              <i class="icon icon-commerical-building"></i>
