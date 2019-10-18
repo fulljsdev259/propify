@@ -232,6 +232,7 @@ export default (config = {}) => {
                         this.model.description = resp.description;
                         this.model.count_of_buildings = resp.count_of_buildings;
                         this.model.internal_quarter_id = resp.internal_quarter_id;
+                        this.model.media = resp.media
                         if(resp.address != undefined) {
                             this.model.zip = resp.address.zip;
                             this.model.city = resp.address.city;

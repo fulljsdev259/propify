@@ -212,7 +212,7 @@
                                     :key="item"
                                     :label="$t('models.building.media_category.' + item)"
                                     :value="item"
-                                    v-for="item in model.media_category">
+                                    v-for="item in $constants.file_categories">
                                 </el-option>
                             </el-select>
                             <el-alert
