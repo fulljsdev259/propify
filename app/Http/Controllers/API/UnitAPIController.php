@@ -102,7 +102,7 @@ class UnitAPIController extends AppBaseController
                     $unit->inactive_contracts_count = $unit->total_contracts_count - $unit->active_contracts_count;
                 });
             }
-            $units = $units->sortByDesc('name')->groupBy('floor')->sortKeys()->toArray();
+            $units = $units->sortBy('name')->groupBy('floor')->sortKeys()->toArray();
             if ($request->building_id) {
                 $buildingHasAttic = Building::whereKey($request->building_id)->value('attic');
                 if ($buildingHasAttic) {
