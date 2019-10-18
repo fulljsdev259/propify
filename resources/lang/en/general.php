@@ -573,5 +573,6 @@ return [
         'activity' => 'Activity',
         'property_managers' => 'Property managers',
         'templates' => 'Templates'
-    ]
+    ],
+    'contracts' => 'Contracts'
 ];

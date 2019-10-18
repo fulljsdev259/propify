@@ -573,5 +573,6 @@ return [
         'activity' => 'Aktivität',
         'property_managers' => 'Fortimo',
         'templates' => 'Vorlagen'
-    ]
+    ],
+    'contracts' => 'Verträge'
 ];

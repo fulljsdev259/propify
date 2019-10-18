@@ -572,5 +572,6 @@ return [
         'activity' => 'Activité',
         'property_managers' => 'Gestionnaires immobiliers',
         'templates' => 'Modèles'
-    ]
+    ],
+    'contracts' => 'Contrats'
 ];
