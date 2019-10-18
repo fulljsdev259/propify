@@ -103,7 +103,7 @@ return [
     'state' => 'Kanton',
     'street' => 'Strasse',
     'house_num' => 'Hausnummer',
-    'internal_quarter_id' => 'Interne Quartals-ID',
+    'internal_quarter_id' => 'Interne Projekt-ID',
     'zip' => 'PLZ',
     'content' => 'Inhalt',
     'none' => 'Nichts gewählt',
