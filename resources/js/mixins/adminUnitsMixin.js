@@ -88,6 +88,7 @@ export default (config = {}) => {
                 toAssign: '',
                 addedAssigmentList: [],
                 media: [],
+                contractCount: 0
             }
         },
         methods: {
@@ -313,6 +314,7 @@ export default (config = {}) => {
                             this.model.contracts = this.model.contracts.concat(resident.contracts)
                         })
                         
+                        this.contractCount = this.model.contracts.length
                         //this.contracts = this.model.resident.contracts
 
                         this.addedAssigmentList.map((user) => {

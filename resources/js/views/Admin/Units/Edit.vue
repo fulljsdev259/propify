@@ -300,7 +300,7 @@
                         </el-tab-pane>
                         <el-tab-pane name="contracts">
                             <span slot="label">
-                                <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
+                                <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
                             </span>
                             
                             <el-row :gutter="20">
@@ -387,6 +387,12 @@
             <div class="content" v-if="visibleDrawer">
                 <emergency-settings-form :visible.sync="visibleDrawer"/>
             </div>
+            <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
+                
+            <div class="content" v-if="visibleDrawer">
+                <contract-form v-if="editingContract" :hide-building-and-units="false" mode="edit" :data="editingContract" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
+                <contract-form v-else mode="add" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
+            </div> -->
         </ui-drawer>
     </div>
 </template>
@@ -402,6 +408,7 @@
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
     import UploadDocument from 'components/UploadDocument';
     import draggable from 'vuedraggable';
+    import ContractForm from 'components/ContractForm';
     import {displayError, displaySuccess} from "helpers/messages";
     import { EventBus } from '../../../event-bus.js';
     
@@ -420,6 +427,7 @@
             EmergencySettingsForm,
             UploadDocument,
             draggable,
+            ContractForm
         },
         data() {
             return {
@@ -473,6 +481,8 @@
                 activeTab1: 'details',
                 activeRightTab: 'residents',
                 activeRequestTab: 'requests',
+                editingContract: null,
+                editingContractIndex: -1,
             }
         },
         methods: {
@@ -547,7 +557,31 @@
                 } else {
                     return true;
                 }
-            }
+            },
+            addContract (data) {
+                this.model.contracts.push(data);
+            },
+            editContract(index) {
+                this.editingContract = this.model.contracts[index];
+                this.editingContractIndex = index;
+                this.visibleDrawer = true;
+                document.getElementsByTagName('footer')[0].style.display = "none";
+            },
+            updateContract(index, params) {
+                this.model.contracts[index] = params;
+            },
+            deleteContract(index) {
+
+                this.$confirm(this.$t(`general.swal.delete_contract.text`), this.$t(`general.swal.delete_contract.title`), {
+                    type: 'warning'
+                }).then(async () => {
+                    if(config.mode == "edit" ) {
+                        await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
+                    }
+                    this.model.contracts.splice(index, 1)
+                }).catch(() => {
+                });
+            },
         },
         mounted() {
              EventBus.$on('request-get-counted', request_count => {
@@ -789,6 +823,19 @@
     .category-select {
         margin-bottom: 10px;
         width: 100%;
+    }
+
+    .contract-table {
+        .clickable {
+            display: block;
+            width: 100%;
+        }
+        .icon-success {
+            color: #5fad64;
+        }
+        .icon-danger {
+            color: #dd6161;
+        }
     }
 
 </style>
