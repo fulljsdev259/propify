@@ -57,7 +57,7 @@
                         <el-tooltip
                             v-for="(item, index) in data.managers"
                             :key="index" 
-                            :content="item.user.name" 
+                            :content="item.user.name"
                             placement="top" 
                             effect="light"
                         >
@@ -414,7 +414,7 @@
                     }
 
                     .text {
-                        padding: 5px;
+                        padding: 5px 0;
                         position: relative;
                         white-space: pre-line;
                         word-break: break-word;
