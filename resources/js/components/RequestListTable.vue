@@ -628,6 +628,7 @@
 </script>
 
 <style lang="scss" scoped>
+
     .avatar-count{
         min-width: 28px;
     }
@@ -867,6 +868,11 @@
         }
     }
 
+    .el-button {
+        border-radius: 20px;
+        padding: 8.65px 15px;
+    }
+    
     .el-button--danger {
         margin-left: 5px !important;
     }

@@ -378,6 +378,11 @@
     }    
 </style>
 <style lang="scss" scoped>    
+
+    .el-button {
+        border-radius: 20px;
+        padding: 8.65px 15px;
+    }
     .request-title {
         text-overflow: ellipsis;
         white-space: nowrap;
