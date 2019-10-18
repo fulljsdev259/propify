@@ -81,7 +81,6 @@
                 }*/, {
                     label: 'models.resident.contract.title',
                     withCounts: true,
-                    width: 150,
                     counts: [
                         {
                             prop: 'total_contracts_count',
@@ -106,7 +105,6 @@
                     i18nPath: 'models.resident.status',
                     class: 'rounded-select',
                     ShowCircleIcon: true,
-                    width: 150,
                     select: {
                         icon: 'ti-pencil',
                         data: [],
@@ -125,7 +123,7 @@
                         ]
                     }]
                 }*/, {
-                    width: 80,
+                    width: 130,
                     actions: [{
                         type: '',
                         icon: 'ti-pencil',
