@@ -28,10 +28,12 @@ class UpdateRequest extends BaseRequest
     {
         $user = Auth::user();
         if ($user->can('edit-request_resident')) {
+            // @TODO discuss
             return Request::$rulesPutResident;
         }
 
         if ($user->can('edit-request_service')) {
+            // @TODO discuss
             return Request::$rulesPutService;
         }
         $putRoles =  Request::$rulesPut;

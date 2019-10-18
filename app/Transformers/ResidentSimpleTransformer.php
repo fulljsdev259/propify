@@ -35,7 +35,6 @@ class ResidentSimpleTransformer extends BaseTransformer
             'private_phone' => $model->private_phone,
             'work_phone' => $model->work_phone,
             'status' => $model->status,
-            'tenant_format' => $model->resident_format, // @TODO delete
             'resident_format' => $model->resident_format,
             'nation' => $model->nation,
         ];

@@ -33,7 +33,6 @@ class ResidentTransformer extends BaseTransformer
             'private_phone' => $model->private_phone,
             'work_phone' => $model->work_phone,
             'status' => $model->status,
-            'tenant_format' => $model->resident_format, // @TODO delete
             'resident_format' => $model->resident_format,
             'nation' => $model->nation,
             'type' => $model->type,
@@ -44,7 +43,6 @@ class ResidentTransformer extends BaseTransformer
         }
 
         if ($model->relationExists('default_contract')) {
-            $response['default_rent_contract'] = (new ContractTransformer())->transform($model->default_contract); // @TODO delete
             $response['default_contract'] = (new ContractTransformer())->transform($model->default_contract);
         }
 
@@ -60,7 +58,6 @@ class ResidentTransformer extends BaseTransformer
 
         $response['media'] = [];
         if ($model->contracts || $model->relationExists('contracts')) { // @TODO delete reloading
-            $response['rent_contracts'] = (new ContractTransformer())->transformCollection($model->contracts); // @TODO delete
             $response['contracts'] = (new ContractTransformer())->transformCollection($model->contracts);
 
             if (!empty($response['contracts'][0]['building'])) {
@@ -85,10 +82,6 @@ class ResidentTransformer extends BaseTransformer
             $response['active_contracts_count'] = $activeCount;
             $response['inactive_contracts_count'] = $allCount - $activeCount;
             $response['total_contracts_count'] = $allCount;
-            // @TODO delete
-            $response['active_rent_contracts_count'] = $activeCount;
-            $response['inactive_rent_contracts_count'] = $allCount - $activeCount;
-            $response['total_rent_contracts_count'] = $allCount;
         }
 
 

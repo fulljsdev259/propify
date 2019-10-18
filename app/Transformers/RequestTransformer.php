@@ -91,12 +91,10 @@ class RequestTransformer extends BaseTransformer
         }
 
         if ($model->relationExists('resident')) {
-            $response['tenant'] = (new ResidentTransformer)->transform($model->resident);  // @TODO delete
             $response['resident'] = (new ResidentTransformer)->transform($model->resident);
         }
 
         if ($model->relationExists('contract')) {
-            $response['rent_contract'] = (new ContractTransformer())->transform($model->contract);
             $response['contract'] = (new ContractTransformer())->transform($model->contract);
         }
 

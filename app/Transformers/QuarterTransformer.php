@@ -53,7 +53,6 @@ class QuarterTransformer extends BaseTransformer
         });
 
         $response['buildings_count'] = $buildings->count();
-        $response['active_tenants_count'] = $units->pluck('contracts.*.resident_id')->collapse()->unique()->count(); // @TODO delete
         $response['active_residents_count'] = $units->pluck('contracts.*.resident_id')->collapse()->unique()->count();
         $response['total_units_count'] = $units->count();
         $response['occupied_units_count'] = $occupiedUnits->count();
