@@ -4,13 +4,15 @@
         </ui-heading>
         <ui-divider />
         <loader v-if="loading" />
-        <div class="placeholder" v-else-if="!loading && !groupedManagers">
-            <img class="image" :src="require('img/5d4c33211edfc.png')" />
-            <div class="content">
-                <div class="title">{{$t('resident.no_data.property_manager')}}</div>
-                <div class="description">{{$t('resident.no_data_info.property_manager')}}</div>
+        <el-card v-else-if="!loading && !groupedManagers">
+            <div class="placeholder" >
+                <img class="image" :src="require('img/5d4c33211edfc.png')" />
+                <div class="content">
+                    <div class="title">{{$t('resident.no_data.property_manager')}}</div>
+                    <div class="description">{{$t('resident.no_data_info.property_manager')}}</div>
+                </div>
             </div>
-        </div>
+        </el-card>
         <el-card v-else>
             <el-timeline>
                 <template v-for="(managers, letter) in groupedManagers">
@@ -130,37 +132,28 @@ import Heading from 'components/Heading'
         }
 
         .placeholder {
-            position: relative;
+            display: flex;
+            padding: 16px;
+            text-align: center;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
 
             .image {
-                width: 100%;
-                filter: opacity(.16);
+                width: 256px;
             }
 
-            .content {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                text-align: center;
+            .title {
+                font-size: 20px;
+                font-weight: 800;
+                color: var(--color-primary);
+            }
 
-                .title {
-                    font-size: 24px;
-                    font-weight: 800;
-                    color: var(--primary-color);
-                    filter: opacity(.72);
-                }
-
-                .description {
-                    font-size: 14px;
-                    font-weight: 600;
-                    color: transparentize(#000, .72);
-                }
+            .description {
+                font-size: 14px;
+                font-weight: 600;
+                word-break: break-word;
+                color: var(--color-text-placeholder);
             }
         }
 
