@@ -89,8 +89,14 @@
                 return this.items.map((request) => {
                     request.qualification_label = request.qualification_label != "" ? this.$t(`models.request.qualification.${request.qualification_label}`) : "";
 
-                    if(request.contract)
+                    if(request.contract) {
                         request.building = request.contract.building
+                        request.unit = request.contract.unit
+                    }
+                    else {
+                        request.building = request.resident.contracts[0].building
+                        request.unit = request.resident.contracts[0].unit
+                    }
                     return request;
                 });
             },
