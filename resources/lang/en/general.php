@@ -300,6 +300,7 @@ return [
     ],
     'components' => [
         'common' => [
+
             'audit' => [
                 'type' => [
                     'pinboard' => 'Pinboard',
@@ -431,6 +432,11 @@ return [
                     'title' => 'There are no messages yet...',
                     'description' => 'Start messaging by using the below form and press enter.',
                 ],
+            ],
+            'internalnotices' => [
+                'switch_confirm' => 'Do you want to select property manager/administrator?',
+                'input_placeholder' => 'Please enter a keyword',
+                'shared_with' => 'Shared with',
             ],
             'internalnotices_list' => [            
                 'load_more' => 'Load {count} more internal notice',            

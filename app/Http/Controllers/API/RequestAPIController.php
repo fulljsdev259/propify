@@ -140,7 +140,6 @@ class RequestAPIController extends AppBaseController
             ->with([
                 'media',
                 'resident.user',
-                'resident.building.address',
                 'resident.contracts' => function ($q) {
                     $q->with('building.address', 'unit');
                 },
@@ -229,7 +228,9 @@ class RequestAPIController extends AppBaseController
         $request->load([
             'media',
             'resident.user',
-            'resident.building.address',
+            'resident.contracts' => function ($q) {
+                $q->with('building.address', 'unit');
+            },
             'contract',
             'category',
             'comments.user',
@@ -295,7 +296,6 @@ class RequestAPIController extends AppBaseController
         $request->load([
             'media',
             'resident.user',
-            'resident.building',
             'category',
             'managers',
             'users',
@@ -391,6 +391,9 @@ class RequestAPIController extends AppBaseController
             'managers.user',
             'users',
             'remainder_user',
+            'resident.contracts' => function ($q) {
+                $q->with('building.address', 'unit');
+            },
             'comments.user',
             'providers.address:id,country_id,state_id,city,street,zip',
             'providers.user',

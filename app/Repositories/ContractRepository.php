@@ -15,13 +15,12 @@ class ContractRepository extends BaseRepository
 {
     use  SaveMediaUploads;
 
+
     /**
      * @var array
      */
-    protected $mimeToExtension = [
-        "application/pdf" => "pdf",
-        "image/png" => "png",
-        "image/jpeg" => "jpg",
+    protected $fieldSearchable = [
+        'contract_format' => 'like',
     ];
 
     /**

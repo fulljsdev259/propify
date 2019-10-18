@@ -432,6 +432,11 @@ return [
                     'description' => 'Avviare la messaggistica utilizzando il modulo sottostante e premere Invio.',
                 ],
             ],
+            'internalnotices' => [
+                'switch_confirm' => 'Coinvolgere e informare le persone',
+                'input_placeholder' => 'Inserisci una parola chiave',
+                'shared_with' => 'Condivisa con',
+            ],
             'internalnotices_list' => [            
                 'load_more' => 'Carico {count} altri avviso interno',            
                 'empty_placeholder' => [

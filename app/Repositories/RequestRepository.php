@@ -48,16 +48,7 @@ class RequestRepository extends BaseRepository
         'due_date' => '=',
         'solved_date' => '>=',
         'created_at' => '>=',
-    ];
-
-    /**
-     * @var array
-     */
-    protected $mimeToExtension = [
-        "image/jpeg" => "jpg",
-        "image/png" => "png",
-        "application/pdf" => "pdf",
-        "application/octet-stream" => "docx",
+        'request_format' => 'like',
     ];
 
     /**

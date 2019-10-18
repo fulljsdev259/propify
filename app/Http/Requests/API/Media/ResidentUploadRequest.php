@@ -3,6 +3,7 @@
 namespace App\Http\Requests\API\Media;
 
 use App\Http\Requests\BaseRequest;
+use App\Models\Resident;
 
 /**
  * Class ResidentUploadRequest
@@ -27,8 +28,6 @@ class ResidentUploadRequest extends BaseRequest
      */
     public function rules()
     {
-        return [
-            'media' => 'required|string',
-        ];
+        return $this->getMediaRules(Resident::class);
     }
 }

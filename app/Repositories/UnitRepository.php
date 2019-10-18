@@ -22,6 +22,7 @@ class UnitRepository extends BaseRepository
         'name' => 'like',
         'description' => 'like',
         'floor' => 'like',
+        'unit_format' => 'like',
     ];
 
     /**

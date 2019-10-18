@@ -7,11 +7,11 @@
             </template>
             <template>
                 <div class="action-group">
-                    <el-button @click="submit" size="small" type="primary" round> {{this.$t('general.actions.save')}}</el-button>
-                    <el-button @click="saveAndClose" size="small" type="primary" round> {{this.$t('general.actions.save_and_close')}}
+                    <el-button @click="submit" size="mini" type="primary" round> {{this.$t('general.actions.save')}}</el-button>
+                    <el-button @click="saveAndClose" size="mini" type="primary" round> {{this.$t('general.actions.save_and_close')}}
                     </el-button>
-                    <el-button @click="batchDeleteBuilding" size="small" type="danger" round icon="ti-trash"> {{this.$t('general.actions.delete')}}</el-button>
-                    <el-button @click="goToListing" size="small" type="warning" round> {{this.$t('general.actions.close')}}
+                    <el-button @click="batchDeleteBuilding" size="mini" type="danger" round icon="ti-trash"> {{this.$t('general.actions.delete')}}</el-button>
+                    <el-button @click="goToListing" size="mini" type="warning" round> {{this.$t('general.actions.close')}}
                     </el-button>
                 </div>
             </template>
@@ -164,7 +164,7 @@
                                             prop="collection_name"
                                         >
                                             <template slot-scope="scope">
-                                                <strong>{{$t(`models.building.${scope.row.collection_name}`)}}</strong>
+                                                <strong>{{$t(`models.building.media_category.${scope.row.collection_name}`)}}</strong>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -210,7 +210,7 @@
                                        v-model="selectedFileCategory">
                                 <el-option
                                     :key="item"
-                                    :label="$t('models.building.' + item)"
+                                    :label="$t('models.building.media_category.' + item)"
                                     :value="item"
                                     v-for="item in model.media_category">
                                 </el-option>
@@ -810,22 +810,14 @@
         },
         mounted() {
             this.$root.$on('changeLanguage', () => this.getStates());            
-            EventBus.$on('service-get-counted', service_count => {
-                this.serviceCount = service_count;
-            });
-            EventBus.$on('file-get-counted', file_count => {
-                this.fileCount = file_count;
-            });
-            EventBus.$on('resident-get-counted', resident_count => {
-                this.residentCount = resident_count;
-            });
+
             EventBus.$on('assignee-get-counted', assignee_count => {                
                 this.assigneeCount = assignee_count;
             });
             EventBus.$on('unit-get-counted', unit_count => {
                 this.unitCount = unit_count;
             });
-             EventBus.$on('request-get-counted', request_count => {
+            EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
             });
             // this.fileCount = this.model.media.length;
@@ -852,7 +844,7 @@
                     value: 3,
                     label: this.$t('settings.contact_enable.hide'),
                 }]
-            }
+            },
         },
         watch: {
             'visibleDrawer': {
@@ -894,11 +886,20 @@
     }
 
     .buildings-edit {
+        overflow: hidden;
         flex: 1;
 
         .main-content {
+            overflow-x: hidden;
+            overflow-y: scroll;
+            height: 100%;
+
             .heading {
                 margin-bottom: 20px;
+            }
+
+            .action-group > .el-button:not(:first-child) {
+                margin-left: 0px;
             }
 
             > .el-row > .el-col {

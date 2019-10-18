@@ -34,17 +34,14 @@
     </div>
     <div v-if="type === 'internalNotices' && content" style="margin: 10px 41px 0 35px;">
         <el-row :gutter="10">
-            <el-col :span="12">
-                <el-form-item class="switcher">
-                    <label class="switcher__label">
-                        Select property manager/admin?
-                        <span class="switcher__desc">Do you want to select property manager/administrator?</span>
-                    </label>
+            <el-col :span="24">
+                <el-form-item class="internal-notices-switch">
+                    <span>{{ $t('general.components.common.internalnotices.switch_confirm')}}</span>
                     <el-switch v-model="isManagerSelect" @change="resetList"/>
                 </el-form-item>
             </el-col>
-            <el-col :span="12">
-                <el-select v-if="isManagerSelect" v-model="selectedManagerLists" multiple filterable remote reserve-keyword placeholder="Please enter a keyword" :remote-method="remoteSearch" :loading="loading" style="width: 100%">
+            <el-col :span="24">
+                <el-select v-if="isManagerSelect" v-model="selectedManagerLists" multiple filterable remote reserve-keyword :placeholder="$t('general.components.common.internalnotices.input_placeholder')" :remote-method="remoteSearch" :loading="loading" style="width: 100%">
                     <el-option v-for="item in managerLists" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
             </el-col>
@@ -235,7 +232,19 @@
     }
 </script>
 
+<style lang="scss">
+    .internal-notices-switch {
+        margin-top: 10px;
+        .el-form-item__content {
+            line-height: 20px !important;
+            .el-switch {
+                float: right;
+            }
+        }
+    }
+</style>
 <style lang="scss" scoped>
+    
     .add-comment {
         width: 100%;
         display: flex;

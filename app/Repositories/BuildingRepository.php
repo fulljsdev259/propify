@@ -25,13 +25,7 @@ class BuildingRepository extends BaseRepository
         'floor_nr' => 'like',
         'address.city' => 'like',
         'address.zip' => 'like',
-    ];
-
-    protected $mimeToExtension = [
-        "image/jpeg" =>  "jpg",
-        "application/pdf" =>  "pdf",
-        "image/png" =>  "png",
-        "application/msword" =>  "doc",
+        'building_format' => 'like',
     ];
 
     /**

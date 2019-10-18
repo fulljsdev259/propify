@@ -19,12 +19,22 @@
                 </template>
                 <template v-slot="{item, index, active}">
                     <dynamic-scroller-item :item="item" :active="active" :data-index="index" :size-dependencies="[item]">
-                        <comment v-bind="commentComponentProps" 
-                                v-on="commentComponentListeners" 
-                                :show-children="showChildren" 
-                                :data="item" 
-                                :reversed="isCommentReversed(item)"
-                                v-resize:debounce="onResize" />
+                        <comment
+                            v-if="item.managers === undefined"
+                            v-bind="commentComponentProps" 
+                            v-on="commentComponentListeners" 
+                            :show-children="showChildren" 
+                            :data="item" 
+                            :reversed="isCommentReversed(item)"
+                            v-resize:debounce="onResize" />
+                        <internal-notices-comment
+                            v-else 
+                            v-bind="commentComponentProps" 
+                            v-on="commentComponentListeners" 
+                            :show-children="showChildren" 
+                            :data="item" 
+                            :reversed="isCommentReversed(item)"
+                            v-resize:debounce="onResize" />
                     </dynamic-scroller-item>
                 </template>
             </dynamic-scroller>
@@ -43,6 +53,7 @@
     import {displaySuccess, displayError} from 'helpers/messages'
     import { EventBus } from '../../../event-bus.js';
     import resize from 'vue-resize-directive';
+    import InternalNoticesComment from 'components/InternalNoticesComment';
 
     export default {
         props: {
@@ -85,6 +96,7 @@
         },
         components: {
             Loader,
+            InternalNoticesComment,
         },
         data () {
             return {

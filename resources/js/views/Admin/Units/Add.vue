@@ -126,7 +126,7 @@
                                                             <el-form-item 
                                                                 :rules="validationRules.monthly_rent_net"
                                                                 prop="monthly_rent_net">
-                                                                <el-input type="text"
+                                                                <el-input type="number"
                                                                         v-model="model.monthly_rent_net"
                                                                 >
                                                                     <template slot="prepend">CHF</template>
@@ -144,7 +144,7 @@
                                                             <el-form-item 
                                                                 :rules="validationRules.monthly_maintenance"
                                                                 prop="monthly_maintenance">
-                                                                <el-input type="text"
+                                                                <el-input type="number"
                                                                         v-model="model.monthly_maintenance"
                                                                 >
                                                                     <template slot="prepend">CHF</template>
@@ -161,7 +161,7 @@
                                                         <div class="cell">
                                                             <el-form-item 
                                                                 prop="monthly_rent_net">
-                                                                {{Number(model.monthly_rent_net) + Number(model.monthly_maintenance)}}
+                                                                {{( Number(model.monthly_rent_net) + Number(model.monthly_maintenance) ).toFixed(2)}}
                                                             </el-form-item>
                                                         </div>
                                                     </td>

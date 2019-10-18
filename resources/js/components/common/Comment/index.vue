@@ -19,6 +19,7 @@
                         <i class="icon-trash-empty" style="color: red;"></i>
                     </el-button>
                 </div>
+               
             </div>
         </div>
         <template v-if="idState.editing">
@@ -53,6 +54,7 @@
     import {IdState} from 'vue-virtual-scroller'
     import {displaySuccess, displayError} from 'helpers/messages'
     import { EventBus } from '../../../event-bus.js';
+    import { Avatar } from 'vue-avatar';
 
     export default {
         mixins: [
@@ -61,6 +63,9 @@
                 idProp: vm => vm.data.id
             })
         ],
+        components: {
+            Avatar
+        },
         props: {
             id: {
                 type: Number,
@@ -266,7 +271,8 @@
             if (this.observer) {
                 this.observer.disconnect()
             }
-        }
+        },
+
     }
 </script>
 

@@ -49,13 +49,13 @@
                                               prop="price">
                                     <el-row :gutter="5">
                                         <el-col :span="16">
-                                            <el-input type="text" v-model="price.integer">
+                                            <el-input type="number" v-model="price.integer">
                                                 <span slot="prepend">CHF</span>
                                             </el-input>
                                         </el-col>
                                         <el-col :span="1">.</el-col>
                                         <el-col :span="7">
-                                            <el-input type="text" v-model="price.decimals" maxlength="2" />
+                                            <el-input type="number" v-model="price.decimals" maxlength="2" />
                                         </el-col>
                                     </el-row>
                                 </el-form-item>

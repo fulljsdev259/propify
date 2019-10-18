@@ -3,6 +3,7 @@
 namespace App\Http\Requests\API\Media;
 
 use App\Http\Requests\BaseRequest;
+use App\Models\Contract;
 
 /**
  * Class ContractUploadRequest
@@ -27,8 +28,6 @@ class ContractUploadRequest extends BaseRequest
      */
     public function rules()
     {
-        return [
-            'media' => 'required|string',
-        ];
+        return $this->getMediaRules(Contract::class);
     }
 }
