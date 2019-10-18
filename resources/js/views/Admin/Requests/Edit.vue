@@ -975,10 +975,11 @@
         }
 
         .reminder-box {
-            min-width: 150px;
+            min-width: 100px;
             display: flex;
             float: right;
             margin-top: 5px;
+            justify-content: flex-end;
 
             .switcher__desc {
                 padding-right: 5px;
