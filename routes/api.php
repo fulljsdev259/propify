@@ -152,16 +152,14 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     // Units
     Route::get('/units', 'UnitAPIController@index')->name('units');
     Route::get('/units/{id}', 'UnitAPIController@show')->name('units.show');
-
     Route::post('/units', 'UnitAPIController@store')->name('units.store');
-
+    Route::post('/units/{id}/media', 'MediaAPIController@unitUpload')->name('units.media.upload');
     Route::put('/units/{id}', 'UnitAPIController@update')->name('units.update');
-
     Route::delete('/units/{id}', 'UnitAPIController@destroy')->name('units.destroy');
     Route::post('/units/deletewithids', 'UnitAPIController@destroyWithIds')->name('units.destroyWithIds');
-
     Route::post('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@assignResident');
     Route::delete('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@unassignResident');
+    Route::delete('/units/{unit_id}/media/{media_id}', 'MediaAPIController@unitDestroy')->name('units.media.destroy');
 
     // Settings
     Route::get('/settings', 'SettingsAPIController@show')->name('settings.show');
@@ -188,12 +186,13 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::put('/quarters/{id}', 'QuarterAPIController@update')->name('quarters.update');
     Route::delete('/quarters/{id}', 'QuarterAPIController@destroy')->name('quarters.destroy');
     Route::post('/quarters/deletewithids', 'QuarterAPIController@destroyWithIds')->name('quarters.destroyWithIds');
+    Route::post('/quarters/{id}/media', 'MediaAPIController@quarterUpload')->name('quarters.media.upload');
 
     Route::get('/quarters/{id}/assignees', 'QuarterAPIController@getAssignees');
     Route::post('/quarters/{id}/managers', 'QuarterAPIController@assignManagers')->name('quarters.assign.managers'); // @TODO delete
     Route::post('/quarters/{id}/users', 'QuarterAPIController@assignUsers')->name('quarters.assign.users');
     Route::delete('/quarters-assignees/{quarters_assignee_id}', 'QuarterAPIController@deleteQuarterAssignee');
-
+    Route::delete('/quarters/{quarter_id}/media/{media_id}', 'MediaAPIController@quarterDestroy')->name('quarters.media.destroy');
 
     // Pinboard
     Route::get('pinboard/rss.xml', 'PinboardAPIController@showNewsRSS');

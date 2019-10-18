@@ -211,7 +211,7 @@
                                         <strong v-if="$constants.requests.priority[model.priority]">{{$t(`models.request.priority.${$constants.requests.priority[model.priority]}`)}}</strong>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="8" class="summary-item">
+                                <!-- <el-col :md="8" class="summary-item">
                                     <el-form-item :label="$t('models.resident.contract.title')" v-if="this.model.contract">
                                         {{this.model.contract.building_id + " -- " + this.model.contract.unit_id}}
                                     </el-form-item>
@@ -229,7 +229,7 @@
                                         </el-select>
                                     </el-form-item>
 
-                                </el-col>
+                                </el-col> -->
 
                                 <!-- <el-col :md="8" class="summary-item">
                                     <el-form-item :label="$t('models.request.visibility.label')">
@@ -440,7 +440,7 @@
                                         <el-form-item :label="$t('models.request.public_title')" prop="is_public">
                                             <el-switch v-model="model.is_public"/>
                                         </el-form-item>
-                                        <div>
+                                        <div class="switcher__desc">
                                             {{ $t('models.request.public_desc') }}
                                         </div>
                                     </div>
@@ -460,7 +460,7 @@
                                         <el-form-item :label="$t('models.request.send_notification_title')" prop="send_notification">
                                             <el-switch v-model="model.send_notification"/>
                                         </el-form-item>
-                                        <div>
+                                        <div class="switcher__desc">
                                             {{ $t('models.request.send_notification_desc') }}
                                         </div>
                                     </div>
@@ -975,10 +975,11 @@
         }
 
         .reminder-box {
-            min-width: 150px;
+            min-width: 100px;
             display: flex;
             float: right;
             margin-top: 5px;
+            justify-content: flex-end;
 
             .switcher__desc {
                 padding-right: 5px;

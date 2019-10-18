@@ -20,7 +20,8 @@ class QuarterRepository extends BaseRepository
      */
     protected $fieldSearchable = [
         'name' => 'like',
-        'description'
+        'description' => 'like',
+        'quarter_format' => 'like',
     ];
 
     /**

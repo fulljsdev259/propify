@@ -104,7 +104,7 @@
                                         <el-form-item :label="$t('models.unit.auto_create_question')" v-if="model.floor_nr > 0">
                                             <el-switch v-model="unitAutoCreate"/>
                                         </el-form-item>
-                                        <div>
+                                        <div class="switcher__desc">
                                             {{ $t('models.unit.auto_create_description') }}
                                         </div>
                                     </div>
@@ -214,6 +214,12 @@
         display: block;
         float: none;
         text-align: left;
+    }
+
+    .switcher__desc {
+        margin-top: 0.5em;
+        display: block;
+        font-size: 0.9em;
     }
 </style>
 

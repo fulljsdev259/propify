@@ -276,7 +276,7 @@ export default (config = {}) => {
                                 this.loading.state = true;
                                 try {
 
-                                    this.model.monthly_rent_gross = Number(this.model.monthly_rent_net) + Number(this.model.monthly_maintenance)
+                                    this.model.monthly_rent_gross = ( Number(model.monthly_rent_net) + Number(model.monthly_maintenance) ).toFixed(2)
                                     const resp = await this.updateUnit(this.model)
                                     displaySuccess(resp);
                                     resolve(true);
@@ -300,8 +300,8 @@ export default (config = {}) => {
 
                         this.model = await this.getUnit({id: this.$route.params.id});
 
-                        if(!this.model.media)
-                            this.model.media = []
+                        // if(!this.model.media)
+                        //     this.model.media = []
                             
                         this.addedAssigmentList = [];
                         this.addedAssigmentList = this.model.residents;
@@ -327,7 +327,10 @@ export default (config = {}) => {
                         //     const building = await this.getBuilding({id: this.model.building_id});
                         //     this.remoteSearchBuildings(`${building.name}`);
                         // }
-
+                        
+                        this.fileCount = this.model.media ? this.model.media.length : 0
+                        this.residentCount = this.addedAssigmentList.length
+                       
                     } catch (err) {
                         this.$router.replace({
                             name: 'adminUnits'

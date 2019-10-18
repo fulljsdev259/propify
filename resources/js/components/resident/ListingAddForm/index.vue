@@ -21,11 +21,11 @@
         </el-row>
         <el-form-item prop="price" :label="$t('resident.price')" v-if="isPriceVisible">
             <div style="display: flex">
-                <el-input v-model="model.price.integer">
+                <el-input type="number" v-model="model.price.integer">
                     <template slot="prepend">CHF</template>
                 </el-input>
                 <div style="padding: 4px">.</div>
-                <el-input v-model="model.price.decimals" style="width: 50%" />
+                <el-input type="text" v-model="model.price.decimals" style="width: 50%" maxlength="2"/>
             </div>
         </el-form-item>
         <el-form-item prop="content" :label="$t('resident.content')">

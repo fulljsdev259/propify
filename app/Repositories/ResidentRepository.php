@@ -34,15 +34,7 @@ class ResidentRepository extends BaseRepository
         'private_phone' => 'like',
         'work_phone' => 'like',
         'user.email' => 'like',
-    ];
-
-    /**
-     * @var array
-     */
-    protected $mimeToExtension = [
-        "application/pdf" => "pdf",
-        "image/png" => "png",
-        "image/jpeg" => "jpg",
+        'resident_format' => 'like',
     ];
 
     /**

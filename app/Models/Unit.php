@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Traits\HasCategoryMediaTrait;
 use App\Traits\UniqueIDFormat;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
 
 /**
  * @SWG\Definition(
@@ -93,9 +95,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Unit extends AuditableModel
+class Unit extends AuditableModel implements HasMedia
 {
-    use SoftDeletes, UniqueIDFormat;
+    use SoftDeletes, UniqueIDFormat, HasCategoryMediaTrait;
 
     public $table = 'units';
 
@@ -154,6 +156,14 @@ class Unit extends AuditableModel
         'attic' => 'boolean',
         'unit_format' => 'string',
         'sq_meter' => 'integer'
+    ];
+
+    protected $permittedExtensions = [
+        'pdf',
+        'doc',
+        'docx',
+        'xls',
+        'xlsx'
     ];
 
     /**

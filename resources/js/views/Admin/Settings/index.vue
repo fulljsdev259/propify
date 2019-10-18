@@ -74,7 +74,7 @@
                                                 <el-form-item :label="$t('settings.blank_pdf')" prop="blank_pdf">
                                                     <el-switch v-model="model.blank_pdf"/>
                                                 </el-form-item>
-                                                <div>
+                                                <div class="switcher__desc">
                                                     {{ $t('settings.blank_pdf_desc') }}
                                                 </div>
                                             </div>
@@ -134,7 +134,7 @@
                                             <el-form-item :label="$t('settings.pinboard_approval_enable')" prop="pinboard_approval_enable">
                                                 <el-switch v-model="model.pinboard_approval_enable"/>
                                             </el-form-item>
-                                            <div>
+                                            <div class="switcher__desc">
                                                 {{ $t('settings.pinboard_approval_enable_desc') }}
                                             </div>
                                         </div>
@@ -142,7 +142,7 @@
                                             <el-form-item :label="$t('settings.contact_enable')" prop="contact_enable">
                                                 <el-switch v-model="model.contact_enable"/>
                                             </el-form-item>
-                                            <div>
+                                            <div class="switcher__desc">
                                                 {{ $t('settings.contact_enable_desc')}}
                                             </div>
                                         </div>
@@ -240,7 +240,7 @@
                                                         ></el-input>
                                                     </el-form-item>
                                                 </el-col>
-                                                 <el-col :md="12">
+                                                 <!-- <el-col :md="12">
                                                     <el-form-item :rules="validationRules.mail_powered_by"
                                                                   prop="email_powered_by">
                                                         <label class="card-label">{{$t('settings.mail_powered_by.label')}}</label>
@@ -251,7 +251,7 @@
                                                                        v-for="item in mail_powered_by"></el-option>
                                                         </el-select>
                                                     </el-form-item>
-                                                </el-col>
+                                                </el-col> -->
                                             </el-row>
                                     </el-card>
                                 </el-col>
@@ -731,6 +731,8 @@
                 });
                 this.getSettings().then((resp) => {
                     this.model = Object.assign({}, this.model, resp.data);
+                    if(this.model.email_powered_by == '')
+                        this.model.email_powered_by = 1;
                     this.$root.$emit('fetch_logo', this.model.logo);
                     try {
                         this.$set(this.model, 'opening_hours', JSON.parse(this.model.opening_hours));
@@ -884,6 +886,12 @@
 <style lang="scss">
     .settings {
         flex: 1;
+    }
+
+    .switcher__desc {
+        margin-top: 0.5em;
+        display: block;
+        font-size: 0.9em;
     }
 
     .dashboard-tabpanel {

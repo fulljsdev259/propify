@@ -94,9 +94,18 @@
                         <el-row :gutter="20">
                             <el-col :md="12">
                                 <el-form-item :label="$t('models.user.profile_image')">
-                                    <cropper :resize="false" :viewportType="'square'" @cropped="cropped"/>
-                                    <img :src="`/${model.avatar}?${Date.now()}`"
-                                         style="width: 100%" v-if="!avatar.length && model.avatar">
+                                    <cropper
+                                            :boundary="{
+                                                width: 250,
+                                                height: 360
+                                            }"
+                                            :viewport="{
+                                                width: 250,
+                                                height: 250
+                                            }"
+                                            :resize="false"
+                                            :defaultAvatarSrc="!avatar.length && model.avatar ? '/'+model.avatar : ''"
+                                            @cropped="cropped"/>
                                 </el-form-item>
                             </el-col>
                             <el-col :md="12">

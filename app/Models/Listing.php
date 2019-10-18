@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use App\Traits\HasMediaTrait;
 
 /**
  * @SWG\Definition(
@@ -147,6 +147,11 @@ class Listing extends AuditableModel implements HasMedia, LikeableContract, Audi
         'price' => 'string',
     ];
 
+    protected $permittedExtensions = [
+        'jpg',
+        'png',
+    ];
+
     /**
      * Validation rules
      *
@@ -183,10 +188,5 @@ class Listing extends AuditableModel implements HasMedia, LikeableContract, Audi
     public function user()
     {
         return $this->belongsTo(\App\Models\User::class, 'user_id', 'id');
-    }
-
-    public function registerMediaCollections()
-    {
-        $this->addMediaCollection('media');
     }
 }

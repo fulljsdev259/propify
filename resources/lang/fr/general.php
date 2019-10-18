@@ -432,6 +432,11 @@ return [
                     'description' => 'Commencez la messagerie en utilisant le formulaire ci-dessous et appuyez sur Entrée.',
                 ],
             ],
+            'internalnotices' => [
+                'switch_confirm' => 'Impliquer et informer les gens',
+                'input_placeholder' => 'Veuillez entrer un mot-clé',
+                'shared_with' => "Partagé avec",
+            ],
             'internalnotices_list' => [            
                 'load_more' => "Charger {count} plus d'avis interne",            
                 'empty_placeholder' => [

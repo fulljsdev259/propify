@@ -5,10 +5,10 @@
                 <el-col :span="3" class="request-aside">
                    <h4>{{ item.request_format }}</h4>
                 </el-col>
-                <el-col :span="17" class="request-title">
+                <el-col :span="15" class="request-title">
                     <h3>{{ item.title }}</h3>
                 </el-col>
-                <el-col :span="3" class="request-tail">
+                <el-col :span="6" class="request-tail">
                     <el-select 
                         class="select-icon rounded-select"  
                         v-model="item.status" 
@@ -23,14 +23,13 @@
                             v-for="item in selectData">
                         </el-option>
                     </el-select>
-                </el-col>
-                <el-col :span="1" class='request-action'>
-                    <router-link
+                     <router-link
                             :to="{name: 'adminRequestsEdit',  params: { id:item.id}}">
                         <el-button
                             size="mini"
                         >
-                            <i class="ti-pencil"></i>
+                            <i class="ti-search"></i>
+                            {{ $t('general.actions.edit') }}
                         </el-button>
                     </router-link>  
                 </el-col>
@@ -42,6 +41,11 @@
                     <el-checkbox @change="handleSelectionChanged"></el-checkbox>
                 </el-col> 
                 <el-col :span="1" class="request-actions">
+                    <!-- <el-tooltip v-if="item.resident.building.id" :content="$t('dashboard.buildings.go_to_building')" placement="top" effect="light">
+                        <router-link :to="{name: 'adminBuildingsEdit', params: {id:item.resident.building.id}}" class="listing-link">
+                             <i class="icon icon-commerical-building"></i>
+                        </router-link>
+                    </el-tooltip> -->
                     <el-tooltip v-if="item.resident.building.id" :content="$t('dashboard.buildings.go_to_building')" placement="top" effect="light">
                         <router-link :to="{name: 'adminBuildingsEdit', params: {id:item.resident.building.id}}" class="listing-link">
                              <i class="icon icon-commerical-building"></i>
@@ -60,24 +64,24 @@
                                     class="item"
                                     effect="light" placement="top">
                                     <template v-if="user.user">
-                                        <avatar :size="33"
+                                        <avatar :size="30"
                                                 :username="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
                                                 backgroundColor="rgb(205, 220, 57)"
                                                 color="#fff"
                                                 v-if="!user.user.avatar"></avatar>
-                                        <avatar :size="33" :src="`/${user.user.avatar}`" v-else></avatar>
+                                        <avatar :size="30" :src="`/${user.user.avatar}`" v-else></avatar>
                                     </template>
                                     <template v-else>
-                                        <avatar :size="33"
+                                        <avatar :size="30"
                                                 :username="user.first_name ? `${user.first_name} ${user.last_name}`: `${user.name}`"
                                                 backgroundColor="rgb(205, 220, 57)"
                                                 color="#fff"
                                                 v-if="!user.avatar"></avatar>
-                                        <avatar :size="33" :src="`/${user.avatar}`" v-else></avatar>
+                                        <avatar :size="30" :src="`/${user.avatar}`" v-else></avatar>
                                     </template>
                                 </el-tooltip>
                         </span>
-                        <avatar class="avatar-count" :size="33" :username="`+ ${item.property_managers.length-2}`"
+                        <avatar class="avatar-count" :size="30" :username="`+ ${item.property_managers.length-2}`"
                                 color="#fff"
                                 v-if="item.property_managers.length>2"></avatar>
                     </div>
@@ -92,24 +96,24 @@
                                     class="item"
                                     effect="light" placement="top">
                                     <template v-if="user.user">
-                                        <avatar :size="33"
+                                        <avatar :size="30"
                                                 :username="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
                                                 backgroundColor="rgb(205, 220, 57)"
                                                 color="#fff"
                                                 v-if="!user.user.avatar"></avatar>
-                                        <avatar :size="33" :src="`/${user.user.avatar}`" v-else></avatar>
+                                        <avatar :size="30" :src="`/${user.user.avatar}`" v-else></avatar>
                                     </template>
                                     <template v-else>
-                                        <avatar :size="33"
+                                        <avatar :size="30"
                                                 :username="user.first_name ? `${user.first_name} ${user.last_name}`: `${user.name}`"
                                                 backgroundColor="rgb(205, 220, 57)"
                                                 color="#fff"
                                                 v-if="!user.avatar"></avatar>
-                                        <avatar :size="33" :src="`/${user.avatar}`" v-else></avatar>
+                                        <avatar :size="30" :src="`/${user.avatar}`" v-else></avatar>
                                     </template>
                                 </el-tooltip>
                         </span>
-                        <avatar class="avatar-count" :size="33" :username="`+ ${item.service_providers.length-2}`"
+                        <avatar class="avatar-count" :size="30" :username="`+ ${item.service_providers.length-2}`"
                                 color="#fff"
                                 v-if="item.service_providers.length > 2"></avatar>
                     </div>
@@ -123,7 +127,7 @@
                                 class="item"
                                 effect="light" placement="top">
                         
-                                <table-avatar :src="item.creator.avatar" :name="item.creator.name" :size="33" />
+                                <table-avatar :src="item.creator.avatar" :name="item.creator.name" :size="30" />
                             </el-tooltip>
                         </p>
                         <div>
@@ -216,7 +220,7 @@ export default {
         },
         formatDate (date) {
             var res = date.split(" ");
-            return res[0];
+            return res[0] + ', ' +res[1].substr(0, 5);
         }
     },
 }
@@ -249,10 +253,25 @@ export default {
             .el-row {
                 margin:-18px -20px;
             }
-            .request-aside, .request-tail, .request-action {
+            .request-aside {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+            }
+            .request-tail {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                .el-select {
+                    width: 190px;
+                }
+                a {
+                    margin-left: 10px;
+                    .el-button {
+                        border-radius: 20px;
+                        padding: 8.65px 15px;
+                    }
+                }
             }
             .request-aside {
                 padding: 0 !important;
@@ -260,10 +279,7 @@ export default {
                 width: 180px !important;
             }
             .request-title {
-                width: calc(87% - 250px) !important;
-            }
-            .request-action {
-                width: 70px !important;
+                width: calc(80% - 270px) !important;
             }
         }
         .request-footer {

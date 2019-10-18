@@ -24,13 +24,6 @@ class BuildingUploadRequest extends BaseRequest
      */
     public function rules()
     {
-        $categories = Building::BuildingMediaCategories;
-        $rules = [];
-        foreach ($categories as $category) {
-            $requiredWithout = implode('_upload,', array_diff($categories, [$category])) . '_upload';
-            $rules[$category . '_upload'] = sprintf('required_without_all:%s|string', $requiredWithout);
-        }
-
-        return $rules;
+        return $this->getFileCategoryRules(Building::class);
     }
 }

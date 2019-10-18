@@ -4,12 +4,10 @@ namespace App\Models;
 
 use App\Traits\UniqueIDFormat;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
-use OwenIt\Auditing\AuditableObserver;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use App\Traits\HasMediaTrait;
 
 /**
  * @SWG\Definition(
@@ -164,14 +162,21 @@ class Contract extends AuditableModel implements HasMedia
     ];
 
     /**
+     * @var array
+     */
+    protected $permittedExtensions = [
+        'pdf',
+    ];
+
+    /**
      * Validation rules
      *
      * @var array
      */
     public static $rules = [
         'resident_id' => 'required|integer|exists:residents,id',
-        'building_id' => 'integer|exists:buildings,id',
-        'unit_id' => 'integer|exists:units,id',
+        'building_id' => 'required|integer|exists:buildings,id',
+        'unit_id' => 'required|integer|exists:units,id',
         'start_date' => 'date',
         'end_date' => 'nullable|date|after_or_equal:start_date',
         'status' => 'digits_between:1,2|numeric',

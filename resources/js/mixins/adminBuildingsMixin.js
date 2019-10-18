@@ -334,7 +334,7 @@ export default (config = {}) => {
                                     });
 
                                     this.model.service_providers = data.data.service_providers;
-                                    EventBus.$emit('service-get-counted', this.model.service_providers.length);
+                                    this.serviceCount = this.model.service_providers.length
                                     this.model.service_providers_ids = [];
 
                                     displaySuccess(data);
@@ -374,12 +374,13 @@ export default (config = {}) => {
                         } = await this.getBuilding({id: this.$route.params.id});
                         this.statistics.raw[0].value = restData.active_residents_count + restData.in_active_residents_count;
                         this.statistics.raw[1].value = restData.active_residents_count;
-                        this.statistics.raw[2].value = restData.in_active_residents_count;                        
+                        this.statistics.raw[2].value = restData.in_active_residents_count;
 
                         this.model = {state_id, ...restAddress, ...restData, service_providers_ids: []};
-                        EventBus.$emit('service-get-counted', this.model.service_providers.length);
-                        EventBus.$emit('file-get-counted', this.model.media.length);                        
-                        EventBus.$emit('resident-get-counted', this.model.residents.length);
+                        
+                        this.serviceCount = this.model.service_providers.length
+                        this.fileCount = this.model.media.length
+                        this.residentCount = this.model.residents.length
 
                         if (this.model.quarter) {
                             this.$set(this.model, 'quarter_id', this.model.quarter.id);

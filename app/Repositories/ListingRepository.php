@@ -29,12 +29,6 @@ class ListingRepository extends BaseRepository
         'title' => 'like',
     ];
 
-    protected $mimeToExtension = [
-        "image/jpeg" =>  "jpg",
-        "image/png" =>  "png",
-    ];
-
-
     /**
      * Configure the Model
      **/
