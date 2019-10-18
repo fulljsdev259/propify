@@ -886,9 +886,14 @@
     }
 
     .buildings-edit {
+        overflow: hidden;
         flex: 1;
 
         .main-content {
+            overflow-x: hidden;
+            overflow-y: scroll;
+            height: 100%;
+
             .heading {
                 margin-bottom: 20px;
             }

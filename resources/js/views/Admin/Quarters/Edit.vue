@@ -126,7 +126,7 @@
                                         :key="item"
                                         :label="$t('models.building.media_category.' + item)"
                                         :value="item"
-                                        v-for="item in model.media_category">
+                                        v-for="item in $constants.file_categories">
                                     </el-option>
                                 </el-select>
                                 <el-alert
@@ -433,7 +433,6 @@
             });
 
             EventBus.$on('building-get-counted', building_count => {
-                console.log(building_count)
                 this.buildingCount = building_count;
             });
             
@@ -480,11 +479,19 @@
     }
 
     .quarters-edit {
+        overflow: hidden;
+        flex: 1;
+
+        .main-content {
+            overflow-x: hidden;
+            overflow-y: scroll;
+            height: 100%;
+        }
         .crud-view {
             margin-top: 1%;
         }
 
-        /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-managers, /deep/ #tab-assignees, {
+        /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-managers, /deep/ #tab-assignees {
             padding-right: 40px;
         }
 
