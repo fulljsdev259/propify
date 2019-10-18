@@ -6,7 +6,7 @@
                    <h4>{{ item.request_format }}</h4>
                 </el-col>
                 <el-col :span="15" class="request-title">
-                    <h3>{{ item.title }}</h3>
+                    <h4>{{ item.title }}</h4>
                 </el-col>
                 <el-col :span="6" class="request-tail">
                     <el-select 
