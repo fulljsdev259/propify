@@ -211,7 +211,7 @@
                             <el-form-item :label="$t('models.pinboard.notify_email')" prop="notify_email">
                                 <el-switch v-model="model.notify_email"/>
                             </el-form-item>
-                            <div>
+                            <div class="switcher__desc">
                                 {{$t('models.pinboard.notify_email_description')}}
                             </div>
                         </div>
@@ -270,7 +270,7 @@
                                             <el-switch v-model="model.is_execution_time"
                                                     @change="isExecutionTimeChange()"/>
                                         </el-form-item>
-                                        <div>
+                                        <div class="switcher__desc">
                                             {{$t('models.pinboard.specify_time_description')}}
                                         </div>
                                     </div>
@@ -448,6 +448,12 @@
         .el-switch {
             margin-left: auto;
         }
+    }
+
+    .switcher__desc {
+        margin-top: 0.5em;
+        display: block;
+        font-size: 0.9em;
     }
 </style>
 

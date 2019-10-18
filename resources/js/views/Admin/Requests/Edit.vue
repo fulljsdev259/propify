@@ -440,7 +440,7 @@
                                         <el-form-item :label="$t('models.request.public_title')" prop="is_public">
                                             <el-switch v-model="model.is_public"/>
                                         </el-form-item>
-                                        <div>
+                                        <div class="switcher__desc">
                                             {{ $t('models.request.public_desc') }}
                                         </div>
                                     </div>
@@ -460,7 +460,7 @@
                                         <el-form-item :label="$t('models.request.send_notification_title')" prop="send_notification">
                                             <el-switch v-model="model.send_notification"/>
                                         </el-form-item>
-                                        <div>
+                                        <div class="switcher__desc">
                                             {{ $t('models.request.send_notification_desc') }}
                                         </div>
                                     </div>
