@@ -34,7 +34,17 @@
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.user.profile_image')">
-                                        <cropper :resize="false" :viewportType="'square'" @cropped="cropped"/>
+                                        <cropper
+                                                :boundary="{
+                                                    width: 250,
+                                                    height: 360
+                                                }"
+                                                :viewport="{
+                                                    width: 250,
+                                                    height: 250
+                                                }"
+                                                :resize="false"
+                                                @cropped="cropped"/>
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">

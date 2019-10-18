@@ -329,18 +329,18 @@
                 if (state) {
                     this.$anime({
                         targets: this.$el.nextElementSibling,
-                        filter: ['blur(0px)', 'blur(16px)'],
+                        // filter: ['blur(0px)', 'blur(16px)'],
                         translateZ: 0,
-                        scale: [1, 1.08],
+                        // scale: [1, 1.08],
                         duration: 240,
                         easing: 'linear'
                     })
                 } else {
                     this.$anime({
                         targets: this.$el.nextElementSibling,
-                        filter: ['blur(16px)', 'blur(0px)'],
+                        // filter: ['blur(16px)', 'blur(0px)'],
                         translateZ: 0,
-                        scale: [1.08, 1],
+                        // scale: [1.08, 1],
                         duration: 240,
                         easing: 'linear'
                     })
