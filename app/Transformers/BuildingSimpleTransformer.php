@@ -27,6 +27,7 @@ class BuildingSimpleTransformer extends BaseTransformer
             'label' => $model->label,
             'description' => $model->description,
             'floor_nr' => $model->floor_nr,
+            'under_floor' => $model->under_floor,
             'basement' => $model->basement,
             'attic' => $model->attic,
             'internal_building_id' => $model->internal_building_id,
