@@ -298,6 +298,30 @@
                                     v-if="addedAssigmentList"
                             />
                         </el-tab-pane>
+                        <el-tab-pane name="contracts">
+                            <span slot="label">
+                                <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('models.unit.contract') }}</el-badge>
+                            </span>
+                            <assignment
+                                    :toAssign.sync="toAssign"
+                                    :assign="assignResident"
+                                    :toAssignList="toAssignList"
+                                    :remoteLoading="remoteLoading"
+                                    :remoteSearch="remoteSearchResidents"
+                                    :multiple="multiple"
+                            />
+                            <relation-list
+                                    :actions="assigneesActions"
+                                    :columns="assigneesColumns"
+                                    :filterValue="false"
+                                    :fetchAction="false"
+                                    :filter="false"
+                                    :fetchStatus="false"
+                                    :addedAssigmentList="addedAssigmentList"
+                                    ref="assigneesList"
+                                    v-if="addedAssigmentList"
+                            />
+                        </el-tab-pane>
                     </el-tabs>
 
                     <el-tabs type="border-card" v-model="activeRequestTab">
