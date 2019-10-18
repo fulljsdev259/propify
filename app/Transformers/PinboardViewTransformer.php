@@ -28,7 +28,6 @@ class PinboardViewTransformer extends BaseTransformer
             'views' => $model->views,
             'created_at' => $model->created_at->toDateTimeString(),
             'updated_at' => $model->updated_at->toDateTimeString(),
-            'tenant_id' => $model->resident_id, // @TODO delete
             'resident_id' => $model->resident_id,
         ];
 

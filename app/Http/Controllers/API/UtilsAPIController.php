@@ -116,7 +116,6 @@ class UtilsAPIController extends AppBaseController
             'buildings' => [], // @TODO is need return building related constants
             'units' => $this->getUnitConstants(),
             'residents' => $this->getResidentConstants(),
-            'tenants' => $this->getResidentConstants(), // @TODO delete
             'rentContracts' => $this->getContractConstants(), // @TODO delete
             'contracts' => $this->getContractConstants(),
             'serviceProviders' => $this->getServiceProviderConstants(),

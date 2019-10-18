@@ -40,20 +40,16 @@ class UnitTransformer extends BaseTransformer
             'attic' => $model->attic,
             'sq_meter' => $model->sq_meter,
             'residents' => [],
-            'tenants' => [], // @TODO delete
         ];
 
         $attributes = $model->attributesToArray();
         if (key_exists('total_contracts_count', $attributes)) {
-            $response['total_rent_contracts_count'] = $attributes['total_contracts_count']; // @TODO delete
             $response['total_contracts_count'] = $attributes['total_contracts_count'];
         }
 
         if (key_exists('active_contracts_count', $attributes)) {
-            $response['active_rent_contracts_count'] = $attributes['active_contracts_count']; // @TODO delete
             $response['active_contracts_count'] = $attributes['active_contracts_count'];
             if (key_exists('total_contracts_count', $attributes)) {
-                $response['inactive_rent_contracts_count'] = $attributes['total_contracts_count'] - $attributes['active_contracts_count']; // @TODO delete
                 $response['inactive_contracts_count'] = $attributes['total_contracts_count'] - $attributes['active_contracts_count'];
             }
         }
@@ -74,7 +70,6 @@ class UnitTransformer extends BaseTransformer
             foreach ($model->residents as $resident) {
                 $response['residents'][] = (new ResidentTransformer)->transform($resident);
             }
-            $response['tenants'][] = $response['residents']; // @TODO delete
         }
 
         return $response;

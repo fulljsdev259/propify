@@ -184,17 +184,6 @@ class DashboardAPIController extends AppBaseController
                 ],
             ]
         ],
-        'tenants' => [ // @TODO delete
-            'class' => Resident::class,
-            'columns' => [
-                'status',
-                'title' => [
-                    'mr' => 'mr',
-                    'mrs' => 'mrs',
-                    'company' => 'company',
-                ],
-            ]
-        ],
         'listings' => [
             'class' => Listing::class,
             'columns' => [
@@ -217,12 +206,6 @@ class DashboardAPIController extends AppBaseController
     const PERMITTED_TABLES_FOR_CREATED_DATE = [
         'listings' => [
             'class' => Listing::class,
-            'columns' => [
-                'status',
-            ]
-        ],
-        'tenants' => [ // @TODO delete
-            'class' => Resident::class,
             'columns' => [
                 'status',
             ]
@@ -338,7 +321,6 @@ class DashboardAPIController extends AppBaseController
 
         $response = [
             'total_residents' => $this->thousandsFormat($residents),
-            'total_tenants' => $this->thousandsFormat($residents),  // @TODO delete
             'total_units' => $this->thousandsFormat($units),
             'occupied_units' => $this->thousandsFormat($occupiedUnits),
             'free_units' => $this->thousandsFormat($freeUnit),
@@ -372,7 +354,6 @@ class DashboardAPIController extends AppBaseController
          */
         $response = [
             'total_residents' => $this->thousandsFormat($residentCount),
-            'total_tenants' => $this->thousandsFormat($residentCount),      // @TODO delete
             'total_units' => $this->thousandsFormat($unitCount),
 //            'occupied_units' => $occupiedUnits,
 //            'free_units' => $freeUnit,
@@ -882,7 +863,6 @@ class DashboardAPIController extends AppBaseController
         $allStartDates = [
             'requests' => $this->timeFormat(Request::min('created_at')),
             'residents' => $this->timeFormat(Resident::min('created_at')),
-            'tenants' => $this->timeFormat(Resident::min('created_at')), // @TODO delete
             'buildings' => $this->timeFormat(Building::min('created_at')),
             'listings' => $this->timeFormat(Listing::min('created_at')),
             'pinboard' => $this->timeFormat(Pinboard::min('created_at')),
@@ -898,8 +878,6 @@ class DashboardAPIController extends AppBaseController
             // all time total residents count and total residents count of per status
             'total_residents' => $this->thousandsFormat(Resident::count('id')),
             'residents_per_status' => $this->donutChartByTable($request, $optionalArgs, 'residents'),
-            'total_tenants' => $this->thousandsFormat(Resident::count('id')),                                   // @TODO delete
-            'tenants_per_status' => $this->donutChartByTable($request, $optionalArgs, 'residents'),     // @TODO delete
 
             // all time total buildings count and total buildings count of per status
             'total_buildings' => $this->thousandsFormat(Building::count('id')),
@@ -2238,7 +2216,6 @@ class DashboardAPIController extends AppBaseController
         $table = $optionalArgs['table'] ?? null;
         $table = $table ?? $request->{self::QUERY_PARAMS['table']};
         $table = key_exists($table, $permissions) ? $table : Arr::first(array_keys($permissions));
-        $table = 'tenants' == $table ? 'residents' : $table;  // @TODO delete
 
         $class = $permissions[$table]['class'];
 

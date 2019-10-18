@@ -20,7 +20,6 @@ class ContractTransformer extends BaseTransformer
     {
         $response = [
             'id' => $model->id,
-            'tenant_id' => $model->resident_id,   // @TODO delete
             'resident_id' => $model->resident_id,
             'building_id' => $model->building_id,
             'unit_id' => $model->unit_id,
@@ -28,7 +27,6 @@ class ContractTransformer extends BaseTransformer
             'duration' => $model->duration,
             'status' => $model->status,
             'contract_format' => $model->contract_format,
-            'rent_contract_format' => $model->contract_format, // @TODO delete
             'deposit_type' => $model->deposit_type,
             'deposit_status' => $model->deposit_status,
             'deposit_amount' => $model->deposit_amount,
@@ -49,7 +47,6 @@ class ContractTransformer extends BaseTransformer
 
         if ($model->relationExists('resident')) {
             $response['resident'] = (new ResidentTransformer())->transform($model->resident);
-            $response['tenant'] = (new ResidentTransformer())->transform($model->resident);   // @TODO delete
         }
 
         if ($model->relationExists('building')) {
