@@ -300,27 +300,65 @@
                         </el-tab-pane>
                         <el-tab-pane name="contracts">
                             <span slot="label">
-                                <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('models.unit.contract') }}</el-badge>
+                                <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
                             </span>
-                            <assignment
-                                    :toAssign.sync="toAssign"
-                                    :assign="assignResident"
-                                    :toAssignList="toAssignList"
-                                    :remoteLoading="remoteLoading"
-                                    :remoteSearch="remoteSearchResidents"
-                                    :multiple="multiple"
-                            />
-                            <relation-list
-                                    :actions="assigneesActions"
-                                    :columns="assigneesColumns"
-                                    :filterValue="false"
-                                    :fetchAction="false"
-                                    :filter="false"
-                                    :fetchStatus="false"
-                                    :addedAssigmentList="addedAssigmentList"
-                                    ref="assigneesList"
-                                    v-if="addedAssigmentList"
-                            />
+                            
+                            <el-row :gutter="20">
+                                <h3 class="chart-card-header">
+                                    <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                                </h3>
+                                
+                            </el-row>
+                            <el-table
+                                :data="model.contracts"
+                                style="width: 100%"
+                                class="contract-table"
+                                >
+                                <el-table-column
+                                    :label="$t('models.resident.contract.contract_id')"
+                                    prop="id"
+                                >
+                                    <template slot-scope="scope">
+                                        <span class="clickable" @click="editContract(scope.$index)">{{scope.row.contract_format}}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    :label="$t('models.resident.building.name')"
+                                    prop="building.name"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                    :label="$t('models.resident.unit.name')"
+                                    prop="unit.name"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                    :label="$t('models.resident.status.label')"
+                                >
+                                    <template slot-scope="scope">
+                                        <i class="icon-dot-circled" :class="[constants.contracts.status[scope.row.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
+                                        {{ constants.contracts.status[scope.row.status] ? $t('models.resident.contract.rent_status.' + constants.contracts.status[scope.row.status]) : ''}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    align="right"
+                                >
+                                    <template slot-scope="scope">
+                                        <el-tooltip
+                                            :content="$t('general.actions.edit')"
+                                            class="item" effect="light" 
+                                            placement="top-end">
+                                                <el-button @click="editContract(scope.$index)" icon="ti-pencil" size="mini" type="success"/>
+                                        </el-tooltip>
+                                        <el-tooltip
+                                            :content="$t('general.actions.delete')"
+                                            class="item" effect="light" 
+                                            placement="top-end">
+                                                <el-button @click="deleteContract(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
+                                        </el-tooltip>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
                         </el-tab-pane>
                     </el-tabs>
 
@@ -354,7 +392,7 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
     import Heading from 'components/Heading';
     import Card from 'components/Card';
     import EditActions from 'components/EditViewActions';
@@ -366,6 +404,7 @@
     import draggable from 'vuedraggable';
     import {displayError, displaySuccess} from "helpers/messages";
     import { EventBus } from '../../../event-bus.js';
+    
 
     export default {
         mixins: [UnitsMixin({
@@ -515,6 +554,11 @@
                 this.requestCount = request_count;
             });
         },
+        computed: {
+            ...mapGetters('application', {
+                constants: 'constants'
+            }),
+        },          
         watch: {
             "model.type" () {
                 if(this.model.type >= 3)
@@ -566,7 +610,7 @@
             overflow-y: scroll;
             height: 100%;
 
-            /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-residents {
+            /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-residents, /deep/ #tab-contracts {
                 padding-right: 40px;
             }
 
