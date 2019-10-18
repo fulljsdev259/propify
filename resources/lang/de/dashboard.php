@@ -45,7 +45,7 @@ return [
         'residents' => 'Einwohner',
         'requests' => 'Anfragen',
         'go_to_buildings' => 'zu den Liegenschaften',
-        'buildings_by_state' => 'Liegenschaften nach Kanton',
+        'buildings_by_state' => 'Liegenschaften nach Kanton'
     ],
     'residents' => [
         'total_residents' => 'Total Bewohner',

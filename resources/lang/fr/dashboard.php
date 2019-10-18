@@ -45,7 +45,7 @@ return [
         'residents' => 'Résidents',
         'requests' => 'demandes',
         'go_to_buildings' => 'Aller aux bâtiments',
-        'buildings_by_state' => 'Immeubles par état',
+        'buildings_by_state' => 'Immeubles par état'
     ],
     'residents' => [
         'total_residents' => 'Nombre total',
