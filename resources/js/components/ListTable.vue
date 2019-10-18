@@ -848,6 +848,11 @@
         margin: 0 auto !important;
     }
 
+    .el-button {
+        border-radius: 20px;
+        padding: 8.65px 15px;
+    }
+    
     .el-input {
         &.el-input--suffix {
             :global(.el-input__inner) {

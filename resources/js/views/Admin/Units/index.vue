@@ -87,7 +87,7 @@
                     withUsers: true,
                     prop: 'residents'
                 }, {
-                    width: 120,
+                    width: 150,
                     actions: [{
                         type: '',
                         icon: 'ti-pencil',

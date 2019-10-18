@@ -52,6 +52,10 @@ body {
         left: -20px;
     }
 }
+  
+.el-loading-mask.is-fullscreen {
+    z-index: 9 !important;
+}
 
 .admin-layout {
     .heading {
@@ -76,6 +80,7 @@ body {
         min-width: 70px;
         margin: 0 !important;
     }
+ 
     .switch-wrapper {
         margin-bottom: 22px;
         .el-form-item {

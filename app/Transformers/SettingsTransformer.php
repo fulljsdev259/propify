@@ -34,7 +34,6 @@ class SettingsTransformer extends TransformerAbstract
             'language' => $model->language,
             'logo' => $model->logo,
             'circle_logo' => $model->circle_logo,
-            'tenant_logo' => $model->resident_logo, // @TODO delete
             'resident_logo' => $model->resident_logo,
             'favicon_icon' => $model->favicon_icon,
             'pdf_font_family' => $model->pdf_font_family,

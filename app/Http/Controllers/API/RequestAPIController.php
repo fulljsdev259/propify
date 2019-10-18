@@ -143,7 +143,9 @@ class RequestAPIController extends AppBaseController
                 'resident.contracts' => function ($q) {
                     $q->with('building.address', 'unit');
                 },
-                'contract',
+                'contract' => function ($q) {
+                    $q->with('building.address', 'unit');
+                },
                 'category',
                 'comments.user',
                 'providers.address:id,country_id,state_id,city,street,zip',
@@ -231,7 +233,9 @@ class RequestAPIController extends AppBaseController
             'resident.contracts' => function ($q) {
                 $q->with('building.address', 'unit');
             },
-            'contract',
+            'contract'  => function ($q) {
+                $q->with('building.address', 'unit');
+            },
             'category',
             'comments.user',
             'providers.address:id,country_id,state_id,city,street,zip',
@@ -306,7 +310,9 @@ class RequestAPIController extends AppBaseController
             'resident.contracts' => function ($q) {
                 $q->with('building.address', 'unit');
             },
-            'contract',
+            'contract' => function ($q) {
+                $q->with('building.address', 'unit');
+            },
             'creator'
         ]);
         $response = (new RequestTransformer)->transform($request);
@@ -386,7 +392,9 @@ class RequestAPIController extends AppBaseController
         $updatedRequest->load([
             'media',
             'resident.user',
-            'contract',
+            'contract' => function ($q) {
+                $q->with('building.address', 'unit');
+            },
             'category',
             'managers.user',
             'users',

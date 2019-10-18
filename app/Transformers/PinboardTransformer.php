@@ -38,7 +38,6 @@ class PinboardTransformer extends BaseTransformer
             'published_at' => $model->published_at ? $model->published_at->toDateTimeString() : null,
             'user_id' => $model->user_id,
             'user' => $ut->transform($model->user),
-            'tenant' => $model->user->resident ? $tt->transform($model->user->resident) : null,  // @TODO delete
             'resident' => $model->user->resident ? $tt->transform($model->user->resident) : null,
             'liked' => $model->liked,
             'likes_count' => $model->likesCount,

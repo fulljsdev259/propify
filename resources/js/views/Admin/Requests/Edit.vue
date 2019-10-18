@@ -11,7 +11,7 @@
                     round
                     class="download-pdf"
             >
-                {{$t('models.request.download_pdf.title')}}
+                {{ $t('models.request.download_pdf.title') }}
             </el-button>
             <edit-actions :saveAction="submit" :deleteAction="deleteRequest" route="adminRequests"/>
         </heading>
@@ -798,9 +798,6 @@
 
 <style lang="scss">
 
-    .el-loading-mask.is-fullscreen {
-        z-index: 9 !important;
-    }
     .switch-item {
         display: flex;
         margin: 0;

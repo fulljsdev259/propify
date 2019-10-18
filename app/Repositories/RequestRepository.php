@@ -67,7 +67,7 @@ class RequestRepository extends BaseRepository
     public function create(array $attributes)
     {
         $attributes = self::getPostAttributes($attributes);
-
+        dd($attributes);
         if (isset($attributes['category_id'])) {
             $requestCategories = RequestCategory::where('has_qualifications', 1)->pluck('id');
             if (! $requestCategories->contains($attributes['category_id'])) {
@@ -90,11 +90,12 @@ class RequestRepository extends BaseRepository
      */
     private static function getPostAttributes($attributes)
     {
-        $user = Auth::user(); // @TODO @TODO
+        $user = Auth::user();
         if ($user->resident) {
             $attr = [];
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
+            $attr['contract_id'] = $attributes['contract_id'];
             $attr['category_id'] = $attributes['category_id'];
             $attr['visibility'] = $attributes['visibility'];
             $attr['priority'] = $attributes['priority'];
@@ -103,11 +104,13 @@ class RequestRepository extends BaseRepository
             $attr['unit_id'] = $user->resident->unit_id;
             $attr['status'] = Request::StatusReceived;
             $attr['qualification'] = array_flip(Request::Qualification)['none'];
-
             return $attr;
         }
 
-        if ($user->can('add-request_service')) { // @TODO correct
+        if ($user->can('add-request_service')) {
+            // @TODO correct add-request_service now not available $user->resident->id
+            // must be throw exception
+            //  if this related service user permissions then
             $attr = [];
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
@@ -119,8 +122,9 @@ class RequestRepository extends BaseRepository
             return $attr;
         }
 
-        $t = Resident::find($attributes['resident_id'] ?? 0);
-        $attributes['unit_id'] = $t->unit_id;
+        // already checked resident exists
+        $resident = Resident::find($attributes['resident_id']);
+        $attributes['unit_id'] = $resident->unit_id;
         $attributes['assignee_ids'] = [Auth::user()->id]; // @TODO where used
         $attributes['status'] = Request::StatusReceived;
         $attributes['due_date'] = Carbon::parse($attributes['due_date'])->format('Y-m-d');
@@ -137,6 +141,8 @@ class RequestRepository extends BaseRepository
     {
         $user = Auth::user();
         if ($user->can('edit-request_resident')) {
+            // @TODO correct edit-request_resident now not available
+            // I think it is resident permitted options
             $attr = [];
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
@@ -147,6 +153,8 @@ class RequestRepository extends BaseRepository
         }
 
         if ($user->can('edit-request_service')) {
+            // @TODO correct edit-request_service now not available
+            // I think it is service permitted options
             $attr = [];
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];

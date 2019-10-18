@@ -97,7 +97,7 @@
                     }
                 }, {
                     // width: 170,
-                    width: 120,
+                    width: 150,
                     actions: [
                         // {
                         //     type: 'primary',
