@@ -120,10 +120,18 @@
                                 </el-row>
 
                                 <el-form-item :label="$t('models.user.profile_image')">
-                                    <cropper :resize="false" :viewportType="'circle'" @cropped="cropped"/>
-                                    <img :src="`/${model.user.avatar}?${Date.now()}`"
-                                         style="width: 100%;max-width: 200px;"
-                                         v-if="!avatar.length && model.user.avatar">
+                                    <cropper
+                                            :boundary="{
+                                                width: 250,
+                                                height: 360
+                                            }"
+                                            :viewport="{
+                                                width: 250,
+                                                height: 250
+                                            }"
+                                            :resize="false"
+                                            :defaultAvatarSrc="!avatar.length && model.user.avatar ? '/'+model.user.avatar : ''"
+                                            @cropped="cropped"/>
                                 </el-form-item>
 
                                 <el-form-item style="margin-bottom: 0;" :label="$t('models.property_manager.slogan')"

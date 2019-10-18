@@ -210,9 +210,11 @@
             }
         }
     }
-    .cr-boundary {
-        width: 100% !important;
-        height: 100% !important;
+    .croppie-wrapper {
+        box-sizing: border-box;
+        * {
+            box-sizing: inherit;
+        }
     }
     .croppie-container {
         max-height: 360px;
@@ -220,9 +222,5 @@
             max-width: 100%;
             max-height: 100%;
         }
-    }
-    .croppie-wrapper {
-        width: 250px;
-        height: 360px;
     }
 </style>
