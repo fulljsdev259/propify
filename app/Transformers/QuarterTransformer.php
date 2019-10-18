@@ -31,6 +31,10 @@ class QuarterTransformer extends BaseTransformer
             $response['address'] = (new AddressTransformer)->transform($model->address);
         }
 
+        if ($model->relationExists('media')) {
+            $response['media'] = (new MediaTransformer())->transformCollection($model->media);
+        }
+
         return $response;
     }
 
@@ -54,6 +58,10 @@ class QuarterTransformer extends BaseTransformer
         $response['total_units_count'] = $units->count();
         $response['occupied_units_count'] = $occupiedUnits->count();
         $response['free_units_count'] = $units->count() - $occupiedUnits->count();
+
+        if ($model->relationExists('media')) {
+            $response['media'] = (new MediaTransformer())->transformCollection($model->media);
+        }
 
         return $response;
     }

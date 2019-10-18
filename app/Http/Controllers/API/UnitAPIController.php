@@ -102,7 +102,7 @@ class UnitAPIController extends AppBaseController
                     $unit->inactive_contracts_count = $unit->total_contracts_count - $unit->active_contracts_count;
                 });
             }
-            $units = $units->sortByDesc('name')->groupBy('floor')->sortKeys()->toArray();
+            $units = $units->sortBy('name')->groupBy('floor')->sortKeys()->toArray();
             if ($request->building_id) {
                 $buildingHasAttic = Building::whereKey($request->building_id)->value('attic');
                 if ($buildingHasAttic) {
@@ -131,7 +131,7 @@ class UnitAPIController extends AppBaseController
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
 
         $units = $this->unitRepository->with([
-            'building', 'residents.user'
+            'building', 'residents.user', 'media'
         ])->paginate($perPage);
 
         $response = (new UnitTransformer)->transformPaginator($units);
@@ -203,7 +203,7 @@ class UnitAPIController extends AppBaseController
             }
         }
 
-        $unit->load(['building', 'residents.user']);
+        $unit->load(['building', 'residents.user', 'media']);
         $response = (new UnitTransformer)->transform($unit);
         return $this->sendResponse($response, __('models.unit.saved'));
     }
@@ -255,7 +255,7 @@ class UnitAPIController extends AppBaseController
             return $this->sendError(__('models.unit.errors.not_found'));
         }
 
-        $unit->load(['building', 'residents.user']);
+        $unit->load(['building', 'residents.user', 'media']);
         $response = (new UnitTransformer)->transform($unit);
         return $this->sendResponse($response, 'Unit retrieved successfully');
     }
@@ -339,7 +339,7 @@ class UnitAPIController extends AppBaseController
             }
         }
 
-        $unit->load('building', 'residents.user');
+        $unit->load('building', 'residents.user', 'media');
         if ($shouldPinboard) {
             $pr->newResidentPinboard($unit->resident);
         }

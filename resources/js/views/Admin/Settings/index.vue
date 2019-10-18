@@ -74,7 +74,7 @@
                                                 <el-form-item :label="$t('settings.blank_pdf')" prop="blank_pdf">
                                                     <el-switch v-model="model.blank_pdf"/>
                                                 </el-form-item>
-                                                <div>
+                                                <div class="switcher__desc">
                                                     {{ $t('settings.blank_pdf_desc') }}
                                                 </div>
                                             </div>
@@ -134,7 +134,7 @@
                                             <el-form-item :label="$t('settings.pinboard_approval_enable')" prop="pinboard_approval_enable">
                                                 <el-switch v-model="model.pinboard_approval_enable"/>
                                             </el-form-item>
-                                            <div>
+                                            <div class="switcher__desc">
                                                 {{ $t('settings.pinboard_approval_enable_desc') }}
                                             </div>
                                         </div>
@@ -142,7 +142,7 @@
                                             <el-form-item :label="$t('settings.contact_enable')" prop="contact_enable">
                                                 <el-switch v-model="model.contact_enable"/>
                                             </el-form-item>
-                                            <div>
+                                            <div class="switcher__desc">
                                                 {{ $t('settings.contact_enable_desc')}}
                                             </div>
                                         </div>
@@ -886,6 +886,12 @@
 <style lang="scss">
     .settings {
         flex: 1;
+    }
+
+    .switcher__desc {
+        margin-top: 0.5em;
+        display: block;
+        font-size: 0.9em;
     }
 
     .dashboard-tabpanel {

@@ -32,6 +32,7 @@ class BuildingTransformer extends BaseTransformer
             'contact_enable' => $model->contact_enable,
             'description' => $model->description,
             'floor_nr' => $model->floor_nr,
+            'under_floor' => $model->under_floor,
             'basement' => $model->basement,
             'attic' => $model->attic,
             'created_at' => $model->created_at->format('Y-m-d'),

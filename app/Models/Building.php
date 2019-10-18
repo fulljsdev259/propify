@@ -49,6 +49,12 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  *          format="int32"
  *      ),
  *      @SWG\Property(
+ *          property="under_floor",
+ *          description="under_floor",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
  *          property="basement",
  *          description="basement",
  *          type="integer",
@@ -111,7 +117,8 @@ class Building extends AuditableModel implements HasMedia
         'longitude',
         'latitude',
         'contact_enable',
-        'internal_building_id'
+        'internal_building_id',
+        'under_floor'
     ];
 
     /**
@@ -124,6 +131,7 @@ class Building extends AuditableModel implements HasMedia
         'description' => 'string',
         'label' => 'string',
         'address_id' => 'integer',
+        'under_floor' => 'integer',
         'quarter_id' => 'integer',
         'floor_nr' => 'integer',
         'contact_enable' => 'integer',
@@ -148,7 +156,8 @@ class Building extends AuditableModel implements HasMedia
      */
     public static $rules = [
         'name' => 'required',
-        'floor_nr' => 'required'
+        'floor_nr' => 'required',
+        'under_floor' => 'in:0,1,2,3'
     ];
 
     protected $auditEvents = [

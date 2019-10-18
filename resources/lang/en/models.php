@@ -426,7 +426,7 @@ return [
         'status_changed' => 'Status changed',
         'priority_changed' => 'Priority changed',
         'assignment' => 'Assignment of managers/services providers',        
-        'active_reminder_switcher' => 'Active Reminder',
+        'active_reminder_switcher' => 'Reminder',
         'days_left' => 'How many days before should the email be sent?',
         'send_person' => 'Which person should be notified?',
         'sort' => 'Sort',
