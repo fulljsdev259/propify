@@ -581,7 +581,8 @@ return [
             'service_request' => 'Service Request',
             'contact_details' => 'Contact Details',
             'contact_text' => 'Voici les coordonnées du résident/propriétaire actuel du logement.',
-        ]
+        ],
+        'go_to_building' => 'Aller au bâtiment'
     ],
     'request_category' => [
         "title" => "Catégories de demandes",

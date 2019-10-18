@@ -581,7 +581,8 @@ return [
             'service_request' => 'Service Request',
             'contact_details' => 'Contact Details',
             'contact_text' => "Questi sono i dati di contatto dell'attuale residente/proprietario dell'unità abitativa.",
-        ]
+        ],
+        'go_to_building' => 'vai al palazzo'
     ],
     'request_category' => [
         "title" => "Richiedi categorie",

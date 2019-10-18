@@ -582,7 +582,9 @@ return [
             'service_request' => 'Serviceanfrage',
             'contact_details' => 'Kontaktdaten',
             'contact_text' => 'Dies sind die Kontaktdaten des aktuellen Bewohners/Besitzers der Wohneinheit.',
-        ]
+        ],
+        'go_to_building' => 'zu den Liegenschaft gehen'
+
     ],
     'request_category' => [
         'title' => 'Anfrage Kategorien',

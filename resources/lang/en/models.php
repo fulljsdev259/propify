@@ -581,7 +581,8 @@ return [
             'service_request' => 'Service Request',
             'contact_details' => 'Contact Details',
             'contact_text' => 'These are the contact details of the current resident/owner of the housing unit.',
-        ]
+        ],
+        'go_to_building' => 'go to building'
     ],
     'request_category' => [
         'title' => 'Request categories',
