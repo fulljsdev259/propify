@@ -94,9 +94,9 @@
                         request.unit = request.contract.unit
                     }
                     else {
-                        
-                        request.building = request.resident.contracts[0].building
-                        request.unit = request.resident.contracts[0].unit
+                        request.resident.filteredContracts = request.resident.contracts.filter(contract => contract.status == 1)
+                        request.building = request.resident.filteredContracts[0].building
+                        request.unit = request.resident.filteredContracts[0].unit
                     }
                     return request;
                 });
