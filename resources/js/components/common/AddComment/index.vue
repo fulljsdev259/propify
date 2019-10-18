@@ -34,7 +34,7 @@
     </div>
     <div v-if="type === 'internalNotices' && content" style="margin: 10px 41px 0 35px;">
         <el-row :gutter="10">
-            <el-col :span="20">
+            <el-col :span="24">
                 <el-form-item class="internal-notices-switch">
                     <span>{{ $t('general.components.common.internalnotices.switch_confirm')}}</span>
                     <el-switch v-model="isManagerSelect" @change="resetList"/>

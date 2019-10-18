@@ -436,6 +436,7 @@ return [
             'internalnotices' => [
                 'switch_confirm' => 'Do you want to select property manager/administrator?',
                 'input_placeholder' => 'Please enter a keyword',
+                'shared_with' => 'Shared with',
             ],
             'internalnotices_list' => [            
                 'load_more' => 'Load {count} more internal notice',            

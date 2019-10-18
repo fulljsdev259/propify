@@ -434,8 +434,9 @@ return [
                 ],
             ],
             'internalnotices' => [
-                'switch_confirm' => 'Möchten Sie den Property Manager/Verwalter auswählen?',
+                'switch_confirm' => 'Personen einbeziehen und benachrichtigen',
                 'input_placeholder' => 'Bitte geben Sie ein Stichwort ein',
+                'shared_with' => 'Geteilt mit',
             ],
             'internalnotices_list' => [            
                 'load_more' => 'Lade {count} weitere interne Notizen',            
