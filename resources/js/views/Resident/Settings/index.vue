@@ -76,7 +76,6 @@
                                                 :placeholder="$t('resident.placeholder.contract')"
                                                 class="custom-select"
                                                 filterable
-                                                clearable
                                                 value-key="loggedInUser.resident.default_contract_id">
                                         <el-option v-for="contract in dirtyContracts" 
                                                     :key="contract.id" 
