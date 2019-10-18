@@ -130,7 +130,17 @@
                             </el-row>
 
                             <el-form-item :label="$t('models.user.profile_image')">
-                                <cropper :resize="false" :viewportType="'circle'" @cropped="cropped"/>
+                                <cropper
+                                        :boundary="{
+                                            width: 250,
+                                            height: 360
+                                        }"
+                                        :viewport="{
+                                            width: 250,
+                                            height: 250
+                                        }"
+                                        :resize="false"
+                                        @cropped="cropped"/>
                             </el-form-item>
 
                             <el-form-item :label="$t('models.property_manager.slogan')" :rules="validationRules.slogan"

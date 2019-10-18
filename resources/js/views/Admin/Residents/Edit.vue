@@ -22,22 +22,44 @@
                                         </el-row>
                                         <el-row :gutter="20">
                                             <el-col :md="8" :lg="6" class="resident_avatar">
-                                                <cropper :resize="false" :viewportType="'circle'" @cropped="cropped"/>
-                                                <img
-                                                    src="~img/man.png"
-                                                    class="user-image"
-                                                    v-if="model.avatar==null && model.title == 'mr'"/>
-                                                <img
-                                                    src="~img/woman.png"
-                                                    class="user-image"
-                                                    v-else-if="model.avatar==null && model.title == 'mrs'"/>
-                                                <img
-                                                    src="~img/company.png"
-                                                    class="user-image"
-                                                    v-else-if="model.avatar==null && model.title == 'company'"/>
-                                                <img :src="`/${user.avatar}?${Date.now()}`"
-                                                    class="user-image"
-                                                    v-if="avatar.length == 0 && user.avatar">
+                                                <cropper
+                                                        v-if="model.title"
+                                                        :boundary="{
+                                                            width: 250,
+                                                            height: 360
+                                                        }"
+                                                        :viewport="{
+                                                            width: 250,
+                                                            height: 250
+                                                        }"
+                                                        :resize="false"
+                                                        :defaultAvatarSrc="
+                                                            !avatar.length && user.avatar
+                                                                ? '/'+user.avatar
+                                                                : model.avatar==null && model.title == 'mr'
+                                                                    ? '/images/man.png'
+                                                                    : model.avatar==null && model.title == 'mrs'
+                                                                        ? '/images/woman.png'
+                                                                        : model.avatar==null && model.title == 'company'
+                                                                            ? '/images/company.png'
+                                                                            : ''
+                                                        "
+                                                        @cropped="cropped"/>
+<!--                                                <img-->
+<!--                                                    src="~img/man.png"-->
+<!--                                                    class="user-image"-->
+<!--                                                    v-if="model.avatar==null && model.title == 'mr'"/>-->
+<!--                                                <img-->
+<!--                                                    src="~img/woman.png"-->
+<!--                                                    class="user-image"-->
+<!--                                                    v-else-if="model.avatar==null && model.title == 'mrs'"/>-->
+<!--                                                <img-->
+<!--                                                    src="~img/company.png"-->
+<!--                                                    class="user-image"-->
+<!--                                                    v-else-if="model.avatar==null && model.title == 'company'"/>-->
+<!--                                                <img :src="`/${user.avatar}?${Date.now()}`"-->
+<!--                                                    class="user-image"-->
+<!--                                                    v-if="avatar.length == 0 && user.avatar">-->
 
                                             </el-col>
                                             <el-col :md="16" :lg="18">
