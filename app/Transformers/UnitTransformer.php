@@ -62,6 +62,10 @@ class UnitTransformer extends BaseTransformer
             $response['building'] = (new BuildingSimpleTransformer)->transform($model->building);
         }
 
+        if ($model->relationExists('media')) {
+            $response['media'] = (new MediaTransformer())->transformCollection($model->media);
+        }
+
         if ($model->relationExists('address')) {
             $response['address'] = (new AddressTransformer)->transform($model->address);
         }

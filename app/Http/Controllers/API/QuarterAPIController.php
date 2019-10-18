@@ -102,19 +102,21 @@ class QuarterAPIController extends AppBaseController
         }
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        $quarters = $this->quarterRepository->with(['buildings' => function ($q) {
-            $q->select('id', 'quarter_id')
-                ->with([
-                    'units' => function ($q) {
-                        $q ->select('id', 'building_id')
-                            ->with([
-                                'contracts' => function ($q) {
-                                    $q->where('status', Contract::StatusActive)->select('unit_id', 'resident_id');
-                                }
-                            ]);
-                    }
-                ]);
-        }])->paginate($perPage);
+        $quarters = $this->quarterRepository->with([
+                'buildings' => function ($q) {
+                    $q->select('id', 'quarter_id')
+                        ->with([
+                            'units' => function ($q) {
+                                $q ->select('id', 'building_id')
+                                    ->with([
+                                        'contracts' => function ($q) {
+                                             $q->where('status', Contract::StatusActive)->select('unit_id', 'resident_id');
+                                        }
+                                    ]);
+                            }]);
+                },
+                'media'
+            ])->paginate($perPage);
         $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWIthStatistics');
         return $this->sendResponse($response, 'Quarters retrieved successfully');
     }
@@ -180,7 +182,7 @@ class QuarterAPIController extends AppBaseController
 
         if ($quarter) {
             DB::commit();
-            $quarter->load('address');
+            $quarter->load('address', 'media');
         } else {
             DB::rollBack();
         }
@@ -238,6 +240,7 @@ class QuarterAPIController extends AppBaseController
         if (empty($quarter)) {
             return $this->sendError(__('models.quarter.errors.not_found'));
         }
+        $quarter->load('media');
 
         $response = (new QuarterTransformer)->transform($quarter);
 
@@ -329,7 +332,7 @@ class QuarterAPIController extends AppBaseController
         $quarter = $this->quarterRepository->updateExisting($quarter, $input);
         if ($quarter) {
             DB::commit();
-            $quarter->load('address');
+            $quarter->load('address', 'media');
         } else {
             DB::rollBack();
         }
