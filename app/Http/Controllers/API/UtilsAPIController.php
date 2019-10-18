@@ -216,6 +216,7 @@ class UtilsAPIController extends AppBaseController
             'room' => Request::Room,
             'capture_phase' => Request::CapturePhase,
             'payer' => Request::Payer,
+            'category' => Request::Category
         ];
 
         return $result;

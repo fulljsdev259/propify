@@ -303,6 +303,15 @@ class Request extends AuditableModel implements HasMedia
         self::PayerResidentLandlord => 'resident/landlord',
     ];
 
+    const CategoryGeneral = 1;
+    const CategoryMalfunction = 2;
+    const CategoryDeficiency = 3;
+
+    const Category = [
+        self::CategoryGeneral => 'general',
+        self::CategoryMalfunction => 'malfunction',
+        self::CategoryDeficiency => 'deficiency',
+    ];
 
     const Fillable = [
         'creator_user_id',
