@@ -53,6 +53,9 @@
                     </el-tooltip>
                 </el-col>
                 <el-col :span="1" class="request-actions">
+                    <el-tooltip :content="$t('models.request.download_pdf.title')" placement="top" effect="light">
+                        <a @click="$emit('pdf-download', item.id)"><i class="icon icon-file-pdf"></i></a>
+                    </el-tooltip>
                 </el-col>
                 <el-col :span="4">
                     <span>{{ $t('models.request.assigned_property_managers') }}</span>
@@ -221,7 +224,8 @@ export default {
         formatDate (date) {
             var res = date.split(" ");
             return res[0] + ', ' +res[1].substr(0, 5);
-        }
+        },
+        
     },
 }
 </script>
