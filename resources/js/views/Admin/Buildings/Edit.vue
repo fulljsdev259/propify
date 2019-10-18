@@ -114,6 +114,15 @@
                                         <el-switch v-model="model.attic"/>
                                     </el-form-item>
                                 </el-col>
+                                <el-col :span="12">
+                                    <el-form-item :label="$t('models.building.under_floor')"
+                                                  :rules="validationRules.floor"
+                                                  prop="under_floor">
+                                        <el-input type="number"
+                                                  :min="0"
+                                                  v-model.number="model.under_floor"></el-input>
+                                    </el-form-item>
+                                </el-col>
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.building.internal_building_id')"
                                                   :rules="validationRules.internal_building_id"
@@ -212,7 +221,7 @@
                                     :key="item"
                                     :label="$t('models.building.media_category.' + item)"
                                     :value="item"
-                                    v-for="item in model.media_category">
+                                    v-for="item in $constants.file_categories">
                                 </el-option>
                             </el-select>
                             <el-alert

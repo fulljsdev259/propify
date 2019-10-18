@@ -92,7 +92,10 @@
                     <!--</el-form-item>-->
                             <el-row type="flex" :gutter="20">
                                 <el-col :span="12">
-                                    <el-form-item :label="$t('models.building.floor_nr')" :rules="validationRules.floor_nr" prop="floor_nr">
+                                    <el-form-item :label="$t('models.building.floor_nr')"
+                                                  style="margin-bottom: 10px;"
+                                                  :rules="validationRules.floor_nr"
+                                                  prop="floor_nr">
                                         <el-input type="number"
                                                   :min="0"
                                                   :max="30"
@@ -100,16 +103,18 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="12">
-                                    <div class="switch-wrapper">
+                                    <div class="switch-wrapper" style="margin-bottom: 10px;">
                                         <el-form-item :label="$t('models.unit.auto_create_question')" v-if="model.floor_nr > 0">
                                             <el-switch v-model="unitAutoCreate"/>
                                         </el-form-item>
-                                        <div class="switcher__desc">
-                                            {{ $t('models.unit.auto_create_description') }}
-                                        </div>
                                     </div>
                                 </el-col>
                             </el-row>
+                            <div class="switch-wrapper">
+                                <div class="switcher__desc">
+                                    {{ $t('models.unit.auto_create_description') }}
+                                </div>
+                            </div>
                             <el-row :gutter="20">
                                 <el-col :span="12"
                                         :key="item"
@@ -135,10 +140,10 @@
                                 <el-col :span="12">
                                     <el-form-item :label="$t('models.building.under_floor')"
                                                   :rules="validationRules.floor"
-                                                  :prop="'floor.' + 0">
+                                                  prop="under_floor">
                                         <el-input type="number"
                                                   :min="0"
-                                                  v-model.number="model.floor[0]"></el-input>
+                                                  v-model.number="model.under_floor"></el-input>
                                     </el-form-item>
                                 </el-col>
                             </el-row>
@@ -172,6 +177,9 @@
             ordinalSuffixFloor(i) {
                 let j = +i % 10,
                     k = +i % 100;
+                if (i === 0) {
+                    return 'Ground';
+                }
                 if (j === 1 && k !== 11) {
                     return i + "st";
                 }
@@ -191,17 +199,12 @@
             floors() {
                 let arr = [];
 
-                for (let i = 1; i <= this.model.floor_nr; i++) {
+                for (let i = 0; i <= this.model.floor_nr-1; i++) {
                     arr.push(i);
                 }
 
-                if (this.model.floor_nr !== '' &&
-                    this.model.floor_nr + 1 < this.model.floor.length
-                ) {
-                    this.model.floor = this.model.floor.splice(0, this.model.floor_nr + 1);
-                }
                 if (!this.unitAutoCreate) {
-                    this.model.floor = this.model.floor.splice(0, 1);
+                    this.model.floor = [];
                 }
 
                 return arr;

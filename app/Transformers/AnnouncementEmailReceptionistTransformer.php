@@ -25,14 +25,11 @@ class AnnouncementEmailReceptionistTransformer extends BaseTransformer
     {
         $response = [
             'pinboard_id' => $model->pinboard_id,
-            'tenant_ids' => $model->resident_ids,           // @TODO delete
-            'failed_tenant_ids' => $model->failed_resident_ids,  // @TODO delete
             'resident_ids' => $model->resident_ids,
             'failed_resident_ids' => $model->failed_resident_ids,
         ];
         // @TODO improve load resident data other place
         $residents = Resident::whereIn('id', $model->resident_ids)->get(['id', 'first_name', 'last_name']);
-        $response['tenants'] = $residents->toArray();       // @TODO delete
         $response['residents'] = $residents->toArray();
         return $response;
     }

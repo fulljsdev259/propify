@@ -266,20 +266,4 @@ class Contract extends AuditableModel implements HasMedia
     {
         return $this->belongsTo(Unit::class, 'unit_id', 'id');
     }
-
-    protected function getFormatColumnPrefix()
-    {
-        $colName = Cache::rememberForever('contract_format', function () {
-                return Schema::hasColumn($this->getTable(),'contract_format')
-                    ? 'contract_format'
-                    : 'rent_contract_format';
-            });
-        if ('resident_contract_format' == $colName) {
-            $colName = Schema::hasColumn($this->getTable(),'contract_format')
-                ? 'contract_format'
-                : 'rent_contract_format';
-        }
-
-        return $colName;
-    }
 }

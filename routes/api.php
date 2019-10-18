@@ -17,9 +17,6 @@ Route::group([
 Route::get('/constants', 'UtilsAPIController@constants')->name('constants');
 Route::put('/residents/resetpassword', 'ResidentAPIController@resetPassword');
 Route::post('/residents/activateResident', 'ResidentAPIController@activateResident');
-// @TODO delete
-Route::put('/tenants/resetpassword', 'ResidentAPIController@resetPassword');
-Route::post('/tenants/activateTenant', 'ResidentAPIController@activateResident');
 
 // private routes
 Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
@@ -68,29 +65,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::delete('/residents/{id}/media/{media_id}', 'MediaAPIController@residentDestroy')->name('residents.media.destroy');
 
 
-    // Residents // @TODO delete
-    Route::get('/tenants', 'ResidentAPIController@index')->name('residents');
-    Route::get('/tenants/gender-statistics', 'DashboardAPIController@residentsGenderStatistics')->name('residents.gender-statistics');
-    Route::get('/tenants/age-statistics', 'DashboardAPIController@residentsAgeStatistics')->name('residents.age-statistics');
-    Route::get('/tenants/latest', 'ResidentAPIController@latest')->name('residents.latest');
-    Route::get('/tenants/me', 'ResidentAPIController@showLoggedIn')->name('residents.me');
-    Route::get('/tenants/{id}', 'ResidentAPIController@show')->name('residents.show');
-    Route::get('/tenants/{id}/statistics', 'DashboardAPIController@residentStatistics')->name('residents.statistics.show');
-
-    Route::post('/tenants', 'ResidentAPIController@store')->name('residents.store');
-    Route::post('/addReview', 'ResidentAPIController@addReview');
-    Route::post('/tenants/{id}/media', 'MediaAPIController@residentUpload')->name('residents.media.upload');
-    Route::post('/tenants/{id}/send-credentials', 'ResidentAPIController@sendCredentials');
-    Route::post('/tenants/{id}/download-credentials', 'ResidentAPIController@downloadCredentials');
-
-    Route::put('/tenants/me', 'ResidentAPIController@updateLoggedIn')->name('residents.me.update');
-    Route::put('/tenants/{id}', 'ResidentAPIController@update')->name('residents.update');
-    Route::put('/tenants/{id}/status', 'ResidentAPIController@changeStatus')->name('residents.changeStatus');
-
-    Route::delete('/tenants/{id}', 'ResidentAPIController@destroy')->name('residents.destroy');
-    Route::post('/tenants/deletewithids', 'ResidentAPIController@destroyWithIds')->name('residents.destroyWithIds');
-    Route::delete('/tenants/{id}/media/{media_id}', 'MediaAPIController@residentDestroy')->name('residents.media.destroy');
-
     //Contract
     Route::get('/contracts', 'ContractAPIController@index')->name('contracts');
     Route::get('/contracts/{id}', 'ContractAPIController@show')->name('contracts.show');
@@ -100,16 +74,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::delete('/contracts/{id}', 'ContractAPIController@destroy')->name('contracts.destroy');
     Route::post('/contracts/deletewithids', 'ContractAPIController@destroyWithIds')->name('contracts.destroyWithIds');
     Route::delete('/contracts/{id}/media/{media_id}', 'MediaAPIController@contractDestroy')->name('contracts.media.destroy');
-
-    //Contract // @TODO delete
-    Route::get('/rent-contracts', 'ContractAPIController@index')->name('contracts');
-    Route::get('/rent-contracts/{id}', 'ContractAPIController@show')->name('contracts.show');
-    Route::post('/rent-contracts', 'ContractAPIController@store')->name('contracts.store');
-    Route::post('/rent-contracts/{id}/media', 'MediaAPIController@contractUpload')->name('contracts.media.upload');
-    Route::put('/rent-contracts/{id}', 'ContractAPIController@update')->name('contracts.update');
-    Route::delete('/rent-contracts/{id}', 'ContractAPIController@destroy')->name('contracts.destroy');
-    Route::post('/rent-contracts/deletewithids', 'ContractAPIController@destroyWithIds')->name('contracts.destroyWithIds');
-    Route::delete('/rent-contracts/{id}/media/{media_id}', 'MediaAPIController@contractDestroy')->name('contracts.media.destroy');
 
     // Location
     Route::get('/states', 'StateAPIController@index')->name('states');

@@ -303,6 +303,15 @@ class Request extends AuditableModel implements HasMedia
         self::PayerResidentLandlord => 'resident/landlord',
     ];
 
+    const CategoryGeneral = 1;
+    const CategoryMalfunction = 2;
+    const CategoryDeficiency = 3;
+
+    const Category = [
+        self::CategoryGeneral => 'general',
+        self::CategoryMalfunction => 'malfunction',
+        self::CategoryDeficiency => 'deficiency',
+    ];
 
     const Fillable = [
         'creator_user_id',
@@ -412,7 +421,7 @@ class Request extends AuditableModel implements HasMedia
      */
     public static $rulesPost = [
         'resident_id' => 'required|exists:residents,id',
-        'contract_id' => 'exists:contracts,id',
+        'contract_id' => 'required|exists:contracts,id',
         'title' => 'required|string',
         'description' => 'required|string',
         'priority' => 'required|integer',
@@ -430,7 +439,7 @@ class Request extends AuditableModel implements HasMedia
      */
     public static $rulesPostResident = [
         'resident_id' => 'exists:residents,id',
-        'contract_id' => 'exists:contracts,id',
+        'contract_id' => 'required|exists:contracts,id',
         'title' => 'required|string',
         'description' => 'required|string',
         'category_id' => 'required|integer',
