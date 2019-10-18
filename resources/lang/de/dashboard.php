@@ -49,7 +49,7 @@ return [
         'go_to_building' => 'zu den Liegenschaft gehen'
     ],
     'residents' => [
-        'total_residents' => 'Total Mieter',
+        'total_residents' => 'Total Bewohner',
         'average_age' => 'Durchschnittsalter:',
         'average_age_acr' => 'Ø Alter',
         'latest_residents' => 'Neueste Einwohner',
