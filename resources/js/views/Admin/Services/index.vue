@@ -68,7 +68,7 @@
                     label: 'general.requests',
                     withCounts: true,
                 }, {
-                    width: 120,
+                    width: 150,
                     actions: [{
                         
                         icon: 'ti-pencil',

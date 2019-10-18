@@ -114,7 +114,7 @@
                     prop: 'user.phone'
                 }, 
                 {
-                    width: 120,
+                    width: 150,
                     actions: [{
                         type: '',
                         icon: 'ti-pencil',
