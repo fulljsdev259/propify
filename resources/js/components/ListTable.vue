@@ -399,7 +399,8 @@
                                     <span>{{$t(action.title)}}</span>    
                                 </template>
                                 <template v-else>
-                                    {{$t(action.title)}}
+                                    <i class="ti-search"></i>
+                                    <span>{{ $t(action.title) }}</span>
                                 </template>
                             </el-button>
                         </template>

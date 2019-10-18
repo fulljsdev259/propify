@@ -497,7 +497,6 @@
                     width: 80,
                     buttons: [{
                         title: 'general.actions.edit',
-                        type: 'primary',
                         onClick: this.unitEditView,
                         tooltipMode: true,
                         icon: 'el-icon-edit'
