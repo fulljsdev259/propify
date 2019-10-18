@@ -58,7 +58,7 @@ return [
     ],
     'attached' => [
         'building' => 'Liegenschaft wurde zugewiesen.',
-        'quarter' => 'Überbauung wurde zugewiesen.',        
+        'quarter' => 'Projekt wurde zugewiesen.',        
         'resident' => "Bewohner wurde zugewiesen.",
         'service' => 'Dienstleister wurde zugewiesen.',
         'manager' => 'Bewirtschafter wurde zugewiesen.',
@@ -67,7 +67,7 @@ return [
     ],
     'detached' => [
         'building' => 'Liegenschaft wurde entfernt',
-        'quarter' => 'Überbauung wurde entfernt',        
+        'quarter' => 'Projekt wurde entfernt',        
         'resident' => "Bewohner wurde entfernt.",
         'service' => 'Dienstleister wurde entfernt.',
         'manager' => 'Bewirtschafter wurde entfernt.',
@@ -75,7 +75,7 @@ return [
         'tag' => 'Tag wurde entfernt',
     ],
     'filters' => [
-        'quarters' => 'Überbauungen',
+        'quarters' => 'Projekte',
         'buildings' => 'Liegenschaften',
         'requests' => 'Anfragen',
         'open_requests' => 'Offene Anfragen',
@@ -170,7 +170,7 @@ return [
     ],
     'assignment_types' => [
         'building' => 'Liegenschaft',
-        'quarter' => 'Überbauung',
+        'quarter' => 'Projekt',
         'services' => 'Dienstleister',
         'managers' => 'Bewirtschafter',
         'administrator' => 'Verwalterin'
@@ -566,7 +566,7 @@ return [
         'units' => 'Einheiten',
         'addresses' => 'Liegenschaften',
         'pinboard' => 'Pinnwand',
-        'quarters' => 'Überbauungen',
+        'quarters' => 'Projekte',
         'listings' => 'Marktplatz',
         'request_categories' => 'Kategorien',
         'services' => 'Dienstleister',
