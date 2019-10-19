@@ -164,7 +164,7 @@
                                             :type="action.type"
                                             size="mini"
                                         >
-                                            <i :class="action.icon ? action.icon : 'ti-pencil'"></i>
+                                            <i :class="action.icon ? action.icon : 'ti-search'"></i>
                                             <span>{{ $t(action.title) }}</span>
                                         </el-button>  
                                 </router-link>      
