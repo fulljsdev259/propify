@@ -321,7 +321,6 @@
                         page
                     });
 
-                    console.log('fetchAction resp',this.fetchAction, resp)
                     this.meta = _.omit(resp.data, 'data');
                     if(!resp.data) {
                         this.list = []

@@ -709,6 +709,12 @@
             if(this.mode == "edit") {
                 this.model = this.data
                 
+                if(this.model.resident)
+                {
+                    this.residents.push(this.model.resident)
+                    this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
+                }
+                console.log('this.model.resident', this.model.resident)
                 console.log('this.model.media', this.model.media)
                 if(!this.model.media)
                     this.model.media = []

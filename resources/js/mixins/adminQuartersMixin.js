@@ -241,22 +241,11 @@ export default (config = {}) => {
                         this.quarter_format = resp.quarter_format;
 
                         this.fileCount = this.model.media.length
-                        //this.residentCount = this.model.residents.length
 
-                        console.log(resp.buildings)
                         this.model.contracts = []
                         resp.buildings.forEach(building => {
-                            console.log(building.contracts)
                             this.model.contracts = this.model.contracts.concat(building.contracts)
                         })
-
-                        console.log(this.model.contracts)
-                        
-
-                        // this.model.residents.forEach(resident => {
-                        //     console.log('resident', resident)
-                        //     this.model.contracts = this.model.contracts.concat(resident.contracts)
-                        // })
                         
                         this.contractCount = this.model.contracts.length
                     },
