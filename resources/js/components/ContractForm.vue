@@ -65,6 +65,27 @@
         </el-row>
         <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
+                <el-form-item :label="$t('general.resident')" :rules="validationRules.resident_id" prop="resident_id">
+                    <el-select
+                        :loading="remoteLoading"
+                        :placeholder="$t('models.request.placeholders.resident')"
+                        :remote-method="remoteSearchResidents"
+                        filterable 
+                        remote
+                        reserve-keyword
+                        style="width: 100%;"
+                        v-model="model.resident_id">
+                        <el-option
+                            :key="resident.id"
+                            :label="resident.name"
+                            :value="resident.id"
+                            v-for="resident in residents"/>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20" v-if="model.unit_id">
+            <el-col :md="12">
                 <el-form-item :label="$t('models.resident.contract.rent_type')"
                             prop="type"
                             class="label-block">
@@ -392,7 +413,21 @@
                 type: Boolean,
                 default: false
             },
+            hideBuilding: {
+                type: Boolean,
+                default: false
+            },
+            showResident: {
+                type: Boolean,
+                default: false
+            },
             quarter_id: {
+                type: Number
+            },
+            building_id: {
+                type: Number
+            },
+            unit_id: {
                 type: Number
             },
         },
@@ -406,6 +441,7 @@
                 deposit_statuses: [],
                 contract_statuses: [],
                 deposit_types: [],
+                residents: [],
                 loading: false,
                 model: {
                     type: '',
@@ -471,7 +507,7 @@
                 ground_floor_label: this.$t('models.unit.floor_title.ground_floor'),
                 under_ground_floor_label: this.$t('models.unit.floor_title.under_ground_floor'),
                 top_floor_label: this.$t('models.unit.floor_title.top_floor'),
-                unit_id : 0,
+                original_unit_id : 0,
             }
         },
         methods: {
@@ -540,6 +576,23 @@
                 const rentStart = new Date(this.model.start_date).getTime();
                 return d <= rentStart;
             },
+            async remoteSearchResidents(search) {
+                if (search === '') {
+                    this.residents = [];
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const {data} = await this.getResidents({get_all: true, has_building: true,search});
+                        this.residents = data;
+                        this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
             async remoteContractSearchBuildings(search) {
                 if (search === '') {
                     this.buildings = [];
@@ -568,7 +621,7 @@
                     this.model.unit_id = '';
                 try {
                     
-                    let filtered_used_units = this.used_units.filter( unit => unit != this.unit_id && unit != "")
+                    let filtered_used_units = this.used_units.filter( unit => unit != this.original_unit_id && unit != "")
 
                     const resp1 = await this.getUnits({
                         show_contract_counts: true,
@@ -644,7 +697,7 @@
             deletePDFfromContract(index) {
                 this.model.media.splice(index, 1)
             },
-            ...mapActions(['getBuildings', 'getUnits']),
+            ...mapActions(['getBuildings', 'getUnits', 'getResidents']),
         },
         async created () {
             let parent_obj = this
@@ -659,7 +712,7 @@
                 console.log('this.model.media', this.model.media)
                 if(!this.model.media)
                     this.model.media = []
-                this.unit_id = this.data.unit_id
+                this.original_unit_id = this.data.unit_id
 
                 if( !this.hideBuildingAndUnits ) {
                 
@@ -695,6 +748,7 @@
 
             }
 
+            console.log('unit, budiling', this.unit_id, this.building_id)
             if(this.hideBuildingAndUnits) {
                 this.model.unit_id = this.unit_id
                 this.model.building__id = this.building_id

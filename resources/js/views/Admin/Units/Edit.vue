@@ -384,10 +384,30 @@
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
             <template v-if="editingContract || isAddContract">
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
-                    
                 <div class="content" v-if="visibleDrawer">
-                    <contract-form v-if="editingContract" :hide-building-and-units="true" :building_id="model.building.id" :unit_id="model.id" mode="edit" :data="editingContract" :resident_type="1" :resident_id="editingContract.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
-                    <contract-form v-else mode="add" :hide-building-and-units="true" :building_id="model.building.id" :unit_id="model.id" :resident_type="1" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
+                    <contract-form v-if="editingContract" 
+                                mode="edit" 
+                                :hide-building-and-units="true" 
+                                :show-resident="true"
+                                :building_id="model.building.id" 
+                                :unit_id="model.id" 
+                                :data="editingContract" 
+                                :resident_type="1" 
+                                :resident_id="editingContract.id" 
+                                :visible.sync="visibleDrawer" 
+                                :edit_index="editingContractIndex" 
+                                @update-contract="updateContract" 
+                                :used_units="used_units"/>
+                    <contract-form v-else 
+                                mode="add" 
+                                :hide-building-and-units="true"
+                                :show-resident="true"
+                                :building_id="model.building.id" 
+                                :unit_id="model.id" 
+                                :resident_type="1" 
+                                :visible.sync="visibleDrawer" 
+                                @add-contract="addContract" 
+                                :used_units="used_units"/>
                 </div>
             </template>
             <template v-else>
