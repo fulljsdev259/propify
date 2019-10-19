@@ -382,17 +382,22 @@
             </el-row>
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-            <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;Emergency</ui-divider>
-            
-            <div class="content" v-if="visibleDrawer">
-                <emergency-settings-form :visible.sync="visibleDrawer"/>
-            </div>
-            <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
+            <template v-if="editingContract || isAddContract">
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
+                    
+                <div class="content" v-if="visibleDrawer">
+                    <contract-form v-if="editingContract" :hide-building-and-units="false" mode="edit" :data="editingContract" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
+                    <contract-form v-else mode="add" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
+                </div>
+            </template>
+            <template v-else>
+                <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;Emergency</ui-divider>
                 
-            <div class="content" v-if="visibleDrawer">
-                <contract-form v-if="editingContract" :hide-building-and-units="false" mode="edit" :data="editingContract" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
-                <contract-form v-else mode="add" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
-            </div> -->
+                <div class="content" v-if="visibleDrawer">
+                    <emergency-settings-form :visible.sync="visibleDrawer"/>
+                </div>
+            </template>
+            
         </ui-drawer>
     </div>
 </template>
@@ -478,10 +483,12 @@
                 fileCount: 0,
                 requestCount: 0,
                 residentCount: 0,
+                contractCount: 0,
                 activeTab1: 'details',
                 activeRightTab: 'residents',
                 activeRequestTab: 'requests',
                 editingContract: null,
+                isAddContract: false,
                 editingContractIndex: -1,
             }
         },
@@ -502,6 +509,7 @@
             },
             toggleDrawer() {
                 this.visibleDrawer = true;
+                this.isAddContract = true;
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
 
@@ -562,6 +570,7 @@
                 this.model.contracts.push(data);
             },
             editContract(index) {
+                console.log('this.model.contracts', this.model.contracts, index)
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
@@ -592,6 +601,9 @@
             ...mapGetters('application', {
                 constants: 'constants'
             }),
+            used_units() {
+                return this.model.contracts.map(item => item.unit_id)
+            },
         },          
         watch: {
             "model.type" () {
@@ -606,6 +618,17 @@
                 if(this.hasAttic(this.model.building_id) == false) 
                     this.model.attic = false;
             },
+            'visibleDrawer': {
+                immediate: false,
+                handler (state) {
+                    // TODO - auto blur container if visible is true first
+                    if (!state) {
+                        this.editingContract = null
+                        this.isAddContract = false
+                        document.getElementsByTagName('footer')[0].style.display = "block";
+                    }
+                }
+            }
         }
         
        
