@@ -2,7 +2,7 @@
     <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
 
         <el-row :gutter="20" v-if="!hideBuildingAndUnits">
-            <el-col :md="12">
+            <el-col :md="12" v-if="!hideBuilding">
                 <el-form-item prop="building_id" :label="$t('models.resident.building.name')" class="label-block">
                     <el-select
                             :loading="remoteLoading"
@@ -714,8 +714,6 @@
                     this.residents.push(this.model.resident)
                     this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
                 }
-                console.log('this.model.resident', this.model.resident)
-                console.log('this.model.media', this.model.media)
                 if(!this.model.media)
                     this.model.media = []
                 this.original_unit_id = this.data.unit_id
@@ -754,10 +752,13 @@
 
             }
 
-            console.log('unit, budiling', this.unit_id, this.building_id)
             if(this.hideBuildingAndUnits) {
                 this.model.unit_id = this.unit_id
-                this.model.building__id = this.building_id
+                this.model.building_id = this.building_id
+            }
+
+            if(this.hideBuilding) {
+                this.model.building_id = this.building_id
             }
         }
     }
