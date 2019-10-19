@@ -31,6 +31,10 @@ class QuarterTransformer extends BaseTransformer
             $response['address'] = (new AddressTransformer)->transform($model->address);
         }
 
+        if ($model->relationExists('buildings')) {
+            $response['buildings'] = (new BuildingTransformer())->transformCollection($model->buildings);
+        }
+
         if ($model->relationExists('media')) {
             $response['media'] = (new MediaTransformer())->transformCollection($model->media);
         }
