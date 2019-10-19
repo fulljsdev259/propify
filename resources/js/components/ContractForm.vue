@@ -655,7 +655,10 @@
 
             if(this.mode == "edit") {
                 this.model = this.data
-
+                
+                console.log('this.model.media', this.model.media)
+                if(!this.model.media)
+                    this.model.media = []
                 this.unit_id = this.data.unit_id
 
                 if( !this.hideBuildingAndUnits ) {
@@ -690,6 +693,11 @@
                     }
                 }
 
+            }
+
+            if(this.hideBuildingAndUnits) {
+                this.model.unit_id = this.unit_id
+                this.model.building__id = this.building_id
             }
         }
     }
