@@ -9,10 +9,10 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FilterByStateCriteria
- * @package Prettus\Repository\Criteria
+ * Class FilterByTypeCriteria
+ * @package App\Criteria\Resident
  */
-class FilterByStateCriteria implements CriteriaInterface
+class FilterByTypeCriteria implements CriteriaInterface
 {
     /**
      * @var \Illuminate\Http\Request
@@ -35,10 +35,9 @@ class FilterByStateCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $stateId = $this->request->get('state_id', null);
-        if ($stateId) {
-            $model->join('loc_addresses', 'loc_addresses.id', '=', 'residents.address_id')
-                ->where('loc_addresses.state_id', $stateId);
+        $type = $this->request->get('type', null);
+        if ($type) {
+            return $model->where('residents.type', (int)$type);
         }
 
         return $model;
