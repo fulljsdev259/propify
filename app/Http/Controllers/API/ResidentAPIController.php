@@ -4,12 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Common\WhereCriteria;
-use App\Criteria\Resident\FilterByBuildingCriteria;
-use App\Criteria\Resident\FilterByQuarterCriteria;
+use App\Criteria\Resident\FilterByContractRelatedCriteria;
+use App\Criteria\Resident\FilterByLanguageCriteria;
 use App\Criteria\Resident\FilterByRequestCriteria;
-use App\Criteria\Resident\FilterByStateCriteria;
 use App\Criteria\Resident\FilterByStatusCriteria;
-use App\Criteria\Resident\FilterByUnitCriteria;
+use App\Criteria\Resident\FilterByTypeCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Resident\CreateRequest;
 use App\Http\Requests\API\Resident\DeleteRequest;
@@ -103,13 +102,12 @@ class ResidentAPIController extends AppBaseController
             'model' => (new Resident)->getTable(),
         ]);
 
-        $this->residentRepository->pushCriteria(new FilterByBuildingCriteria($request));
-        $this->residentRepository->pushCriteria(new FilterByQuarterCriteria($request));
-        $this->residentRepository->pushCriteria(new FilterByStateCriteria($request));
-        $this->residentRepository->pushCriteria(new FilterByRequestCriteria($request));
-        $this->residentRepository->pushCriteria(new FilterByUnitCriteria($request));
-        $this->residentRepository->pushCriteria(new FilterByStatusCriteria($request));
         $this->residentRepository->pushCriteria(new RequestCriteria($request, 'concat(first_name, " ", last_name)'));
+        $this->residentRepository->pushCriteria(new FilterByContractRelatedCriteria($request));
+        $this->residentRepository->pushCriteria(new FilterByRequestCriteria($request));
+        $this->residentRepository->pushCriteria(new FilterByStatusCriteria($request));
+        $this->residentRepository->pushCriteria(new FilterByLanguageCriteria($request));
+        $this->residentRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->residentRepository->pushCriteria(new LimitOffsetCriteria($request));
 
         $getAll = $request->get('get_all', false);
