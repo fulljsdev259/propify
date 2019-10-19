@@ -28,6 +28,7 @@ use App\Repositories\PinboardRepository;
 use App\Repositories\TemplateRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\UserRepository;
+use App\Transformers\ContractTransformer;
 use App\Transformers\ResidentTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -114,8 +115,16 @@ class ResidentAPIController extends AppBaseController
         if ($getAll) {
             $request->merge(['limit' => env('APP_PAGINATE', 10)]);
             $this->residentRepository->pushCriteria(new LimitOffsetCriteria($request));
-            $residents = $this->residentRepository->with('contracts')->get();
+            $residents = $this->residentRepository->with([
+                'contracts' => function ($q) {
+                    $q->with('building.address', 'unit');
+                }])
+                ->get();
             $this->fixCreatedBy($residents);
+            foreach ($residents as $resident) {
+                $resident->setRelation('contracts', collect((new ContractTransformer())->transformCollection($resident->contracts)));
+            }
+
             // @TODO use transformer
             return $this->sendResponse($residents->toArray(), 'Residents retrieved successfully');
         }
