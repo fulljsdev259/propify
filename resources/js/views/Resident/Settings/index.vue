@@ -57,7 +57,7 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane :label="$t('resident.default_address')" name="default_address">
+            <el-tab-pane :label="$t('resident.default_address')" name="default_address" v-if="contracts.length > 2">
                 <el-row>
                     <el-col :span="12" :xs="24">
                         <card>

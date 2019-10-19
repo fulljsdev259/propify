@@ -1,7 +1,7 @@
 <template>
     <el-form ref="form" class="request-add" :model="model" label-position="top" :rules="validationRules" v-loading="loading">
         
-        <el-form-item prop="contract_id" :label="$t('resident.contract')" required>
+        <el-form-item prop="contract_id" :label="$t('resident.contract')" v-if="contracts.length > 1" required>
             <el-select v-model="model.contract_id" 
                         :placeholder="$t('resident.placeholder.contract')"
                         class="custom-select"
@@ -306,6 +306,9 @@
             
             if(this.contracts.find(item => item.id == this.default_contract_id)) {
                 this.model.contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
+            }
+            else if(this.contracts.length == 1) {
+                this.model.contract_id = this.contracts[0].id
             }
             
             try {
