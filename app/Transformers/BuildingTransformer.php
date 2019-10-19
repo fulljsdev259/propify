@@ -105,6 +105,10 @@ class BuildingTransformer extends BaseTransformer
             $response['media'] = (new MediaTransformer)->transformCollection($model->media);
         }
 
+        if ($model->relationExists('contracts')) {
+            $response['contracts'] = (new ContractTransformer())->transformCollection($model->contracts);
+        }
+
         return $response;
     }
 

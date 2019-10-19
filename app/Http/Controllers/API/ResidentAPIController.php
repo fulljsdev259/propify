@@ -4,12 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Common\WhereCriteria;
-use App\Criteria\Resident\FilterByBuildingCriteria;
-use App\Criteria\Resident\FilterByQuarterCriteria;
+use App\Criteria\Resident\FilterByContractRelatedCriteria;
+use App\Criteria\Resident\FilterByLanguageCriteria;
 use App\Criteria\Resident\FilterByRequestCriteria;
-use App\Criteria\Resident\FilterByStateCriteria;
 use App\Criteria\Resident\FilterByStatusCriteria;
-use App\Criteria\Resident\FilterByUnitCriteria;
+use App\Criteria\Resident\FilterByTypeCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Resident\CreateRequest;
 use App\Http\Requests\API\Resident\DeleteRequest;
@@ -29,6 +28,7 @@ use App\Repositories\PinboardRepository;
 use App\Repositories\TemplateRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\UserRepository;
+use App\Transformers\ContractTransformer;
 use App\Transformers\ResidentTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -103,21 +103,28 @@ class ResidentAPIController extends AppBaseController
             'model' => (new Resident)->getTable(),
         ]);
 
-        $this->residentRepository->pushCriteria(new FilterByBuildingCriteria($request));
-        $this->residentRepository->pushCriteria(new FilterByQuarterCriteria($request));
-        $this->residentRepository->pushCriteria(new FilterByStateCriteria($request));
-        $this->residentRepository->pushCriteria(new FilterByRequestCriteria($request));
-        $this->residentRepository->pushCriteria(new FilterByUnitCriteria($request));
-        $this->residentRepository->pushCriteria(new FilterByStatusCriteria($request));
         $this->residentRepository->pushCriteria(new RequestCriteria($request, 'concat(first_name, " ", last_name)'));
+        $this->residentRepository->pushCriteria(new FilterByContractRelatedCriteria($request));
+        $this->residentRepository->pushCriteria(new FilterByRequestCriteria($request));
+        $this->residentRepository->pushCriteria(new FilterByStatusCriteria($request));
+        $this->residentRepository->pushCriteria(new FilterByLanguageCriteria($request));
+        $this->residentRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->residentRepository->pushCriteria(new LimitOffsetCriteria($request));
 
         $getAll = $request->get('get_all', false);
         if ($getAll) {
             $request->merge(['limit' => env('APP_PAGINATE', 10)]);
             $this->residentRepository->pushCriteria(new LimitOffsetCriteria($request));
-            $residents = $this->residentRepository->with('contracts')->get();
+            $residents = $this->residentRepository->with([
+                'contracts' => function ($q) {
+                    $q->with('building.address', 'unit');
+                }])
+                ->get();
             $this->fixCreatedBy($residents);
+            foreach ($residents as $resident) {
+                $resident->setRelation('contracts', collect((new ContractTransformer())->transformCollection($resident->contracts)));
+            }
+
             // @TODO use transformer
             return $this->sendResponse($residents->toArray(), 'Residents retrieved successfully');
         }
