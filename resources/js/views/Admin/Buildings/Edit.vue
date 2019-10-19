@@ -273,6 +273,68 @@
                             v-if="model.id"
                         />
                     </el-tab-pane>
+                    <el-tab-pane name="contracts">
+                        <span slot="label">
+                            <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
+                        </span>
+                        
+                        <el-row :gutter="20">
+                            <h3 class="chart-card-header">
+                                <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>
+                            </h3>
+                            
+                        </el-row>
+                        <el-table
+                            :data="model.contracts"
+                            style="width: 100%"
+                            class="contract-table"
+                            >
+                            <el-table-column
+                                :label="$t('models.resident.contract.contract_id')"
+                                prop="id"
+                            >
+                                <template slot-scope="scope">
+                                    <span class="clickable" @click="editContract(scope.$index)">{{scope.row.contract_format}}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                :label="$t('models.resident.building.name')"
+                                prop="building.name"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                :label="$t('models.resident.unit.name')"
+                                prop="unit.name"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                :label="$t('models.resident.status.label')"
+                            >
+                                <template slot-scope="scope">
+                                    <i class="icon-dot-circled" :class="[constants.contracts.status[scope.row.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
+                                    {{ constants.contracts.status[scope.row.status] ? $t('models.resident.contract.rent_status.' + constants.contracts.status[scope.row.status]) : ''}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                align="right"
+                            >
+                                <template slot-scope="scope">
+                                    <el-tooltip
+                                        :content="$t('general.actions.edit')"
+                                        class="item" effect="light" 
+                                        placement="top-end">
+                                            <el-button @click="editContract(scope.$index)" icon="ti-pencil" size="mini" type="success"/>
+                                    </el-tooltip>
+                                    <el-tooltip
+                                        :content="$t('general.actions.delete')"
+                                        class="item" effect="light" 
+                                        placement="top-end">
+                                            <el-button @click="deleteContract(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
+                                    </el-tooltip>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
                     <el-tab-pane name="managers">
                         <span slot="label">
                             <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('models.building.managers') }}</el-badge>
@@ -387,11 +449,21 @@
         />
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-            <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;Emergency</ui-divider>
-            
-            <div class="content" v-if="visibleDrawer">
-                <emergency-settings-form :visible.sync="visibleDrawer"/>
-            </div>
+            <template v-if="editingContract || isAddContract">
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
+                    
+                <div class="content" v-if="visibleDrawer">
+                    <contract-form v-if="editingContract" :hide-building-and-units="false" mode="edit" :data="editingContract" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
+                    <contract-form v-else mode="add" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
+                </div>
+            </template>
+            <template v-else>
+                <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;Emergency</ui-divider>
+                
+                <div class="content" v-if="visibleDrawer">
+                    <emergency-settings-form :visible.sync="visibleDrawer"/>
+                </div>
+            </template>
         </ui-drawer>
         
     </div>
@@ -414,6 +486,7 @@
     import AssignmentByType from 'components/AssignmentByType';
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
     import { EventBus } from '../../../event-bus.js';
+    import ContractForm from 'components/ContractForm';
 
     export default {
         mixins: [globalFunction, BuildingsMixin({
@@ -430,7 +503,8 @@
             RelationList,
             DeleteBuildingModal,
             AssignmentByType,
-            EmergencySettingsForm
+            EmergencySettingsForm,
+            ContractForm
         },
         data() {
             return {
@@ -549,7 +623,11 @@
                 assigneeCount: 0,
                 unitCount: 0,
                 requestCount: 0,
-                visibleDrawer: false
+                contractCount: 0,
+                visibleDrawer: false,
+                editingContract: null,
+                isAddContract: false,
+                editingContractIndex: -1,
             };
         },
         methods: {
@@ -784,6 +862,11 @@
                 this.visibleDrawer = true;
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
+            toggleAddDrawer() {
+                this.visibleDrawer = true;
+                this.isAddContract = true
+                document.getElementsByTagName('footer')[0].style.display = "none";
+            },
              notifyProviderUnassignment(row) {
                 this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
                     confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
@@ -814,6 +897,31 @@
                 this.resetToAssignProviderList();
                 this.serviceCount--;
                 displaySuccess(resp.data)
+            },
+            addContract (data) {
+                this.model.contracts.push(data);
+            },
+            editContract(index) {
+                console.log('this.model.contracts', this.model.contracts, index)
+                this.editingContract = this.model.contracts[index];
+                this.editingContractIndex = index;
+                this.visibleDrawer = true;
+                document.getElementsByTagName('footer')[0].style.display = "none";
+            },
+            updateContract(index, params) {
+                this.model.contracts[index] = params;
+            },
+            deleteContract(index) {
+
+                this.$confirm(this.$t(`general.swal.delete_contract.text`), this.$t(`general.swal.delete_contract.title`), {
+                    type: 'warning'
+                }).then(async () => {
+                    if(config.mode == "edit" ) {
+                        await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
+                    }
+                    this.model.contracts.splice(index, 1)
+                }).catch(() => {
+                });
             },
         },
         mounted() {
@@ -853,6 +961,10 @@
                     label: this.$t('settings.contact_enable.hide'),
                 }]
             },
+            used_units() {
+                
+                return this.model.contracts.map(item => item.unit_id)
+            },
         },
         watch: {
             'visibleDrawer': {
@@ -860,6 +972,8 @@
                 handler (state) {
                     // TODO - auto blur container if visible is true first
                     if (!state) {
+                        this.editingContract = null
+                        this.isAddContract = false
                         document.getElementsByTagName('footer')[0].style.display = "block";
                     }
                 }
@@ -879,7 +993,7 @@
         }
     }
     
-    #tab-files, #tab-companies, #tab-requests, #tab-residents, #tab-managers, #tab-units{
+    #tab-files, #tab-companies, #tab-requests, #tab-residents, #tab-contracts, #tab-managers, #tab-units{
         padding-right: 40px;
     }
 </style>

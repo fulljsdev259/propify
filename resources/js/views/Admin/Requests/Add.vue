@@ -233,13 +233,13 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="12" v-if="model.resident_id">
+                        <el-col :md="12" v-if="model.resident_id && contracts.length > 1">
                             <el-form-item :label="$t('models.resident.contract.title')" :rules="validationRules.contract_id"
                                               prop="contract_id">
                                 <el-select v-model="model.contract_id" 
                                             :placeholder="$t('resident.placeholder.contract')"
                                             class="custom-select">
-                                    <el-option v-for="contract in dirtyContracts" 
+                                    <el-option v-for="contract in contracts" 
                                                 :key="contract.id" 
                                                 :label="contract.building_room_floor_unit" 
                                                 :value="contract.id" />

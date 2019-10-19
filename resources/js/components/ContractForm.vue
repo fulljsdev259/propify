@@ -655,6 +655,7 @@
 
             if(this.mode == "edit") {
                 this.model = this.data
+
                 this.unit_id = this.data.unit_id
 
                 if( !this.hideBuildingAndUnits ) {
