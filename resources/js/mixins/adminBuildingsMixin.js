@@ -382,6 +382,14 @@ export default (config = {}) => {
                         this.fileCount = this.model.media.length
                         this.residentCount = this.model.residents.length
 
+                        this.model.contracts = []
+                        // this.model.residents.forEach(resident => {
+                        //     console.log('resident', resident)
+                        //     this.model.contracts = this.model.contracts.concat(resident.contracts)
+                        // })
+                        
+                        this.contractCount = this.model.contracts.length
+
                         if (this.model.quarter) {
                             this.$set(this.model, 'quarter_id', this.model.quarter.id);
                             this.remoteSearchQuarters(`${this.model.quarter.name}`);

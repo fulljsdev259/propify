@@ -513,7 +513,6 @@
                             })
                             params.building = this.buildings.find(item => item.id == this.model.building_id)
 
-                            console.log('edit case', params)
                             if (this.mode == "add") {
                                 const resp = await this.$store.dispatch('contracts/create', params);
                                 this.$emit('add-contract', resp.data)
@@ -657,7 +656,6 @@
             if(this.mode == "edit") {
                 this.model = this.data
 
-                console.log('contract form data', this.model)
                 this.unit_id = this.data.unit_id
 
                 if( !this.hideBuildingAndUnits ) {
