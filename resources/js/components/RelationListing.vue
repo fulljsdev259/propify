@@ -379,7 +379,7 @@
 </style>
 <style lang="scss" scoped>    
 
-    .el-button {
+    .el-button--default {
         border-radius: 20px;
         padding: 8.65px 15px;
     }

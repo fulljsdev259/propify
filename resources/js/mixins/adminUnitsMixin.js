@@ -88,7 +88,7 @@ export default (config = {}) => {
                 toAssign: '',
                 addedAssigmentList: [],
                 media: [],
-                contractCount: 0
+                
             }
         },
         methods: {

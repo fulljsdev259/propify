@@ -15,7 +15,7 @@ return [
 	'failed'   => 'Diese Kombination aus Zugangsdaten wurde nicht in unserer Datenbank gefunden.',
 	'throttle' => 'Zu viele Loginversuche. Versuchen Sie es bitte in :seconds Sekunden nochmal.',
 	'login_welcome' => 'Willkommen zurück, bitte melden Sie sich mit Ihrem Konto an.',
-	'title' => 'Mit unserer residenten App ist alles einfacher.',
+	'title' => 'Mit unserer Bewohner App ist alles einfacher.',
 	'intro' => 'Um die Anliegen unserer Bewohner noch schneller zu bearbeiten, erhalten unsere Bewohner Zugang zu einem geschützten Bereich, mit dem das Mietverhältnis digital verwaltet werden kann. Durch die digitale Verarbeitung können wir noch schneller handeln und Transparenz für alle Beteiligten schaffen.',
 	'benefit_1' => [
 		'title' => 'Daten und Dokumente online einsehbar',

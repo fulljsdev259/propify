@@ -273,4 +273,12 @@ class Building extends AuditableModel implements HasMedia
     {
         return $this->hasManyThrough(Request::class, Resident::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
+    }
 }

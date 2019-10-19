@@ -9,10 +9,10 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FilterByQuarterCriteria
- * @package Prettus\Repository\Criteria
+ * Class FilterByTypeCriteria
+ * @package App\Criteria\Resident
  */
-class FilterByQuarterCriteria implements CriteriaInterface
+class FilterByLanguageCriteria implements CriteriaInterface
 {
     /**
      * @var \Illuminate\Http\Request
@@ -27,7 +27,7 @@ class FilterByQuarterCriteria implements CriteriaInterface
     /**
      * Apply criteria in query repository
      *
-     * @param         Builder|Model     $model
+     * @param Builder|Model $model
      * @param RepositoryInterface $repository
      *
      * @return mixed
@@ -35,11 +35,11 @@ class FilterByQuarterCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $did = $this->request->get('quarter_id', null);
-        if ($did) {
-            $model->join('buildings', 'buildings.id', '=', 'residents.building_id')
-                ->where('buildings.quarter_id', $did);
-        }
+        $language = $this->request->get('language', null);
+        if (!$language) { return $model; }
+
+        $model->join('user_settings', 'user_settings.user_id', '=', 'residents.user_id')
+            ->where('user_settings.language', $language);
 
         return $model;
     }

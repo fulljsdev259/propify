@@ -131,30 +131,6 @@ export default (config = {}) => {
             form() {
                 return this.$refs.form;
             },
-            dirtyContracts() {
-                return this.contracts.map(contract => { 
-                    // let floor_label;
-                    // if(contract.unitd.attic == 'attic')
-                    // {
-                    //     floor_label = this.$t('models.unit.floor_title.top_floor')
-                    // }
-                    // else if(contract.unit.floor > 0)
-                    // {
-                    //     floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
-                    // }
-                    // else if(contract.unit.floor == 0)
-                    // {
-                    //     floor_label = this.$t('models.unit.floor_title.ground_floor')
-                    // }
-                    // else if(contract.unit.floor < 0)
-                    // {
-                    //     floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
-                    // }
-                    // contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
-                    contract.building_room_floor_unit = contract.building_id + " -- " + contract.unit_id
-                    return contract
-                });
-            },
         },
         watch: {
             "$i18n.locale": {
@@ -484,9 +460,37 @@ export default (config = {}) => {
             changeResident( resident_id ) {
 
                 this.resident = this.residents.find(resident => resident.id == resident_id)
-
+                // this.contracts = this.resident.contracts.filter( contract => contract.status == 1)
                 this.contracts = this.resident.contracts
+
+                this.contracts = this.contracts.map(contract => { 
+                    // let floor_label;
+                    // if(contract.unitd.attic == 'attic')
+                    // {
+                    //     floor_label = this.$t('models.unit.floor_title.top_floor')
+                    // }
+                    // else if(contract.unit.floor > 0)
+                    // {
+                    //     floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                    // }
+                    // else if(contract.unit.floor == 0)
+                    // {
+                    //     floor_label = this.$t('models.unit.floor_title.ground_floor')
+                    // }
+                    // else if(contract.unit.floor < 0)
+                    // {
+                    //     floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                    // }
+                    // contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                    contract.building_room_floor_unit = contract.building_id + " -- " + contract.unit_id
+                    return contract
+                });
+
+
                 console.log(this.contracts)
+                if(this.contracts.length == 1) {
+                    this.model.contract_id = this.contracts[0].id
+                }
             }
         }
     };

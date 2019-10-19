@@ -240,7 +240,16 @@ class QuarterAPIController extends AppBaseController
         if (empty($quarter)) {
             return $this->sendError(__('models.quarter.errors.not_found'));
         }
-        $quarter->load('media');
+        $quarter->load([
+            'media',
+            'buildings' => function ($q) {
+                $q->with([
+                    'contracts' => function ($q) {
+                        $q->with('building.address', 'unit', 'resident.user');
+                    },
+                ]);
+            }
+        ]);
 
         $response = (new QuarterTransformer)->transform($quarter);
 
