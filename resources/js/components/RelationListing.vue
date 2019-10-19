@@ -167,7 +167,7 @@
                             {{scope.row.name}}
                         </router-link>                        
                     </div>
-                    <div v-else-if="column.type === 'residentName'" class="normal">                        
+                    <div v-else-if="column.type === 'residentName'" class="normal"> 
                         <router-link :to="{name: 'adminResidentsView', params: {id: scope.row.id}}">
                             {{scope.row.name}}
                         </router-link>                        
@@ -321,16 +321,30 @@
                         page
                     });
 
+                    console.log('fetchAction resp',this.fetchAction, resp)
                     this.meta = _.omit(resp.data, 'data');
                     if(!resp.data) {
                         this.list = []
                     }
                     else if (page === 1) {
+                        
+                        if(this.fetchAction == "getBuildings") {
+                            resp.data.data.forEach(item => {
+                                item.residents = item.contracts.map(contract => contract.resident)
+                                item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
+                            })
+                        }
                         this.list = resp.data.data;
                         if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
                             this.unitsTypeLabelMap();
                         }
                     } else {
+                        if(this.fetchAction == "getBuildings") {
+                            resp.data.data.forEach(item => {
+                                item.residents = item.contracts.map(contract => contract.resident)
+                                item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
+                            })
+                        }
                         this.list.push(...resp.data.data);
                         if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
                             this.unitsTypeLabelMap();

@@ -9,7 +9,7 @@ export default {
             }
 
             building.residents = building.contracts.map(contract => contract.resident)
-            building.residentscount = building.residents > 2 ? (building.residents - 2) : 0;
+            building.residentscount = building.residents.length > 2 ? (building.residents.length - 2) : 0;
             building.residents = building.residents.splice(0, 2);
             
             const managers = [...building.managers];

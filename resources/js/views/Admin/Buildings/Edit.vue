@@ -700,6 +700,7 @@
 
             },
             residentEditView(row) {
+                console.log('row', row)
                 this.$router.push({
                     name: 'adminResidentsView',
                     params: {
