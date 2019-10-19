@@ -63,7 +63,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20" v-if="model.unit_id">
+        <el-row :gutter="20" v-if="showResident">
             <el-col :md="12">
                 <el-form-item :label="$t('general.resident')" :rules="validationRules.resident_id" prop="resident_id">
                     <el-select
@@ -448,8 +448,8 @@
                     duration: '',
                     start_date: '',
                     end_date: '',
-                    deposit_amount: '',
-                    deposit_type: '',
+                    deposit_amount: 0,
+                    deposit_type: 1,
                     monthly_rent_net: '',
                     monthly_maintenance: '',
                     status: 1,

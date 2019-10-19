@@ -386,6 +386,11 @@ export default (config = {}) => {
 
                         this.model.residents = this.model.contracts.map(contract => contract.resident);
 
+                        this.model.residents = this.model.residents.filter((item, index) => {
+                            return this.model.residents.indexOf(item) === index
+                        })
+
+                        console.log('residents', this.model.residents)
                         this.residentCount = this.model.residents.length
 
                         

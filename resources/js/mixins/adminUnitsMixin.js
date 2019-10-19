@@ -307,6 +307,10 @@ export default (config = {}) => {
                         this.addedAssigmentList = [];
                         this.addedAssigmentList = this.model.contracts.map(contract => contract.resident);
 
+                        this.model.residents = this.model.residents.filter((item, index) => {
+                            return this.model.residents.indexOf(item) === index
+                        })
+
                         this.addedAssigmentList.map((user) => {
                             if (user.status == 1) {
                                 user.statusString = 'Active';
