@@ -138,7 +138,10 @@ class BuildingAPIController extends AppBaseController
         $buildings = $this->buildingRepository->with([
                 'address.state',
                 'serviceProviders',
-                'residents.user',
+                'residents.user', // @TODO must be delete
+                'contracts' => function ($q) {
+                    $q->with('building.address', 'unit', 'resident.user');
+                },
                 'propertyManagers',
                 'lastPropertyManagers.user',
                 'users'
@@ -219,7 +222,10 @@ class BuildingAPIController extends AppBaseController
         $model = $this->buildingRepository->getModel();
         $buildings = $model->select(['id', 'name'])->orderByDesc('id')->limit($limit)->withCount([
             'units',
-            'residents',
+            'residents', // @TODO must be delete
+            'contracts' => function ($q) {
+                $q->with('building.address', 'unit', 'resident.user');
+            },
         ])->get();
         return $this->sendResponse($buildings->toArray(), 'Buildings retrieved successfully');
     }
@@ -247,7 +253,10 @@ class BuildingAPIController extends AppBaseController
             ])->withCount([
                 'units',
                 'propertyManagers',
-                'residents',
+                'residents', // @TODO must be delete
+                'contracts' => function ($q) {
+                    $q->with('building.address', 'unit', 'resident.user');
+                },
                 'users'
             ])->allRequestStatusCount()
             ->get();
@@ -312,6 +321,12 @@ class BuildingAPIController extends AppBaseController
         $building = $this->buildingRepository->create($input);
         $floorData = $request->get('floor', []);
         $building = $this->buildingRepository->saveManyUnit($building, $floorData, $address->house_num);
+
+        $building->load([
+            'contracts' => function ($q) {
+                $q->with('building.address', 'unit', 'resident.user');
+            },
+        ]);
         $response = (new BuildingTransformer)->transform($building);
 
         return $this->sendResponse($response, __('models.building.saved'));
@@ -365,8 +380,19 @@ class BuildingAPIController extends AppBaseController
         }
 
         $building
-            ->load('address.state', 'serviceProviders', 'residents.user', 'propertyManagers',
-                'lastPropertyManagers.user', 'media', 'quarter', 'users')
+            ->load([
+                'address.state',
+                'serviceProviders',
+                'residents.user', // @TODO must be delete
+                'contracts' => function ($q) {
+                    $q->with('building.address', 'unit', 'resident.user');
+                },
+                'propertyManagers',
+                'lastPropertyManagers.user',
+                'media',
+                'quarter',
+                'users'
+            ])
             ->loadCount('activeResidents', 'inActiveResidents');
         $response = (new BuildingTransformer)->transform($building);
         $response['media_category'] = \ConstFileCategories::MediaCategories; // @TODO delete
@@ -462,7 +488,14 @@ class BuildingAPIController extends AppBaseController
         $floorData = $request->get('floor', []);
         $building = $this->buildingRepository->saveManyUnit($building, $floorData, $address->house_num);
 
-        $building->load(['address.state', 'media', 'serviceProviders']);
+        $building->load([
+            'address.state',
+            'media',
+            'serviceProviders',
+            'contracts' => function ($q) {
+                $q->with('building.address', 'unit', 'resident.user');
+            },
+        ]);
         $response = (new BuildingTransformer)->transform($building);
         return $this->sendResponse($response, __('models.building.saved'));
     }

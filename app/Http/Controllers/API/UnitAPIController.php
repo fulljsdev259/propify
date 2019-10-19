@@ -132,7 +132,7 @@ class UnitAPIController extends AppBaseController
 
         $units = $this->unitRepository->with([
             'building',
-            'residents.user',
+            'residents.user', // @TODO delete
             'media',
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
@@ -210,7 +210,7 @@ class UnitAPIController extends AppBaseController
 
         $unit->load([
             'building',
-            'residents.user',
+            'residents.user', // @TODO delete
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
@@ -269,7 +269,7 @@ class UnitAPIController extends AppBaseController
 
         $unit->load([
             'building',
-            'residents.user',
+            'residents.user', // @TODO delete
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
@@ -360,7 +360,7 @@ class UnitAPIController extends AppBaseController
 
         $unit->load([
             'building',
-            'residents.user',
+            'residents.user', // @TODO delete
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
