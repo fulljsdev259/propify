@@ -460,7 +460,8 @@ export default (config = {}) => {
             changeResident( resident_id ) {
 
                 this.resident = this.residents.find(resident => resident.id == resident_id)
-                this.contracts = this.resident.contracts.filter( contract => contract.status == 1)
+                // this.contracts = this.resident.contracts.filter( contract => contract.status == 1)
+                this.contracts = this.resident.contracts
 
                 this.contracts = this.contracts.map(contract => { 
                     // let floor_label;
