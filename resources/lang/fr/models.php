@@ -393,6 +393,7 @@ return [
         "edit_title" => "Demande de modification",
         "add_title" => "Ajouter une demande",
         "due_date" => "Date d'échéance",
+        "solved_date" => "Fait à la date",
         "closed_date" => "Date de fermeture",
         "service" => "Service",
         "created_by" => "Créé par",

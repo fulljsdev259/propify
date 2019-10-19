@@ -393,6 +393,7 @@ return [
         'edit_title' => 'Edit Request',
         'add_title' => 'Add Request',
         'due_date' => 'Due date',
+        'solved_date' => 'Completed date',
         'closed_date' => 'Closed date',
         'service' => 'Service',
         'created_by' => 'Created by',
