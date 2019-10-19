@@ -242,6 +242,7 @@ export default (config = {}) => {
 
                         this.fileCount = this.model.media.length
                         //this.residentCount = this.model.residents.length
+
                         
                         this.model.contracts = []
                         // this.model.residents.forEach(resident => {
