@@ -63,11 +63,10 @@
                 //     label: 'models.quarter.count_of_buildings',
                 //     prop: 'count_of_buildings'
                 // }, 
-                // {
-                //     label: 'models.quarter.buildings_count',
-                //     prop: 'buildings_count'
-                // }, 
                 {
+                    label: 'models.quarter.buildings_count',
+                    prop: 'buildings_count'
+                }, {
                     label: 'models.quarter.total_units_count',
                     prop: 'total_units_count'
                 }, {
