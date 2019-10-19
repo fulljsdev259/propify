@@ -103,7 +103,7 @@ return [
     'state' => 'Kanton',
     'street' => 'Strasse',
     'house_num' => 'Hausnummer',
-    'internal_quarter_id' => 'Interne Quartals-ID',
+    'internal_quarter_id' => 'Interne Projekt-ID',
     'zip' => 'PLZ',
     'content' => 'Inhalt',
     'none' => 'Nichts gewählt',
@@ -573,5 +573,6 @@ return [
         'activity' => 'Aktivität',
         'property_managers' => 'Fortimo',
         'templates' => 'Vorlagen'
-    ]
+    ],
+    'contracts' => 'Verträge'
 ];

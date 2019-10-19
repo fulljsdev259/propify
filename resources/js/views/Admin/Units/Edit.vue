@@ -298,6 +298,68 @@
                                     v-if="addedAssigmentList"
                             />
                         </el-tab-pane>
+                        <el-tab-pane name="contracts">
+                            <span slot="label">
+                                <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
+                            </span>
+                            
+                            <el-row :gutter="20">
+                                <h3 class="chart-card-header">
+                                    <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                                </h3>
+                                
+                            </el-row>
+                            <el-table
+                                :data="model.contracts"
+                                style="width: 100%"
+                                class="contract-table"
+                                >
+                                <el-table-column
+                                    :label="$t('models.resident.contract.contract_id')"
+                                    prop="id"
+                                >
+                                    <template slot-scope="scope">
+                                        <span class="clickable" @click="editContract(scope.$index)">{{scope.row.contract_format}}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    :label="$t('models.resident.building.name')"
+                                    prop="building.name"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                    :label="$t('models.resident.unit.name')"
+                                    prop="unit.name"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                    :label="$t('models.resident.status.label')"
+                                >
+                                    <template slot-scope="scope">
+                                        <i class="icon-dot-circled" :class="[constants.contracts.status[scope.row.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
+                                        {{ constants.contracts.status[scope.row.status] ? $t('models.resident.contract.rent_status.' + constants.contracts.status[scope.row.status]) : ''}}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    align="right"
+                                >
+                                    <template slot-scope="scope">
+                                        <el-tooltip
+                                            :content="$t('general.actions.edit')"
+                                            class="item" effect="light" 
+                                            placement="top-end">
+                                                <el-button @click="editContract(scope.$index)" icon="ti-pencil" size="mini" type="success"/>
+                                        </el-tooltip>
+                                        <el-tooltip
+                                            :content="$t('general.actions.delete')"
+                                            class="item" effect="light" 
+                                            placement="top-end">
+                                                <el-button @click="deleteContract(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
+                                        </el-tooltip>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </el-tab-pane>
                     </el-tabs>
 
                     <el-tabs type="border-card" v-model="activeRequestTab">
@@ -325,12 +387,18 @@
             <div class="content" v-if="visibleDrawer">
                 <emergency-settings-form :visible.sync="visibleDrawer"/>
             </div>
+            <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
+                
+            <div class="content" v-if="visibleDrawer">
+                <contract-form v-if="editingContract" :hide-building-and-units="false" mode="edit" :data="editingContract" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
+                <contract-form v-else mode="add" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
+            </div> -->
         </ui-drawer>
     </div>
 </template>
 
 <script>
-    import {mapActions} from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
     import Heading from 'components/Heading';
     import Card from 'components/Card';
     import EditActions from 'components/EditViewActions';
@@ -340,8 +408,10 @@
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
     import UploadDocument from 'components/UploadDocument';
     import draggable from 'vuedraggable';
+    import ContractForm from 'components/ContractForm';
     import {displayError, displaySuccess} from "helpers/messages";
     import { EventBus } from '../../../event-bus.js';
+    
 
     export default {
         mixins: [UnitsMixin({
@@ -357,6 +427,7 @@
             EmergencySettingsForm,
             UploadDocument,
             draggable,
+            ContractForm
         },
         data() {
             return {
@@ -410,6 +481,8 @@
                 activeTab1: 'details',
                 activeRightTab: 'residents',
                 activeRequestTab: 'requests',
+                editingContract: null,
+                editingContractIndex: -1,
             }
         },
         methods: {
@@ -484,13 +557,42 @@
                 } else {
                     return true;
                 }
-            }
+            },
+            addContract (data) {
+                this.model.contracts.push(data);
+            },
+            editContract(index) {
+                this.editingContract = this.model.contracts[index];
+                this.editingContractIndex = index;
+                this.visibleDrawer = true;
+                document.getElementsByTagName('footer')[0].style.display = "none";
+            },
+            updateContract(index, params) {
+                this.model.contracts[index] = params;
+            },
+            deleteContract(index) {
+
+                this.$confirm(this.$t(`general.swal.delete_contract.text`), this.$t(`general.swal.delete_contract.title`), {
+                    type: 'warning'
+                }).then(async () => {
+                    if(config.mode == "edit" ) {
+                        await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
+                    }
+                    this.model.contracts.splice(index, 1)
+                }).catch(() => {
+                });
+            },
         },
         mounted() {
              EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
             });
         },
+        computed: {
+            ...mapGetters('application', {
+                constants: 'constants'
+            }),
+        },          
         watch: {
             "model.type" () {
                 if(this.model.type >= 3)
@@ -542,7 +644,7 @@
             overflow-y: scroll;
             height: 100%;
 
-            /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-residents {
+            /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-residents, /deep/ #tab-contracts {
                 padding-right: 40px;
             }
 
@@ -721,6 +823,19 @@
     .category-select {
         margin-bottom: 10px;
         width: 100%;
+    }
+
+    .contract-table {
+        .clickable {
+            display: block;
+            width: 100%;
+        }
+        .icon-success {
+            color: #5fad64;
+        }
+        .icon-danger {
+            color: #dd6161;
+        }
     }
 
 </style>

@@ -31,7 +31,8 @@ export default (config = {}) => {
                     building_id: this.$route.params.id,
                     selected_resident: '',
                     residents: [],
-                    media: []
+                    media: [],
+                    contracts: [],
                 },
                 validationRules: {
                     resident_id: [{
@@ -87,6 +88,7 @@ export default (config = {}) => {
                 toAssign: '',
                 addedAssigmentList: [],
                 media: [],
+                contractCount: 0
             }
         },
         methods: {
@@ -305,6 +307,15 @@ export default (config = {}) => {
                             
                         this.addedAssigmentList = [];
                         this.addedAssigmentList = this.model.residents;
+
+                        this.model.contracts = []
+                        this.model.residents.forEach(resident => {
+                            console.log('resident', resident)
+                            this.model.contracts = this.model.contracts.concat(resident.contracts)
+                        })
+                        
+                        this.contractCount = this.model.contracts.length
+                        //this.contracts = this.model.resident.contracts
 
                         this.addedAssigmentList.map((user) => {
                             if (user.status == 1) {

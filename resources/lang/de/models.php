@@ -373,10 +373,10 @@ return [
         'required' => 'Projekt ist ein Pflichfeld!',
         'buildings' => 'Objekte',
         'count_of_buildings' => 'Anzahl Objekte',
-        'buildings_count' => 'Gebäude zählen',
-        'total_units_count' => 'Gesamtzahl der Einheiten',
-        'occupied_units_count' => 'Anzahl der belegten Einheiten',
-        'active_residents_count' => 'Anzahl der aktiven Bewohner',
+        'buildings_count' => 'Anzahl Objekte',
+        'total_units_count' => 'Anzahl Einheiten',
+        'occupied_units_count' => 'Belegte Einheiten',
+        'active_residents_count' => 'Aktive Bewohner',
         'assignment' => 'Zugewiesene Personen/Administrator',
         'errors' => [
             'not_found' => "Projekt nicht gefunden.",
@@ -582,7 +582,9 @@ return [
             'service_request' => 'Serviceanfrage',
             'contact_details' => 'Kontaktdaten',
             'contact_text' => 'Dies sind die Kontaktdaten des aktuellen Bewohners/Besitzers der Wohneinheit.',
-        ]
+        ],
+        'go_to_building' => 'zu den Liegenschaft gehen'
+
     ],
     'request_category' => [
         'title' => 'Anfrage Kategorien',
