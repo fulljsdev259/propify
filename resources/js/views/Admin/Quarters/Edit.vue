@@ -205,7 +205,7 @@
                                 <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
                             </span>
                             
-                            <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                            <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
                             <contract-list-table
                                     :items="model.contracts"
                                     @edit-contract="editContract"
@@ -466,8 +466,9 @@
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
             toggleAddDrawer() {
-                this.visibleDrawer = true;
                 this.isAddContract = true
+                this.visibleDrawer = true;
+                
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
             addContract (data) {

@@ -82,8 +82,10 @@
                 <ui-media-gallery :files="data.media.slice(0, 3).map(({url}) => url)">
                     <div slot="after" key="view-all" class="ui-media-gallery__more_item" @click="$emit('more-media')" v-if="data.media.length">
                         <div class="ui-media-gallery__more_item__content">
+                            <div>
                             <i class="icon-picture"></i>
                             {{$t('resident.actions.view_all')}}
+                            </div>
                         </div>
                     </div>
                 </ui-media-gallery>
@@ -345,19 +347,36 @@
                                 cursor: pointer
                                 margin-top: 10px
                                 width: 25%
+                                height: 0
+                                padding-top: 25%
                                 display: flex
                                 justify-content: center
                                 align-items: center
+                                position: relative
+                                overflow: hidden
                                 
                                 &:hover
                                     color: var(--color-primary)
                                     border-color: var(--color-primary)
 
                                 .ui-media-gallery__more_item__content
+                                    position: absolute;
+                                    top: 0
+                                    right: 0
+                                    bottom: 0
+                                    left: 0
+                                    width: 100%
+                                    height: 100%
                                     display: flex
-                                    flex-direction: column;
-                                    justify-content: center
+                                    flex-direction: column
                                     align-items: center
+                                    justify-content: center
+
+                                    div
+                                        display: flex
+                                        flex-direction: column
+                                        justify-content: center
+                                        align-items: center
 
                                 i
                                     font-size: 28px

@@ -1,5 +1,5 @@
 <template>
-    <div class="residents-view">
+    <div class="services-view">
         <heading :title="$t('models.service.view_title')" icon="icon-group">
             <template slot="description" v-if="model.service_provider_format">
                 <div class="subtitle">{{model.service_provider_format}}</div>
@@ -64,11 +64,11 @@
 
                                 <el-row :gutter="20">
                                     <el-col :sm="8" :xs="12">{{$t('models.resident.private_phone')}}:</el-col>
-                                    <el-col v-if="((model.private_phone === '') || (model.private_phone === null))" :sm="16" :xs="12" class="text-secondary">
+                                    <el-col v-if="((user.phone === '') || (user.phone === null))" :sm="16" :xs="12" class="text-secondary">
                                         {{$t('general.no_data')}}
                                     </el-col>
                                     <el-col v-else :sm="16" :xs="12" class="text-secondary">
-                                        {{model.private_phone}}
+                                        {{user.phone}}
                                     </el-col>                                    
                                 </el-row>
 
@@ -92,7 +92,7 @@
                                 <el-row :gutter="20">
                                     <el-col :sm="8" :xs="12">{{$t('models.resident.birth_date')}}:</el-col>
                                     <el-col :sm="16" :xs="12" class="text-secondary">
-                                        {{ new Date(model.birth_date) | formatDate }}
+                                        <!-- {{ new Date(model.birth_date) | formatDate }} -->
                                     </el-col>
                                 </el-row>
 
@@ -109,9 +109,8 @@
 <script>
     import Heading from "components/Heading";
     import AdminServicesMixin from "mixins/adminServicesMixin";
-    import UnitsMixin from 'mixins/adminUnitsMixin';
     import RelationList from "components/RelationListing";
-    import Timeline from "components/ResidentViewTimeline"
+    
     import {mapActions, mapGetters} from 'vuex';
     import {displayError, displaySuccess} from "helpers/messages";
     import {format} from 'date-fns'
@@ -119,23 +118,15 @@
     const mixin = AdminServicesMixin({
         mode: "view"
     });
-    const unitsMixin = UnitsMixin({
-        mode: 'add'
-    });
 
     export default {
-        mixins: [mixin, unitsMixin],
+        mixins: [mixin],
         components: {
             Heading,
             RelationList,
-            Timeline
         },
         data() {
             return {
-                requests: [],
-                pinboard: [],
-                listings: [],
-
             };
         },
         filters: {
@@ -179,7 +170,7 @@
         padding: 8px 0px 0 0 !important;
         margin-left: -5px !important;
     }
-    .residents-view {
+    .services-view {
         .heading {
             margin-bottom: 20px;
         }
