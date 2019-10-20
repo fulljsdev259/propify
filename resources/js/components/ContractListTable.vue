@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-table
-            :data="items"
+            :data="showItems"
             style="width: 100%"
             class="contract-table"
             >
@@ -50,46 +50,9 @@
                 </template>
             </el-table-column>
         </el-table>
-
-        <!-- <el-table
-            v-loading="loading.state"
-            :data="items"
-            :element-loading-background="loading.background"
-            :element-loading-spinner="loading.icon"
-            :element-loading-text="$t(loading.text)"
-            :empty-text="emptyText"
-            @selection-change="handleSelectionChange"
-            @row-click="editLink">
-
-            <el-table-column
-                :key="'OneCol'"
-                :width="column.width"
-                v-for="(column, key) in headerWithOneCol"
-            >
-                <template slot-scope="scope">
-                    <request-detail-card
-                        :item="scope.row"
-                        :loading="{state: loading}"
-                        @selectionChanged="handleRequestSelectionChange"
-                        @editAction="column.editAction(scope.row)"
-                        @onChange="scope.row['status']=$event,column.onChange(scope.row)"
-                        @pdf-download="column.downloadPDF($event)"
-                        :categories="categories"
-                    >
-
-                    </request-detail-card>
-                </template>
-            </el-table-column>
-        </el-table>
-        <el-pagination
-            :current-page.sync="page.currPage"
-            :page-size.sync="page.currSize"
-            :page-sizes="pagination.pageSizes"
-            :total="pagination.total"
-            @current-change="onCurrentPageChange"
-            @size-change="onSizeChange"
-            layout="total, sizes, prev, pager, next, jumper"
-            v-if="pagination.total"/> -->
+        <div v-if="showLength < totalLength">
+            <el-button @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>
+        </div>
     </div>
 </template>
 
@@ -106,36 +69,44 @@
             ResponsiveMixin
         ],
         props: {
-            header: {
-                type: Array,
-                default: () => {
-                    return [];
-                }
-            },
             items: {
                 type: Array,
                 default: () => {
                     return [];
                 }
             },
-            
         },
         data() {
             return {
-                search: '',
-                filterModel: {},
-                uuid,
-                selectedItems: [],
-                categories: []
+                // showItems: [],
+                totalLength: 0,
+                showLength: 0,
             }
         },
         computed: {
             ...mapGetters('application', {
                 constants: 'constants'
-            })
+            }),
+            showItems () {
+                return this.items.slice(0, this.showLength)
+            }
         },
         methods: {
-           
+           loadMore() {
+               this.showLength += 5
+               if(this.showLength > this.totalLength)
+                this.showLength = this.totalLength
+           }
+        },
+        mounted() {
+            this.totalLength = this.items.length
+            this.showLength = this.totalLength < 5 ? this.totalLength : 5
+        },
+        watch: {
+            items () {
+                this.totalLength = this.items.length
+                this.showLength = this.totalLength < 5 ? this.totalLength : 5
+            }
         },
     }
 </script>
