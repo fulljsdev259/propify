@@ -126,7 +126,6 @@
                 filterModel: {},
                 uuid,
                 selectedItems: [],
-                
                 categories: []
             }
         },
@@ -138,20 +137,6 @@
         methods: {
            
         },
-        watch: {
-            search(text) {
-                if (this.timer) {
-                    clearTimeout(this.timer);
-                    this.timer = null;
-                }
-
-                this.timer = setTimeout(() => this.updatePage(), 800);
-            },
-            
-        },
-        created() {
-            
-        }
     }
 </script>
 
