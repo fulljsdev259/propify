@@ -10,7 +10,7 @@
         <el-row>
             <el-col :span="24" v-for="(files, category) in documents" :key="category">
                 <div class="title">
-                    {{$t(`models.building.${category}`)}}
+                    {{$t(`resident.media_category.${category}`)}}
                     <small>{{$t('resident.doc_available',{num: files.length})}}</small>
                 </div>
                 <gallery-list :media="files" :cols="4" />
