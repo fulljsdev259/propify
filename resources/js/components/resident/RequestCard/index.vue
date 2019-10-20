@@ -101,7 +101,6 @@
 </template>
 
 <script>
-    import GalleryList from 'components/MediaGalleryList'
     import FormatDateTimeMixin from 'mixins/formatDateTimeMixin'
     import {IdState} from 'vue-virtual-scroller'
 
@@ -113,7 +112,7 @@
             })
         ],
         components: {
-            GalleryList,
+            
         },
         props: {
             data: {

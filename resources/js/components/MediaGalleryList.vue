@@ -18,6 +18,10 @@
                         <!-- <div class="media-filename">{{file.name}}</div> -->
                     </template>
                     <div class="media-actions">
+                        
+                        <div class="badge">
+                            <span> {{ $t(`resident.media_category.${file.collection_name}`) }}</span>
+                        </div>
                         <div class="el-icon-zoom-in" @click="openFile(file, idx)" v-if="canFileBePreviewed(file)"></div>
                         <div class="el-icon-delete remove" v-if="removeable" @click="removeFile(file)"></div>
                     </div>
@@ -103,7 +107,7 @@
             canFileBePreviewed (file) {
                 const ext = file.name.split('.').pop()
 
-                return this.isFileImage(file) || ext === 'pdf'
+                return this.isFileImage(file) || ext === 'pdf' || ext === 'doc' || ext === 'docx' || ext === 'xls' || ext === 'xlsx'
             }
         },
         computed: {
@@ -230,6 +234,59 @@
                     }
                     div + div {
                         margin-left: 8px;
+                    }
+
+                    .badge {
+                        position: absolute;
+                        right: 2px;
+                        top: 2px;
+                        z-index: 1;
+                        overflow: hidden;
+                        width: 200px;
+                        height: 200px;
+                        text-align: right;
+
+                        span {
+                            font-size: 10px;
+                            font-weight: bold;
+                            color: #fff;
+                            text-transform: uppercase;
+                            text-align: center;
+                            line-height: 20px;
+                            transform: rotate(45deg);
+                            width: 200px;
+                            display: block;
+                            background: var(--primary-color);
+                            //background: linear-gradient(var(--primary-color), var(--primary-color-lighter));
+                            box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+                            position: absolute;
+                            top: 56px;
+                            right: -35px;
+
+                            &:before {
+                                content: "";
+                                position: absolute;
+                                left: 0px;
+                                top: 100%;
+                                z-index: -1;
+                                border-left: 3px solid var(--primary-color);
+                                border-right: 3px solid transparent;
+                                border-bottom: 3px solid transparent;
+                                border-top: 3px solid var(--primary-color);
+                            }
+
+                            &:after {
+                                content: "";
+                                position: absolute;
+                                right: 0px;
+                                top: 100%;
+                                z-index: -1;
+                                border-left: 3px solid transparent;
+                                border-right: 3px solid var(--primary-color);
+                                border-bottom: 3px solid transparent;
+                                border-top: 3px solid var(--primary-color);
+                            }
+                        }
                     }
                 }
                 &:hover .media-actions {

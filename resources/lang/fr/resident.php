@@ -165,7 +165,10 @@ return [
     "contract_file" => "Dossier du contrat",
     "my_documents" => "Mes documents",
     "doc_list" => "Une liste avec tous les documents du bâtiment et de l'unité.",
-    "doc_available" => ":num documents disponibles",
+    "doc_available" => [
+        "single" => ":num document disponibles",
+        "multiple" => ":num documents disponibles"
+    ],
     'media_category' => [
         "house_rules" => "Règlement intérieur",
         "operating_instructions" => "Notice d'utilisation",

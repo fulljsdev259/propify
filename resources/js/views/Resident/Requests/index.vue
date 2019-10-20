@@ -152,12 +152,11 @@
 <script>
     import {mapActions, mapState} from 'vuex'
     import Loader from 'components/resident/RequestCard/Loader'
-    import GalleryList from 'components/MediaGalleryList'
+    
 
     export default {
         components: {
             Loader,
-            GalleryList
         },
         data () {
             return {
