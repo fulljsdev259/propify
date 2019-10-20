@@ -19,7 +19,7 @@
                     </template>
                     <div class="media-actions">
                         
-                        <div class="badge">
+                        <div class="badge" v-if="file.collection_name">
                             <span> {{ $t(`resident.media_category.${file.collection_name}`) }}</span>
                         </div>
                         <div class="el-icon-zoom-in" @click="openFile(file, idx)" v-if="canFileBePreviewed(file)"></div>

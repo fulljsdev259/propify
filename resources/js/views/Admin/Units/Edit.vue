@@ -302,13 +302,8 @@
                             <span slot="label">
                                 <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
                             </span>
-                            
-                            <el-row :gutter="20">
-                                <h3 class="chart-card-header">
-                                    <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
-                                </h3>
-                                
-                            </el-row>
+
+                            <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
                             <contract-list-table
                                     :items="model.contracts"
                                     @edit-contract="editContract"
