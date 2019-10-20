@@ -823,17 +823,4 @@
         width: 100%;
     }
 
-    .contract-table {
-        .clickable {
-            display: block;
-            width: 100%;
-        }
-        .icon-success {
-            color: #5fad64;
-        }
-        .icon-danger {
-            color: #dd6161;
-        }
-    }
-
 </style>

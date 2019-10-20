@@ -159,6 +159,7 @@
     .contract-table {
         .clickable {
             display: block;
+            cursor: pointer;
             width: 100%;
         }
         .icon-success {
