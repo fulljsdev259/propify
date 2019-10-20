@@ -333,6 +333,8 @@ return [
     ],
     'service' => [
         'title' => 'Dienstleister und Hauswartung',
+        'view' => 'Öffnen',
+        'view_title' => 'Service anzeigen',
         'add_title' => 'Firma hinzufügen',
         'edit_title' => 'Firma bearbeiten',
         'saved' => 'Dienstleister gespeichert',
