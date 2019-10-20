@@ -5,6 +5,15 @@
             style="width: 100%"
             class="contract-table"
             >
+            <div slot="empty">
+                <el-alert                                     
+                    :title="$t('general.no_data_available')"
+                    type="info"
+                    show-icon
+                    :closable="false"
+                >
+                </el-alert>
+            </div>
             <el-table-column
                 :label="$t('models.resident.contract.contract_id')"
                 prop="id"
