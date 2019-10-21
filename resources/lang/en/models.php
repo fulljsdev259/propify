@@ -27,6 +27,7 @@ return [
     ],
     'resident' => [
         'view' => 'View',
+        'name' => 'Resident',
         'view_title' => 'View resident',
         'edit_title' => 'Edit Resident',
         'download_credentials' => 'Download credentials',

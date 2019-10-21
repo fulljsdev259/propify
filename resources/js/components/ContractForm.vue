@@ -444,6 +444,7 @@
                 residents: [],
                 loading: false,
                 model: {
+                    resident_id: '',
                     type: '',
                     duration: '',
                     start_date: '',
@@ -453,7 +454,7 @@
                     monthly_rent_net: '',
                     monthly_maintenance: '',
                     status: '',
-                    deposit_status: '',
+                    deposit_status: 1,
                     monthly_rent_gross: '',
                     unit_id: '',
                     building_id: '',
@@ -469,6 +470,10 @@
                     unit_id: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.resident.unit.name')})
+                    }],
+                    resident_id: [{
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.name')})
                     }],
                     deposit_amount: [{
                         required: true,
@@ -520,8 +525,10 @@
                         const {...params} = this.model
 
                         
+                        if(!this.showResident)
+                            params.resident_id = this.resident_id
 
-                        if (this.resident_id == undefined || this.resident_id == 0) 
+                        if (params.resident_id == undefined || params.resident_id == 0) 
                         {
 
                             this.units.forEach(group => {
@@ -541,7 +548,6 @@
                         }
                         else {
                             
-                            params.resident_id = this.resident_id
                             this.units.forEach(group => {
                                 let found = group.options.find(item => item.id == this.model.unit_id)
                                 if(found)
@@ -759,6 +765,7 @@
 
             if(this.hideBuilding) {
                 this.model.building_id = this.building_id
+                await this.searchContractUnits(false)
             }
         }
     }
