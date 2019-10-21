@@ -108,7 +108,7 @@ return [
     "content" => "Contenuto",
     'none' => 'Nessuna',
     'all' => 'Tutti',
-    'loadMore' => 'Carica di più',
+    'load_more' => 'Carica di più',
     'loading' => 'Caricamento...',
     'load_more_count' => 'Carico {count} di più',
     'account' => 'Conto',

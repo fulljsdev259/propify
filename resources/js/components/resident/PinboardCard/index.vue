@@ -91,7 +91,6 @@
     import FormatDateTimeMixin from 'mixins/formatDateTimeMixin'
     import {format, isSameDay} from 'date-fns'
     import {IdState} from 'vue-virtual-scroller'
-    import GalleryList from 'components/MediaGalleryList'
     import RequestMedia from 'components/RequestMedia';
     import Loader from 'components/common/AddComment/Loader';
 
@@ -129,7 +128,6 @@
             Likes,
             // AddComment,
             MediaGalleryCarousel,
-            GalleryList,
             RequestMedia,
             Loader
         },

@@ -43,8 +43,8 @@ class RequestRepository extends BaseRepository
         'title' => 'like',
         'description' => 'like',
         'status' => 'like',
-        'priority' => 'like',
-        'internal_priority' => 'like',
+       // 'priority' => 'like',
+       // 'internal_priority' => 'like',
         'due_date' => '=',
         'solved_date' => '>=',
         'created_at' => '>=',
@@ -98,8 +98,8 @@ class RequestRepository extends BaseRepository
             $attr['contract_id'] = $attributes['contract_id'];
             $attr['category_id'] = $attributes['category_id'];
             $attr['visibility'] = $attributes['visibility'];
-            $attr['priority'] = $attributes['priority'];
-            $attr['internal_priority'] = $attributes['internal_priority'] ?? $attributes['priority'];
+           // $attr['priority'] = $attributes['priority'];
+          //  $attr['internal_priority'] = $attributes['internal_priority'] ?? $attributes['priority'];
             $attr['resident_id'] = $user->resident->id;
             $attr['unit_id'] = $user->resident->unit_id;
             $attr['status'] = Request::StatusReceived;
@@ -158,11 +158,11 @@ class RequestRepository extends BaseRepository
             $attr = [];
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
-            $attr['priority'] = $attributes['priority'];
+            //$attr['priority'] = $attributes['priority'];
 
-            if (isset($attributes['internal_priority'])) {
-                $attr['internal_priority'] = $attributes['internal_priority'];
-            }
+//            if (isset($attributes['internal_priority'])) {
+//                $attr['internal_priority'] = $attributes['internal_priority'];
+//            }
 
             $attr['qualification'] = $attributes['qualification'];
             $attr['status'] = $attributes['status'];

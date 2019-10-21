@@ -108,7 +108,7 @@ return [
     'content' => 'Inhalt',
     'none' => 'Nichts gewählt',
     'all' => 'Alle',    
-    'loadMore' => 'Weitere laden',
+    'load_more' => 'Weitere laden',
     'loading' => 'Ladet...',
     'load_more_count' => 'Weitere {count} laden',
     'account' => 'Konto',

@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Building;
+use function GuzzleHttp\Promise\queue;
 
 /**
  * Class BuildingTransformer.
@@ -11,10 +12,6 @@ use App\Models\Building;
  */
 class BuildingTransformer extends BaseTransformer
 {
-    protected $defaultIncludes = [
-        'address'
-    ];
-
     /**
      * Transform the Building entity.
      *
@@ -35,7 +32,7 @@ class BuildingTransformer extends BaseTransformer
             'under_floor' => $model->under_floor,
             'basement' => $model->basement,
             'attic' => $model->attic,
-            'created_at' => $model->created_at->format('Y-m-d'),
+            'created_at' => $model->created_at ? $model->created_at->format('Y-m-d') : '',
             'quarter_id' => $model->quarter_id,
             'address_id' => $model->address_id,
             'internal_building_id' => $model->internal_building_id,
@@ -49,7 +46,6 @@ class BuildingTransformer extends BaseTransformer
 
         $withCount = $model->getStatusRelationCounts();
         $response = array_merge($response, $withCount);
-
 
         if ($model->relationExists('address')) {
             $response['address'] = (new AddressTransformer)->transform($model->address);
@@ -128,15 +124,4 @@ class BuildingTransformer extends BaseTransformer
         return $input;
     }
 
-    /**
-     * Include Address
-     *
-     * @return \League\Fractal\Resource\Item
-     */
-    public function includeAddress(Building $building)
-    {
-        $address = $building->address;
-
-        return $this->item($address, new AddressTransformer);
-    }
 }

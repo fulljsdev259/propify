@@ -164,10 +164,16 @@ return [
     "contract_file" => "Vertragsakte",
     "my_documents" => "Liegenschaft Dokumentation",
     "doc_list" => "Eine Liste mit allen Dokumenten des Gebäudes und der Einheit.",
-    "doc_available" => ":num verfügbare Dokumente",
-    "house_rules" => "Hausordnung",
-    "operating_instructions" => "Bedienungsanleitungen",
-    "care_instructions" => "Pflegehinweise",
+    "doc_available" => [
+        "single" => ":num verfügbare Dokument",
+        "multiple" => ":num verfügbare Dokumente"
+    ],
+    'media_category' => [
+        'house_rules' => 'Hausordnung',
+        'operating_instructions' => 'Benutzungsanleitungen',
+        'care_instructions' => 'Pflegehinweise',
+        'other' => 'Sonstiges',
+    ], 
     "pinboard" => "Pinnwand",
     "listing" => "Marktplatz",
     "admin" => "Admin",

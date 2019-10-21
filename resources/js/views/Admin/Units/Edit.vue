@@ -302,63 +302,13 @@
                             <span slot="label">
                                 <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
                             </span>
-                            
-                            <el-row :gutter="20">
-                                <h3 class="chart-card-header">
-                                    <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
-                                </h3>
-                                
-                            </el-row>
-                            <el-table
-                                :data="model.contracts"
-                                style="width: 100%"
-                                class="contract-table"
-                                >
-                                <el-table-column
-                                    :label="$t('models.resident.contract.contract_id')"
-                                    prop="id"
-                                >
-                                    <template slot-scope="scope">
-                                        <span class="clickable" @click="editContract(scope.$index)">{{scope.row.contract_format}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                    :label="$t('models.resident.building.name')"
-                                    prop="building.name"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                    :label="$t('models.resident.unit.name')"
-                                    prop="unit.name"
-                                >
-                                </el-table-column>
-                                <el-table-column
-                                    :label="$t('models.resident.status.label')"
-                                >
-                                    <template slot-scope="scope">
-                                        <i class="icon-dot-circled" :class="[constants.contracts.status[scope.row.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
-                                        {{ constants.contracts.status[scope.row.status] ? $t('models.resident.contract.rent_status.' + constants.contracts.status[scope.row.status]) : ''}}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                    align="right"
-                                >
-                                    <template slot-scope="scope">
-                                        <el-tooltip
-                                            :content="$t('general.actions.edit')"
-                                            class="item" effect="light" 
-                                            placement="top-end">
-                                                <el-button @click="editContract(scope.$index)" icon="ti-pencil" size="mini" type="success"/>
-                                        </el-tooltip>
-                                        <el-tooltip
-                                            :content="$t('general.actions.delete')"
-                                            class="item" effect="light" 
-                                            placement="top-end">
-                                                <el-button @click="deleteContract(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
-                                        </el-tooltip>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
+
+                            <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                            <contract-list-table
+                                    :items="model.contracts"
+                                    @edit-contract="editContract"
+                                    @delete-contract="deleteContract">
+                            </contract-list-table>
                         </el-tab-pane>
                     </el-tabs>
 
@@ -384,10 +334,30 @@
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
             <template v-if="editingContract || isAddContract">
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
-                    
                 <div class="content" v-if="visibleDrawer">
-                    <contract-form v-if="editingContract" :hide-building-and-units="true" :building_id="model.building.id" :unit_id="model.id" mode="edit" :data="editingContract" :resident_type="1" :resident_id="editingContract.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
-                    <contract-form v-else mode="add" :hide-building-and-units="true" :building_id="model.building.id" :unit_id="model.id" :resident_type="1" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
+                    <contract-form v-if="editingContract" 
+                                mode="edit" 
+                                :hide-building-and-units="true" 
+                                :show-resident="true"
+                                :building_id="model.building.id" 
+                                :unit_id="model.id" 
+                                :data="editingContract" 
+                                :resident_type="1" 
+                                :resident_id="editingContract.id" 
+                                :visible.sync="visibleDrawer" 
+                                :edit_index="editingContractIndex" 
+                                @update-contract="updateContract" 
+                                :used_units="used_units"/>
+                    <contract-form v-else 
+                                mode="add" 
+                                :hide-building-and-units="true"
+                                :show-resident="true"
+                                :building_id="model.building.id" 
+                                :unit_id="model.id" 
+                                :resident_type="1" 
+                                :visible.sync="visibleDrawer" 
+                                @add-contract="addContract" 
+                                :used_units="used_units"/>
                 </div>
             </template>
             <template v-else>
@@ -414,6 +384,7 @@
     import UploadDocument from 'components/UploadDocument';
     import draggable from 'vuedraggable';
     import ContractForm from 'components/ContractForm';
+    import ContractListTable from 'components/ContractListTable';
     import {displayError, displaySuccess} from "helpers/messages";
     import { EventBus } from '../../../event-bus.js';
     
@@ -432,7 +403,8 @@
             EmergencySettingsForm,
             UploadDocument,
             draggable,
-            ContractForm
+            ContractForm,
+            ContractListTable
         },
         data() {
             return {
@@ -584,9 +556,7 @@
                 this.$confirm(this.$t(`general.swal.delete_contract.text`), this.$t(`general.swal.delete_contract.title`), {
                     type: 'warning'
                 }).then(async () => {
-                    if(config.mode == "edit" ) {
-                        await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
-                    }
+                    await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
                     this.model.contracts.splice(index, 1)
                 }).catch(() => {
                 });
@@ -846,19 +816,6 @@
     .category-select {
         margin-bottom: 10px;
         width: 100%;
-    }
-
-    .contract-table {
-        .clickable {
-            display: block;
-            width: 100%;
-        }
-        .icon-success {
-            color: #5fad64;
-        }
-        .icon-danger {
-            color: #dd6161;
-        }
     }
 
 </style>

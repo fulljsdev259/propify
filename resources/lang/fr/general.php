@@ -108,7 +108,7 @@ return [
     "content" => "Contenu",
     'none' => 'Aucun',
     'all' => 'Tous',
-    'loadMore' => 'Charger plus',
+    'load_more' => 'Charger plus',
     'loading' => 'Chargement...',
     'load_more_count' => 'Charge {count} plus',
     'account' => 'Compte',

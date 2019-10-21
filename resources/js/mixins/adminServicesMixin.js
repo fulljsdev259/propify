@@ -134,7 +134,8 @@ export default (config = {}) => {
                 assignmentType: 'building',
                 toAssign: '',
                 toAssignList: [],
-                isFormSubmission: false
+                isFormSubmission: false,
+                user: {},
             };
         },
         computed: {
@@ -397,6 +398,46 @@ export default (config = {}) => {
                     await this.fetchCurrentProvider();
                     
                     this.original_email = this.model.email;
+                };
+
+                break;
+            case 'view':
+                mixin.mixins = [PasswordValidatorMixin({required: false}), UploadUserAvatarMixin];
+                mixin.methods = {
+                    ...mixin.methods,
+                    ...mapActions(['getService'])
+                }
+
+                mixin.computed = {
+                    ...mixin.computed
+                };
+
+                mixin.created = async function () {
+                    const {password, password_confirmation} = this.validationRules;
+
+                    [...password, ...password_confirmation].forEach(rule => rule.required = false);
+
+                    try {
+                        this.loading.state = true;
+
+                        const {data: {address, unit, user, ...r}} = await this.getService({id: this.$route.params.id});
+                        
+                        this.user = user;
+                        
+                        this.model = Object.assign({}, this.model, r);
+                        this.original_email = this.user.email;
+                        this.model.email = user.email;
+                        this.model.avatar = user.avatar;
+
+                    } catch (err) {
+                        this.$router.replace({
+                            name: 'adminServices'
+                        });
+
+                        displayError(err);
+                    } finally {
+                        this.loading.state = false;
+                    }
                 };
 
                 break;

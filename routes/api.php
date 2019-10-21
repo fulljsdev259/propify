@@ -221,7 +221,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::post('/requests/{id}/notify', 'RequestAPIController@notifyProvider')->name('requests.notify');
     Route::put('/requests/{id}', 'RequestAPIController@update')->name('requests.update');
     Route::put('/requests/{id}/status', 'RequestAPIController@changeStatus')->name('requests.changeStatus');
-    Route::put('/requests/{id}/priority', 'RequestAPIController@changePriority')->name('requests.changePriority');
+//    Route::put('/requests/{id}/priority', 'RequestAPIController@changePriority')->name('requests.changePriority');
     Route::delete('/requests/{id}', 'RequestAPIController@destroy')->name('requests.destroy');
     Route::post('/requests/deletewithids', 'RequestAPIController@destroyWithIds')->name('requests.destroyWithIds');
     Route::delete('/requests/{id}/media/{media_id}', 'MediaAPIController@requestDestroy')->name('requests.media.destroy');

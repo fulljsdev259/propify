@@ -108,7 +108,7 @@ return [
     'content' => 'Content',
     'none' => 'None',
     'all' => 'All',
-    'loadMore' => 'Load more',
+    'load_more' => 'Load more',
     'loading' => 'Loading...',
     'load_more_count' => 'Load {count} more',
     'account' => 'Account',

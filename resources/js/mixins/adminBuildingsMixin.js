@@ -380,15 +380,19 @@ export default (config = {}) => {
                         
                         this.serviceCount = this.model.service_providers.length
                         this.fileCount = this.model.media.length
-                        this.residentCount = this.model.residents.length
 
-                        this.model.contracts = []
-                        // this.model.residents.forEach(resident => {
-                        //     console.log('resident', resident)
-                        //     this.model.contracts = this.model.contracts.concat(resident.contracts)
-                        // })
                         
                         this.contractCount = this.model.contracts.length
+
+                        this.model.residents = this.model.contracts.map(contract => contract.resident);
+
+                        this.model.residents = this.model.residents.filter((item, index) => {
+                            return this.model.residents.indexOf(item) === index
+                        })
+
+                        this.residentCount = this.model.residents.length
+
+                        
 
                         if (this.model.quarter) {
                             this.$set(this.model, 'quarter_id', this.model.quarter.id);

@@ -128,7 +128,7 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="12">
+                        <!-- <el-col :md="12">
                             <el-form-item :label="$t('models.request.priority.label')" :rules="validationRules.priority"
                                       prop="priority">
                                 <el-select :placeholder="$t('models.request.priority.label')" class="custom-select"
@@ -141,7 +141,7 @@
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-                        </el-col>
+                        </el-col> -->
                         <el-col :md="12">
                             <el-form-item :label="$t('models.request.status.label')" :rules="validationRules.status"
                                         prop="status">
@@ -233,7 +233,7 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="12" v-if="model.resident_id && contracts.length > 1">
+                        <el-col :md="24" v-if="model.resident_id && contracts.length > 1">
                             <el-form-item :label="$t('models.resident.contract.title')" :rules="validationRules.contract_id"
                                               prop="contract_id">
                                 <el-select v-model="model.contract_id" 
@@ -246,7 +246,7 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="12">
+                        <el-col :md="24">
                             <el-form-item :label="$t('models.request.prop_title')" :rules="validationRules.title"
                                         prop="title">
                                 <el-input type="text" v-model="model.title"/>
@@ -362,11 +362,11 @@
             },
         },
         async created(){
-            this.model['priority'] = '';
-            this.validationRules['priority'] = [{
-                required: true,
-                message: this.$t('validation.general.required')
-            }];
+            // this.model['priority'] = '';
+            // this.validationRules['priority'] = [{
+            //     required: true,
+            //     message: this.$t('validation.general.required')
+            // }];
         }
         
     };

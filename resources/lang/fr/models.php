@@ -332,6 +332,8 @@ return [
     ],
     'service' => [
         "title" => "Services",
+        'view' => 'Afficher',
+        'view_title' => 'Voir le service',
         "add_title" => "Ajouter un service",
         "edit_title" => "Modifier le service",
         "saved" => "Servizio salvato",
