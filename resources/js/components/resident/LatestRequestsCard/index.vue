@@ -79,80 +79,94 @@
     }
 </script>
 
-<style lang="sass" scoped>
-    .ui-card
-        /deep/ .ui-card__header
-            .el-button
-                padding: 0
-                margin-left: auto
+<style lang="scss" scoped>
+    .ui-card {
+        :global(.ui-card__header) {
+            .el-button {
+                padding: 0;
+                margin-left: auto;
 
-                /deep/ [class*=icon] + span
-                    margin-left: 5px
+                :global([class*=icon] + span) {
+                    margin-left: 5px;
+                }
+            }
+        }
 
-        /deep/ .ui-card__body
-            .el-collapse
-                margin: -16px
-                border-style: none
+        :global(.ui-card__body) {
+            .el-collapse {
+                margin: -16px;
+                border-style: none;
 
-                .el-collapse-item
+                .el-collapse-item {
 
-                    &:last-child /deep/ .el-collapse-item__header
-                        border-bottom-style: none
+                    &:last-child :global(.el-collapse-item__header) {
+                        border-bottom-style: none;
+                    }
 
-                    /deep/ .el-collapse-item__header
-                        background: transparent
-                        height: 56px
-                        line-height: 56px
-                        padding: 0 16px
-                        cursor: pointer
+                    :global(.el-collapse-item__header) {
+                        background: transparent;
+                        height: 56px;
+                        line-height: 56px;
+                        padding: 0 16px;
+                        cursor: pointer;
 
-                        .content
-                            flex: auto
-                            display: flex
-                            flex-direction: column
-                            justify-content: center
-                            line-height: 1.48
-                            overflow: hidden
-                            margin-left: 16px
+                        .content {
+                            flex: auto;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            line-height: 1.48;
+                            overflow: hidden;
+                            margin-left: 16px;
 
                             .category,
-                            .title
-                                overflow: hidden
-                                min-width: 0
-                                text-overflow: ellipsis
-                                white-space: nowrap
+                            .title {
+                                overflow: hidden;
+                                min-width: 0;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                            }
 
+                            .category {
+                                font-size: 14px;
+                                font-weight: 300;
+                                color: var(--color-text-placeholder);
+                            }
 
-                            .category
-                                font-size: 14px
-                                font-weight: 300
-                                color: var(--color-text-placeholder)
+                            .title {
+                                font-size: 15px;
+                                font-weight: 600;
+                                color: var(--color-primary);
+                            }
+                        }
+                    }
 
+                    :global(.el-collapse-item__wrap) {
+                        background: transparent;
 
-                            .title
-                                font-size: 15px
-                                font-weight: 600
-                                color: var(--color-primary)
+                        :global(.el-collapse-item__content) {
+                            color: var(--color-text-secondary);
+                            padding: 0 16px 16px 68px;
 
-                    /deep/ .el-collapse-item__wrap
-                        background: transparent
+                            &:after {
+                                content: '';
+                                display: table;
+                                clear: both;
+                            }
 
-                        /deep/ .el-collapse-item__content
-                            color: var(--color-text-secondary)
-                            padding: 0 16px 16px 68px
+                            .description {
+                                white-space: pre-wrap;
+                            }
 
-                            &:after
-                                content: ''
-                                display: table
-                                clear: both
-
-
-                            .description
-                                white-space: pre-wrap
-
-
-                            .el-button
-                                float: right
+                            .el-button {
+                                float: right;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 </style>
 
 <style lang="scss" scoped>
