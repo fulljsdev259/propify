@@ -3,7 +3,6 @@
 namespace App\Criteria\Pinboard;
 
 use App\Models\Contract;
-use App\Models\Resident;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -38,18 +37,11 @@ class FilterByLocationCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $u = \Auth::user();
+        $user = \Auth::user();
 
-        $resident = $u->resident;
+        $resident = $user->resident;
         if (!$resident) {
             return $model;
-        }
-
-
-        // If the resident building is in a quarter, show the announcement pinboard from that quarter
-        if ($resident->building && $resident->building->quarter_id) {
-            $conds[] = "pinboard_quarter.quarter_id = ?";
-            $args[] = $resident->building->quarter_id;
         }
 
 

@@ -858,11 +858,11 @@ class ResidentAPIController extends AppBaseController
      */
     public function downloadCredentials($id, DownloadCredentialsRequest $r)
     {
-        $t = $this->residentRepository->findForCredentials($id);
-        if (empty($t)) {
+        $resident = $this->residentRepository->findForCredentials($id);
+        if (empty($resident)) {
             return $this->sendError(__('models.resident.errors.not_found'));
         }
-        $pdfName = $this->getPdfName($t);
+        $pdfName = $this->getPdfName($resident);
 
         if (!\Storage::disk('resident_credentials')->exists($pdfName)) {
             return $this->sendError($this->credentialsFileNotFound);
@@ -878,16 +878,16 @@ class ResidentAPIController extends AppBaseController
      */
     public function sendCredentials($id, SendCredentialsRequest $r, TemplateRepository $tRepo)
     {
-        $t = $this->residentRepository->findForCredentials($id);
-        if (empty($t)) {
+        $resident = $this->residentRepository->findForCredentials($id);
+        if (empty($resident)) {
             return $this->sendError(__('models.resident.errors.not_found'));
         }
-        $pdfName = $this->getPdfName($t);
+        $pdfName = $this->getPdfName($resident);
         if (!\Storage::disk('resident_credentials')->exists($pdfName)) {
             return $this->sendError($this->credentialsFileNotFound);
         }
 
-        $t->user->notify(new ResidentCredentials($t));
+        $resident->user->notify(new ResidentCredentials($resident));
 
         return $this->sendResponse($id, __('models.resident.credentials_sent'));
     }
