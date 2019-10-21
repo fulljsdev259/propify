@@ -139,7 +139,7 @@ class RequestCategoryAPIController extends AppBaseController
         foreach ($categories as $category => $subCategories) {
             $data = get_category_details($category);
             foreach ($subCategories as $subCategory) {
-                $data['categories'] = get_sub_category_details($subCategory);
+                $data['categories'][] = get_sub_category_details($subCategory);
             }
 
             $response[] = $data;
