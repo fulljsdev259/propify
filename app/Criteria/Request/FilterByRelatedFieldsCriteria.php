@@ -37,10 +37,10 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $categoryIds = $this->request->get('category_id', null);
-        if ($categoryIds) {
-            $categoryIds = Arr::wrap($categoryIds);
-            $model->whereIn('category_id', $categoryIds);
+        $category = $this->request->category ?? $this->request->category_id;
+        if ($category) {
+            $categories = Arr::wrap($category);
+            $model->whereIn('category', $categories);
         }
 
         $residentId = $this->request->get('resident_id', null);
