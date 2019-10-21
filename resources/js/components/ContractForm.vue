@@ -136,6 +136,7 @@
                             style="width: 100%;"
                             type="date"
                             v-model="model.start_date"
+                            @change="changeStartDate"
                             value-format="yyyy-MM-dd"/>
                 </el-form-item>
             </el-col>
@@ -162,7 +163,7 @@
                     </el-input>
                 </el-form-item> 
             </el-col>
-            <el-col :md="12" v-if="resident_type_check == 1">
+            <el-col :md="12" v-if="resident_type_check == 1 && !isFuture">
                 <el-form-item :label="$t('models.resident.status.label')" prop="status" class="label-block">
                     <el-select placeholder="Select" style="display: block" 
                                 v-model="model.status">
@@ -513,7 +514,8 @@
                 under_ground_floor_label: this.$t('models.unit.floor_title.under_ground_floor'),
                 top_floor_label: this.$t('models.unit.floor_title.top_floor'),
                 original_unit_id : 0,
-                resident_type_check: 1
+                resident_type_check: 1,
+                isFuture: false
             }
         },
         methods: {
@@ -582,6 +584,14 @@
                 const d = new Date(date).getTime();
                 const rentStart = new Date(this.model.start_date).getTime();
                 return d <= rentStart;
+            },
+            changeStartDate(date) {
+                const start_date = new Date(date).getTime();
+                const today = new Date().getTime();
+
+                this.isFuture = start_date > today
+                if(this.isFuture)
+                    this.model.status = 2
             },
             async remoteSearchResidents(search) {
                 if (search === '') {
