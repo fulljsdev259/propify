@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * @SWG\Definition(
+ * App\Models\PasswordReset
+ *
+ * @SWG\Definition (
  *      definition="PasswordReset",
  *      required={"email"},
  *      @SWG\Property(
@@ -31,6 +33,20 @@ use Illuminate\Notifications\Notifiable;
  *          format="date-time"
  *      ),
  * )
+ * @property string $email
+ * @property string $token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset whereToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class PasswordReset extends Model
 {

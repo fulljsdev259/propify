@@ -4,7 +4,9 @@ namespace App\Models;
 
 
 /**
- * @SWG\Definition(
+ * App\Models\PinboardView
+ *
+ * @SWG\Definition (
  *      definition="PinboardView",
  *      required={},
  *      @SWG\Property(
@@ -44,6 +46,24 @@ namespace App\Models;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int $pinboard_id
+ * @property int $resident_id
+ * @property int $views
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Pinboard $pinboard
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PinboardView newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PinboardView newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PinboardView query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PinboardView whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PinboardView whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PinboardView wherePinboardId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PinboardView whereResidentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PinboardView whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PinboardView whereViews($value)
+ * @mixin \Eloquent
  */
 class PinboardView extends Model
 {

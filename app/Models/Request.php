@@ -12,7 +12,9 @@ use PDF;
 use Storage;
 
 /**
- * @SWG\Definition(
+ * App\Models\Request
+ *
+ * @SWG\Definition (
  *      definition="Request",
  *      required={"description", "status", "priority", "due_date"},
  *      @SWG\Property(
@@ -130,6 +132,106 @@ use Storage;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int|null $creator_user_id
+ * @property int $category_id
+ * @property int $unit_id
+ * @property int $resident_id
+ * @property int|null $contract_id
+ * @property string $request_format
+ * @property string $title
+ * @property string $description
+ * @property int $status
+ * @property int $priority
+ * @property int $internal_priority
+ * @property int $qualification
+ * @property int|null $location
+ * @property int|null $payer
+ * @property string|null $component
+ * @property int|null $capture_phase
+ * @property int|null $room
+ * @property \Illuminate\Support\Carbon|null $due_date
+ * @property \Illuminate\Support\Carbon|null $solved_date
+ * @property \Illuminate\Support\Carbon|null $reactivation_date
+ * @property int $resolution_time in seconds
+ * @property bool $active_reminder
+ * @property int $days_left_due_date
+ * @property int|null $reminder_user_id
+ * @property array $sent_reminder_user_ids
+ * @property bool $is_public
+ * @property bool $notify_email
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property int $visibility
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $allComments
+ * @property-read int|null $all_comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RequestAssignee[] $assignees
+ * @property-read int|null $assignees_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\RequestCategory $category
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ * @property-read int|null $comments_count
+ * @property-read \App\Models\Contract|null $contract
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Conversation[] $conversations
+ * @property-read int|null $conversations_count
+ * @property-read \App\Models\User|null $creator
+ * @property-read mixed $all_people
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PropertyManager[] $managers
+ * @property-read int|null $managers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ServiceProvider[] $providers
+ * @property-read int|null $providers_count
+ * @property-read \App\Models\User|null $remainder_user
+ * @property-read \App\Models\Resident $resident
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tag[] $tags
+ * @property-read int|null $tags_count
+ * @property-read \App\Models\Unit $unit
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Request onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereActiveReminder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereCapturePhase($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereComponent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereContractId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereCreatorUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereDaysLeftDueDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereDueDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereInternalPriority($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereIsPublic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereLocation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereNotifyEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request wherePayer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request wherePriority($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereQualification($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereReactivationDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereReminderUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereRequestFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereResidentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereResolutionTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereRoom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereSentReminderUserIds($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereSolvedDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereUnitId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereVisibility($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Request withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Request withoutTrashed()
+ * @mixin \Eloquent
  */
 class Request extends AuditableModel implements HasMedia
 {

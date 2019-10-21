@@ -3,7 +3,9 @@
 namespace App\Models;
 
 /**
- * @SWG\Definition(
+ * App\Models\Autologin
+ *
+ * @SWG\Definition (
  *      definition="Autologin",
  *      required={},
  *      @SWG\Property(
@@ -37,6 +39,26 @@ namespace App\Models;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int $user_id
+ * @property string $token
+ * @property string $redirect
+ * @property int $used
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $url
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Autologin newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Autologin newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Autologin query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Autologin whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Autologin whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Autologin whereRedirect($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Autologin whereToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Autologin whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Autologin whereUsed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Autologin whereUserId($value)
+ * @mixin \Eloquent
  */
 class Autologin extends Model
 {

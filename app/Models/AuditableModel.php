@@ -9,6 +9,16 @@ use Illuminate\Support\Collection;
 use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Models\Audit;
 
+/**
+ * App\Models\AuditableModel
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AuditableModel newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AuditableModel newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AuditableModel query()
+ * @mixin \Eloquent
+ */
 class AuditableModel extends Model implements Auditable
 {
     use \App\Traits\Auditable,

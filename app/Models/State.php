@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @SWG\Definition(
+ * App\Models\State
+ *
+ * @SWG\Definition (
  *      definition="State",
  *      required={"code", "name", "name_de", "name_fr", "name_it", "name_rm"},
  *      @SWG\Property(
@@ -57,6 +59,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int $country_id
+ * @property string $code
+ * @property string $name
+ * @property string $name_de
+ * @property string $name_fr
+ * @property string $name_it
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\State newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\State newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\State query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\State whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\State whereCountryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\State whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\State whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\State whereNameDe($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\State whereNameFr($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\State whereNameIt($value)
+ * @mixin \Eloquent
  */
 class State extends Model
 {

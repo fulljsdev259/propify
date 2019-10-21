@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Str;
 
 /**
- * @SWG\Definition(
+ * App\Models\RequestAssignee
+ *
+ * @SWG\Definition (
  *      definition="RequestAssignee",
  *      @SWG\Property(
  *          property="id",
@@ -44,6 +46,22 @@ use Illuminate\Support\Str;
  *          type="string"
  *      ),
  * )
+ * @property int $id
+ * @property int $request_id
+ * @property int $assignee_id
+ * @property string $assignee_type
+ * @property string|null $created_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestAssignee newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestAssignee newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestAssignee query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestAssignee whereAssigneeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestAssignee whereAssigneeType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestAssignee whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestAssignee whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestAssignee whereRequestId($value)
+ * @mixin \Eloquent
  */
 class RequestAssignee extends AuditableModel
 {
