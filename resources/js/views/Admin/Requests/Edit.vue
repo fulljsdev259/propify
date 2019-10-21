@@ -387,7 +387,7 @@
                                                     {{$t('models.request.due_date')}}
                                                     <div class="reminder-box">
                                                         <label class="switcher__label">
-                                                            <span class="switcher__desc">{{$t('models.request.active_reminder_switcher')}}</span>
+                                                            {{$t('models.request.active_reminder_switcher')}}
                                                         </label>
                                                         <el-switch v-model="model.active_reminder"/>
                                                     </div>
@@ -982,7 +982,8 @@
             margin-top: 5px;
             justify-content: flex-end;
 
-            .switcher__desc {
+            .switcher__label {
+                margin-top: 5px;
                 padding-right: 5px;
             }
 
