@@ -44,18 +44,6 @@ use Illuminate\Support\Facades\Storage;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="building_id",
- *          description="building_id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="unit_id",
- *          description="unit_id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
  *          property="type",
  *          description="type",
  *          type="integer",
@@ -131,8 +119,6 @@ use Illuminate\Support\Facades\Storage;
  * @property int|null $user_id
  * @property int|null $default_contract_id
  * @property int|null $address_id
- * @property int|null $building_id
- * @property int|null $unit_id
  * @property int|null $country_id
  * @property int|null $rating
  * @property int $type
@@ -157,7 +143,6 @@ use Illuminate\Support\Facades\Storage;
  * @property-read \App\Models\Address|null $address
  * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read int|null $audits_count
- * @property-read \App\Models\Building|null $building
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Contract[] $contracts
  * @property-read int|null $contracts_count
  * @property-read \App\Models\Country|null $country
@@ -168,7 +153,6 @@ use Illuminate\Support\Facades\Storage;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Request[] $requests
  * @property-read int|null $requests_count
  * @property-read \App\Models\UserSettings $settings
- * @property-read \App\Models\Unit|null $unit
  * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident allRequestStatusCount()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident newModelQuery()
@@ -257,8 +241,6 @@ class Resident extends AuditableModel implements HasMedia
         'user_id',
         'default_contract_id',
         'address_id',
-        'building_id',
-        'unit_id',
         'title',
         'company',
         'first_name',
@@ -288,9 +270,7 @@ class Resident extends AuditableModel implements HasMedia
     protected $casts = [
         'user_id' => 'integer',
         'address_id' => 'integer',
-        'building_id' => 'integer',
         'country_id' => 'integer',
-        'unit_id' => 'integer',
         'title' => 'string',
         'company' => 'string',
         'first_name' => 'string',
@@ -366,26 +346,10 @@ class Resident extends AuditableModel implements HasMedia
         return $this->belongsTo(Address::class, 'address_id', 'id');
     }
 
-    /**
-     * @return BelongsTo
-     **/
-    public function unit()
-    {
-        return $this->belongsTo(Unit::class, 'unit_id', 'id');
-    }
-
     public function registerMediaCollections()
     {
         // @TODO check used or not
         $this->addMediaCollection('documents');
-    }
-
-    /**
-     * @return BelongsTo
-     **/
-    public function building()
-    {
-        return $this->belongsTo(Building::class, 'building_id', 'id');
     }
 
     /**

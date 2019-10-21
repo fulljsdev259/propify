@@ -24,6 +24,8 @@ class RequestTransformer extends BaseTransformer
             'title' => $model->title,
             'description' => $model->description,
             'status' => $model->status,
+            'category' => $model->category,
+            'sub_category' => $model->sub_category,
             //'priority' => $model->priority,
             //'internal_priority' => $model->internal_priority,
             'qualification' => $model->qualification,
