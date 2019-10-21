@@ -220,6 +220,10 @@ return [
             'title' => 'Reactivate request',
             'text' => 'Please leave a message with the reason for the reactivation.',
         ],
+        'delete_pinboard' => [
+            'title' => 'Delete Pinboard',
+            'text' => 'Do you really want to delete the pinboard?',
+        ],
         'delete_listing' => [
             'title' => 'Delete Listing',
             'text' => 'Do you really want to delete the listing?',

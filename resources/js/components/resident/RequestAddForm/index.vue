@@ -68,11 +68,11 @@
                 </el-option>
             </el-select>
         </el-form-item>
-        <el-form-item prop="priority" :label="$t('resident.priority')" required>
+        <!-- <el-form-item prop="priority" :label="$t('resident.priority')" required>
                     <el-select :placeholder="$t('resident.placeholder.priority')" filterable v-model="model.priority">
                         <el-option v-for="priority in priorities" :key="priority.value" :label="$t(`models.request.priority.${priority.label}`)" :value="priority.value" />
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
         <el-form-item prop="title" :label="$t('resident.title')" required>
             <el-input v-model="model.title" />
         </el-form-item>
@@ -166,10 +166,10 @@
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('resident.category')})
                     },
-                    priority: {
-                        required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('resident.priority')})
-                    },                                        
+                    // priority: {
+                    //     required: true,
+                    //     message: this.$t('validation.required',{attribute: this.$t('resident.priority')})
+                    // },                                        
                     description: {
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('resident.description')})
@@ -295,7 +295,7 @@
             }
         },
         async mounted () {
-            this.priorities = Object.entries(this.$constants.requests.priority).map(([value, label]) => ({value: +value, label}));
+            //this.priorities = Object.entries(this.$constants.requests.priority).map(([value, label]) => ({value: +value, label}));
             this.contracts = this.$store.getters.loggedInUser.resident.contracts.filter( contract => contract.status == 1)
 
             this.contracts.forEach(contract => {

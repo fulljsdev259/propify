@@ -14,7 +14,9 @@ use App\Traits\HasMediaTrait;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * @SWG\Definition(
+ * App\Models\Resident
+ *
+ * @SWG\Definition (
  *      definition="Resident",
  *      required={"first_name", "birthdate"},
  *      @SWG\Property(
@@ -125,6 +127,81 @@ use Illuminate\Support\Facades\Storage;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int|null $user_id
+ * @property int|null $default_contract_id
+ * @property int|null $address_id
+ * @property int|null $building_id
+ * @property int|null $unit_id
+ * @property int|null $country_id
+ * @property int|null $rating
+ * @property int $type
+ * @property string $resident_format
+ * @property string|null $nation
+ * @property string|null $review
+ * @property string $title
+ * @property string|null $company
+ * @property string $first_name
+ * @property string $last_name
+ * @property \Illuminate\Support\Carbon $birth_date
+ * @property string|null $mobile_phone
+ * @property string|null $private_phone
+ * @property string|null $work_phone
+ * @property int $status
+ * @property string|null $activation_code
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $rent_start
+ * @property \Illuminate\Support\Carbon|null $rent_end
+ * @property-read \App\Models\Address|null $address
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\Building|null $building
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Contract[] $contracts
+ * @property-read int|null $contracts_count
+ * @property-read \App\Models\Country|null $country
+ * @property-read \App\Models\Contract|null $default_contract
+ * @property-read mixed $name
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Request[] $requests
+ * @property-read int|null $requests_count
+ * @property-read \App\Models\UserSettings $settings
+ * @property-read \App\Models\Unit|null $unit
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident allRequestStatusCount()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereActivationCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereAddressId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereBirthDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereBuildingId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereCompany($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereCountryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereDefaultContractId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereMobilePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereNation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident wherePrivatePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereRating($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereRentEnd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereRentStart($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereResidentFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereReview($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereUnitId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereWorkPhone($value)
+ * @mixin \Eloquent
  */
 class Resident extends AuditableModel implements HasMedia
 {

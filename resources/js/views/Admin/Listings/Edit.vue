@@ -93,7 +93,7 @@
                                         <request-media :data="[...model.media, ...media]" @deleteMedia="deleteMedia"
                                                                     v-if="media.length || (model.media && model.media.length)"></request-media>
                                     </div> -->
-                                    <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex"/>
+                                    <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex" :show-description="false"/>
                                     <el-alert
                                         :title="$t('general.upload_all_desc')"
                                         type="info"

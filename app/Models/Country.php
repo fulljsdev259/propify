@@ -3,7 +3,9 @@
 namespace App\Models;
 
 /**
- * @SWG\Definition(
+ * App\Models\Country
+ *
+ * @SWG\Definition (
  *      definition="Country",
  *      required={"name", "code"},
  *      @SWG\Property(
@@ -42,8 +44,26 @@ namespace App\Models;
  *          description="name_it",
  *          type="string"
  *      ),
- *
+ * 
  * )
+ * @property int $id
+ * @property string $name
+ * @property string $code
+ * @property string $alpha_3
+ * @property string $name_de
+ * @property string $name_fr
+ * @property string $name_it
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereAlpha3($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereNameDe($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereNameFr($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Country whereNameIt($value)
+ * @mixin \Eloquent
  */
 class Country extends Model
 {

@@ -41,7 +41,8 @@ class FilterByBuildingCriteria implements CriteriaInterface
         }
 
         $u = \Auth::user();
-        if (!$u->can('list-pinboard') && $u->resident) {
+        if ($u->resident) {
+            // @TODO fix contract related
             $building_id = $u->resident->building_id;
         }
 
