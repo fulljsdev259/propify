@@ -1,5 +1,5 @@
 <template>
-    <div class="audit" v-infinite-scroll="fetch">
+    <div class="audit">
         <el-col class="filter-col" v-if="showFilter">
             <el-divider :content-position="filterPosition">
                     <el-popover
@@ -18,7 +18,7 @@
             <small>{{$t('resident.no_data_info.activity')}}</small>
         </placeholder>
             <el-timeline v-else>
-                <template v-for="(audit, date) in audits.data">                    
+                <template v-for="(audit,id) in list">                               
                     <el-timeline-item  :key="audit.id" :timestamp="`${audit.user.name} • ${formatDatetime(audit.updated_at)}`">
                         <span>{{audit.statement}}</span>
                     </el-timeline-item>
@@ -26,6 +26,9 @@
                 <el-timeline-item v-if="loading">
                     {{$t('resident.loading')}}
                 </el-timeline-item>
+                <div v-if="meta.current_page < meta.last_page">
+                    <el-button @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>
+                </div>
             </el-timeline>
     </div>
 </template>
@@ -66,15 +69,14 @@
                 auditable_type: null,
             };
             return {
-                audits: {
-                    data: {}
-                },
+                list: [],
+                meta: {},
                 filters: {
                     schema: filterSchema,
                     data: filterData
                 },
                 categories: [],
-                loading: true
+                loading: true,                
             }
         },
         methods: {
@@ -172,153 +174,55 @@
                             this.filters.data.event = null
                         }
                     }
-                    this.audits.data = undefined
-                    this.audits.current_page = undefined
+                    this.list = undefined
+                    this.meta.current_page = undefined
                     await this.fetch();
             },
-            async fetch (params) {
+            async fetch (page = 1,params) {
                 // Get current page and last page of the displayed audits
-                const {
-                    current_page,
-                    last_page
-                } = this.audits
+                this.loading = true                
 
-                // If current page and last page are set, and current page is the last page then don't fetch the next audits
-                if (current_page && last_page &&
-                    current_page == last_page) {
-                    return;
-                }
-
-                // Display loading in timeline
-                this.loading = true
-
-                let page = current_page || 0
-                page++
                 const auditable_type = this.type ? this.type : this.filters.data.auditable_type
                 // Fetch audits
-                const audit_resp = await this.axios.get('audits?' + queryString.stringify({
-                    sortedBy: 'desc',
-                    orderBy: 'created_at',
-                    page,
-                    per_page: 25,
-                    auditable_id: this.id,
-                    auditable_type: auditable_type,
-                    event: this.filters.data.event,
-                    ...params,
-                }))                
-                console.log(audit_resp.data.data.total);
-                EventBus.$emit('audit-get-counted', audit_resp.data.data.total);
-                this.audits = audit_resp.data.data;
-                /*try{
-
-                // Extract audits from response
-
-                let constant_variables = {}
-                switch (auditable_type) {
-                    case 'request': constant_variables = this.$constants.requests
-                    break;
-                    case 'pinboard': constant_variables = this.$constants.pinboard;
-                    break;
-                    case 'listing': constant_variables = this.$constants.listings;
-                    break;
-                }
-                const translation_with_id = this.id ? 'withId': 'withNoId'
-                const audits = data.data.reduce((obj, current, idx) => {
-                    let audit_replacer = [];
-                    let content = [];
-                    const translated_auditable_type = this.$t(`general.components.common.audit.type.${current.auditable_type}`);
-                    switch(current.event){
-                        //  If audit event is updated
-                        case 'updated':
-                            //  Build new values array for type
-                            Object.values(current.new_values).map((new_value, new_idx) => {
-                                audit_replacer[Object.keys(current.new_values)[new_idx]] = []
-                                const type = Object.keys(current.new_values)[new_idx];
-                                if(type in constant_variables){
-                                    audit_replacer[type]['new'] = this.$t(`models.${auditable_type}.${type}.${constant_variables[type][new_value]}`)
-                                }else{
-                                    switch (type) {
-                                        case 'category_id':
-                                            audit_replacer[type]['new'] = this.$t(`models.${auditable_type}.category_options.${this.categories[new_value]}`);
-                                        break;
-                                        case 'due_date':
-                                            audit_replacer[type]['new'] = this.formatDatetime(new_value);
-                                        break;
-                                        case 'published_at':
-                                            audit_replacer[type]['new'] = this.formatDatetime(new_value);
-                                        break;
-                                        default: audit_replacer[type]['new'] = new_value
-                                    }
-                                }
-                                audit_replacer[type]['new'] = audit_replacer[type]['new']
-
-                            })
-                            //  Build old values array for type
-                            Object.values(current.old_values).map((old_value, old_idx) => {
-                                const type = Object.keys(current.old_values)[old_idx];
-                                if(type in constant_variables){
-                                    audit_replacer[type]['old'] = this.$t(`models.${auditable_type}.${type}.${constant_variables[type][old_value]}`)
-                                }else{
-                                    switch (type) {
-                                        case 'category_id':
-                                            audit_replacer[type]['old'] = this.$t(`models.${auditable_type}.category_options.${this.categories[old_value]}`);
-                                        break;
-                                        case 'due_date':
-                                            audit_replacer[type]['old'] = this.formatDatetime(old_value);
-                                        break;
-                                        default: audit_replacer[type]['old'] = old_value
-                                    }
-                                }
-                                audit_replacer[type]['old'] = audit_replacer[type]['old']
-                            })
-
-                            //  For each type find the content text located in the translation file,
-                            //  then replace the old and new values
-
-                            content = Object.values(audit_replacer).map(( current_line, index) => {
-                                return this.$t(`general.components.common.audit.content.${translation_with_id}.${current.auditable_type}.updated.${Object.keys(audit_replacer)[index]}`,{old: current_line.old, new: current_line.new, auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
-                            })
-
-                            //  Build audit object
-                            obj[current.created_at] = {id:current.id, event:current.event, content:content, userName:current.user.name}
-                        break;
-                        case 'created':
-                            content[0] = this.$t(`general.components.common.audit.content.${translation_with_id}.${current.auditable_type}.created`,{userName: current.user.name, auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
-                            obj[current.created_at] = {id:current.id, event:current.event, content:content, userName:current.user.name}
-                        break;
-                        case 'user_assigned':
-                            content[0] = this.$t(`general.components.common.audit.content.${translation_with_id}.${current.auditable_type}.user_assigned`,{userName: current.new_values.user_name, auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
-                            obj[current.created_at] = {id:current.id, event:current.event, content:content, userName:current.user.name}
-                        break;
-                        case 'provider_assigned':
-                            content[0] = this.$t(`general.components.common.audit.content.${translation_with_id}.${current.auditable_type}.provider_assigned`,{providerName: current.new_values.provider_name, auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
-                            obj[current.created_at] = {id:current.id, event:current.event, content:content, userName:current.user.name}
-                        break;
-                        default:
-                            content[0] = this.$t(`general.components.common.audit.content.${translation_with_id}.${current.auditable_type}.${current.event}`,{ auditable_id: current.auditable_id, auditable_type: translated_auditable_type})
-                             obj[current.created_at] = {id:current.id, event:current.event, content:content, userName:current.user.name}
-                        break;
+                try {
+                    const resp = await this.axios.get('audits?' + queryString.stringify({
+                        sortedBy: 'desc',
+                        orderBy: 'created_at',
+                        page,
+                        per_page: 5,
+                        auditable_id: this.id,
+                        auditable_type: auditable_type,
+                        event: this.filters.data.event,
+                        ...params,
+                    }))  
+                    this.meta = _.omit(resp.data.data, 'data');                  
+                    if(!resp.data.data.data) {
+                        this.list = []
                     }
-                    return obj
-                },{})
-
-                // Delete fetched audits from object so they don't merge with the procesed ones
-                delete data.data
-
-                // Concatenate to the existing audits and also update the extra data like current page and last page that come from the request
-                this.audits = {data: {...this.audits.data, ...audits}, ...data}
-                }catch (err) {
-                    this.$message.error(err, {
-                        offset: 88
-                    })
-                }finally {
-                    this.loading = false
-                }*/
+                    else{                        
+                        if (page === 1) {                            
+                            this.list = resp.data.data.data;
+                        } else {                            
+                            this.list.push(...resp.data.data.data);
+                        }
+                        EventBus.$emit('audit-get-counted', resp.data.data.total);                
+                    }
+                }catch (e) {
+                    this.list = []
+                    console.log(e);
+                } finally {
+                    this.loading = false;
+                }                                             
+            },
+            loadMore() {
+                if (this.meta.current_page < this.meta.last_page) {
+                    this.fetch(this.meta.current_page + 1);
+                }                
             }
         },
         computed: {
             isEmpty () {
-                return !this.loading && !Object.keys(this.audits.data).length
+                return !this.loading && !Object.keys(this.list).length
             }
         },
         async mounted () {
