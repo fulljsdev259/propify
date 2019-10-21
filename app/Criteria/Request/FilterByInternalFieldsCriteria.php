@@ -75,15 +75,15 @@ class FilterByInternalFieldsCriteria implements CriteriaInterface
             $model->where('status', $status);
         }
 
-        $priority = $this->request->get('priority', null);
-        if ($priority) {
-            $model->where('priority', $priority);
-        }
+//        $priority = $this->request->get('priority', null);
+//        if ($priority) {
+//            $model->where('priority', $priority);
+//        }
 
-        $internalPriority = $this->request->get('internal_priority', null);
-        if ($internalPriority) {
-            $model->where('internal_priority', $internalPriority);
-        }
+//        $internalPriority = $this->request->get('internal_priority', null);
+//        if ($internalPriority) {
+//            $model->where('internal_priority', $internalPriority);
+//        }
 
         $qualification = $this->request->get('qualification', null);
         if ($qualification) {
