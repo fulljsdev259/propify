@@ -435,7 +435,17 @@ return [
         'send_person' => 'Quale persona deve essere informata?',
         'sort' => 'In scadenza il',
         'reset_sort' => 'Ripristina ordinamento',
-        'creation_date' => 'Data di creazione',        
+        'creation_date' => 'Data di creazione',
+        'category_list' => [
+            'general' => 'Preoccupazioni generali',
+            'malfunction' => 'Guasto',
+            'deficiency' => 'Carenza (limitata nel tempo)'
+        ],
+        'sub_category' => [
+            'surrounding' => 'Circostante',
+            'real_estate' => 'Immobili',
+            'flat' => 'Appartamento',
+        ],
         'media' => [
             "added" => "Documento ajouté",
             "removed" => "Supporti rimossi",

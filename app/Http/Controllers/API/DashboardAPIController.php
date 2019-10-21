@@ -335,7 +335,9 @@ class DashboardAPIController extends AppBaseController
     protected function allBuildingStatistics()
     {
         $unitCount = Unit::count();
-        $occupiedUnitsCount = Unit::has('resident')->count();
+        $occupiedUnitsCount = Unit::whereHas('contracts', function ($q) {
+                $q->where('status', Contract::StatusActive);
+            })->count();
 
         if ($unitCount) {
             $occupiedUnits = round($occupiedUnitsCount * 100 / $unitCount);
@@ -973,18 +975,14 @@ class DashboardAPIController extends AppBaseController
         $period = $this->getPeriod($request);
         [$periodValues, $raw] = $this->getPeriodRelatedData($period, $startDate, $endDate);
 
-        $name = get_translation_attribute_name('name');
-        $parentCategories = RequestCategory::whereNull('parent_id')->pluck($name, 'id')->toArray();
-        $requests = Request::selectRaw($raw . ', IF(cat2.id IS NULL, cat1.id, cat2.id) AS category_parent_id')
-            ->join('request_categories AS cat1', 'requests.category_id', '=', 'cat1.id')
-            ->leftJoin('request_categories AS cat2', 'cat1.parent_id', '=', 'cat2.id')
+        $requests = Request::selectRaw($raw . ', category')
             ->whereDate('requests.created_at', '>=', $startDate->format('Y-m-d'))
             ->whereDate('requests.created_at', '<=', $endDate->format('Y-m-d'))
             ->groupBy('period')
-            ->groupBy('category_parent_id')
+            ->groupBy('category')
             ->get();
 
-        $ret = $this->formatResponseGropedPeriodAndCol($periodValues, $requests, 'category_parent_id', $parentCategories);
+        $ret = $this->formatResponseGropedPeriodAndCol($periodValues, $requests, 'category', Request::Category);
         $isConvertResponse = $optionalArgs['isConvertResponse'] ?? true;
         return $isConvertResponse
             ? $this->sendResponse($ret, 'Request services statistics formatted successfully')
@@ -1346,25 +1344,23 @@ class DashboardAPIController extends AppBaseController
     protected function _donutChartRequestByCategory($request, $optionalArgs = [])
     {
         [$startDate, $endDate] = $this->getStartDateEndDate($request, $optionalArgs);
-        $name = get_translation_attribute_name('name');
-        $parentCategories = RequestCategory::whereNull('parent_id')->pluck($name, 'id');
 
-        $requests = Request::selectRaw('count(requests.id) as count, IF(cat2.id IS NULL, cat1.id, cat2.id) AS category_parent_id')
-            ->join('request_categories AS cat1', 'requests.category_id', '=', 'cat1.id')
-            ->leftJoin('request_categories AS cat2', 'cat1.parent_id', '=', 'cat2.id')
+        $requests = Request::selectRaw('count(requests.id) as count, category')
             ->when($startDate, function ($q) use ($startDate) {$q->whereDate('requests.created_at', '>=', $startDate->format('Y-m-d'));})
             ->when($endDate, function ($q) use ($endDate) {$q->whereDate('requests.created_at', '<=', $endDate->format('Y-m-d'));})
-            ->groupBy('category_parent_id')
+            ->groupBy('category')
             ->get();
 
-        $statisticData = $parentCategories->values()->flip();
-        foreach ($statisticData as $category => $__) {
-            $statisticData[$category] = 0;
+        $statisticData = collect();
+        $parentCategories = [];
+        foreach (Request::Category as $key => $value) {
+            $statisticData[__('models.request.category_list.' . $value)] = 0;
+            $parentCategories[$key] = __('models.request.category_list.' . $value);
         }
 
-        foreach ($requests as $request) {
-            $category = $parentCategories[$request->category_parent_id];
-            $statisticData[$category] = $this->thousandsFormat($request->count);
+        foreach ($requests as $_request) {
+            $category = $parentCategories[$_request->category];
+            $statisticData[$category] = $this->thousandsFormat($_request->count);
         }
 
         $response = [

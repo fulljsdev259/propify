@@ -435,7 +435,17 @@ return [
         'send_person' => 'Quelle personne doit être notifiée ?',
         'sort' => 'Trier',
         'reset_sort' => 'Réinitialiser le tri',
-        'creation_date' => 'Date de création',        
+        'creation_date' => 'Date de création',
+        'category_list' => [
+            'general' => 'Préoccupations générales',
+            'malfunction' => 'Défaut de fonctionnement',
+            'deficiency' => 'Déficience (limitée dans le temps)'
+        ],
+        'sub_category' => [
+            'surrounding' => 'Environnant',
+            'real_estate' => 'Real Estate',
+            'flat' => 'Flat',
+        ],
         'media' => [
             "added" => "Document ajouté",
             "removed" => "Suppression du support",
