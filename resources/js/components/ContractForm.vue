@@ -70,6 +70,7 @@
                         :loading="remoteLoading"
                         :placeholder="$t('models.request.placeholders.resident')"
                         :remote-method="remoteSearchResidents"
+                        @change="changeResident"
                         filterable 
                         remote
                         reserve-keyword
@@ -109,7 +110,7 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-            <el-col :md="12" v-if="model.unit_id && resident_type == 1">
+            <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.contract.rent_duration')"
                             prop="duration"
                             class="label-block">
@@ -139,7 +140,7 @@
                             value-format="yyyy-MM-dd"/>
                 </el-form-item>
             </el-col>
-            <el-col :md="12" v-if="model.unit_id && model.duration == 2 && resident_type == 1">
+            <el-col :md="12" v-if="model.unit_id && model.duration == 2 && resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.contract.rent_end')">
                     <el-date-picker
                         :picker-options="{disabledDate: disabledRentEnd}"
@@ -162,7 +163,7 @@
                     </el-input>
                 </el-form-item> 
             </el-col>
-            <el-col :md="12" v-if="resident_type == 1">
+            <el-col :md="12" v-if="resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.status.label')" prop="status" class="label-block">
                     <el-select placeholder="Select" style="display: block" 
                                 v-model="model.status">
@@ -176,7 +177,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <template v-if="resident_type == 1">
+        <template v-if="resident_type_check == 1">
         <ui-divider v-if="model.unit_id" content-position="left">
             {{ $t('models.resident.contract.deposit_amount') }}
         </ui-divider>
@@ -451,11 +452,11 @@
                     end_date: '',
                     deposit_amount: 0,
                     deposit_type: 1,
-                    monthly_rent_net: '',
-                    monthly_maintenance: '',
+                    monthly_rent_net: 0,
+                    monthly_maintenance: 0,
                     status: '',
                     deposit_status: 1,
-                    monthly_rent_gross: '',
+                    monthly_rent_gross: 0,
                     unit_id: '',
                     building_id: '',
                     media: [],
@@ -513,6 +514,7 @@
                 under_ground_floor_label: this.$t('models.unit.floor_title.under_ground_floor'),
                 top_floor_label: this.$t('models.unit.floor_title.top_floor'),
                 original_unit_id : 0,
+                resident_type_check: 1
             }
         },
         methods: {
@@ -677,6 +679,10 @@
                     this.remoteLoading = false;
                 }
             },
+            changeResident(val) {
+                let resident = this.residents.find(resident => resident.id == val)
+                this.resident_type_check = resident.type
+            },
             changeContractUnit() {
 
                 let unit = null
@@ -767,6 +773,9 @@
                 this.model.building_id = this.building_id
                 await this.searchContractUnits(true)
             }
+
+            if(this.resident_type)
+                this.resident_type_check = this.resident_type
         },
         mounted() {
             this.$refs.form.$el.focus()
