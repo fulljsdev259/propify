@@ -167,52 +167,37 @@
                 </el-col>
                 <el-col :md="12">
                     <card :loading="loading" class="mb20" :header="$t('models.pinboard.buildings')">
-                        <el-row :gutter="10">
-                            <el-col :lg="6">
-                                <el-select @change="resetToAssignList"
-                                           class="custom-select"
-                                           v-model="assignmentType"
-                                >
-                                    <el-option
-                                        :key="type"
-                                        :label="$t(`general.assignment_types.${type}`)"
-                                        :value="type"
-                                        v-for="(type) in assignmentTypes">
-                                    </el-option>
-                                </el-select>
-                            </el-col>
-                            <el-col :lg="18" :xl="18">
-                                <el-select
-                                    :loading="remoteLoading"
-                                    :placeholder="$t('general.placeholders.search')"
-                                    :remote-method="remoteSearchBuildings"
-                                    class="custom-remote-select"
-                                    filterable
-                                    remote
-                                    reserve-keyword
-                                    style="width: 100%;"
-                                    v-model="toAssign"
-                                >
-                                    <div class="custom-prefix-wrapper" slot="prefix">
-                                        <i class="el-icon-search custom-icon"></i>
-                                    </div>
-                                    <el-option
-                                        :key="building.id"
-                                        :label="building.name"
-                                        :value="building.id"
-                                        v-for="building in toAssignList"/>
-                                </el-select>
-                            </el-col>
-                        </el-row>
+                        <assignment-by-type
+                                :resetToAssignList="resetToAssignList"
+                                :assignmentType.sync="assignmentType"
+                                :toAssign.sync="toAssign"
+                                :assignmentTypes="assignmentTypes"
+                                :assign="attachAddedAssigmentList"
+                                :toAssignList="toAssignList"
+                                :remoteLoading="remoteLoading"
+                                :remoteSearch="remoteSearchBuildings"
+                        />
+                        <relation-list
+                                :actions="assignmentsActions"
+                                :columns="assignmentsColumns"
+                                :addedAssigmentList="addedAssigmentList"
+                                :fetchStatus="false"
+                                :filterValue="false"
+                                :fetchAction="false"
+                                :filter="false"
+                                ref="assignmentsList"
+                        />
 
-                        <el-divider></el-divider>
+                        <div v-if="addedAssigmentList.length">
+                            <el-divider></el-divider>
 
-                        <div class="switch-wrapper">
-                            <el-form-item :label="$t('models.pinboard.notify_email')" prop="notify_email">
-                                <el-switch v-model="model.notify_email"/>
-                            </el-form-item>
-                            <div class="switcher__desc">
-                                {{$t('models.pinboard.notify_email_description')}}
+                            <div class="switch-wrapper">
+                                <el-form-item :label="$t('models.pinboard.notify_email')" prop="notify_email">
+                                    <el-switch v-model="model.notify_email"/>
+                                </el-form-item>
+                                <div class="switcher__desc">
+                                    {{$t('models.pinboard.notify_email_description')}}
+                                </div>
                             </div>
                         </div>
                     </card>
@@ -383,17 +368,49 @@
     import PinboardMixin from 'mixins/adminPinboardMixin';
     import AddActions from 'components/EditViewActions';
     import EditorConfig from 'mixins/adminEditorConfig';
+    import AssignmentByType from 'components/AssignmentByType';
+    import RelationList from 'components/RelationListing';
 
     const mixin = PinboardMixin({mode: 'add'});
     export default {
         mixins: [mixin, EditorConfig],
         components: {
             AddActions,
+            AssignmentByType,
+            RelationList,
+        },
+        data() {
+            return {
+                assignmentsColumns: [{
+                    prop: 'name',
+                    label: 'general.name'
+                }, {
+                    prop: 'type',
+                    label: 'models.pinboard.assign_type',
+                    i18n: this.translateType
+                }],
+                assignmentsActions: [{
+                    width: '180px',
+                    buttons: [{
+                        title: 'general.unassign',
+                        type: 'danger',
+                        onClick: this.notifyUnassignment
+                    }]
+                }],
+            }
         },
         mounted() {
             this.rolename = this.$store.getters.loggedInUser.roles[0].name;
         },
         methods: {
+            notifyUnassignment(row) {
+                this.addedAssigmentList.forEach(element => {
+                    if (element === row) {
+                        let index = this.addedAssigmentList.indexOf(element);
+                        this.addedAssigmentList.splice(index, 1);
+                    }
+                });
+            },
             replacePinboardTitle() {
                 this.$route.meta.title = `Add ${this.$constants.pinboard.type[this.model.type]} Pinboard`;
                 this.$router.replace({
