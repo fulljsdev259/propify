@@ -35,7 +35,7 @@ class FilterByStatusCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $status = $this->request->get('residents.status', null);
+        $status = $this->request->get('status', null);
         if ($status) {
             return $model->where('residents.status', (int)$status);
         }

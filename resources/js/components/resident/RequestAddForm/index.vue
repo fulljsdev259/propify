@@ -1,7 +1,7 @@
 <template>
     <el-form ref="form" class="request-add" :model="model" label-position="top" :rules="validationRules" v-loading="loading">
         
-        <el-form-item prop="contract_id" :label="$t('resident.contract')" required>
+        <el-form-item prop="contract_id" :label="$t('resident.contract')" v-if="contracts.length > 1" required>
             <el-select v-model="model.contract_id" 
                         :placeholder="$t('resident.placeholder.contract')"
                         class="custom-select"
@@ -9,7 +9,7 @@
                         @change="showSubcategory">
                 <el-option v-for="contract in contracts" 
                             :key="contract.id" 
-                            :label="contract.building_unit" 
+                            :label="contract.building_room_floor_unit" 
                             :value="contract.id" />
             </el-select>
         </el-form-item>
@@ -299,13 +299,33 @@
             this.contracts = this.$store.getters.loggedInUser.resident.contracts.filter( contract => contract.status == 1)
 
             this.contracts.forEach(contract => {
-                contract.building_unit = contract.building.name + " " +  contract.unit.name
+                let floor_label;
+                if(contract.unit.attic == 'attic')
+                {
+                    floor_label = this.$t('models.unit.floor_title.top_floor')
+                }
+                else if(contract.unit.floor > 0)
+                {
+                    floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                }
+                else if(contract.unit.floor == 0)
+                {
+                    floor_label = this.$t('models.unit.floor_title.ground_floor')
+                }
+                else if(contract.unit.floor < 0)
+                {
+                    floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                }
+                contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
             })
 
             this.default_contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
             
             if(this.contracts.find(item => item.id == this.default_contract_id)) {
                 this.model.contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
+            }
+            else if(this.contracts.length == 1) {
+                this.model.contract_id = this.contracts[0].id
             }
             
             try {

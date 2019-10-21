@@ -544,8 +544,7 @@
     import EditActions from 'components/EditViewActions';
     import ServiceDialog from 'components/ServiceAttachModal';
     import {displaySuccess, displayError} from "../../../helpers/messages";
-    import {Avatar} from 'vue-avatar';
-    import Audit from 'components/Audit';
+    import {Avatar} from 'vue-avatar';    
     import AssignmentByType from 'components/AssignmentByType';
     import Vue from 'vue';
     import { EventBus } from '../../../event-bus.js';
@@ -564,8 +563,7 @@
             ServiceDialog,
             RelationList,
             EditActions,
-            Avatar,
-            Audit,
+            Avatar,            
             AssignmentByType,
         },
         data() {

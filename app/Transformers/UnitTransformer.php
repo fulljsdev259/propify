@@ -40,6 +40,7 @@ class UnitTransformer extends BaseTransformer
             'attic' => $model->attic,
             'sq_meter' => $model->sq_meter,
             'residents' => [],
+            'media' => [],
         ];
 
         $attributes = $model->attributesToArray();
@@ -67,9 +68,11 @@ class UnitTransformer extends BaseTransformer
         }
 
         if ($model->relationExists('residents')) {
-            foreach ($model->residents as $resident) {
-                $response['residents'][] = (new ResidentTransformer)->transform($resident);
-            }
+            $response['residents'] = (new ResidentTransformer)->transformCollection($model->residents);
+        }
+
+        if ($model->relationExists('contracts')) {
+            $response['contracts'] = (new ContractTransformer())->transformCollection($model->contracts);
         }
 
         return $response;

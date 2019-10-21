@@ -24,11 +24,13 @@ import ApplicationStore from 'store/modules/application'
 import AddressesStore from 'store/modules/addresses'
 import TagsStore from 'store/modules/tags'
 
+
 // new ones - this will stay in the future, the above one will be removed at some point
 import NewPinboardStore from 'store/modules/newPinboard'
 import NewRequestsStore from 'store/modules/newRequests'
 import NewListingsStore from 'store/modules/newListings'
-import contractsStore from 'store/modules/contracts'
+import ContractsStore from 'store/modules/contracts'
+import EmergencyStore from 'store/modules/emergency'
 
 import createPersistedState from 'vuex-persistedstate'
 
@@ -79,7 +81,8 @@ export default new Vuex.Store({
         newPinboard: NewPinboardStore,
         newListings: NewListingsStore,
         newRequests: NewRequestsStore,
-        contracts: contractsStore
+        contracts: ContractsStore,
+        emergency: EmergencyStore,
     },
     plugins: [createPersistedState({
         key: 'state',

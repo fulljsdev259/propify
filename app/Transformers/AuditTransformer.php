@@ -2,9 +2,15 @@
 
 namespace App\Transformers;
 
+use App\Helpers\Helper;
 use App\Models\Pinboard;
 use App\Models\Listing;
 use App\Models\Request;
+use App\Models\RequestCategory;
+use App\Models\Resident;
+use App\Models\Unit;
+use Carbon\Carbon;
+use App\Repositories\AuditRepository;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use OwenIt\Auditing\Models\Audit;
 use Illuminate\Support\Arr;
@@ -25,6 +31,8 @@ class AuditTransformer extends BaseTransformer
      */
     public function transform(Audit $model)
     {
+        $locale = app()->getLocale();
+        $fieldMapToLanguage = Helper::mapAuditFieldToLanguage();
         $response = [
             'id' => $model->id,
             'event' => $model->event,
@@ -38,6 +46,7 @@ class AuditTransformer extends BaseTransformer
             'ip_address' => $model->ip_address,
             'created_at' => $model->created_at->toDateTimeString(),
             'updated_at' => $model->updated_at->toDateTimeString(),
+            'statement' => ''
         ];
         if ($model->user) {
             $response['user'] = (new UserTransformer())->transform($model->user);
@@ -49,8 +58,69 @@ class AuditTransformer extends BaseTransformer
                 'phone' => '',
                 'avatar' => '',
             ];
+        }        
+        if($model->event == 'updated'){            
+            $statement = "";
+            foreach($model->new_values as $field => $fieldvalue){
+                $old_value = (isset($model->old_values[$field])) ? $model->old_values[$field] : "";
+                $new_value = (isset($model->new_values[$field])) ? $model->new_values[$field] : "";                
+                $fieldname = (isset($fieldMapToLanguage[$model->auditable_type][$field])) ? $fieldMapToLanguage[$model->auditable_type][$field] : $field;
+                if($field == 'description'){                
+                    $old_value = ($old_value) ? Helper::shortenString($old_value) : "";
+                    $new_value = ($new_value) ? Helper::shortenString($new_value) : "";
+                }
+                elseif(($model->auditable_type == 'request') && (in_array($field, ['status','visibility','resident_id','unit_id','internal_priority','priority','is_public']))){
+                    $old_value = ($old_value) ? (AuditRepository::getDataFromField($field, $old_value, $model->auditable_type)) : "";
+                    $new_value = ($new_value) ? (AuditRepository::getDataFromField($field, $new_value, $model->auditable_type)) : "";
+                }                
+                elseif(in_array($field, ['due_date','solved_date'])){                    
+                    $old_value = ($old_value) ? Helper::formatedDate($old_value) : "";
+                    $new_value = ($new_value) ? Helper::formatedDate($new_value) : "";
+                }                              
+                elseif(($model->auditable_type == 'request') && ($field == 'category_id')){                    
+                    $old_category = RequestCategory::find($old_value);
+                    $new_category = RequestCategory::find($new_value);                    
+                    if($locale == 'de'){
+                        $old_value = $old_category->name_de;
+                        $new_value = $new_category->name_de;                        
+                    } elseif($locale == 'fr'){
+                        $old_value = $old_category->name_fr;
+                        $new_value = $new_category->name_fr;
+                    } elseif($locale == 'it'){
+                        $old_value = $old_category->name_it;
+                        $new_value = $new_category->name_it;
+                    } else {
+                        $old_value = $old_category->name;
+                        $new_value = $new_category->name;
+                    }
+                }                
+                $statement .= __("general.components.common.audit.content.with_id.".$model->auditable_type.".updated",['fieldname' => $fieldname, 'old' => $old_value, 'new' => $new_value]);
+                $statement .= " ";
+            }
+            $statement = rtrim($statement, ',');
+            $response['statement'] = $statement;
         }
-
+        elseif($model->event == 'created'){                        
+            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".created",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
+        }
+        elseif($model->event == 'manager_assigned'){            
+            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".manager_assigned",['propertyManagerFirstName' => $model->new_values['property_manager_first_name'],'propertyManagerLastName' => $model->new_values['property_manager_last_name']]);
+        }
+        elseif($model->event == 'manager_unassigned'){            
+            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".manager_unassigned",['propertyManagerFirstName' => $model->old_values['property_manager_first_name'],'propertyManagerLastName' => $model->old_values['property_manager_last_name']]);
+        }
+        elseif($model->event == 'provider_assigned'){            
+            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".provider_assigned",['providerName' => $model->new_values['service_provider_name']]);
+        }
+        elseif($model->event == 'provider_unassigned'){            
+            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".provider_unassigned",['providerName' => $model->old_values['service_provider_name']]);
+        }
+        elseif($model->event == 'media_uploaded'){            
+            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".media_uploaded");
+        }
+        elseif($model->event == 'media_deleted'){            
+            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".media_deleted");
+        } 
         return $response;
     }
 

@@ -28,7 +28,12 @@ return [
         'list-request',
         'view-request',
         'add_media_upload-request',
-        'delete_media_upload-request'
+        'delete_media_upload-request',
+        'list-tag',
+        'view-tag',
+        'add-tag',
+        'edit-tag',
+        'delete-tag',
     ],
     'manager' => [
         'list-user',

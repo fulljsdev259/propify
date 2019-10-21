@@ -372,7 +372,7 @@
                                         :type="action.type"
                                         size="mini"
                                     >
-                                        <i class="ti-pencil"></i>
+                                        <i class="ti-search"></i>
                                         <span>{{ $t('general.actions.edit') }}</span>
                                     </el-button>
                                 </router-link>      
@@ -385,12 +385,12 @@
                                 size="mini"
                             >
                                 <template v-if="action.isTemplateEdit != undefined">
-                                    <i class="ti-pencil"></i>
+                                    <i class="ti-search"></i>
                                     <span>{{ $t('general.actions.edit') }}</span>    
                                 </template>
                                 <template v-else-if="action.title.indexOf('edit') !== -1">
                                     <router-link :to="{name: 'adminPropertyManagersEdit',  params: { id:scope.row['id']}}" class="el-menu-item-link">
-                                        <i class="ti-pencil"></i>
+                                        <i class="ti-search"></i>
                                         <span>{{ $t('general.actions.edit') }}</span>
                                     </router-link>      
                                 </template>
@@ -399,7 +399,8 @@
                                     <span>{{$t(action.title)}}</span>    
                                 </template>
                                 <template v-else>
-                                    {{$t(action.title)}}
+                                    <i class="ti-search"></i>
+                                    <span>{{ $t(action.title) }}</span>
                                 </template>
                             </el-button>
                         </template>

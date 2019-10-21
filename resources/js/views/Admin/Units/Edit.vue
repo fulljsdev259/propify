@@ -298,6 +298,18 @@
                                     v-if="addedAssigmentList"
                             />
                         </el-tab-pane>
+                        <el-tab-pane name="contracts">
+                            <span slot="label">
+                                <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
+                            </span>
+
+                            <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                            <contract-list-table
+                                    :items="model.contracts"
+                                    @edit-contract="editContract"
+                                    @delete-contract="deleteContract">
+                            </contract-list-table>
+                        </el-tab-pane>
                     </el-tabs>
 
                     <el-tabs type="border-card" v-model="activeRequestTab">
@@ -320,17 +332,48 @@
             </el-row>
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-            <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;Emergency</ui-divider>
+            <template v-if="editingContract || isAddContract">
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
+                <div class="content" v-if="visibleDrawer">
+                    <contract-form v-if="editingContract" 
+                                mode="edit" 
+                                :hide-building-and-units="true" 
+                                :show-resident="true"
+                                :building_id="model.building.id" 
+                                :unit_id="model.id" 
+                                :data="editingContract" 
+                                :resident_type="1" 
+                                :resident_id="editingContract.id" 
+                                :visible.sync="visibleDrawer" 
+                                :edit_index="editingContractIndex" 
+                                @update-contract="updateContract" 
+                                :used_units="used_units"/>
+                    <contract-form v-else 
+                                mode="add" 
+                                :hide-building-and-units="true"
+                                :show-resident="true"
+                                :building_id="model.building.id" 
+                                :unit_id="model.id" 
+                                :resident_type="1" 
+                                :visible.sync="visibleDrawer" 
+                                @add-contract="addContract" 
+                                :used_units="used_units"/>
+                </div>
+            </template>
+            <template v-else>
+                <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;Emergency</ui-divider>
+                
+                <div class="content" v-if="visibleDrawer">
+                    <emergency-settings-form :visible.sync="visibleDrawer"/>
+                </div>
+            </template>
             
-            <div class="content" v-if="visibleDrawer">
-                <emergency-settings-form :visible.sync="visibleDrawer"/>
-            </div>
         </ui-drawer>
     </div>
 </template>
 
 <script>
-    import {mapActions} from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
     import Heading from 'components/Heading';
     import Card from 'components/Card';
     import EditActions from 'components/EditViewActions';
@@ -340,8 +383,11 @@
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
     import UploadDocument from 'components/UploadDocument';
     import draggable from 'vuedraggable';
+    import ContractForm from 'components/ContractForm';
+    import ContractListTable from 'components/ContractListTable';
     import {displayError, displaySuccess} from "helpers/messages";
     import { EventBus } from '../../../event-bus.js';
+    
 
     export default {
         mixins: [UnitsMixin({
@@ -357,6 +403,8 @@
             EmergencySettingsForm,
             UploadDocument,
             draggable,
+            ContractForm,
+            ContractListTable
         },
         data() {
             return {
@@ -407,9 +455,13 @@
                 fileCount: 0,
                 requestCount: 0,
                 residentCount: 0,
+                contractCount: 0,
                 activeTab1: 'details',
                 activeRightTab: 'residents',
                 activeRequestTab: 'requests',
+                editingContract: null,
+                isAddContract: false,
+                editingContractIndex: -1,
             }
         },
         methods: {
@@ -429,6 +481,7 @@
             },
             toggleDrawer() {
                 this.visibleDrawer = true;
+                this.isAddContract = true;
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
 
@@ -484,13 +537,44 @@
                 } else {
                     return true;
                 }
-            }
+            },
+            addContract (data) {
+                this.model.contracts.push(data);
+            },
+            editContract(index) {
+                console.log('this.model.contracts', this.model.contracts, index)
+                this.editingContract = this.model.contracts[index];
+                this.editingContractIndex = index;
+                this.visibleDrawer = true;
+                document.getElementsByTagName('footer')[0].style.display = "none";
+            },
+            updateContract(index, params) {
+                this.model.contracts[index] = params;
+            },
+            deleteContract(index) {
+
+                this.$confirm(this.$t(`general.swal.delete_contract.text`), this.$t(`general.swal.delete_contract.title`), {
+                    type: 'warning'
+                }).then(async () => {
+                    await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
+                    this.model.contracts.splice(index, 1)
+                }).catch(() => {
+                });
+            },
         },
         mounted() {
              EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
             });
         },
+        computed: {
+            ...mapGetters('application', {
+                constants: 'constants'
+            }),
+            used_units() {
+                return this.model.contracts.map(item => item.unit_id)
+            },
+        },          
         watch: {
             "model.type" () {
                 if(this.model.type >= 3)
@@ -504,6 +588,17 @@
                 if(this.hasAttic(this.model.building_id) == false) 
                     this.model.attic = false;
             },
+            'visibleDrawer': {
+                immediate: false,
+                handler (state) {
+                    // TODO - auto blur container if visible is true first
+                    if (!state) {
+                        this.editingContract = null
+                        this.isAddContract = false
+                        document.getElementsByTagName('footer')[0].style.display = "block";
+                    }
+                }
+            }
         }
         
        
@@ -542,7 +637,7 @@
             overflow-y: scroll;
             height: 100%;
 
-            /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-residents {
+            /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-residents, /deep/ #tab-contracts {
                 padding-right: 40px;
             }
 

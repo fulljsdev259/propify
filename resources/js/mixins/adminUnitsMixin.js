@@ -31,7 +31,8 @@ export default (config = {}) => {
                     building_id: this.$route.params.id,
                     selected_resident: '',
                     residents: [],
-                    media: []
+                    media: [],
+                    contracts: [],
                 },
                 validationRules: {
                     resident_id: [{
@@ -87,6 +88,7 @@ export default (config = {}) => {
                 toAssign: '',
                 addedAssigmentList: [],
                 media: [],
+                
             }
         },
         methods: {
@@ -300,11 +302,14 @@ export default (config = {}) => {
 
                         this.model = await this.getUnit({id: this.$route.params.id});
 
-                        // if(!this.model.media)
-                        //     this.model.media = []
-                            
+                        this.contractCount = this.model.contracts.length
+
                         this.addedAssigmentList = [];
-                        this.addedAssigmentList = this.model.residents;
+                        this.addedAssigmentList = this.model.contracts.map(contract => contract.resident);
+
+                        this.model.residents = this.model.residents.filter((item, index) => {
+                            return this.model.residents.indexOf(item) === index
+                        })
 
                         this.addedAssigmentList.map((user) => {
                             if (user.status == 1) {
@@ -315,6 +320,8 @@ export default (config = {}) => {
                             user.name = user.first_name + " " + user.last_name;
                             return user;
                         });
+                        
+                        this.residentCount = this.addedAssigmentList.length
 
                         // if (this.model.resident) {
                         //     this.$set(this.model, 'resident_id', this.model.resident.id);
@@ -329,7 +336,7 @@ export default (config = {}) => {
                         // }
                         
                         this.fileCount = this.model.media ? this.model.media.length : 0
-                        this.residentCount = this.addedAssigmentList.length
+                        
                        
                     } catch (err) {
                         this.$router.replace({

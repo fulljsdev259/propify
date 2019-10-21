@@ -241,8 +241,13 @@ export default (config = {}) => {
                         this.quarter_format = resp.quarter_format;
 
                         this.fileCount = this.model.media.length
-                        //this.residentCount = this.model.residents.length
 
+                        this.model.contracts = []
+                        resp.buildings.forEach(building => {
+                            this.model.contracts = this.model.contracts.concat(building.contracts)
+                        })
+                        
+                        this.contractCount = this.model.contracts.length
                     },
                     submit() {
                         return new Promise((resolve, reject) => {

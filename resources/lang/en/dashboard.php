@@ -45,8 +45,7 @@ return [
         'residents' => 'Residents',
         'requests' => 'Requests',
         'go_to_buildings' => 'go to buildings',
-        'buildings_by_state' => 'Buildings by state',
-        'go_to_building' => 'go to building'
+        'buildings_by_state' => 'Buildings by state'
     ],
     'residents' => [
         'total_residents' => 'Total Count',
