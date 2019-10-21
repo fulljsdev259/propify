@@ -871,6 +871,7 @@
             },
             addContract (data) {
                 this.model.contracts.push(data);
+                this.contractCount ++;
             },
             editContract(index) {
                 console.log('this.model.contracts', this.model.contracts, index)
