@@ -18,9 +18,9 @@
             <small>{{$t('resident.no_data_info.activity')}}</small>
         </placeholder>
             <el-timeline v-else>
-                <template v-for="(audit, date) in audits.data">
-                    <el-timeline-item  v-for="(content, index) in audit.content" :key="audit.id+'-'+index" :timestamp="`${audit.userName} • ${formatDatetime(date)}`">
-                        <span v-html="content">{{content}}</span>
+                <template v-for="(audit, date) in audits.data">                    
+                    <el-timeline-item  :key="audit.id" :timestamp="`${audit.user.name} • ${formatDatetime(audit.updated_at)}`">
+                        <span>{{audit.statement}}</span>
                     </el-timeline-item>
                 </template>
                 <el-timeline-item v-if="loading">
@@ -35,6 +35,7 @@
     import {format} from 'date-fns'
     import queryString from 'query-string'
     import FormatDateTimeMixin from 'mixins/formatDateTimeMixin'
+    import { EventBus } from '../../../event-bus.js';
 
     export default {
         mixins: [FormatDateTimeMixin],
@@ -195,7 +196,7 @@
                 page++
                 const auditable_type = this.type ? this.type : this.filters.data.auditable_type
                 // Fetch audits
-                const {data:{data}} = await this.axios.get('audits?' + queryString.stringify({
+                const audit_resp = await this.axios.get('audits?' + queryString.stringify({
                     sortedBy: 'desc',
                     orderBy: 'created_at',
                     page,
@@ -204,9 +205,11 @@
                     auditable_type: auditable_type,
                     event: this.filters.data.event,
                     ...params,
-                }))
-
-                try{
+                }))                
+                console.log(audit_resp.data.data.total);
+                EventBus.$emit('audit-get-counted', audit_resp.data.data.total);
+                this.audits = audit_resp.data.data;
+                /*try{
 
                 // Extract audits from response
 
@@ -310,7 +313,7 @@
                     })
                 }finally {
                     this.loading = false
-                }
+                }*/
             }
         },
         computed: {
