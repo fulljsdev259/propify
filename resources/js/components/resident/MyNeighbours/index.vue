@@ -81,6 +81,9 @@
                     id: resident.building_id
                 })
 
+                // exclude the loggedin resident
+                residents = residents.filter(resident => resident.id != this.$store.getters.loggedInUser.resident.id) 
+
                 if (this.limit > -1) {
                     residents = residents.slice(0, this.limit)
                 }

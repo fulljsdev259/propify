@@ -333,6 +333,8 @@ return [
     ],
     'service' => [
         'title' => 'Dienstleister und Hauswartung',
+        'view' => 'Öffnen',
+        'view_title' => 'Service anzeigen',
         'add_title' => 'Firma hinzufügen',
         'edit_title' => 'Firma bearbeiten',
         'saved' => 'Dienstleister gespeichert',
@@ -394,6 +396,7 @@ return [
         'edit_title' => 'Anfrage bearbeiten',
         'add_title' => 'Anfrage hinzufügen',
         'due_date' => 'Zu erledigen bis',
+        'solved_date' => 'Erledigt Datum',
         'closed_date' => 'Erledigt am',
         'service' => 'Dienstleister',
         'created_by' => 'Erstellt durch',

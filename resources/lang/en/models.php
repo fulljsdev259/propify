@@ -332,6 +332,8 @@ return [
     ],
     'service' => [
         'title' => 'Services',
+        'view' => 'View',
+        'view_title' => 'View Service',
         'add_title' => 'Add Service',
         'edit_title' => 'Edit Service',
         'saved' => 'Service saved',
@@ -393,6 +395,7 @@ return [
         'edit_title' => 'Edit Request',
         'add_title' => 'Add Request',
         'due_date' => 'Due date',
+        'solved_date' => 'Completed date',
         'closed_date' => 'Closed date',
         'service' => 'Service',
         'created_by' => 'Created by',

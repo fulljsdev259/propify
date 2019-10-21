@@ -2,6 +2,7 @@
 
     <div :class="['requests']">
         <div class="container" >
+            <div class="inner-container">
             <div class="main-content" v-infinite-scroll="get">
                 <ui-heading icon="icon-chat-empty" :title="$t('resident.requests')" :description="$t('resident.heading_info.request')">
                     <el-popover popper-class="requests__filter-popover" placement="bottom-end" trigger="click" :width="192">
@@ -61,14 +62,15 @@
                     <request-add-form ref="request-add-form" />
                 </div>
             </ui-drawer> -->
-            
-        </div>
-        <request-status-change-modal
+            </div>
+            <request-status-change-modal
                 :statusChangeModalVisible="statusChangeModalVisible"
                 :statusChangeModalType="statusChangeModalType"
                 :closeModal="closeStatusChangeModal"
                 :changeStatus="changeStatus"
             />
+        </div>
+        
         <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked @update:visibleDrawer="resetDataFromDrawer">
             <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="openedRequest">
                 <el-tab-pane name="chat" lazy>
@@ -152,12 +154,11 @@
 <script>
     import {mapActions, mapState} from 'vuex'
     import Loader from 'components/resident/RequestCard/Loader'
-    import GalleryList from 'components/MediaGalleryList'
+    
 
     export default {
         components: {
             Loader,
-            GalleryList
         },
         data () {
             return {
@@ -442,9 +443,15 @@
             background-image: url('~img/5c7d3b0b0f0f4.png')
 
         .container
-            height: 100%
-            padding: 16px
-            overflow-y: auto
+            display: flex
+            padding: 0 !important
+            flex-direction: column
+            overflow: hidden !important
+
+            .inner-container
+                height: 100%
+                padding: 16px
+                overflow-y: auto
 
             .vue-recycle-scroller
                 max-width: 640px

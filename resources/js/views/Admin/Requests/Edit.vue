@@ -206,11 +206,11 @@
                                 </el-col>
                             </el-row>
                             <el-row :gutter="20" class="summary-row">
-                                <el-col :md="8" class="summary-item">
+                                <!-- <el-col :md="8" class="summary-item">
                                     <el-form-item :label="$t('models.request.priority.label')">
                                         <strong v-if="$constants.requests.priority[model.priority]">{{$t(`models.request.priority.${$constants.requests.priority[model.priority]}`)}}</strong>
                                     </el-form-item>
-                                </el-col>
+                                </el-col> -->
                                 <!-- <el-col :md="8" class="summary-item">
                                     <el-form-item :label="$t('models.resident.contract.title')" v-if="this.model.contract">
                                         {{this.model.contract.building_id + " -- " + this.model.contract.unit_id}}
@@ -361,7 +361,7 @@
                                             </el-form-item>
                                         </el-col>
                                         
-                                        <el-col :md="12">
+                                        <!-- <el-col :md="12">
                                             <el-form-item :label="$t('models.request.internal_priority.label')"
                                                         :rules="validationRules.internal_priority"
                                                         prop="internal_priority">
@@ -374,7 +374,7 @@
                                                     </el-option>
                                                 </el-select>
                                             </el-form-item>
-                                        </el-col>
+                                        </el-col> -->
                                     </el-row>
                                     <el-row :gutter="10">
                                         <el-col :md="12">
@@ -544,8 +544,7 @@
     import EditActions from 'components/EditViewActions';
     import ServiceDialog from 'components/ServiceAttachModal';
     import {displaySuccess, displayError} from "../../../helpers/messages";
-    import {Avatar} from 'vue-avatar';
-    import Audit from 'components/Audit';
+    import {Avatar} from 'vue-avatar';    
     import AssignmentByType from 'components/AssignmentByType';
     import Vue from 'vue';
     import { EventBus } from '../../../event-bus.js';
@@ -564,8 +563,7 @@
             ServiceDialog,
             RelationList,
             EditActions,
-            Avatar,
-            Audit,
+            Avatar,            
             AssignmentByType,
         },
         data() {

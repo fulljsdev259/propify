@@ -115,12 +115,12 @@
                         key: 'status',
                         data: this.prepareFilters("status"),
                     },
-                    {
-                        name: this.$t('models.request.internal_priority.label'),
-                        type: 'select',
-                        key: 'internal_priority',
-                        data: this.prepareFilters("internal_priority"),
-                    },
+                    // {
+                    //     name: this.$t('models.request.internal_priority.label'),
+                    //     type: 'select',
+                    //     key: 'internal_priority',
+                    //     data: this.prepareFilters("internal_priority"),
+                    // },
                     {
                         name: this.$t('general.filters.quarters'),
                         type: 'select',

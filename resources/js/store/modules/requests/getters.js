@@ -6,8 +6,8 @@ export default {
         const storerequests = state.requests.data ? state.requests.data : [];
 
         return storerequests.map((request) => {
-            request.priority_label = requests.priority[request.priority];
-            request.internal_priority_label = requests.internal_priority[request.internal_priority];
+            //request.priority_label = requests.priority[request.priority];
+            //request.internal_priority_label = requests.internal_priority[request.internal_priority];
             request.status_label = requests.status[request.status];
             
 
