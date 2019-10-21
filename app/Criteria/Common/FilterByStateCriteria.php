@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Criteria\ServiceProvider;
+namespace App\Criteria\Common;
 
-use App\Models\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -10,20 +9,16 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FilterByBuildingCriteria
+ * Class FilterByStateCriteria
  * @package App\Criteria\ServiceProvider
  */
-class FilterByRelationsCriteria implements CriteriaInterface
+class FilterByStateCriteria implements CriteriaInterface
 {
     /**
      * @var \Illuminate\Http\Request
      */
     protected $request;
 
-    /**
-     * FilterByRelationsCriteria constructor.
-     * @param Request $request
-     */
     public function __construct(Request $request)
     {
         $this->request = $request;
@@ -41,14 +36,12 @@ class FilterByRelationsCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $buildingId = $this->request->get('building_id', null);
-
-        if (empty($buildingId)) {
-            return $model;
+        $stateId = $this->request->get('state_id', null);
+        if (! empty($stateId)) {
+            $model->whereHas('address', function ($q) use ($stateId) {
+                $q->where('state_id', $stateId);
+            });
         }
-
-        $model->join('building_service_provider as bsp', 'bsp.service_provider_id', '=', 'service_providers.id')
-            ->where('bsp.building_id', $buildingId);
 
         return $model;
     }

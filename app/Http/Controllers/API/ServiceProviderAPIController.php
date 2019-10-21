@@ -4,11 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\ServiceProvider\FilterByCategoryCriteria;
-use App\Criteria\ServiceProvider\FilterByRelationsCriteria;
-use App\Criteria\ServiceProvider\FilterByLanguageCriteria;
-use App\Criteria\ServiceProvider\FilterByPinboardCriteria;
+use App\Criteria\Common\FilterByManyBuildingCriteria;
+use App\Criteria\Common\FilterByLanguageCriteria;
+use App\Criteria\Common\FilterByPinboardCriteria;
 use App\Criteria\Common\HasRequestCriteria;
-use App\Criteria\ServiceProvider\FilterByStateCriteria;
+use App\Criteria\Common\FilterByStateCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\ServiceProvider\AssignRequest;
 use App\Http\Requests\API\ServiceProvider\CreateRequest;
@@ -105,7 +105,7 @@ class ServiceProviderAPIController extends AppBaseController
         $this->serviceProviderRepository->pushCriteria(new FilterByLanguageCriteria($request));
         $this->serviceProviderRepository->pushCriteria(new FilterByCategoryCriteria($request));
         $this->serviceProviderRepository->pushCriteria(new FilterByStateCriteria($request));
-        $this->serviceProviderRepository->pushCriteria(new FilterByRelationsCriteria($request));
+        $this->serviceProviderRepository->pushCriteria(new FilterByManyBuildingCriteria($request));
 
         $getAll = $request->get('get_all', false);
 

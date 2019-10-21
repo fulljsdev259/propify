@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Criteria\ServiceProvider;
+namespace App\Criteria\Common;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -9,10 +9,10 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FilterByStateCriteria
+ * Class FilterByLanguageCriteria
  * @package App\Criteria\ServiceProvider
  */
-class FilterByStateCriteria implements CriteriaInterface
+class FilterByLanguageCriteria implements CriteriaInterface
 {
     /**
      * @var \Illuminate\Http\Request
@@ -36,11 +36,13 @@ class FilterByStateCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $stateId = $this->request->get('state_id', null);
-        if (!$stateId) { return $model; }
+        $language = $this->request->get('language', null);
 
-        $model->join('loc_addresses', 'loc_addresses.id', '=', 'service_providers.address_id')
-            ->where('loc_addresses.state_id', $stateId);
+        if (! empty($language)) {
+            $model->whereHas('settings', function ($q) use ($language) {
+                $q->where('language', $language);
+            });
+        }
 
         return $model;
     }

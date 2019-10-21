@@ -236,6 +236,14 @@ class ServiceProvider extends AuditableModel
         return $this->belongsToMany(Quarter::class, 'quarter_service_provider', 'service_provider_id', 'quarter_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     **/
+    public function pinboards()
+    {
+        return $this->belongsToMany(Pinboard::class, 'pinboard_service_provider', 'service_provider_id', 'pinboard_id');
+    }
+
     // @TODO remove
     public function setCategoryAttribute($value)
     {
