@@ -527,7 +527,7 @@ export default (config = {}) => {
                         this.alreadyAssigned.quarters = this.model.quarters.map((quarter) => quarter.id);
 
                         this.model.execution_start ? this.executionStartTime = this.model.execution_start.split(' ')[1] : '';
-                        this.model.execution_end ? his.executionEndTime = this.model.execution_end.split(' ')[1] : '';
+                        this.model.execution_end ? this.executionEndTime = this.model.execution_end.split(' ')[1] : '';
 
                         return this.model;
                     }
