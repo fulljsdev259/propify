@@ -33,7 +33,7 @@ export default [{
         name: 'adminServicesEdit',
         path: ':id',
         component: () => import ( /* webpackChunkName: "admin/services/edit" */ 'views/Admin/Services/Edit'),
-        beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.update.provider)]),
+        //beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.update.provider)]),
         props: {
             title: 'Edit Service'
         },
