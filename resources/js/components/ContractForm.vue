@@ -1,8 +1,8 @@
 <template>
     <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
 
-        <el-row :gutter="20" v-if="!hideBuildingAndUnits">
-            <el-col :md="12" v-if="!hideBuilding">
+        <el-row :gutter="20">
+            <el-col :md="12" v-if="!hideBuildingAndUnits && !hideBuilding">
                 <el-form-item prop="building_id" :label="$t('models.resident.building.name')" class="label-block">
                     <el-select
                             :loading="remoteLoading"
@@ -38,7 +38,7 @@
                     </el-select>
                 </el-form-item>
             </el-col> -->
-            <el-col :md="12" v-if="model.building_id">
+            <el-col :md="12" v-if="!hideBuildingAndUnits && model.building_id">
                 <el-form-item prop="unit_id" :label="$t('models.resident.unit.name')"
                             class="label-block">
                     <el-select :placeholder="$t('models.resident.search_unit')" 
@@ -62,9 +62,7 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-        </el-row>
-        <el-row :gutter="20" v-if="showResident && model.unit_id">
-            <el-col :md="12">
+            <el-col :md="12" v-if="showResident && model.unit_id">
                 <el-form-item :label="$t('general.resident')" prop="resident_id">
                     <el-select
                         :loading="remoteLoading"
@@ -85,6 +83,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
+
         <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
                 <el-form-item :label="$t('models.resident.contract.rent_type')"
