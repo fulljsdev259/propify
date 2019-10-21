@@ -626,7 +626,7 @@ class Request extends AuditableModel implements HasMedia
         'qualification' => 'integer',
         'status' => 'integer',
         'due_date' => 'date',
-        'category' => 'integer',
+        'category' => 'nullable:integer',
         'sub_category' => 'integer',
         'visibility' => 'required|integer',
         'active_reminder' => 'boolean',
