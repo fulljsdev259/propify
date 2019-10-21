@@ -27,6 +27,7 @@ return [
     ],
     'resident' => [
         "view" => "Vista",
+        'name' => 'Residente',
         "view_title" => "Visualizza residente",
         "edit_title" => "Modifica Residente",
         "download_credentials" => "Scarica le credenziali",

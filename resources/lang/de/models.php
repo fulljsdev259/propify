@@ -27,6 +27,7 @@ return [
     ],
     'resident' => [
         'view' => 'Öffnen',
+        'name' => 'Bewohner',
         'view_title' => 'Bewohner Details',
         'edit_title' => 'Bewohner bearbeiten',
         'download_credentials' => 'Zugangsdaten (pdf)',
