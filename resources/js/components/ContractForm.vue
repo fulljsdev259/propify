@@ -65,7 +65,7 @@
         </el-row>
         <el-row :gutter="20" v-if="showResident">
             <el-col :md="12">
-                <el-form-item :label="$t('general.resident')" :rules="validationRules.resident_id" prop="resident_id">
+                <el-form-item :label="$t('general.resident')" prop="resident_id">
                     <el-select
                         :loading="remoteLoading"
                         :placeholder="$t('models.request.placeholders.resident')"
@@ -765,8 +765,11 @@
 
             if(this.hideBuilding) {
                 this.model.building_id = this.building_id
-                await this.searchContractUnits(false)
+                await this.searchContractUnits(true)
             }
+        },
+        mounted() {
+            this.$refs.form.$el.focus()
         }
     }
 </script>
