@@ -578,6 +578,12 @@ export default (config = {}) => {
                         message: this.$t('validation.general.required')
                     }];
 
+                    this.validationRules.contract_id = [{
+                        required: true,
+                        message: this.$t('validation.general.required')
+                    }];
+                    
+
                     this.getRealCategories();
                     this.getLanguageI18n();
 
