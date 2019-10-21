@@ -63,7 +63,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20" v-if="showResident">
+        <el-row :gutter="20" v-if="showResident && model.unit_id">
             <el-col :md="12">
                 <el-form-item :label="$t('general.resident')" prop="resident_id">
                     <el-select
