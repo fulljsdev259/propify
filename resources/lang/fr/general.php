@@ -220,6 +220,10 @@ return [
             'title' => 'Riattivare la richiesta',
             'text' => 'Veuillez laisser un message avec la raison de la réactivation.',
         ],
+        'delete_pinboard' => [
+            'title' => 'Supprimer le tableau d\'affichage',
+            'text' => "Voulez-vous vraiment effacer le tableau d'affichage ?",
+        ],
         'delete_listing' => [
             'title' => 'supprimer la liste',
             'text' => "Voulez-vous vraiment supprimer l'annonce ?",

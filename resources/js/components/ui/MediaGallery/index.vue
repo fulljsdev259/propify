@@ -43,7 +43,7 @@
             <div class="ui-media-gallery__placeholder__title">
                 {{$t('resident.no_data.media')}}
             </div>
-            <div class="ui-media-gallery__placeholder__description">
+            <div class="ui-media-gallery__placeholder__description" v-if="showDescription">
                 {{$t('resident.media_info')}}
             </div>
         </div>
@@ -60,6 +60,10 @@
                 default: () => ([])
             },
             usePlaceholder: {
+                type: Boolean,
+                default: true
+            },
+            showDescription: {
                 type: Boolean,
                 default: true
             }
