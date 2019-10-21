@@ -321,7 +321,7 @@ export default (config = {}) => {
                             return user;
                         });
                         
-                        //this.residentCount = this.addedAssigmentList.length
+                        this.residentCount = this.addedAssigmentList.length
 
                         // if (this.model.resident) {
                         //     this.$set(this.model, 'resident_id', this.model.resident.id);
