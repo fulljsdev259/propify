@@ -96,6 +96,17 @@ export default [{
         meta: {
             title: 'Edit Request'
         }
+    }, {
+        path: ':id',
+        name: 'adminRequestsView',
+        component: () => import ( /* webpackChunkName: "admin/requests/view" */ 'views/Admin/Requests/View'),
+        beforeEnter: VueRouterMultiguard([isAuthenticatedGuard, isAdminGuard /* , hasPermissionGuard(AdminPermissions.update.request) */]),
+        props: {
+            title: 'View request'
+        },
+        meta: {
+            title: 'View Request'
+        }
     }]
 }];
 

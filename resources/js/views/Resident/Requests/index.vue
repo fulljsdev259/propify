@@ -192,22 +192,22 @@
                             }
                         }))
                     }, {
-                        type: 'el-select',
-                        title: 'resident.priority',
-                        name: 'priority',
-                        props: {
-                            placeholder: 'resident.placeholder.priority',
-                            clearable: true,
-                            size: 'small'
-                        },
-                        children: Object.entries(this.$store.getters['application/constants'].requests.priority).map(([value, label]) => ({
-                            type: 'el-option',
-                            props: {
-                                label: `models.request.priority.${label}`,
-                                value
-                            }
-                        }))
-                    }, {
+                    //     type: 'el-select',
+                    //     title: 'resident.priority',
+                    //     name: 'priority',
+                    //     props: {
+                    //         placeholder: 'resident.placeholder.priority',
+                    //         clearable: true,
+                    //         size: 'small'
+                    //     },
+                    //     children: Object.entries(this.$store.getters['application/constants'].requests.priority).map(([value, label]) => ({
+                    //         type: 'el-option',
+                    //         props: {
+                    //             label: `models.request.priority.${label}`,
+                    //             value
+                    //         }
+                    //     }))
+                    // }, {
                         type: 'el-date-picker',
                         title: 'resident.created_date',
                         name: 'created',
