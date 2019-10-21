@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class Helper
 {
@@ -51,7 +52,7 @@ class Helper
     }  
     public static function shortenString($str){
         if($str) {
-            return mb_substr($str, 0, mb_strpos($str, ' ', 20)) . '...';
+            return Str::limit($str, 20);
         } else{
             return "";
         }
