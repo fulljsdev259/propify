@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @SWG\Definition(
+ * App\Models\Settings
+ *
+ * @SWG\Definition (
  *      definition="Settings",
  *      required={"name", "language"},
  *      @SWG\Property(
@@ -135,6 +137,102 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int $address_id
+ * @property int $login_variation
+ * @property int $login_variation_2_slider
+ * @property int $email_powered_by
+ * @property string $name
+ * @property string|null $email
+ * @property string|null $phone
+ * @property string|null $language
+ * @property string|null $logo
+ * @property string|null $circle_logo
+ * @property string|null $resident_logo
+ * @property string|null $pdf_font_family
+ * @property string|null $favicon_icon
+ * @property string|null $accent_color
+ * @property string|null $primary_color
+ * @property string $primary_color_lighter
+ * @property bool $blank_pdf
+ * @property bool $quarter_enable
+ * @property bool $gocaution_enable
+ * @property bool $cleanify_enable
+ * @property bool $free_apartments_enable
+ * @property string|null $free_apartments_url
+ * @property string|null $cleanify_email
+ * @property array|null $opening_hours
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property bool $listing_approval_enable
+ * @property bool $pinboard_approval_enable
+ * @property int $comment_update_timeout
+ * @property string $iframe_url
+ * @property bool $iframe_enable
+ * @property bool $contact_enable
+ * @property array|null $pinboard_receiver_ids
+ * @property string|null $mail_host
+ * @property int|null $mail_port
+ * @property string|null $mail_username
+ * @property mixed $mail_password
+ * @property string|null $mail_encryption
+ * @property string|null $mail_from_address
+ * @property string|null $mail_from_name
+ * @property-read \App\Models\Address $address
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Settings onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereAccentColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereAddressId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereBlankPdf($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereCircleLogo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereCleanifyEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereCleanifyEnable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereCommentUpdateTimeout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereContactEnable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereEmailPoweredBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereFaviconIcon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereFreeApartmentsEnable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereFreeApartmentsUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereGocautionEnable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereIframeEnable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereIframeUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereLanguage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereListingApprovalEnable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereLoginVariation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereLoginVariation2Slider($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereLogo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereMailEncryption($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereMailFromAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereMailFromName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereMailHost($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereMailPassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereMailPort($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereMailUsername($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereOpeningHours($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings wherePdfFontFamily($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings wherePinboardApprovalEnable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings wherePinboardReceiverIds($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings wherePrimaryColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings wherePrimaryColorLighter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereQuarterEnable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereResidentLogo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Settings whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Settings withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Settings withoutTrashed()
+ * @mixin \Eloquent
  */
 class Settings extends AuditableModel
 {

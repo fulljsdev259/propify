@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Criteria\ServiceProvider;
+namespace App\Criteria\Common;
 
+use App\Models\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -9,16 +10,20 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FilterByLanguageCriteria
+ * Class FilterByBuildingCriteria
  * @package App\Criteria\ServiceProvider
  */
-class FilterByLanguageCriteria implements CriteriaInterface
+class FilterByManyBuildingCriteria implements CriteriaInterface
 {
     /**
      * @var \Illuminate\Http\Request
      */
     protected $request;
 
+    /**
+     * FilterByRelationsCriteria constructor.
+     * @param Request $request
+     */
     public function __construct(Request $request)
     {
         $this->request = $request;
@@ -36,11 +41,14 @@ class FilterByLanguageCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $language = $this->request->get('language', null);
-        if (!$language) { return $model; }
+        $buildingId = $this->request->get('building_id', null);
 
-        $model->join('user_settings', 'user_settings.user_id', '=', 'service_providers.user_id')
-            ->where('user_settings.language', $language);
+        if (! empty($buildingId)) {
+            $model->whereHas('buildings', function ($q) use ($buildingId) {
+                $q->where('building_id', $buildingId);
+            });
+        }
+
 
         return $model;
     }

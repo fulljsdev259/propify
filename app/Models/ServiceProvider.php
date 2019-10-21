@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * @SWG\Definition(
+ * App\Models\ServiceProvider
+ *
+ * @SWG\Definition (
  *      definition="ServiceProvider",
  *      required={"name"},
  *      @SWG\Property(
@@ -62,6 +64,55 @@ use Illuminate\Notifications\Notifiable;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int $user_id
+ * @property int $address_id
+ * @property string $service_provider_format
+ * @property string $category
+ * @property string $name
+ * @property string $email
+ * @property string $phone
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Address $address
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Building[] $buildings
+ * @property-read int|null $buildings_count
+ * @property-read array|string|null $category_name_de
+ * @property-read array|string|null $category_name_en
+ * @property-read array|string|null $category_name_fr
+ * @property-read array|string|null $category_name_it
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Quarter[] $quarters
+ * @property-read int|null $quarters_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Request[] $requests
+ * @property-read int|null $requests_count
+ * @property-read \App\Models\UserSettings $settings
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider allRequestStatusCount()
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\ServiceProvider onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider whereAddressId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider whereCategory($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider whereServiceProviderFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ServiceProvider whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\ServiceProvider withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\ServiceProvider withoutTrashed()
+ * @mixin \Eloquent
  */
 class ServiceProvider extends AuditableModel
 {
@@ -183,6 +234,14 @@ class ServiceProvider extends AuditableModel
     public function quarters()
     {
         return $this->belongsToMany(Quarter::class, 'quarter_service_provider', 'service_provider_id', 'quarter_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     **/
+    public function pinboards()
+    {
+        return $this->belongsToMany(Pinboard::class, 'pinboard_service_provider', 'service_provider_id', 'pinboard_id');
     }
 
     // @TODO remove

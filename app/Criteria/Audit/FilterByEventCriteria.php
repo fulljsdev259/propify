@@ -35,8 +35,8 @@ class FilterByEventCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        if ($t = $this->request->get('event', null)) {
-            $model->where('event', $t);
+        if ($event = $this->request->get('event', null)) {
+            $model->where('event', $event);
         }
 
         return $model;

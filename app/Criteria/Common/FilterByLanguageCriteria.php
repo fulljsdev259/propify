@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Criteria\Resident;
+namespace App\Criteria\Common;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -9,8 +9,8 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FilterByTypeCriteria
- * @package App\Criteria\Resident
+ * Class FilterByLanguageCriteria
+ * @package App\Criteria\ServiceProvider
  */
 class FilterByLanguageCriteria implements CriteriaInterface
 {
@@ -24,10 +24,11 @@ class FilterByLanguageCriteria implements CriteriaInterface
         $this->request = $request;
     }
 
+
     /**
      * Apply criteria in query repository
      *
-     * @param Builder|Model $model
+     * @param         Builder|Model     $model
      * @param RepositoryInterface $repository
      *
      * @return mixed
@@ -36,10 +37,12 @@ class FilterByLanguageCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
         $language = $this->request->get('language', null);
-        if (!$language) { return $model; }
 
-        $model->join('user_settings', 'user_settings.user_id', '=', 'residents.user_id')
-            ->where('user_settings.language', $language);
+        if (! empty($language)) {
+            $model->whereHas('settings', function ($q) use ($language) {
+                $q->where('language', $language);
+            });
+        }
 
         return $model;
     }

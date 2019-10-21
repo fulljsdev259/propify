@@ -35,16 +35,16 @@ class FilterByRequestCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $rid = $this->request->get('request_id', null);
-        $rs = $this->request->get('request_status', null);
-        if ($rid || $rs) {
-            $model->join('requests', 'requests.resident_id', '=', 'residents.id');
-        }
-        if ($rid) {
-            $model->where('requests.id', $rid);
-        }
-        if ($rs) {
-            $model->where('requests.status', $rs);
+        $requestId = $this->request->get('request_id', null);
+        $requestStatus = $this->request->get('request_status', null);
+        if (! empty($requestId) || ! empty($requestStatus)) {
+            $model->whereHas('requests', function ($q) use ($requestStatus, $requestId) {
+                $q->when($requestStatus, function ($q) use ($requestStatus) {
+                    $q->where('requests.status', $requestStatus);
+                })->when($requestId, function ($q) use ($requestId) {
+                    $q->where('requests.id', $requestId);
+                });
+            });
         }
 
         return $model;

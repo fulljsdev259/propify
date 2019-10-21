@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @SWG\Definition(
+ * App\Models\Translation
+ *
+ * @SWG\Definition (
  *      definition="Translation",
  *      required={"object_type", "object_id", "language", "name", "value"},
  *      @SWG\Property(
@@ -53,6 +55,35 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property string $object_type
+ * @property int $object_id
+ * @property string $language
+ * @property string $name
+ * @property string $value
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Translation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Translation newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Translation onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Translation query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Translation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Translation whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Translation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Translation whereLanguage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Translation whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Translation whereObjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Translation whereObjectType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Translation whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Translation whereValue($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Translation withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Translation withoutTrashed()
+ * @mixin \Eloquent
  */
 class Translation extends AuditableModel
 {

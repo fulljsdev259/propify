@@ -20,8 +20,8 @@ class ViewRequest extends BaseRequest
 
         // permit residents to see their building
         $b = Building::where('id', $this->route('id'))->first();
-        $t = $this->user()->resident ?? null;
+        $resident = $this->user()->resident ?? null;
 
-        return $t && $t->building_id == $b->id;
+        return $resident && $resident->building_id == $b->id;
     }
 }

@@ -10,7 +10,9 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use App\Traits\HasMediaTrait;
 
 /**
- * @SWG\Definition(
+ * App\Models\Contract
+ *
+ * @SWG\Definition (
  *      definition="Contract",
  *      required={"first_name", "birthdate"},
  *      @SWG\Property(
@@ -115,6 +117,53 @@ use App\Traits\HasMediaTrait;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int $resident_id
+ * @property int|null $building_id
+ * @property int|null $unit_id
+ * @property int|null $type
+ * @property int|null $duration
+ * @property int|null $status
+ * @property string|null $contract_format
+ * @property int|null $deposit_type
+ * @property int|null $deposit_status
+ * @property int|null $deposit_amount
+ * @property float|null $monthly_rent_net
+ * @property float|null $monthly_rent_gross
+ * @property float|null $monthly_maintenance
+ * @property \Illuminate\Support\Carbon|null $start_date
+ * @property \Illuminate\Support\Carbon|null $end_date
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\Building|null $building
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \App\Models\Resident $resident
+ * @property-read \App\Models\Unit|null $unit
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereBuildingId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereContractFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereDepositAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereDepositStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereDepositType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereDuration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereEndDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereMonthlyMaintenance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereMonthlyRentGross($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereMonthlyRentNet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereResidentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereStartDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUnitId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Contract extends AuditableModel implements HasMedia
 {

@@ -10,7 +10,9 @@ use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @SWG\Definition(
+ * App\Models\PropertyManager
+ *
+ * @SWG\Definition (
  *      definition="PropertyManager",
  *      required={""},
  *      @SWG\Property(
@@ -74,6 +76,56 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int $user_id
+ * @property int $type
+ * @property string $property_manager_format
+ * @property string|null $description
+ * @property string $title
+ * @property string $first_name
+ * @property string $last_name
+ * @property string|null $profession
+ * @property string|null $slogan
+ * @property string|null $xing_url
+ * @property string|null $linkedin_url
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Building[] $buildings
+ * @property-read int|null $buildings_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Quarter[] $quarters
+ * @property-read int|null $quarters_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Request[] $requests
+ * @property-read int|null $requests_count
+ * @property-read \App\Models\UserSettings $settings
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager allRequestStatusCount()
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\PropertyManager onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereLinkedinUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereProfession($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager wherePropertyManagerFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereSlogan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereXingUrl($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\PropertyManager withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\PropertyManager withoutTrashed()
+ * @mixin \Eloquent
  */
 class PropertyManager extends AuditableModel
 {

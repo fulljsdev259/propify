@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @SWG\Definition(
+ * App\Models\Tag
+ *
+ * @SWG\Definition (
  *      definition="Tag",
  *      required={"name", "description"},
  *      @SWG\Property(
@@ -32,6 +34,25 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property string $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tag newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tag newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Tag onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tag query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tag whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tag whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tag whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tag whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Tag whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Tag withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Tag withoutTrashed()
+ * @mixin \Eloquent
  */
 class Tag extends Model
 {
