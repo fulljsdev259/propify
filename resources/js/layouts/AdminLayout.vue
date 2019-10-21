@@ -35,13 +35,25 @@
                         </span>
                         
                         <el-dropdown-menu slot="dropdown" :style="dropmenuwidth" @click.native="removeMenuActive">
-                                <router-link  v-if="this.user.roles[0].name != 'manager'" :to="{name: 'adminProfile'}" class="el-menu-item-link">
+                                <!-- <router-link  v-if="this.user.roles[0].name != 'manager'" :to="{name: 'adminProfile'}" class="el-menu-item-link">
+                                    <el-dropdown-item>
+                                        <i class="icon-user"/>
+                                        {{$t('general.admin_menu.profile')}}
+                                    </el-dropdown-item>
+                                </router-link> -->
+                                <router-link  v-if="this.user.roles[0].name == 'administrator'" :to="{name: 'adminPropertyManagersEdit', params: {id: this.user.property_manager_id}}" class="el-menu-item-link">
                                     <el-dropdown-item>
                                         <i class="icon-user"/>
                                         {{$t('general.admin_menu.profile')}}
                                     </el-dropdown-item>
                                 </router-link>
-                                <router-link  v-if="this.user.roles[0].name == 'manager'" :to="{name: 'adminPropertyManagersEdit', params: {id: this.user.property_manager_id}}" class="el-menu-item-link">
+                                <router-link  v-else-if="this.user.roles[0].name == 'manager'" :to="{name: 'adminPropertyManagersEdit', params: {id: this.user.property_manager_id}}" class="el-menu-item-link">
+                                    <el-dropdown-item>
+                                        <i class="icon-user"/>
+                                        {{$t('general.admin_menu.profile')}}
+                                    </el-dropdown-item>
+                                </router-link>
+                                <router-link  v-else-if="this.user.roles[0].name == 'provider'" :to="{name: 'adminServicesEdit', params: {id: this.user.service_privider_id}}" class="el-menu-item-link">
                                     <el-dropdown-item>
                                         <i class="icon-user"/>
                                         {{$t('general.admin_menu.profile')}}
