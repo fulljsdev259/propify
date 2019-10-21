@@ -424,6 +424,41 @@ class Request extends AuditableModel implements HasMedia
         self::SubCategoryFlat => 'flat',
     ];
 
+    const RoomAttr = 'room';
+    const LocationAttr = 'location';
+    const HasQualifications = 'has_qualifications';
+    const Acquisition = 'acquisition';
+
+    const SubCategories = 'sub_categories';
+    const Attributes = 'attributes';
+
+    const CategoryAttributes = [
+        self::CategoryGeneral => [
+
+        ],
+        self::CategoryMalfunction => [
+
+        ],
+        self::CategoryDeficiency => [
+            self::Acquisition
+        ],
+    ];
+
+    const SubCategoryAttributes = [
+        self::SubCategorySurrounding => [
+            self::HasQualifications
+        ],
+        self::SubCategoryRealEstate => [
+            self::HasQualifications,
+            self::LocationAttr,
+
+        ],
+        self::SubCategoryFlat => [
+            self::Acquisition,
+            self::RoomAttr
+        ],
+    ];
+
     const CategorySubCategory = [
         self::CategoryGeneral => [
 
@@ -699,14 +734,6 @@ class Request extends AuditableModel implements HasMedia
             [],
             $newValues
         ];
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     **/
-    public function category()
-    {
-        return $this->hasOne(RequestCategory::class, 'id', 'category');
     }
 
     /**
