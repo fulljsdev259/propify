@@ -32,7 +32,7 @@
                             {{ $t('general.actions.edit') }}
                         </el-button>
                     </router-link>
-                    <router-link
+                    <!-- <router-link
                             :to="{name: 'adminRequestsView',  params: { id:item.id}}">
                         <el-button
                             size="mini"
@@ -40,7 +40,7 @@
                             <i class="ti-search"></i>
                             {{ $t('general.actions.view') }}
                         </el-button>
-                    </router-link>
+                    </router-link> -->
                 </el-col>
             </el-row>
         </div>

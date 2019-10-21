@@ -259,14 +259,14 @@
                                     <span slot="label">
                                         <el-badge :value="mediaCount" :max="99" class="admin-layout">{{ $t('models.request.images') }}</el-badge>
                                     </span>
-                                    <el-alert
+                                    <!-- <el-alert
                                         v-if="( !media || media.length == 0) && mediaCount == 0"
                                         :title="$t('models.request.no_images_message')"
                                         type="info"
                                         show-icon
                                         :closable="false"
                                     >
-                                    </el-alert>
+                                    </el-alert> -->
                                     <!-- <upload-document
                                         @fileUploaded="uploadFiles"
                                         class="drag-custom mt15"
@@ -277,7 +277,9 @@
                                         <request-media :data="[...model.media, ...media]" @deleteMedia="deleteMedia"
                                                        v-if="media.length || (model.media && model.media.length)"></request-media>
                                     </div> -->
-                                    <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex"/>
+                                    <span class="image-tab-title">Files</span>
+                                    <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex" :show-description="false"/>
+                                    <span class="image-tab-title">Upload</span>
                                     <el-alert
                                         :title="$t('general.upload_all_desc')"
                                         type="info"
@@ -906,6 +908,10 @@
     }
 
     #edit_request {
+        .image-tab-title {
+            display: block;
+            margin-bottom: 5px;
+        }
         .el-form-item {
             margin-bottom: 16px;
         }
