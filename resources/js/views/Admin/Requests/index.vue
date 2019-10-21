@@ -1,5 +1,5 @@
 <template>  
-    <div class="services">
+    <div class="services" v-loading.fullscreen.lock="isDownloading">
         <heading :title="$t('models.request.title')" icon="icon-chat-empty" shadow="heavy">
             <template v-if="$can($permissions.create.request)">
                 <el-button @click="add" icon="ti-plus" round size="mini" type="primary">
@@ -25,6 +25,7 @@
             :withSearch="false"
             :withCheckSelection="false"
             @selectionChanged="selectionChanged"
+            @pdf-download="downloadPDF($event)"
         >
         </request-list-table>
     </div>
@@ -65,7 +66,8 @@
                     label: '',
                     withOneCol: true,
                     editAction: this.edit,
-                    onChange: this.listingSelectChangedNotify
+                    onChange: this.listingSelectChangedNotify,
+                    downloadPDF: this.downloadPDF
                 }],
                 categories:{},
                 quarters:{},
@@ -73,7 +75,8 @@
                 propertyManagers:{},
                 residents: {},
                 services: {},
-                isLoadingFilters: false
+                isLoadingFilters: false,
+                isDownloading: false
             }
         },
         computed: {
@@ -83,12 +86,8 @@
                 }
             }),
             formattedItems() {
-                console.log('items', this.items)
                 return this.items.map((request) => {
                     request.qualification_label = request.qualification_label != "" ? this.$t(`models.request.qualification.${request.qualification_label}`) : "";
-
-                    if(request.contract)
-                        request.building = request.contract.building
                     return request;
                 });
             },
@@ -191,7 +190,7 @@
             }
         },
         methods: {
-            ...mapActions(['updateRequest', 'getRequestCategoriesTree', 'getServices', 'getBuildings', 'getResidents']),
+            ...mapActions(['updateRequest', 'getRequestCategoriesTree', 'getServices', 'getBuildings', 'getResidents', 'downloadRequestPDF']),
             async getFilterBuildings() {
                 const buildings = await this.getBuildings({
                     get_all: true
@@ -285,6 +284,26 @@
                         name: propertyManager.user.name
                     }
                 })
+            },
+            async downloadPDF(id) {
+                this.isDownloading = true;
+                try {
+                    const resp = await this.downloadRequestPDF({id: id});
+                    if (resp && resp.data) {
+                        const url = window.URL.createObjectURL(new Blob([resp.data], {type: resp.headers['content-type']}));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', resp.headers['content-disposition'].split('filename=')[1]);
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        window.URL.revokeObjectURL(url);
+                    }
+                } catch (e) {
+                    displayError(e)
+                } finally {
+                    this.isDownloading = false;
+                }
             }
         },
         async created(){

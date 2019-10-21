@@ -332,6 +332,8 @@ return [
     ],
     'service' => [
         'title' => 'Services',
+        'view' => 'View',
+        'view_title' => 'View Service',
         'add_title' => 'Add Service',
         'edit_title' => 'Edit Service',
         'saved' => 'Service saved',
@@ -393,6 +395,7 @@ return [
         'edit_title' => 'Edit Request',
         'add_title' => 'Add Request',
         'due_date' => 'Due date',
+        'solved_date' => 'Completed date',
         'closed_date' => 'Closed date',
         'service' => 'Service',
         'created_by' => 'Created by',
@@ -581,7 +584,8 @@ return [
             'service_request' => 'Service Request',
             'contact_details' => 'Contact Details',
             'contact_text' => 'These are the contact details of the current resident/owner of the housing unit.',
-        ]
+        ],
+        'go_to_building' => 'go to building'
     ],
     'request_category' => [
         'title' => 'Request categories',

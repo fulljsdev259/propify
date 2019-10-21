@@ -57,7 +57,7 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane :label="$t('resident.default_address')" name="default_address">
+            <el-tab-pane :label="$t('resident.default_address')" name="default_address" v-if="contracts.length > 1 || expired == true">
                 <el-row>
                     <el-col :span="12" :xs="24">
                         <card>
@@ -76,7 +76,6 @@
                                                 :placeholder="$t('resident.placeholder.contract')"
                                                 class="custom-select"
                                                 filterable
-                                                clearable
                                                 value-key="loggedInUser.resident.default_contract_id">
                                         <el-option v-for="contract in dirtyContracts" 
                                                     :key="contract.id" 

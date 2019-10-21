@@ -159,62 +159,15 @@
                         
                         <card class="mt15 contract-box">
                             <template slot="header">
-                                
                                 {{ $t('models.resident.contract.title') }}
                                 <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
-                            
                             </template>
                             
-                                <el-table
-                                    :data="model.contracts"
-                                    style="width: 100%"
-                                    class="contract-table"
-                                    >
-                                    <el-table-column
-                                        :label="$t('models.resident.contract.contract_id')"
-                                        prop="id"
-                                    >
-                                        <template slot-scope="scope">
-                                            <span class="clickable" @click="editContract(scope.$index)">{{scope.row.contract_format}}</span>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column
-                                        :label="$t('models.resident.building.name')"
-                                        prop="building.name"
-                                    >
-                                    </el-table-column>
-                                    <el-table-column
-                                        :label="$t('models.resident.unit.name')"
-                                        prop="unit.name"
-                                    >
-                                    </el-table-column>
-                                    <el-table-column
-                                        :label="$t('models.resident.status.label')"
-                                    >
-                                        <template slot-scope="scope">
-                                            <i class="icon-dot-circled" :class="[constants.contracts.status[scope.row.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
-                                            {{ constants.contracts.status[scope.row.status] ? $t('models.resident.contract.rent_status.' + constants.contracts.status[scope.row.status]) : ''}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column
-                                        align="right"
-                                    >
-                                        <template slot-scope="scope">
-                                            <el-tooltip
-                                                :content="$t('general.actions.edit')"
-                                                class="item" effect="light" 
-                                                placement="top-end">
-                                                    <el-button @click="editContract(scope.$index)" icon="ti-pencil" size="mini" type="success"/>
-                                            </el-tooltip>
-                                            <el-tooltip
-                                                :content="$t('general.actions.delete')"
-                                                class="item" effect="light" 
-                                                placement="top-end">
-                                                    <el-button @click="deleteContract(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
-                                            </el-tooltip>
-                                        </template>
-                                    </el-table-column>
-                                </el-table>
+                            <contract-list-table
+                                        :items="model.contracts"
+                                        @edit-contract="editContract"
+                                        @delete-contract="deleteContract">
+                            </contract-list-table>
                             
                         </card>
                     </el-col>
@@ -240,6 +193,7 @@
     import AddActions from 'components/EditViewActions';
     import SelectLanguage from 'components/SelectLanguage';
     import ContractForm from 'components/ContractForm';
+    import ContractListTable from 'components/ContractListTable';
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
@@ -253,6 +207,7 @@
             ContractForm,
             AddActions,
             SelectLanguage,
+            ContractListTable
         },
         mounted() {
             this.$root.$on('changeLanguage', () => this.getCountries());

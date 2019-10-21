@@ -332,6 +332,8 @@ return [
     ],
     'service' => [
         "title" => "Services",
+        'view' => 'Afficher',
+        'view_title' => 'Voir le service',
         "add_title" => "Ajouter un service",
         "edit_title" => "Modifier le service",
         "saved" => "Servizio salvato",
@@ -393,6 +395,7 @@ return [
         "edit_title" => "Demande de modification",
         "add_title" => "Ajouter une demande",
         "due_date" => "Date d'échéance",
+        "solved_date" => "Fait à la date",
         "closed_date" => "Date de fermeture",
         "service" => "Service",
         "created_by" => "Créé par",
@@ -581,7 +584,8 @@ return [
             'service_request' => 'Service Request',
             'contact_details' => 'Contact Details',
             'contact_text' => 'Voici les coordonnées du résident/propriétaire actuel du logement.',
-        ]
+        ],
+        'go_to_building' => 'Aller au bâtiment'
     ],
     'request_category' => [
         "title" => "Catégories de demandes",

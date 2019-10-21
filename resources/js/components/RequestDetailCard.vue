@@ -6,7 +6,7 @@
                    <h4>{{ item.request_format }}</h4>
                 </el-col>
                 <el-col :span="15" class="request-title">
-                    <h3>{{ item.title }}</h3>
+                    <h4>{{ item.title }}</h4>
                 </el-col>
                 <el-col :span="6" class="request-tail">
                     <el-select 
@@ -41,18 +41,16 @@
                     <el-checkbox @change="handleSelectionChanged"></el-checkbox>
                 </el-col> 
                 <el-col :span="1" class="request-actions">
-                    <!-- <el-tooltip v-if="item.resident.building.id" :content="$t('dashboard.buildings.go_to_building')" placement="top" effect="light">
-                        <router-link :to="{name: 'adminBuildingsEdit', params: {id:item.resident.building.id}}" class="listing-link">
-                             <i class="icon icon-commerical-building"></i>
-                        </router-link>
-                    </el-tooltip> -->
-                    <el-tooltip v-if="item.resident.building.id" :content="$t('dashboard.buildings.go_to_building')" placement="top" effect="light">
-                        <router-link :to="{name: 'adminBuildingsEdit', params: {id:item.resident.building.id}}" class="listing-link">
+                    <el-tooltip v-if="item.contract.building.id" :content="$t('models.request.go_to_building')" placement="top" effect="light">
+                        <router-link :to="{name: 'adminBuildingsEdit', params: {id:item.contract.building.id}}" class="listing-link">
                              <i class="icon icon-commerical-building"></i>
                         </router-link>
                     </el-tooltip>
                 </el-col>
                 <el-col :span="1" class="request-actions">
+                    <el-tooltip :content="$t('models.request.download_pdf.title')" placement="top" effect="light">
+                        <a @click="$emit('pdf-download', item.id)"><i class="icon icon-file-pdf"></i></a>
+                    </el-tooltip>
                 </el-col>
                 <el-col :span="4">
                     <span>{{ $t('models.request.assigned_property_managers') }}</span>
@@ -221,7 +219,8 @@ export default {
         formatDate (date) {
             var res = date.split(" ");
             return res[0] + ', ' +res[1].substr(0, 5);
-        }
+        },
+        
     },
 }
 </script>

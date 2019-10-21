@@ -167,7 +167,7 @@
                             {{scope.row.name}}
                         </router-link>                        
                     </div>
-                    <div v-else-if="column.type === 'residentName'" class="normal">                        
+                    <div v-else-if="column.type === 'residentName'" class="normal"> 
                         <router-link :to="{name: 'adminResidentsView', params: {id: scope.row.id}}">
                             {{scope.row.name}}
                         </router-link>                        
@@ -236,7 +236,7 @@
             </el-table-column>
         </el-table>
         <div v-if="meta.current_page < meta.last_page">
-            <el-button @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.loadMore')}}</el-button>
+            <el-button @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>
         </div>
     </div>
 </template>
@@ -326,11 +326,24 @@
                         this.list = []
                     }
                     else if (page === 1) {
+                        
+                        if(this.fetchAction == "getBuildings") {
+                            resp.data.data.forEach(item => {
+                                item.residents = item.contracts.map(contract => contract.resident)
+                                item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
+                            })
+                        }
                         this.list = resp.data.data;
                         if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
                             this.unitsTypeLabelMap();
                         }
                     } else {
+                        if(this.fetchAction == "getBuildings") {
+                            resp.data.data.forEach(item => {
+                                item.residents = item.contracts.map(contract => contract.resident)
+                                item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
+                            })
+                        }
                         this.list.push(...resp.data.data);
                         if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
                             this.unitsTypeLabelMap();
@@ -378,6 +391,11 @@
     }    
 </style>
 <style lang="scss" scoped>    
+
+    .el-button--default {
+        border-radius: 20px;
+        padding: 8.65px 15px;
+    }
     .request-title {
         text-overflow: ellipsis;
         white-space: nowrap;

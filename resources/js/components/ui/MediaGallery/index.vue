@@ -21,9 +21,17 @@
                 </template>
                 <template v-else-if="isFileDoc(file)">
                     <i class="ui-media-gallery__item__content__icon icon-doc-text-1" />
+                    <div class="file__actions">
+                        <div class="el-icon-zoom-in" @click="openFile(file)"></div>
+                        <div class="icon-trash-empty" @click="deleteImage(index)"></div>
+                    </div>
                 </template>
                 <template v-else-if="isFileExcel(file)">
                     <i class="ui-media-gallery__item__content__icon icon-file-excel" />
+                    <div class="file__actions">
+                        <div class="el-icon-zoom-in" @click="openFile(file)"></div>
+                        <div class="icon-trash-empty" @click="deleteImage(index)"></div>
+                    </div>
                 </template>
                 <template v-else>
                     <i class="ui-media-gallery__item__content__icon ti-file" />

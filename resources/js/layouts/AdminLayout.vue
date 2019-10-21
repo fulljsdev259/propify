@@ -266,14 +266,14 @@
                             name: 'adminPropertyManagers'
                         }
                     },
-                    "houseOwners": {
-                        icon: 'icon-users',
-                        title: this.$t('general.admin_menu.house_owners'),
-                        permission: this.$permissions.list.propertyManager,
-                        route: {
-                            name: 'adminHouseOwners'
-                        }
-                    },
+                    // "houseOwners": {
+                    //     icon: 'icon-users',
+                    //     title: this.$t('general.admin_menu.house_owners'),
+                    //     permission: this.$permissions.list.propertyManager,
+                    //     route: {
+                    //         name: 'adminHouseOwners'
+                    //     }
+                    // },
                     "services": {
                         icon: 'icon-tools',
                         title: this.$t('general.admin_menu.services'),

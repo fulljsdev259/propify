@@ -87,7 +87,7 @@
                     withUsers: true,
                     prop: 'residents'
                 }, {
-                    width: 120,
+                    width: 150,
                     actions: [{
                         type: '',
                         icon: 'ti-pencil',
@@ -136,6 +136,7 @@
             },
             formattedItems() {
                 return this.items.map((unit) => {
+                    unit.residents = unit.contracts.map(contract => contract.resident)
                     unit.formatted_type_label = this.$t(`models.unit.type.${unit.typeLabel}`);
                     return unit
                 })

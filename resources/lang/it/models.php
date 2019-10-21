@@ -332,6 +332,8 @@ return [
     ],
     'service' => [
         "title" => "Servizi",
+        'view' => 'Vista',
+        'view_title' => 'Visualizza servizio',
         "add_title" => "Aggiungi servizio",
         "edit_title" => "Modifica servizio",
         "saved" => "Servizio salvato",
@@ -393,6 +395,7 @@ return [
         "edit_title" => "Modifica Richiesta",
         "add_title" => "Aggiungi Richiesta",
         "due_date" => "Scadenza",
+        "solved_date" => "Data di fabbricazione",
         "closed_date" => "Data di chiusura",
         "service" => "Servizio",
         "created_by" => "Creato da",
@@ -581,7 +584,8 @@ return [
             'service_request' => 'Service Request',
             'contact_details' => 'Contact Details',
             'contact_text' => "Questi sono i dati di contatto dell'attuale residente/proprietario dell'unità abitativa.",
-        ]
+        ],
+        'go_to_building' => 'vai al palazzo'
     ],
     'request_category' => [
         "title" => "Richiedi categorie",

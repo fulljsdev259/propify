@@ -21,7 +21,7 @@
                 <latest-pinboard-card class="widget" />
             </div>
             <div class="column">
-                <latest-listings-card class="widget" />
+                <!-- <latest-listings-card class="widget" /> -->
                 <rate-card v-if="this.loggedInUser.resident.review == null"/>
             </div>
         </div>

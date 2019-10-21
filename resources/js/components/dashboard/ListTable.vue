@@ -152,24 +152,21 @@
                         >
                             <template v-if="action.editUrl">
                                 <router-link :to="{
-                                                name: action.editUrl,  
-                                                params: { 
-                                                    type:$constants.pinboard.type[scope.row['type']], 
-                                                    id:scope.row['id'] }
-                                                }" 
-                                            class="el-menu-item-link">
-                                    <el-tooltip
-                                        :content="$t(action.title)"
-                                        class="item" effect="light" placement="top-end">                                        
+                                    name: action.editUrl,  
+                                    params: { 
+                                        type:$constants.pinboard.type[scope.row['type']], 
+                                        id:scope.row['id'] }
+                                    }" 
+                                    class="el-menu-item-link">            
+                                                              
                                         <el-button
                                             :style="action.style"
                                             :type="action.type"
                                             size="mini"
                                         >
-                                            <i :class="action.icon ? action.icon : 'ti-pencil'"></i>
-                                            <!-- <span>{{ $t(action.title) }}</span> -->
-                                        </el-button>
-                                    </el-tooltip>    
+                                            <i :class="action.icon ? action.icon : 'ti-search'"></i>
+                                            <span>{{ $t(action.title) }}</span>
+                                        </el-button>  
                                 </router-link>      
                             </template>
                         </template>
@@ -315,6 +312,12 @@
                 }
             }
         }
+    }
+
+    
+    .el-button {
+        border-radius: 20px;
+        padding: 8.65px 15px;
     }
 
     .el-table {

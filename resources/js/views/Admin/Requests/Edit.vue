@@ -11,7 +11,7 @@
                     round
                     class="download-pdf"
             >
-                {{$t('models.request.download_pdf.title')}}
+                {{ $t('models.request.download_pdf.title') }}
             </el-button>
             <edit-actions :saveAction="submit" :deleteAction="deleteRequest" route="adminRequests"/>
         </heading>
@@ -544,8 +544,7 @@
     import EditActions from 'components/EditViewActions';
     import ServiceDialog from 'components/ServiceAttachModal';
     import {displaySuccess, displayError} from "../../../helpers/messages";
-    import {Avatar} from 'vue-avatar';
-    import Audit from 'components/Audit';
+    import {Avatar} from 'vue-avatar';    
     import AssignmentByType from 'components/AssignmentByType';
     import Vue from 'vue';
     import { EventBus } from '../../../event-bus.js';
@@ -564,8 +563,7 @@
             ServiceDialog,
             RelationList,
             EditActions,
-            Avatar,
-            Audit,
+            Avatar,            
             AssignmentByType,
         },
         data() {
@@ -798,9 +796,6 @@
 
 <style lang="scss">
 
-    .el-loading-mask.is-fullscreen {
-        z-index: 9 !important;
-    }
     .switch-item {
         display: flex;
         margin: 0;

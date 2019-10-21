@@ -232,6 +232,7 @@ export default (config = {}) => {
                         this.model.description = resp.description;
                         this.model.count_of_buildings = resp.count_of_buildings;
                         this.model.internal_quarter_id = resp.internal_quarter_id;
+                        this.model.media = resp.media
                         if(resp.address != undefined) {
                             this.model.zip = resp.address.zip;
                             this.model.city = resp.address.city;
@@ -240,8 +241,13 @@ export default (config = {}) => {
                         this.quarter_format = resp.quarter_format;
 
                         this.fileCount = this.model.media.length
-                        //this.residentCount = this.model.residents.length
 
+                        this.model.contracts = []
+                        resp.buildings.forEach(building => {
+                            this.model.contracts = this.model.contracts.concat(building.contracts)
+                        })
+                        
+                        this.contractCount = this.model.contracts.length
                     },
                     submit() {
                         return new Promise((resolve, reject) => {

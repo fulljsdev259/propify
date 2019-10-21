@@ -165,10 +165,16 @@ return [
     "contract_file" => "Fascicolo contrattuale",
     "my_documents" => "I miei documenti",
     "doc_list" => "Una lista con tutti i documenti dell'edificio e dell'unita'.",
-    "doc_available" => ":num documenti disponibili",
-    "house_rules" => "Regole della casa",
-    "operating_instructions" => "Istruzioni per l'uso",
-    "care_instructions" => "Istruzioni per la cura",
+    "doc_available" => [
+        "single" => ":num documento disponibili",
+        "multiple" => ":num documenti disponibili"
+    ],
+    'media_category' => [
+        "house_rules" => "Le regole della casa",
+        "operating_instructions" => "Istruzioni per l'uso",
+        'care_instructions' => 'Istruzioni per la cura',
+        'other' => 'Altro',
+    ],
     "pinboard" => "Lavagna a fogli mobili",
     "listing" => "Mercato",
     "admin" => "Ammin",

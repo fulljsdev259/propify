@@ -76,7 +76,7 @@
                     label: 'models.quarter.active_residents_count',
                     prop: 'active_residents_count'
                 }, {
-                    width: 120,
+                    width: 150,
                     actions: [{
                         type: '',
                         icon: 'ti-pencil',
