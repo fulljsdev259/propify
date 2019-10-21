@@ -165,10 +165,16 @@ return [
     "contract_file" => "Dossier du contrat",
     "my_documents" => "Mes documents",
     "doc_list" => "Une liste avec tous les documents du bâtiment et de l'unité.",
-    "doc_available" => ":num documents disponibles",
-    "house_rules" => "Règlement intérieur",
-    "operating_instructions" => "Notice d'utilisation",
-    "care_instructions" => "Conseils d'entretien",
+    "doc_available" => [
+        "single" => ":num document disponibles",
+        "multiple" => ":num documents disponibles"
+    ],
+    'media_category' => [
+        "house_rules" => "Règlement intérieur",
+        "operating_instructions" => "Notice d'utilisation",
+        'care_instructions' => 'Conseils d\'entretien',
+        'other' => 'Autre',
+    ],
     "pinboard" => "Panneau d'affichage",
     "listing" => "Marché en ligne",
     "admin" => "Admin",

@@ -332,6 +332,8 @@ return [
     ],
     'service' => [
         'title' => 'Services',
+        'view' => 'View',
+        'view_title' => 'View Service',
         'add_title' => 'Add Service',
         'edit_title' => 'Edit Service',
         'saved' => 'Service saved',

@@ -8,12 +8,19 @@
         </ui-heading>
         <ui-divider />
         <el-row>
-            <el-col :span="24" v-for="(files, category) in documents" :key="category">
+            <!-- <el-col :span="24" v-for="(files, category) in documents" :key="category">
                 <div class="title">
-                    {{$t(`models.building.${category}`)}}
-                    <small>{{$t('resident.doc_available',{num: files.length})}}</small>
+                    {{$t(`resident.media_category.${category}`)}}
+                    <small>{{ files.length > 1 ? $t('resident.doc_available.multiple',{num: files.length}) : $t('resident.doc_available.single',{num: files.length}) }}</small>
                 </div>
                 <gallery-list :media="files" :cols="4" />
+                <el-divider />
+            </el-col> -->
+            <el-col :span="24" >
+                <div class="title">
+                    <small>{{ media.length > 1 ? $t('resident.doc_available.multiple',{num: media.length}) : $t('resident.doc_available.single',{num: media.length}) }}</small>
+                </div>
+                <gallery-list :media="media" :cols="4" />
                 <el-divider />
             </el-col>
         </el-row>
@@ -39,6 +46,7 @@
         data() {
             return {
                 documents: {},
+                media: [],
                 loader: {
                     visible: true
                 },
@@ -58,7 +66,9 @@
 
             try {
                 const {media} = await this.$store.dispatch('getBuilding', {id: this.$store.getters.loggedInUser.resident.building_id})
-
+                
+                console.log('media', media)
+                this.media = media
                 this.documents = media.reduce((obj, file) => {
                     obj[file.collection_name] = obj[file.collection_name] || []
                     obj[file.collection_name].push(file)

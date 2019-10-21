@@ -109,9 +109,9 @@
                                     <!--                                        </el-switch>-->
                                     <!--                                    </div>-->
                                     <!--                                    <el-time-picker-->
-                                    <!--                                        :end-placeholder="$t('settings.endTime')"-->
+                                    <!--                                        :end-placeholder="$t('settings.end_time')"-->
                                     <!--                                        :range-separator="$t('settings.to')"-->
-                                    <!--                                        :start-placeholder="$t('settings.startTime')"-->
+                                    <!--                                        :start-placeholder="$t('settings.start_time')"-->
                                     <!--                                        format="HH:mm"-->
                                     <!--                                        is-range-->
                                     <!--                                        style="width: 100%"-->

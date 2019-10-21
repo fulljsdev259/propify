@@ -278,62 +278,12 @@
                             <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
                         </span>
                         
-                        <el-row :gutter="20">
-                            <h3 class="chart-card-header">
-                                <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>
-                            </h3>
-                            
-                        </el-row>
-                        <el-table
-                            :data="model.contracts"
-                            style="width: 100%"
-                            class="contract-table"
-                            >
-                            <el-table-column
-                                :label="$t('models.resident.contract.contract_id')"
-                                prop="id"
-                            >
-                                <template slot-scope="scope">
-                                    <span class="clickable" @click="editContract(scope.$index)">{{scope.row.contract_format}}</span>
-                                </template>
-                            </el-table-column>
-                            <el-table-column
-                                :label="$t('models.resident.building.name')"
-                                prop="building.name"
-                            >
-                            </el-table-column>
-                            <el-table-column
-                                :label="$t('models.resident.unit.name')"
-                                prop="unit.name"
-                            >
-                            </el-table-column>
-                            <el-table-column
-                                :label="$t('models.resident.status.label')"
-                            >
-                                <template slot-scope="scope">
-                                    <i class="icon-dot-circled" :class="[constants.contracts.status[scope.row.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
-                                    {{ constants.contracts.status[scope.row.status] ? $t('models.resident.contract.rent_status.' + constants.contracts.status[scope.row.status]) : ''}}
-                                </template>
-                            </el-table-column>
-                            <el-table-column
-                                align="right"
-                            >
-                                <template slot-scope="scope">
-                                    <el-tooltip
-                                        :content="$t('general.actions.edit')"
-                                        class="item" effect="light" 
-                                        placement="top-end">
-                                            <el-button @click="editContract(scope.$index)" icon="ti-pencil" size="mini" type="success"/>
-                                    </el-tooltip>
-                                    <el-tooltip
-                                        :content="$t('general.actions.delete')"
-                                        class="item" effect="light" 
-                                        placement="top-end">
-                                            <el-button @click="deleteContract(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
-                                    </el-tooltip>
-                                </template>
-                            </el-table-column>
-                        </el-table>
+                        <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                        <contract-list-table
+                                    :items="model.contracts"
+                                    @edit-contract="editContract"
+                                    @delete-contract="deleteContract">
+                        </contract-list-table>
                     </el-tab-pane>
                     <el-tab-pane name="managers">
                         <span slot="label">
@@ -453,8 +403,27 @@
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
                     
                 <div class="content" v-if="visibleDrawer">
-                    <contract-form v-if="editingContract" :hide-building-and-units="false" mode="edit" :data="editingContract" :resident_type="1" :resident_id="editingContract.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
-                    <contract-form v-else mode="add" :resident_type="1" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
+                    <contract-form v-if="editingContract" 
+                                mode="edit"
+                                :hide-building="true" 
+                                :show-resident="true"
+                                :building_id="model.id" 
+                                :data="editingContract" 
+                                :resident_type="1" 
+                                :resident_id="editingContract.id" 
+                                :visible.sync="visibleDrawer" 
+                                :edit_index="editingContractIndex" 
+                                @update-contract="updateContract" 
+                                :used_units="used_units"/>
+                    <contract-form v-else 
+                                mode="add" 
+                                :hide-building="true" 
+                                :show-resident="true"
+                                :building_id="model.id" 
+                                :resident_type="1" 
+                                :visible.sync="visibleDrawer" 
+                                @add-contract="addContract" 
+                                :used_units="used_units"/>
                 </div>
             </template>
             <template v-else>
@@ -487,6 +456,7 @@
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
     import { EventBus } from '../../../event-bus.js';
     import ContractForm from 'components/ContractForm';
+    import ContractListTable from 'components/ContractListTable';
 
     export default {
         mixins: [globalFunction, BuildingsMixin({
@@ -504,7 +474,8 @@
             DeleteBuildingModal,
             AssignmentByType,
             EmergencySettingsForm,
-            ContractForm
+            ContractForm,
+            ContractListTable
         },
         data() {
             return {
@@ -859,13 +830,13 @@
                 this.model.name = this.model.street + ' ' + this.model.house_num;
             },
             toggleDrawer() {
-                this.visibleDrawer = true;
-                document.getElementsByTagName('footer')[0].style.display = "none";
+                this.visibleDrawer = true
+                document.getElementsByTagName('footer')[0].style.display = "none"
             },
             toggleAddDrawer() {
-                this.visibleDrawer = true;
+                this.visibleDrawer = true
                 this.isAddContract = true
-                document.getElementsByTagName('footer')[0].style.display = "none";
+                document.getElementsByTagName('footer')[0].style.display = "none"
             },
              notifyProviderUnassignment(row) {
                 this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
@@ -916,9 +887,7 @@
                 this.$confirm(this.$t(`general.swal.delete_contract.text`), this.$t(`general.swal.delete_contract.title`), {
                     type: 'warning'
                 }).then(async () => {
-                    if(config.mode == "edit" ) {
-                        await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
-                    }
+                    await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
                     this.model.contracts.splice(index, 1)
                 }).catch(() => {
                 });

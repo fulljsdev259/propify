@@ -165,10 +165,16 @@ return [
     "contract_file" => "Contract file",
     "my_documents" => "My documents",
     "doc_list" => "A list with all building and unit's documents.",
-    "doc_available" => ":num documents available",
-    "house_rules" => "House rules",
-    "operating_instructions" => "Operating instructions",
-    "care_instructions" => "Care instructions",
+    "doc_available" => [
+        "single" => ":num document available",
+        "multiple" => ":num documents available"
+    ],
+    'media_category' => [
+        'house_rules' => 'House rules',
+        'operating_instructions' => 'Operating instructions',
+        'care_instructions' => 'Care instructions',
+        'other' => 'Other',
+    ],
     "pinboard" => "Pinboard",
     "listing" => "Listing",
     "admin" => "Admin",
