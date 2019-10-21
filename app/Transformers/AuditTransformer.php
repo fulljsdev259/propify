@@ -62,6 +62,9 @@ class AuditTransformer extends BaseTransformer
         if($model->event == 'updated'){            
             $statement = "";
             foreach($model->new_values as $field => $fieldvalue){
+                if(in_array($field,['category_id', 'internal_priority', 'priority'])){
+                    continue;
+                }
                 $old_value = (isset($model->old_values[$field])) ? $model->old_values[$field] : "";
                 $new_value = (isset($model->new_values[$field])) ? $model->new_values[$field] : "";                
                 $fieldname = (isset($fieldMapToLanguage[$model->auditable_type][$field])) ? $fieldMapToLanguage[$model->auditable_type][$field] : $field;

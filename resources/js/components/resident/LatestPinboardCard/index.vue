@@ -1,5 +1,5 @@
 <template>
-    <ui-card shadow="always">
+    <ui-card shadow="always" class="latest-pinboard-card">
         <template #header>
             <i class="icon-megaphone-1"></i> {{$t('resident.latest_pinboard')}}
             <el-button type="text" @click="$router.push({name: 'residentPinboard'})">{{$t('resident.actions.view_all')}}</el-button>
@@ -91,73 +91,88 @@
     }
 </script>
 
-<style lang="sass" scoped>
-    .ui-card
-        /deep/ .ui-card__header
-            .el-button
-                padding: 0
-                margin-left: auto
+<style lang="scss">
+    .ui-card.latest-pinboard-card {
+        .ui-card__header {
+            .el-button {
+                padding: 0;
+                margin-left: auto;
 
-                /deep/ [class*=icon] + span
-                    margin-left: 5px
+                [class*=icon] + span {
+                    margin-left: 5px;
+                }
+            }
+        }
+        .ui-card__body {
+            .el-collapse {
+                margin: -16px;
+                border-style: none;
 
-        /deep/ .ui-card__body
-            .el-collapse
-                margin: -16px
-                border-style: none
-
-                .el-collapse-item
+                .el-collapse-item {
                     
-                    &:last-child /deep/ .el-collapse-item__header
-                        border-bottom-style: none
+                    &:last-child .el-collapse-item__header {
+                        border-bottom-style: none;
+                    }
 
-                    /deep/ .el-collapse-item__header
-                        height: 56px
-                        cursor: pointer
-                        padding: 0 16px
-                        line-height: 56px
-                        background: transparent
+                    .el-collapse-item__header {
+                        height: 56px;
+                        cursor: pointer;
+                        padding: 0 16px;
+                        line-height: 56px;
+                        background: transparent;
 
-                        .content
-                            flex: auto
-                            display: flex
-                            overflow: hidden
-                            margin-left: 16px
-                            line-height: 1.48
-                            flex-direction: column
-                            justify-content: center
+                        .content {
+                            flex: auto;
+                            display: flex;
+                            overflow: hidden;
+                            margin-left: 16px;
+                            line-height: 1.48;
+                            flex-direction: column;
+                            justify-content: center;
 
-                            .user
-                                min-width: 0
-                                font-size: 15px
-                                overflow: hidden
-                                font-weight: 600
-                                white-space: nowrap
-                                text-overflow: ellipsis
-                                color: var(--color-primary)
+                            .user {
+                                min-width: 0;
+                                font-size: 15px;
+                                overflow: hidden;
+                                font-weight: 600;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                color: var(--color-primary);
+                            }
 
+                            .like {
+                                font-size: 13px;
+                                font-weight: 300;
+                                color: var(--color-text-placeholder);
+                            }
+                        }
+                    }
 
-                            .like
-                                font-size: 13px
-                                font-weight: 300
-                                color: var(--color-text-placeholder)
+                    .el-collapse-item__wrap {
+                        background: transparent;
 
-                    /deep/ .el-collapse-item__wrap
-                        background: transparent
+                        .el-collapse-item__content {
+                            color: var(--color-text-secondary);
+                            padding: 0 16px 16px 68px;
+                            font-size: 14px;
 
-                        /deep/ .el-collapse-item__content
-                            color: var(--color-text-secondary)
-                            padding: 0 16px 16px 68px
-                            font-size: 14px
+                            &:after {
+                                content: '';
+                                clear: both;
+                                display: table;
+                            }
 
-                            &:after
-                                content: ''
-                                clear: both
-                                display: table
+                            .content {
+                                white-space: pre-wrap;
+                            }
 
-                            .content
-                                white-space: pre-wrap
-
-                            .el-button
-                                float: right
+                            .el-button {
+                                float: right;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 </style>
