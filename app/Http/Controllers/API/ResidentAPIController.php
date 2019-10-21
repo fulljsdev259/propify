@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Common\WhereCriteria;
 use App\Criteria\Resident\FilterByContractRelatedCriteria;
-use App\Criteria\Resident\FilterByLanguageCriteria;
+use App\Criteria\Common\FilterByLanguageCriteria;
 use App\Criteria\Resident\FilterByRequestCriteria;
 use App\Criteria\Resident\FilterByStatusCriteria;
 use App\Criteria\Resident\FilterByTypeCriteria;

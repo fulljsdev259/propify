@@ -3,6 +3,7 @@
 namespace App\Criteria\Request;
 
 use App\Models\Request;
+use App\Models\Resident;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\CriteriaInterface;
@@ -39,27 +40,43 @@ class FilterByPermissionsCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $u = $this->request->user();
+        $user = $this->request->user();
 
-        if ($u->resident) {
+        if ($user->resident) {
 
-            $qs = [
-                '(requests.visibility = ? and requests.resident_id = ?)',
-                '(requests.visibility = ? and buildings.quarter_id = ?)',
-            ];
-            $model->select('requests.*')
-                ->join('units', 'units.id', '=', 'requests.unit_id')
-                ->join('buildings', 'units.building_id', '=', 'buildings.id');
-            $vs = [
-                Request::VisibilityResident, $u->resident->id,
-                Request::VisibilityBuilding, $u->resident->building_id,
-            ];
-            if ($u->resident->building) {
-                $vs[] = Request::VisibilityQuarter;
-                $vs[] = $u->resident->building->quarter_id;
-                $qs[] = '(requests.visibility = ? and units.building_id = ?)';
-            }
-            return $model->whereRaw('(' . implode(' or ', $qs) . ')', $vs);
+
+            $contracts = $user->resident->contracts()
+                ->where('status', Resident::StatusActive)
+                ->select('id', 'building_id')->with('building:id,quarter_id')
+                ->get();
+
+            $buildingIds = $contracts->pluck('building.id')->toArray();
+            $quarterIds = $contracts->pluck('building.quarter_id')->toArray();
+
+            $model->where(function ($q) use ($user, $quarterIds, $buildingIds) {
+                $q->where(function ($q) use ($user) {
+                    $q->where('visibility', Request::VisibilityResident)
+                        ->where('resident_id', $user->resident->id);
+                })->when($buildingIds, function ($q) use ($buildingIds) {
+                    $q->orWhere(function ($q) use ($buildingIds) {
+                        $q->where('visibility', Request::VisibilityBuilding)
+                            ->whereHas('contract', function ($q) use ($buildingIds){
+                                $q->whereIn('building_id', $buildingIds);
+                            });
+                        });
+                })->when($quarterIds, function ($q) use ($quarterIds) {
+                    $q->orWhere(function ($q) use ($quarterIds) {
+                        $q->where('visibility', Request::VisibilityQuarter)
+                            ->whereHas('contract', function ($q) use ($quarterIds) {
+                                $q->whereHas('building', function ($q) use ($quarterIds) {
+                                    $q->whereIn('quarter_id', $quarterIds);
+                                });
+                            });
+                        });
+                });
+
+            });
+            return $model;
         }
 
 //        if ($u->hasRole('service') && $u->serviceProvider) {
