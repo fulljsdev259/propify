@@ -210,8 +210,9 @@ class RequestRepository extends BaseRepository
     {
         if (!empty($attributes['contract_id'])) {
             // already validated and it must be exists
-            $contract = Contract::find($attributes['contract_id'], ['id', 'resident_id']);
+            $contract = Contract::find($attributes['contract_id'], ['id', 'resident_id', 'unit_id']);
             $attributes['resident_id'] = $contract->resident_id;
+            $attributes['unit_id'] = $contract->unit_id;
         }
 
         return $attributes;

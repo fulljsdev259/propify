@@ -559,6 +559,8 @@ class Request extends AuditableModel implements HasMedia
         'autologinUrl' => '',
         'resident' => '',
         'category' => '',
+        'unit' => '',
+        'building' => '',
     ];
 
     /**
@@ -589,7 +591,7 @@ class Request extends AuditableModel implements HasMedia
 //        'internal_priority' => 'integer',
         'qualification' => 'integer',
         'due_date' => 'required|date',
-        'category' => 'required_without:category_id|nullable|integer', // @TODO correct is required|integer
+        'category' => 'nullable|integer', // @TODO correct is required|integer
         'sub_category' => 'integer',
         'visibility' => 'required|integer',
     ];
@@ -604,7 +606,7 @@ class Request extends AuditableModel implements HasMedia
         'contract_id' => 'required|exists:contracts,id',
         'title' => 'required|string',
         'description' => 'required|string',
-        'category' => 'required_without:category_id|nullable|integer', // @TODO correct is required|integer
+        'category' => 'nullable|integer', // @TODO correct is required|integer
         'sub_category' => 'integer',
 //        'priority' => 'required|integer',
 //        'internal_priority' => 'integer',
@@ -626,7 +628,7 @@ class Request extends AuditableModel implements HasMedia
         'qualification' => 'integer',
         'status' => 'integer',
         'due_date' => 'date',
-        'category' => 'nullable:integer',
+        'category' => 'nullable|integer',
         'sub_category' => 'integer',
         'visibility' => 'required|integer',
         'active_reminder' => 'boolean',
@@ -743,6 +745,14 @@ class Request extends AuditableModel implements HasMedia
     public function resident()
     {
         return $this->belongsTo(Resident::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
     }
 
     /**
