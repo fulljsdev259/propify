@@ -2,6 +2,7 @@
 
 namespace App\Criteria\Pinboard;
 
+use App\Models\Contract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -36,40 +37,43 @@ class FilterByLocationCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $u = \Auth::user();
-        if ($u->can('list-pinboard')) {
+        $user = \Auth::user();
+
+        $resident = $user->resident;
+        if (!$resident) {
             return $model;
         }
 
-        if ($this->request->get('all', null)) {
-            return $model;
-        }
 
-        $t = $u->resident;
-        if (!$t) {
-            return $model;
-        }
+        $contracts = $resident->contracts()
+            ->where('status', Contract::StatusActive)
+            ->select('id', 'building_id')->with('building:id,quarter_id')
+            ->get();
 
-        $conds = [
-            "pinboard.user_id = ?",
-            "pinboard.visibility = ?",
-            "building_pinboard.building_id = ?",
-        ];
-        $args = [
-            \Auth::id(),
-            Pinboard::VisibilityAll,
-            $t->building_id,
-        ];
-        // If the resident building is in a quarter, show the announcement pinboard from that quarter
-        if ($t->building && $t->building->quarter_id) {
-            $conds[] = "pinboard_quarter.quarter_id = ?";
-            $args[] = $t->building->quarter_id;
-        }
+        $buildingIds = $contracts->pluck('building.id')->toArray();
+        $quarterIds = $contracts->pluck('building.quarter_id')->toArray();
+        $model->where(function ($q) use ($quarterIds, $buildingIds) {
+            $q->where(function ($q) {
+                $q->where('visibility', Pinboard::VisibilityAll)
+                    ->where('user_id', \Auth::id());
+            })->when($buildingIds, function ($q) use ($buildingIds) {
+                $q->orWhere(function ($q) use ($buildingIds) {
+                    $q->where('visibility', Pinboard::VisibilityAddress)
+                        ->whereHas('buildings', function ($q) use ($buildingIds){
+                            $q->whereIn('building_id', $buildingIds);
+                        });
+                });
+            })->when($quarterIds, function ($q) use ($quarterIds) {
+                $q->orWhere(function ($q) use ($quarterIds) {
+                    $q->where('visibility', Pinboard::VisibilityQuarter)
+                        ->whereHas('quarters', function ($q) use ($quarterIds) {
+                            $q->whereIn('quarter_id', $quarterIds);
+                        });
+                });
+            });
 
-        // It's raw, Melissa, because  https://github.com/laravel/framework/issues/23957
-        return $model->select('pinboard.*')->distinct()
-            ->leftJoin("building_pinboard", "building_pinboard.pinboard_id", "=", "pinboard.id")
-            ->leftJoin("pinboard_quarter", "pinboard_quarter.pinboard_id", "=", "pinboard.id")
-            ->whereRaw("(" . implode(" or ", $conds) . ")", $args);
+        });
+
+        return $model;
     }
 }

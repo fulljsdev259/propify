@@ -12,7 +12,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 
 /**
- * @SWG\Definition(
+ * App\Models\Building
+ *
+ * @SWG\Definition (
  *      definition="Building",
  *      required={"name", "floor_nr"},
  *      @SWG\Property(
@@ -79,6 +81,82 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int|null $quarter_id
+ * @property int $address_id
+ * @property string|null $internal_building_id
+ * @property string $building_format
+ * @property float|null $latitude
+ * @property float|null $longitude
+ * @property int $contact_enable
+ * @property string $name
+ * @property string|null $description
+ * @property string|null $label
+ * @property int $floor_nr
+ * @property int $under_floor
+ * @property bool $basement
+ * @property bool $attic
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Resident[] $activeResidents
+ * @property-read int|null $active_residents_count
+ * @property-read \App\Models\Address $address
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BuildingAssignee[] $assignees
+ * @property-read int|null $assignees_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Contract[] $contracts
+ * @property-read int|null $contracts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Resident[] $inActiveResidents
+ * @property-read int|null $in_active_residents_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PropertyManager[] $lastPropertyManagers
+ * @property-read int|null $last_property_managers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Resident[] $lastResidents
+ * @property-read int|null $last_residents_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PropertyManager[] $propertyManagers
+ * @property-read int|null $property_managers_count
+ * @property-read \App\Models\Quarter|null $quarter
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Request[] $requests
+ * @property-read int|null $requests_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Resident[] $residents
+ * @property-read int|null $residents_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ServiceProvider[] $serviceProviders
+ * @property-read int|null $service_providers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Unit[] $units
+ * @property-read int|null $units_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building allRequestStatusCount()
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Building onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereAddressId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereAttic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereBasement($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereBuildingFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereContactEnable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereFloorNr($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereInternalBuildingId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereLatitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereLongitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereQuarterId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereUnderFloor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Building whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Building withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Building withoutTrashed()
+ * @mixin \Eloquent
  */
 class Building extends AuditableModel implements HasMedia
 {

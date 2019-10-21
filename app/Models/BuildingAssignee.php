@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Str;
 
 /**
- * @SWG\Definition(
+ * App\Models\BuildingAssignee
+ *
+ * @SWG\Definition (
  *      definition="BuildingAssignee",
  *      @SWG\Property(
  *          property="id",
@@ -38,6 +40,22 @@ use Illuminate\Support\Str;
  *          type="string"
  *      ),
  * )
+ * @property int $id
+ * @property int $building_id
+ * @property int $assignee_id
+ * @property string $assignee_type
+ * @property string|null $created_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingAssignee newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingAssignee newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingAssignee query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingAssignee whereAssigneeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingAssignee whereAssigneeType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingAssignee whereBuildingId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingAssignee whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BuildingAssignee whereId($value)
+ * @mixin \Eloquent
  */
 class BuildingAssignee extends AuditableModel
 {

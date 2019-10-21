@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Str;
 
 /**
- * @SWG\Definition(
+ * App\Models\QuarterAssignee
+ *
+ * @SWG\Definition (
  *      definition="QuarterAssignee",
  *      @SWG\Property(
  *          property="id",
@@ -38,6 +40,22 @@ use Illuminate\Support\Str;
  *          type="string"
  *      ),
  * )
+ * @property int $id
+ * @property int $quarter_id
+ * @property int $assignee_id
+ * @property string $assignee_type
+ * @property string|null $created_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\QuarterAssignee newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\QuarterAssignee newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\QuarterAssignee query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\QuarterAssignee whereAssigneeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\QuarterAssignee whereAssigneeType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\QuarterAssignee whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\QuarterAssignee whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\QuarterAssignee whereQuarterId($value)
+ * @mixin \Eloquent
  */
 class QuarterAssignee extends AuditableModel
 {

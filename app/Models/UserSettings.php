@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @SWG\Definition(
+ * App\Models\UserSettings
+ *
+ * @SWG\Definition (
  *      definition="UserSettings",
  *      required={"language", "summary", "pinboard_notification", "listing_notification", "service_notification"},
  *      @SWG\Property(
@@ -67,6 +69,39 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int $user_id
+ * @property string $language
+ * @property string $summary
+ * @property bool $admin_notification
+ * @property bool $pinboard_notification
+ * @property bool $listing_notification
+ * @property bool $service_notification
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Resident $resident
+ * @property-read \App\Models\User $user
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\UserSettings onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings whereAdminNotification($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings whereLanguage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings whereListingNotification($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings wherePinboardNotification($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings whereServiceNotification($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings whereSummary($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserSettings whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\UserSettings withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\UserSettings withoutTrashed()
+ * @mixin \Eloquent
  */
 class UserSettings extends Model
 {

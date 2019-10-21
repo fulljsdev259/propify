@@ -11,7 +11,9 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use App\Traits\HasMediaTrait;
 
 /**
- * @SWG\Definition(
+ * App\Models\Pinboard
+ *
+ * @SWG\Definition (
  *      definition="Pinboard",
  *      required={"content"},
  *      @SWG\Property(
@@ -95,6 +97,95 @@ use App\Traits\HasMediaTrait;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int $user_id
+ * @property int $type
+ * @property int|null $sub_type
+ * @property int $status
+ * @property int $visibility
+ * @property bool|null $category_image
+ * @property string $content
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $published_at
+ * @property bool $announcement
+ * @property int|null $category
+ * @property bool $is_execution_time
+ * @property int $execution_period
+ * @property \Illuminate\Support\Carbon|null $execution_start
+ * @property \Illuminate\Support\Carbon|null $execution_end
+ * @property string|null $title
+ * @property bool $notify_email
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $allComments
+ * @property-read int|null $all_comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnnouncementEmailReceptionist[] $announcement_email_receptionists
+ * @property-read int|null $announcement_email_receptionists_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Building[] $buildings
+ * @property-read int|null $buildings_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ * @property-read int|null $comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Like[] $dislikes
+ * @property-read int $dislikes_count
+ * @property-read \Cog\Laravel\Love\LikeCounter\Models\LikeCounter $dislikesCounter
+ * @property-read mixed $buildings_str
+ * @property-read mixed $category_str
+ * @property-read bool $disliked
+ * @property-read mixed $execution_end_str
+ * @property-read mixed $execution_start_str
+ * @property-read bool $liked
+ * @property-read int|null $likes_count
+ * @property-read int $likes_diff_dislikes_count
+ * @property-read mixed $providers_str
+ * @property-read mixed $quarters_str
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Like[] $likes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Like[] $likesAndDislikes
+ * @property-read int|null $likes_and_dislikes_count
+ * @property-read \Cog\Laravel\Love\LikeCounter\Models\LikeCounter $likesCounter
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ServiceProvider[] $providers
+ * @property-read int|null $providers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Quarter[] $quarters
+ * @property-read int|null $quarters_count
+ * @property-read \App\Models\User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PinboardView[] $views
+ * @property-read int|null $views_count
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Pinboard onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard orderByDislikesCount($direction = 'desc')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard orderByLikesCount($direction = 'desc')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereAnnouncement($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereCategory($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereCategoryImage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereDislikedBy($userId = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereExecutionEnd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereExecutionPeriod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereExecutionStart($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereIsExecutionTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereLikedBy($userId = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereNotifyEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard wherePublishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereSubType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pinboard whereVisibility($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Pinboard withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Pinboard withoutTrashed()
+ * @mixin \Eloquent
  */
 class Pinboard extends AuditableModel implements HasMedia, LikeableContract
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Criteria\ServiceProvider;
+namespace App\Criteria\Common;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -36,11 +36,13 @@ class FilterByPinboardCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $pinboardId = $this->request->pinboard_id ?? $this->request->post_id;
-        if (!$pinboardId) { return $model; }
 
-        $model->join('pinboard_service_provider', 'pinboard_service_provider.service_provider_id', '=', 'service_providers.id')
-            ->where('pinboard_service_provider.pinboard_id', $pinboardId);
+        $pinboardId = $this->request->pinboard_id ?? $this->request->post_id;
+        if (! empty($pinboardId)) {
+            $model->whereHas('pinboards', function ($q) use ($pinboardId) {
+                $q->where('pinboard_id', $pinboardId);
+            });
+        }
 
         return $model;
     }

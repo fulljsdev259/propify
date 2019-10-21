@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Criteria\ServiceProvider;
+namespace App\Criteria\Common;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -37,10 +37,11 @@ class FilterByStateCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
         $stateId = $this->request->get('state_id', null);
-        if (!$stateId) { return $model; }
-
-        $model->join('loc_addresses', 'loc_addresses.id', '=', 'service_providers.address_id')
-            ->where('loc_addresses.state_id', $stateId);
+        if (! empty($stateId)) {
+            $model->whereHas('address', function ($q) use ($stateId) {
+                $q->where('state_id', $stateId);
+            });
+        }
 
         return $model;
     }
