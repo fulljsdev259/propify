@@ -2,6 +2,7 @@
 
 namespace App\Criteria\Request;
 
+use App\Models\Contract;
 use App\Models\Request;
 use App\Models\Resident;
 use Illuminate\Database\Eloquent\Builder;
@@ -44,9 +45,8 @@ class FilterByPermissionsCriteria implements CriteriaInterface
 
         if ($user->resident) {
 
-
             $contracts = $user->resident->contracts()
-                ->where('status', Resident::StatusActive)
+                ->where('status', Contract::StatusActive)
                 ->select('id', 'building_id')->with('building:id,quarter_id')
                 ->get();
 
@@ -76,6 +76,7 @@ class FilterByPermissionsCriteria implements CriteriaInterface
                 });
 
             });
+
             return $model;
         }
 
