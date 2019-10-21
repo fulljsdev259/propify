@@ -204,8 +204,8 @@ class UtilsAPIController extends AppBaseController
     {
         $result = [
             'status' => Request::Status,
-            'priority' => Request::Priority,
-            'internal_priority' => Request::Priority,
+           // 'priority' => Request::Priority,
+            //'internal_priority' => Request::Priority,
             'qualification' => Request::Qualification,
             'statusByResident' => Request::StatusByResident,
             'statusByService' => Request::StatusByService,

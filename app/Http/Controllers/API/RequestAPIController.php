@@ -221,7 +221,7 @@ class RequestAPIController extends AppBaseController
     public function store(CreateRequest $createRequest)
     {
         $input = $createRequest->all();
-        $input['internal_priority'] = $input['internal_priority'] ?? $input['priority'];
+//        $input['internal_priority'] = $input['internal_priority'] ?? $input['priority'];
         $request = $this->requestRepository->create($input);
         $this->requestRepository->notifyNewRequest($request);
         if (isset($input['due_date'])) {
@@ -512,23 +512,23 @@ class RequestAPIController extends AppBaseController
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function changePriority(int $id, ChangePriorityRequest $changePriorityRequest)
-    {
-        /** @var Request $request */
-        $request = $this->requestRepository->findWithoutFail($id);
-        if (empty($request)) {
-            return $this->sendError(__('models.request.errors.not_found'));
-        }
-
-        $input = [
-            'priority' => $changePriorityRequest->get('priority', '')
-        ];
-
-        $request = $this->requestRepository->update($input, $id);
-
-        $response = (new RequestTransformer)->transform($request);
-        return $this->sendResponse($response, __('models.request.priority_changed'));
-    }
+//    public function changePriority(int $id, ChangePriorityRequest $changePriorityRequest)
+//    {
+//        /** @var Request $request */
+//        $request = $this->requestRepository->findWithoutFail($id);
+//        if (empty($request)) {
+//            return $this->sendError(__('models.request.errors.not_found'));
+//        }
+//
+//        $input = [
+//            'priority' => $changePriorityRequest->get('priority', '')
+//        ];
+//
+//        $request = $this->requestRepository->update($input, $id);
+//
+//        $response = (new RequestTransformer)->transform($request);
+//        return $this->sendResponse($response, __('models.request.priority_changed'));
+//    }
 
     /**
      * @SWG\Delete(

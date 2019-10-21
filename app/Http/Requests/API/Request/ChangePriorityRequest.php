@@ -27,8 +27,8 @@ class ChangePriorityRequest extends BaseRequest
         $validValues = '|in:' . implode(',', array_keys(Request::Priority));
 
         $rules = [
-            'priority' => 'required|integer' . $validValues,
-            'internal_priority' => 'integer' . $validValues,
+//            'priority' => 'required|integer' . $validValues,
+//            'internal_priority' => 'integer' . $validValues,
         ];
 
         return $rules;
