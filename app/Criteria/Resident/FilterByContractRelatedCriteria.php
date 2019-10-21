@@ -47,33 +47,28 @@ class FilterByContractRelatedCriteria implements CriteriaInterface
         if (!( $buildingId || $quarterId || $hasBuilding || $unitId || $stateId) ) {
             return $model;
         }
-        $model->join('contracts', 'contracts.resident_id', '=', 'residents.id');
 
-        if ($hasBuilding) {
-            $model->whereNotNull('contracts.building_id');
-        }
+        $model->whereHas('contracts', function ($q) use($buildingId, $quarterId, $hasBuilding, $unitId, $stateId) {
+            $q->when($hasBuilding, function ($q) {
+                    $q->whereNotNull('building_id');
+                })->when($buildingId, function ($q) use ($buildingId) {
+                    $q->where('building_id', $buildingId);
+                })->when($unitId, function ($q) use ($unitId) {
+                    $q->where('unit_id', $unitId);
+                })->when(($quarterId || $stateId), function ($q) use ($quarterId, $stateId) {
+                     $q->whereHas('building', function ($q) use ($quarterId, $stateId) {
+                         $q->when($quarterId, function ($q) use ($quarterId) {
+                            $q->where('quarter_id', $quarterId);
+                         })->when($stateId, function ($q) use ($stateId) {
+                             $q->whereHas('address', function ($q) use ($stateId) {
+                                 $q->where('state_id', $stateId);
+                             });
+                         });
+                     });
+                })
+            ;
+        });
 
-        if ($buildingId) {
-            $model->where('contracts.building_id', $buildingId);
-        }
-
-        if ($unitId) {
-            $model->where('contracts.unit_id', $unitId);
-        }
-
-        if ($quarterId || $stateId) {
-            $model->join('buildings', 'contracts.building_id', '=', 'buildings.id');
-
-            if ($quarterId) {
-                $model->where('buildings.quarter_id', $quarterId);
-            }
-
-            if ($stateId) {
-                $model->join('loc_addresses', 'loc_addresses.id', '=', 'buildings.address_id')
-                    ->where('loc_addresses.state_id', $stateId);
-            }
-        }
-
-        return $model;     
+        return $model;
     }  
 }
