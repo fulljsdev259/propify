@@ -6,6 +6,13 @@
                     {{$t('models.request.add_title')}}
                 </el-button>
             </template>
+            <template v-if="$can($permissions.assign.manager)">
+                <el-button :disabled="!selectedItems.length" @click="batchEdit" icon="ti-user" round
+                           size="mini"
+                           type="info">
+                    {{$t('models.request.mass_edit')}}
+                </el-button>
+            </template>
             <template v-if="$can($permissions.delete.request)">
                 <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"
                            type="danger">

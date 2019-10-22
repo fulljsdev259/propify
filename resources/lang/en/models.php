@@ -395,6 +395,7 @@ return [
         'category' => 'Category',
         'edit_title' => 'Edit Request',
         'add_title' => 'Add Request',
+        'mass_edit' => 'Mass Edit',
         'due_date' => 'Due date',
         'solved_date' => 'Completed date',
         'closed_date' => 'Closed date',

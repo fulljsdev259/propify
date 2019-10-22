@@ -96,6 +96,9 @@ export default ({
                 .catch(err => displayError(err));                
             }).catch(() => {
             });
+        },
+        batchEdit(){
+            
         }
     },
     computed: {

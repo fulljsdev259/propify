@@ -395,6 +395,7 @@ return [
         "category" => "Catégorie",
         "edit_title" => "Demande de modification",
         "add_title" => "Ajouter une demande",
+        'mass_edit' => 'Traitement en masse',
         "due_date" => "Date d'échéance",
         "solved_date" => "Fait à la date",
         "closed_date" => "Date de fermeture",
