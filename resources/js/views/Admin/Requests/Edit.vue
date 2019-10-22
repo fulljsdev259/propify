@@ -377,8 +377,6 @@
                                                 </el-select>
                                             </el-form-item>
                                         </el-col> -->
-                                    </el-row>
-                                    <el-row :gutter="10">
                                         <el-col :md="12">
                                             <el-form-item :label="$t('models.request.due_date')"
                                                         class="due_date-field"
