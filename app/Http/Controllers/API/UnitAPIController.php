@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Criteria\Common\RequestCriteria;
+use App\Criteria\Common\WhereCriteria;
 use App\Criteria\Unit\FilterByRelatedFieldsCriteria;
 use App\Criteria\Unit\FilterByTypeCriteria;
 use App\Http\Controllers\AppBaseController;
@@ -16,6 +17,7 @@ use App\Http\Requests\API\Unit\ViewRequest;
 use App\Models\Building;
 use App\Models\Contract;
 use App\Models\Unit;
+use App\Repositories\ContractRepository;
 use App\Repositories\PinboardRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\UnitRepository;
@@ -35,15 +37,24 @@ class UnitAPIController extends AppBaseController
     /** @var  ResidentRepository */
     private $residentRepository;
 
+    /** @var  ResidentRepository */
+    private $contractRepository;
+
     /**
      * UnitAPIController constructor.
-     * @param UnitRepository $unitRepo
-     * @param ResidentRepository $residentRepo
+     * @param UnitRepository $unitRepository
+     * @param ResidentRepository $residentRepository
+     * @param ContractRepository $contractRepository
      */
-    public function __construct(UnitRepository $unitRepo, ResidentRepository $residentRepo)
+    public function __construct(
+        UnitRepository $unitRepository,
+        ResidentRepository $residentRepository,
+        ContractRepository $contractRepository
+    )
     {
-        $this->unitRepository = $unitRepo;
-        $this->residentRepository = $residentRepo;
+        $this->unitRepository = $unitRepository;
+        $this->residentRepository = $residentRepository;
+        $this->contractRepository = $contractRepository;
     }
 
     /**
@@ -132,7 +143,6 @@ class UnitAPIController extends AppBaseController
 
         $units = $this->unitRepository->with([
             'building',
-            'residents.user', // @TODO delete
             'media',
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
@@ -198,11 +208,9 @@ class UnitAPIController extends AppBaseController
 
         if (isset($input['resident_id'])) {
             try {
-                $attr = [
-                    'unit_id' => $unit->id,
-                ];
-                $resident = $this->residentRepository->update($attr, $input['resident_id']);
-                $pr->newResidentPinboard($resident);
+                $contract = $this->contractRepository->newContractForUnit($unit, $input['resident_id']);
+                $resident = $this->residentRepository->find($input['resident_id']);
+                $pr->newResidentPinboard($resident); // @TODO use $resident or @contract
             } catch (\Exception $e) {
                 return $this->sendError(__('models.unit.errors.resident_assign') . $e->getMessage());
             }
@@ -210,7 +218,6 @@ class UnitAPIController extends AppBaseController
 
         $unit->load([
             'building',
-            'residents.user', // @TODO delete
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
@@ -269,7 +276,6 @@ class UnitAPIController extends AppBaseController
 
         $unit->load([
             'building',
-            'residents.user', // @TODO delete
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
@@ -340,8 +346,10 @@ class UnitAPIController extends AppBaseController
         if (empty($unit)) {
             return $this->sendError(__('models.unit.errors.not_found'));
         }
-        $shouldPinboard = isset($input['resident_id']) &&
-            (!$unit->resident || ($unit->resident && $unit->resident->id != $input['resident_id']));
+
+//        $shouldPinboard = isset($input['resident_id']) &&
+//            (!$unit->resident || ($unit->resident && $unit->resident->id != $input['resident_id']));
+        $shouldPinboard = false; // @TODO correct contract related
 
         try {
             $unit = $this->unitRepository->update($input, $id);
@@ -349,10 +357,12 @@ class UnitAPIController extends AppBaseController
             return $this->sendError(__('models.unit.errors.update') . $e->getMessage());
         }
 
-        $currentResident = $unit->tenan ? $unit->resident->id : 0;
+//        $currentResident = $unit->resident ? $unit->resident->id : 0;
+        $currentResident = 0; // @TODO correct contract related
         if (isset($input['resident_id']) && $input['resident_id'] != $currentResident) {
             try {
-                $this->residentRepository->moveResidentInUnit($input['resident_id'], $unit);
+                $contract = Contract::where('unit_id', $unit->id)->where('resident_id', $input['resident_id'])->delete(); // @TODO delete single or many
+                $this->contractRepository->newContractForUnit($unit, $input['resident_id']);
             } catch (\Exception $e) {
                 return $this->sendError(__('models.unit.errors.create') . $e->getMessage());
             }
@@ -360,14 +370,14 @@ class UnitAPIController extends AppBaseController
 
         $unit->load([
             'building',
-            'residents.user', // @TODO delete
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
             'media'
         ]);
         if ($shouldPinboard) {
-            $pr->newResidentPinboard($unit->resident);
+            $resident = $this->residentRepository->find($input['resident_id']);
+            $pr->newResidentPinboard($resident); // @TODO use $resident or new created contract
         }
 
         $response = (new UnitTransformer)->transform($unit);
@@ -509,6 +519,7 @@ class UnitAPIController extends AppBaseController
      * @param AssignRequest $r
      * @return mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function assignResident($unitId, $residentId, AssignRequest $r)
     {
@@ -522,10 +533,9 @@ class UnitAPIController extends AppBaseController
             return $this->sendError(__('models.unit.errors.not_found'));
         }
 
-        $data = [
-            'unit_id' => $unit->id,
-        ];
-        $this->residentRepository->update($data, $residentId);
+        $contract = $this->contractRepository->newContractForUnit($unit, $resident);
+
+        // @TODO need newResidentPinboard
         return $this->sendResponse($unitId, __('models.unit.resident_assigned'));
     }
 
@@ -597,21 +607,18 @@ class UnitAPIController extends AppBaseController
      */
     public function unassignResident($unitId, $residentId, UnAssignRequest $r)
     {
-        $resident = $this->residentRepository->find($residentId, ['id', 'unit_id']);
-        if (empty($resident)) {
-            return $this->sendError(__('models.unit.errors.resident_not_found'));
-        }
+        $this->contractRepository->pushCriteria(new WhereCriteria('unit_id', $unitId));
+        $this->contractRepository->pushCriteria(new WhereCriteria('resident_id', $residentId));
 
-        if ($resident->unit_id !=  $unitId) {
+        $contracts = $this->contractRepository->get(['id']);
+        if ($contracts->isEmpty()) {
             return $this->sendError(__('models.unit.errors.resident_not_assign'));
         }
 
-        $data = [
-            'unit_id' => null,
-            'building_id' => null,
-            'address_id' => null,
-        ];
-        $this->residentRepository->update($data, $residentId);
+        // @TODO delete single contract or all
+        foreach ($contracts as $contract) {
+            $contract->delete();
+        }
 
         return $this->sendResponse($unitId, __('models.unit.resident_unassigned'));
     }

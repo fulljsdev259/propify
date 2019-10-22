@@ -498,7 +498,9 @@ class ResidentAPIController extends AppBaseController
             return $this->sendError(__('models.resident.errors.not_found'));
         }
 
-        $shouldPinboard = isset($input['unit_id']) && $input['unit_id'] != $resident->unit_id;
+        // @TODO contract related
+//        $shouldPinboard = isset($input['unit_id']) && $input['unit_id'] != $resident->unit_id;
+        $shouldPinboard = false;
 
         $input['user'] = $input['user'] ?? [];
         $input['user']['name'] = sprintf('%s %s', $input['first_name'], $input['last_name']);

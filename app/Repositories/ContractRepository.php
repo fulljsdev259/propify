@@ -48,6 +48,23 @@ class ContractRepository extends BaseRepository
     }
 
     /**
+     * @param $unit
+     * @param $residentId
+     * @return mixed
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
+    public function newContractForUnit($unit, $residentId)
+    {
+        $attr = [
+            // @TODO other attributes
+            'start_date' => now(),
+            'unit_id' => $unit->id,
+            'resident_id' => $residentId
+        ];
+        return  $this->create($attr);
+    }
+
+    /**
      * @param array $attributes
      * @param $id
      * @return mixed

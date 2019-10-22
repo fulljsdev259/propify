@@ -349,14 +349,15 @@ class PinboardRepository extends BaseRepository
         if ($resident->homeless()) {
             return false;
         }
-
+        $buildingIds = $resident->contracts()->where('status', Contract::StatusActive)->pluck('building_id')->toArray();
+        // @TODO is need here also use quarter_ids?
         $pinboard = $this->create([
             'visibility' => Pinboard::VisibilityAddress,
             'status' => Pinboard::StatusNew,
             'type' => Pinboard::TypeNewNeighbour,
             'content' => "New neighbour",
             'user_id' => $resident->user->id,
-            'building_ids' => [$resident->building->id],
+            'building_ids' => $buildingIds,
             'needs_approval' => false,
             'notify_email' => true,
         ]);

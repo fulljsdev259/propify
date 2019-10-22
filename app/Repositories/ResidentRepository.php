@@ -154,12 +154,13 @@ class ResidentRepository extends BaseRepository
     }
 
     /**
-     * @param int $resident_id
+     * @param int $residentId
      * @param Unit $unit
-     * @return mixed
+     * @return Model|mixed
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function moveResidentInUnit(int $resident_id, Unit $unit)
+    public function moveResidentInUnit(int $residentId, Unit $unit)
     {
         // Move old residents outs of this unit
         $this->model->where('unit_id', $unit->id)->update(['unit_id' => null]);
@@ -170,14 +171,16 @@ class ResidentRepository extends BaseRepository
             'building_id' => $unit->building_id,
             'address_id' => $unit->building->address_id,
         ];
-        return $this->update($attrs, $resident_id);
+        return $this->update($attrs, $residentId);
     }
+
 
     /**
      * @param array $attributes
      * @param $id
-     * @return mixed
+     * @return Model|mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update(array $attributes, $id)
     {
