@@ -81,6 +81,11 @@ export default (config = {}) => {
                 assignmentType: 'building',
                 toAssign: '',
                 toAssignList: [],
+                addedAssigmentList: [],
+                alreadyAssigned: {
+                    buildings: [],
+                    quarters: []
+                },
                 toAssignProvider: '',
                 toAssignProviderList: [],
                 types: [],
@@ -188,8 +193,16 @@ export default (config = {}) => {
                                 get_all: true,
                                 search,
                             });
+
+                            resp.data = resp.data.filter((building) => {
+                                return !this.alreadyAssigned.buildings.includes(building.id)
+                            });
                         } else {
                             resp = await this.getQuarters({get_all: true, search});
+
+                            resp.data = resp.data.filter((building) => {
+                                return !this.alreadyAssigned.buildings.includes(building.id)
+                            });
                         }
 
                         this.toAssignList = resp.data;
@@ -199,6 +212,44 @@ export default (config = {}) => {
                         this.remoteLoading = false;
                     }
                 }
+            },
+            async saveAddedAssigmentList(modelId) {
+                try {
+                    let resp;
+
+                    this.addedAssigmentList.forEach(async element => {
+                        if (element.type === 'building') {
+                            resp = await this.assignPinboardBuilding({
+                                id: modelId,
+                                toAssignId: element.id
+                            });
+                        } else {
+                            resp = await this.assignPinboardQuarter({
+                                id: modelId,
+                                toAssignId: element.id
+                            });
+                        }
+                    });
+                } catch (e) {
+                    displayError(e)
+                }
+            },
+            async attachAddedAssigmentList(assigmentId) {
+                let assigment = this.toAssignList.filter(n => n.id === assigmentId)[0];
+
+                if (!!assigment) {
+                    this.addedAssigmentList.push({
+                        id: assigmentId,
+                        name: assigment.name,
+                        type: this.assignmentType
+                    });
+                }
+
+                this.alreadyAssigned.buildings = this.addedAssigmentList.filter(item => item['type'] === 'building').map((building) => building.id);
+                this.alreadyAssigned.quarters = this.addedAssigmentList.filter(item => item['type'] === 'quarter').map((quarter) => quarter.id);
+
+                this.toAssign = '';
+                this.toAssignList = [];
             },
 
             attachBuilding() {
@@ -393,6 +444,9 @@ export default (config = {}) => {
                                 })
                             }
                             this.form.resetFields();
+
+                            this.saveAddedAssigmentList(resp.data.id);
+
                             this.media = [];
                             displaySuccess(resp);
                             if (!!afterValid) {
@@ -469,9 +523,11 @@ export default (config = {}) => {
                             ...restData
                         };
 
+                        this.alreadyAssigned.buildings = this.model.buildings.map((building) => building.id);
+                        this.alreadyAssigned.quarters = this.model.quarters.map((quarter) => quarter.id);
 
-                        this.executionStartTime = this.model.execution_start.split(' ')[1];
-                        this.executionEndTime = this.model.execution_end.split(' ')[1];
+                        this.model.execution_start ? this.executionStartTime = this.model.execution_start.split(' ')[1] : '';
+                        this.model.execution_end ? this.executionEndTime = this.model.execution_end.split(' ')[1] : '';
 
                         return this.model;
                     }

@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @SWG\Definition(
+ * App\Models\RequestCategory
+ *
+ * @SWG\Definition (
  *      definition="RequestCategory",
  *      required={"name", "description"},
  *      @SWG\Property(
@@ -48,6 +50,46 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int|null $parent_id
+ * @property string $name
+ * @property string $name_de
+ * @property string $name_fr
+ * @property string $name_it
+ * @property int|null $room
+ * @property int|null $location
+ * @property string|null $description
+ * @property int $has_qualifications
+ * @property int $acquisition
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RequestCategory[] $categories
+ * @property-read int|null $categories_count
+ * @property-read \App\Models\RequestCategory|null $parentCategory
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\RequestCategory onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereAcquisition($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereHasQualifications($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereLocation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereNameDe($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereNameFr($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereNameIt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereParentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereRoom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestCategory whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\RequestCategory withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\RequestCategory withoutTrashed()
+ * @mixin \Eloquent
  */
 class RequestCategory extends Model
 {

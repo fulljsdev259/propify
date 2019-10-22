@@ -215,6 +215,7 @@
                 assignmentsActions: [{
                     width: '180px',
                     buttons: [{
+                        icon: 'el-icon-close',
                         title: 'general.unassign',
                         type: 'danger',
                         onClick: this.notifyUnassignment

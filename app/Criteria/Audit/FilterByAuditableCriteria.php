@@ -35,11 +35,11 @@ class FilterByAuditableCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        if ($t = $this->request->get('auditable_type', null)) {
-            $model->where('auditable_type', $t);
+        if ($type = $this->request->get('auditable_type', null)) {
+            $model->where('auditable_type', $type);
         }
-        if ($i = $this->request->get('auditable_id', null)) {
-            $model->where('auditable_id', $i);
+        if ($id = $this->request->get('auditable_id', null)) {
+            $model->where('auditable_id', $id);
         }
         return $model;
     }

@@ -390,7 +390,7 @@ export default (config = {}) => {
                             return this.model.residents.indexOf(item) === index
                         })
 
-                        this.residentCount = this.model.residents.length
+                        //this.residentCount = this.model.residents.length
 
                         
 

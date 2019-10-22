@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @SWG\Definition(
+ * App\Models\Address
+ *
+ * @SWG\Definition (
  *      definition="Address",
  *      required={"city", "address", "address_nr", "zip"},
  *      @SWG\Property(
@@ -59,6 +61,37 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int $country_id
+ * @property int $state_id
+ * @property string $city
+ * @property string $street
+ * @property string $house_num
+ * @property string $zip
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Country $country
+ * @property-read \App\Models\State $state
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Address onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereCountryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereHouseNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereStateId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereStreet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereZip($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Address withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Address withoutTrashed()
+ * @mixin \Eloquent
  */
 class Address extends Model
 {

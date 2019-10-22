@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 
 /**
- * @SWG\Definition(
+ * App\Models\Unit
+ *
+ * @SWG\Definition (
  *      definition="Unit",
  *      required={"name", "floor"},
  *      @SWG\Property(
@@ -94,6 +96,59 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int $building_id
+ * @property string $unit_format
+ * @property int $type
+ * @property string $name
+ * @property string $description
+ * @property int $floor
+ * @property float|null $monthly_rent_net
+ * @property float|null $monthly_rent_gross
+ * @property float|null $monthly_maintenance
+ * @property float|null $room_no
+ * @property bool $basement
+ * @property bool $attic
+ * @property int $sq_meter
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\Building $building
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Contract[] $contracts
+ * @property-read int|null $contracts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \App\Models\Resident $resident
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Resident[] $residents
+ * @property-read int|null $residents_count
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Unit onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereAttic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereBasement($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereBuildingId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereFloor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereMonthlyMaintenance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereMonthlyRentGross($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereMonthlyRentNet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereRoomNo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereSqMeter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereUnitFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Unit whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Unit withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Unit withoutTrashed()
+ * @mixin \Eloquent
  */
 class Unit extends AuditableModel implements HasMedia
 {

@@ -148,7 +148,7 @@
                                                        v-if="media.length || (model.media && model.media.length)"></request-media>
                                     </div>
                                 </el-form-item> -->
-                                <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex"/>
+                                <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex" :show-description="false"/>
                                 <el-alert
                                     :title="$t('general.upload_all_desc')"
                                     type="info"
@@ -182,7 +182,7 @@
                                     <request-media :data="[...model.media, ...media]" @deleteMedia="deleteMedia"
                                                        v-if="media.length || (model.media && model.media.length)"></request-media>
                                 </div> -->
-                                <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex"/>
+                                <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex" :show-description="false"/>
                                 <el-alert
                                     :title="$t('general.upload_all_desc')"
                                     type="info"
@@ -443,51 +443,17 @@
                         
                     </el-card>
 
-                    <el-card :header="$t('models.pinboard.buildings')" :loading="loading" v-if="model.type == 3 && (!model.resident)" class="mt15">
-                        <el-row :gutter="10">
-                            <el-col :lg="6">
-                                <el-select @change="resetToAssignList"
-                                           class="custom-select"
-                                           v-model="assignmentType"
-                                >
-                                    <el-option
-                                        :key="type"
-                                        :label="$t(`general.assignment_types.${type}`)"
-                                        :value="type"
-                                        v-for="(type) in assignmentTypes">
-                                    </el-option>
-                                </el-select>
-                            </el-col>
-                            <el-col :lg="12" :xl="14">
-                                <el-select
-                                    :loading="remoteLoading"
-                                    :placeholder="$t('general.placeholders.search')"
-                                    :remote-method  ="remoteSearchBuildings"
-                                    class="custom-remote-select"
-                                    filterable
-                                    clearable
-                                    remote
-                                    reserve-keyword
-                                    style="width: 100%;"
-                                    v-model="toAssign"
-                                >
-                                    <div class="custom-prefix-wrapper" slot="prefix">
-                                        <i class="el-icon-search custom-icon"></i>
-                                    </div>
-                                    <el-option
-                                        :key="building.id"
-                                        :label="building.name"
-                                        :value="building.id"
-                                        v-for="building in toAssignList"/>
-                                </el-select>
-                            </el-col>
-                            <el-col :lg="6" :xl="4">
-                                <el-button :disabled="!toAssign" @click="attachBuilding" class="full-button"
-                                           icon="ti-save" type="primary">
-                                    {{$t('general.assign')}}
-                                </el-button>
-                            </el-col>
-                        </el-row>
+                    <el-card :header="$t('models.pinboard.buildings')" :loading="loading" class="mt15">
+                        <assignment-by-type
+                                :resetToAssignList="resetToAssignList"
+                                :assignmentType.sync="assignmentType"
+                                :toAssign.sync="toAssign"
+                                :assignmentTypes="assignmentTypes"
+                                :assign="attachBuilding"
+                                :toAssignList="toAssignList"
+                                :remoteLoading="remoteLoading"
+                                :remoteSearch="remoteSearchBuildings"
+                        />
                         <relation-list
                             :actions="assignmentsActions"
                             :columns="assignmentsColumns"
@@ -498,19 +464,21 @@
                             v-if="model.id"
                         />
 
-                        <el-divider></el-divider>
+                        <div v-if="!!alreadyAssigned.quarters.length || !!alreadyAssigned.buildings.length">
+                            <el-divider></el-divider>
 
-                        <div class="switch-wrapper">
-                            <el-form-item :label="$t('models.pinboard.notify_email')" prop="notify_email">
-                                <el-switch v-model="model.notify_email"/>
-                            </el-form-item>
-                            <div class="switcher__desc">
-                                {{$t('models.pinboard.notify_email_description')}}
+                            <div class="switch-wrapper">
+                                <el-form-item :label="$t('models.pinboard.notify_email')" prop="notify_email">
+                                    <el-switch v-model="model.notify_email"/>
+                                </el-form-item>
+                                <div class="switcher__desc">
+                                    {{$t('models.pinboard.notify_email_description')}}
+                                </div>
                             </div>
                         </div>
                     </el-card>
 
-                    <el-card :header="$t('models.pinboard.placeholders.search_provider')" v-if="model.type == 3" :loading="loading" class="mt15">
+                    <el-card :header="$t('models.pinboard.placeholders.search_provider')" v-if="model.type == 3 && model.sub_type == 3" :loading="loading" class="mt15">
                         <el-row :gutter="10">
                             <el-col :lg="18" :xl="20">
                                 <el-select

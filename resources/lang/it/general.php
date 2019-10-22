@@ -220,6 +220,10 @@ return [
             'title' => 'Riattivare la richiesta',
             'text' => 'Si prega di lasciare un messaggio con il motivo della riattivazione.',
         ],
+        'delete_pinboard' => [
+            'title' => "Cancellare la bacheca",
+            'text' => "Vuoi davvero cancellare la bacheca?",
+        ],
         'delete_listing' => [
             'title' => "Cancellare l'annuncio",
             'text' => "Vuoi davvero cancellare l'annuncio?",

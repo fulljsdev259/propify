@@ -220,6 +220,10 @@ return [
             'title' => 'Anfrage reaktivieren',
             'text' => 'Bitte hinterlassen Sie eine Nachricht mit dem Begründung der Reaktivierung. (Pflichtfeld)',
         ],
+        'delete_pinboard' => [
+            'title' => 'Pinnwand löschen',
+            'text' => 'Willst du wirklich die Pinnwand löschen?',
+        ],
         'delete_listing' => [
             'title' => 'Inserat löschen',
             'text' => 'Soll das Inserat wirklich gelöscht werden?',

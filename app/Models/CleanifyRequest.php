@@ -3,7 +3,9 @@
 namespace App\Models;
 
 /**
- * @SWG\Definition(
+ * App\Models\CleanifyRequest
+ *
+ * @SWG\Definition (
  *      definition="CleanifyRequest",
  *      required={"content"},
  *      @SWG\Property(
@@ -19,6 +21,21 @@ namespace App\Models;
  *          format="int32"
  *      )
  * )
+ * @property int $id
+ * @property array $form
+ * @property int|null $user_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CleanifyRequest newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CleanifyRequest newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CleanifyRequest query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CleanifyRequest whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CleanifyRequest whereForm($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CleanifyRequest whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CleanifyRequest whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CleanifyRequest whereUserId($value)
+ * @mixin \Eloquent
  */
 class CleanifyRequest extends Model
 {

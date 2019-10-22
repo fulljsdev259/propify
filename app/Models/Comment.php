@@ -7,7 +7,9 @@ use Illuminate\Validation\Rule;
 use BeyondCode\Comments\Comment as Comment_;
 
 /**
- * @SWG\Definition(
+ * App\Models\Comment
+ *
+ * @SWG\Definition (
  *      definition="Comment",
  *      required={"comment"},
  *      @SWG\Property(
@@ -46,6 +48,37 @@ use BeyondCode\Comments\Comment as Comment_;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property string $commentable_type
+ * @property int $commentable_id
+ * @property int|null $parent_id
+ * @property string $comment
+ * @property bool $is_approved
+ * @property int|null $user_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $children
+ * @property-read int|null $children_count
+ * @property-read \App\Models\Comment $childrenCountRelation
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $commentable
+ * @property-read \App\Models\User|null $commentator
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ * @property-read int|null $comments_count
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\BeyondCode\Comments\Comment approved()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment whereComment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment whereCommentableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment whereCommentableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment whereIsApproved($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment whereParentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment whereUserId($value)
+ * @mixin \Eloquent
  */
 class Comment extends Comment_
 {

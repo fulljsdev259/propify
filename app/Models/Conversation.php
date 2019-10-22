@@ -8,7 +8,9 @@ use App\Notifications\RequestInternalComment;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 /**
- * @SWG\Definition(
+ * App\Models\Conversation
+ *
+ * @SWG\Definition (
  *      definition="Conversation",
  *      required={"conversation"},
  *      @SWG\Property(
@@ -18,6 +20,29 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  *          format="int32"
  *      )
  * )
+ * @property int $id
+ * @property string $conversationable_type
+ * @property int $conversationable_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $allComments
+ * @property-read int|null $all_comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ * @property-read int|null $comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation ofLoggedInUser()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation whereConversationableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation whereConversationableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Conversation whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Conversation extends Model
 {

@@ -179,7 +179,7 @@
                 this.resetFilters ()
             },
             async deletePinboard(event, data) {
-                const resp = await this.$confirm(this.$t(`general.swal.delete_listing.text`), this.$t(`general.swal.delete_listing.title`), {
+                const resp = await this.$confirm(this.$t(`general.swal.delete_pinboard.text`), this.$t(`general.swal.delete_pinboard.title`), {
                     type: 'warning'
                 }).then(() => {
                     this.$store.dispatch('newPinboard/delete', data)

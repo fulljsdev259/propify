@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 
 /**
- * @SWG\Definition(
+ * App\Models\Quarter
+ *
+ * @SWG\Definition (
  *      definition="Quarter",
  *      required={"name", "description"},
  *      @SWG\Property(
@@ -57,6 +59,48 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int|null $address_id
+ * @property string|null $internal_quarter_id
+ * @property int|null $count_of_buildings
+ * @property string $quarter_format
+ * @property string $name
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Address $address
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\QuarterAssignee[] $assignees
+ * @property-read int|null $assignees_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
+ * @property-read int|null $audits_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Building[] $buildings
+ * @property-read int|null $buildings_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PropertyManager[] $propertyManagers
+ * @property-read int|null $property_managers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Quarter newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Quarter newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Quarter onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Quarter query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Quarter whereAddressId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Quarter whereCountOfBuildings($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Quarter whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Quarter whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Quarter whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Quarter whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Quarter whereInternalQuarterId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Quarter whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Quarter whereQuarterFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Quarter whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Quarter withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Quarter withoutTrashed()
+ * @mixin \Eloquent
  */
 class Quarter extends AuditableModel implements HasMedia
 {

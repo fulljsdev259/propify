@@ -4,7 +4,9 @@ namespace App\Models;
 
 
 /**
- * @SWG\Definition(
+ * App\Models\AnnouncementEmailReceptionist
+ *
+ * @SWG\Definition (
  *      definition="AnnouncementEmailReceptionist",
  *      required={"content"},
  *      @SWG\Property(
@@ -48,6 +50,23 @@ namespace App\Models;
  *          format="date-time"
  *      )
  * )
+ * @property int $id
+ * @property int $pinboard_id
+ * @property array|null $resident_ids
+ * @property array|null $failed_resident_ids
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Pinboard $pinboard
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnnouncementEmailReceptionist newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnnouncementEmailReceptionist newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnnouncementEmailReceptionist query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnnouncementEmailReceptionist whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnnouncementEmailReceptionist whereFailedResidentIds($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnnouncementEmailReceptionist whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnnouncementEmailReceptionist wherePinboardId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnnouncementEmailReceptionist whereResidentIds($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnnouncementEmailReceptionist whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class AnnouncementEmailReceptionist extends Model
 {
