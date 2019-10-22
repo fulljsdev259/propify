@@ -95,7 +95,7 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
 
         $buildingId = $this->request->get('building_id', null);
         if ($buildingId) {
-            $model->whereHas('resident', function ($query) use ($buildingId) {
+            $model->whereHas('contract', function ($query) use ($buildingId) {
                 $query->where('building_id', $buildingId);
             });
         }

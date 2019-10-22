@@ -138,7 +138,6 @@ class BuildingAPIController extends AppBaseController
         $buildings = $this->buildingRepository->with([
                 'address.state',
                 'serviceProviders',
-                'residents.user', // @TODO must be delete
                 'contracts' => function ($q) {
                     $q->with('building.address', 'unit', 'resident.user');
                 },
@@ -148,7 +147,6 @@ class BuildingAPIController extends AppBaseController
             ])->withCount([
                 'units',
                 'propertyManagers',
-                'residents',
                 'users'
             ])
             ->scope('allRequestStatusCount')
@@ -222,7 +220,6 @@ class BuildingAPIController extends AppBaseController
         $model = $this->buildingRepository->getModel();
         $buildings = $model->select(['id', 'name'])->orderByDesc('id')->limit($limit)->withCount([
             'units',
-            'residents', // @TODO must be delete
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
@@ -253,7 +250,6 @@ class BuildingAPIController extends AppBaseController
             ])->withCount([
                 'units',
                 'propertyManagers',
-                'residents', // @TODO must be delete
                 'contracts' => function ($q) {
                     $q->with('building.address', 'unit', 'resident.user');
                 },
@@ -383,7 +379,6 @@ class BuildingAPIController extends AppBaseController
             ->load([
                 'address.state',
                 'serviceProviders',
-                'residents.user', // @TODO must be delete
                 'contracts' => function ($q) {
                     $q->with('building.address', 'unit', 'resident.user');
                 },
@@ -392,8 +387,7 @@ class BuildingAPIController extends AppBaseController
                 'media',
                 'quarter',
                 'users'
-            ])
-            ->loadCount('activeResidents', 'inActiveResidents');
+            ]);
         $response = (new BuildingTransformer)->transform($building);
         $response['media_category'] = \ConstFileCategories::MediaCategories; // @TODO delete
 
@@ -843,8 +837,14 @@ class BuildingAPIController extends AppBaseController
             return $this->sendError( __('models.building.errors.manager_assigned') . $e->getMessage());
         }
 
-        $building->load(['address.state', 'media', 'serviceProviders', 'propertyManagers',
-            'lastPropertyManagers.user', 'users']);
+        $building->load([
+            'address.state',
+            'media',
+            'serviceProviders',
+            'propertyManagers',
+            'lastPropertyManagers.user',
+            'users'
+        ]);
         $response = (new BuildingTransformer)->transform($building);
         return $this->sendResponse($response, __('models.building.managers_assigned'));
     }
@@ -916,8 +916,14 @@ class BuildingAPIController extends AppBaseController
             return $this->sendError( __('models.building.errors.user_assigned') . $e->getMessage());
         }
 
-        $building->load(['address.state', 'media', 'serviceProviders', 'propertyManagers',
-            'lastPropertyManagers.user', 'users']);
+        $building->load([
+            'address.state',
+            'media',
+            'serviceProviders',
+            'propertyManagers',
+            'lastPropertyManagers.user',
+            'users'
+        ]);
         $response = (new BuildingTransformer)->transform($building);
         return $this->sendResponse($response, __('models.building.user_assigned'));
     }
@@ -953,6 +959,7 @@ class BuildingAPIController extends AppBaseController
      * @param int $id
      * @param UnAssignRequest $request
      * @return mixed
+     * @throws \Exception
      */
     public function deleteBuildingAssignee(int $id, UnAssignRequest $request)
     {
@@ -998,7 +1005,8 @@ class BuildingAPIController extends AppBaseController
      * @param int $building_id
      * @param int $manager_id
      * @param UnAssignRequest $r
-     * @return Response
+     * @return mixed
+     * @throws \Exception
      */
     public function unAssignPropertyManager(int $building_id, int $manager_id, UnAssignRequest $r)
     {
