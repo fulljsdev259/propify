@@ -122,12 +122,14 @@ function get_category_details($category)
     $values = \App\Models\Request::CategoryAttributes;
     return [
         'id' => $category,
+        'parent_id' => null,
         'name' => \App\Models\Request::Category[$category] ?? 'not exists',
         'description' => 'description @TODO',
         'acquisition' => get_category_attribute(\App\Models\Request::Acquisition, $values, $category),
         'has_qualifications' => get_category_attribute(\App\Models\Request::HasQualifications, $values, $category),
         'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $category),
         'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $category),
+        'categories' => []
     ];
 }
 
@@ -157,6 +159,7 @@ function get_sub_category_details($subCategory)
         'has_qualifications' => get_category_attribute(\App\Models\Request::HasQualifications, $values, $subCategory),
         'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $subCategory),
         'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $subCategory),
+        'categories' => []
     ];
 }
 

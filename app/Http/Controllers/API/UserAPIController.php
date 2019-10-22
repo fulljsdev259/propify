@@ -747,9 +747,9 @@ class UserAPIController extends AppBaseController
      */
     protected function getResidentContactEnable($resident)
     {
-        $default = true;
-        $building = $resident->building;
-
+        $default = true; // @TODO contract related
+//        $building = $resident->building; // always null
+        $building = null;
         if ( ! $building || Building::ContactEnablesBasedSettings == $building->contact_enable) {
             $settings = Settings::first('contact_enable');
             return $settings->contact_enable ?? $default;
