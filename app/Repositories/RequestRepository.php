@@ -281,12 +281,13 @@ class RequestRepository extends BaseRepository
      */
     public function notifyNewRequest(Request $request)
     {
-        if (!$request->resident->building) {
+        $contract = $request->contract;
+        if (! $contract->building) {
             return;
         }
 
-        $propertyManagers = PropertyManager::whereHas('buildings', function ($q) use ($request) {
-            $q->where('buildings.id', $request->resident->building->id);
+        $propertyManagers = PropertyManager::whereHas('buildings', function ($q) use ($contract) {
+            $q->where('buildings.id', $contract->building->id);
         })->get();
 
         $i = 0;
@@ -295,7 +296,7 @@ class RequestRepository extends BaseRepository
             $propertyManager->user->redirect = "/admin/requests/" . $request->id;
 
             $propertyManager->user
-                ->notify((new NewResidentRequest($request, $propertyManager->user, $request->resident->user))
+                ->notify((new NewResidentRequest($request, $propertyManager->user, $contract->resident->user))
                     ->delay(now()->addSeconds($delay)));
         }
     }
