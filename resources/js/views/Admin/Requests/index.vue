@@ -38,6 +38,13 @@
         <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
                    :visible.sync="batchEditVisible"
                    v-loading="processAssignment" width="30%">
+
+            <el-radio-group v-model="massEditOption" @change="changeMassEditOption">
+                <el-radio :label="3">Option A</el-radio>
+                <el-radio :label="6">Option B</el-radio>
+                <el-radio :label="9">Option C</el-radio>
+            </el-radio-group>
+
             <el-form :model="managersForm">
                 <el-select
                     :loading="remoteLoading"
@@ -121,6 +128,7 @@
                 toAssign: [],
                 remoteLoading: false,
                 managersForm: {},
+                massEditOption: 9
             }
         },
         computed: {
@@ -356,6 +364,9 @@
                 this.batchEditVisible = false;
                 this.toAssign = [];
                 this.toAssignList = [];
+            },
+            changeMassEditOption(option) {
+                
             },
             assignManagers() {
                 const promises = this.selectedItems.map((building) => {
