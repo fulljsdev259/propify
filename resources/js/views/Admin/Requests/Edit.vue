@@ -578,7 +578,7 @@
                 activeActionTab: 'actions',
                 conversationVisible: false,
                 selectedConversation: {},
-                constants: this.$constants,                
+                constants: this.$constants,
                 assigneesColumns: [{
                     type: 'assignProviderManagerAvatars',
                     width: 70,
