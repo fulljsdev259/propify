@@ -18,13 +18,13 @@
                         <div class="phone-number">
                             SUPPORT
                             <br>
-                            <b>071112244</b>
+                            <b>{{ phone }}</b>
                         </div>
                         <div class="bottom-logo">
                             <img :src="logo_src" v-show="logo_src"/>
                         </div>
                         <div class="address">
-                            Fortimo AG - Botsford Trace 3172 New Bartonstad
+                            Fortimo AG - {{ street }} {{ zip }} {{ city }}
                         </div>
                     </div>
                 </el-aside>
@@ -78,7 +78,7 @@
                         </el-row>
                     </div>
                 </el-main>
-                 <div class="company-info">
+                <div class="company-info">
                     <div class="phone-number">
                         SUPPORT
                         <br>
@@ -91,6 +91,7 @@
                         Fortimo AG - Botsford Trace 3172 New Bartonstad
                     </div>
                 </div>
+                 
             </el-col>
         </el-row>
     </el-container>
@@ -100,7 +101,11 @@
         data() {
             return {
                 resident_logo_src: '',
-                logo_scr: ''
+                logo_scr: '',
+                phone: '',
+                street: '',
+                zip: '',
+                city: ''
             }
         },
         beforeCreate() {
@@ -109,6 +114,10 @@
         mounted () {
             this.resident_logo_src = "/" + this.$constants.logo.resident_logo;
             this.logo_src = "/" + this.$constants.logo.logo;
+            this.phone = this.$constants.details.phone;
+            this.street = this.$constants.details.street;
+            this.zip = this.$constants.details.zip;
+            this.city = this.$constants.details.city;
         }
     }
 </script>
@@ -155,6 +164,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding-bottom: 15px;
             .phone-number {
                 line-height: 1.5;
             }
@@ -242,6 +252,12 @@
                 width: 100% !important;
                 height: auto;
             }
+            .company-info {
+                padding-top: 20px;
+                @media screen and (min-width: 554px) {
+                    display: none;
+                }
+            }
             .el-main {
                 position: relative;
                 padding: 8em;
@@ -253,6 +269,7 @@
                 }
                 @media screen and (max-width: 1200px) {
                     padding: 20px;
+                    align-items: center;
                 }
                 @media screen and (max-width: 1024px) {
                     align-items: center;
@@ -297,8 +314,10 @@
                         color: #fff;
                     }
                     @media screen and (max-width: 554px) {
+                        padding-top: 20px;
                         h1 {
                             text-align: center;
+                            font-size: 28px;
                         }
                         p {
                             color: #515862;
