@@ -19,7 +19,7 @@ export default [{
         SettingsRoutes,
         DashboardRoutes,
         CleanifyRoutes,
-        ListingRoutes,
+        // ListingRoutes,
         MyNeighboursRoutes,
         PropertyManagersRoutes
     ]
