@@ -220,7 +220,7 @@ class ResidentAPIController extends AppBaseController
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }])
-            ->get(['id', 'address_id', 'first_name', 'last_name', 'status', 'created_at']);
+            ->get(['id', 'first_name', 'last_name', 'status', 'created_at']);
         $this->fixCreatedBy($residents);
         return $this->sendResponse($residents->toArray(), 'Residents retrieved successfully');
     }
@@ -756,12 +756,6 @@ class ResidentAPIController extends AppBaseController
 
         if (!$this->residentRepository->checkStatusPermission($input, $resident->status)) {
             return $this->sendError(__('models.resident.errors.not_allowed_change_status'));
-        }
-
-        if ($input['status'] == Resident::StatusNotActive) {
-            $input['building_id'] = null;
-            $input['unit_id'] = null;
-            // $input['address_id'] = null;
         }
 
         try {
