@@ -40,13 +40,13 @@ export default [{
         meta: {
             breadcrumb: 'Home'
         },
-    }, {
-        path: 'profile',
-        name: 'adminProfile',
-        component: Profile,
-        meta: {
-            breadcrumb: 'Profile'
-        }
+    // }, {
+    //     path: 'profile',
+    //     name: 'adminProfile',
+    //     component: Profile,
+    //     meta: {
+    //         breadcrumb: 'Profile'
+    //     }
     }, {
         path: 'settings',
         name: 'adminSettings',
@@ -67,7 +67,7 @@ export default [{
         ...RequestsRoutes,
         ...PropertyManagersRoutes,
         ...HouseOwnersRoutes,
-        ...ListingsRoutes,
+        // ...ListingsRoutes,
         ...TemplatesRoutes,
     ],
     beforeEnter: VueRouterMultiguard([isAuthenticatedGuard, isAdminGuard]),

@@ -299,6 +299,9 @@
         margin-bottom: 22px;
     }
 
+    .request-chat {
+        margin-top: 15px;
+    }
     .request-chat .el-textarea .el-textarea__inner{
         min-height: 56px !important;
     }

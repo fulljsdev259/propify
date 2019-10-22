@@ -395,6 +395,7 @@ return [
         "category" => "Categoria",
         "edit_title" => "Modifica Richiesta",
         "add_title" => "Aggiungi Richiesta",
+        'mass_edit' => 'Modifica di massa',
         "due_date" => "Scadenza",
         "solved_date" => "Data di fabbricazione",
         "closed_date" => "Data di chiusura",

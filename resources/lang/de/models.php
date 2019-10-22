@@ -396,6 +396,7 @@ return [
         'category' => 'Anfrage-Typ',
         'edit_title' => 'Anfrage bearbeiten',
         'add_title' => 'Anfrage hinzufügen',
+        'mass_edit' => 'Massenbearbeitung',
         'due_date' => 'Zu erledigen bis',
         'solved_date' => 'Erledigt Datum',
         'closed_date' => 'Erledigt am',

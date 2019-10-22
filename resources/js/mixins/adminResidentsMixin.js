@@ -44,6 +44,7 @@ export default (config = {}) => {
                     nation: '',
                     type: null,
                     contracts: [],
+                    status: 1
                 },
                 visibleDrawer: false,
                 editingContract: null,
@@ -186,6 +187,15 @@ export default (config = {}) => {
 
                             try {
 
+                                resident.status = 2
+                                const today = new Date().getTime();
+                                resident.contracts.forEach(contract => {
+
+                                    if(contract.duration == 1 && contract.start_date <= today )
+                                        resident.status = 1
+                                    if(contract.duration == 2 && contract.start_date <= today && contract.end_date > today)
+                                        resident.status = 1
+                                })
                                 const resp = await this.createResident({
                                     user: {
                                         email,
