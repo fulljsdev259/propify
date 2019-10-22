@@ -709,7 +709,7 @@ class TemplateRepository extends BaseRepository
                 ->where('name', 'communication_resident');
         })->get();
 
-        foreach ($templates as $template) {
+        foreach ($templates as &$template) {
             $context = [
                 'user' => $user,
                 'subject' => $request->resident->user,
@@ -734,7 +734,7 @@ class TemplateRepository extends BaseRepository
                 ->where('name', 'communication_service_chat');
         })->get();
 
-        foreach ($templates as $template) {
+        foreach ($templates as &$template) {
             $context = [
                 'user' => $user,
                 'subject' => $request->resident->user,
@@ -758,7 +758,7 @@ class TemplateRepository extends BaseRepository
                 ->where('name', 'communication_service_email');
         })->get();
 
-        foreach ($templates as $template) {
+        foreach ($templates as &$template) {
             $context = [
                 'user' => $user,
                 'subject' => $request->resident->user,
