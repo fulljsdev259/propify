@@ -285,7 +285,6 @@ class UserAPIController extends AppBaseController
                     'contracts' => function ($q) {
                         $q->with('building.address', 'unit', 'media');
                     },
-                    'building:id,contact_enable'
                 ]);
             },
             'propertyManager:id,user_id',
