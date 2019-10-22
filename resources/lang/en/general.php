@@ -60,7 +60,7 @@ return [
         'building' => 'Building assigned',
         'quarter' => 'Quarter assigned',        
         'resident' => 'Resident attached',
-        'service' => 'Provider attached successfully',
+        'provider' => 'Provider attached successfully',
         'manager' => 'Manager attached successfully',
         'user' => 'User assigned successfully',
         'tag' => 'Tag assigned successfully',
@@ -69,7 +69,7 @@ return [
         'building' => 'Buiding unassigned',
         'quarter' => 'Quarter unassigned',        
         'resident' => 'Resident detached',
-        'service' => 'Provider detached successfully',
+        'provider' => 'Provider detached successfully',
         'manager' => 'Manager detached successfully',
         'user' => 'User unassigned successfully',
         'tag' => 'Tag unassigned successfully',
@@ -304,7 +304,6 @@ return [
     ],
     'components' => [
         'common' => [
-
             'audit' => [
                 'type' => [
                     'pinboard' => 'Pinboard',
@@ -339,86 +338,27 @@ return [
                 ],
                 'content' => [
                     'with_id' => [
-                        'pinboard' => [
-                            'created' => '{userName} opened this {auditable_type} on {auditable_type} #{auditable_id}.',
-                            'updated' => [
-                                'status' => 'The status changed from "{old}" to "{new}".',
-                                'published_at' => 'Pinboard published on {new}.'
-                            ]
-                        ],
-                        'listing' => [
-                            'created' => '{userName} opened this {auditable_type}.',
-                            'updated' => [
-                                'title' => 'The title changed from "{old}" to "{new}".',
-                                'status' => 'The status changed from "{old}" to "{new}".',
-                                'due_date' => 'The due date changed from "{old}" to "{new}".',
-                                'priority' => 'The priority changed from "{old}" to "{new}".',
-                                'internal_priority' => 'The internal priority has been changed from "{old}" to "{new}".',
-                                'category_id' => 'The category changed from "{old}" to "{new}".',
-                                'qualification' => 'The qualification changed from "{old}" to "{new}".',
-                                'visibility' => 'The visibility changed from "{old}" to "{new}".',
-                            ],
-                            'provider_assigned' => '{providerName} has been assigned as provider.',
-                            'user_assigned' => '{userName} has been assigned as manager.',
-                            'media_uploaded' => 'Media uploaded',
-                            'media_deleted' => 'Media deleted',
-                        ],
-                        'request' => [
-                            'created' => ':userName opened this :auditable_type.',
+                        'general' => [
                             'updated' => 'The :fieldname changed from :old to :new.',
                             'provider_assigned' => ':providerName has been assigned as provider.',
                             'provider_unassigned' => 'Provider :providerName has been unassigned.',
                             'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName has been assigned as manager.',
                             'manager_unassigned' => 'Manager :propertyManagerFirstName :propertyManagerLastName has been unassigned.',
-                            'user_assigned' => '{userName} has been assigned as manager.',
+                            'user_assigned' => ':userName has been assigned as manager.',
                             'media_uploaded' => 'Media uploaded',
                             'media_deleted' => 'Media deleted',
-                        ]
-                    ],
-                    'with_no_id' => [
+                            'provider_notified' => 'Provider :providerName has been notified by mail.'
+                        ],                        
                         'pinboard' => [
-                            'created' => '{userName} opened this {auditable_type} on {auditable_type} #{auditable_id}.',
-                            'updated' => [
-                                'status' => 'The status changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                                'published_at' => 'Pinboard published on {new} on {auditable_type} #{auditable_id}.'
-                            ]
+                            'created' => ':userName opened this :auditable_type on :auditable_type #:auditable_id.',
                         ],
                         'listing' => [
-                            'created' => '{userName} opened this {auditable_type} on {auditable_type} #{auditable_id}.',
-                            'updated' => [
-                                'title' => 'The title changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                                'status' => 'The status changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                                'due_date' => 'The due date changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                                'priority' => 'The priority changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                                'category_id' => 'The category changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                                'qualification' => 'The qualification changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                                'visibility' => 'The visibility changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                            ],
-                            'provider_assigned' => '{providerName} has been assigned as provider on {auditable_type} #{auditable_id}.',
-                            'user_assigned' => '{userName} has been assigned as manager on {auditable_type} #{auditable_id}.',
-                            'media_uploaded' => 'Media uploaded on {auditable_type} #{auditable_id}.',
-                            'media_deleted' => 'Media deleted on {auditable_type} #{auditable_id}.',
+                            'created' => ':userName opened this :auditable_type.',                            
                         ],
                         'request' => [
-                            'created' => '{userName} opened this {auditable_type} on {auditable_type} #{auditable_id}.',
-                            'updated' => [
-                                'title' => 'The title changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                                'status' => 'The status changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                                'due_date' => 'The due date changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                                'priority' => 'The priority changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                                'category_id' => 'The category changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                                'qualification' => 'The qualification changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                                'visibility' => 'The visibility changed from "{old}" to "{new}" on {auditable_type} #{auditable_id}.',
-                            ],
-                            'provider_assigned' => '{providerName} has been assigned as service provider on {auditable_type} #{auditable_id}.',
-                            'provider_unassigned' => 'Service provider {providerName} has been unassigned on {auditable_type} #{auditable_id}.',
-                            'manager_assigned' => '{propertyManagerFirstName} {propertyManagerLastName} has been assigned as manager on {auditable_type} #{auditable_id}.',
-                            'manager_unassigned' => 'Manager {propertyManagerFirstName} {propertyManagerLastName} has been unassigned on {auditable_type} #{auditable_id}.',
-                            'user_assigned' => '{userName} has been assigned as manager on {auditable_type} #{auditable_id}.',
-                            'media_uploaded' => 'Media uploaded on {auditable_type} #{auditable_id}.',
-                            'media_deleted' => 'Media deleted on {auditable_type} #{auditable_id}.',
+                            'created' => ':userName opened this :auditable_type.',                            
                         ]
-                    ]
+                    ],
                 ],
             ],
             'comments_list' => [            

@@ -60,7 +60,7 @@ return [
         "building" => "Bâtiment affecté",
         "quarter" => "Trimestre assigné",        
         'resident' => "Résident attaché avec succès",
-        "service" => "Le prestataire s'est attaché avec succès",
+        "provider" => "Le prestataire s'est attaché avec succès",
         "manager" => "Gestionnaire attaché avec succès",
         "user" => "Utilisateur affecté avec succès",
         "tag" => "Étiquette attribuée avec succès",
@@ -69,7 +69,7 @@ return [
         "building" => "Bâtiment non assigné",
         "quarter" => "Trimestre non attribué",        
         'resident' => "Résident détaché avec succès",
-        "service" => "Le prestataire s'est détaché avec succès",
+        "provider" => "Le prestataire s'est détaché avec succès",
         "manager" => "Gestionnaire détaché avec succès",
         "user" => "Utilisateur non affecté avec succès",
         "tag" => "Étiquette non attribuée avec succès",
@@ -338,86 +338,27 @@ return [
                 ],
                 'content' => [
                     'with_id' => [
-                        'pinboard' => [
-                            'created' => '{userName} a ouvert ce {auditable_type} à bord de {auditable_type} #{auditable_id}.',
-                            'updated' => [
-                                'status' => 'Le statut est passé de "{old}" au "{new}".',
-                                'published_at' => 'Panneau d\'affichage publié sur {new}.'
-                            ]
-                        ],
-                        'listing' => [
-                            'created' => '{userName} a ouvert ce {auditable_type}.',
-                            'updated' => [
-                                'title' => 'Le titre est passé de "{old}" au "{new}".',
-                                'status' => 'Le statut est passé de "{old}" au "{new}".',
-                                'due_date' => "La date d'échéance est passée de '{old}' au '{new}'.",
-                                'priority' => 'La priorité est passée de "{old}" au "{new}".',
-                                'internal_priority' => 'La priorité interne est passée de "{old}" à "{new}".',
-                                'category_id' => 'La catégorie est passée de "{old}" au "{new}".',
-                                'qualification' => 'La qualification est passée de "{old}" au "{new}".',
-                                'visibility' => 'La visibilité est passée de "{old}" au "{new}".',
-                            ],
-                            'provider_assigned' => '{providerName} a été affecté en tant que prestataire.',
-                            'user_assigned' => '{userName} a été affecté au poste de gestionnaire.',
-                            'media_uploaded' => 'Média téléchargé',
-                            'media_deleted' => 'Médias supprimés',
-                        ],
-                        'request' => [
-                            'created' => ':userName a ouvert ce :auditable_type.',
+                        'general' => [
                             'updated' => 'La :fieldname est passée de :old au :new.',
                             'provider_assigned' => ':providerName a été affecté en tant que prestataire.',
                             'provider_unassigned' => "Prestataire :providerName n'a pas été affecté.",
                             'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName a été affecté au poste de gestionnaire.',
                             'manager_unassigned' => "Gestionnaire :propertyManagerFirstName :propertyManagerLastName n'a pas été affecté.",
-                            'user_assigned' => '{userName} a été affecté au poste de gestionnaire.',
+                            'user_assigned' => ':userName a été affecté au poste de gestionnaire.',
                             'media_uploaded' => 'Média téléchargé',
                             'media_deleted' => 'Médias supprimés',
-                        ]
-                    ],
-                    'with_no_id' => [
+                            'provider_notified' => 'Prestataire :providerName a été avisé par courriel.'
+                        ],
                         'pinboard' => [
-                            'created' => '{userName} a ouvert ce {auditable_type} à bord de {auditable_type} #{auditable_id}.',
-                            'updated' => [
-                                'status' => 'Le statut est passé de "{old}" au "{new}" sur {auditable_type} #{auditable_id}.',
-                                'published_at' => 'Panneau d\'affichage publié au {new} sur {auditable_type} #{auditable_id}.'
-                            ]
+                            'created' => ':userName a ouvert ce :auditable_type à bord de :auditable_type #:auditable_id.',                                                        
                         ],
                         'listing' => [
-                            'created' => '{userName} opened this {auditable_type} sur {auditable_type} #{auditable_id}.',
-                            'updated' => [
-                                'title' => 'Le titre est passé de "{old}" au "{new}" sur {auditable_type} #{auditable_id}.',
-                                'status' => 'Le statut est passé de "{old}" au "{new}" sur {auditable_type} #{auditable_id}.',
-                                'due_date' => "La date d'échéance est passée de '{old}' au '{new}' sur {auditable_type} #{auditable_id}.",
-                                'priority' => 'La priorité est passée de "{old}" au "{new}" sur {auditable_type} #{auditable_id}.',
-                                'category_id' => 'La catégorie est passée de "{old}" au "{new}" sur {auditable_type} #{auditable_id}.',
-                                'qualification' => 'La qualification est passée de "{old}" au "{new}" sur {auditable_type} #{auditable_id}.',
-                                'visibility' => 'La visibilité est passée de "{old}" au "{new}" sur {auditable_type} #{auditable_id}.',
-                            ],
-                            'provider_assigned' => '{providerName} a été affecté en tant que prestataire sur {auditable_type} #{auditable_id}.',
-                            'user_assigned' => '{userName} a été affecté au poste de gestionnaire sur {auditable_type} #{auditable_id}.',
-                            'media_uploaded' => 'Média téléchargé sur {auditable_type} #{auditable_id}.',
-                            'media_deleted' => 'Médias supprimés sur {auditable_type} #{auditable_id}.',
+                            'created' => ':userName a ouvert ce :auditable_type.',
                         ],
                         'request' => [
-                            'created' => '{userName} opened this {auditable_type} sur {auditable_type} #{auditable_id}.',
-                            'updated' => [
-                                'title' => 'Le titre est passé de "{old}" au "{new}" sur {auditable_type} #{auditable_id}.',
-                                'status' => 'Le statut est passé de "{old}" au "{new}" sur {auditable_type} #{auditable_id}.',
-                                'due_date' => "La date d'échéance est passée de '{old}' au '{new}' sur {auditable_type} #{auditable_id}.",
-                                'priority' => 'La priorité est passée de "{old}" au "{new}" sur {auditable_type} #{auditable_id}.',
-                                'category_id' => 'La catégorie est passée de "{old}" au "{new}" sur {auditable_type} #{auditable_id}.',
-                                'qualification' => 'La qualification est passée de "{old}" au "{new}" sur {auditable_type} #{auditable_id}.',
-                                'visibility' => 'La visibilité est passée de "{old}" au "{new}" sur {auditable_type} #{auditable_id}.',
-                            ],
-                            'provider_assigned' => '{providerName} a été affecté en tant que prestataire sur {auditable_type} #{auditable_id}.',
-                            'provider_unassigned' => "Prestataire {providerName} n'a pas été affecté sur {auditable_type} #{auditable_id}.",
-                            'manager_assigned' => '{propertyManagerFirstName} {propertyManagerLastName} a été affecté au poste de gestionnaire sur {auditable_type} #{auditable_id}.',
-                            'manager_unassigned' => "Gestionnaire {propertyManagerFirstName} {propertyManagerLastName} n'a pas été affecté sur {auditable_type} #{auditable_id}.",
-                            'user_assigned' => '{userName} a été affecté au poste de gestionnaire sur {auditable_type} #{auditable_id}.',
-                            'media_uploaded' => 'Média téléchargé sur {auditable_type} #{auditable_id}.',
-                            'media_deleted' => 'Médias supprimés sur {auditable_type} #{auditable_id}.',
+                            'created' => ':userName a ouvert ce :auditable_type.',                            
                         ]
-                    ]
+                    ],                    
                 ],
             ],
             'comments_list' => [            

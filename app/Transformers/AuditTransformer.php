@@ -97,7 +97,7 @@ class AuditTransformer extends BaseTransformer
                         $new_value = $new_category->name;
                     }
                 }                
-                $statement .= __("general.components.common.audit.content.with_id.".$model->auditable_type.".updated",['fieldname' => $fieldname, 'old' => $old_value, 'new' => $new_value]);
+                $statement .= __("general.components.common.audit.content.with_id.general.updated",['fieldname' => $fieldname, 'old' => $old_value, 'new' => $new_value]);
                 $statement .= " ";
             }
             $statement = rtrim($statement, ',');
@@ -107,23 +107,26 @@ class AuditTransformer extends BaseTransformer
             $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".created",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
         }
         elseif($model->event == 'manager_assigned'){            
-            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".manager_assigned",['propertyManagerFirstName' => $model->new_values['property_manager_first_name'],'propertyManagerLastName' => $model->new_values['property_manager_last_name']]);
+            $response['statement'] = __("general.components.common.audit.content.with_id.general.manager_assigned",['propertyManagerFirstName' => $model->new_values['property_manager_first_name'],'propertyManagerLastName' => $model->new_values['property_manager_last_name']]);
         }
         elseif($model->event == 'manager_unassigned'){            
-            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".manager_unassigned",['propertyManagerFirstName' => $model->old_values['property_manager_first_name'],'propertyManagerLastName' => $model->old_values['property_manager_last_name']]);
+            $response['statement'] = __("general.components.common.audit.content.with_id.general.manager_unassigned",['propertyManagerFirstName' => $model->old_values['property_manager_first_name'],'propertyManagerLastName' => $model->old_values['property_manager_last_name']]);
         }
         elseif($model->event == 'provider_assigned'){            
-            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".provider_assigned",['providerName' => $model->new_values['service_provider_name']]);
+            $response['statement'] = __("general.components.common.audit.content.with_id.general.provider_assigned",['providerName' => $model->new_values['service_provider_name']]);
         }
         elseif($model->event == 'provider_unassigned'){            
-            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".provider_unassigned",['providerName' => $model->old_values['service_provider_name']]);
+            $response['statement'] = __("general.components.common.audit.content.with_id.general.provider_unassigned",['providerName' => $model->old_values['service_provider_name']]);
         }
         elseif($model->event == 'media_uploaded'){            
-            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".media_uploaded");
+            $response['statement'] = __("general.components.common.audit.content.with_id.general.media_uploaded");
         }
         elseif($model->event == 'media_deleted'){            
-            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".media_deleted");
-        } 
+            $response['statement'] = __("general.components.common.audit.content.with_id.general.media_deleted");
+        }
+        elseif($model->event == 'provider_notified'){
+            $response['statement'] = __("general.components.common.audit.content.with_id.general.provider_notified",['providerName' => $model->new_values['service_provider']['name']]);
+        }         
         return $response;
     }
 

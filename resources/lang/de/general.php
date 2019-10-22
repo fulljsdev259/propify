@@ -60,7 +60,7 @@ return [
         'building' => 'Liegenschaft wurde zugewiesen.',
         'quarter' => 'Projekt wurde zugewiesen.',        
         'resident' => "Bewohner wurde zugewiesen.",
-        'service' => 'Dienstleister wurde zugewiesen.',
+        'provider' => 'Dienstleister wurde zugewiesen.',
         'manager' => 'Bewirtschafter wurde zugewiesen.',
         'user' => 'Tag erfolgreich zugewiesen.',
         'tag' => 'Tag wurde enternt.',
@@ -69,7 +69,7 @@ return [
         'building' => 'Liegenschaft wurde entfernt',
         'quarter' => 'Projekt wurde entfernt',        
         'resident' => "Bewohner wurde entfernt.",
-        'service' => 'Dienstleister wurde entfernt.',
+        'provider' => 'Dienstleister wurde entfernt.',
         'manager' => 'Bewirtschafter wurde entfernt.',
         'user' => 'Administrator wurde entfernt.',
         'tag' => 'Tag wurde entfernt',
@@ -338,87 +338,26 @@ return [
                 ],
                 'content' => [
                     'with_id' => [
-                        'pinboard' => [
-                            'created' => '{userName} hat diesen Beitrag erstellt.',
-                            'updated' => [
-                                'status' => 'Der Status wurde von "{old}" zu "{new}" geändert.',
-                                'published_at' => 'Beitrag wurde am {new} veröffentlicht.'
-                            ]
-                        ],
-                        'listing' => [
-                            'created' => '{userName} dieses Inserat erstellt: {auditable_type}',
-                            'updated' => [
-                                'title' => 'Der Titel wurde von "{old}" zu "{new}" geändert.',
-                                'status' => 'Der Status wurde von "{old}" zu "{new}" geändert.',
-                                'due_date' => 'Das Erledigungsdatum wurde von "{old}" zu "{new}" geändert.',
-                                'priority' => 'Die Priorität wurde von "{old}" zu "{new}" geändert.',
-                                'internal_priority' => 'Die interne Priorität wurde von "{old}" zu "{new}" geändert.',
-                                'category_id' => 'Die Kategorie wurde von "{old}" zu "{new}" geändert.',
-                                'qualification' => 'Die Qualifikation wurde von "{old}" zu "{new}" geändert.',
-                                'visibility' => 'Die Sichtbarkeit wurde von "{old}" zu "{new}" geändert.',
-                            ],
-                            'provider_assigned' => '{providerName} wurde als Dienstleistern zugewiesen.',
-                            'user_assigned' => '{userName} wurde als zuständige Person zugewiesen.',
-                            'media_uploaded' => 'Mediendateien hinaufgeladen',
-                            'media_deleted' => 'Mediendateien gelöscht',
-                        ],
-                        'request' => [
-                            'created' => ':userName hat diese :auditable_type erstellt.',
-                            'updated' => 'Die :fieldname wurde von :old zu :new geändert.',                            
+                        'general' => [
                             'provider_assigned' => ':providerName wurde als Dienstleister zugewiesen.',
                             'provider_unassigned' => 'Dienstleisterin :providerName wurde nicht beauftragt.',
                             'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName wurde als Managerin zugewiesen.',
                             'manager_unassigned' => 'Managerin :propertyManagerFirstName :propertyManagerLastName wurde nicht zugewiesen.',
-                            'user_assigned' => '{userName} wurde dieser Anfrage hinzugefügt.',
+                            'user_assigned' => ':userName wurde dieser Anfrage hinzugefügt.',
                             'media_uploaded' => 'Mediendateien hinaufgeladen',
                             'media_deleted' => 'Mediendateien gelöscht',
-                        ]
-                    ],
-                    'with_no_id' => [
+                            'provider_notified' => 'Dienstleisterin :providerName wurde per E-Mail benachrichtigt'
+                        ],
                         'pinboard' => [
-                            'created' => '{userName} hat folgende Anfrage erstellt: {auditable_type} im {auditable_type} #{auditable_id}.',
-                            'updated' => [
-                                'status' => 'Der Status wurde von "{old}" zu "{new}" im {auditable_type} #{auditable_id} geändert.',
-                                'published_at' => 'Post published im {new} im {auditable_type} #{auditable_id}.'
-                            ]
+                            'created' => ':userName hat diesen Beitrag erstellt.',                            
                         ],
                         'listing' => [
-                            'created' => '{userName} hat dieses Inserat erstellt.',
-                            'updated' => [
-                                'title' => 'Der Titel wurde von "{old}" zu "{new}" geändert im {auditable_type} #{auditable_id}.',
-                                'status' => 'Der Status wurde von "{old}" zu "{new}" geändert im {auditable_type} #{auditable_id}.',
-                                'due_date' => 'Das Erledigungsdatum wurde von "{old}" zu "{new}" geändert im {auditable_type} #{auditable_id}.',
-                                'priority' => 'Die Priorität wurde von "{old}" zu "{new}" geändert im {auditable_type} #{auditable_id}.',
-                                'category_id' => 'Die Kategorie wurde von "{old}" zu "{new}" geändert im {auditable_type} #{auditable_id}.',
-                                'qualification' => 'Die Qualifikation wurde von "{old}" zu "{new}" geändert im {auditable_type} #{auditable_id}.',
-                                'visibility' => 'Die Sichtbarkeit wurde von "{old}" zu "{new}" geändert im {auditable_type} #{auditable_id}.',
-                            ],
-                            'provider_assigned' => '{providerName} wurde als Dienstleister zugewiesen.',
-                            'user_assigned' => '{userName} wurde als zuständige Person zugewiesen.',
-                            'media_uploaded' => 'Mediendateien hinaufgeladen',
-                            'media_deleted' => 'Mediendateie gelöscht',
+                            'created' => ':userName dieses Inserat erstellt: :auditable_type',                            
                         ],
                         'request' => [
-                            'created' => '{userName} hat diese Anfrage erstellt.',
-                            'updated' => [
-                                'title' => 'Der Titel wurde von "{old}" zu "{new}" geändert.',
-                                'status' => 'Der Status wurde von "{old}" zu "{new}" geändert.',
-                                'due_date' => 'Das Erledigungsdatum wurde von "{old}" zu "{new}" geändert.',
-                                'priority' => 'Die Priorität wurde von "{old}" zu "{new}" geändert.',
-                                'category_id' => 'Die Kategorie wurde von "{old}" zu "{new}" geändert.',
-                                'qualification' => 'Die Qualifikation wurde von "{old}" zu "{new}" geändert.',
-                                'visibility' => 'Die Sichtbarkeit wurde von "{old}" zu "{new}" geändert.',
-                            ],
-                            'provider_assigned' => '{providerName} wurde als Dienstleister zugewiesen.',
-                            //'provider_unassigned' => 'Dienstleisterin {providerName} wurde nicht beauftragt im {auditable_type} #{auditable_id}.',
-                            'provider_unassigned' => '{providerName} wurde als Dienstleister entfernt.',
-                            'manager_assigned' => '{propertyManagerFirstName} {propertyManagerLastName} wurde als zuständige Person zugewiesen.',
-                            'manager_unassigned' => '{propertyManagerFirstName} {propertyManagerLastName} als zusätinge Person wurde entfernt.',
-                            'user_assigned' => '{userName} wurde als zuständige Person zugewiesen.',
-                            'media_uploaded' => 'Mediendateien hinaufgeladen',
-                            'media_deleted' => 'Mediendateien gelöscht',
+                            'created' => ':userName hat diese :auditable_type erstellt.',
                         ]
-                    ]
+                    ],                   
                 ],
             ],
             'comments_list' => [                        
