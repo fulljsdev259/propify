@@ -111,6 +111,13 @@ export default {
             }).catch(({response: {data: err}}) => reject(err))
         });
     },
+    massEdit({}, payload) {
+        return new Promise((resolve, reject) => {
+            axios.post(`requests/massedit`, payload).then((resp) => {
+                resolve(resp);
+            }).catch(({response: {data: err}}) => reject(err))
+        });
+    },
     unassignAssignee({}, payload) {
         return new Promise((resolve, reject) => {
             axios.delete(`requests-assignees/${payload.toAssignId}`).then((resp) => {

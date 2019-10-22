@@ -7,11 +7,25 @@
                 </el-button>
             </template>
             <template v-if="$can($permissions.assign.manager)">
-                <el-button :disabled="!selectedItems.length" @click="batchEdit" icon="ti-user" round
+                <el-dropdown split-button 
+                            :disabled="!selectedItems.length" 
+                            size="mini"
+                            type="info" 
+                            trigger="click" 
+                            class="round"
+                            @command="handleCommand">
+                    {{$t('models.request.mass_edit')}}
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item :disabled="!selectedItems.length" command="service">Service Provider</el-dropdown-item>
+                        <el-dropdown-item :disabled="!selectedItems.length" command="manager">Property Manager</el-dropdown-item>
+                        <el-dropdown-item :disabled="!selectedItems.length" command="status">Change Status</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+                <!-- <el-button :disabled="!selectedItems.length" @click="batchEdit" icon="ti-user" round
                            size="mini"
                            type="info">
                     {{$t('models.request.mass_edit')}}
-                </el-button>
+                </el-button> -->
             </template>
             <template v-if="$can($permissions.delete.request)">
                 <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"
@@ -41,18 +55,13 @@
             <span slot="title">
                 {{ $t('models.request.mass_edit') }}
             </span>
-            <!-- <el-radio-group v-model="massEditOption" @change="changeMassEditOption">
-                <el-radio :label="'service'">Service Provider</el-radio>
-                <el-radio :label="'manager'">Property Manager</el-radio>
-                <el-radio :label="'status'">Status Change</el-radio>
-            </el-radio-group> -->
-            <el-select v-model="massEditOption" @change="changeMassEditOption" 
+            <!-- <el-select v-model="massEditOption" @change="changeMassEditOption" 
                         :placeholder="$t('models.request.placeholders.status')"
-                        class="custom-select">
+                        class="edit-type-select">
                     <el-option :value="'service'" label="Service Provider"></el-option>
                     <el-option :value="'manager'" label="Property Manager"></el-option>
                     <el-option :value="'status'" label="Status Change"></el-option>
-            </el-select>
+            </el-select> -->
             <el-form :model="managersForm" v-if="massEditOption == 'service'">
                 <el-select
                     :loading="remoteLoading"
@@ -290,7 +299,7 @@
             }
         },
         methods: {
-            ...mapActions(['updateRequest', 'getRequestCategoriesTree', 'getServices', 'getBuildings', 'getResidents', 'downloadRequestPDF']),
+            ...mapActions(['updateRequest', 'getRequestCategoriesTree', 'getServices', 'getBuildings', 'getResidents', 'downloadRequestPDF', 'getServices', 'getPropertyManagers', 'massEdit', 'assignProvider', 'assignManager']),
             async getFilterBuildings() {
                 const buildings = await this.getBuildings({
                     get_all: true
@@ -413,65 +422,36 @@
                 this.toAssign = [];
                 this.toAssignList = [];
             },
-            changeMassEditOption(option) {
-                
+            handleCommand(command) {
+                this.massEditOption = command
+                this.batchEditVisible = true
             },
             massAssignPartners() {
-                const promises = this.selectedItems.map((provider) => {
-                    return this.assignProvider({
-                        id: provider.id,
-                        managersIds: this.toAssign
-                    })
-                });
-
-                Promise.all(promises).then((resp) => {
-                    this.processAssignment = false;
-                    this.closeModal();
-                    this.fetchMore();
-                    displaySuccess(resp[0]);
-                }).catch((error) => {
-                    this.processAssignment = false;
-                    this.closeModal();
-                    displayError(error);
-                });
+                let requests = this.selectedItems.map(request => request.id)
+                let service_providers = this.toAssign
+                
+                return this.massEdit({
+                    requests, 
+                    service_providers
+                })
             },
             massAssignManagers() {
-                const promises = this.selectedItems.map((request) => {
-                    return this.assignManager({
-                        id: request.id,
-                        managersIds: this.toAssign
-                    })
-                });
-
-                Promise.all(promises).then((resp) => {
-                    this.processAssignment = false;
-                    this.closeModal();
-                    this.fetchMore();
-                    displaySuccess(resp[0]);
-                }).catch((error) => {
-                    this.processAssignment = false;
-                    this.closeModal();
-                    displayError(error);
-                });
+                let requests = this.selectedItems.map(request => request.id)
+                let property_managers = this.toAssign
+                
+                return this.massEdit({
+                    requests, 
+                    property_managers
+                })
             },
             massChangeStatus() {
-                const promises = this.selectedItems.map((building) => {
-                    return this.assignManagerToBuilding({
-                        id: building.id,
-                        managersIds: this.toAssign
-                    })
-                });
-
-                Promise.all(promises).then((resp) => {
-                    this.processAssignment = false;
-                    this.closeModal();
-                    this.fetchMore();
-                    displaySuccess(resp[0]);
-                }).catch((error) => {
-                    this.processAssignment = false;
-                    this.closeModal();
-                    displayError(error);
-                });
+                let requests = this.selectedItems.map(request => request.id)
+                let status = this.massStatus
+                
+                return this.massEdit({
+                    requests, 
+                    status
+                })
             },
             async remoteSearchManagers(search) {
                 if (search === '') {
@@ -550,5 +530,24 @@
 <style>
     .vue-recycle-scroller__item-view {
         min-height: 41px !important;
+    }
+</style>
+
+<style lang="scss" scoped>
+
+    .el-dropdown.round {
+        border-radius: 20px;
+    }
+
+    .el-dialog {
+
+        .el-select {
+            width: 100%;
+        }
+        
+        .edit-type-select {
+            margin-bottom: 15px;
+        }
+
     }
 </style>
