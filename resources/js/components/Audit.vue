@@ -338,26 +338,27 @@
             }
         },
         async mounted () {
-            const {data:{data}} = await this.axios.get('requestCategories/tree?get_all=true');
-            // Get filter options from translation file and add the to filter object
+            // const {data:{data}} = await this.axios.get('requestCategories/tree?get_all=true');
+            // // Get filter options from translation file and add the to filter object
           
-            const flattenCategories = categories => categories.reduce((obj, category) => {
-                obj[category.id] = category
-                obj[category.id].linked_name = category.name_en.toLowerCase().replace(/ /g,"_");
+            // const flattenCategories = categories => categories.reduce((obj, category) => {
+            //     obj[category.id] = category
+            //     obj[category.id].linked_name = category.name_en.toLowerCase().replace(/ /g,"_");
                 
-                obj[category.id].name = category['name_'+ this.$i18n.locale]
-                //obj[category.id].name = this.$i18n.locale ? category.name_en : category.name_de
+            //     obj[category.id].name = category['name_'+ this.$i18n.locale]
+            //     //obj[category.id].name = this.$i18n.locale ? category.name_en : category.name_de
 
 
-                if (category.categories) {
-                    obj = {...obj, ...flattenCategories(category.categories)}
+            //     if (category.categories) {
+            //         obj = {...obj, ...flattenCategories(category.categories)}
 
-                    delete category.categories;
-                }
-                return obj
-            }, {})
+            //         delete category.categories;
+            //     }
+            //     return obj
+            // }, {})
 
-            this.categories = flattenCategories(data)
+            // this.categories = flattenCategories(data)
+            this.categories = this.$constants.requests.categories_data.tree
             
             await this.filterReset();
         }
