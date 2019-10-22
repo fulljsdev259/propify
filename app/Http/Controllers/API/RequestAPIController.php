@@ -1464,11 +1464,10 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'resident.user', 'resident.building',
+            'media', 'resident.user', 'unit.building',
         ]);
 
         $templates = $tempRepo->getParsedCommunicationTemplates($request, Auth::user());
-
         $response = (new TemplateTransformer)->transformCollection($templates);
         return $this->sendResponse($response, 'Communication Templates retrieved successfully');
     }
@@ -1524,7 +1523,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'resident.user', 'resident.building',
+            'media', 'resident.user', 'unit.building',
         ]);
 
         $templates = $tempRepo->getParsedServiceCommunicationTemplates($request, Auth::user());
@@ -1584,7 +1583,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'resident.user', 'resident.building',
+            'media', 'resident.user', 'unit.building',
         ]);
 
         $templates = $tempRepo->getParsedServiceEmailTemplates($request, Auth::user());
