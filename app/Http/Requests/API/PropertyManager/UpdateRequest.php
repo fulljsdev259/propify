@@ -30,7 +30,7 @@ class UpdateRequest extends BaseRequest
     {
         $rules = PropertyManager::$rulesUpdate;
         $rules['position'] = 'in:' . implode(',', PropertyManager::Position);
-        $rules['title'] = 'in:' . implode(',', PropertyManager::Title);
+        $rules['title'] = 'in:' . implode(',', PropertyManager::Title) . ',company';
         return $rules;
     }
 }
