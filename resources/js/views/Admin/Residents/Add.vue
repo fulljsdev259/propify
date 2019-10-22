@@ -194,6 +194,7 @@
     import SelectLanguage from 'components/SelectLanguage';
     import ContractForm from 'components/ContractForm';
     import ContractListTable from 'components/ContractListTable';
+    import RelationListing from 'components/RelationListing';
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
@@ -207,7 +208,8 @@
             ContractForm,
             AddActions,
             SelectLanguage,
-            ContractListTable
+            ContractListTable,
+            RelationListing
         },
         mounted() {
             this.$root.$on('changeLanguage', () => this.getCountries());
@@ -251,18 +253,8 @@
                 display: block;
             }
 
-            .contract-table {
-                .clickable {
-                    display: block;
-                    width: 100%;
-                }
-
-                .icon-success {
-                    color: #5fad64;
-                }
-                .icon-danger {
-                    color: #dd6161;
-                }
+            .el-table__empty-text {
+                width: 100%;
             }
         }
 
@@ -304,19 +296,21 @@
                 
             }
 
-            .chart-card-header{
-                font-size: 16px;
-                font-weight: 400;
-                padding: 10px 20px;
-                margin: 0;
-                border-bottom: 1px solid #EBEEF5;
+            // .chart-card-header{
+            //     font-size: 16px;
+            //     font-weight: 400;
+            //     padding: 10px 20px;
+            //     margin: 0;
+            //     border-bottom: 1px solid #EBEEF5;
 
-                h3 {
-                    font-size: 24px;
-                    font-weight: 500;
-                }
+            //     h3 {
+            //         font-size: 24px;
+            //         font-weight: 500;
+            //     }
 
-            }
+            // }
+
+            
         }
     }
 
