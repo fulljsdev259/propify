@@ -35,6 +35,37 @@
             @pdf-download="downloadPDF($event)"
         >
         </request-list-table>
+        <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
+                   :visible.sync="batchEditVisible"
+                   v-loading="processAssignment" width="30%">
+            <el-form :model="managersForm">
+                <el-select
+                    :loading="remoteLoading"
+                    :placeholder="$t('general.placeholders.search')"
+                    :remote-method="remoteSearchManagers"
+                    class="custom-remote-select"
+                    filterable
+                    multiple
+                    remote
+                    reserve-keyword
+                    style="width: 100%;"
+                    v-model="toAssign"
+                >
+                    <div class="custom-prefix-wrapper" slot="prefix">
+                        <i class="el-icon-search custom-icon"></i>
+                    </div>
+                    <el-option
+                        :key="manager.id"
+                        :label="`${manager.first_name} ${manager.last_name}`"
+                        :value="manager.id"
+                        v-for="manager in toAssignList"/>
+                </el-select>
+            </el-form>
+            <span class="dialog-footer" slot="footer">
+                <el-button @click="closeModal" size="mini">{{$t('models.building.cancel')}}</el-button>
+                <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_managers')}}</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -83,7 +114,13 @@
                 residents: {},
                 services: {},
                 isLoadingFilters: false,
-                isDownloading: false
+                isDownloading: false,
+                batchEditVisible: false,
+                processAssignment: false,
+                toAssignList: '',
+                toAssign: [],
+                remoteLoading: false,
+                managersForm: {},
             }
         },
         computed: {
@@ -311,7 +348,58 @@
                 } finally {
                     this.isDownloading = false;
                 }
-            }
+            },
+            batchEdit() {
+                this.batchEditVisible = true;
+            },
+            closeModal() {
+                this.batchEditVisible = false;
+                this.toAssign = [];
+                this.toAssignList = [];
+            },
+            assignManagers() {
+                const promises = this.selectedItems.map((building) => {
+                    return this.assignManagerToBuilding({
+                        id: building.id,
+                        managersIds: this.toAssign
+                    })
+                });
+
+                Promise.all(promises).then((resp) => {
+                    this.processAssignment = false;
+                    this.closeModal();
+                    this.fetchMore();
+                    displaySuccess(resp[0]);
+                }).catch((error) => {
+                    this.processAssignment = false;
+                    this.closeModal();
+                    displayError(error);
+                });
+            },
+            async remoteSearchManagers(search) {
+                if (search === '') {
+                    this.resetToAssignList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const resp = await this.getPropertyManagers({
+                            get_all: true,
+                            search
+                        });
+
+                        this.toAssignList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            resetToAssignList() {
+                this.toAssignList = [];
+                this.toAssign = [];
+            },
         },
         async created(){
             this.isLoadingFilters = true;
