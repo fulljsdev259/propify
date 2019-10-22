@@ -391,7 +391,6 @@ export default (config = {}) => {
 
                 this.categories = this.$constants.requests.categories_data.tree
 
-                console.log(this.model.category_id)
                 if(this.model.category_id)
                 {
                     let p_category = this.categories.find(category => {
@@ -399,7 +398,6 @@ export default (config = {}) => {
                     });
 
                     this.sub_categories = p_category ? p_category.sub_categories : [];
-                    console.log(this.sub_categories)
                 }
 
             },

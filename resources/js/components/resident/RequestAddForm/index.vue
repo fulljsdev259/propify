@@ -345,7 +345,6 @@
                     });
 
                     this.sub_categories = p_category ? p_category.sub_categories : [];
-                    console.log(this.sub_categories)
                 }
 
             } catch (err) {

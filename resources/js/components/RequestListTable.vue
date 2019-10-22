@@ -349,7 +349,6 @@
                 }
             },
             headerWithOneCol() {
-                console.log(this.header)
                 return this.header.reduce((acc, row) => (row.withOneCol && acc.push(row), acc), []);
             },
             filterColSize() {
