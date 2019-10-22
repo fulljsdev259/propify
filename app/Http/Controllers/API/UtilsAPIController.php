@@ -240,7 +240,7 @@ class UtilsAPIController extends AppBaseController
         foreach ($categories as $category => $subCategories) {
             $data = get_category_details($category);
             foreach ($subCategories as $subCategory) {
-                $data['categories'][] = get_sub_category_details($subCategory);
+                $data['sub_categories'][] = get_sub_category_details($subCategory);
             }
 
             $categoryTree[] = $data;
@@ -259,9 +259,9 @@ class UtilsAPIController extends AppBaseController
             'room' => Request::Room,
             'capture_phase' => Request::CapturePhase,
             'payer' => Request::Payer,
-            'categories' =>  [
-                'category' => Request::Category,
-                'sub_category' => Request::SubCategory,
+            'categories_data' =>  [
+                'categories' => Request::Category,
+                'sub_categories' => Request::SubCategory,
                 'parent_child' => Request::CategorySubCategory,
                 'tree' => $categoryTree,
             ]
