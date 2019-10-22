@@ -85,7 +85,27 @@ class UtilsAPIController extends AppBaseController
             'languages' => $languages,
         ];
 
-        $settings = App\Models\Settings::first(['login_variation', 'login_variation_2_slider', 'primary_color', 'primary_color_lighter', 'accent_color', 'logo', 'circle_logo', 'resident_logo', 'favicon_icon']);
+        $settings = App\Models\Settings::with([
+            'address' => function($q) {
+                $q->select('id', 'city', 'street', 'zip', 'state_id')->with('state:id,name');
+             }])
+            ->first([
+                'name',
+                'email',
+                'phone',
+                'login_variation',
+                'login_variation_2_slider',
+                'primary_color',
+                'primary_color_lighter',
+                'accent_color',
+                'logo',
+                'circle_logo',
+                'resident_logo',
+                'favicon_icon',
+                'address_id'
+            ]);
+
+
 
         if ($settings) {
             $colors = $settings->only(['primary_color', 'accent_color', 'primary_color_lighter']);
@@ -94,6 +114,16 @@ class UtilsAPIController extends AppBaseController
                 'variation' => $settings->login_variation,
                 'variation_2_slider' => (bool) $settings->login_variation_2_slider,
             ];
+
+            $details = $settings->only(['name', 'email', 'phone',]);
+            if ($settings->address) {
+                $details['city'] = $settings->address->city;
+                $details['street'] = $settings->address->street;
+                $details['zip'] = $settings->address->zip;
+                if ($settings->address->state) {
+                    $details['state'] = $settings->address->state->name;
+                }
+            }
         } else {
             $colors = [
                 'primary_color_lighter' => '#c55a9059',
@@ -110,8 +140,11 @@ class UtilsAPIController extends AppBaseController
                 'variation' => 1,
                 'variation_2_slider' => true,
             ];
+
+            $details = [];
         }
         $response = [
+            'details' => $details,
             'app' => $app,
             'buildings' => [], // @TODO is need return building related constants
             'units' => $this->getUnitConstants(),
@@ -230,7 +263,7 @@ class UtilsAPIController extends AppBaseController
                 'category' => Request::Category,
                 'sub_category' => Request::SubCategory,
                 'parent_child' => Request::CategorySubCategory,
-                'category_tree' => $categoryTree,
+                'tree' => $categoryTree,
             ]
         ];
 
