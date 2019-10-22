@@ -305,8 +305,13 @@ class DashboardAPIController extends AppBaseController
             return $this->sendError(__('models.building.errors.not_found'));
         }
 
-        $residents = $this->residentRepo->getTotalResidentsFromBuilding($building->id);
+        $residents = $building->contracts()
+            ->where('status', Contract::StatusActive)
+            ->select('id', 'resident_id')
+            ->with('resident')->get()
+            ->pluck('resident');
         $units = Unit::where('building_id', $id)->count();
+
         $occupiedUnitsCount = Unit::where('building_id', $id)->whereHas('contracts', function ($q) {
             $q->where('status', Contract::StatusActive);
         })->count();
@@ -1437,17 +1442,13 @@ class DashboardAPIController extends AppBaseController
 
         $requestCount = Request
             ::when($startDate, function ($q) use ($startDate) {$q->whereDate('requests.created_at', '>=', $startDate->format('Y-m-d'));})
-            ->whereHas('category', function ($q) {
-                $q->whereIn('id', [1, 2])->orWhereIn('parent_id', [1, 2]); // @TODO fix hard coding [1, 2]
-            })
+            ->whereIn('category', [1, 2])
             ->when($endDate, function ($q) use ($endDate) {$q->whereDate('requests.created_at', '<=', $endDate->format('Y-m-d'));})
             ->count();
 
         $requestHasProviderCount = Request
             ::has('providers')
-            ->whereHas('category', function ($q) {
-                $q->whereIn('id', [1, 2])->orWhereIn('parent_id', [1, 2]); // @TODO fix hard coding [1, 2]
-            })
+            ->whereIn('category', [1, 2])
             ->when($startDate, function ($q) use ($startDate) {$q->whereDate('requests.created_at', '>=', $startDate->format('Y-m-d'));})
             ->when($endDate, function ($q) use ($endDate) {$q->whereDate('requests.created_at', '<=', $endDate->format('Y-m-d'));})
             ->count();
