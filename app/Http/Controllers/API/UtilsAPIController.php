@@ -202,6 +202,17 @@ class UtilsAPIController extends AppBaseController
      */
     protected function getRequestsConstants()
     {
+        $categories = Request::CategorySubCategory;
+        $categoryTree = [];
+        foreach ($categories as $category => $subCategories) {
+            $data = get_category_details($category);
+            foreach ($subCategories as $subCategory) {
+                $data['categories'][] = get_sub_category_details($subCategory);
+            }
+
+            $categoryTree[] = $data;
+        }
+
         $result = [
             'status' => Request::Status,
            // 'priority' => Request::Priority,
@@ -215,7 +226,10 @@ class UtilsAPIController extends AppBaseController
             'room' => Request::Room,
             'capture_phase' => Request::CapturePhase,
             'payer' => Request::Payer,
-            'category' => Request::Category
+            'category' => Request::Category,
+            'sub_category' => Request::SubCategory,
+            'category_sub_category' => Request::CategorySubCategory,
+            'category_tree' => $categoryTree
         ];
 
         return $result;
@@ -229,6 +243,7 @@ class UtilsAPIController extends AppBaseController
         $result = [
             'title' => PropertyManager::Title,
             'type' => PropertyManager::Type,
+            'position' => PropertyManager::Position,
         ];
 
         return $result;
