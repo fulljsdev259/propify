@@ -475,6 +475,7 @@
             },
             addContract (data) {
                 this.model.contracts.push(data);
+                this.contractCount ++;
             },
             editContract(index) {
                 console.log('this.model.contracts', this.model.contracts, index)
@@ -493,6 +494,7 @@
                 }).then(async () => {
                     await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
                     this.model.contracts.splice(index, 1)
+                    this.contractCount --;
                 }).catch(() => {
                 });
             },

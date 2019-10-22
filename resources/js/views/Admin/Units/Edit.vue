@@ -568,9 +568,6 @@
              EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
             });
-            EventBus.$on('resident-get-counted', resident_count => {                
-                this.residentCount = resident_count;
-            });
         },
         computed: {
             ...mapGetters('application', {
