@@ -35,18 +35,20 @@ class FilterByQuarterCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $quarter_id = $this->request->get('quarter_id', null);
-        if (!$quarter_id) {
+        $quarterId = $this->request->get('quarter_id', null);
+        if (!$quarterId) {
             return $model;
         }
 
+        $quarterIds = is_array($quarterId) ? $quarterId : [$quarterId];
+        // @TODO check residents can see only contract->buildings->quarter->pinboard or all
         $u = \Auth::user();
-        if (!$u->can('list-pinboard') && $u->resident) {
-            $quarter_id = $u->resident->building->quarter_id;
+        if ($u->resident) {
+            $quarterIds = $u->resident->contracts()->select('id', 'building_id')->with('building:id,quarter_id')->get()->pluck('building.quarter_id');
         }
 
-        $model->whereHas('quarters', function ($query) use ($quarter_id) {
-            $query->where('id', $quarter_id);
+        $model->whereHas('quarters', function ($query) use ($quarterIds) {
+            $query->whereIn('id', $quarterIds);
         });
 
         return $model;

@@ -36,29 +36,31 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
 
-        $state_id = $this->request->get('state_id', null);
-        if ($state_id) {
-            return $model->whereHas('address', function ($q) use ($state_id) {
-                $q->where('state_id', $state_id);
+        $stateId = $this->request->get('state_id', null);
+        if ($stateId) {
+            return $model->whereHas('address', function ($q) use ($stateId) {
+                $q->where('state_id', $stateId);
             });
         }
 
-        $quarter_id = $this->request->get('quarter_id', null);
-        if ($quarter_id) {
-            $model->where('quarter_id', $quarter_id);
+        $quarterId = $this->request->get('quarter_id', null);
+        if ($quarterId) {
+            $model->where('quarter_id', $quarterId);
         }
 
-        $manager_id = $this->request->get('manager_id', null);
-        if ($manager_id) {
-            return $model->whereHas('propertyManagers', function ($q) use ($manager_id) {
-                $q->where('building_assignees.assignee_id', $manager_id);
+        $managerId = $this->request->get('manager_id', null);
+        if ($managerId) {
+            return $model->whereHas('propertyManagers', function ($q) use ($managerId) {
+                $q->where('building_assignees.assignee_id', $managerId);
             });
         }
 
-        $request_status = $this->request->get('request_status', null);
-        if ($request_status) {
-            return $model->whereHas('residents.requests', function ($query) use ($request_status) {
-                $query->where('status', $request_status);
+        $requestStatus = $this->request->get('request_status', null);
+        if ($requestStatus) {
+            return $model->whereHas('contracts', function ($q) use ($requestStatus) {
+                $q->whereHas('residents.requests', function ($query) use ($requestStatus) {
+                    $query->where('status', $requestStatus);
+                });
             });
         }
 

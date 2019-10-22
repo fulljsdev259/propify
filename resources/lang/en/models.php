@@ -435,7 +435,17 @@ return [
         'send_person' => 'Which person should be notified?',
         'sort' => 'Sort',
         'reset_sort' => 'Reset Sort',
-        'creation_date' => 'Creation Date',        
+        'creation_date' => 'Creation Date',
+        'category_list' => [
+            'general' => ' Allgemeine Anliegen',
+            'malfunction' => 'Fehlfunktion',
+            'deficiency' => 'Mangel (Zeitlich begrenzt)'
+        ],
+        'sub_category' => [
+            'surrounding' => 'Umgebung',
+            'real_estate' => 'Immobilien',
+            'flat' => 'flach',
+        ],
         'media'  => [
             'added' => 'Document added',
             'removed' => 'Document removed',

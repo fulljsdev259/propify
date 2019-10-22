@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Building;
+use App\Models\Resident;
 use function GuzzleHttp\Promise\queue;
 
 /**
@@ -55,19 +56,6 @@ class BuildingTransformer extends BaseTransformer
             $response['quarter'] = (new QuarterTransformer)->transform($model->quarter);
         }
 
-        if(! is_null($model->getAttribute('active_residents_count'))) {
-            $response['active_residents_count'] = $model->getAttribute('active_residents_count');
-        }
-
-        if(! is_null($model->getAttribute('in_active_residents_count'))) {
-            $response['in_active_residents_count'] = $model->getAttribute('in_active_residents_count');
-        }
-
-        if ($model->relationExists('residents')) {
-            $response['residents'] = (new ResidentSimpleTransformer)->transformCollection($model->residents);
-            $response['residents_last'] = (new ResidentSimpleTransformer)->transformCollection($model->lastResidents);
-        }
-
         if ($model->relationExists('serviceProviders')) {
             $response['service_providers'] = (new ServiceProviderTransformer)->transformCollection($model->serviceProviders);
         }
@@ -103,6 +91,17 @@ class BuildingTransformer extends BaseTransformer
 
         if ($model->relationExists('contracts')) {
             $response['contracts'] = (new ContractTransformer())->transformCollection($model->contracts);
+            $residents = collect($response['contracts'])->pluck('resident')->unique();
+
+
+            // @TODO delete
+            if ($residents->isNotEmpty()) {
+                $response['residents'] = $residents->all();
+                $response['residents_last'] = $residents->sortByDesc('id')->slice(0, 5)->all();
+                $response['residents_count'] = $residents->count();
+                $response['active_residents_count'] = $residents->where('status', Resident::StatusActive)->count();
+                $response['in_active_residents_count'] = $residents->where('status', Resident::StatusNotActive)->count();
+            }
         }
 
         return $response;

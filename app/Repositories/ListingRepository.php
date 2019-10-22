@@ -41,8 +41,9 @@ class ListingRepository extends BaseRepository
     {
         $u = \Auth::user();
         if ($u->resident()->exists() && !$u->resident->homeless()) {
-            $atts['address_id'] = $u->resident->building->address_id;
-            $atts['quarter_id'] = $u->resident->building->quarter_id;
+            $firstContractBuilding = $u->resident->contracts->first()->building; // @TODO contract related
+            $atts['address_id'] = $firstContractBuilding->address_id;
+            $atts['quarter_id'] = $firstContractBuilding->quarter_id;
         }
 
         if ($atts['visibility'] != Listing::VisibilityAll &&
