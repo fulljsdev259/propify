@@ -118,7 +118,10 @@ class ResidentAPIController extends AppBaseController
             $residents = $this->residentRepository->with([
                 'contracts' => function ($q) {
                     $q->with('building.address', 'unit');
-                }])
+                },
+                'default_contract' => function ($q) {
+                    $q->with('building.address', 'unit');
+                },])
                 ->get();
             $this->fixCreatedBy($residents);
             foreach ($residents as $resident) {
@@ -130,12 +133,11 @@ class ResidentAPIController extends AppBaseController
         }
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        // @TODO CONTRACT is need? building, address, unit . I think not need because many
         $residents = $this->residentRepository->with([
             'user',
-            'building.address',
-            'unit',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit');
             }])->paginate($perPage);
@@ -212,8 +214,9 @@ class ResidentAPIController extends AppBaseController
         $this->residentRepository->pushCriteria(new RequestCriteria($request));
         // @TODO CONTRACT is need? address. I think not need because many
         $residents = $this->residentRepository->with([
-            'address:id,street,house_num',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }])
@@ -305,11 +308,9 @@ class ResidentAPIController extends AppBaseController
 
         $resident->load([
             'user',
-            'building',
-            'unit',
-            'address',
-            'media',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
@@ -371,11 +372,9 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'settings',
             'user',
-            'building',
-            'unit',
-            'address',
-            'media',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
@@ -428,11 +427,9 @@ class ResidentAPIController extends AppBaseController
         $user->resident->load([
             'user',
             'settings',
-            'building',
-            'unit',
-            'address',
-            'media',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
@@ -537,11 +534,9 @@ class ResidentAPIController extends AppBaseController
 
         $resident->load([
             'settings',
-            'building',
-            'unit',
-            'address',
-            'media',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
@@ -631,10 +626,12 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
-            'building',
-            'unit',
-            'address',
-            'media',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
+            'contracts' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            }
         ]);
         $response = (new ResidentTransformer)->transform($resident);
         return $this->sendResponse($response, __('models.resident.saved'));
@@ -686,10 +683,12 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
-            'building',
-            'unit',
-            'address',
-            'media',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
+            'contracts' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            }
         ]);
         $response = (new ResidentTransformer)->transform($resident);
         return $this->sendResponse($response, __('models.resident.saved'));
@@ -772,14 +771,12 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
-            'building',
-            'unit',
-            'address',
-            'media',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
-            }
+            },
         ]);
         $response = (new ResidentTransformer)->transform($resident);
         return $this->sendResponse($response, __('models.resident.status_changed'));

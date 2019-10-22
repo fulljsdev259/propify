@@ -591,8 +591,8 @@ class Request extends AuditableModel implements HasMedia
 //        'internal_priority' => 'integer',
         'qualification' => 'integer',
         'due_date' => 'required|date',
-        'category' => 'nullable|integer', // @TODO correct is required|integer
-        'sub_category' => 'integer',
+//        'category' => 'required|integer', //@TODO
+//        'sub_category' => 'integer',
         'visibility' => 'required|integer',
     ];
 
@@ -606,8 +606,8 @@ class Request extends AuditableModel implements HasMedia
         'contract_id' => 'required|exists:contracts,id',
         'title' => 'required|string',
         'description' => 'required|string',
-        'category' => 'nullable|integer', // @TODO correct is required|integer
-        'sub_category' => 'integer',
+//        'category' => 'required|integer', //@TODO
+//        'sub_category' => 'integer',
 //        'priority' => 'required|integer',
 //        'internal_priority' => 'integer',
         'visibility' => 'required|integer',
@@ -628,8 +628,8 @@ class Request extends AuditableModel implements HasMedia
         'qualification' => 'integer',
         'status' => 'integer',
         'due_date' => 'date',
-        'category' => 'nullable|integer',
-        'sub_category' => 'integer',
+//        'category' => 'integer', //@TODO
+//        'sub_category' => 'integer',
         'visibility' => 'required|integer',
         'active_reminder' => 'boolean',
     ];
