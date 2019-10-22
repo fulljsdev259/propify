@@ -40,11 +40,17 @@ class FilterByBuildingCriteria implements CriteriaInterface
             $model = $model->whereNotNull('building_id');
         }
 
-        $building_id = $this->request->get('building_id', null);
-        if ($building_id) {
-            $model = $model->where('building_id', (int)$building_id);
+        $buildingId = $this->request->get('building_id', null);
+        if ($buildingId) {
+            $model = $model->where('building_id', (int)$buildingId);
         }
-        
+
+        $quarterId = $this->request->get('quarter_id', null);
+        if ($quarterId) {
+            $model = $model->whereHas('building', function ($q) use ($quarterId) {
+                $q->where('quarter_id', $quarterId);
+            });
+        }
         return $model;     
     }  
 }
