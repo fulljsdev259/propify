@@ -8,11 +8,25 @@
             </div>    
             <el-col :xl="7" :lg="7" :md="12" :sm="12" :xs="12" class="login-sidebar">
                 <el-aside width="90%">
-                    <router-link to="/login" class="logo">
-                        <img src="~img/logo5.png" v-show="!resident_logo_src"/>
-                        <img :src="resident_logo_src" v-show="resident_logo_src"/>
-                    </router-link>
-                    <router-view></router-view>
+                    <div class="login-pane">
+                        <router-link to="/login" class="logo">
+                            <img :src="resident_logo_src" v-show="resident_logo_src"/>
+                        </router-link>
+                        <router-view></router-view>
+                    </div>
+                    <div class="company-info">
+                        <div class="phone-number">
+                            SUPPORT
+                            <br>
+                            <b>{{ phone }}</b>
+                        </div>
+                        <div class="bottom-logo">
+                            <img :src="logo_src" v-show="logo_src"/>
+                        </div>
+                        <div class="address">
+                            Fortimo AG - {{ street }} {{ zip }} {{ city }}
+                        </div>
+                    </div>
                 </el-aside>
             </el-col>
             <el-col :xl="17" :lg="17" :md="12" :sm="12" :xs="12" class="login-content">
@@ -64,6 +78,20 @@
                         </el-row>
                     </div>
                 </el-main>
+                <div class="company-info">
+                    <div class="phone-number">
+                        SUPPORT
+                        <br>
+                        <b>071112244</b>
+                    </div>
+                    <div class="bottom-logo">
+                        <img :src="logo_src" v-show="logo_src"/>
+                    </div>
+                    <div class="address">
+                        Fortimo AG - Botsford Trace 3172 New Bartonstad
+                    </div>
+                </div>
+                 
             </el-col>
         </el-row>
     </el-container>
@@ -73,6 +101,11 @@
         data() {
             return {
                 resident_logo_src: '',
+                logo_scr: '',
+                phone: '',
+                street: '',
+                zip: '',
+                city: ''
             }
         },
         beforeCreate() {
@@ -80,6 +113,11 @@
         },
         mounted () {
             this.resident_logo_src = "/" + this.$constants.logo.resident_logo;
+            this.logo_src = "/" + this.$constants.logo.logo;
+            this.phone = this.$constants.details.phone;
+            this.street = this.$constants.details.street;
+            this.zip = this.$constants.details.zip;
+            this.city = this.$constants.details.city;
         }
     }
 </script>
@@ -120,7 +158,26 @@
                 height: 100%;
                 content: '';
             }
-        }
+        } 
+        .company-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 15px;
+            .phone-number {
+                line-height: 1.5;
+            }
+            .bottom-logo{
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+            .address {
+                font-size: 10px;
+                line-height: 2;
+            }
+        }            
+
         .login-sidebar {
             
             @media screen and (max-width: 554px) {
@@ -128,12 +185,16 @@
                 height: auto;
                 background-color: #fff;
                 margin-top: 150px;
+                .company-info {
+                    display: none;
+                }
             }
             .el-aside {
                 position: relative;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
+                align-items: center;
                 padding: 3em;
                 margin: 40px 0 40px 40px;
                 height: calc(100% - 80px);
@@ -158,10 +219,17 @@
                 @media screen and (max-width: 992px) {
                     padding: 0 20px;
                 }
-                .logo {
-                    margin: 1em auto;
-                    img {
-                        width: 130px;
+                .login-pane {
+                    flex: 1;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    .logo {
+                        margin: 1em auto;
+                        img {
+                            width: 130px;
+                        }
                     }
                 }
                 &:before {
@@ -175,8 +243,7 @@
                     width: 100%;
                     height: 100%;
                 }
-            
-
+               
             }
         }
         .login-content {
@@ -184,6 +251,12 @@
             @media screen and (max-width: 554px) {
                 width: 100% !important;
                 height: auto;
+            }
+            .company-info {
+                padding-top: 20px;
+                @media screen and (min-width: 554px) {
+                    display: none;
+                }
             }
             .el-main {
                 position: relative;
@@ -196,6 +269,7 @@
                 }
                 @media screen and (max-width: 1200px) {
                     padding: 20px;
+                    align-items: center;
                 }
                 @media screen and (max-width: 1024px) {
                     align-items: center;
@@ -240,8 +314,10 @@
                         color: #fff;
                     }
                     @media screen and (max-width: 554px) {
+                        padding-top: 20px;
                         h1 {
                             text-align: center;
+                            font-size: 28px;
                         }
                         p {
                             color: #515862;

@@ -6,6 +6,13 @@
                     {{$t('models.request.add_title')}}
                 </el-button>
             </template>
+            <template v-if="$can($permissions.assign.manager)">
+                <el-button :disabled="!selectedItems.length" @click="batchEdit" icon="ti-user" round
+                           size="mini"
+                           type="info">
+                    {{$t('models.request.mass_edit')}}
+                </el-button>
+            </template>
             <template v-if="$can($permissions.delete.request)">
                 <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"
                            type="danger">
@@ -28,6 +35,91 @@
             @pdf-download="downloadPDF($event)"
         >
         </request-list-table>
+        <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
+                   :visible.sync="batchEditVisible"
+                   v-loading="processAssignment" width="30%">
+            <span slot="title">
+                {{ $t('models.request.mass_edit') }}
+            </span>
+            <!-- <el-radio-group v-model="massEditOption" @change="changeMassEditOption">
+                <el-radio :label="'service'">Service Provider</el-radio>
+                <el-radio :label="'manager'">Property Manager</el-radio>
+                <el-radio :label="'status'">Status Change</el-radio>
+            </el-radio-group> -->
+            <el-select v-model="massEditOption" @change="changeMassEditOption" 
+                        :placeholder="$t('models.request.placeholders.status')"
+                        class="custom-select">
+                    <el-option :value="'service'" label="Service Provider"></el-option>
+                    <el-option :value="'manager'" label="Property Manager"></el-option>
+                    <el-option :value="'status'" label="Status Change"></el-option>
+            </el-select>
+            <el-form :model="managersForm" v-if="massEditOption == 'service'">
+                <el-select
+                    :loading="remoteLoading"
+                    :placeholder="$t('general.placeholders.search')"
+                    :remote-method="remoteSearchPartners"
+                    class="custom-remote-select"
+                    filterable
+                    multiple
+                    remote
+                    reserve-keyword
+                    style="width: 100%;"
+                    v-model="toAssign"
+                >
+                    <div class="custom-prefix-wrapper" slot="prefix">
+                        <i class="el-icon-search custom-icon"></i>
+                    </div>
+                    <el-option
+                        :key="service.id"
+                        :label="`${service.name}`"
+                        :value="service.id"
+                        v-for="service in toAssignList"/>
+                </el-select>
+            </el-form>
+
+            <el-form :model="managersForm" v-if="massEditOption == 'manager'">
+                <el-select
+                    :loading="remoteLoading"
+                    :placeholder="$t('general.placeholders.search')"
+                    :remote-method="remoteSearchManagers"
+                    class="custom-remote-select"
+                    filterable
+                    multiple
+                    remote
+                    reserve-keyword
+                    style="width: 100%;"
+                    v-model="toAssign"
+                >
+                    <div class="custom-prefix-wrapper" slot="prefix">
+                        <i class="el-icon-search custom-icon"></i>
+                    </div>
+                    <el-option
+                        :key="manager.id"
+                        :label="`${manager.first_name} ${manager.last_name}`"
+                        :value="manager.id"
+                        v-for="manager in toAssignList"/>
+                </el-select>
+            </el-form>
+            
+            <el-form :model="managersForm" v-if="massEditOption == 'status'">
+                <el-select :placeholder="$t('models.request.placeholders.status')"
+                        class="custom-select"
+                        v-model="massStatus">
+                    <el-option
+                        :key="k"
+                        :label="$t(`models.request.status.${status}`)"
+                        :value="parseInt(k)"
+                        v-for="(status, k) in $constants.requests.status">
+                    </el-option>
+                </el-select>
+            </el-form>
+            <span class="dialog-footer" slot="footer">
+                <el-button @click="closeModal" size="mini">{{$t('general.actions.close')}}</el-button>
+                <el-button v-if="massEditOption == 'service'" @click="massAssignPartners" size="mini" type="primary">{{$t('models.request.assign_partners')}}</el-button>
+                <el-button v-if="massEditOption == 'manager'" @click="massAssignManagers" size="mini" type="primary">{{$t('models.request.assign_managers')}}</el-button>
+                <el-button v-if="massEditOption == 'status'" @click="massChangeStatus" size="mini" type="primary">{{$t('models.request.change_status')}}</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -76,7 +168,15 @@
                 residents: {},
                 services: {},
                 isLoadingFilters: false,
-                isDownloading: false
+                isDownloading: false,
+                batchEditVisible: false,
+                processAssignment: false,
+                toAssignList: '',
+                toAssign: [],
+                remoteLoading: false,
+                managersForm: {},
+                massEditOption: 'service',
+                massStatus: ''
             }
         },
         computed: {
@@ -304,7 +404,119 @@
                 } finally {
                     this.isDownloading = false;
                 }
-            }
+            },
+            batchEdit() {
+                this.batchEditVisible = true;
+            },
+            closeModal() {
+                this.batchEditVisible = false;
+                this.toAssign = [];
+                this.toAssignList = [];
+            },
+            changeMassEditOption(option) {
+                
+            },
+            massAssignPartners() {
+                const promises = this.selectedItems.map((provider) => {
+                    return this.assignProvider({
+                        id: provider.id,
+                        managersIds: this.toAssign
+                    })
+                });
+
+                Promise.all(promises).then((resp) => {
+                    this.processAssignment = false;
+                    this.closeModal();
+                    this.fetchMore();
+                    displaySuccess(resp[0]);
+                }).catch((error) => {
+                    this.processAssignment = false;
+                    this.closeModal();
+                    displayError(error);
+                });
+            },
+            massAssignManagers() {
+                const promises = this.selectedItems.map((request) => {
+                    return this.assignManager({
+                        id: request.id,
+                        managersIds: this.toAssign
+                    })
+                });
+
+                Promise.all(promises).then((resp) => {
+                    this.processAssignment = false;
+                    this.closeModal();
+                    this.fetchMore();
+                    displaySuccess(resp[0]);
+                }).catch((error) => {
+                    this.processAssignment = false;
+                    this.closeModal();
+                    displayError(error);
+                });
+            },
+            massChangeStatus() {
+                const promises = this.selectedItems.map((building) => {
+                    return this.assignManagerToBuilding({
+                        id: building.id,
+                        managersIds: this.toAssign
+                    })
+                });
+
+                Promise.all(promises).then((resp) => {
+                    this.processAssignment = false;
+                    this.closeModal();
+                    this.fetchMore();
+                    displaySuccess(resp[0]);
+                }).catch((error) => {
+                    this.processAssignment = false;
+                    this.closeModal();
+                    displayError(error);
+                });
+            },
+            async remoteSearchManagers(search) {
+                if (search === '') {
+                    this.resetToAssignList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const resp = await this.getPropertyManagers({
+                            get_all: true,
+                            search
+                        });
+
+                        this.toAssignList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            async remoteSearchPartners(search) {
+                if (search === '') {
+                    this.resetToAssignList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const resp = await this.getServices({
+                            get_all: true,
+                            search
+                        });
+
+                        this.toAssignList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            resetToAssignList() {
+                this.toAssignList = [];
+                this.toAssign = [];
+            },
         },
         async created(){
             this.isLoadingFilters = true;
