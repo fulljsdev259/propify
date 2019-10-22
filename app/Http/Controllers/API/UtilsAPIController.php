@@ -226,10 +226,12 @@ class UtilsAPIController extends AppBaseController
             'room' => Request::Room,
             'capture_phase' => Request::CapturePhase,
             'payer' => Request::Payer,
-            'category' => Request::Category,
-            'sub_category' => Request::SubCategory,
-            'category_sub_category' => Request::CategorySubCategory,
-            'category_tree' => $categoryTree
+            'categories' =>  [
+                'category' => Request::Category,
+                'sub_category' => Request::SubCategory,
+                'parent_child' => Request::CategorySubCategory,
+                'category_tree' => $categoryTree,
+            ]
         ];
 
         return $result;
