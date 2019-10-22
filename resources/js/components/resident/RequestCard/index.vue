@@ -35,10 +35,11 @@
                         </div>
                     </div>
                 </div>                  
-                <div class="category" @click="$emit('toggle-drawer')">                    
-                    {{ data.category.parent_id==null?'': categories[data.category.parentCategory.id] == undefined? '':
-                        categories[data.category.parentCategory.id][$i18n.locale]+ ' / ' }}
-                        {{ categories[data.category.id] == undefined? '':categories[data.category.id][$i18n.locale]}}
+                <div class="category" @click="$emit('toggle-drawer')">
+                    {{$t(`models.request.category_list.${data.category.name}`)}}
+                    <!-- {{ data.category.parent_id==null?'': categories[data.category.parentCategory.id] == undefined? '':
+                        $t(`models.request.category_list.${categories[data.category.parentCategory.id].name}`) + ' / ' }}
+                        {{ categories[data.category.id] == undefined? '': $t(`models.request.category_list.${categories[data.category.id].name}`) }} -->
                 </div>                
                 <div class="title" @click="$emit('toggle-drawer')">{{data.title}}</div>
                 <ui-readmore class="description" :text="data.description" :max="512" />
@@ -161,19 +162,6 @@
             }
         },
         methods: {
-            getCompleteCategory (category) {
-                const flattenCategories = (category, result = '') => {
-                    result = result.replace(/^/, category.name + (result.length ? '/' : ''))
-
-                    if (category.parentCategory) {
-                        return flattenCategories(category.parentCategory, result)
-                    }
-
-                    return result
-                }
-
-                return flattenCategories(category)
-            },
             showRestAssignees () {
                 this.idState.showAllAssginees = true
 

@@ -145,9 +145,11 @@
                 </el-col> 
                 <el-col :span="4" class="request-category">
                     <span>{{ $t('models.request.category') }}</span>
-                    <p>{{ item.category.parent_id==null?'': categories[item.category.parentCategory.id] == undefined? '':
-                        categories[item.category.parentCategory.id][$i18n.locale]+ ' > ' }}
-                        {{ categories[item.category.id] == undefined? '':categories[item.category.id][$i18n.locale]}}
+
+                    <p>
+                        {{ item.category.parent_id==null?'': categories[item.category.parentCategory.id] == undefined? '':
+                        $t(`models.request.category_list.${categories[item.category.parentCategory.id].name}`) + ' > ' }}
+                        {{ categories[item.category.id] == undefined? '': $t(`models.request.category_list.${categories[item.category.id].name}`) }}
                     </p>
                 </el-col>
                 <el-col :span="4">

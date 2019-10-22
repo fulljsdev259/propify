@@ -5,8 +5,7 @@
             <el-select v-model="model.contract_id" 
                         :placeholder="$t('resident.placeholder.contract')"
                         class="custom-select"
-                        filterable
-                        @change="showSubcategory">
+                        filterable>
                 <el-option v-for="contract in contracts" 
                             :key="contract.id" 
                             :label="contract.building_room_floor_unit" 
@@ -18,28 +17,32 @@
             <el-select v-model="model.category_id" 
                         :placeholder="$t('resident.placeholder.category')"
                         filterable
-                        @change="showSubcategory">
-                <el-option v-for="category in categories" 
-                            :key="category.id" 
-                            :label="category['name_'+$i18n.locale]" 
-                            :value="category.id" />
+                        @change="changeCategory">
+                <el-option
+                    :key="category.id"
+                    :label="$t(`models.request.category_list.${category.name}`)"
+                    :value="category.id"
+                    v-for="category in categories">
+                </el-option>
             </el-select>
         </el-form-item>
 
-        <el-form-item prop="defect" :label="$t('resident.defect_location')" v-if="this.showsubcategory == true" required>
+        <el-form-item prop="defect" :label="$t('resident.defect_location')" v-if="this.showSubCategory == true" required>
             <el-select v-model="model.defect" 
                         :placeholder="$t('resident.placeholder.defect_location')"
                         filterable
-                        @change="showLocationOrRoom">
-                <el-option v-for="category in defect_subcategories" 
-                            :key="category.id" 
-                            :label="category['name_'+$i18n.locale]" 
-                            :value="category.id" />
+                        @change="changeSubCategory">
+                <el-option
+                    :key="category.id"
+                    :label="$t(`models.request.sub_category.${category.name}`)"
+                    :value="category.id"
+                    v-for="category in sub_categories">
+                </el-option>
             </el-select>
         </el-form-item>
 
         <el-form-item :label="$t('models.request.category_options.range')" 
-                    v-if="this.showsubcategory == true && this.showLiegenschaft == true && this.showWohnung == false">
+                    v-if="this.showSubCategory == true && this.showLiegenschaft == true && this.showWohnung == false">
             <el-select :disabled="$can($permissions.update.serviceRequest)"
                         :placeholder="$t(`general.placeholders.select`)"
                         filterable
@@ -54,7 +57,7 @@
             </el-select>
         </el-form-item>
         <el-form-item :label="$t('models.request.category_options.room')"
-                    v-if="this.showsubcategory == true && this.showWohnung == true && this.showLiegenschaft == false">
+                    v-if="this.showSubCategory == true && this.showWohnung == true && this.showLiegenschaft == false">
             <el-select :disabled="$can($permissions.update.serviceRequest)"
                         :placeholder="$t(`general.placeholders.select`)"
                         filterable
@@ -85,7 +88,7 @@
                 </el-option>
             </el-select>
         </el-form-item> -->
-        <el-form-item class="switcher" prop="is_public" v-if="this.showsubcategory == true">
+        <el-form-item class="switcher" prop="is_public" v-if="this.showSubCategory == true">
             <label class="switcher__label" >
                 {{$t('resident.request_public_title')}}
                 <span class="switcher__desc">{{$t('resident.request_public_desc')}}</span>
@@ -186,17 +189,16 @@
                 categories: [],
                 priorities: [],
                 loading: false,
-                defect_subcategories: [],
+                sub_categories: [],
                 address: {},
                 building_locations: [],
                 apartment_rooms: [],
                 contracts: [],
                 mediaUploadMaxSize: MEDIA_UPLOAD_MAX_SIZE,
-                showsubcategory: false,
-                showpayer: false,
+                showSubCategory: false,
+                showPayer: false,
                 showUmgebung: false,
                 showLiegenschaft: false,
-                showacquisition: false,
                 showWohnung: false,
                 request_id: null,
                 audit_id: null,
@@ -204,12 +206,17 @@
             }
         },
         methods: {
-            showSubcategory() {
-                this.showsubcategory = this.model.category_id == 1 ? true : false;
-                this.showpayer = this.model.qualification == 5 ? true : false;
+            changeCategory() {
+                let children = this.$constants.requests.categories_data.parent_child[this.model.category_id]
+                this.showSubCategory = children.length > 0 ? true : false;
+                let p_category = this.categories.find(category => { return category.id == this.model.category_id});
+                if(this.showSubCategory) {
+                    this.sub_categories = p_category ? p_category.sub_categories : [];
+                }
+                this.showPayer = this.model.qualification == 5 ? true : false;
             },
-            showLocationOrRoom() {
-                const subcategory = this.defect_subcategories.find(category => {
+            changeSubCategory() {
+                const subcategory = this.sub_categories.find(category => {
                     return category.id == this.model.defect;
                 });
 
@@ -329,16 +336,17 @@
             }
             
             try {
-                const {data} = await this.$store.dispatch('getRequestCategoriesTree', {get_all: true})
-
-                this.categories = data.filter(category => {
-                    return category.parent_id !== 1;
-                });
+                this.categories = this.$constants.requests.categories_data.tree
                 
-                let defect_cat = data.find(category => {
-                    return category.id === 1;
-                });
-                this.defect_subcategories = defect_cat.categories;
+                if(this.model.category_id)
+                {
+                    let p_category = this.categories.find(category => {
+                        return category.id === this.model.category_id;
+                    });
+
+                    this.sub_categories = p_category ? p_category.sub_categories : [];
+                    console.log(this.sub_categories)
+                }
 
             } catch (err) {
                 displayError(err)
