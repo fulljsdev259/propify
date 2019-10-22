@@ -101,7 +101,7 @@
         data() {
             return {
                 resident_logo_src: '',
-                logo_scr: '',
+                logo_src: '',
                 phone: '',
                 street: '',
                 zip: '',
