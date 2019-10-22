@@ -269,6 +269,7 @@
                 }
                 @media screen and (max-width: 1200px) {
                     padding: 20px;
+                    align-items: center;
                 }
                 @media screen and (max-width: 1024px) {
                     align-items: center;
@@ -316,6 +317,7 @@
                         padding-top: 20px;
                         h1 {
                             text-align: center;
+                            font-size: 28px;
                         }
                         p {
                             color: #515862;
