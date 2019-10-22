@@ -437,6 +437,16 @@ return [
         'sort' => 'Sortierung',
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',
+        'category_list' => [
+            'general' => 'General concerns',
+            'malfunction' => 'Malfunction',
+            'deficiency' => 'Deficiency'
+        ],
+        'sub_category' => [
+            'surrounding' => 'Surrounding',
+            'real_estate' => 'Real Estate',
+            'flat' => 'Flat',
+        ],
         'media' => [
             'added' => 'Mediendatei hinzugefügt',
             'removed' => 'Mediendatei entfernt.',

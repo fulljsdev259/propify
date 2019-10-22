@@ -116,3 +116,65 @@ function get_type_correspond_role($type)
         return \App\Models\Role::whereName($roleName)->first();
     });
 }
+
+function get_category_details($category)
+{
+    $values = \App\Models\Request::CategoryAttributes;
+    return [
+        'id' => $category,
+        'parent_id' => null,
+        'name' => \App\Models\Request::Category[$category] ?? 'not exists',
+        'name_en' => \App\Models\Request::Category[$category] ?? 'not exists',
+        'name_de' => \App\Models\Request::Category[$category] ?? 'not exists',
+        'name_it' => \App\Models\Request::Category[$category] ?? 'not exists',
+        'name_fr' => \App\Models\Request::Category[$category] ?? 'not exists',
+        'description' => 'description @TODO',
+        'acquisition' => get_category_attribute(\App\Models\Request::Acquisition, $values, $category),
+        'has_qualifications' => get_category_attribute(\App\Models\Request::HasQualifications, $values, $category),
+        'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $category),
+        'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $category),
+        'categories' => []
+    ];
+}
+
+function get_sub_category_details($subCategory)
+{
+    if (is_null($subCategory)) {
+        return [];
+    }
+
+    $config = \App\Models\Request::CategorySubCategory;
+    $parentId = null;
+    foreach ($config as $id => $values) {
+        if (in_array($subCategory, $values)) {
+            $parentId = $id;
+            break;
+        }
+    }
+
+
+    $values = \App\Models\Request::SubCategoryAttributes;
+    return [
+        'id' => $subCategory,
+        'parent_id' => $parentId,
+        'name' => \App\Models\Request::SubCategory[$subCategory] ?? 'not exists',
+        'name_en' => \App\Models\Request::SubCategory[$subCategory] ?? 'not exists',
+        'name_de' => \App\Models\Request::SubCategory[$subCategory] ?? 'not exists',
+        'name_fr' => \App\Models\Request::SubCategory[$subCategory] ?? 'not exists',
+        'name_it' => \App\Models\Request::SubCategory[$subCategory] ?? 'not exists',
+        'description' => 'description @TODO',
+        'acquisition' => get_category_attribute(\App\Models\Request::Acquisition, $values, $subCategory),
+        'has_qualifications' => get_category_attribute(\App\Models\Request::HasQualifications, $values, $subCategory),
+        'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $subCategory),
+        'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $subCategory),
+        'categories' => []
+    ];
+}
+
+function get_category_attribute($attribute, $attributeValues, $key)
+{
+    if (empty($attributeValues[$key])) {
+        return 0;
+    }
+    return (int) in_array($attribute, $attributeValues[$key]);
+}

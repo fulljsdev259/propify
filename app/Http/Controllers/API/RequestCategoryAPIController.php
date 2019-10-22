@@ -134,15 +134,16 @@ class RequestCategoryAPIController extends AppBaseController
      */
     public function categoryTree(ListRequest $request)
     {
-        $this->requestCategoryRepository->pushCriteria(new RequestCriteria($request));
-        $this->requestCategoryRepository->pushCriteria(new LimitOffsetCriteria($request));
+        $categories = Request::CategorySubCategory;
+        $response = [];
+        foreach ($categories as $category => $subCategories) {
+            $data = get_category_details($category);
+            foreach ($subCategories as $subCategory) {
+                $data['categories'][] = get_sub_category_details($subCategory);
+            }
 
-        $requestCategories = $this->requestCategoryRepository->with('categories')
-            ->findWhere([
-                'parent_id' => null
-            ]);
-
-        $response = (new RequestCategoryTransformer())->transformCollection($requestCategories);
+            $response[] = $data;
+        }
 
         return $this->sendResponse($response, 'Service Requests Categories retrieved successfully');
     }
