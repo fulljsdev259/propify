@@ -38,7 +38,7 @@ class FilterByStatusCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
         $status = $this->request->get('status', null);
-        if (!\Auth::user()->can('list-pinboard')) {
+        if (! \Auth::user()->can('list-pinboard')) {
             $status = Pinboard::StatusPublished;
         }
         if ($status) {
