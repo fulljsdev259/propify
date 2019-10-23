@@ -655,7 +655,8 @@ export default (config = {}) => {
                         //     this.$set(this.model, 'defect', data.category.id);
                         // }
                         this.$set(this.model, 'category_id', data.category.id);
-                        this.$set(this.model, 'sub_category_id', data.sub_category.id);
+                        if(data.sub_category)
+                            this.$set(this.model, 'sub_category_id', data.sub_category.id);
                         this.$set(this.model, 'created_by', data.created_by);
                         this.$set(this.model, 'building', data.resident.building.name);
 
