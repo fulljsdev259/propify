@@ -91,18 +91,6 @@ use Illuminate\Support\Facades\Storage;
  *          type="string"
  *      ),
  *      @SWG\Property(
- *          property="rent_start",
- *          description="rent_start",
- *          type="string",
- *          format="date"
- *      ),
- *      @SWG\Property(
- *          property="rent_end",
- *          description="rent_end",
- *          type="string",
- *          format="date"
- *      ),
- *      @SWG\Property(
  *          property="created_at",
  *          description="created_at",
  *          type="string",
@@ -138,8 +126,6 @@ use Illuminate\Support\Facades\Storage;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $rent_start
- * @property \Illuminate\Support\Carbon|null $rent_end
  * @property-read \App\Models\Address|null $address
  * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read int|null $audits_count
@@ -224,8 +210,6 @@ class Resident extends AuditableModel implements HasMedia
         'first_name' => 'required|string',
         'last_name' => 'required|string',
         'birth_date' => 'date',
-        'rent_start' => 'date',
-        'rent_end' => 'date|after_or_equal:rent_start',
         'status' => 'digits_between:1,2|numeric'
     ];
 
@@ -250,8 +234,6 @@ class Resident extends AuditableModel implements HasMedia
         'private_phone',
         'work_phone',
         'status',
-        'rent_start',
-        'rent_end',
         'resident_format',
         'review',
         'rating',
@@ -260,7 +242,7 @@ class Resident extends AuditableModel implements HasMedia
         'type',
     ];
 
-    protected $dates = ['deleted_at', 'rent_start', 'rent_end'];
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that should be casted to native types.
@@ -276,8 +258,6 @@ class Resident extends AuditableModel implements HasMedia
         'first_name' => 'string',
         'last_name' => 'string',
         'birth_date' => 'date',
-        'rent_start' => 'date',
-        'rent_end' => 'date',
         'mobile_phone' => 'string',
         'private_phone' => 'string',
         'work_phone' => 'string',

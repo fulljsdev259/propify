@@ -49,12 +49,6 @@ class ResidentTransformer extends BaseTransformer
         if ($model->relationExists('user')) {
             $response['user'] = (new UserTransformer)->transform($model->user);
         }
-        if ($model->rent_start) {
-            $response['rent_start'] = $model->rent_start->format('Y-m-d');
-        }
-        if ($model->rent_end) {
-            $response['rent_end'] = $model->rent_end->format('Y-m-d');
-        }
 
         $response['media'] = [];
         if ($model->contracts || $model->relationExists('contracts')) { // @TODO delete reloading
