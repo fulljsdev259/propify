@@ -118,7 +118,6 @@
             // })
 
             this.contracts = this.$store.getters.loggedInUser.resident.contracts
-            console.log('contracts', this.contracts)
             // try {
             //     const {data: {unit, media, address, rent_start, rent_end, }} = await this.$store.dispatch('myTenancy')
 
