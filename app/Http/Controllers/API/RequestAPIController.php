@@ -421,18 +421,29 @@ class RequestAPIController extends AppBaseController
      *      description="Update Request",
      *      produces={"application/json"},
      *      @SWG\Parameter(
-     *          name="ids",
+     *          name="request_ids",
      *          description="ids of Request",
      *          type="integer",
      *          required=true,
      *          in="path"
      *      ),
      *      @SWG\Parameter(
-     *          name="body",
-     *          in="body",
-     *          description="Request that should be updated",
-     *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Request")
+     *          name="property_manager_ids",
+     *          description="ids of Property Managere",
+     *          type="integer",
+     *          in="path"
+     *      ),
+     *      @SWG\Parameter(
+     *          name="service_provider_ids",
+     *          description="ids of service providers",
+     *          type="integer",
+     *          in="path"
+     *      ),
+     *      @SWG\Parameter(
+     *          name="status",
+     *          description="status",
+     *          type="integer",
+     *          in="path"
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -463,12 +474,26 @@ class RequestAPIController extends AppBaseController
     public function massEdit(MassEditRequest $massEditRequest)
     {
         //get in MassEditRequest validation class
-        $requests = $massEditRequest->get('requests');
+        $requests = $massEditRequest->request->get('requests');
+        $managers = $massEditRequest->request->get('managers');
+        if ($managers) {
+            $this->requestRepository->massAssign($requests, 'managers', $managers);
+        }
+
+        //get in MassEditRequest validation class
+        $providers = $massEditRequest->request->get('providers');
+        if ($providers) {
+            $this->requestRepository->massAssign($requests, 'providers', $providers);
+        }
+
+        $status = $massEditRequest->get('status');
+        if ($status) {
+            $this->requestRepository->massUpdateAttribute($requests, ['status' => $status]);
+        }
+
         $response = [];
         foreach ($requests as $request) {
-            $updatedRequest = $this->requestRepository->updateExisting($request, $massEditRequest->get('attributes'));
-
-            $updatedRequest->load([
+            $request->load([
                 'media',
                 'resident.user',
                 'contract' => function ($q) {
@@ -485,7 +510,7 @@ class RequestAPIController extends AppBaseController
                 'providers.user',
                 'creator'
             ]);
-            $response[] = (new RequestTransformer)->transform($updatedRequest);
+            $response[] = (new RequestTransformer)->transform($request);
         }
 
         return $this->sendResponse($response, __('models.request.saved'));
@@ -1004,8 +1029,8 @@ class RequestAPIController extends AppBaseController
      */
     public function assignManager(int $id, int $pmid, UserRepository $uRepo, AssignRequest $r)
     {
-        $sr = $this->requestRepository->findWithoutFail($id);
-        if (empty($sr)) {
+        $request = $this->requestRepository->findWithoutFail($id);
+        if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
         }
 
@@ -1015,16 +1040,16 @@ class RequestAPIController extends AppBaseController
             return $this->sendError(__('models.request.errors.user_not_found'));
         }
 
-        $sr->managers()->sync([$pmid => ['created_at' => now()]], false);
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
+        $request->managers()->sync([$pmid => ['created_at' => now()]], false);
+        $request->load('media', 'resident.user', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
 
-        foreach ($sr->providers as $p) {
-            $sr->conversationFor($p->user, $manager->user);
+        foreach ($request->providers as $p) {
+            $request->conversationFor($p->user, $manager->user);
         }
-        $sr->touch();
+        $request->touch();
         $manager->touch();
-        return $this->sendResponse($sr, __('general.attached.manager'));
+        return $this->sendResponse($request, __('general.attached.manager'));
     }
 
     /**

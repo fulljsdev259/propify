@@ -403,4 +403,30 @@ class RequestRepository extends BaseRepository
     {
         return $this->model->whereIn('unit_id', $ids)->count();
     }
+
+    /**
+     * @param $requests
+     * @param $relation
+     * @param $items
+     */
+    public function massAssign($requests, $relation, $items)
+    {
+        foreach ($requests as $request) {
+            foreach ($items as $item) {
+                $request->{$relation}()->sync([$item->id => ['created_at' => now()]], false);
+            }
+        }
+    }
+
+    /**
+     * @param $requests
+     * @param $data
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function massUpdateAttribute($requests, $data)
+    {
+        foreach ($requests as $request) {
+            $this->updateExisting($request, $data);
+        }
+    }
 }
