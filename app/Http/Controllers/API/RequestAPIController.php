@@ -733,7 +733,7 @@ class RequestAPIController extends AppBaseController
         $sr->conversationFor(Auth::user(), $sp->user);
         $sr->touch();
         $sp->touch();
-        return $this->sendResponse($sr, __('general.attached.service'));
+        return $this->sendResponse($sr, __('general.attached.provider'));
     }
 
     /**

@@ -128,8 +128,7 @@ export default (config = {}) => {
                                 role: 'administrator'
                             });
                         }
-                        this.toAssignList = resp.data;
-                        EventBus.$emit('assignee-get-counted', this.toAssignList.total);
+                        this.toAssignList = resp.data;                        
                     } catch (err) {
                         displayError(err);
                     } finally {

@@ -385,8 +385,7 @@ return [
             'deleted' => "Erreur d'effacement trimestriel : ",
         ],
     ],
-    'request' => [
-        "audits" => "Audits",
+    'request' => [        
         "deleted" => "Richiesta supprimée",
         "title" => "Demandes",
         "created" => "Créé",

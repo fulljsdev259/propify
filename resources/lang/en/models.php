@@ -385,8 +385,7 @@ return [
             'deleted' => "Quarter deleted error: ",
         ],
     ],
-    'request' => [
-        'audits' => 'Audits',
+    'request' => [        
         'deleted' => 'Request deleted',
         'title' => 'Requests',
         'created' => 'Created',
