@@ -21,7 +21,7 @@
                             <b>{{ phone }}</b>
                         </div> -->
                         <div class="bottom-logo">
-                            <img :src="logo_src" v-show="logo_src" width="150"/>
+                            <img :src="logo_src" v-show="logo_src" width="120"/>
                         </div>
                         <div class="address">
                             Fortimo AG - {{ street }} {{ zip }} {{ city }}
@@ -85,7 +85,7 @@
                         <b>{{ phone }}</b>
                     </div> -->
                     <div class="bottom-logo">
-                        <img :src="logo_src" v-show="logo_src" width="150"/>
+                        <img :src="logo_src" v-show="logo_src" width="120"/>
                     </div>
                     <div class="address">
                         Fortimo AG - {{ street }} {{ zip }} {{ city }}
