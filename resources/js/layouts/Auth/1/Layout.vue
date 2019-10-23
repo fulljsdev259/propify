@@ -159,10 +159,12 @@
                 content: '';
             }
         } 
-        @media screen and (max-height: 650px) {
+        @media screen and (max-height: 768px) {
             height: auto;
-            .login-content {
-                padding-top: 85px;
+            @media screen and (min-width: 554px) {
+                .login-content {
+                    padding-top: 85px;
+                }
             }
         }
         .company-info {

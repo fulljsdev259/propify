@@ -62,6 +62,11 @@
         }
   
     }
+    @media screen and (max-width: 1024px) {
+        .el-col {
+            width: 100%;
+        }
+    }
     .el-form-item {
         &:nth-of-type(1) {
             margin-top: 20px;
