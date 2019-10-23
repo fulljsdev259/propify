@@ -126,7 +126,7 @@
             }
         },
         methods: {
-            ...mapActions(['getBuildings', 'getRequestCategoriesTree']),
+            ...mapActions(['getBuildings']),
             add() {
                 this.$router.push({
                     name: 'adminServicesAdd'
