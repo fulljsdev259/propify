@@ -651,15 +651,6 @@ class Request extends AuditableModel implements HasMedia
     ];
 
     /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rulesPutService = [
-        'status' => 'integer'
-    ];
-
-    /**
      * @var array
      */
     protected $auditEvents = [
