@@ -399,7 +399,7 @@ return [
         'mass_edit' => 'Massenbearbeitung',
         'assign_partners' => 'Servicepartner zuordnen',
         'assign_managers' => 'Bewirtschafter zuweisen',
-        'change_status' => 'Änderungsstand',
+        'change_status' => 'Status ändern',
         'due_date' => 'Zu erledigen bis',
         'solved_date' => 'Erledigt Datum',
         'closed_date' => 'Erledigt am',
