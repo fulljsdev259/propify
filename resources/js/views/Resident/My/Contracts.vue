@@ -14,8 +14,8 @@
                     <div class="name-line">
                         <b>{{$t('resident.name')}}: </b>
                         <div>
-                            <div>{{contract.building.address.street}} {{contract.building.address.house_num}}</div>
-                            <div>{{contract.building.address.zip}} {{contract.building.address.city}}</div>
+                            <div>{{contract.address.street}} {{contract.address.house_num}}</div>
+                            <div>{{contract.address.zip}} {{contract.address.city}}</div>
                         </div>
                     </div>
                     <el-divider class="column-divider" content-position="left">{{$t('resident.unit')}}</el-divider>
@@ -118,7 +118,6 @@
             // })
 
             this.contracts = this.$store.getters.loggedInUser.resident.contracts
-
             // try {
             //     const {data: {unit, media, address, rent_start, rent_end, }} = await this.$store.dispatch('myTenancy')
 

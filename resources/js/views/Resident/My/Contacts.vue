@@ -62,7 +62,7 @@
             })
 
             try {
-                const {service_providers} = await this.$store.dispatch('getBuilding', {id: this.$store.getters.loggedInUser.resident.building_id})
+                const {service_providers} = await this.$store.dispatch('getBuilding', {id: this.$store.getters.loggedInUser.resident.building.id})
 
                 this.contacts = service_providers
             } catch (err) {

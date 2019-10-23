@@ -65,9 +65,9 @@
             })
 
             try {
-                const {media} = await this.$store.dispatch('getBuilding', {id: this.$store.getters.loggedInUser.resident.building_id})
+
+                const {media} = await this.$store.dispatch('getBuilding', {id: this.$store.getters.loggedInUser.resident.building.id})
                 
-                console.log('media', media)
                 this.media = media
                 this.documents = media.reduce((obj, file) => {
                     obj[file.collection_name] = obj[file.collection_name] || []
