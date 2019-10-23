@@ -96,6 +96,7 @@ class RequestRepository extends BaseRepository
             $attr['description'] = $attributes['description'];
             $attr['contract_id'] = $attributes['contract_id'];
             $attr['category'] = $attributes['category'];
+            $attr['sub_category'] = $attributes['sub_category'];
             $attr['visibility'] = $attributes['visibility'];
            // $attr['priority'] = $attributes['priority'];
           //  $attr['internal_priority'] = $attributes['internal_priority'] ?? $attributes['priority'];
@@ -126,7 +127,8 @@ class RequestRepository extends BaseRepository
             $attr = [];
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
-            $attr['category_id'] = $attributes['category_id'];
+            $attr['category'] = $attributes['category'];
+            $attr['sub_category'] = $attributes['sub_category'];
             $attr['status'] = $attributes['status'];
 
             return $attr;
