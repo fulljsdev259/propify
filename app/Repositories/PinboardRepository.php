@@ -377,7 +377,7 @@ class PinboardRepository extends BaseRepository
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function newContractPinboard(Contract $contract)
+    public function newResidentContractPinboard(Contract $contract)
     {
         if (empty($contract->building_id)) {
             return false;

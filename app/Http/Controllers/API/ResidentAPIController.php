@@ -271,11 +271,11 @@ class ResidentAPIController extends AppBaseController
      * )
      *
      * @param CreateRequest $request
-     * @param PinboardRepository $pr
+     * @param PinboardRepository $pinboardRepository
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function store(CreateRequest $request, PinboardRepository $pr)
+    public function store(CreateRequest $request, PinboardRepository $pinboardRepository)
     {
         $input = (new ResidentTransformer)->transformRequest($request->all());
         //@TODO This action already done in  ResidentTransformer delete it
@@ -301,6 +301,9 @@ class ResidentAPIController extends AppBaseController
 
         try {
             $resident = $this->residentRepository->create($input);
+            foreach ($resident->contracts as $contract) {
+                $pinboardRepository->newResidentContractPinboard($contract);
+            }
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->sendError(__('models.resident.errors.create') . $e->getMessage());
@@ -483,13 +486,13 @@ class ResidentAPIController extends AppBaseController
      *
      * @param $id
      * @param UpdateRequest $request
-     * @param PinboardRepository $pr
+     * @param PinboardRepository $pinboardRepository
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update($id, UpdateRequest $request, PinboardRepository $pr)
+    public function update($id, UpdateRequest $request, PinboardRepository $pinboardRepository)
     {
         $input = (new ResidentTransformer)->transformRequest($request->all());
         /** @var Resident $resident */
@@ -544,7 +547,7 @@ class ResidentAPIController extends AppBaseController
             }
         ]);
         if ($shouldPinboard) {
-            $pr->newResidentPinboard($resident);
+            $pinboardRepository->newResidentPinboard($resident);
         }
         //if ($userPass) {
             //$resident->setCredentialsPDF();
