@@ -36,13 +36,8 @@
                     </div>
                 </div>                  
                 <div class="category" @click="$emit('toggle-drawer')">
-                    <div class="item">
-                        {{$t('resident.category')}}:
-                        <div class="label">
-                            {{ $t(`models.request.category_list.${data.category.name}`) }}
-                            {{ data.sub_category ? " > " + $t(`models.request.sub_category.${data.sub_category.name}`) : ""}}
-                        </div>
-                    </div>
+                    {{ $t(`models.request.category_list.${data.category.name}`) }}
+                    {{ data.sub_category ? " > " + $t(`models.request.sub_category.${data.sub_category.name}`) : ""}}
                 </div>                
                 <div class="title" @click="$emit('toggle-drawer')">{{data.title}}</div>
                 <ui-readmore class="description" :text="data.description" :max="512" />
@@ -196,7 +191,7 @@
                     overflow-y: auto
 
                     #pane-overview
-                        .statuses, .category
+                        .statuses
                             display: flex
                             align-items: center
                             margin-bottom: 12px
