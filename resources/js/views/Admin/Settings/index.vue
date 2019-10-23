@@ -319,23 +319,32 @@
                                                 <!-- <img :src="SettingsLogo" ref="SettingsLogo"
                                                      v-show="SettingsLogo || model.logo_upload"
                                                      width="300px"> -->
-                                                <upload-document @fileUploaded="setAvatarLogoUpload" class="drag-custom" drag/>
-                                                <img :src="logo_upload_img"
-                                                     v-show="logo_upload_img"
-                                                     >
-                                                <img :src="SettingsLogo" ref="SettingsLogo"
-                                                     v-show="SettingsLogo && !logo_upload_img"
-                                                    >
-                                                
+                                                <cropper
+                                                        :boundary="{
+                                                            width: 250,
+                                                            height: 360
+                                                        }"
+                                                        :viewport="{
+                                                            width: 250,
+                                                            height: 250
+                                                        }"
+                                                        :resize="false"
+                                                        :defaultAvatarSrc="SettingsLogo"
+                                                        @cropped="croppedAvatarLogo"/>
                                             </el-form-item>
                                             <el-form-item :label="$t('models.user.circle_logo')">
-                                                <upload-document @fileUploaded="setCircleLogoUpload" class="drag-custom" drag/>
-                                                <img :src="circle_logo_upload_img"
-                                                     v-show="circle_logo_upload_img"
-                                                    >
-                                                <img :src="SettingsCircleLogo" ref="SettingsCircleLogo"
-                                                     v-show="SettingsCircleLogo && !circle_logo_upload_img"
-                                                    >
+                                                <cropper
+                                                        :boundary="{
+                                                            width: 250,
+                                                            height: 360
+                                                        }"
+                                                        :viewport="{
+                                                            width: 250,
+                                                            height: 250
+                                                        }"
+                                                        :resize="false"
+                                                        :defaultAvatarSrc="SettingsCircleLogo"
+                                                        @cropped="croppedCircleLogo"/>
                                             </el-form-item>
                                             <!-- <el-form-item :label="$t('models.user.favicon_icon')">
                                                 <upload-document @fileUploaded="setFaviconIconUpload" class="drag-custom" drag/>
@@ -347,13 +356,18 @@
                                                     >
                                             </el-form-item> -->
                                             <el-form-item :label="$t('models.user.resident_logo')">
-                                                <upload-document @fileUploaded="setResidentLogoUpload" class="drag-custom" drag/>
-                                                <img :src="resident_logo_upload_img"
-                                                     v-show="resident_logo_upload_img"
-                                                    >
-                                                <img :src="SettingsResidentLogo" ref="SettingsResidentLogo"
-                                                     v-show="SettingsResidentLogo && !resident_logo_upload_img"
-                                                     >
+                                                <cropper
+                                                        :boundary="{
+                                                            width: 250,
+                                                            height: 360
+                                                        }"
+                                                        :viewport="{
+                                                            width: 250,
+                                                            height: 250
+                                                        }"
+                                                        :resize="false"
+                                                        :defaultAvatarSrc="SettingsResidentLogo"
+                                                        @cropped="croppedResidentLogo"/>
                                             </el-form-item>
                                             <el-form-item :label="$t('settings.primary_color')">
                                                 <el-color-picker
@@ -512,7 +526,6 @@
 <script>
     import Heading from 'components/Heading';
     import Cropper from 'components/Cropper';
-    import UploadDocument from 'components/UploadDocument';
     import {mapActions} from 'vuex';
     import {displayError, displaySuccess} from 'helpers/messages';
     import CategoriesListing from './Categories'
@@ -526,7 +539,6 @@
         components: {
             Heading,
             Cropper,
-            UploadDocument,
             CategoriesListing,
             TemplatesListing,
             TemplateEdit
@@ -648,9 +660,9 @@
             SettingsCircleLogo() {
                 return this.model.circle_logo ? `/${this.model.circle_logo}?${Date.now()}` : '';
             },
-            SettingsFaviconIcon() {
-                return this.model.favicon_icon ? `/${this.model.favicon_icon}?${Date.now()}` : '';
-            },
+            // SettingsFaviconIcon() {
+            //     return this.model.favicon_icon ? `/${this.model.favicon_icon}?${Date.now()}` : '';
+            // },
             SettingsResidentLogo() {
                 return this.model.resident_logo ? `/${this.model.resident_logo}?${Date.now()}` : '';
             },
@@ -772,24 +784,21 @@
                     }
                 });
             },
-            setLogoUpload(image) {
-                this.model.logo_upload = image;
+            // setLogoUpload(image) {
+            //     this.model.logo_upload = image;
+            // },
+            croppedAvatarLogo(e) {
+                this.model.logo_upload = e;
             },
-            setAvatarLogoUpload(image) {
-                this.model.logo_upload = image.src;
-                this.logo_upload_img = "data:image/png;base64," + image.src;
+            croppedCircleLogo(e) {
+                this.model.circle_logo_upload = e;
             },
-            setCircleLogoUpload(image) {
-                this.model.circle_logo_upload = image.src;
-                this.circle_logo_upload_img = "data:image/png;base64," + image.src;
-            },
-            setFaviconIconUpload(image) {
-                this.model.favicon_icon_upload = image.src;
-                this.favicon_icon_upload_img = "data:image/png;base64," + image.src;
-            },
-            setResidentLogoUpload(image) {
-                this.model.resident_logo_upload = image.src;
-                this.resident_logo_upload_img = "data:image/png;base64," + image.src;
+            // setFaviconIconUpload(image) {
+            //     this.model.favicon_icon_upload = image.src;
+            //     this.favicon_icon_upload_img = "data:image/png;base64," + image.src;
+            // },
+            croppedResidentLogo(e) {
+                this.model.resident_logo_upload = e;
             },
             toggleDrawer () {
                 this.visibleDrawer = !this.visibleDrawer
