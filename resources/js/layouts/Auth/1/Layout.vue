@@ -127,7 +127,7 @@
             top: 40px;
             right: 40px;
             z-index: 3000;
-            @media screen and (max-width: 554px) { 
+            @media screen and (max-width: 1024px) { 
                 top: 20px;
                 right: 20px;
             }
@@ -161,6 +161,9 @@
         } 
         @media screen and (max-height: 768px) {
             height: auto;
+            .logo {
+                margin-bottom: 35px !important;
+            }
             @media screen and (min-width: 554px) {
                 .login-content {
                     padding-top: 85px;
@@ -229,6 +232,11 @@
                 @media screen and (max-width: 992px) {
                     padding: 0 20px;
                 }
+                @media screen and (min-width: 1400px) {
+                    .company-info {
+                        display: none;
+                    }
+                }
                 .login-pane {
                     flex: 1;
                     display: flex;
@@ -240,8 +248,17 @@
                         img {
                             width: 130px;
                         }
+                        @media screen and (max-width: 850px) {
+                            margin: 20px auto 1em;
+                        }
+                        @media screen and (max-width: 554px) {
+                            margin: 0 auto 1em;
+                        }
                     }
-                }
+                    @media screen and (max-width: 850px) {
+                        justify-content: flex-start;
+                    }
+                 }
                 &:before {
                     content: '';
                     position: absolute;
