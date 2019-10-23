@@ -27,6 +27,7 @@ return [
     ],
     'resident' => [
         'view' => 'View',
+        'name' => 'Resident',
         'view_title' => 'View resident',
         'edit_title' => 'Edit Resident',
         'download_credentials' => 'Download credentials',
@@ -394,6 +395,10 @@ return [
         'category' => 'Category',
         'edit_title' => 'Edit Request',
         'add_title' => 'Add Request',
+        'mass_edit' => 'Mass Edit',
+        'assign_partners' => 'Assign Service Partners',
+        'assign_managers' => 'Assign Property Managers',
+        'change_status' => 'Change Status',
         'due_date' => 'Due date',
         'solved_date' => 'Completed date',
         'closed_date' => 'Closed date',
@@ -434,7 +439,17 @@ return [
         'send_person' => 'Which person should be notified?',
         'sort' => 'Sort',
         'reset_sort' => 'Reset Sort',
-        'creation_date' => 'Creation Date',        
+        'creation_date' => 'Creation Date',
+        'category_list' => [
+            'general' => ' Allgemeine Anliegen',
+            'malfunction' => 'Fehlfunktion',
+            'deficiency' => 'Mangel (Zeitlich begrenzt)'
+        ],
+        'sub_category' => [
+            'surrounding' => 'Umgebung',
+            'real_estate' => 'Immobilien',
+            'flat' => 'flach',
+        ],
         'media'  => [
             'added' => 'Document added',
             'removed' => 'Document removed',

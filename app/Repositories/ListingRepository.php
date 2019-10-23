@@ -41,8 +41,9 @@ class ListingRepository extends BaseRepository
     {
         $u = \Auth::user();
         if ($u->resident()->exists() && !$u->resident->homeless()) {
-            $atts['address_id'] = $u->resident->building->address_id;
-            $atts['quarter_id'] = $u->resident->building->quarter_id;
+            $firstContractBuilding = $u->resident->contracts->first()->building; // @TODO contract related
+            $atts['address_id'] = $firstContractBuilding->address_id;
+            $atts['quarter_id'] = $firstContractBuilding->quarter_id;
         }
 
         if ($atts['visibility'] != Listing::VisibilityAll &&
@@ -77,28 +78,28 @@ class ListingRepository extends BaseRepository
         return $listing;
     }
 
-    public function notify(Listing $listing)
-    {
-        $users = [];
-        if ($listing->visibility == Listing::VisibilityAll) {
-            $users = User::all();
-        }
-        if ($listing->visibility == Listing::VisibilityQuarter) {
-            // @TODO use where has and contract related
-            $users = User::select('users.*')
-                ->join('residents', 'residents.user_id', '=', 'users.id')
-                ->join('buildings', 'buildings.id', '=', 'residents.building_id')
-                ->where('buildings.quarter_id', $listing->quarter_id)
-                ->get();
-        }
-        if ($listing->visibility == Listing::VisibilityAddress) {
-            // @TODO use where has and contract related
-            $users = User::select('users.*')
-                ->join('residents', 'residents.user_id', '=', 'users.id')
-                ->join('buildings', 'buildings.id', '=', 'residents.building_id')
-                ->where('buildings.address_id', $listing->address_id)
-                ->get();
-        }
-        Notification::send($users, new ListingPublished($listing));
-    }
+//    public function notify(Listing $listing)
+//    {
+//        $users = [];
+//        if ($listing->visibility == Listing::VisibilityAll) {
+//            $users = User::all();
+//        }
+//        if ($listing->visibility == Listing::VisibilityQuarter) {
+//            // @TODO use where has and contract related
+//            $users = User::select('users.*')
+//                ->join('residents', 'residents.user_id', '=', 'users.id')
+//                ->join('buildings', 'buildings.id', '=', 'residents.building_id')
+//                ->where('buildings.quarter_id', $listing->quarter_id)
+//                ->get();
+//        }
+//        if ($listing->visibility == Listing::VisibilityAddress) {
+//            // @TODO use where has and contract related
+//            $users = User::select('users.*')
+//                ->join('residents', 'residents.user_id', '=', 'users.id')
+//                ->join('buildings', 'buildings.id', '=', 'residents.building_id')
+//                ->where('buildings.address_id', $listing->address_id)
+//                ->get();
+//        }
+//        Notification::send($users, new ListingPublished($listing));
+//    }
 }

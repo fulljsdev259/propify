@@ -84,7 +84,7 @@ class RequestAPIController extends AppBaseController
      *          required=false,
      *      ),
      *     @SWG\Parameter(
-     *          name="category_id",
+     *          name="category",
      *          in="query",
      *          type="integer",
      *          description=" Filter by Category",
@@ -130,8 +130,7 @@ class RequestAPIController extends AppBaseController
 
         $getAll = $listRequest->get('get_all', false);
         if ($getAll) {
-            $requests = $this->requestRepository
-                ->with('category')->get();
+            $requests = $this->requestRepository->get();
             $response = (new RequestTransformer)->transformCollection($requests);
             return $this->sendResponse($response, 'Requests retrieved successfully');
         }
@@ -146,7 +145,6 @@ class RequestAPIController extends AppBaseController
                 'contract' => function ($q) {
                     $q->with('building.address', 'unit');
                 },
-                'category',
                 'comments.user',
                 'providers.address:id,country_id,state_id,city,street,zip',
                 'providers.user',
@@ -221,6 +219,9 @@ class RequestAPIController extends AppBaseController
     public function store(CreateRequest $createRequest)
     {
         $input = $createRequest->all();
+        if (isset($input['category_id'])) {
+            $input['category'] = $input['category_id']; // @TODO delete
+        }
 //        $input['internal_priority'] = $input['internal_priority'] ?? $input['priority'];
         $request = $this->requestRepository->create($input);
         $this->requestRepository->notifyNewRequest($request);
@@ -236,7 +237,6 @@ class RequestAPIController extends AppBaseController
             'contract'  => function ($q) {
                 $q->with('building.address', 'unit');
             },
-            'category',
             'comments.user',
             'providers.address:id,country_id,state_id,city,street,zip',
             'providers.user',
@@ -300,7 +300,6 @@ class RequestAPIController extends AppBaseController
         $request->load([
             'media',
             'resident.user',
-            'category',
             'managers',
             'users',
             'remainder_user',
@@ -376,6 +375,9 @@ class RequestAPIController extends AppBaseController
     public function update($id, UpdateRequest $updateRequest)
     {
         $input = $updateRequest->only(Request::Fillable);
+        if (isset($updateRequest->category_id)) {
+            $input['category'] = $updateRequest->category_id; // @TODO delete
+        }
         /** @var Request $request */
         $request = $this->requestRepository->findWithoutFail($id);
         if (empty($request)) {
@@ -395,7 +397,6 @@ class RequestAPIController extends AppBaseController
             'contract' => function ($q) {
                 $q->with('building.address', 'unit');
             },
-            'category',
             'managers.user',
             'users',
             'remainder_user',
@@ -721,7 +722,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $sr->providers()->sync([$pid => ['created_at' => now()]], false);
-        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
 
         foreach ($sr->managers as $manager) {
@@ -824,7 +825,7 @@ class RequestAPIController extends AppBaseController
         // @TODO check admin or super admin
 
         $sr->users()->sync([$uid => ['created_at' => now()]], false);
-        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
 
         foreach ($sr->providers as $p) {
@@ -936,7 +937,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $sr->managers()->sync([$pmid => ['created_at' => now()]], false);
-        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
 
         foreach ($sr->providers as $p) {
@@ -1082,7 +1083,7 @@ class RequestAPIController extends AppBaseController
 
         $sr->tags()->sync($tag, false);
         $sr->touch();
-        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
 
         return $this->sendResponse($sr, __('general.attached.tag'));
@@ -1168,7 +1169,7 @@ class RequestAPIController extends AppBaseController
             $sr->touch();
         }
 
-        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
 
         return $this->sendResponse($sr, __('general.attached.tag'));
@@ -1246,7 +1247,7 @@ class RequestAPIController extends AppBaseController
             $sr->touch();
         }
 
-        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
 
         return $this->sendResponse($sr, __('general.detached.tag'));
@@ -1300,7 +1301,7 @@ class RequestAPIController extends AppBaseController
 
         $sr->tags()->detach($tag);
         $sr->touch();
-        $sr->load('media', 'resident.user', 'category', 'comments.user', 'users',
+        $sr->load('media', 'resident.user', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
 
         return $this->sendResponse($sr, __('general.detached.tag'));
@@ -1463,11 +1464,10 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'resident.user', 'resident.building', 'category',
+            'media', 'resident.user', 'unit.building',
         ]);
 
         $templates = $tempRepo->getParsedCommunicationTemplates($request, Auth::user());
-
         $response = (new TemplateTransformer)->transformCollection($templates);
         return $this->sendResponse($response, 'Communication Templates retrieved successfully');
     }
@@ -1523,7 +1523,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'resident.user', 'resident.building', 'category',
+            'media', 'resident.user', 'unit.building',
         ]);
 
         $templates = $tempRepo->getParsedServiceCommunicationTemplates($request, Auth::user());
@@ -1583,7 +1583,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'resident.user', 'resident.building', 'category',
+            'media', 'resident.user', 'unit.building',
         ]);
 
         $templates = $tempRepo->getParsedServiceEmailTemplates($request, Auth::user());

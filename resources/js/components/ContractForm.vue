@@ -1,8 +1,8 @@
 <template>
     <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
 
-        <el-row :gutter="20" v-if="!hideBuildingAndUnits">
-            <el-col :md="12" v-if="!hideBuilding">
+        <el-row :gutter="20">
+            <el-col :md="12" v-if="!hideBuildingAndUnits && !hideBuilding">
                 <el-form-item prop="building_id" :label="$t('models.resident.building.name')" class="label-block">
                     <el-select
                             :loading="remoteLoading"
@@ -38,7 +38,7 @@
                     </el-select>
                 </el-form-item>
             </el-col> -->
-            <el-col :md="12" v-if="model.building_id">
+            <el-col :md="12" v-if="!hideBuildingAndUnits && model.building_id">
                 <el-form-item prop="unit_id" :label="$t('models.resident.unit.name')"
                             class="label-block">
                     <el-select :placeholder="$t('models.resident.search_unit')" 
@@ -62,14 +62,13 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-        </el-row>
-        <el-row :gutter="20" v-if="showResident">
-            <el-col :md="12">
-                <el-form-item :label="$t('general.resident')" :rules="validationRules.resident_id" prop="resident_id">
+            <el-col :md="12" v-if="showResident && model.unit_id">
+                <el-form-item :label="$t('general.resident')" prop="resident_id">
                     <el-select
                         :loading="remoteLoading"
                         :placeholder="$t('models.request.placeholders.resident')"
                         :remote-method="remoteSearchResidents"
+                        @change="changeResident"
                         filterable 
                         remote
                         reserve-keyword
@@ -84,6 +83,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
+
         <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
                 <el-form-item :label="$t('models.resident.contract.rent_type')"
@@ -109,7 +109,7 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-            <el-col :md="12" v-if="model.unit_id && resident_type == 1">
+            <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.contract.rent_duration')"
                             prop="duration"
                             class="label-block">
@@ -136,10 +136,11 @@
                             style="width: 100%;"
                             type="date"
                             v-model="model.start_date"
+                            @change="changeStartDate"
                             value-format="yyyy-MM-dd"/>
                 </el-form-item>
             </el-col>
-            <el-col :md="12" v-if="model.unit_id && model.duration == 2 && resident_type == 1">
+            <el-col :md="12" v-if="model.unit_id && model.duration == 2 && resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.contract.rent_end')">
                     <el-date-picker
                         :picker-options="{disabledDate: disabledRentEnd}"
@@ -162,7 +163,7 @@
                     </el-input>
                 </el-form-item> 
             </el-col>
-            <el-col :md="12" v-if="resident_type == 1">
+            <el-col :md="12" v-if="resident_type_check == 1 && !isFuture">
                 <el-form-item :label="$t('models.resident.status.label')" prop="status" class="label-block">
                     <el-select placeholder="Select" style="display: block" 
                                 v-model="model.status">
@@ -176,7 +177,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <template v-if="resident_type == 1">
+        <template v-if="resident_type_check == 1">
         <ui-divider v-if="model.unit_id" content-position="left">
             {{ $t('models.resident.contract.deposit_amount') }}
         </ui-divider>
@@ -444,17 +445,18 @@
                 residents: [],
                 loading: false,
                 model: {
+                    resident_id: '',
                     type: '',
                     duration: '',
                     start_date: '',
                     end_date: '',
                     deposit_amount: 0,
                     deposit_type: 1,
-                    monthly_rent_net: '',
-                    monthly_maintenance: '',
+                    monthly_rent_net: 0,
+                    monthly_maintenance: 0,
                     status: '',
-                    deposit_status: '',
-                    monthly_rent_gross: '',
+                    deposit_status: 1,
+                    monthly_rent_gross: 0,
                     unit_id: '',
                     building_id: '',
                     media: [],
@@ -469,6 +471,10 @@
                     unit_id: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.resident.unit.name')})
+                    }],
+                    resident_id: [{
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.name')})
                     }],
                     deposit_amount: [{
                         required: true,
@@ -508,6 +514,8 @@
                 under_ground_floor_label: this.$t('models.unit.floor_title.under_ground_floor'),
                 top_floor_label: this.$t('models.unit.floor_title.top_floor'),
                 original_unit_id : 0,
+                resident_type_check: 1,
+                isFuture: false
             }
         },
         methods: {
@@ -520,8 +528,10 @@
                         const {...params} = this.model
 
                         
+                        if(!this.showResident)
+                            params.resident_id = this.resident_id
 
-                        if (this.resident_id == undefined || this.resident_id == 0) 
+                        if (params.resident_id == undefined || params.resident_id == 0) 
                         {
 
                             this.units.forEach(group => {
@@ -541,7 +551,6 @@
                         }
                         else {
                             
-                            params.resident_id = this.resident_id
                             this.units.forEach(group => {
                                 let found = group.options.find(item => item.id == this.model.unit_id)
                                 if(found)
@@ -575,6 +584,14 @@
                 const d = new Date(date).getTime();
                 const rentStart = new Date(this.model.start_date).getTime();
                 return d <= rentStart;
+            },
+            changeStartDate(date) {
+                const start_date = new Date(date).getTime();
+                const today = new Date().getTime();
+
+                this.isFuture = start_date > today
+                if(this.isFuture)
+                    this.model.status = 2
             },
             async remoteSearchResidents(search) {
                 if (search === '') {
@@ -671,6 +688,10 @@
                     this.remoteLoading = false;
                 }
             },
+            changeResident(val) {
+                let resident = this.residents.find(resident => resident.id == val)
+                this.resident_type_check = resident.type
+            },
             changeContractUnit() {
 
                 let unit = null
@@ -759,7 +780,14 @@
 
             if(this.hideBuilding) {
                 this.model.building_id = this.building_id
+                await this.searchContractUnits(true)
             }
+
+            if(this.resident_type)
+                this.resident_type_check = this.resident_type
+        },
+        mounted() {
+            this.$refs.form.$el.focus()
         }
     }
 </script>

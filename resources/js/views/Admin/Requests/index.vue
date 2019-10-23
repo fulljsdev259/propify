@@ -6,6 +6,27 @@
                     {{$t('models.request.add_title')}}
                 </el-button>
             </template>
+            <template v-if="$can($permissions.assign.manager)">
+                <el-dropdown split-button 
+                            :disabled="!selectedItems.length" 
+                            size="mini"
+                            type="info" 
+                            trigger="click" 
+                            class="round"
+                            @command="handleCommand">
+                    {{$t('models.request.mass_edit')}}
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item :disabled="!selectedItems.length" command="service">Service Provider</el-dropdown-item>
+                        <el-dropdown-item :disabled="!selectedItems.length" command="manager">Property Manager</el-dropdown-item>
+                        <el-dropdown-item :disabled="!selectedItems.length" command="status">Change Status</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+                <!-- <el-button :disabled="!selectedItems.length" @click="batchEdit" icon="ti-user" round
+                           size="mini"
+                           type="info">
+                    {{$t('models.request.mass_edit')}}
+                </el-button> -->
+            </template>
             <template v-if="$can($permissions.delete.request)">
                 <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"
                            type="danger">
@@ -28,6 +49,86 @@
             @pdf-download="downloadPDF($event)"
         >
         </request-list-table>
+        <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
+                   :visible.sync="batchEditVisible"
+                   v-loading="processAssignment" width="30%">
+            <span slot="title">
+                {{ $t('models.request.mass_edit') }}
+            </span>
+            <!-- <el-select v-model="massEditOption" @change="changeMassEditOption" 
+                        :placeholder="$t('models.request.placeholders.status')"
+                        class="edit-type-select">
+                    <el-option :value="'service'" label="Service Provider"></el-option>
+                    <el-option :value="'manager'" label="Property Manager"></el-option>
+                    <el-option :value="'status'" label="Status Change"></el-option>
+            </el-select> -->
+            <el-form :model="managersForm" v-if="massEditOption == 'service'">
+                <el-select
+                    :loading="remoteLoading"
+                    :placeholder="$t('general.placeholders.search')"
+                    :remote-method="remoteSearchPartners"
+                    class="custom-remote-select"
+                    filterable
+                    multiple
+                    remote
+                    reserve-keyword
+                    style="width: 100%;"
+                    v-model="toAssign"
+                >
+                    <div class="custom-prefix-wrapper" slot="prefix">
+                        <i class="el-icon-search custom-icon"></i>
+                    </div>
+                    <el-option
+                        :key="service.id"
+                        :label="`${service.name}`"
+                        :value="service.id"
+                        v-for="service in toAssignList"/>
+                </el-select>
+            </el-form>
+
+            <el-form :model="managersForm" v-if="massEditOption == 'manager'">
+                <el-select
+                    :loading="remoteLoading"
+                    :placeholder="$t('general.placeholders.search')"
+                    :remote-method="remoteSearchManagers"
+                    class="custom-remote-select"
+                    filterable
+                    multiple
+                    remote
+                    reserve-keyword
+                    style="width: 100%;"
+                    v-model="toAssign"
+                >
+                    <div class="custom-prefix-wrapper" slot="prefix">
+                        <i class="el-icon-search custom-icon"></i>
+                    </div>
+                    <el-option
+                        :key="manager.id"
+                        :label="`${manager.first_name} ${manager.last_name}`"
+                        :value="manager.id"
+                        v-for="manager in toAssignList"/>
+                </el-select>
+            </el-form>
+            
+            <el-form :model="managersForm" v-if="massEditOption == 'status'">
+                <el-select :placeholder="$t('models.request.placeholders.status')"
+                        class="custom-select"
+                        v-model="massStatus">
+                    <el-option
+                        :key="k"
+                        :label="$t(`models.request.status.${status}`)"
+                        :value="parseInt(k)"
+                        v-for="(status, k) in $constants.requests.status">
+                    </el-option>
+                </el-select>
+            </el-form>
+            <span class="dialog-footer" slot="footer">
+                <el-button @click="closeModal" size="mini">{{$t('general.actions.close')}}</el-button>
+                <el-button v-if="massEditOption == 'service'" @click="massAssignPartners" size="mini" type="primary">{{$t('models.request.assign_partners')}}</el-button>
+                <el-button v-if="massEditOption == 'manager'" @click="massAssignManagers" size="mini" type="primary">{{$t('models.request.assign_managers')}}</el-button>
+                <el-button v-if="massEditOption == 'status'" @click="massChangeStatus" size="mini" type="primary">{{$t('models.request.change_status')}}</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -76,7 +177,15 @@
                 residents: {},
                 services: {},
                 isLoadingFilters: false,
-                isDownloading: false
+                isDownloading: false,
+                batchEditVisible: false,
+                processAssignment: false,
+                toAssignList: '',
+                toAssign: [],
+                remoteLoading: false,
+                managersForm: {},
+                massEditOption: 'service',
+                massStatus: ''
             }
         },
         computed: {
@@ -190,7 +299,7 @@
             }
         },
         methods: {
-            ...mapActions(['updateRequest', 'getRequestCategoriesTree', 'getServices', 'getBuildings', 'getResidents', 'downloadRequestPDF']),
+            ...mapActions(['updateRequest', 'getRequestCategoriesTree', 'getServices', 'getBuildings', 'getResidents', 'downloadRequestPDF', 'getServices', 'getPropertyManagers', 'massEdit', 'assignProvider', 'assignManager']),
             async getFilterBuildings() {
                 const buildings = await this.getBuildings({
                     get_all: true
@@ -304,7 +413,90 @@
                 } finally {
                     this.isDownloading = false;
                 }
-            }
+            },
+            batchEdit() {
+                this.batchEditVisible = true;
+            },
+            closeModal() {
+                this.batchEditVisible = false;
+                this.toAssign = [];
+                this.toAssignList = [];
+            },
+            handleCommand(command) {
+                this.massEditOption = command
+                this.batchEditVisible = true
+            },
+            massAssignPartners() {
+                let requests = this.selectedItems.map(request => request.id)
+                let service_providers = this.toAssign
+                
+                return this.massEdit({
+                    requests, 
+                    service_providers
+                })
+            },
+            massAssignManagers() {
+                let requests = this.selectedItems.map(request => request.id)
+                let property_managers = this.toAssign
+                
+                return this.massEdit({
+                    requests, 
+                    property_managers
+                })
+            },
+            massChangeStatus() {
+                let requests = this.selectedItems.map(request => request.id)
+                let status = this.massStatus
+                
+                return this.massEdit({
+                    requests, 
+                    status
+                })
+            },
+            async remoteSearchManagers(search) {
+                if (search === '') {
+                    this.resetToAssignList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const resp = await this.getPropertyManagers({
+                            get_all: true,
+                            search
+                        });
+
+                        this.toAssignList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            async remoteSearchPartners(search) {
+                if (search === '') {
+                    this.resetToAssignList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const resp = await this.getServices({
+                            get_all: true,
+                            search
+                        });
+
+                        this.toAssignList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            resetToAssignList() {
+                this.toAssignList = [];
+                this.toAssign = [];
+            },
         },
         async created(){
             this.isLoadingFilters = true;
@@ -338,5 +530,24 @@
 <style>
     .vue-recycle-scroller__item-view {
         min-height: 41px !important;
+    }
+</style>
+
+<style lang="scss" scoped>
+
+    .el-dropdown.round {
+        border-radius: 20px;
+    }
+
+    .el-dialog {
+
+        .el-select {
+            width: 100%;
+        }
+        
+        .edit-type-select {
+            margin-bottom: 15px;
+        }
+
     }
 </style>

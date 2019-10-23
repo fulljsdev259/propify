@@ -243,8 +243,9 @@
                     
                 <div class="content" v-if="visibleDrawer">
                     <contract-form v-if="editingContract" 
-                                :quarter_id="model.id" 
                                 mode="edit" 
+                                :quarter_id="model.id" 
+                                :show-resident="true"
                                 :data="editingContract" 
                                 :resident_type="1" 
                                 :resident_id="editingContract.id" 
@@ -255,6 +256,7 @@
                     <contract-form v-else 
                                 mode="add" 
                                 :quarter_id="model.id" 
+                                :show-resident="true"
                                 :resident_type="1" 
                                 :visible.sync="visibleDrawer" 
                                 @add-contract="addContract" 
@@ -473,6 +475,7 @@
             },
             addContract (data) {
                 this.model.contracts.push(data);
+                this.contractCount ++;
             },
             editContract(index) {
                 console.log('this.model.contracts', this.model.contracts, index)
@@ -491,6 +494,7 @@
                 }).then(async () => {
                     await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
                     this.model.contracts.splice(index, 1)
+                    this.contractCount --;
                 }).catch(() => {
                 });
             },

@@ -27,6 +27,7 @@ return [
     ],
     'resident' => [
         'view' => 'Öffnen',
+        'name' => 'Bewohner',
         'view_title' => 'Bewohner Details',
         'edit_title' => 'Bewohner bearbeiten',
         'download_credentials' => 'Zugangsdaten (pdf)',
@@ -395,6 +396,10 @@ return [
         'category' => 'Anfrage-Typ',
         'edit_title' => 'Anfrage bearbeiten',
         'add_title' => 'Anfrage hinzufügen',
+        'mass_edit' => 'Massenbearbeitung',
+        'assign_partners' => 'Servicepartner zuordnen',
+        'assign_managers' => 'Bewirtschafter zuweisen',
+        'change_status' => 'Status ändern',
         'due_date' => 'Zu erledigen bis',
         'solved_date' => 'Erledigt Datum',
         'closed_date' => 'Erledigt am',
@@ -436,6 +441,16 @@ return [
         'sort' => 'Sortierung',
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',
+        'category_list' => [
+            'general' => 'General concerns',
+            'malfunction' => 'Malfunction',
+            'deficiency' => 'Deficiency'
+        ],
+        'sub_category' => [
+            'surrounding' => 'Surrounding',
+            'real_estate' => 'Real Estate',
+            'flat' => 'Flat',
+        ],
         'media' => [
             'added' => 'Mediendatei hinzugefügt',
             'removed' => 'Mediendatei entfernt.',

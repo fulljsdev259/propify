@@ -36,8 +36,15 @@ class CreateRequest extends BaseRequest
         }
 
         $rules = Request::$rulesPost;
-        $requestCategories = RequestCategory::where('has_qualifications', 1)->pluck('id');
-        $rules['qualification'] = 'required_if:category_id,'  . $requestCategories->implode(',') .  '|integer';// todo improve permit only specific integers
+        $categories = [];
+        foreach (Request::CategoryAttributes as $key => $attributes) {
+            if (in_array(Request::HasQualifications, $attributes)) {
+                $categories[] = $key;
+            }
+        }
+        if ($categories) {
+            $rules['qualification'] = 'required_if:category,'  .implode(',', $categories) .  '|integer';// todo improve permit only specific integers
+        }
         return $rules;
     }
 }

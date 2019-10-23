@@ -242,22 +242,6 @@ class Unit extends AuditableModel implements HasMedia
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     **/
-    public function resident()
-    {
-        return $this->hasOne(Resident::class, 'unit_id', 'id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function residents()
-    {
-        return $this->hasMany(Resident::class, 'unit_id', 'id');
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function contracts()

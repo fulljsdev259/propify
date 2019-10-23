@@ -24,8 +24,8 @@ use Storage;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="category_id",
- *          description="category_id",
+ *          property="category",
+ *          description="category",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -134,7 +134,7 @@ use Storage;
  * )
  * @property int $id
  * @property int|null $creator_user_id
- * @property int $category_id
+ * @property int $category
  * @property int $unit_id
  * @property int $resident_id
  * @property int|null $contract_id
@@ -170,7 +170,6 @@ use Storage;
  * @property-read int|null $assignees_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read int|null $audits_count
- * @property-read \App\Models\RequestCategory $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  * @property-read int|null $comments_count
  * @property-read \App\Models\Contract|null $contract
@@ -415,10 +414,72 @@ class Request extends AuditableModel implements HasMedia
         self::CategoryDeficiency => 'deficiency',
     ];
 
+    const SubCategorySurrounding = 4;
+    const SubCategoryRealEstate = 5;
+    const SubCategoryFlat = 6;
+
+    const SubCategory = [
+        self::SubCategorySurrounding => 'surrounding',
+        self::SubCategoryRealEstate => 'real_estate',
+        self::SubCategoryFlat => 'flat',
+    ];
+
+    const RoomAttr = 'room';
+    const LocationAttr = 'location';
+    const HasQualifications = 'has_qualifications';
+    const Acquisition = 'acquisition';
+
+    const SubCategories = 'sub_categories';
+    const Attributes = 'attributes';
+
+    const CategoryAttributes = [
+        self::CategoryGeneral => [
+
+        ],
+        self::CategoryMalfunction => [
+
+        ],
+        self::CategoryDeficiency => [
+            self::Acquisition
+        ],
+    ];
+
+    const SubCategoryAttributes = [
+        self::SubCategorySurrounding => [
+            self::HasQualifications
+        ],
+        self::SubCategoryRealEstate => [
+            self::HasQualifications,
+            self::LocationAttr,
+
+        ],
+        self::SubCategoryFlat => [
+            self::Acquisition,
+            self::RoomAttr
+        ],
+    ];
+
+    const CategorySubCategory = [
+        self::CategoryGeneral => [
+
+        ],
+        self::CategoryMalfunction => [
+            self::SubCategorySurrounding,
+            self::SubCategoryRealEstate,
+            self::SubCategoryFlat
+        ],
+        self::CategoryDeficiency => [
+            self::SubCategorySurrounding,
+            self::SubCategoryRealEstate,
+            self::SubCategoryFlat
+        ],
+    ];
+
     const Fillable = [
         'creator_user_id',
         'reminder_user_id',
-        'category_id',
+        'category',
+        'sub_category',
         'subject_id',
         'resident_id',
         'contract_id',
@@ -461,7 +522,7 @@ class Request extends AuditableModel implements HasMedia
      * @var array
      */
     protected $casts = [
-        'category_id' => 'integer',
+        'category' => 'integer',
         'creator_user_id' => 'integer',
         'reminder_user_id' => 'integer',
         'resident_id' => 'integer',
@@ -528,9 +589,10 @@ class Request extends AuditableModel implements HasMedia
         'description' => 'required|string',
 //        'priority' => 'required|integer',
 //        'internal_priority' => 'integer',
-        'qualification' => 'required|integer',
+        'qualification' => 'integer',
         'due_date' => 'required|date',
-        'category_id' => 'required|integer',
+//        'category' => 'required|integer', //@TODO
+//        'sub_category' => 'integer',
         'visibility' => 'required|integer',
     ];
 
@@ -544,7 +606,8 @@ class Request extends AuditableModel implements HasMedia
         'contract_id' => 'required|exists:contracts,id',
         'title' => 'required|string',
         'description' => 'required|string',
-        'category_id' => 'required|integer',
+//        'category' => 'required|integer', //@TODO
+//        'sub_category' => 'integer',
 //        'priority' => 'required|integer',
 //        'internal_priority' => 'integer',
         'visibility' => 'required|integer',
@@ -565,7 +628,8 @@ class Request extends AuditableModel implements HasMedia
         'qualification' => 'integer',
         'status' => 'integer',
         'due_date' => 'date',
-        'category_id' => 'integer',
+//        'category' => 'integer', //@TODO
+//        'sub_category' => 'integer',
         'visibility' => 'required|integer',
         'active_reminder' => 'boolean',
     ];
@@ -673,14 +737,6 @@ class Request extends AuditableModel implements HasMedia
             [],
             $newValues
         ];
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     **/
-    public function category()
-    {
-        return $this->hasOne(RequestCategory::class, 'id', 'category_id');
     }
 
     /**

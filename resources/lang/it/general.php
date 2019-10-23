@@ -60,7 +60,7 @@ return [
         "building" => "Edificio assegnato",
         "quarter" => "Trimestre assegnato",        
         'resident' => "Residente attaccato con successo",
-        "service" => "Fornitore collegato con successo",
+        "provider" => "Fornitore collegato con successo",
         "manager" => "Manager attaccato con successo",
         "user" => "Utente assegnato con successo",
         "tag" => "Tag assegnato con successo",
@@ -69,7 +69,7 @@ return [
         "building" => "Costruire senza assegnazione",
         "quarter" => "Quartiere non assegnato",        
         'resident' => "Residente distaccato con successo",
-        "service" => "Fornitore staccato con successo",
+        "provider" => "Fornitore staccato con successo",
         "manager" => "Manager staccato con successo",
         "user" => "Utente non assegnato con successo",
         "tag" => "Tag non assegnato con successo",
@@ -338,86 +338,27 @@ return [
                 ],
                 'content' => [
                     'with_id' => [
-                        'pinboard' => [
-                            'created' => '{userName} ha aperto questo {auditable_type} su {auditable_type} #{auditable_id}.',
-                            'updated' => [
-                                'status' => 'Lo stato è cambiato da "{old}" al "{new}".',
-                                'published_at' => 'Bacheca pubblicato su {new}.'
-                            ]
-                        ],
-                        'listing' => [
-                            'created' => '{userName} ha aperto questo {auditable_type}.',
-                            'updated' => [
-                                'title' => 'Il titolo è cambiato da "{old}" al "{new}".',
-                                'status' => 'Lo stato è cambiato da "{old}" al "{new}".',
-                                'due_date' => 'La data di scadenza è cambiata da "{old}" al "{new}".',
-                                'priority' => 'La categoria è cambiata da "{old}" al "{new}".',
-                                'internal_priority' => 'La priorità interna è stata cambiata da "{old}" a "{new}".',
-                                'category_id' => 'La categoria è cambiata da "{old}" al "{new}".',
-                                'qualification' => 'La qualifica è cambiata da "{old}" al "{new}".',
-                                'visibility' => 'La visibilità è cambiata da "{old}" al "{new}".',
-                            ],
-                            'provider_assigned' => '{providerName} è stato assegnato come fornitore.',
-                            'user_assigned' => '{userName} è stato assegnato come manager.',
-                            'media_uploaded' => 'Media caricati',
-                            'media_deleted' => 'Supporti cancellati',
-                        ],
-                        'request' => [
-                            'created' => ':userName ha aperto questo :auditable_type.',
+                        'general' => [
                             'updated' => 'La :fieldname è cambiata da :old al :new.',
                             'provider_assigned' => ':providerName è stato assegnato come fornitore.',
                             'provider_unassigned' => 'Fornitore di servizi :providerName non è stato assegnato.',
                             'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName è stato assegnato come manager.',
                             'manager_unassigned' => 'Manager :propertyManagerFirstName :propertyManagerLastName non è stato assegnato.',
-                            'user_assigned' => '{userName} è stato assegnato come manager.',
+                            'user_assigned' => ':userName è stato assegnato come manager.',
                             'media_uploaded' => 'Media caricati',
                             'media_deleted' => 'Supporti cancellati',
-                        ]
-                    ],
-                    'with_no_id' => [
+                            'provider_notified' => 'Fornitore di servizi :providerName è stato notificato via e-mail'
+                        ],
                         'pinboard' => [
-                            'created' => '{userName} ha aperto questo {auditable_type} su {auditable_type} #{auditable_id}.',
-                            'updated' => [
-                                'status' => 'Lo stato è cambiato da "{old}" al "{new}" su {auditable_type} #{auditable_id}.',
-                                'published_at' => 'Bacheca pubblicato su {new} su {auditable_type} #{auditable_id}.'
-                            ]
+                            'created' => ':userName ha aperto questo :auditable_type su :auditable_type #:auditable_id.',                            
                         ],
                         'listing' => [
-                            'created' => '{userName} ha aperto questo {auditable_type} su {auditable_type} #{auditable_id}.',
-                            'updated' => [
-                                'title' => 'Il titolo è cambiato da "{old}" al "{new}" su {auditable_type} #{auditable_id}.',
-                                'status' => 'Lo stato è cambiato da "{old}" al "{new}" su {auditable_type} #{auditable_id}.',
-                                'due_date' => 'La data di scadenza è cambiata da "{old}" al "{new}" su {auditable_type} #{auditable_id}.',
-                                'priority' => 'La categoria è cambiata da "{old}" al "{new}" su {auditable_type} #{auditable_id}.',
-                                'category_id' => 'La categoria è cambiata da "{old}" al "{new}" su {auditable_type} #{auditable_id}.',
-                                'qualification' => 'La qualifica è cambiata da "{old}" al "{new}" al "{new}" su {auditable_type} #{auditable_id}.',
-                                'visibility' => 'La visibilità è cambiata da "{old}" al "{new}" su {auditable_type} #{auditable_id}.',
-                            ],
-                            'provider_assigned' => '{providerName} è stato assegnato come fornitore su {auditable_type} #{auditable_id}.',
-                            'user_assigned' => '{userName} è stato assegnato come manager su {auditable_type} #{auditable_id}.',
-                            'media_uploaded' => 'Media caricati su {auditable_type} #{auditable_id}.',
-                            'media_deleted' => 'Supporti cancellati su {auditable_type} #{auditable_id}.',
+                            'created' => ':userName ha aperto questo :auditable_type.',
                         ],
                         'request' => [
-                            'created' => '{userName} opened this {auditable_type} su {auditable_type} #{auditable_id}.',
-                            'updated' => [
-                                'title' => 'Il titolo è cambiato da "{old}" al "{new}" su {auditable_type} #{auditable_id}.',
-                                'status' => 'Lo stato è cambiato da "{old}" al "{new}" su {auditable_type} #{auditable_id}.',
-                                'due_date' => 'La data di scadenza è cambiata da "{old}" al "{new}" su {auditable_type} #{auditable_id}.',
-                                'priority' => 'La categoria è cambiata da "{old}" al "{new}" su {auditable_type} #{auditable_id}.',
-                                'category_id' => 'La categoria è cambiata da "{old}" al "{new}" su {auditable_type} #{auditable_id}.',
-                                'qualification' => 'La qualifica è cambiata da "{old}" al "{new}" al "{new}" su {auditable_type} #{auditable_id}.',
-                                'visibility' => 'La visibilità è cambiata da "{old}" al "{new}" su {auditable_type} #{auditable_id}.',
-                            ],
-                            'provider_assigned' => '{providerName} è stato assegnato come fornitore su {auditable_type} #{auditable_id}.',
-                            'provider_unassigned' => 'Fornitore di servizi {providerName} non è stato assegnato su {auditable_type} #{auditable_id}.',
-                            'manager_assigned' => '{propertyManagerFirstName} {propertyManagerLastName} è stato assegnato come manager su {auditable_type} #{auditable_id}.',
-                            'manager_unassigned' => 'Manager {propertyManagerFirstName} {propertyManagerLastName} non è stato assegnato su {auditable_type} #{auditable_id}.',
-                            'user_assigned' => '{userName} è stato assegnato come manager su {auditable_type} #{auditable_id}.',
-                            'media_uploaded' => 'Media caricati su {auditable_type} #{auditable_id}.',
-                            'media_deleted' => 'Supporti cancellati su {auditable_type} #{auditable_id}.',
+                            'created' => ':userName ha aperto questo :auditable_type.',                            
                         ]
-                    ]
+                    ],                  
                 ],
             ],
             'comments_list' => [            

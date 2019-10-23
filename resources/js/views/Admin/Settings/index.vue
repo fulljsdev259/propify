@@ -407,7 +407,7 @@
                             <el-form :model="model" :rules="validationRules"
                                      ref="residentsLoginVariationsForm">
 
-                                <el-row :gutter="20">
+                                <!-- <el-row :gutter="20">
                                     <el-col :md="12">
                                         <el-card>
                                             <el-radio-group class="login-radio-group" v-model="model.login_variation">
@@ -453,7 +453,7 @@
                                             
                                         </el-card>
                                     </el-col>
-                                </el-row>
+                                </el-row> -->
                             </el-form>
                         </el-tab-pane>
                     </el-tabs>
@@ -567,7 +567,7 @@
                     contact_enable: false,
                     accent_color: '',
                     primary_color: '',
-                    login_variation: '',
+                    login_variation: 1,
                     login_variation_2_slider: false,
                     pdf_font_family: '',
                     visibleDrawer: false,
@@ -731,6 +731,7 @@
                 });
                 this.getSettings().then((resp) => {
                     this.model = Object.assign({}, this.model, resp.data);
+                    this.model.login_variation = 1;
                     if(this.model.email_powered_by == '')
                         this.model.email_powered_by = 1;
                     this.$root.$emit('fetch_logo', this.model.logo);
@@ -892,6 +893,10 @@
         margin-top: 0.5em;
         display: block;
         font-size: 0.9em;
+    }
+
+    #tab-login_variations {
+        visibility: hidden;
     }
 
     .dashboard-tabpanel {

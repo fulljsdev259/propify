@@ -67,7 +67,6 @@ class RequestRepository extends BaseRepository
     public function create(array $attributes)
     {
         $attributes = self::getPostAttributes($attributes);
-        dd($attributes);
         if (isset($attributes['category_id'])) {
             $requestCategories = RequestCategory::where('has_qualifications', 1)->pluck('id');
             if (! $requestCategories->contains($attributes['category_id'])) {
@@ -101,7 +100,6 @@ class RequestRepository extends BaseRepository
            // $attr['priority'] = $attributes['priority'];
           //  $attr['internal_priority'] = $attributes['internal_priority'] ?? $attributes['priority'];
             $attr['resident_id'] = $user->resident->id;
-            $attr['unit_id'] = $user->resident->unit_id;
             $attr['status'] = Request::StatusReceived;
             $attr['qualification'] = array_flip(Request::Qualification)['none'];
             return $attr;
@@ -116,15 +114,12 @@ class RequestRepository extends BaseRepository
             $attr['description'] = $attributes['description'];
             $attr['category_id'] = $attributes['category_id'];
             $attr['resident_id'] = $user->resident->id;
-            $attr['unit_id'] = $user->resident->unit_id;
             $attr['status'] = Request::StatusReceived;
 
             return $attr;
         }
 
         // already checked resident exists
-        $resident = Resident::find($attributes['resident_id']);
-        $attributes['unit_id'] = $resident->unit_id;
         $attributes['assignee_ids'] = [Auth::user()->id]; // @TODO where used
         $attributes['status'] = Request::StatusReceived;
         $attributes['due_date'] = Carbon::parse($attributes['due_date'])->format('Y-m-d');
@@ -215,8 +210,9 @@ class RequestRepository extends BaseRepository
     {
         if (!empty($attributes['contract_id'])) {
             // already validated and it must be exists
-            $contract = Contract::find($attributes['contract_id'], ['id', 'resident_id']);
-            $attributes['resident_id'] = $contract->id;
+            $contract = Contract::find($attributes['contract_id'], ['id', 'resident_id', 'unit_id']);
+            $attributes['resident_id'] = $contract->resident_id;
+            $attributes['unit_id'] = $contract->unit_id;
         }
 
         return $attributes;
@@ -285,12 +281,13 @@ class RequestRepository extends BaseRepository
      */
     public function notifyNewRequest(Request $request)
     {
-        if (!$request->resident->building) {
+        $contract = $request->contract;
+        if (! $contract->building) {
             return;
         }
 
-        $propertyManagers = PropertyManager::whereHas('buildings', function ($q) use ($request) {
-            $q->where('buildings.id', $request->resident->building->id);
+        $propertyManagers = PropertyManager::whereHas('buildings', function ($q) use ($contract) {
+            $q->where('buildings.id', $contract->building->id);
         })->get();
 
         $i = 0;
@@ -299,7 +296,7 @@ class RequestRepository extends BaseRepository
             $propertyManager->user->redirect = "/admin/requests/" . $request->id;
 
             $propertyManager->user
-                ->notify((new NewResidentRequest($request, $propertyManager->user, $request->resident->user))
+                ->notify((new NewResidentRequest($request, $propertyManager->user, $contract->resident->user))
                     ->delay(now()->addSeconds($delay)));
         }
     }

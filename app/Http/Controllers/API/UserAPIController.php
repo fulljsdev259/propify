@@ -285,7 +285,6 @@ class UserAPIController extends AppBaseController
                     'contracts' => function ($q) {
                         $q->with('building.address', 'unit', 'media');
                     },
-                    'building:id,contact_enable'
                 ]);
             },
             'propertyManager:id,user_id',
@@ -747,9 +746,9 @@ class UserAPIController extends AppBaseController
      */
     protected function getResidentContactEnable($resident)
     {
-        $default = true;
-        $building = $resident->building;
-
+        $default = true; // @TODO contract related
+//        $building = $resident->building; // always null
+        $building = null;
         if ( ! $building || Building::ContactEnablesBasedSettings == $building->contact_enable) {
             $settings = Settings::first('contact_enable');
             return $settings->contact_enable ?? $default;

@@ -118,7 +118,10 @@ class ResidentAPIController extends AppBaseController
             $residents = $this->residentRepository->with([
                 'contracts' => function ($q) {
                     $q->with('building.address', 'unit');
-                }])
+                },
+                'default_contract' => function ($q) {
+                    $q->with('building.address', 'unit');
+                },])
                 ->get();
             $this->fixCreatedBy($residents);
             foreach ($residents as $resident) {
@@ -130,12 +133,11 @@ class ResidentAPIController extends AppBaseController
         }
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        // @TODO CONTRACT is need? building, address, unit . I think not need because many
         $residents = $this->residentRepository->with([
             'user',
-            'building.address',
-            'unit',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit');
             }])->paginate($perPage);
@@ -212,12 +214,13 @@ class ResidentAPIController extends AppBaseController
         $this->residentRepository->pushCriteria(new RequestCriteria($request));
         // @TODO CONTRACT is need? address. I think not need because many
         $residents = $this->residentRepository->with([
-            'address:id,street,house_num',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }])
-            ->get(['id', 'address_id', 'first_name', 'last_name', 'status', 'created_at']);
+            ->get(['id', 'first_name', 'last_name', 'status', 'created_at']);
         $this->fixCreatedBy($residents);
         return $this->sendResponse($residents->toArray(), 'Residents retrieved successfully');
     }
@@ -305,11 +308,9 @@ class ResidentAPIController extends AppBaseController
 
         $resident->load([
             'user',
-            'building',
-            'unit',
-            'address',
-            'media',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
@@ -371,11 +372,9 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'settings',
             'user',
-            'building',
-            'unit',
-            'address',
-            'media',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
@@ -428,11 +427,9 @@ class ResidentAPIController extends AppBaseController
         $user->resident->load([
             'user',
             'settings',
-            'building',
-            'unit',
-            'address',
-            'media',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
@@ -501,7 +498,9 @@ class ResidentAPIController extends AppBaseController
             return $this->sendError(__('models.resident.errors.not_found'));
         }
 
-        $shouldPinboard = isset($input['unit_id']) && $input['unit_id'] != $resident->unit_id;
+        // @TODO contract related
+//        $shouldPinboard = isset($input['unit_id']) && $input['unit_id'] != $resident->unit_id;
+        $shouldPinboard = false;
 
         $input['user'] = $input['user'] ?? [];
         $input['user']['name'] = sprintf('%s %s', $input['first_name'], $input['last_name']);
@@ -537,11 +536,9 @@ class ResidentAPIController extends AppBaseController
 
         $resident->load([
             'settings',
-            'building',
-            'unit',
-            'address',
-            'media',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
@@ -631,10 +628,12 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
-            'building',
-            'unit',
-            'address',
-            'media',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
+            'contracts' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            }
         ]);
         $response = (new ResidentTransformer)->transform($resident);
         return $this->sendResponse($response, __('models.resident.saved'));
@@ -686,10 +685,12 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
-            'building',
-            'unit',
-            'address',
-            'media',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
+            'contracts' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            }
         ]);
         $response = (new ResidentTransformer)->transform($resident);
         return $this->sendResponse($response, __('models.resident.saved'));
@@ -757,12 +758,6 @@ class ResidentAPIController extends AppBaseController
             return $this->sendError(__('models.resident.errors.not_allowed_change_status'));
         }
 
-        if ($input['status'] == Resident::StatusNotActive) {
-            $input['building_id'] = null;
-            $input['unit_id'] = null;
-            // $input['address_id'] = null;
-        }
-
         try {
             $resident = $this->residentRepository->update($input, $id);
         } catch (\Exception $e) {
@@ -772,14 +767,12 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
-            'building',
-            'unit',
-            'address',
-            'media',
-            'default_contract',
+            'default_contract' => function ($q) {
+                $q->with('building.address', 'unit', 'media');
+            },
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
-            }
+            },
         ]);
         $response = (new ResidentTransformer)->transform($resident);
         return $this->sendResponse($response, __('models.resident.status_changed'));

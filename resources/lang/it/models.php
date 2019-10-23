@@ -27,6 +27,7 @@ return [
     ],
     'resident' => [
         "view" => "Vista",
+        'name' => 'Residente',
         "view_title" => "Visualizza residente",
         "edit_title" => "Modifica Residente",
         "download_credentials" => "Scarica le credenziali",
@@ -394,6 +395,10 @@ return [
         "category" => "Categoria",
         "edit_title" => "Modifica Richiesta",
         "add_title" => "Aggiungi Richiesta",
+        'mass_edit' => 'Modifica di massa',
+        'assign_partners' => 'Assegnare i partner di assistenza',
+        'assign_managers' => 'Assegnare i gestori di proprietà',
+        'change_status' => 'Cambia stato',
         "due_date" => "Scadenza",
         "solved_date" => "Data di fabbricazione",
         "closed_date" => "Data di chiusura",
@@ -434,7 +439,17 @@ return [
         'send_person' => 'Quale persona deve essere informata?',
         'sort' => 'In scadenza il',
         'reset_sort' => 'Ripristina ordinamento',
-        'creation_date' => 'Data di creazione',        
+        'creation_date' => 'Data di creazione',
+        'category_list' => [
+            'general' => 'Preoccupazioni generali',
+            'malfunction' => 'Guasto',
+            'deficiency' => 'Carenza (limitata nel tempo)'
+        ],
+        'sub_category' => [
+            'surrounding' => 'Circostante',
+            'real_estate' => 'Immobili',
+            'flat' => 'Appartamento',
+        ],
         'media' => [
             "added" => "Documento ajouté",
             "removed" => "Supporti rimossi",

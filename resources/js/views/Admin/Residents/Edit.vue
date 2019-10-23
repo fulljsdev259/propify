@@ -132,11 +132,11 @@
                                                             </el-select>
                                                         </el-form-item>
                                                     </el-col>
-                                                    <!-- <el-col :md="6">
+                                                    <el-col :md="6">
                                                         <el-form-item :label="$t('models.resident.type.label')"
                                                                     prop="type">
                                                             
-                                                            <el-select placeholder="Select" style="display: block" v-model="model.type">
+                                                            <el-select placeholder="Select" style="display: block" v-model="model.type" disabled>
                                                                 <el-option
                                                                     :key="k"
                                                                     :label="$t(`models.resident.type.${type}`)"
@@ -145,7 +145,7 @@
                                                                 </el-option>
                                                             </el-select>
                                                         </el-form-item>
-                                                    </el-col> -->
+                                                    </el-col>
                                             </el-col>
                                         </el-row>
                                 </el-card>
@@ -462,6 +462,20 @@
             .right-col{
                 padding-right: 10px!important;
             }
+
+
+           .el-table__empty-text {
+                width: 100%;
+
+                .el-alert--info.is-light {
+                    padding-left: 35%;
+                    -webkit-box-align: center;
+                    -ms-flex-align: center;
+                    align-items: center;
+                    line-height: inherit;
+                }
+            }
+        
         }
 
         .user-image{

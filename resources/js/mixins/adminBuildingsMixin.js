@@ -389,10 +389,7 @@ export default (config = {}) => {
                         this.model.residents = this.model.residents.filter((item, index) => {
                             return this.model.residents.indexOf(item) === index
                         })
-
-                        this.residentCount = this.model.residents.length
-
-                        
+  
 
                         if (this.model.quarter) {
                             this.$set(this.model, 'quarter_id', this.model.quarter.id);

@@ -1,5 +1,6 @@
 import axios from '@/axios';
 import {buildFetchUrl} from 'helpers/url';
+import { EventBus } from '../../../event-bus.js';
 
 export default {
     getResidents({commit}, payload) {
@@ -7,13 +8,14 @@ export default {
             axios.get(buildFetchUrl('residents', payload))
                 .then(({data: r}) => {
                     commit('SET_RESIDENTS', r.data);
-
+                    
                     if (!payload.get_all) {
                         r.data.data = r.data.data.map((resident) => {
                             resident.name = `${resident.first_name} ${resident.last_name}`;
                             return resident;
                         });
                     }
+                    EventBus.$emit('resident-get-counted', r.data.total);
 
                     resolve(r)
                 })

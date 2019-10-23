@@ -871,6 +871,7 @@
             },
             addContract (data) {
                 this.model.contracts.push(data);
+                this.contractCount ++;
             },
             editContract(index) {
                 console.log('this.model.contracts', this.model.contracts, index)
@@ -889,6 +890,7 @@
                 }).then(async () => {
                     await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
                     this.model.contracts.splice(index, 1)
+                    this.contractCount --;
                 }).catch(() => {
                 });
             },
@@ -904,6 +906,9 @@
             });
             EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
+            });
+            EventBus.$on('resident-get-counted', resident_count => {                
+                this.residentCount = resident_count;
             });
             // this.fileCount = this.model.media.length;
         },
