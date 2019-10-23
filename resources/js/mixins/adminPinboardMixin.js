@@ -381,6 +381,10 @@ export default (config = {}) => {
             },
             setExecutionDateTime() {
                 this.model.execution_end = this.model.execution_start;
+
+                this.executionStartTime = this.executionStartTime || '00:00:00';
+                this.executionEndTime = this.executionEndTime || '23:59:00';
+
                 this.model.execution_start
                     ? this.model.execution_start = this.model.execution_start.split(' ')[0] + ' ' + this.executionStartTime
                     : '';

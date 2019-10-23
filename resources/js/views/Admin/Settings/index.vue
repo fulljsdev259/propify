@@ -83,8 +83,8 @@
                                                     {{$t('settings.font_family')}}
                                                 </label>
                                                 <el-select
-                                                           style="display: block"
-                                                           v-model="model.pdf_font_family">
+                                                        style="display: block"
+                                                        v-model="model.pdf_font_family">
                                                     <el-option :key="font.id"
                                                                :style="`font-family: '${font.label}';`"
                                                                :label="font.label"
@@ -95,140 +95,140 @@
                                         </el-card>
                                     </el-col>
                                     <el-col :md="12">
-                                    <!--                        <el-card class="mb20">-->
-                                    <!--                            <el-form :model="model" size="mini"-->
-                                    <!--                            >-->
-                                    <!--                                <div :key="schedule.day" :md="12"-->
-                                    <!--                                     class="day-wrapper mb20" v-for="schedule in model.opening_hours ">-->
-                                    <!--                                    <div class="day-name">-->
-                                    <!--                                        <div class="group-name">{{$t(`general.days.${schedule.day}`)}}</div>-->
-                                    <!--                                        <el-switch-->
-                                    <!--                                            size="mini"-->
-                                    <!--                                            v-model="schedule.closed"-->
-                                    <!--                                        >-->
-                                    <!--                                        </el-switch>-->
-                                    <!--                                    </div>-->
-                                    <!--                                    <el-time-picker-->
-                                    <!--                                        :end-placeholder="$t('settings.end_time')"-->
-                                    <!--                                        :range-separator="$t('settings.to')"-->
-                                    <!--                                        :start-placeholder="$t('settings.start_time')"-->
-                                    <!--                                        format="HH:mm"-->
-                                    <!--                                        is-range-->
-                                    <!--                                        style="width: 100%"-->
-                                    <!--                                        v-model="schedule.time"-->
-                                    <!--                                        value-format="HH:mm">-->
-                                    <!--                                    </el-time-picker>-->
-                                    <!--                                </div>-->
-                                    <!--                            </el-form>-->
-                                    <!--                        </el-card>-->
+                                        <!--                        <el-card class="mb20">-->
+                                        <!--                            <el-form :model="model" size="mini"-->
+                                        <!--                            >-->
+                                        <!--                                <div :key="schedule.day" :md="12"-->
+                                        <!--                                     class="day-wrapper mb20" v-for="schedule in model.opening_hours ">-->
+                                        <!--                                    <div class="day-name">-->
+                                        <!--                                        <div class="group-name">{{$t(`general.days.${schedule.day}`)}}</div>-->
+                                        <!--                                        <el-switch-->
+                                        <!--                                            size="mini"-->
+                                        <!--                                            v-model="schedule.closed"-->
+                                        <!--                                        >-->
+                                        <!--                                        </el-switch>-->
+                                        <!--                                    </div>-->
+                                        <!--                                    <el-time-picker-->
+                                        <!--                                        :end-placeholder="$t('settings.end_time')"-->
+                                        <!--                                        :range-separator="$t('settings.to')"-->
+                                        <!--                                        :start-placeholder="$t('settings.start_time')"-->
+                                        <!--                                        format="HH:mm"-->
+                                        <!--                                        is-range-->
+                                        <!--                                        style="width: 100%"-->
+                                        <!--                                        v-model="schedule.time"-->
+                                        <!--                                        value-format="HH:mm">-->
+                                        <!--                                    </el-time-picker>-->
+                                        <!--                                </div>-->
+                                        <!--                            </el-form>-->
+                                        <!--                        </el-card>-->
 
-                                    <el-card :header="$t('settings.settings')">
-                                        <!-- <el-form-item :label="$t('settings.quarter_enable')" prop="quarter_enable">
-                                            <el-switch v-model="model.quarter_enable"/>
-                                        </el-form-item>
-                                        <el-form-item :label="$t('settings.listing_approval_enable')"
-                                                      prop="listing_approval_enable">
-                                            <el-switch v-model="model.listing_approval_enable"/>
-                                        </el-form-item> -->
-                                        <div class="switch-wrapper">
-                                            <el-form-item :label="$t('settings.pinboard_approval_enable')" prop="pinboard_approval_enable">
-                                                <el-switch v-model="model.pinboard_approval_enable"/>
+                                        <el-card :header="$t('settings.settings')">
+                                            <!-- <el-form-item :label="$t('settings.quarter_enable')" prop="quarter_enable">
+                                                <el-switch v-model="model.quarter_enable"/>
                                             </el-form-item>
-                                            <div class="switcher__desc">
-                                                {{ $t('settings.pinboard_approval_enable_desc') }}
-                                            </div>
-                                        </div>
-                                        <div class="switch-wrapper">
-                                            <el-form-item :label="$t('settings.contact_enable')" prop="contact_enable">
-                                                <el-switch v-model="model.contact_enable"/>
-                                            </el-form-item>
-                                            <div class="switcher__desc">
-                                                {{ $t('settings.contact_enable_desc')}}
-                                            </div>
-                                        </div>
-                                        <el-row :gutter="20">
-                                            <el-col :md="12">
-                                                <el-form-item :label="$t('settings.comment_update_timeout')"
-                                                              :rules="validationRules.comment_update_timeout"
-                                                              prop="comment_update_timeout">
-                                                    <el-input autocomplete="off" type="number"
-                                                              v-model="model.comment_update_timeout"></el-input>
+                                            <el-form-item :label="$t('settings.listing_approval_enable')"
+                                                          prop="listing_approval_enable">
+                                                <el-switch v-model="model.listing_approval_enable"/>
+                                            </el-form-item> -->
+                                            <div class="switch-wrapper">
+                                                <el-form-item :label="$t('settings.pinboard_approval_enable')" prop="pinboard_approval_enable">
+                                                    <el-switch v-model="model.pinboard_approval_enable"/>
                                                 </el-form-item>
-                                            </el-col>
-                                        </el-row>
-                                    </el-card>
+                                                <div class="switcher__desc">
+                                                    {{ $t('settings.pinboard_approval_enable_desc') }}
+                                                </div>
+                                            </div>
+                                            <div class="switch-wrapper">
+                                                <el-form-item :label="$t('settings.contact_enable')" prop="contact_enable">
+                                                    <el-switch v-model="model.contact_enable"/>
+                                                </el-form-item>
+                                                <div class="switcher__desc">
+                                                    {{ $t('settings.contact_enable_desc')}}
+                                                </div>
+                                            </div>
+                                            <el-row :gutter="20">
+                                                <el-col :md="12">
+                                                    <el-form-item :label="$t('settings.comment_update_timeout')"
+                                                                  :rules="validationRules.comment_update_timeout"
+                                                                  prop="comment_update_timeout">
+                                                        <el-input autocomplete="off" type="number"
+                                                                  v-model="model.comment_update_timeout"></el-input>
+                                                    </el-form-item>
+                                                </el-col>
+                                            </el-row>
+                                        </el-card>
 
-                                    <el-card :header="$t('settings.email')">
-                                        <el-row :gutter="20">
-                                            <el-col :md="12">
-                                                <el-form-item :label="$t('settings.mail_from_name.label')"
-                                                              prop="mail_from_name"
-                                                              :rules="validationRules.mail_from_name"
-                                                >
-                                                    <el-input autocomplete="off" type="text"
-                                                              v-model="model.mail_from_name"></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                            <el-col :md="12">
-                                                <el-form-item :label="$t('settings.mail_from_address.label')"
-                                                              prop="mail_from_address"
-                                                              :rules="validationRules.mail_from_address"
-                                                >
-                                                    <el-input autocomplete="off" type="text"
-                                                              v-model="model.mail_from_address"></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                        </el-row>
-                                        <el-row :gutter="20">
-                                            <el-col :md="12">
-                                                <el-form-item :label="$t('settings.mail_host.label')"
-                                                              prop="mail_host"
-                                                              :rules="validationRules.mail_host"
-                                                >
-                                                    <el-input autocomplete="off"
-                                                              type="url"
-                                                              v-model="model.mail_host"
-                                                              class="dis-autofill"
-                                                              readonly
-                                                              onfocus="this.removeAttribute('readonly');"
-                                                    ></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                            <el-col :md="12">
-                                                <el-form-item :label="$t('settings.mail_port.label')"
-                                                              prop="mail_port"
-                                                              :rules="validationRules.mail_port"
-                                                >
-                                                    <el-input autocomplete="off" type="text"
-                                                              v-model="model.mail_port"></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                        </el-row>
-                                        <el-row :gutter="20">
-                                            <el-col :md="12">
-                                                <el-form-item required
-                                                >
-                                                    <label class="card-label">{{$t('settings.mail_encryption')}}</label>
-                                                    <el-select :placeholder="$t('settings.mail_encryption')" style="display: block"
-                                                               v-model="model.mail_encryption">
-                                                        <el-option :key="item.id"
-                                                                   :label="item"
-                                                                   :value="item"
-                                                                   v-for="item in mailEncryption"></el-option>
-                                                    </el-select>
-                                                </el-form-item>
-                                            </el-col>
-                                            <el-col :md="12">
-                                                <el-form-item :label="$t('settings.mail_username.label')"
-                                                              prop="mail_username"
-                                                              :rules="validationRules.mail_username"
-                                                >
-                                                    <el-input autocomplete="off" type="text"
-                                                              v-model="model.mail_username"></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                        </el-row>
-                                        <el-row :gutter="20">
+                                        <el-card :header="$t('settings.email')">
+                                            <el-row :gutter="20">
+                                                <el-col :md="12">
+                                                    <el-form-item :label="$t('settings.mail_from_name.label')"
+                                                                  prop="mail_from_name"
+                                                                  :rules="validationRules.mail_from_name"
+                                                    >
+                                                        <el-input autocomplete="off" type="text"
+                                                                  v-model="model.mail_from_name"></el-input>
+                                                    </el-form-item>
+                                                </el-col>
+                                                <el-col :md="12">
+                                                    <el-form-item :label="$t('settings.mail_from_address.label')"
+                                                                  prop="mail_from_address"
+                                                                  :rules="validationRules.mail_from_address"
+                                                    >
+                                                        <el-input autocomplete="off" type="text"
+                                                                  v-model="model.mail_from_address"></el-input>
+                                                    </el-form-item>
+                                                </el-col>
+                                            </el-row>
+                                            <el-row :gutter="20">
+                                                <el-col :md="12">
+                                                    <el-form-item :label="$t('settings.mail_host.label')"
+                                                                  prop="mail_host"
+                                                                  :rules="validationRules.mail_host"
+                                                    >
+                                                        <el-input autocomplete="off"
+                                                                  type="url"
+                                                                  v-model="model.mail_host"
+                                                                  class="dis-autofill"
+                                                                  readonly
+                                                                  onfocus="this.removeAttribute('readonly');"
+                                                        ></el-input>
+                                                    </el-form-item>
+                                                </el-col>
+                                                <el-col :md="12">
+                                                    <el-form-item :label="$t('settings.mail_port.label')"
+                                                                  prop="mail_port"
+                                                                  :rules="validationRules.mail_port"
+                                                    >
+                                                        <el-input autocomplete="off" type="text"
+                                                                  v-model="model.mail_port"></el-input>
+                                                    </el-form-item>
+                                                </el-col>
+                                            </el-row>
+                                            <el-row :gutter="20">
+                                                <el-col :md="12">
+                                                    <el-form-item required
+                                                    >
+                                                        <label class="card-label">{{$t('settings.mail_encryption')}}</label>
+                                                        <el-select :placeholder="$t('settings.mail_encryption')" style="display: block"
+                                                                   v-model="model.mail_encryption">
+                                                            <el-option :key="item.id"
+                                                                       :label="item"
+                                                                       :value="item"
+                                                                       v-for="item in mailEncryption"></el-option>
+                                                        </el-select>
+                                                    </el-form-item>
+                                                </el-col>
+                                                <el-col :md="12">
+                                                    <el-form-item :label="$t('settings.mail_username.label')"
+                                                                  prop="mail_username"
+                                                                  :rules="validationRules.mail_username"
+                                                    >
+                                                        <el-input autocomplete="off" type="text"
+                                                                  v-model="model.mail_username"></el-input>
+                                                    </el-form-item>
+                                                </el-col>
+                                            </el-row>
+                                            <el-row :gutter="20">
                                                 <el-col :md="12">
                                                     <el-form-item :label="$t('settings.mail_password.label')"
                                                                   :rules="validationRules.mail_password"
@@ -240,21 +240,21 @@
                                                         ></el-input>
                                                     </el-form-item>
                                                 </el-col>
-                                                 <!-- <el-col :md="12">
-                                                    <el-form-item :rules="validationRules.mail_powered_by"
-                                                                  prop="email_powered_by">
-                                                        <label class="card-label">{{$t('settings.mail_powered_by.label')}}</label>
-                                                        <el-select :placeholder="$t('general.state')" style="display: block"
-                                                                   v-model="model.email_powered_by">
-                                                            <el-option :label="$t('general.placeholders.select')" value=""></el-option>
-                                                            <el-option :key="item.label+item.value" :label="$t('settings.powered_by')+' '+item.label" :value="item.value"
-                                                                       v-for="item in mail_powered_by"></el-option>
-                                                        </el-select>
-                                                    </el-form-item>
-                                                </el-col> -->
+                                                <!-- <el-col :md="12">
+                                                   <el-form-item :rules="validationRules.mail_powered_by"
+                                                                 prop="email_powered_by">
+                                                       <label class="card-label">{{$t('settings.mail_powered_by.label')}}</label>
+                                                       <el-select :placeholder="$t('general.state')" style="display: block"
+                                                                  v-model="model.email_powered_by">
+                                                           <el-option :label="$t('general.placeholders.select')" value=""></el-option>
+                                                           <el-option :key="item.label+item.value" :label="$t('settings.powered_by')+' '+item.label" :value="item.value"
+                                                                      v-for="item in mail_powered_by"></el-option>
+                                                       </el-select>
+                                                   </el-form-item>
+                                               </el-col> -->
                                             </el-row>
-                                    </el-card>
-                                </el-col>
+                                        </el-card>
+                                    </el-col>
                                 </el-row>
                             </el-form>
                         </el-tab-pane>
@@ -271,9 +271,9 @@
                                             <span @click="Iframe_drawer" class="icon-cog"></span>
                                             <el-form-item :label="$t('settings.iframe_enable')" class="switcher switcher-block" prop="contact_enable">
                                                 <span class="switcher__desc">{{ $t('settings.iframe_enable_desc')}}</span>
-                                                <el-switch 
-                                                    v-model="model.iframe_enable"
-                                                    />
+                                                <el-switch
+                                                        v-model="model.iframe_enable"
+                                                />
                                             </el-form-item>
                                         </el-card>
                                     </el-col>
@@ -322,20 +322,20 @@
                                                 <upload-document @fileUploaded="setAvatarLogoUpload" class="drag-custom" drag/>
                                                 <img :src="logo_upload_img"
                                                      v-show="logo_upload_img"
-                                                     >
+                                                >
                                                 <img :src="SettingsLogo" ref="SettingsLogo"
                                                      v-show="SettingsLogo && !logo_upload_img"
-                                                    >
-                                                
+                                                >
+
                                             </el-form-item>
                                             <el-form-item :label="$t('models.user.circle_logo')">
                                                 <upload-document @fileUploaded="setCircleLogoUpload" class="drag-custom" drag/>
                                                 <img :src="circle_logo_upload_img"
                                                      v-show="circle_logo_upload_img"
-                                                    >
+                                                >
                                                 <img :src="SettingsCircleLogo" ref="SettingsCircleLogo"
                                                      v-show="SettingsCircleLogo && !circle_logo_upload_img"
-                                                    >
+                                                >
                                             </el-form-item>
                                             <!-- <el-form-item :label="$t('models.user.favicon_icon')">
                                                 <upload-document @fileUploaded="setFaviconIconUpload" class="drag-custom" drag/>
@@ -350,10 +350,10 @@
                                                 <upload-document @fileUploaded="setResidentLogoUpload" class="drag-custom" drag/>
                                                 <img :src="resident_logo_upload_img"
                                                      v-show="resident_logo_upload_img"
-                                                    >
+                                                >
                                                 <img :src="SettingsResidentLogo" ref="SettingsResidentLogo"
                                                      v-show="SettingsResidentLogo && !resident_logo_upload_img"
-                                                     >
+                                                >
                                             </el-form-item>
                                             <el-form-item :label="$t('settings.primary_color')">
                                                 <el-color-picker
@@ -378,16 +378,16 @@
             <el-tab-pane name="requests">
                 <template slot="label"><i class="icon icon-chat-empty"></i>{{$t('general.requests')}}</template>
 
-<!--                <heading :title="$t('general.requests')" class="custom-heading" icon="ti-settings" shadow="heavy" />-->
+                <!--                <heading :title="$t('general.requests')" class="custom-heading" icon="ti-settings" shadow="heavy" />-->
 
                 <div class="dashboard-tabpanel dashboard-tabpanel_left">
                     <el-tabs type="border-card" v-model="activeRequestName">
-<!--                        <el-tab-pane :label="$t('settings.categories')" name="categories">-->
-<!--                            <CategoriesListing/>-->
-<!--                        </el-tab-pane>-->
+                        <!--                        <el-tab-pane :label="$t('settings.categories')" name="categories">-->
+                        <!--                            <CategoriesListing/>-->
+                        <!--                        </el-tab-pane>-->
                         <el-tab-pane :label="$t('settings.templates')" name="templates">
                             <TemplatesListing v-if="!templateEditMode" :onClick="handleEditClick"/>
-                            
+
                             <TemplateEdit v-else />
                         </el-tab-pane>
                     </el-tabs>
@@ -450,7 +450,7 @@
                                                 </label>
                                                 <el-switch v-model="model.login_variation_2_slider"/>
                                             </el-form-item>
-                                            
+
                                         </el-card>
                                     </el-col>
                                 </el-row> -->
@@ -467,43 +467,43 @@
                 </el-tab-pane>
                 <el-tab-pane name="gocaution" v-if="Gocaution_drawer_val">
                     <div slot="label"><i class="icon-cog"></i><label class="switcher__label">{{$t('settings.gocaution.label')}}</label> </div>
-                    
+
                 </el-tab-pane>
                 <el-tab-pane name="cleanify" v-if="Cleanify_drawer_val">
                     <div slot="label"><i class="icon-cog"></i><label class="switcher__label">{{$t('settings.cleanify_email.label')}}</label> </div>
                     <!-- <el-input type="email" v-model="model.cleanify_email"></el-input> -->
                 </el-tab-pane>
                 <div :style="{'display':Iframe_drawer_val?'block':'none'}">
-                        <el-form :model="model" :rules="iFrameRules" ref="microAppsSettingsForm_iframe" class="demo-ruleForm">
-                            <el-form-item :label="$t('settings.iframe_url.label')"  prop="iframe_url">
-                                <el-input v-model="model.iframe_url"></el-input>
-                            </el-form-item>
-                        </el-form>    
-                        <div class="drawer-btn-sec"> 
-                            <el-button class="save-tab is-round" @click="saveSettings('microAppsSettingsForm_iframe')" icon="ti-save"
-                                    type="primary">
-                                {{$t('general.actions.save')}}
-                            </el-button> 
-                        </div> 
-                </div> 
+                    <el-form :model="model" :rules="iFrameRules" ref="microAppsSettingsForm_iframe" class="demo-ruleForm">
+                        <el-form-item :label="$t('settings.iframe_url.label')"  prop="iframe_url">
+                            <el-input v-model="model.iframe_url"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <div class="drawer-btn-sec">
+                        <el-button class="save-tab is-round" @click="saveSettings('microAppsSettingsForm_iframe')" icon="ti-save"
+                                   type="primary">
+                            {{$t('general.actions.save')}}
+                        </el-button>
+                    </div>
+                </div>
                 <div :style="{'display':Cleanify_drawer_val?'block':'none'}">
                     <el-form :model="model" :rules="cleanifyRules" ref="microAppsSettingsForm_cleanify" class="demo-ruleForm">
                         <el-form-item :label="$t('settings.cleanify_url.label')"  prop="cleanify_email">
                             <el-input type="email" v-model="model.cleanify_email"></el-input>
                         </el-form-item>
                     </el-form>
-                    <div class="drawer-btn-sec"> 
+                    <div class="drawer-btn-sec">
                         <el-button class="save-tab is-round" @click="saveSettings('microAppsSettingsForm_cleanify')" icon="ti-save"
-                                type="primary">
+                                   type="primary">
                             {{$t('general.actions.save')}}
-                        </el-button> 
-                    </div> 
-                </div> 
-                <!-- <div class="drawer-btn-sec"> 
+                        </el-button>
+                    </div>
+                </div>
+                <!-- <div class="drawer-btn-sec">
                     <el-button class="save-tab is-round" @click="saveSettings('microAppsSettingsForm')" icon="ti-save"
                             type="primary">
                         {{$t('general.actions.save')}}
-                    </el-button> 
+                    </el-button>
                 </div>  -->
             </el-tabs>
         </ui-drawer>
@@ -575,11 +575,11 @@
                     iframe_url: '',
                 },
                 iFrameRules: {
-                    iframe_url: [  
+                    iframe_url: [
                         { required: true, message: this.$t("settings.iframe_url.validation"), trigger: 'blur' },
                         { type: 'url', message: this.$t("settings.iframe_url.label") },
                     ]
-                },    
+                },
                 cleanifyRules:{
                     cleanify_email:[
                         { required: true, message: this.$t("settings.cleanify_url.validation"), trigger: 'blur' },
@@ -624,7 +624,7 @@
         },
         async created() {
             await this.fetchSettings();
-            
+
 
             if (this.$route.query.tab) {
                 this.goToTab(this.$route.query.tab);
@@ -754,7 +754,7 @@
                     if (valid) {
                         this.model.primary_color_lighter = this.getLightenDarkenColor(this.model.primary_color, 90) + '59'
                         this.updateSettings(this.model).then((resp) => {
-                            
+
                             this.fetchSettings();
                             displaySuccess(resp);
                             //this.main_drawer = false;
@@ -765,7 +765,7 @@
                             }, 3000);
 
                             // this.main_drawer = false;
-                            
+
                         }).catch((error) => {
                             displayError(error);
                         });
@@ -815,9 +815,9 @@
                 }
                 this.drawerTabsModel = 'cleanify'
             },
-             Iframe_drawer(val){
+            Iframe_drawer(val){
                 if(val)
-                {                    
+                {
                     this.main_drawer = true;
                     this.Iframe_drawer_val = true;
                     this.Gocaution_drawer_val = false;
@@ -873,10 +873,10 @@
                     if(this.$route.name == "login") {
                         return;
                     }
-                    
+
                     if(this.$route.query.template == undefined)
                         this.templateEditMode = false;
-                    
+
                 }
             }
         }
@@ -1330,13 +1330,13 @@
         padding: 0;
     }
     .card-boxs span.switcher__desc {
-    text-align: center;
-    font-weight: normal;
-    margin-top: 10px;
-    line-height: 20px;
-    font-size: 13px;
-    color: #333;
-}
+        text-align: center;
+        font-weight: normal;
+        margin-top: 10px;
+        line-height: 20px;
+        font-size: 13px;
+        color: #333;
+    }
     .card-boxs div {
         text-align: center;
     }
@@ -1378,7 +1378,7 @@
     .switcher-frist .el-switch {
         margin-top: 10px;
     }
-   .card-boxs .icon-menu:after {
+    .card-boxs .icon-menu:after {
         width: auto;
         position: absolute;
         top: -22px;
