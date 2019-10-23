@@ -74,11 +74,11 @@
         async mounted () {
             const {resident} = this.user
 
-            if (resident.building_id) {
+            if (resident.building) {
                 this.loading = true
 
                 let {residents} = await this.$store.dispatch('getBuilding', {
-                    id: resident.building_id
+                    id: resident.building.id
                 })
 
                 // exclude the loggedin resident
