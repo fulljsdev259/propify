@@ -35,7 +35,6 @@ export default (config = {}) => {
                     provider_ids: [],
                     building: '',
                     created_by: '',
-                    defect:'',
                     location: '',
                     room: '',
                     capture_phase: '',
@@ -45,6 +44,7 @@ export default (config = {}) => {
                     payer: '',
                     property_managers: [],
                     media: [],
+                    sub_category_id: ''
                 },
                 validationRules: {
                     category: [{
@@ -349,9 +349,9 @@ export default (config = {}) => {
             },
             changeSubCategory() {
                 const subcategory = this.sub_categories.find(category => {
-                    return category.id == this.model.defect;
+                    return category.id == this.model.sub_category_id;
                 });
-
+                
                 this.model.room = '';
                 this.model.location = '';
                 this.showLiegenschaft = false;
@@ -496,7 +496,6 @@ export default (config = {}) => {
                 });
 
 
-                console.log(this.contracts)
                 if(this.contracts.length == 1) {
                     this.model.contract_id = this.contracts[0].id
                 }
@@ -511,9 +510,12 @@ export default (config = {}) => {
                     ...mixin.methods,
                     ...mapActions(['createRequest', 'createRequestTags', 'getTags']),
                     async saveRequest() {
-                        if(this.model.category_id == 1) {
-                            this.model.category_id = this.model.defect;
-                        }
+                        // if(this.model.category_id == 1) {
+                        //     this.model.category_id = this.model.defect;
+                        // }
+
+                        this.model.category_id = this.model.category_id
+                        this.model.sub_category = this.model.sub_category_id 
 
                         const resp = await this.createRequest(this.model);
                         
@@ -622,8 +624,12 @@ export default (config = {}) => {
                                 return manager
                             });
                         }
+
+                        this.category_id = resp.data.category
+
+                        this.sub_category_id = resp.data.sub_category
                         
-                        this.showSubCategory = resp.data.category.parent_id == 1 ? true : false;
+                        this.showSubCategory = this.sub_category_id ? true : false;
                         
                         // this.showLiegenschaft =  resp.data.category.parent_id == 1 && resp.data.category.location == 1 ? true : false;
 
@@ -641,13 +647,15 @@ export default (config = {}) => {
                         const data = resp.data;
 
                         this.model = Object.assign({}, this.model, data);
-                        if(data.category.parent_id == null) {
-                            this.$set(this.model, 'category_id', data.category.id);
-                        }
-                        else {
-                            this.$set(this.model, 'category_id', data.category.parent_id);
-                            this.$set(this.model, 'defect', data.category.id);
-                        }
+                        // if(data.category.parent_id == null) {
+                        //     this.$set(this.model, 'category_id', data.category.id);
+                        // }
+                        // else {
+                        //     this.$set(this.model, 'category_id', data.category.parent_id);
+                        //     this.$set(this.model, 'defect', data.category.id);
+                        // }
+                        this.$set(this.model, 'category_id', data.category.id);
+                        this.$set(this.model, 'sub_category_id', data.sub_category.id);
                         this.$set(this.model, 'created_by', data.created_by);
                         this.$set(this.model, 'building', data.resident.building.name);
 
@@ -672,8 +680,10 @@ export default (config = {}) => {
                                 this.loading.state = true;
                                 let {service_providers, property_managers, ...params} = this.model;
                                 
-                                if(params.category_id == 1)
-                                    params.category_id = this.model.defect;
+                                // if(params.category_id == 1)
+                                //     params.category_id = this.model.defect;
+                                params.category = this.model.category_id
+                                params.sub_category = this.model.sub_category_id
 
                                 let existingsKeys = [];
                                 let newTags = [];
@@ -773,11 +783,19 @@ export default (config = {}) => {
                     tags.data.data.map(item => {
                         this.model.keywords.push(item.name);
                     })
-
+                    
+                    this.categories = this.$constants.requests.categories_data.tree
                     
                     await this.fetchCurrentRequest();
 
-                    this.getRealCategories();
+                    if(this.model.category_id)
+                    {
+                        let p_category = this.categories.find(category => {
+                            return category.id === this.model.category_id;
+                        });
+
+                        this.sub_categories = p_category ? p_category.sub_categories : [];
+                    }
 
                     this.loading.state = false;
                 };
