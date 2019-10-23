@@ -27,8 +27,8 @@
             </el-select>
         </el-form-item>
 
-        <el-form-item prop="defect" :label="$t('resident.defect_location')" v-if="this.showSubCategory == true" required>
-            <el-select v-model="model.defect" 
+        <el-form-item prop="sub_category_id" :label="$t('resident.defect_location')" v-if="this.showSubCategory == true" required>
+            <el-select v-model="model.sub_category_id" 
                         :placeholder="$t('resident.placeholder.defect_location')"
                         filterable
                         @change="changeSubCategory">
@@ -147,7 +147,7 @@
                     visibility: '',
                     description: '',
                     media: [],
-                    defect:'',
+                    sub_category_id:'',
                     location: '',
                     room: '',
                     capture_phase: '',
@@ -217,7 +217,7 @@
             },
             changeSubCategory() {
                 const subcategory = this.sub_categories.find(category => {
-                    return category.id == this.model.defect;
+                    return category.id == this.model.sub_category_id;
                 });
 
                 this.model.room = '';
@@ -254,9 +254,8 @@
 
                             //const data = await this.$store.dispatch('createRequest', params)
 
-                            if(params.category_id == 1)
-                                params.category_id = this.model.defect;
-                            
+                            params.category = params.category_id
+                            params.sub_category = params.sub_category_id
 
                             const resp = await this.$store.dispatch('newRequests/create', params);
                             
