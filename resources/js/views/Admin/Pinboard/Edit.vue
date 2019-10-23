@@ -350,8 +350,8 @@
                         <el-row :gutter="20" v-if="model.execution_period == 1">
                             <el-col :md="12">
                                 <el-form-item :label="$t('models.pinboard.execution_interval.date')"
-                                              :rules="validationRules.execution_date"
-                                              prop="execution_date">
+                                              :rules="validationRules.execution_start"
+                                              prop="execution_start">
                                     <el-date-picker
                                             :key="datePickerKey"
                                             prefix-icon="el-icon-date"
