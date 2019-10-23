@@ -1364,6 +1364,10 @@ class DashboardAPIController extends AppBaseController
         }
 
         foreach ($requests as $_request) {
+            if (empty($parentCategories[$_request->category])) {
+                // when inserted wrong category
+                continue;
+            }
             $category = $parentCategories[$_request->category];
             $statisticData[$category] = $this->thousandsFormat($_request->count);
         }

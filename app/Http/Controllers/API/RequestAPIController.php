@@ -474,16 +474,18 @@ class RequestAPIController extends AppBaseController
     public function massEdit(MassEditRequest $massEditRequest)
     {
         //get in MassEditRequest validation class
-        $requests = $massEditRequest->request->get('requests');
-        $managers = $massEditRequest->request->get('managers');
+        $requests = $massEditRequest->requests;
+
+        $managers = $massEditRequest->managers;
         if ($managers) {
             $this->requestRepository->massAssign($requests, 'managers', $managers);
         }
 
         //get in MassEditRequest validation class
-        $providers = $massEditRequest->request->get('providers');
+        $providers = $massEditRequest->providers;
         if ($providers) {
             $this->requestRepository->massAssign($requests, 'providers', $providers);
+            $this->requestRepository->massUpdateAttribute($requests, ['status' => Request::StatusAssigned]);
         }
 
         $status = $massEditRequest->get('status');
