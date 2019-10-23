@@ -53,7 +53,6 @@ class PinboardRepository extends BaseRepository
      */
     public function create(array $atts)
     {
-        dd($atts);
         $atts['building_ids'] = $atts['building_ids'] ?? [];
         $atts['quarter_ids'] = $atts['quarter_ids'] ?? [];
         $u = \Auth::user();
