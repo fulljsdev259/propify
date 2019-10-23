@@ -1568,11 +1568,12 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'resident.user', 'unit.building',
+            'media', 'resident.user', 'contract.unit.building',
         ]);
-
+        $this->tmpSetUnit($request);
         $templates = $tempRepo->getParsedCommunicationTemplates($request, Auth::user());
         $response = (new TemplateTransformer)->transformCollection($templates);
+
         return $this->sendResponse($response, 'Communication Templates retrieved successfully');
     }
 
@@ -1627,8 +1628,9 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'resident.user', 'unit.building',
+            'media', 'resident.user', 'contract.unit.building',
         ]);
+        $this->tmpSetUnit($request);
 
         $templates = $tempRepo->getParsedServiceCommunicationTemplates($request, Auth::user());
 
@@ -1687,13 +1689,23 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'resident.user', 'unit.building',
+            'media', 'resident.user', 'contract.unit.building',
         ]);
+        $this->tmpSetUnit($request);
 
         $templates = $tempRepo->getParsedServiceEmailTemplates($request, Auth::user());
 
         $response = (new TemplateTransformer)->transformCollection($templates);
         return $this->sendResponse($response, 'Service Email Templates retrieved successfully');
+    }
+
+    protected function tmpSetUnit(Request $request)
+    {
+        if (!empty($request->contract->unit)) {
+            $request->setRelation('unit', $request->contract->unit);
+        } else {
+            $request->setRelation('unit', null);
+        }
     }
 
     /**
