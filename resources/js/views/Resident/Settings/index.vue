@@ -9,7 +9,19 @@
                         <card>
                             <el-form :model="loggedInUser" label-width="120px" ref="accform">
                                 <el-form-item :label="$t('models.user.profile_image')">
-                                    <cropper :resize="false" :viewportType="'circle'" @cropped="cropped"/>
+                                    <cropper
+                                            :boundary="{
+                                                width: 250,
+                                                height: 360
+                                            }"
+                                            :viewport="{
+                                                width: 250,
+                                                height: 250
+                                            }"
+                                            :resize="false"
+                                            :defaultAvatarSrc="loggedInUser.avatar ? '/'+loggedInUser.avatar : ''"
+                                            @cropped="cropped"/>
+
                                 </el-form-item>
                                 <el-form-item :label="$t('general.email')" :rules="accountValidationRules.email"
                                               prop="email">
