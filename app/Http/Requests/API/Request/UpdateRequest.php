@@ -27,15 +27,10 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         $user = Auth::user();
-        if ($user->can('edit-request_resident')) {
-            // @TODO discuss
+        if ($user->resident) {
             return Request::$rulesPutResident;
         }
 
-        if ($user->can('edit-request_service')) {
-            // @TODO discuss
-            return Request::$rulesPutService;
-        }
         $putRoles =  Request::$rulesPut;
         $putRoles['reminder_user_id'] = Rule::requiredIf(function () {
             return $this->active_reminder == true;

@@ -67,9 +67,9 @@ class RequestRepository extends BaseRepository
     public function create(array $attributes)
     {
         $attributes = self::getPostAttributes($attributes);
-        if (isset($attributes['category_id'])) {
-            $requestCategories = RequestCategory::where('has_qualifications', 1)->pluck('id');
-            if (! $requestCategories->contains($attributes['category_id'])) {
+        if (isset($attributes['category'])) {
+            $categoryAttributes = Request::CategoryAttributes[$attributes['category']] ?? [];
+            if (empty($categoryAttributes) || ! in_array(Request::HasQualifications, $categoryAttributes)) {
                 unset($attributes['qualification']);
             }
         }
@@ -95,27 +95,13 @@ class RequestRepository extends BaseRepository
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
             $attr['contract_id'] = $attributes['contract_id'];
-            $attr['category_id'] = $attributes['category_id'];
+            $attr['category'] = $attributes['category'];
             $attr['visibility'] = $attributes['visibility'];
            // $attr['priority'] = $attributes['priority'];
           //  $attr['internal_priority'] = $attributes['internal_priority'] ?? $attributes['priority'];
             $attr['resident_id'] = $user->resident->id;
             $attr['status'] = Request::StatusReceived;
             $attr['qualification'] = array_flip(Request::Qualification)['none'];
-            return $attr;
-        }
-
-        if ($user->can('add-request_service')) {
-            // @TODO correct add-request_service now not available $user->resident->id
-            // must be throw exception
-            //  if this related service user permissions then
-            $attr = [];
-            $attr['title'] = $attributes['title'];
-            $attr['description'] = $attributes['description'];
-            $attr['category_id'] = $attributes['category_id'];
-            $attr['resident_id'] = $user->resident->id;
-            $attr['status'] = Request::StatusReceived;
-
             return $attr;
         }
 
@@ -135,8 +121,7 @@ class RequestRepository extends BaseRepository
     public static function getPutAttributes($attributes, $request)
     {
         $user = Auth::user();
-        if ($user->can('edit-request_resident')) {
-            // @TODO correct edit-request_resident now not available
+        if ($user->resident) {
             // I think it is resident permitted options
             $attr = [];
             $attr['title'] = $attributes['title'];
@@ -146,27 +131,6 @@ class RequestRepository extends BaseRepository
 
             return $attr;
         }
-
-        if ($user->can('edit-request_service')) {
-            // @TODO correct edit-request_service now not available
-            // I think it is service permitted options
-            $attr = [];
-            $attr['title'] = $attributes['title'];
-            $attr['description'] = $attributes['description'];
-            //$attr['priority'] = $attributes['priority'];
-
-//            if (isset($attributes['internal_priority'])) {
-//                $attr['internal_priority'] = $attributes['internal_priority'];
-//            }
-
-            $attr['qualification'] = $attributes['qualification'];
-            $attr['status'] = $attributes['status'];
-            $attr['category_id'] = $attributes['category_id'];
-            $attr['resident_id'] = $attributes['resident_id'];
-
-            return $attr;
-        }
-
 
         $attributes = self::getStatusRelatedAttributes($attributes, $request);
 
@@ -245,14 +209,8 @@ class RequestRepository extends BaseRepository
         }
         return true;
         $user = Auth::user();
-        if ($user->can('edit-request_resident')) {
+        if ($user->resident) {
             if (!in_array($attributes['status'], Request::StatusByResident[$currentStatus])) {
-                return false;
-            }
-        }
-
-        if ($user->can('edit-request_service')) {
-            if (!in_array($attributes['status'], Request::StatusByService[$currentStatus])) {
                 return false;
             }
         }

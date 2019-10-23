@@ -593,7 +593,7 @@ class Request extends AuditableModel implements HasMedia
         'due_date' => 'required|date',
 //        'category' => 'required|integer', //@TODO
 //        'sub_category' => 'integer',
-        'visibility' => 'required|integer',
+        'visibility' => 'nullable|integer',
     ];
 
     /**
@@ -610,7 +610,7 @@ class Request extends AuditableModel implements HasMedia
 //        'sub_category' => 'integer',
 //        'priority' => 'required|integer',
 //        'internal_priority' => 'integer',
-        'visibility' => 'required|integer',
+        'visibility' => 'nullable|integer',
     ];
 
     /**
@@ -630,7 +630,7 @@ class Request extends AuditableModel implements HasMedia
         'due_date' => 'date',
 //        'category' => 'integer', //@TODO
 //        'sub_category' => 'integer',
-        'visibility' => 'integer',
+        'visibility' => 'nullable|integer',
         'active_reminder' => 'boolean',
     ];
 
@@ -647,16 +647,7 @@ class Request extends AuditableModel implements HasMedia
         'status' => 'integer',
 //        'priority' => 'required|integer',
 //        'internal_priority' => 'integer',
-        'visibility' => 'integer',
-    ];
-
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rulesPutService = [
-        'status' => 'integer'
+        'visibility' => 'nullable|integer',
     ];
 
     /**
