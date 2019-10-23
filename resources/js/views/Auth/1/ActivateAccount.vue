@@ -8,25 +8,25 @@
                 </router-link>
             <h2>{{$t('general.activate_account')}}</h2>
             <p>{{$t('general.activate_info')}}</p>
-             <el-row type="flex">
-                <el-col :span="12">
+             <el-row :gutter="10">
+                <el-col :xl="12" :lg="12" :md="12" :sm="24" :xs="24">
                     <el-form-item prop="email" :label="$t('general.email')" :rules="validationRules.email">
                         <el-input type="email" v-model="model.email" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :xl="12" :lg="12" :md="12" :sm="24" :xs="24">
                     <el-form-item prop="act_code" :label="$t('general.activate_code')" :rules="validationRules.act_code">
                         <el-input type="text" v-model="model.act_code" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-row type="flex">
-                <el-col :span="12">
+            <el-row :gutter="10">
+                <el-col :xl="12" :lg="12" :md="12" :sm="24" :xs="24">
                     <el-form-item prop="password" :label="$t('general.password')" :rules="validationRules.password">
                         <el-input autocomplete="off" type="password" v-model="model.password"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :xl="12" :lg="12" :md="12" :sm="24" :xs="24">
                     <el-form-item prop="password_confirmation" :label="$t('general.confirm_password')" :rules="validationRules.password_confirmation">
                         <el-input autocomplete="off" type="password"
                                     v-model="model.password_confirmation"></el-input>
@@ -57,15 +57,10 @@
         h2 {
             font-weight: normal;
         }
-        
-        .el-form .el-row {
-            .el-col {
-                &:nth-child(2) {
-                    margin-left: 25px;
-                }
-            }
-            
+        a .el-button {
+            text-align: left;
         }
+  
     }
     .el-form-item {
         &:nth-of-type(1) {
