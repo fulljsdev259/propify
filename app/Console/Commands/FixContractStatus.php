@@ -40,7 +40,7 @@ class FixContractStatus extends Command
     public function handle()
     {
         $query = Contract::where('status', Contract::StatusInactive)
-            ->where('start_date', '<', now()->format('Y-m-d'));
+            ->where('start_date', '=', now()->format('Y-m-d'));
 
         // get all not active contract until today
         $contracts = $query->get(['resident_id']);

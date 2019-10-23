@@ -138,6 +138,12 @@ class AuditableModel extends Model implements Auditable
             $value = $this->getMediaAudit($value);
         }
 
+        if (is_a($value, Model::class)) {
+            $value = $this->getSingleRelationAuditData($value);
+        } elseif (is_a($value, Collection::class)) {
+            $value = $this->getManyRelationAuditData($value);
+        }
+
         if (self::EventCreated == $audit->event) {
             $audit->new_values = $this->fixAddedData($audit->new_values, $key, $value, $isSingle);
             $audit->save();
@@ -216,6 +222,7 @@ class AuditableModel extends Model implements Auditable
             return $this->getMediaAudit($relation);
         }
 
+        // @TODO use auditable attributes or similar thing
         $auditData = $relation->getAttributes();
         unset($auditData['created_at']);
         unset($auditData['updated_at']);
