@@ -39,7 +39,7 @@
     import queryString from 'query-string'
     import FormatDateTimeMixin from 'mixins/formatDateTimeMixin'
     import { EventBus } from '../../../event-bus.js';
-
+    import sFilter from './filters.json';
     export default {
         mixins: [FormatDateTimeMixin],
 
@@ -55,7 +55,7 @@
             showFilter: Boolean,
             type: {
                 type: String,
-                validator: type => ['pinboard', 'listing', 'request'].includes(type)
+                validator: type => ['pinboard', 'listing', 'request', 'unit', 'quarter', 'building', 'manager', 'resident', 'provider'].includes(type)
             }
         },
         components: {
@@ -75,6 +75,7 @@
                     schema: filterSchema,
                     data: filterData
                 },
+                sFilter: sFilter,
                 categories: [],
                 loading: true,                
             }
@@ -96,23 +97,23 @@
                                 label: 'resident.all',
                                 value: null
                             }
-                        });
-                if(this.type){
+                        });                  
+                if(this.type){                     
                     // If there is type then only show event options
                     // Get type options from translation files
                     filter_name = 'event'
-                    const filter_event_translations = this.$t(`general.components.common.audit.filter.${this.type}`);
-                    const filter_event_options = Object.keys(filter_event_translations).map((key, index) => {
+                    const filter_event_translations = this.sFilter[this.type];                    
+                    const filter_event_options = Object.values(filter_event_translations).map((value,key) => {                        
                         // Push to schema array
                         schema_children.push({
                             type: 'el-option',
                             props: {
-                                label: `general.components.common.audit.filter.${this.type}.${key}`,
-                                value: key
+                                label: `general.components.common.audit.filter.general.${value}`,
+                                value: value
                             }
                         })
                     });                    
-                }else{
+                }else{                    
                     // If there is no type prop on audit component then show type select
                     // Get filter translations from file
                     filter_name = 'auditable_type'
@@ -226,21 +227,22 @@
             }
         },
         async mounted () {
-            const {data:{data}} = await this.axios.get('requestCategories/tree?get_all=true');
-            // Get filter options from translation file and add the to filter object
+            // const {data:{data}} = await this.axios.get('requestCategories/tree?get_all=true');
+            // // Get filter options from translation file and add the to filter object
 
-            const flattenCategories = categories => categories.reduce((obj, category) => {
-                obj[category.id] = category.name_en.toLowerCase().replace(/ /g,"_");
+            // const flattenCategories = categories => categories.reduce((obj, category) => {
+            //     obj[category.id] = category.name_en.toLowerCase().replace(/ /g,"_");
 
-                if (category.categories) {
-                    obj = {...obj, ...flattenCategories(category.categories)}
+            //     if (category.categories) {
+            //         obj = {...obj, ...flattenCategories(category.categories)}
 
-                    delete category.categories;
-                }
-                return obj
-            }, {})
+            //         delete category.categories;
+            //     }
+            //     return obj
+            // }, {})
 
-            this.categories = flattenCategories(data)
+            // this.categories = flattenCategories(data)
+            this.categories = this.$constants.requests.categories_data.tree
             await this.filterReset();
         }
     }

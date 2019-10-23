@@ -229,6 +229,12 @@
                                 v-if="model.id"
                             />
                         </el-tab-pane>
+                        <el-tab-pane name="audit" style="height: 400px;overflow:auto;">
+                            <span slot="label">
+                                <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge>
+                            </span>
+                            <audit :id="model.id" type="quarter" showFilter/>
+                        </el-tab-pane>
                         <el-tab-pane name="settings" :disabled="true">
                             <span slot="label" class="icon-cog" @click="toggleDrawer">
                             </span>
@@ -381,6 +387,7 @@
                     }]
                 }],
                 visibleDrawer: false,
+                auditCount: 0,
                 fileCount: 0,
                 requestCount: 0,
                 assigneeCount: 0,
@@ -540,7 +547,9 @@
             EventBus.$on('building-get-counted', building_count => {
                 this.buildingCount = building_count;
             });
-            
+            EventBus.$on('audit-get-counted', audit_count => {
+                this.auditCount = audit_count;
+            });
         },
         watch: {
             'visibleDrawer': {
@@ -598,7 +607,7 @@
             margin-top: 1%;
         }
 
-        /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-buildings, /deep/ #tab-contracts, /deep/ #tab-assignees {
+        /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-buildings, /deep/ #tab-contracts, /deep/ #tab-assignees, /deep/ #tab-audit {
             padding-right: 40px;
         }
 

@@ -630,7 +630,7 @@ class Request extends AuditableModel implements HasMedia
         'due_date' => 'date',
 //        'category' => 'integer', //@TODO
 //        'sub_category' => 'integer',
-        'visibility' => 'required|integer',
+        'visibility' => 'integer',
         'active_reminder' => 'boolean',
     ];
 
@@ -647,7 +647,7 @@ class Request extends AuditableModel implements HasMedia
         'status' => 'integer',
 //        'priority' => 'required|integer',
 //        'internal_priority' => 'integer',
-        'visibility' => 'required|integer',
+        'visibility' => 'integer',
     ];
 
     /**

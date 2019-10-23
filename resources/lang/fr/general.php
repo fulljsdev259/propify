@@ -35,6 +35,7 @@ return [
         'saturday' => 'samedi',
         'sunday' => 'dimanche',
     ],
+    "audits" => "Audits",
     "user" => "Utilisateur",
     "resident" => "Résident",
     "residents" => "Résidents",
@@ -315,26 +316,15 @@ return [
                         'pinboard' => 'Panneau d\'affichage',
                         'listing' => 'Produit',
                         'request' => 'Demande'
-                    ],
-                    'pinboard' => [
+                    ],                    
+                    'general' => [
                         'created' => 'Créé',
                         'updated' => 'Mises à jour',
                         'provider_assigned' => 'Fournisseur assigné',
-                        'user_assigned' => "Affecté par l'utilisateur",
+                        'manager_assigned' => "Gestionnaire assigné",
                         'media_uploaded' => 'Média téléchargé',
                         'media_deleted' => 'Médias supprimés'
-                    ],
-                    'listing' => [
-    
-                    ],
-                    'request' => [
-                        'created' => 'Créé',
-                        'updated' => 'Mises à jour',
-                        'provider_assigned' => 'Fournisseur assigné',
-                        'user_assigned' => "Affecté par l'utilisateur",
-                        'media_uploaded' => 'Média téléchargé',
-                        'media_deleted' => 'Médias supprimés'
-                    ]
+                    ]                  
                 ],
                 'content' => [
                     'with_id' => [
@@ -347,7 +337,11 @@ return [
                             'user_assigned' => ':userName a été affecté au poste de gestionnaire.',
                             'media_uploaded' => 'Média téléchargé',
                             'media_deleted' => 'Médias supprimés',
-                            'provider_notified' => 'Prestataire :providerName a été avisé par courriel.'
+                            'provider_notified' => 'Prestataire :providerName a été avisé par courriel.',
+                            'quarter_assigned' => ':quarterName Trimestre assigné',
+                            'quarter_unassigned' => ':quarterName Trimestre non attribué',
+                            'building_assigned' => ':buildingName Bâtiment affecté',
+                            'building_unassigned' => ':buildingNam Bâtiment non assigné',
                         ],
                         'pinboard' => [
                             'created' => ':userName a ouvert ce :auditable_type à bord de :auditable_type #:auditable_id.',                                                        

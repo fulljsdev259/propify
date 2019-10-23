@@ -90,7 +90,7 @@ export default (config = {}) => {
                 },
                 remoteLoading: false,
                 categories: [],
-                defect_subcategories: [],
+                sub_categories: [],
                 residents: [],
                 toAssignList: [],
                 media: [],
@@ -103,11 +103,11 @@ export default (config = {}) => {
                 rooms: [],
                 acquisitions: [],
                 costs: [],
-                showsubcategory: false,
-                showpayer: false,
+                showSubCategory: false,
+                showPayer: false,
                 showUmgebung: false,
                 showLiegenschaft: false,
-                showacquisition: false,
+                showAcquisition: false,
                 showWohnung: false,
                 createTag: false,
                 editTag: false,
@@ -141,7 +141,7 @@ export default (config = {}) => {
             }
         },
         methods: {
-            ...mapActions(['getRequestCategoriesTree', 'getResidents', 'getServices', 'uploadRequestMedia', 'deleteRequestMedia', 'getPropertyManagers', 'assignProvider', 'assignManager', 'getUsers', 'assignAdministrator','getAssignees']),
+            ...mapActions(['getResidents', 'getServices', 'uploadRequestMedia', 'deleteRequestMedia', 'getPropertyManagers', 'assignProvider', 'assignManager', 'getUsers', 'assignAdministrator','getAssignees']),
             async remoteSearchResidents(search) {
                 if (search === '') {
                     this.residents = [];
@@ -336,13 +336,19 @@ export default (config = {}) => {
                 displaySuccess(resp);
             },
             changeCategory() {
-                this.showsubcategory = this.model.category_id == 1 ? true : false;
-                this.showpayer = this.model.qualification == 5 ? true : false;
-                let p_category = this.categories.find(item => { return item.id == this.model.category_id});
-                this.showacquisition =  p_category && p_category.acquisition == 1 ? true : false;
+                
+                let children = this.$constants.requests.categories_data.parent_child[this.model.category_id]
+                this.showSubCategory = children.length > 0 ? true : false;
+                let p_category = this.categories.find(category => { return category.id == this.model.category_id});
+
+                if(this.showSubCategory) {
+                    this.sub_categories = p_category ? p_category.sub_categories : [];
+                }
+                this.showPayer = this.model.qualification == 5 ? true : false;
+                this.showAcquisition =  p_category.acquisition == 1 ? true : false;
             },
             changeSubCategory() {
-                const subcategory = this.defect_subcategories.find(category => {
+                const subcategory = this.sub_categories.find(category => {
                     return category.id == this.model.defect;
                 });
 
@@ -364,7 +370,7 @@ export default (config = {}) => {
             },
             changeQualification() {
                 this.model.payer = '';
-                this.showpayer = this.model.qualification == 5 ? true : false;
+                this.showPayer = this.model.qualification == 5 ? true : false;
             },
             selectedCategoryHasQualification(categoryId) {
                 if (!categoryId) {
@@ -382,14 +388,17 @@ export default (config = {}) => {
                 return false;
             },
             async getRealCategories() {
-                const {data: categories} = await this.getRequestCategoriesTree({get_all: true});
 
-                this.categories = categories;
-                
-                let defect_cat = categories.find(category => {
-                    return category.id === 1;
-                });
-                this.defect_subcategories = defect_cat.categories;
+                this.categories = this.$constants.requests.categories_data.tree
+
+                if(this.model.category_id)
+                {
+                    let p_category = this.categories.find(category => {
+                        return category.id === this.model.category_id;
+                    });
+
+                    this.sub_categories = p_category ? p_category.sub_categories : [];
+                }
 
             },
             getLanguageI18n() {
@@ -614,7 +623,7 @@ export default (config = {}) => {
                             });
                         }
                         
-                        this.showsubcategory = resp.data.category.parent_id == 1 ? true : false;
+                        this.showSubCategory = resp.data.category.parent_id == 1 ? true : false;
                         
                         // this.showLiegenschaft =  resp.data.category.parent_id == 1 && resp.data.category.location == 1 ? true : false;
 
@@ -624,10 +633,10 @@ export default (config = {}) => {
 
                         this.showWohnung = resp.data.room != null ? true : false;
                         
-                        this.showpayer = resp.data.qualification == 5 ? true : false;
+                        this.showPayer = resp.data.qualification == 5 ? true : false;
 
                         let p_category = this.categories.find(item => { return item.id == resp.data.category.parent_id});
-                        this.showacquisition =  p_category && p_category.acquisition == 1 ? true : false;
+                        this.showAcquisition =  p_category && p_category.acquisition == 1 ? true : false;
                         
                         const data = resp.data;
 
@@ -745,7 +754,7 @@ export default (config = {}) => {
                 mixin.created = async function () {
                     this.loading.state = true;
 
-                    this.getRealCategories();
+                    
 
                     const tagsResp = await this.getTags({get_all: true, search: ''});
 
@@ -767,6 +776,8 @@ export default (config = {}) => {
 
                     
                     await this.fetchCurrentRequest();
+
+                    this.getRealCategories();
 
                     this.loading.state = false;
                 };

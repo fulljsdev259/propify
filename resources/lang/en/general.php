@@ -35,6 +35,7 @@ return [
         'saturday' => 'Saturday',
         'sunday' => 'Sunday',
     ],
+    'audits' => 'Audits',
     'user' => 'User',
     'resident' => 'Resident',
     'residents' => 'Residents',
@@ -315,26 +316,15 @@ return [
                         'pinboard' => 'Pinboard',
                         'listing' => 'Listing',
                         'request' => 'Request'
-                    ],
-                    'pinboard' => [
+                    ],                   
+                    'general' => [
                         'created' => 'Created',
                         'updated' => 'Updates',
                         'provider_assigned' => 'Provider assigned',
-                        'user_assigned' => 'User assigned',
+                        'manager_assigned' => 'Manager assigned',
                         'media_uploaded' => 'Media uploaded',
                         'media_deleted' => 'Media deleted'
                     ],
-                    'listing' => [
-    
-                    ],
-                    'request' => [
-                        'created' => 'Created',
-                        'updated' => 'Updates',
-                        'provider_assigned' => 'Provider assigned',
-                        'user_assigned' => 'User assigned',
-                        'media_uploaded' => 'Media uploaded',
-                        'media_deleted' => 'Media deleted'
-                    ]
                 ],
                 'content' => [
                     'with_id' => [
@@ -347,7 +337,11 @@ return [
                             'user_assigned' => ':userName has been assigned as manager.',
                             'media_uploaded' => 'Media uploaded',
                             'media_deleted' => 'Media deleted',
-                            'provider_notified' => 'Provider :providerName has been notified by mail.'
+                            'provider_notified' => 'Provider :providerName has been notified by mail.',
+                            'quarter_assigned' => ':quarterName quarter assigned',
+                            'quarter_unassigned' => ':quarterName quarter unassigned',
+                            'building_assigned' => ':buildingName building assigned',
+                            'building_unassigned' => ':buildingName buiding unassigned',
                         ],                        
                         'pinboard' => [
                             'created' => ':userName opened this :auditable_type on :auditable_type #:auditable_id.',

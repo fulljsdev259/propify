@@ -299,7 +299,7 @@
             }
         },
         methods: {
-            ...mapActions(['updateRequest', 'getRequestCategoriesTree', 'getServices', 'getBuildings', 'getResidents', 'downloadRequestPDF', 'getServices', 'getPropertyManagers', 'massEdit', 'assignProvider', 'assignManager']),
+            ...mapActions(['updateRequest', 'getServices', 'getBuildings', 'getResidents', 'downloadRequestPDF', 'getServices', 'getPropertyManagers', 'massEdit']),
             async getFilterBuildings() {
                 const buildings = await this.getBuildings({
                     get_all: true
@@ -308,11 +308,7 @@
                 return buildings.data;
             },
             async getFilterCategories() {
-                const {data: categories} = await this.getRequestCategoriesTree({get_all: true});
-
-                this.categories = categories.filter(category => {
-                    return category.parent_id !== 1;
-                });
+                this.categories = this.$constants.requests.categories_data.tree
 
                 return this.categories;
             },
@@ -537,6 +533,37 @@
 
     .el-dropdown.round {
         border-radius: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+        /deep/ .el-button-group {
+            border-radius: 20px;
+
+            .el-button:first-child {
+                border-radius: 20px;
+                padding-right: 30px;
+                z-index: -1;
+                border-right: none;
+            }
+
+            .el-dropdown__caret-button {
+                position: absolute;
+                right: -9px;
+                border-radius: 20px;
+                border-left: none;
+            }
+
+            .el-dropdown .el-dropdown__caret-button::before {
+                content: '';
+                position: absolute;
+                display: block;
+                width: 1px;
+                top: 0;
+                bottom: 5px;
+                left: 0;
+                height: 100%;
+                background: rgba(255,255,255,.5);
+            }
+        }
     }
 
     .el-dialog {

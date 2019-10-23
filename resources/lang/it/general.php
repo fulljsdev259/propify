@@ -35,6 +35,7 @@ return [
         'saturday' => 'sabato',
         'sunday' => 'domenicale',
     ],
+    "audits" => "Audit",
     "user" => "Utente",
     "resident" => "Residente",
     "residents" => "Residenti",
@@ -315,26 +316,15 @@ return [
                         'pinboard' => 'Bacheca',
                         'listing' => 'Prodotto',
                         'request' => 'Richiesta'
-                    ],
-                    'pinboard' => [
+                    ],                   
+                    'general' => [
                         'created' => 'Creato',
                         'updated' => 'Aggiornamenti',
                         'provider_assigned' => 'Fornitore assegnato',
-                        'user_assigned' => 'Utente assegnato',
+                        'manager_assigned' => 'Manager assegnato',
                         'media_uploaded' => 'Media caricati',
                         'media_deleted' => 'Supporti cancellati'
-                    ],
-                    'listing' => [
-    
-                    ],
-                    'request' => [
-                        'created' => 'Creato',
-                        'updated' => 'Aggiornamenti',
-                        'provider_assigned' => 'Fornitore assegnato',
-                        'user_assigned' => 'Utente assegnato',
-                        'media_uploaded' => 'Media caricati',
-                        'media_deleted' => 'Supporti cancellati'
-                    ]
+                    ]                    
                 ],
                 'content' => [
                     'with_id' => [
@@ -347,7 +337,11 @@ return [
                             'user_assigned' => ':userName è stato assegnato come manager.',
                             'media_uploaded' => 'Media caricati',
                             'media_deleted' => 'Supporti cancellati',
-                            'provider_notified' => 'Fornitore di servizi :providerName è stato notificato via e-mail'
+                            'provider_notified' => 'Fornitore di servizi :providerName è stato notificato via e-mail',
+                            'quarter_assigned' => ':quarterName Quartiere assegnato',
+                            'quarter_unassigned' => ':quarterName Quartiere non assegnato',
+                            'building_assigned' => ':buildingName Costruire assegnato',
+                            'building_unassigned' => ':buildingNam Costruire senza assegnazione',
                         ],
                         'pinboard' => [
                             'created' => ':userName ha aperto questo :auditable_type su :auditable_type #:auditable_id.',                            

@@ -1,0 +1,10 @@
+{
+    "request": ["created","updated","provider_assigned","provider_unassigned","manager_assigned","manager_unassigned","media_uploaded","media_deleted"],
+    "quarter": ["created","updated","manager_assigned","manager_unassigned","media_uploaded","media_deleted"],
+    "building": ["created","updated","provider_assigned","provider_unassigned","manager_assigned","manager_unassigned","media_uploaded","media_deleted"],
+    "unit": ["created","updated","media_uploaded","media_deleted"],
+    "pinboard": ["created","updated","media_uploaded","media_deleted","building_assigned","building_unassigned","quarter_assigned","quarter_unassigned"],
+    "resident": ["created","updated"],
+    "manager": ["created","updated","media_uploaded","media_deleted","building_assigned","building_unassigned","quarter_assigned","quarter_unassigned"],
+    "provider": ["created","updated","media_uploaded","media_deleted","building_assigned","building_unassigned","quarter_assigned","quarter_unassigned"]
+}

@@ -219,6 +219,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::post('/requests/{id}/media', 'MediaAPIController@requestUpload')->name('requests.media.upload');
     Route::post('/requests/{id}/comments', 'CommentAPIController@storeRequestComment')->name('requests.comment.store');
     Route::post('/requests/{id}/notify', 'RequestAPIController@notifyProvider')->name('requests.notify');
+    Route::put('/requests/massedit', 'RequestAPIController@massEdit')->name('requests.mass-edit');
     Route::put('/requests/{id}', 'RequestAPIController@update')->name('requests.update');
     Route::put('/requests/{id}/status', 'RequestAPIController@changeStatus')->name('requests.changeStatus');
 //    Route::put('/requests/{id}/priority', 'RequestAPIController@changePriority')->name('requests.changePriority');
