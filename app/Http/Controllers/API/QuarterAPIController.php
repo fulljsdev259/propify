@@ -179,6 +179,9 @@ class QuarterAPIController extends AppBaseController
         }
 
         $quarter = $this->quarterRepository->create($input);
+        if (isset($address)) {
+            $quarter->addDataInAudit('address', $address);
+        }
 
         if ($quarter) {
             DB::commit();

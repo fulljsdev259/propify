@@ -30,7 +30,7 @@
                             <el-form-item
                                 v-if="filter.type === filterTypes.select && filter.data &&  filter.data.length">
                                 <el-select
-                                    v-if="filter.key == 'category_id' || filter.key == 'status' || filter.key == 'internal_priority'"
+                                    v-if="filter.key == 'category_id'"
                                     clearable
                                     :filterable="true"
                                     :placeholder="filter.name"
@@ -41,8 +41,26 @@
                                     v-model="filterModel[filter.key]">
                                     <el-option :label="`${$t('general.placeholders.select')+' '+filter.name}`" value=""></el-option>
                                     <el-option
-                                        :key="filter.key == 'category_id'? item.id + item.name_en : item.id + item.name "
-                                        :label="filter.key == 'category_id'?item['name_'+$i18n.locale]:item.name"
+                                        :key="item.id + item.name "
+                                        :label="$t(`models.request.category_list.${item.name}`)"
+                                        :value="item.id"
+                                        v-for="item in filter.data">
+                                    </el-option>
+                                </el-select>
+                                <el-select
+                                    v-else-if="filter.key == 'status' || filter.key == 'internal_priority'"
+                                    clearable
+                                    :filterable="true"
+                                    :placeholder="filter.name"
+                                    @change="filterChanged(filter)"
+                                    class="filter-select"
+                                    multiple
+                                    collapse-tags
+                                    v-model="filterModel[filter.key]">
+                                    <el-option :label="`${$t('general.placeholders.select')+' '+filter.name}`" value=""></el-option>
+                                    <el-option
+                                        :key="item.id + item.name "
+                                        :label="item.name"
                                         :value="item.id"
                                         v-for="item in filter.data">
                                     </el-option>
@@ -338,30 +356,6 @@
             }
         },
         methods: {
-            ...mapActions(['getRequestCategoriesTree']),
-            async getFilterCategories() {
-                const {data: categories} = await this.getRequestCategoriesTree({get_all: true});
-                
-                this.categories = [];
-                categories.map((category) => {
-                    this.categories[category.id] = {
-                        'en' : category.name_en,
-                        'fr' : category.name_fr,
-                        'it' : category.name_it,
-                        'de' : category.name_de,
-                    };
-                    if(category.categories.length > 0) {
-                        category.categories.map((subCategory) => {
-                            this.categories[subCategory.id] = {
-                                'en' : subCategory.name_en,
-                                'fr' : subCategory.name_fr,
-                                'it' : subCategory.name_it,
-                                'de' : subCategory.name_de,
-                            }
-                        });
-                    }
-                });
-            },
             clearSearch() {
                 this.search = '';
             },
@@ -622,7 +616,7 @@
                 }
             });
             
-            this.getFilterCategories();
+            this.categories = this.$constants.requests.categories_data.tree
         }
     }
 </script>

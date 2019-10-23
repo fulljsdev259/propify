@@ -327,6 +327,12 @@
                                 v-if="model.id"
                             />
                         </el-tab-pane>
+                        <el-tab-pane name="audit" style="height: 400px;overflow:auto;">
+                            <span slot="label">
+                                <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge>
+                            </span>
+                            <audit :id="model.id" type="unit" showFilter/>
+                        </el-tab-pane>
                     </el-tabs>
                 </el-col>
             </el-row>
@@ -456,6 +462,7 @@
                 requestCount: 0,
                 residentCount: 0,
                 contractCount: 0,
+                auditCount: 0,
                 activeTab1: 'details',
                 activeRightTab: 'residents',
                 activeRequestTab: 'requests',
@@ -568,6 +575,9 @@
              EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
             });
+            EventBus.$on('audit-get-counted', audit_count => {
+                this.auditCount = audit_count;
+            });
         },
         computed: {
             ...mapGetters('application', {
@@ -639,7 +649,7 @@
             overflow-y: scroll;
             height: 100%;
 
-            /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-residents, /deep/ #tab-contracts {
+            /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-residents, /deep/ #tab-contracts, /deep/ #tab-audit {
                 padding-right: 40px;
             }
 

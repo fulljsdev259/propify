@@ -385,8 +385,7 @@ return [
             'deleted' => "Quarter deleted error: ",
         ],
     ],
-    'request' => [
-        'audits' => 'Audits',
+    'request' => [        
         'deleted' => 'Request deleted',
         'title' => 'Requests',
         'created' => 'Created',
@@ -441,14 +440,14 @@ return [
         'reset_sort' => 'Reset Sort',
         'creation_date' => 'Creation Date',
         'category_list' => [
-            'general' => ' Allgemeine Anliegen',
-            'malfunction' => 'Fehlfunktion',
-            'deficiency' => 'Mangel (Zeitlich begrenzt)'
+            'general' => 'General concerns',
+            'malfunction' => 'Malfunction',
+            'deficiency' => 'Deficiency'
         ],
         'sub_category' => [
-            'surrounding' => 'Umgebung',
-            'real_estate' => 'Immobilien',
-            'flat' => 'flach',
+            'surrounding' => 'Surrounding',
+            'real_estate' => 'Real Estate',
+            'flat' => 'Flat',
         ],
         'media'  => [
             'added' => 'Document added',

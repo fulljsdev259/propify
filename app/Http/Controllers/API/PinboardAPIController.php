@@ -1002,7 +1002,7 @@ class PinboardAPIController extends AppBaseController
         $p->likers = $p->collectLikers();
 
 
-        return $this->sendResponse($p, __('general.attached.service'));
+        return $this->sendResponse($p, __('general.attached.provider'));
     }
 
     /**

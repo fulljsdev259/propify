@@ -386,8 +386,7 @@ return [
             'deleted' => "Fehler beim Löschen des Projekts: ",
         ],
     ],
-    'request' => [
-        'audits' => 'History',
+    'request' => [        
         'deleted' => 'Anfrage gelöscht',
         'title' => 'Anfragen Management',
         'created' => 'Erstellt',
@@ -442,14 +441,14 @@ return [
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',
         'category_list' => [
-            'general' => 'General concerns',
-            'malfunction' => 'Malfunction',
-            'deficiency' => 'Deficiency'
+            'general' => ' Allgemeine Anliegen',
+            'malfunction' => 'Fehlfunktion',
+            'deficiency' => 'Mangel (Zeitlich begrenzt)'
         ],
         'sub_category' => [
-            'surrounding' => 'Surrounding',
-            'real_estate' => 'Real Estate',
-            'flat' => 'Flat',
+            'surrounding' => 'Umgebung',
+            'real_estate' => 'Immobilien',
+            'flat' => 'flach',
         ],
         'media' => [
             'added' => 'Mediendatei hinzugefügt',
