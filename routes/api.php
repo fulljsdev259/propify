@@ -197,14 +197,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('cleanify', 'CleanifyRequestAPIController@index');
     Route::post('cleanify', 'CleanifyRequestAPIController@store');
 
-    // Service Requests Category
-    Route::get('/requestCategories', 'RequestCategoryAPIController@index')->name('requests.categories');
-    Route::get('/requestCategories/tree', 'RequestCategoryAPIController@categoryTree')->name('requests.categories.tree');
-    Route::get('/requestCategories/{id}', 'RequestCategoryAPIController@show')->name('requests.categories.show');
-    Route::post('/requestCategories', 'RequestCategoryAPIController@store')->name('requests.categories.store');
-    Route::put('/requestCategories/{id}', 'RequestCategoryAPIController@update')->name('requests.categories.update');
-    Route::delete('/requestCategories/{id}', 'RequestCategoryAPIController@destroy')->name('requests.categories.destroy');
-
     // Tag Requests
     Route::resource('tags', 'TagAPIController');
 
