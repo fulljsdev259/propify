@@ -35,7 +35,6 @@ export default (config = {}) => {
                     provider_ids: [],
                     building: '',
                     created_by: '',
-                    defect:'',
                     location: '',
                     room: '',
                     capture_phase: '',
@@ -349,13 +348,10 @@ export default (config = {}) => {
                 this.showAcquisition =  p_category.acquisition == 1 ? true : false;
             },
             changeSubCategory() {
-                console.log(this.sub_categories)
-                console.log(this.sub_category_id)
                 const subcategory = this.sub_categories.find(category => {
                     return category.id == this.model.sub_category_id;
                 });
-                console.log('subcategory', subcategory)
-
+                
                 this.model.room = '';
                 this.model.location = '';
                 this.showLiegenschaft = false;
@@ -500,7 +496,6 @@ export default (config = {}) => {
                 });
 
 
-                console.log(this.contracts)
                 if(this.contracts.length == 1) {
                     this.model.contract_id = this.contracts[0].id
                 }
@@ -793,8 +788,6 @@ export default (config = {}) => {
                     
                     await this.fetchCurrentRequest();
 
-                    console.log(this.model.category_id)
-                    console.log(this.model.sub_category_id)
                     if(this.model.category_id)
                     {
                         let p_category = this.categories.find(category => {
