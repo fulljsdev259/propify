@@ -169,20 +169,20 @@ class PropertyManagerAPIController extends AppBaseController
             $user = $this->userRepository->create($input['user']);
             User::enableAuditing();
         } catch (\Exception $e) {
-            return $this->sendError(__('models.propertyManager.errors.create') . $e->getMessage());
+            return $this->sendError(__('models.property_manager.errors.create') . $e->getMessage());
         }
 
         $input['user_id'] = $user->id;
         try {
             $propertyManager = $this->propertyManagerRepository->create($input);
         } catch (\Exception $e) {
-            return $this->sendError(__('models.propertyManager.errors.create') . $e->getMessage());
+            return $this->sendError(__('models.property_manager.errors.create') . $e->getMessage());
         }
 
         $propertyManager->load('buildings', 'quarters');
         $propertyManager->setRelation('user', $user);
         $response = (new PropertyManagerTransformer)->transform($propertyManager);
-        return $this->sendResponse($response, __('models.propertyManager.saved'));
+        return $this->sendResponse($response, __('models.property_manager.saved'));
     }
 
     /**
@@ -231,7 +231,7 @@ class PropertyManagerAPIController extends AppBaseController
         $propertyManager->load('settings');
 
         if (empty($propertyManager)) {
-            return $this->sendError(__('models.propertyManager.errors.not_found'));
+            return $this->sendError(__('models.property_manager.errors.not_found'));
         }
 
         $propertyManager->load(['user', 'buildings', 'quarters'])
@@ -292,7 +292,7 @@ class PropertyManagerAPIController extends AppBaseController
         /** @var PropertyManager $propertyManager */
         $propertyManager = $this->propertyManagerRepository->find($id);
         if (empty($propertyManager)) {
-            return $this->sendError(__('models.propertyManager.errors.not_found'));
+            return $this->sendError(__('models.property_manager.errors.not_found'));
         }
 
         if (isset($input['user'])) {
@@ -319,18 +319,18 @@ class PropertyManagerAPIController extends AppBaseController
             }
             User::enableAuditing();
         } catch (\Exception $e) {
-            return $this->sendError(__('models.propertyManager.errors.update') . $e->getMessage());
+            return $this->sendError(__('models.property_manager.errors.update') . $e->getMessage());
         }
 
         try {
             $propertyManager = $this->propertyManagerRepository->updateExisting($propertyManager, $input);
         } catch (\Exception $e) {
-            return $this->sendError(__('models.propertyManager.errors.update') . $e->getMessage());
+            return $this->sendError(__('models.property_manager.errors.update') . $e->getMessage());
         }
 
         $propertyManager->load('user', 'buildings', 'quarters', 'settings');
         $response = (new PropertyManagerTransformer)->transform($propertyManager);
-        return $this->sendResponse($response, __('models.propertyManager.saved'));
+        return $this->sendResponse($response, __('models.property_manager.saved'));
     }
 
     /**
@@ -378,12 +378,12 @@ class PropertyManagerAPIController extends AppBaseController
         /** @var PropertyManager $propertyManager */
         $propertyManager = $this->propertyManagerRepository->find($id);
         if (empty($propertyManager)) {
-            return $this->sendError(__('models.propertyManager.errors.not_found'));
+            return $this->sendError(__('models.property_manager.errors.not_found'));
         }
 
         $propertyManager->delete();
 
-        return $this->sendResponse($id, __('models.propertyManager.deleted'));
+        return $this->sendResponse($id, __('models.property_manager.deleted'));
     }
 
     /**
@@ -424,11 +424,11 @@ class PropertyManagerAPIController extends AppBaseController
     {
         $pm = $this->propertyManagerRepository->findWithoutFail($id);
         if (empty($pm)) {
-            return $this->sendError(__('models.propertyManager.errors.not_found'));
+            return $this->sendError(__('models.property_manager.errors.not_found'));
         }
         $d = $qRepo->findWithoutFail($did);
         if (empty($d)) {
-            return $this->sendError(__('models.propertyManager.errors.quarter_not_found'));
+            return $this->sendError(__('models.property_manager.errors.quarter_not_found'));
         }
 
         $pm->quarters()->sync($d, false);
@@ -475,11 +475,11 @@ class PropertyManagerAPIController extends AppBaseController
     {
         $pm = $this->propertyManagerRepository->findWithoutFail($id);
         if (empty($pm)) {
-            return $this->sendError(__('models.propertyManager.errors.not_found'));
+            return $this->sendError(__('models.property_manager.errors.not_found'));
         }
         $d = $qRepo->findWithoutFail($did);
         if (empty($d)) {
-            return $this->sendError(__('models.propertyManager.errors.quarter_not_found'));
+            return $this->sendError(__('models.property_manager.errors.quarter_not_found'));
         }
 
         $pm->quarters()->detach($d);
@@ -526,15 +526,15 @@ class PropertyManagerAPIController extends AppBaseController
     {
         $pm = $this->propertyManagerRepository->findWithoutFail($id);
         if (empty($pm)) {
-            return $this->sendError(__('models.propertyManager.errors.not_found'));
+            return $this->sendError(__('models.property_manager.errors.not_found'));
         }
         $b = $bRepo->findWithoutFail($bid);
         if (empty($b)) {
-            return $this->sendError(__('models.propertyManager.errors.building_not_found'));
+            return $this->sendError(__('models.property_manager.errors.building_not_found'));
         }
 
         if ($b->quarter_id && $pm->quarters->contains('id', $b->quarter_id)) {
-            return $this->sendError(__('models.propertyManager.errors.building_already_assign'));
+            return $this->sendError(__('models.property_manager.errors.building_already_assign'));
         }
 
         $pm->buildings()->sync($b, false);
@@ -581,11 +581,11 @@ class PropertyManagerAPIController extends AppBaseController
     {
         $pm = $this->propertyManagerRepository->findWithoutFail($id);
         if (empty($pm)) {
-            return $this->sendError(__('models.propertyManager.errors.not_found'));
+            return $this->sendError(__('models.property_manager.errors.not_found'));
         }
         $b = $bRepo->findWithoutFail($bid);
         if (empty($b)) {
-            return $this->sendError(__('models.propertyManager.errors.building_not_found'));
+            return $this->sendError(__('models.property_manager.errors.building_not_found'));
         }
 
         $pm->buildings()->detach($b);
@@ -637,7 +637,7 @@ class PropertyManagerAPIController extends AppBaseController
         $managerIds = $request->get('managerIds', []);
         $assignee = $request->get('assignee', 0);
         if (in_array($assignee, $managerIds)) {
-            return $this->sendError(__('models.propertyManager.errors.building_assign_deleted_property_manager'));
+            return $this->sendError(__('models.property_manager.errors.building_assign_deleted_property_manager'));
         }
 
         $response = [
@@ -651,7 +651,7 @@ class PropertyManagerAPIController extends AppBaseController
                 /** @var PropertyManager $propertyManager */
                 $propertyManager = $this->propertyManagerRepository->find($managerId);
                 if (empty($propertyManager)) {
-                    return $this->sendError(__('models.propertyManager.errors.not_found'));
+                    return $this->sendError(__('models.property_manager.errors.not_found'));
                 }
 
                 $assignedBuildingIds = $propertyManager->buildings()->pluck('buildings.id')->toArray();
@@ -668,12 +668,12 @@ class PropertyManagerAPIController extends AppBaseController
         if ($assignee) {
             $propertyManager = $this->propertyManagerRepository->find($assignee);
             if (empty($propertyManager)) {
-                return $this->sendError(__('models.propertyManager.errors.not_found'));
+                return $this->sendError(__('models.property_manager.errors.not_found'));
             }
             $propertyManager->buildings()->sync($buildingIds, false);
         }
 
-        return $this->sendResponse($response, __('models.propertyManager.deleted'));
+        return $this->sendResponse($response, __('models.property_manager.deleted'));
     }
 
     /**
@@ -714,7 +714,7 @@ class PropertyManagerAPIController extends AppBaseController
         /** @var PropertyManager $propertyManager */
         $propertyManager = $this->propertyManagerRepository->find($id);
         if (empty($propertyManager)) {
-            return $this->sendError(__('models.propertyManager.errors.not_found'));
+            return $this->sendError(__('models.property_manager.errors.not_found'));
         }
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
@@ -732,7 +732,7 @@ class PropertyManagerAPIController extends AppBaseController
         /** @var PropertyManager $propertyManager */
         $propertyManagerArray = $this->propertyManagerRepository->find($request->post('ids'));
         if (empty($propertyManagerArray)) {
-            return $this->sendError(__('models.propertyManager.errors.not_found'));
+            return $this->sendError(__('models.property_manager.errors.not_found'));
         }
         $assignments = $this->propertyManagerRepository->assignmentsWithIds($propertyManagerArray->pluck('id')->all())->count();
         return $this->sendResponse($assignments, 'Assignments retrieved successfully');

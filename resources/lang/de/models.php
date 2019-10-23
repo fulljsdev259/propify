@@ -386,8 +386,7 @@ return [
             'deleted' => "Fehler beim Löschen des Projekts: ",
         ],
     ],
-    'request' => [
-        'audits' => 'History',
+    'request' => [        
         'deleted' => 'Anfrage gelöscht',
         'title' => 'Anfragen Management',
         'created' => 'Erstellt',

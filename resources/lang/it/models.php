@@ -385,8 +385,7 @@ return [
             'deleted' => "Errore al quarto eliminato: ",
         ],
     ],
-    'request' => [
-        "audits" => "Audit",
+    'request' => [        
         "deleted" => "Richiesta supprimée",
         "title" => "Richieste",
         "created" => "Creato",

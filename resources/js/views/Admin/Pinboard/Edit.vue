@@ -527,6 +527,12 @@
                         </div>
                         <chat class="edit-pinboard-chat" :id="model.id" size="480px" type="pinboard"/>
                     </el-card>
+                    <el-card class="mt15">
+                        <div slot="header" class="clearfix">
+                            <span>{{$t('general.audits')}}</span>
+                        </div>
+                        <audit :id="model.id" type="pinboard" showFilter/>
+                    </el-card>
                 </el-col>
             </el-form>
         </el-row>

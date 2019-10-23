@@ -35,6 +35,7 @@ return [
         'saturday' => 'Samstag',
         'sunday' => 'Sonntag',
     ],
+    'audits' => 'History',
     'user' => 'Benutzer',
     'resident' => 'Bewohner',
     'residents' => 'Bewohner',
@@ -314,27 +315,16 @@ return [
                     'type' => [
                         'pinboard' => 'Pinnwand',
                         'listing' => 'Markplatz',
-                        'request' => 'Anfragen'
+                        'request' => 'Anfragen',                        
                     ],
-                    'pinboard' => [
-                        'created' => 'Erstellt',
-                        'updated' => 'Aktualisiert',
-                        'provider_assigned' => 'Dienstleister wurde zugewiesen',
-                        'user_assigned' => 'Benutzer wurde zugewiesen',
-                        'media_uploaded' => 'Mediendateien hinaufgeladen',
-                        'media_deleted' => 'Mediendateien gelöscht'
-                    ],
-                    'listing' => [
-    
-                    ],
-                    'request' => [
+                    'general' => [
                         'created' => 'Erstellt',
                         'updated' => 'Aktualisiert',
                         'provider_assigned' => 'Dienstleister zugewiesen',
-                        'user_assigned' => 'Benutzer Dienstleister',
+                        'manager_assigned' => 'Bewirtschafter Dienstleister',
                         'media_uploaded' => 'Medien hinaufgeladen',
                         'media_deleted' => 'Medien gelöscht'
-                    ]
+                    ],
                 ],
                 'content' => [
                     'with_id' => [
@@ -346,7 +336,11 @@ return [
                             'user_assigned' => ':userName wurde dieser Anfrage hinzugefügt.',
                             'media_uploaded' => 'Mediendateien hinaufgeladen',
                             'media_deleted' => 'Mediendateien gelöscht',
-                            'provider_notified' => 'Dienstleisterin :providerName wurde per E-Mail benachrichtigt'
+                            'provider_notified' => 'Dienstleisterin :providerName wurde per E-Mail benachrichtigt',
+                            'quarter_assigned' => ':quarterName Projekt wurde zugewiesen.',
+                            'quarter_unassigned' => ':quarterName Projekt wurde entfernt',
+                            'building_assigned' => ':buildingName Liegenschaft wurde zugewiesen.',
+                            'building_unassigned' => ':buildingName Liegenschaft wurde entfernt',
                         ],
                         'pinboard' => [
                             'created' => ':userName hat diesen Beitrag erstellt.',                            
