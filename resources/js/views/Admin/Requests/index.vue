@@ -423,21 +423,21 @@
                 this.batchEditVisible = true
             },
             massAssignPartners() {
-                let requests = this.selectedItems.map(request => request.id)
-                let service_providers = this.toAssign
+                let request_ids = this.selectedItems.map(request => request.id)
+                let service_provider_ids = this.toAssign
                 
                 return this.massEdit({
-                    requests, 
-                    service_providers
+                    request_ids, 
+                    service_provider_ids
                 })
             },
             massAssignManagers() {
-                let requests = this.selectedItems.map(request => request.id)
-                let property_managers = this.toAssign
+                let request_ids = this.selectedItems.map(request => request.id)
+                let property_manager_ids = this.toAssign
                 
                 return this.massEdit({
-                    requests, 
-                    property_managers
+                    request_ids, 
+                    property_manager_ids
                 })
             },
             massChangeStatus() {
