@@ -422,32 +422,53 @@
                 this.massEditOption = command
                 this.batchEditVisible = true
             },
-            massAssignPartners() {
+            async massAssignPartners() {
                 let request_ids = this.selectedItems.map(request => request.id)
                 let service_provider_ids = this.toAssign
                 
-                return this.massEdit({
+                const resp = await this.massEdit({
                     request_ids, 
                     service_provider_ids
                 })
+
+                this.processAssignment = false;
+                this.closeModal();
+                this.fetchMore();
+                if(resp.data.success)
+                    displaySuccess(resp.data.message);
+
             },
-            massAssignManagers() {
+            async massAssignManagers() {
                 let request_ids = this.selectedItems.map(request => request.id)
                 let property_manager_ids = this.toAssign
                 
-                return this.massEdit({
+                const resp = await this.massEdit({
                     request_ids, 
                     property_manager_ids
                 })
+
+                this.processAssignment = false;
+                this.closeModal();
+                this.fetchMore();
+                if(resp.data.success)
+                    displaySuccess(resp.data.message);
+
             },
-            massChangeStatus() {
-                let requests = this.selectedItems.map(request => request.id)
+            async massChangeStatus() {
+                let request_ids = this.selectedItems.map(request => request.id)
                 let status = this.massStatus
                 
-                return this.massEdit({
-                    requests, 
+                const resp = await this.massEdit({
+                    request_ids, 
                     status
                 })
+
+                this.processAssignment = false;
+                this.closeModal();
+                this.fetchMore();
+                if(resp.data.success)
+                    displaySuccess(resp.data.message);
+                
             },
             async remoteSearchManagers(search) {
                 if (search === '') {
