@@ -201,10 +201,10 @@ class Resident extends AuditableModel implements HasMedia
     ];
 
     const StatusActive = 1;
-    const StatusNotActive = 2;
+    const StatusInActive = 2;
     const Status = [
         self::StatusActive => 'active',
-        self::StatusNotActive => 'not_active',
+        self::StatusInActive => 'not_active',
     ];
 
     const TypeResident = 1;

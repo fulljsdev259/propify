@@ -271,11 +271,10 @@ class ResidentAPIController extends AppBaseController
      * )
      *
      * @param CreateRequest $request
-     * @param PinboardRepository $pinboardRepository
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function store(CreateRequest $request, PinboardRepository $pinboardRepository)
+    public function store(CreateRequest $request)
     {
         $input = (new ResidentTransformer)->transformRequest($request->all());
         //@TODO This action already done in  ResidentTransformer delete it
@@ -301,9 +300,6 @@ class ResidentAPIController extends AppBaseController
 
         try {
             $resident = $this->residentRepository->create($input);
-            foreach ($resident->contracts as $contract) {
-                $pinboardRepository->newResidentContractPinboard($contract);
-            }
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->sendError(__('models.resident.errors.create') . $e->getMessage());

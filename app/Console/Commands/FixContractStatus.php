@@ -51,7 +51,7 @@ class FixContractStatus extends Command
             $query->update(['status' => Contract::StatusActive]);
             // make  inactive resident to active
             Resident::whereIn('id', $residentIds)
-                ->where('status', Resident::StatusNotActive)
+                ->where('status', Resident::StatusInActive)
                 ->update(['status' => Resident::StatusActive]);
         }
 
