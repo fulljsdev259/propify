@@ -6,14 +6,14 @@ use App\Models\Contract;
 use App\Models\Resident;
 use Illuminate\Console\Command;
 
-class FixContractExpired extends Command
+class FixContractStatus extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'fix-contract-expired';
+    protected $signature = 'fix-contract-status';
 
     /**
      * The console command description.
@@ -39,12 +39,28 @@ class FixContractExpired extends Command
      */
     public function handle()
     {
+        $query = Contract::where('status', Contract::StatusInactive)
+            ->where('start_date', '<', now()->format('Y-m-d'));
+
+        // get all not active contract until today
+        $contracts = $query->get(['resident_id']);
+
+        $residentIds = $contracts->pluck('resident_id')->unique()->toArray();
+        if ($residentIds) {
+            // make  contracts active
+            $query->update(['status' => Contract::StatusActive]);
+            // make  inactive resident to active
+            Resident::whereIn('id', $residentIds)
+                ->where('status', Resident::StatusNotActive)
+                ->update(['status' => Resident::StatusActive]);
+        }
+
         $query = Contract::where('status', Contract::StatusActive)
             ->where('duration', Contract::DurationLimited)
             ->where('end_date', '<', now()->format('Y-m-d'));
 
         // get all expired contract
-        $contracts = $query->get(['id', 'resident_id']);
+        $contracts = $query->get(['resident_id']);
         // make inactive expired contracts
         $query->update(['status' => Contract::StatusInactive]);
 
