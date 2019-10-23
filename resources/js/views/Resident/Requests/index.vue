@@ -349,7 +349,13 @@
                 this.statusChangeModalVisible = false;
                 
                 this.changingRequest.status = status == 'done' ? 4 : 5;
+                this.changingRequest.category = this.changingRequest.category.id
                 this.changingRequest.category_id = this.changingRequest.category.id
+                if(this.changingRequest.sub_category) {
+                    this.changingRequest.sub_category = this.changingRequest.sub_category.id
+                    this.changingRequest.sub_category_id = this.changingRequest.sub_category.id
+                }
+                
                 await this.$store.dispatch('newRequests/update', this.changingRequest)
                 
                 this.changingRequest = null

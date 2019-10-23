@@ -147,9 +147,8 @@
                     <span>{{ $t('models.request.category') }}</span>
 
                     <p>
-                        {{ item.category.parent_id==null?'': categories[item.category.parentCategory.id] == undefined? '':
-                        $t(`models.request.category_list.${categories[item.category.parentCategory.id].name}`) + ' > ' }}
-                        {{ categories[item.category.id] == undefined? '': $t(`models.request.category_list.${categories[item.category.id].name}`) }}
+                        {{ $t(`models.request.category_list.${item.category.name}`) }}
+                        {{ item.sub_category ? " > " + $t(`models.request.sub_category.${item.sub_category.name}`) : ""}}
                     </p>
                 </el-col>
                 <el-col :span="4">
