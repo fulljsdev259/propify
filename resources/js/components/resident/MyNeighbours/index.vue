@@ -88,6 +88,9 @@
                     residents = residents.slice(0, this.limit)
                 }
 
+                if(residents.length == 0)
+                    this.$root.$emit('hide-my-neighbour-card');
+
                 const unorderedList = residents.reduce((obj, resident) => {
                     obj[resident.first_name[0]] = obj[resident.first_name[0]] || []
                     obj[resident.first_name[0]].push(resident)
@@ -104,6 +107,9 @@
                     }, {})
 
                 this.timeout = setTimeout(() => this.loading = false, EXTRA_LOADING_SECONDS)
+            }
+            else {
+                this.$root.$emit('hide-my-neighbour-card');
             }
         },
         beforeDestroy () {

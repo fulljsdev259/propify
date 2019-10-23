@@ -12,8 +12,8 @@
             <div class="column">
                 <emergency-card class="widget" />
                 <weather-card class="widget" />
-                <latest-property-managers-card class="widget" />
-                <latest-my-neighbours-card class="widget" />
+                <latest-property-managers-card v-if="!hidePropertyManagerCard" class="widget" />
+                <latest-my-neighbours-card v-if="!hideMyNeighbourCard" class="widget" />
             </div>
             <div class="column">
                 <requests-statistics-card class="widget" />
@@ -161,6 +161,8 @@
                 visibleDrawer: false,
                 activeDrawerTab: 'chat',
                 activeDrawerMediaTab: 0,
+                hidePropertyManagerCard: false,
+                hideMyNeighbourCard: false
             }
         },
         computed: {
@@ -190,6 +192,12 @@
             }
         },
         mounted () {
+            this.$root.$on('hide-property-manager-card', () => {
+                this.hidePropertyManagerCard = true
+            });
+            this.$root.$on('hide-my-neighbour-card', () => {
+                this.hideMyNeighbourCard = true
+            });
             // TweenMax.staggerFrom(, 2, {scale:0.5, opacity:0, delay:0.5, ease:Elastic.easeOut, force3D:true}, 0.2)
         }
     }

@@ -71,12 +71,16 @@
                     id: resident.building_id
                 })
 
-                console.log('managers_last', managers_last)
                 if (managers_last) {
                     this.managers = managers_last
                 }
 
+                if(managers_last.length == 0)
+                    this.$root.$emit('hide-property-manager-card');
                 this.timeout = setTimeout(() => this.loading = false, EXTRA_LOADING_SECONDS)
+            }
+            else {
+                this.$root.$emit('hide-property-manager-card');
             }
 
         },

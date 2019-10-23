@@ -78,7 +78,7 @@ import Heading from 'components/Heading'
         },
         async mounted () {
             const {resident} = this.user
-
+            
             if (resident.building_id) {
                 this.loading = true
 
