@@ -38,8 +38,13 @@ class ContractRepository extends BaseRepository
      */
     public function create(array $attributes)
     {
+        if ( !isset($attributes['status'])) {
+            $attributes['status'] = Contract::StatusActive;
+        }
+
         $attributes = $this->fixBuildingData($attributes);
         $model = parent::create($attributes);
+
         if ($model)  {
             $model = $this->saveMediaUploads($model, $attributes);
         }

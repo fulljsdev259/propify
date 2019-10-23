@@ -17,6 +17,7 @@ use App\Http\Requests\API\Request\ChangeStatusRequest;
 use App\Http\Requests\API\Request\CreateRequest;
 use App\Http\Requests\API\Request\DeleteRequest;
 use App\Http\Requests\API\Request\ListRequest;
+use App\Http\Requests\API\Request\MassEditRequest;
 use App\Http\Requests\API\Request\NotifyProviderRequest;
 use App\Http\Requests\API\Request\SeeRequestsCount;
 use App\Http\Requests\API\Request\UnAssignRequest;
@@ -409,6 +410,109 @@ class RequestAPIController extends AppBaseController
             'creator'
         ]);
         $response = (new RequestTransformer)->transform($updatedRequest);
+        return $this->sendResponse($response, __('models.request.saved'));
+    }
+
+    /**
+     * @SWG\Put(
+     *      path="/requests/massedit",
+     *      summary="Update many Request in storage",
+     *      tags={"Request"},
+     *      description="Update Request",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="request_ids",
+     *          description="ids of Request",
+     *          type="integer",
+     *          required=true,
+     *          in="path"
+     *      ),
+     *      @SWG\Parameter(
+     *          name="property_manager_ids",
+     *          description="ids of Property Managere",
+     *          type="integer",
+     *          in="path"
+     *      ),
+     *      @SWG\Parameter(
+     *          name="service_provider_ids",
+     *          description="ids of service providers",
+     *          type="integer",
+     *          in="path"
+     *      ),
+     *      @SWG\Parameter(
+     *          name="status",
+     *          description="status",
+     *          type="integer",
+     *          in="path"
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  ref="#/definitions/Request"
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     *
+     * @param MassEditRequest $massEditRequest
+     * @return mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function massEdit(MassEditRequest $massEditRequest)
+    {
+        //get in MassEditRequest validation class
+        $requests = $massEditRequest->request->get('requests');
+        $managers = $massEditRequest->request->get('managers');
+        if ($managers) {
+            $this->requestRepository->massAssign($requests, 'managers', $managers);
+        }
+
+        //get in MassEditRequest validation class
+        $providers = $massEditRequest->request->get('providers');
+        if ($providers) {
+            $this->requestRepository->massAssign($requests, 'providers', $providers);
+        }
+
+        $status = $massEditRequest->get('status');
+        if ($status) {
+            $this->requestRepository->massUpdateAttribute($requests, ['status' => $status]);
+        }
+
+        $response = [];
+        foreach ($requests as $request) {
+            $request->load([
+                'media',
+                'resident.user',
+                'contract' => function ($q) {
+                    $q->with('building.address', 'unit');
+                },
+                'managers.user',
+                'users',
+                'remainder_user',
+                'resident.contracts' => function ($q) {
+                    $q->with('building.address', 'unit');
+                },
+                'comments.user',
+                'providers.address:id,country_id,state_id,city,street,zip',
+                'providers.user',
+                'creator'
+            ]);
+            $response[] = (new RequestTransformer)->transform($request);
+        }
+
         return $this->sendResponse($response, __('models.request.saved'));
     }
 
@@ -925,8 +1029,8 @@ class RequestAPIController extends AppBaseController
      */
     public function assignManager(int $id, int $pmid, UserRepository $uRepo, AssignRequest $r)
     {
-        $sr = $this->requestRepository->findWithoutFail($id);
-        if (empty($sr)) {
+        $request = $this->requestRepository->findWithoutFail($id);
+        if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
         }
 
@@ -936,16 +1040,16 @@ class RequestAPIController extends AppBaseController
             return $this->sendError(__('models.request.errors.user_not_found'));
         }
 
-        $sr->managers()->sync([$pmid => ['created_at' => now()]], false);
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
+        $request->managers()->sync([$pmid => ['created_at' => now()]], false);
+        $request->load('media', 'resident.user', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
 
-        foreach ($sr->providers as $p) {
-            $sr->conversationFor($p->user, $manager->user);
+        foreach ($request->providers as $p) {
+            $request->conversationFor($p->user, $manager->user);
         }
-        $sr->touch();
+        $request->touch();
         $manager->touch();
-        return $this->sendResponse($sr, __('general.attached.manager'));
+        return $this->sendResponse($request, __('general.attached.manager'));
     }
 
     /**
