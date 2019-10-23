@@ -19,14 +19,14 @@
                                             @change="changeCategory">
                                     <el-option
                                         :key="category.id"
-                                        :label="category['name_'+$i18n.locale]"
+                                        :label="$t(`models.request.category_list.${category.name}`)"
                                         :value="category.id"
                                         v-for="category in categories">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="12" v-if="this.showsubcategory == true">
+                        <el-col :md="12" v-if="this.showSubCategory == true">
                             <el-form-item :label="$t('models.request.defect_location.label')">
                                 <el-select :disabled="$can($permissions.update.serviceRequest)"
                                             :placeholder="$t(`general.placeholders.select`)"
@@ -35,15 +35,15 @@
                                             @change="changeSubCategory">
                                     <el-option
                                         :key="category.id"
-                                        :label="category['name_'+ $i18n.locale]"
+                                        :label="$t(`models.request.sub_category.${category.name}`)"
                                         :value="category.id"
-                                        v-for="category in defect_subcategories">
+                                        v-for="category in sub_categories">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
                         <el-col :md="12" 
-                                v-if="this.showsubcategory == true && this.showLiegenschaft == true && this.showWohnung == false">
+                                v-if="this.showSubCategory == true && this.showLiegenschaft == true && this.showWohnung == false">
                             <el-form-item :label="$t('models.request.category_options.range')">
                                 <el-select :disabled="$can($permissions.update.serviceRequest)"
                                             :placeholder="$t(`general.placeholders.select`)"
@@ -59,7 +59,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :md="12"
-                                v-if="this.showsubcategory == true && this.showWohnung == true && this.showLiegenschaft == false">
+                                v-if="this.showSubCategory == true && this.showWohnung == true && this.showLiegenschaft == false">
                             <el-form-item :label="$t('models.request.category_options.room')">
                                 <el-select :disabled="$can($permissions.update.serviceRequest)"
                                             :placeholder="$t(`general.placeholders.select`)"
@@ -74,7 +74,7 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="12" v-if="this.showacquisition == true">
+                        <el-col :md="12" v-if="this.showAcquisition == true">
                             <el-form-item :label="$t('models.request.category_options.acquisition')">
                                 <el-select :disabled="$can($permissions.update.serviceRequest)"
                                             :placeholder="$t(`general.placeholders.select`)"
@@ -113,7 +113,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :md="12"
-                                v-if="model.category_id && selectedCategoryHasQualification(model.category_id) && this.showpayer == true">
+                                v-if="model.category_id && selectedCategoryHasQualification(model.category_id) && this.showPayer == true">
                             <el-form-item :label="$t('models.request.category_options.cost')">
                                 <el-select :disabled="$can($permissions.update.serviceRequest)"
                                             :placeholder="$t(`general.placeholders.select`)"
@@ -339,7 +339,6 @@
             }
         },
         methods: {
-            ...mapActions(['getRequestCategoriesTree']),
             async saveWithService(serviceAttachModel) {
                 try {
                     const resp = await this.saveRequest();

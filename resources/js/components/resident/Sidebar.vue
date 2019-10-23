@@ -374,7 +374,7 @@
 
 <style lang="scss" scoped>
     .sidebar {
-        padding: 16px;
+        padding: 16px !important;
         z-index: 1;
         box-sizing: border-box;
 

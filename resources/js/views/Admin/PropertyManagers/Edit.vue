@@ -205,6 +205,12 @@
                                 v-if="model.user && model.user.id"
                             />
                         </card>
+                        <el-card class="mt15">
+                            <div slot="header" class="clearfix">
+                                <span>{{$t('general.audits')}}</span>
+                            </div>
+                            <audit :id="model.id" type="manager" showFilter/>
+                        </el-card>
                     </el-col>
                 </el-row>
             </el-form>

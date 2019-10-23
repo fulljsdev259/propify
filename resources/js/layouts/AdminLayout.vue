@@ -348,7 +348,7 @@
 
         methods: {
             ...mapActions(['logout']),
-            ...mapActions(['updateUserSettings', 'getRequestCategoriesTree']),
+            ...mapActions(['updateUserSettings']),
             ...mapActions('application', ['setLocale']),
             toggleFullscreen() {
                 if (document.fullscreenElement) {
