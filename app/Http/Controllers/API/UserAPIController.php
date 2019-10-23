@@ -7,6 +7,7 @@ use App\Criteria\User\FilterByRolesCriteria;
 use App\Criteria\User\WhereCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\User\ChangePasswordRequest;
+use App\Http\Requests\API\User\CheckEmailRequest;
 use App\Http\Requests\API\User\CreateRequest;
 use App\Http\Requests\API\User\DeleteRequest;
 use App\Http\Requests\API\User\ListRequest;
@@ -719,11 +720,11 @@ class UserAPIController extends AppBaseController
     }
 
     /**
-     * @param CreateRequest $request
+     * @param CheckEmailRequest $request
      * @return mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function checkEmail(CreateRequest $request)
+    public function checkEmail(CheckEmailRequest $request)
     {
         $email = $request->email;
         if (empty($email)) {
