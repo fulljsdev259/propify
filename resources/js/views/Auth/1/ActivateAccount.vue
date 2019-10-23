@@ -68,8 +68,9 @@
         }
     }
     .el-form-item {
+        margin-bottom: 17px !important;
         &:nth-of-type(1) {
-            margin-top: 20px;
+            margin-top: 15px;
         }
         &:nth-last-child(2), :nth-last-child() :global(.el-form-item__content) {
             display: flex;

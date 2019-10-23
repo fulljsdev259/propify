@@ -170,6 +170,7 @@
                 }
             }
         }
+        
         .company-info {
             display: flex;
             flex-direction: column;
