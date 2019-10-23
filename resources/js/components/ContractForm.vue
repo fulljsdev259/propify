@@ -737,6 +737,13 @@
                 }
                 if(!this.model.media)
                     this.model.media = []
+
+
+                const start_date = new Date(this.model.start_date).getTime();
+                const today = new Date().getTime();
+
+                this.isFuture = start_date > today
+                
                 this.original_unit_id = this.data.unit_id
 
                 if( !this.hideBuildingAndUnits ) {
