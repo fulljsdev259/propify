@@ -394,6 +394,10 @@ return [
         "category" => "Catégorie",
         "edit_title" => "Demande de modification",
         "add_title" => "Ajouter une demande",
+        'mass_edit' => 'Traitement en masse',
+        'assign_partners' => 'Affecter des partenaires de service',
+        'assign_managers' => 'Affecter des gestionnaires immobiliers',
+        'change_status' => 'Modifier l\'état',
         "due_date" => "Date d'échéance",
         "solved_date" => "Fait à la date",
         "closed_date" => "Date de fermeture",
@@ -434,7 +438,17 @@ return [
         'send_person' => 'Quelle personne doit être notifiée ?',
         'sort' => 'Trier',
         'reset_sort' => 'Réinitialiser le tri',
-        'creation_date' => 'Date de création',        
+        'creation_date' => 'Date de création',
+        'category_list' => [
+            'general' => 'Préoccupations générales',
+            'malfunction' => 'Défaut de fonctionnement',
+            'deficiency' => 'Déficience (limitée dans le temps)'
+        ],
+        'sub_category' => [
+            'surrounding' => 'Environnant',
+            'real_estate' => 'Real Estate',
+            'flat' => 'Flat',
+        ],
         'media' => [
             "added" => "Document ajouté",
             "removed" => "Suppression du support",

@@ -30,6 +30,7 @@ class ServiceProviderRepository extends BaseRepository
         'email' => 'like',
         'phone' => 'like',
         'service_provider_format' => 'like',
+        'user.email' => 'like',
     ];
 
     /**

@@ -35,19 +35,21 @@ class FilterByBuildingCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $building_id = $this->request->get('building_id', null);
-        if (!$building_id) {
+        $buildingId = $this->request->get('building_id', null);
+        if (!$buildingId) {
             return $model;
         }
+        $buildingIds = is_array($buildingId) ? $buildingId : [$buildingId];
 
+        // @TODO check residents can see only contract->buildings->pinboard or all
         $u = \Auth::user();
         if ($u->resident) {
             // @TODO fix contract related
-            $building_id = $u->resident->building_id;
+            $buildingIds = $u->resident->contracts()->pluck('building_id');
         }
 
-        $model->whereHas('buildings', function ($query) use ($building_id) {
-            $query->where('id', $building_id);
+        $model->whereHas('buildings', function ($query) use ($buildingIds) {
+            $query->whereIn('id', $buildingIds);
         });
 
         return $model;

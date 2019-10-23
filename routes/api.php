@@ -250,14 +250,14 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
 
     // Listings
-    Route::resource('listings', 'ListingAPIController');
-    Route::post('listings/{id}/like', 'ListingAPIController@like')->name('listings.like');
-    Route::post('listings/{id}/unlike', 'ListingAPIController@unlike')->name('listings.unlike');
-    Route::post('listings/{id}/media', 'MediaAPIController@listingUpload')->name('listings.media.upload');
-    Route::delete('listings/{id}/media/{media_id}', 'MediaAPIController@listingDestroy')->name('listings.media.destroy');
-    Route::post('/listings/deletewithids', 'ListingAPIController@destroyWithIds')->name('listings.destroyWithIds');
-    Route::post('listings/{id}/comments', 'CommentAPIController@storeProductComment')->name('listings.store.comment');
-    Route::post('listings/{id}/publish', 'ListingAPIController@publish')->name('listings.publish');
+//    Route::resource('listings', 'ListingAPIController');
+//    Route::post('listings/{id}/like', 'ListingAPIController@like')->name('listings.like');
+//    Route::post('listings/{id}/unlike', 'ListingAPIController@unlike')->name('listings.unlike');
+//    Route::post('listings/{id}/media', 'MediaAPIController@listingUpload')->name('listings.media.upload');
+//    Route::delete('listings/{id}/media/{media_id}', 'MediaAPIController@listingDestroy')->name('listings.media.destroy');
+//    Route::post('/listings/deletewithids', 'ListingAPIController@destroyWithIds')->name('listings.destroyWithIds');
+//    Route::post('listings/{id}/comments', 'CommentAPIController@storeProductComment')->name('listings.store.comment');
+//    Route::post('listings/{id}/publish', 'ListingAPIController@publish')->name('listings.publish');
 
     // Service Requests
     Route::get('propertyManagers', 'PropertyManagerAPIController@index')->name('propertyManagers');

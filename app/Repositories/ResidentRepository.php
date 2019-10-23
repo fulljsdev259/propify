@@ -53,28 +53,6 @@ class ResidentRepository extends BaseRepository
      */
     public function create(array $attributes)
     {
-        if (isset($attributes['unit_id'])) {
-            $unit = Unit::with('building')->find($attributes['unit_id']);
-            if ($unit) {
-                $attributes['building_id'] = $unit->building_id;
-                $attributes['unit_id'] = $unit->id;
-                $attributes['address_id'] = $unit->building->address_id;
-            }
-            unset($attributes['unit']);
-        }
-
-        if (isset($attributes['address'])) {
-            unset($attributes['address']);
-        }
-
-        if (isset($attributes['building'])) {
-            unset($attributes['building']);
-        }
-
-        if (isset($attributes['user'])) {
-            unset($attributes['user']);
-        }
-
         if (!isset($attributes['title']) || $attributes['title'] != 'company') {
             unset($attributes['company']);
         }
@@ -144,40 +122,13 @@ class ResidentRepository extends BaseRepository
         return $resident;
     }
 
-    /**
-     * @param int $building_id
-     * @return mixed
-     */
-    public function getTotalResidentsFromBuilding(int $building_id)
-    {
-        return $this->model->where('building_id', $building_id)->count();
-    }
-
-    /**
-     * @param int $resident_id
-     * @param Unit $unit
-     * @return mixed
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function moveResidentInUnit(int $resident_id, Unit $unit)
-    {
-        // Move old residents outs of this unit
-        $this->model->where('unit_id', $unit->id)->update(['unit_id' => null]);
-
-        // Move in the new resident
-        $attrs = [
-            'unit_id' => $unit->id,
-            'building_id' => $unit->building_id,
-            'address_id' => $unit->building->address_id,
-        ];
-        return $this->update($attrs, $resident_id);
-    }
 
     /**
      * @param array $attributes
      * @param $id
-     * @return mixed
+     * @return Model|mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update(array $attributes, $id)
     {
@@ -194,28 +145,6 @@ class ResidentRepository extends BaseRepository
      */
     public function updateExisting(Model $model, $attributes)
     {
-        if (isset($attributes['unit_id'])) {
-            $unit = Unit::with('building')->find($attributes['unit_id']);
-            if ($unit) {
-                $attributes['building_id'] = $unit->building_id;
-                $attributes['unit_id'] = $unit->id;
-                $attributes['address_id'] = $unit->building->address_id;
-            }
-            unset($attributes['unit']);
-        }
-
-        if (isset($attributes['address'])) {
-            unset($attributes['address']);
-        }
-
-        if (isset($attributes['building'])) {
-            unset($attributes['building']);
-        }
-
-        if (isset($attributes['user'])) {
-            unset($attributes['user']);
-        }
-
         if (!isset($attributes['title']) || $attributes['title'] != 'company') {
             unset($attributes['company']);
         }

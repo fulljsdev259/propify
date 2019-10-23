@@ -67,12 +67,21 @@ class UnitTransformer extends BaseTransformer
             $response['address'] = (new AddressTransformer)->transform($model->address);
         }
 
-        if ($model->relationExists('residents')) {
-            $response['residents'] = (new ResidentTransformer)->transformCollection($model->residents);
-        }
-
         if ($model->relationExists('contracts')) {
             $response['contracts'] = (new ContractTransformer())->transformCollection($model->contracts);
+
+            $residents = [];
+            foreach ($response['contracts'] as $contractData) {
+                if (!empty($contractData['resident'])) {
+                    $residents[] = $contractData['resident'];
+                }
+            }
+
+
+            // @TODO delete
+            if ($residents) {
+                $response['residents'] = $residents;
+            }
         }
 
         return $response;

@@ -249,30 +249,6 @@
             }
         },
         methods: {
-            ...mapActions(['getRequestCategoriesTree']),
-            async getFilterCategories() {
-                const {data: categories} = await this.getRequestCategoriesTree({get_all: true});
-                
-                this.categories = [];
-                categories.map((category) => {
-                    this.categories[category.id] = {
-                        'en' : category.name_en,
-                        'fr' : category.name_fr,
-                        'it' : category.name_it,
-                        'de' : category.name_de,
-                    };
-                    if(category.categories.length > 0) {
-                        category.categories.map((subCategory) => {
-                            this.categories[subCategory.id] = {
-                                'en' : subCategory.name_en,
-                                'fr' : subCategory.name_fr,
-                                'it' : subCategory.name_it,
-                                'de' : subCategory.name_de,
-                            }
-                        });
-                    }
-                });
-            },
             async get (params = {}) {
                 if (this.loading) {
                     return
@@ -384,7 +360,8 @@
         },
         mounted () {
             //this.$refs['dynamic-scroller'].forceUpdate()
-            this.getFilterCategories();
+
+            this.categories = this.$constants.requests.categories_data.tree
         },
         watch: {
             'visibleDrawer': {

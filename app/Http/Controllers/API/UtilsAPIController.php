@@ -85,7 +85,7 @@ class UtilsAPIController extends AppBaseController
             'languages' => $languages,
         ];
 
-        $settings = App\Models\Settings::first(['login_variation', 'login_variation_2_slider', 'primary_color', 'primary_color_lighter', 'accent_color', 'logo', 'circle_logo', 'resident_logo', 'favicon_icon']);
+        $settings = $this->getSettings();
 
         if ($settings) {
             $colors = $settings->only(['primary_color', 'accent_color', 'primary_color_lighter']);
@@ -94,6 +94,8 @@ class UtilsAPIController extends AppBaseController
                 'variation' => $settings->login_variation,
                 'variation_2_slider' => (bool) $settings->login_variation_2_slider,
             ];
+
+
         } else {
             $colors = [
                 'primary_color_lighter' => '#c55a9059',
@@ -131,9 +133,75 @@ class UtilsAPIController extends AppBaseController
             'file_categories' => \ConstFileCategories::MediaCategories
         ];
 
+        if (\Auth::guest()) {
+            $response['details'] = $this->getDetails($settings);
+        }
         return $this->sendResponse($response, 'App constants statistics retrieved successfully');
     }
 
+    /**
+     * @return App\Models\Settings|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    protected function getSettings()
+    {
+        if (\Auth::guest()) {
+            return App\Models\Settings::with([
+                'address' => function($q) {
+                    $q->select('id', 'city', 'street', 'zip', 'state_id')->with('state:id,name');
+                }])
+                ->first([
+                    'name',
+                    'email',
+                    'phone',
+                    'login_variation',
+                    'login_variation_2_slider',
+                    'primary_color',
+                    'primary_color_lighter',
+                    'accent_color',
+                    'logo',
+                    'circle_logo',
+                    'resident_logo',
+                    'favicon_icon',
+                    'address_id'
+                ]);
+        }
+
+        return App\Models\Settings::first([
+            'login_variation',
+            'login_variation_2_slider',
+            'primary_color',
+            'primary_color_lighter',
+            'accent_color',
+            'logo',
+            'circle_logo',
+            'resident_logo',
+            'favicon_icon',
+        ]);
+    }
+
+    /**
+     * @param $settings
+     * @return array
+     */
+    protected function getDetails($settings)
+    {
+        if (empty($settings)) {
+            return [];
+        }
+
+        $details = $settings->only(['name', 'email', 'phone',]);
+
+        if ($settings->address) {
+            $details['city'] = $settings->address->city;
+            $details['street'] = $settings->address->street;
+            $details['zip'] = $settings->address->zip;
+            if ($settings->address->state) {
+                $details['state'] = $settings->address->state->name;
+            }
+        }
+
+        return $details;
+    }
     /**
      * @return array|false
      */
@@ -202,6 +270,17 @@ class UtilsAPIController extends AppBaseController
      */
     protected function getRequestsConstants()
     {
+        $categories = Request::CategorySubCategory;
+        $categoryTree = [];
+        foreach ($categories as $category => $subCategories) {
+            $data = get_category_details($category);
+            foreach ($subCategories as $subCategory) {
+                $data['sub_categories'][] = get_sub_category_details($subCategory);
+            }
+
+            $categoryTree[] = $data;
+        }
+
         $result = [
             'status' => Request::Status,
            // 'priority' => Request::Priority,
@@ -215,7 +294,12 @@ class UtilsAPIController extends AppBaseController
             'room' => Request::Room,
             'capture_phase' => Request::CapturePhase,
             'payer' => Request::Payer,
-            'category' => Request::Category
+            'categories_data' =>  [
+                'categories' => Request::Category,
+                'sub_categories' => Request::SubCategory,
+                'parent_child' => Request::CategorySubCategory,
+                'tree' => $categoryTree,
+            ]
         ];
 
         return $result;
@@ -229,6 +313,7 @@ class UtilsAPIController extends AppBaseController
         $result = [
             'title' => PropertyManager::Title,
             'type' => PropertyManager::Type,
+            'position' => PropertyManager::Position,
         ];
 
         return $result;
