@@ -26,6 +26,9 @@
 </script>
 <style lang="scss" scoped>
     .el-form {
+        a .el-button {
+            text-align: left;
+        }
         .el-form-item {
             &:last-of-type :global(.el-form-item__content) {
                 display: flex;
