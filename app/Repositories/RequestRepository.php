@@ -67,9 +67,9 @@ class RequestRepository extends BaseRepository
     public function create(array $attributes)
     {
         $attributes = self::getPostAttributes($attributes);
-        if (isset($attributes['category_id'])) {
-            $requestCategories = RequestCategory::where('has_qualifications', 1)->pluck('id');
-            if (! $requestCategories->contains($attributes['category_id'])) {
+        if (isset($attributes['category'])) {
+            $categoryAttributes = Request::CategoryAttributes[$attributes['category']] ?? [];
+            if (empty($categoryAttributes) || ! in_array(Request::HasQualifications, $categoryAttributes)) {
                 unset($attributes['qualification']);
             }
         }
@@ -95,7 +95,7 @@ class RequestRepository extends BaseRepository
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
             $attr['contract_id'] = $attributes['contract_id'];
-            $attr['category_id'] = $attributes['category_id'];
+            $attr['category'] = $attributes['category'];
             $attr['visibility'] = $attributes['visibility'];
            // $attr['priority'] = $attributes['priority'];
           //  $attr['internal_priority'] = $attributes['internal_priority'] ?? $attributes['priority'];
