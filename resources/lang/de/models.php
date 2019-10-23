@@ -443,12 +443,12 @@ return [
         'category_list' => [
             'general' => ' Allgemeine Anliegen',
             'malfunction' => 'Fehlfunktion',
-            'deficiency' => 'Mangel (Zeitlich begrenzt)'
+            'deficiency' => 'Mangel'
         ],
         'sub_category' => [
             'surrounding' => 'Umgebung',
-            'real_estate' => 'Immobilien',
-            'flat' => 'flach',
+            'real_estate' => 'Liegenschaft',
+            'flat' => 'Wohnung',
         ],
         'media' => [
             'added' => 'Mediendatei hinzugefügt',
