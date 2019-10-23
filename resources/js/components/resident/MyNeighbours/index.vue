@@ -105,6 +105,9 @@
 
                 this.timeout = setTimeout(() => this.loading = false, EXTRA_LOADING_SECONDS)
             }
+            else {
+                this.$root.$emit('hide-my-neighbour-card');
+            }
         },
         beforeDestroy () {
             clearTimeout(this.timeout)

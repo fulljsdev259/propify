@@ -64,6 +64,8 @@
             
             const {resident} = this.user
 
+            console.log('resident', resident)
+
             if (resident.building_id) {
                 this.loading = true
 
@@ -77,6 +79,9 @@
                 }
 
                 this.timeout = setTimeout(() => this.loading = false, EXTRA_LOADING_SECONDS)
+            }
+            else {
+                this.$root.$emit('hide-property-manager-card');
             }
 
         },
