@@ -398,9 +398,6 @@ export default (config = {}) => {
                     this.justBlurred = ''
                 }, 10);
             },
-            dd() {
-                console.log('fff')
-            },
             reinitDatePickers() {
                 ++this.datePickerKey;
 
