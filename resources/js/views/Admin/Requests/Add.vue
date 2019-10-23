@@ -31,7 +31,7 @@
                                 <el-select :disabled="$can($permissions.update.serviceRequest)"
                                             :placeholder="$t(`general.placeholders.select`)"
                                             class="custom-select"
-                                            v-model="model.defect"
+                                            v-model="model.sub_category_id"
                                             @change="changeSubCategory">
                                     <el-option
                                         :key="category.id"
