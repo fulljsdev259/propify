@@ -51,7 +51,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     Route::post('/residents', 'ResidentAPIController@store')->name('residents.store');
     Route::post('/addReview', 'ResidentAPIController@addReview');
-    Route::post('/residents/{id}/media', 'MediaAPIController@residentUpload')->name('residents.media.upload');
     Route::post('/residents/{id}/send-credentials', 'ResidentAPIController@sendCredentials');
     Route::post('/residents/{id}/download-credentials', 'ResidentAPIController@downloadCredentials');
 
@@ -62,7 +61,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     Route::delete('/residents/{id}', 'ResidentAPIController@destroy')->name('residents.destroy');
     Route::post('/residents/deletewithids', 'ResidentAPIController@destroyWithIds')->name('residents.destroyWithIds');
-    Route::delete('/residents/{id}/media/{media_id}', 'MediaAPIController@residentDestroy')->name('residents.media.destroy');
 
 
     //Contract

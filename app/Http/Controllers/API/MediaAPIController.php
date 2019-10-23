@@ -15,10 +15,8 @@ use App\Http\Requests\API\Media\ListingDeleteRequest;
 use App\Http\Requests\API\Media\ListingUploadRequest;
 use App\Http\Requests\API\Media\RequestDeleteRequest;
 use App\Http\Requests\API\Media\RequestUploadRequest;
-use App\Http\Requests\API\Media\ResidentDeleteRequest;
 use App\Http\Requests\API\Media\ContractDeleteRequest;
 use App\Http\Requests\API\Media\ContractUploadRequest;
-use App\Http\Requests\API\Media\ResidentUploadRequest;
 use App\Models\Building;
 use App\Repositories\AddressRepository;
 use App\Repositories\BuildingRepository;
@@ -548,132 +546,6 @@ class MediaAPIController extends AppBaseController
         }
 
         $media = $pinboard->media->find($media_id);
-        if (empty($media)) {
-            return $this->sendError(__('general.media_not_found'));
-        }
-
-        $media->delete();
-
-        return $this->sendResponse($media_id, __('general.swal.media.deleted'));
-    }
-
-    /**
-     * @SWG\Post(
-     *      path="/residents/{resident_id}/media",
-     *      summary="Store a newly created Resident Media in storage",
-     *      tags={"Resident"},
-     *      description="Store Media",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="body",
-     *          in="body",
-     *          description="Media that should be stored",
-     *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Pinboard")
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Resident"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     *
-     * @param int $id
-     * @param ResidentUploadRequest $request
-     * @return mixed
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function residentUpload(int $id, ResidentUploadRequest $request)
-    {
-        $resident = $this->residentRepository->findWithoutFail($id);
-        if (empty($resident)) {
-            return $this->sendError(__('models.resident.errors.not_found'));
-        }
-
-        //@TODO tmp solution
-        $resident->load('contracts');
-        $contract = $resident->contracts->first();
-        if (empty($contract)) {
-            $contract = $this->contractRepository->create(['resident_id' => $resident->id]);
-        }
-
-        $data = $request->get('media', '');
-        if (!$media = $this->contractRepository->uploadFile('media', $data, $contract, $request->merge_in_audit)) {
-            return $this->sendError(__('general.upload_error'));
-        }
-
-        $data = $request->get('media', '');
-        if (!$media = $this->residentRepository->uploadFile('media', $data, $resident)) {
-            return $this->sendError(__('general.upload_error'));
-        }
-
-        $response = (new MediaTransformer)->transform($media);
-        return $this->sendResponse($response, __('general.swal.media.added'));
-    }
-
-
-    /**
-     * @SWG\Delete(
-     *      path="/residents/{id}/media/{media_id}",
-     *      summary="Remove the specified Media from storage",
-     *      tags={"Resident"},
-     *      description="Delete Media",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of Media",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  type="string"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     *
-     * @param int $id
-     * @param int $media_id
-     * @param ResidentDeleteRequest $r
-     * @return Response
-     */
-    public function residentDestroy(int $id, int $media_id, ResidentDeleteRequest $r)
-    {
-        $resident = $this->residentRepository->findWithoutFail($id);
-        if (empty($resident)) {
-            return $this->sendError(__('models.pinboard.errors.not_found'));
-        }
-
-        $media = $resident->media->find($media_id);
         if (empty($media)) {
             return $this->sendError(__('general.media_not_found'));
         }
