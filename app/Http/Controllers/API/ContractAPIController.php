@@ -14,6 +14,7 @@ use App\Http\Requests\API\Contract\CreateRequest;
 use App\Http\Requests\API\Contract\ListRequest;
 use App\Models\Contract;
 use App\Repositories\ContractRepository;
+use App\Repositories\PinboardRepository;
 use App\Transformers\ContractTransformer;
 use Illuminate\Http\Response;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
@@ -270,22 +271,32 @@ class ContractAPIController extends AppBaseController
      *
      * @param $id
      * @param UpdateRequest $request
+     * @param PinboardRepository $pinboardRepository
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update($id, UpdateRequest $request)
+    public function update($id, UpdateRequest $request, PinboardRepository $pinboardRepository)
     {
         $input =  $input = $request->all();
         /** @var Contract $contract */
         $contract = $this->contractRepository->findWithoutFail($id);
+
+        $shouldPinboard = isset($input['building_id']) && $input['building_id'] != $contract->building_id;
+
         if (empty($contract)) {
             return $this->sendError(__('models.resident.contract.errors.not_found'));
         }
 
         try {
-            $resident = $this->contractRepository->updateExisting($contract, $input);
+            $contract = $this->contractRepository->updateExisting($contract, $input);
         } catch (\Exception $e) {
             return $this->sendError(__('models.resident.errors.create') . $e->getMessage());
+        }
+
+        if ($shouldPinboard) {
+            $pinboardRepository->newResidentContractPinboard($contract);
         }
 
         $contract->load(['resident', 'building.address', 'unit']);

@@ -189,10 +189,10 @@ class UnitAPIController extends AppBaseController
      * )
      *
      * @param CreateRequest $request
-     * @param PinboardRepository $pr
+     * @param PinboardRepository $pinboardRepository
      * @return Response
      */
-    public function store(CreateRequest $request, PinboardRepository $pr)
+    public function store(CreateRequest $request, PinboardRepository $pinboardRepository)
     {
         $input = $request->all();
         $input['sq_meter'] = $input['sq_meter'] ?? 0;
@@ -209,8 +209,7 @@ class UnitAPIController extends AppBaseController
         if (isset($input['resident_id'])) {
             try {
                 $contract = $this->contractRepository->newContractForUnit($unit, $input['resident_id']);
-                $resident = $this->residentRepository->find($input['resident_id']);
-                $pr->newResidentPinboard($resident); // @TODO use $resident or @contract
+                $pinboardRepository->newResidentContractPinboard($contract); 
             } catch (\Exception $e) {
                 return $this->sendError(__('models.unit.errors.resident_assign') . $e->getMessage());
             }
@@ -329,12 +328,12 @@ class UnitAPIController extends AppBaseController
      *
      * @param $id
      * @param UpdateRequest $request
-     * @param PinboardRepository $pr
+     * @param PinboardRepository $pinboardRepository
      * @return mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update($id, UpdateRequest $request, PinboardRepository $pr)
+    public function update($id, UpdateRequest $request, PinboardRepository $pinboardRepository)
     {
         $input = $request->all();
         if (isset($input['monthly_rent'])) {
@@ -347,10 +346,6 @@ class UnitAPIController extends AppBaseController
             return $this->sendError(__('models.unit.errors.not_found'));
         }
 
-//        $shouldPinboard = isset($input['resident_id']) &&
-//            (!$unit->resident || ($unit->resident && $unit->resident->id != $input['resident_id']));
-        $shouldPinboard = false; // @TODO correct contract related
-
         try {
             $unit = $this->unitRepository->update($input, $id);
         } catch (\Exception $e) {
@@ -361,8 +356,9 @@ class UnitAPIController extends AppBaseController
         $currentResident = 0; // @TODO correct contract related
         if (isset($input['resident_id']) && $input['resident_id'] != $currentResident) {
             try {
-                $contract = Contract::where('unit_id', $unit->id)->where('resident_id', $input['resident_id'])->delete(); // @TODO delete single or many
-                $this->contractRepository->newContractForUnit($unit, $input['resident_id']);
+                Contract::where('unit_id', $unit->id)->where('resident_id', $input['resident_id'])->delete(); // @TODO delete single or many
+                $contract = $this->contractRepository->newContractForUnit($unit, $input['resident_id']);
+                $pinboardRepository->newResidentContractPinboard($contract);
             } catch (\Exception $e) {
                 return $this->sendError(__('models.unit.errors.create') . $e->getMessage());
             }
@@ -375,10 +371,6 @@ class UnitAPIController extends AppBaseController
             },
             'media'
         ]);
-        if ($shouldPinboard) {
-            $resident = $this->residentRepository->find($input['resident_id']);
-            $pr->newResidentPinboard($resident); // @TODO use $resident or new created contract
-        }
 
         $response = (new UnitTransformer)->transform($unit);
         return $this->sendResponse($response, __('models.unit.saved'));

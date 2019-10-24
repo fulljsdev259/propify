@@ -134,7 +134,7 @@ class AuthController extends Controller
         }
 
         $userData = $request->user();
-        if ($userData->resident && $userData->resident->status == Resident::StatusNotActive) {
+        if ($userData->resident && $userData->resident->status == Resident::StatusInActive) {
             return response()->json([
                 'message' => 'Your account has been disabled'
             ], 401);
