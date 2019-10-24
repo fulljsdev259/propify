@@ -144,9 +144,9 @@ class AuditableModel extends Model implements Auditable
         } elseif (self::EventUpdated == $audit->event) {
             $newAuditValue = $this->getChangedAuditValue($value);
             $oldAuditValue = $this->getChangedOriginalAuditValue($value);
-
-//            $audit->new_values = $this->fixAddedData($audit->new_values, $key, $value, $isSingle);
-//            $audit->save();
+            $audit->new_values = $this->fixAddedData($audit->new_values, $key, $newAuditValue, $isSingle);
+            $audit->old_values = $this->fixAddedData($audit->old_values, $key, $oldAuditValue, $isSingle);
+            $audit->save();
         } else {
             // @TODO
         }
@@ -159,7 +159,11 @@ class AuditableModel extends Model implements Auditable
     protected function getChangedAuditValue($value)
     {
         if (is_a($value, Model::class)) {
-            $value = $value->getChanges();
+            if ($value->wasRecentlyCreated) {
+                $value = $this->getSingleRelationAuditData($value);
+            } else {
+                $value = $value->getChanges();
+            }
             unset($value['updated_at']);
         } else {
             dd('@TODO');

@@ -7,7 +7,7 @@ trait OldChagesAttribute
     /**
      * @var
      */
-    protected $oldChanges;
+    protected $oldChanges = [];
 
     /**
      * Sync the changed attributes.
