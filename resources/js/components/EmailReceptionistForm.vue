@@ -21,7 +21,7 @@
                 <el-col :md="24">
                     <el-form-item :label="$t('general.email_receptionist.email_receptionist_of', {category: $t(`models.request.category_list.${category.name}`) })"
                         :rules="validationRules.assign"
-                        :prop="'assign[$index]'"
+                        :prop="'assign.' + $index"
                         class="label-block"
                         >
                         <el-select
