@@ -17,6 +17,11 @@
             </template>
         </heading>
         <el-row :gutter="20" class="crud-view">
+            <el-col :md="24">
+                <div class="red-bar">
+                    If you don't save it, you will lose data
+                </div>
+            </el-col>
             <el-col :md="12">
                 <el-tabs type="border-card" v-model="activeTab">
                     <el-tab-pane :label="$t('general.actions.view')" name="details">
@@ -452,7 +457,7 @@
                         </div>
                         
                         <div class="content" v-if="visibleDrawer">
-                            <email-receptionist-form :visible.sync="visibleDrawer"/>
+                            <email-receptionist-form :is-building="true" :visible.sync="visibleDrawer"/>
                         </div>
 
                     </el-tab-pane>
@@ -479,6 +484,7 @@
     import DeleteBuildingModal from 'components/DeleteBuildingModal';
     import AssignmentByType from 'components/AssignmentByType';
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
+    import EmailReceptionistForm from 'components/EmailReceptionistForm';
     import { EventBus } from '../../../event-bus.js';
     import ContractForm from 'components/ContractForm';
     import ContractListTable from 'components/ContractListTable';
@@ -499,6 +505,7 @@
             DeleteBuildingModal,
             AssignmentByType,
             EmergencySettingsForm,
+            EmailReceptionistForm,
             ContractForm,
             ContractListTable
         },
@@ -1022,6 +1029,14 @@
 
             .heading {
                 margin-bottom: 20px;
+            }
+
+            .red-bar {
+                background-color: #c53929; 
+                color: white;
+                height: 20px;
+                padding: 10px;
+                margin-bottom: 10px;
             }
 
             .action-group > .el-button:not(:first-child) {

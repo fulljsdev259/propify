@@ -1,14 +1,14 @@
 <template>
     <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
         
-        <el-row :gutter="20">
+        <el-row :gutter="20" v-if="isBuilding">
             <el-col :md="24">
                 <el-dropdown split-button 
                             :disabled="true" 
-                            type="info" 
+                            type="primary" 
                             trigger="click" 
                             @command="handleCommand">
-                    {{$t('general.email_receptionist.info_desc')}}
+                    {{$t('general.email_receptionist.info_desc')}} ?
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item command="global">{{$t('general.email_receptionist.global')}}</el-dropdown-item>
                         <el-dropdown-item command="assign">{{$t('general.email_receptionist.assign')}}</el-dropdown-item>
@@ -16,36 +16,36 @@
                 </el-dropdown>
             </el-col>
         </el-row>
-
-        <el-row v-for="category in categories" :key="category">
-            <el-col :md="24">
-                <el-form-item :label="$t('general.email_receptionist.email_receptionist_of') + ' ' + $t(`models.request.category_list.${category}`)"
-                            class="label-block">
-                    <el-select
-                        :loading="remoteLoading"
-                        :placeholder="$t('general.placeholders.search')"
-                        :remote-method="remoteSearchManagers"
-                        class="custom-remote-select"
-                        filterable
-                        multiple
-                        remote
-                        reserve-keyword
-                        style="width: 100%;"
-                        v-model="toAssign"
-                    >
-                        <div class="custom-prefix-wrapper" slot="prefix">
-                            <i class="el-icon-search custom-icon"></i>
-                        </div>
-                        <el-option
-                            :key="manager.id"
-                            :label="`${manager.first_name} ${manager.last_name}`"
-                            :value="manager.id"
-                            v-for="manager in toAssignList"/>
-                    </el-select>
-                </el-form-item>
-            </el-col>
-        </el-row>
-
+        <template v-if="activeCommand == 'assign'">
+            <el-row v-for="(category, $index) in categories" :key="category.id">
+                <el-col :md="24">
+                    <el-form-item :label="$t('general.email_receptionist.email_receptionist_of') + ' ' + $t(`models.request.category_list.${category.name}`)"
+                                class="label-block">
+                        <el-select
+                            :loading="remoteLoading"
+                            :placeholder="$t('general.placeholders.search')"
+                            :remote-method="data => remoteSearchManagers(data, $index)"
+                            class="custom-remote-select"
+                            filterable
+                            multiple
+                            remote
+                            reserve-keyword
+                            style="width: 100%;"
+                            v-model="assign[$index]"
+                        >
+                            <div class="custom-prefix-wrapper" slot="prefix">
+                                <i class="el-icon-search custom-icon"></i>
+                            </div>
+                            <el-option
+                                :key="manager.id"
+                                :label="`${manager.first_name} ${manager.last_name}`"
+                                :value="manager.id"
+                                v-for="manager in assignList[$index]"/>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </template>
         <div class="drawer-actions">
             <el-button type="primary" @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
         </div>
@@ -68,6 +68,10 @@
                 type: Boolean,
                 default: false
             },
+            isBuilding: {
+                type: Boolean,
+                default: false
+            }
         },
         data () {
             return {
@@ -91,6 +95,8 @@
                 },
                 toAssignList: '',
                 toAssign: [],
+                assignList: '',
+                assign: [],
                 remoteLoading: false,
                 activeCommand: '',
             }
@@ -99,16 +105,49 @@
             ...mapActions(['getPropertyManagers']),
             submit () {
                 
-                this.$refs.form.validate(async valid => {
-                    if (valid) {
-                        this.loading = true;  
-                        
-                    }
-                })
+                // let service_provider_ids = this.toAssign
+                
+                // const resp = await this.massEdit({
+                //     request_ids, 
+                //     service_provider_ids
+                // })
+
+                // this.processAssignment = false;
+                // this.closeModal();
+                // this.fetchMore();
+                // if(resp.data.success)
+                //     displaySuccess(resp.data.message);
+                console.log(this.categories.length)
+                for(let i = 0; i < this.categories.length; i ++)
+                {
+                    console.log('category, assign', this.categories[i].name, this.assign[i])
+                    
+                }
+             
             },
-            async remoteSearchManagers(search) {
+            // async remoteSearchManagers(search) {
+            //     if (search === '') {
+            //         this.resetToAssignList();
+            //     } else {
+            //         this.remoteLoading = true;
+
+            //         try {
+            //             const resp = await this.getPropertyManagers({
+            //                 get_all: true,
+            //                 search
+            //             });
+
+            //             this.toAssignList = resp.data;
+            //         } catch (err) {
+            //             displayError(err);
+            //         } finally {
+            //             this.remoteLoading = false;
+            //         }
+            //     }
+            // },
+            async remoteSearchManagers(search, index) {
                 if (search === '') {
-                    this.resetToAssignList();
+                    this.resetToAssignList(index);
                 } else {
                     this.remoteLoading = true;
 
@@ -118,7 +157,7 @@
                             search
                         });
 
-                        this.toAssignList = resp.data;
+                        this.assignList[index] = resp.data;
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -126,12 +165,38 @@
                     }
                 }
             },
+            resetToAssignList(index) {
+                this.assignList[index] = [];
+                this.assign[index] = '';
+            },
+            // resetToAssignList() {
+            //     this.toAssignList = [];
+            //     this.toAssign = '';
+            // },
             handleCommand(command) {
                 this.activeCommand = command
             },
         },
         async created () {
-            this.categories = this.$constants.requests.categories_data.categories
+            let categories = this.$constants.requests.categories_data.categories
+
+            this.categories = Object.keys(categories).map(key => {
+                return { id : key, name : categories[key] }
+            })
+
+            this.categories
+            console.log(this.categories)
+
+            if(!this.isBuilding)
+                this.activeCommand = 'assign'
+
+            this.assignList = []
+            for(let i = 0; i < this.categories.length; i ++)
+            {
+                this.assign.push([])
+                this.assign[i] = []
+            }
+            
         }
     }
 </script>
@@ -174,32 +239,27 @@
             
         }
         
-        .switcher {
-            /deep/ .el-form-item__content {
-                display: flex;
-                align-items: center;
+        .el-dropdown {
+            width: 100%;
+            
 
-                & > div {
-                    flex: 1;
-                    justify-content: flex-end;
-                    text-align: end;
-                    width: 130px
-                }
-                .el-select {
-                    width: 130px
-                }
-            }
-            &__label {
-                text-align: left;
-                line-height: 1.4em;
-                color: #606266;
-            }
-            &__desc {
-                margin-top: 0.5em;
-                display: block;
-                font-size: 0.9em;
-            }
+            /deep/ .el-button-group {
+                width: 100%;
 
+                
+                .el-button:first-child {
+                    width: calc(100% - 30px);
+                    border-radius: 20px;
+                    border-top-right-radius: unset;
+                    border-bottom-right-radius: unset;
+                }
+
+                .el-button:last-child {
+                    border-radius: 20px;
+                    border-top-left-radius: unset;
+                    border-bottom-left-radius: unset;
+                }
+            }
         }
 
         /deep/ .drawer-actions {
