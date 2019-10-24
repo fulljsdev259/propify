@@ -19,7 +19,12 @@
         <el-row :gutter="20" class="crud-view">
             <el-col :md="24">
                 <div class="red-bar">
-                    If you don't save it, you will lose data
+                    <div class="message">
+                        You need to save the information correctly.
+                    </div>
+                    <div class="red-bar-title">
+                        Problem Found
+                    </div>
                 </div>
             </el-col>
             <el-col :md="12">
@@ -457,7 +462,7 @@
                         </div>
                         
                         <div class="content" v-if="visibleDrawer">
-                            <email-receptionist-form :is-building="true" :visible.sync="visibleDrawer"/>
+                            <email-receptionist-form :is-building="true" :quarter_id="model.quarter_id" :visible.sync="visibleDrawer"/>
                         </div>
 
                     </el-tab-pane>
@@ -1037,6 +1042,18 @@
                 height: 20px;
                 padding: 10px;
                 margin-bottom: 10px;
+                display: flex;
+
+                .message {
+                    flex-grow: 1;
+                }
+
+                .red-bar-title {
+                    float: right;
+                    font-size: 16px;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
             }
 
             .action-group > .el-button:not(:first-child) {

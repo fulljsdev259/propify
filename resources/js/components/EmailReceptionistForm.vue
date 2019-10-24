@@ -1,7 +1,7 @@
 <template>
     <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
         
-        <el-row :gutter="20" v-if="isBuilding">
+        <el-row :gutter="20" v-if="isBuilding && quarter_id">
             <el-col :md="24">
                 <el-dropdown split-button 
                             :disabled="true" 
@@ -71,6 +71,9 @@
             isBuilding: {
                 type: Boolean,
                 default: false
+            },
+            quarter_id: {
+                type: Number
             }
         },
         data () {
@@ -117,7 +120,6 @@
                 // this.fetchMore();
                 // if(resp.data.success)
                 //     displaySuccess(resp.data.message);
-                console.log(this.categories.length)
                 for(let i = 0; i < this.categories.length; i ++)
                 {
                     console.log('category, assign', this.categories[i].name, this.assign[i])
@@ -125,26 +127,6 @@
                 }
              
             },
-            // async remoteSearchManagers(search) {
-            //     if (search === '') {
-            //         this.resetToAssignList();
-            //     } else {
-            //         this.remoteLoading = true;
-
-            //         try {
-            //             const resp = await this.getPropertyManagers({
-            //                 get_all: true,
-            //                 search
-            //             });
-
-            //             this.toAssignList = resp.data;
-            //         } catch (err) {
-            //             displayError(err);
-            //         } finally {
-            //             this.remoteLoading = false;
-            //         }
-            //     }
-            // },
             async remoteSearchManagers(search, index) {
                 if (search === '') {
                     this.resetToAssignList(index);
@@ -169,10 +151,6 @@
                 this.assignList[index] = [];
                 this.assign[index] = '';
             },
-            // resetToAssignList() {
-            //     this.toAssignList = [];
-            //     this.toAssign = '';
-            // },
             handleCommand(command) {
                 this.activeCommand = command
             },
@@ -184,10 +162,9 @@
                 return { id : key, name : categories[key] }
             })
 
-            this.categories
-            console.log(this.categories)
-
             if(!this.isBuilding)
+                this.activeCommand = 'assign'
+            else if(this.isBuilding && !this.quarter_id)
                 this.activeCommand = 'assign'
 
             this.assignList = []
