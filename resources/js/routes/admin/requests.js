@@ -75,17 +75,6 @@ export default [{
             title: 'Add Request'
         }
     }, {
-        path: 'activity',
-        name: 'adminRequestsActivity',
-        component: () => import ( /* webpackChunkName: "admin/requests/activity" */ 'views/Admin/Requests/Activity'),
-        beforeEnter: VueRouterMultiguard([isAuthenticatedGuard, isAdminGuard]),
-        props: {
-            title: 'Activity requests'
-        },
-        meta: {
-            title: 'Activity requests'
-        }
-    }, {
         path: ':id',
         name: 'adminRequestsEdit',
         component: () => import ( /* webpackChunkName: "admin/requests/edit" */ 'views/Admin/Requests/Edit'),

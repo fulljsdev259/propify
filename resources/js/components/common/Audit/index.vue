@@ -18,7 +18,7 @@
             <small>{{$t('resident.no_data_info.activity')}}</small>
         </placeholder>
             <el-timeline v-else>
-                <template v-for="(audit,id) in list">                               
+                <template v-for="(audit,id) in list">
                     <el-timeline-item  :key="audit.id" :timestamp="`${audit.user.name} • ${formatDatetime(audit.updated_at)}`">
                         <span>{{audit.statement}}</span>
                     </el-timeline-item>
@@ -39,7 +39,7 @@
     import queryString from 'query-string'
     import FormatDateTimeMixin from 'mixins/formatDateTimeMixin'
     import { EventBus } from '../../../event-bus.js';
-    import sFilter from './filters.json';
+    import auditFilter from './filters.json';
     export default {
         mixins: [FormatDateTimeMixin],
 
@@ -55,7 +55,7 @@
             showFilter: Boolean,
             type: {
                 type: String,
-                validator: type => ['pinboard', 'listing', 'request', 'unit', 'quarter', 'building', 'manager', 'resident', 'provider'].includes(type)
+                validator: type => ['pinboard', 'listing', 'request', 'unit', 'quarter', 'building', 'manager', 'resident', 'provider', 'all'].includes(type),                
             }
         },
         components: {
@@ -75,9 +75,11 @@
                     schema: filterSchema,
                     data: filterData
                 },
-                sFilter: sFilter,
+                auditFilter: auditFilter,
                 categories: [],
-                loading: true,                
+                loading: true,
+                currentAuditableType: null,
+                currentEvent: null,
             }
         },
         methods: {
@@ -92,17 +94,31 @@
                     }
                 };
                 schema_children.push({
-                            type: 'el-option',
-                            props: {
-                                label: 'resident.all',
-                                value: null
+                    type: 'el-option',
+                    props: {
+                        label: 'resident.all',
+                        value: null
+                    }
+                });
+                if(this.type === 'all'){                      
+                    // If there is no type prop on audit component then show type select
+                    // Get filter translations from file
+                    filter_name = 'auditable_type'                    
+                    const filter_type_translations = this.$t(`general.components.common.audit.filter.type`);                    
+                    const filter_type_options = Object.keys(filter_type_translations).map((key, index) => {                        
+                    schema_children.push({
+                        type: 'el-option',
+                        props: {
+                            label: filter_type_translations[key],
+                            value: key
                             }
-                        });                  
-                if(this.type){                     
+                        })
+                    });                                       
+                } else{                     
                     // If there is type then only show event options
                     // Get type options from translation files
                     filter_name = 'event'
-                    const filter_event_translations = this.sFilter[this.type];                    
+                    const filter_event_translations = this.auditFilter[this.type];                    
                     const filter_event_options = Object.values(filter_event_translations).map((value,key) => {                        
                         // Push to schema array
                         schema_children.push({
@@ -112,21 +128,7 @@
                                 value: value
                             }
                         })
-                    });                    
-                }else{                    
-                    // If there is no type prop on audit component then show type select
-                    // Get filter translations from file
-                    filter_name = 'auditable_type'
-                    const filter_type_translations = this.$t(`general.components.common.audit.filter.type`);
-                    const filter_type_options = Object.keys(filter_type_translations).map((key, index) => {
-                    schema_children.push({
-                        type: 'el-option',
-                        props: {
-                            label: filter_type_translations[key],
-                            value: key
-                            }
-                        })
-                    });
+                    }); 
                 }
                 this.filters.schema.push({
                     type: 'el-select',
@@ -137,60 +139,68 @@
                     },
                     children: schema_children
                 })
-                },
-                async filtersChanged (filters) {
-                    // If type filter is set search for second select
-                    if(filters.auditable_type && filters.auditable_type != ''){
-                        let schema_children = [];
-                        const filter_event_translations = this.$t(`general.components.common.audit.filter.${filters.auditable_type}`);
-                        const filter_event_options = Object.keys(filter_event_translations).map((key, index) => {
-                            // Push to schema array
-                            schema_children.push({
-                                type: 'el-option',
-                                props: {
-                                    label: filter_event_translations[key],
-                                    value: key
-                                }
-                            })
-                        });
-                        //remove previous select if exists
-                        this.filters.schema.splice(1,1)
-                        //remove any set event data in filter
-                        if(!Object.keys(filter_event_translations).includes(this.filters.data.event))
-                        {
-                        this.filters.data.event = null
+            },
+            async filtersChanged (filters) {                                                                                 
+                if((filters.auditable_type) && (filters.auditable_type != '') && (filters.auditable_type !== this.currentAuditableType)){                    
+                    let schema_children = [];
+                    schema_children.push({
+                        type: 'el-option',
+                        props: {
+                            label: 'resident.all',
+                            value: null
                         }
-                        this.filters.schema.push({
-                            type: 'el-select',
-                            title: 'Event type',
-                            name: 'event',
+                    });
+                    const filter_event_translations = this.auditFilter[filters.auditable_type];
+                    const filter_event_options = Object.values(filter_event_translations).map((value,key) => {                        
+                        // Push to schema array
+                        schema_children.push({
+                            type: 'el-option',
                             props: {
-                                size: 'mini'
-                            },
-                            children: schema_children
-                        });
-                    }else{
-                        this.filters.schema.splice(1,1)
-                        if(this.filters.schema.findIndex(x => x.name == 'type') != -1){
-                            this.filters.data.event = null
-                        }
+                                label: `general.components.common.audit.filter.general.${value}`,
+                                value: value
+                            }
+                        })
+                    });                                             
+                    //remove previous select if exists
+                    this.filters.schema.splice(1,1)
+                    //remove any set event data in filter
+                    if(!Object.keys(filter_event_translations).includes(this.filters.data.event))
+                    {
+                        this.filters.data.event = null
                     }
-                    this.list = undefined
-                    this.meta.current_page = undefined
-                    await this.fetch();
+                    this.filters.schema.push({
+                        type: 'el-select',
+                        title: 'Event type',
+                        name: 'event',
+                        props: {
+                            size: 'mini'
+                        },
+                        children: schema_children
+                    });
+                    this.currentAuditableType = filters.auditable_type;
+                } else if((filters.event) && (filters.event !== this.currentEvent)){                    
+                    // this.filters.schema.splice(1,1)                                    
+                    if(this.filters.schema.findIndex(x => x.name == 'type') != -1){
+                        this.filters.data.event = null
+                    }
+                    this.currentEvent = filters.event;
+                }
+                this.list = undefined
+                this.meta.current_page = undefined
+                await this.fetch();
             },
             async fetch (page = 1,params) {
                 // Get current page and last page of the displayed audits
                 this.loading = true                
 
-                const auditable_type = this.type ? this.type : this.filters.data.auditable_type
+                const auditable_type = this.filters.data.auditable_type ? this.filters.data.auditable_type : this.type                
                 // Fetch audits
                 try {
                     const resp = await this.axios.get('audits?' + queryString.stringify({
                         sortedBy: 'desc',
                         orderBy: 'created_at',
                         page,
-                        per_page: 5,
+                        per_page: 25,
                         auditable_id: this.id,
                         auditable_type: auditable_type,
                         event: this.filters.data.event,
@@ -226,7 +236,7 @@
                 return !this.loading && !Object.keys(this.list).length
             }
         },
-        async mounted () {
+        async mounted () {            
             // const {data:{data}} = await this.axios.get('requestCategories/tree?get_all=true');
             // // Get filter options from translation file and add the to filter object
 
@@ -243,7 +253,8 @@
 
             // this.categories = flattenCategories(data)
             this.categories = this.$constants.requests.categories_data.tree
-            await this.filterReset();
+            await this.filterReset();            
+            await this.fetch();            
         }
     }
 </script>
