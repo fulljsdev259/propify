@@ -443,7 +443,7 @@ return [
         'category_list' => [
             'general' => ' Allgemeine Anliegen',
             'malfunction' => 'Fehlfunktion',
-            'deficiency' => 'Mangel (Zeitlich begrenzt)'
+            'deficiency' => 'Mangel'
         ],
         'sub_category' => [
             'surrounding' => 'Umgebung',
