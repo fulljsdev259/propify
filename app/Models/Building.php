@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\AddressOwnerAudit;
 use App\Traits\HasCategoryMediaTrait;
 use App\Traits\RequestRelation;
 use App\Traits\UniqueIDFormat;
@@ -163,7 +162,6 @@ class Building extends AuditableModel implements HasMedia
     use SoftDeletes,
         HasCategoryMediaTrait,
         UniqueIDFormat,
-        AddressOwnerAudit,
         HasBelongsToManyEvents,
         HasMorphedByManyEvents,
         RequestRelation;
@@ -239,8 +237,8 @@ class Building extends AuditableModel implements HasMedia
     ];
 
     protected $auditEvents = [
-        AuditableModel::EventCreated => 'getCreatedEventAttributesIncludeAddress',
-        AuditableModel::EventUpdated => 'getUpdatedEventAttributesIncludeAddress',
+        AuditableModel::EventCreated,
+        AuditableModel::EventUpdated,
         AuditableModel::EventDeleted,
         AuditableModel::EventUserAssigned => 'getAttachedEventAttributes',
         AuditableModel::EventManagerAssigned => 'getAttachedEventAttributes',

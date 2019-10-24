@@ -137,8 +137,12 @@ class AuditableModel extends Model implements Auditable
         }
 
         if ($audit == self::UpdateOrCreate) {
-            $this->auditEvent = self::EventUpdated;
-            $audit = $this->audit ?? new Audit($this->toAudit());
+            if ($this->audit) {
+                $audit = $this->audits;
+            } else {
+                $this->auditEvent = self::EventUpdated;
+                $audit = new Audit($this->toAudit());
+            }
         }
 
         if ('media' == $key) {
@@ -180,6 +184,8 @@ class AuditableModel extends Model implements Auditable
                 $value = $value->getChanges();
             }
             unset($value['updated_at']);
+        } else if (is_a($value, Collection::class)) {
+            dd($value);
         } else {
             dd('@TODO');
         }

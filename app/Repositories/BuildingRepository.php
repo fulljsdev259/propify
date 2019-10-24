@@ -119,10 +119,15 @@ class BuildingRepository extends BaseRepository
             $data = $this->getAtticData($atticFloor, $floorCount, $preText, $data, ['attic' => true]);
         }
 
-        $units = $building->units()->createMany($data);
-        $building->addDataInAudit('units', $units, AuditableModel::UpdateOrCreate);
-        Unit::enableAuditing();
-        $building->setRelation('units', $units);
+        if ($data) {
+            $units = $building->units()->createMany($data);
+            Unit::enableAuditing();
+            $building->addDataInAudit('units', $units, AuditableModel::UpdateOrCreate);
+            $building->setRelation('units', $units);
+        } else {
+            Unit::enableAuditing();
+        }
+
         return $building;
     }
 
