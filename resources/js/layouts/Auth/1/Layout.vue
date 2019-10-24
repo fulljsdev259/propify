@@ -118,6 +118,8 @@
             this.street = this.$constants.details.street;
             this.zip = this.$constants.details.zip;
             this.city = this.$constants.details.city;
+            this.logo_src = "/images/logo.png";
+            this.resident_logo_src = '/images/resident-logo.png'; 
         }
     }
 </script>
@@ -163,6 +165,11 @@
             height: auto;
             .logo {
                 margin-bottom: 35px !important;
+            }
+            @media screen and (max-width: 554px) {
+                .logo {
+                    margin-bottom: 15px !important;
+                }
             }
             @media screen and (min-width: 554px) {
                 .login-content {
@@ -248,6 +255,9 @@
                         margin: 1em auto;
                         img {
                             width: 130px;
+                            @media screen and (max-width: 736px) {
+                                width: 80px;
+                            }
                         }
                         @media screen and (max-width: 850px) {
                             margin: 20px auto 1em;
@@ -295,11 +305,13 @@
                     padding: 4em;
                 }
                 @media screen and (max-width: 1200px) {
-                    padding: 20px;
                     align-items: center;
                 }
                 @media screen and (max-width: 1024px) {
                     align-items: center;
+                }
+                @media screen and (max-width: 992px) {
+                    padding: 0 20px;
                 }
                 &:before {
                     content: '';
