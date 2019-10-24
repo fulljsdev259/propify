@@ -87,6 +87,10 @@ export default (config = {}) => {
                     title: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('general.salutation')})
+                    }],
+                    type: [{
+                        required: true,
+                        message: this.$t('validation.general.required')
                     }]
                 },
                 loading: {

@@ -101,6 +101,11 @@ return [
             'add' => 'Add new contract',
             'pdf_only_desc' => 'Please note that only PDF files can be uploaded',
             'saved' => 'Contract saved',
+            'status_count' => [
+                'total' => 'Total contracts',
+                'active' => 'Active contracts',
+                'inactive' => 'Inactive contracts',
+            ],
         ],      
         'status' => [
             'label' => 'Status',

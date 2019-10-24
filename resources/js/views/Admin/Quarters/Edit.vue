@@ -270,11 +270,30 @@
                 </div>
             </template>
             <template v-else>
-                <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;Emergency</ui-divider>
-                
-                <div class="content" v-if="visibleDrawer">
-                    <emergency-settings-form :visible.sync="visibleDrawer"/>
-                </div>
+                <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="visibleDrawer">
+                    <el-tab-pane name="emergency" lazy>
+                        <div slot="label">
+                            <i class="icon-cog"></i>
+                            {{$t('general.emergency.title')}}
+                        </div>
+                        <div class="content" v-if="visibleDrawer">
+                            <emergency-settings-form :visible.sync="visibleDrawer"/>
+                        </div>
+                        
+                    </el-tab-pane>
+                    <el-tab-pane name="email_receptionist" lazy>
+                        <div slot="label">
+                            <i class="ti-gallery"></i>
+                            {{$t('general.email_receptionist.title')}}
+                        </div>
+                        
+                        <div class="content" v-if="visibleDrawer">
+                            
+                            <email-receptionist-form :visible.sync="visibleDrawer"/>
+                        </div>
+
+                    </el-tab-pane>
+                </el-tabs>
             </template>
         </ui-drawer>
     </div>
@@ -290,6 +309,7 @@
     import RelationList from 'components/RelationListing';
     import AssignmentByType from 'components/AssignmentByType';
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
+    import EmailReceptionistForm from 'components/EmailReceptionistForm';
     import UploadDocument from 'components/UploadDocument';
     import draggable from 'vuedraggable';
     import { EventBus } from '../../../event-bus.js';
@@ -309,6 +329,7 @@
             RelationList,
             AssignmentByType,
             EmergencySettingsForm,
+            EmailReceptionistForm,
             UploadDocument,
             draggable,
             ContractForm,
@@ -399,6 +420,7 @@
                 editingContract: null,
                 isAddContract: false,
                 editingContractIndex: -1,
+                activeDrawerTab: "emergency"
             }
         },
         methods: {
@@ -647,6 +669,20 @@
     }
     
     .ui-drawer {
+        .el-tabs {
+            height: 100%;
+            /deep/ .el-tabs__header {
+                margin-bottom: 0;
+            }
+            /deep/ .el-tabs__content{
+                height: 100%;
+
+                .el-tab-pane {
+                    height: 100%;
+                }
+            }
+        }
+
         .ui-divider {
             margin: 32px 16px 0 16px;
             i {
