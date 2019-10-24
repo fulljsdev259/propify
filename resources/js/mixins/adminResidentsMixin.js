@@ -195,11 +195,12 @@ export default (config = {}) => {
                                 const today = new Date().getTime();
                                 resident.contracts.forEach(contract => {
                                     const start_date = new Date(contract.start_date).getTime();
-                                    const start_date = new Date(contract.start_date).getTime();
+                                    const end_date = new Date(contract.end_date).getTime();
                                     if(contract.duration == 1 && start_date <= today )
                                         resident.status = 1
-                                    if(contract.duration == 2 && start_date <= today && contract.end_date > today)
+                                    if(contract.duration == 2 && start_date <= today && end_date > today)
                                         resident.status = 1
+                                        
                                 })
                                 const resp = await this.createResident({
                                     user: {
