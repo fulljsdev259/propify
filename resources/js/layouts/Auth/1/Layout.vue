@@ -47,7 +47,8 @@
                                 </div>
                             </el-col>
                             <el-col :xl="12" :lg="12" :md="24" :sm="24" :xs="24">
-                                <i class="icon-megaphone-1" />
+                                <!-- <i class="icon-megaphone-1" /> -->
+                                <i class="icon-chat-empty" />
                                 <div class="content">
                                     <h3>{{ $t('auth.benefit_2.title') }}</h3>
                                     <p>
@@ -56,7 +57,7 @@
                                 </div>
                             </el-col>
                         </el-row>
-                        <el-row :gutter="24">
+                        <!-- <el-row :gutter="24">
                             <el-col :xl="12" :lg="12" :md="24" :sm="24" :xs="24">
                                 <i class="icon-chat-empty" />
                                 <div class="content">
@@ -75,7 +76,7 @@
                                     </p>
                                 </div>
                             </el-col>
-                        </el-row>
+                        </el-row> -->
                     </div>
                 </el-main>
                 <div class="company-info">
@@ -359,7 +360,7 @@
                     @media screen and (max-width: 554px) {
                         h1 {
                             text-align: center;
-                            font-size: 24px;
+                            font-size: 22px;
                         }
                         p {
                             color: #515862;
