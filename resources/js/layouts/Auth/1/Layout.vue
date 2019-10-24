@@ -118,8 +118,6 @@
             this.street = this.$constants.details.street;
             this.zip = this.$constants.details.zip;
             this.city = this.$constants.details.city;
-            this.logo_src = "/images/logo.png";
-            this.resident_logo_src = '/images/resident-logo.png'; 
         }
     }
 </script>
