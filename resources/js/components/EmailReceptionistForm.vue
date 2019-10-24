@@ -102,30 +102,41 @@
                 assign: [],
                 remoteLoading: false,
                 activeCommand: '',
+                global: '',
             }
         },
         methods: {
             ...mapActions(['getPropertyManagers']),
             submit () {
-                
+                if(this.activeCommand == 'global')
+                    this.global = 1
+                else if(this.activeCommand == 'assign')
+                    this.global = 0
                 // let service_provider_ids = this.toAssign
                 
-                // const resp = await this.massEdit({
-                //     request_ids, 
-                //     service_provider_ids
-                // })
+                
 
                 // this.processAssignment = false;
                 // this.closeModal();
                 // this.fetchMore();
                 // if(resp.data.success)
                 //     displaySuccess(resp.data.message);
+                let categories = [];
                 for(let i = 0; i < this.categories.length; i ++)
                 {
+                    categories.push({
+                        quarter_id : 1,
+                        category_id : this.categories[i].id,
+                        property_manager_ids: this.assign[i]
+                    })
                     console.log('category, assign', this.categories[i].name, this.assign[i])
                     
                 }
              
+                // const resp = await this.saveEmailReceptionist({
+                //     request_ids, 
+                //     service_provider_ids
+                // })
             },
             async remoteSearchManagers(search, index) {
                 if (search === '') {

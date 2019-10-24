@@ -136,7 +136,7 @@
                                                         <el-form-item :label="$t('models.resident.type.label')"
                                                                     prop="type">
                                                             
-                                                            <el-select placeholder="Select" style="display: block" v-model="model.type" disabled>
+                                                            <el-select placeholder="Select" style="display: block" v-model="model.type" >
                                                                 <el-option
                                                                     :key="k"
                                                                     :label="$t(`models.resident.type.${type}`)"
