@@ -321,15 +321,27 @@ return [
                 ],
                 'filter' => [
                     'type' => [
-                        'pinboard' => 'Pinboard',
-                        'listing' => 'Listing',
-                        'request' => 'Request'
+                        'pinboard' => 'Pinboard',                        
+                        'request' => 'Request',
+                        'quarter' => 'Quarter',
+                        'building' => 'Building',
+                        'unit' => 'Unit',
+                        'resident' =>'Resident',
+                        'manager' => 'Manager',
+                        'provider' => 'Provider',
                     ],                   
                     'general' => [
                         'created' => 'Created',
                         'updated' => 'Updates',
                         'provider_assigned' => 'Provider assigned',
+                        'provider_unassigned' => 'Provider unassigned',
+                        'provider_notified' => 'Provider notified',                        
                         'manager_assigned' => 'Manager assigned',
+                        'manager_unassigned' => 'Manager unassigned',
+                        'quarter_assigned' => 'Quarter assigned',
+                        'quarter_unassigned' => 'Quarter unassigned',
+                        'building_assigned' => 'Building assigned',
+                        'building_unassigned' => 'Building unassigned',
                         'media_uploaded' => 'Media uploaded',
                         'media_deleted' => 'Media deleted'
                     ],

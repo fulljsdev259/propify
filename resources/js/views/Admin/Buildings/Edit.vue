@@ -386,9 +386,10 @@
                     </el-tab-pane>
                     <el-tab-pane name="audit" style="height: 400px;overflow:auto;">
                         <span slot="label">
-                            <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge>
+                            {{ $t('general.audits') }}
+                            <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
                         </span>
-                        <audit :id="model.id" type="building" showFilter/>
+                        <audit v-if="model.id" :id="model.id" type="building" showFilter/>
                     </el-tab-pane>
                     <el-tab-pane name="settings" :disabled="true">
                         <span slot="label" class="icon-cog" @click="toggleDrawer">

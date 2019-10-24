@@ -259,7 +259,7 @@
                         title: this.$t('general.admin_menu.activity'),
                         permission: this.$permissions.list.audit,
                         route: {
-                            name: 'adminRequestsActivity'
+                            name: 'adminActivityList'
                         }
                     },
                     "residents": {
@@ -657,8 +657,8 @@
             }
 
             .language-checked-img{
-                width: 25px;
-                height: 25px;
+                width: 26px;
+                height: 26px;
                 border-radius: 50%;
                 overflow: hidden;
                 position: relative;
