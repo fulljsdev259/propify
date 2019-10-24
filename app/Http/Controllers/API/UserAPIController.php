@@ -7,6 +7,7 @@ use App\Criteria\User\FilterByRolesCriteria;
 use App\Criteria\User\WhereCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\User\ChangePasswordRequest;
+use App\Http\Requests\API\User\CheckEmailRequest;
 use App\Http\Requests\API\User\CreateRequest;
 use App\Http\Requests\API\User\DeleteRequest;
 use App\Http\Requests\API\User\ListRequest;
@@ -19,6 +20,7 @@ use App\Models\Settings;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Transformers\MediaTransformer;
+use App\Transformers\ResidentTransformer;
 use App\Transformers\UserTransformer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -272,6 +274,7 @@ class UserAPIController extends AppBaseController
      *
      * @param Request $request
      * @return mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function showLoggedIn(Request $request)
     {
@@ -304,14 +307,11 @@ class UserAPIController extends AppBaseController
         $resident = $user->resident;
 
         if ($resident) {
-            $resident->contact_enable = (bool) $this->getResidentContactEnable($resident);
-            $resident->contracts->each(function ($contract) {
-                if ($contract->relationExists('media')) {
-                    $contract->setRelation('media', collect((new MediaTransformer)->transformCollection($contract->media)));
-                } else {
-                    $contract->media = [];
-                }
-            });
+            unset($user->resident);
+            $contactEnable = (bool) $this->getResidentContactEnable($resident);
+            $resident = (new ResidentTransformer())->transform($resident);
+            $resident['contact_enable'] = $contactEnable;
+            $user->setAttribute('resident', $resident);
         }
 
         return $this->sendResponse($user->toArray(), 'User retrieved successfully');
@@ -719,11 +719,11 @@ class UserAPIController extends AppBaseController
     }
 
     /**
-     * @param CreateRequest $request
+     * @param CheckEmailRequest $request
      * @return mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function checkEmail(CreateRequest $request)
+    public function checkEmail(CheckEmailRequest $request)
     {
         $email = $request->email;
         if (empty($email)) {

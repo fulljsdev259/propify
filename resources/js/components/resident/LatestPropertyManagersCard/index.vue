@@ -64,19 +64,23 @@
             
             const {resident} = this.user
 
-            if (resident.building_id) {
+            if (resident.building) {
                 this.loading = true
 
                 const {managers_last} = await this.$store.dispatch('getBuilding', {
-                    id: resident.building_id
+                    id: resident.building.id
                 })
 
-                console.log('managers_last', managers_last)
                 if (managers_last) {
                     this.managers = managers_last
                 }
 
+                if(managers_last.length == 0)
+                    this.$root.$emit('hide-property-manager-card');
                 this.timeout = setTimeout(() => this.loading = false, EXTRA_LOADING_SECONDS)
+            }
+            else {
+                this.$root.$emit('hide-property-manager-card');
             }
 
         },

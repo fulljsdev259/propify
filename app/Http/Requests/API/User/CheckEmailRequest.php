@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\API\RequestCategory;
+namespace App\Http\Requests\API\User;
 
+use App\Models\User;
 use App\Http\Requests\BaseRequest;
 
-class DeleteRequest extends BaseRequest
+class CheckEmailRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,6 +14,6 @@ class DeleteRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('delete-request');
+        return $this->can('add-user');
     }
 }

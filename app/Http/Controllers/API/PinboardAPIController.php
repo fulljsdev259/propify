@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Criteria\Pinboard\FeedCriteria;
 use App\Criteria\Pinboard\FilterByBuildingCriteria;
 use App\Criteria\Pinboard\FilterByQuarterCriteria;
-use App\Criteria\Pinboard\FilterByLocationCriteria;
+use App\Criteria\Pinboard\FilterByPermissionCriteria;
 use App\Criteria\Pinboard\FilterByAnnouncementCriteria;
 use App\Criteria\Pinboard\FilterByStatusCriteria;
 use App\Criteria\Pinboard\FilterByTypeCriteria;
@@ -108,7 +108,7 @@ class PinboardAPIController extends AppBaseController
         $this->pinboardRepository->pushCriteria(new FeedCriteria($request));
         $this->pinboardRepository->pushCriteria(new FilterByStatusCriteria($request));
         $this->pinboardRepository->pushCriteria(new FilterByTypeCriteria($request));
-        $this->pinboardRepository->pushCriteria(new FilterByLocationCriteria($request));
+        $this->pinboardRepository->pushCriteria(new FilterByPermissionCriteria($request));
         $this->pinboardRepository->pushCriteria(new FilterByUserCriteria($request));
         $this->pinboardRepository->pushCriteria(new FilterByQuarterCriteria($request));
         $this->pinboardRepository->pushCriteria(new FilterByBuildingCriteria($request));

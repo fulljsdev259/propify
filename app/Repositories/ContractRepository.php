@@ -6,6 +6,7 @@ use App\Models\Model;
 use App\Models\Contract;
 use App\Models\Unit;
 use App\Traits\SaveMediaUploads;
+use Illuminate\Support\Facades\App;
 
 /**
  * Class ContractRepository
@@ -33,7 +34,8 @@ class ContractRepository extends BaseRepository
 
     /**
      * @param array $attributes
-     * @return mixed
+     * @return Model|mixed
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function create(array $attributes)
@@ -43,10 +45,19 @@ class ContractRepository extends BaseRepository
         }
 
         $attributes = $this->fixBuildingData($attributes);
+        /**
+         * @var Contract $model
+         */
         $model = parent::create($attributes);
 
         if ($model)  {
             $model = $this->saveMediaUploads($model, $attributes);
+            /**
+             * @var $pinboardRepository PinboardRepository
+             */
+            $pinboardRepository = App::make(PinboardRepository::class);
+            $pinboardRepository->newResidentContractPinboard($model);
+
         }
 
         return $model;
@@ -55,7 +66,8 @@ class ContractRepository extends BaseRepository
     /**
      * @param $unit
      * @param $residentId
-     * @return mixed
+     * @return Model|mixed
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function newContractForUnit($unit, $residentId)

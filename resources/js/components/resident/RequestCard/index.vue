@@ -20,14 +20,14 @@
                             {{$t(`models.request.priority.${$constants.requests.priority[data.priority]}`)}}
                         </div>
                     </div> -->
-                    <div class="item" v-if="this.data.category.parent_id == 1 && this.data.qualification > 1" >
+                    <div class="item" v-if="this.data.category.sub_category && this.data.qualification > 1" >
                         {{$t('resident.qualification')}}:
                         <div class="label">
                             {{$t(`models.request.qualification.${$constants.requests.qualification[data.qualification]}`)}}
                         </div>
                     </div>
                 </div>
-                <div class="statuses" v-if="this.data.category.parent_id == 1 && this.data.qualification == 5 && this.data.payer">
+                <div class="statuses" v-if="this.data.category.sub_category && this.data.qualification == 5 && this.data.payer">
                     <div class="item">
                         {{$t('resident.cost_impact')}}:
                         <div class="label">
@@ -36,10 +36,8 @@
                     </div>
                 </div>                  
                 <div class="category" @click="$emit('toggle-drawer')">
-                    {{$t(`models.request.category_list.${data.category.name}`)}}
-                    <!-- {{ data.category.parent_id==null?'': categories[data.category.parentCategory.id] == undefined? '':
-                        $t(`models.request.category_list.${categories[data.category.parentCategory.id].name}`) + ' / ' }}
-                        {{ categories[data.category.id] == undefined? '': $t(`models.request.category_list.${categories[data.category.id].name}`) }} -->
+                    {{ $t(`models.request.category_list.${data.category.name}`) }}
+                    {{ data.sub_category ? " > " + $t(`models.request.sub_category.${data.sub_category.name}`) : ""}}
                 </div>                
                 <div class="title" @click="$emit('toggle-drawer')">{{data.title}}</div>
                 <ui-readmore class="description" :text="data.description" :max="512" />

@@ -259,7 +259,18 @@ export default (config = {}) => {
                                 this.loading.state = true;
                                 
                                 try {
-                                    const resp = await this.updateQuarter(this.model);                                    
+                                    
+                                    const {state_id, city, street, house_num, zip, ...restParams} = this.model;
+                                    const resp = await this.updateQuarter({
+                                        address: {
+                                            state_id,
+                                            city,
+                                            street,
+                                            house_num,
+                                            zip
+                                        },
+                                        ...restParams
+                                    });                                 
                                     displaySuccess(resp);
                                     resolve(true);
                                 } catch (err) {

@@ -82,7 +82,7 @@ export default (config = {}) => {
                     description: [{
                         required: true,
                         message: this.$t('validation.general.required')
-                    }]
+                    }],
                 },
                 loading: {
                     state: false,
@@ -647,15 +647,10 @@ export default (config = {}) => {
                         const data = resp.data;
 
                         this.model = Object.assign({}, this.model, data);
-                        // if(data.category.parent_id == null) {
-                        //     this.$set(this.model, 'category_id', data.category.id);
-                        // }
-                        // else {
-                        //     this.$set(this.model, 'category_id', data.category.parent_id);
-                        //     this.$set(this.model, 'defect', data.category.id);
-                        // }
+
                         this.$set(this.model, 'category_id', data.category.id);
-                        this.$set(this.model, 'sub_category_id', data.sub_category.id);
+                        if(data.sub_category)
+                            this.$set(this.model, 'sub_category_id', data.sub_category.id);
                         this.$set(this.model, 'created_by', data.created_by);
                         this.$set(this.model, 'building', data.resident.building.name);
 

@@ -47,7 +47,8 @@
                                 </div>
                             </el-col>
                             <el-col :xl="12" :lg="12" :md="24" :sm="24" :xs="24">
-                                <i class="icon-megaphone-1" />
+                                <!-- <i class="icon-megaphone-1" /> -->
+                                <i class="icon-chat-empty" />
                                 <div class="content">
                                     <h3>{{ $t('auth.benefit_2.title') }}</h3>
                                     <p>
@@ -56,7 +57,7 @@
                                 </div>
                             </el-col>
                         </el-row>
-                        <el-row :gutter="24">
+                        <!-- <el-row :gutter="24">
                             <el-col :xl="12" :lg="12" :md="24" :sm="24" :xs="24">
                                 <i class="icon-chat-empty" />
                                 <div class="content">
@@ -75,7 +76,7 @@
                                     </p>
                                 </div>
                             </el-col>
-                        </el-row>
+                        </el-row> -->
                     </div>
                 </el-main>
                 <div class="company-info">
@@ -127,7 +128,7 @@
             top: 40px;
             right: 40px;
             z-index: 3000;
-            @media screen and (max-width: 554px) { 
+            @media screen and (max-width: 1024px) { 
                 top: 20px;
                 right: 20px;
             }
@@ -161,12 +162,21 @@
         } 
         @media screen and (max-height: 768px) {
             height: auto;
+            .logo {
+                margin-bottom: 35px !important;
+            }
+            @media screen and (max-width: 554px) {
+                .logo {
+                    margin-bottom: 15px !important;
+                }
+            }
             @media screen and (min-width: 554px) {
                 .login-content {
                     padding-top: 85px;
                 }
             }
         }
+        
         .company-info {
             display: flex;
             flex-direction: column;
@@ -229,6 +239,11 @@
                 @media screen and (max-width: 992px) {
                     padding: 0 20px;
                 }
+                @media screen and (min-width: 1400px) {
+                    .company-info {
+                        display: none;
+                    }
+                }
                 .login-pane {
                     flex: 1;
                     display: flex;
@@ -239,9 +254,21 @@
                         margin: 1em auto;
                         img {
                             width: 130px;
+                            @media screen and (max-width: 736px) {
+                                width: 80px;
+                            }
+                        }
+                        @media screen and (max-width: 850px) {
+                            margin: 20px auto 1em;
+                        }
+                        @media screen and (max-width: 554px) {
+                            margin: 0 auto 1em;
                         }
                     }
-                }
+                    @media screen and (max-width: 850px) {
+                        justify-content: flex-start;
+                    }
+                 }
                 &:before {
                     content: '';
                     position: absolute;
@@ -277,11 +304,13 @@
                     padding: 4em;
                 }
                 @media screen and (max-width: 1200px) {
-                    padding: 20px;
                     align-items: center;
                 }
                 @media screen and (max-width: 1024px) {
                     align-items: center;
+                }
+                @media screen and (max-width: 992px) {
+                    padding: 0 20px;
                 }
                 &:before {
                     content: '';
@@ -331,7 +360,7 @@
                     @media screen and (max-width: 554px) {
                         h1 {
                             text-align: center;
-                            font-size: 24px;
+                            font-size: 22px;
                         }
                         p {
                             color: #515862;

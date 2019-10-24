@@ -31,17 +31,17 @@
                     prop: 'total_contracts_count',
                     background: '#aaa',
                     color: '#fff',
-                    label: this.$t('models.resident.status.total')
+                    label: this.$t('models.resident.contract.status_count.total')
                 }, {
                     prop: 'active_contracts_count',
                     background: '#5fad64',
                     color: '#fff',
-                    label: this.$t('models.resident.status.active')
+                    label: this.$t('models.resident.contract.status_count.active')
                 }, {
                     prop: 'inactive_contracts_count',
                     background: '#dd6161',
                     color: '#fff',
-                    label: this.$t('models.resident.status.not_active')
+                    label: this.$t('models.resident.contract.status_count.inactive')
                 }
                 ]
             }

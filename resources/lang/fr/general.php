@@ -294,10 +294,18 @@ return [
     'maintenance' => 'Maintenance',
     'gross_rent' => 'Loyer brut',
     'emergency' => [
+        'title' => 'En cas d\'urgence',
         'activate_title' => 'Activer la boîte d\'urgence',
         'activate_desc' => 'Vous pouvez activer la boîte d\'urgence',
         'phone_number' => 'Numéro de téléphone',
         'time_schedule' => 'Calendrier Horaire',
+    ],
+    'email_receptionist' => [
+        'title' => 'Réceptionniste par courriel',
+        'info_desc' => 'Souhaitez-vous utiliser global ou affecter',
+        'global' => 'Choisissez parmi les',
+        'assign' => 'Assigner',
+        'email_receptionist_of' => 'Réceptionniste par courriel de'
     ],
     'filter' => 'Filtres',
     'activities' => [

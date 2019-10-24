@@ -78,12 +78,12 @@ import Heading from 'components/Heading'
         },
         async mounted () {
             const {resident} = this.user
-
-            if (resident.building_id) {
+            
+            if (resident.building) {
                 this.loading = true
 
                 let {managers_last} = await this.$store.dispatch('getBuilding', {
-                    id: resident.building_id
+                    id: resident.building.id
                 })
 
                 if (this.limit > -1) {

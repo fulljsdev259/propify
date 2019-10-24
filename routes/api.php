@@ -51,7 +51,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     Route::post('/residents', 'ResidentAPIController@store')->name('residents.store');
     Route::post('/addReview', 'ResidentAPIController@addReview');
-    Route::post('/residents/{id}/media', 'MediaAPIController@residentUpload')->name('residents.media.upload');
     Route::post('/residents/{id}/send-credentials', 'ResidentAPIController@sendCredentials');
     Route::post('/residents/{id}/download-credentials', 'ResidentAPIController@downloadCredentials');
 
@@ -62,7 +61,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     Route::delete('/residents/{id}', 'ResidentAPIController@destroy')->name('residents.destroy');
     Route::post('/residents/deletewithids', 'ResidentAPIController@destroyWithIds')->name('residents.destroyWithIds');
-    Route::delete('/residents/{id}/media/{media_id}', 'MediaAPIController@residentDestroy')->name('residents.media.destroy');
 
 
     //Contract
@@ -198,14 +196,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     // Cleanify Request
     Route::get('cleanify', 'CleanifyRequestAPIController@index');
     Route::post('cleanify', 'CleanifyRequestAPIController@store');
-
-    // Service Requests Category
-    Route::get('/requestCategories', 'RequestCategoryAPIController@index')->name('requests.categories');
-    Route::get('/requestCategories/tree', 'RequestCategoryAPIController@categoryTree')->name('requests.categories.tree');
-    Route::get('/requestCategories/{id}', 'RequestCategoryAPIController@show')->name('requests.categories.show');
-    Route::post('/requestCategories', 'RequestCategoryAPIController@store')->name('requests.categories.store');
-    Route::put('/requestCategories/{id}', 'RequestCategoryAPIController@update')->name('requests.categories.update');
-    Route::delete('/requestCategories/{id}', 'RequestCategoryAPIController@destroy')->name('requests.categories.destroy');
 
     // Tag Requests
     Route::resource('tags', 'TagAPIController');

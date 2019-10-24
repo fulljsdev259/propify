@@ -35,39 +35,69 @@ class FixContractStatus extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
      */
     public function handle()
     {
-        $query = Contract::where('status', Contract::StatusInactive)
-            ->where('start_date', '=', now()->format('Y-m-d'));
+        $this->makeActiveContractToInActiveIfNeed();
+        $this->makeInactiveContractToActiveIfNeed();
+    }
 
-        // get all not active contract until today
-        $contracts = $query->get(['resident_id']);
+    /**
+     *
+     */
+    protected function makeInactiveContractToActiveIfNeed()
+    {
+        // get all not active contract started today
+        $contracts = Contract::where('status', Contract::StatusInactive)
+            ->where('start_date', '=', now()->format('Y-m-d'))
+            ->get(['id', 'resident_id', 'status']);
 
         $residentIds = $contracts->pluck('resident_id')->unique()->toArray();
-        if ($residentIds) {
-            // make  contracts active
-            $query->update(['status' => Contract::StatusActive]);
-            // make  inactive resident to active
-            Resident::whereIn('id', $residentIds)
-                ->where('status', Resident::StatusNotActive)
-                ->update(['status' => Resident::StatusActive]);
+        // make  contracts active
+        foreach ($contracts as $contract) {
+            $contract->update(['status' => Contract::StatusActive]);
         }
 
-        $query = Contract::where('status', Contract::StatusActive)
-            ->where('duration', Contract::DurationLimited)
-            ->where('end_date', '<', now()->format('Y-m-d'));
+        if ($residentIds) {
+            // make  inactive resident to active
+            $residents = Resident::whereIn('id', $residentIds)
+                ->where('status', Resident::StatusInActive)
+                ->get(['id', 'status']);
 
+            foreach ($residents as $resident) {
+                $resident->update(['status' => Resident::StatusActive]);
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    protected function makeActiveContractToInActiveIfNeed()
+    {
         // get all expired contract
-        $contracts = $query->get(['resident_id']);
+        $contracts = Contract::where('status', Contract::StatusActive)
+            ->where('duration', Contract::DurationLimited)
+            ->where('end_date', '<', now()->format('Y-m-d'))
+            ->get(['id', 'resident_id', 'status']);
+
         // make inactive expired contracts
-        $query->update(['status' => Contract::StatusInactive]);
+        foreach ($contracts as $contract) {
+            $contract->update(['status' => Contract::StatusInactive]);
+        }
 
         $residentIds = $contracts->pluck('resident_id')->unique()->toArray();
-        // make inactive residents how all contracts expired
-        Resident::whereIn('id', $residentIds)->whereDoesntHave('contracts', function ($q) {
-            $q->where('status', Contract::StatusActive);
-        })->update(['status' => Contract::StatusInactive]);
+
+        if ($residentIds) {
+            // make inactive residents how all contracts expired
+            $residents = Resident::whereIn('id', $residentIds)
+                ->whereDoesntHave('contracts', function ($q) {
+                    $q->where('status', Contract::StatusActive);
+                })->get(['id', 'status']);
+            
+            foreach ($residents as $resident) {
+                $resident->update(['status' => Resident::StatusActive]);
+            }
+        }
     }
 }

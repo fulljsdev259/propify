@@ -271,11 +271,10 @@ class ResidentAPIController extends AppBaseController
      * )
      *
      * @param CreateRequest $request
-     * @param PinboardRepository $pr
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function store(CreateRequest $request, PinboardRepository $pr)
+    public function store(CreateRequest $request)
     {
         $input = (new ResidentTransformer)->transformRequest($request->all());
         //@TODO This action already done in  ResidentTransformer delete it
@@ -483,13 +482,10 @@ class ResidentAPIController extends AppBaseController
      *
      * @param $id
      * @param UpdateRequest $request
-     * @param PinboardRepository $pr
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update($id, UpdateRequest $request, PinboardRepository $pr)
+    public function update($id, UpdateRequest $request)
     {
         $input = (new ResidentTransformer)->transformRequest($request->all());
         /** @var Resident $resident */
@@ -497,10 +493,6 @@ class ResidentAPIController extends AppBaseController
         if (empty($resident)) {
             return $this->sendError(__('models.resident.errors.not_found'));
         }
-
-        // @TODO contract related
-//        $shouldPinboard = isset($input['unit_id']) && $input['unit_id'] != $resident->unit_id;
-        $shouldPinboard = false;
 
         $input['user'] = $input['user'] ?? [];
         $input['user']['name'] = sprintf('%s %s', $input['first_name'], $input['last_name']);
@@ -543,9 +535,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
-        if ($shouldPinboard) {
-            $pr->newResidentPinboard($resident);
-        }
+
         //if ($userPass) {
             //$resident->setCredentialsPDF();
         //}

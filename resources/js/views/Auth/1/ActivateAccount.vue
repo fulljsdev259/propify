@@ -33,8 +33,8 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-form-item prop="terms" :rules="validationRules.terms">
-                <el-checkbox v-model="model.terms">{{$t('general.activate_terms_condition_1')}}</el-checkbox>
+            <el-form-item prop="terms" :rules="validationRules.terms" class="checkbox-container">
+                <el-checkbox v-model="model.terms"></el-checkbox><div>{{$t('general.activate_terms_condition_1')}}</div>
             </el-form-item>    
             <el-form-item>
                 <el-button type="primary" class="text-center w100p" @click="submit">{{$t('general.activate')}}</el-button>
@@ -62,14 +62,28 @@
         }
   
     }
+    .checkbox-container {
+        :global(.el-form-item__content) {
+            display: flex;
+            align-items: baseline;
+            div {
+                margin-left: 10px;
+                line-height: 1.5;
+                @media screen and (max-width:  768px) {
+                    word-break: break-all;
+                }
+            }
+        }
+    }
     @media screen and (max-width: 1024px) {
         .el-col {
             width: 100%;
         }
     }
     .el-form-item {
+        margin-bottom: 15px !important;
         &:nth-of-type(1) {
-            margin-top: 20px;
+            margin-top: 15px;
         }
         &:nth-last-child(2), :nth-last-child() :global(.el-form-item__content) {
             display: flex;

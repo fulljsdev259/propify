@@ -348,7 +348,7 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
         }
         return [
             'content' => 'required',
-            'visibility' => [Rule::in(array_keys($visibilities))],
+            'visibility' => ['nullable', Rule::in(array_keys($visibilities))],
             'category' => [Rule::in($categories)],
             'announcement' => function ($attribute, $value, $fail) {
                 if ($value && !\Auth::user()->can('announcement-pinboard')) {

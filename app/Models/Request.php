@@ -135,7 +135,6 @@ use Storage;
  * @property int $id
  * @property int|null $creator_user_id
  * @property int $category
- * @property int $unit_id
  * @property int $resident_id
  * @property int|null $contract_id
  * @property string $request_format
@@ -483,7 +482,6 @@ class Request extends AuditableModel implements HasMedia
         'subject_id',
         'resident_id',
         'contract_id',
-        'unit_id',
         'title',
         'description',
         'status',
@@ -593,7 +591,7 @@ class Request extends AuditableModel implements HasMedia
         'due_date' => 'required|date',
 //        'category' => 'required|integer', //@TODO
 //        'sub_category' => 'integer',
-        'visibility' => 'required|integer',
+        'visibility' => 'nullable|integer',
     ];
 
     /**
@@ -610,7 +608,7 @@ class Request extends AuditableModel implements HasMedia
 //        'sub_category' => 'integer',
 //        'priority' => 'required|integer',
 //        'internal_priority' => 'integer',
-        'visibility' => 'required|integer',
+        'visibility' => 'nullable|integer',
     ];
 
     /**
@@ -630,7 +628,7 @@ class Request extends AuditableModel implements HasMedia
         'due_date' => 'date',
 //        'category' => 'integer', //@TODO
 //        'sub_category' => 'integer',
-        'visibility' => 'integer',
+        'visibility' => 'nullable|integer',
         'active_reminder' => 'boolean',
     ];
 
@@ -647,16 +645,7 @@ class Request extends AuditableModel implements HasMedia
         'status' => 'integer',
 //        'priority' => 'required|integer',
 //        'internal_priority' => 'integer',
-        'visibility' => 'integer',
-    ];
-
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rulesPutService = [
-        'status' => 'integer'
+        'visibility' => 'nullable|integer',
     ];
 
     /**
@@ -745,14 +734,6 @@ class Request extends AuditableModel implements HasMedia
     public function resident()
     {
         return $this->belongsTo(Resident::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     **/
-    public function unit()
-    {
-        return $this->belongsTo(Unit::class);
     }
 
     /**
