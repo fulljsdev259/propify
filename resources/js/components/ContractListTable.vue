@@ -43,6 +43,8 @@
             </el-table-column>
             <el-table-column
                 align="right"
+                :min-width="130"
+                :width="130"
             >
                 <template slot-scope="scope">
                     <el-tooltip
