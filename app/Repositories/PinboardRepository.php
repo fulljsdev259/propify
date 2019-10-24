@@ -339,39 +339,6 @@ class PinboardRepository extends BaseRepository
     }
 
     /**
-     * @param Resident $resident
-     * @return Pinboard|bool|mixed
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function newResidentPinboard(Resident $resident)
-    {
-        if ($resident->homeless()) {
-            return false;
-        }
-        $buildingIds = $resident->contracts()->where('status', Contract::StatusActive)->pluck('building_id')->toArray();
-        // @TODO is need here also use quarter_ids?
-        $pinboard = $this->create([
-            'visibility' => Pinboard::VisibilityAddress,
-            'status' => Pinboard::StatusNew,
-            'type' => Pinboard::TypeNewNeighbour,
-            'content' => "New neighbour",
-            'user_id' => $resident->user->id,
-            'building_ids' => $buildingIds,
-            'needs_approval' => false,
-            'notify_email' => true,
-        ]);
-
-        $publishStart = $resident->rent_start ?? Carbon::now();
-        if ($publishStart->isBefore(Carbon::now())) {
-            $publishStart = Carbon::now();
-        }
-
-        $this->setStatusExisting($pinboard, Pinboard::StatusPublished, $publishStart);
-        return $pinboard;
-    }
-
-    /**
      * @param Contract $contract
      * @return Pinboard|bool|mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException

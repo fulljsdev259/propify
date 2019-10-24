@@ -16,9 +16,9 @@ class BuildingTransformer extends BaseTransformer
     /**
      * Transform the Building entity.
      *
-     * @param \App\Models\Building $model
-     *
+     * @param Building $model
      * @return array
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(Building $model)
     {
@@ -100,7 +100,7 @@ class BuildingTransformer extends BaseTransformer
                 $response['residents_last'] = $residents->sortByDesc('id')->slice(0, 5)->all();
                 $response['residents_count'] = $residents->count();
                 $response['active_residents_count'] = $residents->where('status', Resident::StatusActive)->count();
-                $response['in_active_residents_count'] = $residents->where('status', Resident::StatusNotActive)->count();
+                $response['in_active_residents_count'] = $residents->where('status', Resident::StatusInActive)->count();
             }
         }
 

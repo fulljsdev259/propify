@@ -1278,9 +1278,9 @@ class DashboardAPIController extends AppBaseController
      *
      * @SWG\Get(
      *      path="/admin/donutChartRequestByCategory",
-     *      summary="Get request statistics for Donut Chart by request_categories",
+     *      summary="Get request statistics for Donut Chart by request category",
      *      tags={"Request", "Donut"},
-     *      description="Get request statistics for Donut Chart by request_categories",
+     *      description="Get request statistics for Donut Chart by request category",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="start_date",
@@ -1326,7 +1326,7 @@ class DashboardAPIController extends AppBaseController
      *              @SWG\Property(
      *                  property="message",
      *                  type="string",
-     *                  example="Request statistics retrieved successfully By request_categories"
+     *                  example="Request statistics retrieved successfully By request category"
      *              )
      *          )
      *      )

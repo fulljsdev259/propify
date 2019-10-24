@@ -57,12 +57,29 @@ class ResidentRepository extends BaseRepository
             unset($attributes['company']);
         }
 
-        $attributes['status'] = Resident::StatusActive;
+        if (! isset($attributes['status'])) {
+            $attributes['status'] = $this->getStatusBasedContracts($attributes);
+        }
+
         $model = parent::create($attributes);
         if ($model) {
             $model = $this->saveContracts($model, $attributes);
         }
         return $model;
+    }
+
+    /**
+     * @param $attributes
+     * @return int
+     */
+    protected function getStatusBasedContracts($attributes)
+    {
+        if (empty($attributes['contracts'])) {
+            return Resident::StatusInActive;
+        }
+        return collect($attributes['contracts'])->contains('status', Contract::StatusActive)
+            ? Resident::StatusActive
+            : Resident::StatusInActive;
     }
 
     /**
@@ -149,7 +166,7 @@ class ResidentRepository extends BaseRepository
             unset($attributes['company']);
         }
 
-        if (! empty($attributes['status']) && $attributes['status'] != $model->status && $attributes['status'] == Resident::StatusNotActive) {
+        if (! empty($attributes['status']) && $attributes['status'] != $model->status && $attributes['status'] == Resident::StatusInActive) {
             $model->contracts()
                 ->where('status', Contract::StatusActive)
                 ->update(['status' =>  Contract::StatusInactive]);
