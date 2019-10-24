@@ -180,18 +180,22 @@ class QuarterAPIController extends AppBaseController
         }
 
         $quarter = $this->quarterRepository->create($input);
-        if (isset($address)) {
-            $quarter->addDataInAudit('address', $address);
-        }
 
         if ($quarter) {
+
+            if (isset($address)) {
+                $quarter->addDataInAudit('address', $address);
+            }
+
             DB::commit();
             $quarter->load('address', 'media');
+            $response = (new QuarterTransformer)->transform($quarter);
+
         } else {
+            $response = [];
             DB::rollBack();
         }
 
-        $response = (new QuarterTransformer)->transform($quarter);
 
         return $this->sendResponse($response, __('models.quarter.saved'));
     }
@@ -364,18 +368,22 @@ class QuarterAPIController extends AppBaseController
 
 
         $quarter = $this->quarterRepository->updateExisting($quarter, $input);
-        if (isset($address)) {
-            $quarter->addDataInAudit('address', $address, AuditableModel::UpdateOrCreate);
-        }
 
         if ($quarter) {
+
+            if (isset($address)) {
+                $quarter->addDataInAudit('address', $address, AuditableModel::UpdateOrCreate);
+            }
+
             DB::commit();
             $quarter->load('address', 'media');
+            $response = (new QuarterTransformer)->transform($quarter);
+
         } else {
             DB::rollBack();
+            $response = [];
         }
 
-        $response = (new QuarterTransformer)->transform($quarter);
         return $this->sendResponse($response, __('models.quarter.saved'));
     }
 

@@ -235,7 +235,7 @@ class Building extends AuditableModel implements HasMedia
     public static $rules = [
         'name' => 'required',
         'floor_nr' => 'required',
-        'under_floor' => 'in:0,1,2,3'
+        'under_floor' => 'numeric|between:0,3'
     ];
 
     protected $auditEvents = [

@@ -15,6 +15,7 @@ use App\Http\Requests\API\Building\ListRequest;
 use App\Http\Requests\API\Building\UpdateRequest;
 use App\Http\Requests\API\Building\ViewRequest;
 use App\Models\Address;
+use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\BuildingAssignee;
 use App\Models\PropertyManager;
@@ -323,6 +324,9 @@ class BuildingAPIController extends AppBaseController
                 $q->with('building.address', 'unit', 'resident.user');
             },
         ]);
+        if ($building && isset($address)) {
+            $building->addDataInAudit('address', $address);
+        }
         $response = (new BuildingTransformer)->transform($building);
 
         return $this->sendResponse($response, __('models.building.saved'));
@@ -363,9 +367,10 @@ class BuildingAPIController extends AppBaseController
      *      )
      * )
      *
-     * @param int $id
+     * @param $id
      * @param ViewRequest $r
-     * @return Response
+     * @return mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function show($id, ViewRequest $r)
     {
@@ -481,6 +486,9 @@ class BuildingAPIController extends AppBaseController
         $building = $this->buildingRepository->update($input, $id);
         $floorData = $request->get('floor', []);
         $building = $this->buildingRepository->saveManyUnit($building, $floorData, $address->house_num);
+        if ($building && isset($address)) {
+            $building->addDataInAudit('address', $address, AuditableModel::UpdateOrCreate);
+        }
 
         $building->load([
             'address.state',
