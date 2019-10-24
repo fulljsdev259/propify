@@ -571,6 +571,8 @@
                 right: -9px;
                 border-radius: 20px;
                 border-left: none;
+                border-top-left-radius: unset;
+                border-bottom-left-radius: unset;
             }
 
             .el-dropdown .el-dropdown__caret-button::before {
