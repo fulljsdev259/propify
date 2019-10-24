@@ -14,6 +14,7 @@ use App\Http\Requests\API\Quarter\ListRequest;
 use App\Http\Requests\API\Quarter\ViewRequest;
 use App\Http\Requests\API\Quarter\DeleteRequest;
 use App\Models\Address;
+use App\Models\AuditableModel;
 use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
@@ -364,7 +365,7 @@ class QuarterAPIController extends AppBaseController
 
         $quarter = $this->quarterRepository->updateExisting($quarter, $input);
         if (isset($address)) {
-            $quarter->addDataInAudit('address', $address);
+            $quarter->addDataInAudit('address', $address, AuditableModel::UpdateOrCreate);
         }
 
         if ($quarter) {

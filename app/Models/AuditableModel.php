@@ -6,6 +6,7 @@ use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Illuminate\Support\Collection;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Models\Audit;
 
 /**
  * App\Models\AuditableModel
@@ -22,6 +23,8 @@ class AuditableModel extends Model implements Auditable
     use \App\Traits\Auditable,
         HasBelongsToManyEvents,
         HasMorphedByManyEvents;
+
+    const UpdateOrCreate = 'updateOrCreate';
 
     const EventCreated = 'created';
     const EventUpdated = 'updated';
@@ -132,21 +135,32 @@ class AuditableModel extends Model implements Auditable
             return;
         }
 
+        if ($audit == self::UpdateOrCreate) {
+            $this->auditEvent = self::EventUpdated;
+            $audit = $this->audit ?? new Audit($this->toAudit());
+        }
+
         if ('media' == $key) {
             $value = $this->getMediaAudit($value);
         }
 
 
         if (self::EventCreated == $audit->event) {
+
             $value = $this->correctCreatedAuditValue($value);
             $audit->new_values = $this->fixAddedData($audit->new_values, $key, $value, $isSingle);
             $audit->save();
+
         } elseif (self::EventUpdated == $audit->event) {
+
             $newAuditValue = $this->getChangedAuditValue($value);
             $oldAuditValue = $this->getChangedOriginalAuditValue($value);
-            $audit->new_values = $this->fixAddedData($audit->new_values, $key, $newAuditValue, $isSingle);
-            $audit->old_values = $this->fixAddedData($audit->old_values, $key, $oldAuditValue, $isSingle);
-            $audit->save();
+            if (! empty($newAuditValue) || !empty($oldAuditValue)) {
+                $audit->new_values = $this->fixAddedData($audit->new_values, $key, $newAuditValue, $isSingle);
+                $audit->old_values = $this->fixAddedData($audit->old_values, $key, $oldAuditValue, $isSingle);
+                $audit->save();
+            }
+
         } else {
             // @TODO
         }
