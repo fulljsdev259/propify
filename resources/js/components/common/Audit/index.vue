@@ -18,7 +18,7 @@
             <small>{{$t('resident.no_data_info.activity')}}</small>
         </placeholder>
             <el-timeline v-else>
-                <template v-for="(audit,id) in list">
+                <template v-for="audit in list">
                     <el-timeline-item  :key="audit.id" :timestamp="`${audit.user.name} • ${formatDatetime(audit.updated_at)}`">
                         <span>{{audit.statement}}</span>
                     </el-timeline-item>
@@ -45,7 +45,7 @@
 
         props: {
             id: {
-                type: Number
+                type: [Number, String]
             },
             filterPosition: {
                 default: 'right',
@@ -195,7 +195,7 @@
 
                 const auditable_type = this.filters.data.auditable_type ? this.filters.data.auditable_type : this.type                
                 // Fetch audits
-                try {
+                try {                    
                     const resp = await this.axios.get('audits?' + queryString.stringify({
                         sortedBy: 'desc',
                         orderBy: 'created_at',
@@ -236,7 +236,7 @@
                 return !this.loading && !Object.keys(this.list).length
             }
         },
-        async mounted () {            
+        async mounted () {               
             // const {data:{data}} = await this.axios.get('requestCategories/tree?get_all=true');
             // // Get filter options from translation file and add the to filter object
 
