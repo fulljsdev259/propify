@@ -484,8 +484,6 @@ class BuildingAPIController extends AppBaseController
         }
 
         $building = $this->buildingRepository->update($input, $id);
-        $floorData = $request->get('floor', []);
-        $building = $this->buildingRepository->saveManyUnit($building, $floorData, $address->house_num);
         if ($building && isset($address)) {
             $building->addDataInAudit('address', $address, AuditableModel::UpdateOrCreate);
         }

@@ -129,20 +129,9 @@ class AuditableModel extends Model implements Auditable
      */
     public function addDataInAudit($key, $value, $audit = null, $isSingle = true)
     {
-        if (is_null($audit)) {
-            $audit = $this->audit;
-        }
+        $audit = $this->getAudit($audit);
         if (empty($audit)) {
             return;
-        }
-
-        if ($audit == self::UpdateOrCreate) {
-            if ($this->audit) {
-                $audit = $this->audits;
-            } else {
-                $this->auditEvent = self::EventUpdated;
-                $audit = new Audit($this->toAudit());
-            }
         }
 
         if ('media' == $key) {
@@ -169,6 +158,33 @@ class AuditableModel extends Model implements Auditable
         } else {
             // @TODO
         }
+    }
+
+    /**
+     * @param $audit
+     * @return mixed|Audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    protected function getAudit($audit)
+    {
+        if (is_null($audit)) {
+            $audit = $this->audit;
+        }
+
+        if (empty($audit)) {
+            return $audit;
+        }
+
+        if ($audit != self::UpdateOrCreate) {
+            return $audit;
+        }
+
+        if ($this->audit) {
+            return $this->audit;
+        }
+
+        $this->auditEvent = self::EventUpdated;
+        return new Audit($this->toAudit());
     }
 
     /**

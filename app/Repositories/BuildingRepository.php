@@ -98,7 +98,7 @@ class BuildingRepository extends BaseRepository
      */
     public function saveManyUnit($building, $floorData, $preText)
     {
-        if (! is_array($floorData)) {
+        if (! is_array($floorData) || empty($floorData)) {
             return $building;
         }
 
