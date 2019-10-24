@@ -16,17 +16,16 @@
                 </div>
             </template>
         </heading>
+        <div class="warning-bar">
+            <div class="message">
+                {{$t('models.building.warning_bar.message')}}
+            </div>
+            <div class="title" @click="gotoEmailReceptionistDrawer">
+                {{$t('models.building.warning_bar.title')}}
+            </div>
+        </div>
         <el-row :gutter="20" class="crud-view">
-            <el-col :md="24">
-                <div class="red-bar">
-                    <div class="message">
-                        You need to save the information correctly.
-                    </div>
-                    <div class="red-bar-title">
-                        Problem Found
-                    </div>
-                </div>
-            </el-col>
+            
             <el-col :md="12">
                 <el-tabs type="border-card" v-model="activeTab">
                     <el-tab-pane :label="$t('general.actions.view')" name="details">
@@ -872,6 +871,11 @@
                 this.visibleDrawer = true
                 document.getElementsByTagName('footer')[0].style.display = "none"
             },
+            gotoEmailReceptionistDrawer() {
+                this.visibleDrawer = true
+                this.activeDrawerTab = "email_receptionist"
+                document.getElementsByTagName('footer')[0].style.display = "none"
+            },
             toggleAddDrawer() {
                 this.visibleDrawer = true
                 this.isAddContract = true
@@ -1033,26 +1037,29 @@
             height: 100%;
 
             .heading {
-                margin-bottom: 20px;
+                //margin-bottom: 20px;
             }
 
-            .red-bar {
-                background-color: #c53929; 
+            .warning-bar {
+                background-color: var(--primary-color); 
                 color: white;
-                height: 20px;
+                min-height: 20px;
                 padding: 10px;
                 margin-bottom: 10px;
                 display: flex;
 
                 .message {
                     flex-grow: 1;
+                    font-size: 13px;
                 }
 
-                .red-bar-title {
+                .title {
                     float: right;
-                    font-size: 16px;
+                    font-size: 15px;
                     font-weight: bold;
                     text-transform: uppercase;
+                    min-width: 140px;
+                    cursor: pointer;
                 }
             }
 
