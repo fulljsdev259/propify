@@ -447,8 +447,8 @@ return [
         ],
         'sub_category' => [
             'surrounding' => 'Umgebung',
-            'real_estate' => 'Immobilien',
-            'flat' => 'flach',
+            'real_estate' => 'Liegenschaft',
+            'flat' => 'Wohnung',
         ],
         'media' => [
             'added' => 'Mediendatei hinzugefügt',
