@@ -14,6 +14,7 @@ export default {
         template: 'list-template',
         provider: 'list-provider',
         requestCategory: 'list-service_request_category',
+        audit: 'list-audit'
     },
     view: {
         user: 'view-user',
