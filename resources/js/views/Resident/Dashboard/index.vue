@@ -69,7 +69,7 @@
                         <i class="ti-gallery"></i>
                         Audit
                     </div>
-                    <audit :id="openedRequest.id" type="request" show-filter />
+                    <audit v-if="openedRequest.id" :id="openedRequest.id" type="request" show-filter />
                 </el-tab-pane>
             </el-tabs>
         </ui-drawer>
