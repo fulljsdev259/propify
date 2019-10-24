@@ -274,6 +274,7 @@ class UserAPIController extends AppBaseController
      *
      * @param Request $request
      * @return mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function showLoggedIn(Request $request)
     {

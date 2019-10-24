@@ -37,21 +37,21 @@
             beforeAvatarUpload(file) {
                 const isJPG = file.type === 'image/jpeg';
                 const isPNG = file.type === 'image/png';
-                const isLt2M = file.size / 1024 / 1024 < 2;
+                const isLt5M = file.size / 1024 / 1024 <= 5;
 
                 if (!isJPG && !isPNG) {
                     displayError({
                         success: false,
-                        message: 'Avatar picture must be JPG format!'
+                        message: 'Avatar picture must be JPG/PNG format!'
                     });
                 }
-                if (!isLt2M) {
+                if (!isLt5M) {
                     displayError({
                         success: false,
-                        message: 'Avatar picture size can not exceed 2MB!'
+                        message: 'Avatar picture size can not exceed 5MB!'
                     });
                 }
-                return (isJPG || isPNG) && isLt2M;
+                return (isJPG || isPNG) && isLt5M;
             },
             imageUpload(e) {
                 this.base64(e.file, (dataUrl) => {

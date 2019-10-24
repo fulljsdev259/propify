@@ -174,7 +174,7 @@ return [
         'quarter' => 'Projekt',
         'services' => 'Dienstleister',
         'managers' => 'Bewirtschafter',
-        'administrator' => 'Verwalterin'
+        'administrator' => 'Administrator'
     ],
     'email' => 'E-Mail',
     'email_validation' => [
@@ -357,20 +357,20 @@ return [
             'comments_list' => [                        
                 'load_more' => 'Lade {count} weitere Kommentare',
                 'empty_placeholder' => [
-                    'title' => 'Bislang wurden keine Kommentare geteilt...',
+                    'title' => 'Bislang wurden keine Kommentare geteilt.',
                     'description' => 'Verfassen Sie den ersten Kommentar.',
                 ],
             ],
             'internalnotices' => [
                 'switch_confirm' => 'Personen einbeziehen und benachrichtigen',
-                'input_placeholder' => 'Bitte geben Sie ein Stichwort ein',
+                'input_placeholder' => 'Tippen Sie den Namen der Person ein.',
                 'shared_with' => 'Geteilt mit',
             ],
             'internalnotices_list' => [            
                 'load_more' => 'Lade {count} weitere interne Notizen',            
                 'empty_placeholder' => [
-                    'title' => 'Es existieren noch keine interne Notizen.',
-                    'description' => 'Fügen Sie einen internen Notiz hinzu.',
+                    'title' => 'Keine interne Notizen vorhanden.',
+                    'description' => 'Fügen Sie eine interne Notiz hinzu.',
                 ],
             ],
             'serviceproviderconversations_list' => [            
@@ -383,8 +383,8 @@ return [
             'residentconversations_list' => [
                 'load_more' => 'Laden von {count} mehr residuelle Gespräche.',
                 'empty_placeholder' => [
-                    'title' => 'Es gibt kein Gespräch mit dem Bewohner.',
-                    'description' => 'Fügen Sie mit dem untenstehenden Formular eine Nachricht an den Bewohner hinzu und drücken Sie die Eingabetaste.',
+                    'title' => 'Keine Nachrichten vorhanden.',
+                    'description' => 'Senden Sie die erste Chat-Nachricht an den Bewohner.',
                 ],
             ],
             'listingcomments_list' => [

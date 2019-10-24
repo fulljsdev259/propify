@@ -14,7 +14,7 @@ use App\Models\Pinboard;
  * Class FilterByLocationCriteria
  * @package Prettus\Repository\Criteria
  */
-class FilterByLocationCriteria implements CriteriaInterface
+class FilterByPermissionCriteria implements CriteriaInterface
 {
     /**
      * @var \Illuminate\Http\Request
@@ -47,6 +47,7 @@ class FilterByLocationCriteria implements CriteriaInterface
 
         $contracts = $resident->contracts()
             ->where('status', Contract::StatusActive)
+            ->where('start_date', '<', now())
             ->select('id', 'building_id')->with('building:id,quarter_id')
             ->get();
 
