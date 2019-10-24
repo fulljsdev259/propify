@@ -288,8 +288,8 @@
                         </div>
                         
                         <div class="content" v-if="visibleDrawer">
-                            Global or Assign,
-                            Here show three categories and assign buttons
+                            
+                            <email-receptionist-form :visible.sync="visibleDrawer"/>
                         </div>
 
                     </el-tab-pane>
@@ -309,6 +309,7 @@
     import RelationList from 'components/RelationListing';
     import AssignmentByType from 'components/AssignmentByType';
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
+    import EmailReceptionistForm from 'components/EmailReceptionistForm';
     import UploadDocument from 'components/UploadDocument';
     import draggable from 'vuedraggable';
     import { EventBus } from '../../../event-bus.js';
@@ -328,6 +329,7 @@
             RelationList,
             AssignmentByType,
             EmergencySettingsForm,
+            EmailReceptionistForm,
             UploadDocument,
             draggable,
             ContractForm,

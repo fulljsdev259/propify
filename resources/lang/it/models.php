@@ -101,6 +101,11 @@ return [
             'add' => 'Aggiungere un nuovo contratto',
             'pdf_only_desc' => 'Si prega di notare che solo i file PDF possono essere caricati',
             'saved' => 'Contratto salvato',
+            'status_count' => [
+                'total' => 'Totale contratti',
+                'active' => 'Contratti attivi',
+                'inactive' => 'Contratti inattivi',
+            ],
         ],        
         'status' => [
             "label" => "Situazione",

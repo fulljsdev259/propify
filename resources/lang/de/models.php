@@ -97,10 +97,15 @@ return [
             'rent_status' => [
                 'active' => 'Aktiv',
                 'inactive' => 'Inaktiv',
-            ],            
+            ],
             'add' => 'Vertrag erstellen',            
             'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',
             'saved' => 'Vertrag gespeichert',
+            'status_count' => [
+                'total' => 'Gesamtzahl der Verträge',
+                'active' => 'Aktive Verträge',
+                'inactive' => 'Inaktive Verträge',
+            ],
         ],
         'status' => [
             'label' => 'Status',

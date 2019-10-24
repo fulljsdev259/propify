@@ -728,7 +728,7 @@
             this.contract_statuses = Object.entries(this.$constants.contracts.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.rent_status.${label}`)}));
 
             if(this.mode == "edit") {
-                this.model = this.data
+                this.model = Object.assign({}, this.data)
                 
                 if(this.model.resident)
                 {
