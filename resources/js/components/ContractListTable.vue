@@ -16,6 +16,7 @@
             </div>
             <el-table-column
                 :label="$t('models.resident.contract.contract_id')"
+                v-if="!hideContractId"
                 prop="id"
             >
                 <template slot-scope="scope">
@@ -83,6 +84,10 @@
                 default: () => {
                     return [];
                 }
+            },
+            hideContractId: {
+                type: Boolean,
+                default: false
             },
         },
         data() {

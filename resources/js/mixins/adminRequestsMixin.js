@@ -82,7 +82,7 @@ export default (config = {}) => {
                     description: [{
                         required: true,
                         message: this.$t('validation.general.required')
-                    }]
+                    }],
                 },
                 loading: {
                     state: false,

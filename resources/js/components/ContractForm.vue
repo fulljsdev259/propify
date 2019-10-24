@@ -728,7 +728,7 @@
             this.contract_statuses = Object.entries(this.$constants.contracts.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.rent_status.${label}`)}));
 
             if(this.mode == "edit") {
-                this.model = this.data
+                this.model = Object.assign({}, this.data)
                 
                 if(this.model.resident)
                 {
@@ -737,6 +737,13 @@
                 }
                 if(!this.model.media)
                     this.model.media = []
+
+
+                const start_date = new Date(this.model.start_date).getTime();
+                const today = new Date().getTime();
+
+                this.isFuture = start_date > today
+                
                 this.original_unit_id = this.data.unit_id
 
                 if( !this.hideBuildingAndUnits ) {

@@ -294,10 +294,18 @@ return [
     'maintenance' => 'Heiz- und Nebenkosten',
     'gross_rent' => 'Bruttomiete',
     'emergency' => [
+        'title' => 'Notfall',
         'activate_title' => 'Notfallkasten aktivieren',
         'activate_desc' => 'Sie können die Notfallbox aktivieren.',
         'phone_number' => 'Telefonnummer',
         'time_schedule' => 'Zeitplan',
+    ],
+    'email_receptionist' => [
+        'title' => 'E-Mail-Empfangsstelle',
+        'info_desc' => 'Möchten Sie global verwenden oder zuordnen?',
+        'global' => 'Wählen Sie aus den globalen',
+        'assign' => 'Zuweisen',
+        'email_receptionist_of' => 'E-Mail-Empfangsstelle von'
     ],
     'filter' => 'Filter',
     'activities' => [
