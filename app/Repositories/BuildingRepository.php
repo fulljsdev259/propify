@@ -52,7 +52,7 @@ class BuildingRepository extends BaseRepository
         $model = parent::create($attributes);
 
         if ($attributes['service_providers']) {
-            $model->serviceProviders()->attach($attributes['service_providers']);
+            $model->service_providers()->attach($attributes['service_providers']);
         }
 
         return $model;
@@ -63,7 +63,7 @@ class BuildingRepository extends BaseRepository
         $model = parent::update($attributes, $id);
 
         if ($attributes['service_providers']) {
-            $model->serviceProviders()->sync($attributes['service_providers']);
+            $model->service_providers()->sync($attributes['service_providers']);
         }
 
         return $model;
@@ -75,7 +75,7 @@ class BuildingRepository extends BaseRepository
 
         $model = $this->find($id);
 
-        $model->serviceProviders()->detach();
+        $model->service_providers()->detach();// @TODO check
 
         $deleted = $model->delete();
 

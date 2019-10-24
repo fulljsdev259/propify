@@ -45,6 +45,7 @@ class AuditableModel extends Model implements Auditable
 
     const SyncAuditConfig = [
         'attach' => [
+            'service_providers' =>  AuditableModel::EventProviderAssigned,
             'providers' =>  AuditableModel::EventProviderAssigned,
             'managers' =>  AuditableModel::EventManagerAssigned,
             'propertyManagers' =>  AuditableModel::EventManagerAssigned,
@@ -53,6 +54,7 @@ class AuditableModel extends Model implements Auditable
             'quarters' => AuditableModel::EventQuarterAssigned,
         ],
         'detach' => [
+            'service_providers' =>  AuditableModel::EventProviderUnassigned,
             'providers' =>  AuditableModel::EventProviderUnassigned,
             'managers' =>  AuditableModel::EventManagerUnassigned,
             'propertyManagers' =>  AuditableModel::EventManagerUnassigned,
@@ -66,6 +68,7 @@ class AuditableModel extends Model implements Auditable
         'managers' => ['first_name', 'last_name'],
         'propertyManagers' => ['first_name', 'last_name'],
         'providers' => ['name'],
+        'service_providers' => ['name'],
         'users' => ['name'],
         'buildings' => ['name'],
         'quarters' => ['name'],

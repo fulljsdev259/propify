@@ -6,6 +6,7 @@ use App\Criteria\Building\FilterByRelatedFieldsCriteria;
 use App\Criteria\Common\HasRequestCriteria;
 use App\Criteria\Common\RequestCriteria;
 use App\Http\Controllers\AppBaseController;
+use App\Http\Requests\API\Building\AssignRequest;
 use App\Http\Requests\API\Building\BatchAssignManagers;
 use App\Http\Requests\API\Building\BatchAssignUsers;
 use App\Http\Requests\API\Building\CreateRequest;
@@ -23,6 +24,7 @@ use App\Models\User;
 use App\Repositories\AddressRepository;
 use App\Repositories\BuildingRepository;
 use App\Repositories\PropertyManagerRepository;
+use App\Repositories\ServiceProviderRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UnitRepository;
 use App\Repositories\RequestRepository;
@@ -138,7 +140,7 @@ class BuildingAPIController extends AppBaseController
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $buildings = $this->buildingRepository->with([
                 'address.state',
-                'serviceProviders',
+                'service_providers',
                 'contracts' => function ($q) {
                     $q->with('building.address', 'unit', 'resident.user');
                 },
@@ -383,7 +385,7 @@ class BuildingAPIController extends AppBaseController
         $building
             ->load([
                 'address.state',
-                'serviceProviders',
+                'service_providers',
                 'contracts' => function ($q) {
                     $q->with('building.address', 'unit', 'resident.user');
                 },
@@ -491,7 +493,7 @@ class BuildingAPIController extends AppBaseController
         $building->load([
             'address.state',
             'media',
-            'serviceProviders',
+            'service_providers',
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
@@ -632,9 +634,75 @@ class BuildingAPIController extends AppBaseController
         }
     }
 
+
+    /**
+     * @SWG\Post(
+     *      path="/buildings/{id}/services/{bid}",
+     *      summary="Assign the provided service provider to the building",
+     *      tags={"ServiceProvider"},
+     *      description="Assign the provided service provider to the building",
+     *      produces={"application/json"},
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  ref="#/definitions/Building"
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     *
+     * @param int $id
+     * @param int $serviceProviderId
+     * @param ServiceProviderRepository $serviceProviderRepository
+     * @param AssignRequest $r
+     * @return mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function assignService(
+        int $id,
+        int $serviceProviderId,
+        ServiceProviderRepository $serviceProviderRepository,
+        AssignRequest $r
+    )
+    {
+        $building = $this->buildingRepository->findWithoutFail($id);
+        if (empty($building)) {
+            return $this->sendError(__('models.building.errors.not_found'));
+        }
+        $serviceProvider = $serviceProviderRepository->findWithoutFail($serviceProviderId);
+        if (empty($serviceProvider)) {
+            return $this->sendError(__('models.service.errors.not_found'));
+        }
+
+        $building->service_providers()->sync($serviceProvider, false);
+
+        $building->load([
+            'address.state',
+            'media',
+            'service_providers',
+            'propertyManagers',
+            'lastPropertyManagers.user',
+            'users'
+        ]);
+        $response = (new BuildingTransformer)->transform($building);
+        return $this->sendResponse($response, __('models.building.managers_assigned'));
+    }
+
     /**
      * @SWG\Delete(
-     *      path="/buildings/{pinboard_id}/service/{service_id}",
+     *      path="/buildings/{id}/service/{service_id}",
      *      summary="Remove the specified Service from storage",
      *      tags={"Building"},
      *      description="Delete Service",
@@ -672,7 +740,7 @@ class BuildingAPIController extends AppBaseController
      * @param UnAssignRequest $r
      * @return Response
      */
-    public function serviceRemove(int $id, int $service_id, UnAssignRequest $r)
+    public function unAssignService(int $id, int $service_id, UnAssignRequest $r)
     {
         /** @var Building $building */
         $building = $this->buildingRepository->findWithoutFail($id);
@@ -681,7 +749,7 @@ class BuildingAPIController extends AppBaseController
         }
 
         try {
-            $building->serviceProviders()->detach($service_id);
+            $building->service_providers()->detach($service_id);
         } catch (\Exception $e) {
             return $this->sendError(__('models.building.errors.provider_deleted') . $e->getMessage());
         }
@@ -818,6 +886,12 @@ class BuildingAPIController extends AppBaseController
      * @param BatchAssignManagers $request
      * @return Response
      */
+    /**
+     * @param int $id
+     * @param BatchAssignManagers $request
+     * @return mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function assignManagers(int $id, BatchAssignManagers $request)
     {
         /** @var Building $building */
@@ -846,7 +920,7 @@ class BuildingAPIController extends AppBaseController
         $building->load([
             'address.state',
             'media',
-            'serviceProviders',
+            'service_providers',
             'propertyManagers',
             'lastPropertyManagers.user',
             'users'
@@ -897,6 +971,12 @@ class BuildingAPIController extends AppBaseController
      * @param BatchAssignUsers $request
      * @return Response
      */
+    /**
+     * @param int $id
+     * @param BatchAssignUsers $request
+     * @return mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function assignUsers(int $id, BatchAssignUsers $request)
     {
         /** @var Building $building */
@@ -925,7 +1005,7 @@ class BuildingAPIController extends AppBaseController
         $building->load([
             'address.state',
             'media',
-            'serviceProviders',
+            'service_providers',
             'propertyManagers',
             'lastPropertyManagers.user',
             'users'

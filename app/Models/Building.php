@@ -122,7 +122,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  * @property-read int|null $requests_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Resident[] $residents
  * @property-read int|null $residents_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ServiceProvider[] $serviceProviders
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ServiceProvider[] $service_providers
  * @property-read int|null $service_providers_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Unit[] $units
  * @property-read int|null $units_count
@@ -242,8 +242,10 @@ class Building extends AuditableModel implements HasMedia
         AuditableModel::EventDeleted,
         AuditableModel::EventUserAssigned => 'getAttachedEventAttributes',
         AuditableModel::EventManagerAssigned => 'getAttachedEventAttributes',
+        AuditableModel::EventProviderAssigned => 'getAttachedEventAttributes',
         AuditableModel::EventUserUnassigned => 'getDetachedEventAttributes',
         AuditableModel::EventManagerUnassigned => 'getDetachedEventAttributes',
+        AuditableModel::EventProviderUnassigned => 'getDetachedEventAttributes',
     ];
 
     /**
@@ -273,7 +275,7 @@ class Building extends AuditableModel implements HasMedia
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      **/
-    public function serviceProviders()
+    public function service_providers()
     {
         return $this->belongsToMany(ServiceProvider::class);
     }
