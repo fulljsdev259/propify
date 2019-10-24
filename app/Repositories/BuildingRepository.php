@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Models\AuditableModel;
 use App\Models\Building;
+use App\Models\Unit;
 
 /**
  * Class BuildingRepository
@@ -100,6 +102,7 @@ class BuildingRepository extends BaseRepository
             return $building;
         }
 
+        Unit::disableAuditing();
         if ($building->attic) {
             $atticFloor = array_key_last($floorData);
             $floorCount = array_pop($floorData);
@@ -115,8 +118,10 @@ class BuildingRepository extends BaseRepository
         if ($building->attic) {
             $data = $this->getAtticData($atticFloor, $floorCount, $preText, $data, ['attic' => true]);
         }
-        
+
         $units = $building->units()->createMany($data);
+        $building->addDataInAudit('units', $units, AuditableModel::UpdateOrCreate);
+        Unit::enableAuditing();
         $building->setRelation('units', $units);
         return $building;
     }
