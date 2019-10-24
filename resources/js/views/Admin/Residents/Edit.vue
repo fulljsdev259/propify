@@ -563,7 +563,9 @@
             }
         }
 
-
+        .el-select {
+            display: block;
+        }
 
         .ui-drawer {
             .ui-divider {
