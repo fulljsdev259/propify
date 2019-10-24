@@ -290,7 +290,7 @@
                         
                         <div class="content" v-if="visibleDrawer">
                             
-                            <email-receptionist-form :visible.sync="visibleDrawer"/>
+                            <email-receptionist-form :quarter_id="model.id" :visible.sync="visibleDrawer"/>
                         </div>
 
                     </el-tab-pane>
