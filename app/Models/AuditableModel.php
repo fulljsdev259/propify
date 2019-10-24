@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use OwenIt\Auditing\Contracts\Auditable;
-use OwenIt\Auditing\Models\Audit;
 
 /**
  * App\Models\AuditableModel
@@ -138,21 +136,67 @@ class AuditableModel extends Model implements Auditable
             $value = $this->getMediaAudit($value);
         }
 
+
+        if (self::EventCreated == $audit->event) {
+            $value = $this->correctCreatedAuditValue($value);
+            $audit->new_values = $this->fixAddedData($audit->new_values, $key, $value, $isSingle);
+            $audit->save();
+        } elseif (self::EventUpdated == $audit->event) {
+            $newAuditValue = $this->getChangedAuditValue($value);
+            $oldAuditValue = $this->getChangedOriginalAuditValue($value);
+
+//            $audit->new_values = $this->fixAddedData($audit->new_values, $key, $value, $isSingle);
+//            $audit->save();
+        } else {
+            // @TODO
+        }
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    protected function getChangedAuditValue($value)
+    {
+        if (is_a($value, Model::class)) {
+            $value = $value->getChanges();
+            unset($value['updated_at']);
+        } else {
+            dd('@TODO');
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    protected function getChangedOriginalAuditValue($value)
+    {
+        if (is_a($value, Model::class)) {
+            $value = $value->getOldChanges();
+            unset($value['updated_at']);
+        } else {
+            dd('@TODO');
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param $value
+     * @return array|mixed
+     */
+    protected function correctCreatedAuditValue($value)
+    {
         if (is_a($value, Model::class)) {
             $value = $this->getSingleRelationAuditData($value);
         } elseif (is_a($value, Collection::class)) {
             $value = $this->getManyRelationAuditData($value);
         }
 
-        if (self::EventCreated == $audit->event) {
-            $audit->new_values = $this->fixAddedData($audit->new_values, $key, $value, $isSingle);
-            $audit->save();
-        } elseif (self::EventUpdated == $audit->event) {
-            $audit->new_values = $this->fixAddedData($audit->new_values, $key, $value, $isSingle);
-            $audit->save();
-        } else {
-            // @TODO
-        }
+        return $value;
     }
 
     /**

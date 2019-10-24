@@ -321,6 +321,28 @@ class QuarterAPIController extends AppBaseController
 
         DB::beginTransaction();
         $addressInput = $request->get('address');
+        if (empty($addressInput)) {
+            if (isset($request->state_id)) {
+                $addressInput['state_id'] = $request->state_id;
+            }
+
+            if (isset($request->city)) {
+                $addressInput['city'] = $request->city;
+            }
+
+            if (isset($request->zip)) {
+                $addressInput['zip'] = $request->zip;
+            }
+
+            if (isset($request->street)) {
+                $addressInput['street'] = $request->street;
+            }
+            if (isset($request->house_num)) {
+                $addressInput['house_num'] = $request->house_num;
+            }
+        }
+
+
         if ($addressInput) {
             $validator = Validator::make($addressInput, Address::$rules);
             if ($validator->fails()) {
@@ -330,7 +352,6 @@ class QuarterAPIController extends AppBaseController
 
             if ($quarter->address) {
                 $address = $this->addressRepository->updateExisting($quarter->address, $addressInput);
-
             } else {
                 $address = $this->addressRepository->create($addressInput);
                 $input['address_id'] = $address->id;
@@ -342,6 +363,10 @@ class QuarterAPIController extends AppBaseController
 
 
         $quarter = $this->quarterRepository->updateExisting($quarter, $input);
+        if (isset($address)) {
+            $quarter->addDataInAudit('address', $address);
+        }
+
         if ($quarter) {
             DB::commit();
             $quarter->load('address', 'media');
