@@ -305,7 +305,7 @@ return [
         'info_desc' => 'Möchten Sie global verwenden oder zuordnen?',
         'global' => 'Wählen Sie aus den globalen',
         'assign' => 'Zuweisen',
-        'email_receptionist_of' => 'E-Mail-Empfangsstelle von'
+        'email_receptionist_of' => 'E-Mail-Empfangsstelle von :category'
     ],
     'filter' => 'Filter',
     'activities' => [

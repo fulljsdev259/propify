@@ -19,7 +19,7 @@
         <template v-if="activeCommand == 'assign'">
             <el-row v-for="(category, $index) in categories" :key="category.id">
                 <el-col :md="24">
-                    <el-form-item :label="$t('general.email_receptionist.email_receptionist_of') + ' ' + $t(`models.request.category_list.${category.name}`)"
+                    <el-form-item :label="$t('general.email_receptionist.email_receptionist_of', {category: $t(`models.request.category_list.${category.name}`) })"
                                 class="label-block">
                         <el-select
                             :loading="remoteLoading"
