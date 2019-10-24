@@ -8,10 +8,10 @@
                             type="info" 
                             trigger="click" 
                             @command="handleCommand">
-                    Do you want to use global or assign?
+                    {{$t('general.email_receptionist.info_desc')}}
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="global">Choose from global</el-dropdown-item>
-                        <el-dropdown-item command="assign">Assign</el-dropdown-item>
+                        <el-dropdown-item command="global">{{$t('general.email_receptionist.global')}}</el-dropdown-item>
+                        <el-dropdown-item command="assign">{{$t('general.email_receptionist.assign')}}</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-col>
@@ -19,7 +19,7 @@
 
         <el-row v-for="category in categories" :key="category">
             <el-col :md="24">
-                <el-form-item :label="'Email Receptionist of ' + $t(`models.request.category_list.${category}`)"
+                <el-form-item :label="$t('general.email_receptionist.email_receptionist_of') + ' ' + $t(`models.request.category_list.${category}`)"
                             class="label-block">
                     <el-select
                         :loading="remoteLoading"

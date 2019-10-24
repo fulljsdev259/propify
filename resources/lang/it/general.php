@@ -294,10 +294,18 @@ return [
     'maintenance' => 'Manutenzione',
     'gross_rent' => 'Affitto lordo',
     'emergency' => [
+        'title' => 'Emergenza',
         'activate_title' => 'Attivare il box di emergenza',
         'activate_desc' => 'È possibile attivare la casella di emergenza',
         'phone_number' => 'Numero di telefono',
         'time_schedule' => 'Orario',
+    ],
+    'email_receptionist' => [
+        'title' => 'Ricezione e-mail',
+        'info_desc' => 'Volete utilizzare l\'opzione globale o assegnare a',
+        'global' => 'Scegliere da globale',
+        'assign' => 'Assegna',
+        'email_receptionist_of' => 'Ricezione e-mail di'
     ],
     'filter' => 'Filtri',
     'activities' => [

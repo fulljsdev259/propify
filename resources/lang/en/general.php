@@ -294,10 +294,18 @@ return [
     'maintenance' => 'Maintenance',
     'gross_rent' => 'Gross rent',
     'emergency' => [
+        'title' => 'Emergency',
         'activate_title' => 'Activate Emergency Box',
         'activate_desc' => 'You can activate emergency box',
         'phone_number' => 'Phone Number',
         'time_schedule' => 'Time Schedule',
+    ],
+    'email_receptionist' => [
+        'title' => 'Email Receptionist',
+        'info_desc' => 'Do you want to use global or assign',
+        'global' => 'Choose from global',
+        'assign' => 'Assign',
+        'email_receptionist_of' => 'Email Receptionist of'
     ],
     'filter' => 'Filters',
     'activities' => [

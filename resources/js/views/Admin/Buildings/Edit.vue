@@ -437,7 +437,7 @@
                     <el-tab-pane name="emergency" lazy>
                         <div slot="label">
                             <i class="icon-cog"></i>
-                            Emergency
+                            {{$t('general.emergency.title')}}
                         </div>
                         <div class="content" v-if="visibleDrawer">
                             <emergency-settings-form :visible.sync="visibleDrawer"/>
@@ -447,12 +447,11 @@
                     <el-tab-pane name="email_receptionist" lazy>
                         <div slot="label">
                             <i class="ti-gallery"></i>
-                            Email Receptionist
+                            {{$t('general.email_receptionist.title')}}
                         </div>
                         
                         <div class="content" v-if="visibleDrawer">
-                            Global or Assign,
-                            Here show three categories and assign buttons
+                            <email-receptionist-form :visible.sync="visibleDrawer"/>
                         </div>
 
                     </el-tab-pane>
