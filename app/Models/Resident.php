@@ -219,7 +219,7 @@ class Resident extends AuditableModel implements HasMedia
      * @var array
      */
     public static $putRules = [
-        'default_contract_id' => 'exists:contracts,id',// @TODO check own or not
+        'default_contract_id' => 'nullable|exists:contracts,id',// @TODO check own or not
         'title' => 'string',
         'first_name' => 'string',
         'last_name' => 'string',
