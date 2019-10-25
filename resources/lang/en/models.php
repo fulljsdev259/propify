@@ -152,7 +152,10 @@ return [
         'units' => 'Units',
         'saved' => 'Building saved',
         'floors' => 'Floors',
-        'under_floor' => 'Under floor',
+        'under_floor' => [
+            'title' => 'Under floor',
+            'from_0_to_3' => 'Under floor must be in between 0 and 3',
+        ],
         'basement' => 'Basement',
         'attic' => 'Attic',
         'floor_nr' => 'Number of floors',

@@ -49,6 +49,7 @@ export default (config = {}) => {
                     description: '',
                     floor_nr: 1,
                     floor: [],
+                    under_floor: 0,
                     attic: false,
                     state_id: '',
                     city: '',
@@ -73,6 +74,10 @@ export default (config = {}) => {
                     floor: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.building.floors')})
+                    }],
+                    under_floor: [{
+                        pattern: /^[0-3]$/,
+                        message: this.$t('models.building.under_floor.from_0_to_3')
                     }],
                     state_id: [{
                         required: true,

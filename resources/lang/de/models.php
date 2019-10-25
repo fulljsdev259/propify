@@ -152,7 +152,10 @@ return [
         'units' => 'Einheiten',
         'saved' => 'Objekt wurde gespeichert.',
         'floors' => 'Etagen',
-        'under_floor' => 'Untergeschoss',
+        'under_floor' => [
+            'title' => 'Untergeschoss',
+            'from_0_to_3' => 'Der Unterboden muss zwischen 0 und 3 liegen',
+        ],
         'basement' => 'Erdgeschoss',
         'attic' => 'Attikageschoss',
         'floor_nr' => 'Anzahl Etagen',

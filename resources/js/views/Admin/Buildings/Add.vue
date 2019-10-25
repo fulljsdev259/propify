@@ -138,11 +138,12 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="12">
-                                    <el-form-item :label="$t('models.building.under_floor')"
-                                                  :rules="validationRules.floor"
+                                    <el-form-item :label="$t('models.building.under_floor.title')"
+                                                  :rules="validationRules.under_floor"
                                                   prop="under_floor">
                                         <el-input type="number"
                                                   :min="0"
+                                                  :max="3"
                                                   v-model.number="model.under_floor"></el-input>
                                     </el-form-item>
                                 </el-col>
@@ -201,6 +202,12 @@
 
                 for (let i = 0; i <= this.model.floor_nr-1; i++) {
                     arr.push(i);
+                }
+
+                if (this.model.floor_nr !== '' &&
+                    this.model.floor_nr < this.model.floor.length
+                ) {
+                    this.model.floor = this.model.floor.splice(0, this.model.floor_nr);
                 }
 
                 if (!this.unitAutoCreate) {

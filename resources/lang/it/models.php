@@ -152,7 +152,10 @@ return [
         "units" => "Unità",
         "saved" => "Edificio salvato",
         "floors" => "Pavimenti",
-        'under_floor' => 'Sotto il pavimento',
+        'under_floor' => [
+            'title' => 'Sotto il pavimento',
+            'from_0_to_3' => 'Sotto il pavimento deve essere compreso tra 0 e 3',
+        ],
         "basement" => "Nel seminterrato",
         "attic" => "In soffitta",
         "floor_nr" => "Numero di piani",
