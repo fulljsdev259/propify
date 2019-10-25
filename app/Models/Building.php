@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\AddressOwnerAudit;
 use App\Traits\HasCategoryMediaTrait;
 use App\Traits\RequestRelation;
 use App\Traits\UniqueIDFormat;
@@ -123,7 +122,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  * @property-read int|null $requests_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Resident[] $residents
  * @property-read int|null $residents_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ServiceProvider[] $serviceProviders
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ServiceProvider[] $service_providers
  * @property-read int|null $service_providers_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Unit[] $units
  * @property-read int|null $units_count
@@ -163,7 +162,6 @@ class Building extends AuditableModel implements HasMedia
     use SoftDeletes,
         HasCategoryMediaTrait,
         UniqueIDFormat,
-        AddressOwnerAudit,
         HasBelongsToManyEvents,
         HasMorphedByManyEvents,
         RequestRelation;
@@ -235,17 +233,19 @@ class Building extends AuditableModel implements HasMedia
     public static $rules = [
         'name' => 'required',
         'floor_nr' => 'required',
-        'under_floor' => 'in:0,1,2,3'
+        'under_floor' => 'numeric|between:0,3'
     ];
 
     protected $auditEvents = [
-        AuditableModel::EventCreated => 'getCreatedEventAttributesIncludeAddress',
-        AuditableModel::EventUpdated => 'getUpdatedEventAttributesIncludeAddress',
+        AuditableModel::EventCreated,
+        AuditableModel::EventUpdated,
         AuditableModel::EventDeleted,
         AuditableModel::EventUserAssigned => 'getAttachedEventAttributes',
         AuditableModel::EventManagerAssigned => 'getAttachedEventAttributes',
+        AuditableModel::EventProviderAssigned => 'getAttachedEventAttributes',
         AuditableModel::EventUserUnassigned => 'getDetachedEventAttributes',
         AuditableModel::EventManagerUnassigned => 'getDetachedEventAttributes',
+        AuditableModel::EventProviderUnassigned => 'getDetachedEventAttributes',
     ];
 
     /**
@@ -275,7 +275,7 @@ class Building extends AuditableModel implements HasMedia
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      **/
-    public function serviceProviders()
+    public function service_providers()
     {
         return $this->belongsToMany(ServiceProvider::class);
     }

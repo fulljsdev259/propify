@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Models\Audit;
@@ -25,6 +24,8 @@ class AuditableModel extends Model implements Auditable
         HasBelongsToManyEvents,
         HasMorphedByManyEvents;
 
+    const UpdateOrCreate = 'updateOrCreate';
+
     const EventCreated = 'created';
     const EventUpdated = 'updated';
     const EventDeleted = 'deleted';
@@ -44,6 +45,7 @@ class AuditableModel extends Model implements Auditable
 
     const SyncAuditConfig = [
         'attach' => [
+            'service_providers' =>  AuditableModel::EventProviderAssigned,
             'providers' =>  AuditableModel::EventProviderAssigned,
             'managers' =>  AuditableModel::EventManagerAssigned,
             'propertyManagers' =>  AuditableModel::EventManagerAssigned,
@@ -52,6 +54,7 @@ class AuditableModel extends Model implements Auditable
             'quarters' => AuditableModel::EventQuarterAssigned,
         ],
         'detach' => [
+            'service_providers' =>  AuditableModel::EventProviderUnassigned,
             'providers' =>  AuditableModel::EventProviderUnassigned,
             'managers' =>  AuditableModel::EventManagerUnassigned,
             'propertyManagers' =>  AuditableModel::EventManagerUnassigned,
@@ -65,6 +68,7 @@ class AuditableModel extends Model implements Auditable
         'managers' => ['first_name', 'last_name'],
         'propertyManagers' => ['first_name', 'last_name'],
         'providers' => ['name'],
+        'service_providers' => ['name'],
         'users' => ['name'],
         'buildings' => ['name'],
         'quarters' => ['name'],
@@ -124,12 +128,11 @@ class AuditableModel extends Model implements Auditable
      * @param $value
      * @param null $audit
      * @param bool $isSingle
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function addDataInAudit($key, $value, $audit = null, $isSingle = true)
     {
-        if (is_null($audit)) {
-            $audit = $this->audit;
-        }
+        $audit = $this->getAudit($audit);
         if (empty($audit)) {
             return;
         }
@@ -138,21 +141,106 @@ class AuditableModel extends Model implements Auditable
             $value = $this->getMediaAudit($value);
         }
 
+
+        if (self::EventCreated == $audit->event) {
+
+            $value = $this->correctCreatedAuditValue($value);
+            $audit->new_values = $this->fixAddedData($audit->new_values, $key, $value, $isSingle);
+            $audit->save();
+
+        } elseif (self::EventUpdated == $audit->event) {
+
+            $newAuditValue = $this->getChangedAuditValue($value);
+            $oldAuditValue = $this->getChangedOriginalAuditValue($value);
+            if (! empty($newAuditValue) || !empty($oldAuditValue)) {
+                $audit->new_values = $this->fixAddedData($audit->new_values, $key, $newAuditValue, $isSingle);
+                $audit->old_values = $this->fixAddedData($audit->old_values, $key, $oldAuditValue, $isSingle);
+                $audit->save();
+            }
+
+        } else {
+            // @TODO
+        }
+    }
+
+    /**
+     * @param $audit
+     * @return mixed|Audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    protected function getAudit($audit)
+    {
+        if (is_null($audit)) {
+            $audit = $this->audit;
+        }
+
+        if (empty($audit)) {
+            return $audit;
+        }
+
+        if ($audit != self::UpdateOrCreate) {
+            return $audit;
+        }
+
+        if ($this->audit) {
+            return $this->audit;
+        }
+
+        $this->auditEvent = self::EventUpdated;
+        return new Audit($this->toAudit());
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    protected function getChangedAuditValue($value)
+    {
+        if (is_a($value, Model::class)) {
+            if ($value->wasRecentlyCreated) {
+                $value = $this->getSingleRelationAuditData($value);
+            } else {
+                $value = $value->getChanges();
+            }
+            unset($value['updated_at']);
+        } else if (is_a($value, Collection::class)) {
+            dd($value);
+        } else {
+            dd('@TODO');
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    protected function getChangedOriginalAuditValue($value)
+    {
+        if (is_a($value, Model::class)) {
+            $value = $value->getOldChanges();
+            unset($value['updated_at']);
+        } else {
+            dd('@TODO');
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param $value
+     * @return array|mixed
+     */
+    protected function correctCreatedAuditValue($value)
+    {
         if (is_a($value, Model::class)) {
             $value = $this->getSingleRelationAuditData($value);
         } elseif (is_a($value, Collection::class)) {
             $value = $this->getManyRelationAuditData($value);
         }
 
-        if (self::EventCreated == $audit->event) {
-            $audit->new_values = $this->fixAddedData($audit->new_values, $key, $value, $isSingle);
-            $audit->save();
-        } elseif (self::EventUpdated == $audit->event) {
-            $audit->new_values = $this->fixAddedData($audit->new_values, $key, $value, $isSingle);
-            $audit->save();
-        } else {
-            // @TODO
-        }
+        return $value;
     }
 
     /**
