@@ -17,8 +17,8 @@
             </template>
         </heading>
         <div class="warning-bar">
-            <div class="message">
-                {{$t('models.building.warning_bar.message')}}
+            <div class="message" type="info">
+                <i class="icon-info-circled"></i>{{$t('models.building.warning_bar.message')}}
             </div>
             <div class="title" @click="gotoEmailReceptionistDrawer">
                 {{$t('models.building.warning_bar.title')}}
@@ -456,7 +456,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="email_receptionist" lazy>
                         <div slot="label">
-                            <i class="ti-gallery"></i>
+                            <i class="ti-email"></i>
                             {{$t('general.email_receptionist.title')}}
                         </div>
                         
@@ -1066,6 +1066,12 @@
                 .message {
                     flex-grow: 1;
                     font-size: 13px;
+                    line-height: 20px;
+
+                    i {
+                        font-size: 15px;
+                        margin-right: 5px;
+                    }
                 }
 
                 .title {

@@ -14,6 +14,19 @@
                         <el-dropdown-item command="assign">{{$t('general.email_receptionist.assign')}}</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
+                <el-select
+                    :placeholder="$t('general.placeholders.search')"
+                    class="custom-select"
+                    v-model="model.category_id"
+                    @change="changeCategory"
+                >
+                    <el-option
+                        :key="category.id"
+                        :label="$t(`models.request.category_list.${category.name}`)"
+                        :value="category.id"
+                        v-for="category in categories">
+                    </el-option>
+                </el-select>
             </el-col>
         </el-row>
         <template v-if="activeCommand == 'assign'">
