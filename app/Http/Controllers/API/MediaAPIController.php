@@ -158,7 +158,7 @@ class MediaAPIController extends AppBaseController
 
     /**
      * @SWG\Delete(
-     *      path="/building/{building_id}/media/{media_id}",
+     *      path="/buildings/{building_id}/media/{media_id}",
      *      summary="Remove the specified Media from storage",
      *      tags={"Building"},
      *      description="Delete Media",
@@ -194,7 +194,8 @@ class MediaAPIController extends AppBaseController
      * @param int $building_id
      * @param int $media_id
      * @param BuildingDeleteRequest $r
-     * @return Response
+     * @return mixed
+     * @throws \Exception
      */
     public function buildingDestroy(int $building_id, int $media_id, BuildingDeleteRequest $r)
     {

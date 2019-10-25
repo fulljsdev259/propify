@@ -637,9 +637,9 @@ class BuildingAPIController extends AppBaseController
 
     /**
      * @SWG\Post(
-     *      path="/buildings/{id}/services/{bid}",
+     *      path="/buildings/{id}/services/{service_id}",
      *      summary="Assign the provided service provider to the building",
-     *      tags={"ServiceProvider"},
+     *      tags={"ServiceProvider", "Building"},
      *      description="Assign the provided service provider to the building",
      *      produces={"application/json"},
      *      @SWG\Response(
