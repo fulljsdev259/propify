@@ -1,5 +1,5 @@
 <template>
-    <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
+    <el-form :model="model" :rules="validationRules" label-position="top" ref="form" v-loading="loading">
         
         <el-row :gutter="20" v-if="isBuilding && quarter_id">
             <el-col :md="24">
@@ -20,7 +20,10 @@
             <el-row v-for="(category, $index) in categories" :key="category.id">
                 <el-col :md="24">
                     <el-form-item :label="$t('general.email_receptionist.email_receptionist_of', {category: $t(`models.request.category_list.${category.name}`) })"
-                                class="label-block">
+                        :rules="validationRules.assign"
+                        :prop="'assign.' + $index"
+                        class="label-block"
+                        >
                         <el-select
                             :loading="remoteLoading"
                             :placeholder="$t('general.placeholders.search')"
@@ -31,7 +34,7 @@
                             remote
                             reserve-keyword
                             style="width: 100%;"
-                            v-model="assign[$index]"
+                            v-model="model.assign[$index]"
                         >
                             <div class="custom-prefix-wrapper" slot="prefix">
                                 <i class="el-icon-search custom-icon"></i>
@@ -40,7 +43,7 @@
                                 :key="manager.id"
                                 :label="`${manager.first_name} ${manager.last_name}`"
                                 :value="manager.id"
-                                v-for="manager in assignList[$index]"/>
+                                v-for="manager in model.assignList[$index]"/>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -80,63 +83,71 @@
             return {
                 remoteLoading: false,
                 loading: false,
+                global: '',
                 model: {
-                    phone_number: '',
-                    activate_emergency: false,
-                    time_schedule: ''
+                    assignList: '',
+                    assign: [],
                 },
                 categories: [],
                 validationRules: {
-                    phone_number: [{
+                    assign: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('general.emergency.phone_number')})
-                    }],
-                    time_schedule: [{
-                        required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('general.emergency.time_schedule')})
+                        message: this.$t('models.quarter.required')
                     }],
                 },
-                toAssignList: '',
-                toAssign: [],
-                assignList: '',
-                assign: [],
                 remoteLoading: false,
                 activeCommand: '',
-                global: '',
+                
             }
         },
         methods: {
             ...mapActions(['getPropertyManagers']),
-            submit () {
-                if(this.activeCommand == 'global')
-                    this.global = 1
-                else if(this.activeCommand == 'assign')
-                    this.global = 0
-                // let service_provider_ids = this.toAssign
-                
-                
-
-                // this.processAssignment = false;
-                // this.closeModal();
-                // this.fetchMore();
-                // if(resp.data.success)
-                //     displaySuccess(resp.data.message);
-                let categories = [];
-                for(let i = 0; i < this.categories.length; i ++)
-                {
-                    categories.push({
-                        quarter_id : 1,
-                        category_id : this.categories[i].id,
-                        property_manager_ids: this.assign[i]
-                    })
-                    console.log('category, assign', this.categories[i].name, this.assign[i])
-                    
+            async submit () {
+                try {
+                    const valid = await this.$refs.form.validate();
+                    if (valid) {
+                        if(this.activeCommand == 'global')
+                            this.global = 1
+                        else if(this.activeCommand == 'assign')
+                            this.global = 0
+                        
+                        let categories = [];
+                        for(let i = 0; i < this.categories.length; i ++)
+                        {
+                            categories.push({
+                                category_id : +this.categories[i].id,
+                                property_manager_ids: this.model.assign[i]
+                            })
+                            //console.log('category, assign', this.categories[i].name, this.assign[i])
+                            
+                        }
+                        let payload = {
+                            quarter_id : this.quarter_id,
+                            global: this.global,
+                            categories: categories
+                        }
+                        if(this.isBuilding == false)
+                        {
+                            payload = {
+                                quarter_id : this.quarter_id,
+                                categories: categories
+                            }
+                        }
+                        
+                        console.log('payload', payload)
+                        
+                        // const resp = await this.saveEmailReceptionist({
+                        //     request_ids, 
+                        //     service_provider_ids
+                        // })
+                        
+                        // if(resp.data.success)
+                        //     displaySuccess(resp.data.message);
+                    }
                 }
-             
-                // const resp = await this.saveEmailReceptionist({
-                //     request_ids, 
-                //     service_provider_ids
-                // })
+                catch(err) {
+                    console.log(err)
+                }
             },
             async remoteSearchManagers(search, index) {
                 if (search === '') {
@@ -150,7 +161,7 @@
                             search
                         });
 
-                        this.assignList[index] = resp.data;
+                        this.model.assignList[index] = resp.data;
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -159,8 +170,8 @@
                 }
             },
             resetToAssignList(index) {
-                this.assignList[index] = [];
-                this.assign[index] = '';
+                this.model.assignList[index] = [];
+                this.model.assign[index] = '';
             },
             handleCommand(command) {
                 this.activeCommand = command
@@ -178,11 +189,11 @@
             else if(this.isBuilding && !this.quarter_id)
                 this.activeCommand = 'assign'
 
-            this.assignList = []
+            this.model.assignList = []
             for(let i = 0; i < this.categories.length; i ++)
             {
-                this.assign.push([])
-                this.assign[i] = []
+                this.model.assign.push([])
+                this.model.assign[i] = []
             }
             
         }
