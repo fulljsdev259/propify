@@ -203,6 +203,10 @@ return [
             "dont_delete_requests" => "Non cancellare una o più richieste di cancellazione",
         ],
         'assigned_buildings' => "Edifici assegnati",
+        'warning_bar' => [
+            'title' => 'Problema trovato',
+            'message' => "Sembra che tu non abbia selezionato fortimo membri come destinatari di e-mail per le categorie di richiesta. Si prega di selezionarli dal cassetto delle impostazioni disponibile nella scheda Richieste."
+        ]
     ],
     'unit' => [
         "title" => "Unità",

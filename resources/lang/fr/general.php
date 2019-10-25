@@ -305,7 +305,7 @@ return [
         'info_desc' => 'Souhaitez-vous utiliser global ou affecter',
         'global' => 'Choisissez parmi les',
         'assign' => 'Assigner',
-        'email_receptionist_of' => 'Réceptionniste par courriel de'
+        'email_receptionist_of' => 'Réceptionniste par courriel de :category'
     ],
     'filter' => 'Filtres',
     'activities' => [
@@ -321,15 +321,27 @@ return [
                 ],
                 'filter' => [
                     'type' => [
-                        'pinboard' => 'Panneau d\'affichage',
-                        'listing' => 'Produit',
-                        'request' => 'Demande'
+                        'pinboard' => 'Panneau d\'affichage',                        
+                        'request' => 'Demande',
+                        'quarter' => 'Trimestre',
+                        'building' => 'Bâtiment',
+                        'unit' => 'Unité',
+                        'resident' =>'Résident',
+                        'manager' => 'Gestionnaire',
+                        'provider' => 'Fournisseur',
                     ],                    
                     'general' => [
                         'created' => 'Créé',
                         'updated' => 'Mises à jour',
                         'provider_assigned' => 'Fournisseur assigné',
+                        'provider_unassigned' => 'Fournisseur non assigné',
+                        'provider_notified' => 'Fournisseur notifiés', 
                         'manager_assigned' => "Gestionnaire assigné",
+                        'manager_unassigned' => 'Gestionnaire non assigné',
+                        'quarter_assigned' => 'Trimestre assigné',
+                        'quarter_unassigned' => 'Trimestre non assigné',
+                        'building_assigned' => 'Bâtiment assigné',
+                        'building_unassigned' => 'Bâtiment non assigné',
                         'media_uploaded' => 'Média téléchargé',
                         'media_deleted' => 'Médias supprimés'
                     ]                  

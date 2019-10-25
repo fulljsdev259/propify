@@ -203,6 +203,10 @@ return [
             "dont_delete_requests" => "Ne supprimez pas de demande(s)",
         ],
         'assigned_buildings' => "Bâtiments affectés",
+        'warning_bar' => [
+            'title' => 'Problème trouvé',
+            'message' => "Il semble que vous n'ayez pas sélectionné les membres de fortimo comme destinataires d'emails pour les catégories de demandes. Veuillez les sélectionner dans le tiroir des paramètres disponible dans l'onglet Demandes."
+        ]
     ],
     'unit' => [
         "title" => "Unités",

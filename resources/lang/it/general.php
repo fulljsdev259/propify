@@ -305,7 +305,7 @@ return [
         'info_desc' => 'Volete utilizzare l\'opzione globale o assegnare a',
         'global' => 'Scegliere da globale',
         'assign' => 'Assegna',
-        'email_receptionist_of' => 'Ricezione e-mail di'
+        'email_receptionist_of' => 'Ricezione e-mail di :category'
     ],
     'filter' => 'Filtri',
     'activities' => [
@@ -321,15 +321,27 @@ return [
                 ],
                 'filter' => [
                     'type' => [
-                        'pinboard' => 'Bacheca',
-                        'listing' => 'Prodotto',
-                        'request' => 'Richiesta'
+                        'pinboard' => 'Bacheca',                        
+                        'request' => 'Richiesta',
+                        'quarter' => 'Quartiere',
+                        'building' => 'Edificio',
+                        'unit' => 'Unità',
+                        'resident' =>'Residente',
+                        'manager' => 'Manager',
+                        'provider' => 'Fornitore',
                     ],                   
                     'general' => [
                         'created' => 'Creato',
                         'updated' => 'Aggiornamenti',
                         'provider_assigned' => 'Fornitore assegnato',
+                        'provider_unassigned' => 'Fornitore disimpegnato',
+                        'provider_notified' => 'Fornitore notificato',
                         'manager_assigned' => 'Manager assegnato',
+                        'manager_unassigned' => 'Manager disimpegnato',
+                        'quarter_assigned' => 'Quartiere assegnato',
+                        'quarter_unassigned' => 'Quartiere disimpegnato',
+                        'building_assigned' => 'Costruire assegnato',
+                        'building_unassigned' => 'Costruire disimpegnato',
                         'media_uploaded' => 'Media caricati',
                         'media_deleted' => 'Supporti cancellati'
                     ]                    

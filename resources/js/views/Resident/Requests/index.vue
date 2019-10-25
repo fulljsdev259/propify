@@ -6,11 +6,11 @@
             <div class="main-content" v-infinite-scroll="get">
                 <ui-heading icon="icon-chat-empty" :title="$t('resident.requests')" :description="$t('resident.heading_info.request')">
                     <el-popover popper-class="requests__filter-popover" placement="bottom-end" trigger="click" :width="192">
-                        <el-button slot="reference" icon="el-icon-sort" round>{{$t('resident.filters')}}</el-button>
+                        <el-button slot="reference" class="fit-button" icon="el-icon-sort" round>{{$t('resident.filters')}}</el-button>
                         <filters ref="filters" layout="column" :data.sync="filters.data" :schema="filters.schema" @changed="onFiltersChanged" />
                         <el-button type="primary" size="small" icon="el-icon-sort-up" @click="resetFilters">{{$t('resident.reset_filters')}}</el-button>
                     </el-popover>
-                    <el-button @click="showAddRequest" type="primary" icon="ti-plus" round>
+                    <el-button @click="showAddRequest" class="fit-button" type="primary" icon="ti-plus" round>
                         {{$t('resident.add_request')}}
                     </el-button>
                 </ui-heading>
@@ -71,7 +71,10 @@
             />
         </div>
         
-        <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked @update:visibleDrawer="resetDataFromDrawer">
+        <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked @update:visibleDrawer="resetDataFromDrawer" :class="{'full-width': !openedRequest}">
+            <a class="a-close-button" @click="visibleDrawer=!visibleDrawer">
+                <span class="el-icon-close"></span>
+            </a>
             <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="openedRequest">
                 <el-tab-pane name="chat" lazy>
                     <div slot="label">
@@ -137,7 +140,7 @@
                         <i class="ti-gallery"></i>
                         Audit
                     </div>
-                    <audit :id="openedRequest.id" type="request" show-filter />
+                    <audit v-if="openedRequest.id" :id="openedRequest.id" type="request" show-filter />
                 </el-tab-pane>
             </el-tabs>
             <template v-if="!openedRequest">
@@ -410,6 +413,11 @@
         flex-direction: column
         overflow: hidden !important
 
+        @media screen and (max-width: 414px)
+            .fit-button 
+                padding: 7px 15px;
+                height: 31px;
+
         &:before
             content: ''
             top: 0
@@ -460,6 +468,15 @@
 
         .ui-drawer
 
+            @media screen and (max-width: 414px) 
+                width: 100% !important;
+                max-width: 100%!important;
+
+            &.full-width 
+                @media screen and (max-height: 414px)
+                    width: 100% !important;
+                    max-width: 100%!important;
+            
             &:before
                 content: ''
                 position: fixed

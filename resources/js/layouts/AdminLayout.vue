@@ -259,7 +259,7 @@
                         title: this.$t('general.admin_menu.activity'),
                         permission: this.$permissions.list.audit,
                         route: {
-                            name: 'adminRequestsActivity'
+                            name: 'adminActivityList'
                         }
                     },
                     "residents": {

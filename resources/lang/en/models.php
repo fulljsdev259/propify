@@ -202,7 +202,11 @@ return [
             'delete_requests' => 'Delete Request(s)',
             'dont_delete_requests' => 'Don\'t Delete Request(s)',
         ],
-        'assigned_buildings' => 'Assigned buildings'
+        'assigned_buildings' => 'Assigned buildings',
+        'warning_bar' => [
+            'title' => 'Problem Found',
+            'message' => "It looks like you've not selected fortimo members as email receivers for request categories. Please select them from settings drawer available at Requests tab"
+        ]
     ],
     'unit' => [
         'title' => 'Units',
