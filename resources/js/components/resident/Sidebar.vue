@@ -483,10 +483,10 @@
             width: 100%;
             height: auto;
             order: 999999;
-            padding-top: 0;
+            padding: 0 !important;
 
             @media screen and (max-width: 812px) {
-                height: 125px;
+                height: 80px;
             }
             
             /deep/ &::-webkit-scrollbar {
@@ -563,6 +563,7 @@
                 overflow-x: overlay;
                 overflow-y: hidden;
                 flex-direction: row;
+                align-items: flex-start;
 
                 .item {
                     flex: 1;
@@ -573,8 +574,13 @@
 
                     @media screen and (max-width: 812px) {
                         height: 64px;
+                        justify-content: flex-start;
                         a .title {
                             margin-top: 0px !important;
+                        }
+                        .icon-th {
+                            font-size: 20px;
+                            line-height: 38px;
                         }
                     }
                 }
