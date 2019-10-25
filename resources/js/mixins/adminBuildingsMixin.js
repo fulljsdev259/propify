@@ -77,7 +77,11 @@ export default (config = {}) => {
                     }],
                     under_floor: [{
                         pattern: /^[0-3]$/,
-                        message: this.$t('models.building.under_floor.from_0_to_3')
+                        message: this.$t('validation.digits_between', {
+                            attribute: this.$t('models.building.under_floor'),
+                            min: 0,
+                            max: 3,
+                        })
                     }],
                     state_id: [{
                         required: true,

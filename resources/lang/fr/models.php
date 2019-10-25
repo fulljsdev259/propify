@@ -152,10 +152,7 @@ return [
         "units" => "Unités",
         "saved" => "Bâtiment sauvé",
         "floors" => "Planchers",
-        'under_floor' => [
-            'title' => 'Sous le plancher',
-            'from_0_to_3' => 'Le sous-sol doit être compris entre 0 et 3',
-        ],
+        'under_floor' => 'Sous le plancher',
         "basement" => "Sous-sol",
         "attic" => "Grenier aménageable",
         "floor_nr" => "Nombre d'étages",

@@ -124,7 +124,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="12">
-                                    <el-form-item :label="$t('models.building.under_floor.title')"
+                                    <el-form-item :label="$t('models.building.under_floor')"
                                                   :rules="validationRules.under_floor"
                                                   prop="under_floor">
                                         <el-input type="number"
