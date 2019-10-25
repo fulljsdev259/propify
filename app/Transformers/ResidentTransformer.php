@@ -37,6 +37,8 @@ class ResidentTransformer extends BaseTransformer
             'resident_format' => $model->resident_format,
             'nation' => $model->nation,
             'type' => $model->type,
+            'review' => $model->review,
+            'rating' => $model->rating,
         ];
 
         if ($model->relationExists('settings')) {

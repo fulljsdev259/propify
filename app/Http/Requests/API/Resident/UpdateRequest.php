@@ -14,7 +14,8 @@ class UpdateRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('edit-resident');
+        return $this->can('edit-resident')
+            || (!empty($this->resident_id) && $this->user()->resident && $this->resident_id  == $this->user()->resident->id);
     }
 
     /**
@@ -24,6 +25,6 @@ class UpdateRequest extends BaseRequest
      */
     public function rules()
     {
-        return Resident::$rules;
+        return Resident::$putRules;
     }
 }

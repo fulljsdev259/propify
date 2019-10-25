@@ -1102,10 +1102,10 @@ class ResidentAPIController extends AppBaseController
         if (empty($resident)) {
             return $this->sendError(__('models.resident.errors.not_found'));
         }
-        $data['review']=$input['review'];
-        $data['rating']=$input['rating'];
-        Resident::where('id',$input['resident_id'])->update($data);
-        
+        $data['review'] = $input['review'];
+        $data['rating'] = $input['rating'];
+        $resident->update($data);
+
         return $this->sendResponse($input['resident_id'], __('models.resident.saved'));
     }
 }
