@@ -10,8 +10,6 @@ use App\Models\PropertyManager;
 use App\Models\Contract;
 use App\Models\ServiceProvider;
 use App\Models\Request;
-use App\Models\RequestCategory;
-use App\Models\Resident;
 use App\Models\User;
 use App\Notifications\NewResidentRequest;
 use App\Notifications\RequestCommented;
@@ -46,8 +44,8 @@ class RequestRepository extends BaseRepository
        // 'priority' => 'like',
        // 'internal_priority' => 'like',
         'due_date' => '=',
-        'solved_date' => '>=',
-        'created_at' => '>=',
+//        'solved_date' => '=',
+//        'created_at' => '>=',
         'request_format' => 'like',
     ];
 
