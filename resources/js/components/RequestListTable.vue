@@ -122,6 +122,7 @@
                                     remote
                                     reserve-keyword
                                     style="width: 100%;"
+                                    
                                     v-model="filterModel[filter.key]">
                                     <el-option
                                         :label="$t('general.all')"
@@ -415,8 +416,12 @@
                     delete query.search;
                 }
                 for(var filter in this.filterModel) {
-                    if(this.filterModel[filter] == '' && query[filter] != undefined)
+                    if((this.filterModel[filter] == '' || this.filterModel[filter] == null) && (query[filter] != undefined || query[filter] == null))
+                    {
                         delete query[filter];
+                        
+                    }
+                        
                 }
 
                 try {
@@ -439,6 +444,10 @@
             },
             onCurrentPageChange(newPage) {
                 this.updatePage(newPage);
+            },
+            clearRemoteFilter(filter) {
+                filterChanged(filter)
+                this.filterModel[filter.key] = null
             },
             filterChanged(filter, init = false) {
                 if (filter.type === this.filterTypes.select) {
@@ -477,11 +486,17 @@
 
                 if (init && filter.type === this.filterTypes.remoteSelect && this.filterModel[filter.key]) {
                     this.remoteFilter(filter, '');
+                    
                 }
 
+                if(this.filterModel[filter.key] == '')
+                    this.filterModel[filter.key] = null
+                    
                 if ((!filter.parentKey && filter.fetch && init && this.filterModel[filter.key]) || !init) {
                     this.updatePage();
                 }
+
+                
             },
             isDisabled(select, selected, status) {
                 if (select.withDisabled) {
