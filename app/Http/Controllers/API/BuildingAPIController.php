@@ -327,7 +327,7 @@ class BuildingAPIController extends AppBaseController
             },
         ]);
         if ($building && isset($address)) {
-            $building->addDataInAudit('address', $address);
+            $building->addDataInAudit(AuditableModel::MergeInMainData, $address);
         }
         $response = (new BuildingTransformer)->transform($building);
 
@@ -487,7 +487,7 @@ class BuildingAPIController extends AppBaseController
 
         $building = $this->buildingRepository->update($input, $id);
         if ($building && isset($address)) {
-            $building->addDataInAudit('address', $address, AuditableModel::UpdateOrCreate);
+            $building->addDataInAudit(AuditableModel::MergeInMainData, $address, AuditableModel::UpdateOrCreate);
         }
 
         $building->load([
