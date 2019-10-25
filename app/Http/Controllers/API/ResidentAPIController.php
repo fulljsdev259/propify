@@ -10,6 +10,7 @@ use App\Criteria\Resident\FilterByRequestCriteria;
 use App\Criteria\Resident\FilterByStatusCriteria;
 use App\Criteria\Resident\FilterByTypeCriteria;
 use App\Http\Controllers\AppBaseController;
+use App\Http\Requests\API\Resident\AddReviewRequest;
 use App\Http\Requests\API\Resident\CreateRequest;
 use App\Http\Requests\API\Resident\DeleteRequest;
 use App\Http\Requests\API\Resident\DownloadCredentialsRequest;
@@ -1095,7 +1096,7 @@ class ResidentAPIController extends AppBaseController
      * @param UpdateRequest $request
      * @return mixed
      */
-    public function addReview(UpdateRequest $request){
+    public function addReview(AddReviewRequest $request){
         $input = $request->all();
         $resident = $this->residentRepository->findWithoutFail($input['resident_id']);
         
