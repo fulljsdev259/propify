@@ -58,6 +58,8 @@
 
                 /deep/ .el-rate__item .el-rate__icon
                     font-size: 28px
+                    @media screen and (max-width: 375px), screen and (min-width: 415px) and (max-width: 768px)
+                        margin-right: 2.7px !important;
 
             .el-button
                 width: 100%

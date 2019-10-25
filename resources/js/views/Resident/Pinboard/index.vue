@@ -36,6 +36,9 @@
             
         </div>
         <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
+            <a class="a-close-button" @click="visibleDrawer=!visibleDrawer">
+                <span class="el-icon-close"></span>
+            </a>
             <ui-divider content-position="left" v-if="editingPinboard"><i class="ti-pencil"></i> {{$t('resident.edit_pinboard')}}</ui-divider>
             <div class="content">
                 <pinboard-edit-form :data="editingPinboard" v-if="editingPinboard" :visible.sync="visibleDrawer"/>
@@ -320,7 +323,7 @@
         }
 
         .el-divider--horizontal {
-            margin: 24px 0;
+            margin: 24px 0 !important;
         }
     }
 
@@ -338,6 +341,20 @@
 <style lang="sass" scoped>
     .pinboard-box
         /deep/ .ui-drawer
+            .a-close-button 
+                font-size: 25px
+                line-height: 1.1
+                position: absolute
+                top: 5px
+                right: 5px
+                z-index: 999
+                display: none
+            @media screen and (max-width: 414px) 
+                .a-close-button
+                    display: block
+            @media screen and (max-width: 1024px) 
+                width: 100% !important;
+                max-width: 100% !important;
             display: flex
             flex-direction: column
 
@@ -357,7 +374,7 @@
                 pointer-events: none
 
             .ui-divider
-                margin: 32px 16px 0 16px
+                margin: 32px 16px 10px 16px
 
                 /deep/ .ui-divider__content
                     left: 0

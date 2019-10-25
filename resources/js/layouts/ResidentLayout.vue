@@ -3,8 +3,9 @@
     <div :class="['layout', {[sidebarDirection]: true}, {md: el.is.md}]" v-else>
         <div class="header">
             <div class="item">
-                <img src="~img/logo3.png" v-show="!resident_logo_src"/>
-                <img :src="resident_logo_src" v-show="resident_logo_src"/>
+                <router-link to="/dashboard" class="logo">
+                    <img :src="resident_logo_src" v-show="resident_logo_src"/>
+                </router-link>
             </div>
             <div class="item spacer"></div>
             <!-- <div class="item">
@@ -15,12 +16,14 @@
             </div>
             <div class="item divider" :style="[el.is.md && {'display': 'none'}]"></div>
             <div class="item">
-                <el-badge type="danger" :value="unreadNotifications.length" :max="9" :hidden="!unreadNotifications.length">
+                <el-button v-if="visibleDrawer && drawerTabsModel=='notifications'" icon="el-icon-error" circle @click="openNotificationsDrawer()" />
+                <el-badge v-else type="danger" :value="unreadNotifications.length" :max="9" :hidden="!unreadNotifications.length">
                     <el-button icon="icon-bell-alt" circle @click="openNotificationsDrawer()" />
                 </el-badge>
             </div>
             <div class="item">
-                <user @avatar-click="openSettingsDrawer()" :only-avatar="el.is.md" />
+                <el-button v-if="visibleDrawer && drawerTabsModel=='settings'" icon="el-icon-error" circle @click="openSettingsDrawer()" />
+                <user v-else @avatar-click="openSettingsDrawer()" :only-avatar="el.is.md" />
             </div>
             <div class="item">
                 <el-tooltip :content="$t('resident.logout')" effect="dark" placement="bottom">
@@ -373,6 +376,9 @@
                     height: 100%;
                 }
             }
+            .logo {
+                height: 100%;
+            }
         }
 
         .container {
@@ -381,9 +387,41 @@
             display: flex;
             overflow: hidden;
 
+            :global(.a-close-button) {
+                font-size: 25px;
+                line-height: 1.1;
+                position: absolute;
+                top: 7px;
+                right: 5px;
+                z-index: 999;
+                display: none;
+                @media screen and (max-width: 414px) { 
+                    display: block;
+                }
+            }   
+            :global(.el-divider--horizontal) {
+                margin: 14px 0;
+                :global(.el-divider__text) {
+                    background-color: transparent !important;
+                }
+            }
+
             .content {
                 width: 100%;
                 display: flex;
+
+                @media screen and (max-width: 1024px) {
+                    :global(.sidebar .menu .item:first-of-type) {
+                        :global(a) {
+                            :global(i) {
+                                font-size: 20px;
+                            }
+                            :global(.title) {
+                                margin-top: 3px !important;
+                            }
+                        }
+                    }
+                }
 
                 .view {
                     width: 100%;
@@ -395,6 +433,10 @@
             }
 
             .ui-drawer {
+                @media screen and (max-width: 414px) {
+                    width: 100% !important;
+                    max-width: 100%!important;
+                }
                 .el-tabs {
                     height: 100%;
                     display: flex;

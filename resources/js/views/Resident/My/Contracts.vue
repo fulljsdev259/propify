@@ -19,35 +19,35 @@
                         </div>
                     </div>
                     <el-divider class="column-divider" content-position="left">{{$t('resident.unit')}}</el-divider>
-                    <div>
+                    <div class="item">
                         <b>{{$t('resident.type')}}:</b>
                         {{$t('models.unit.type.' + $constants.units.type[contract.unit.type])}}
                     </div>
-                    <div>
+                    <div class="item">
                         <b>{{$t('resident.unit_number')}}:</b>
                         {{contract.unit.room_no}}
                     </div>
-                    <div>
+                    <div class="item">
                         <b>{{$t('resident.floor')}}:</b>
                         {{contract.unit.floor}}
                     </div>
-                    <div v-if="contract.unit.basement">
+                    <div v-if="contract.unit.basement" class="item">
                         <b>Basement:</b>
                         Yes
                     </div>
-                    <div v-if="contract.unit.attic">
+                    <div v-if="contract.unit.attic" class="item">
                         <b>Attic:</b>
                         Yes
                     </div>
-                    <div>
+                    <div class="item">
                         <b>{{$t('resident.monthly_rent_net')}}:</b>
                         {{contract.monthly_rent_net}}
                     </div>
-                    <div>
+                    <div class="item">
                         <b>{{$t('general.maintenance')}}:</b>
                         {{contract.monthly_maintenance}}
                     </div>
-                    <div>
+                    <div class="item">
                         <b>{{$t('general.gross_rent')}}:</b>
                         {{contract.monthly_rent_gross}}
                     </div>
@@ -137,7 +137,12 @@
 
 <style lang="scss" scoped>
 
-    
+    @media screen and (max-width: 812px) {
+        .item {
+            width: 49%;
+            display: inline-block;
+        }
+    }
 
    .placeholder {
         height: 100% !important;
