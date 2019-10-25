@@ -551,15 +551,12 @@
                 this.contractCount ++; //@TODO : update the assigned residents data accordingly
             },
             editContract(index) {
-                console.log('this.model.contracts', this.model.contracts, index)
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
-                console.log('update', params)
-//                this.model.contracts[index] = params;
                 this.$set(this.model.contracts, index, params);
             },
             deleteContract(index) {
