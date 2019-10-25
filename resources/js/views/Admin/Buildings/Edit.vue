@@ -125,10 +125,11 @@
                                 </el-col>
                                 <el-col :span="12">
                                     <el-form-item :label="$t('models.building.under_floor')"
-                                                  :rules="validationRules.floor"
+                                                  :rules="validationRules.under_floor"
                                                   prop="under_floor">
                                         <el-input type="number"
                                                   :min="0"
+                                                  :max="3"
                                                   v-model.number="model.under_floor"></el-input>
                                     </el-form-item>
                                 </el-col>
@@ -140,7 +141,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <!-- <el-col :span="12">
-                                    <el-form-item :label="$t('models.building.under_floor')"
+                                    <el-form-item :label="$t('models.building.under_floor.title')"
                                                   :rules="validationRules.floor"
                                                   :prop="'floor.' + 0">
                                         <el-input type="number"
@@ -917,14 +918,13 @@
                 this.contractCount ++;
             },
             editContract(index) {
-                console.log('this.model.contracts', this.model.contracts, index)
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
-                this.model.contracts[index] = params;
+                this.$set(this.model.contracts, index, params);
             },
             deleteContract(index) {
 

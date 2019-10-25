@@ -14,8 +14,7 @@ export default {
             request.qualification_label = request.qualification > 0 && request.qualification <= 5 ? requests.qualification[request.qualification] : "";
             request.resident_name = request.resident ? `${request.resident.first_name} ${request.resident.last_name}` : '';
             request.category_name = request.category.name;
-            request.parent_category_name = request.category.parent_id ? request.category.parentCategory.name : '';
-
+            
             const assignedUsers = [...request.assignedUsers];
 
             request.assignedUsersCount = 0;

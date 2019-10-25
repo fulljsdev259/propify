@@ -3,7 +3,6 @@
 namespace App\Http\Requests\API\Request;
 
 use App\Models\Request;
-use App\Models\RequestCategory;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\BaseRequest;
 

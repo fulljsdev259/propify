@@ -184,7 +184,7 @@ class QuarterAPIController extends AppBaseController
         if ($quarter) {
 
             if (isset($address)) {
-                $quarter->addDataInAudit('address', $address);
+                $quarter->addDataInAudit(AuditableModel::MergeInMainData, $address);
             }
 
             DB::commit();
@@ -306,10 +306,12 @@ class QuarterAPIController extends AppBaseController
      *      )
      * )
      *
+     *
      * @param $id
      * @param UpdateRequest $request
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
@@ -372,7 +374,7 @@ class QuarterAPIController extends AppBaseController
         if ($quarter) {
 
             if (isset($address)) {
-                $quarter->addDataInAudit('address', $address, AuditableModel::UpdateOrCreate);
+                $quarter->addDataInAudit(AuditableModel::MergeInMainData, $address, AuditableModel::UpdateOrCreate);
             }
 
             DB::commit();

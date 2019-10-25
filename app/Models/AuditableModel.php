@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Models\Audit;
@@ -25,6 +26,7 @@ class AuditableModel extends Model implements Auditable
         HasMorphedByManyEvents;
 
     const UpdateOrCreate = 'updateOrCreate';
+    const MergeInMainData = '';
     const System = 'system';
 
     const EventCreated = 'created';
@@ -129,23 +131,34 @@ class AuditableModel extends Model implements Auditable
      * @param $value
      * @param null $event
      * @param bool $isSingle
+     * @param array $tags
+     * @return Audit
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function newSystemAudit($key, $value, $event = null, $isSingle = true)
+    public function newSystemAudit($key, $value, $event = null, $isSingle = true, $tags = [])
     {
         $event = $event ?? AuditableModel::EventCreated;
         $this->auditEvent = self::EventUpdated;
         $audit =  new Audit($this->toAudit());
         $audit->event = $event;
         $audit->user_type = self::System;
+        $audit->auditable_id = $audit->auditable_id ?? 0;
+        $audit->auditable_type = $audit->auditable_id ? $audit->auditable_type  :  'system';
+
+        if (!empty($tags)) {
+            $tags = Arr::wrap($tags);
+            $audit->tags = json_encode($tags); // @TODO correct later
+        }
 
         if (AuditableModel::EventCreated == $event) {
             $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
         } elseif (AuditableModel::EventUpdated == $event) {
-            $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle);
+            $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle, false);
         } else {
             dd('@TODO');
         }
+
+        return $audit;
     }
 
 
@@ -196,16 +209,19 @@ class AuditableModel extends Model implements Auditable
      * @param $key
      * @param $value
      * @param bool $isSingle
+     * @param bool $changeOldValues
      */
-    protected function saveUpdatedEventMerging($audit, $key, $value, $isSingle = true)
+    protected function saveUpdatedEventMerging($audit, $key, $value, $isSingle = true, $changeOldValues = true)
     {
         $newAuditValue = $this->getChangedAuditValue($value);
-        $oldAuditValue = $this->getChangedOriginalAuditValue($value);
-        if (! empty($newAuditValue) || !empty($oldAuditValue)) {
-            $audit->new_values = $this->fixAddedData($audit->new_values, $key, $newAuditValue, $isSingle);
+        $audit->new_values = $this->fixAddedData($audit->new_values, $key, $newAuditValue, $isSingle);
+
+        if ($changeOldValues) {
+            $oldAuditValue = $this->getChangedOriginalAuditValue($value);
             $audit->old_values = $this->fixAddedData($audit->old_values, $key, $oldAuditValue, $isSingle);
-            $audit->save();
         }
+
+        $audit->save();
     }
 
     /**
@@ -241,6 +257,10 @@ class AuditableModel extends Model implements Auditable
      */
     protected function getChangedAuditValue($value)
     {
+        if (is_array($value)) {
+            return $value;
+        }
+
         if (is_a($value, Model::class)) {
             if ($value->wasRecentlyCreated) {
                 $value = $this->getSingleRelationAuditData($value);
@@ -248,13 +268,14 @@ class AuditableModel extends Model implements Auditable
                 $value = $value->getChanges();
             }
             unset($value['updated_at']);
-        } else if (is_a($value, Collection::class)) {
-            $value = $this->getManyRelationAuditData($value);
-        } else {
-            dd('@TODO1');
+            return $value;
         }
 
-        return $value;
+        if (is_a($value, Collection::class)) {
+            return $this->getManyRelationAuditData($value);
+        }
+
+        dd('@TODO1');
     }
 
     /**
@@ -263,10 +284,17 @@ class AuditableModel extends Model implements Auditable
      */
     protected function getChangedOriginalAuditValue($value)
     {
+        if (is_array($value)) {
+            return $value;
+        }
+
         if (is_a($value, Model::class)) {
             $value = $value->getOldChanges();
             unset($value['updated_at']);
-        } else if (is_a($value, Collection::class)) {
+            return $value;
+        }
+
+        if (is_a($value, Collection::class)) {
             dd('@TODO');
             $value = [];
         } else {
@@ -300,10 +328,23 @@ class AuditableModel extends Model implements Auditable
      */
     protected function fixAddedData($savedValues, $key, $newValue, $isSingle)
     {
+        // @TODO improve code readability
         if ($isSingle) {
-            $savedValues[$key] = $newValue;
+            if (self::MergeInMainData == $key) {
+                if (is_array($newValue)) {
+                    $savedValues = array_merge($savedValues, $newValue);
+                } else {
+                    $savedValues[] = $newValue;
+                }
+            } else {
+                $savedValues[$key] = $newValue;
+            }
         } else  {
-            $savedValues[$key][] = $newValue;
+            if (self::MergeInMainData == $key) {
+                dd('@TODO');
+            } else {
+                $savedValues[$key][] = $newValue;
+            }
         }
 
         return $savedValues;

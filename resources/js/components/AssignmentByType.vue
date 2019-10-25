@@ -54,9 +54,12 @@
                 type: Function 
             },
             assignmentType: {
-                required: true
+                // required: true
             },
             assignmentTypes: {
+                default() {
+                    return []
+                },
                 type: Array
             },
             toAssign: {

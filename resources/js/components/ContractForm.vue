@@ -577,11 +577,15 @@
             },
             disabledRentStart(date) {
                 const d = new Date(date).getTime();
+                if(!this.model.end_date)
+                    return false
                 const rentEnd = new Date(this.model.end_date).getTime();
                 return d >= rentEnd;
             },
             disabledRentEnd(date) {
                 const d = new Date(date).getTime();
+                if(!this.model.start_date)
+                    return false
                 const rentStart = new Date(this.model.start_date).getTime();
                 return d <= rentStart;
             },
@@ -783,6 +787,9 @@
             if(this.hideBuildingAndUnits) {
                 this.model.unit_id = this.unit_id
                 this.model.building_id = this.building_id
+                this.model.unit = this.data.unit
+                this.model.building = this.data.building
+                this.buildings.push(this.model.building)
             }
 
             if(this.hideBuilding) {
