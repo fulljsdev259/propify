@@ -346,33 +346,23 @@ return [
                         'media_deleted' => 'Médias supprimés'
                     ]                  
                 ],
-                'content' => [
-                    'with_id' => [
-                        'general' => [
-                            'updated' => 'La :fieldname est passée de :old au :new.',
-                            'provider_assigned' => ':providerName a été affecté en tant que prestataire.',
-                            'provider_unassigned' => "Prestataire :providerName n'a pas été affecté.",
-                            'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName a été affecté au poste de gestionnaire.',
-                            'manager_unassigned' => "Gestionnaire :propertyManagerFirstName :propertyManagerLastName n'a pas été affecté.",
-                            'user_assigned' => ':userName a été affecté au poste de gestionnaire.',
-                            'media_uploaded' => 'Média téléchargé',
-                            'media_deleted' => 'Médias supprimés',
-                            'provider_notified' => 'Prestataire :providerName a été avisé par courriel.',
-                            'quarter_assigned' => ':quarterName Trimestre assigné',
-                            'quarter_unassigned' => ':quarterName Trimestre non attribué',
-                            'building_assigned' => ':buildingName Bâtiment affecté',
-                            'building_unassigned' => ':buildingNam Bâtiment non assigné',
-                        ],
-                        'pinboard' => [
-                            'created' => ':userName a ouvert ce :auditable_type à bord de :auditable_type #:auditable_id.',                                                        
-                        ],
-                        'listing' => [
-                            'created' => ':userName a ouvert ce :auditable_type.',
-                        ],
-                        'request' => [
-                            'created' => ':userName a ouvert ce :auditable_type.',                            
-                        ]
-                    ],                    
+                'content' => [                    
+                    'general' => [
+                        'created' => ':userName a créé cette :auditable_type',
+                        'updated' => 'La :fieldname est passée de :old au :new.',
+                        'provider_assigned' => ':providerName a été affecté en tant que prestataire.',
+                        'provider_unassigned' => "Prestataire :providerName n'a pas été affecté.",
+                        'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName a été affecté au poste de gestionnaire.',
+                        'manager_unassigned' => "Gestionnaire :propertyManagerFirstName :propertyManagerLastName n'a pas été affecté.",
+                        'user_assigned' => ':userName a été affecté au poste de gestionnaire.',
+                        'media_uploaded' => 'Média téléchargé',
+                        'media_deleted' => 'Médias supprimés',
+                        'provider_notified' => 'Prestataire :providerName a été avisé par courriel.',
+                        'quarter_assigned' => ':quarterName Trimestre assigné',
+                        'quarter_unassigned' => ':quarterName Trimestre non attribué',
+                        'building_assigned' => ':buildingName Bâtiment affecté',
+                        'building_unassigned' => ':buildingNam Bâtiment non assigné',
+                    ],                                      
                 ],
             ],
             'comments_list' => [            

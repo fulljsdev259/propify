@@ -346,32 +346,23 @@ return [
                         'media_deleted' => 'Medien gelöscht',
                     ],
                 ],
-                'content' => [
-                    'with_id' => [
-                        'general' => [
-                            'provider_assigned' => ':providerName wurde als Dienstleister zugewiesen.',
-                            'provider_unassigned' => 'Dienstleisterin :providerName wurde nicht beauftragt.',
-                            'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName wurde als Managerin zugewiesen.',
-                            'manager_unassigned' => 'Managerin :propertyManagerFirstName :propertyManagerLastName wurde nicht zugewiesen.',
-                            'user_assigned' => ':userName wurde dieser Anfrage hinzugefügt.',
-                            'media_uploaded' => 'Mediendateien hinaufgeladen',
-                            'media_deleted' => 'Mediendateien gelöscht',
-                            'provider_notified' => 'Dienstleisterin :providerName wurde per E-Mail benachrichtigt',
-                            'quarter_assigned' => ':quarterName Projekt wurde zugewiesen.',
-                            'quarter_unassigned' => ':quarterName Projekt wurde entfernt',
-                            'building_assigned' => ':buildingName Liegenschaft wurde zugewiesen.',
-                            'building_unassigned' => ':buildingName Liegenschaft wurde entfernt',
-                        ],
-                        'pinboard' => [
-                            'created' => ':userName hat diesen Beitrag erstellt.',                            
-                        ],
-                        'listing' => [
-                            'created' => ':userName dieses Inserat erstellt: :auditable_type',                            
-                        ],
-                        'request' => [
-                            'created' => ':userName hat diese :auditable_type erstellt.',
-                        ]
-                    ],                   
+                'content' => [                    
+                    'general' => [
+                        'created' => ':userName hat diesen :auditable_type erstellt',
+                        'updated' => 'Die :fieldname wurde von :old zu :new',
+                        'provider_assigned' => ':providerName wurde als Dienstleister zugewiesen.',
+                        'provider_unassigned' => 'Dienstleisterin :providerName wurde nicht beauftragt.',
+                        'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName wurde als Managerin zugewiesen.',
+                        'manager_unassigned' => 'Managerin :propertyManagerFirstName :propertyManagerLastName wurde nicht zugewiesen.',
+                        'user_assigned' => ':userName wurde dieser Anfrage hinzugefügt.',
+                        'media_uploaded' => 'Mediendateien hinaufgeladen',
+                        'media_deleted' => 'Mediendateien gelöscht',
+                        'provider_notified' => 'Dienstleisterin :providerName wurde per E-Mail benachrichtigt',
+                        'quarter_assigned' => ':quarterName Projekt wurde zugewiesen.',
+                        'quarter_unassigned' => ':quarterName Projekt wurde entfernt',
+                        'building_assigned' => ':buildingName Liegenschaft wurde zugewiesen.',
+                        'building_unassigned' => ':buildingName Liegenschaft wurde entfernt',
+                    ],                    
                 ],
             ],
             'comments_list' => [                        

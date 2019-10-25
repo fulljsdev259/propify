@@ -347,32 +347,22 @@ return [
                     ],
                 ],
                 'content' => [
-                    'with_id' => [
-                        'general' => [
-                            'updated' => 'The :fieldname changed from :old to :new.',
-                            'provider_assigned' => ':providerName has been assigned as provider.',
-                            'provider_unassigned' => 'Provider :providerName has been unassigned.',
-                            'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName has been assigned as manager.',
-                            'manager_unassigned' => 'Manager :propertyManagerFirstName :propertyManagerLastName has been unassigned.',
-                            'user_assigned' => ':userName has been assigned as manager.',
-                            'media_uploaded' => 'Media uploaded',
-                            'media_deleted' => 'Media deleted',
-                            'provider_notified' => 'Provider :providerName has been notified by mail.',
-                            'quarter_assigned' => ':quarterName quarter assigned',
-                            'quarter_unassigned' => ':quarterName quarter unassigned',
-                            'building_assigned' => ':buildingName building assigned',
-                            'building_unassigned' => ':buildingName buiding unassigned',
-                        ],                        
-                        'pinboard' => [
-                            'created' => ':userName opened this :auditable_type on :auditable_type #:auditable_id.',
-                        ],
-                        'listing' => [
-                            'created' => ':userName opened this :auditable_type.',                            
-                        ],
-                        'request' => [
-                            'created' => ':userName opened this :auditable_type.',                            
-                        ]
-                    ],
+                    'general' => [
+                        'created' => ':userName has created this :auditable_type',
+                        'updated' => 'The :fieldname changed from :old to :new.',
+                        'provider_assigned' => ':providerName has been assigned as provider.',
+                        'provider_unassigned' => 'Provider :providerName has been unassigned.',
+                        'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName has been assigned as manager.',
+                        'manager_unassigned' => 'Manager :propertyManagerFirstName :propertyManagerLastName has been unassigned.',
+                        'user_assigned' => ':userName has been assigned as manager.',
+                        'media_uploaded' => 'Media uploaded',
+                        'media_deleted' => 'Media deleted',
+                        'provider_notified' => 'Provider :providerName has been notified by mail.',
+                        'quarter_assigned' => ':quarterName quarter assigned',
+                        'quarter_unassigned' => ':quarterName quarter unassigned',
+                        'building_assigned' => ':buildingName building assigned',
+                        'building_unassigned' => ':buildingName buiding unassigned',
+                    ],                    
                 ],
             ],
             'comments_list' => [            
