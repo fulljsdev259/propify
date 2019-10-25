@@ -3,8 +3,8 @@
     <div :class="['layout', {[sidebarDirection]: true}, {md: el.is.md}]" v-else>
         <div class="header">
             <div class="item">
-                <router-link to="/dashboard" class="logo">
-                    <img :src="resident_logo_src" v-show="resident_logo_src"/>
+                <router-link to="/dashboard" class="logo" >
+                    <img :src="resident_logo_src" v-show="resident_logo_src" @click="handleLogoClick()"/>
                 </router-link>
             </div>
             <div class="item spacer"></div>
@@ -16,14 +16,52 @@
             </div>
             <div class="item divider" :style="[el.is.md && {'display': 'none'}]"></div>
             <div class="item">
-                <el-button v-if="visibleDrawer && drawerTabsModel=='notifications'" icon="el-icon-error" circle @click="openNotificationsDrawer()" />
-                <el-badge v-else type="danger" :value="unreadNotifications.length" :max="9" :hidden="!unreadNotifications.length">
-                    <el-button icon="icon-bell-alt" circle @click="openNotificationsDrawer()" />
+                <el-button 
+                    v-if="visibleDrawer && drawerTabsModel=='notifications'" 
+                    icon="el-icon-error" 
+                    class="mobile-button"
+                    circle 
+                    @click="openNotificationsDrawer()" />
+                <el-badge 
+                    v-else 
+                    type="danger" 
+                    class="mobile-button" 
+                    :value="unreadNotifications.length" 
+                    :max="9" 
+                    :hidden="!unreadNotifications.length">
+                    <el-button 
+                        icon="icon-bell-alt"
+                        circle 
+                        @click="openNotificationsDrawer()" />
+                </el-badge>
+                <el-badge 
+                    type="danger" 
+                    class="desktop-button" 
+                    :value="unreadNotifications.length" 
+                    :max="9" 
+                    :hidden="!unreadNotifications.length">
+                    <el-button 
+                        icon="icon-bell-alt"
+                        circle 
+                        @click="openNotificationsDrawer()" />
                 </el-badge>
             </div>
             <div class="item">
-                <el-button v-if="visibleDrawer && drawerTabsModel=='settings'" icon="el-icon-error" circle @click="openSettingsDrawer()" />
-                <user v-else @avatar-click="openSettingsDrawer()" :only-avatar="el.is.md" />
+                <el-button 
+                    v-if="visibleDrawer && drawerTabsModel=='settings'" 
+                    icon="el-icon-error" 
+                    class="mobile-button"
+                    circle 
+                    @click="openSettingsDrawer()" />
+                <user 
+                    v-else 
+                    class="mobile-button"
+                    @avatar-click="openSettingsDrawer()" 
+                    :only-avatar="el.is.md" />
+                <user 
+                    class="desktop-button"
+                    @avatar-click="openSettingsDrawer()" 
+                    :only-avatar="el.is.md" />
             </div>
             <div class="item">
                 <el-tooltip :content="$t('resident.logout')" effect="dark" placement="bottom">
@@ -35,7 +73,7 @@
             <div ref="content" id="layout-content" :class="['content', {'fill': !visibleSidebar}]">
                 <sidebar ref="sidebar" :key="sidebarKey" :routes="routes" :visible.sync="visibleSidebar" :direction="sidebarDirection" :show-toggler="false" />
                 <transition @enter="onEnterTransition" @leave="onLeaveTransition" mode="out-in" :css="false" appear>
-                    <router-view class="view" />
+                    <router-view class="view" ref="routeComponent"/>
                 </transition>
             </div>
             <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
@@ -264,6 +302,10 @@
                 }
 
                 this.drawerTabsModel = 'settings'
+            },
+            handleLogoClick() {
+                this.visibleDrawer = false;
+                this.$refs.routeComponent.closeDrawer();
             }
         },
         computed: {
@@ -325,6 +367,17 @@
         background-color: var(--color-main-background-base);
         display: flex;
         flex-direction: column;
+
+        @media screen and (max-width: 414px) {
+            .desktop-button {
+                display: none;
+            }
+        }
+        @media screen and (min-width: 600px) {
+            .mobile-button {
+                display: none;
+            }
+        }
 
         &.md .container .content {
             flex-direction: column;

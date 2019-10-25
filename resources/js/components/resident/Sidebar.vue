@@ -274,7 +274,7 @@
                     if (state) {
                         this.$anime({
                             targets: this.$refs.submenu,
-                            translateY: ['100%', '-98px'],
+                            translateY: ['100%', '-65px'],
                             translateX: this.origin.x,
                             translateZ: 0,
                             opacity: [0, 1],
@@ -285,7 +285,7 @@
                     } else {
                         this.$anime({
                             targets: this.$refs.submenu,
-                            translateY: ['-98px', '100%'],
+                            translateY: ['-65px', '100%'],
                             translateX: this.origin.x,
                             translateZ: 0,
                             opacity: [1, 0],
