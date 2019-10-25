@@ -559,29 +559,29 @@
 
             EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
-                if(this.requestCount >= 99) {
-                    document.getElementById('tab-requests').style.paddingRight = '50px';
-                }
+                // if(this.requestCount >= 99) {
+                //     document.getElementById('tab-requests').style.paddingRight = '50px';
+                // }
             });
 
             EventBus.$on('assignee-get-counted', assignee_count => {                
                 this.assigneeCount = assignee_count;
-                if(this.assigneeCount >= 99) {
-                    document.getElementById('tab-assignees').style.paddingRight = '50px';
-                }
+                // if(this.assigneeCount >= 99) {
+                //     document.getElementById('tab-assignees').style.paddingRight = '50px';
+                // }
             });
 
             EventBus.$on('building-get-counted', building_count => {
                 this.buildingCount = building_count;
-                if(this.buildingCount >= 99) {
-                    document.getElementById('tab-buildings').style.paddingRight = '50px';
-                }
+                // if(this.buildingCount >= 99) {
+                //     document.getElementById('tab-buildings').style.paddingRight = '50px';
+                // }
             });
             EventBus.$on('audit-get-counted', audit_count => {
                 this.auditCount = audit_count;
-                if(this.auditCount >= 99) {
-                    document.getElementById('tab-audit').style.paddingRight = '50px';
-                }
+                // if(this.auditCount >= 99) {
+                //     document.getElementById('tab-audit').style.paddingRight = '50px';
+                // }
             });
         },
         watch: {
