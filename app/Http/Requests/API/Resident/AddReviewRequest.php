@@ -5,7 +5,7 @@ namespace App\Http\Requests\API\Resident;
 use App\Models\Resident;
 use App\Http\Requests\BaseRequest;
 
-class UpdateRequest extends BaseRequest
+class AddReviewRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,6 +25,10 @@ class UpdateRequest extends BaseRequest
      */
     public function rules()
     {
-        return Resident::$putRules;
+        return [
+            'resident_id' => 'required|exists:residents,id',
+            'review' => 'string',
+            'rating' => 'required|between:0,10',
+        ];
     }
 }
