@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\OldChagesAttribute;
+
 /**
  * App\Models\Model
  *
@@ -12,6 +14,8 @@ namespace App\Models;
  */
 class Model extends \Illuminate\Database\Eloquent\Model
 {
+    use OldChagesAttribute;
+
     /**
      * @var array
      */

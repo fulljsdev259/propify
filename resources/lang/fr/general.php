@@ -302,7 +302,7 @@ return [
     ],
     'email_receptionist' => [
         'title' => 'Réceptionniste par courriel',
-        'info_desc' => 'Souhaitez-vous utiliser global ou affecter',
+        'info_desc' => 'Souhaitez-vous utiliser global ou affecter?',
         'global' => 'Choisissez parmi les',
         'assign' => 'Assigner',
         'email_receptionist_of' => 'Réceptionniste par courriel de :category'

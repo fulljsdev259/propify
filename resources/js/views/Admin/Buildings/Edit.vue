@@ -17,8 +17,8 @@
             </template>
         </heading>
         <div class="warning-bar">
-            <div class="message">
-                {{$t('models.building.warning_bar.message')}}
+            <div class="message" type="info">
+                <i class="icon-info-circled"></i>{{$t('models.building.warning_bar.message')}}
             </div>
             <div class="title" @click="gotoEmailReceptionistDrawer">
                 {{$t('models.building.warning_bar.title')}}
@@ -296,7 +296,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="managers">
                         <span slot="label">
-                            <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('models.building.managers') }}</el-badge>
+                            <el-badge :value="managerCount" :max="99" class="admin-layout">{{ $t('models.building.managers') }}</el-badge>
                         </span>
                         <assignment-by-type
                             :resetToAssignList="resetToAssignList"
@@ -379,7 +379,7 @@
                 </el-tabs>
                 
                 <el-tabs type="border-card" v-model="activeRequestTab">
-                    <el-tab-pane name="requests">
+                    <el-tab-pane name="requests" >
                         <span slot="label">
                             <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
                         </span>
@@ -456,7 +456,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="email_receptionist" lazy>
                         <div slot="label">
-                            <i class="ti-gallery"></i>
+                            <i class="icon-mail"></i>
                             {{$t('general.email_receptionist.title')}}
                         </div>
                         
@@ -627,7 +627,7 @@
                 contactUseGlobalAddition: '',
                 fileCount: 0,                
                 residentCount: 0,
-                assigneeCount: 0,
+                managerCount: 0,
                 unitCount: 0,
                 requestCount: 0,
                 contractCount: 0,
@@ -941,20 +941,35 @@
         mounted() {
             this.$root.$on('changeLanguage', () => this.getStates());            
 
-            EventBus.$on('assignee-get-counted', assignee_count => {                
-                this.assigneeCount = assignee_count;
+            EventBus.$on('assignee-get-counted', manager_count => {                
+                this.managerCount = manager_count;
+                // if(this.managerCount >= 99) {
+                //     document.getElementById('tab-managers').style.paddingRight = '50px';
+                // }
             });
             EventBus.$on('unit-get-counted', unit_count => {
                 this.unitCount = unit_count;
+                // if(this.unitCount >= 99) {
+                //     document.getElementById('tab-units').style.paddingRight = '50px';
+                // }
             });
             EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
+                // if(this.requestCount >= 99) {
+                //     document.getElementById('tab-requests').style.paddingRight = '50px';
+                // }
             });
             EventBus.$on('resident-get-counted', resident_count => {                
                 this.residentCount = resident_count;
+                // if(this.residentCount >= 99) {
+                //     document.getElementById('tab-residents').style.paddingRight = '50px';
+                // }
             });
             EventBus.$on('audit-get-counted', audit_count => {
                 this.auditCount = audit_count;
+                // if(this.auditCount >= 99) {
+                //     document.getElementById('tab-audit').style.paddingRight = '50px';
+                // }
             });
             // this.fileCount = this.model.media.length;
         },
@@ -1051,6 +1066,12 @@
                 .message {
                     flex-grow: 1;
                     font-size: 13px;
+                    line-height: 20px;
+
+                    i {
+                        font-size: 15px;
+                        margin-right: 5px;
+                    }
                 }
 
                 .title {

@@ -157,6 +157,16 @@ class Quarter extends AuditableModel implements HasMedia
         'xls',
         'xlsx'
     ];
+    /**
+     * @var array
+     */
+    protected $auditEvents = [
+        AuditableModel::EventCreated,
+        AuditableModel::EventUpdated,
+        AuditableModel::EventDeleted,
+        AuditableModel::EventManagerAssigned => 'getAttachedEventAttributes',
+        AuditableModel::EventManagerUnassigned => 'getDetachedEventAttributes',
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany

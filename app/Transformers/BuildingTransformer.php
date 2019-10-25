@@ -56,8 +56,8 @@ class BuildingTransformer extends BaseTransformer
             $response['quarter'] = (new QuarterTransformer)->transform($model->quarter);
         }
 
-        if ($model->relationExists('serviceProviders')) {
-            $response['service_providers'] = (new ServiceProviderTransformer)->transformCollection($model->serviceProviders);
+        if ($model->relationExists('service_providers')) {
+            $response['service_providers'] = (new ServiceProviderTransformer)->transformCollection($model->service_providers);
         }
 
         $assignedUsers = $model->newCollection();

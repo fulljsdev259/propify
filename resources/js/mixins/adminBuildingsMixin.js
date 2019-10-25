@@ -380,9 +380,14 @@ export default (config = {}) => {
                         
                         this.serviceCount = this.model.service_providers.length
                         this.fileCount = this.model.media.length
-
+                        // if(this.fileCount >= 99) {
+                        //     document.getElementById('tab-files').style.paddingRight = '50px';
+                        // }
                         
                         this.contractCount = this.model.contracts.length
+                        // if(this.contractCount >= 99) {
+                        //     document.getElementById('tab-contracts').style.paddingRight = '50px';
+                        // }
 
                         this.model.residents = this.model.contracts.map(contract => contract.resident);
 

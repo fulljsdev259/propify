@@ -136,7 +136,7 @@
                                                         <el-form-item :label="$t('models.resident.type.label')"
                                                                     prop="type">
                                                             
-                                                            <el-select placeholder="Select" style="display: block" v-model="model.type" >
+                                                            <el-select placeholder="Select" style="display: block" v-model="model.type" disabled>
                                                                 <el-option
                                                                     :key="k"
                                                                     :label="$t(`models.resident.type.${type}`)"
@@ -563,7 +563,9 @@
             }
         }
 
-
+        .el-select {
+            display: block;
+        }
 
         .ui-drawer {
             .ui-divider {
