@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Models\AuditableModel;
 use App\Models\Building;
+use App\Models\Unit;
 
 /**
  * Class BuildingRepository
@@ -50,7 +52,7 @@ class BuildingRepository extends BaseRepository
         $model = parent::create($attributes);
 
         if ($attributes['service_providers']) {
-            $model->serviceProviders()->attach($attributes['service_providers']);
+            $model->service_providers()->attach($attributes['service_providers']);
         }
 
         return $model;
@@ -61,7 +63,7 @@ class BuildingRepository extends BaseRepository
         $model = parent::update($attributes, $id);
 
         if ($attributes['service_providers']) {
-            $model->serviceProviders()->sync($attributes['service_providers']);
+            $model->service_providers()->sync($attributes['service_providers']);
         }
 
         return $model;
@@ -73,7 +75,7 @@ class BuildingRepository extends BaseRepository
 
         $model = $this->find($id);
 
-        $model->serviceProviders()->detach();
+        $model->service_providers()->detach();// @TODO check
 
         $deleted = $model->delete();
 
@@ -96,10 +98,11 @@ class BuildingRepository extends BaseRepository
      */
     public function saveManyUnit($building, $floorData, $preText)
     {
-        if (! is_array($floorData)) {
+        if (! is_array($floorData) || empty($floorData)) {
             return $building;
         }
 
+        Unit::disableAuditing();
         if ($building->attic) {
             $atticFloor = array_key_last($floorData);
             $floorCount = array_pop($floorData);
@@ -115,9 +118,16 @@ class BuildingRepository extends BaseRepository
         if ($building->attic) {
             $data = $this->getAtticData($atticFloor, $floorCount, $preText, $data, ['attic' => true]);
         }
-        
-        $units = $building->units()->createMany($data);
-        $building->setRelation('units', $units);
+
+        if ($data) {
+            $units = $building->units()->createMany($data);
+            Unit::enableAuditing();
+            $building->addDataInAudit('units', $units, AuditableModel::UpdateOrCreate);
+            $building->setRelation('units', $units);
+        } else {
+            Unit::enableAuditing();
+        }
+
         return $building;
     }
 

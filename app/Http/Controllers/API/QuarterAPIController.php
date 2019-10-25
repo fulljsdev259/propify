@@ -14,6 +14,7 @@ use App\Http\Requests\API\Quarter\ListRequest;
 use App\Http\Requests\API\Quarter\ViewRequest;
 use App\Http\Requests\API\Quarter\DeleteRequest;
 use App\Models\Address;
+use App\Models\AuditableModel;
 use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
@@ -179,18 +180,22 @@ class QuarterAPIController extends AppBaseController
         }
 
         $quarter = $this->quarterRepository->create($input);
-        if (isset($address)) {
-            $quarter->addDataInAudit('address', $address);
-        }
 
         if ($quarter) {
+
+            if (isset($address)) {
+                $quarter->addDataInAudit('address', $address);
+            }
+
             DB::commit();
             $quarter->load('address', 'media');
+            $response = (new QuarterTransformer)->transform($quarter);
+
         } else {
+            $response = [];
             DB::rollBack();
         }
 
-        $response = (new QuarterTransformer)->transform($quarter);
 
         return $this->sendResponse($response, __('models.quarter.saved'));
     }
@@ -321,6 +326,28 @@ class QuarterAPIController extends AppBaseController
 
         DB::beginTransaction();
         $addressInput = $request->get('address');
+        if (empty($addressInput)) {
+            if (isset($request->state_id)) {
+                $addressInput['state_id'] = $request->state_id;
+            }
+
+            if (isset($request->city)) {
+                $addressInput['city'] = $request->city;
+            }
+
+            if (isset($request->zip)) {
+                $addressInput['zip'] = $request->zip;
+            }
+
+            if (isset($request->street)) {
+                $addressInput['street'] = $request->street;
+            }
+            if (isset($request->house_num)) {
+                $addressInput['house_num'] = $request->house_num;
+            }
+        }
+
+
         if ($addressInput) {
             $validator = Validator::make($addressInput, Address::$rules);
             if ($validator->fails()) {
@@ -330,7 +357,6 @@ class QuarterAPIController extends AppBaseController
 
             if ($quarter->address) {
                 $address = $this->addressRepository->updateExisting($quarter->address, $addressInput);
-
             } else {
                 $address = $this->addressRepository->create($addressInput);
                 $input['address_id'] = $address->id;
@@ -342,14 +368,22 @@ class QuarterAPIController extends AppBaseController
 
 
         $quarter = $this->quarterRepository->updateExisting($quarter, $input);
+
         if ($quarter) {
+
+            if (isset($address)) {
+                $quarter->addDataInAudit('address', $address, AuditableModel::UpdateOrCreate);
+            }
+
             DB::commit();
             $quarter->load('address', 'media');
+            $response = (new QuarterTransformer)->transform($quarter);
+
         } else {
             DB::rollBack();
+            $response = [];
         }
 
-        $response = (new QuarterTransformer)->transform($quarter);
         return $this->sendResponse($response, __('models.quarter.saved'));
     }
 

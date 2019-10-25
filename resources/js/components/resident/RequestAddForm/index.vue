@@ -79,7 +79,7 @@
         <el-form-item prop="title" :label="$t('resident.title')" required>
             <el-input v-model="model.title" />
         </el-form-item>
-        <el-form-item prop="description" :label="$t('resident.description')" required>
+        <el-form-item prop="description" :label="$t('resident.description')" required class="full-width">
             <el-input type="textarea" ref="description" v-model="model.description" :autosize="{minRows: 4, maxRows: 16}" />
         </el-form-item>
         <!-- <el-form-item prop="visibility" :label="$t('resident.visibility')" required>
@@ -88,7 +88,7 @@
                 </el-option>
             </el-select>
         </el-form-item> -->
-        <el-form-item class="switcher" prop="is_public" v-if="this.showSubCategory == true">
+        <el-form-item class="switcher full-width" prop="is_public" v-if="this.showSubCategory == true">
             <label class="switcher__label" >
                 {{$t('resident.request_public_title')}}
                 <span class="switcher__desc">{{$t('resident.request_public_desc')}}</span>
@@ -364,7 +364,17 @@
 
 <style lang="scss" scoped>
     .request-add.el-form {
+        @media screen and (max-height: 414px) {
+            display: block !important;
+        }
         .el-form-item {
+            @media screen and (max-height: 414px) {
+                width: 49.5% !important;
+                display: inline-block;
+            }
+            &.full-width {
+                width: 100% !important;
+            }
             margin-bottom: 0px;
 
             &.is-error {

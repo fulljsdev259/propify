@@ -305,7 +305,7 @@ return [
         'info_desc' => 'Souhaitez-vous utiliser global ou affecter',
         'global' => 'Choisissez parmi les',
         'assign' => 'Assigner',
-        'email_receptionist_of' => 'Réceptionniste par courriel de'
+        'email_receptionist_of' => 'Réceptionniste par courriel de :category'
     ],
     'filter' => 'Filtres',
     'activities' => [

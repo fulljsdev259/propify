@@ -93,6 +93,8 @@
         /deep/ .ui-card__body
             .owi
                 font-size: 112px
+                @media screen and (max-width: 414px) 
+                    font-size: 60px
                 color: var(--primary-color)
 
             .city
@@ -102,6 +104,8 @@
                 overflow: hidden
                 text-overflow: ellipsis
                 white-space: nowrap
+                @media screen and (max-width: 414px) 
+                    font-size: 24px
 
             .temperature
                 display: flex

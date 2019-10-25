@@ -14,6 +14,7 @@
                 <weather-card class="widget" />
                 <latest-property-managers-card v-if="!hidePropertyManagerCard" class="widget" />
                 <latest-my-neighbours-card v-if="!hideMyNeighbourCard" class="widget" />
+                <rate-card v-if="this.loggedInUser.resident.review == null" class="first-rate"/>
             </div>
             <div class="column">
                 <requests-statistics-card class="widget" />
@@ -22,7 +23,7 @@
             </div>
             <div class="column">
                 <!-- <latest-listings-card class="widget" /> -->
-                <rate-card v-if="this.loggedInUser.resident.review == null"/>
+                <rate-card v-if="this.loggedInUser.resident.review == null" class="second-rate"/>
             </div>
         </div>
         
@@ -30,6 +31,9 @@
 
     </div>
     <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked @update:visibleDrawer="resetDataFromDrawer">
+            <a class="a-close-button" @click="visibleDrawer=!visibleDrawer">
+                <span class="el-icon-close"></span>
+            </a>
             <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="openedRequest">
                 <el-tab-pane name="chat" lazy>
                     <div slot="label">
@@ -208,6 +212,32 @@
         overflow: auto;
         padding: 16px;
         
+        @media screen and (max-width: 414px), (min-width: 1025px) {
+            :global(.ui-heading__content__title) {
+                font-size: 24px;
+            }
+            .first-rate {
+                display: none;
+            }
+        }
+        @media screen and (max-width: 1024px) and (min-width: 415px) {
+            .second-rate {
+                display: none;
+            }
+        }
+        :global(.ui-card) {
+            :global(.ui-card__header) {
+                position: relative;
+                :global(.el-button) {
+                    @media screen and (max-width: 414px) {
+                        position: absolute;
+                        bottom: 5px;
+                        right: 16px;
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
         .heading {
             .description {
                 color: darken(#fff, 40%);
@@ -279,8 +309,11 @@
         flex-direction: column
         overflow: hidden !important
 
-
         .ui-drawer
+            @media screen and (max-width: 414px) 
+                width: 100% !important;
+                max-width: 100% !important;
+
             .el-tabs
                 height: 100%
                 display: flex

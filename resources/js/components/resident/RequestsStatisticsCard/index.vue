@@ -116,6 +116,10 @@
                     border-radius: 50%
                     border: 8px var(--primary-color) solid
                     box-shadow: 0 1px 3px transparentize(#000, .88), 0 1px 2px transparentize(#000, .76)
+                    @media screen and (max-width: 414px) 
+                        width: 40px
+                        height: 40px
+                        border: 4px var(--primary-color) solid
 
                 .title
                     font-size: 18px
@@ -123,4 +127,9 @@
                     color: var(--color-text-placeholder)
                     padding: 8px
                     text-transform: capitalize
+                    @media screen and (max-width: 414px)
+                        padding: 5px;
+                span 
+                    @media screen and (max-width: 414px)
+                        line-height: 1;
 </style>

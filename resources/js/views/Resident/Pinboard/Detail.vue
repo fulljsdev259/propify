@@ -1,11 +1,11 @@
 <template>
     <div class="pinboard">
         <heading icon="ti-announcement" :title="$t('resident.pinboard')" :description="$t('resident.heading_info.pinboard')"/>
-        <el-row :gutter="24">
-            <el-col :span="16">
+        <el-row :gutter="16">
+            <el-col :xl="11" :lg="11" :md="12" :sm="12" :xs="24">
                 <pinboard-card :data="data" v-if="data" :show-actions="false"/>
             </el-col>
-            <el-col :span="8">
+            <el-col :xl="8" :lg="8" :md="12" :sm="12" :xs="24">
                 <rss-feed title="Blick.ch Pinboard"/>
             </el-col>
         </el-row>
@@ -48,14 +48,14 @@
         :global(.heading) {
             margin-bottom: 1em;
         }
-        .el-row {
-            .el-col {
-                &:nth-child(1) {
-                    max-width: 640px;
-                }
-                &:nth-child(2) {
-                    max-width: 448px;
-                }
+        @media screen and (min-width: 667px) {
+            .el-col-xs-24 {
+                width:50% !important;
+            }
+        }
+        @media screen and (max-width: 666px) {
+            .el-col:nth-of-type(2) {
+                margin-top: 16px;
             }
         }
     }

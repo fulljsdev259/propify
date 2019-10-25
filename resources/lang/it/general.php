@@ -305,7 +305,7 @@ return [
         'info_desc' => 'Volete utilizzare l\'opzione globale o assegnare a',
         'global' => 'Scegliere da globale',
         'assign' => 'Assegna',
-        'email_receptionist_of' => 'Ricezione e-mail di'
+        'email_receptionist_of' => 'Ricezione e-mail di :category'
     ],
     'filter' => 'Filtri',
     'activities' => [

@@ -82,6 +82,7 @@
 <style lang="scss" scoped>
     .ui-card {
         :global(.ui-card__header) {
+            position: relative;
             .el-button {
                 padding: 0;
                 margin-left: auto;

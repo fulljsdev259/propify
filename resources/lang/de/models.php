@@ -202,7 +202,11 @@ return [
             'delete_requests' => 'Löschen',
             'dont_delete_requests' => 'Nicht löschen',
         ],
-        'assigned_buildings' => 'Zugewiesene Objekte'
+        'assigned_buildings' => 'Zugewiesene Objekte',
+        'warning_bar' => [
+            'title' => 'Problem gefunden',
+            'message' => "Es sieht so aus, als hätten Sie fortimo-Mitglieder nicht als E-Mail-Empfänger für Anforderungskategorien ausgewählt. Bitte wählen Sie sie aus der Einstellungsschublade, die auf der Registerkarte Anfragen verfügbar ist."
+        ]
     ],
     'unit' => [
         'title' => 'Einheiten',

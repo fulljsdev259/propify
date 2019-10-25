@@ -305,7 +305,7 @@ return [
         'info_desc' => 'Do you want to use global or assign',
         'global' => 'Choose from global',
         'assign' => 'Assign',
-        'email_receptionist_of' => 'Email Receptionist of'
+        'email_receptionist_of' => 'Email Receptionist of :category'
     ],
     'filter' => 'Filters',
     'activities' => [
