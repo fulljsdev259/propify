@@ -194,32 +194,6 @@
                             </el-form-item>
                         </template>                        
                     </el-card>
-
-                    <el-card :loading="loading" v-if="this.model.type != 3 && (!model.resident)">
-                        <div slot="header" class="clearfix">
-                            <span>{{$t('general.assignment')}}</span>
-                        </div>
-                        <assignment-by-type
-                            :resetToAssignList="resetToAssignList"
-                            :assignmentType.sync="assignmentType"
-                            :toAssign.sync="toAssign"
-                            :assignmentTypes="assignmentTypes"
-                            :assign="attachBuilding"
-                            :toAssignList="toAssignList"
-                            :remoteLoading="remoteLoading"
-                            :remoteSearch="remoteSearchBuildings"
-                        />
-                        <relation-list
-                            :actions="assignmentsActions"
-                            :columns="assignmentsColumns"
-                            :filterValue="model.id"
-                            fetchAction="getPinboardAssignments"
-                            filter="pinboard_id"
-                            ref="assignmentsList"
-                            v-if="model.id"
-                        />
-
-                    </el-card>                
                 </el-col>
                 <el-col :md="12">
                     <el-card :loading="loading" class="contact-info-card">
@@ -445,14 +419,14 @@
 
                     <el-card :header="$t('models.pinboard.buildings')" :loading="loading" class="mt15">
                         <assignment-by-type
-                                :resetToAssignList="resetToAssignList"
-                                :assignmentType.sync="assignmentType"
-                                :toAssign.sync="toAssign"
-                                :assignmentTypes="assignmentTypes"
-                                :assign="attachBuilding"
-                                :toAssignList="toAssignList"
-                                :remoteLoading="remoteLoading"
-                                :remoteSearch="remoteSearchBuildings"
+                            :resetToAssignList="resetToAssignList"
+                            :assignmentType.sync="assignmentType"
+                            :toAssign.sync="toAssign"
+                            :assignmentTypes="assignmentTypes"
+                            :assign="attachBuilding"
+                            :toAssignList="toAssignList"
+                            :remoteLoading="remoteLoading"
+                            :remoteSearch="remoteSearchBuildings"
                         />
                         <relation-list
                             :actions="assignmentsActions"
@@ -479,37 +453,14 @@
                     </el-card>
 
                     <el-card :header="$t('models.pinboard.placeholders.search_provider')" v-if="model.type == 3 && model.sub_type == 3" :loading="loading" class="mt15">
-                        <el-row :gutter="10">
-                            <el-col :lg="18" :xl="20">
-                                <el-select
-                                    :loading="remoteLoading"
-                                    :placeholder="$t('models.pinboard.placeholders.search_provider')"
-                                    :remote-method="remoteSearchProviders"
-                                    class="custom-remote-select"
-                                    filterable
-                                     clearable
-                                    remote
-                                    reserve-keyword
-                                    style="width: 100%;"
-                                    v-model="toAssignProvider"
-                                >
-                                    <div class="custom-prefix-wrapper" slot="prefix">
-                                        <i class="el-icon-search custom-icon"></i>
-                                    </div>
-                                    <el-option
-                                        :key="provider.id"
-                                        :label="provider.name"
-                                        :value="provider.id"
-                                        v-for="provider in toAssignProviderList"/>
-                                </el-select>
-                            </el-col>
-                            <el-col :lg="6" :xl="4">
-                                <el-button :disabled="!toAssignProvider" @click="attachProvider" class="full-button"
-                                            icon="ti-save" type="primary">
-                                    {{$t('general.assign')}}
-                                </el-button>
-                            </el-col>
-                        </el-row>
+                        <assignment-by-type
+                            :resetToAssignList="resetToAssignProviderList"
+                            :toAssign.sync="toAssignProvider"
+                            :assign="attachProvider"
+                            :toAssignList="toAssignProviderList"
+                            :remoteLoading="remoteLoading"
+                            :remoteSearch="remoteSearchProviders"
+                        />
                         <relation-list
                             :actions="assignmentsProviderActions"
                             :columns="assignmentsProviderColumns"
@@ -576,6 +527,7 @@
                 assignmentsActions: [{
                     width: '180px',
                     buttons: [{
+                        icon: 'el-icon-close',
                         title: 'general.unassign',
                         type: 'danger',
                         onClick: this.notifyUnassignment
@@ -649,16 +601,21 @@
                     resp = await this.unassignPinboardBuilding({
                         id: this.model.id,
                         toAssignId: toUnassign.id
-                    })
+                    });
+                    this.alreadyAssigned.buildings = this.alreadyAssigned.buildings.filter(building => {
+                        return building != toUnassign.id
+                    });
                 } else {
                     resp = await this.unassignPinboardQuarter({
                         id: this.model.id,
                         toAssignId: toUnassign.id
-                    })
+                    });
+                    this.alreadyAssigned.quarters = this.alreadyAssigned.quarters.filter(quarter => {
+                        return quarter != toUnassign.id
+                    });
                 }
 
                 if (resp) {
-                    await this.fetchCurrentPinboard();
                     this.$refs.assignmentsList.fetch();
 
                     this.toAssign = '';
@@ -673,7 +630,10 @@
                     toAssignId: toUnassign.id
                 });
 
-                await this.fetchCurrentPinboard();
+                this.alreadyAssigned.providers = this.alreadyAssigned.providers.filter(provider => {
+                    return provider != toUnassign.id
+                });
+
                 this.$refs.assignmentsProviderList.fetch();
 
                 this.toAssignProvider = '';

@@ -168,24 +168,24 @@
                 <el-col :md="12">
                     <card :loading="loading" class="mb20" :header="$t('models.pinboard.buildings')">
                         <assignment-by-type
-                                :resetToAssignList="resetToAssignList"
-                                :assignmentType.sync="assignmentType"
-                                :toAssign.sync="toAssign"
-                                :assignmentTypes="assignmentTypes"
-                                :assign="attachAddedAssigmentList"
-                                :toAssignList="toAssignList"
-                                :remoteLoading="remoteLoading"
-                                :remoteSearch="remoteSearchBuildings"
+                            :resetToAssignList="resetToAssignList"
+                            :assignmentType.sync="assignmentType"
+                            :toAssign.sync="toAssign"
+                            :assignmentTypes="assignmentTypes"
+                            :assign="attachAddedAssigmentList"
+                            :toAssignList="toAssignList"
+                            :remoteLoading="remoteLoading"
+                            :remoteSearch="remoteSearchBuildings"
                         />
                         <relation-list
-                                :actions="assignmentsActions"
-                                :columns="assignmentsColumns"
-                                :addedAssigmentList="addedAssigmentList"
-                                :fetchStatus="false"
-                                :filterValue="false"
-                                :fetchAction="false"
-                                :filter="false"
-                                ref="assignmentsList"
+                            :actions="assignmentsActions"
+                            :columns="assignmentsColumns"
+                            :addedAssigmentList="addedAssigmentList"
+                            :fetchStatus="false"
+                            :filterValue="false"
+                            :fetchAction="false"
+                            :filter="false"
+                            ref="assignmentsList"
                         />
 
                         <div v-if="addedAssigmentList.length">
@@ -207,30 +207,24 @@
                               :loading="loading"
                               class="mt15"
                               :header="$t('models.pinboard.placeholders.search_provider')">
-                            <el-row :gutter="10">
-                                <el-col :lg="24" :xl="24">
-                                    <el-select
-                                        :loading="remoteLoading"
-                                        :placeholder="$t('models.pinboard.placeholders.search_provider')"
-                                        :remote-method="remoteSearchProviders"
-                                        class="custom-remote-select"
-                                        filterable
-                                        remote
-                                        reserve-keyword
-                                        style="width: 100%;"
-                                        v-model="toAssignProvider"
-                                    >
-                                        <div class="custom-prefix-wrapper" slot="prefix">
-                                            <i class="el-icon-search custom-icon"></i>
-                                        </div>
-                                        <el-option
-                                            :key="provider.id"
-                                            :label="provider.name"
-                                            :value="provider.id"
-                                            v-for="provider in toAssignProviderList"/>
-                                    </el-select>
-                                </el-col>
-                            </el-row>
+                            <assignment-by-type
+                                :resetToAssignList="resetToAssignProviderList"
+                                :toAssign.sync="toAssignProvider"
+                                :assign="attachAddedProviderAssigmentList"
+                                :toAssignList="toAssignProviderList"
+                                :remoteLoading="remoteLoading"
+                                :remoteSearch="remoteSearchProviders"
+                            />
+                            <relation-list
+                                :actions="assignmentsProviderActions"
+                                :columns="assignmentsProviderColumns"
+                                :addedAssigmentList="addedProviderAssigmentList"
+                                :fetchStatus="false"
+                                :filterValue="false"
+                                :fetchAction="false"
+                                :filter="false"
+                                ref="assignmentsProviderList"
+                            />
                         </card>
 
                         <card :loading="loading" class="mt15" :header="$t('models.pinboard.announcement')">
@@ -392,9 +386,25 @@
                 assignmentsActions: [{
                     width: '180px',
                     buttons: [{
+                        icon: 'el-icon-close',
                         title: 'general.unassign',
                         type: 'danger',
                         onClick: this.notifyUnassignment
+                    }]
+                }],
+                assignmentsProviderColumns: [{
+                    prop: 'name',
+                    label: 'general.name',
+                    type: 'serviceName'
+                }],
+                assignmentsProviderActions: [{
+                    width: '180px',
+                    buttons: [{
+                        icon: 'el-icon-close',
+                        title: 'general.unassign',
+                        type: 'danger',
+                        onClick: this.notifyProviderUnassignment,
+                        tooltipMode: true
                     }]
                 }],
             }
@@ -408,6 +418,14 @@
                     if (element === row) {
                         let index = this.addedAssigmentList.indexOf(element);
                         this.addedAssigmentList.splice(index, 1);
+                    }
+                });
+            },
+            notifyProviderUnassignment(row) {
+                this.addedProviderAssigmentList.forEach(element => {
+                    if (element === row) {
+                        let index = this.addedProviderAssigmentList.indexOf(element);
+                        this.addedProviderAssigmentList.splice(index, 1);
                     }
                 });
             },
