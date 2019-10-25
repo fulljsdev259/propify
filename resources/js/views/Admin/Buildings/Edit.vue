@@ -155,8 +155,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="units" v-loading="loading.state">
                         <span slot="label">
-                            {{ $t('models.building.units') }}
-                            <el-badge :value="unitCount" :max="99" class="admin-layout"></el-badge>
+                            <el-badge :value="unitCount" :max="99" class="admin-layout">{{ $t('models.building.units') }}</el-badge>
                         </span>
                         <relation-list
                             :actions="unitActions"
@@ -169,8 +168,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="files">
                         <span slot="label">
-                            {{ $t('models.building.files') }}
-                            <el-badge :value="fileCount" :max="99" class="admin-layout"></el-badge>
+                            <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('models.building.files') }}</el-badge>
                         </span>
                         <draggable @sort="sortFiles" v-model="model.media">
                             <transition-group name="list-complete">
@@ -274,8 +272,7 @@
                 <el-tabs type="border-card" v-model="activeRightTab">
                     <el-tab-pane name="residents" v-loading="loading.state">                        
                         <span slot="label">
-                            {{ $t('general.residents') }}
-                            <el-badge :value="residentCount" :max="99" class="admin-layout"></el-badge>
+                            <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.residents') }}</el-badge>
                         </span>
                         <relation-list
                             :actions="residentActions"
@@ -288,8 +285,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="contracts">
                         <span slot="label">
-                            {{ $t('general.contracts') }}
-                            <el-badge :value="contractCount" :max="99" class="admin-layout"></el-badge>
+                            <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
                         </span>
                         
                         <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
@@ -301,8 +297,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="managers">
                         <span slot="label">
-                            {{ $t('models.building.managers') }}
-                            <el-badge :value="managerCount" :max="99" class="admin-layout"></el-badge>
+                            <el-badge :value="managerCount" :max="99" class="admin-layout">{{ $t('models.building.managers') }}</el-badge>
                         </span>
                         <assignment-by-type
                             :resetToAssignList="resetToAssignList"
@@ -326,8 +321,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="companies">
                         <span slot="label">
-                            {{ $t('models.building.companies') }}
-                            <el-badge :value="serviceCount" :max="99" class="admin-layout"></el-badge>
+                            <el-badge :value="serviceCount" :max="99" class="admin-layout">{{ $t('models.building.companies') }}</el-badge>
                         </span>                        
                         <!-- <label class="card-label">{{$t('settings.contact_enable.label')}}</label>
                         <el-select
@@ -388,8 +382,7 @@
                 <el-tabs type="border-card" v-model="activeRequestTab">
                     <el-tab-pane name="requests" >
                         <span slot="label">
-                            {{ $t('general.requests') }}
-                            <el-badge :value="requestCount" :max="99" class="admin-layout"></el-badge>
+                            <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
                         </span>
                         
                         <relation-list
@@ -1035,9 +1028,6 @@
         }
     }
     
-    #tab-files, #tab-companies, #tab-requests, #tab-residents, #tab-contracts, #tab-managers, #tab-units, #tab-audit{
-        // padding-right: 40px;
-    }
 </style>
 <style lang="scss" scoped>
     .last-form-row {
@@ -1052,14 +1042,6 @@
     .buildings-edit {
         overflow: hidden;
         flex: 1;
-
-        :global(.el-badge) {
-            height: 30px;
-            margin-right: -10px;
-            :global(sup) {
-                background-color: var(--primary-color);
-            }
-        }
 
         .main-content {
             overflow-x: hidden;
