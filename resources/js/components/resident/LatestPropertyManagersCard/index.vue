@@ -102,6 +102,9 @@
 
         /deep/ .ui-card__body
             .el-carousel
+                @media screen and (max-width: 414px)
+                    /deep/ .el-carousel__container
+                        height: 205px
                 /deep/ .el-carousel__item
                     display: flex
                     flex-direction: column

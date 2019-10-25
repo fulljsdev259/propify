@@ -3,7 +3,18 @@
         <div :class="['toggler', direction === 'vertical' && {'icon-left': visible, 'icon-right': !visible}, direction === 'horizontal' && {'icon-down': visible, 'icon-up': !visible}]" v-if="showToggler && !submenu.visible" @click="handleVisibility"></div>
         <div ref="menu" class="menu">
             
-            <div :class="['item', {'active': item.active}]" v-for="item in items" :key="item.title" :style="item.style" @mouseover="handleMouseRoute($event, item)" @click.stop="handleRoute($event, item)">
+            <div :class="['item', 'desktop-sidebar', {'active': item.active}]" v-for="item in items" :key="item.title" :style="item.style" @mouseover="handleMouseRoute($event, item)" @click.stop="handleRoute($event, item)">
+                <router-link 
+                    :to="{name: item.route.name}" v-if="!item.children">
+                    <i :class="['icon', item.icon]"></i>
+                    <div class="title">{{$t(item.title)}}</div>
+                </router-link>
+                <template v-else>
+                <i :class="['icon', item.icon]"></i>
+                <div class="title">{{$t(item.title)}}</div>
+                </template>
+            </div>
+            <div :class="['item', 'mobile-sidebar', {'active': item.active}]" v-for="item in items" :key="item.title + '1'" :style="item.style" @click.stop="handleRoute($event, item)">
                 <router-link 
                     :to="{name: item.route.name}" v-if="!item.children">
                     <i :class="['icon', item.icon]"></i>
@@ -296,7 +307,7 @@
                     if (state) {
                         this.$anime({
                             targets: this.$refs.submenu,
-                            translateX: ['-100%', '112px'],
+                            translateX: ['-100%', '122px'],
                             translateY: this.origin.y,
                             translateZ: 0,
                             opacity: [0, 1],
@@ -307,7 +318,7 @@
                     } else {
                         this.$anime({
                             targets: this.$refs.submenu,
-                            translateX: ['112px', '-100%'],
+                            translateX: ['122px', '-100%'],
                             translateY: this.origin.y,
                             translateZ: 0,
                             opacity: [1, 0],
@@ -387,6 +398,17 @@
             }
         }
 
+        @media screen and (max-width: 1366px) {
+            .desktop-sidebar {
+                display: none !important;
+            }
+        }
+        @media screen and (min-width: 1367px) {
+            .mobile-sidebar {
+                display: none !important;
+            }
+        }
+
         &.vertical-direction .menu,
         .submenu {
             overflow-y: auto;
@@ -462,6 +484,10 @@
             height: auto;
             order: 999999;
             padding-top: 0;
+
+            @media screen and (max-width: 812px) {
+                height: 125px;
+            }
             
             /deep/ &::-webkit-scrollbar {
                 width: 4px;
@@ -505,6 +531,10 @@
             &:not(.hidden) {
                 .menu {
                     height: 96px;
+    
+                    @media screen and (max-width: 812px) {
+                        height: 64px;
+                    }
                     border-radius: 0;
                 }
             }
@@ -540,6 +570,13 @@
                     width: 96px;
                     height: 96px;
                     margin: 0 !important;
+
+                    @media screen and (max-width: 812px) {
+                        height: 64px;
+                        a .title {
+                            margin-top: 0px !important;
+                        }
+                    }
                 }
             }
 
@@ -559,6 +596,7 @@
         .menu,
         .submenu {
             display: flex;
+            align-items: baseline;
             position: relative;
             scrollbar-width: thin;
             border-radius: 12px;
@@ -585,6 +623,10 @@
                     white-space: nowrap;
                     pointer-events: none;
                     margin-top: 8px;
+
+                    @media screen and (max-width: 812px) {
+                        margin-top: 0px !important;
+                    }
                 }
 
                 &.active {
@@ -650,7 +692,7 @@
             background-color: white;
             max-width: 320px;
             position: absolute;
-            left: 0;
+            left: -10px;
             z-index: 1;
 
             .item {

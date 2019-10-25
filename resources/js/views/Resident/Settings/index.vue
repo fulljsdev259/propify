@@ -5,7 +5,7 @@
         <el-tabs v-model="active">
             <el-tab-pane label="Personal Informations" name="personal_informations">
                 <el-row>
-                    <el-col :span="12" :xs="24">
+                    <el-col :span="12" :sm="18" :xs="24">
                         <card>
                             <el-form :model="loggedInUser" label-width="120px" ref="accform">
                                 <el-form-item :label="$t('models.user.profile_image')">
@@ -39,7 +39,7 @@
             </el-tab-pane>
             <el-tab-pane :label="$t('resident.security')" name="security">
                 <el-row>
-                    <el-col :span="12" :xs="24">
+                    <el-col :span="12" :sm="18" :xs="24">
                         <card>
                             <el-form :model="changePassword" label-width="210px" ref="changePasswordForm" size="medium">
                                 <el-form-item :label="$t('resident.old_password')" :rules="passwordValidationRules.password_old"
@@ -71,7 +71,7 @@
             </el-tab-pane>
             <el-tab-pane :label="$t('resident.default_address')" name="default_address" v-if="contracts.length > 1 || expired == true">
                 <el-row>
-                    <el-col :span="12" :xs="24">
+                    <el-col :span="12" :sm="18" :xs="24">
                         <card>
                             <el-form :model="defaultAddress" label-width="140px" ref="defaultAddressForm" size="medium">
                                 <el-alert                                     
@@ -83,7 +83,7 @@
                                 >
                                 </el-alert>
                                 <el-form-item :label="$t('resident.default_contract_id')" :rules="defaultAddressValidationRules.default_contract_id"
-                                              prop="default_contract_id">
+                                              prop="default_contract_id" class="contract">
                                     <el-select v-model="defaultAddress.default_contract_id" 
                                                 :placeholder="$t('resident.placeholder.contract')"
                                                 class="custom-select"
@@ -401,6 +401,37 @@
 
 <style lang="scss" scoped>
     .settings {
+        @media screen and (max-width: 414px) {
+            :global(.avatar-box) {
+                width: 140px;
+                height: 140px;
+                :global(.def-icon) {
+                    font-size: 140px;
+                }
+            }
+            :global(.el-form-item) {
+                margin-bottom: 5px;
+                :global(.el-form-item__label) {
+                    width: auto !important;
+                    line-height: 2;
+                }
+                :global(.el-form-item__content) {
+                    margin-left: 0px !important;
+                }
+            }
+        }
+        @media screen and (min-width: 415px) {
+            .contract {
+                display: flex;
+                :global(.el-form-item__label) {
+                    width: auto !important;
+                }
+                :global(.el-form-item__content) {
+                    flex: 1;
+                    margin-left: 0px !important;
+                }
+            }
+        }
         .custom-heading {
             margin-bottom: 2em;
         }
@@ -415,6 +446,9 @@
             background-position: calc(100% + 6em) calc(100% + 6em);
             width: 100%;
             height: 100%;
+            @media screen and (max-width: 812px) {
+                filter: opacity(.08)
+            }
         }
 
         :global(.el-input__prefix) {
