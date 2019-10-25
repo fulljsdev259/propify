@@ -302,7 +302,7 @@ return [
     ],
     'email_receptionist' => [
         'title' => 'Email Receptionist',
-        'info_desc' => 'Do you want to use global or assign',
+        'info_desc' => 'Do you want to use global or assign?',
         'global' => 'Choose from global',
         'assign' => 'Assign',
         'email_receptionist_of' => 'Email Receptionist of :category'

@@ -303,6 +303,9 @@ export default (config = {}) => {
                         this.model = await this.getUnit({id: this.$route.params.id});
 
                         this.contractCount = this.model.contracts.length
+                        // if(this.contractCount >= 99) {
+                        //     document.getElementById('tab-contracts').style.paddingRight = '50px';
+                        // }
 
                         this.addedAssigmentList = [];
                         this.addedAssigmentList = this.model.contracts.map(contract => contract.resident);
@@ -322,7 +325,9 @@ export default (config = {}) => {
                         });
                         
                         this.residentCount = this.addedAssigmentList.length
-
+                        // if(this.residentCount >= 99) {
+                        //     document.getElementById('tab-residents').style.paddingRight = '50px';
+                        // }
                         // if (this.model.resident) {
                         //     this.$set(this.model, 'resident_id', this.model.resident.id);
                         //     this.remoteSearchResidents(`${this.model.resident.first_name}`);
@@ -336,6 +341,9 @@ export default (config = {}) => {
                         // }
                         
                         this.fileCount = this.model.media ? this.model.media.length : 0
+                        // if(this.fileCount >= 99) {
+                        //     document.getElementById('tab-files').style.paddingRight = '50px';
+                        // }
                         
                        
                     } catch (err) {
