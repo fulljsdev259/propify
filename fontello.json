@@ -385,6 +385,12 @@
       "src": "typicons"
     },
     {
+      "uid": "9daa1fdf0838118518a7e22715e83abc",
+      "css": "file-pdf",
+      "code": 61889,
+      "src": "fontawesome"
+    },
+    {
       "uid": "dfhp68fdlvh9dknvxk4tkf8yy0h7vw3r",
       "css": "zoom-in",
       "code": 59436,
@@ -401,18 +407,6 @@
       "css": "right-open",
       "code": 61446,
       "src": "mfglabs"
-    },
-    {
-      "uid": "qab5uvjyoc3uu4d2pvt8soshtgkuvpak",
-      "css": "minus",
-      "code": 59439,
-      "src": "typicons"
-    },
-    {
-      "uid": "9daa1fdf0838118518a7e22715e83abc",
-      "css": "file-pdf",
-      "code": 61889,
-      "src": "fontawesome"
     },
     {
       "uid": "1a7104205ea96e6f40ac716d0ca72f21",
@@ -514,6 +508,12 @@
       "uid": "f761c3bbe16ba2d332914ecb28e7a042",
       "css": "file-excel",
       "code": 61891,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "bf882b30900da12fca090d9796bc3030",
+      "css": "mail",
+      "code": 59439,
       "src": "fontawesome"
     }
   ]

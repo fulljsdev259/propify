@@ -280,11 +280,10 @@
                         <div class="content" v-if="visibleDrawer">
                             <emergency-settings-form :visible.sync="visibleDrawer"/>
                         </div>
-                        
                     </el-tab-pane>
                     <el-tab-pane name="email_receptionist" lazy>
                         <div slot="label">
-                            <i class="ti-gallery"></i>
+                            <i class="icon-mail"></i>
                             {{$t('general.email_receptionist.title')}}
                         </div>
                         
@@ -292,7 +291,6 @@
                             
                             <email-receptionist-form :quarter_id="model.id" :visible.sync="visibleDrawer"/>
                         </div>
-
                     </el-tab-pane>
                 </el-tabs>
             </template>

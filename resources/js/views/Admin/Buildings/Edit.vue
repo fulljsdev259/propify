@@ -456,7 +456,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="email_receptionist" lazy>
                         <div slot="label">
-                            <i class="ti-email"></i>
+                            <i class="icon-mail"></i>
                             {{$t('general.email_receptionist.title')}}
                         </div>
                         
