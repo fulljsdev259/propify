@@ -174,9 +174,8 @@ class RequestRepository extends BaseRepository
     {
         if (!empty($attributes['contract_id'])) {
             // already validated and it must be exists
-            $contract = Contract::find($attributes['contract_id'], ['id', 'resident_id', 'unit_id']);
+            $contract = Contract::find($attributes['contract_id'], ['id', 'resident_id']);
             $attributes['resident_id'] = $contract->resident_id;
-            $attributes['unit_id'] = $contract->unit_id;
         }
 
         return $attributes;
@@ -354,12 +353,16 @@ class RequestRepository extends BaseRepository
 
     public function deleteRequesetWithUnitIds($ids)
     {
-        return $this->model->whereIn('unit_id', $ids)->delete();
+        return $this->model->whereHas('contract', function ($q) use ($ids) {
+            $q->whereIn('unit_id', $ids);
+        })->delete();
     }
 
     public function getRequestCountWithUnitIds($ids)
     {
-        return $this->model->whereIn('unit_id', $ids)->count();
+        return $this->model->whereHas('contract', function ($q) use ($ids) {
+            $q->whereIn('unit_id', $ids);
+        })->count();
     }
 
     /**
