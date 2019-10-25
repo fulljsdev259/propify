@@ -33,6 +33,7 @@ class QuarterTransformer extends BaseTransformer
 
         if ($model->relationExists('buildings')) {
             $response['buildings'] = (new BuildingTransformer())->transformCollection($model->buildings);
+            $response['contracts'] = collect($response['buildings'])->pluck('contracts')->collapse();
         }
 
         if ($model->relationExists('media')) {

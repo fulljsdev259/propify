@@ -196,7 +196,7 @@ class Resident extends AuditableModel implements HasMedia
     const TypeResident = 1;
     const TypeOwner = 2;
     const Type = [
-        self::TypeResident => 'resident',
+        self::TypeResident => 'tenant',
         self::TypeOwner => 'owner',
     ];
     /**
