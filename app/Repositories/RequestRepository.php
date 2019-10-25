@@ -10,8 +10,6 @@ use App\Models\PropertyManager;
 use App\Models\Contract;
 use App\Models\ServiceProvider;
 use App\Models\Request;
-use App\Models\RequestCategory;
-use App\Models\Resident;
 use App\Models\User;
 use App\Notifications\NewResidentRequest;
 use App\Notifications\RequestCommented;
