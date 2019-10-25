@@ -90,7 +90,7 @@ class AuditTransformer extends BaseTransformer
                     $old_value = ($old_value) ? Helper::formatedDate($old_value) : "";
                     $new_value = ($new_value) ? Helper::formatedDate($new_value) : "";
                 }                              
-                elseif(($model->auditable_type == 'request') && ($field == 'category_id')){                    
+                /*elseif(($model->auditable_type == 'request') && ($field == 'category_id')){                    
                     $old_category = RequestCategory::find($old_value);
                     $new_category = RequestCategory::find($new_value);                    
                     if($locale == 'de'){
@@ -106,7 +106,7 @@ class AuditTransformer extends BaseTransformer
                         $old_value = $old_category->name;
                         $new_value = $new_category->name;
                     }
-                }                
+                }*/                
                 $statement .= __("general.components.common.audit.content.with_id.general.updated",['fieldname' => $fieldname, 'old' => $old_value, 'new' => $new_value]);
                 $statement .= " ";
             }

@@ -16,7 +16,16 @@
                 </div>
             </template>
         </heading>
+        <div class="warning-bar">
+            <div class="message">
+                {{$t('models.building.warning_bar.message')}}
+            </div>
+            <div class="title" @click="gotoEmailReceptionistDrawer">
+                {{$t('models.building.warning_bar.title')}}
+            </div>
+        </div>
         <el-row :gutter="20" class="crud-view">
+            
             <el-col :md="12">
                 <el-tabs type="border-card" v-model="activeTab">
                     <el-tab-pane :label="$t('general.actions.view')" name="details">
@@ -386,9 +395,10 @@
                     </el-tab-pane>
                     <el-tab-pane name="audit" style="height: 400px;overflow:auto;">
                         <span slot="label">
-                            <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge>
+                            {{ $t('general.audits') }}
+                            <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
                         </span>
-                        <audit :id="model.id" type="building" showFilter/>
+                        <audit v-if="model.id" :id="model.id" type="building" showFilter/>
                     </el-tab-pane>
                     <el-tab-pane name="settings" :disabled="true">
                         <span slot="label" class="icon-cog" @click="toggleDrawer">
@@ -451,7 +461,7 @@
                         </div>
                         
                         <div class="content" v-if="visibleDrawer">
-                            <email-receptionist-form :visible.sync="visibleDrawer"/>
+                            <email-receptionist-form :is-building="true" :quarter_id="model.quarter_id" :visible.sync="visibleDrawer"/>
                         </div>
 
                     </el-tab-pane>
@@ -478,6 +488,7 @@
     import DeleteBuildingModal from 'components/DeleteBuildingModal';
     import AssignmentByType from 'components/AssignmentByType';
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
+    import EmailReceptionistForm from 'components/EmailReceptionistForm';
     import { EventBus } from '../../../event-bus.js';
     import ContractForm from 'components/ContractForm';
     import ContractListTable from 'components/ContractListTable';
@@ -498,6 +509,7 @@
             DeleteBuildingModal,
             AssignmentByType,
             EmergencySettingsForm,
+            EmailReceptionistForm,
             ContractForm,
             ContractListTable
         },
@@ -859,6 +871,11 @@
                 this.visibleDrawer = true
                 document.getElementsByTagName('footer')[0].style.display = "none"
             },
+            gotoEmailReceptionistDrawer() {
+                this.visibleDrawer = true
+                this.activeDrawerTab = "email_receptionist"
+                document.getElementsByTagName('footer')[0].style.display = "none"
+            },
             toggleAddDrawer() {
                 this.visibleDrawer = true
                 this.isAddContract = true
@@ -1020,7 +1037,30 @@
             height: 100%;
 
             .heading {
-                margin-bottom: 20px;
+                //margin-bottom: 20px;
+            }
+
+            .warning-bar {
+                background-color: var(--primary-color); 
+                color: white;
+                min-height: 20px;
+                padding: 10px;
+                margin-bottom: 10px;
+                display: flex;
+
+                .message {
+                    flex-grow: 1;
+                    font-size: 13px;
+                }
+
+                .title {
+                    float: right;
+                    font-size: 15px;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    min-width: 140px;
+                    cursor: pointer;
+                }
             }
 
             .action-group > .el-button:not(:first-child) {

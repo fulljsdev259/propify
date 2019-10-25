@@ -305,7 +305,7 @@ return [
         'info_desc' => 'Möchten Sie global verwenden oder zuordnen?',
         'global' => 'Wählen Sie aus den globalen',
         'assign' => 'Zuweisen',
-        'email_receptionist_of' => 'E-Mail-Empfangsstelle von'
+        'email_receptionist_of' => 'E-Mail-Empfangsstelle von :category'
     ],
     'filter' => 'Filter',
     'activities' => [
@@ -321,17 +321,29 @@ return [
                 ],
                 'filter' => [
                     'type' => [
-                        'pinboard' => 'Pinnwand',
-                        'listing' => 'Markplatz',
-                        'request' => 'Anfragen',                        
+                        'pinboard' => 'Pinnwand',                        
+                        'request' => 'Anfragen',
+                        'quarter' => 'Projekt',
+                        'building' => 'Liegenschaft',
+                        'unit' => 'Einheit',
+                        'resident' =>'Bewohner',
+                        'manager' => 'Bewirtschafter',
+                        'provider' => 'Dienstleister',
                     ],
                     'general' => [
                         'created' => 'Erstellt',
                         'updated' => 'Aktualisiert',
                         'provider_assigned' => 'Dienstleister zugewiesen',
-                        'manager_assigned' => 'Bewirtschafter Dienstleister',
+                        'provider_unassigned' => 'Dienstleister entfernt', 
+                        'provider_notified' => 'Dienstleisterin benachrichtigt',                       
+                        'manager_assigned' => 'Managerin zugewiesen',
+                        'manager_unassigned' => 'Managerin entfernt',          
+                        'quarter_assigned' => 'Projekt zugewiesen',
+                        'quarter_unassigned' => 'Projekt entfernt',
+                        'building_assigned' => 'Liegenschaft zugewiesen',
+                        'building_unassigned' => 'Liegenschaft entfernt',
                         'media_uploaded' => 'Medien hinaufgeladen',
-                        'media_deleted' => 'Medien gelöscht'
+                        'media_deleted' => 'Medien gelöscht',
                     ],
                 ],
                 'content' => [

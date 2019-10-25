@@ -136,7 +136,7 @@
                                                         <el-form-item :label="$t('models.resident.type.label')"
                                                                     prop="type">
                                                             
-                                                            <el-select placeholder="Select" style="display: block" v-model="model.type" disabled>
+                                                            <el-select placeholder="Select" style="display: block" v-model="model.type" >
                                                                 <el-option
                                                                     :key="k"
                                                                     :label="$t(`models.resident.type.${type}`)"
@@ -265,7 +265,7 @@
                                     <div slot="header" class="clearfix">
                                         <span>{{$t('general.audits')}}</span>
                                     </div>
-                                    <audit :id="model.id" type="resident" showFilter/>
+                                    <audit v-if="model.id" :id="model.id" type="resident" showFilter/>
                                 </el-card>
                             </el-col>    
                         </el-row>

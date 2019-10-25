@@ -19,6 +19,7 @@ import PropertyManagersRoutes from 'routes/admin/propertyManagers';
 import HouseOwnersRoutes from 'routes/admin/houseOwners';
 import ListingsRoutes from 'routes/admin/listings';
 import TemplatesRoutes from 'routes/admin/templates';
+import ActivityRoutes from 'routes/admin/activity';
 
 
 export default [{
@@ -69,6 +70,7 @@ export default [{
         ...HouseOwnersRoutes,
         // ...ListingsRoutes,
         ...TemplatesRoutes,
+        ...ActivityRoutes
     ],
     beforeEnter: VueRouterMultiguard([isAuthenticatedGuard, isAdminGuard]),
 }];
