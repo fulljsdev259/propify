@@ -212,6 +212,7 @@
                         :type="button.type"
                         @click="button.onClick(scope.row)"
                         size="mini"
+                        round
                         v-for="button in action.buttons"
                         v-if="!button.tooltipMode">
                         <!-- &nbsp;{{$t(button.title)}}-->
@@ -229,6 +230,7 @@
                             @click="button.onClick(scope.row)"
                             v-if="(button.view == 'building') || (scope.row.type != 'user' && scope.row.type != 'manager') || button.type == 'danger'"
                             size="mini"
+                            round
                         >
                         </el-button>
                     </el-tooltip>

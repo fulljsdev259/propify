@@ -238,7 +238,7 @@
                                                 align="right"
                                             >
                                                 <template slot-scope="scope">
-                                                    <el-button icon="el-icon-close" type="danger" @click="deleteDocument('media', scope.$index)" size="mini"/>
+                                                    <el-button icon="el-icon-close" type="danger" round @click="deleteDocument('media', scope.$index)" size="mini"/>
                                                 </template>
                                             </el-table-column>
                                         </el-table>
@@ -440,7 +440,7 @@
                     i18n: this.translateType
                 }],
                 assigneesActions: [{
-                    width: '180px',
+                    width: '100px',
                     buttons: [{
                         title: 'general.unassign',
                         tooltipMode: true,
