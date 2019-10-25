@@ -153,7 +153,7 @@ function get_sub_category_details($subCategory)
         'parent_id' => $parentId,
         'name' => \App\Models\Request::SubCategory[$subCategory] ?? 'not exists',
         'acquisition' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $subCategory),
-        'capture_phase' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $category),
+        'capture_phase' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $subCategory),
         'has_qualifications' => get_category_attribute(\App\Models\Request::HasQualifications, $values, $subCategory),
         'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $subCategory),
         'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $subCategory),
