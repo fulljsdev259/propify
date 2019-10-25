@@ -196,7 +196,8 @@
             }),
             formattedItems() {
                 return this.items.map((request) => {
-                    request.qualification_label = request.qualification_label != "" ? this.$t(`models.request.qualification.${request.qualification_label}`) : "";
+                    //console.log(request.qualification_label)
+                    request.translated_qualification_label = request.qualification_label != "" ? this.$t(`models.request.qualification.${request.qualification_label}`) : "";
                     return request;
                 });
             },
@@ -232,27 +233,35 @@
                     // },
                     {
                         name: this.$t('general.filters.quarters'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'quarter_id',
                         data: this.quarters,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteQuarters
                     },
                     {
                         name: this.$t('general.filters.buildings'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'building_id',
                         data: this.buildings,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteBuildings
                     },
                     {
                         name: this.$t('general.filters.property_managers'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'property_manager_id',
                         data: this.propertyManagers,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteManagers
                     },
                     {
                         name: this.$t('general.filters.services'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'service_provider_id',
                         data: this.services,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteServices
                     },
                     {
                         name: this.$t('general.filters.resident'),
@@ -299,7 +308,7 @@
             }
         },
         methods: {
-            ...mapActions(['updateRequest', 'getServices', 'getBuildings', 'getResidents', 'downloadRequestPDF', 'getServices', 'getPropertyManagers', 'massEdit']),
+            ...mapActions(['updateRequest', 'getQuarters', 'getServices', 'getBuildings', 'getResidents', 'downloadRequestPDF', 'getServices', 'getPropertyManagers', 'massEdit']),
             async getFilterBuildings() {
                 const buildings = await this.getBuildings({
                     get_all: true
@@ -317,7 +326,32 @@
 
                 return services.data;
             },
-            async fetchRemoteResidents(search) {
+            async fetchRemoteQuarters(search = '') {
+                const buildings = await this.getQuarters({get_all: true, search});
+
+                return buildings.data
+            },
+            async fetchRemoteBuildings(search = '') {
+                const buildings = await this.getBuildings({get_all: true, search});
+
+                return buildings.data
+            },
+            async fetchRemoteManagers(search = '') {
+                const managers = await this.getPropertyManagers({get_all: true, search});
+
+                return managers.data.map(manager => {
+                    return {
+                        id: manager.id,
+                        name: manager.user.name
+                    }
+                });
+            },
+            async fetchRemoteServices(search = '') {
+                const services = await this.getServices({get_all: true, search});
+
+                return services.data;
+            },
+            async fetchRemoteResidents(search = '') {
                 const residents = await this.getResidents({get_all: true, search});
 
                 return residents.data.map((resident) => {
@@ -517,24 +551,28 @@
         },
         async created(){
             this.isLoadingFilters = true;
-            const quarters = await this.axios.get('quarters')
-            this.quarters = quarters.data.data.data;
-
-            const propertyManagers = await this.axios.get('propertyManagers?get_all=true')
-            this.propertyManagers = propertyManagers.data.data.map((propertyManager) => {
-                return {
-                    id: propertyManager.id,
-                    name: propertyManager.user.name
-                }
-            });
 
             const states = await this.axios.get('states?filters=true')
             this.states = states.data.data;
 
-            this.buildings = await this.getFilterBuildings()
+            
             this.categories = await this.getFilterCategories()
-            this.services = await this.getFilterServices()
-            this.residents = await this.fetchRemoteResidents()
+
+            // const quarters = await this.axios.get('quarters')
+            // this.quarters = quarters.data.data.data;
+
+            // const propertyManagers = await this.axios.get('propertyManagers?get_all=true')
+            // this.propertyManagers = propertyManagers.data.data.map((propertyManager) => {
+            //     return {
+            //         id: propertyManager.id,
+            //         name: propertyManager.user.name
+            //     }
+            // });
+
+            
+            //this.buildings = await this.getFilterBuildings()
+            // this.services = await this.fetchRemoteServices()
+            // this.residents = await this.fetchRemoteResidents()
 
             this.isLoadingFilters = false;
 
