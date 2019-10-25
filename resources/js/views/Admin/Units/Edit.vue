@@ -575,9 +575,15 @@
         mounted() {
              EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
+                // if(this.requestCount >= 99) {
+                //     document.getElementById('tab-requests').style.paddingRight = '50px';
+                // }
             });
             EventBus.$on('audit-get-counted', audit_count => {
                 this.auditCount = audit_count;
+                // if(this.auditCount >= 99) {
+                //     document.getElementById('tab-audit').style.paddingRight = '50px';
+                // }
             });
         },
         computed: {

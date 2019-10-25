@@ -25,6 +25,7 @@ class AuditableModel extends Model implements Auditable
         HasMorphedByManyEvents;
 
     const UpdateOrCreate = 'updateOrCreate';
+    const System = 'system';
 
     const EventCreated = 'created';
     const EventUpdated = 'updated';
@@ -126,6 +127,31 @@ class AuditableModel extends Model implements Auditable
     /**
      * @param $key
      * @param $value
+     * @param null $event
+     * @param bool $isSingle
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function newSystemAudit($key, $value, $event = null, $isSingle = true)
+    {
+        $event = $event ?? AuditableModel::EventCreated;
+        $this->auditEvent = self::EventUpdated;
+        $audit =  new Audit($this->toAudit());
+        $audit->event = $event;
+        $audit->user_type = self::System;
+
+        if (AuditableModel::EventCreated == $event) {
+            $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
+        } elseif (AuditableModel::EventUpdated == $event) {
+            $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle);
+        } else {
+            dd('@TODO');
+        }
+    }
+
+
+    /**
+     * @param $key
+     * @param $value
      * @param null $audit
      * @param bool $isSingle
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
@@ -143,23 +169,42 @@ class AuditableModel extends Model implements Auditable
 
 
         if (self::EventCreated == $audit->event) {
-
-            $value = $this->correctCreatedAuditValue($value);
-            $audit->new_values = $this->fixAddedData($audit->new_values, $key, $value, $isSingle);
-            $audit->save();
-
+            $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
         } elseif (self::EventUpdated == $audit->event) {
-
-            $newAuditValue = $this->getChangedAuditValue($value);
-            $oldAuditValue = $this->getChangedOriginalAuditValue($value);
-            if (! empty($newAuditValue) || !empty($oldAuditValue)) {
-                $audit->new_values = $this->fixAddedData($audit->new_values, $key, $newAuditValue, $isSingle);
-                $audit->old_values = $this->fixAddedData($audit->old_values, $key, $oldAuditValue, $isSingle);
-                $audit->save();
-            }
-
+            $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle);
         } else {
             // @TODO
+        }
+    }
+
+    /**
+     * @param $audit
+     * @param $key
+     * @param $value
+     * @param bool $isSingle
+     */
+    protected function saveCreatedEventMerging($audit, $key, $value, $isSingle = true)
+    {
+        $value = $this->correctCreatedAuditValue($value);
+        $audit->new_values = $this->fixAddedData($audit->new_values, $key, $value, $isSingle);
+        $audit->save();
+    }
+
+
+    /**
+     * @param $audit
+     * @param $key
+     * @param $value
+     * @param bool $isSingle
+     */
+    protected function saveUpdatedEventMerging($audit, $key, $value, $isSingle = true)
+    {
+        $newAuditValue = $this->getChangedAuditValue($value);
+        $oldAuditValue = $this->getChangedOriginalAuditValue($value);
+        if (! empty($newAuditValue) || !empty($oldAuditValue)) {
+            $audit->new_values = $this->fixAddedData($audit->new_values, $key, $newAuditValue, $isSingle);
+            $audit->old_values = $this->fixAddedData($audit->old_values, $key, $oldAuditValue, $isSingle);
+            $audit->save();
         }
     }
 
@@ -204,9 +249,9 @@ class AuditableModel extends Model implements Auditable
             }
             unset($value['updated_at']);
         } else if (is_a($value, Collection::class)) {
-            dd($value);
+            $value = $this->getManyRelationAuditData($value);
         } else {
-            dd('@TODO');
+            dd('@TODO1');
         }
 
         return $value;
@@ -221,6 +266,9 @@ class AuditableModel extends Model implements Auditable
         if (is_a($value, Model::class)) {
             $value = $value->getOldChanges();
             unset($value['updated_at']);
+        } else if (is_a($value, Collection::class)) {
+            dd('@TODO');
+            $value = [];
         } else {
             dd('@TODO');
         }
