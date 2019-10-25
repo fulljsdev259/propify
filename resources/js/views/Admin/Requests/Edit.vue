@@ -628,7 +628,7 @@
                 return {
                     resident: this.model.resident,
                     request_format: this.model.request_format,
-                    category: (this.model.category.parent_id == null)? this.model.category.name : this.model.category.parentCategory.name + " > " + this.model.category.name
+                    category: (this.model.sub_category_id == null)? this.model.category.name : this.model.category.name + " > " + this.model.sub_category.name
                 }
             },
             mediaCount() {

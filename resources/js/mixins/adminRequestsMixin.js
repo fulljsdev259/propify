@@ -341,6 +341,8 @@ export default (config = {}) => {
                 this.showSubCategory = children.length > 0 ? true : false;
                 let p_category = this.categories.find(category => { return category.id == this.model.category_id});
 
+                this.model.category = p_category
+
                 if(this.showSubCategory) {
                     this.sub_categories = p_category ? p_category.sub_categories : [];
                 }
@@ -352,6 +354,8 @@ export default (config = {}) => {
                     return category.id == this.model.sub_category_id;
                 });
                 
+                this.model.subcategory = subcategory
+
                 this.model.room = '';
                 this.model.location = '';
                 this.showLiegenschaft = false;
@@ -625,24 +629,11 @@ export default (config = {}) => {
                             });
                         }
 
-                        this.category_id = resp.data.category
-
-                        this.sub_category_id = resp.data.sub_category
-                        
-                        this.showSubCategory = this.sub_category_id ? true : false;
-                        
-                        // this.showLiegenschaft =  resp.data.category.parent_id == 1 && resp.data.category.location == 1 ? true : false;
-
-                        // this.showWohnung = resp.data.category.parent_id == 1 && resp.data.category.room == 1 ? true : false;
-
+                        this.showSubCategory = resp.data.sub_category ? true : false;
                         this.showLiegenschaft = resp.data.location != null ? true : false;
-
                         this.showWohnung = resp.data.room != null ? true : false;
-                        
                         this.showPayer = resp.data.qualification == 5 ? true : false;
-
-                        let p_category = this.categories.find(item => { return item.id == resp.data.category.parent_id});
-                        this.showAcquisition =  p_category && p_category.acquisition == 1 ? true : false;
+                        this.showAcquisition =  resp.data.category.acquisition == 1 ? true : false;
                         
                         const data = resp.data;
 
@@ -675,8 +666,6 @@ export default (config = {}) => {
                                 this.loading.state = true;
                                 let {service_providers, property_managers, ...params} = this.model;
                                 
-                                // if(params.category_id == 1)
-                                //     params.category_id = this.model.defect;
                                 params.category = this.model.category_id
                                 params.sub_category = this.model.sub_category_id
 
