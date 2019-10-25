@@ -44,8 +44,8 @@ class RequestRepository extends BaseRepository
        // 'priority' => 'like',
        // 'internal_priority' => 'like',
         'due_date' => '=',
-        'solved_date' => '>=',
-        'created_at' => '>=',
+//        'solved_date' => '=',
+//        'created_at' => '>=',
         'request_format' => 'like',
     ];
 
