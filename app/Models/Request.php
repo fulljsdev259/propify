@@ -426,7 +426,7 @@ class Request extends AuditableModel implements HasMedia
     const RoomAttr = 'room';
     const LocationAttr = 'location';
     const HasQualifications = 'has_qualifications';
-    const Acquisition = 'acquisition';
+    const CapturePhaseAttr = 'capture_phase';
 
     const SubCategories = 'sub_categories';
     const Attributes = 'attributes';
@@ -439,7 +439,7 @@ class Request extends AuditableModel implements HasMedia
 
         ],
         self::CategoryDeficiency => [
-            self::Acquisition
+            self::CapturePhaseAttr
         ],
     ];
 
@@ -453,7 +453,7 @@ class Request extends AuditableModel implements HasMedia
 
         ],
         self::SubCategoryFlat => [
-            self::Acquisition,
+            self::CapturePhaseAttr,
             self::RoomAttr
         ],
     ];
