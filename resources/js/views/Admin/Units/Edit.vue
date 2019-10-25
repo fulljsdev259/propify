@@ -278,14 +278,6 @@
                             <span slot="label">
                                 <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('models.unit.assignment') }}</el-badge>
                             </span>
-                            <assignment
-                                    :toAssign.sync="toAssign"
-                                    :assign="assignResident"
-                                    :toAssignList="toAssignList"
-                                    :remoteLoading="remoteLoading"
-                                    :remoteSearch="remoteSearchResidents"
-                                    :multiple="multiple"
-                            />
                             <relation-list
                                     :actions="assigneesActions"
                                     :columns="assigneesColumns"
@@ -432,7 +424,7 @@
                 requestActions: [{
                     width: 120,
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.requestEditView,
                         tooltipMode: true

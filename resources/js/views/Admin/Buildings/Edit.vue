@@ -581,7 +581,7 @@
                         title: 'general.actions.edit',
                         onClick: this.unitEditView,
                         tooltipMode: true,
-                        icon: 'el-icon-edit'
+                        icon: 'ti-search'
                     }]
                 }],
                 requestColumns: [{
@@ -600,7 +600,7 @@
                 requestActions: [{
                     width: 120,
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.requestEditView,
                         tooltipMode: true

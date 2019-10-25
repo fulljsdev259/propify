@@ -3,7 +3,8 @@
         <div class="main-content">
             <heading :title="$t('models.quarter.edit')" icon="icon-chat-empty" shadow="heavy">
                 <template slot="description" v-if="model.quarter_format">
-                    <div class="subtitle">{{`${model.quarter_format} > ${model.name}`}}</div>
+                    <!-- <div class="subtitle">{{`${model.quarter_format} > ${model.name}`}}</div> -->
+                    <div class="subtitle">{{model.quarter_format}}</div>
                 </template>
                 <edit-actions :saveAction="submit" :deleteAction="deleteQuarter" route="adminQuarters"/>
             </heading>
@@ -353,7 +354,7 @@
                 requestActions: [{
                     width: 120,
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.requestEditView,
                         tooltipMode: true
@@ -400,7 +401,7 @@
                 quarterActions: [{
                     width: '90px',
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.buildingEditView,
                         tooltipMode: true

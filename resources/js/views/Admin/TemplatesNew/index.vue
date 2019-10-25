@@ -60,7 +60,7 @@
                 }, {
                     width: 120,
                     actions: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         type: '',
                         isTemplateEdit: true,
                         title: 'general.actions.edit',

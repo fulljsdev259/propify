@@ -239,7 +239,7 @@
                 requestActions: [{
                     width: 120,
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.requestEditView,
                         tooltipMode: true
@@ -259,6 +259,7 @@
                     buttons: [{
                         title: 'general.unassign',
                         type: 'danger',
+                        icon: 'el-icon-close',
                         onClick: this.notifyUnassignment
                     }]
                 }]

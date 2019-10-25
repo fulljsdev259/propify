@@ -51,13 +51,13 @@
                         :content="$t('general.actions.edit')"
                         class="item" effect="light" 
                         placement="top-end">
-                            <el-button @click="$emit('edit-contract', scope.$index)" icon="ti-pencil" size="mini" type="success"/>
+                            <el-button @click="$emit('edit-contract', scope.$index)" icon="ti-search" size="mini" round/>
                     </el-tooltip>
                     <el-tooltip
                         :content="$t('general.actions.delete')"
                         class="item" effect="light" 
                         placement="top-end">
-                            <el-button @click="$emit('delete-contract', scope.$index)" icon="ti-trash" size="mini" type="danger"/>
+                            <el-button @click="$emit('delete-contract', scope.$index)" icon="ti-trash" size="mini" type="danger" round/>
                     </el-tooltip>
                 </template>
             </el-table-column>

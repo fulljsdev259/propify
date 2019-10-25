@@ -237,7 +237,7 @@ export default (config = {}) => {
                             this.model.city = resp.address.city;
                             this.model.state_id = resp.address.state.id;
                         }
-                        this.quarter_format = resp.quarter_format;
+                        this.model.quarter_format = resp.quarter_format;
 
                         this.fileCount = this.model.media.length
                         // if(this.fileCount >= 99) {
