@@ -44,7 +44,7 @@ export default (config = {}) => {
                     payer: '',
                     property_managers: [],
                     media: [],
-                    sub_category_id: ''
+                    sub_category_id: null
                 },
                 validationRules: {
                     category: [{
@@ -338,6 +338,8 @@ export default (config = {}) => {
             changeCategory() {
                 
                 let children = this.$constants.requests.categories_data.parent_child[this.model.category_id]
+                if(children.length == 0)
+                    this.model.sub_category_id = null;
                 this.showSubCategory = children.length > 0 ? true : false;
                 let p_category = this.categories.find(category => { return category.id == this.model.category_id});
 
