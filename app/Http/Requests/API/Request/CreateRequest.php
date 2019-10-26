@@ -37,7 +37,7 @@ class CreateRequest extends BaseRequest
         $rules = Request::$rulesPost;
         $categories = [];
         foreach (Request::CategoryAttributes as $key => $attributes) {
-            if (in_array(Request::HasQualifications, $attributes)) {
+            if (in_array(Request::QualificationAttr, $attributes)) {
                 $categories[] = $key;
             }
         }
