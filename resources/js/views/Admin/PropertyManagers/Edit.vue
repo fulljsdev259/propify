@@ -269,7 +269,7 @@
                         title: 'general.actions.edit',
                         onClick: this.requestEditView,
                         tooltipMode: true
-                    }]
+                    }] 
                 }],
                 assignmentsColumns: [{
                     prop: 'name',

@@ -7,7 +7,7 @@
             <el-col :md="12">
                 <card :loading="loading" :header="$t('general.actions.view')">                    
                     <el-form :model="model" label-position="top" label-width="192px" ref="form">
-                        <el-row class="last-form-row" :gutter="20">
+                        <el-row :gutter="20">
                             <el-col :md="12">
                                 <el-form-item :label="$t('models.unit.building')" 
                                         :rules="validationRules.building_id" 
@@ -30,6 +30,11 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :md="12">
+                                <el-form-item :label="$t('models.unit.name')" :rules="validationRules.name" prop="name">
+                                    <el-input autocomplete="off" type="text" v-model="model.name"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <!-- <el-col :md="12">
                                 <el-form-item :label="$t('models.unit.assigned_resident')" 
                                             :rules="validationRules.resident_id"
                                             prop="resident_id">
@@ -49,14 +54,10 @@
                                             v-for="resident in toAssignList"/>
                                     </el-select>
                                 </el-form-item>
-                            </el-col>
+                            </el-col> -->
                         </el-row>
-                        <el-row class="last-form-row" :gutter="20">
-                            <el-col :md="12">
-                                <el-form-item :label="$t('models.unit.name')" :rules="validationRules.name" prop="name">
-                                    <el-input autocomplete="off" type="text" v-model="model.name"></el-input>
-                                </el-form-item>
-                            </el-col>
+                        <el-row :gutter="20">
+                            
                             <el-col :md="12">
                                 <el-form-item :label="$t('models.unit.type.label')" :rules="validationRules.type" prop="type">
                                     <el-select :placeholder="$t('models.unit.type.label')" class="w100p" style="width: 100%;"
@@ -70,28 +71,23 @@
                                     </el-select>
                                 </el-form-item>
                             </el-col>
-                        </el-row>
-                        <el-row class="last-form-row" :gutter="20">
-                            <el-col :md="12" v-if="model.type === 1 || model.type === 2">
-                                <el-form-item :label="$t('models.unit.room_no')" :rules="validationRules.room_no" prop="room_no"
-                                            >
-                                    <el-select :placeholder="$t('general.placeholders.select')" class="w100p" style="width: 100%;"
-                                            v-model="model.room_no">
-                                        <el-option :key="room.value"
-                                                :label="room.label"
-                                                :value="room.value"
-                                                v-for="room in rooms"/>
-                                    </el-select>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :md="12" v-if="model.type >= 3">
+                            <el-col :md="6" v-if="model.type >= 3">
                                 <el-form-item :label="$t('general.monthly_rent_net')" :rules="validationRules.monthly_rent_net"
                                             prop="monthly_rent_net">
-                                    <el-input autocomplete="off" step="0.01" type="number"
-                                            v-model="model.monthly_rent_net"></el-input>
+                                    <el-input autocomplete="off" 
+                                            step="0.01" 
+                                            type="number"
+                                            v-model="model.monthly_rent_net">
+                                            <template slot="prepend">CHF</template>
+                                    </el-input>
                                 </el-form-item>
                             </el-col>
-                            <el-col :md="24" v-else-if="model.type < 3">
+                            <el-col :md="6">
+                                <el-form-item :label="$t('models.unit.floor')" :rules="validationRules.floor" prop="floor">
+                                    <el-input autocomplete="off" type="number" min="-3" v-model="model.floor"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :md="24" v-if="model.type < 3">
                                 <div class="el-table el-table--fit el-table--enable-row-hover el-table--enable-row-transition monthly-rent-data" 
                                         style="width: 100%;">
                                     <div class="el-table__header-wrapper">
@@ -173,9 +169,16 @@
                             </el-col>
                         </el-row>
                         <el-row class="last-form-row" :gutter="20">
-                            <el-col :md="8">
-                                <el-form-item :label="$t('models.unit.floor')" :rules="validationRules.floor" prop="floor">
-                                    <el-input autocomplete="off" type="number" min="-3" v-model="model.floor"></el-input>
+                            <el-col :md="8" v-if="model.type === 1 || model.type === 2">
+                                <el-form-item :label="$t('models.unit.room_no')" :rules="validationRules.room_no" prop="room_no"
+                                            >
+                                    <el-select :placeholder="$t('general.placeholders.select')" class="w100p" style="width: 100%;"
+                                            v-model="model.room_no">
+                                        <el-option :key="room.value"
+                                                :label="room.label"
+                                                :value="room.value"
+                                                v-for="room in rooms"/>
+                                    </el-select>
                                 </el-form-item>
                             </el-col>
                             <el-col :md="8">
@@ -247,7 +250,19 @@
 </script>
 
 <style lang="scss">
-
+    .el-card .el-card__body {
+        display: flex;
+        flex-direction: column;
+    }
+    .el-form-item__content {
+        .el-input.el-input-group {
+            .el-input-group__prepend {
+                padding: 2px 8px 0;
+                font-weight: 600;
+            }
+        }
+    }
+    
 </style>
 
 <style lang="scss" scoped>

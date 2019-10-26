@@ -53,63 +53,63 @@ export default {
             }).catch(({response: {data: err}}) => reject(err))
         })
     },
-    assignQuarter({}, payload) {
-        return new Promise((resolve, reject) => {
-            axios.post(`propertyManagers/${payload.id}/quarters/${payload.toAssignId}`, {}).then((resp) => {
-                resolve(resp.data);
-            }).catch(({response: {data: err}}) => reject(err))
-        });
-    },
-    assignBuilding({}, payload) {
-        return new Promise((resolve, reject) => {
-            axios.post(`propertyManagers/${payload.id}/buildings/${payload.toAssignId}`, {}).then((resp) => {
-                resolve(resp.data);
-            }).catch(({response: {data: err}}) => reject(err))
-        });
-    },
-    unassignBuilding({}, payload) {
-        return new Promise((resolve, reject) => {
-            axios.delete(`propertyManagers/${payload.id}/buildings/${payload.toAssignId}`).then((response) => {
-                resolve(response.data)
-            }).catch(({response: {data: err}}) => reject(err))
-        })
-    },
-    unassignQuarter({}, payload) {
-        return new Promise((resolve, reject) => {
-            axios.delete(`propertyManagers/${payload.id}/quarters/${payload.toAssignId}`).then((response) => {
-                resolve(response.data)
-            }).catch(({response: {data: err}}) => reject(err))
-        })
-    },
-    batchDeleteHouseOwners({commit}, payload) {
-        return new Promise((resolve, reject) => {
-            axios.delete(`propertyManagers/batchDelete`, {data: payload}).then((response) => {
-                resolve(response.data)
-            }).catch(({response: {data: err}}) => reject(err))
-        })
-    },
-    getAssignments({}, payload) {
-        return new Promise((resolve, reject) => {
-            axios.get(buildFetchUrl(`propertyManagers/${payload.manager_id}/assignments`, payload)).then((response) => {
-                response.data.data.data = response.data.data.data.map((building) => {
-                    if (building.type === 'building') {
-                        building.aType = 1;
-                        building.assignmentType = 'building';
-                    } else {
-                        building.aType = 2;
-                        building.assignmentType = 'quarter';
-                    }
-                    return building;
-                });
-                resolve(response.data);
-            }).catch(({response: {data: err}}) => reject(err));
-        });
-    },
-    getIDsAssignmentsCount({}, payload) {       
-        return new Promise((resolve, reject) => {
-            axios.post(`propertyManagers/idsassignments`, payload).then((response) => {    
-                resolve(response.data);
-            }).catch(({response: {data: err}}) => reject(err));
-        });
-    }
+    // assignQuarter({}, payload) {
+    //     return new Promise((resolve, reject) => {
+    //         axios.post(`propertyManagers/${payload.id}/quarters/${payload.toAssignId}`, {}).then((resp) => {
+    //             resolve(resp.data);
+    //         }).catch(({response: {data: err}}) => reject(err))
+    //     });
+    // },
+    // assignBuilding({}, payload) {
+    //     return new Promise((resolve, reject) => {
+    //         axios.post(`propertyManagers/${payload.id}/buildings/${payload.toAssignId}`, {}).then((resp) => {
+    //             resolve(resp.data);
+    //         }).catch(({response: {data: err}}) => reject(err))
+    //     });
+    // },
+    // unassignBuilding({}, payload) {
+    //     return new Promise((resolve, reject) => {
+    //         axios.delete(`propertyManagers/${payload.id}/buildings/${payload.toAssignId}`).then((response) => {
+    //             resolve(response.data)
+    //         }).catch(({response: {data: err}}) => reject(err))
+    //     })
+    // },
+    // unassignQuarter({}, payload) {
+    //     return new Promise((resolve, reject) => {
+    //         axios.delete(`propertyManagers/${payload.id}/quarters/${payload.toAssignId}`).then((response) => {
+    //             resolve(response.data)
+    //         }).catch(({response: {data: err}}) => reject(err))
+    //     })
+    // },
+    // batchDeleteHouseOwners({commit}, payload) {
+    //     return new Promise((resolve, reject) => {
+    //         axios.delete(`propertyManagers/batchDelete`, {data: payload}).then((response) => {
+    //             resolve(response.data)
+    //         }).catch(({response: {data: err}}) => reject(err))
+    //     })
+    // },
+    // getAssignments({}, payload) {
+    //     return new Promise((resolve, reject) => {
+    //         axios.get(buildFetchUrl(`propertyManagers/${payload.manager_id}/assignments`, payload)).then((response) => {
+    //             response.data.data.data = response.data.data.data.map((building) => {
+    //                 if (building.type === 'building') {
+    //                     building.aType = 1;
+    //                     building.assignmentType = 'building';
+    //                 } else {
+    //                     building.aType = 2;
+    //                     building.assignmentType = 'quarter';
+    //                 }
+    //                 return building;
+    //             });
+    //             resolve(response.data);
+    //         }).catch(({response: {data: err}}) => reject(err));
+    //     });
+    // },
+    // getIDsAssignmentsCount({}, payload) {       
+    //     return new Promise((resolve, reject) => {
+    //         axios.post(`propertyManagers/idsassignments`, payload).then((response) => {    
+    //             resolve(response.data);
+    //         }).catch(({response: {data: err}}) => reject(err));
+    //     });
+    // }
 }
