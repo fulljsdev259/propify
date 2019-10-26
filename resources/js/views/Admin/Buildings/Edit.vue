@@ -1028,9 +1028,6 @@
         }
     }
     
-    #tab-files, #tab-companies, #tab-requests, #tab-residents, #tab-contracts, #tab-managers, #tab-units, #tab-audit{
-        padding-right: 40px;
-    }
 </style>
 <style lang="scss" scoped>
     .last-form-row {

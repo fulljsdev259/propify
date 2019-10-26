@@ -7,9 +7,8 @@
             <div class="menu-icon" @click="handletoggle">
                 <i class="icon-menu"></i>
             </div>
-            <div class="logo-image">
-                <img src="~img/logo3.png" v-show="!logo"/>
-                <img :src="logo" v-show="logo"/>
+            <div class="logo-image" :style="{backgroundImage: 'url(' + logo + ')'}">
+                <!-- <img :src="logo" v-show="logo"/> -->
             </div>
         </el-menu-item>
         <el-menu-item class="header-menu-links" index="content" v-if="hasSlot()">
@@ -91,6 +90,9 @@
                         width: 220px;
                         position: relative;
                         transition: 0.3s linear;
+                        background-repeat: no-repeat;
+                        background-position-x: 30px;
+                        background-size: auto 44px;
                         img {
                             height: 100%;
                             vertical-align: baseline;

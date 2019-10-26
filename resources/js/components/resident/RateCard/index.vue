@@ -55,11 +55,15 @@
             .el-rate
                 outline: 0
                 height: 40px
+                @media screen and (max-width: 320px)
+                    height: 32px
 
                 /deep/ .el-rate__item .el-rate__icon
                     font-size: 28px
                     @media screen and (max-width: 375px), screen and (min-width: 415px) and (max-width: 768px)
-                        margin-right: 2.7px !important;
+                        margin-right: 2.7px !important
+                    @media screen and (max-width: 360px)
+                        font-size: 22px
 
             .el-button
                 width: 100%
