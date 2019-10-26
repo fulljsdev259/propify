@@ -222,15 +222,7 @@
             AddActions
         },
         methods: {
-            hasAttic(id) {
-                let hasAttic = false;
-                this.buildings.map(building => {
-                    if(building.id == this.model.building_id) {
-                        hasAttic = building.attic;
-                    }
-                });
-                return hasAttic;
-            }
+            
         },
         watch: {
             "model.type" () {
@@ -242,7 +234,7 @@
                 }
             },
             "model.building_id" () {
-                if(this.buildings[this.model.building_id].attic == false) 
+                if(this.hasAttic(this.model.building_id) == false) 
                     this.model.attic = false;
             }
         },

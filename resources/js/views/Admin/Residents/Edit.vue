@@ -254,6 +254,7 @@
                                         </el-row>
                                         <contract-list-table
                                                     :items="model.contracts"
+                                                    :hide-avatar="true"
                                                     @edit-contract="editContract"
                                                     @delete-contract="deleteContract">
                                         </contract-list-table>

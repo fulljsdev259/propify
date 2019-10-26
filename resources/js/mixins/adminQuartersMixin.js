@@ -244,10 +244,12 @@ export default (config = {}) => {
                         //     document.getElementById('tab-files').style.paddingRight = '50px';
                         // }
 
-                        this.model.contracts = []
-                        resp.buildings.forEach(building => {
-                            this.model.contracts = this.model.contracts.concat(building.contracts)
-                        })
+                        //this.model.contracts = []
+                        // resp.buildings.forEach(building => {
+                        //     this.model.contracts = this.model.contracts.concat(building.contracts)
+                        // })
+                        
+                        this.model.contracts = resp.contracts
                         
                         this.contractCount = this.model.contracts.length
                         // if(this.contractCount >= 99) {

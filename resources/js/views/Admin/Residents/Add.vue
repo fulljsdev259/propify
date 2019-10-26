@@ -167,6 +167,7 @@
                             <contract-list-table
                                         :items="model.contracts"
                                         :hide-contract-id="true"
+                                        :hide-avatar="true"
                                         @edit-contract="editContract"
                                         @delete-contract="deleteContract">
                             </contract-list-table>

@@ -298,6 +298,8 @@
                             <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
                             <contract-list-table
                                     :items="model.contracts"
+                                    :hide-building="true"
+                                    :hide-unit="true"
                                     @edit-contract="editContract"
                                     @delete-contract="deleteContract">
                             </contract-list-table>
@@ -431,6 +433,9 @@
                     }]
                 }],
                 assigneesColumns: [{
+                    type: 'requestResidentAvatar',
+                    width: 70                    
+                }, {
                     prop: 'name',
                     label: 'general.name',
                     type: 'residentName'
@@ -438,6 +443,11 @@
                     prop: 'statusString',
                     label: 'models.request.user_type.label',
                     i18n: this.translateType
+                }, {
+                    prop: 'status',
+                    i18n: this.residentStatusLabel,
+                    withBadge: this.residentStatusBadge,
+                    label: 'models.resident.status.label'
                 }],
                 assigneesActions: [{
                     width: '100px',
@@ -470,15 +480,7 @@
                 "uploadUnitFile", 
                 "deleteUnitFile",
             ]),
-            hasAttic(id) {
-                let hasAttic = false;
-                this.buildings.map(building => {
-                    if(building.id == this.model.building_id) {
-                        hasAttic = building.attic;
-                    }
-                });
-                return hasAttic;
-            },
+            
             toggleDrawer() {
                 this.visibleDrawer = true;
                 this.isAddContract = true;
@@ -562,6 +564,17 @@
                 }).catch(() => {
                 });
             },
+            residentStatusBadge(status) {
+                const classObject = {
+                    1: 'icon-success',
+                    2: 'icon-danger'
+                };
+
+                return classObject[status];
+            },
+            residentStatusLabel(status) {
+                return this.$t(`models.resident.status.${this.residentStatusConstants[status]}`)
+            },
         },
         mounted() {
              EventBus.$on('request-get-counted', request_count => {
@@ -583,6 +596,9 @@
             }),
             used_units() {
                 return this.model.contracts.map(item => item.unit_id)
+            },
+            residentStatusConstants() {
+                return this.constants.residents.status
             },
         },          
         watch: {

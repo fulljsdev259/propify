@@ -291,6 +291,7 @@
                         <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
                         <contract-list-table
                                     :items="model.contracts"
+                                    :hide-building="true"
                                     @edit-contract="editContract"
                                     @delete-contract="deleteContract">
                         </contract-list-table>

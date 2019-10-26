@@ -787,9 +787,10 @@
             if(this.hideBuildingAndUnits) {
                 this.model.unit_id = this.unit_id
                 this.model.building_id = this.building_id
-                this.model.unit = this.data.unit
-                this.model.building = this.data.building
-                this.buildings.push(this.model.building)
+
+                // this.model.unit = this.data.unit
+                // this.model.building = this.data.building
+                // this.buildings.push(this.model.building)
             }
 
             if(this.hideBuilding) {
