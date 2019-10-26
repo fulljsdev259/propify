@@ -413,7 +413,6 @@ export default (config = {}) => {
                         this.statistics.raw[2].value = this.model.pending_requests_count;
                         this.statistics.raw[3].value = this.model.buildings_count;
 
-                        console.log('model', this.model)
                         this.original_email = this.model.user.email;
 
                         return resp.data;

@@ -83,8 +83,6 @@
                     per_page : 5
                 });
 
-                console.log(buildings.data.data)
-
                 buildings.data.data.map(building => {
                     building.residents = building.contracts.map(contract => contract.resident)
                     building.residentscount = building.residents.length > 2 ? (building.residents.length - 2) : 0;

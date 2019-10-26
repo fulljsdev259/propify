@@ -735,7 +735,6 @@
             this.deposit_statuses = Object.entries(this.$constants.contracts.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.deposit_status.${label}`)}));
             this.contract_statuses = Object.entries(this.$constants.contracts.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.rent_status.${label}`)}));
 
-            console.log('edit_index', this.edit_index)
             if(this.mode == "edit") {
                 this.model = Object.assign({}, this.data)
                 
