@@ -408,6 +408,10 @@
                 :global(.def-icon) {
                     font-size: 140px;
                 }
+                :global(span) {
+                    width: 140px !important;
+                    height: 140px !important;
+                }
             }
             :global(.el-form-item) {
                 margin-bottom: 5px;
