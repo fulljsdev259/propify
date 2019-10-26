@@ -296,8 +296,8 @@
                                     v-for="contactEnableValue in contactEnableValues"/>
                         </el-select>
                         <el-divider class="mt15" /> -->
-                        <el-row :gutter="10">
-                            <el-col :lg="18" :xl="20">
+                        <el-row :gutter="10" id="providerAssignBox">
+                            <el-col id="providerSelect">
                                 <el-select
                                     clearable
                                     :loading="remoteLoading"
@@ -320,7 +320,7 @@
                                         v-for="provider in toAssignProviderList"/>
                                 </el-select>
                             </el-col>
-                            <el-col :lg="6" :xl="4">
+                            <el-col id="providerAssignBtn">
                                 <el-button :disabled="!toAssignProvider" @click="attachProvider" class="full-button"
                                             icon="ti-save" type="primary">
                                     {{$t('general.assign')}}
@@ -1078,6 +1078,18 @@
                         color: var(--color-text-primary);
                         float: right;
                     }
+                }
+            }
+
+            #providerAssignBox {
+                display: flex;
+
+                #providerSelect {
+                    width: 100%;
+                }
+
+                #providerAssignBtn {
+                    flex: 1;
                 }
             }
 

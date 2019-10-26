@@ -808,9 +808,6 @@
         }
     }
 
-    #tab-audit{
-        padding-left:40px;
-    }
 
     .summary-row {
         background-color: #F3F3F3;
@@ -841,10 +838,6 @@
                 }
             }
         }
-    }
-
-    #tab-request_images {
-        padding-right: 40px !important;
     }
 
 

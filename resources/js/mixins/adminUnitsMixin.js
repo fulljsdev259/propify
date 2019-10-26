@@ -236,7 +236,7 @@ export default (config = {}) => {
 
                 return rooms;
             }
-        }
+        },
     };
 
     if (config.mode) {

@@ -195,6 +195,9 @@
                 ];
             }
         },
+        mounted() {
+            this.$root.$on('changeLanguage', () => this.types = Object.entries(this.$constants.units.type).map(([value, label]) => ({value: +value, name: this.$t(`models.unit.type.${label}`)})));
+        },
         async created() {
             this.isLoadingFilters = true;
             this.isReady = true;
@@ -215,16 +218,7 @@
             const buildings = await this.axios.get('buildings?get_all=true')
             this.buildings = buildings.data.data;
 
-            this.types = $constants.units.type;
-            console.log(this.types)
-            // {
-            //                 id: 1,
-            //                 name: this.$t('models.unit.type.apartment')
-            //             },
-            //             {
-            //                 id: 2,
-            //                 name: this.$t('models.unit.type.business')
-            //             }
+            this.types = Object.entries(this.$constants.units.type).map(([value, label]) => ({value: +value, name: this.$t(`models.unit.type.${label}`)}))
             this.isLoadingFilters = false;
         }
     }
