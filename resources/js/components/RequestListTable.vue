@@ -407,14 +407,22 @@
                     per_page: this.page.currSize,
                     ...this.filterModel
                 };
+                
+                console.log('route query', this.$route.query)
+                console.log('filterModel', this.filterModel)
+
+                console.log('query val', query)
 
                 let params = this.$route.params;
-
+                console.log('params', params)
+                console.log('search', this.search)
                 if (this.search) {
                     query = {search: this.search, ...query};
                 } else if (this.withSearch) {
                     delete query.search;
                 }
+                console.log('query', query)
+
                 for(var filter in this.filterModel) {
                     if((this.filterModel[filter] == '' || this.filterModel[filter] == null) && (query[filter] != undefined || query[filter] == null))
                     {
@@ -425,6 +433,7 @@
                 }
 
                 try {
+                    console.log('replace', query, params)
                     this.$router.replace({name: this.$route.name, query, params}).catch(err => {})
                 }
                 catch (err) {
@@ -588,6 +597,8 @@
                         return;
                     }
 
+                    console.log('prevQuery', prevQuery)
+
                     if (!page || !per_page && prevQuery) {
                         this.page.currPage = 1;
                         this.page.currSize = 20;
@@ -619,7 +630,8 @@
             _.each(this.filters, (filter) => {
                 const queryFilterValue = this.$route.query[filter.key];
                 const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
-                const value = queryFilterValue && queryFilterValue.match(dateReg) ? queryFilterValue : parseInt(queryFilterValue);
+//                const value = queryFilterValue && queryFilterValue.match(dateReg) ? queryFilterValue : parseInt(queryFilterValue); 
+                const value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
                 this.$set(this.filterModel, filter.key, value);
 
                 if (!this.filterModel[filter.key]) {
@@ -630,7 +642,6 @@
                     this.filterChanged(filter, true);
                 }
             });
-            
             this.categories = this.$constants.requests.categories_data.tree
         }
     }
