@@ -167,6 +167,7 @@
                             <contract-list-table
                                         :items="model.contracts"
                                         :hide-contract-id="true"
+                                        :hide-avatar="true"
                                         @edit-contract="editContract"
                                         @delete-contract="deleteContract">
                             </contract-list-table>
@@ -184,16 +185,16 @@
                                 mode="edit" 
                                 :data="editingContract" 
                                 :resident_type="model.type" 
-                                :resident_id="model.id" 
                                 :visible.sync="visibleDrawer" 
                                 :edit_index="editingContractIndex" 
-                                @update-contract="updateContract" 
+                                @update-contract="updateContract"
+                                @delete-contract="deleteContract" 
                                 :used_units="used_units"/>
                 <contract-form v-else mode="add" 
                                 :resident_type="model.type" 
-                                :resident_id="model.id" 
                                 :visible.sync="visibleDrawer" 
                                 @add-contract="addContract" 
+                                @delete-contract="deleteContract"
                                 :used_units="used_units"/>
             </div>
         </ui-drawer>

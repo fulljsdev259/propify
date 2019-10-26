@@ -199,7 +199,7 @@
                                             align="right"
                                         >
                                             <template slot-scope="scope">
-                                                <el-button icon="el-icon-close" type="danger" @click="deleteDocument('media', scope.$index)" size="mini"/>
+                                                <el-button icon="el-icon-close" type="danger" round @click="deleteDocument('media', scope.$index)" size="mini"/>
                                             </template>
                                         </el-table-column>
                                     </el-table>
@@ -291,6 +291,7 @@
                         <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
                         <contract-list-table
                                     :items="model.contracts"
+                                    :hide-building="true"
                                     @edit-contract="editContract"
                                     @delete-contract="deleteContract">
                         </contract-list-table>
@@ -431,6 +432,7 @@
                                 :visible.sync="visibleDrawer" 
                                 :edit_index="editingContractIndex" 
                                 @update-contract="updateContract" 
+                                @delete-contract="deleteContract"
                                 :used_units="used_units"/>
                     <contract-form v-else 
                                 mode="add" 
@@ -440,6 +442,7 @@
                                 :resident_type="1" 
                                 :visible.sync="visibleDrawer" 
                                 @add-contract="addContract" 
+                                @delete-contract="deleteContract"
                                 :used_units="used_units"/>
                 </div>
             </template>
@@ -554,7 +557,7 @@
                     i18n: this.translateType
                 }],
                 assigneesActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         title: 'models.building.unassign_manager',
                         type: 'danger',
@@ -581,7 +584,7 @@
                         title: 'general.actions.edit',
                         onClick: this.unitEditView,
                         tooltipMode: true,
-                        icon: 'el-icon-edit'
+                        icon: 'ti-search'
                     }]
                 }],
                 requestColumns: [{
@@ -600,7 +603,7 @@
                 requestActions: [{
                     width: 120,
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.requestEditView,
                         tooltipMode: true
@@ -612,7 +615,7 @@
                     type: 'serviceName'
                 }],
                 assignmentsProviderActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         icon: 'el-icon-close',
                         title: 'general.unassign',
@@ -934,6 +937,7 @@
                     await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
                     this.model.contracts.splice(index, 1)
                     this.contractCount --;
+                    this.visibleDrawer = false;
                 }).catch(() => {
                 });
             },
