@@ -123,9 +123,10 @@ function get_category_details($category)
     return [
         'id' => $category,
         'name' => \App\Models\Request::Category[$category] ?? 'not exists',
-        'acquisition' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $category),
+        'acquisition' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $category), // @TODO delete
         'capture_phase' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $category),
-        'has_qualifications' => get_category_attribute(\App\Models\Request::HasQualifications, $values, $category),
+        'has_qualifications' => get_category_attribute(\App\Models\Request::QualificationAttr, $values, $category), // @TODO delete
+        'qualification' => get_category_attribute(\App\Models\Request::QualificationAttr, $values, $category),
         'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $category),
         'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $category),
     ];
@@ -152,9 +153,10 @@ function get_sub_category_details($subCategory)
         'id' => $subCategory,
         'parent_id' => $parentId,
         'name' => \App\Models\Request::SubCategory[$subCategory] ?? 'not exists',
-        'acquisition' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $subCategory),
+        'acquisition' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $subCategory),// @TODO delete
         'capture_phase' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $subCategory),
-        'has_qualifications' => get_category_attribute(\App\Models\Request::HasQualifications, $values, $subCategory),
+        'has_qualifications' => get_category_attribute(\App\Models\Request::QualificationAttr, $values, $subCategory),// @TODO delete
+        'qualification' => get_category_attribute(\App\Models\Request::QualificationAttr, $values, $subCategory),
         'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $subCategory),
         'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $subCategory),
     ];
