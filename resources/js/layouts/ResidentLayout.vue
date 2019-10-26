@@ -452,12 +452,7 @@
                     display: block;
                 }
             }   
-            :global(.el-divider--horizontal) {
-                margin: 14px 0;
-                :global(.el-divider__text) {
-                    background-color: transparent !important;
-                }
-            }
+            
 
             .content {
                 width: 100%;
