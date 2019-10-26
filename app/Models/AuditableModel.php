@@ -332,7 +332,7 @@ class AuditableModel extends Model implements Auditable
         if ($isSingle) {
             if (self::MergeInMainData == $key) {
                 if (is_array($newValue)) {
-                    $savedValues = array_merge($savedValues, $newValue);
+                    $savedValues = array_merge($newValue, $savedValues);
                 } else {
                     $savedValues[] = $newValue;
                 }
