@@ -337,7 +337,7 @@
                                                      v-show="SettingsCircleLogo && !circle_logo_upload_img"
                                                 >
                                             </el-form-item>
-                                            <!-- <el-form-item :label="$t('models.user.favicon_icon')">
+                                            <el-form-item :label="$t('models.user.favicon_icon')">
                                                 <upload-document @fileUploaded="setFaviconIconUpload" class="drag-custom" drag/>
                                                 <img :src="favicon_icon_upload_img"
                                                      v-show="favicon_icon_upload_img"
@@ -345,7 +345,7 @@
                                                 <img :src="SettingsFaviconIcon" ref="SettingsFaviconIcon"
                                                      v-show="SettingsFaviconIcon && !favicon_icon_upload_img"
                                                     >
-                                            </el-form-item> -->
+                                            </el-form-item>
                                             <el-form-item :label="$t('models.user.resident_logo')">
                                                 <upload-document @fileUploaded="setResidentLogoUpload" class="drag-custom" drag/>
                                                 <img :src="resident_logo_upload_img"

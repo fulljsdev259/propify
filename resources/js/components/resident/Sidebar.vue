@@ -373,6 +373,12 @@
         },
         mounted () {
             this.doAnimeOnDirection(this.direction)
+            this.$root.$on('hide-property-manager-card', () => {
+                this.hidePropertyManagerCard = true
+            });
+            this.$root.$on('hide-my-neighbour-card', () => {
+                this.hideMyNeighbourCard = true
+            });
 //            this.onSiblingElementClickHandler = () => this.submenu.visible = false
 
 //            this.$el.nextElementSibling.addEventListener('click', this.onSiblingElementClickHandler)

@@ -352,11 +352,11 @@ export default (config = {}) => {
                 this.showAcquisition =  p_category.acquisition == 1 ? true : false;
             },
             changeSubCategory() {
-                const subcategory = this.sub_categories.find(category => {
+                const sub_category = this.sub_categories.find(category => {
                     return category.id == this.model.sub_category_id;
                 });
                 
-                this.model.subcategory = subcategory
+                this.model.sub_category = sub_category
 
                 this.model.room = '';
                 this.model.location = '';
@@ -364,13 +364,13 @@ export default (config = {}) => {
                 this.showUmgebung = false;
                 this.showWohnung = false;
 
-                if(subcategory.room == 1) {
+                if(sub_category.room == 1) {
                     this.showWohnung = true;
                 }
-                else if(subcategory.location == 1) {
+                else if(sub_category.location == 1) {
                     this.showLiegenschaft = true;
                 }
-                else if(subcategory.location == 0 && subcategory.room == 0) {
+                else if(sub_category.location == 0 && sub_category.room == 0) {
                     this.showUmgebung = true;
                 }
             },
