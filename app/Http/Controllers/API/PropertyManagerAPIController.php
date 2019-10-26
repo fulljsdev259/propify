@@ -15,6 +15,7 @@ use App\Http\Requests\API\PropertyManager\ListRequest;
 use App\Http\Requests\API\PropertyManager\UnAssignRequest;
 use App\Http\Requests\API\PropertyManager\UpdateRequest;
 use App\Http\Requests\API\PropertyManager\ViewRequest;
+use App\Models\AuditableModel;
 use App\Models\PropertyManager;
 use App\Models\Role;
 use App\Models\User;
@@ -416,25 +417,25 @@ class PropertyManagerAPIController extends AppBaseController
      *
      * @param int $id
      * @param int $did
-     * @param QuarterRepository $qRepo
+     * @param QuarterRepository $quarterRepository
      * @param AssignRequest $r
      * @return mixed
      */
-    public function assignQuarter(int $id, int $did, QuarterRepository $qRepo, AssignRequest $r)
+    public function assignQuarter(int $id, int $did, QuarterRepository $quarterRepository, AssignRequest $r)
     {
-        $pm = $this->propertyManagerRepository->findWithoutFail($id);
-        if (empty($pm)) {
+        $propertyManager = $this->propertyManagerRepository->findWithoutFail($id);
+        if (empty($propertyManager)) {
             return $this->sendError(__('models.property_manager.errors.not_found'));
         }
-        $d = $qRepo->findWithoutFail($did);
-        if (empty($d)) {
+        $quarter = $quarterRepository->findWithoutFail($did);
+        if (empty($quarter)) {
             return $this->sendError(__('models.property_manager.errors.quarter_not_found'));
         }
 
-        $pm->quarters()->sync($d, false);
-        $pm->load('quarters', 'buildings');
+        $propertyManager->quarters()->sync([$quarter->id => ['created_at' => now()]], false);
+        $propertyManager->load('quarters', 'buildings');
 
-        return $this->sendResponse($pm, __('general.attached.quarter'));
+        return $this->sendResponse($propertyManager, __('general.attached.quarter'));
     }
 
     /**
@@ -467,25 +468,26 @@ class PropertyManagerAPIController extends AppBaseController
      *
      * @param int $id
      * @param int $did
-     * @param QuarterRepository $qRepo
+     * @param QuarterRepository $quarterRepository
      * @param UnAssignRequest $r
      * @return mixed
      */
-    public function unassignQuarter(int $id, int $did, QuarterRepository $qRepo, UnAssignRequest $r)
+    public function unassignQuarter(int $id, int $did, QuarterRepository $quarterRepository, UnAssignRequest $r)
     {
-        $pm = $this->propertyManagerRepository->findWithoutFail($id);
-        if (empty($pm)) {
+        $propertyManager = $this->propertyManagerRepository->findWithoutFail($id);
+        if (empty($propertyManager)) {
             return $this->sendError(__('models.property_manager.errors.not_found'));
         }
-        $d = $qRepo->findWithoutFail($did);
-        if (empty($d)) {
+
+        $quarter = $quarterRepository->findWithoutFail($did);
+        if (empty($quarter)) {
             return $this->sendError(__('models.property_manager.errors.quarter_not_found'));
         }
 
-        $pm->quarters()->detach($d);
-        $pm->load('quarters', 'buildings');
+        $propertyManager->quarters()->detach($quarter);
+        $propertyManager->load('quarters', 'buildings');
 
-        return $this->sendResponse($pm, __('general.detached.quarter'));
+        return $this->sendResponse($propertyManager, __('general.detached.quarter'));
     }
 
     /**
@@ -518,29 +520,31 @@ class PropertyManagerAPIController extends AppBaseController
      *
      * @param int $id
      * @param int $bid
-     * @param BuildingRepository $bRepo
+     * @param BuildingRepository $buildingRepository
      * @param AssignRequest $r
      * @return mixed
      */
-    public function assignBuilding(int $id, int $bid, BuildingRepository $bRepo, AssignRequest $r)
+    public function assignBuilding(int $id, int $bid, BuildingRepository $buildingRepository, AssignRequest $r)
     {
-        $pm = $this->propertyManagerRepository->findWithoutFail($id);
-        if (empty($pm)) {
+        $propertyManager = $this->propertyManagerRepository->findWithoutFail($id);
+        if (empty($propertyManager)) {
             return $this->sendError(__('models.property_manager.errors.not_found'));
         }
-        $b = $bRepo->findWithoutFail($bid);
-        if (empty($b)) {
+
+        $building = $buildingRepository->findWithoutFail($bid);
+        if (empty($building)) {
             return $this->sendError(__('models.property_manager.errors.building_not_found'));
         }
 
-        if ($b->quarter_id && $pm->quarters->contains('id', $b->quarter_id)) {
+        // @TODO discuss with
+        if ($building->quarter_id && $propertyManager->quarters()->where('quarter_id', 5)->exists()) {
             return $this->sendError(__('models.property_manager.errors.building_already_assign'));
         }
 
-        $pm->buildings()->sync($b, false);
-        $pm->load('quarters', 'buildings');
+        $propertyManager->buildings()->sync([$building->id => ['created_at' => now()]], false);
+        $propertyManager->load('quarters', 'buildings');
 
-        return $this->sendResponse($pm, __('general.attached.building'));
+        return $this->sendResponse($propertyManager, __('general.attached.building'));
     }
 
     /**
@@ -573,25 +577,26 @@ class PropertyManagerAPIController extends AppBaseController
      *
      * @param int $id
      * @param int $bid
-     * @param BuildingRepository $bRepo
+     * @param BuildingRepository $buildingRepository
      * @param UnAssignRequest $r
      * @return mixed
      */
-    public function unassignBuilding(int $id, int $bid, BuildingRepository $bRepo, UnAssignRequest $r)
+    public function unassignBuilding(int $id, int $bid, BuildingRepository $buildingRepository, UnAssignRequest $r)
     {
-        $pm = $this->propertyManagerRepository->findWithoutFail($id);
-        if (empty($pm)) {
+        $propertyManager = $this->propertyManagerRepository->findWithoutFail($id);
+        if (empty($propertyManager)) {
             return $this->sendError(__('models.property_manager.errors.not_found'));
         }
-        $b = $bRepo->findWithoutFail($bid);
-        if (empty($b)) {
+
+        $building = $buildingRepository->findWithoutFail($bid);
+        if (empty($building)) {
             return $this->sendError(__('models.property_manager.errors.building_not_found'));
         }
 
-        $pm->buildings()->detach($b);
-        $pm->load('quarters', 'buildings');
+        $propertyManager->buildings()->detach($building);
+        $propertyManager->load('quarters', 'buildings');
 
-        return $this->sendResponse($pm, __('general.detached.building'));
+        return $this->sendResponse($propertyManager, __('general.detached.building'));
     }
 
     /**
