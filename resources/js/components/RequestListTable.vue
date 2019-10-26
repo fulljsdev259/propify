@@ -408,21 +408,12 @@
                     ...this.filterModel
                 };
                 
-                console.log('route query', this.$route.query)
-                console.log('filterModel', this.filterModel)
-
-                console.log('query val', query)
-
                 let params = this.$route.params;
-                console.log('params', params)
-                console.log('search', this.search)
                 if (this.search) {
                     query = {search: this.search, ...query};
                 } else if (this.withSearch) {
                     delete query.search;
                 }
-                console.log('query', query)
-
                 for(var filter in this.filterModel) {
                     if((this.filterModel[filter] == '' || this.filterModel[filter] == null) && (query[filter] != undefined || query[filter] == null))
                     {
@@ -433,7 +424,6 @@
                 }
 
                 try {
-                    console.log('replace', query, params)
                     this.$router.replace({name: this.$route.name, query, params}).catch(err => {})
                 }
                 catch (err) {
@@ -596,8 +586,6 @@
                     if(this.$route.name == "login") {
                         return;
                     }
-
-                    console.log('prevQuery', prevQuery)
 
                     if (!page || !per_page && prevQuery) {
                         this.page.currPage = 1;
