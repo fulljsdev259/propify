@@ -429,19 +429,8 @@ export default (config = {}) => {
 
                     this.loading.state = true;
 
-                    
-
                     await this.fetchCurrentManager();
 
-
-                    // const {
-                    //     data: {
-                    //         ...restData
-                    //     }
-                    // } = await this.getPropertyManager({id: this.$route.params.id});
-
-                    
-                    
                     this.loading.state = false;
                 };
 
