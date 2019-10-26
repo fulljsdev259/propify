@@ -548,7 +548,7 @@ class BuildingAPIController extends AppBaseController
         if (empty($building)) {
             return $this->sendError(__('models.building.errors.not_found'));
         }
-
+dd(1);
         try {
             $this->buildingRepository->delete($building->id);
         } catch (\Exception $e) {

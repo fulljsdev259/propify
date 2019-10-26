@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use OwenIt\Auditing\Contracts\Auditable;
 use OwenIt\Auditing\Models\Audit;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 /**
  * App\Models\AuditableModel
@@ -261,7 +262,7 @@ class AuditableModel extends Model implements Auditable
             return $value;
         }
 
-        if (is_a($value, Model::class)) {
+        if (is_a($value, EloquentModel::class)) {
             if ($value->wasRecentlyCreated) {
                 $value = $this->getSingleRelationAuditData($value);
             } else {
@@ -288,7 +289,7 @@ class AuditableModel extends Model implements Auditable
             return $value;
         }
 
-        if (is_a($value, Model::class)) {
+        if (is_a($value, EloquentModel::class)) {
             $value = $value->getOldChanges();
             unset($value['updated_at']);
             return $value;
@@ -310,7 +311,7 @@ class AuditableModel extends Model implements Auditable
      */
     protected function correctCreatedAuditValue($value)
     {
-        if (is_a($value, Model::class)) {
+        if (is_a($value, EloquentModel::class)) {
             $value = $this->getSingleRelationAuditData($value);
         } elseif (is_a($value, Collection::class)) {
             $value = $this->getManyRelationAuditData($value);
@@ -332,7 +333,7 @@ class AuditableModel extends Model implements Auditable
         if ($isSingle) {
             if (self::MergeInMainData == $key) {
                 if (is_array($newValue)) {
-                    $savedValues = array_merge($savedValues, $newValue);
+                    $savedValues = array_merge($newValue, $savedValues);
                 } else {
                     $savedValues[] = $newValue;
                 }
@@ -370,7 +371,7 @@ class AuditableModel extends Model implements Auditable
     {
         if (is_a($relationData, Collection::class)) {
             return $this->getManyRelationAuditData($relationData);
-        } elseif(is_a($relationData, Model::class)) {
+        } elseif(is_a($relationData, EloquentModel::class)) {
             return $this->getSingleRelationAuditData($relationData);
         }
         return [];//'@TODO'
