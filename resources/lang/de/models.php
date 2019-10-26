@@ -139,7 +139,7 @@ return [
         ],
         'type' => [
             'label' => 'Typ',
-            'resident' => 'Mieter',
+            'tenant' => 'Mieterin',
             'owner' => 'Eigentümer',
         ],
     ],

@@ -555,7 +555,7 @@
                     i18n: this.translateType
                 }],
                 assigneesActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         title: 'models.building.unassign_manager',
                         type: 'danger',
@@ -613,7 +613,7 @@
                     type: 'serviceName'
                 }],
                 assignmentsProviderActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         icon: 'el-icon-close',
                         title: 'general.unassign',

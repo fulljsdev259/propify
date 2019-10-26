@@ -361,7 +361,7 @@
                     }]
                 }],
                 assigneesActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [ {
                         title: 'general.unassign',
                         tooltipMode: true,

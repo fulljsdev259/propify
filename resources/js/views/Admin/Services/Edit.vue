@@ -255,7 +255,7 @@
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         title: 'general.unassign',
                         type: 'danger',

@@ -213,7 +213,7 @@
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         icon: 'el-icon-close',
                         title: 'general.unassign',

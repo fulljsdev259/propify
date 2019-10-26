@@ -78,7 +78,7 @@ export default (config = {}) => {
                     label: 'models.request.category'
                 }],
                 requestActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         title: 'general.actions.edit',
                         type: 'primary',
