@@ -1,5 +1,5 @@
 <template>
-    <div class="units-edit">
+    <div class="units-edit" v-loading.fullscreen.lock="loading.state">
         <div class="main-content">
             <heading :title="$t('models.unit.edit')" icon="icon-unit" style="margin-bottom: 20px;" shadow="heavy">
                 <template slot="description" v-if="model.unit_format">

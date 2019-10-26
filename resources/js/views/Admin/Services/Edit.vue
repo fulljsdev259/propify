@@ -1,5 +1,5 @@
 <template>
-    <div class="services-edit mb20">
+    <div class="services-edit mb20" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.service.edit_title')" icon="icon-tools" shadow="heavy">
             <template slot="description" v-if="model.service_provider_format">
                 <div class="subtitle">{{model.service_provider_format}}</div>
@@ -9,7 +9,7 @@
         <el-row :gutter="20" class="crud-view">
             <el-col :md="12">
                 <el-form :model="model" label-position="top" label-width="192px" ref="form">
-                    <card :loading="loading" :header="$t('models.service.company_details')">
+                    <card :header="$t('models.service.company_details')">
                         <el-row class="last-form-row" :gutter="20">
                             <el-col :md="12">
                                 <el-form-item :label="$t('models.service.category.label')" prop="category">
@@ -32,7 +32,7 @@
                             </el-col>
                         </el-row>
                     </card>
-                    <card class="mt15" :loading="loading" :header="$t('models.service.contact_details')">
+                    <card class="mt15" :header="$t('models.service.contact_details')">
                         <el-row :gutter="20">
                             <el-col :md="12">
                                 <el-form-item :label="$t('general.street')" :rules="validationRules.street"
@@ -90,7 +90,7 @@
                             </el-col>
                         </el-row>
                     </card>
-                    <card :loading="loading" class="mt15" :header="$t('models.service.user_credentials')">
+                    <card class="mt15" :header="$t('models.service.user_credentials')">
                         <el-row :gutter="20">
                             <el-col :md="12">
                                 <el-form-item :label="$t('models.user.profile_image')">
@@ -147,7 +147,7 @@
             </el-col>
             <el-col :md="12">
                 <raw-grid-statistics-card :cols="8" :data="statistics.raw"/>
-                <card :loading="loading" class="mt15" :header="$t('general.assignment')">
+                <card class="mt15" :header="$t('general.assignment')">
             
                     <assignment-by-type
                         :resetToAssignList="resetToAssignList"
@@ -170,7 +170,7 @@
                     />
 
                 </card>
-                <card :loading="loading" class="mt15" :header="$t('general.requests')">
+                <card class="mt15" :header="$t('general.requests')">
 
                     <relation-list
                         :actions="requestActions"

@@ -1,5 +1,5 @@
 <template>
-    <div class="buildings-edit ">
+    <div class="buildings-edit " v-loading.fullscreen.lock="loading.state">
         <div class="main-content">
         <heading :title="$t('models.building.edit_title')" icon="icon-commerical-building" shadow="heavy">
             <template slot="description" v-if="model.building_format">
@@ -153,7 +153,7 @@
                             </el-row>
                         </el-form>
                     </el-tab-pane>
-                    <el-tab-pane name="units" v-loading="loading.state">
+                    <el-tab-pane name="units" >
                         <span slot="label">
                             <el-badge :value="unitCount" :max="99" class="admin-layout">{{ $t('models.building.units') }}</el-badge>
                         </span>
@@ -270,7 +270,7 @@
             </el-col>
             <el-col :md="12">
                 <el-tabs type="border-card" v-model="activeRightTab">
-                    <el-tab-pane name="residents" v-loading="loading.state">                        
+                    <el-tab-pane name="residents">                        
                         <span slot="label">
                             <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.residents') }}</el-badge>
                         </span>

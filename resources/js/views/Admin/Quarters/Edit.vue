@@ -1,5 +1,5 @@
 <template>
-    <div class="quarters-edit">
+    <div class="quarters-edit" v-loading.fullscreen.lock="loading.state">
         <div class="main-content">
             <heading :title="$t('models.quarter.edit')" icon="icon-chat-empty" shadow="heavy">
                 <template slot="description" v-if="model.quarter_format">
@@ -164,7 +164,7 @@
                 </el-col>
                 <el-col :md="12">
                     <el-tabs type="border-card" v-model="activeRightTab">
-                        <el-tab-pane name="assignees" v-loading="loading.state">                        
+                        <el-tab-pane name="assignees">                        
                             <span slot="label">
                                 <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('models.quarter.assignment') }}</el-badge>
                             </span>
