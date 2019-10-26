@@ -1,12 +1,12 @@
 <template>
-    <div class="users-edit">
+    <div class="users-edit" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.user.edit_admin')" icon="icon-user">
             <edit-actions :saveAction="submit" :deleteAction="deleteUser" :role="this.$route.params.role" route="adminUsers" :queryParams="queryParams" shadow="heavy"/>
         </heading>
         <el-row class="crud-view">
             <el-form :model="model" label-position="top" label-width="192px" ref="form">
                 <el-col :md="12" id="left_card">
-                    <card :loading="loading">
+                    <card>
                         <el-row :gutter="20">
                             <el-col :md="12">
                                 <el-form-item :label="$t('general.name')" :rules="validationRules.name" prop="name">

@@ -1,12 +1,12 @@
 <template>
-    <div id="pinboard-edit-view" class="units-edit mb20">
+    <div id="pinboard-edit-view" class="units-edit mb20" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.pinboard.edit_title')" icon="icon-megaphone-1" shadow="heavy" style="margin-bottom: 20px;">
             <edit-actions :saveAction="submit" :deleteAction="deletePinboard" route="adminPinboard"/>
         </heading>
         <el-row :gutter="20" class="crud-view">
             <el-form :model="model" label-position="top" label-width="192px" ref="form">
                 <el-col :md="12">                
-                    <el-card :header="$t('models.property_manager.details_card')" :loading="loading" class="mb20">
+                    <el-card :header="$t('models.property_manager.details_card')" class="mb20">
                         <el-row :gutter="20" class="mb20">
                             <el-col :lg="8">
                                 <el-form-item :label="$t('models.pinboard.type.label')">
@@ -196,7 +196,7 @@
                     </el-card>
                 </el-col>
                 <el-col :md="12">
-                    <el-card :loading="loading" class="contact-info-card">
+                    <el-card class="contact-info-card">
                         <el-row  :gutter="30" class="contact-info-card-row">
                             <el-col class="contact-info-card-col" :md="8">
                                 <div class="contact-info-title">
@@ -290,7 +290,7 @@
                         </el-row>                                                    
                     </el-card>
 
-                    <el-card :header="$t('models.pinboard.announcement')" v-if="model.type == 3" :loading="loading" class="mt15">
+                    <el-card :header="$t('models.pinboard.announcement')" v-if="model.type == 3" class="mt15">
                         <el-row :gutter="20">
                             <el-col :md="12">
                                 <el-form-item :label="$t('models.pinboard.execution_period.label')">
@@ -417,7 +417,7 @@
                         
                     </el-card>
 
-                    <el-card :header="$t('models.pinboard.buildings')" :loading="loading" class="mt15">
+                    <el-card :header="$t('models.pinboard.buildings')" class="mt15">
                         <assignment-by-type
                             :resetToAssignList="resetToAssignList"
                             :assignmentType.sync="assignmentType"
@@ -452,7 +452,7 @@
                         </div>
                     </el-card>
 
-                    <el-card :header="$t('models.pinboard.placeholders.search_provider')" v-if="model.type == 3 && model.sub_type == 3" :loading="loading" class="mt15">
+                    <el-card :header="$t('models.pinboard.placeholders.search_provider')" v-if="model.type == 3 && model.sub_type == 3" class="mt15">
                         <assignment-by-type
                             :resetToAssignList="resetToAssignProviderList"
                             :toAssign.sync="toAssignProvider"

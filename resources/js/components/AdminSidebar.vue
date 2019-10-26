@@ -156,6 +156,7 @@
         }
         .el-badge {
             float: right;
+            display: block;
         }
     }
     /deep/ .el-menu-item.is-active, .el-menu-item:hover {

@@ -1,6 +1,5 @@
 <template>
-    
-        <div class="residents-edit mb20 residents-edit-new">
+        <div class="residents-edit mb20 residents-edit-new" v-loading.fullscreen.lock="loading.state">
             <div class="main-content">
                 <heading :title="$t('models.resident.edit_title')" icon="icon-group">
                     <template slot="description" v-if="model.resident_format">
@@ -243,7 +242,7 @@
                         </el-form>
                         <el-row :gutter="20">
                             <el-col :md="12">
-                                <el-card :loading="loading" class="chart-card">
+                                <el-card class="chart-card">
                                         <el-row :gutter="20">
                                             <h3 class="chart-card-header">
                                                 <i class="icon-handshake-o ti-user icon "/>
