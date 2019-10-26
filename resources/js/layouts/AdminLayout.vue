@@ -769,7 +769,6 @@
     .admin-layout .el-badge {
         display: flex;
         align-items: center;
-        margin-right: -10px;
         .el-badge__content.is-fixed {
             position: static;
             transform: none;
