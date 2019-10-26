@@ -37,10 +37,19 @@ class Helper
             'quarter' => [
                 'internal_quarter_id' => __('general.internal_quarter_id'),
                 'name' => __('general.name'),                
+                'zip' => __('general.zip'),
+                'city' => __('general.city'),
+                'state_id' => __('general.state'),
+                'house_num' => __('general.house_num'),
             ],
             'building' => [
                 'quarter_id' => __('general.assignment_types.quarter'),
-                'floor_nr' => __('models.building.floor_nr')
+                'floor_nr' => __('models.building.floor_nr'),  
+                'name' => __('general.name'),                
+                'zip' => __('general.zip'),
+                'city' => __('general.city'),
+                'state_id' => __('general.state'),
+                'house_num' => __('general.house_num'),              
             ],
             'contract' => [],
             'listing' => [],

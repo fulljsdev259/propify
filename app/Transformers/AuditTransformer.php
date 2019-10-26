@@ -10,6 +10,7 @@ use App\Repositories\AuditRepository;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use OwenIt\Auditing\Models\Audit;
 use Illuminate\Support\Arr;
+use Lang;
 
 /**
  * Class AuditTransformer.
@@ -69,7 +70,17 @@ class AuditTransformer extends BaseTransformer
                 }elseif($model->auditable_type == 'provider'){
                     $language_map = 'service';
                 }                
-                $fieldname = (isset($fieldMapToLanguage[$model->auditable_type][$field])) ? $fieldMapToLanguage[$model->auditable_type][$field] : __('models.'.$language_map.'.'.$field);
+                if(isset($fieldMapToLanguage[$model->auditable_type][$field])){
+                    $fieldname = $fieldMapToLanguage[$model->auditable_type][$field];
+                } else {                    
+                    if(Lang::has('models.'.$language_map.'.'.$field) && gettype(Lang::get('models.'.$language_map.'.'.$field)) == 'string'){
+                        $fieldname = Lang::get('models.'.$language_map.'.'.$field);
+                    }
+                    else{
+                        $fieldname = $field;
+                    }                    
+                }
+                // $fieldname = (isset($fieldMapToLanguage[$model->auditable_type][$field])) ? $fieldMapToLanguage[$model->auditable_type][$field] : __('models.'.$language_map.'.'.$field);
                 if(in_array($field, ['content','description'])){
                     $old_value = ($old_value) ? Helper::shortenString($old_value) : "";
                     $new_value = ($new_value) ? Helper::shortenString($new_value) : "";
@@ -78,14 +89,14 @@ class AuditTransformer extends BaseTransformer
                     $old_value = ($old_value) ? __('general.salutation_option.'.$old_value) : "";
                     $new_value = ($new_value) ? __('general.salutation_option.'.$new_value) : "";
                 }
-                elseif(in_array($field, ['type','status','visibility','building_id','resident_id', 'quarter_id','unit_id','address_id','internal_priority','priority','is_public','category','nation'])){
+                elseif(in_array($field, ['type','status','visibility','building_id','resident_id', 'quarter_id','unit_id','address_id','internal_priority','priority','is_public','category','nation','state_id'])){
                     $old_value = ($old_value) ? (AuditRepository::getDataFromField($field, $old_value, $model->auditable_type)) : "";
                     $new_value = ($new_value) ? (AuditRepository::getDataFromField($field, $new_value, $model->auditable_type)) : "";
                 }                                
                 elseif(in_array($field, ['due_date','solved_date','published_at','birth_date'])){                    
                     $old_value = ($old_value) ? Helper::formatedDate($old_value) : "";
                     $new_value = ($new_value) ? Helper::formatedDate($new_value) : "";
-                }                              
+                }                
                 /*elseif(($model->auditable_type == 'request') && ($field == 'category_id')){                    
                     $old_category = RequestCategory::find($old_value);
                     $new_category = RequestCategory::find($new_value);                    
@@ -103,47 +114,47 @@ class AuditTransformer extends BaseTransformer
                         $new_value = $new_category->name;
                     }
                 }*/                
-                $statement .= __("general.components.common.audit.content.with_id.general.updated",['fieldname' => $fieldname, 'old' => $old_value, 'new' => $new_value]);
+                $statement .= __("general.components.common.audit.content.general.updated",['fieldname' => $fieldname, 'old' => $old_value, 'new' => $new_value]);
                 $statement .= " ";
             }
             $statement = rtrim($statement, ',');
             $response['statement'] = $statement;
         }
         elseif($model->event == 'created'){                        
-            $response['statement'] = __("general.components.common.audit.content.with_id.".$model->auditable_type.".created",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
+            $response['statement'] = __("general.components.common.audit.content.general.created",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
         }
         elseif($model->event == 'manager_assigned'){            
-            $response['statement'] = __("general.components.common.audit.content.with_id.general.manager_assigned",['propertyManagerFirstName' => $model->new_values['property_manager_first_name'],'propertyManagerLastName' => $model->new_values['property_manager_last_name']]);
+            $response['statement'] = __("general.components.common.audit.content.general.manager_assigned",['propertyManagerFirstName' => $model->new_values['property_manager_first_name'],'propertyManagerLastName' => $model->new_values['property_manager_last_name']]);
         }
         elseif($model->event == 'manager_unassigned'){            
-            $response['statement'] = __("general.components.common.audit.content.with_id.general.manager_unassigned",['propertyManagerFirstName' => $model->old_values['property_manager_first_name'],'propertyManagerLastName' => $model->old_values['property_manager_last_name']]);
+            $response['statement'] = __("general.components.common.audit.content.general.manager_unassigned",['propertyManagerFirstName' => $model->old_values['property_manager_first_name'],'propertyManagerLastName' => $model->old_values['property_manager_last_name']]);
         }
         elseif($model->event == 'provider_assigned'){            
-            $response['statement'] = __("general.components.common.audit.content.with_id.general.provider_assigned",['providerName' => $model->new_values['service_provider_name']]);
+            $response['statement'] = __("general.components.common.audit.content.general.provider_assigned",['providerName' => $model->new_values['service_provider_name']]);
         }
         elseif($model->event == 'provider_unassigned'){            
-            $response['statement'] = __("general.components.common.audit.content.with_id.general.provider_unassigned",['providerName' => $model->old_values['service_provider_name']]);
+            $response['statement'] = __("general.components.common.audit.content.general.provider_unassigned",['providerName' => $model->old_values['service_provider_name']]);
         }
         elseif($model->event == 'media_uploaded'){            
-            $response['statement'] = __("general.components.common.audit.content.with_id.general.media_uploaded");
+            $response['statement'] = __("general.components.common.audit.content.general.media_uploaded");
         }
         elseif($model->event == 'media_deleted'){            
-            $response['statement'] = __("general.components.common.audit.content.with_id.general.media_deleted");
+            $response['statement'] = __("general.components.common.audit.content.general.media_deleted");
         }
         elseif($model->event == 'provider_notified'){
-            $response['statement'] = __("general.components.common.audit.content.with_id.general.provider_notified",['providerName' => $model->new_values['service_provider']['name']]);
+            $response['statement'] = __("general.components.common.audit.content.general.provider_notified",['providerName' => $model->new_values['service_provider']['name']]);
         }  
         elseif($model->event == 'quarter_assigned'){
-            $response['statement'] = __("general.components.common.audit.content.with_id.general.quarter_assigned",['quarterName' => $model->new_values['quarter_name']]);
+            $response['statement'] = __("general.components.common.audit.content.general.quarter_assigned",['quarterName' => $model->new_values['quarter_name']]);
         }
         elseif($model->event == 'quarter_unassigned'){
-            $response['statement'] = __("general.components.common.audit.content.with_id.general.quarter_assigned",['quarterName' => $model->old_values['quarter_name']]);
+            $response['statement'] = __("general.components.common.audit.content.general.quarter_assigned",['quarterName' => $model->old_values['quarter_name']]);
         }
         elseif($model->event == 'building_assigned'){
-            $response['statement'] = __("general.components.common.audit.content.with_id.general.building_assigned",['buildingName' => $model->new_values['building_name']]);
+            $response['statement'] = __("general.components.common.audit.content.general.building_assigned",['buildingName' => $model->new_values['building_name']]);
         }
         elseif($model->event == 'building_unassigned'){
-            $response['statement'] = __("general.components.common.audit.content.with_id.general.building_assigned",['buildingName' => $model->old_values['building_name']]);
+            $response['statement'] = __("general.components.common.audit.content.general.building_assigned",['buildingName' => $model->old_values['building_name']]);
         }
         return $response;
     }
