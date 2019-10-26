@@ -367,7 +367,8 @@
         <ui-divider></ui-divider>
         <div class="contract-form-actions">
             <div class="button-group">
-                <el-button type="primary" @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
+                <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" round>{{ edit_index == undefined ? $t('general.actions.add') : $t('general.actions.edit')}}</el-button>
+                <el-button type="primary" v-else @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
                 <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-contract', edit_index)" icon="ti-trash" round>{{$t('general.actions.delete')}}</el-button>
             </div>
         </div>
