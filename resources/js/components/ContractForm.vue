@@ -366,7 +366,10 @@
         </template>
         <ui-divider></ui-divider>
         <div class="contract-form-actions">
-            <el-button type="primary" @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
+            <div class="button-group">
+                <el-button type="primary" @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
+                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-contract', edit_index)" icon="ti-trash" round>{{$t('general.actions.delete')}}</el-button>
+            </div>
         </div>
         
 
@@ -731,6 +734,7 @@
             this.deposit_statuses = Object.entries(this.$constants.contracts.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.deposit_status.${label}`)}));
             this.contract_statuses = Object.entries(this.$constants.contracts.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.rent_status.${label}`)}));
 
+            console.log('edit_index', this.edit_index)
             if(this.mode == "edit") {
                 this.model = Object.assign({}, this.data)
                 
@@ -938,6 +942,10 @@
             i {
                 padding-right: 5px;
             }
+        }
+
+        .button-group {
+            display: flex;
         }
     }
 
