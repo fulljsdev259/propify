@@ -33,7 +33,7 @@
 
 <script>
     import Heading from 'components/Heading';
-    import {mapActions} from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
     import ListTableMixin from 'mixins/ListTableMixin';
     import getFilterQuarters from 'mixins/methods/getFilterQuarters';
     import getFilterStates from "mixins/methods/getFilterStates";
@@ -62,6 +62,7 @@
                 fetchParams: {},
                 states:{},
                 propertyManagers:{},
+                types:{},
                 quarters:{},
                 buildings:{},
                 header: [{
@@ -131,6 +132,9 @@
             }
         },
         computed: {
+            ...mapGetters('application', {
+                constants: 'constants'
+            }),
             title() {
                 return `${this.building.name} - ${this.$t('general.admin_menu.units')}`;
             },
@@ -186,14 +190,7 @@
                         name: this.$t('general.filters.type'),
                         type: 'select',
                         key: 'type',
-                        data: [{
-                            id: 1,
-                            name: this.$t('models.unit.type.apartment')
-                        },
-                        {
-                            id: 2,
-                            name: this.$t('models.unit.type.business')
-                        }]
+                        data: this.types
                     }
                 ];
             }
@@ -217,6 +214,17 @@
 
             const buildings = await this.axios.get('buildings?get_all=true')
             this.buildings = buildings.data.data;
+
+            this.types = $constants.units.type;
+            console.log(this.types)
+            // {
+            //                 id: 1,
+            //                 name: this.$t('models.unit.type.apartment')
+            //             },
+            //             {
+            //                 id: 2,
+            //                 name: this.$t('models.unit.type.business')
+            //             }
             this.isLoadingFilters = false;
         }
     }

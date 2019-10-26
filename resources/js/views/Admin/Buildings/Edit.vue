@@ -173,53 +173,12 @@
                         <draggable @sort="sortFiles" v-model="model.media">
                             <transition-group name="list-complete">
                                 <div key="list-complete-item" class="list-complete-item">
-                                    <el-table
-                                        :data="model.media"
-                                        style="width: 100%"
-                                        v-if="model.media && model.media.length"
-                                        :show-header="false"
-                                        >
-                                        <el-table-column
-                                            prop="collection_name"
-                                        >
-                                            <template slot-scope="scope">
-                                                <strong>{{$t(`models.building.media_category.${scope.row.collection_name}`)}}</strong>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column
-                                            align="right"
-                                        >
-                                            <template slot-scope="scope">
-                                                <a :href="scope.row.url" class="file-name" target="_blank">
-                                                    {{scope.row.name}}
-                                                </a>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column
-                                            align="right"
-                                        >
-                                            <template slot-scope="scope">
-                                                <el-button icon="el-icon-close" type="danger" round @click="deleteDocument('media', scope.$index)" size="mini"/>
-                                            </template>
-                                        </el-table-column>
-                                    </el-table>
+                                    <building-file-list-table 
+                                            :items="model.media" 
+                                            @delete-document="deleteDocument">
+                                    </building-file-list-table>
                                 </div>
-                                <!-- <el-row :gutter="10" :key="element.name" class="list-complete-item"
-                                        v-for="(element, i) in model.media">
-                                    <el-col :md="12">
-                                        <strong>{{$t(`models.building.${element.collection_name}`)}}</strong>
-                                    </el-col>
-                                    <el-col :md="11">
-                                        <a :href="element.url" class="file-name" target="_blank">
-                                            {{element.name}}
-                                        </a>
-                                    </el-col>
-                                    <el-col :md="1" style="text-align: right">
-                                        <el-button :style="{color: 'red'}" @click="deleteDocument('media', i)"
-                                                   icon="ti-close" size="mini" type="text"
-                                        />
-                                    </el-col>
-                                </el-row> -->
+                                
                             </transition-group>
                         </draggable>
                         <div class="mt15">
@@ -320,9 +279,9 @@
                             v-if="model.id"
                         />
                     </el-tab-pane>
-                    <el-tab-pane name="companies">
+                    <el-tab-pane name="providers">
                         <span slot="label">
-                            <el-badge :value="serviceCount" :max="99" class="admin-layout">{{ $t('models.building.companies') }}</el-badge>
+                            <el-badge :value="serviceCount" :max="99" class="admin-layout">{{ $t('models.building.providers') }}</el-badge>
                         </span>                        
                         <!-- <label class="card-label">{{$t('settings.contact_enable.label')}}</label>
                         <el-select
@@ -342,7 +301,7 @@
                                 <el-select
                                     clearable
                                     :loading="remoteLoading"
-                                    :placeholder="$t('models.building.add_companies')"
+                                    :placeholder="$t('general.placeholders.search')"
                                     :remote-method="remoteSearchProviders"
                                     class="custom-remote-select"
                                     filterable
@@ -496,6 +455,7 @@
     import { EventBus } from '../../../event-bus.js';
     import ContractForm from 'components/ContractForm';
     import ContractListTable from 'components/ContractListTable';
+    import BuildingFileListTable from 'components/BuildingFileListTable';
 
     export default {
         mixins: [globalFunction, BuildingsMixin({
@@ -515,7 +475,8 @@
             EmergencySettingsForm,
             EmailReceptionistForm,
             ContractForm,
-            ContractListTable
+            ContractListTable,
+            BuildingFileListTable
         },
         data() {
             return {
@@ -947,33 +908,18 @@
 
             EventBus.$on('assignee-get-counted', manager_count => {                
                 this.managerCount = manager_count;
-                // if(this.managerCount >= 99) {
-                //     document.getElementById('tab-managers').style.paddingRight = '50px';
-                // }
             });
             EventBus.$on('unit-get-counted', unit_count => {
                 this.unitCount = unit_count;
-                // if(this.unitCount >= 99) {
-                //     document.getElementById('tab-units').style.paddingRight = '50px';
-                // }
             });
             EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
-                // if(this.requestCount >= 99) {
-                //     document.getElementById('tab-requests').style.paddingRight = '50px';
-                // }
             });
             EventBus.$on('resident-get-counted', resident_count => {                
                 this.residentCount = resident_count;
-                // if(this.residentCount >= 99) {
-                //     document.getElementById('tab-residents').style.paddingRight = '50px';
-                // }
             });
             EventBus.$on('audit-get-counted', audit_count => {
                 this.auditCount = audit_count;
-                // if(this.auditCount >= 99) {
-                //     document.getElementById('tab-audit').style.paddingRight = '50px';
-                // }
             });
             // this.fileCount = this.model.media.length;
         },
@@ -1195,6 +1141,10 @@
         display: flex;
         justify-content: space-between;
         border-top: 1px solid #eee;
+
+        > div {
+            width: 100%;
+        }
 
         & > .el-col {
             border-left: 1px solid #eee;

@@ -634,9 +634,6 @@
             },
             mediaCount() {
                 if(this.model.media) {
-                    // if(this.model.media.length >= 99) {
-                    //     document.getElementById('tab-request_images').style.paddingRight = '50px';
-                    // }
                     return this.model.media.length;
                 } else {
                     return 0;
@@ -758,24 +755,6 @@
                 }
             }
         },
-        // watch: {
-        //     'requestCommentCount': {
-        //         immediate: false,
-        //         handler (value) {
-        //             if(value >= 99) {
-        //                 document.getElementById('tab-comments').style.paddingRight = '50px';
-        //             }
-        //         }
-        //     },
-        //     'noticeCommentCount': {
-        //         immediate: false,
-        //         handler (value) {
-        //             if(value >= 99) {
-        //                 document.getElementById('tab-internal-notices').style.paddingRight = '50px';
-        //             }
-        //         }
-        //     }
-        // },
     };
 </script>
 <style lang="scss" scoped>

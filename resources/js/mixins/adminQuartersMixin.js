@@ -240,21 +240,11 @@ export default (config = {}) => {
                         this.model.quarter_format = resp.quarter_format;
 
                         this.fileCount = this.model.media.length
-                        // if(this.fileCount >= 99) {
-                        //     document.getElementById('tab-files').style.paddingRight = '50px';
-                        // }
-
-                        //this.model.contracts = []
-                        // resp.buildings.forEach(building => {
-                        //     this.model.contracts = this.model.contracts.concat(building.contracts)
-                        // })
                         
                         this.model.contracts = resp.contracts
                         
                         this.contractCount = this.model.contracts.length
-                        // if(this.contractCount >= 99) {
-                        //     document.getElementById('tab-contracts').style.paddingRight = '50px';
-                        // }
+
                     },
                     submit() {
                         return new Promise((resolve, reject) => {
