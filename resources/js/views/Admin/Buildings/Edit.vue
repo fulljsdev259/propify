@@ -17,8 +17,8 @@
             </template>
         </heading>
         <div class="warning-bar">
-            <div class="message">
-                {{$t('models.building.warning_bar.message')}}
+            <div class="message" type="info">
+                <i class="icon-info-circled"></i>{{$t('models.building.warning_bar.message')}}
             </div>
             <div class="title" @click="gotoEmailReceptionistDrawer">
                 {{$t('models.building.warning_bar.title')}}
@@ -125,10 +125,11 @@
                                 </el-col>
                                 <el-col :span="12">
                                     <el-form-item :label="$t('models.building.under_floor')"
-                                                  :rules="validationRules.floor"
+                                                  :rules="validationRules.under_floor"
                                                   prop="under_floor">
                                         <el-input type="number"
                                                   :min="0"
+                                                  :max="3"
                                                   v-model.number="model.under_floor"></el-input>
                                     </el-form-item>
                                 </el-col>
@@ -140,7 +141,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <!-- <el-col :span="12">
-                                    <el-form-item :label="$t('models.building.under_floor')"
+                                    <el-form-item :label="$t('models.building.under_floor.title')"
                                                   :rules="validationRules.floor"
                                                   :prop="'floor.' + 0">
                                         <el-input type="number"
@@ -198,7 +199,7 @@
                                             align="right"
                                         >
                                             <template slot-scope="scope">
-                                                <el-button icon="el-icon-close" type="danger" @click="deleteDocument('media', scope.$index)" size="mini"/>
+                                                <el-button icon="el-icon-close" type="danger" round @click="deleteDocument('media', scope.$index)" size="mini"/>
                                             </template>
                                         </el-table-column>
                                     </el-table>
@@ -290,6 +291,7 @@
                         <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
                         <contract-list-table
                                     :items="model.contracts"
+                                    :hide-building="true"
                                     @edit-contract="editContract"
                                     @delete-contract="deleteContract">
                         </contract-list-table>
@@ -379,8 +381,8 @@
                 </el-tabs>
                 
                 <el-tabs type="border-card" v-model="activeRequestTab">
-                    <el-tab-pane name="requests" class="aa" :class="requestCount >= 99 ? 'wide-pane' : ''">
-                        <span slot="label" class="bb">
+                    <el-tab-pane name="requests" >
+                        <span slot="label">
                             <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
                         </span>
                         
@@ -430,6 +432,7 @@
                                 :visible.sync="visibleDrawer" 
                                 :edit_index="editingContractIndex" 
                                 @update-contract="updateContract" 
+                                @delete-contract="deleteContract"
                                 :used_units="used_units"/>
                     <contract-form v-else 
                                 mode="add" 
@@ -439,6 +442,7 @@
                                 :resident_type="1" 
                                 :visible.sync="visibleDrawer" 
                                 @add-contract="addContract" 
+                                @delete-contract="deleteContract"
                                 :used_units="used_units"/>
                 </div>
             </template>
@@ -456,7 +460,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="email_receptionist" lazy>
                         <div slot="label">
-                            <i class="ti-gallery"></i>
+                            <i class="icon-mail"></i>
                             {{$t('general.email_receptionist.title')}}
                         </div>
                         
@@ -553,7 +557,7 @@
                     i18n: this.translateType
                 }],
                 assigneesActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         title: 'models.building.unassign_manager',
                         type: 'danger',
@@ -580,7 +584,7 @@
                         title: 'general.actions.edit',
                         onClick: this.unitEditView,
                         tooltipMode: true,
-                        icon: 'el-icon-edit'
+                        icon: 'ti-search'
                     }]
                 }],
                 requestColumns: [{
@@ -599,7 +603,7 @@
                 requestActions: [{
                     width: 120,
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.requestEditView,
                         tooltipMode: true
@@ -611,7 +615,7 @@
                     type: 'serviceName'
                 }],
                 assignmentsProviderActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         icon: 'el-icon-close',
                         title: 'general.unassign',
@@ -917,14 +921,13 @@
                 this.contractCount ++;
             },
             editContract(index) {
-                console.log('this.model.contracts', this.model.contracts, index)
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
-                this.model.contracts[index] = params;
+                this.$set(this.model.contracts, index, params);
             },
             deleteContract(index) {
 
@@ -934,6 +937,7 @@
                     await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
                     this.model.contracts.splice(index, 1)
                     this.contractCount --;
+                    this.visibleDrawer = false;
                 }).catch(() => {
                 });
             },
@@ -943,33 +947,33 @@
 
             EventBus.$on('assignee-get-counted', manager_count => {                
                 this.managerCount = manager_count;
-                if(this.managerCount >= 99) {
-                    document.getElementById('tab-managers').style.paddingRight = '50px';
-                }
+                // if(this.managerCount >= 99) {
+                //     document.getElementById('tab-managers').style.paddingRight = '50px';
+                // }
             });
             EventBus.$on('unit-get-counted', unit_count => {
                 this.unitCount = unit_count;
-                if(this.unitCount >= 99) {
-                    document.getElementById('tab-units').style.paddingRight = '50px';
-                }
+                // if(this.unitCount >= 99) {
+                //     document.getElementById('tab-units').style.paddingRight = '50px';
+                // }
             });
             EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
-                if(this.requestCount >= 99) {
-                    document.getElementById('tab-requests').style.paddingRight = '50px';
-                }
+                // if(this.requestCount >= 99) {
+                //     document.getElementById('tab-requests').style.paddingRight = '50px';
+                // }
             });
             EventBus.$on('resident-get-counted', resident_count => {                
                 this.residentCount = resident_count;
-                if(this.residentCount >= 99) {
-                    document.getElementById('tab-residents').style.paddingRight = '50px';
-                }
+                // if(this.residentCount >= 99) {
+                //     document.getElementById('tab-residents').style.paddingRight = '50px';
+                // }
             });
             EventBus.$on('audit-get-counted', audit_count => {
                 this.auditCount = audit_count;
-                if(this.auditCount >= 99) {
-                    document.getElementById('tab-audit').style.paddingRight = '50px';
-                }
+                // if(this.auditCount >= 99) {
+                //     document.getElementById('tab-audit').style.paddingRight = '50px';
+                // }
             });
             // this.fileCount = this.model.media.length;
         },
@@ -1028,9 +1032,6 @@
         }
     }
     
-    #tab-files, #tab-companies, #tab-requests, #tab-residents, #tab-contracts, #tab-managers, #tab-units, #tab-audit{
-        padding-right: 40px;
-    }
 </style>
 <style lang="scss" scoped>
     .last-form-row {
@@ -1066,6 +1067,12 @@
                 .message {
                     flex-grow: 1;
                     font-size: 13px;
+                    line-height: 20px;
+
+                    i {
+                        font-size: 15px;
+                        margin-right: 5px;
+                    }
                 }
 
                 .title {

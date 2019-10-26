@@ -3,7 +3,8 @@
         <div class="main-content">
             <heading :title="$t('models.quarter.edit')" icon="icon-chat-empty" shadow="heavy">
                 <template slot="description" v-if="model.quarter_format">
-                    <div class="subtitle">{{`${model.quarter_format} > ${model.name}`}}</div>
+                    <!-- <div class="subtitle">{{`${model.quarter_format} > ${model.name}`}}</div> -->
+                    <div class="subtitle">{{model.quarter_format}}</div>
                 </template>
                 <edit-actions :saveAction="submit" :deleteAction="deleteQuarter" route="adminQuarters"/>
             </heading>
@@ -110,7 +111,7 @@
                                                 align="right"
                                             >
                                                 <template slot-scope="scope">
-                                                    <el-button icon="el-icon-close" type="danger" @click="deleteDocument('media', scope.$index)" size="mini"/>
+                                                    <el-button icon="el-icon-close" type="danger" round @click="deleteDocument('media', scope.$index)" size="mini"/>
                                                 </template>
                                             </el-table-column>
                                         </el-table>
@@ -259,6 +260,7 @@
                                 :visible.sync="visibleDrawer" 
                                 :edit_index="editingContractIndex" 
                                 @update-contract="updateContract" 
+                                @delete-contract="deleteContract"
                                 :used_units="used_units"/>
                     <contract-form v-else 
                                 mode="add" 
@@ -267,6 +269,7 @@
                                 :resident_type="1" 
                                 :visible.sync="visibleDrawer" 
                                 @add-contract="addContract" 
+                                @delete-contract="deleteContract"
                                 :used_units="used_units"/>
                 </div>
             </template>
@@ -280,11 +283,10 @@
                         <div class="content" v-if="visibleDrawer">
                             <emergency-settings-form :visible.sync="visibleDrawer"/>
                         </div>
-                        
                     </el-tab-pane>
                     <el-tab-pane name="email_receptionist" lazy>
                         <div slot="label">
-                            <i class="ti-gallery"></i>
+                            <i class="icon-mail"></i>
                             {{$t('general.email_receptionist.title')}}
                         </div>
                         
@@ -292,7 +294,6 @@
                             
                             <email-receptionist-form :quarter_id="model.id" :visible.sync="visibleDrawer"/>
                         </div>
-
                     </el-tab-pane>
                 </el-tabs>
             </template>
@@ -355,14 +356,14 @@
                 requestActions: [{
                     width: 120,
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.requestEditView,
                         tooltipMode: true
                     }]
                 }],
                 assigneesActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [ {
                         title: 'general.unassign',
                         tooltipMode: true,
@@ -402,7 +403,7 @@
                 quarterActions: [{
                     width: '90px',
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.buildingEditView,
                         tooltipMode: true
@@ -508,14 +509,13 @@
                 this.contractCount ++;
             },
             editContract(index) {
-                console.log('this.model.contracts', this.model.contracts, index)
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
-                this.model.contracts[index] = params;
+                this.$set(this.model.contracts, index, params);
             },
             deleteContract(index) {
 
@@ -525,6 +525,7 @@
                     await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
                     this.model.contracts.splice(index, 1)
                     this.contractCount --;
+                    this.visibleDrawer = false;
                 }).catch(() => {
                 });
             },
@@ -561,17 +562,29 @@
 
             EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
+                // if(this.requestCount >= 99) {
+                //     document.getElementById('tab-requests').style.paddingRight = '50px';
+                // }
             });
 
             EventBus.$on('assignee-get-counted', assignee_count => {                
                 this.assigneeCount = assignee_count;
+                // if(this.assigneeCount >= 99) {
+                //     document.getElementById('tab-assignees').style.paddingRight = '50px';
+                // }
             });
 
             EventBus.$on('building-get-counted', building_count => {
                 this.buildingCount = building_count;
+                // if(this.buildingCount >= 99) {
+                //     document.getElementById('tab-buildings').style.paddingRight = '50px';
+                // }
             });
             EventBus.$on('audit-get-counted', audit_count => {
                 this.auditCount = audit_count;
+                // if(this.auditCount >= 99) {
+                //     document.getElementById('tab-audit').style.paddingRight = '50px';
+                // }
             });
         },
         watch: {

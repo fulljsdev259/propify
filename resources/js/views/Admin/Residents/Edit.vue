@@ -254,6 +254,7 @@
                                         </el-row>
                                         <contract-list-table
                                                     :items="model.contracts"
+                                                    :hide-avatar="true"
                                                     @edit-contract="editContract"
                                                     @delete-contract="deleteContract">
                                         </contract-list-table>
@@ -277,8 +278,25 @@
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
                 
                 <div class="content" v-if="visibleDrawer">
-                    <contract-form v-if="editingContract" :hide-building-and-units="false" mode="edit" :data="editingContract" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" :edit_index="editingContractIndex" @update-contract="updateContract" :used_units="used_units"/>
-                    <contract-form v-else mode="add" :resident_type="model.type" :resident_id="model.id" :visible.sync="visibleDrawer" @add-contract="addContract" :used_units="used_units"/>
+                    <contract-form v-if="editingContract" 
+                                :hide-building-and-units="false" 
+                                mode="edit" 
+                                :data="editingContract" 
+                                :resident_type="model.type" 
+                                :resident_id="model.id" 
+                                :visible.sync="visibleDrawer" 
+                                :edit_index="editingContractIndex" 
+                                @update-contract="updateContract"
+                                @delete-contract="deleteContract"
+                                :used_units="used_units"/>
+                    <contract-form v-else 
+                                mode="add" 
+                                :resident_type="model.type" 
+                                :resident_id="model.id" 
+                                :visible.sync="visibleDrawer" 
+                                @add-contract="addContract" 
+                                @delete-contract="deleteContract"
+                                :used_units="used_units"/>
                 </div>
             </ui-drawer>
         </div>

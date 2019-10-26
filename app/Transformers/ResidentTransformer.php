@@ -23,6 +23,7 @@ class ResidentTransformer extends BaseTransformer
     {
         $response = [
             'id' => $model->id,
+            'default_contract_id' => $model->default_contract_id,
             'title' => $model->title,
             'company' => $model->company,
             'first_name' => $model->first_name,
@@ -36,6 +37,8 @@ class ResidentTransformer extends BaseTransformer
             'resident_format' => $model->resident_format,
             'nation' => $model->nation,
             'type' => $model->type,
+            'review' => $model->review,
+            'rating' => $model->rating,
         ];
 
         if ($model->relationExists('settings')) {

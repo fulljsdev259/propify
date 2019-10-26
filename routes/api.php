@@ -251,19 +251,28 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 //    Route::post('listings/{id}/comments', 'CommentAPIController@storeProductComment')->name('listings.store.comment');
 //    Route::post('listings/{id}/publish', 'ListingAPIController@publish')->name('listings.publish');
 
-    // Service Requests
+
+
+    // Property Manager
     Route::get('propertyManagers', 'PropertyManagerAPIController@index')->name('propertyManagers');
     Route::get('propertyManagers/{id}', 'PropertyManagerAPIController@show')->name('propertyManagers.show');
     Route::get('propertyManagers/{id}/assignments', 'PropertyManagerAPIController@getAssignments');
+
     Route::post('propertyManagers/idsassignments', 'PropertyManagerAPIController@getIDsAssignmentsCount');
     Route::post('propertyManagers', 'PropertyManagerAPIController@store')->name('propertyManagers.store');
+
     Route::put('propertyManagers/{id}', 'PropertyManagerAPIController@update')->name('propertyManagers.update');
+
     Route::delete('/propertyManagers/batchDelete', 'PropertyManagerAPIController@batchDelete');
     Route::delete('propertyManagers/{id}', 'PropertyManagerAPIController@destroy')->name('propertyManagers.destroy');
+
     Route::post('/propertyManagers/{id}/quarters/{quarter_id}', 'PropertyManagerAPIController@assignQuarter');
     Route::delete('/propertyManagers/{id}/quarters/{quarter_id}', 'PropertyManagerAPIController@unassignQuarter');
+
     Route::post('/propertyManagers/{id}/buildings/{building_id}', 'PropertyManagerAPIController@assignBuilding');
     Route::delete('/propertyManagers/{id}/buildings/{building_id}', 'PropertyManagerAPIController@unassignBuilding');
+
+
 
     // Templates
     Route::get('/templates', 'TemplateAPIController@index')->name('templates');

@@ -196,7 +196,7 @@ class Resident extends AuditableModel implements HasMedia
     const TypeResident = 1;
     const TypeOwner = 2;
     const Type = [
-        self::TypeResident => 'resident',
+        self::TypeResident => 'tenant',
         self::TypeOwner => 'owner',
     ];
     /**
@@ -209,6 +209,20 @@ class Resident extends AuditableModel implements HasMedia
         'title' => 'required|string',
         'first_name' => 'required|string',
         'last_name' => 'required|string',
+        'birth_date' => 'date',
+        'status' => 'digits_between:1,2|numeric'
+    ];
+
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $putRules = [
+        'default_contract_id' => 'nullable|exists:contracts,id',// @TODO check own or not
+        'title' => 'string',
+        'first_name' => 'string',
+        'last_name' => 'string',
         'birth_date' => 'date',
         'status' => 'digits_between:1,2|numeric'
     ];

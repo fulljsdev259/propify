@@ -766,10 +766,15 @@
 </style>
 
 <style lang="scss">
-    .admin-layout .el-badge__content.is-fixed {
-        top: 19px;
-        right: -5px;
-        background-color: var(--primary-color) !important;
-        margin-left: 5px;
+    .admin-layout .el-badge {
+        display: flex;
+        align-items: center;
+        margin-right: -10px;
+        .el-badge__content.is-fixed {
+            position: static;
+            transform: none;
+            background-color: var(--primary-color) !important;
+            margin-left: 5px;
+        }
     }
 </style>

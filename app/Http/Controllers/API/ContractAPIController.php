@@ -114,7 +114,7 @@ class ContractAPIController extends AppBaseController
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         // @TODO CONTRACT is need? building, address, unit . I think not need because many
-        $contracts = $this->contractRepository->with(['resident', 'building.address', 'unit'])->paginate($perPage);
+        $contracts = $this->contractRepository->with(['resident.user', 'building.address', 'unit'])->paginate($perPage);
         $response = (new ContractTransformer())->transformPaginator($contracts);
         return $this->sendResponse($response, 'Contracts retrieved successfully');
     }
@@ -167,7 +167,7 @@ class ContractAPIController extends AppBaseController
             return $this->sendError(__('models.resident.contract.errors.not_found'));
         }
 
-        $contract->load(['resident', 'building.address', 'unit']);
+        $contract->load(['resident.user', 'building.address', 'unit']);
         $response = (new ContractTransformer())->transform($contract);
         return $this->sendResponse($response, 'Resident Contract retrieved successfully');
     }
@@ -221,7 +221,7 @@ class ContractAPIController extends AppBaseController
         }
 
 
-        $contract->load(['resident', 'building.address', 'unit']);
+        $contract->load(['resident.user', 'building.address', 'unit']);
 
         $response = (new ContractTransformer())->transform($contract);
         return $this->sendResponse($response, __('models.resident.contract.saved'));
@@ -299,7 +299,7 @@ class ContractAPIController extends AppBaseController
             $pinboardRepository->newResidentContractPinboard($contract);
         }
 
-        $contract->load(['resident', 'building.address', 'unit']);
+        $contract->load(['resident.user', 'building.address', 'unit']);
         $response = (new ContractTransformer())->transform($contract);
         return $this->sendResponse($response, __('models.resident.saved'));
     }

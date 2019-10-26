@@ -139,7 +139,7 @@ return [
         ],
         'type' => [
             'label' => 'Typ',
-            'resident' => 'Mieter',
+            'tenant' => 'Mieterin',
             'owner' => 'Eigentümer',
         ],
     ],
@@ -609,7 +609,7 @@ return [
             'contact_details' => 'Kontaktdaten',
             'contact_text' => 'Dies sind die Kontaktdaten des aktuellen Bewohners/Besitzers der Wohneinheit.',
         ],
-        'go_to_building' => 'zu den Liegenschaft gehen'
+        'go_to_building' => 'Zum Objekt gehen'
 
     ],
     'request_category' => [

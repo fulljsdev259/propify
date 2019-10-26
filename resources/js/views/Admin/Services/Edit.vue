@@ -239,7 +239,7 @@
                 requestActions: [{
                     width: 120,
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.requestEditView,
                         tooltipMode: true
@@ -255,10 +255,11 @@
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         title: 'general.unassign',
                         type: 'danger',
+                        icon: 'el-icon-close',
                         onClick: this.notifyUnassignment
                     }]
                 }]

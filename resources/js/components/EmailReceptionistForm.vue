@@ -3,17 +3,24 @@
         
         <el-row :gutter="20" v-if="isBuilding && quarter_id">
             <el-col :md="24">
-                <el-dropdown split-button 
-                            :disabled="true" 
-                            type="primary" 
-                            trigger="click" 
-                            @command="handleCommand">
-                    {{$t('general.email_receptionist.info_desc')}} ?
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="global">{{$t('general.email_receptionist.global')}}</el-dropdown-item>
-                        <el-dropdown-item command="assign">{{$t('general.email_receptionist.assign')}}</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
+                <el-form-item :label="$t('general.email_receptionist.info_desc')"
+                        class="label-block"
+                >
+                    <el-select
+                        :placeholder="$t('general.placeholders.search')"
+                        class="custom-select"
+                        v-model="activeCommand"
+                    >
+                        <el-option
+                            :label="$t('general.email_receptionist.global')"
+                            value="global">
+                        </el-option>
+                        <el-option
+                            :label="$t('general.email_receptionist.assign')"
+                            value="assign">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
             </el-col>
         </el-row>
         <template v-if="activeCommand == 'assign'">
@@ -96,7 +103,7 @@
                     }],
                 },
                 remoteLoading: false,
-                activeCommand: '',
+                activeCommand: 'global',
                 
             }
         },
@@ -205,6 +212,10 @@
         display: flex;
         flex-direction: column;
         height: 100%;
+        
+        .el-select {
+            width: 100%;
+        }
         
         /deep/ .ui-divider {
             margin: 32px 16px 16px 0;

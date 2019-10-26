@@ -238,7 +238,7 @@
                                                 align="right"
                                             >
                                                 <template slot-scope="scope">
-                                                    <el-button icon="el-icon-close" type="danger" @click="deleteDocument('media', scope.$index)" size="mini"/>
+                                                    <el-button icon="el-icon-close" type="danger" round @click="deleteDocument('media', scope.$index)" size="mini"/>
                                                 </template>
                                             </el-table-column>
                                         </el-table>
@@ -278,14 +278,6 @@
                             <span slot="label">
                                 <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('models.unit.assignment') }}</el-badge>
                             </span>
-                            <assignment
-                                    :toAssign.sync="toAssign"
-                                    :assign="assignResident"
-                                    :toAssignList="toAssignList"
-                                    :remoteLoading="remoteLoading"
-                                    :remoteSearch="remoteSearchResidents"
-                                    :multiple="multiple"
-                            />
                             <relation-list
                                     :actions="assigneesActions"
                                     :columns="assigneesColumns"
@@ -306,6 +298,8 @@
                             <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
                             <contract-list-table
                                     :items="model.contracts"
+                                    :hide-building="true"
+                                    :hide-unit="true"
                                     @edit-contract="editContract"
                                     @delete-contract="deleteContract">
                             </contract-list-table>
@@ -354,6 +348,7 @@
                                 :visible.sync="visibleDrawer" 
                                 :edit_index="editingContractIndex" 
                                 @update-contract="updateContract" 
+                                @delete-contract="deleteContract"
                                 :used_units="used_units"/>
                     <contract-form v-else 
                                 mode="add" 
@@ -364,6 +359,7 @@
                                 :resident_type="1" 
                                 :visible.sync="visibleDrawer" 
                                 @add-contract="addContract" 
+                                @delete-contract="deleteContract"
                                 :used_units="used_units"/>
                 </div>
             </template>
@@ -432,13 +428,16 @@
                 requestActions: [{
                     width: 120,
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.requestEditView,
                         tooltipMode: true
                     }]
                 }],
                 assigneesColumns: [{
+                    type: 'requestResidentAvatar',
+                    width: 70                    
+                }, {
                     prop: 'name',
                     label: 'general.name',
                     type: 'residentName'
@@ -446,9 +445,14 @@
                     prop: 'statusString',
                     label: 'models.request.user_type.label',
                     i18n: this.translateType
+                }, {
+                    prop: 'status',
+                    i18n: this.residentStatusLabel,
+                    withBadge: this.residentStatusBadge,
+                    label: 'models.resident.status.label'
                 }],
                 assigneesActions: [{
-                    width: '180px',
+                    width: '100px',
                     buttons: [{
                         title: 'general.unassign',
                         tooltipMode: true,
@@ -478,15 +482,7 @@
                 "uploadUnitFile", 
                 "deleteUnitFile",
             ]),
-            hasAttic(id) {
-                let hasAttic = false;
-                this.buildings.map(building => {
-                    if(building.id == this.model.building_id) {
-                        hasAttic = building.attic;
-                    }
-                });
-                return hasAttic;
-            },
+            
             toggleDrawer() {
                 this.visibleDrawer = true;
                 this.isAddContract = true;
@@ -551,14 +547,13 @@
                 this.contractCount ++; //@TODO : update the assigned residents data accordingly
             },
             editContract(index) {
-                console.log('this.model.contracts', this.model.contracts, index)
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
-                this.model.contracts[index] = params;
+                this.$set(this.model.contracts, index, params);
             },
             deleteContract(index) {
 
@@ -568,16 +563,34 @@
                     await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
                     this.model.contracts.splice(index, 1)
                     this.contractCount --;
+                    this.visibleDrawer = false;
                 }).catch(() => {
                 });
+            },
+            residentStatusBadge(status) {
+                const classObject = {
+                    1: 'icon-success',
+                    2: 'icon-danger'
+                };
+
+                return classObject[status];
+            },
+            residentStatusLabel(status) {
+                return this.$t(`models.resident.status.${this.residentStatusConstants[status]}`)
             },
         },
         mounted() {
              EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
+                // if(this.requestCount >= 99) {
+                //     document.getElementById('tab-requests').style.paddingRight = '50px';
+                // }
             });
             EventBus.$on('audit-get-counted', audit_count => {
                 this.auditCount = audit_count;
+                // if(this.auditCount >= 99) {
+                //     document.getElementById('tab-audit').style.paddingRight = '50px';
+                // }
             });
         },
         computed: {
@@ -586,6 +599,9 @@
             }),
             used_units() {
                 return this.model.contracts.map(item => item.unit_id)
+            },
+            residentStatusConstants() {
+                return this.constants.residents.status
             },
         },          
         watch: {

@@ -49,6 +49,7 @@ export default (config = {}) => {
                     description: '',
                     floor_nr: 1,
                     floor: [],
+                    under_floor: 0,
                     attic: false,
                     state_id: '',
                     city: '',
@@ -73,6 +74,14 @@ export default (config = {}) => {
                     floor: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.building.floors')})
+                    }],
+                    under_floor: [{
+                        pattern: /^[0-3]$/,
+                        message: this.$t('validation.digits_between', {
+                            attribute: this.$t('models.building.under_floor'),
+                            min: 0,
+                            max: 3,
+                        })
                     }],
                     state_id: [{
                         required: true,
@@ -380,14 +389,14 @@ export default (config = {}) => {
                         
                         this.serviceCount = this.model.service_providers.length
                         this.fileCount = this.model.media.length
-                        if(this.fileCount >= 99) {
-                            document.getElementById('tab-files').style.paddingRight = '50px';
-                        }
+                        // if(this.fileCount >= 99) {
+                        //     document.getElementById('tab-files').style.paddingRight = '50px';
+                        // }
                         
                         this.contractCount = this.model.contracts.length
-                        if(this.contractCount >= 99) {
-                            document.getElementById('tab-contracts').style.paddingRight = '50px';
-                        }
+                        // if(this.contractCount >= 99) {
+                        //     document.getElementById('tab-contracts').style.paddingRight = '50px';
+                        // }
 
                         this.model.residents = this.model.contracts.map(contract => contract.resident);
 

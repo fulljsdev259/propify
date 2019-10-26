@@ -327,7 +327,7 @@ class BuildingAPIController extends AppBaseController
             },
         ]);
         if ($building && isset($address)) {
-            $building->addDataInAudit('address', $address);
+            $building->addDataInAudit(AuditableModel::MergeInMainData, $address);
         }
         $response = (new BuildingTransformer)->transform($building);
 
@@ -487,7 +487,7 @@ class BuildingAPIController extends AppBaseController
 
         $building = $this->buildingRepository->update($input, $id);
         if ($building && isset($address)) {
-            $building->addDataInAudit('address', $address, AuditableModel::UpdateOrCreate);
+            $building->addDataInAudit(AuditableModel::MergeInMainData, $address, AuditableModel::UpdateOrCreate);
         }
 
         $building->load([
@@ -548,7 +548,7 @@ class BuildingAPIController extends AppBaseController
         if (empty($building)) {
             return $this->sendError(__('models.building.errors.not_found'));
         }
-
+dd(1);
         try {
             $this->buildingRepository->delete($building->id);
         } catch (\Exception $e) {
@@ -637,9 +637,9 @@ class BuildingAPIController extends AppBaseController
 
     /**
      * @SWG\Post(
-     *      path="/buildings/{id}/services/{bid}",
+     *      path="/buildings/{id}/services/{service_id}",
      *      summary="Assign the provided service provider to the building",
-     *      tags={"ServiceProvider"},
+     *      tags={"ServiceProvider", "Building"},
      *      description="Assign the provided service provider to the building",
      *      produces={"application/json"},
      *      @SWG\Response(

@@ -184,7 +184,7 @@
                     width: 150,
                     actions: [{
                         type: '',
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.edit,
                         editUrl: 'adminBuildingsEdit',

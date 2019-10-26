@@ -625,14 +625,18 @@
                 }
             },
             selectedRequestData() {
+                console.log('sub', this.model.sub_category_id)
                 return {
                     resident: this.model.resident,
                     request_format: this.model.request_format,
-                    category: (this.model.category.parent_id == null)? this.model.category.name : this.model.category.parentCategory.name + " > " + this.model.category.name
+                    category: (this.model.sub_category_id == null) ? this.$t(`models.request.category_list.${this.model.category.name}`) : this.$t(`models.request.category_list.${this.model.category.name}`) + " > " + this.$t(`models.request.sub_category.${this.model.sub_category.name}`)
                 }
             },
             mediaCount() {
                 if(this.model.media) {
+                    // if(this.model.media.length >= 99) {
+                    //     document.getElementById('tab-request_images').style.paddingRight = '50px';
+                    // }
                     return this.model.media.length;
                 } else {
                     return 0;
@@ -753,7 +757,25 @@
                     this.loading.state = false;
                 }
             }
-        }
+        },
+        // watch: {
+        //     'requestCommentCount': {
+        //         immediate: false,
+        //         handler (value) {
+        //             if(value >= 99) {
+        //                 document.getElementById('tab-comments').style.paddingRight = '50px';
+        //             }
+        //         }
+        //     },
+        //     'noticeCommentCount': {
+        //         immediate: false,
+        //         handler (value) {
+        //             if(value >= 99) {
+        //                 document.getElementById('tab-internal-notices').style.paddingRight = '50px';
+        //             }
+        //         }
+        //     }
+        // },
     };
 </script>
 <style lang="scss" scoped>

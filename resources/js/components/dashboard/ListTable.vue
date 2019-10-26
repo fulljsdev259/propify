@@ -163,6 +163,7 @@
                                             :style="action.style"
                                             :type="action.type"
                                             size="mini"
+                                            round
                                         >
                                             <i :class="action.icon ? action.icon : 'ti-search'"></i>
                                             <span>{{ $t(action.title) }}</span>

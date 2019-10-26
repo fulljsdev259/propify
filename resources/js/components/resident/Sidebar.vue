@@ -274,7 +274,7 @@
                     if (state) {
                         this.$anime({
                             targets: this.$refs.submenu,
-                            translateY: ['100%', '-98px'],
+                            translateY: ['100%', '-65px'],
                             translateX: this.origin.x,
                             translateZ: 0,
                             opacity: [0, 1],
@@ -285,7 +285,7 @@
                     } else {
                         this.$anime({
                             targets: this.$refs.submenu,
-                            translateY: ['-98px', '100%'],
+                            translateY: ['-65px', '100%'],
                             translateX: this.origin.x,
                             translateZ: 0,
                             opacity: [1, 0],
@@ -483,10 +483,10 @@
             width: 100%;
             height: auto;
             order: 999999;
-            padding-top: 0;
+            padding: 0 !important;
 
             @media screen and (max-width: 812px) {
-                height: 125px;
+                height: 80px;
             }
             
             /deep/ &::-webkit-scrollbar {
@@ -563,6 +563,7 @@
                 overflow-x: overlay;
                 overflow-y: hidden;
                 flex-direction: row;
+                align-items: flex-start;
 
                 .item {
                     flex: 1;
@@ -573,8 +574,13 @@
 
                     @media screen and (max-width: 812px) {
                         height: 64px;
+                        justify-content: flex-start;
                         a .title {
                             margin-top: 0px !important;
+                        }
+                        .icon-th {
+                            font-size: 20px;
+                            line-height: 38px;
                         }
                     }
                 }

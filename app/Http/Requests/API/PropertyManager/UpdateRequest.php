@@ -29,7 +29,6 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         $rules = PropertyManager::$rulesUpdate;
-        $rules['position'] = 'nullable|in:' . implode(',', PropertyManager::Position);
         $rules['title'] = 'in:' . implode(',', PropertyManager::Title) . ',company';
         return $rules;
     }
