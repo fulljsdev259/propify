@@ -8,7 +8,7 @@
         </div>
         <list-table
             :header="header"
-            :items="buildings"
+            :items="latestBuildings"
             :loading="{state: loading}"
             @selectionChanged="selectionChanged"
         >
@@ -82,7 +82,7 @@
             }
         },
         computed: {
-            ...mapGetters(['buildings']),
+            ...mapGetters(['latestBuildings']),
         },
         created() {
           this.fetchData();

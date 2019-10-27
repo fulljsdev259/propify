@@ -8,7 +8,7 @@
         </div>
         <list-table
             :header="header"
-            :items="items"
+            :items="latestListings"
             :loading="{state: loading}"
             :withSearch="false"
             :withCheckSelection="false"
@@ -19,9 +19,7 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex';
-    import axios from '@/axios';
-
+    import {mapActions, mapGetters} from 'vuex';
     import {displayError, displaySuccess} from "helpers/messages";
     import DashboardListMixin from 'mixins/DashboardListMixin';
     
@@ -77,37 +75,19 @@
             };
         },
         computed: {
-            listingConstants() {
-                return this.$constants.listings;
-            },
-
+            ...mapGetters(['latestListings']),
         },
         methods: {
-            fetchData() {
-              let that = this;
-              let url = '';
-              let toolTipSeriesName = '';
-              if(this.type === 'latest_listings'){
-                url = 'listings?per_page=5';
-                toolTipSeriesName = this.$t('models.building.title');
-              }
-              return axios.get(url)
-              .then(function (response) {
-                const items = response.data.data.data.map(item => {
-                  item.visibility_label = that.$t(`models.listing.visibility.${that.listingConstants.visibility[item.visibility]}`);
-                  item.type_label = `models.listing.type.${that.listingConstants.type[item.type]}`;
-                  item.price = '$' + item.price;
-                  item.image_url = item.media.length == 0 ? '' : item.media[0].url;
-                  return item;
+            ...mapActions(['getListings']),
+            async fetchData() {
+                const listings = await this.getListings({
+                    per_page: 5
                 });
-                that.items = items;
-              }).catch(function (error) {
-                  console.log(error);
-              })
-            }
-        },
+                this.items = listings.data.data
+            },
+         },
         created() {
-          this.fetchData();
+            this.fetchData();
         }
     }
 </script>
