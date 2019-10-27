@@ -111,6 +111,7 @@
                     
                     <div v-if="column.type == 'counts'" class="avatars-wrapper square-avatars">        
                          <request-count :countsData="items[scope.$index]"></request-count>
+                         <pinboard-count :countsData="items[scope.$index]"></pinboard-count>
                     </div>
                     <el-tag
                         v-if="column.type == 'tag'"
@@ -184,6 +185,7 @@
     import {Avatar} from 'vue-avatar'
     import uuid from 'uuid/v1'
     import RequestCount from 'components/RequestCount.vue';
+    import PinboardCount from 'components/PinboardCount.vue';
     import tableAvatar from 'components/Avatar';
 
     export default {
@@ -191,6 +193,7 @@
         components: {
             Avatar,
             RequestCount,
+            PinboardCount,
             'table-avatar': tableAvatar
         },
         props: {

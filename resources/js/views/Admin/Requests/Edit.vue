@@ -624,8 +624,6 @@
                 }
             },
             selectedRequestData() {
-                console.log('sub', this.model.sub_category_id)
-                console.log('sub_category', this.model.sub_category)
                 return {
                     resident: this.model.resident,
                     request_format: this.model.request_format,
