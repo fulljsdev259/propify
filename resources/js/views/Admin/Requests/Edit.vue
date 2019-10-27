@@ -410,7 +410,7 @@
                                         <el-col :md="12" v-if="model.active_reminder">
                                             <el-form-item :label="$t('models.request.days_left')"
                                                         prop="days_left">
-                                                <el-input v-model="model.days_left"></el-input>
+                                                <el-input v-model="model.days_left" type="number"></el-input>
                                             </el-form-item>
                                         </el-col>
                                         <el-col :md="12" v-if="model.active_reminder">

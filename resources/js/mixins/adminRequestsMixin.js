@@ -39,7 +39,6 @@ export default (config = {}) => {
                     room: '',
                     capture_phase: '',
                     acquisition_phase: '',
-                    qualification: '',
                     has_qualification: '',
                     component: '',
                     keyword: '',
@@ -525,8 +524,8 @@ export default (config = {}) => {
                         this.model.sub_category = this.model.sub_category_id 
 
                         //@TODO : rename and delete the orginal ; qualification -> has_qualification, capture_phase -> acquisition_phase
-                        this.model.has_qualification = this.model.qualification
-                        this.model.acquisition_phase = this.model.capture_phase
+                        // this.model.has_qualification = this.model.qualification
+                        // this.model.acquisition_phase = this.model.capture_phase
 
                         const resp = await this.createRequest(this.model);
                         
