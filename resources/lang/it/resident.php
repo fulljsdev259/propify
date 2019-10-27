@@ -156,6 +156,7 @@ return [
     "building" => "Edificio",
     "name" => "Nome",
     "unit" => "Unità",
+    "quarter" => "Quartiere",
     "type" => "Tipo",
     "unit_number" => "Numero di unità",
     "floor" => "Piano",

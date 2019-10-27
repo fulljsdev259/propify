@@ -8,19 +8,28 @@
         </ui-heading>
         <ui-divider />
         <el-row>
-            <!-- <el-col :span="24" v-for="(files, category) in documents" :key="category">
+            <el-col :span="24" v-if="building_media.length">
                 <div class="title">
-                    {{$t(`resident.media_category.${category}`)}}
-                    <small>{{ files.length > 1 ? $t('resident.doc_available.multiple',{num: files.length}) : $t('resident.doc_available.single',{num: files.length}) }}</small>
+                    {{ $t('resident.building') }}
+                    <small>{{ building_media.length > 1 ? $t('resident.doc_available.multiple',{num: building_media.length}) : $t('resident.doc_available.single',{num: building_media.length}) }}</small>
                 </div>
-                <gallery-list :media="files" :cols="4" />
+                <gallery-list :media="building_media" :cols="4" />
                 <el-divider />
-            </el-col> -->
-            <el-col :span="24" >
+            </el-col>
+            <el-col :span="24" v-if="unit_media.length">
                 <div class="title">
-                    <small>{{ media.length > 1 ? $t('resident.doc_available.multiple',{num: media.length}) : $t('resident.doc_available.single',{num: media.length}) }}</small>
+                    {{ $t('resident.unit') }}
+                    <small>{{ unit_media.length > 1 ? $t('resident.doc_available.multiple',{num: unit_media.length}) : $t('resident.doc_available.single',{num: unit_media.length}) }}</small>
                 </div>
-                <gallery-list :media="media" :cols="4" />
+                <gallery-list :media="unit_media" :cols="4" />
+                <el-divider />
+            </el-col>
+            <el-col :span="24" v-if="quarter_media.length">
+                <div class="title">
+                    {{ $t('resident.quarter') }}
+                    <small>{{ quarter_media.length > 1 ? $t('resident.doc_available.multiple',{num: quarter_media.length}) : $t('resident.doc_available.single',{num: quarter_media.length}) }}</small>
+                </div>
+                <gallery-list :media="quarter_media" :cols="4" />
                 <el-divider />
             </el-col>
         </el-row>
@@ -47,6 +56,9 @@
             return {
                 documents: {},
                 media: [],
+                building_media: [],
+                unit_media: [],
+                quarter_media: [],
                 loader: {
                     visible: true
                 },
@@ -55,7 +67,8 @@
         },
         computed: {
             isEmpty () {
-                return !Object.keys(this.documents).length
+                // return !Object.keys(this.documents).length
+                return !this.building_media.length && !this.unit_media.length && !this.quarter_media.length
             }
         },
         async mounted () {
@@ -68,13 +81,22 @@
 
                 const {media} = await this.$store.dispatch('getBuilding', {id: this.$store.getters.loggedInUser.resident.building.id})
                 
-                this.media = media
-                this.documents = media.reduce((obj, file) => {
-                    obj[file.collection_name] = obj[file.collection_name] || []
-                    obj[file.collection_name].push(file)
+                this.building_media = media
 
-                    return obj
-                }, {})
+                // const {media1} = await this.$store.dispatch('getUnit', {id: this.$store.getters.loggedInUser.resident.unit.id})
+                
+                // this.unit_media = media1
+
+                // const {media2} = await this.$store.dispatch('getQuarter', {id: this.$store.getters.loggedInUser.resident.building.quarter_id})
+                
+                // this.quarter_media = media2
+
+                // this.documents = media.reduce((obj, file) => {
+                //     obj[file.collection_name] = obj[file.collection_name] || []
+                //     obj[file.collection_name].push(file)
+
+                //     return obj
+                // }, {})
             } catch (err) {
                 displayError(err)
             } finally {
