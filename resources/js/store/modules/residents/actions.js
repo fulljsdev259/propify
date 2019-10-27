@@ -21,6 +21,16 @@ export default {
                 })
                 .catch(({response: {data: err}}) => reject(err)));
     },
+    getLatestResidents({commit}, payload) {
+        return new Promise((resolve, reject) =>
+            axios.get(buildFetchUrl('residents/latest', payload))
+                .then(({data: r}) => {
+                    commit('SET_RESIDENTS', r.data);
+                    
+                    resolve(r)
+                })
+                .catch(({response: {data: err}}) => reject(err)));
+    },
     getResident(_, {id}) {
         return new Promise((resolve, reject) =>
             axios.get(`residents/${id}`)

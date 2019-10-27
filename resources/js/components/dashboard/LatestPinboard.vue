@@ -8,7 +8,7 @@
         </div>
         <list-table
             :header="header"
-            :items="items"
+            :items="latestPinboard"
             :loading="{state: loading}"
             @selectionChanged="selectionChanged"
         >
@@ -17,9 +17,7 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex';
-    import axios from '@/axios';
-
+    import {mapActions, mapGetters} from 'vuex';
     import {displayError, displaySuccess} from "helpers/messages";
     import DashboardListMixin from 'mixins/DashboardListMixin';
     
@@ -75,35 +73,23 @@
                         }
                     ]
                 }],
-                listing: {},
+                items: []
             };
         },
         computed: {
-            pinboardConstants() {
-                return this.$constants.pinboard;
-            },
-
+            ...mapGetters(['latestPinboard']),
         },
         methods: {
-            fetchData() {
-              let that = this;
-              const url = 'pinboard?per_page=5';
-
-              return axios.get(url)
-              .then(function (response) {
-                const items = response.data.data.data.map(item => {
-                  item.status_label = `models.pinboard.status.${that.pinboardConstants.status[item.type]}`;
-                  item.image_url = item.media.length == 0 ? '' : item.media[0].url;
-                  return item;
+            ...mapActions(['getPinboards']),
+            async fetchData() {
+                const pinboards = await this.getPinboards({
+                    per_page: 5
                 });
-                that.items = items;
-              }).catch(function (error) {
-                  console.log(error);
-              })
-            }
-        },
+                this.items = pinboards.data.data
+            },
+         },
         created() {
-          this.fetchData();
+            this.fetchData();
         }
     }
 </script>

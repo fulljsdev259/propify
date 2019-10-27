@@ -8,7 +8,7 @@
         </div>
         <list-table
             :header="header"
-            :items="items"
+            :items="services"
             :loading="{state: loading}"
             @selectionChanged="selectionChanged"
             :height="250"
@@ -18,9 +18,7 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex';
-    import axios from '@/axios';
-
+    import {mapActions, mapGetters} from 'vuex';
     import {displayError, displaySuccess} from "helpers/messages";
     import DashboardListMixin from 'mixins/DashboardListMixin';
     
@@ -60,30 +58,25 @@
                         }
                     ]
                 }],
+                items: []
             };
         },
         methods: {
-            fetchData() {
-              let that = this;
-              let url = 'services?get_all=true&has_req=1';
-              return axios.get(url)
-              .then(function (response) {
-                that.items = response.data.data.map((item) => {
-                    item.requests_count = item.requests_received_count
-                                        + item.requests_assigned_count
-                                        + item.requests_in_processing_count
-                                        + item.requests_reactivated_count
-                                        + item.requests_done_count
-                                        + item.requests_archived_count;
-                    return item;
+            ...mapActions(['getServices']),
+            async fetchData() {
+
+                const services = await this.getServices({
+                    get_all : true,
+                    has_req : 1
                 });
-              }).catch(function (error) {
-                  console.log(error);
-              })
+                this.items = services.data
             }
         },
+        computed: {
+            ...mapGetters(['services']),
+        },
         created() {
-          this.fetchData();
+            this.fetchData();
         }
     }
 </script>

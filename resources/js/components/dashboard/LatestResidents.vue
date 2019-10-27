@@ -8,7 +8,7 @@
         </div>
         <list-table
             :header="header"
-            :items="items"
+            :items="latestResidents"
             :loading="{state: loading}"
             @selectionChanged="selectionChanged"
         >
@@ -17,8 +17,7 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex';
-    import axios from '@/axios';
+    import {mapActions, mapGetters} from 'vuex';
 
     import {displayError, displaySuccess} from "helpers/messages";
     import DashboardListMixin from 'mixins/DashboardListMixin';
@@ -47,12 +46,13 @@
                 },{
                     type: 'icon-circle',
                     label: 'models.resident.status.label',
+                    width: 130,
                     prop: 'status_label',
                     classSuffix: 'status_class_suffix',
                 }, {
                     type: 'actions',
                     label: 'dashboard.actions',
-                    width: '130px',
+                    width: 130,
                     actions: [ 
                         {
                             type: 'default',
@@ -65,34 +65,23 @@
                         }
                     ]
                 }],
+                items: []
             };
         },
         computed: {
-            residentConstants() {
-                return this.$constants.residents;
-            },
+            ...mapGetters(['latestResidents']),
         },
         methods: {
-            fetchData() {
-              let that = this;
-              let url = 'residents/latest';
-              return axios.get(url)
-              .then(function (response) {
-                const items = response.data.data.map(item => {
-                  item.status_label = `models.resident.status.${that.residentConstants.status[item.status]}`;
-                  item.name = item.first_name + ' ' + item.last_name;
-                  item.address = item.address? item.address['street'] + ' ' + item.address['house_num']:'';
-                  item.status_class_suffix = that.residentConstants.status[item.status];
-                  return item;
+            ...mapActions(['getLatestResidents']),
+            async fetchData() {
+                const residents = await this.getLatestResidents({
+                    limit: 5
                 });
-                that.items = items;
-              }).catch(function (error) {
-                  console.log(error);
-              })
+                this.items = residents.data
             }
         },
         created() {
-          this.fetchData();
+            this.fetchData();
         }
     }
 </script>
