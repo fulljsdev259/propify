@@ -17,7 +17,8 @@ export default (config = {}) => {
                     street: 'street',
                     house_num: 'house_num',
                     media: [],
-                    internal_quarter_id: ''
+                    internal_quarter_id: '',
+
                 },
                 quarter_format: '',
                 validationRules: {
@@ -226,23 +227,15 @@ export default (config = {}) => {
                     async fetchCurrentQuarter() {
                         const resp = await this.getQuarter({id: this.$route.params.id});
                         
-                        this.model.id = resp.id;
-                        this.model.name = resp.name;
-                        this.model.description = resp.description;
-                        this.model.count_of_buildings = resp.count_of_buildings;
-                        this.model.internal_quarter_id = resp.internal_quarter_id;
-                        this.model.media = resp.media
+                        this.model = {...resp}
+
                         if(resp.address != undefined) {
-                            this.model.zip = resp.address.zip;
-                            this.model.city = resp.address.city;
-                            this.model.state_id = resp.address.state.id;
+                            this.model.zip = this.model.address.zip;
+                            this.model.city = this.model.address.city;
+                            this.model.state_id = this.model.address.state.id;
                         }
-                        this.model.quarter_format = resp.quarter_format;
 
                         this.fileCount = this.model.media.length
-                        
-                        this.model.contracts = resp.contracts
-                        
                         this.contractCount = this.model.contracts.length
 
                     },
