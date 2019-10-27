@@ -65,7 +65,8 @@ class AppBaseController extends Controller
     {
         $userType = get_morph_type_of(User::class);
         $userIds = $assignees->where('assignee_type', $userType)->pluck('assignee_id');
-        $users = User::select('id', 'name', 'email')
+        $raw = DB::raw('(select `roles`.name from roles inner join role_user on roles.id = role_user.role_id where role_user.user_id = users.id) as role');
+        $users = User::select('id', 'name', 'email',$raw)
             ->whereIn('id', $userIds)
             ->get();
 
@@ -84,8 +85,9 @@ class AppBaseController extends Controller
         $managerIds = $assignees->where('assignee_type', $managerType)->pluck('assignee_id');
         $raw = DB::raw('(select email from users where users.id = property_managers.user_id) as email,
                 (select avatar from users where users.id = property_managers.user_id) as avatar, 
-                Concat(first_name, " ", last_name) as name');
-        $managers = PropertyManager::select('id', $raw)
+                Concat(first_name, " ", last_name) as name, 
+                (select `roles`.name from roles inner join role_user on roles.id = role_user.role_id where role_user.user_id = property_managers.user_id) as role');
+        $managers = PropertyManager::select('id', 'user_id', $raw)
             ->whereIn('id', $managerIds)
             ->get();
 
@@ -102,8 +104,9 @@ class AppBaseController extends Controller
     {
         $providerType = get_morph_type_of(ServiceProvider::class);
         $providerIds = $assignees->where('assignee_type', $providerType)->pluck('assignee_id');
-        $raw = DB::raw('(select avatar from users where users.id = service_providers.user_id) as avatar');
-        $providers = ServiceProvider::select('id', 'email', 'name', $raw)
+        $raw = DB::raw('(select avatar from users where users.id = service_providers.user_id) as avatar, 
+                (select `roles`.name from roles inner join role_user on roles.id = role_user.role_id where role_user.user_id = service_providers.user_id) as role');
+        $providers = ServiceProvider::select('id', 'email', 'name', 'user_id', $raw)
             ->whereIn('id', $providerIds)
             ->get();
 
