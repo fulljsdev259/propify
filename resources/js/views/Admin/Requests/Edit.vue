@@ -108,7 +108,7 @@
                                                 :key="acquisition.value"
                                                 :label="acquisition.name"
                                                 :value="acquisition.value"
-                                                v-for="acquisition in acquisitions">
+                                                v-for="acquisition in acquisition_phases">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
@@ -129,10 +129,10 @@
                                                    v-model="model.qualification"
                                                    @change="changeQualification">
                                             <el-option
-                                                :key="k"
-                                                :label="$t(`models.request.qualification.${qualification}`)"
-                                                :value="parseInt(k)"
-                                                v-for="(qualification, k) in constants.requests.qualification">
+                                                    :key="qualification.value"
+                                                    :label="qualification.name"
+                                                    :value="qualification.value"
+                                                    v-for="qualification in qualifications">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
