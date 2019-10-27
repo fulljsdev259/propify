@@ -88,12 +88,12 @@
                 localStorage.setItem('sidebar:visibility', this.visible)
             },
             hideSubmenu() {
-                // this.mouseIn = false
-                // setTimeout(() => {
-                //     if(!this.mouseIn)
-                //         this.submenu.visible = false
-                // }, 100);
-                this.submenu.visible = false
+                this.mouseIn = false
+                setTimeout(() => {
+                    if(!this.mouseIn)
+                        this.submenu.visible = false
+                }, 300);
+                //this.submenu.visible = false
             },
             handleMouseRoute (e, item) {
                 // if (!this.submenu.visible) {
@@ -107,7 +107,6 @@
                 this.submenu.visible = item.children ? true : false
                 if(item.children)
                     this.mouseIn = true
-                console.log('main', this.mouseIn)
 
                 if(item.children)
                     this.submenu.items = item.children
