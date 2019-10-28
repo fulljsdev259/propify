@@ -117,7 +117,7 @@
                     width: 150,
                     actions: [{
                         type: '',
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         editUrl: 'adminHouseOwnersEdit',
                         onClick: this.edit,

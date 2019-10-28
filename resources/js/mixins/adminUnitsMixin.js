@@ -78,7 +78,7 @@ export default (config = {}) => {
                     label: 'models.request.category'
                 }],
                 requestActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         title: 'general.actions.edit',
                         type: 'primary',
@@ -209,7 +209,16 @@ export default (config = {}) => {
                     callback(new Error(this.$t('validation.gte.numeric',{attribute: this.$t('models.unit.floor'), value: '-3'})));
                 }
                 callback();
-            }
+            },
+            hasAttic(id) {
+                let hasAttic = false;
+                this.buildings.map(building => {
+                    if(building.id == this.model.building_id) {
+                        hasAttic = building.attic;
+                    }
+                });
+                return hasAttic;
+            },
         },
         computed: {
             form() {

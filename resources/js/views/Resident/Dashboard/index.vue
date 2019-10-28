@@ -182,6 +182,10 @@
                 this.openedRequest = request
 
                 this.visibleDrawer = !this.visibleDrawer
+            },
+            closeDrawer() {
+                this.resetDataFromDrawer();
+                this.visibleDrawer = false;
             }
         },
         watch: {

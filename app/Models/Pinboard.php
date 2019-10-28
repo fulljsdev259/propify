@@ -332,6 +332,24 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
     ];
 
     /**
+     * @var array
+     */
+    protected $auditEvents = [
+        AuditableModel::EventCreated,
+        AuditableModel::EventUpdated,
+        AuditableModel::EventDeleted,
+
+        AuditableModel::EventProviderAssigned => 'getAttachedEventAttributes',
+        AuditableModel::EventProviderUnassigned => 'getDetachedEventAttributes',
+
+        AuditableModel::EventQuarterAssigned => 'getAttachedEventAttributes',
+        AuditableModel::EventQuarterUnassigned => 'getDetachedEventAttributes',
+
+        AuditableModel::EventBuildingAssigned => 'getAttachedEventAttributes',
+        AuditableModel::EventBuildingUnassigned => 'getDetachedEventAttributes',
+    ];
+
+    /**
      * Validation rules
      *
      * @return array

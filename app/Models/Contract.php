@@ -186,10 +186,10 @@ class Contract extends AuditableModel implements HasMedia
     ];
     
     const StatusActive = 1;
-    const StatusInactive = 2;
+    const StatusInActive = 2;
     const Status = [
         self::StatusActive => 'active',
-        self::StatusInactive => 'inactive',
+        self::StatusInActive => 'inactive',
     ];
 
     const DepositTypeBankDepositt = 1;

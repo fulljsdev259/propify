@@ -8,7 +8,7 @@
         </div>
         <list-table
             :header="header"
-            :items="items"
+            :items="buildings"
             :loading="{state: loading}"
             @selectionChanged="selectionChanged"
         >
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
     import axios from '@/axios';
 
     import {displayError, displaySuccess} from "helpers/messages";
@@ -64,9 +64,11 @@
                         }
                     ]
                 }],
+                items: []
             };
         },
         methods: {
+            ...mapActions(["getBuildings"]),
             // edit({id}) {
             //     this.$router.push({
             //         name: 'adminBuildingsEdit',
@@ -75,16 +77,23 @@
             //         }
             //     });
             // },
-            fetchData() {
-                let that = this;
-                const url = 'buildings/?&page=1&per_page=5';
-                return axios.get(url)
-                .then(function (response) {
-                    that.items = response.data.data.data;
-                }).catch(function (error) {
-                    console.log(error);
+            async fetchData() {
+                 const buildings = await this.getBuildings({
+                    page : 1,
+                    per_page : 5
+                });
+
+                buildings.data.data.map(building => {
+                    building.residents = building.contracts.map(contract => contract.resident)
+                    building.residentscount = building.residents.length > 2 ? (building.residents.length - 2) : 0;
+                    building.residents = building.residents.splice(0, 2);
                 })
+                
+                this.items = buildings.data.data
             }
+        },
+        computed: {
+            ...mapGetters(['buildings']),
         },
         created() {
           this.fetchData();

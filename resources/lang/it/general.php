@@ -346,33 +346,23 @@ return [
                         'media_deleted' => 'Supporti cancellati'
                     ]                    
                 ],
-                'content' => [
-                    'with_id' => [
-                        'general' => [
-                            'updated' => 'La :fieldname è cambiata da :old al :new.',
-                            'provider_assigned' => ':providerName è stato assegnato come fornitore.',
-                            'provider_unassigned' => 'Fornitore di servizi :providerName non è stato assegnato.',
-                            'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName è stato assegnato come manager.',
-                            'manager_unassigned' => 'Manager :propertyManagerFirstName :propertyManagerLastName non è stato assegnato.',
-                            'user_assigned' => ':userName è stato assegnato come manager.',
-                            'media_uploaded' => 'Media caricati',
-                            'media_deleted' => 'Supporti cancellati',
-                            'provider_notified' => 'Fornitore di servizi :providerName è stato notificato via e-mail',
-                            'quarter_assigned' => ':quarterName Quartiere assegnato',
-                            'quarter_unassigned' => ':quarterName Quartiere non assegnato',
-                            'building_assigned' => ':buildingName Costruire assegnato',
-                            'building_unassigned' => ':buildingNam Costruire senza assegnazione',
-                        ],
-                        'pinboard' => [
-                            'created' => ':userName ha aperto questo :auditable_type su :auditable_type #:auditable_id.',                            
-                        ],
-                        'listing' => [
-                            'created' => ':userName ha aperto questo :auditable_type.',
-                        ],
-                        'request' => [
-                            'created' => ':userName ha aperto questo :auditable_type.',                            
-                        ]
-                    ],                  
+                'content' => [                    
+                    'general' => [
+                        'created' => ':userName ha creato questo :auditable_type',
+                        'updated' => 'La :fieldname è cambiata da :old al :new.',
+                        'provider_assigned' => ':providerName è stato assegnato come fornitore.',
+                        'provider_unassigned' => 'Fornitore di servizi :providerName non è stato assegnato.',
+                        'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName è stato assegnato come manager.',
+                        'manager_unassigned' => 'Manager :propertyManagerFirstName :propertyManagerLastName non è stato assegnato.',
+                        'user_assigned' => ':userName è stato assegnato come manager.',
+                        'media_uploaded' => 'Media caricati',
+                        'media_deleted' => 'Supporti cancellati',
+                        'provider_notified' => 'Fornitore di servizi :providerName è stato notificato via e-mail',
+                        'quarter_assigned' => ':quarterName Quartiere assegnato',
+                        'quarter_unassigned' => ':quarterName Quartiere non assegnato',
+                        'building_assigned' => ':buildingName Costruire assegnato',
+                        'building_unassigned' => ':buildingNam Costruire senza assegnazione',
+                    ],                                   
                 ],
             ],
             'comments_list' => [            

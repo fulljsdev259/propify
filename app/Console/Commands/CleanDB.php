@@ -27,7 +27,6 @@ use App\Models\Role;
 use App\Models\ServiceProvider;
 use App\Models\Request;
 use App\Models\RequestAssignee;
-use App\Models\RequestCategory;
 use App\Models\State;
 use App\Models\Tag;
 use App\Models\Template;

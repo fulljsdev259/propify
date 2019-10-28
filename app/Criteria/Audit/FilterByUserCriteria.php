@@ -35,8 +35,8 @@ class FilterByUserCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        if ($u = $this->request->get('user_id', null)) {
-            $model->where('user_id', $u);
+        if ($userId = $this->request->get('user_id', null)) {
+            $model->where('user_id', $userId);
         }
 
         return $model;

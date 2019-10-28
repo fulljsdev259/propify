@@ -3,7 +3,6 @@
 namespace App\Http\Requests\API\Request;
 
 use App\Models\Request;
-use App\Models\RequestCategory;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\BaseRequest;
 
@@ -38,7 +37,7 @@ class CreateRequest extends BaseRequest
         $rules = Request::$rulesPost;
         $categories = [];
         foreach (Request::CategoryAttributes as $key => $attributes) {
-            if (in_array(Request::HasQualifications, $attributes)) {
+            if (in_array(Request::QualificationAttr, $attributes)) {
                 $categories[] = $key;
             }
         }

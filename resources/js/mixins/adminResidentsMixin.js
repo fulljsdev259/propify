@@ -132,6 +132,7 @@ export default (config = {}) => {
                         await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
                     }
                     this.model.contracts.splice(index, 1)
+                    this.visibleDrawer = false;
                 }).catch(() => {
                 });
             },

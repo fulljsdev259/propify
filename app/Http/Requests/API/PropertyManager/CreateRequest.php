@@ -25,7 +25,6 @@ class CreateRequest extends BaseRequest
     public function rules()
     {
         $rules = PropertyManager::$rules;
-        $rules['position'] = 'in:' . implode(',', PropertyManager::Position);
         $rules['title'] = 'in:' . implode(',', PropertyManager::Title) . ',company';
         return $rules;
     }

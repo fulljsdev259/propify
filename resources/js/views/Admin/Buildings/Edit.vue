@@ -1,5 +1,5 @@
 <template>
-    <div class="buildings-edit ">
+    <div class="buildings-edit " v-loading.fullscreen.lock="loading.state">
         <div class="main-content">
         <heading :title="$t('models.building.edit_title')" icon="icon-commerical-building" shadow="heavy">
             <template slot="description" v-if="model.building_format">
@@ -153,7 +153,7 @@
                             </el-row>
                         </el-form>
                     </el-tab-pane>
-                    <el-tab-pane name="units" v-loading="loading.state">
+                    <el-tab-pane name="units" >
                         <span slot="label">
                             <el-badge :value="unitCount" :max="99" class="admin-layout">{{ $t('models.building.units') }}</el-badge>
                         </span>
@@ -199,7 +199,7 @@
                                             align="right"
                                         >
                                             <template slot-scope="scope">
-                                                <el-button icon="el-icon-close" type="danger" @click="deleteDocument('media', scope.$index)" size="mini"/>
+                                                <el-button icon="el-icon-close" type="danger" round @click="deleteDocument('media', scope.$index)" size="mini"/>
                                             </template>
                                         </el-table-column>
                                     </el-table>
@@ -270,7 +270,7 @@
             </el-col>
             <el-col :md="12">
                 <el-tabs type="border-card" v-model="activeRightTab">
-                    <el-tab-pane name="residents" v-loading="loading.state">                        
+                    <el-tab-pane name="residents">                        
                         <span slot="label">
                             <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.residents') }}</el-badge>
                         </span>
@@ -291,6 +291,7 @@
                         <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
                         <contract-list-table
                                     :items="model.contracts"
+                                    :hide-building="true"
                                     @edit-contract="editContract"
                                     @delete-contract="deleteContract">
                         </contract-list-table>
@@ -431,6 +432,7 @@
                                 :visible.sync="visibleDrawer" 
                                 :edit_index="editingContractIndex" 
                                 @update-contract="updateContract" 
+                                @delete-contract="deleteContract"
                                 :used_units="used_units"/>
                     <contract-form v-else 
                                 mode="add" 
@@ -440,6 +442,7 @@
                                 :resident_type="1" 
                                 :visible.sync="visibleDrawer" 
                                 @add-contract="addContract" 
+                                @delete-contract="deleteContract"
                                 :used_units="used_units"/>
                 </div>
             </template>
@@ -554,7 +557,7 @@
                     i18n: this.translateType
                 }],
                 assigneesActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         title: 'models.building.unassign_manager',
                         type: 'danger',
@@ -581,7 +584,7 @@
                         title: 'general.actions.edit',
                         onClick: this.unitEditView,
                         tooltipMode: true,
-                        icon: 'el-icon-edit'
+                        icon: 'ti-search'
                     }]
                 }],
                 requestColumns: [{
@@ -600,7 +603,7 @@
                 requestActions: [{
                     width: 120,
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.requestEditView,
                         tooltipMode: true
@@ -612,7 +615,7 @@
                     type: 'serviceName'
                 }],
                 assignmentsProviderActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         icon: 'el-icon-close',
                         title: 'general.unassign',
@@ -918,14 +921,13 @@
                 this.contractCount ++;
             },
             editContract(index) {
-                console.log('this.model.contracts', this.model.contracts, index)
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
-                this.model.contracts[index] = params;
+                this.$set(this.model.contracts, index, params);
             },
             deleteContract(index) {
 
@@ -935,6 +937,7 @@
                     await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
                     this.model.contracts.splice(index, 1)
                     this.contractCount --;
+                    this.visibleDrawer = false;
                 }).catch(() => {
                 });
             },
@@ -1029,9 +1032,6 @@
         }
     }
     
-    #tab-files, #tab-companies, #tab-requests, #tab-residents, #tab-contracts, #tab-managers, #tab-units, #tab-audit{
-        padding-right: 40px;
-    }
 </style>
 <style lang="scss" scoped>
     .last-form-row {

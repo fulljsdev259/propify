@@ -408,6 +408,13 @@ export default (config = {}) => {
                         this.alreadyAssigned.buildings = this.model.buildings.map((building) => building.id);
                         this.alreadyAssigned.quarters = this.model.quarters.map((quarter) => quarter.id);
 
+                        this.statistics.raw[0].value = this.model.requests_count;
+                        this.statistics.raw[1].value = this.model.solved_requests_count;
+                        this.statistics.raw[2].value = this.model.pending_requests_count;
+                        this.statistics.raw[3].value = this.model.buildings_count;
+
+                        this.original_email = this.model.user.email;
+
                         return resp.data;
                     },
 
@@ -422,24 +429,8 @@ export default (config = {}) => {
 
                     this.loading.state = true;
 
-                    
-
                     await this.fetchCurrentManager();
 
-
-                    const {
-                        data: {
-                            ...restData
-                        }
-                    } = await this.getPropertyManager({id: this.$route.params.id});
-
-                    this.statistics.raw[0].value = restData.requests_count;
-                    this.statistics.raw[1].value = restData.solved_requests_count;
-                    this.statistics.raw[2].value = restData.pending_requests_count;
-                    this.statistics.raw[3].value = restData.buildings_count;
-
-                    this.original_email = this.model.user.email;
-                    
                     this.loading.state = false;
                 };
 

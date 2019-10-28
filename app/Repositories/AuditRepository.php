@@ -12,6 +12,7 @@ use App\Models\PropertyManager;
 use App\Models\ServiceProvider;
 use App\Models\Country;
 use App\Models\Address;
+use App\Models\State;
 use OwenIt\Auditing\Models\Audit;
 
 /**
@@ -67,6 +68,10 @@ class AuditRepository extends BaseRepository
             elseif($fieldname == 'nation'){
                 $model = Country::find($fieldvalue);
                 return $model->name;            
+            }
+            elseif($fieldname == 'state_id'){
+                $model = State::find($fieldvalue);
+                return $model->name;
             }
             elseif(($auditable_type == 'resident') && ($fieldname == 'status')){   
                 return __('models.resident.status.' . Resident::Status[$fieldvalue]);

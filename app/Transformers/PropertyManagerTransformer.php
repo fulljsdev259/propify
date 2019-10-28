@@ -29,7 +29,6 @@ class PropertyManagerTransformer extends BaseTransformer
             'first_name' => $model->first_name,
             'last_name' => $model->last_name,
             'profession' => $model->profession,
-            'position' => $model->position,
             'slogan' => $model->slogan,
             'xing_url' => $model->xing_url,
             'linkedin_url' => $model->linkedin_url,

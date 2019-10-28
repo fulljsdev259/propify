@@ -18,8 +18,8 @@ return [
 	'title' => 'Mit unserer Bewohner App ist alles einfacher.',
 	'intro' => 'Um die Anliegen unserer Bewohner noch schneller zu bearbeiten, erhalten unsere Bewohner Zugang zu einem geschützten Bereich, mit dem das Mietverhältnis digital verwaltet werden kann. Durch die digitale Verarbeitung können wir noch schneller handeln und Transparenz für alle Beteiligten schaffen.',
 	'benefit_1' => [
-		'title' => 'Daten und Dokumente online einsehbar',
-		'description' => 'Sie können alle Angaben zum Mietverhältnis und Unterlagen wie z.B. den Mietvertrag, jederzeit im PDF Format herunterladen.'
+		'title' => 'Ihr Online Mieter-Dossier',
+		'description' => 'Sie können alle Angaben zum Mietverhältnis und dazugehörige Unterlagen jederzeit und von überall her einsehen.'
 	],
 	'benefit_2' => [
 		'title' => 'Anliegen digital übermitteln',

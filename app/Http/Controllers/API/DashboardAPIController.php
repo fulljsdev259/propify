@@ -14,7 +14,6 @@ use App\Models\Building;
 use App\Models\LoginDevice;
 use App\Models\Contract;
 use App\Models\Request;
-use App\Models\RequestCategory;
 use App\Models\State;
 use App\Models\Resident;
 use App\Models\Listing;

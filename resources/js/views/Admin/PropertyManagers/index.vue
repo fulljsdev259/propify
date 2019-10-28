@@ -128,7 +128,7 @@
                     width: 150,
                     actions: [{
                         type: '',
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         editUrl: 'adminPropertyManagersEdit',
                         onClick: this.edit,

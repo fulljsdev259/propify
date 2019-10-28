@@ -1,9 +1,10 @@
 <template>
-    <div class="quarters-edit">
+    <div class="quarters-edit" v-loading.fullscreen.lock="loading.state">
         <div class="main-content">
             <heading :title="$t('models.quarter.edit')" icon="icon-chat-empty" shadow="heavy">
                 <template slot="description" v-if="model.quarter_format">
-                    <div class="subtitle">{{`${model.quarter_format} > ${model.name}`}}</div>
+                    <!-- <div class="subtitle">{{`${model.quarter_format} > ${model.name}`}}</div> -->
+                    <div class="subtitle">{{model.quarter_format}}</div>
                 </template>
                 <edit-actions :saveAction="submit" :deleteAction="deleteQuarter" route="adminQuarters"/>
             </heading>
@@ -110,7 +111,7 @@
                                                 align="right"
                                             >
                                                 <template slot-scope="scope">
-                                                    <el-button icon="el-icon-close" type="danger" @click="deleteDocument('media', scope.$index)" size="mini"/>
+                                                    <el-button icon="el-icon-close" type="danger" round @click="deleteDocument('media', scope.$index)" size="mini"/>
                                                 </template>
                                             </el-table-column>
                                         </el-table>
@@ -163,7 +164,7 @@
                 </el-col>
                 <el-col :md="12">
                     <el-tabs type="border-card" v-model="activeRightTab">
-                        <el-tab-pane name="assignees" v-loading="loading.state">                        
+                        <el-tab-pane name="assignees">                        
                             <span slot="label">
                                 <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('models.quarter.assignment') }}</el-badge>
                             </span>
@@ -259,6 +260,7 @@
                                 :visible.sync="visibleDrawer" 
                                 :edit_index="editingContractIndex" 
                                 @update-contract="updateContract" 
+                                @delete-contract="deleteContract"
                                 :used_units="used_units"/>
                     <contract-form v-else 
                                 mode="add" 
@@ -267,6 +269,7 @@
                                 :resident_type="1" 
                                 :visible.sync="visibleDrawer" 
                                 @add-contract="addContract" 
+                                @delete-contract="deleteContract"
                                 :used_units="used_units"/>
                 </div>
             </template>
@@ -353,14 +356,14 @@
                 requestActions: [{
                     width: 120,
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.requestEditView,
                         tooltipMode: true
                     }]
                 }],
                 assigneesActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [ {
                         title: 'general.unassign',
                         tooltipMode: true,
@@ -400,7 +403,7 @@
                 quarterActions: [{
                     width: '90px',
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.buildingEditView,
                         tooltipMode: true
@@ -506,14 +509,13 @@
                 this.contractCount ++;
             },
             editContract(index) {
-                console.log('this.model.contracts', this.model.contracts, index)
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
-                this.model.contracts[index] = params;
+                this.$set(this.model.contracts, index, params);
             },
             deleteContract(index) {
 
@@ -523,6 +525,7 @@
                     await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
                     this.model.contracts.splice(index, 1)
                     this.contractCount --;
+                    this.visibleDrawer = false;
                 }).catch(() => {
                 });
             },

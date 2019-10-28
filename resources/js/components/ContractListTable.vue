@@ -15,6 +15,27 @@
                 </el-alert>
             </div>
             <el-table-column
+                :label="$t('general.resident')"
+                v-if="!hideAvatar"
+                >
+                <template slot-scope="scope">
+                    <el-tooltip
+                            :content="`${scope.row.resident.first_name} ${scope.row.resident.last_name}`"
+                            class="item"
+                            effect="light" placement="top"
+                    >
+                        <avatar :size="30"
+                                :src="'/' + scope.row.resident.user.avatar"
+                                v-if="scope.row.resident.user.avatar"></avatar>
+                        <avatar :size="28"
+                                backgroundColor="rgb(205, 220, 57)"
+                                color="#fff"
+                                :username="scope.row.resident.user.first_name ? `${scope.row.resident.user.first_name} ${scope.row.resident.user.last_name}`: `${scope.row.resident.user.name}`"
+                                v-if="!scope.row.resident.user.avatar"></avatar>
+                    </el-tooltip>
+                </template>
+            </el-table-column>
+            <el-table-column
                 :label="$t('models.resident.contract.contract_id')"
                 v-if="!hideContractId"
                 prop="id"
@@ -25,11 +46,13 @@
             </el-table-column>
             <el-table-column
                 :label="$t('models.resident.building.name')"
+                v-if="!hideBuilding"
                 prop="building.name"
             >
             </el-table-column>
             <el-table-column
                 :label="$t('models.resident.unit.name')"
+                v-if="!hideUnit"
                 prop="unit.name"
             >
             </el-table-column>
@@ -43,22 +66,21 @@
             </el-table-column>
             <el-table-column
                 align="right"
-                :min-width="130"
-                :width="130"
+                :width="80"
             >
                 <template slot-scope="scope">
                     <el-tooltip
                         :content="$t('general.actions.edit')"
                         class="item" effect="light" 
                         placement="top-end">
-                            <el-button @click="$emit('edit-contract', scope.$index)" icon="ti-pencil" size="mini" type="success"/>
+                            <el-button @click="$emit('edit-contract', scope.$index)" icon="ti-search" size="mini" round/>
                     </el-tooltip>
-                    <el-tooltip
+                    <!-- <el-tooltip
                         :content="$t('general.actions.delete')"
                         class="item" effect="light" 
                         placement="top-end">
-                            <el-button @click="$emit('delete-contract', scope.$index)" icon="ti-trash" size="mini" type="danger"/>
-                    </el-tooltip>
+                            <el-button @click="$emit('delete-contract', scope.$index)" icon="ti-trash" size="mini" type="danger" round/>
+                    </el-tooltip> -->
                 </template>
             </el-table-column>
         </el-table>
@@ -72,14 +94,18 @@
 
     import uuid from 'uuid/v1'
     import {mapActions, mapGetters} from 'vuex';
-    
+    import {Avatar} from 'vue-avatar'
     import {ResponsiveMixin} from 'vue-responsive-components'
+    
 
     export default {
         name: 'ContractListTable',
         mixins: [
             ResponsiveMixin
         ],
+        components: {
+            Avatar,
+        },
         props: {
             items: {
                 type: Array,
@@ -88,6 +114,18 @@
                 }
             },
             hideContractId: {
+                type: Boolean,
+                default: false
+            },
+            hideBuilding: {
+                type: Boolean,
+                default: false
+            },
+            hideUnit: {
+                type: Boolean,
+                default: false
+            },
+            hideAvatar: {
                 type: Boolean,
                 default: false
             },

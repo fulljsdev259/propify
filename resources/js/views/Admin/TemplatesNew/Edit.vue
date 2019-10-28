@@ -1,11 +1,11 @@
 <template>
-    <div class="templates-edit">
+    <div class="templates-edit" v-loading.fullscreen.lock="loading.state">
         <edit-actions :queryParams="{tab: 'requests'}" :saveAction="submit" route="adminSettings"/>
       
         <el-row :gutter="20" class="crud-view">
             <el-form :model="model" label-width="100px" ref="form">
                 <el-col :md="12">
-                    <card :loading="loading">
+                    <card>
                         <el-form-item :label="$t('general.name')" :rules="validationRules.name" prop="name">
                             <el-input autocomplete="off" type="text"
                                       v-model="model.name"></el-input>
@@ -29,7 +29,7 @@
                     </card>
                 </el-col>
                 <el-col :md="12">
-                    <card :loading="loading">
+                    <card>
 
                         <el-form-item :label="$t('models.template.category')" :rules="validationRules.category"
                                       prop="category_id">

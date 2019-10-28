@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Helpers\Helper;
 use App\Traits\BuildingRelation;
+use App\Traits\OldChagesAttribute;
 use App\Traits\RequestRelation;
 use BeyondCode\Comments\Contracts\Commentator;
 use Cog\Contracts\Love\Liker\Models\Liker as LikerContract;
@@ -135,7 +136,8 @@ class User extends Authenticatable implements LikerContract, Commentator, Audita
         Liker,
         BuildingRelation,
         RequestRelation,
-        \App\Traits\Auditable;
+        \App\Traits\Auditable,
+        OldChagesAttribute;
 
     const Title = [
         'mr',

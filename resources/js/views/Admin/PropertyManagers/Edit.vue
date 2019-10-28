@@ -1,5 +1,5 @@
 <template>
-    <div class="services-edit">
+    <div class="services-edit" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.property_manager.edit_title')" icon="icon-users" shadow="heavy">
             <template slot="description" v-if="model.property_manager_format">
                 <div class="subtitle">{{model.property_manager_format}}</div>
@@ -170,7 +170,7 @@
                             </el-tab-pane>
                         </el-tabs>
 
-                        <card :loading="loading" class="mt15" :header="$t('general.assignment')">
+                        <card class="mt15" :header="$t('general.assignment')">
                             <assignment-by-type
                                     :resetToAssignList="resetToAssignList"
                                     :assignmentType.sync="assignmentType"
@@ -195,7 +195,7 @@
                     <el-col :md="12">
                         <raw-grid-statistics-card :cols="8" :data="statistics.raw"/>
 
-                        <card :loading="loading" class="mt15" :header="$t('general.requests')">
+                        <card class="mt15" :header="$t('general.requests')">
                             <relation-list
                                 :actions="requestActions"
                                 :columns="requestColumns"
@@ -265,11 +265,11 @@
                 requestActions: [{
                     width: '120',
                     buttons: [{
-                        icon: 'ti-pencil',
+                        icon: 'ti-search',
                         title: 'general.actions.edit',
                         onClick: this.requestEditView,
                         tooltipMode: true
-                    }]
+                    }] 
                 }],
                 assignmentsColumns: [{
                     prop: 'name',
@@ -280,7 +280,7 @@
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{
-                    width: '180px',
+                    width: 80,
                     buttons: [{
                         title: 'general.unassign',
                         type: 'danger',
