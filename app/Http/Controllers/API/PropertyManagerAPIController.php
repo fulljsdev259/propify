@@ -182,6 +182,8 @@ class PropertyManagerAPIController extends AppBaseController
 
         $propertyManager->load('buildings', 'quarters');
         $propertyManager->setRelation('user', $user);
+        $propertyManager->addDataInAudit(AuditableModel::MergeInMainData, $user);
+
         $response = (new PropertyManagerTransformer)->transform($propertyManager);
         return $this->sendResponse($response, __('models.property_manager.saved'));
     }

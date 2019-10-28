@@ -364,6 +364,30 @@ class AuditableModel extends Model implements Auditable
     }
 
     /**
+     * @param $user
+     * @return mixed
+     */
+    protected function getUserAudit(User $user)
+    {
+
+        $auditData = $user->getAttributes();
+        unset($auditData['created_at']);
+        unset($auditData['updated_at']);
+        unset($auditData['password']);
+
+        if ($user->relationExists('settings')) {
+            $auditData = array_merge($auditData, $this->getSingleRelationAuditData($user->settings));
+            unset($auditData['user_id']);
+        }
+
+        if ($user->relationExists('role')) {
+            $auditData['role'] = $user->role->name;
+        }
+
+        return $auditData;
+    }
+
+    /**
      * @param $relationData
      * @return array|mixed
      */
@@ -398,6 +422,10 @@ class AuditableModel extends Model implements Auditable
     {
         if (is_a($relation, Media::class)) {
             return $this->getMediaAudit($relation);
+        }
+
+        if (is_a($relation, User::class)) {
+            return $this->getUserAudit($relation);
         }
 
         // @TODO use auditable attributes or similar thing

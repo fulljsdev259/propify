@@ -64,6 +64,7 @@ class UserRepository extends BaseRepository
         $settings = Arr::pull($attributes, 'settings');
         $settings = $model->settings()->create($settings);
         $model->setRelation('settings', $settings);
+        $model->setRelation('role', $role);
 
         if (in_array($role->name, ['administrator'])) {
             dispatch(new NewAdminNotification($model));
