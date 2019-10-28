@@ -181,7 +181,6 @@ class AuditableModel extends Model implements Auditable
             $value = $this->getMediaAudit($value);
         }
 
-
         if (self::EventCreated == $audit->event) {
             $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
         } elseif (self::EventUpdated == $audit->event) {
@@ -266,7 +265,11 @@ class AuditableModel extends Model implements Auditable
             if ($value->wasRecentlyCreated) {
                 $value = $this->getSingleRelationAuditData($value);
             } else {
-                $value = $value->getChanges();
+                if (is_a($value, User::class)) {
+                    $value = $this->getUpdatedUserAudit($value);
+                } else {
+                    $value = $value->getChanges();
+                }
             }
             unset($value['updated_at']);
             return $value;
@@ -290,7 +293,11 @@ class AuditableModel extends Model implements Auditable
         }
 
         if (is_a($value, EloquentModel::class)) {
-            $value = $value->getOldChanges();
+            if (is_a($value, User::class)) {
+                $value = $this->getUpdatedUserOriginalData($value);
+            } else {
+                $value = $value->getOldChanges();
+            }
             unset($value['updated_at']);
             return $value;
         }
@@ -382,6 +389,38 @@ class AuditableModel extends Model implements Auditable
 
         if ($user->relationExists('role')) {
             $auditData['role'] = $user->role->name;
+        }
+
+        return $auditData;
+    }
+
+    /**
+     * @param $user
+     * @return mixed
+     */
+    protected function getUpdatedUserAudit(User $user)
+    {
+        $auditData = $user->getChanges();
+
+        if ($user->relationExists('settings')) {
+            $auditData = array_merge($auditData, $user->settings->getChanges());
+            unset($auditData['user_id']);
+        }
+
+        return $auditData;
+    }
+
+    /**
+     * @param $user
+     * @return mixed
+     */
+    protected function getUpdatedUserOriginalData(User $user)
+    {
+        $auditData = $user->getOldChanges();
+
+        if ($user->relationExists('settings')) {
+            $auditData = array_merge($auditData, $user->settings->getOldChanges());
+            unset($auditData['user_id']);
         }
 
         return $auditData;

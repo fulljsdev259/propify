@@ -328,7 +328,7 @@ class PropertyManagerAPIController extends AppBaseController
 
         try {
             $propertyManager = $this->propertyManagerRepository->updateExisting($propertyManager, $input);
-            $propertyManager->addDataInAudit(AuditableModel::MergeInMainData, $user);
+            $propertyManager->addDataInAudit(AuditableModel::MergeInMainData, $user, AuditableModel::UpdateOrCreate);
         } catch (\Exception $e) {
             return $this->sendError(__('models.property_manager.errors.update') . $e->getMessage());
         }

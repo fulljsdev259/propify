@@ -108,12 +108,17 @@ class UserRepository extends BaseRepository
             if ($role) {
                 $model->detachRoles();
                 $model->attachRole($role);
+                // for audit
+                $model->setRelation('role', $role);
             }
         }
 
         $settings = Arr::pull($attributes, 'settings');
         if ($settings) {
-            $model->settings()->update($settings);
+            $userSettings = $model->settings;
+            $userSettings->update($settings);
+            // for audit
+            $model->setRelation('settings', $userSettings);
         }
 
         return $model;
