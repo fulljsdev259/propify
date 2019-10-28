@@ -378,7 +378,7 @@ class UserAPIController extends AppBaseController
         $fileData = base64_decode($request->get('image_upload', ''));
         if ($fileData) {
             try {
-                $input['avatar'] = $this->userRepository->uploadImage($fileData, $user);
+                $input['avatar'] = $this->userRepository->uploadImage($fileData, $user, $request->merge_in_audit);
             } catch (\Exception $e) {
                 return $this->sendError(__('models.user.errors.image_upload') . $e->getMessage());
             }
@@ -445,7 +445,7 @@ class UserAPIController extends AppBaseController
         $fileData = base64_decode($request->get('image_upload', ''));
         if ($fileData) {
             try {
-                $input['avatar'] = $this->userRepository->uploadImage($fileData, $user);
+                $input['avatar'] = $this->userRepository->uploadImage($fileData, $user, $request->merge_in_audit);
             } catch (\Exception $e) {
                 return $this->sendError(__('models.user.errors.image_upload') . $e->getMessage());
             }
@@ -561,7 +561,6 @@ class UserAPIController extends AppBaseController
     public function uploadImage(int $id, UploadImageRequest $request)
     {
         $input = $request->all();
-
         /** @var User $user */
         $user = $this->userRepository->findWithoutFail($id);
         if (empty($user)) {
@@ -573,7 +572,7 @@ class UserAPIController extends AppBaseController
 
         if ($fileData) {
             try {
-                $input['avatar'] = $this->userRepository->uploadImage($fileData, $user);
+                $input['avatar'] = $this->userRepository->uploadImage($fileData, $user, $request->merge_in_audit);
             } catch (\Exception $e) {                
                 return $this->sendError(__('models.user.errors.image_upload') . $e->getMessage());
             }
@@ -639,7 +638,7 @@ class UserAPIController extends AppBaseController
         $fileData = base64_decode($request->get('image_upload', ''));
         if ($fileData) {
             try {
-                $input['avatar'] = $this->userRepository->uploadImage($fileData, $user);
+                $input['avatar'] = $this->userRepository->uploadImage($fileData, $user, $request->merge_in_audit);
             } catch (\Exception $e) {
                 return $this->sendError(__('models.user.errors.image_upload') . $e->getMessage());
             }

@@ -10,6 +10,7 @@ use App\Notifications\PasswordResetSuccess;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManager as Image;
+use OwenIt\Auditing\Models\Audit;
 use Prettus\Repository\Events\RepositoryEntityUpdated;
 
 /**
@@ -128,15 +129,23 @@ class UserRepository extends BaseRepository
     /**
      * @param string $fileData
      * @param User $user
+     * @param null $mergeInAudit
      * @return string
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function uploadImage(string $fileData, User $user)
+    public function uploadImage(string $fileData, User $user, $mergeInAudit = null)
     {
         $avatar = Str::slug(sprintf('%s-%d', $user->name, $user->id)) . '.png';
         $imgPath = storage_path(sprintf('app/public/avatar/%s', $avatar));
 
         (new Image)->make($fileData)->encode('png', 100)->fit(800, 800)->save($imgPath);
+        if ($mergeInAudit) {
+            $audit = is_integer($mergeInAudit)
+                ? Audit::find($mergeInAudit)
+                : $mergeInAudit;
 
+            (new App\Models\AuditableModel())->addDataInAudit('avatar', $avatar, $audit);
+        }
         return sprintf('storage/avatar/%s', $avatar);
     }
 
