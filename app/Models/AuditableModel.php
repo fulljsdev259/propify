@@ -407,6 +407,10 @@ class AuditableModel extends Model implements Auditable
             unset($auditData['user_id']);
         }
 
+        if ($user->relationExists('role')) {
+            $auditData['role'] = $user->role->name;
+        }
+
         return $auditData;
     }
 
@@ -417,6 +421,10 @@ class AuditableModel extends Model implements Auditable
     protected function getUpdatedUserOriginalData(User $user)
     {
         $auditData = $user->getOldChanges();
+
+        if ($user->relationExists('role')) {
+            $auditData['role'] = $user->role->name;
+        }
 
         if ($user->relationExists('settings')) {
             $auditData = array_merge($auditData, $user->settings->getOldChanges());

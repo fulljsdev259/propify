@@ -106,8 +106,7 @@ class UserRepository extends BaseRepository
         if (isset($attributes['role'])) {
             $role = (new RoleRepository(app()))->getRoleByName($attributes['role']);
             if ($role) {
-                $model->detachRoles();
-                $model->attachRole($role);
+                $model->roles()->sync($role);
                 // for audit
                 $model->setRelation('role', $role);
             }
