@@ -17,6 +17,7 @@ use App\Http\Requests\API\ServiceProvider\ListRequest;
 use App\Http\Requests\API\ServiceProvider\ViewRequest;
 use App\Http\Requests\API\ServiceProvider\UnAssignRequest;
 use App\Http\Requests\API\ServiceProvider\UpdateRequest;
+use App\Models\AuditableModel;
 use App\Models\ServiceProvider;
 use App\Models\User;
 use App\Repositories\AddressRepository;
@@ -268,7 +269,13 @@ class ServiceProviderAPIController extends AppBaseController
         $input['address_id'] = $address->id;
 
         try {
+
             $serviceProvider = $this->serviceProviderRepository->create($input);
+            if (isset($address)) {
+                $serviceProvider->addDataInAudit(AuditableModel::MergeInMainData, $address);
+            }
+
+            $serviceProvider->addDataInAudit(AuditableModel::MergeInMainData, $user);
         } catch (Exception $e) {
             return $this->sendError(__('models.service.errors.create') . $e->getMessage());
         }
@@ -401,7 +408,7 @@ class ServiceProviderAPIController extends AppBaseController
         $input['user']['settings'] = Arr::pull($input, 'settings', []);
         try {
             User::disableAuditing();
-            $this->userRepository->update($input['user'], $serviceProvider->user_id);
+            $user = $this->userRepository->update($input['user'], $serviceProvider->user_id);
             User::enableAuditing();
         } catch (Exception $e) {
             return $this->sendError(__('models.service.errors.update') . $e->getMessage());
@@ -417,7 +424,13 @@ class ServiceProviderAPIController extends AppBaseController
         }
 
         try {
+
             $serviceProvider = $this->serviceProviderRepository->updateExisting($serviceProvider, $input);
+            $serviceProvider->addDataInAudit(AuditableModel::MergeInMainData, $user, AuditableModel::UpdateOrCreate);
+            if (isset($address)) {
+                $serviceProvider->addDataInAudit(AuditableModel::MergeInMainData, $address, AuditableModel::UpdateOrCreate);
+            }
+
         } catch (Exception $e) {
             return $this->sendError(__('models.service.errors.update') . $e->getMessage());
         }
