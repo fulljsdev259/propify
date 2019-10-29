@@ -174,6 +174,7 @@ return [
         'quarter' => 'Projekt',
         'services' => 'Dienstleister',
         'managers' => 'Bewirtschafter',
+        'manager' => 'Bewirtschafter',
         'administrator' => 'Administrator'
     ],
     'email' => 'E-Mail',

@@ -482,23 +482,24 @@
                 this.batchEditVisible = true
             },
             async massEditAction( option ) {
-                if(options == 'service_provider') {
-                    massAssignProviders()
+                if(option == 'service_provider') {
+                    this.massAssignProviders()
                 }
-                else if(options == 'property_manager') {
-                    massAssignManagers()
+                else if(option == 'property_manager') {
+                    this.massAssignManagers()
                 }
-                else if(options == 'change_status') {
-                    massChangeStatus()
+                else if(option == 'change_status') {
+                    this.massChangeStatus()
                 }
             },
             async massAssignProviders() {
                 let request_ids = this.selectedItems.map(request => request.id)
                 let service_provider_ids = this.toAssign
-                
+                let send_email_service_provider = this.send_email_service_provider
                 const resp = await this.massEdit({
                     request_ids, 
-                    service_provider_ids
+                    service_provider_ids,
+                    send_email_service_provider
                 })
 
                 this.processAssignment = false;

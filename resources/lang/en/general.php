@@ -174,6 +174,7 @@ return [
         'quarter' => 'Quarter',
         'services' => 'Services',
         'managers' => 'Managers',
+        'manager' => 'Manager',
         'administrator' => 'Administrator',
     ],
     'email' => 'Email',

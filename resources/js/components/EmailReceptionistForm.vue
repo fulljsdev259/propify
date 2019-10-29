@@ -4,7 +4,7 @@
         <el-row :gutter="20" v-if="isBuilding && quarter_id">
             <el-col :md="24">
                 <el-form-item :label="$t('general.email_receptionist.info_desc')"
-                        class="label-block"
+                        class="label-block info-label"
                 >
                     <el-select
                         :placeholder="$t('general.placeholders.search')"
@@ -238,6 +238,13 @@
 
             &.is-error {
                 margin-bottom: 10px;
+            }
+
+            &.info-label {
+                /deep/ .el-form-item__label {
+                    line-height: 2em;
+                    margin-bottom: 1em;
+                }
             }
         }
 

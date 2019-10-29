@@ -174,6 +174,7 @@ return [
         "quarter" => "Trimestre",
         "services" => "Services",
         "managers" => "Gestionnaires",
+        'manager' => 'Gestionnaires',
         "administrator" => "Administrateur",
     ],
     'email' => 'Courriel',

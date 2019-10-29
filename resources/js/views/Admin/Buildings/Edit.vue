@@ -344,7 +344,8 @@
                         <span slot="label">
                             <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
                         </span>
-                        
+                        <span class="icon-cog" @click="toggleDrawer">
+                        </span>
                         <relation-list
                             :actions="requestActions"
                             :columns="requestColumns"
@@ -361,10 +362,10 @@
                         </span>
                         <audit v-if="model.id" :id="model.id" type="building" showFilter/>
                     </el-tab-pane>
-                    <el-tab-pane name="settings" :disabled="true">
+                    <!-- <el-tab-pane name="settings" :disabled="true">
                         <span slot="label" class="icon-cog" @click="toggleDrawer">
                         </span>
-                    </el-tab-pane>
+                    </el-tab-pane> -->
                 </el-tabs>
             </el-col>
         </el-row>
@@ -513,7 +514,7 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
-                    prop: 'type',
+                    prop: 'role',
                     label: 'models.request.user_type.label',
                     i18n: this.translateType
                 }],
@@ -620,7 +621,7 @@
                 'checkUnitRequestWidthIds'
             ]),
             translateType(type) {
-                return this.$t(`models.request.user_type.${type}`);
+                return this.$t(`general.assignment_types.${type}`);
             },
             fetchSettings() {
                 this.getSettings().then((resp) => {
@@ -1079,6 +1080,13 @@
                         float: right;
                     }
                 }
+
+                
+            }
+
+            span.icon-cog {
+                cursor: pointer;
+                float: right;
             }
 
             #providerAssignBox {

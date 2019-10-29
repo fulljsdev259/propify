@@ -230,7 +230,8 @@
                             <span slot="label">
                                 <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
                             </span>
-                            
+                            <span class="icon-cog" @click="toggleDrawer">
+                            </span>
                             <relation-list
                                 :actions="requestActions"
                                 :columns="requestColumns"
@@ -247,10 +248,10 @@
                             </span>
                             <audit v-if="model.id" :id="model.id" type="quarter" showFilter/>
                         </el-tab-pane>
-                        <el-tab-pane name="settings" :disabled="true">
+                        <!-- <el-tab-pane name="settings" :disabled="true">
                             <span slot="label" class="icon-cog" @click="toggleDrawer">
                             </span>
-                        </el-tab-pane>
+                        </el-tab-pane> -->
                     </el-tabs>
                 </el-col>
             </el-row>
@@ -677,6 +678,7 @@
 
     span.icon-cog {
         cursor: pointer;
+        float: right;
     }
     
     .ui-drawer {
