@@ -28,7 +28,7 @@
             
             <el-col :md="12">
                 <el-tabs type="border-card" v-model="activeTab">
-                    <el-tab-pane :label="$t('general.actions.view')" name="details">
+                    <el-tab-pane :label="$t('general.box_titles.details')" name="details">
                         <el-form :model="model" label-position="top" label-width="192px" ref="form">
                             <el-row :gutter="20">
                                 <el-col :md="10">
@@ -168,7 +168,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="files">
                         <span slot="label">
-                            <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('models.building.files') }}</el-badge>
+                            <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge>
                         </span>
                         <draggable @sort="sortFiles" v-model="model.media">
                             <transition-group name="list-complete">
@@ -257,7 +257,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="managers">
                         <span slot="label">
-                            <el-badge :value="managerCount" :max="99" class="admin-layout">{{ $t('models.building.managers') }}</el-badge>
+                            <el-badge :value="managerCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
                         </span>
                         <assignment-by-type
                             :resetToAssignList="resetToAssignList"
@@ -515,7 +515,7 @@
                     label: 'general.name'
                 }, {
                     prop: 'role',
-                    label: 'models.request.user_type.label',
+                    label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
                 assigneesActions: [{

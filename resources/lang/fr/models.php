@@ -468,7 +468,7 @@ return [
         "internal_notices" => "Avis internes",
         "status_changed" => "Le statut a changé",
         "priority_changed" => "Priorité modifiée",
-        'assignment' => 'Affectation de gestionnaires/fournisseurs de services',        
+        'assignment' => 'Gestionnaires/Services',        
         'active_reminder_switcher' => 'Rappel',
         'days_left' => "Combien de jours avant l'envoi de l'email ?",
         'send_person' => 'Quelle personne doit être notifiée ?',

@@ -170,12 +170,21 @@ return [
         'old_password_required' => 'Das alte Passwort wird benötigt.',
     ],
     'assignment_types' => [
+        'label' => 'Typ',
         'building' => 'Liegenschaft',
         'quarter' => 'Projekt',
         'services' => 'Dienstleister',
         'managers' => 'Bewirtschafter',
+        'provider' => 'Dienstleister',
         'manager' => 'Bewirtschafter',
         'administrator' => 'Administrator'
+    ],
+    'box_titles' => [
+        'details' => 'Details',
+        'files' => 'Dokumente',
+        'managers' => 'Bewirtschafter',
+        'buildings' => 'Objekte',
+        'buildings_and_quarters' => 'Objekte/bearbeiten',
     ],
     'email' => 'E-Mail',
     'email_validation' => [

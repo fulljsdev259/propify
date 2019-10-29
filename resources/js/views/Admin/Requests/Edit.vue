@@ -586,7 +586,7 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
-                    prop: 'type',
+                    prop: 'role',
                     label: 'models.request.user_type.label',
                     i18n: this.translateType
                 }],

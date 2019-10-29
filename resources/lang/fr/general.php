@@ -170,12 +170,21 @@ return [
         'old_password_required' => 'Ancien mot de passe requis',
     ],
     'assignment_types' => [
+        'label' => 'Tipo',
         "building" => "Bâtiment",
         "quarter" => "Trimestre",
         "services" => "Services",
         "managers" => "Gestionnaires",
+        'provider' => 'Service après-vente',
         'manager' => 'Gestionnaires',
         "administrator" => "Administrateur",
+    ],
+    'box_titles' => [
+        'details' => 'Détails',
+        'files' => 'Fichiers',
+        'managers' => 'Gestionnaires',
+        'buildings' => 'Bâtiments',
+        'buildings_and_quarters' => 'Bâtiments/trimestre',
     ],
     'email' => 'Courriel',
     'email_validation' => [

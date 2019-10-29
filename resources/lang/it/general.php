@@ -170,12 +170,21 @@ return [
         'old_password_required' => 'È richiesta una vecchia password',
     ],
     'assignment_types' => [
+        'label' => 'Type',
         "building" => "Edificio",
         "quarter" => "Quartiere",
         "services" => "Servizi",
         "managers" => "Manager",
+        'provider' => 'Servizio',
         'manager' => 'Manager',
         "administrator" => "Gestore",
+    ],
+    'box_titles' => [
+        'details' => 'Dettagli',
+        'files' => 'File',
+        'managers' => 'Dirigenti',
+        'buildings' => 'Edifici',
+        'buildings_and_quarters' => 'Edifici/contrade',
     ],
     'email' => 'eMail',
     'email_validation' => [

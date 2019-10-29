@@ -468,7 +468,7 @@ return [
         "internal_notices" => "Avvisi interni",
         "status_changed" => "Stato cambiato",
         "priority_changed" => "La priorità è cambiata",
-        'assignment' => 'Assegnazione di manager/fornitori di servizi',
+        'assignment' => 'Manager/Servizi',
         'active_reminder_switcher' => 'Promemoria',
         'days_left' => "Quanti giorni prima dovrebbe essere inviata l'e-mail?",
         'send_person' => 'Quale persona deve essere informata?',

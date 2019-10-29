@@ -166,7 +166,7 @@
 
                 </el-col>
                 <el-col :md="12">
-                    <card :loading="loading" class="mb20" :header="$t('models.pinboard.buildings')">
+                    <card :loading="loading" class="mb20" :header="$t('general.box_titles.buildings_and_quarters')">
                         <assignment-by-type
                             :resetToAssignList="resetToAssignList"
                             :assignmentType.sync="assignmentType"
@@ -379,8 +379,8 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
-                    prop: 'type',
-                    label: 'models.pinboard.assign_type',
+                    prop: 'role',
+                    label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{
