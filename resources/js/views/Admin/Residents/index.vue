@@ -143,19 +143,15 @@
         },
         async created(){
             this.isLoadingFilters = true;
-            const quarters = await this.axios.get('quarters')
-            this.quarters = quarters.data.data.data;
 
             const states = await this.axios.get('states?filters=true')
             this.states = states.data.data;
 
-            this.buildings = await this.getStateBuildings()
-            this.units = await this.getBuildingUnits();
             this.isLoadingFilters = false;
 
         },
         methods: {
-            ...mapActions(['getBuildings', 'getUnits', 'changeResidentStatus']),
+            ...mapActions(['getBuildings', 'getQuarters', 'getUnits', 'changeResidentStatus']),
             add() {
                 this.$router.push({
                     name: 'adminResidentsAdd'
@@ -177,19 +173,20 @@
                     }
                 });
             },
-            async getStateBuildings() {
-                const buildings = await this.getBuildings({
-                    get_all: true
-                });
+            async fetchRemoteQuarters(search = '') {
+                const buildings = await this.getQuarters({get_all: true, search});
 
-                return buildings.data;
+                return buildings.data
             },
-            async getBuildingUnits() {
-                const units = await this.getUnits({
-                    get_all: true
-                });
+            async fetchRemoteBuildings(search = '') {
+                const buildings = await this.getBuildings({get_all: true, search});
 
-                return units.data;
+                return buildings.data
+            },
+            async fetchRemoteUnits(search = '') {
+                const buildings = await this.getUnits({get_all: true, search});
+
+                return buildings.data
             },
             listingSelectChangedNotify(row) {
                 this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
@@ -253,19 +250,25 @@
                         data: this.states,
                     }, {
                         name: this.$t('general.filters.buildings'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'building_id',
                         data: this.buildings,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteBuildings
                     }, {
                         name: this.$t('general.filters.units'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'unit_id',
                         data: this.units,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteUnits
                     }, {
                         name: this.$t('general.filters.quarters'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'quarter_id',
                         data: this.quarters,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteQuarters
                     }, {
                         name: this.$t('general.filters.request_status'),
                         type: 'select',

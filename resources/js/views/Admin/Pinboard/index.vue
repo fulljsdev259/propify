@@ -167,15 +167,19 @@
                     },
                     {
                         name: this.$t('general.filters.quarters'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'quarter_id',
                         data: this.quarters,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteQuarters
                     },
                     {
                         name: this.$t('general.filters.buildings'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'building_id',
                         data: this.buildings,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteBuildings
                     },
                     {
                         name: this.$t('general.filters.resident'),
@@ -190,12 +194,15 @@
         },
         methods: {
             ...mapActions(['changePinboardPublish', 'updatePinboard', 'getBuildings', 'getResidents']),
-            async getFilterBuildings() {
-                const buildings = await this.getBuildings({
-                    get_all: true
-                });
+            async fetchRemoteQuarters(search = '') {
+                const buildings = await this.getQuarters({get_all: true, search});
 
-                return buildings.data;
+                return buildings.data
+            },
+            async fetchRemoteBuildings(search = '') {
+                const buildings = await this.getBuildings({get_all: true, search});
+
+                return buildings.data
             },
             checkPinboardType(pinboard) {
                 return pinboard.type === 2;
@@ -266,10 +273,7 @@
         },
         async created(){
             this.isLoadingFilters = true;
-            this.buildings = await this.getFilterBuildings();
             this.residents = this.fetchRemoteResidents();
-            const quarters = await this.axios.get('quarters')
-            this.quarters = quarters.data.data.data;
             this.isLoadingFilters = false;
         }
     }

@@ -200,16 +200,6 @@
             const states = await this.axios.get('states?filters=true')
             this.states = states.data.data;
 
-            const quarters = await this.axios.get('quarters')
-            this.quarters = quarters.data.data.data;
-
-            const propertyManagers = await this.axios.get('propertyManagers?get_all=true')
-            this.propertyManagers = propertyManagers.data.data.map((propertyManager) => {
-                return {
-                    id: propertyManager.id,
-                    name: propertyManager.user.name
-                }
-            });
             this.isLoadingFilters = false;
         },
         computed: {
@@ -234,15 +224,19 @@
                     },
                     {
                         name: this.$t('general.filters.quarters'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'quarter_id',
-                        data: this.quarters
+                        data: this.quarters,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteQuarters
                     },
                     {
                         name: this.$t('general.filters.property_managers'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'manager_id',
-                        data: this.propertyManagers
+                        data: this.propertyManagers,
+                        remoteLoading: false,
+                        fetch: this.fetchRemotePropertyManagers
                     },
                     {
                         name: this.$t('general.filters.request_status'),
@@ -255,7 +249,17 @@
             
         },
         methods: {
-            ...mapActions(['getPropertyManagers', 'assignManagerToBuilding', 'deleteBuildingWithIds', 'checkUnitRequestWidthIds']),
+            ...mapActions(['getPropertyManagers', 'assignManagerToBuilding', 'deleteBuildingWithIds', 'checkUnitRequestWidthIds', 'getQuarters', 'getPropertyManagers']),
+            async fetchRemoteQuarters(search = '') {
+                const quarters = await this.getQuarters({get_all: true, search});
+
+                return quarters.data
+            },
+            async fetchRemotePropertyManagers(search = '') {
+                const propertyManagers = await this.getPropertyManagers({get_all: true, search});
+
+                return propertyManagers.data
+            },
             prepareRequestFilters(property) {
                 return Object.keys(this.requestConstants[property]).map((id) => {
                     return {
