@@ -41,13 +41,15 @@ class FixContractStatus extends Command
         $auditData = $this->makeActiveContractToInActiveIfNeed();
         $auditData = $this->makeInactiveContractToActiveIfNeed($auditData);
 
-        (new AuditableModel())->newSystemAudit(
-            AuditableModel::MergeInMainData,
-            $auditData,
-            AuditableModel::EventUpdated,
-            true,
-            ['command' => $this->signature]
-        );
+        if (!empty($auditData)) {
+            (new AuditableModel())->newSystemAudit(
+                AuditableModel::MergeInMainData,
+                $auditData,
+                AuditableModel::EventUpdated,
+                true,
+                ['command' => $this->signature]
+            );
+        }
     }
 
     /**
@@ -67,7 +69,7 @@ class FixContractStatus extends Command
             return $auditData;
         }
 
-        $auditData['contracts'][] = [
+        $auditData['contracts']['status'][] = [
             'ids' => $contractIds,
             'status' => [
                 'old' => Contract::StatusActive,
@@ -77,8 +79,26 @@ class FixContractStatus extends Command
 
         // make inactive expired contracts
         Contract::whereIn('id', $contractIds)->update(['status' => Contract::StatusInActive]);
-        $residentIds = $contracts->pluck('resident_id')->unique()->toArray();
 
+
+        // change default_contract_id
+        $residentWithDefaultContract = Resident::whereIn('default_contract_id', $contractIds)->get(['id', 'default_contract_id']);
+        $activeContracts = Contract::whereIn('resident_id', $residentWithDefaultContract->pluck('id'))
+            ->where('status', Contract::StatusActive)->get(['id', 'resident_id']);
+
+        foreach ($residentWithDefaultContract as $resident) {
+            $contractId = $activeContracts->where('resident_id', $resident->id)->first()->id ?? null;
+            $auditData['residents']['default_contract'][$resident->id] = [
+                'old' => $resident->default_contract_id,
+                'new' => $contractId,
+            ];
+            $resident->update([
+                'default_contract_id' => $contractId
+            ]);
+        }
+
+
+        $residentIds = $contracts->pluck('resident_id')->unique()->toArray();
         if (empty($residentIds)) {
             return $auditData;
         }
@@ -96,7 +116,7 @@ class FixContractStatus extends Command
         }
 
 
-        $auditData['residents'][] = [
+        $auditData['residents']['status'][] = [
             'ids' => $activeResidentIds,
             'status' => [
                 'old' => Resident::StatusActive,
