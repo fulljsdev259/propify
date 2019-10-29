@@ -17,8 +17,13 @@
 
                                     <p style="margin:7px 0 0;">
                                         <b>@lang('models.request.category',[],$language):</b>
-                                        {{ ($category->parentCategory != null) ? $category->parentCategory->{'name'.($language != 'en' ? '_'.$language : '') } . ' > ' : ''  }}
-                                        {{ $category->{'name'.($language != 'en' ? '_'.$language : '') } }}
+                                        @if (! empty($subCategory))
+                                            {{ !empty($category['name']) ? __('models.request.category_list.' . $category['name'], [], $language) . ' > ' : ''  }}
+                                            {{ __('models.request.sub_category.' . $subCategory['name'], [], $language) }}
+                                        @elseif (! empty($category['name']))
+                                            {{ __('models.request.category_list.' . $category['name'], [], $language) }}
+                                        @endif
+
                                     </p>
                                     <p style="margin:7px 0 0;">
                                         <b>@lang('models.request.status.label',[],$language):</b>
@@ -52,22 +57,24 @@
                                         <tbody>
 
                                         <tr>
-                                            @if($category->acquisition == 1 || ($category->parentCategory != null && $category->parentCategory->acquisition))
+                                            @if( (!empty($category['capture_phase']) && $category['capture_phase'] == 1) || (!empty($subCategory['capture_phase']) && $subCategory['capture_phase'] == 1) )
 
-                                            <td class="no_border">
-                                                <strong>
-                                                    @lang('models.request.category_options.acquisition',[],$language):
-                                                </strong>
-                                            </td>
+                                                <td class="no_border">
+                                                    <strong>
+                                                        @lang('models.request.category_options.capture_phase',[],$language):
+                                                    </strong>
+                                                </td>
 
-                                            <td class="no_border">
-                                                @if(key_exists($request->capture_phase, \App\Models\Request::CapturePhase))
-                                                    @lang('models.request.sub_category_fields.capture_phase.' . \App\Models\Request::CapturePhase[$request->capture_phase], [], $language)
-                                                @endif
-                                            </td>
+                                                <td class="no_border">
+                                                    @if(key_exists($request->capture_phase, \App\Models\Request::CapturePhase))
+                                                        @lang('models.request.sub_category_fields.capture_phase.' . \App\Models\Request::CapturePhase[$request->capture_phase], [], $language)
+                                                    @endif
+                                                </td>
 
                                             @endif
-                                            @if($category->has_qualifications == 1 || ($category->parentCategory != null && $category->parentCategory->has_qualifications))
+
+                                            @if( (!empty($category['qualification']) && $category['qualification'] == 1) || (!empty($subCategory['qualification']) && $subCategory['qualification'] == 1) )
+
                                                 <td class="no_border">
                                                     <strong>
                                                         @lang('models.request.qualification.label',[],$language):
@@ -76,6 +83,7 @@
                                                 <td class="no_border">
                                                     @lang('models.request.qualification.'.\App\Models\Request::Qualification[$request->qualification],[],$language)
                                                 </td>
+
                                            @endif
                                         </tr>
 
@@ -86,7 +94,7 @@
 
 
 
-                                            @if($category->location == 1 || ($category->parentCategory != null && $category->parentCategory->location))
+                                            @if( (!empty($category['location']) && $category['location'] == 1) || (!empty($subCategory['location']) && $subCategory['location'] == 1) )
                                                 <td class="border_btm">
                                                     <strong> @lang('models.request.category_options.range',[],$language):</strong>
                                                 </td>
@@ -97,8 +105,8 @@
                                                 </td>
                                             @endif
 
-                                            @if($category->room == 1 || ($category->parentCategory != null && $category->parentCategory->room))
-                                             <td class="border_btm"><strong>@lang('models.request.category_options.room',[],$language):</strong></td>
+                                            @if( (!empty($category['room']) && $category['room'] == 1) || (!empty($subCategory['room']) && $subCategory['room'] == 1) )
+                                                <td class="border_btm"><strong>@lang('models.request.category_options.room',[],$language):</strong></td>
                                                 <td class="border_btm">
                                                     @if(key_exists($request->room, \App\Models\Request::Room))
                                                         @lang('models.request.sub_category_fields.room.' . \App\Models\Request::Room[$request->room], [], $language);

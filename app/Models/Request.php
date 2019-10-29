@@ -850,7 +850,8 @@ class Request extends AuditableModel implements HasMedia
     public function setDownloadPdf(){
 
        $data = [
-            'category' => $this->category,
+            'category' => get_category_details($this->category),
+            'subCategory' => get_sub_category_details($this->sub_category),
             'request' => $this,
             'resident' => $this->resident,
             'language'  => $this->resident->settings->language
