@@ -513,5 +513,11 @@ return [
         'property_managers' => 'Gestionnaires immobiliers',
         'templates' => 'Modèles'
     ],
-    'contracts' => 'Contrats'
+    'contracts' => 'Contrats',
+    'ordinal_endings' => [
+        'st' => 'em',
+        'nd' => 'ème',
+        'rd' => 'ème',
+        'th' => 'ème',
+    ],
 ];

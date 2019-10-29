@@ -513,5 +513,11 @@ return [
         'property_managers' => 'Fortimo',
         'templates' => 'Vorlagen'
     ],
-    'contracts' => 'Verträge'
+    'contracts' => 'Verträge',
+    'ordinal_endings' => [
+        'st' => '.',
+        'nd' => '.',
+        'rd' => '.',
+        'th' => '.',
+    ],
 ];
