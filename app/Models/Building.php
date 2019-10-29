@@ -324,4 +324,18 @@ class Building extends AuditableModel implements HasMedia
     {
         return $this->hasMany(Contract::class);
     }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function transformAudit(array $data): array
+    {
+        if (isset($data['new_values']['attic'])) {
+            $data['new_values']['attic'] = (int) $data['new_values']['attic'];
+
+        }
+        return $data;
+    }
+
 }
