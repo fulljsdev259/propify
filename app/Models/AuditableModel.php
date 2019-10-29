@@ -484,4 +484,17 @@ class AuditableModel extends Model implements Auditable
         }
         return $auditData;
     }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function transformAudit(array $data): array
+    {
+        if (method_exists($this, 'getFormatColumnName')) {
+            $data['auditable_format'] = $this->{$this->getFormatColumnName()};
+        };
+
+        return $data;
+    }
 }

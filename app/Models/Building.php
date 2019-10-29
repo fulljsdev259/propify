@@ -335,7 +335,8 @@ class Building extends AuditableModel implements HasMedia
             $data['new_values']['attic'] = (int) $data['new_values']['attic'];
 
         }
-        return $data;
+
+        return parent::transformAudit($data);
     }
 
 }

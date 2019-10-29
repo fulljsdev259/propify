@@ -10,7 +10,7 @@ use OwenIt\Auditing\AuditableObserver;
 
 trait UniqueIDFormat
 {
-    protected function getFormatColumnName()
+    public function getFormatColumnName()
     {
         $propName = $this->getTable();
         $propName = Str::singular($propName) . '_format';

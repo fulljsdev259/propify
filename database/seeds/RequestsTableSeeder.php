@@ -46,7 +46,6 @@ class RequestsTableSeeder extends Seeder
                 }
 
                 $request->resident_id = $user->resident->id;
-                $request->unit_id = $user->resident->unit_id;
                 $request->status = array_rand(Request::Status);
                 if ($request->status == Request::StatusDone) {
                     $request->solved_date = now();
