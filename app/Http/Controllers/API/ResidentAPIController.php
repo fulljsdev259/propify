@@ -15,6 +15,7 @@ use App\Http\Requests\API\Resident\CreateRequest;
 use App\Http\Requests\API\Resident\DeleteRequest;
 use App\Http\Requests\API\Resident\DownloadCredentialsRequest;
 use App\Http\Requests\API\Resident\ListRequest;
+use App\Http\Requests\API\Resident\MyDocumentsRequest;
 use App\Http\Requests\API\Resident\SendCredentialsRequest;
 use App\Http\Requests\API\Resident\ShowRequest;
 use App\Http\Requests\API\Resident\UpdateDefaultContractRequest;
@@ -22,6 +23,7 @@ use App\Http\Requests\API\Resident\UpdateLoggedInRequest;
 use App\Http\Requests\API\Resident\UpdateRequest;
 use App\Http\Requests\API\Resident\UpdateStatusRequest;
 use App\Models\AuditableModel;
+use App\Models\Contract;
 use App\Models\Settings;
 use App\Models\Resident;
 use App\Models\User;
@@ -31,9 +33,11 @@ use App\Repositories\TemplateRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\UserRepository;
 use App\Transformers\ContractTransformer;
+use App\Transformers\MediaTransformer;
 use App\Transformers\ResidentTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Illuminate\Support\Facades\Validator;
@@ -1116,4 +1120,64 @@ class ResidentAPIController extends AppBaseController
 
         return $this->sendResponse($input['resident_id'], __('models.resident.saved'));
     }
+
+    /**
+     *
+     * @SWG\Get(
+     *      path="/my/documents",
+     *      summary="Get Resident documents grouped by quarter, building, unit",
+     *      tags={"Resident"},
+     *      description="Get Resident documents grouped by quarter, building, unit",
+     *      produces={"application/json"},
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successfully updated",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  example="true"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  type="integer",
+     *                  example=1
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     *
+     * @param MyDocumentsRequest $myDocumentsRequest
+     * @return mixed
+     */
+    public function myDocuments(MyDocumentsRequest $myDocumentsRequest)
+    {
+        $resident = Auth::user()->resident;
+        $contracts = $resident->contracts()
+            ->select('unit_id', 'building_id')
+            ->where('status', Contract::StatusActive)
+            ->with([
+                'unit:id',
+                'building:id,quarter_id',
+                'building.quarter:id',
+                'unit.media:id,name,collection_name,model_id,order_column,disk,file_name',
+                'building.quarter.media:id,name,collection_name,model_id,order_column,disk,file_name',
+                'building.media:id,name,collection_name,model_id,order_column,disk,file_name',
+            ])->get();
+
+        $unitMedias = $contracts->pluck('unit.media')->collapse();
+        $buildingMedias = $contracts->pluck('building.media')->collapse();
+        $quarterMedias = $contracts->pluck('building.quarter.media')->collapse();
+        $response['quarter'] = (new MediaTransformer)->transformCollection($quarterMedias);
+        $response['building'] = (new MediaTransformer)->transformCollection($buildingMedias);
+        $response['unit'] = (new MediaTransformer)->transformCollection($unitMedias);
+
+        return $this->sendResponse($response, 'my products');
+    }
+
 }
