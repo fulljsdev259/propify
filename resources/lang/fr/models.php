@@ -407,29 +407,29 @@ return [
             'label' => 'Traitement en masse',
             'options' => [
                 'service_provider' => 'Prestataire de services',
-                'property_manager' => 'Property manager',
+                'property_manager' => 'Gestionnaire immobilier',
                 'change_status' => 'Modifier l\'état'
             ],
             'service_provider' => [
                 'modal' => [
-                    'heading_title' => 'Assign service providers heading',
-                    'content_label' => 'You can select service provider(s) here',
-                    'footer_button' => 'Assign service providers',
-                    'switcher_label' => 'Switcher label for Service Provider',
-                    'switcher_desc' => 'Switcher description for Service Provider',
+                    'heading_title' => 'Affectation de l\'en-tête des prestataires de services',
+                    'content_label' => 'Vous pouvez sélectionner le(s) fournisseur(s) de services ici',
+                    'footer_button' => 'Affecter des prestataires de services',
+                    'switcher_label' => 'Aviser les fournisseurs de services',
+                    'switcher_desc' => 'Vous pouvez informer les prestataires concernés',
                 ]
             ],
             'property_manager' => [
                 'modal' => [
-                    'heading_title' => 'Assign property managers heading',
-                    'content_label' => 'You can select property manager(s) here',
+                    'heading_title' => 'Assegnare i gestori di immobili alla rubrica',
+                    'content_label' => 'Vous pouvez sélectionner le(s) gestionnaire(s) immobilier(s) ici',
                     'footer_button' => 'Affecter des gestionnaires immobiliers',
                 ]
             ],
             'change_status' => [
                 'modal' => [
-                    'heading_title' => 'Change status heading',
-                    'content_label' => 'You can change status here',
+                    'heading_title' => 'Modifier l\'en-tête d\'état',
+                    'content_label' => 'Vous pouvez modifier le statut ici',
                     'footer_button' => 'Modifier l\'état',
                 ]
             ],

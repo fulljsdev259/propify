@@ -413,30 +413,28 @@ return [
             ],
             'service_provider' => [
                 'modal' => [
-                    'heading_title' => 'Assign service providers heading',
-                    'content_label' => 'You can select service provider(s) here',
-                    'footer_button' => 'Assign service providers',
-                    'switcher_label' => 'Switcher label for Service Provider',
-                    'switcher_desc' => 'Switcher description for Service Provider',
+                    'heading_title' => 'Dienstleisterüberschrift zuordnen',
+                    'content_label' => 'Sie können hier Dienstleister auswählen',
+                    'footer_button' => 'Dienstleister zuordnen',
+                    'switcher_label' => 'Benachrichtigung von Dienstleistern',
+                    'switcher_desc' => 'Sie können die betroffenen Dienstleister informieren',
                 ]
             ],
             'property_manager' => [
                 'modal' => [
-                    'heading_title' => 'Assign property managers heading',
-                    'content_label' => 'You can select property manager(s) here',
-                    'footer_button' => 'Assign property managers',
+                    'heading_title' => 'Zuweisung der Überschrift der Hausverwalter',
+                    'content_label' => 'Sie können hier den/die Hausverwalter auswählen.',
+                    'footer_button' => 'Hausverwalter zuordnen',
                 ]
             ],
             'change_status' => [
                 'modal' => [
-                    'heading_title' => 'Change status heading',
-                    'content_label' => 'You can change status here',
+                    'heading_title' => 'Statusüberschrift ändern',
+                    'content_label' => 'Sie können den Status hier ändern.',
                     'footer_button' => 'Status ändern',
                 ]
             ],
         ],
-        'assign_partners' => 'Dienstleister zuordnen',
-        'assign_managers' => 'Bewirtschafter zuweisen',
         'due_date' => 'Zu erledigen bis',
         'solved_date' => 'Erledigt Datum',
         'closed_date' => 'Erledigt am',

@@ -407,29 +407,29 @@ return [
             'label' => 'Modifica di massa',
             'options' => [
                 'service_provider' => 'Fornitore di servizi',
-                'property_manager' => 'Property manager',
+                'property_manager' => 'Proprietà manager',
                 'change_status' => 'Cambia stato'
             ],
             'service_provider' => [
                 'modal' => [
-                    'heading_title' => 'Assign service providers heading',
-                    'content_label' => 'You can select service provider(s) here',
-                    'footer_button' => 'Assign service providers',
-                    'switcher_label' => 'Switcher label for Service Provider',
-                    'switcher_desc' => 'Switcher description for Service Provider',
+                    'heading_title' => 'Assegnare la voce ai fornitori di servizi',
+                    'content_label' => 'È possibile selezionare i fornitori di servizi qui',
+                    'footer_button' => 'Assegnare i fornitori di servizi',
+                    'switcher_label' => 'Informare i fornitori di servizi',
+                    'switcher_desc' => 'È possibile informare i fornitori di servizi interessati',
                 ]
             ],
             'property_manager' => [
                 'modal' => [
-                    'heading_title' => 'Assign property managers heading',
-                    'content_label' => 'You can select property manager(s) here',
+                    'heading_title' => 'Assegnare i gestori di immobili alla rubrica',
+                    'content_label' => 'È possibile selezionare il gestore(i) di proprietà qui',
                     'footer_button' => 'Assegnare i gestori di proprietà',
                 ]
             ],
             'change_status' => [
                 'modal' => [
-                    'heading_title' => 'Change status heading',
-                    'content_label' => 'You can change status here',
+                    'heading_title' => 'Cambiare l\'intestazione di stato',
+                    'content_label' => 'È possibile modificare lo stato qui',
                     'footer_button' => 'Cambia stato',
                 ]
             ],

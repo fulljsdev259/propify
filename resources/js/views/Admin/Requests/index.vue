@@ -14,18 +14,17 @@
                             trigger="click" 
                             class="round"
                             @command="handleCommand">
-                    {{$t('models.request.mass_edit')}}
+                    {{$t('models.request.mass_edit.label')}}
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item :disabled="!selectedItems.length" command="service">{{$t('models.request.service_provider')}}</el-dropdown-item>
-                        <el-dropdown-item :disabled="!selectedItems.length" command="manager">{{$t('models.request.property_manager')}}</el-dropdown-item>
-                        <el-dropdown-item :disabled="!selectedItems.length" command="status">{{$t('models.request.change_status')}}</el-dropdown-item>
+                        <el-dropdown-item 
+                            :disabled="!selectedItems.length" 
+                            :command="option"
+                            :key="option"
+                            v-for="option in massEditOptions">
+                            {{$t('models.request.mass_edit.options.' + option)}}
+                        </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
-                <!-- <el-button :disabled="!selectedItems.length" @click="batchEdit" icon="ti-user" round
-                           size="mini"
-                           type="info">
-                    {{$t('models.request.mass_edit')}}
-                </el-button> -->
             </template>
             <template v-if="$can($permissions.delete.request)">
                 <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"
@@ -53,25 +52,22 @@
                    :visible.sync="batchEditVisible"
                    v-loading="processAssignment" width="30%">
             <span slot="title">
-                <template v-if="massEditOption == 'service'">
-                    {{ $t('models.request.assign_partners') }}
-                </template>
-                <template v-else-if="massEditOption == 'managers'">
-                    {{ $t('models.request.assign_managers') }}
-                </template>
-                <template v-else-if="massEditOption == 'status'">
-                    {{ $t('models.request.change_status') }}
+                <template v-for="option in massEditOptions">
+                    <span :key="option" v-if="activeMassEditOption == option">
+                        {{$t('models.request.mass_edit.' + option + '.modal.heading_title')}}
+                    </span>
                 </template>
             </span>
-            <!-- <el-select v-model="massEditOption" @change="changeMassEditOption" 
-                        :placeholder="$t('models.request.placeholders.status')"
-                        class="edit-type-select">
-                    <el-option :value="'service'" label="Service Provider"></el-option>
-                    <el-option :value="'manager'" label="Property Manager"></el-option>
-                    <el-option :value="'status'" label="Status Change"></el-option>
-            </el-select> -->
-            <el-form :model="managersForm"  v-if="massEditOption == 'service'">
-                <el-form-item :label="$t('models.request.service_provider')">
+            <el-form :model="managersForm"  v-if="activeMassEditOption == 'service_provider'">
+                <div class="switch-wrapper">
+                    <el-form-item :label="$t('models.request.mass_edit.service_provider.modal.switcher_label')">
+                        <el-switch v-model="send_email_service_provider"/>
+                    </el-form-item>
+                    <div class="switcher__desc">
+                        {{ $t('models.request.mass_edit.service_provider.modal.switcher_desc') }}
+                    </div>
+                </div>
+                <el-form-item :label="$t('models.request.mass_edit.service_provider.modal.content_label')">
                     <el-select
                         :loading="remoteLoading"
                         :placeholder="$t('general.placeholders.search')"
@@ -96,8 +92,8 @@
                 </el-form-item>
             </el-form>
 
-            <el-form :model="managersForm" v-if="massEditOption == 'manager'">
-                <el-form-item :label="$t('models.request.property_manager')">
+            <el-form :model="managersForm" v-if="activeMassEditOption == 'property_manager'">
+                <el-form-item :label="$t('models.request.mass_edit.property_manager.modal.content_label')">
                     <el-select
                         :loading="remoteLoading"
                         :placeholder="$t('general.placeholders.search')"
@@ -122,9 +118,9 @@
                 </el-form-item>
             </el-form>
             
-            <el-form :model="managersForm" v-if="massEditOption == 'status'">
+            <el-form :model="managersForm" v-if="activeMassEditOption == 'change_status'">
                 <el-form-item :label="$t('models.request.status.label')">
-                    <el-select :placeholder="$t('models.request.placeholders.status')"
+                    <el-select :placeholder="$t('models.request.mass_edit.change_status.modal.content_label')"
                             class="custom-select"
                             v-model="massStatus">
                         <el-option
@@ -138,9 +134,18 @@
             </el-form>
             <span class="dialog-footer" slot="footer">
                 <el-button @click="closeModal" size="mini">{{$t('general.actions.close')}}</el-button>
-                <el-button v-if="massEditOption == 'service'" @click="massAssignPartners" size="mini" type="primary">{{$t('models.request.assign_partners')}}</el-button>
-                <el-button v-if="massEditOption == 'manager'" @click="massAssignManagers" size="mini" type="primary">{{$t('models.request.assign_managers')}}</el-button>
-                <el-button v-if="massEditOption == 'status'" @click="massChangeStatus" size="mini" type="primary">{{$t('models.request.change_status')}}</el-button>
+                <template
+                        v-for="option in massEditOptions">
+                    <el-button 
+                            v-if="activeMassEditOption == option" 
+                            @click="massEditAction(option)" 
+                            size="mini" 
+                            type="primary"
+                            :key="option"
+                            >
+                        {{$t('models.request.mass_edit.' + option + '.modal.footer_button')}}
+                    </el-button>
+                </template>
             </span>
         </el-dialog>
     </div>
@@ -196,10 +201,16 @@
                 processAssignment: false,
                 toAssignList: '',
                 toAssign: [],
+                send_email_service_provider: true,
                 remoteLoading: false,
                 managersForm: {},
-                massEditOption: 'service',
-                massStatus: ''
+                activeMassEditOption: 'service_provider',
+                massStatus: '',
+                massEditOptions : [
+                    'service_provider',
+                    'property_manager',
+                    'change_status'
+                ]
             }
         },
         computed: {
@@ -466,11 +477,22 @@
                 this.toAssign = [];
                 this.toAssignList = [];
             },
-            handleCommand(command) {
-                this.massEditOption = command
+            handleCommand( option ) {
+                this.activeMassEditOption = option
                 this.batchEditVisible = true
             },
-            async massAssignPartners() {
+            async massEditAction( option ) {
+                if(options == 'service_provider') {
+                    massAssignProviders()
+                }
+                else if(options == 'property_manager') {
+                    massAssignManagers()
+                }
+                else if(options == 'change_status') {
+                    massChangeStatus()
+                }
+            },
+            async massAssignProviders() {
                 let request_ids = this.selectedItems.map(request => request.id)
                 let service_provider_ids = this.toAssign
                 
@@ -651,5 +673,12 @@
             margin-bottom: 15px;
         }
 
+        .switch-wrapper {
+            .switcher__desc {
+                margin-top: 0.5em;
+                display: block;
+                font-size: 0.9em;
+            }
+        }
     }
 </style>

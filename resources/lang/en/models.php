@@ -415,8 +415,8 @@ return [
                     'heading_title' => 'Assign service providers heading',
                     'content_label' => 'You can select service provider(s) here',
                     'footer_button' => 'Assign service providers',
-                    'switcher_label' => 'Switcher label for Service Provider',
-                    'switcher_desc' => 'Switcher description for Service Provider',
+                    'switcher_label' => 'Notify service providers',
+                    'switcher_desc' => 'You can inform the concerned service providers',
                 ]
             ],
             'property_manager' => [
