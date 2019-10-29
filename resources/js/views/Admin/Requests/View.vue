@@ -96,8 +96,8 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12" v-if="this.showAcquisition == true">
-                                    <el-form-item :label="$t('models.request.category_options.acquisition')">
+                                <el-col :md="12" v-if="this.showCapturePhase == true">
+                                    <el-form-item :label="$t('models.request.category_options.capture_phase')">
                                         <el-select 
                                             :disabled="$can($permissions.update.serviceRequest)"
                                             :placeholder="$t(`general.placeholders.select`)"
@@ -105,10 +105,10 @@
                                             v-model="model.capture_phase"
                                         >
                                             <el-option
-                                                :key="acquisition.value"
-                                                :label="acquisition.name"
-                                                :value="acquisition.value"
-                                                v-for="acquisition in acquisitions">
+                                                :key="capture_phase.value"
+                                                :label="capture_phase.name"
+                                                :value="capture_phase.value"
+                                                v-for="capture_phase in capture_phases">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
