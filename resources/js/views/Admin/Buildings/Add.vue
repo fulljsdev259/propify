@@ -178,22 +178,11 @@
                 this.model.name = this.model.street + ' ' + this.model.house_num;
             },
             ordinalSuffixFloor(i) {
-                let lang = this.$i18n.locale;
-
-                switch (lang) {
-                    case 'en':
-                        let b = i % 10;
-                        return i + ((~~ (i % 100 / 10) === 1) ? 'th' :
-                            (b === 1) ? 'st' :
-                                (b === 2) ? 'nd' :
-                                    (b === 3) ? 'rd' : 'th');
-                    case 'de':
-                        return i + '.';
-                    case 'it':
-                        return i + 'º';
-                    case 'fr':
-                        return i + (i === 1 ? 'er' : 'e');
-                }
+                let b = i % 10;
+                return i + ((~~ (i % 100 / 10) === 1) ? this.$t('general.ordinal_endings.th') :
+                    (b === 1) ? this.$t('general.ordinal_endings.st') :
+                        (b === 2) ? this.$t('general.ordinal_endings.nd') :
+                            (b === 3) ? this.$t('general.ordinal_endings.rd') : this.$t('general.ordinal_endings.th'));
             },
         },
         mounted() {

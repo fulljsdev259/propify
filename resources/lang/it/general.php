@@ -513,5 +513,11 @@ return [
         'property_managers' => 'Gestori',
         'templates' => 'Modelli'    
     ],
-    'contracts' => 'Contratti'
+    'contracts' => 'Contratti',
+    'ordinal_endings' => [
+        'st' => 'º',
+        'nd' => 'º',
+        'rd' => 'º',
+        'th' => 'º',
+    ],
 ];
