@@ -54,6 +54,6 @@ class PropertyManagerTransformer extends BaseTransformer
             $response['quarters'] = (new QuarterTransformer)->transformCollection($model->quarters);
         }
 
-        return $response;
+        return $this->addAuditIdInResponseIfNeed($model, $response);
     }
 }

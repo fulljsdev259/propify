@@ -18,6 +18,7 @@ abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepositor
      * @param null $mergeInAudit
      * @param bool $disableAuditing
      * @return bool
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function uploadFile(string $collectionName, string $dataBase64, Model $model, $mergeInAudit = null, $disableAuditing = false)
     {

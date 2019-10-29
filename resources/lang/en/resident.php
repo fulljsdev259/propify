@@ -156,6 +156,7 @@ return [
     "building" => "Building",
     "name" => "Name",
     "unit" => "Unit",
+    "quarter" => "Quarter",
     "type" => "Type",
     "unit_number" => "Unit number",
     "floor" => "Floor",

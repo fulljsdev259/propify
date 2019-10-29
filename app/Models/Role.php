@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BaseModelTrait;
 use Zizaco\Entrust\EntrustRole;
 
 
@@ -56,6 +57,8 @@ use Zizaco\Entrust\EntrustRole;
  */
 class Role extends EntrustRole
 {
+    use BaseModelTrait;
+
     /**
      * @param $permissionName
      */

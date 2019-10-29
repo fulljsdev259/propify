@@ -21,6 +21,7 @@ use App\Http\Requests\API\Resident\UpdateDefaultContractRequest;
 use App\Http\Requests\API\Resident\UpdateLoggedInRequest;
 use App\Http\Requests\API\Resident\UpdateRequest;
 use App\Http\Requests\API\Resident\UpdateStatusRequest;
+use App\Models\AuditableModel;
 use App\Models\Settings;
 use App\Models\Resident;
 use App\Models\User;
@@ -212,8 +213,8 @@ class ResidentAPIController extends AppBaseController
         ]);
         $this->residentRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->residentRepository->pushCriteria(new RequestCriteria($request));
-        // @TODO CONTRACT is need? address. I think not need because many
         $residents = $this->residentRepository->with([
+            'user',
             'default_contract' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
@@ -222,7 +223,8 @@ class ResidentAPIController extends AppBaseController
             }])
             ->get(['id', 'first_name', 'last_name', 'status', 'created_at']);
         $this->fixCreatedBy($residents);
-        return $this->sendResponse($residents->toArray(), 'Residents retrieved successfully');
+        $response = (new ResidentTransformer())->transformCollection($residents);
+        return $this->sendResponse($response, 'Residents retrieved successfully');
     }
 
     /**
@@ -270,9 +272,11 @@ class ResidentAPIController extends AppBaseController
      *      )
      * )
      *
+    /**
      * @param CreateRequest $request
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function store(CreateRequest $request)
     {
@@ -314,6 +318,8 @@ class ResidentAPIController extends AppBaseController
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
+
+        $resident->addDataInAudit(AuditableModel::MergeInMainData, $user);
 
         DB::commit();
         $response = (new ResidentTransformer)->transform($resident);
@@ -521,6 +527,7 @@ class ResidentAPIController extends AppBaseController
 
         try {
             $resident = $this->residentRepository->updateExisting($resident, $input);
+            $resident->addDataInAudit(AuditableModel::MergeInMainData, $updatedUser, AuditableModel::UpdateOrCreate);
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->sendError(__('models.resident.errors.create') . $e->getMessage());

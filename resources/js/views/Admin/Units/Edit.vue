@@ -212,36 +212,10 @@
                             <draggable @sort="sortFiles" v-model="model.media">
                                 <transition-group name="list-complete">
                                     <div key="list-complete-item" class="list-complete-item">
-                                        <el-table
-                                            :data="model.media"
-                                            style="width: 100%"
-                                            v-if="model.media && model.media.length"
-                                            :show-header="false"
-                                            >
-                                            <el-table-column
-                                                prop="collection_name"
-                                            >
-                                                <template slot-scope="scope">
-                                                    <strong>{{$t(`models.building.media_category.${scope.row.collection_name}`)}}</strong>
-                                                </template>
-                                            </el-table-column>
-                                            <el-table-column
-                                                align="right"
-                                            >
-                                                <template slot-scope="scope">
-                                                    <a :href="scope.row.url" class="file-name" target="_blank">
-                                                        {{scope.row.name}}
-                                                    </a>
-                                                </template>
-                                            </el-table-column>
-                                            <el-table-column
-                                                align="right"
-                                            >
-                                                <template slot-scope="scope">
-                                                    <el-button icon="el-icon-close" type="danger" round @click="deleteDocument('media', scope.$index)" size="mini"/>
-                                                </template>
-                                            </el-table-column>
-                                        </el-table>
+                                        <building-file-list-table 
+                                                :items="model.media" 
+                                                @delete-document="deleteDocument">
+                                        </building-file-list-table>
                                     </div>
                                 </transition-group>
                             </draggable>
@@ -388,6 +362,7 @@
     import draggable from 'vuedraggable';
     import ContractForm from 'components/ContractForm';
     import ContractListTable from 'components/ContractListTable';
+    import BuildingFileListTable from 'components/BuildingFileListTable';
     import {displayError, displaySuccess} from "helpers/messages";
     import { EventBus } from '../../../event-bus.js';
     
@@ -407,7 +382,8 @@
             UploadDocument,
             draggable,
             ContractForm,
-            ContractListTable
+            ContractListTable,
+            BuildingFileListTable
         },
         data() {
             return {
@@ -582,15 +558,9 @@
         mounted() {
              EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
-                // if(this.requestCount >= 99) {
-                //     document.getElementById('tab-requests').style.paddingRight = '50px';
-                // }
             });
             EventBus.$on('audit-get-counted', audit_count => {
                 this.auditCount = audit_count;
-                // if(this.auditCount >= 99) {
-                //     document.getElementById('tab-audit').style.paddingRight = '50px';
-                // }
             });
         },
         computed: {
@@ -665,10 +635,6 @@
             overflow-x: hidden;
             overflow-y: scroll;
             height: 100%;
-
-            /deep/ #tab-files, /deep/ #tab-requests, /deep/ #tab-residents, /deep/ #tab-contracts, /deep/ #tab-audit {
-                padding-right: 40px;
-            }
 
             /deep/ .el-tabs--border-card {
                 border-radius: 6px;
@@ -807,6 +773,10 @@
         display: flex;
         justify-content: space-between;
         border-top: 1px solid #eee;
+
+        > div {
+            width: 100%;
+        }
 
         & > .el-col {
             border-left: 1px solid #eee;

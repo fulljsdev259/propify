@@ -156,6 +156,7 @@ return [
     "building" => "Bâtiment",
     "name" => "Nom",
     "unit" => "Unité",
+    "quarter" => "Trimestre",
     "type" => "Type",
     "unit_number" => "Numéro d'unité",
     "floor" => "Plancher",

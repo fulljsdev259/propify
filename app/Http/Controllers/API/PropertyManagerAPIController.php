@@ -182,6 +182,8 @@ class PropertyManagerAPIController extends AppBaseController
 
         $propertyManager->load('buildings', 'quarters');
         $propertyManager->setRelation('user', $user);
+        $propertyManager->addDataInAudit(AuditableModel::MergeInMainData, $user);
+
         $response = (new PropertyManagerTransformer)->transform($propertyManager);
         return $this->sendResponse($response, __('models.property_manager.saved'));
     }
@@ -314,11 +316,10 @@ class PropertyManagerAPIController extends AppBaseController
         $input['user']['settings'] = Arr::pull($input, 'settings', []);
         try {
             User::disableAuditing();
-            $user = $this->userRepository->update($input['user'], $propertyManager->user_id);
             if (isset($input['type']) && $input['type'] != $propertyManager->type) {
-                $role = get_type_correspond_role($input['type']);
-                $user->roles()->sync($role);
+                $input['user']['role'] = get_type_correspond_role($input['type']);
             }
+            $user = $this->userRepository->update($input['user'], $propertyManager->user_id);
             User::enableAuditing();
         } catch (\Exception $e) {
             return $this->sendError(__('models.property_manager.errors.update') . $e->getMessage());
@@ -326,7 +327,7 @@ class PropertyManagerAPIController extends AppBaseController
 
         try {
             $propertyManager = $this->propertyManagerRepository->updateExisting($propertyManager, $input);
-            $propertyManager->addDataInAudit(AuditableModel::MergeInMainData, $user);
+            $propertyManager->addDataInAudit(AuditableModel::MergeInMainData, $user, AuditableModel::UpdateOrCreate);
         } catch (\Exception $e) {
             return $this->sendError(__('models.property_manager.errors.update') . $e->getMessage());
         }

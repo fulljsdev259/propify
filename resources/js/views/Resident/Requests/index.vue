@@ -15,7 +15,7 @@
                     </el-button>
                 </ui-heading>
                 <ui-divider />
-                <dynamic-scroller ref="dynamic-scroller" :items="requests.data" :min-item-size="249" page-mode v-if="!loading">
+                <dynamic-scroller ref="dynamic-scroller" :items="requests.data" :min-item-size="249" v-if="!loading">
                     <template #before v-if="loading && !requests.data.length">
                         <loader v-for="idx in 5" :key="idx" />
                     </template>
@@ -277,7 +277,7 @@
 
                 await this.$store.dispatch('newRequests/get', {
                     page,
-                    per_page: 25,
+                    per_page: 0,
                     sortedBy: 'desc',
                     orderBy: 'created_at',
                     ...params

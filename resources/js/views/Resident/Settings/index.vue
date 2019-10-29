@@ -69,19 +69,19 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane :label="$t('resident.default_address')" name="default_address" v-if="contracts.length > 1 || expired == true">
+            <el-tab-pane :label="$t('resident.default_address')" name="default_address" v-if="contracts.length > 1">
                 <el-row>
                     <el-col :span="12" :sm="18" :xs="24">
                         <card>
                             <el-form :model="defaultAddress" label-width="140px" ref="defaultAddressForm" size="medium">
-                                <el-alert                                     
+                                <!-- <el-alert                                     
                                     :title="$t('resident.default_contract_expired')"
                                     type="info"
                                     show-icon
                                     :closable="false"
                                     v-if="expired"
                                 >
-                                </el-alert>
+                                </el-alert> -->
                                 <el-form-item :label="$t('resident.default_contract_id')" :rules="defaultAddressValidationRules.default_contract_id"
                                               prop="default_contract_id" class="contract">
                                     <el-select v-model="defaultAddress.default_contract_id" 
@@ -392,7 +392,6 @@
         mounted () {
             this.defaultAddress.default_contract_id = this.loggedInUser.resident.default_contract_id
             if(!this.contracts.find(item => item.id == this.defaultAddress.default_contract_id)) {
-                this.expired = true
                 this.defaultAddress.default_contract_id = undefined
             }
         }

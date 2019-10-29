@@ -407,9 +407,8 @@
                     per_page: this.page.currSize,
                     ...this.filterModel
                 };
-
+                
                 let params = this.$route.params;
-
                 if (this.search) {
                     query = {search: this.search, ...query};
                 } else if (this.withSearch) {
@@ -420,8 +419,7 @@
                     {
                         delete query[filter];
                         
-                    }
-                        
+                    }     
                 }
 
                 try {
@@ -619,7 +617,8 @@
             _.each(this.filters, (filter) => {
                 const queryFilterValue = this.$route.query[filter.key];
                 const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
-                const value = queryFilterValue && queryFilterValue.match(dateReg) ? queryFilterValue : parseInt(queryFilterValue);
+//                const value = queryFilterValue && queryFilterValue.match(dateReg) ? queryFilterValue : parseInt(queryFilterValue); 
+                const value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
                 this.$set(this.filterModel, filter.key, value);
 
                 if (!this.filterModel[filter.key]) {
@@ -630,7 +629,6 @@
                     this.filterChanged(filter, true);
                 }
             });
-            
             this.categories = this.$constants.requests.categories_data.tree
         }
     }
