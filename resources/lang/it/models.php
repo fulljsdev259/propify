@@ -549,7 +549,7 @@ return [
             'room' => 'Camera',
             'range' => 'Gamma',
             'component' => 'Componente',
-            'acquisition' => 'Fase di acquisizione',
+            'capture_phase' => 'Fase di cattura',
             'cost' => 'Costo Impatto',
             'keywords' => 'Parole chiave',
         ],

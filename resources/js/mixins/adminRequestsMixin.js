@@ -38,8 +38,7 @@ export default (config = {}) => {
                     location: '',
                     room: '',
                     capture_phase: '',
-                    acquisition_phase: '',
-                    has_qualification: '',
+                    qualification: '',
                     component: '',
                     keyword: '',
                     keywords: [],
@@ -103,14 +102,13 @@ export default (config = {}) => {
                 address: {},
                 locations: [],
                 rooms: [],
-                acquisitions: [],
-                acquisition_phases: [],
+                capture_phases: [],
                 costs: [],
                 showSubCategory: false,
                 showPayer: false,
                 showUmgebung: false,
                 showLiegenschaft: false,
-                showAcquisition: false,
+                showCapturePhase: false,
                 showWohnung: false,
                 createTag: false,
                 editTag: false,
@@ -352,7 +350,7 @@ export default (config = {}) => {
                     this.sub_categories = p_category ? p_category.sub_categories : [];
                 }
                 this.showPayer = this.model.qualification == 5 ? true : false;
-                this.showAcquisition =  p_category.acquisition == 1 ? true : false;
+                this.showCapturePhase =  p_category.capture_phase == 1 ? true : false;
             },
             changeSubCategory() {
                 const sub_category = this.sub_categories.find(category => {
@@ -387,7 +385,7 @@ export default (config = {}) => {
                 }
 
                 const categoryArr = this.categories.filter((category) => {
-                    return category.id === categoryId && category.has_qualifications;
+                    return category.id === categoryId && category.qualification;
                 });
 
                 if (categoryArr.length) {
@@ -400,8 +398,7 @@ export default (config = {}) => {
 
                 this.locations = Object.entries(this.$constants.requests.location).map(([value, label]) => ({value: +value, name: this.$t(`models.request.location.${label}`)}))
                 this.rooms = Object.entries(this.$constants.requests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
-                this.acquisitions = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
-                this.acquisition_phases = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
+                this.capture_phases = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
                 this.qualifications = Object.entries(this.$constants.requests.qualification).map(([value, label]) => ({value: +value, name: this.$t(`models.request.qualification.${label}`)}))
                 this.costs = Object.entries(this.$constants.requests.payer).map(([value, label]) => ({value: +value, name: this.$t(`models.request.payer.${label}`)}))
                 this.categories = this.$constants.requests.categories_data.tree
@@ -519,10 +516,6 @@ export default (config = {}) => {
                         this.model.category_id = this.model.category_id
                         this.model.sub_category = this.model.sub_category_id 
 
-                        //@TODO : rename and delete the orginal ; qualification -> has_qualification, capture_phase -> acquisition_phase
-                        // this.model.has_qualification = this.model.qualification
-                        // this.model.acquisition_phase = this.model.capture_phase
-
                         const resp = await this.createRequest(this.model);
                         
                         let requestId = resp.data.id;
@@ -631,7 +624,7 @@ export default (config = {}) => {
                         this.showLiegenschaft = resp.data.location != null ? true : false;
                         this.showWohnung = resp.data.room != null ? true : false;
                         this.showPayer = resp.data.qualification == 5 ? true : false;
-                        this.showAcquisition =  resp.data.category.acquisition == 1 ? true : false;
+                        this.showCapturePhase =  resp.data.category.capture_phase == 1 ? true : false;
                         
                         const data = resp.data;
 
