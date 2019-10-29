@@ -402,10 +402,37 @@ return [
         "category" => "Categoria",
         "edit_title" => "Modifica Richiesta",
         "add_title" => "Aggiungi Richiesta",
-        'mass_edit' => 'Modifica di massa',
-        'assign_partners' => 'Assegnare i partner di assistenza',
-        'assign_managers' => 'Assegnare i gestori di proprietà',
-        'change_status' => 'Cambia stato',
+        'mass_edit' => [
+            'label' => 'Modifica di massa',
+            'options' => [
+                'service_provider' => 'Fornitore di servizi',
+                'property_manager' => 'Property manager',
+                'change_status' => 'Cambia stato'
+            ],
+            'service_provider' => [
+                'modal' => [
+                    'heading_title' => 'Assign service providers heading',
+                    'content_label' => 'You can select service provider(s) here',
+                    'footer_button' => 'Assign service providers',
+                    'switcher_label' => 'Switcher label for Service Provider',
+                    'switcher_desc' => 'Switcher description for Service Provider',
+                ]
+            ],
+            'property_manager' => [
+                'modal' => [
+                    'heading_title' => 'Assign property managers heading',
+                    'content_label' => 'You can select property manager(s) here',
+                    'footer_button' => 'Assegnare i gestori di proprietà',
+                ]
+            ],
+            'change_status' => [
+                'modal' => [
+                    'heading_title' => 'Change status heading',
+                    'content_label' => 'You can change status here',
+                    'footer_button' => 'Cambia stato',
+                ]
+            ],
+        ],
         "due_date" => "Scadenza",
         "solved_date" => "Data di fabbricazione",
         "closed_date" => "Data di chiusura",

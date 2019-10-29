@@ -303,7 +303,7 @@ return [
     'email_receptionist' => [
         'title' => 'E-Mail-Empfangsstelle',
         'info_desc' => 'Möchten Sie global verwenden oder zuordnen?',
-        'global' => 'Wählen Sie aus den globalen',
+        'global' => 'Global',
         'assign' => 'Zuweisen',
         'email_receptionist_of' => 'E-Mail-Empfangsstelle von :category'
     ],

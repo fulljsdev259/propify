@@ -302,8 +302,8 @@ return [
     ],
     'email_receptionist' => [
         'title' => 'Ricezione e-mail',
-        'info_desc' => 'Volete utilizzare l\'opzione globale o assegnare a?',
-        'global' => 'Scegliere da globale',
+        'info_desc' => 'Vuoi usare la receptionist globale da un quarto di dollaro o assegnarne di nuovi?',
+        'global' => 'Globale',
         'assign' => 'Assegna',
         'email_receptionist_of' => 'Ricezione e-mail di :category'
     ],

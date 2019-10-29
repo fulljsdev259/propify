@@ -16,9 +16,9 @@
                             @command="handleCommand">
                     {{$t('models.request.mass_edit')}}
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item :disabled="!selectedItems.length" command="service">Service Provider</el-dropdown-item>
-                        <el-dropdown-item :disabled="!selectedItems.length" command="manager">Property Manager</el-dropdown-item>
-                        <el-dropdown-item :disabled="!selectedItems.length" command="status">Change Status</el-dropdown-item>
+                        <el-dropdown-item :disabled="!selectedItems.length" command="service">{{$t('models.request.service_provider')}}</el-dropdown-item>
+                        <el-dropdown-item :disabled="!selectedItems.length" command="manager">{{$t('models.request.property_manager')}}</el-dropdown-item>
+                        <el-dropdown-item :disabled="!selectedItems.length" command="status">{{$t('models.request.change_status')}}</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
                 <!-- <el-button :disabled="!selectedItems.length" @click="batchEdit" icon="ti-user" round
@@ -53,7 +53,15 @@
                    :visible.sync="batchEditVisible"
                    v-loading="processAssignment" width="30%">
             <span slot="title">
-                {{ $t('models.request.mass_edit') }}
+                <template v-if="massEditOption == 'service'">
+                    {{ $t('models.request.assign_partners') }}
+                </template>
+                <template v-else-if="massEditOption == 'managers'">
+                    {{ $t('models.request.assign_managers') }}
+                </template>
+                <template v-else-if="massEditOption == 'status'">
+                    {{ $t('models.request.change_status') }}
+                </template>
             </span>
             <!-- <el-select v-model="massEditOption" @change="changeMassEditOption" 
                         :placeholder="$t('models.request.placeholders.status')"
@@ -62,65 +70,71 @@
                     <el-option :value="'manager'" label="Property Manager"></el-option>
                     <el-option :value="'status'" label="Status Change"></el-option>
             </el-select> -->
-            <el-form :model="managersForm" v-if="massEditOption == 'service'">
-                <el-select
-                    :loading="remoteLoading"
-                    :placeholder="$t('general.placeholders.search')"
-                    :remote-method="remoteSearchPartners"
-                    class="custom-remote-select"
-                    filterable
-                    multiple
-                    remote
-                    reserve-keyword
-                    style="width: 100%;"
-                    v-model="toAssign"
-                >
-                    <div class="custom-prefix-wrapper" slot="prefix">
-                        <i class="el-icon-search custom-icon"></i>
-                    </div>
-                    <el-option
-                        :key="service.id"
-                        :label="`${service.name}`"
-                        :value="service.id"
-                        v-for="service in toAssignList"/>
-                </el-select>
+            <el-form :model="managersForm"  v-if="massEditOption == 'service'">
+                <el-form-item :label="$t('models.request.service_provider')">
+                    <el-select
+                        :loading="remoteLoading"
+                        :placeholder="$t('general.placeholders.search')"
+                        :remote-method="remoteSearchPartners"
+                        class="custom-remote-select"
+                        filterable
+                        multiple
+                        remote
+                        reserve-keyword
+                        style="width: 100%;"
+                        v-model="toAssign"
+                    >
+                        <div class="custom-prefix-wrapper" slot="prefix">
+                            <i class="el-icon-search custom-icon"></i>
+                        </div>
+                        <el-option
+                            :key="service.id"
+                            :label="`${service.name}`"
+                            :value="service.id"
+                            v-for="service in toAssignList"/>
+                    </el-select>
+                </el-form-item>
             </el-form>
 
             <el-form :model="managersForm" v-if="massEditOption == 'manager'">
-                <el-select
-                    :loading="remoteLoading"
-                    :placeholder="$t('general.placeholders.search')"
-                    :remote-method="remoteSearchManagers"
-                    class="custom-remote-select"
-                    filterable
-                    multiple
-                    remote
-                    reserve-keyword
-                    style="width: 100%;"
-                    v-model="toAssign"
-                >
-                    <div class="custom-prefix-wrapper" slot="prefix">
-                        <i class="el-icon-search custom-icon"></i>
-                    </div>
-                    <el-option
-                        :key="manager.id"
-                        :label="`${manager.first_name} ${manager.last_name}`"
-                        :value="manager.id"
-                        v-for="manager in toAssignList"/>
-                </el-select>
+                <el-form-item :label="$t('models.request.property_manager')">
+                    <el-select
+                        :loading="remoteLoading"
+                        :placeholder="$t('general.placeholders.search')"
+                        :remote-method="remoteSearchManagers"
+                        class="custom-remote-select"
+                        filterable
+                        multiple
+                        remote
+                        reserve-keyword
+                        style="width: 100%;"
+                        v-model="toAssign"
+                    >
+                        <div class="custom-prefix-wrapper" slot="prefix">
+                            <i class="el-icon-search custom-icon"></i>
+                        </div>
+                        <el-option
+                            :key="manager.id"
+                            :label="`${manager.first_name} ${manager.last_name}`"
+                            :value="manager.id"
+                            v-for="manager in toAssignList"/>
+                    </el-select>
+                </el-form-item>
             </el-form>
             
             <el-form :model="managersForm" v-if="massEditOption == 'status'">
-                <el-select :placeholder="$t('models.request.placeholders.status')"
-                        class="custom-select"
-                        v-model="massStatus">
-                    <el-option
-                        :key="k"
-                        :label="$t(`models.request.status.${status}`)"
-                        :value="parseInt(k)"
-                        v-for="(status, k) in $constants.requests.status">
-                    </el-option>
-                </el-select>
+                <el-form-item :label="$t('models.request.status.label')">
+                    <el-select :placeholder="$t('models.request.placeholders.status')"
+                            class="custom-select"
+                            v-model="massStatus">
+                        <el-option
+                            :key="k"
+                            :label="$t(`models.request.status.${status}`)"
+                            :value="parseInt(k)"
+                            v-for="(status, k) in $constants.requests.status">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
             </el-form>
             <span class="dialog-footer" slot="footer">
                 <el-button @click="closeModal" size="mini">{{$t('general.actions.close')}}</el-button>

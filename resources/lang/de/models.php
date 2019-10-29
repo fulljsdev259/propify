@@ -403,10 +403,39 @@ return [
         'category' => 'Anfrage-Typ',
         'edit_title' => 'Anfrage bearbeiten',
         'add_title' => 'Anfrage hinzufügen',
-        'mass_edit' => 'Massenbearbeitung',
-        'assign_partners' => 'Servicepartner zuordnen',
+        'mass_edit' => [
+            'label' => 'Massenbearbeitung',
+            'options' => [
+                'service_provider' => 'Dienstleister',
+                'property_manager' => 'Bewirtschafter',
+                'change_status' => 'Status ändern'
+            ],
+            'service_provider' => [
+                'modal' => [
+                    'heading_title' => 'Assign service providers heading',
+                    'content_label' => 'You can select service provider(s) here',
+                    'footer_button' => 'Assign service providers',
+                    'switcher_label' => 'Switcher label for Service Provider',
+                    'switcher_desc' => 'Switcher description for Service Provider',
+                ]
+            ],
+            'property_manager' => [
+                'modal' => [
+                    'heading_title' => 'Assign property managers heading',
+                    'content_label' => 'You can select property manager(s) here',
+                    'footer_button' => 'Assign property managers',
+                ]
+            ],
+            'change_status' => [
+                'modal' => [
+                    'heading_title' => 'Change status heading',
+                    'content_label' => 'You can change status here',
+                    'footer_button' => 'Status ändern',
+                ]
+            ],
+        ],
+        'assign_partners' => 'Dienstleister zuordnen',
         'assign_managers' => 'Bewirtschafter zuweisen',
-        'change_status' => 'Status ändern',
         'due_date' => 'Zu erledigen bis',
         'solved_date' => 'Erledigt Datum',
         'closed_date' => 'Erledigt am',

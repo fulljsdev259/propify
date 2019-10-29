@@ -595,7 +595,7 @@
                     buttons: [{
                         title: 'models.request.notify',
                         tooltipMode: true,
-                        icon: 'el-icon-message',
+                        icon: 'icon-chat-empty',
                         view: 'request',
                         onClick: this.openNotifyProvider
                     }, {

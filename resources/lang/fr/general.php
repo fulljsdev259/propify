@@ -302,8 +302,8 @@ return [
     ],
     'email_receptionist' => [
         'title' => 'Réceptionniste par courriel',
-        'info_desc' => 'Souhaitez-vous utiliser global ou affecter?',
-        'global' => 'Choisissez parmi les',
+        'info_desc' => 'Souhaitez-vous utiliser la réceptionniste mondiale du trimestre ou en assigner une plus récente ?',
+        'global' => 'Globale',
         'assign' => 'Assigner',
         'email_receptionist_of' => 'Réceptionniste par courriel de :category'
     ],

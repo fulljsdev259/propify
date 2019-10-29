@@ -402,10 +402,37 @@ return [
         'category' => 'Category',
         'edit_title' => 'Edit Request',
         'add_title' => 'Add Request',
-        'mass_edit' => 'Mass Edit',
-        'assign_partners' => 'Assign Service Partners',
-        'assign_managers' => 'Assign Property Managers',
-        'change_status' => 'Change Status',
+        'mass_edit' => [
+            'label' => 'Mass Edit',
+            'options' => [
+                'service_provider' => 'Service provider',
+                'property_manager' => 'Property manager',
+                'change_status' => 'Change status'
+            ],
+            'service_provider' => [
+                'modal' => [
+                    'heading_title' => 'Assign service providers heading',
+                    'content_label' => 'You can select service provider(s) here',
+                    'footer_button' => 'Assign service providers',
+                    'switcher_label' => 'Switcher label for Service Provider',
+                    'switcher_desc' => 'Switcher description for Service Provider',
+                ]
+            ],
+            'property_manager' => [
+                'modal' => [
+                    'heading_title' => 'Assign property managers heading',
+                    'content_label' => 'You can select property manager(s) here',
+                    'footer_button' => 'Assign property managers',
+                ]
+            ],
+            'change_status' => [
+                'modal' => [
+                    'heading_title' => 'Change status heading',
+                    'content_label' => 'You can change status here',
+                    'footer_button' => 'Change status',
+                ]
+            ],
+        ],
         'due_date' => 'Due date',
         'solved_date' => 'Completed date',
         'closed_date' => 'Closed date',

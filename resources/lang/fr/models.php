@@ -402,10 +402,37 @@ return [
         "category" => "Catégorie",
         "edit_title" => "Demande de modification",
         "add_title" => "Ajouter une demande",
-        'mass_edit' => 'Traitement en masse',
-        'assign_partners' => 'Affecter des partenaires de service',
-        'assign_managers' => 'Affecter des gestionnaires immobiliers',
-        'change_status' => 'Modifier l\'état',
+        'mass_edit' => [
+            'label' => 'Traitement en masse',
+            'options' => [
+                'service_provider' => 'Prestataire de services',
+                'property_manager' => 'Property manager',
+                'change_status' => 'Modifier l\'état'
+            ],
+            'service_provider' => [
+                'modal' => [
+                    'heading_title' => 'Assign service providers heading',
+                    'content_label' => 'You can select service provider(s) here',
+                    'footer_button' => 'Assign service providers',
+                    'switcher_label' => 'Switcher label for Service Provider',
+                    'switcher_desc' => 'Switcher description for Service Provider',
+                ]
+            ],
+            'property_manager' => [
+                'modal' => [
+                    'heading_title' => 'Assign property managers heading',
+                    'content_label' => 'You can select property manager(s) here',
+                    'footer_button' => 'Affecter des gestionnaires immobiliers',
+                ]
+            ],
+            'change_status' => [
+                'modal' => [
+                    'heading_title' => 'Change status heading',
+                    'content_label' => 'You can change status here',
+                    'footer_button' => 'Modifier l\'état',
+                ]
+            ],
+        ],
         "due_date" => "Date d'échéance",
         "solved_date" => "Fait à la date",
         "closed_date" => "Date de fermeture",
