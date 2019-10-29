@@ -81,8 +81,7 @@ class ResidentTransformer extends BaseTransformer
             $response['total_contracts_count'] = $allCount;
         }
 
-
-        return $response;
+        return $this->addAuditIdInResponseIfNeed($model, $response);
     }
 
     /**

@@ -21,6 +21,7 @@ use App\Http\Requests\API\Resident\UpdateDefaultContractRequest;
 use App\Http\Requests\API\Resident\UpdateLoggedInRequest;
 use App\Http\Requests\API\Resident\UpdateRequest;
 use App\Http\Requests\API\Resident\UpdateStatusRequest;
+use App\Models\AuditableModel;
 use App\Models\Settings;
 use App\Models\Resident;
 use App\Models\User;
@@ -271,9 +272,11 @@ class ResidentAPIController extends AppBaseController
      *      )
      * )
      *
+    /**
      * @param CreateRequest $request
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function store(CreateRequest $request)
     {
@@ -315,6 +318,8 @@ class ResidentAPIController extends AppBaseController
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
+
+        $resident->addDataInAudit(AuditableModel::MergeInMainData, $user);
 
         DB::commit();
         $response = (new ResidentTransformer)->transform($resident);
@@ -522,6 +527,7 @@ class ResidentAPIController extends AppBaseController
 
         try {
             $resident = $this->residentRepository->updateExisting($resident, $input);
+            $resident->addDataInAudit(AuditableModel::MergeInMainData, $updatedUser, AuditableModel::UpdateOrCreate);
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->sendError(__('models.resident.errors.create') . $e->getMessage());
