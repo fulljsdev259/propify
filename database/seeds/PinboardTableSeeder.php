@@ -18,11 +18,11 @@ class PinboardTableSeeder extends Seeder
             $totalPosts = 200;
             $pinboards = factory(App\Models\Pinboard::class, $totalPosts)->create(['status' => Pinboard::StatusPublished]);
             foreach ($pinboards as $pinboard) {
-                $u = $pinboard->user;
-                if ($u->resident && $u->resident->building) {
-                    $pinboard->buildings()->sync($u->resident->building->id);
-                    if ($u->resident->building->quarter_id) {
-                        $pinboard->quarters()->sync($u->resident->building->quarter_id);
+                $user = $pinboard->user;
+                if ($user->resident && ! empty($user->resident->default_contract->building)) {
+                    $pinboard->buildings()->sync($user->resident->default_contract->building->id);
+                    if ($user->resident->default_contract->building->quarter_id) {
+                        $pinboard->quarters()->sync($user->resident->default_contract->building->quarter_id);
                     }
                 }
                 //$pRepo->setStatus($pinboard->id, Post::StatusPublished, now());
