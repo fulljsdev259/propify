@@ -153,6 +153,7 @@ return [
         "saved" => "Bâtiment sauvé",
         "floors" => "Planchers",
         'under_floor' => 'Sous le plancher',
+        'ground_floor' => 'Rez-de-chaussée',
         "basement" => "Sous-sol",
         "attic" => "Grenier aménageable",
         "floor_nr" => "Nombre d'étages",

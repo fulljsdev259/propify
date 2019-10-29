@@ -119,7 +119,9 @@
                                 <el-col :span="12"
                                         :key="item"
                                         v-for="item in floors">
-                                    <el-form-item :label="`${ordinalSuffixFloor(item)} ${$t('models.unit.floor')}`"
+                                    <el-form-item :label="item === 0
+                                                            ? $t('models.building.ground_floor')
+                                                            : `${ordinalSuffixFloor(item)} ${$t('models.unit.floor')}`"
                                                   :rules="validationRules.floor"
                                                   :prop="'floor.'+ item"
                                                   v-if="unitAutoCreate">
@@ -176,21 +178,11 @@
                 this.model.name = this.model.street + ' ' + this.model.house_num;
             },
             ordinalSuffixFloor(i) {
-                let j = +i % 10,
-                    k = +i % 100;
-                if (i === 0) {
-                    return 'Ground';
-                }
-                if (j === 1 && k !== 11) {
-                    return i + "st";
-                }
-                if (j === 2 && k !== 12) {
-                    return i + "nd";
-                }
-                if (j === 3 && k !== 13) {
-                    return i + "rd";
-                }
-                return i + "th";
+                let b = i % 10;
+                return i + ((~~ (i % 100 / 10) === 1) ? this.$t('general.ordinal_endings.th') :
+                    (b === 1) ? this.$t('general.ordinal_endings.st') :
+                        (b === 2) ? this.$t('general.ordinal_endings.nd') :
+                            (b === 3) ? this.$t('general.ordinal_endings.rd') : this.$t('general.ordinal_endings.th'));
             },
         },
         mounted() {
