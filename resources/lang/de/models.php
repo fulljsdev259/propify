@@ -204,8 +204,8 @@ return [
         ],
         'assigned_buildings' => 'Zugewiesene Objekte',
         'warning_bar' => [
-            'title' => 'Problem gefunden',
-            'message' => "Es sieht so aus, als hätten Sie fortimo-Mitglieder nicht als E-Mail-Empfänger für Anforderungskategorien ausgewählt. Bitte wählen Sie sie aus der Einstellungsschublade, die auf der Registerkarte Anfragen verfügbar ist."
+            'title' => 'Problem beheben',
+            'message' => "Es wurden keine Empfänger für Anfragen in diesem Objekt oder dem dazugehörigen Projekt eingerichtet."
         ]
     ],
     'unit' => [
