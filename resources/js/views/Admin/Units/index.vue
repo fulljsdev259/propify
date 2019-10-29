@@ -33,7 +33,7 @@
 
 <script>
     import Heading from 'components/Heading';
-    import {mapActions} from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
     import ListTableMixin from 'mixins/ListTableMixin';
     import getFilterQuarters from 'mixins/methods/getFilterQuarters';
     import getFilterStates from "mixins/methods/getFilterStates";
@@ -62,6 +62,7 @@
                 fetchParams: {},
                 states:{},
                 propertyManagers:{},
+                types:{},
                 quarters:{},
                 buildings:{},
                 header: [{
@@ -131,6 +132,9 @@
             }
         },
         computed: {
+            ...mapGetters('application', {
+                constants: 'constants'
+            }),
             title() {
                 return `${this.building.name} - ${this.$t('general.admin_menu.units')}`;
             },
@@ -186,17 +190,13 @@
                         name: this.$t('general.filters.type'),
                         type: 'select',
                         key: 'type',
-                        data: [{
-                            id: 1,
-                            name: this.$t('models.unit.type.apartment')
-                        },
-                        {
-                            id: 2,
-                            name: this.$t('models.unit.type.business')
-                        }]
+                        data: this.types
                     }
                 ];
             }
+        },
+        mounted() {
+            this.$root.$on('changeLanguage', () => this.types = Object.entries(this.$constants.units.type).map(([value, label]) => ({value: +value, name: this.$t(`models.unit.type.${label}`)})));
         },
         async created() {
             this.isLoadingFilters = true;
@@ -217,6 +217,8 @@
 
             const buildings = await this.axios.get('buildings?get_all=true')
             this.buildings = buildings.data.data;
+
+            this.types = Object.entries(this.$constants.units.type).map(([value, label]) => ({value: +value, name: this.$t(`models.unit.type.${label}`)}))
             this.isLoadingFilters = false;
         }
     }

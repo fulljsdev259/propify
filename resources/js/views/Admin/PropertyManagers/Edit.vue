@@ -286,7 +286,7 @@
                         type: 'danger',
                         onClick: this.notifyUnassignment,
                         tooltipMode: true,
-                        icon: 'el-icon-close',                        
+                        icon: 'el-icon-close',                
                     }]
                 }],
             }
