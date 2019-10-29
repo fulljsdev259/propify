@@ -18,7 +18,9 @@ class ChangeContractIdToRequiredInRequestsTable extends Migration
             if (empty($contract)) {
                 $request->delete();
             } else {
+                \App\Models\Request::disableAuditing();
                 $request->update(['contract_id' => $contract->id]);
+                \App\Models\Request::enableAuditing();
             }
         });
         Schema::table('requests', function (Blueprint $table) {
