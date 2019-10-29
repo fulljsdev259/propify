@@ -204,8 +204,8 @@ return [
         ],
         'assigned_buildings' => 'Zugewiesene Objekte',
         'warning_bar' => [
-            'title' => 'Problem gefunden',
-            'message' => "Es sieht so aus, als hätten Sie fortimo-Mitglieder nicht als E-Mail-Empfänger für Anforderungskategorien ausgewählt. Bitte wählen Sie sie aus der Einstellungsschublade, die auf der Registerkarte Anfragen verfügbar ist."
+            'title' => 'Problem beheben',
+            'message' => "Es wurden keine Empfänger für Anfragen in diesem Objekt oder dem dazugehörigen Projekt eingerichtet."
         ]
     ],
     'unit' => [
@@ -389,7 +389,7 @@ return [
         'total_units_count' => 'Anzahl Einheiten',
         'occupied_units_count' => 'Belegte Einheiten',
         'active_residents_count' => 'Aktive Bewohner',
-        'assignment' => 'Zugewiesene Personen/Administrator',
+        'assignment' => 'Zuständigkeit',
         'errors' => [
             'not_found' => "Projekt nicht gefunden.",
             'deleted' => "Fehler beim Löschen des Projekts: ",
@@ -469,7 +469,7 @@ return [
         'internal_notices' => 'Interne Notizen',
         'status_changed' => 'Status wurde geändert',
         'priority_changed' => 'Priorität wurde geändert',
-        'assignment' => 'Bewirtschafter/Dienstleister',        
+        'assignment' => 'Zuständigkeit',        
         'active_reminder_switcher' => 'Erinnerung',
         'days_left' => 'Wie viele Tage vorher?',
         'send_person' => 'Wer soll benachrichtigt werden?',
