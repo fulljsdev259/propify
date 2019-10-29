@@ -389,7 +389,7 @@ return [
         'total_units_count' => 'Anzahl Einheiten',
         'occupied_units_count' => 'Belegte Einheiten',
         'active_residents_count' => 'Aktive Bewohner',
-        'assignment' => 'Zugewiesene Personen/Administrator',
+        'assignment' => 'Zuständigkeit',
         'errors' => [
             'not_found' => "Projekt nicht gefunden.",
             'deleted' => "Fehler beim Löschen des Projekts: ",
@@ -442,7 +442,7 @@ return [
         'internal_notices' => 'Interne Notizen',
         'status_changed' => 'Status wurde geändert',
         'priority_changed' => 'Priorität wurde geändert',
-        'assignment' => 'Zugewiesene Personen/Firmen',        
+        'assignment' => 'Zuständigkeit',        
         'active_reminder_switcher' => 'Erinnerung',
         'days_left' => 'Wie viele Tage vorher?',
         'send_person' => 'Wer soll benachrichtigt werden?',
