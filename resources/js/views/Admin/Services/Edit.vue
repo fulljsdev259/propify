@@ -250,7 +250,7 @@
                     label: 'general.name',
                     type: 'assigneesName'
                 }, {
-                    prop: 'role',
+                    prop: 'type',
                     label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
