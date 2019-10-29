@@ -38,7 +38,7 @@
                 
                 <div class="managers" >
                     <div class="edit-action">
-                        <p>{{ $t('general.components.common.internalnotices.shared_with') }} : </p>
+                        <p v-if="data.managers !== undefined && data.managers.length !== 0">{{ $t('general.components.common.internalnotices.shared_with') }} : </p>
                         <template v-if="idState.editing">
                             <i18n path="general.components.common.comment.update_or_cancel" tag="div" class="extra">
                                 <el-tooltip :content="$t('general.components.common.comment.update_shortcut', {shortcut: updateKeysShortcut})" placement="bottom-start" place="update">

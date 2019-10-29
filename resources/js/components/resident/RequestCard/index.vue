@@ -241,6 +241,7 @@
                             display: flex
                             margin-top: 12px
                             display: none
+                            float: right
 
                         .tab-overview-after
                             float: right
