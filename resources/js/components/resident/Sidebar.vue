@@ -108,7 +108,7 @@
                 if(item.children)
                     this.mouseIn = true
 
-                if(item.children)
+                if(item.children) 
                     this.submenu.items = item.children
             },
             handleRoute (e, item) {
