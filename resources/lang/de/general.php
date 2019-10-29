@@ -294,7 +294,7 @@ return [
     'maintenance' => 'Heiz- und Nebenkosten',
     'gross_rent' => 'Bruttomiete',
     'emergency' => [
-        'title' => 'Notfall',
+        'title' => 'Notfallnummer',
         'activate_title' => 'Notfallnummer aktivieren',
         'activate_desc' => 'Im Dashboard des Bewohner Portals wird die Notfallbox angezeigt.',
         'phone_number' => 'Person/Telefonnummer',
