@@ -153,6 +153,7 @@ return [
         'saved' => 'Objekt wurde gespeichert.',
         'floors' => 'Etagen',
         'under_floor' => 'Untergeschoss',
+        'ground_floor' => 'Erdgeschoss',
         'basement' => 'Erdgeschoss',
         'attic' => 'Attikageschoss',
         'floor_nr' => 'Anzahl Etagen',

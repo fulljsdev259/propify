@@ -119,7 +119,9 @@
                                 <el-col :span="12"
                                         :key="item"
                                         v-for="item in floors">
-                                    <el-form-item :label="`${ordinalSuffixFloor(item)} ${$t('models.unit.floor')}`"
+                                    <el-form-item :label="item === 0
+                                                            ? $t('models.building.ground_floor')
+                                                            : `${ordinalSuffixFloor(item)} ${$t('models.unit.floor')}`"
                                                   :rules="validationRules.floor"
                                                   :prop="'floor.'+ item"
                                                   v-if="unitAutoCreate">
@@ -176,21 +178,22 @@
                 this.model.name = this.model.street + ' ' + this.model.house_num;
             },
             ordinalSuffixFloor(i) {
-                let j = +i % 10,
-                    k = +i % 100;
-                if (i === 0) {
-                    return 'Ground';
+                let lang = this.$i18n.locale;
+
+                switch (lang) {
+                    case 'en':
+                        let b = i % 10;
+                        return i + ((~~ (i % 100 / 10) === 1) ? 'th' :
+                            (b === 1) ? 'st' :
+                                (b === 2) ? 'nd' :
+                                    (b === 3) ? 'rd' : 'th');
+                    case 'de':
+                        return i + '.';
+                    case 'it':
+                        return i + 'º';
+                    case 'fr':
+                        return i + (i === 1 ? 'er' : 'e');
                 }
-                if (j === 1 && k !== 11) {
-                    return i + "st";
-                }
-                if (j === 2 && k !== 12) {
-                    return i + "nd";
-                }
-                if (j === 3 && k !== 13) {
-                    return i + "rd";
-                }
-                return i + "th";
             },
         },
         mounted() {
