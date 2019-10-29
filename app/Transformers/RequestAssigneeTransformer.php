@@ -9,7 +9,7 @@ use App\Models\RequestAssignee;
  *
  * @package namespace App\Transformers;
  */
-class RequestAssigneeTransformer extends BaseTransformer
+class RequestAssigneeTransformer extends AssigneeTransformer
 {
     /**
      * Transform the ServiceProvider entity.
@@ -20,15 +20,6 @@ class RequestAssigneeTransformer extends BaseTransformer
      */
     public function transform(RequestAssignee $model)
     {
-        $response = [
-            'id' => $model->id,
-            'edit_id' => $model->assignee_id,
-            'type' => $model->assignee_type,
-            'email' => $model->related ? $model->related->email : 'incorrect relation',
-            'name' => $model->related ? $model->related->name : 'incorrect relation',
-            'avatar' => $model->related ? $model->related->avatar : 'incorrect relation'
-        ];
-
-        return $response;
+        return $this->transformAssignee($model);
     }
 }

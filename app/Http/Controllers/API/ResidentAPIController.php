@@ -212,8 +212,8 @@ class ResidentAPIController extends AppBaseController
         ]);
         $this->residentRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->residentRepository->pushCriteria(new RequestCriteria($request));
-        // @TODO CONTRACT is need? address. I think not need because many
         $residents = $this->residentRepository->with([
+            'user',
             'default_contract' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
@@ -222,7 +222,8 @@ class ResidentAPIController extends AppBaseController
             }])
             ->get(['id', 'first_name', 'last_name', 'status', 'created_at']);
         $this->fixCreatedBy($residents);
-        return $this->sendResponse($residents->toArray(), 'Residents retrieved successfully');
+        $response = (new ResidentTransformer())->transformCollection($residents);
+        return $this->sendResponse($response, 'Residents retrieved successfully');
     }
 
     /**

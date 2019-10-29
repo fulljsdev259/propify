@@ -49,4 +49,20 @@ class BaseTransformer extends TransformerAbstract
             ]
         );
     }
+
+    /**
+     * @param $model
+     * @param $response
+     * @return mixed
+     */
+    protected function addAuditIdInResponseIfNeed($model, $response)
+    {
+        if ($model->relationExists('audit')) {
+            $audit = $model->audit;
+            if ($audit) {
+                $response['audit_id'] = $audit->id;
+            }
+        }
+        return $response;
+    }
 }

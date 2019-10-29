@@ -20,7 +20,9 @@ class UnitTransformer extends BaseTransformer
      *
      * @param Unit $model
      *
+     * @param Unit $model
      * @return array
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(Unit $model)
     {
