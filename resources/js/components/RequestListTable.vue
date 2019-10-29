@@ -419,8 +419,7 @@
                     {
                         delete query[filter];
                         
-                    }
-                        
+                    }     
                 }
 
                 try {

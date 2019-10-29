@@ -61,7 +61,7 @@ class UsersTableSeeder extends Seeder
         $lastName = implode(' ',$nameParts);
         $manager = \App\Models\PropertyManager::create([
                 'first_name'  => $firstName,
-                'lsat_name' => $lastName,
+                'last_name' => $lastName,
                 'title' => $user->title,
                 'type' => \App\Models\PropertyManager::TypeAdministrator,
                 'user_id' => $user->id,

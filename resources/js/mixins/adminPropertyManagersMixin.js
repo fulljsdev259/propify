@@ -182,9 +182,9 @@ export default (config = {}) => {
                 if(this.isFormSubmission == true)
                     return;
     
-                if(config.mode == 'add' || ( this.original_email != null && this.original_email !== validateObject.user.email)) {
+                if(config.mode == 'add' || ( this.original_email != null && this.original_email !== validateObject.email)) {
                     try {
-                        const resp = await axios.get('users/check-email?email=' + validateObject.user.email);                
+                        const resp = await axios.get('users/check-email?email=' + validateObject.email);                
                     } catch(error) {
                         if(error.response.data.success == false) {
                             callback(new Error(error.response.data.message));
@@ -228,7 +228,7 @@ export default (config = {}) => {
                 }
 
             },
-            async saveAddedAssigmentList(modelId) {
+            async saveAddedAssigmentList(modelId, merge_in_audit) {
                 try {
                     let resp;
 
@@ -236,12 +236,14 @@ export default (config = {}) => {
                         if (element.type === 'building') {
                             resp = await this.assignBuilding({
                                 id: modelId,
-                                toAssignId: element.id
+                                toAssignId: element.id,
+                                merge_in_audit: merge_in_audit
                             });
                         } else {
                             resp = await this.assignQuarter({
                                 id: modelId,
-                                toAssignId: element.id
+                                toAssignId: element.id,
+                                merge_in_audit: merge_in_audit
                             });
                         }
                     });
@@ -316,13 +318,13 @@ export default (config = {}) => {
                                 const resp = await this.createPropertyManager(this.model);
 
                                 if (resp.data.user && resp.data.user.id) {
-                                    await this.uploadAvatarIfNeeded(resp.data.user.id);
+                                    await this.uploadAvatarIfNeeded(resp.data.user.id, resp.data.audit_id);
                                 }                                  
                                 displaySuccess(resp);
 
                                 this.form.resetFields();
 
-                                this.saveAddedAssigmentList(resp.data.id);
+                                this.saveAddedAssigmentList(resp.data.id, resp.data.audit_id);
 
                                 if (!!afterValid) {
                                     afterValid(resp);

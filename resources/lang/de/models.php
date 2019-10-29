@@ -550,7 +550,7 @@ return [
             'room' => 'Raum',
             'range' => 'Bereich',
             'component' => 'Bauteil',
-            'acquisition' => 'Erfassungsphase',
+            'capture_phase' => 'Erfassungsphase',
             'cost' => 'Zu Lasten von',
             'keywords' => 'Tags',
         ],

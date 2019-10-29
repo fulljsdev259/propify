@@ -5,7 +5,7 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Models\Request::class, function (Faker $faker) {
 
-    $resident = (new App\Models\Resident)->where('unit_id', '>', 0)->inRandomOrder()->first();
+    $resident = (new App\Models\Resident)->inRandomOrder()->first();
     $status = $faker->randomElement(array_keys(Request::Status));
     $priority = $faker->randomElement(array_keys(Request::Priority));
     $qualification = $faker->randomElement(array_keys(Request::Qualification));
@@ -17,7 +17,6 @@ $factory->define(App\Models\Request::class, function (Faker $faker) {
         'category' => $randCategory,
         'sub_category' => ! empty(Request::CategorySubCategory[$randCategory]) ? array_rand(array_keys(Request::CategorySubCategory[$randCategory])) : null,
         'resident_id' => $resident->id,
-        'unit_id' => $resident->unit_id,
         'title' => $faker->sentence(4),
         'description' => $faker->text,
         'status' => $status,

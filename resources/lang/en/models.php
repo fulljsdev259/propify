@@ -549,7 +549,7 @@ return [
             'room' => 'Room',
             'range' => 'Range',
             'component' => 'Component',
-            'acquisition' => 'Acquisition Phase',
+            'capture_phase' => 'Capture Phase',
             'cost' => 'Cost Impact',
             'keywords' => 'Keywords',
         ],

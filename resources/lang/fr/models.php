@@ -549,7 +549,7 @@ return [
             'room' => 'Chambre',
             'range' => 'Gamme',
             'component' => 'Composante',
-            'acquisition' => 'Phase d\'acquisition',
+            'capture_phase' => 'Phase de capture',
             'cost' => 'Incidence sur les coûts',
             'keywords' => 'Mots-clés',
         ],

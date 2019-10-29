@@ -102,9 +102,11 @@
                         data: this.states,
                     }, {
                         name: this.$t('general.filters.buildings'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'building_id',
                         data: this.buildings,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteBuildings
                     }, {
                         name: this.$t('general.filters.categories'),
                         type: 'select',
@@ -140,12 +142,10 @@
                     }
                 });
             },
-            async getStateBuildings() {
-                const buildings = await this.getBuildings({
-                    get_all: true
-                });
+            async fetchRemoteBuildings(search = '') {
+                const buildings = await this.getBuildings({get_all: true, search});
 
-                return buildings.data;
+                return buildings.data
             },
             async getFilterCategories() {
                 let categories = [];
@@ -168,7 +168,6 @@
             const states = await this.axios.get('states?filters=true')
             this.states = states.data.data;
 
-            this.buildings = await this.getStateBuildings()
             this.categories = await this.getFilterCategories()
             this.isLoadingFilters = false;
         },
