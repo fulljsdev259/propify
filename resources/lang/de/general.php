@@ -11,7 +11,7 @@ return [
         'weeks' => 'Wochen',
         'months' => 'Monate',
         'years' => 'Jahre',
-        'day' => 'Day de'
+        'day' => 'Tag'
     ],
     'choose_language' => 'Sprache auswählen',
     'language' => "Sprache",
@@ -19,7 +19,7 @@ return [
         'fr' => 'Français',
         'it' => 'Italiano',
         'de' => 'Deutsch',
-        'en' => 'English',
+        'en' => 'Englisch',
     ],
     'footer_text' => [
         'company_name' => 'Propify®',
@@ -294,18 +294,18 @@ return [
     'maintenance' => 'Heiz- und Nebenkosten',
     'gross_rent' => 'Bruttomiete',
     'emergency' => [
-        'title' => 'Notfall',
-        'activate_title' => 'Notfallkasten aktivieren',
-        'activate_desc' => 'Sie können die Notfallbox aktivieren.',
-        'phone_number' => 'Telefonnummer',
+        'title' => 'Notfallnummer',
+        'activate_title' => 'Notfallnummer aktivieren',
+        'activate_desc' => 'Im Dashboard des Bewohner Portals wird die Notfallbox angezeigt.',
+        'phone_number' => 'Person/Telefonnummer',
         'time_schedule' => 'Zeitplan',
     ],
     'email_receptionist' => [
-        'title' => 'E-Mail-Empfangsstelle',
-        'info_desc' => 'Möchten Sie global verwenden oder zuordnen?',
-        'global' => 'Wählen Sie aus den globalen',
-        'assign' => 'Zuweisen',
-        'email_receptionist_of' => 'E-Mail-Empfangsstelle von :category'
+        'title' => 'Benachrichtung (Empfänger)',
+        'info_desc' => 'Welche Einstellungen sollen verwendet werden?',
+        'global' => 'Einstellungen im Projekt',
+        'assign' => 'Individuelle Einstellungen',
+        'email_receptionist_of' => 'Empfänger für Kategorie ":category"'
     ],
     'filter' => 'Filter',
     'activities' => [
