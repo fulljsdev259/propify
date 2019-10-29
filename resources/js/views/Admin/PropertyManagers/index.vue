@@ -158,15 +158,19 @@
                     },
                     {
                         name: this.$t('general.filters.quarters'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'quarter_id',
                         data: this.quarters,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteQuarters
                     },
                     {
                         name: this.$t('general.filters.buildings'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'building_id',
                         data: this.buildings,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteBuildings
                     },
                     {
                         name: this.$t('general.roles.label'),
@@ -248,7 +252,16 @@
                 this.toAssign = '';
                 this.toAssignList = [];
             },
+            async fetchRemoteQuarters(search = '') {
+                const quarters = await this.getQuarters({get_all: true, search});
 
+                return quarters.data
+            },
+            async fetchRemoteBuildings(search = '') {
+                const buildings = await this.getBuildings({get_all: true, search});
+
+                return buildings.data
+            },
             async remoteSearchManagers(search) {
                 if (search === '') {
                     this.resetToAssignList();
@@ -282,13 +295,6 @@
             
         },
         async created(){
-            this.isLoadingFilters = true;
-            const quarters = await this.axios.get('quarters');
-            this.quarters = quarters.data.data.data;
-
-            this.buildings = await this.getFilterBuildings();
-            
-            this.isLoadingFilters = false;
         
         },
         mounted() {

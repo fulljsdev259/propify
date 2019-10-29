@@ -35,7 +35,9 @@ export default (config = {}) => {
                     name: '',
                     phone: '',
                     category: null,
-                    settings: [],
+                    settings: {
+                        language: ''
+                    },
                     password: '',
                     password_confirmation: '',
                     avatar: '',

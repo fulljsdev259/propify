@@ -641,7 +641,13 @@
                 } else if (this.withSearch) {
                     delete query.search;
                 }
-
+                for(var filter in this.filterModel) {
+                    if((this.filterModel[filter] == '' || this.filterModel[filter] == null) && (query[filter] != undefined || query[filter] == null))
+                    {
+                        delete query[filter];
+                        
+                    }     
+                }
                 /*if(this.$route.name=='adminUsers') {
                     query = {roles: ['administrator'], ...query};
                     if(query.role)
@@ -710,6 +716,9 @@
                     this.remoteFilter(filter, '');
                 }
 
+                if(this.filterModel[filter.key] == '')
+                    this.filterModel[filter.key] = null
+                    
                 if ((!filter.parentKey && filter.fetch && init && this.filterModel[filter.key]) || !init) {
                     this.updatePage();
                 }
@@ -818,7 +827,7 @@
                 let queryFilterValue = this.$route.query[filter.key];
                 
                 const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
-                const value = queryFilterValue && queryFilterValue.toString().match(dateReg) ? queryFilterValue : parseInt(queryFilterValue);
+                const value = queryFilterValue && (queryFilterValue.toString().match(dateReg) || filter.key == 'search')  ? queryFilterValue : parseInt(queryFilterValue);
                 this.$set(this.filterModel, filter.key, value);
                 if(filter.key == "search")
                     this.filterModel[filter.key] = queryFilterValue;

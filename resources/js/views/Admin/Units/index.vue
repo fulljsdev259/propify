@@ -105,13 +105,21 @@
             };
         },
         methods: {
-            ...mapActions(['getBuildings']),
-            async getFilterBuildings() {
-                const buildings = await this.getBuildings({
-                    get_all: true
-                });
+            ...mapActions(['getBuildings', 'getPropertyManagers', 'getQuarters']),
+            async fetchRemoteQuarters(search = '') {
+                const quarters = await this.getQuarters({get_all: true, search});
 
-                return buildings.data;
+                return quarters.data
+            },
+            async fetchRemoteBuildings(search = '') {
+                const buildings = await this.getBuildings({get_all: true, search});
+
+                return buildings.data
+            },
+            async fetchRemotePropertyManagers(search = '') {
+                const propertyManagers = await this.getPropertyManagers({get_all: true, search});
+
+                return propertyManagers.data
             },
             add() {
                 this.$router.push({
@@ -161,21 +169,27 @@
                     },
                     {
                         name: this.$t('general.filters.quarters'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'quarter_id',
                         data: this.quarters,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteQuarters
                     },
                     {
                         name: this.$t('general.filters.buildings'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'building_id',
                         data: this.buildings,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteBuildings
                     },
                     {
                         name: this.$t('general.filters.property_managers'),
-                        type: 'select',
+                        type: 'remote-select',
                         key: 'manager_id',
                         data: this.propertyManagers,
+                        remoteLoading: false,
+                        fetch: this.fetchRemotePropertyManagers
                     },
                     {
                         name: this.$t('general.filters.requests'),
@@ -201,23 +215,11 @@
         async created() {
             this.isLoadingFilters = true;
             this.isReady = true;
-            const quarters = await this.axios.get('quarters')
-            this.quarters = quarters.data.data.data;
-
-            const propertyManagers = await this.axios.get('propertyManagers?get_all=true')
-            this.propertyManagers = propertyManagers.data.data.map((propertyManager) => {
-                return {
-                    id: propertyManager.id,
-                    name: propertyManager.user.name
-                }
-            });
-
+            
             const states = await this.axios.get('states?filters=true')
             this.states = states.data.data;
 
-            const buildings = await this.axios.get('buildings?get_all=true')
-            this.buildings = buildings.data.data;
-
+            
             this.types = Object.entries(this.$constants.units.type).map(([value, label]) => ({value: +value, name: this.$t(`models.unit.type.${label}`)}))
             this.isLoadingFilters = false;
         }
