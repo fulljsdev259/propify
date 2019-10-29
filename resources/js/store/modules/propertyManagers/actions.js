@@ -55,14 +55,14 @@ export default {
     },
     assignQuarter({}, payload) {
         return new Promise((resolve, reject) => {
-            axios.post(`propertyManagers/${payload.id}/quarters/${payload.toAssignId}`, {}).then((resp) => {
+            axios.post(`propertyManagers/${payload.id}/quarters/${payload.toAssignId}`, payload).then((resp) => {
                 resolve(resp.data);
             }).catch(({response: {data: err}}) => reject(err))
         });
     },
     assignBuilding({}, payload) {
         return new Promise((resolve, reject) => {
-            axios.post(`propertyManagers/${payload.id}/buildings/${payload.toAssignId}`, {}).then((resp) => {
+            axios.post(`propertyManagers/${payload.id}/buildings/${payload.toAssignId}`, payload).then((resp) => {
                 resolve(resp.data);
             }).catch(({response: {data: err}}) => reject(err))
         });
