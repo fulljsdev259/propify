@@ -15,7 +15,7 @@
                     </el-button>
                 </ui-heading>
                 <ui-divider />
-                <dynamic-scroller ref="dynamic-scroller" :items="requests.data" :min-item-size="249" v-if="!loading">
+                <dynamic-scroller ref="dynamic-scroller" :items="requests.data" :min-item-size="249">
                     <template #before v-if="loading && !requests.data.length">
                         <loader v-for="idx in 5" :key="idx" />
                     </template>
@@ -277,7 +277,7 @@
 
                 await this.$store.dispatch('newRequests/get', {
                     page,
-                    per_page: 0,
+                    per_page: 25,
                     sortedBy: 'desc',
                     orderBy: 'created_at',
                     ...params
@@ -395,208 +395,251 @@
     }
 </script>
 
-<style lang="sass">
-    .requests__filter-popover
-        padding: 16px
-        border-radius: 12px
-        box-shadow: 0 1px 3px transparentize(#000, .88), 0 1px 2px transparentize(#000, .76)
+<style lang="scss">
+    .requests__filter-popover {
+        padding: 16px;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px transparentize(#000, .88), 0 1px 2px transparentize(#000, .76);
 
-        .el-button
-            width: 100%
-            margin-top: 8px
+        .el-button {
+            width: 100%;
+            margin-top: 8px;
+        }
+    }
 </style>
 
-<style lang="sass" scoped>
-    .requests
-        display: flex
-        padding: 0 !important
-        flex-direction: column
-        overflow: hidden !important
+<style lang="scss" scoped>
+    .requests {
+        display: flex;
+        padding: 0 !important;
+        flex-direction: column;
+        overflow: hidden !important;
 
-        @media screen and (max-width: 414px)
-            .fit-button 
+        @media screen and (max-width: 414px) {
+            .fit-button {
                 padding: 7px 15px;
                 height: 31px;
+            }
+        }
 
-        &:before
-            content: ''
-            top: 0
-            left: 0
-            z-index: -1
-            width: 100%
-            height: 100%
-            position: fixed
-            filter: opacity(.08)
-            pointer-events: none
-            background-repeat: no-repeat
-            background-attachment: fixed
-            background-position: top left
-            background-image: url('~img/5c7d3b0b0f0f4.png')
+        &:before {
+            content: '';
+            top: 0;
+            left: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            filter: opacity(.08);
+            pointer-events: none;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: top left;
+            background-image: url('~img/5c7d3b0b0f0f4.png');
+        }
 
-        .container
-            display: flex
-            padding: 0 !important
-            flex-direction: column
-            overflow: hidden !important
+        .container {
+            display: flex;
+            padding: 0 !important;
+            flex-direction: column;
+            overflow: hidden !important;
 
-            .inner-container
-                height: 100%
-                padding: 16px
-                overflow-y: auto
+            .inner-container {
+                height: 100%;
+                padding: 16px;
+                overflow-y: auto;
+            }
 
-            .vue-recycle-scroller
-                max-width: 640px
+            .vue-recycle-scroller {
+                max-width: 640px;
 
-                /deep/ .vue-recycle-scroller__item-wrapper
-                    overflow: visible
+                :global(.vue-recycle-scroller__item-wrapper) {
+                    overflow: visible;
 
-                    /deep/ .vue-recycle-scroller__item-view > div
-                        padding: 8px 0
+                    :global(.vue-recycle-scroller__item-view > div) {
+                        padding: 8px 0;
 
-                        .request-card
-                            .el-tabs .el-tabs__content .el-tab-pane
-                                &:nth-child(1)
-                                    .el-button
-                                        float: right
+                        .request-card {
+                            .el-tabs .el-tabs__content .el-tab-pane {
+                                &:nth-child(1) {
+                                    .el-button {
+                                        float: right;
+                                    }
+                                }
 
-                                &:nth-child(2)
-                                    .ui-divider
-                                        margin-top: 32px
+                                &:nth-child(2) {
+                                    .ui-divider {
+                                        margin-top: 32px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
-                /deep/ .vue-recycle-scroller__slot .el-loading-parent--relative
-                    min-height: 42px
+                :global(.vue-recycle-scroller__slot .el-loading-parent--relative) {
+                    min-height: 42px;
+                }
+            }
+        }
 
-        .ui-drawer
+        .ui-drawer {
 
-            @media screen and (max-width: 414px) 
+            @media screen and (max-width: 414px) {
                 width: 100% !important;
                 max-width: 100%!important;
+            }
 
-            &.full-width 
-                @media screen and (max-height: 414px)
+            &.full-width {
+                @media screen and (max-height: 414px) {
                     width: 100% !important;
                     max-width: 100%!important;
+                }
+            }
             
-            &:before
-                content: ''
-                position: fixed
-                top: 0
-                left: 0
-                width: 100%
-                height: 100%
-                background-repeat: no-repeat
-                background-position: top center
-                width: 100%
-                height: 100%
-                filter: opacity(0.08)
-                pointer-events: none
+            &:before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-repeat: no-repeat;
+                background-position: top center;
+                width: 100%;
+                height: 100%;
+                filter: opacity(0.08);
+                pointer-events: none;
+            }
 
-            .el-tabs
-                height: 100%
-                display: flex
-                flex-direction: column
+            .el-tabs {
+                height: 100%;
+                display: flex;
+                flex-direction: column;
 
-                /deep/ .el-tabs__header
-                    margin-bottom: 0
+                :global(.el-tabs__header) {
+                    margin-bottom: 0;
 
-                    /deep/ .el-tabs__nav-wrap
-                        /deep/ .el-tabs__nav-scroll
-                            /deep/ .el-tabs__nav
-                                border: 0
+                    :global(.el-tabs__nav-wrap)
+                        :global(.el-tabs__nav-scroll)
+                            :global(.el-tabs__nav) {
+                                border: 0;
+                            }
+                }
 
-                /deep/ .el-tabs__content
-                    height: 100%
-                    overflow-y: auto
-                    display: flex
-                    flex-direction: column
+                :global(.el-tabs__content) {
+                    height: 100%;
+                    overflow-y: auto;
+                    display: flex;
+                    flex-direction: column;
 
-                    /deep/ .el-tab-pane
-                        height: 100%
-                        display: flex
-                        flex-direction: column
+                    :global(.el-tab-pane) {
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
 
-                        > *
-                            padding: 16px
+                        > * {
+                            padding: 16px;
+                        }
 
-                        .el-tabs
-                            padding: 0
+                        .el-tabs {
+                            padding: 0;
+                        }
 
-                        .chat
-                            .comments-list
-                                .vue-recycle-scroller
-                                    margin-top: -16px
-                                    margin-right: -16px
-                                    padding-top: 16px
-                                    padding-right: 16px
+                        .chat {
+                            .comments-list {
+                                .vue-recycle-scroller {
+                                    margin-top: -16px;
+                                    margin-right: -16px;
+                                    padding-top: 16px;
+                                    padding-right: 16px;
+                                }
+                            }
+                        }
 
-                        .ui-divider
-                            padding: 0
+                        .ui-divider {
+                            padding: 0;
+                        }
                             
-                        .upload-description
+                        .upload-description {
                             margin: 16px;
-                            padding: 0
+                            padding: 0;
+                        }
                         
-                        .ui-media-uploader 
-                            flex-grow: 1
+                        .ui-media-uploader {
+                            flex-grow: 1;
+                        }
+                        // .ui-media-gallery {
+                        //     height: 100%;
+                        //     padding: 16px;
+                        // }
 
-                            
+                        // .audit {
+                        //     padding: 16px;
+                        // }
+                    }
+                }
+            }
+            .ui-divider {
+                margin: 32px 16px 0 16px;
+                padding: 0;
 
-                        // .ui-media-gallery
-                        //     height: 100%
-                        //     padding: 16px
-
-                        // .audit
-                        //     padding: 16px
-            .ui-divider
-                margin: 32px 16px 0 16px
-                padding: 0
-
-                /deep/ .ui-divider__content
-                    left: 0
-                    z-index: 1
-                    padding-left: 0
-                    font-size: 16px
-                    font-weight: 700
-                    color: var(--color-primary)
+                :global(.ui-divider__content) {
+                    left: 0;
+                    z-index: 1;
+                    padding-left: 0;
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: var(--color-primary);
+                }
+            }
                     
-            .content
-                height: calc(100% - 32px)
-                display: flex
-                padding: 16px
-                overflow-y: auto
-                flex-direction: column
-                position: relative
+            .content {
+                height: calc(100% - 32px);
+                display: flex;
+                padding: 16px;
+                overflow-y: auto;
+                flex-direction: column;
+                position: relative;
 
-                .el-form
-                    flex: 1
-                    display: flex
-                    flex-direction: column
+                .el-form {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
 
-                    /deep/ .el-input .el-input__inner,
-                    /deep/ .el-textarea .el-textarea__inner
-                        background-color: transparentize(#fff, .44)
+                    :global(.el-input .el-input__inner),
+                    :global(.el-textarea .el-textarea__inner) {
+                        background-color: transparentize(#fff, .44);
+                    }
 
-                    /deep/ .el-loading-mask
-                        position: fixed
+                    :global(.el-loading-mask) {
+                        position: fixed;
+                    }
 
-                    /deep/ .ui-divider__content
-                        left: 0
-                        z-index: 1
-                        padding-left: 0
-                        font-size: 16px
-                        font-weight: 700
-                        color: var(--color-primary)
+                    :global(.ui-divider__content) {
+                        left: 0;
+                        z-index: 1;
+                        padding-left: 0;
+                        font-size: 16px;
+                        font-weight: 700;
+                        color: var(--color-primary);
+                    }
+                }
+            }
+        }
 
-                   
-
-        /deep/ .el-button+.el-button
-            margin-right: 10px
-
+        :global(.el-button+.el-button) {
+            margin-right: 10px;
+        }
+    }
         
-    @media only screen and (max-width: 676px)
+    @media only screen and (max-width: 676px) {
         .requests
-            /deep/ .el-dialog
-                width: 90% !important
-            /deep/ .ui-heading__content__description
-                display: none
+            :global(.el-dialog) {
+                width: 90% !important;
+            }
+            :global(.ui-heading__content__description) {
+                display: none;
+            }
+    }
 </style>
