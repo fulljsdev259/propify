@@ -43,13 +43,6 @@ class ListingTransformer extends BaseTransformer
             'comments_count' => $model->all_comments_count,
         ];
 
-        if ($model->relationExists('audit')) {
-            $audit = $model->audit;
-            if ($audit) {
-                $response['audit_id'] = $audit->id;
-            }
-        }
-
-        return $response;
+        return $this->addAuditIdInResponseIfNeed($model, $response);
     }
 }

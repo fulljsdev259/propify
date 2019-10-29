@@ -45,13 +45,6 @@ class RequestTransformer extends BaseTransformer
             'sent_reminder_user_ids' => $model->sent_reminder_user_ids,
         ];
 
-        if ($model->relationExists('audit')) {
-            $audit = $model->audit;
-            if ($audit) {
-                $response['audit_id'] = $audit->id;
-            }
-        }
-
         if ($model->due_date) {
             $response['due_date'] = $model->due_date->format('Y-m-d');
         }
@@ -117,6 +110,6 @@ class RequestTransformer extends BaseTransformer
             $response['media'] = (new MediaTransformer)->transformCollection($model->media);
         }
 
-        return $response;
+        return $this->addAuditIdInResponseIfNeed($model, $response);
     }
 }

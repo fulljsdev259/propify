@@ -10,6 +10,7 @@ use App\Notifications\PasswordResetSuccess;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManager as Image;
+use OwenIt\Auditing\Models\Audit;
 use Prettus\Repository\Events\RepositoryEntityUpdated;
 
 /**
@@ -64,6 +65,7 @@ class UserRepository extends BaseRepository
         $settings = Arr::pull($attributes, 'settings');
         $settings = $model->settings()->create($settings);
         $model->setRelation('settings', $settings);
+        $model->setRelation('role', $role);
 
         if (in_array($role->name, ['administrator'])) {
             dispatch(new NewAdminNotification($model));
@@ -105,14 +107,18 @@ class UserRepository extends BaseRepository
         if (isset($attributes['role'])) {
             $role = (new RoleRepository(app()))->getRoleByName($attributes['role']);
             if ($role) {
-                $model->detachRoles();
-                $model->attachRole($role);
+                $model->roles()->sync($role);
+                // for audit
+                $model->setRelation('role', $role);
             }
         }
 
         $settings = Arr::pull($attributes, 'settings');
         if ($settings) {
-            $model->settings()->update($settings);
+            $userSettings = $model->settings;
+            $userSettings->update($settings);
+            // for audit
+            $model->setRelation('settings', $userSettings);
         }
 
         return $model;
@@ -123,15 +129,23 @@ class UserRepository extends BaseRepository
     /**
      * @param string $fileData
      * @param User $user
+     * @param null $mergeInAudit
      * @return string
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function uploadImage(string $fileData, User $user)
+    public function uploadImage(string $fileData, User $user, $mergeInAudit = null)
     {
         $avatar = Str::slug(sprintf('%s-%d', $user->name, $user->id)) . '.png';
         $imgPath = storage_path(sprintf('app/public/avatar/%s', $avatar));
 
         (new Image)->make($fileData)->encode('png', 100)->fit(800, 800)->save($imgPath);
+        if ($mergeInAudit) {
+            $audit = is_integer($mergeInAudit)
+                ? Audit::find($mergeInAudit)
+                : $mergeInAudit;
 
+            (new App\Models\AuditableModel())->addDataInAudit('avatar', $avatar, $audit);
+        }
         return sprintf('storage/avatar/%s', $avatar);
     }
 

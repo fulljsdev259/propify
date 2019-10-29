@@ -108,7 +108,7 @@
                                                 :key="acquisition.value"
                                                 :label="acquisition.name"
                                                 :value="acquisition.value"
-                                                v-for="acquisition in acquisitions">
+                                                v-for="acquisition in acquisition_phases">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
@@ -129,10 +129,10 @@
                                                    v-model="model.qualification"
                                                    @change="changeQualification">
                                             <el-option
-                                                :key="k"
-                                                :label="$t(`models.request.qualification.${qualification}`)"
-                                                :value="parseInt(k)"
-                                                v-for="(qualification, k) in constants.requests.qualification">
+                                                    :key="qualification.value"
+                                                    :label="qualification.name"
+                                                    :value="qualification.value"
+                                                    v-for="qualification in qualifications">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
@@ -410,7 +410,7 @@
                                         <el-col :md="12" v-if="model.active_reminder">
                                             <el-form-item :label="$t('models.request.days_left')"
                                                         prop="days_left">
-                                                <el-input v-model="model.days_left"></el-input>
+                                                <el-input v-model="model.days_left" type="number"></el-input>
                                             </el-form-item>
                                         </el-col>
                                         <el-col :md="12" v-if="model.active_reminder">
@@ -595,7 +595,6 @@
                     buttons: [{
                         title: 'models.request.notify',
                         tooltipMode: true,
-                        type: 'success',
                         icon: 'el-icon-message',
                         view: 'request',
                         onClick: this.openNotifyProvider
@@ -625,7 +624,6 @@
                 }
             },
             selectedRequestData() {
-                console.log('sub', this.model.sub_category_id)
                 return {
                     resident: this.model.resident,
                     request_format: this.model.request_format,
@@ -634,9 +632,6 @@
             },
             mediaCount() {
                 if(this.model.media) {
-                    // if(this.model.media.length >= 99) {
-                    //     document.getElementById('tab-request_images').style.paddingRight = '50px';
-                    // }
                     return this.model.media.length;
                 } else {
                     return 0;
@@ -758,24 +753,6 @@
                 }
             }
         },
-        // watch: {
-        //     'requestCommentCount': {
-        //         immediate: false,
-        //         handler (value) {
-        //             if(value >= 99) {
-        //                 document.getElementById('tab-comments').style.paddingRight = '50px';
-        //             }
-        //         }
-        //     },
-        //     'noticeCommentCount': {
-        //         immediate: false,
-        //         handler (value) {
-        //             if(value >= 99) {
-        //                 document.getElementById('tab-internal-notices').style.paddingRight = '50px';
-        //             }
-        //         }
-        //     }
-        // },
     };
 </script>
 <style lang="scss" scoped>
@@ -829,9 +806,6 @@
         }
     }
 
-    #tab-audit{
-        padding-left:40px;
-    }
 
     .summary-row {
         background-color: #F3F3F3;
@@ -862,10 +836,6 @@
                 }
             }
         }
-    }
-
-    #tab-request_images {
-        padding-right: 40px !important;
     }
 
 

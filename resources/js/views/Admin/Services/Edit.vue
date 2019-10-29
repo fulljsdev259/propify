@@ -260,7 +260,8 @@
                         title: 'general.unassign',
                         type: 'danger',
                         icon: 'el-icon-close',
-                        onClick: this.notifyUnassignment
+                        onClick: this.notifyUnassignment,
+                        tooltipMode: true,
                     }]
                 }]
             }

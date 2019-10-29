@@ -1493,6 +1493,7 @@ class RequestAPIController extends AppBaseController
      * @param int $id
      * @param UnAssignRequest $unAssignRequest
      * @return mixed
+     * @throws Exception
      */
     public function deleteRequestAssignee(int $id, UnAssignRequest $unAssignRequest)
     {

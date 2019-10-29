@@ -38,6 +38,8 @@ export default (config = {}) => {
                     location: '',
                     room: '',
                     capture_phase: '',
+                    acquisition_phase: '',
+                    has_qualification: '',
                     component: '',
                     keyword: '',
                     keywords: [],
@@ -102,6 +104,7 @@ export default (config = {}) => {
                 locations: [],
                 rooms: [],
                 acquisitions: [],
+                acquisition_phases: [],
                 costs: [],
                 showSubCategory: false,
                 showPayer: false,
@@ -352,11 +355,11 @@ export default (config = {}) => {
                 this.showAcquisition =  p_category.acquisition == 1 ? true : false;
             },
             changeSubCategory() {
-                const subcategory = this.sub_categories.find(category => {
+                const sub_category = this.sub_categories.find(category => {
                     return category.id == this.model.sub_category_id;
                 });
                 
-                this.model.subcategory = subcategory
+                this.model.sub_category = sub_category
 
                 this.model.room = '';
                 this.model.location = '';
@@ -364,13 +367,13 @@ export default (config = {}) => {
                 this.showUmgebung = false;
                 this.showWohnung = false;
 
-                if(subcategory.room == 1) {
+                if(sub_category.room == 1) {
                     this.showWohnung = true;
                 }
-                else if(subcategory.location == 1) {
+                else if(sub_category.location == 1) {
                     this.showLiegenschaft = true;
                 }
-                else if(subcategory.location == 0 && subcategory.room == 0) {
+                else if(sub_category.location == 0 && sub_category.room == 0) {
                     this.showUmgebung = true;
                 }
             },
@@ -393,8 +396,14 @@ export default (config = {}) => {
 
                 return false;
             },
-            async getRealCategories() {
+            getLanguageI18n() {
 
+                this.locations = Object.entries(this.$constants.requests.location).map(([value, label]) => ({value: +value, name: this.$t(`models.request.location.${label}`)}))
+                this.rooms = Object.entries(this.$constants.requests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
+                this.acquisitions = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
+                this.acquisition_phases = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
+                this.qualifications = Object.entries(this.$constants.requests.qualification).map(([value, label]) => ({value: +value, name: this.$t(`models.request.qualification.${label}`)}))
+                this.costs = Object.entries(this.$constants.requests.payer).map(([value, label]) => ({value: +value, name: this.$t(`models.request.payer.${label}`)}))
                 this.categories = this.$constants.requests.categories_data.tree
 
                 if(this.model.category_id)
@@ -405,15 +414,6 @@ export default (config = {}) => {
 
                     this.sub_categories = p_category ? p_category.sub_categories : [];
                 }
-
-            },
-            getLanguageI18n() {
-
-                this.locations = Object.entries(this.$constants.requests.location).map(([value, label]) => ({value: +value, name: this.$t(`models.request.location.${label}`)}))
-                this.rooms = Object.entries(this.$constants.requests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
-                this.acquisitions = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
-                this.costs = Object.entries(this.$constants.requests.payer).map(([value, label]) => ({value: +value, name: this.$t(`models.request.payer.${label}`)}))
-                
             },
             async deleteTag(tag) {
                 
@@ -516,18 +516,16 @@ export default (config = {}) => {
                     ...mixin.methods,
                     ...mapActions(['createRequest', 'createRequestTags', 'getTags']),
                     async saveRequest() {
-                        // if(this.model.category_id == 1) {
-                        //     this.model.category_id = this.model.defect;
-                        // }
-
                         this.model.category_id = this.model.category_id
                         this.model.sub_category = this.model.sub_category_id 
+
+                        //@TODO : rename and delete the orginal ; qualification -> has_qualification, capture_phase -> acquisition_phase
+                        // this.model.has_qualification = this.model.qualification
+                        // this.model.acquisition_phase = this.model.capture_phase
 
                         const resp = await this.createRequest(this.model);
                         
                         let requestId = resp.data.id;
-
-                        
 
                         await this.createRequestTags({
                             id: requestId,
@@ -600,8 +598,6 @@ export default (config = {}) => {
                         message: this.$t('validation.general.required')
                     }];
                     
-
-                    this.getRealCategories();
                     this.getLanguageI18n();
 
                     const tagsResp = await this.getTags({get_all: true, search: ''});
@@ -621,7 +617,7 @@ export default (config = {}) => {
                     ...mapActions(['getRequest', 'updateRequest', 'getResident', 'getRequestConversations', 'getAddress', 'getRequestTags',
                 'createRequestTags', 'getTags', 'deleteRequestTag']),
                     async fetchCurrentRequest() {
-                        this.getLanguageI18n();
+                        
                         const resp = await this.getRequest({id: this.$route.params.id});
 
                         if(resp) {
@@ -750,8 +746,6 @@ export default (config = {}) => {
                 mixin.created = async function () {
                     this.loading.state = true;
 
-                    
-
                     const tagsResp = await this.getTags({get_all: true, search: ''});
 
                     if(tagsResp.success == true) 
@@ -769,19 +763,9 @@ export default (config = {}) => {
                     tags.data.data.map(item => {
                         this.model.keywords.push(item.name);
                     })
-                    
-                    this.categories = this.$constants.requests.categories_data.tree
-                    
+
                     await this.fetchCurrentRequest();
-
-                    if(this.model.category_id)
-                    {
-                        let p_category = this.categories.find(category => {
-                            return category.id === this.model.category_id;
-                        });
-
-                        this.sub_categories = p_category ? p_category.sub_categories : [];
-                    }
+                    this.getLanguageI18n();
 
                     this.loading.state = false;
                 };

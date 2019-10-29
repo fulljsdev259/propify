@@ -22,6 +22,16 @@ export default {
             return resident;
         });
     },
+    latestResidents({residents}, getters, { application: { constants } }) {
+        return residents.map(resident => {
+            resident.name = `${resident.first_name} ${resident.last_name}`;
+            resident.status_label = `models.resident.status.${constants.residents.status[resident.status]}`;
+            resident.address = resident.address ? resident.address['street'] + ' ' + resident.address['house_num'] : '';
+            resident.status_class_suffix = constants.residents.status[resident.status];
+
+            return resident;
+        });
+    },
     residentsMeta({residents}) {
         return _.omit(residents, 'data');
     },

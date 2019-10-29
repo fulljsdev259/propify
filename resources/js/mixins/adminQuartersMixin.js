@@ -17,7 +17,8 @@ export default (config = {}) => {
                     street: 'street',
                     house_num: 'house_num',
                     media: [],
-                    internal_quarter_id: ''
+                    internal_quarter_id: '',
+
                 },
                 quarter_format: '',
                 validationRules: {
@@ -226,35 +227,17 @@ export default (config = {}) => {
                     async fetchCurrentQuarter() {
                         const resp = await this.getQuarter({id: this.$route.params.id});
                         
-                        this.model.id = resp.id;
-                        this.model.name = resp.name;
-                        this.model.description = resp.description;
-                        this.model.count_of_buildings = resp.count_of_buildings;
-                        this.model.internal_quarter_id = resp.internal_quarter_id;
-                        this.model.media = resp.media
+                        this.model = {...resp}
+
                         if(resp.address != undefined) {
-                            this.model.zip = resp.address.zip;
-                            this.model.city = resp.address.city;
-                            this.model.state_id = resp.address.state.id;
+                            this.model.zip = this.model.address.zip;
+                            this.model.city = this.model.address.city;
+                            this.model.state_id = this.model.address.state.id;
                         }
-                        this.model.quarter_format = resp.quarter_format;
 
                         this.fileCount = this.model.media.length
-                        // if(this.fileCount >= 99) {
-                        //     document.getElementById('tab-files').style.paddingRight = '50px';
-                        // }
-
-                        //this.model.contracts = []
-                        // resp.buildings.forEach(building => {
-                        //     this.model.contracts = this.model.contracts.concat(building.contracts)
-                        // })
-                        
-                        this.model.contracts = resp.contracts
-                        
                         this.contractCount = this.model.contracts.length
-                        // if(this.contractCount >= 99) {
-                        //     document.getElementById('tab-contracts').style.paddingRight = '50px';
-                        // }
+
                     },
                     submit() {
                         return new Promise((resolve, reject) => {

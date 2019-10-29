@@ -22,7 +22,7 @@ class PinboardTransformer extends BaseTransformer
         $ut = new UserTransformer();
         $tt = new ResidentTransformer();
 
-        $ret = [
+        $response = [
             'id' => $model->id,
             'type' => $model->type,
             'sub_type' => $model->sub_type,
@@ -46,47 +46,42 @@ class PinboardTransformer extends BaseTransformer
             'pinned' => $model->announcement,           // @TODO delete
             'notify_email' => $model->notify_email,
         ];
-        if ($model->relationExists('audit')) {
-            $audit = $model->audit;
-            if ($audit) {
-                $ret['audit_id'] = $audit->id;
-            }
-        }
+
         if ($model->announcement) {
-            $ret['execution_start'] = $this->formatExecutionTime($model, 'execution_start');
-            $ret['execution_end'] = $this->formatExecutionTime($model, 'execution_end');
-            $ret['is_execution_time'] = $model->is_execution_time;
-            $ret['execution_period'] = $model->execution_period;
+            $response['execution_start'] = $this->formatExecutionTime($model, 'execution_start');
+            $response['execution_end'] = $this->formatExecutionTime($model, 'execution_end');
+            $response['is_execution_time'] = $model->is_execution_time;
+            $response['execution_period'] = $model->execution_period;
         }
 
         if (key_exists('views_count', $model->getAttributes())) {
-            $ret['views_count'] = $model->views_count;
+            $response['views_count'] = $model->views_count;
         }
 
         if ($model->relationExists('buildings')) {
-            $ret['buildings'] = (new BuildingTransformer)->transformCollection($model->buildings);
+            $response['buildings'] = (new BuildingTransformer)->transformCollection($model->buildings);
         }
         if ($model->relationExists('quarters')) {
-            $ret['quarters'] = (new QuarterTransformer)->transformCollection($model->quarters);
+            $response['quarters'] = (new QuarterTransformer)->transformCollection($model->quarters);
         }
         if ($model->relationExists('providers')) {
-            $ret['providers'] = (new ServiceProviderTransformer)->transformCollection($model->providers);
+            $response['providers'] = (new ServiceProviderTransformer)->transformCollection($model->providers);
         }
         if ($model->relationExists('likes')) {
-            $ret['likes'] = (new LikeTransformer)->transformCollection($model->likes);
+            $response['likes'] = (new LikeTransformer)->transformCollection($model->likes);
         }
         if ($model->relationExists('media')) {
-            $ret['media'] = (new MediaTransformer)->transformCollection($model->media);
+            $response['media'] = (new MediaTransformer)->transformCollection($model->media);
         }
         if ($model->relationExists('views')) {
-            $ret['views'] = $model->views->sum('views');
+            $response['views'] = $model->views->sum('views');
         }
         if ($model->relationExists('announcement_email_receptionists')) {
-            $ret['announcement_email_receptionists'] = (new AnnouncementEmailReceptionistTransformer())
+            $response['announcement_email_receptionists'] = (new AnnouncementEmailReceptionistTransformer())
                 ->transformCollection($model->announcement_email_receptionists);
         }
 
-        return $ret;
+        return $this->addAuditIdInResponseIfNeed($model, $response);
     }
 
     protected function formatExecutionTime($model, $col)

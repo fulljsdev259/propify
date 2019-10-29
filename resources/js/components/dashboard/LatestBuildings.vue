@@ -8,7 +8,7 @@
         </div>
         <list-table
             :header="header"
-            :items="buildings"
+            :items="latestBuildings"
             :loading="{state: loading}"
             @selectionChanged="selectionChanged"
         >
@@ -18,8 +18,6 @@
 
 <script>
     import {mapActions, mapGetters} from 'vuex';
-    import axios from '@/axios';
-
     import {displayError, displaySuccess} from "helpers/messages";
     import DashboardListMixin from 'mixins/DashboardListMixin';
     
@@ -69,16 +67,8 @@
         },
         methods: {
             ...mapActions(["getBuildings"]),
-            // edit({id}) {
-            //     this.$router.push({
-            //         name: 'adminBuildingsEdit',
-            //         params: {
-            //             id
-            //         }
-            //     });
-            // },
             async fetchData() {
-                 const buildings = await this.getBuildings({
+                const buildings = await this.getBuildings({
                     page : 1,
                     per_page : 5
                 });
@@ -88,12 +78,11 @@
                     building.residentscount = building.residents.length > 2 ? (building.residents.length - 2) : 0;
                     building.residents = building.residents.splice(0, 2);
                 })
-                
                 this.items = buildings.data.data
             }
         },
         computed: {
-            ...mapGetters(['buildings']),
+            ...mapGetters(['latestBuildings']),
         },
         created() {
           this.fetchData();

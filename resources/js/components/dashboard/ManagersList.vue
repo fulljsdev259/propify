@@ -2,15 +2,13 @@
     <div class="managers-list dashboard-table">
         <div class="link-container">
             <router-link :to="{name: 'adminPropertyManagers'}">
-                <div @click="searchroute">
-                    <span class="title">{{ $t('dashboard.requests.go_to_property_managers') }} </span>
-                    <i class="icon-right icon"/>
-                </div>
+                <span class="title">{{ $t('dashboard.requests.go_to_property_managers') }} </span>
+                <i class="icon-right icon"/>
             </router-link>
         </div>
         <list-table
             :header="header"
-            :items="items"
+            :items="propertyManagers"
             :loading="{state: loading}"
             @selectionChanged="selectionChanged"
             :height="250"
@@ -20,9 +18,7 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex';
-    import axios from '@/axios';
-
+    import {mapActions, mapGetters} from 'vuex';
     import {displayError, displaySuccess} from "helpers/messages";
     import DashboardListMixin from 'mixins/DashboardListMixin';
     
@@ -61,38 +57,24 @@
                         }
                     ]
                 }],
+                items: []
             };
         },
         methods: {
-            fetchData() {
-              let that = this;
-              let url = 'propertyManagers?get_all=true&has_req=1';
-              return axios.get(url)
-              .then(function (response) {
-                const items = response.data.data.map(item => {
-                  item.name = item.first_name + ' ' + item.last_name;
-                  item.requests_count = item.requests_received_count
-                                        + item.requests_assigned_count
-                                        + item.requests_in_processing_count
-                                        + item.requests_reactivated_count
-                                        + item.requests_done_count
-                                        + item.requests_archived_count;
-                  return item;
+            ...mapActions(['getPropertyManagers']),
+            async fetchData() {
+                const propertyManagers = await this.getPropertyManagers({
+                    get_all : true,
+                    has_req : 1
                 });
-                that.items = items;
-              }).catch(function (error) {
-                  console.log(error);
-              })
+                this.items = propertyManagers.data
             },
-            searchroute() {
-                while( document.querySelector('.content .is-active') != null) 
-                {
-                    document.querySelector('.content .is-active').classList.remove('is-active'); 
-                }
-            }
+        },
+        computed: {
+            ...mapGetters(['propertyManagers']),
         },
         created() {
-          this.fetchData();
+            this.fetchData();
         }
     }
 </script>

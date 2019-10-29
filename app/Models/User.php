@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\Helper;
+use App\Traits\BaseModelTrait;
 use App\Traits\BuildingRelation;
 use App\Traits\OldChagesAttribute;
 use App\Traits\RequestRelation;
@@ -137,7 +138,8 @@ class User extends Authenticatable implements LikerContract, Commentator, Audita
         BuildingRelation,
         RequestRelation,
         \App\Traits\Auditable,
-        OldChagesAttribute;
+        OldChagesAttribute,
+        BaseModelTrait;
 
     const Title = [
         'mr',
@@ -312,10 +314,5 @@ class User extends Authenticatable implements LikerContract, Commentator, Audita
         $a->save();
 
         return $a->url;
-    }
-
-    public function relationExists($key)
-    {
-        return parent::relationLoaded($key) && isset($this->$key);
     }
 }

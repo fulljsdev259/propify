@@ -530,7 +530,8 @@
                         icon: 'el-icon-close',
                         title: 'general.unassign',
                         type: 'danger',
-                        onClick: this.notifyUnassignment
+                        onClick: this.notifyUnassignment,
+                        tooltipMode: true,
                     }]
                 }],
                 assignmentsProviderColumns: [{
