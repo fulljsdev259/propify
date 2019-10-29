@@ -195,9 +195,9 @@
         methods: {
             ...mapActions(['changePinboardPublish', 'updatePinboard', 'getBuildings', 'getResidents']),
             async fetchRemoteQuarters(search = '') {
-                const buildings = await this.getQuarters({get_all: true, search});
+                const quarters = await this.getQuarters({get_all: true, search});
 
-                return buildings.data
+                return quarters.data
             },
             async fetchRemoteBuildings(search = '') {
                 const buildings = await this.getBuildings({get_all: true, search});
