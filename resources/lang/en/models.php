@@ -153,6 +153,7 @@ return [
         'saved' => 'Building saved',
         'floors' => 'Floors',
         'under_floor' => 'Under floor',
+        'ground_floor' => 'Ground floor',
         'basement' => 'Basement',
         'attic' => 'Attic',
         'floor_nr' => 'Number of floors',

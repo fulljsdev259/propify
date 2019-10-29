@@ -513,5 +513,11 @@ return [
         'property_managers' => 'Property managers',
         'templates' => 'Templates'
     ],
-    'contracts' => 'Contracts'
+    'contracts' => 'Contracts',
+    'ordinal_endings' => [
+        'st' => 'st',
+        'nd' => 'nd',
+        'rd' => 'rd',
+        'th' => 'th',
+    ],
 ];

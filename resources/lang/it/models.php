@@ -153,6 +153,7 @@ return [
         "saved" => "Edificio salvato",
         "floors" => "Pavimenti",
         'under_floor' => 'Sotto il pavimento',
+        'ground_floor' => 'Piano terra',
         "basement" => "Nel seminterrato",
         "attic" => "In soffitta",
         "floor_nr" => "Numero di piani",
