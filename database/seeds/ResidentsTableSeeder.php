@@ -39,10 +39,6 @@ class ResidentsTableSeeder extends Seeder
 
             if ($email == 'resident@example.com' || rand(0, 1)) {
                 $unit = $units->random();
-                $building = $unit->building;
-                $data['address_id'] = $building->address_id;
-                $data['building_id'] = $building->id;
-                $data['unit_id'] = $unit->id;
                 $data['status'] = Resident::StatusActive;
                 $date = $this->getRandomTime($unit->created_at);
 
