@@ -192,6 +192,7 @@ class QuarterAPIController extends AppBaseController
 
             DB::commit();
             $quarter->load('address', 'media');
+            $quarter->setHasRelation('email_receptionists');
             $response = (new QuarterTransformer)->transform($quarter);
 
         } else {
@@ -261,9 +262,9 @@ class QuarterAPIController extends AppBaseController
                 ]);
             }
         ]);
+        $quarter->setHasRelation('email_receptionists');
 
         $response = (new QuarterTransformer)->transform($quarter);
-
         return $this->sendResponse($response, 'Quarter retrieved successfully');
     }
 
@@ -382,6 +383,7 @@ class QuarterAPIController extends AppBaseController
 
             DB::commit();
             $quarter->load('address', 'media');
+            $quarter->setHasRelation('email_receptionists');
             $response = (new QuarterTransformer)->transform($quarter);
 
         } else {
@@ -750,16 +752,17 @@ class QuarterAPIController extends AppBaseController
             'email_receptionists:id,category,property_manager_id,model_id',
             'email_receptionists.property_manager:id,first_name,last_name'
         ]);
-        $response = (new EmailReceptionistTransformer())->transformCollection($quarter->email_receptionists);
+        $response['email_receptionists'] = (new EmailReceptionistTransformer())->transformEmailReceptionists($quarter->email_receptionists);
+        $response['quarter_id'] = $quarterId;
         return $this->sendResponse($response, __('Email Receptionist get successfully'));
     }
 
     /**
      *  @SWG\Post(
      *      path="/quarters/{id}/email-receptionists",
-     *      summary="get quarter email-receptionists",
+     *      summary="set quarter email-receptionists",
      *      tags={"Quarter", "EmailReceptionist"},
-     *      description="get quarter email-receptionists",
+     *      description="set quarter email-receptionists",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
@@ -832,6 +835,7 @@ class QuarterAPIController extends AppBaseController
                 ];
                 $new = $quarter->email_receptionists()->create($savedData);
                 $emailReceptionists->push($new);
+                $categoryEmailReceptionists->push($new);
             }
         }
 
@@ -845,7 +849,8 @@ class QuarterAPIController extends AppBaseController
             'email_receptionists:id,category,property_manager_id,model_id',
             'email_receptionists.property_manager:id,first_name,last_name'
         ]);
-        $response = (new EmailReceptionistTransformer())->transformCollection($quarter->email_receptionists);
+        $response['email_receptionists'] = (new EmailReceptionistTransformer())->transformEmailReceptionists($quarter->email_receptionists);
+        $response['quarter_id'] = $quarterId;
         return $this->sendResponse($response, __('Email Receptionists get successfully'));
     }
 }
