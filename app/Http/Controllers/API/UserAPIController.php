@@ -19,6 +19,7 @@ use App\Models\Building;
 use App\Models\Settings;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use App\Repositories\File;
 use App\Transformers\MediaTransformer;
 use App\Transformers\ResidentTransformer;
 use App\Transformers\UserTransformer;
