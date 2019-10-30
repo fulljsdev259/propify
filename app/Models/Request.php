@@ -436,7 +436,7 @@ class Request extends AuditableModel implements HasMedia
 
         ],
         self::CategoryMalfunction => [
-
+            self::CapturePhaseAttr
         ],
         self::CategoryDeficiency => [
             self::CapturePhaseAttr
