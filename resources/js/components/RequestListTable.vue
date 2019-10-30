@@ -121,8 +121,7 @@
                                     filterable
                                     remote
                                     reserve-keyword
-                                    style="width: 100%;"
-                                    
+                                    class="remote-select"
                                     v-model="filterModel[filter.key]">
                                     <el-option
                                         :label="$t('general.all')"
@@ -654,7 +653,7 @@
     .el-input {
         &.el-input--suffix {
             :global(.el-input__inner) {
-                padding-right: 50px;
+                padding-right: 30px;
             }
 
             :global(.el-input__suffix) {
@@ -856,6 +855,21 @@
 
     .icon-danger {
         color: #dd6161;
+    }
+
+    .remote-select {
+        width: 100%;
+        :global(input) {
+            padding-right: 15px;
+        }
+        :global(span.el-input__suffix) {
+            display: none;
+        }
+    }
+    :global(.el-date-editor) {
+        :global(.el-input__inner) {
+            padding-right: 15px !important;
+        }
     }
 
 </style>
