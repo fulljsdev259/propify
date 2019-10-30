@@ -27,6 +27,10 @@ class QuarterTransformer extends BaseTransformer
             'count_of_buildings' => $model->count_of_buildings,
         ];
 
+        if ($model->hasAttribute('has_email_receptionists')) {
+            $response['has_email_receptionists'] = $model->has_email_receptionists;
+        }
+
         if ($model->relationExists('address')) {
             $response['address'] = (new AddressTransformer)->transform($model->address);
         }

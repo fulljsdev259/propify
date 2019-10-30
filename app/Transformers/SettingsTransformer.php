@@ -54,6 +54,7 @@ class SettingsTransformer extends TransformerAbstract
             'iframe_enable' => $model->iframe_enable,
             'cleanify_email' => $model->cleanify_email,
             'pinboard_receiver_ids' => $model->pinboard_receiver_ids,
+            'email_receptionist_ids' => $model->email_receptionist_ids,
             'email_powered_by' => $model->email_powered_by,
         ];
         if (\Auth::user()->can('edit-settings')) {
