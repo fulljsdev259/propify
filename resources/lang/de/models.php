@@ -80,6 +80,7 @@ return [
                 'limited' => 'Befristet',
             ],
             'contract_pdf' => 'Vertrag PDF',
+            'filename' => 'Name',
             'deposit_amount' => 'Kautionsbetrag',
             'type_of_deposit' => 'Art der Sicherheitsleistung',
             'deposit_types' => [
@@ -204,8 +205,8 @@ return [
         ],
         'assigned_buildings' => 'Zugewiesene Objekte',
         'warning_bar' => [
-            'title' => 'Problem gefunden',
-            'message' => "Es sieht so aus, als hätten Sie fortimo-Mitglieder nicht als E-Mail-Empfänger für Anforderungskategorien ausgewählt. Bitte wählen Sie sie aus der Einstellungsschublade, die auf der Registerkarte Anfragen verfügbar ist."
+            'title' => 'Problem beheben',
+            'message' => "Es wurden keine Empfänger für Anfragen in diesem Objekt oder dem dazugehörigen Projekt eingerichtet."
         ]
     ],
     'unit' => [
@@ -389,7 +390,7 @@ return [
         'total_units_count' => 'Anzahl Einheiten',
         'occupied_units_count' => 'Belegte Einheiten',
         'active_residents_count' => 'Aktive Bewohner',
-        'assignment' => 'Zugewiesene Personen/Administrator',
+        'assignment' => 'Zuständigkeit',
         'errors' => [
             'not_found' => "Projekt nicht gefunden.",
             'deleted' => "Fehler beim Löschen des Projekts: ",
@@ -404,10 +405,37 @@ return [
         'category' => 'Anfrage-Typ',
         'edit_title' => 'Anfrage bearbeiten',
         'add_title' => 'Anfrage hinzufügen',
-        'mass_edit' => 'Massenbearbeitung',
-        'assign_partners' => 'Servicepartner zuordnen',
-        'assign_managers' => 'Bewirtschafter zuweisen',
-        'change_status' => 'Status ändern',
+        'mass_edit' => [
+            'label' => 'Massenbearbeitung',
+            'options' => [
+                'service_provider' => 'Dienstleister',
+                'property_manager' => 'Bewirtschafter',
+                'change_status' => 'Status ändern'
+            ],
+            'service_provider' => [
+                'modal' => [
+                    'heading_title' => 'Dienstleisterüberschrift zuordnen',
+                    'content_label' => 'Sie können hier Dienstleister auswählen',
+                    'footer_button' => 'Dienstleister zuordnen',
+                    'switcher_label' => 'Benachrichtigung von Dienstleistern',
+                    'switcher_desc' => 'Sie können die betroffenen Dienstleister informieren',
+                ]
+            ],
+            'property_manager' => [
+                'modal' => [
+                    'heading_title' => 'Zuweisung der Überschrift der Hausverwalter',
+                    'content_label' => 'Sie können hier den/die Hausverwalter auswählen.',
+                    'footer_button' => 'Hausverwalter zuordnen',
+                ]
+            ],
+            'change_status' => [
+                'modal' => [
+                    'heading_title' => 'Statusüberschrift ändern',
+                    'content_label' => 'Sie können den Status hier ändern.',
+                    'footer_button' => 'Status ändern',
+                ]
+            ],
+        ],
         'due_date' => 'Zu erledigen bis',
         'solved_date' => 'Erledigt Datum',
         'closed_date' => 'Erledigt am',
@@ -442,7 +470,7 @@ return [
         'internal_notices' => 'Interne Notizen',
         'status_changed' => 'Status wurde geändert',
         'priority_changed' => 'Priorität wurde geändert',
-        'assignment' => 'Zugewiesene Personen/Firmen',        
+        'assignment' => 'Zuständigkeit',        
         'active_reminder_switcher' => 'Erinnerung',
         'days_left' => 'Wie viele Tage vorher?',
         'send_person' => 'Wer soll benachrichtigt werden?',

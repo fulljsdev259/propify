@@ -163,18 +163,6 @@ class PropertyManager extends AuditableModel
         self::TypeAdministrator => 'administrator',
     ];
 
-    const PositionCMO = 'cmo';
-    const PositionCEO = 'ceo';
-    const PositionCFO = 'cfo';
-    const PositionManager = 'manager';
-
-    const Position = [
-        self::PositionCMO,
-        self::PositionCEO,
-        self::PositionCFO,
-        self::PositionManager,
-    ];
-
     public $fillable = [
         'description',
         'user_id',

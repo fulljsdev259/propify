@@ -2,7 +2,7 @@
 
 namespace App\Transformers;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection as FCollection;

@@ -38,8 +38,10 @@ class FixContractStatus extends Command
      */
     public function handle()
     {
+        Resident::disableAuditing();
         $auditData = $this->makeActiveContractToInActiveIfNeed();
         $auditData = $this->makeInactiveContractToActiveIfNeed($auditData);
+        Resident::enableAuditing();
 
         if (!empty($auditData)) {
             (new AuditableModel())->newSystemAudit(

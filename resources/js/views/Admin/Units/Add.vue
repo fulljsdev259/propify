@@ -5,7 +5,7 @@
         </heading>
         <el-row :gutter="20" class="crud-view">
             <el-col :md="12">
-                <card :loading="loading" :header="$t('general.actions.view')">                    
+                <card :loading="loading" :header="$t('general.box_titles.details')">                    
                     <el-form :model="model" label-position="top" label-width="192px" ref="form">
                         <el-row :gutter="20">
                             <el-col :md="12">

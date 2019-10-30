@@ -11,7 +11,7 @@ trait HasCategoryMediaTrait
 
     public function registerMediaCollections()
     {
-        foreach (\ConstFileCategories::MediaCategories as $category)  {
+        foreach (\ConstantsHelpers::MediaFileCategories as $category)  {
             $this->addMediaCollection($category);
         }
     }

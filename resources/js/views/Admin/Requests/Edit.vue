@@ -491,7 +491,7 @@
                         </template>
                         <!--                    v-if="(!$can($permissions.update.serviceRequest)) || ($can($permissions.update.serviceRequest) && (media.length || (model.media && model.media.length)))"-->
                         <card class="mt15" v-if="model.id" id="comments">
-                            <el-tabs id="comments-card" v-model="activeTab2"  @tab-click="adjustAuditTabPadding">
+                            <el-tabs id="comments-card" v-model="activeTab2" >
                                 <el-tab-pane name="comments">
                                     <span slot="label">
                                         <el-badge :value="requestCommentCount" :max="99" class="admin-layout">{{ $t('models.request.comments') }}</el-badge>
@@ -586,7 +586,7 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
-                    prop: 'type',
+                    prop: 'role',
                     label: 'models.request.user_type.label',
                     i18n: this.translateType
                 }],
@@ -595,7 +595,7 @@
                     buttons: [{
                         title: 'models.request.notify',
                         tooltipMode: true,
-                        icon: 'el-icon-message',
+                        icon: 'icon-chat-empty',
                         view: 'request',
                         onClick: this.openNotifyProvider
                     }, {

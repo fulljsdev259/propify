@@ -190,7 +190,7 @@ export default {
                 .then(({data: r}) => resolve(r))
                 .catch(({response: {data: err}}) => reject(err)));
     },
-    uploadUserAvatar({commit}, payload) {
+    uploadUserAvatar({state, commit}, payload) {
         return new Promise((resolve, reject) =>
             axios.post(`users/${payload.id}/upload_image`, payload)
                 .then(({data: r}) => {

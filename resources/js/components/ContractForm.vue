@@ -327,7 +327,7 @@
                     class="contract-file-table"
                     >
                     <el-table-column
-                        :label="$t('models.contract.filename')"
+                        :label="$t('models.resident.contract.filename')"
                         prop="name"
                     >
                         <template slot-scope="scope">

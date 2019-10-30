@@ -396,7 +396,7 @@ class BuildingAPIController extends AppBaseController
                 'users'
             ]);
         $response = (new BuildingTransformer)->transform($building);
-        $response['media_category'] = \ConstFileCategories::MediaCategories; // @TODO delete
+        $response['media_category'] = \ConstantsHelpers::MediaFileCategories; // @TODO delete
 
         return $this->sendResponse($response, 'Building retrieved successfully');
     }

@@ -101,7 +101,7 @@ $config =  [
     ]
 ];
 
-$mediaCategories = ConstFileCategories::MediaCategories;
+$MediaFileCategories = ConstantsHelpers::MediaFileCategories;
 $disks = $config['disks'];
 $categoryResources = [
     'buildings',
@@ -109,7 +109,7 @@ $categoryResources = [
     'quarters',
 ];
 
-foreach ($mediaCategories as $category) {
+foreach ($MediaFileCategories as $category) {
     foreach ($categoryResources as $resource) {
         $disks[$resource . '_' . $category] = [
             'driver' => 'local',

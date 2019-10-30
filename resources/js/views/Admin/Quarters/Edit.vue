@@ -11,7 +11,7 @@
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
                     <el-tabs type="border-card" v-model="activeTab1">
-                        <el-tab-pane :label="$t('general.actions.view')" name="details">
+                        <el-tab-pane :label="$t('general.box_titles.details')" name="details">
                             <el-form :model="model" ref="form">
                                 <el-row :gutter="20">
                                     <el-col :md="12">
@@ -80,7 +80,7 @@
                         </el-tab-pane>
                         <el-tab-pane name="files">
                             <span slot="label">
-                                <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('models.building.files') }}</el-badge>
+                                <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge>
                             </span>
                             <draggable @sort="sortFiles" v-model="model.media">
                                 <transition-group name="list-complete">
@@ -176,7 +176,7 @@
                     <el-tabs type="border-card" v-model="activeRightTab">
                         <el-tab-pane name="assignees">                        
                             <span slot="label">
-                                <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('models.quarter.assignment') }}</el-badge>
+                                <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
                             </span>
                             <assignment-by-type
                                 :resetToAssignList="resetToAssignList"
@@ -200,7 +200,7 @@
                         </el-tab-pane>
                         <el-tab-pane name="buildings">
                             <span slot="label">
-                                <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('models.quarter.buildings') }}</el-badge>
+                                <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge>
                             </span>
                             <relation-list
                                 :actions="quarterActions"
@@ -230,7 +230,8 @@
                             <span slot="label">
                                 <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
                             </span>
-                            
+                            <span class="icon-cog" @click="toggleDrawer">
+                            </span>
                             <relation-list
                                 :actions="requestActions"
                                 :columns="requestColumns"
@@ -247,10 +248,10 @@
                             </span>
                             <audit v-if="model.id" :id="model.id" type="quarter" showFilter/>
                         </el-tab-pane>
-                        <el-tab-pane name="settings" :disabled="true">
+                        <!-- <el-tab-pane name="settings" :disabled="true">
                             <span slot="label" class="icon-cog" @click="toggleDrawer">
                             </span>
-                        </el-tab-pane>
+                        </el-tab-pane> -->
                     </el-tabs>
                 </el-col>
             </el-row>
@@ -392,8 +393,8 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
-                    prop: 'type',
-                    label: 'models.request.user_type.label',
+                    prop: 'role',
+                    label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
                 quarterColumns: [{
@@ -445,7 +446,9 @@
                 "uploadQuarterFile", 
                 "deleteQuarterFile",
             ]),
-
+            translateType(type) {
+                return this.$t(`general.assignment_types.${type}`);
+            },
             requestEditView(row) {
                 this.$router.push({
                     name: 'adminRequestsEdit',
@@ -474,9 +477,11 @@
                 this.setOrder();
             },
             uploadFiles(file) {
-                this.insertDocument(this.selectedFileCategory, file);
+                let success = this.insertDocument(this.selectedFileCategory, file);
+                if(!success)
+                    return;
                 if(this.fileCount){
-                    this.fileCount++;
+                    this.fileCount ++;
                 } else {
                     this.fileCount = 1;
                 }
@@ -489,8 +494,10 @@
                 }).then((resp) => {
                     displaySuccess(resp);
                     this.model.media.push(resp.media);
+                    return true;
                 }).catch((err) => {
                     displayError(err);
+                    return false;
                 });
             },
             deleteDocument(prop, index) {
@@ -677,6 +684,7 @@
 
     span.icon-cog {
         cursor: pointer;
+        float: right;
     }
     
     .ui-drawer {
