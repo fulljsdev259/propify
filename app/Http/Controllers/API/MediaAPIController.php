@@ -900,7 +900,7 @@ class MediaAPIController extends AppBaseController
      */
     protected function getFileRelated($request)
     {
-        $fileCategories = \ConstFileCategories::MediaCategories;
+        $fileCategories = \ConstantsHelpers::MediaFileCategories;
         $collectionName = '';
         $data = '';
         foreach ($fileCategories as $mediaCategory) {

@@ -741,6 +741,16 @@
     }
 </style>
 <style lang="less">
+    .wangEditor-container .wangEditor-txt {
+        padding-top: 12px;
+        line-height: 1.8;
+        h1, h2, h3, h4, h5, p {
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+    }
+
     .crud-view {
         .el-card__header {
             border-bottom: 1px solid #EBEEF5 !important;

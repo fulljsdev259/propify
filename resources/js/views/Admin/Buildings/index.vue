@@ -135,7 +135,7 @@
                     count: 'residentscount',
                     prop: 'residents'
                 }, {
-                    label: 'models.building.managers',
+                    label: 'general.box_titles.managers',
                     withUsers: true,
                     prop: 'managers',
                     count: 'managerscount'

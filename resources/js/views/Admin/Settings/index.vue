@@ -17,7 +17,7 @@
                                 <el-row :gutter="20">
                                     <el-col :md="12">
 
-                                        <el-card :header="$t('general.actions.view')">
+                                        <el-card :header="$t('general.box_titles.details')">
                                             <el-row :gutter="20">
                                                 <el-col :md="12">
                                                     <el-form-item :label="$t('general.name')" :rules="validationRules.name" prop="name">

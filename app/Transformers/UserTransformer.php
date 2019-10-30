@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 
 /**
  * Class UserTransformer.
@@ -25,7 +26,8 @@ class UserTransformer extends BaseTransformer
             'name' => $model->name,
             'email' => $model->email,
             'phone' => $model->phone,
-            'avatar' => $model->avatar,
+            'avatar' => getDefaultAvatar($model),
+            'avatar_variations' => getUserAvatars($model)
         ];
 
         if ($model->relationExists('settings')) {

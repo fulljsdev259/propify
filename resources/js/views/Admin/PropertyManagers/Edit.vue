@@ -170,7 +170,7 @@
                             </el-tab-pane>
                         </el-tabs>
 
-                        <card class="mt15" :header="$t('general.assignment')">
+                        <card class="mt15" :header="$t('general.box_titles.buildings_and_quarters')">
                             <assignment-by-type
                                     :resetToAssignList="resetToAssignList"
                                     :assignmentType.sync="assignmentType"
@@ -276,7 +276,7 @@
                     label: 'general.name'
                 }, {
                     prop: 'type',
-                    label: 'models.property_manager.assign_type',
+                    label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{

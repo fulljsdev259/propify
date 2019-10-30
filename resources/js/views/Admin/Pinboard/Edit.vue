@@ -93,7 +93,7 @@
                         </el-row>
 
                         <el-tabs type="card" v-if="this.model.type == 3" v-model="activeTab1">
-                            <el-tab-pane :label="$t('general.actions.view')" name="details">
+                            <el-tab-pane :label="$t('general.box_titles.details')" name="details">
                                 <el-form-item :label="$t('models.pinboard.title_label')" :rules="validationRules.title"
                                             prop="title">
                                     <el-input type="text" v-model="model.title"></el-input>
@@ -417,7 +417,7 @@
                         
                     </el-card>
 
-                    <el-card :header="$t('models.pinboard.buildings')" class="mt15">
+                    <el-card :header="$t('general.box_titles.buildings_and_quarters')" class="mt15">
                         <assignment-by-type
                             :resetToAssignList="resetToAssignList"
                             :assignmentType.sync="assignmentType"
@@ -521,7 +521,7 @@
                     label: 'general.name'
                 }, {
                     prop: 'type',
-                    label: 'models.pinboard.assign_type',
+                    label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{

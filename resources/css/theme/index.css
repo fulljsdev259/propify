@@ -10607,7 +10607,7 @@ input.el-input__inner[type=number]{
     padding:9px
 }
 .el-button--mini,.el-button--mini.is-round{
-    padding:7px 15px
+    padding:7.5px 15px
 }
 .el-button--mini.is-circle{
     padding:7px

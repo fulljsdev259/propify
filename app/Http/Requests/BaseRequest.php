@@ -33,7 +33,7 @@ class BaseRequest extends APIRequest
     {
         $permittedExtensions = (new $class())->getPermittedExtensions();
 
-        $categories = \ConstFileCategories::MediaCategories;
+        $categories = \ConstantsHelpers::MediaFileCategories;
         $rules = [];
         foreach ($categories as $category) {
             $requiredWithout = implode('_upload,', array_diff($categories, [$category])) . '_upload';

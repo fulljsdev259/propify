@@ -130,7 +130,7 @@ class UtilsAPIController extends AppBaseController
             'colors' => $colors,
             'logo' => $logo,
             'login' => $login,
-            'file_categories' => \ConstFileCategories::MediaCategories
+            'file_categories' => \ConstantsHelpers::MediaFileCategories
         ];
 
         if (\Auth::guest()) {

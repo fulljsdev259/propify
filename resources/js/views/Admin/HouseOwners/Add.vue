@@ -185,8 +185,8 @@
                     prop: 'name',
                     label: 'general.title'
                 }, {
-                    prop: 'type',
-                    label: 'models.house_owner.assign_type',
+                    prop: 'role',
+                    label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{

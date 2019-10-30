@@ -1,12 +1,12 @@
 <template>
     <div :class="['pinboard-box']">
-        <div :class="['pinboard']">
+        <div :class="['pinboard']" >
             <ui-heading icon="icon-megaphone-1" :title="$t('resident.pinboard')" :description="$t('resident.heading_info.pinboard')" />
             
                 <ui-divider />
-            <div class="container">
+            <div class="container" >
                 
-                <div class="content">
+                <div class="content" v-infinite-scroll="getPinboards">
                     <pinboard-add-card />
                     <el-divider content-position="left">
                         <el-button @click="refreshPage" size="small" icon="icon-arrows-ccw" plain round>{{$t('resident.refresh')}}</el-button>
@@ -16,19 +16,19 @@
                             <el-button type="primary" size="mini" icon="el-icon-sort-up" @click="resetFilters">{{$t('resident.reset_filters')}}</el-button>
                         </el-popover> -->
                     </el-divider>
-                    <dynamic-scroller ref="dynamic-scroller" heightField="height" :items="filteredPinboards" :min-item-size="131" v-if="!loading && filteredPinboards.length">
-                        <!-- <template #before v-if="loading && !filteredPinboards.length">
+                    <dynamic-scroller ref="dynamic-scroller" heightField="height" :items="filteredPinboards" :min-item-size="131"  >
+                        <template #before v-if="loading && !filteredPinboards.length">
                             <loader v-for="idx in 5" :key="idx" />
-                        </template> -->
+                        </template>
                         <template v-slot="{item, index, active}">
-                            <dynamic-scroller-item :item="item" :active="active" :data-index="index" :size-dependencies="[item]" page-mode v-if="!loading">
+                            <dynamic-scroller-item :item="item" :active="active" :data-index="index" :size-dependencies="[item]">
                                 <pinboard-new-resident-card :data="item" v-if="$constants.pinboard.type[item.type] === 'new_neighbour' && item.user_id != $store.getters.loggedInUser.id"/>
                                 <pinboard-card :data="item" @edit-pinboard="editPinboard" @delete-pinboard="deletePinboard" v-else-if="$constants.pinboard.type[item.type] !== 'new_neighbour'" @update-dynamic-scroller="force_scroller_update()"/>
                             </dynamic-scroller-item>
                         </template>
-                        <!-- <template #after v-if="loading && !filteredPinboards.length">
+                        <template #after v-if="loading && filteredPinboards.length">
                             <loader />
-                        </template> -->
+                        </template>
                     </dynamic-scroller>
                 </div>
                 <!-- <rss-feed class="rss-feed" title="Blick.ch Pinboard" /> -->
@@ -143,13 +143,13 @@
                  this.$refs['dynamic-scroller'].forceUpdate();
             },
             async getPinboards (params = {}) {
-                if (this.loading && this.pinboard.data.length) {
+                if (this.loading) {
                     return
                 }
 
                 const {current_page, last_page} = this.pinboard
 
-                if (this.pinboard.data.length && current_page === last_page) {
+                if (current_page && last_page && current_page === last_page) {
                     return
                 }
 
@@ -338,79 +338,97 @@
     }
 </style>
 
-<style lang="sass" scoped>
-    .pinboard-box
-        /deep/ .ui-drawer
-            .a-close-button 
-                font-size: 25px
-                line-height: 1.1
-                position: absolute
-                top: 5px
-                right: 5px
-                z-index: 999
-                display: none
-            @media screen and (max-width: 414px) 
-                .a-close-button
-                    display: block
-            @media screen and (max-width: 1024px) 
+<style lang="scss" scoped>
+    .pinboard-box {
+        :global(.ui-drawer) {
+            .a-close-button { 
+                font-size: 25px;
+                line-height: 1.1;
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                z-index: 999;
+                display: none;
+            }
+            @media screen and (max-width: 414px) { 
+                .a-close-button {
+                    display: block;
+                }
+            }
+            @media screen and (max-width: 414px) { 
                 width: 100% !important;
                 max-width: 100% !important;
-            display: flex
-            flex-direction: column
+            }
+            display: flex;
+            flex-direction: column;
 
-            &:before
-                content: ''
-                position: fixed
-                top: 0
-                left: 0
-                width: 100%
-                height: 100%
-                // background-image: url('~img/5d619aede1e3c.png')
-                background-repeat: no-repeat
-                background-position: top center
-                width: 100%
-                height: 100%
-                filter: opacity(0.08)
-                pointer-events: none
+            &:before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                // background-image: url('~img/5d619aede1e3c.png');
+                background-repeat: no-repeat;
+                background-position: top center;
+                width: 100%;
+                height: 100%;
+                filter: opacity(0.08);
+                pointer-events: none;
+            }
 
-            .ui-divider
-                margin: 32px 16px 10px 16px
+            .ui-divider {
+                margin: 32px 16px 10px 16px;
 
-                /deep/ .ui-divider__content
-                    left: 0
-                    z-index: 1
-                    padding-left: 0
-                    font-size: 16px
-                    font-weight: 700
-                    color: var(--color-primary)
+                :global(.ui-divider__content) {
+                    left: 0;
+                    z-index: 1;
+                    padding-left: 0;
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: var(--color-primary);
+                }
+            }
 
-            .content
-                height: 100%
-                display: flex
-                padding: 16px
-                overflow-y: auto
-                flex-direction: column
+            .content {
+                height: 100%;
+                display: flex;
+                padding: 16px;
+                overflow-y: auto;
+                flex-direction: column;
 
-                .el-form
-                    flex: 1
+                .el-form {
+                    flex: 1;
 
-                    /deep/ .el-input .el-input__inner,
-                    /deep/ .el-textarea .el-textarea__inner
-                        background-color: transparentize(#fff, .44)
+                    :global(.el-input .el-input__inner),
+                    :global(.el-textarea .el-textarea__inner) {
+                        background-color: transparentize(#fff, .44);
+                    }
 
-                    /deep/ .el-loading-mask
-                        position: fixed
+                    :global(.el-loading-mask) {
+                        position: fixed;
+                    }
                     
-                    .ui-media-gallery
-                        margin-top: 8px
+                    .ui-media-gallery {
+                        margin-top: 8px;
+                    }
 
-                    .ui-divider
-                        margin-top: 30px
-                        margin-left: 0
-                        margin-bottom: 16px
-    @media only screen and (max-width: 676px)
-        .pinboard
-            /deep/ .ui-heading__content__description
-                display: none
+                    .ui-divider {
+                        margin-top: 30px;
+                        margin-left: 0;
+                        margin-bottom: 16px;
+                    }
+                }
+            }
+        }
+    }
+    @media only screen and (max-width: 676px) {
+        .pinboard {
+            :global(.ui-heading__content__description) {
+                display: none;
+            }
+        }
+    }
 </style>
 

@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\PasswordResetSuccess;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use App\Repositories\File;
 use Intervention\Image\ImageManager as Image;
 use OwenIt\Auditing\Models\Audit;
 use Prettus\Repository\Events\RepositoryEntityUpdated;
@@ -135,18 +136,23 @@ class UserRepository extends BaseRepository
      */
     public function uploadImage(string $fileData, User $user, $mergeInAudit = null)
     {
-        $avatar = Str::slug(sprintf('%s-%d', $user->name, $user->id)) . '.png';
-        $imgPath = storage_path(sprintf('app/public/avatar/%s', $avatar));
-
-        (new Image)->make($fileData)->encode('png', 100)->fit(800, 800)->save($imgPath);
-        if ($mergeInAudit) {
-            $audit = is_integer($mergeInAudit)
-                ? Audit::find($mergeInAudit)
-                : $mergeInAudit;
-
-            (new App\Models\AuditableModel())->addDataInAudit('avatar', $avatar, $audit);
+        $pixels = \ConstantsHelpers::AVATAR_SIZES;
+        foreach($pixels as $pixel){
+            $avatar = Str::slug(sprintf($user->name)) .'.png';
+            $path = storage_path('app/public/avatar/'.$user->id .'/'. $pixel  . 'x' . $pixel);          
+            if(!file_exists($path)){
+                \File::makeDirectory($path, $mode = 0777, true, true);
+            }
+            $imgPath = storage_path(sprintf('app/public/avatar/' .$user->id .'/' . $pixel . 'x' . $pixel . '/' . $avatar));
+            (new Image)->make($fileData)->encode('png', 100)->fit($pixel, $pixel)->save($imgPath);
+            if ($mergeInAudit) {
+                $audit = is_integer($mergeInAudit)
+                    ? Audit::find($mergeInAudit)
+                    : $mergeInAudit;
+                (new App\Models\AuditableModel())->addDataInAudit('avatar', $avatar, $audit);
+            }
         }
-        return sprintf('storage/avatar/%s', $avatar);
+        return sprintf($avatar);
     }
 
     /**

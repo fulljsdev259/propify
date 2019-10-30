@@ -1,14 +1,38 @@
 <?php
 
-class ConstFileCategories
+class ConstantsHelpers
 {
-    const MediaCategories = [
+    const MediaFileCategories = [
         'house_rules',
         'operating_instructions',
         'care_instructions',
         'other',
     ];
+    const AVATAR_SIZES = [
+        32,
+        48,
+        64,
+        800
+    ];
 }
+function getDefaultAvatar($user, $default = '32x32')
+{   
+    $avatarPath = $user->avatar;
+    if($user->avatar) $avatarPath = 'storage/avatar/' . $user->id . '/' . $default . '/' . $user->avatar;
+
+    return $avatarPath;
+}
+function getUserAvatars($user)
+{
+    $avatarVariations = [];
+    foreach (ConstantsHelpers::AVATAR_SIZES as $pixel) {
+        $avatarPath = $user->avatar;
+        if($user->avatar) $avatarPath = 'storage/avatar/' . $user->id . '/' . $pixel  . 'x' . $pixel . '/' . $user->avatar;
+        $avatarVariations[] =  $avatarPath;
+    }
+    return   $avatarVariations;
+}
+
 
 function get_morph_type_of($class)
 {
@@ -36,7 +60,7 @@ function get_translation_attribute_name($attribute)
 {
     $currentLanguage = config('app.locale');
 
-    if (! key_exists($currentLanguage, config('app.locales'))) {
+    if (!key_exists($currentLanguage, config('app.locales'))) {
         return $attribute;
     }
 
@@ -80,7 +104,7 @@ function update_db_fields($class, $fields, $replace, $to, $isUcFirst = true)
                         echo '[' . $_val  . "] replaced to [" . ($value[$i] ?? '') . ']' . PHP_EOL;
                     }
                 } else {
-                    echo '[' . $oldValue  . "] replaced to [" . $value . ']'. PHP_EOL;
+                    echo '[' . $oldValue  . "] replaced to [" . $value . ']' . PHP_EOL;
                 }
                 echo  '------------------------' .  PHP_EOL;
                 if ($isAssoc) {
@@ -98,7 +122,7 @@ function update_db_fields($class, $fields, $replace, $to, $isUcFirst = true)
 
 function update_notifications_data_value($replace, $to)
 {
-    $notifications = \Illuminate\Notifications\DatabaseNotification::where('data', 'like', '%' . $replace .'%')->get();
+    $notifications = \Illuminate\Notifications\DatabaseNotification::where('data', 'like', '%' . $replace . '%')->get();
     foreach ($notifications as $notification) {
         $value = json_encode($notification->data);
         $newValue = str_replace($replace, $to, $value);

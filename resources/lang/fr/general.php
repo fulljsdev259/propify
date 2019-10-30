@@ -170,11 +170,21 @@ return [
         'old_password_required' => 'Ancien mot de passe requis',
     ],
     'assignment_types' => [
+        'label' => 'Tipo',
         "building" => "Bâtiment",
         "quarter" => "Trimestre",
         "services" => "Services",
         "managers" => "Gestionnaires",
+        'provider' => 'Service après-vente',
+        'manager' => 'Gestionnaires',
         "administrator" => "Administrateur",
+    ],
+    'box_titles' => [
+        'details' => 'Détails',
+        'files' => 'Fichiers',
+        'managers' => 'Gestionnaires',
+        'buildings' => 'Bâtiments',
+        'buildings_and_quarters' => 'Bâtiments/trimestre',
     ],
     'email' => 'Courriel',
     'email_validation' => [
@@ -302,8 +312,8 @@ return [
     ],
     'email_receptionist' => [
         'title' => 'Réceptionniste par courriel',
-        'info_desc' => 'Souhaitez-vous utiliser global ou affecter?',
-        'global' => 'Choisissez parmi les',
+        'info_desc' => 'Souhaitez-vous utiliser la réceptionniste mondiale du trimestre ou en assigner une plus récente ?',
+        'global' => 'Globale',
         'assign' => 'Assigner',
         'email_receptionist_of' => 'Réceptionniste par courriel de :category'
     ],

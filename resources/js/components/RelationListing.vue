@@ -393,10 +393,18 @@
     }    
 </style>
 <style lang="scss" scoped>    
-
+    .listing {
+        :global(.el-table__body-wrapper) {
+            :global(table) {
+                display: block;
+                max-height: 270px;
+                overflow-y: auto;
+            }
+        }
+    }
     .el-button--default {
         border-radius: 20px;
-        padding: 8.65px 15px;
+        height: 29px;
     }
     .request-title {
         text-overflow: ellipsis;
