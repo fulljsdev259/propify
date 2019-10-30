@@ -184,9 +184,20 @@ class Quarter extends AuditableModel implements HasMedia
         return $this->morphedByMany(User::class, 'assignee', 'quarter_assignees', 'quarter_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function assignees()
     {
         return $this->hasMany(QuarterAssignee::class, 'quarter_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function email_receptionists()
+    {
+        return $this->hasMany(EmailReceptionist::class, 'model_id')->where('model_type', get_morph_type_of($this));
     }
 
     /**
