@@ -38,7 +38,7 @@ export default (config = {}) => {
                     location: '',
                     room: '',
                     capture_phase: '',
-                    qualification: '',
+                    qualification: 0,
                     component: '',
                     keyword: '',
                     keywords: [],
