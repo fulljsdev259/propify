@@ -22,7 +22,7 @@
                         </template>
                         <template v-slot="{item, index, active}">
                             <dynamic-scroller-item :item="item" :active="active" :data-index="index" :size-dependencies="[item]">
-                                <pinboard-new-resident-card :data="item" v-if="$constants.pinboard.type[item.type] === 'new_neighbour' && item.user_id != $store.getters.loggedInUser.id"/>
+                                <pinboard-new-resident-card :data="item" v-if="$constants.pinboard.type[item.type] === 'new_neighbour' && item.user_id != $store.getters.loggedInUser.id" @update-dynamic-scroller="force_scroller_update()"/>
                                 <pinboard-card :data="item" @edit-pinboard="editPinboard" @delete-pinboard="deletePinboard" v-else-if="$constants.pinboard.type[item.type] !== 'new_neighbour'" @update-dynamic-scroller="force_scroller_update()"/>
                             </dynamic-scroller-item>
                         </template>
