@@ -48,6 +48,8 @@ class BuildingRepository extends BaseRepository
             unset($attributes['quarter']);
         }
 
+        $attributes['global_email_receptionist'] = ! empty($attributes['quarter_id']);
+
         // Have to skip presenter to get a model not some data
         $model = parent::create($attributes);
 

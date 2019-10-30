@@ -68,6 +68,11 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  *          format="int32"
  *      ),
  *      @SWG\Property(
+ *          property="global_email_receptionist",
+ *          description="global_email_receptionist",
+ *          type="boolean",
+ *      ),
+ *      @SWG\Property(
  *          property="created_at",
  *          description="created_at",
  *          type="string",
@@ -194,7 +199,8 @@ class Building extends AuditableModel implements HasMedia
         'latitude',
         'contact_enable',
         'internal_building_id',
-        'under_floor'
+        'under_floor',
+        'global_email_receptionist',
     ];
 
     /**
@@ -215,6 +221,7 @@ class Building extends AuditableModel implements HasMedia
         'attic' => 'boolean',
         'building_format' => 'string',
         'internal_building_id' => 'string',
+        'global_email_receptionist' => 'boolean',
     ];
 
     protected $permittedExtensions = [
