@@ -1,11 +1,26 @@
 <template>
-<div style="width: 100%;">
+<div style="width: 100%;" v-resize:debounce="keyHandler">
     <div :class="['add-comment', {'with-templates': showTemplates}]">
         <el-tooltip :content="user.name" effect="dark" placement="top-start">
             <ui-avatar :name="user.name" :size="32" :src="user.avatar" />
         </el-tooltip>
         <div class="content">
-            <el-input autosize ref="content" :class="{'is-focused': focused}" type="textarea" resize="none" v-model="content" :placeholder="$t('general.components.common.add_comment.placeholder')" :disabled="loading" :validate-event="false" @blur="focused = false" @focus="focused = true" @keydown.native.alt.enter.exact="save" />
+            <el-input 
+                autosize 
+                ref="content" 
+                :class="{'is-focused': focused}" 
+                type="textarea" 
+                resize="none" 
+                v-model="content" 
+                :placeholder="$t('general.components.common.add_comment.placeholder')" 
+                :disabled="loading" 
+                :validate-event="false" 
+                v-resize:debounce="keyHandler"
+                @blur="focused = false" 
+                @focus="focused = true" 
+                @keydown="keyHandler($event)"
+                @keydown.native.alt.enter.exact="save" />
+
             <el-dropdown class="templates" size="small" placement="top-end" trigger="click" @command="onTemplateSelected" @visible-change="onDropdownVisibility" v-if="showTemplates">
                 <el-tooltip ref="templates-button-tooltip" :content="type == 'internalNotices' ? 'Choose Property maneger and Admin' : $t('general.components.common.add_comment.tooltip_templates')" placement="top-end">
                     <el-button ref="templates-button" type="text" class="el-dropdown-link" :disabled="loading">
@@ -55,8 +70,12 @@
     import ErrorFallback from 'components/common/AddComment/Error'
     import {displaySuccess, displayError} from 'helpers/messages'
     import { EventBus } from '../../../event-bus.js';
+    import resize from 'vue-resize-directive';
 
     export default {
+        directives: {
+            resize
+        },
         props: {
             id: {
                 type: Number,
@@ -103,6 +122,9 @@
                 getTemplates: 'getRequestTemplates',
                 getPropertyManagers: 'getPropertyManagers',
             }),
+            keyHandler() {
+                this.$emit('update-dynamic-scroller');
+            },
             async remoteSearch(search) {
                 if (search === '') {
                     this.managerList = [];
@@ -227,6 +249,11 @@
 
             if (this.autofocus) {
                 this.focus()
+            }
+        },
+        watch: {
+            content() {
+                this.$emit('update-dynamic-scroller');
             }
         }
     }
