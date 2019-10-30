@@ -41,7 +41,7 @@ class AvatarEdit extends Command
      */
     public function handle()
     {
-        $pixels = \ConstFileCategories::AVATAR_SIZES;
+        $pixels = \ConstantsHelpers::AVATAR_SIZES;
         $users = User::whereNotNull('avatar')->get();
         foreach ($users as $user) {
             $avatar = explode('/', $user->avatar);

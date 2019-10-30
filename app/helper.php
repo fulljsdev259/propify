@@ -1,8 +1,8 @@
 <?php
 
-class ConstFileCategories
+class ConstantsHelpers
 {
-    const MediaCategories = [
+    const MediaFileCategories = [
         'house_rules',
         'operating_instructions',
         'care_instructions',
@@ -15,15 +15,20 @@ class ConstFileCategories
         800
     ];
 }
-function getDefaultAvatar($user, $default = '800x800')
-{
-    return 'storage/avatar/' . $user->id . '/' . $default . '/' . $user->avatar;
+function getDefaultAvatar($user, $default = '32x32')
+{   
+    $avatarPath = $user->avatar;
+    if($user->avatar) $avatarPath = 'storage/avatar/' . $user->id . '/' . $default . '/' . $user->avatar;
+
+    return $avatarPath;
 }
 function getUserAvatars($user)
 {
     $avatarVariations = [];
-    foreach (ConstFileCategories::AVATAR_SIZES as $pixel) {
-        $avatarVariations[] =  'storage/avatar/' . $user->id . '/' . $pixel  . 'x' . $pixel . '/' . $user->avatar;
+    foreach (ConstantsHelpers::AVATAR_SIZES as $pixel) {
+        $avatarPath = $user->avatar;
+        if($user->avatar) $avatarPath = 'storage/avatar/' . $user->id . '/' . $pixel  . 'x' . $pixel . '/' . $user->avatar;
+        $avatarVariations[] =  $avatarPath;
     }
     return   $avatarVariations;
 }
