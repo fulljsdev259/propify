@@ -133,10 +133,11 @@ class AuditableModel extends Model implements Auditable
      * @param null $event
      * @param bool $isSingle
      * @param array $tags
+     * @param bool $changeOldValues
      * @return Audit
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function newSystemAudit($key, $value, $event = null, $isSingle = true, $tags = [])
+    public function newSystemAudit($key, $value, $event = null, $isSingle = true, $tags = [], $changeOldValues = false)
     {
         $event = $event ?? AuditableModel::EventCreated;
         $this->auditEvent = self::EventUpdated;
@@ -154,7 +155,7 @@ class AuditableModel extends Model implements Auditable
         if (AuditableModel::EventCreated == $event) {
             $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
         } elseif (AuditableModel::EventUpdated == $event) {
-            $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle, false);
+            $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle, $changeOldValues);
         } else {
             dd('@TODO');
         }

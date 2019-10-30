@@ -48,6 +48,7 @@ class ResidentRepository extends BaseRepository
     /**
      * @param array $attributes
      * @return Resident|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
@@ -86,6 +87,7 @@ class ResidentRepository extends BaseRepository
      * @param Resident $resident
      * @param $data
      * @return Resident
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
