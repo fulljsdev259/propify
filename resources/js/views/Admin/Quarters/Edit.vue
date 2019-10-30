@@ -477,14 +477,7 @@
                 this.setOrder();
             },
             uploadFiles(file) {
-                let success = this.insertDocument(this.selectedFileCategory, file);
-                if(!success)
-                    return;
-                if(this.fileCount){
-                    this.fileCount ++;
-                } else {
-                    this.fileCount = 1;
-                }
+                this.insertDocument(this.selectedFileCategory, file);
             },
             insertDocument(prop, file) {
                 file.order = this.model.media.length + 1;
@@ -494,10 +487,13 @@
                 }).then((resp) => {
                     displaySuccess(resp);
                     this.model.media.push(resp.media);
-                    return true;
+                    if(this.fileCount){
+                        this.fileCount++;
+                    } else {
+                        this.fileCount = 1;
+                    }
                 }).catch((err) => {
                     displayError(err);
-                    return false;
                 });
             },
             deleteDocument(prop, index) {
