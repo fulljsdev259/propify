@@ -108,7 +108,7 @@
             }
         },
         methods: {
-            ...mapActions(['getPropertyManagers']),
+            ...mapActions(['getPropertyManagers', 'getQuarterEmailReceptionists', 'saveQuarterEmailReceptionists']),
             async submit () {
                 try {
                     const valid = await this.$refs.form.validate();
@@ -143,10 +143,9 @@
                         
                         console.log('payload', payload)
                         
-                        // const resp = await this.saveEmailReceptionist({
-                        //     request_ids, 
-                        //     service_provider_ids
-                        // })
+                        const resp = await this.saveQuarterEmailReceptionists({
+                            payload
+                        })
                         
                         // if(resp.data.success)
                         //     displaySuccess(resp.data.message);

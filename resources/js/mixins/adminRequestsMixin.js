@@ -38,17 +38,22 @@ export default (config = {}) => {
                     location: '',
                     room: '',
                     capture_phase: '',
-                    qualification: 0,
+                    qualification: 1,
                     component: '',
                     keyword: '',
                     keywords: [],
                     payer: '',
                     property_managers: [],
                     media: [],
-                    sub_category_id: null
+                    sub_category_id: null,
+                    contract_id: ''
                 },
                 validationRules: {
                     category: [{
+                        required: true,
+                        message: this.$t('validation.general.required')
+                    }],
+                    sub_category: [{
                         required: true,
                         message: this.$t('validation.general.required')
                     }],
@@ -110,6 +115,7 @@ export default (config = {}) => {
                 showLiegenschaft: false,
                 showCapturePhase: false,
                 showWohnung: false,
+                showQualification: false,
                 createTag: false,
                 editTag: false,
                 tags: [],
@@ -364,6 +370,7 @@ export default (config = {}) => {
                 this.showLiegenschaft = false;
                 this.showUmgebung = false;
                 this.showWohnung = false;
+                this.showQualification = false;
 
                 if(sub_category.room == 1) {
                     this.showWohnung = true;
@@ -373,6 +380,9 @@ export default (config = {}) => {
                 }
                 else if(sub_category.location == 0 && sub_category.room == 0) {
                     this.showUmgebung = true;
+                }
+                if(sub_category.qualification == 1) {
+                    this.showQualification = true;
                 }
             },
             changeQualification() {
@@ -469,8 +479,11 @@ export default (config = {}) => {
                     }
                 }
             },
+            changeContract( val ) {
+                console.log(val)
+            },
             changeResident( resident_id ) {
-
+                this.model.contract_id = null
                 this.resident = this.residents.find(resident => resident.id == resident_id)
                 // this.contracts = this.resident.contracts.filter( contract => contract.status == 1)
                 this.contracts = this.resident.contracts
@@ -636,8 +649,8 @@ export default (config = {}) => {
                         this.$set(this.model, 'created_by', data.created_by);
                         this.$set(this.model, 'building', data.resident.building.name);
 
-                        this.contracts = resp.data.resident.contracts.filter(item => item.status == 1)
-
+                        //this.contracts = resp.data.resident.contracts.filter(item => item.status == 1)
+                        this.model.contract_id = data.contract.id
                         await this.getConversations();
                         
                         if (data.resident) {

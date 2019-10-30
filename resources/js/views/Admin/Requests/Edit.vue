@@ -43,7 +43,9 @@
                                 </el-col>
                                 <el-col :md="12"
                                         v-if="this.showSubCategory == true">
-                                    <el-form-item :label="$t('models.request.defect_location.label')">
+                                    <el-form-item :label="$t('models.request.defect_location.label')"
+                                                :rules="validationRules.sub_category"
+                                                prop="sub_category_id">
                                         <el-select
                                             :disabled="$can($permissions.update.serviceRequest)"
                                             :placeholder="$t(`general.placeholders.select`)"
@@ -119,7 +121,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12"
-                                        v-if="model.category_id && selectedCategoryHasQualification(model.category_id)">
+                                        v-if="this.showQualification == true">
                                     <el-form-item :label="$t('models.request.qualification.label')"
                                                   :rules="validationRules.qualification"
                                                   prop="qualification">
@@ -137,7 +139,7 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12" v-if="model.category_id && selectedCategoryHasQualification(model.category_id) && this.showPayer == true">
+                                <el-col :md="12" v-if="this.showQualification == true && this.showPayer == true">
                                     <el-form-item :label="$t('models.request.category_options.cost')">
                                         <el-select :disabled="$can($permissions.update.serviceRequest)"
                                                    :placeholder="$t(`general.placeholders.select`)"

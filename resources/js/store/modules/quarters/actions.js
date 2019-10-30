@@ -106,4 +106,16 @@ export default {
             }
         );
     },
+    getQuarterEmailReceptionists({commit}, {quarter_id, ...restPayload}) {
+        return new Promise((resolve, reject) =>
+            axios.get(buildFetchUrl(`quarters/${quarter_id}/email-receptionists`, restPayload))
+                .then(({data: r}) => (r && resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
+    saveQuarterEmailReceptionists({commit}, {quarter_id, ...restPayload}) {
+        return new Promise((resolve, reject) =>
+            axios.post(buildFetchUrl(`quarters/${quarter_id}/email-receptionists`, restPayload))
+                .then(({data: r}) => (r && resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
 }
