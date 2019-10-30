@@ -404,10 +404,37 @@ return [
         'category' => 'Anfrage-Typ',
         'edit_title' => 'Anfrage bearbeiten',
         'add_title' => 'Anfrage hinzufügen',
-        'mass_edit' => 'Massenbearbeitung',
-        'assign_partners' => 'Servicepartner zuordnen',
-        'assign_managers' => 'Bewirtschafter zuweisen',
-        'change_status' => 'Status ändern',
+        'mass_edit' => [
+            'label' => 'Massenbearbeitung',
+            'options' => [
+                'service_provider' => 'Dienstleister',
+                'property_manager' => 'Bewirtschafter',
+                'change_status' => 'Status ändern'
+            ],
+            'service_provider' => [
+                'modal' => [
+                    'heading_title' => 'Dienstleisterüberschrift zuordnen',
+                    'content_label' => 'Sie können hier Dienstleister auswählen',
+                    'footer_button' => 'Dienstleister zuordnen',
+                    'switcher_label' => 'Benachrichtigung von Dienstleistern',
+                    'switcher_desc' => 'Sie können die betroffenen Dienstleister informieren',
+                ]
+            ],
+            'property_manager' => [
+                'modal' => [
+                    'heading_title' => 'Zuweisung der Überschrift der Hausverwalter',
+                    'content_label' => 'Sie können hier den/die Hausverwalter auswählen.',
+                    'footer_button' => 'Hausverwalter zuordnen',
+                ]
+            ],
+            'change_status' => [
+                'modal' => [
+                    'heading_title' => 'Statusüberschrift ändern',
+                    'content_label' => 'Sie können den Status hier ändern.',
+                    'footer_button' => 'Status ändern',
+                ]
+            ],
+        ],
         'due_date' => 'Zu erledigen bis',
         'solved_date' => 'Erledigt Datum',
         'closed_date' => 'Erledigt am',

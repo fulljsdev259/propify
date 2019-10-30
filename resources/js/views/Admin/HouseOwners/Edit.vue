@@ -241,8 +241,8 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
-                    prop: 'type',
-                    label: 'models.house_owner.assign_type',
+                    prop: 'role',
+                    label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{
@@ -266,9 +266,6 @@
                         id: row.id
                     }
                 })
-            },
-            translateType(type) {
-                return this.$t(`general.assignment_types.${type}`);
             },
             translateRequestStatus(status) {
                 return this.$t(`models.request.status.${this.requestStatusConstants[status]}`);

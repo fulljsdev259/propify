@@ -586,7 +586,7 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
-                    prop: 'type',
+                    prop: 'role',
                     label: 'models.request.user_type.label',
                     i18n: this.translateType
                 }],
@@ -595,7 +595,7 @@
                     buttons: [{
                         title: 'models.request.notify',
                         tooltipMode: true,
-                        icon: 'el-icon-message',
+                        icon: 'icon-chat-empty',
                         view: 'request',
                         onClick: this.openNotifyProvider
                     }, {

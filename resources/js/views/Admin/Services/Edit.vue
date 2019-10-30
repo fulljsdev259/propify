@@ -147,7 +147,7 @@
             </el-col>
             <el-col :md="12">
                 <raw-grid-statistics-card :cols="8" :data="statistics.raw"/>
-                <card class="mt15" :header="$t('general.assignment')">
+                <card class="mt15" :header="$t('general.box_titles.buildings_and_quarters')">
             
                     <assignment-by-type
                         :resetToAssignList="resetToAssignList"
@@ -251,7 +251,7 @@
                     type: 'assigneesName'
                 }, {
                     prop: 'type',
-                    label: 'models.service.assign_type',
+                    label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{

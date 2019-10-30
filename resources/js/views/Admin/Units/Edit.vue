@@ -10,7 +10,7 @@
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
                     <el-tabs type="border-card" v-model="activeTab1">
-                        <el-tab-pane :label="$t('general.actions.view')" name="details">
+                        <el-tab-pane :label="$t('general.box_titles.details')" name="details">
                             <el-form :model="model" label-position="top" label-width="192px" ref="form">
                                 <el-row :gutter="20">
                                     <el-col :md="12">
@@ -207,7 +207,7 @@
                         </el-tab-pane>
                         <el-tab-pane name="files">
                             <span slot="label">
-                                <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('models.building.files') }}</el-badge>
+                                <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge>
                             </span>
                             <draggable @sort="sortFiles" v-model="model.media">
                                 <transition-group name="list-complete">
@@ -250,7 +250,7 @@
                     <el-tabs type="border-card" v-model="activeRightTab">
                         <el-tab-pane name="residents">
                             <span slot="label">
-                                <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('models.unit.assignment') }}</el-badge>
+                                <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.residents') }}</el-badge>
                             </span>
                             <relation-list
                                     :actions="assigneesActions"

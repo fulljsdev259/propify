@@ -14,18 +14,17 @@
                             trigger="click" 
                             class="round"
                             @command="handleCommand">
-                    {{$t('models.request.mass_edit')}}
+                    {{$t('models.request.mass_edit.label')}}
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item :disabled="!selectedItems.length" command="service">Service Provider</el-dropdown-item>
-                        <el-dropdown-item :disabled="!selectedItems.length" command="manager">Property Manager</el-dropdown-item>
-                        <el-dropdown-item :disabled="!selectedItems.length" command="status">Change Status</el-dropdown-item>
+                        <el-dropdown-item 
+                            :disabled="!selectedItems.length" 
+                            :command="option"
+                            :key="option"
+                            v-for="option in massEditOptions">
+                            {{$t('models.request.mass_edit.options.' + option)}}
+                        </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
-                <!-- <el-button :disabled="!selectedItems.length" @click="batchEdit" icon="ti-user" round
-                           size="mini"
-                           type="info">
-                    {{$t('models.request.mass_edit')}}
-                </el-button> -->
             </template>
             <template v-if="$can($permissions.delete.request)">
                 <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"
@@ -53,80 +52,100 @@
                    :visible.sync="batchEditVisible"
                    v-loading="processAssignment" width="30%">
             <span slot="title">
-                {{ $t('models.request.mass_edit') }}
+                <template v-for="option in massEditOptions">
+                    <span :key="option" v-if="activeMassEditOption == option">
+                        {{$t('models.request.mass_edit.' + option + '.modal.heading_title')}}
+                    </span>
+                </template>
             </span>
-            <!-- <el-select v-model="massEditOption" @change="changeMassEditOption" 
-                        :placeholder="$t('models.request.placeholders.status')"
-                        class="edit-type-select">
-                    <el-option :value="'service'" label="Service Provider"></el-option>
-                    <el-option :value="'manager'" label="Property Manager"></el-option>
-                    <el-option :value="'status'" label="Status Change"></el-option>
-            </el-select> -->
-            <el-form :model="managersForm" v-if="massEditOption == 'service'">
-                <el-select
-                    :loading="remoteLoading"
-                    :placeholder="$t('general.placeholders.search')"
-                    :remote-method="remoteSearchPartners"
-                    class="custom-remote-select"
-                    filterable
-                    multiple
-                    remote
-                    reserve-keyword
-                    style="width: 100%;"
-                    v-model="toAssign"
-                >
-                    <div class="custom-prefix-wrapper" slot="prefix">
-                        <i class="el-icon-search custom-icon"></i>
+            <el-form :model="managersForm"  v-if="activeMassEditOption == 'service_provider'">
+                <div class="switch-wrapper">
+                    <el-form-item :label="$t('models.request.mass_edit.service_provider.modal.switcher_label')">
+                        <el-switch v-model="send_email_service_provider"/>
+                    </el-form-item>
+                    <div class="switcher__desc">
+                        {{ $t('models.request.mass_edit.service_provider.modal.switcher_desc') }}
                     </div>
-                    <el-option
-                        :key="service.id"
-                        :label="`${service.name}`"
-                        :value="service.id"
-                        v-for="service in toAssignList"/>
-                </el-select>
+                </div>
+                <el-form-item :label="$t('models.request.mass_edit.service_provider.modal.content_label')">
+                    <el-select
+                        :loading="remoteLoading"
+                        :placeholder="$t('general.placeholders.search')"
+                        :remote-method="remoteSearchPartners"
+                        class="custom-remote-select"
+                        filterable
+                        multiple
+                        remote
+                        reserve-keyword
+                        style="width: 100%;"
+                        v-model="toAssign"
+                    >
+                        <div class="custom-prefix-wrapper" slot="prefix">
+                            <i class="el-icon-search custom-icon"></i>
+                        </div>
+                        <el-option
+                            :key="service.id"
+                            :label="`${service.name}`"
+                            :value="service.id"
+                            v-for="service in toAssignList"/>
+                    </el-select>
+                </el-form-item>
             </el-form>
 
-            <el-form :model="managersForm" v-if="massEditOption == 'manager'">
-                <el-select
-                    :loading="remoteLoading"
-                    :placeholder="$t('general.placeholders.search')"
-                    :remote-method="remoteSearchManagers"
-                    class="custom-remote-select"
-                    filterable
-                    multiple
-                    remote
-                    reserve-keyword
-                    style="width: 100%;"
-                    v-model="toAssign"
-                >
-                    <div class="custom-prefix-wrapper" slot="prefix">
-                        <i class="el-icon-search custom-icon"></i>
-                    </div>
-                    <el-option
-                        :key="manager.id"
-                        :label="`${manager.first_name} ${manager.last_name}`"
-                        :value="manager.id"
-                        v-for="manager in toAssignList"/>
-                </el-select>
+            <el-form :model="managersForm" v-if="activeMassEditOption == 'property_manager'">
+                <el-form-item :label="$t('models.request.mass_edit.property_manager.modal.content_label')">
+                    <el-select
+                        :loading="remoteLoading"
+                        :placeholder="$t('general.placeholders.search')"
+                        :remote-method="remoteSearchManagers"
+                        class="custom-remote-select"
+                        filterable
+                        multiple
+                        remote
+                        reserve-keyword
+                        style="width: 100%;"
+                        v-model="toAssign"
+                    >
+                        <div class="custom-prefix-wrapper" slot="prefix">
+                            <i class="el-icon-search custom-icon"></i>
+                        </div>
+                        <el-option
+                            :key="manager.id"
+                            :label="`${manager.first_name} ${manager.last_name}`"
+                            :value="manager.id"
+                            v-for="manager in toAssignList"/>
+                    </el-select>
+                </el-form-item>
             </el-form>
             
-            <el-form :model="managersForm" v-if="massEditOption == 'status'">
-                <el-select :placeholder="$t('models.request.placeholders.status')"
-                        class="custom-select"
-                        v-model="massStatus">
-                    <el-option
-                        :key="k"
-                        :label="$t(`models.request.status.${status}`)"
-                        :value="parseInt(k)"
-                        v-for="(status, k) in $constants.requests.status">
-                    </el-option>
-                </el-select>
+            <el-form :model="managersForm" v-if="activeMassEditOption == 'change_status'">
+                <el-form-item :label="$t('models.request.status.label')">
+                    <el-select :placeholder="$t('models.request.mass_edit.change_status.modal.content_label')"
+                            class="custom-select"
+                            v-model="massStatus">
+                        <el-option
+                            :key="k"
+                            :label="$t(`models.request.status.${status}`)"
+                            :value="parseInt(k)"
+                            v-for="(status, k) in $constants.requests.status">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
             </el-form>
             <span class="dialog-footer" slot="footer">
                 <el-button @click="closeModal" size="mini">{{$t('general.actions.close')}}</el-button>
-                <el-button v-if="massEditOption == 'service'" @click="massAssignPartners" size="mini" type="primary">{{$t('models.request.assign_partners')}}</el-button>
-                <el-button v-if="massEditOption == 'manager'" @click="massAssignManagers" size="mini" type="primary">{{$t('models.request.assign_managers')}}</el-button>
-                <el-button v-if="massEditOption == 'status'" @click="massChangeStatus" size="mini" type="primary">{{$t('models.request.change_status')}}</el-button>
+                <template
+                        v-for="option in massEditOptions">
+                    <el-button 
+                            v-if="activeMassEditOption == option" 
+                            @click="massEditAction(option)" 
+                            size="mini" 
+                            type="primary"
+                            :key="option"
+                            >
+                        {{$t('models.request.mass_edit.' + option + '.modal.footer_button')}}
+                    </el-button>
+                </template>
             </span>
         </el-dialog>
     </div>
@@ -182,10 +201,16 @@
                 processAssignment: false,
                 toAssignList: '',
                 toAssign: [],
+                send_email_service_provider: true,
                 remoteLoading: false,
                 managersForm: {},
-                massEditOption: 'service',
-                massStatus: ''
+                activeMassEditOption: 'service_provider',
+                massStatus: '',
+                massEditOptions : [
+                    'service_provider',
+                    'property_manager',
+                    'change_status'
+                ]
             }
         },
         computed: {
@@ -452,17 +477,29 @@
                 this.toAssign = [];
                 this.toAssignList = [];
             },
-            handleCommand(command) {
-                this.massEditOption = command
+            handleCommand( option ) {
+                this.activeMassEditOption = option
                 this.batchEditVisible = true
             },
-            async massAssignPartners() {
+            async massEditAction( option ) {
+                if(option == 'service_provider') {
+                    this.massAssignProviders()
+                }
+                else if(option == 'property_manager') {
+                    this.massAssignManagers()
+                }
+                else if(option == 'change_status') {
+                    this.massChangeStatus()
+                }
+            },
+            async massAssignProviders() {
                 let request_ids = this.selectedItems.map(request => request.id)
                 let service_provider_ids = this.toAssign
-                
+                let send_email_service_provider = this.send_email_service_provider
                 const resp = await this.massEdit({
                     request_ids, 
-                    service_provider_ids
+                    service_provider_ids,
+                    send_email_service_provider
                 })
 
                 this.processAssignment = false;
@@ -637,5 +674,12 @@
             margin-bottom: 15px;
         }
 
+        .switch-wrapper {
+            .switcher__desc {
+                margin-top: 0.5em;
+                display: block;
+                font-size: 0.9em;
+            }
+        }
     }
 </style>
