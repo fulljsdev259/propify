@@ -501,7 +501,7 @@ return [
         'logout' => 'Abmelden',
         'profile' => 'Profil',
         'users' => 'Benutzer',
-        'employees' => 'Fortimo',
+        'employees' => 'Fortimo-Mitarbeiter',
         'companies' => 'Dienstleister',
         'admins' => 'Administratoren',
         'super_admins' => 'Super Administratoren',
