@@ -413,7 +413,7 @@
                 }
             }
             :global(.el-form-item) {
-                margin-bottom: 5px;
+                margin-bottom: 18px;
                 :global(.el-form-item__label) {
                     width: auto !important;
                     line-height: 2;

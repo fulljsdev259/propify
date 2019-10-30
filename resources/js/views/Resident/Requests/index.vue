@@ -21,7 +21,16 @@
                     </template>
                     <template v-slot="{item, index, active}">
                         <dynamic-scroller-item :item="item" :active="active" :data-index="index" :size-dependencies="[item]">
-                            <request-card  :categories="categories" :data="item" :visible-media-limit="3" :media-options="{container: '#gallery'}" @toggle-drawer="toggleDrawer(item)" @more-media="toggleDrawer(item, 'media')" @tab-click="$refs['dynamic-scroller'].forceUpdate" @hook:mounted="$refs['dynamic-scroller'].forceUpdate">
+                            <request-card  
+                                :categories="categories" 
+                                :data="item" :visible-media-limit="3" 
+                                :media-options="{container: '#gallery'}" 
+                                @toggle-drawer="toggleDrawer(item)" 
+                                @more-media="toggleDrawer(item, 'media')" 
+                                @tab-click="$refs['dynamic-scroller'].forceUpdate" 
+                                @hook:mounted="$refs['dynamic-scroller'].forceUpdate" 
+                                @update-dynamic-scroller="force_scroller_update()">
+
                                 <template #tab-overview-after-for-mobile>
                                     <div class="tab-overview-after-for-mobile">
                                         <el-tooltip :content="$t('resident.tooltips.status_change_requeset')">
@@ -72,7 +81,7 @@
         </div>
         
         <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked @update:visibleDrawer="resetDataFromDrawer" :class="{'full-width': !openedRequest}">
-            <a class="a-close-button" @click="visibleDrawer=!visibleDrawer">
+            <a class="a-close-button" :class="{'display-block': !openedRequest}" @click="visibleDrawer=!visibleDrawer">
                 <span class="el-icon-close"></span>
             </a>
             <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="openedRequest">
@@ -252,6 +261,9 @@
             }
         },
         methods: {
+            force_scroller_update () {
+                this.$refs['dynamic-scroller'].forceUpdate();
+            },
             async get (params = {}) {
                 if (this.loading) {
                     return
@@ -409,6 +421,11 @@
 </style>
 
 <style lang="scss" scoped>
+    .display-block {
+        @media screen and (max-width: 414px) {
+            display: block !important;
+        }
+    }
     .requests {
         display: flex;
         padding: 0 !important;
@@ -494,6 +511,10 @@
                 @media screen and (max-height: 414px) {
                     width: 100% !important;
                     max-width: 100%!important;
+                    
+                    :gloabl(&.a-close-button) {
+                        display: block !important;
+                    }
                 }
             }
             
