@@ -328,6 +328,13 @@ class BuildingAPIController extends AppBaseController
                 $q->with('building.address', 'unit', 'resident.user');
             },
         ]);
+
+        if ($building->global_email_receptionist) {
+            $building->setAttribute('has_email_receptionists', true);
+        } else {
+            $building->setHasRelation('email_receptionists');
+        }
+
         if ($building && isset($address)) {
             $building->addDataInAudit(AuditableModel::MergeInMainData, $address);
         }
@@ -397,6 +404,13 @@ class BuildingAPIController extends AppBaseController
                 'quarter',
                 'users'
             ]);
+
+        if ($building->global_email_receptionist) {
+            $building->setAttribute('has_email_receptionists', true);
+        } else {
+            $building->setHasRelation('email_receptionists');
+        }
+
         $response = (new BuildingTransformer)->transform($building);
         $response['media_category'] = \ConstantsHelpers::MediaFileCategories; // @TODO delete
 
@@ -500,6 +514,13 @@ class BuildingAPIController extends AppBaseController
                 $q->with('building.address', 'unit', 'resident.user');
             },
         ]);
+
+        if ($building->global_email_receptionist) {
+            $building->setAttribute('has_email_receptionists', true);
+        } else {
+            $building->setHasRelation('email_receptionists');
+        }
+
         $response = (new BuildingTransformer)->transform($building);
         return $this->sendResponse($response, __('models.building.saved'));
     }
@@ -550,7 +571,7 @@ class BuildingAPIController extends AppBaseController
         if (empty($building)) {
             return $this->sendError(__('models.building.errors.not_found'));
         }
-dd(1);
+
         try {
             $this->buildingRepository->delete($building->id);
         } catch (\Exception $e) {
@@ -1298,6 +1319,7 @@ dd(1);
                 ];
                 $new = $building->email_receptionists()->create($savedData);
                 $emailReceptionists->push($new);
+                $categoryEmailReceptionists->push($new);
             }
         }
 

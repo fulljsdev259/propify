@@ -192,6 +192,7 @@ class QuarterAPIController extends AppBaseController
 
             DB::commit();
             $quarter->load('address', 'media');
+            $quarter->setHasRelation('email_receptionists');
             $response = (new QuarterTransformer)->transform($quarter);
 
         } else {
@@ -261,9 +262,9 @@ class QuarterAPIController extends AppBaseController
                 ]);
             }
         ]);
+        $quarter->setHasRelation('email_receptionists');
 
         $response = (new QuarterTransformer)->transform($quarter);
-
         return $this->sendResponse($response, 'Quarter retrieved successfully');
     }
 
@@ -382,6 +383,7 @@ class QuarterAPIController extends AppBaseController
 
             DB::commit();
             $quarter->load('address', 'media');
+            $quarter->setHasRelation('email_receptionists');
             $response = (new QuarterTransformer)->transform($quarter);
 
         } else {
@@ -833,6 +835,7 @@ class QuarterAPIController extends AppBaseController
                 ];
                 $new = $quarter->email_receptionists()->create($savedData);
                 $emailReceptionists->push($new);
+                $categoryEmailReceptionists->push($new);
             }
         }
 

@@ -46,6 +46,10 @@ class BuildingTransformer extends BaseTransformer
             'global_email_receptionist' => $model->global_email_receptionist
         ];
 
+        if ($model->hasAttribute('has_email_receptionists')) {
+            $response['has_email_receptionists'] = $model->has_email_receptionists;
+        }
+
         $withCount = $model->getStatusRelationCounts();
         $response = array_merge($response, $withCount);
 
