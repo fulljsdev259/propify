@@ -217,7 +217,6 @@ export default (config = {}) => {
                 }
             },
             async attachAddedAssigmentList(assigmentId) {
-                console.log('attachAddedAssigmentList', assigmentId);
                 let assigment = this.toAssignList.filter(n => n.id === assigmentId)[0];
 
                 if (!!assigment) {
