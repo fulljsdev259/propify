@@ -29,7 +29,7 @@
             <div id="dropdown" class="dropdown-menu" ref="prev">
                 <el-dropdown trigger="click" @visible-change="handlerDropdownVisibleChange">
                     <div>
-                        <avatar :src="'storage/avatar/2/32x32/' + user.avatar" :name="user.name" :size="33" />
+                        <avatar :src="user.avatar" :name="user.name" :size="33" />
                         <span class="el-dropdown-link">
                             {{user.name}}<i class="el-icon-arrow-down el-icon--right"></i>
                         </span>
