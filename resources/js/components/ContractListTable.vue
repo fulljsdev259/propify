@@ -38,11 +38,11 @@
             <el-table-column
                 :label="$t('models.resident.contract.contract_id')"
                 v-if="!hideContractId"
-                prop="id"
+                prop="contract_format"
             >
-                <template slot-scope="scope">
+                <!-- <template slot-scope="scope">
                     <span class="clickable" @click="$emit('edit-contract', scope.$index)">{{scope.row.contract_format}}</span>
-                </template>
+                </template> -->
             </el-table-column>
             <el-table-column
                 :label="$t('models.resident.building.name')"

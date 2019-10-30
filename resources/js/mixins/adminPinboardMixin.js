@@ -40,7 +40,10 @@ export default (config = {}) => {
                     is_execution_time: false,
                     execution_start: null,
                     execution_end: null,
-                    category_image: true
+                    category_image: true,
+                    building_ids: [],
+                    quarter_ids: [],
+                    provider_ids: [],
                 },
                 validationRules: {
                     content: [{
@@ -83,11 +86,6 @@ export default (config = {}) => {
                 toAssignList: [],
                 addedAssigmentList: [],
                 addedProviderAssigmentList: [],
-                alreadyAssigned: {
-                    buildings: [],
-                    quarters: [],
-                    providers: [],
-                },
                 toAssignProvider: '',
                 toAssignProviderList: [],
                 types: [],
@@ -118,6 +116,8 @@ export default (config = {}) => {
             pinboardConstants() {
                 return this.$constants.pinboard
             }
+        },
+        mounted() {
         },
         methods: {
             ...mapActions(['uploadPinboardMedia', 'deletePinboardMedia', 'getBuildings', 'getQuarters', 'assignPinboardBuilding',
@@ -198,13 +198,13 @@ export default (config = {}) => {
                             });
 
                             resp.data = resp.data.filter((building) => {
-                                return !this.alreadyAssigned.buildings.includes(building.id)
+                                return !this.model.building_ids.includes(building.id)
                             });
                         } else {
                             resp = await this.getQuarters({get_all: true, search});
 
                             resp.data = resp.data.filter((quarter) => {
-                                return !this.alreadyAssigned.quarters.includes(quarter.id)
+                                return !this.model.quarter_ids.includes(quarter.id)
                             });
                         }
 
@@ -214,34 +214,6 @@ export default (config = {}) => {
                     } finally {
                         this.remoteLoading = false;
                     }
-                }
-            },
-            async saveAddedAssigmentList(modelId) {
-                try {
-                    let resp;
-
-                    this.addedAssigmentList.forEach(async element => {
-                        if (element.type === 'building') {
-                            resp = await this.assignPinboardBuilding({
-                                id: modelId,
-                                toAssignId: element.id
-                            });
-                        } else {
-                            resp = await this.assignPinboardQuarter({
-                                id: modelId,
-                                toAssignId: element.id
-                            });
-                        }
-                    });
-
-                    this.addedProviderAssigmentList.forEach(async element => {
-                        resp = await this.assignPinboardProvider({
-                            id: modelId,
-                            toAssignId: element.id
-                        });
-                    });
-                } catch (e) {
-                    displayError(e)
                 }
             },
             async attachAddedAssigmentList(assigmentId) {
@@ -255,8 +227,8 @@ export default (config = {}) => {
                     });
                 }
 
-                this.alreadyAssigned.buildings = this.addedAssigmentList.filter(item => item['type'] === 'building').map((building) => building.id);
-                this.alreadyAssigned.quarters = this.addedAssigmentList.filter(item => item['type'] === 'quarter').map((quarter) => quarter.id);
+                this.model.building_ids = this.addedAssigmentList.filter(item => item['type'] === 'building').map((building) => building.id);
+                this.model.quarter_ids = this.addedAssigmentList.filter(item => item['type'] === 'quarter').map((quarter) => quarter.id);
 
                 this.toAssign = '';
                 this.toAssignList = [];
@@ -272,7 +244,7 @@ export default (config = {}) => {
                     });
                 }
 
-                this.alreadyAssigned.providers = this.addedProviderAssigmentList.filter(item => item['type'] === 'providers').map((provider) => provider.id);
+                this.model.provider_ids = this.addedProviderAssigmentList.filter(item => item['type'] === 'providers').map((provider) => provider.id);
 
                 this.toAssignProvider = '';
                 this.toAssignProviderList = [];
@@ -293,13 +265,13 @@ export default (config = {}) => {
                                 id: this.model.id,
                                 toAssignId: this.toAssign
                             });
-                            this.alreadyAssigned.buildings.push(this.toAssign);
+                            this.model.building_ids.push(this.toAssign);
                         } else {
                             resp = await this.assignPinboardQuarter({
                                 id: this.model.id,
                                 toAssignId: this.toAssign
                             });
-                            this.alreadyAssigned.quarters.push(this.toAssign);
+                            this.model.quarter_ids.push(this.toAssign);
                         }
 
                         if (resp && resp.data && config.mode === 'edit') {
@@ -338,7 +310,7 @@ export default (config = {}) => {
                         const resp = await this.getServices({get_all: true, search});
 
                         resp.data = resp.data.filter((provider) => {
-                            return !this.alreadyAssigned.providers.includes(provider.id)
+                            return !this.model.provider_ids.includes(provider.id)
                         });
 
                         this.toAssignProviderList = resp.data;
@@ -363,7 +335,7 @@ export default (config = {}) => {
                             toAssignId: this.toAssignProvider
                         });
 
-                        this.alreadyAssigned.providers.push(this.toAssignProvider);
+                        this.model.provider_ids.push(this.toAssignProvider);
 
                         if (resp && resp.data && config.mode === 'edit') {
                             this.$refs.assignmentsProviderList.fetch();
@@ -481,8 +453,6 @@ export default (config = {}) => {
                             }
                             this.form.resetFields();
 
-                            this.saveAddedAssigmentList(resp.data.id);
-
                             this.media = [];
                             displaySuccess(resp);
                             if (!!afterValid) {
@@ -559,9 +529,9 @@ export default (config = {}) => {
                             ...restData
                         };
 
-                        this.alreadyAssigned.buildings = this.model.buildings.map((building) => building.id);
-                        this.alreadyAssigned.quarters = this.model.quarters.map((quarter) => quarter.id);
-                        this.alreadyAssigned.providers = this.model.providers.map((provider) => provider.id);
+                        this.model.building_ids = this.model.buildings.map((building) => building.id);
+                        this.model.quarter_ids = this.model.quarters.map((quarter) => quarter.id);
+                        this.model.provider_ids = this.model.providers.map((provider) => provider.id);
 
                         this.model.execution_start ? this.executionStartTime = this.model.execution_start.split(' ')[1] : '';
                         this.model.execution_end ? this.executionEndTime = this.model.execution_end.split(' ')[1] : '';

@@ -26,6 +26,8 @@
                                         <el-input type="text" v-model="model.name"></el-input>
                                     </el-form-item>
                                 </el-col>
+                            </el-row>
+                            <el-row :gutter="20">
                                 <el-col :md="4">
                                     <el-form-item :label="$t('general.zip')" :rules="validationRules.zip" prop="zip">
                                         <el-input type="text" v-model="model.zip"></el-input>

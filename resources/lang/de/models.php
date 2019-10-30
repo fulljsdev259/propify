@@ -42,7 +42,7 @@ return [
         'password_reset' => 'Passwort wurde erfolgreich zurückgesetzt',
         'update' => 'Update',
         'birth_date' => 'Geburtsdatum',
-        'nation' => 'Nationanalität',
+        'nation' => 'Nationalität',
         'mobile_phone' => 'Mobil',
         'work_phone' => 'Geschäft',
         'private_phone' => 'Telefon privat',
@@ -143,7 +143,7 @@ return [
         ],
         'type' => [
             'label' => 'Typ',
-            'tenant' => 'Mieterin',
+            'tenant' => 'Mieter',
             'owner' => 'Eigentümer',
         ],
     ],
