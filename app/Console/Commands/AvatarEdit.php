@@ -55,7 +55,11 @@ class AvatarEdit extends Command
                 $imgPath = storage_path(sprintf('app/public/avatar/' . $user->id . '/' . $pixel . 'x' . $pixel . '/' . $avatar));
                 (new Image)->make(file_get_contents($originalPath))->fit($pixel, $pixel)->save($imgPath);
             }
-            unlink($user->avatar);
+            if(\File::exists($user->avatar)){
+                unlink($user->avatar);
+            }else{
+                $avatar='';
+            }
             $user->avatar = $avatar;
             $user->save();
         }
