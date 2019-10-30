@@ -419,6 +419,9 @@
                     if (element === row) {
                         let index = this.addedAssigmentList.indexOf(element);
                         this.addedAssigmentList.splice(index, 1);
+
+                        this.model.building_ids = this.addedAssigmentList.filter(item => item['type'] === 'building').map((building) => building.id);
+                        this.model.quarter_ids = this.addedAssigmentList.filter(item => item['type'] === 'quarter').map((quarter) => quarter.id);
                     }
                 });
             },
@@ -427,6 +430,8 @@
                     if (element === row) {
                         let index = this.addedProviderAssigmentList.indexOf(element);
                         this.addedProviderAssigmentList.splice(index, 1);
+
+                        this.model.provider_ids = this.addedProviderAssigmentList.filter(item => item['type'] === 'providers').map((provider) => provider.id);
                     }
                 });
             },
