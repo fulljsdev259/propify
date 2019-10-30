@@ -31,10 +31,10 @@
                                     </p>
                                     <p style="margin:7px 0 0;">
                                         <b>@lang('general.address',[],$language):</b>
-                                        {{ @$tenant->address->street }}
-                                        {{ @$tenant->address->house_num }},
-                                        {{ @$tenant->address->zip }}
-                                        {{ @$tenant->address->city }}
+                                        {{ @$contract->building->address->street }}
+                                        {{ @$contract->building->address->house_num }},
+                                        {{ @$contract->building->address->zip }}
+                                        {{ @$contract->building->address->city }}
 
                                     </p>
                                 </td>
