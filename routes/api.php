@@ -151,8 +151,8 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::delete('/quarters/{id}', 'QuarterAPIController@destroy')->name('quarters.destroy');
     Route::post('/quarters/deletewithids', 'QuarterAPIController@destroyWithIds')->name('quarters.destroyWithIds');
     Route::post('/quarters/{id}/media', 'MediaAPIController@quarterUpload')->name('quarters.media.upload');
-    Route::get('/quarters/{id}/email-receptions', 'QuarterAPIController@getEmailReceptions')->name('quarters.email-receptions.get');
-    Route::post('/quarters/{id}/email-receptions', 'QuarterAPIController@storeEmailReceptions')->name('quarters.email-receptions.store');
+    Route::get('/quarters/{id}/email-receptionists', 'QuarterAPIController@getEmailReceptionists')->name('quarters.email-receptionists.get');
+    Route::post('/quarters/{id}/email-receptionists', 'QuarterAPIController@storeEmailReceptionists')->name('quarters.email-receptionists.store');
 
     Route::get('/quarters/{id}/assignees', 'QuarterAPIController@getAssignees');
     Route::post('/quarters/{id}/managers', 'QuarterAPIController@assignManagers')->name('quarters.assign.managers'); // @TODO delete

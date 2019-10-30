@@ -701,11 +701,45 @@ class QuarterAPIController extends AppBaseController
     }
 
     /**
+     * @SWG\Get(
+     *      path="/quarters/{id}/email-receptionists",
+     *      summary="get quarter email-receptionists",
+     *      tags={"Quarter", "EmailReceptionists"},
+     *      description="get quarter email-receptionists",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="id",
+     *          description="id of quarter",
+     *          type="integer",
+     *          required=true,
+     *          in="query",
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  type="integer",
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     *
      * @param $quarterId
      * @param EmailReceptionistRequest $emailReceptionistRequest
      * @return mixed
      */
-    public function getEmailReceptions($quarterId, EmailReceptionistRequest $emailReceptionistRequest)
+    public function getEmailReceptionists($quarterId, EmailReceptionistRequest $emailReceptionistRequest)
     {
         /** @var Quarter $quarter */
         $quarter = $this->quarterRepository->findWithoutFail($quarterId);
@@ -721,11 +755,44 @@ class QuarterAPIController extends AppBaseController
     }
 
     /**
+     *  @SWG\Post(
+     *      path="/quarters/{id}/email-receptionists",
+     *      summary="get quarter email-receptionists",
+     *      tags={"Quarter", "EmailReceptionist"},
+     *      description="get quarter email-receptionists",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="id",
+     *          description="id of quarter",
+     *          type="integer",
+     *          required=true,
+     *          in="query",
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  type="integer",
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
      * @param $quarterId
      * @param EmailReceptionistRequest $emailReceptionistRequest
      * @return mixed
      */
-    public function storeEmailReceptions($quarterId, EmailReceptionistRequest $emailReceptionistRequest)
+    public function storeEmailReceptionists($quarterId, EmailReceptionistRequest $emailReceptionistRequest)
     {
         /** @var Quarter $quarter */
         $quarter = $this->quarterRepository->findWithoutFail($quarterId);
@@ -779,6 +846,6 @@ class QuarterAPIController extends AppBaseController
             'email_receptionists.property_manager:id,first_name,last_name'
         ]);
         $response = (new EmailReceptionistTransformer())->transformCollection($quarter->email_receptionists);
-        return $this->sendResponse($response, __('Email Receptionist get successfully'));
+        return $this->sendResponse($response, __('Email Receptionists get successfully'));
     }
 }
