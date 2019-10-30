@@ -139,7 +139,7 @@ return [
             'your_administration' => 'Ihre Verwaltung'
         ],
         'type' => [
-            'label' => 'Typ',
+            'label' => 'Geschäftsbeziehung',
             'tenant' => 'Mieter',
             'owner' => 'Eigentümer',
         ],
@@ -452,8 +452,8 @@ return [
         'assigned_to' => 'Zuständig',
         'assign_providers' => 'Zuweisen',
         'assign_managers' => 'Zuweisen',
-        'assigned_service_providers' => 'Zugewiesene Dienstleister',
-        'assigned_property_managers' => 'Zugewiesen intern',
+        'assigned_service_providers' => 'Dienstleister',
+        'assigned_property_managers' => 'Verantwortlich',
         'notify' => 'Kommunikation',
         'public_legend' => 'Setzen Sie diese Option, um die Anfrage für alle ansässigen Nachbarn sichtbar zu machen.',
         'conversation' => 'Chat-Mitteilungen',
@@ -478,7 +478,7 @@ return [
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',
         'category_list' => [
-            'general' => ' Allgemeine Anliegen',
+            'general' => ' Allg. Anliegen',
             'malfunction' => 'Fehlfunktion',
             'deficiency' => 'Mangel'
         ],
