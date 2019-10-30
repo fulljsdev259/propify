@@ -854,6 +854,7 @@ class Request extends AuditableModel implements HasMedia
             'subCategory' => get_sub_category_details($this->sub_category),
             'request' => $this,
             'resident' => $this->resident,
+            'contract' => $this->contract,
             'language'  => $this->resident->settings->language
         ];
 
