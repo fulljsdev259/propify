@@ -143,13 +143,14 @@ export default (config = {}) => {
                     });
                 }
             },
-            async uploadNewMedia(id) {
+            async uploadNewMedia(id, audit_id) {
                 if (this.media.length) {
                     for (let i = 0; i < this.media.length; i++) {
                         const image = this.media[i];
                         await this.uploadPinboardMedia({
                             id,
-                            media: image.file.src
+                            media: image.file.src,
+                            merge_in_audit : audit_id
                         });
                     }
                 }
@@ -464,7 +465,7 @@ export default (config = {}) => {
 
                             if (resp && resp.data.id) {
                                 this.$set(this.model, 'id', resp.data.id);
-                                await this.uploadNewMedia(resp.data.id);
+                                await this.uploadNewMedia(resp.data.id, resp.data.audit_id);
                                 if (this.toAssign) {
                                     await this.attachBuilding();
                                 }

@@ -122,7 +122,7 @@
                         for(let i = 0; i < this.categories.length; i ++)
                         {
                             categories.push({
-                                category_id : +this.categories[i].id,
+                                category : +this.categories[i].id,
                                 property_manager_ids: this.model.assign[i]
                             })
                             //console.log('category, assign', this.categories[i].name, this.assign[i])

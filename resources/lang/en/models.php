@@ -80,6 +80,7 @@ return [
                 'limited' => 'Limited',
             ],
             'contract_pdf' => 'Contract PDF',
+            'filename' => 'Name',
             'deposit_amount' => 'Deposit amount',
             'type_of_deposit' => 'Type of deposit',
             'deposit_types' => [
