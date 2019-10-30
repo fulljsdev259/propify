@@ -14,7 +14,7 @@ class AddDefaultEmailReceptionistInSettingsTable extends Migration
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {
-            $table->text('email_receptionist_ids')->default('[]')->after('pinboard_receiver_ids');
+            $table->text('email_receptionist_ids')->default('')->after('pinboard_receiver_ids');
         });
     }
 
