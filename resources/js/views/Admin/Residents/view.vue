@@ -146,19 +146,70 @@
                         </h3>
                         <el-row :gutter="20">
                             <el-col :sm="8" :xs="12">{{$t('models.resident.contract.rent_start')}}:</el-col>
-                            <el-col :sm="16" :xs="12" class="text-secondary" v-if="model.rent_start">
-                                {{new Date(model.rent_start) | formatDate }}
+                            <el-col :sm="16" :xs="12" class="text-secondary" v-if="model.start_date">
+                                {{new Date(model.start_date) | formatDate }}
                             </el-col>
                             <el-col :sm="16" :xs="12" class="text-secondary" v-else>
                                &#8203;
                             </el-col>
 
                             <el-col :sm="8" :xs="12">{{$t('models.resident.contract.rent_end')}}:</el-col>
-                            <el-col :sm="16" :xs="12" class="text-secondary" v-if="model.rent_end">
-                                {{  new Date(model.rent_end) | formatDate }}
+                            <el-col :sm="16" :xs="12" class="text-secondary" v-if="model.end_date">
+                                {{  new Date(model.end_date) | formatDate }}
                             </el-col>
                             <el-col :sm="16" :xs="12" class="text-secondary" v-else>
                                 &#8203;
+                            </el-col>
+
+                            <el-col :sm="8" :xs="12">{{$t('general.street')}}:</el-col>
+                            <el-col :sm="16" :xs="12" class="text-secondary">
+                                {{
+                                buildings.filter(building => building.id==model.building_id).length>0 ?
+                                buildings.filter(building => building.id==model.building_id)[0].address.street
+                                : '&nbsp;'
+                                }}
+                            </el-col>
+
+                            <el-col :sm="8" :xs="12">{{$t('models.building.house_num')}}:</el-col>
+                            <el-col :sm="16" :xs="12" class="text-secondary">
+                                {{
+                                buildings.filter(building => building.id==model.building_id).length>0 ?
+                                buildings.filter(building => building.id==model.building_id)[0].address.house_num
+                                : '&nbsp;'
+                                }}
+                            </el-col>
+
+                            <el-col :sm="8" :xs="12">{{$t('general.zip')}}:</el-col>
+                            <el-col :sm="16" :xs="12" class="text-secondary">
+                                {{
+                                buildings.filter(building => building.id==model.building_id).length>0 ?
+                                buildings.filter(building => building.id==model.building_id)[0].address.zip
+                                : '&nbsp;'
+                                }}
+                            </el-col>
+
+                            <el-col :sm="8" :xs="12">{{$t('general.city')}}:</el-col>
+                            <el-col :sm="16" :xs="12" class="text-secondary">
+                                {{
+                                buildings.filter(building => building.id==model.building_id).length>0 ?
+                                buildings.filter(building => building.id==model.building_id)[0].address.city
+                                : '&nbsp;'
+                                }}
+                            </el-col>
+
+                            <el-col :sm="12" :xs="12">{{$t('models.unit.type.label')}}:</el-col>
+                            <el-col :sm="12" :xs="12" class="text-secondary">
+
+                                {{
+                                !!$constants.units.type[unit.type] ?
+                                $t('models.unit.type.' + $constants.units.type[unit.type])
+                                : '&nbsp;'
+                                }}
+                            </el-col>
+
+                            <el-col :sm="12" :xs="12">{{$t('models.unit.room_no')}}:</el-col>
+                            <el-col :sm="12" :xs="12" class="text-secondary">
+                                {{unit.room_no}}&nbsp;
                             </el-col>
 
                             <el-col v-if="lastMedia" class="media">
@@ -173,7 +224,7 @@
                             </el-col>
                         </el-row>
                    </el-card>
-                    <el-card class="chart-card left-card-data-section">
+                    <!-- <el-card class="chart-card left-card-data-section">
                         <h3 class="right-card">
                             <i class="icon-commerical-building icon"/>
                             {{$t('models.resident.building.name')}}
@@ -279,7 +330,7 @@
                                 </div>
                             </el-col>
                         </el-row>
-                    </el-card>
+                    </el-card> -->
                 </el-col>
                 <el-col :md="17">
                     <el-row :gutter="20">
