@@ -59,14 +59,6 @@
                 </template>
             </span>
             <el-form :model="managersForm"  v-if="activeMassEditOption == 'service_provider'">
-                <div class="switch-wrapper">
-                    <el-form-item :label="$t('models.request.mass_edit.service_provider.modal.switcher_label')">
-                        <el-switch v-model="send_email_service_provider"/>
-                    </el-form-item>
-                    <div class="switcher__desc">
-                        {{ $t('models.request.mass_edit.service_provider.modal.switcher_desc') }}
-                    </div>
-                </div>
                 <el-form-item :label="$t('models.request.mass_edit.service_provider.modal.content_label')">
                     <el-select
                         :loading="remoteLoading"
@@ -90,6 +82,14 @@
                             v-for="service in toAssignList"/>
                     </el-select>
                 </el-form-item>
+                <div class="switch-wrapper">
+                    <el-form-item :label="$t('models.request.mass_edit.service_provider.modal.switcher_label')">
+                        <el-switch v-model="send_email_service_provider"/>
+                    </el-form-item>
+                    <div class="switcher__desc">
+                        {{ $t('models.request.mass_edit.service_provider.modal.switcher_desc') }}
+                    </div>
+                </div>
             </el-form>
 
             <el-form :model="managersForm" v-if="activeMassEditOption == 'property_manager'">
@@ -665,7 +665,13 @@
     }
 
     .el-dialog {
+        .el-dialog__body {
+            padding: 10px 20px;
+        }
 
+        .el-form-item {
+            margin-bottom: 0;
+        }
         .el-select {
             width: 100%;
         }
