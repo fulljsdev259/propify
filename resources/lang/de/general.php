@@ -501,7 +501,7 @@ return [
         'logout' => 'Abmelden',
         'profile' => 'Profil',
         'users' => 'Benutzer',
-        'employees' => 'Fortimo',
+        'employees' => 'Fortimo-Mitarbeiter',
         'companies' => 'Dienstleister',
         'admins' => 'Administratoren',
         'super_admins' => 'Super Administratoren',
@@ -520,7 +520,7 @@ return [
         'request_categories' => 'Kategorien',
         'services' => 'Dienstleister',
         'activity' => 'Aktivität',
-        'property_managers' => 'Fortimo',
+        'property_managers' => 'Fortimo-Mitarbeiter',
         'templates' => 'Vorlagen'
     ],
     'contracts' => 'Verträge',
