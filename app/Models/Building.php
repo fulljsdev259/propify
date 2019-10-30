@@ -333,6 +333,14 @@ class Building extends AuditableModel implements HasMedia
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function email_receptionists()
+    {
+        return $this->hasMany(EmailReceptionist::class, 'model_id')->where('model_type', get_morph_type_of($this));
+    }
+
+    /**
      * @param array $data
      * @return array
      */

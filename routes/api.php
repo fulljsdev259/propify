@@ -103,6 +103,10 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::post('/buildings/deletewithids', 'BuildingAPIController@destroyWithIds')->name('buildings.destroyWithIds');
     Route::post('/buildings/checkunitrequest', 'BuildingAPIController@checkUnitRequest')->name('buildings.checkUnitRequest');
 
+    Route::get('/buildings/{id}/email-receptionists', 'BuildingAPIController@getEmailReceptionists')->name('buildings.email-receptionists.get');
+    Route::post('/buildings/{id}/email-receptionists', 'BuildingAPIController@storeEmailReceptionists')->name('buildings.email-receptionists.store');
+
+
     Route::put('/buildings/{id}', 'BuildingAPIController@update')->name('buildings.update');
 
     Route::delete('/buildings/{id}', 'BuildingAPIController@destroy')->name('buildings.destroy');
