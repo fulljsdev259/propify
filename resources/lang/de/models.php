@@ -80,6 +80,7 @@ return [
                 'limited' => 'Befristet',
             ],
             'contract_pdf' => 'Vertrag PDF',
+            'filename' => 'Name',
             'deposit_amount' => 'Kautionsbetrag',
             'type_of_deposit' => 'Art der Sicherheitsleistung',
             'deposit_types' => [

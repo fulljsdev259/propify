@@ -30,12 +30,12 @@
             <div class="p-user__settings__description">
                 {{$t('resident.notifications.pinboard')}}
             </div>
-            <el-form-item :label="$t('resident.listing')">
+            <!-- <el-form-item :label="$t('resident.listing')">
                 <el-switch v-model="loggedInUser.settings.listing_notification" @change="save" />
-            </el-form-item>
-            <div class="p-user__settings__description">
+            </el-form-item> -->
+            <!-- <div class="p-user__settings__description">
                 {{$t('resident.notifications.listing')}}
-            </div>
+            </div> -->
             <!--<el-form-item :label="$t('resident.admin')">
                 <el-switch v-model="loggedInUser.settings.admin_notification" @change="save" />
             </el-form-item>
