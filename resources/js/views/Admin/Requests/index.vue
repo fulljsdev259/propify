@@ -664,8 +664,8 @@
         }
     }
 
-    .el-dialog {
-        .el-dialog__body {
+    /deep/ .el-dialog {
+        /deep/ .el-dialog__body {
             padding: 10px 20px;
         }
 
@@ -681,8 +681,9 @@
         }
 
         .switch-wrapper {
+            margin-bottom: 0;
+
             .switcher__desc {
-                margin-top: 0.5em;
                 display: block;
                 font-size: 0.9em;
             }
