@@ -11,7 +11,7 @@ return [
         'weeks' => 'Wochen',
         'months' => 'Monate',
         'years' => 'Jahre',
-        'day' => 'Day de'
+        'day' => 'Tag'
     ],
     'choose_language' => 'Sprache auswählen',
     'language' => "Sprache",
@@ -19,7 +19,7 @@ return [
         'fr' => 'Français',
         'it' => 'Italiano',
         'de' => 'Deutsch',
-        'en' => 'English',
+        'en' => 'Englisch',
     ],
     'footer_text' => [
         'company_name' => 'Propify®',
@@ -170,11 +170,21 @@ return [
         'old_password_required' => 'Das alte Passwort wird benötigt.',
     ],
     'assignment_types' => [
+        'label' => 'Typ',
         'building' => 'Liegenschaft',
         'quarter' => 'Projekt',
         'services' => 'Dienstleister',
         'managers' => 'Bewirtschafter',
+        'provider' => 'Dienstleister',
+        'manager' => 'Bewirtschafter',
         'administrator' => 'Administrator'
+    ],
+    'box_titles' => [
+        'details' => 'Details',
+        'files' => 'Dokumente',
+        'managers' => 'Bewirtschafter',
+        'buildings' => 'Objekte',
+        'buildings_and_quarters' => 'Objekte/bearbeiten',
     ],
     'email' => 'E-Mail',
     'email_validation' => [
@@ -294,18 +304,18 @@ return [
     'maintenance' => 'Heiz- und Nebenkosten',
     'gross_rent' => 'Bruttomiete',
     'emergency' => [
-        'title' => 'Notfall',
-        'activate_title' => 'Notfallkasten aktivieren',
-        'activate_desc' => 'Sie können die Notfallbox aktivieren.',
-        'phone_number' => 'Telefonnummer',
+        'title' => 'Notfallnummer',
+        'activate_title' => 'Notfallnummer aktivieren',
+        'activate_desc' => 'Im Dashboard des Bewohner Portals wird die Notfallbox angezeigt.',
+        'phone_number' => 'Person/Telefonnummer',
         'time_schedule' => 'Zeitplan',
     ],
     'email_receptionist' => [
-        'title' => 'E-Mail-Empfangsstelle',
-        'info_desc' => 'Möchten Sie global verwenden oder zuordnen?',
-        'global' => 'Wählen Sie aus den globalen',
-        'assign' => 'Zuweisen',
-        'email_receptionist_of' => 'E-Mail-Empfangsstelle von :category'
+        'title' => 'Benachrichtung (Empfänger)',
+        'info_desc' => 'Welche Einstellungen sollen verwendet werden?',
+        'global' => 'Einstellungen im Projekt',
+        'assign' => 'Individuelle Einstellungen',
+        'email_receptionist_of' => 'Empfänger für Kategorie ":category"'
     ],
     'filter' => 'Filter',
     'activities' => [
@@ -348,20 +358,20 @@ return [
                 ],
                 'content' => [                    
                     'general' => [
-                        'created' => ':userName hat diesen :auditable_type erstellt',
-                        'updated' => 'Die :fieldname wurde von :old zu :new',
-                        'provider_assigned' => ':providerName wurde als Dienstleister zugewiesen.',
-                        'provider_unassigned' => 'Dienstleisterin :providerName wurde nicht beauftragt.',
-                        'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName wurde als Managerin zugewiesen.',
-                        'manager_unassigned' => 'Managerin :propertyManagerFirstName :propertyManagerLastName wurde nicht zugewiesen.',
+                        'created' => ':userName hat diese :auditable_type erstellt',
+                        'updated' => 'Das Feld :fieldname wurde von :old zu :new geändert',
+                        'provider_assigned' => ':providerName wurde als Dienstleister hinzugezogen.',
+                        'provider_unassigned' => 'Dienstleister :providerName wurde nicht entfernt.',
+                        'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName wurde als zustätige Person zugewiesen.',
+                        'manager_unassigned' => ':propertyManagerFirstName :propertyManagerLastName wurde als zustätige Person entfernt.',
                         'user_assigned' => ':userName wurde dieser Anfrage hinzugefügt.',
                         'media_uploaded' => 'Mediendateien hinaufgeladen',
                         'media_deleted' => 'Mediendateien gelöscht',
                         'provider_notified' => 'Dienstleisterin :providerName wurde per E-Mail benachrichtigt',
-                        'quarter_assigned' => ':quarterName Projekt wurde zugewiesen.',
-                        'quarter_unassigned' => ':quarterName Projekt wurde entfernt',
-                        'building_assigned' => ':buildingName Liegenschaft wurde zugewiesen.',
-                        'building_unassigned' => ':buildingName Liegenschaft wurde entfernt',
+                        'quarter_assigned' => 'Projekt :quarterName wurde zugewiesen.',
+                        'quarter_unassigned' => 'Projekt :quarterName wurde entfernt',
+                        'building_assigned' => 'Liegenschaft :buildingName wurde zugewiesen.',
+                        'building_unassigned' => 'Liegenschaft :buildingName wurde entfernt',
                     ],                    
                 ],
             ],
@@ -513,5 +523,11 @@ return [
         'property_managers' => 'Fortimo',
         'templates' => 'Vorlagen'
     ],
-    'contracts' => 'Verträge'
+    'contracts' => 'Verträge',
+    'ordinal_endings' => [
+        'st' => '.',
+        'nd' => '.',
+        'rd' => '.',
+        'th' => '.',
+    ],
 ];

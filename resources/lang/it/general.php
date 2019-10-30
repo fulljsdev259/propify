@@ -170,11 +170,21 @@ return [
         'old_password_required' => 'È richiesta una vecchia password',
     ],
     'assignment_types' => [
+        'label' => 'Type',
         "building" => "Edificio",
         "quarter" => "Quartiere",
         "services" => "Servizi",
         "managers" => "Manager",
+        'provider' => 'Servizio',
+        'manager' => 'Manager',
         "administrator" => "Gestore",
+    ],
+    'box_titles' => [
+        'details' => 'Dettagli',
+        'files' => 'File',
+        'managers' => 'Dirigenti',
+        'buildings' => 'Edifici',
+        'buildings_and_quarters' => 'Edifici/contrade',
     ],
     'email' => 'eMail',
     'email_validation' => [
@@ -302,8 +312,8 @@ return [
     ],
     'email_receptionist' => [
         'title' => 'Ricezione e-mail',
-        'info_desc' => 'Volete utilizzare l\'opzione globale o assegnare a?',
-        'global' => 'Scegliere da globale',
+        'info_desc' => 'Vuoi usare la receptionist globale da un quarto di dollaro o assegnarne di nuovi?',
+        'global' => 'Globale',
         'assign' => 'Assegna',
         'email_receptionist_of' => 'Ricezione e-mail di :category'
     ],
@@ -513,5 +523,11 @@ return [
         'property_managers' => 'Gestori',
         'templates' => 'Modelli'    
     ],
-    'contracts' => 'Contratti'
+    'contracts' => 'Contratti',
+    'ordinal_endings' => [
+        'st' => 'º',
+        'nd' => 'º',
+        'rd' => 'º',
+        'th' => 'º',
+    ],
 ];

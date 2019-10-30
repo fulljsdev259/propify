@@ -28,7 +28,7 @@
             
             <el-col :md="12">
                 <el-tabs type="border-card" v-model="activeTab">
-                    <el-tab-pane :label="$t('general.actions.view')" name="details">
+                    <el-tab-pane :label="$t('general.box_titles.details')" name="details">
                         <el-form :model="model" label-position="top" label-width="192px" ref="form">
                             <el-row :gutter="20">
                                 <el-col :md="10">
@@ -168,7 +168,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="files">
                         <span slot="label">
-                            <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('models.building.files') }}</el-badge>
+                            <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge>
                         </span>
                         <draggable @sort="sortFiles" v-model="model.media">
                             <transition-group name="list-complete">
@@ -257,7 +257,7 @@
                     </el-tab-pane>
                     <el-tab-pane name="managers">
                         <span slot="label">
-                            <el-badge :value="managerCount" :max="99" class="admin-layout">{{ $t('models.building.managers') }}</el-badge>
+                            <el-badge :value="managerCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
                         </span>
                         <assignment-by-type
                             :resetToAssignList="resetToAssignList"
@@ -344,7 +344,8 @@
                         <span slot="label">
                             <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
                         </span>
-                        
+                        <span class="icon-cog" @click="toggleDrawer">
+                        </span>
                         <relation-list
                             :actions="requestActions"
                             :columns="requestColumns"
@@ -361,10 +362,10 @@
                         </span>
                         <audit v-if="model.id" :id="model.id" type="building" showFilter/>
                     </el-tab-pane>
-                    <el-tab-pane name="settings" :disabled="true">
+                    <!-- <el-tab-pane name="settings" :disabled="true">
                         <span slot="label" class="icon-cog" @click="toggleDrawer">
                         </span>
-                    </el-tab-pane>
+                    </el-tab-pane> -->
                 </el-tabs>
             </el-col>
         </el-row>
@@ -513,8 +514,8 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
-                    prop: 'type',
-                    label: 'models.request.user_type.label',
+                    prop: 'role',
+                    label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
                 assigneesActions: [{
@@ -620,7 +621,7 @@
                 'checkUnitRequestWidthIds'
             ]),
             translateType(type) {
-                return this.$t(`models.request.user_type.${type}`);
+                return this.$t(`general.assignment_types.${type}`);
             },
             fetchSettings() {
                 this.getSettings().then((resp) => {
@@ -1079,6 +1080,13 @@
                         float: right;
                     }
                 }
+
+                
+            }
+
+            span.icon-cog {
+                cursor: pointer;
+                float: right;
             }
 
             #providerAssignBox {

@@ -170,11 +170,21 @@ return [
         'old_password_required' => 'Old password is required',
     ],
     'assignment_types' => [
+        'label' => 'Type',
         'building' => 'Building',
         'quarter' => 'Quarter',
         'services' => 'Services',
         'managers' => 'Managers',
+        'provider' => 'Service',
+        'manager' => 'Manager',
         'administrator' => 'Administrator',
+    ],
+    'box_titles' => [
+        'details' => 'Details',
+        'files' => 'Files',
+        'managers' => 'Managers',
+        'buildings' => 'Buildings',
+        'buildings_and_quarters' => 'Buildings/quarters',
     ],
     'email' => 'Email',
     'email_validation' => [
@@ -302,8 +312,8 @@ return [
     ],
     'email_receptionist' => [
         'title' => 'Email Receptionist',
-        'info_desc' => 'Do you want to use global or assign?',
-        'global' => 'Choose from global',
+        'info_desc' => 'Do you want to use global receptionist from quarter or assign newer?',
+        'global' => 'Global',
         'assign' => 'Assign',
         'email_receptionist_of' => 'Email Receptionist of :category'
     ],
@@ -513,5 +523,11 @@ return [
         'property_managers' => 'Property managers',
         'templates' => 'Templates'
     ],
-    'contracts' => 'Contracts'
+    'contracts' => 'Contracts',
+    'ordinal_endings' => [
+        'st' => 'st',
+        'nd' => 'nd',
+        'rd' => 'rd',
+        'th' => 'th',
+    ],
 ];

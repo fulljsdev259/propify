@@ -136,7 +136,7 @@ class UserRepository extends BaseRepository
      */
     public function uploadImage(string $fileData, User $user, $mergeInAudit = null)
     {
-        $pixels = \ConstFileCategories::AVATAR_SIZES;
+        $pixels = \ConstantsHelpers::AVATAR_SIZES;
         foreach($pixels as $pixel){
             $avatar = Str::slug(sprintf($user->name)) .'.png';
             $path = storage_path('app/public/avatar/'.$user->id .'/'. $pixel  . 'x' . $pixel);          

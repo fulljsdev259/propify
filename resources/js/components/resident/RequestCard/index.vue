@@ -1,5 +1,5 @@
 <template>
-    <ui-card class="request-card" shadow="always">
+    <ui-card class="request-card" shadow="always" v-resize:debounce="onResize">
         <el-tabs type="card" v-model="idState.activeTab" stretch v-on="$listeners">
             <el-tab-pane name="overview">
                 <div slot="label">
@@ -41,7 +41,7 @@
                 </div>                
                 <div class="title" @click="$emit('toggle-drawer')">{{data.title}}</div>
                 <ui-readmore class="description" :text="data.description" :max="512" />
-                <div class="assignees" v-if="assignees.length">
+                <div class="assignees" v-if="assignees.length" v-resize:debounce="onResize">
                     {{$t('resident.assignees')}}
                     <div :key="assignee.id" class="assignee" v-for="assignee in visibleAssignees">
                         <ui-avatar :name="assignee.name" :size="32" :src="assignee.avatar" />
@@ -102,8 +102,9 @@
 </template>
 
 <script>
-    import FormatDateTimeMixin from 'mixins/formatDateTimeMixin'
-    import {IdState} from 'vue-virtual-scroller'
+    import FormatDateTimeMixin from 'mixins/formatDateTimeMixin';
+    import {IdState} from 'vue-virtual-scroller';
+    import resize from 'vue-resize-directive';
 
     export default {
         mixins: [
@@ -112,8 +113,10 @@
                 idProp: vm => vm.data.id
             })
         ],
+        directives: {
+            resize
+        },
         components: {
-            
         },
         props: {
             data: {
@@ -161,9 +164,11 @@
         },
         methods: {
             showRestAssignees () {
-                this.idState.showAllAssginees = true
-
-                this.$emit('tab-click')
+                this.idState.showAllAssginees = true;
+                this.$emit('tab-click');
+            },
+            onResize() {
+                this.$emit('update-dynamic-scroller');
             }
         }
     }

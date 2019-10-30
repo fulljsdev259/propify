@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Models\AuditableModel;
 use App\Models\Model;
 use App\Models\Contract;
+use App\Models\Resident;
 use App\Models\Unit;
 use App\Traits\SaveMediaUploads;
 use Illuminate\Support\Facades\App;
@@ -34,7 +36,8 @@ class ContractRepository extends BaseRepository
 
     /**
      * @param array $attributes
-     * @return Model|mixed
+     * @return Contract|Model|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
@@ -57,16 +60,52 @@ class ContractRepository extends BaseRepository
              */
             $pinboardRepository = App::make(PinboardRepository::class);
             $pinboardRepository->newResidentContractPinboard($model);
-
         }
+
+       $this->setAsResidentDefaultContractIfNeed($model);
 
         return $model;
     }
 
     /**
+     * @param $contract
+     * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    protected function setAsResidentDefaultContractIfNeed($contract)
+    {
+        if ($contract->status != Contract::StatusActive) {
+            return $contract;
+        }
+
+        // save default_contract_id if need
+        $contract->load('resident:id,default_contract_id');
+        $resident = $contract->resident;
+
+        if (! ($resident && is_null($resident->default_contract_id))) {
+            return $contract;
+        }
+        
+        Resident::disableAuditing();
+        $resident->update(['default_contract_id' => $contract->id]);
+        Resident::enableAuditing();
+        (new AuditableModel())->newSystemAudit(
+            'resident',
+            $resident,
+            AuditableModel::EventUpdated,
+            true,
+            [],
+            true
+        );
+
+        return $contract;
+    }
+
+    /**
      * @param $unit
      * @param $residentId
-     * @return Model|mixed
+     * @return Contract|Model|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */

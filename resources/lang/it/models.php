@@ -153,6 +153,7 @@ return [
         "saved" => "Edificio salvato",
         "floors" => "Pavimenti",
         'under_floor' => 'Sotto il pavimento',
+        'ground_floor' => 'Piano terra',
         "basement" => "Nel seminterrato",
         "attic" => "In soffitta",
         "floor_nr" => "Numero di piani",
@@ -402,10 +403,37 @@ return [
         "category" => "Categoria",
         "edit_title" => "Modifica Richiesta",
         "add_title" => "Aggiungi Richiesta",
-        'mass_edit' => 'Modifica di massa',
-        'assign_partners' => 'Assegnare i partner di assistenza',
-        'assign_managers' => 'Assegnare i gestori di proprietà',
-        'change_status' => 'Cambia stato',
+        'mass_edit' => [
+            'label' => 'Modifica di massa',
+            'options' => [
+                'service_provider' => 'Fornitore di servizi',
+                'property_manager' => 'Proprietà manager',
+                'change_status' => 'Cambia stato'
+            ],
+            'service_provider' => [
+                'modal' => [
+                    'heading_title' => 'Assegnare la voce ai fornitori di servizi',
+                    'content_label' => 'È possibile selezionare i fornitori di servizi qui',
+                    'footer_button' => 'Assegnare i fornitori di servizi',
+                    'switcher_label' => 'Informare i fornitori di servizi',
+                    'switcher_desc' => 'È possibile informare i fornitori di servizi interessati',
+                ]
+            ],
+            'property_manager' => [
+                'modal' => [
+                    'heading_title' => 'Assegnare i gestori di immobili alla rubrica',
+                    'content_label' => 'È possibile selezionare il gestore(i) di proprietà qui',
+                    'footer_button' => 'Assegnare i gestori di proprietà',
+                ]
+            ],
+            'change_status' => [
+                'modal' => [
+                    'heading_title' => 'Cambiare l\'intestazione di stato',
+                    'content_label' => 'È possibile modificare lo stato qui',
+                    'footer_button' => 'Cambia stato',
+                ]
+            ],
+        ],
         "due_date" => "Scadenza",
         "solved_date" => "Data di fabbricazione",
         "closed_date" => "Data di chiusura",
@@ -440,7 +468,7 @@ return [
         "internal_notices" => "Avvisi interni",
         "status_changed" => "Stato cambiato",
         "priority_changed" => "La priorità è cambiata",
-        'assignment' => 'Assegnazione di manager/fornitori di servizi',
+        'assignment' => 'Manager/Servizi',
         'active_reminder_switcher' => 'Promemoria',
         'days_left' => "Quanti giorni prima dovrebbe essere inviata l'e-mail?",
         'send_person' => 'Quale persona deve essere informata?',

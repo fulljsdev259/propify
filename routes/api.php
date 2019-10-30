@@ -48,6 +48,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/residents/me', 'ResidentAPIController@showLoggedIn')->name('residents.me');
     Route::get('/residents/{id}', 'ResidentAPIController@show')->name('residents.show');
     Route::get('/residents/{id}/statistics', 'DashboardAPIController@residentStatistics')->name('residents.statistics.show');
+    Route::get('/my/documents', 'ResidentAPIController@myDocuments')->name('my.documents');
 
     Route::post('/residents', 'ResidentAPIController@store')->name('residents.store');
     Route::post('/addReview', 'ResidentAPIController@addReview');

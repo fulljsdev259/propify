@@ -153,6 +153,7 @@ return [
         "saved" => "Bâtiment sauvé",
         "floors" => "Planchers",
         'under_floor' => 'Sous le plancher',
+        'ground_floor' => 'Rez-de-chaussée',
         "basement" => "Sous-sol",
         "attic" => "Grenier aménageable",
         "floor_nr" => "Nombre d'étages",
@@ -402,10 +403,37 @@ return [
         "category" => "Catégorie",
         "edit_title" => "Demande de modification",
         "add_title" => "Ajouter une demande",
-        'mass_edit' => 'Traitement en masse',
-        'assign_partners' => 'Affecter des partenaires de service',
-        'assign_managers' => 'Affecter des gestionnaires immobiliers',
-        'change_status' => 'Modifier l\'état',
+        'mass_edit' => [
+            'label' => 'Traitement en masse',
+            'options' => [
+                'service_provider' => 'Prestataire de services',
+                'property_manager' => 'Gestionnaire immobilier',
+                'change_status' => 'Modifier l\'état'
+            ],
+            'service_provider' => [
+                'modal' => [
+                    'heading_title' => 'Affectation de l\'en-tête des prestataires de services',
+                    'content_label' => 'Vous pouvez sélectionner le(s) fournisseur(s) de services ici',
+                    'footer_button' => 'Affecter des prestataires de services',
+                    'switcher_label' => 'Aviser les fournisseurs de services',
+                    'switcher_desc' => 'Vous pouvez informer les prestataires concernés',
+                ]
+            ],
+            'property_manager' => [
+                'modal' => [
+                    'heading_title' => 'Assegnare i gestori di immobili alla rubrica',
+                    'content_label' => 'Vous pouvez sélectionner le(s) gestionnaire(s) immobilier(s) ici',
+                    'footer_button' => 'Affecter des gestionnaires immobiliers',
+                ]
+            ],
+            'change_status' => [
+                'modal' => [
+                    'heading_title' => 'Modifier l\'en-tête d\'état',
+                    'content_label' => 'Vous pouvez modifier le statut ici',
+                    'footer_button' => 'Modifier l\'état',
+                ]
+            ],
+        ],
         "due_date" => "Date d'échéance",
         "solved_date" => "Fait à la date",
         "closed_date" => "Date de fermeture",
@@ -440,7 +468,7 @@ return [
         "internal_notices" => "Avis internes",
         "status_changed" => "Le statut a changé",
         "priority_changed" => "Priorité modifiée",
-        'assignment' => 'Affectation de gestionnaires/fournisseurs de services',        
+        'assignment' => 'Gestionnaires/Services',        
         'active_reminder_switcher' => 'Rappel',
         'days_left' => "Combien de jours avant l'envoi de l'email ?",
         'send_person' => 'Quelle personne doit être notifiée ?',
