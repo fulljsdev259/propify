@@ -69,7 +69,7 @@
                 <el-button @click="$refs.addComment.focus()" icon="ti-comment-alt" type="text"> &nbsp;{{$t('resident.comment')}}</el-button>
                 <span class="icon-picture" v-if="data.announcement === false && data.media.length">
                     <template v-if="data.media.length">
-                        {{data.media.length}} {{data.media.length > 1 ? $t('resident.images') : $t('resident.image')}}
+                        <span>{{data.media.length}} {{data.media.length > 1 ? $t('resident.images') : $t('resident.image')}}</span>
                     </template>
                 </span>
             </like>

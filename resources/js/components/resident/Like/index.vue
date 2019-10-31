@@ -143,8 +143,10 @@
         }
         .icon-picture {
             margin-left: 10px;
-            padding-left: 5px;
             color: var(--primary-color);
+            span {
+                padding-left: 5px;
+            }
         }
     }
 </style>
