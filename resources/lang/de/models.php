@@ -65,6 +65,9 @@ return [
             'update' => "Fehler bei der Aktualisierung des Bewohners: ",
             'deleted' => "Bewohner Löschfehler: ",
             'not_allowed_change_status' => 'Sie können den Status nicht ändern.',
+            'not_allowed_change_type_has_request_contract' => 'You can\'t change type as this resident has :contract_status contracts and :requests_status requests',
+            'not_allowed_change_type_has_contract' => 'You can\'t change type as this resident has :contract_status contracts',
+            'not_allowed_change_type_has_request' => 'You can\'t change type as this resident has :requests_status requests',
         ],        
         'personal_details_card' => 'Persönliche Angaben',
         'account_info_card' => 'Benutzer-Login',
@@ -139,7 +142,7 @@ return [
             'your_administration' => 'Ihre Verwaltung'
         ],
         'type' => [
-            'label' => 'Typ',
+            'label' => 'Geschäftsbeziehung',
             'tenant' => 'Mieter',
             'owner' => 'Eigentümer',
         ],
@@ -452,8 +455,8 @@ return [
         'assigned_to' => 'Zuständig',
         'assign_providers' => 'Zuweisen',
         'assign_managers' => 'Zuweisen',
-        'assigned_service_providers' => 'Zugewiesene Dienstleister',
-        'assigned_property_managers' => 'Zugewiesen intern',
+        'assigned_service_providers' => 'Dienstleister',
+        'assigned_property_managers' => 'Verantwortlich',
         'notify' => 'Kommunikation',
         'public_legend' => 'Setzen Sie diese Option, um die Anfrage für alle ansässigen Nachbarn sichtbar zu machen.',
         'conversation' => 'Chat-Mitteilungen',
@@ -478,7 +481,7 @@ return [
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',
         'category_list' => [
-            'general' => ' Allgemeine Anliegen',
+            'general' => ' Allg. Anliegen',
             'malfunction' => 'Fehlfunktion',
             'deficiency' => 'Mangel'
         ],
