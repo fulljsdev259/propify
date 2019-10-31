@@ -379,7 +379,7 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
-                    prop: 'role',
+                    prop: 'type',
                     label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
