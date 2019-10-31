@@ -36,6 +36,10 @@ class UpdateRequest extends BaseRequest
                         return $fails(__('models.resident.errors.not_found'));
                     }
 
+                    if ($resident->type == $value) {
+                        return;
+                    }
+
                     if ($resident->requests_count && $resident->contracts_count) {
                         return $fails(__('models.resident.errors.not_allowed_change_type_has_request_contract', $resident->only('contracts_count', 'requests_count')));
                     }
