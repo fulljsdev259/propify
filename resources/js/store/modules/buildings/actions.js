@@ -130,5 +130,18 @@ export default {
                     .catch(({response: {data: err}}) => reject(err));
             }
         );
-    },    
+    },
+    getBuildingEmailReceptionists({commit}, {building_id}) {
+        return new Promise((resolve, reject) =>
+            axios.get(buildFetchUrl(`buildings/${building_id}/email-receptionists`))
+                .then(({data: r}) => (r && resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
+    saveBuildingEmailReceptionists({commit}, {building_id, ...restPayload}) {
+        return new Promise((resolve, reject) =>
+            axios.post(buildFetchUrl(`buildings/${building_id}/email-receptionists`), restPayload.categories)
+                .then(({data: r}) => (r && resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
+
 }

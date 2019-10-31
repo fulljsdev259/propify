@@ -367,7 +367,7 @@
                     label: 'models.request.status.label'
                 }],
                 requestActions: [{
-                    width: 120,
+                    width: 70,
                     buttons: [{
                         icon: 'ti-search',
                         title: 'general.actions.edit',
@@ -376,7 +376,7 @@
                     }]
                 }],
                 assigneesActions: [{
-                    width: 80,
+                    width: 70,
                     buttons: [ {
                         title: 'general.unassign',
                         tooltipMode: true,
@@ -414,7 +414,7 @@
                     label: 'general.residents'
                 }],
                 quarterActions: [{
-                    width: '90px',
+                    width: 70,
                     buttons: [{
                         icon: 'ti-search',
                         title: 'general.actions.edit',

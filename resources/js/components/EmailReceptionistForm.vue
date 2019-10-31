@@ -28,7 +28,7 @@
                 <el-col :md="24">
                     <el-form-item :label="$t('general.email_receptionist.email_receptionist_of', {category: $t(`models.request.category_list.${category.name}`) })"
                         :rules="validationRules.assign"
-                        :prop="'assign.' + $index"
+                        :prop="'assign[$index]'"
                         class="label-block"
                         >
                         <el-select
@@ -39,6 +39,7 @@
                             filterable
                             multiple
                             remote
+                            clearable
                             reserve-keyword
                             style="width: 100%;"
                             v-model="model.assign[$index]"
@@ -84,6 +85,9 @@
             },
             quarter_id: {
                 type: Number
+            },
+            building_id: {
+                type: Number
             }
         },
         data () {
@@ -108,7 +112,7 @@
             }
         },
         methods: {
-            ...mapActions(['getPropertyManagers', 'getQuarterEmailReceptionists', 'saveQuarterEmailReceptionists']),
+            ...mapActions(['getPropertyManagers', 'getQuarterEmailReceptionists', 'saveQuarterEmailReceptionists', 'getBuildingEmailReceptionists', 'saveBuildingEmailReceptionists']),
             async submit () {
                 try {
                     const valid = await this.$refs.form.validate();
@@ -125,28 +129,40 @@
                                 category : +this.categories[i].id,
                                 property_manager_ids: this.model.assign[i]
                             })
+
+                            console.log(this.model.assignList[0]);
                             //console.log('category, assign', this.categories[i].name, this.assign[i])
                             
                         }
-                        let payload = {
-                            quarter_id : this.quarter_id,
-                            global: this.global,
-                            categories: categories
+
+                        if(this.isBuilding == false) {
+                            let payload = {
+                                quarter_id : this.quarter_id,
+                                global: this.global,
+                                categories: categories
+                            }
+
+                            const resp = await this.saveBuildingEmailReceptionists(payload)
+
+                            if(resp.data.success)
+                                displaySuccess(resp.data.message);
                         }
+
                         if(this.isBuilding == false)
                         {
                             payload = {
                                 quarter_id : this.quarter_id,
                                 categories: categories
                             }
+                            const resp = await this.saveQuarterEmailReceptionists(payload)
+
+                            if(resp.data.success)
+                                displaySuccess(resp.data.message);
                         }
                         
                         console.log('payload', payload)
                         
-                        const resp = await this.saveQuarterEmailReceptionists(payload)
                         
-                        // if(resp.data.success)
-                        //     displaySuccess(resp.data.message);
                     }
                 }
                 catch(err) {
@@ -183,7 +199,7 @@
         },
         async created () {
             let categories = this.$constants.requests.categories_data.categories
-
+            this.loading = true;
             this.categories = Object.keys(categories).map(key => {
                 return { id : key, name : categories[key] }
             })
@@ -200,11 +216,30 @@
                 this.model.assign[i] = []
             }
 
-            if(this.quarter_id)
-            {
-                const resp = await this.getQuarterEmailReceptionists({quarter_id: this.quarter_id})
-                console.log('getemailrecp', resp.data)
+            if(this.isBuilding == true) {
+                const resp = await this.getBuildingEmailReceptionists({building_id: this.building_id})
+                if(resp.data.email_receptionists.length > 0) {
+                    for(let i = 0; i < this.categories.length; i ++)
+                    {
+                        this.model.assign[i] = resp.data.email_receptionists[i].property_managers.map(item => item.id)
+                        this.model.assignList[i] = resp.data.email_receptionists[i].property_managers
+                    }
+                }
             }
+            else {
+                const resp = await this.getQuarterEmailReceptionists({quarter_id: this.quarter_id})
+                if(resp.data.email_receptionists.length > 0) {
+                    for(let i = 0; i < this.categories.length; i ++)
+                    {
+                        this.model.assign[i] = resp.data.email_receptionists[i].property_managers.map(item => item.id)
+                        this.model.assignList[i] = resp.data.email_receptionists[i].property_managers
+                    }
+                }
+            }
+
+            this.loading = false;
+            console.log('assign', this.model.assign)
+            
                 
             
         }
