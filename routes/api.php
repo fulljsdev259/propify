@@ -239,12 +239,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::delete('/requests/{id}/tags/{tag_id}', 'RequestAPIController@unassignTag');
     Route::delete('/requests-assignees/{requests_assignee_id}', 'RequestAPIController@deleteRequestAssignee');
 
-    // @TODO remove later
-    Route::post('/requests/{id}/assignees/{assignee_id}', 'RequestAPIController@assignTmpManager');
-    Route::delete('/requests/{id}/assignees/{assignee_id}', 'RequestAPIController@unassignUser');
-    Route::delete('/requests/{id}/providers/{provider_id}', 'RequestAPIController@unassignProvider');
-
-
     Route::get('/requests/{id}/communicationTemplates', 'RequestAPIController@getCommunicationTemplates');
     Route::get('/requests/{id}/serviceCommunicationTemplates', 'RequestAPIController@getServiceCommunicationTemplates');
     Route::get('/requests/{id}/serviceEmailTemplates', 'RequestAPIController@getServiceEmailTemplates');

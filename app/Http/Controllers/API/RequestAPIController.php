@@ -362,12 +362,6 @@ class RequestAPIController extends AppBaseController
      * )
      *
      * @param $id
-     * @param UpdateRequest $request
-     * @return mixed
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     */
-    /**
-     * @param $id
      * @param UpdateRequest $updateRequest
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
@@ -842,47 +836,7 @@ class RequestAPIController extends AppBaseController
         $sp->touch();
         return $this->sendResponse($sr, __('general.attached.provider'));
     }
-
-    /**
-     * @SWG\Delete(
-     *      path="/requests/{id}/providers/{pid}",
-     *      summary="Unassign the provided service provider from the request",
-     *      tags={"Request"},
-     *      description="use <a href='http://dev.propify.ch/api/docs#/Request/delete_requests_assignees__requests_assignee_id_'>/requests-assignees/{requests_assignee_id}</a>",
-     *      deprecated=true,
-     *      produces={"application/json"},
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Request"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     *
-     * @param int $id
-     * @param int $pid
-     * @param ServiceProviderRepository $spRepo
-     * @param UnAssignRequest $r
-     * @return mixed
-     */
-    public function unassignProvider(int $id, int $pid, ServiceProviderRepository $spRepo, UnAssignRequest $r)
-    {
-        return $this->deleteRequestAssignee($pid, $r);
-    }
-
+    
     /**
      * @SWG\Post(
      *      path="/requests/{id}/users/{user_id}",
@@ -944,58 +898,6 @@ class RequestAPIController extends AppBaseController
     }
 
     /**
-     * @TODO delete this method
-     * @SWG\Post(
-     *      path="/requests/{id}/assignees/{uid}",
-     *      summary="Assign the provided user to the request",
-     *      tags={"Request"},
-     *      description="use <a href='http://dev.propify.ch/api/docs#/Request/pinboard_requests__id__managers__pmid_'>/requests/{id}/managers/{pmid}</a>",
-     *      deprecated=true,
-     *      produces={"application/json"},
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Request"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     * @param int $id
-     * @param int $uid
-     * @param UserRepository $uRepo
-     * @param AssignRequest $r
-     * @return mixed
-     */
-    public function assignTmpManager(int $id, int $uid, UserRepository $uRepo, AssignRequest $r)
-    {
-        $sr = $this->requestRepository->findWithoutFail($id);
-        if (empty($sr)) {
-            return $this->sendError(__('models.request.errors.not_found'));
-        }
-
-        $u = $uRepo->findWithoutFail($uid);
-        if (empty($u)) {
-            return $this->sendError(__('models.request.errors.user_not_found'));
-        }
-
-        // @TODO remove,
-        $managerId = PropertyManager::where('user_id', $u->id)->value('id');
-        return $this->assignManager($id, $managerId, $uRepo, $r);
-    }
-
-    /**
      * @SWG\Post(
      *      path="/requests/{id}/managers/{pmid}",
      *      summary="Assign property manager to the request",
@@ -1052,46 +954,6 @@ class RequestAPIController extends AppBaseController
         $request->touch();
         $manager->touch();
         return $this->sendResponse($request, __('general.attached.manager'));
-    }
-
-    /**
-     * @SWG\Delete(
-     *      path="/requests/{id}/assignees/{uid}",
-     *      summary="Unassign the provided user to the request",
-     *      tags={"Request"},
-     *      description="use <a href='http://dev.propify.ch/api/docs#/Request/delete_requests_assignees__requests_assignee_id_'>/requests-assignees/{requests_assignee_id}</a>",
-     *      deprecated=true,
-     *      produces={"application/json"},
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Request"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     *
-     * @param int $id
-     * @param int $uid
-     * @param UserRepository $uRepo
-     * @param UnAssignRequest $r
-     * @return mixed
-     */
-    public function unassignUser(int $id, int $uid, UserRepository $uRepo, UnAssignRequest $r)
-    {
-        return $this->deleteRequestAssignee($uid, $r);
     }
 
     /**
