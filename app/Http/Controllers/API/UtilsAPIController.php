@@ -122,7 +122,7 @@ class UtilsAPIController extends AppBaseController
             'contracts' => $this->getContractConstants(),
             'serviceProviders' => $this->getServiceProviderConstants(),
             'requests' => $this->getRequestsConstants(),
-            'quarter' => $this->getQuarterConstants(),
+            'quarters' => $this->getQuartersConstants(),
             'propertyManager' => $this->getPropertyManagerConstants(),
             'pinboard' => $this->getPinboardConstants(),
             'listings' => $this->getListingConstants(),
@@ -269,7 +269,7 @@ class UtilsAPIController extends AppBaseController
     /**
      * @return array
      */
-    protected function getQuarterConstants()
+    protected function getQuartersConstants()
     {
         $result = [
             'type' => App\Models\Quarter::Type,
