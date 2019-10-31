@@ -309,10 +309,8 @@ return [
         ],
         'status' => [
             'label' => 'Status',
-            'new' => 'Neu',
             'published' => 'Veröffentlicht',
             'unpublished' => 'Unveröffentlicht',
-            'not_approved' => 'Nicht genehmigt',
         ],
         'visibility' => [
             'label' => 'Sichtbarkeit',

@@ -205,10 +205,8 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
     const SubTypeCritical = 2;
     const SubTypeMaintenance = 3;
 
-    const StatusNew = 1;
-    const StatusPublished = 2;
-    const StatusUnpublished = 3;
-    const StatusNotApproved = 4;
+    const StatusPublished = 1;
+    const StatusUnpublished = 2;
 
     const VisibilityAddress = 1;
     const VisibilityQuarter = 2;
@@ -237,10 +235,8 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
         ]
     ];
     const Status = [
-        self::StatusNew => 'new',
         self::StatusPublished => 'published',
         self::StatusUnpublished => 'unpublished',
-        self::StatusNotApproved => 'not_approved',
     ];
     const Visibility = [
         self::VisibilityAddress => 'address',
