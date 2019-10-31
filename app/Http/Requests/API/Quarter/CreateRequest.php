@@ -24,6 +24,9 @@ class CreateRequest extends BaseRequest
      */
     public function rules()
     {
-        return Quarter::$rules;
+        return [
+            'name' => 'required|string',
+            'type' => $this->getInRuleByClassConstants(Quarter::Type)
+        ];
     }
 }

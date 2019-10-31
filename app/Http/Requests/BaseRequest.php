@@ -61,4 +61,13 @@ class BaseRequest extends APIRequest
             ]
         ];
     }
+
+    /**
+     * @param $constants
+     * @return string
+     */
+    protected function getInRuleByClassConstants($constants)
+    {
+        return 'in:' . implode(array_keys($constants));
+    }
 }
