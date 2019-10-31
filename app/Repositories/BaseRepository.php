@@ -105,20 +105,4 @@ abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepositor
 
         return $this->parserResult($model);
     }
-
-    /**
-     * @param $data
-     * @param $key
-     * @param int $default
-     * @return mixed
-     */
-    protected function fixBollInt($data, $key, $default = 0)
-    {
-        if (key_exists($key, $data)) {
-            $data[$key]  = (int) ('true' == $data[$key] || true == $data[$key]);
-        } else {
-            $data[$key] = $default;
-        }
-        return $data;
-    }
 }
