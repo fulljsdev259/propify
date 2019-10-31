@@ -520,7 +520,7 @@ return [
         'request_categories' => 'Kategorien',
         'services' => 'Dienstleister',
         'activity' => 'Aktivität',
-        'property_managers' => 'Fortimo',
+        'property_managers' => 'Fortimo-Mitarbeiter',
         'templates' => 'Vorlagen'
     ],
     'contracts' => 'Verträge',
