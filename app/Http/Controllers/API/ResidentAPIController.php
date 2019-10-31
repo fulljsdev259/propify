@@ -11,6 +11,7 @@ use App\Criteria\Resident\FilterByStatusCriteria;
 use App\Criteria\Resident\FilterByTypeCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Resident\AddReviewRequest;
+use App\Http\Requests\API\Resident\CheckHasRequestOrContractRequest;
 use App\Http\Requests\API\Resident\CreateRequest;
 use App\Http\Requests\API\Resident\DeleteRequest;
 use App\Http\Requests\API\Resident\DownloadCredentialsRequest;
@@ -1178,6 +1179,71 @@ class ResidentAPIController extends AppBaseController
         $response['unit'] = (new MediaTransformer)->transformCollection($unitMedias);
 
         return $this->sendResponse($response, 'my products');
+    }
+
+    /**
+     *
+     *
+     * @SWG\Get(
+     *      path="/residents/{id}/type",
+     *      summary="Check resident has contract or request",
+     *      tags={"Resident"},
+     *      description="Check resident has contract or request",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="id",
+     *          description="id of Resident",
+     *          type="integer",
+     *          required=true,
+     *          in="path"
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successfully updated",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  example="true"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  type="integer",
+     *                  example=1
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     *
+     * @param $id
+     * @param CheckHasRequestOrContractRequest $r
+     * @return mixed
+     */
+    public function checkResidentHasContractOrRequest($id, CheckHasRequestOrContractRequest $r)
+    {
+        $resident = Resident::withCount('requests', 'contracts')->find($id);
+
+        if (empty($resident)) {
+            return $this->sendError(__('models.resident.errors.not_found'));
+        }
+
+        if ($resident->requests_count && $resident->contracts_count) {
+            return $this->sendError(__('models.resident.errors.not_allowed_change_type_has_request_contract', $resident->only('contracts_count', 'requests_count')));
+        }
+
+        if ($resident->contracts_count) {
+            return $this->sendError(__('models.resident.errors.not_allowed_change_type_has_contract', $resident->only('contracts_count')));
+        }
+
+        if ($resident->requests_count) {
+            return $this->sendError(__('models.resident.errors.not_allowed_change_type_has_request', $resident->only('requests_count')));
+        }
+        return $this->sendResponse($id, '');
     }
 
 }
