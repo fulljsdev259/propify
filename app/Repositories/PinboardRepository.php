@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Building;
 use App\Models\Model;
-use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\Pinboard;
 use App\Models\Contract;
@@ -15,6 +14,7 @@ use App\Notifications\NewResidentInNeighbour;
 use App\Notifications\NewResidentPinboard;
 use App\Notifications\AnnouncementPinboardPublished;
 use App\Notifications\PinboardPublished;
+use App\Traits\SaveMediaUploads;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +30,8 @@ use Illuminate\Support\Facades\Auth;
 */
 class PinboardRepository extends BaseRepository
 {
+    use  SaveMediaUploads;
+
     /**
      * @var array
      */
@@ -47,14 +49,14 @@ class PinboardRepository extends BaseRepository
     }
 
     /**
-     * @param array $atts
+     * @param array $attributes
      * @return Pinboard|mixed
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function create(array $atts)
+    public function create(array $attributes)
     {
-        $atts['building_ids'] = $atts['building_ids'] ?? [];
-        $atts['quarter_ids'] = $atts['quarter_ids'] ?? [];
+        $attributes['building_ids'] = $attributes['building_ids'] ?? [];
+        $attributes['quarter_ids'] = $attributes['quarter_ids'] ?? [];
         $u = \Auth::user();
         if ($u->resident()->exists()) {
             $contracts = $u->resident->active_contracts_with_building()->get(['building_id']);
@@ -63,50 +65,55 @@ class PinboardRepository extends BaseRepository
             }
 
             $contracts->load('building:id,quarter_id');
-            $atts['building_ids'] = $contracts->pluck('building_id')->unique()->toArray();
-            if (!empty($atts['visibility']) && Pinboard::VisibilityQuarter == $atts['visibility']) {
+            $attributes['building_ids'] = $contracts->pluck('building_id')->unique()->toArray();
+            if (!empty($attributes['visibility']) && Pinboard::VisibilityQuarter == $attributes['visibility']) {
                 $quarterIds = $contracts->where('building.quarter_id', '!=', null)->pluck('building.quarter_id');
-                $atts['quarter_ids'] = $quarterIds->unique()->toArray();
+                $attributes['quarter_ids'] = $quarterIds->unique()->toArray();
             } else {
-                $atts['quarter_ids'] = [];
+                $attributes['quarter_ids'] = [];
             }
         }
 
-        if (isset($atts['category_image'])) {
-            $atts['category_image'] = ($atts['category_image'] == 'true') ? 1 : 0;
+        if (isset($attributes['category_image'])) {
+            $attributes['category_image'] = ($attributes['category_image'] == 'true') ? 1 : 0;
         } else {
-            $atts['category_image'] = 0;
+            $attributes['category_image'] = 0;
         }
 
-        $atts = $this->fixBollInt($atts, 'is_execution_time', 1);
+        $attributes = $this->fixBollInt($attributes, 'is_execution_time', 1);
 
-        if (! $atts['needs_approval']) {
+        if (! $attributes['needs_approval']) {
             // @TODO correct this things
-            $atts['status'] = Pinboard::StatusPublished;
+            $attributes['status'] = Pinboard::StatusPublished;
         }
 
-        if (Pinboard::StatusPublished == $atts['status']) {
-            $atts['published_at'] = now();
+        if (Pinboard::StatusPublished == $attributes['status']) {
+            $attributes['published_at'] = now();
         }
 
         /**
          * @var $model Pinboard
          */
-        $model = parent::create($atts);
-        if (!empty($atts['quarter_ids'])) {
-            $model->quarters()->sync($atts['quarter_ids']);
+        $model = parent::create($attributes);
+        if (empty($model))  {
+            return $model;
         }
 
-        if (!empty($atts['building_ids'])) {
-            $model->buildings()->sync($atts['building_ids']);
+        $model = $this->saveMediaUploads($model, $attributes);
+        if (!empty($attributes['quarter_ids'])) {
+            $model->quarters()->sync($attributes['quarter_ids']);
         }
 
-        if (!empty($atts['provider_ids'])) {
-            $model->providers()->sync($atts['provider_ids']);
+        if (!empty($attributes['building_ids'])) {
+            $model->buildings()->sync($attributes['building_ids']);
+        }
+
+        if (!empty($attributes['provider_ids'])) {
+            $model->providers()->sync($attributes['provider_ids']);
         }
 
         $notificationsData = collect();
-        if (Pinboard::StatusPublished == $atts['status']) {
+        if (Pinboard::StatusPublished == $attributes['status']) {
             $notificationsData = $this->notify($model);
         }
         $adminNotificationsData = $this->notifyAdminNewResidentPinboard($model);
