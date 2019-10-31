@@ -711,6 +711,11 @@
                 }).then((resp) => {
                     displaySuccess(resp);
                     this.model.media.push(resp.media);
+                    if(this.fileCount){
+                        this.fileCount ++;
+                    } else {
+                        this.fileCount = 1;
+                    }
                 }).catch((err) => {
                     displayError(err);
                 });
@@ -750,11 +755,6 @@
             },
             uploadFiles(file) {
                 this.insertDocument(this.selectedFileCategory, file);
-                if(this.fileCount){
-                    this.fileCount++;
-                } else {
-                    this.fileCount = 1;
-                }
             },
             removeService(service) {
                 this.deleteBuildingService({

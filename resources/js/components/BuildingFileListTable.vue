@@ -30,7 +30,7 @@
                         :content="$t('general.actions.delete')"
                         class="item" effect="light" placement="top-end"
                     >
-                        <el-button icon="ti-trash" type="danger" round @click="$emit('delete-document', 'media', scope.$index)" size="mini"/>
+                        <el-button icon="icon-trash-empty" type="danger" round @click="$emit('delete-document', 'media', scope.$index)" size="mini"/>
                     </el-tooltip>
                 </template>
             </el-table-column>

@@ -478,11 +478,6 @@
             },
             uploadFiles(file) {
                 this.insertDocument(this.selectedFileCategory, file);
-                if(this.fileCount){
-                    this.fileCount++;
-                } else {
-                    this.fileCount = 1;
-                }
             },
             insertDocument(prop, file) {
                 file.order = this.model.media.length + 1;
@@ -492,6 +487,11 @@
                 }).then((resp) => {
                     displaySuccess(resp);
                     this.model.media.push(resp.media);
+                    if(this.fileCount){
+                        this.fileCount++;
+                    } else {
+                        this.fileCount = 1;
+                    }
                 }).catch((err) => {
                     displayError(err);
                 });

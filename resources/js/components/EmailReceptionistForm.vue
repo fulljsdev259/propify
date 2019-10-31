@@ -108,7 +108,7 @@
             }
         },
         methods: {
-            ...mapActions(['getPropertyManagers']),
+            ...mapActions(['getPropertyManagers', 'getQuarterEmailReceptionists', 'saveQuarterEmailReceptionists']),
             async submit () {
                 try {
                     const valid = await this.$refs.form.validate();
@@ -122,7 +122,7 @@
                         for(let i = 0; i < this.categories.length; i ++)
                         {
                             categories.push({
-                                category_id : +this.categories[i].id,
+                                category : +this.categories[i].id,
                                 property_manager_ids: this.model.assign[i]
                             })
                             //console.log('category, assign', this.categories[i].name, this.assign[i])
@@ -143,10 +143,7 @@
                         
                         console.log('payload', payload)
                         
-                        // const resp = await this.saveEmailReceptionist({
-                        //     request_ids, 
-                        //     service_provider_ids
-                        // })
+                        const resp = await this.saveQuarterEmailReceptionists(payload)
                         
                         // if(resp.data.success)
                         //     displaySuccess(resp.data.message);

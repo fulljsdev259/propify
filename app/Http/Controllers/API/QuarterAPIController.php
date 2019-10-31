@@ -8,6 +8,7 @@ use App\Http\Requests\API\Quarter\AssigneeListRequest;
 use App\Http\Requests\API\Quarter\BatchAssignManagers;
 use App\Http\Requests\API\Quarter\BatchAssignUsers;
 use App\Http\Requests\API\Quarter\CreateRequest;
+use App\Http\Requests\API\Quarter\EmailReceptionistRequest;
 use App\Http\Requests\API\Quarter\UnAssignRequest;
 use App\Http\Requests\API\Quarter\UpdateRequest;
 use App\Http\Requests\API\Quarter\ListRequest;
@@ -15,6 +16,7 @@ use App\Http\Requests\API\Quarter\ViewRequest;
 use App\Http\Requests\API\Quarter\DeleteRequest;
 use App\Models\Address;
 use App\Models\AuditableModel;
+use App\Models\EmailReceptionist;
 use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
@@ -22,6 +24,7 @@ use App\Models\Contract;
 use App\Models\User;
 use App\Repositories\AddressRepository;
 use App\Repositories\QuarterRepository;
+use App\Transformers\EmailReceptionistTransformer;
 use App\Transformers\QuarterAssigneeTransformer;
 use App\Transformers\QuarterTransformer;
 use Illuminate\Http\Request;
@@ -189,6 +192,7 @@ class QuarterAPIController extends AppBaseController
 
             DB::commit();
             $quarter->load('address', 'media');
+            $quarter->setHasRelation('email_receptionists');
             $response = (new QuarterTransformer)->transform($quarter);
 
         } else {
@@ -258,9 +262,9 @@ class QuarterAPIController extends AppBaseController
                 ]);
             }
         ]);
+        $quarter->setHasRelation('email_receptionists');
 
         $response = (new QuarterTransformer)->transform($quarter);
-
         return $this->sendResponse($response, 'Quarter retrieved successfully');
     }
 
@@ -379,6 +383,7 @@ class QuarterAPIController extends AppBaseController
 
             DB::commit();
             $quarter->load('address', 'media');
+            $quarter->setHasRelation('email_receptionists');
             $response = (new QuarterTransformer)->transform($quarter);
 
         } else {
@@ -683,6 +688,7 @@ class QuarterAPIController extends AppBaseController
      * @param int $id
      * @param UnAssignRequest $request
      * @return mixed
+     * @throws \Exception
      */
     public function deleteQuarterAssignee(int $id, UnAssignRequest $request)
     {
@@ -694,5 +700,157 @@ class QuarterAPIController extends AppBaseController
         $quarterAssignee->delete();
 
         return $this->sendResponse($id, __('general.detached.' . $quarterAssignee->assignee_type));
+    }
+
+    /**
+     * @SWG\Get(
+     *      path="/quarters/{id}/email-receptionists",
+     *      summary="get quarter email-receptionists",
+     *      tags={"Quarter", "EmailReceptionists"},
+     *      description="get quarter email-receptionists",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="id",
+     *          description="id of quarter",
+     *          type="integer",
+     *          required=true,
+     *          in="query",
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  type="integer",
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     *
+     * @param $quarterId
+     * @param EmailReceptionistRequest $emailReceptionistRequest
+     * @return mixed
+     */
+    public function getEmailReceptionists($quarterId, EmailReceptionistRequest $emailReceptionistRequest)
+    {
+        /** @var Quarter $quarter */
+        $quarter = $this->quarterRepository->findWithoutFail($quarterId);
+        if (empty($quarter)) {
+            return $this->sendError(__('models.quarter.errors.not_found'));
+        }
+        $quarter->load([
+            'email_receptionists:id,category,property_manager_id,model_id',
+            'email_receptionists.property_manager:id,first_name,last_name'
+        ]);
+        $response['email_receptionists'] = (new EmailReceptionistTransformer())->transformEmailReceptionists($quarter->email_receptionists);
+        $response['quarter_id'] = $quarterId;
+        return $this->sendResponse($response, __('Email Receptionist get successfully'));
+    }
+
+    /**
+     *  @SWG\Post(
+     *      path="/quarters/{id}/email-receptionists",
+     *      summary="set quarter email-receptionists",
+     *      tags={"Quarter", "EmailReceptionist"},
+     *      description="set quarter email-receptionists",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="id",
+     *          description="id of quarter",
+     *          type="integer",
+     *          required=true,
+     *          in="query",
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  type="integer",
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     * @param $quarterId
+     * @param EmailReceptionistRequest $emailReceptionistRequest
+     * @return mixed
+     */
+    public function storeEmailReceptionists($quarterId, EmailReceptionistRequest $emailReceptionistRequest)
+    {
+        /** @var Quarter $quarter */
+        $quarter = $this->quarterRepository->findWithoutFail($quarterId);
+        if (empty($quarter)) {
+            return $this->sendError(__('models.quarter.errors.not_found'));
+        }
+
+        $modelType = get_morph_type_of(Quarter::class);
+        $data = $emailReceptionistRequest->toArray();
+        $emailReceptionists = $quarter->email_receptionists()->get(['category', 'id', 'property_manager_id']);
+        $needDelete = $emailReceptionists->whereNotIn('category', collect($data)->pluck('category'));
+
+        foreach ($data as $single) {
+            if (empty($single['category']) || ! key_exists($single['category'], \App\Models\Request::Category))  {
+                continue;
+            }
+
+            $category = $single['category'];
+            $categoryEmailReceptionists = $emailReceptionists->where('category', $category);
+
+            if (empty($single['property_manager_ids']) || ! is_array($single['property_manager_ids']))  {
+                $needDelete = $needDelete->merge($categoryEmailReceptionists);
+                continue;
+            }
+
+            $deletedEmailReceptionists = $categoryEmailReceptionists->whereNotIn('property_manager_id', $single['property_manager_ids']);
+            $needDelete = $needDelete->merge($deletedEmailReceptionists);
+
+            foreach ($single['property_manager_ids'] as $propertyManagerId) {
+                if ($categoryEmailReceptionists->contains('property_manager_id', $propertyManagerId)) {
+                    continue;
+                }
+                $savedData = [
+                    'category' => $category,
+                    'property_manager_id' => $propertyManagerId,
+                    'model_type' => $modelType,
+                ];
+                $new = $quarter->email_receptionists()->create($savedData);
+                $emailReceptionists->push($new);
+                $categoryEmailReceptionists->push($new);
+            }
+        }
+
+        //@TODO audit
+        foreach ($needDelete as $emailReceptionist) {
+            $emailReceptionist->delete();
+        }
+
+
+        $quarter->load([
+            'email_receptionists:id,category,property_manager_id,model_id',
+            'email_receptionists.property_manager:id,first_name,last_name'
+        ]);
+        $response['email_receptionists'] = (new EmailReceptionistTransformer())->transformEmailReceptionists($quarter->email_receptionists);
+        $response['quarter_id'] = $quarterId;
+        return $this->sendResponse($response, __('Email Receptionists get successfully'));
     }
 }

@@ -59,14 +59,6 @@
                 </template>
             </span>
             <el-form :model="managersForm"  v-if="activeMassEditOption == 'service_provider'">
-                <div class="switch-wrapper">
-                    <el-form-item :label="$t('models.request.mass_edit.service_provider.modal.switcher_label')">
-                        <el-switch v-model="send_email_service_provider"/>
-                    </el-form-item>
-                    <div class="switcher__desc">
-                        {{ $t('models.request.mass_edit.service_provider.modal.switcher_desc') }}
-                    </div>
-                </div>
                 <el-form-item :label="$t('models.request.mass_edit.service_provider.modal.content_label')">
                     <el-select
                         :loading="remoteLoading"
@@ -90,9 +82,17 @@
                             v-for="service in toAssignList"/>
                     </el-select>
                 </el-form-item>
+                <div class="switch-wrapper">
+                    <el-form-item :label="$t('models.request.mass_edit.service_provider.modal.switcher_label')">
+                        <el-switch v-model="send_email_service_provider"/>
+                    </el-form-item>
+                    <div class="switcher__desc">
+                        {{ $t('models.request.mass_edit.service_provider.modal.switcher_desc') }}
+                    </div>
+                </div>
             </el-form>
 
-            <el-form :model="managersForm" v-if="activeMassEditOption == 'property_manager'">
+            <el-form :model="managersForm" v-else-if="activeMassEditOption == 'property_manager'">
                 <el-form-item :label="$t('models.request.mass_edit.property_manager.modal.content_label')">
                     <el-select
                         :loading="remoteLoading"
@@ -118,9 +118,9 @@
                 </el-form-item>
             </el-form>
             
-            <el-form :model="managersForm" v-if="activeMassEditOption == 'change_status'">
-                <el-form-item :label="$t('models.request.status.label')">
-                    <el-select :placeholder="$t('models.request.mass_edit.change_status.modal.content_label')"
+            <el-form :model="managersForm" v-else-if="activeMassEditOption == 'change_status'">
+                <el-form-item :label="$t('models.request.mass_edit.change_status.modal.content_label')">
+                    <el-select :placeholder="$t('general.placeholders.select')"
                             class="custom-select"
                             v-model="massStatus">
                         <el-option
@@ -480,6 +480,7 @@
             handleCommand( option ) {
                 this.activeMassEditOption = option
                 this.batchEditVisible = true
+                this.resetToAssignList();
             },
             async massEditAction( option ) {
                 if(option == 'service_provider') {
@@ -664,8 +665,14 @@
         }
     }
 
-    .el-dialog {
+    /deep/ .el-dialog {
+        /deep/ .el-dialog__body {
+            padding: 10px 20px;
+        }
 
+        .el-form-item {
+            margin-bottom: 0;
+        }
         .el-select {
             width: 100%;
         }
@@ -675,8 +682,9 @@
         }
 
         .switch-wrapper {
+            margin-bottom: 0;
+
             .switcher__desc {
-                margin-top: 0.5em;
                 display: block;
                 font-size: 0.9em;
             }

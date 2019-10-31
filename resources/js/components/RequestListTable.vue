@@ -121,8 +121,7 @@
                                     filterable
                                     remote
                                     reserve-keyword
-                                    style="width: 100%;"
-                                    
+                                    class="remote-select"
                                     v-model="filterModel[filter.key]">
                                     <el-option
                                         :label="$t('general.all')"
@@ -510,16 +509,31 @@
                 this.selectedItems = val;
                 this.$emit('selectionChanged', this.selectedItems);
             },
-            handleRequestSelectionChange(val) {
-                var exist = -1;
-                this.selectedItems.map((item, index) => {
-                    if(item.id == val.id)
-                        exist = index;
-                });
-                if(exist == -1) {
-                    this.selectedItems.push(val)
-                } else {
-                    this.selectedItems.slice(exist, 1);
+            handleRequestSelectionChange(selectedItem, isChecked) {
+                // var exist = -1;
+                
+                // this.selectedItems.map((item, index) => {
+                //     if(item.id == selectedItem.id)
+                //         exist = index;
+                // });
+                // console.log('exist', exist);
+                // if(exist == -1) {
+                //     this.selectedItems.push(selectedItem)
+                // } else {
+                //     this.selectedItems = this.selectedItems.splice(exist, 1);
+                // }
+                // console.log('selectedItems', this.selectedItems)
+                // this.handleSelectionChange(this.selectedItems);
+                if(isChecked) {
+                    this.selectedItems.push(selectedItem)
+                }
+                else {
+                    var deleteIndex = -1;
+                    this.selectedItems.map((item, index) => {
+                        if(item.id == selectedItem.id)
+                            deleteIndex = index;
+                    });
+                    this.selectedItems.splice(deleteIndex, 1)
                 }
                 this.handleSelectionChange(this.selectedItems);
             },
@@ -654,7 +668,7 @@
     .el-input {
         &.el-input--suffix {
             :global(.el-input__inner) {
-                padding-right: 50px;
+                padding-right: 30px;
             }
 
             :global(.el-input__suffix) {
@@ -856,6 +870,21 @@
 
     .icon-danger {
         color: #dd6161;
+    }
+
+    .remote-select {
+        width: 100%;
+        :global(input) {
+            padding-right: 15px;
+        }
+        :global(span.el-input__suffix) {
+            display: none;
+        }
+    }
+    :global(.el-date-editor) {
+        :global(.el-input__inner) {
+            padding-right: 15px !important;
+        }
     }
 
 </style>

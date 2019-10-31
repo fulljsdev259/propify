@@ -23,7 +23,6 @@ export default {
                     'bgcolor',
                     '|',
                     'quote',
-                    'fontfamily',
                     'fontsize',
                     'head',
                     'unorderlist',
@@ -36,27 +35,13 @@ export default {
                     'unlink',
                     'table',
                     '|',
-                    'video',
                     'location',
-                    'insertcode',
                     '|',
                     'undo',
                     'redo',
                     'fullscreen'
                 ],
                 lang: '',
-                familys: [
-                    'Arial',
-                    'Verdana',
-                    'Georgia',
-                    'Times New Roman',
-                    'Microsoft JhengHei',
-                    'Trebuchet MS',
-                    'Courier New',
-                    'Impact',
-                    'Comic Sans MS',
-                    'Consolas'
-                ],
                 colors: '',
             }
         }
@@ -382,7 +367,6 @@ export default {
             this.editorChangeLang();
 
             this.reInitHead(E, this.editorHead);
-            this.reInitVideo(E, $, this.editorVideo);
             this.reInitTable(E, $, this.editorTable);
         }, 0);
 
@@ -390,7 +374,6 @@ export default {
             this.editorChangeLang();
 
             this.reInitHead(E, this.editorHead);
-            this.reInitVideo(E, $, this.editorVideo);
             this.reInitTable(E, $, this.editorTable);
         });
     },
@@ -473,11 +456,6 @@ export default {
                 '<h4>': title + '4',
                 '<h5>': title + '5',
             }
-        },
-        editorVideo() {
-            return [
-                this.$t('models.editor.in_format'),
-            ]
         },
         editorTable() {
             return [
