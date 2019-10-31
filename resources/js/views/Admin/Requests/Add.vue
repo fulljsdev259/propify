@@ -160,11 +160,19 @@
                             </el-form-item>
                         </el-col>
                         <el-col :md="24">
-                            <el-form-item :label="$t('models.request.public_desc')"
+                            <!-- <el-form-item :label="$t('models.request.public_desc')"
                                         prop="is_public"
                             >
                                 <el-switch v-model="model.is_public" @change="changePublic"/>
-                            </el-form-item>
+                            </el-form-item> -->
+                            <div class="switch-wrapper">
+                                <el-form-item :label="$t('models.request.public_title')" prop="is_public">
+                                    <el-switch v-model="model.is_public" @change="changePublic"/>
+                                </el-form-item>
+                                <div class="switcher__desc">
+                                    {{ $t('models.request.public_desc') }}
+                                </div>
+                            </div>
                         </el-col>
                         <el-col :md="24" v-if="model.is_public">
                             <el-form-item :label="$t('models.request.visibility.label')"
@@ -414,6 +422,20 @@
         }
         .el-select__tags {
             top: 70% !important;
+        }
+
+        .switch-wrapper {
+            .switcher__label {
+                text-align: left;
+                line-height: 1.4em;
+                color: #606266;
+            }
+            .switcher__desc {
+                margin-top: 0.5em;
+                display: block;
+                font-size: 0.9em;
+            }
+
         }
     }
 

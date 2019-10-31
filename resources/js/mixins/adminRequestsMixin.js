@@ -38,7 +38,7 @@ export default (config = {}) => {
                     location: '',
                     room: '',
                     capture_phase: '',
-                    qualification: 1,
+                    qualification: null,
                     component: '',
                     keyword: '',
                     keywords: [],
@@ -351,12 +351,20 @@ export default (config = {}) => {
                 let p_category = this.categories.find(category => { return category.id == this.model.category_id});
 
                 this.model.category = p_category
-
+                
+                this.showCapturePhase =  p_category.capture_phase == 1 ? true : false;
+                this.showQualification = p_category.qualification == 1 ? true : false;
+                console.log('qualification', this.model.qualification)
                 if(this.showSubCategory) {
                     this.sub_categories = p_category ? p_category.sub_categories : [];
+
+                    if(!this.showQualification && this.model.sub_category_id != null) {
+                        console.log('sub_category_id', this.model.sub_category_id)
+                        let sub_category = this.sub_categories.find(category => { return category.id == this.model.sub_category_id});
+                        this.showQualification = sub_category.qualification == 1 ? true : false;
+                    }
                 }
-                this.showPayer = this.model.qualification == 5 ? true : false;
-                this.showCapturePhase =  p_category.capture_phase == 1 ? true : false;
+
             },
             changeSubCategory() {
                 const sub_category = this.sub_categories.find(category => {
