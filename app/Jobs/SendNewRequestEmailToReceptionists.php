@@ -58,8 +58,8 @@ class SendNewRequestEmailToReceptionists
 
         // @TODO save audit
         foreach ($users as $user) {
-            Mail::to($user)
-                ->queue(new NewRequestForReceptionist($user, $this->request));
+            $mail = (new NewRequestForReceptionist($user, $this->request))->onQueue('high');
+            Mail::to($user)->queue($mail);
         }
 
     }

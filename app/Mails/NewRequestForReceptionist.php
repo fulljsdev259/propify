@@ -6,11 +6,12 @@ use App\Models\Request;
 use App\Models\User;
 use App\Repositories\TemplateRepository;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\App;
 
-class NewRequestForReceptionist extends Mailable
+class NewRequestForReceptionist extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
