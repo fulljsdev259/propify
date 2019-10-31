@@ -73,7 +73,8 @@
                                     :content="$t('models.resident.created_date')"
                                     class="item"
                                     effect="light" placement="top">
-                                        <span>{{ new Date(element.created_at) | formatDate}}</span>
+                                        <span v-if="fetchAction == 'getRequests'">{{ extractDate(element.created_at) }}</span>
+                                        <span v-if="fetchAction == 'getPinboardTruncated'">{{ new Date(element.created_at) | formatDate}}</span>
                                 </el-tooltip> 
                             </p>
                              <div class="reactions" v-if="fetchAction == 'getListings'">
@@ -139,7 +140,7 @@ import { mapGetters } from 'vuex';
         },
         filters: {
             formatDate(date) {
-                return format(date, 'DD.MM.YYYY')
+                return format(date, 'DD.MM.YYYY, HH:mm')
             }
         },
         computed: {
@@ -149,7 +150,8 @@ import { mapGetters } from 'vuex';
         },
         methods: {
             extractDate(date) {
-
+                var res = date.split(" ");
+                return res[0] + ', ' +res[1].substr(0, 5);
             },
             viewPage(data, action) {
                 if (action === 'getRequests') {
