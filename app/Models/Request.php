@@ -783,7 +783,8 @@ class Request extends AuditableModel implements HasMedia
         foreach ($this->conversations as $c) {
             if (count($c->users) == 2 &&
                 $c->users->contains($u1->id) &&
-                $c->users->contains($u2->id)) {
+                $c->users->contains($u2->id))
+            {
                 return $c;
             }
         }
