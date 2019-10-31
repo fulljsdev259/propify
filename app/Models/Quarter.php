@@ -106,6 +106,14 @@ class Quarter extends AuditableModel implements HasMedia
 {
     use SoftDeletes, UniqueIDFormat, HasCategoryMediaTrait;
 
+    const TypeRent = 1;
+    const TypeSell = 2;
+
+    const Type = [
+        self::TypeRent => 'rent',
+        self::TypeSell => 'sell',
+    ];
+
     /**
      * Validation rules
      *
