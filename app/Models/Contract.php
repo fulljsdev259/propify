@@ -169,13 +169,22 @@ class Contract extends AuditableModel implements HasMedia
 {
     use HasMediaTrait, UniqueIDFormat;
 
-    const TypePrivate = 1;
+    const TypeApartment = 1;
     const TypeBusiness = 2;
-    const TypeParkingSlot = 3;
+    const TypeHobbyRoom = 3;
+    const TypeStoreroom = 4;
+    const TypeUndergroundParkingSpace = 5;
+    const TypeOutdoorParking = 6;
+    const TypeMotorbikePitch = 7;
+
     const Type = [
-        self::TypePrivate => 'private',
+        self::TypeApartment => 'apartment',
         self::TypeBusiness => 'business',
-        self::TypeParkingSlot => 'parking_slot'
+        self::TypeHobbyRoom => 'hobby_room',
+        self::TypeStoreroom => 'storeroom',
+        self::TypeUndergroundParkingSpace => 'underground_parking_space',
+        self::TypeOutdoorParking => 'outdoor_parking',
+        self::TypeMotorbikePitch => 'motorbike_pitch',
     ];
 
     const DurationUnlimited = 1;
