@@ -16,7 +16,7 @@
                 </div>
             </template>
         </heading>
-        <div class="warning-bar">
+        <div class="warning-bar" v-if="!model.has_email_receptionists">
             <div class="message" type="info">
                 <i class="icon-info-circled"></i>{{$t('models.building.warning_bar.message')}}
             </div>

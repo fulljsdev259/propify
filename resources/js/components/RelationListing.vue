@@ -30,12 +30,12 @@
                             </router-link>                               
                         </div>
                         <div class="category">
-                        <span v-if="scope.row.category.parentCategory">
-                            {{scope.row.category.parentCategory.name}} >&nbsp;
-                        </span>
                             <span>
-                            {{scope.row.category.name}}
-                        </span>
+                                {{scope.row.category.name}}
+                            </span>
+                            <span v-if="scope.row.sub_category">
+                                &nbsp;>&nbsp; {{scope.row.sub_category.name}} 
+                            </span>
                         </div>
                     </div>
 
