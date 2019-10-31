@@ -25,6 +25,7 @@ class QuarterTransformer extends BaseTransformer
             'internal_quarter_id' => $model->internal_quarter_id,
             'description' => $model->description,
             'count_of_buildings' => $model->count_of_buildings,
+            'type' => $model->type,
         ];
 
         if ($model->hasAttribute('has_email_receptionists')) {
