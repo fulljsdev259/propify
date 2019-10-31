@@ -524,7 +524,6 @@
                 // }
                 // console.log('selectedItems', this.selectedItems)
                 // this.handleSelectionChange(this.selectedItems);
-                console.log(selectedItem, isChecked);
                 if(isChecked) {
                     this.selectedItems.push(selectedItem)
                 }
