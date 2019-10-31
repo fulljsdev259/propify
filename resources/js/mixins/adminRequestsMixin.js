@@ -38,17 +38,22 @@ export default (config = {}) => {
                     location: '',
                     room: '',
                     capture_phase: '',
-                    qualification: '',
+                    qualification: null,
                     component: '',
                     keyword: '',
                     keywords: [],
                     payer: '',
                     property_managers: [],
                     media: [],
-                    sub_category_id: null
+                    sub_category_id: null,
+                    contract_id: ''
                 },
                 validationRules: {
                     category: [{
+                        required: true,
+                        message: this.$t('validation.general.required')
+                    }],
+                    sub_category: [{
                         required: true,
                         message: this.$t('validation.general.required')
                     }],
@@ -110,6 +115,7 @@ export default (config = {}) => {
                 showLiegenschaft: false,
                 showCapturePhase: false,
                 showWohnung: false,
+                showQualification: false,
                 createTag: false,
                 editTag: false,
                 tags: [],
@@ -345,12 +351,20 @@ export default (config = {}) => {
                 let p_category = this.categories.find(category => { return category.id == this.model.category_id});
 
                 this.model.category = p_category
-
+                
+                this.showCapturePhase =  p_category.capture_phase == 1 ? true : false;
+                this.showQualification = p_category.qualification == 1 ? true : false;
+                console.log('qualification', this.model.qualification)
                 if(this.showSubCategory) {
                     this.sub_categories = p_category ? p_category.sub_categories : [];
+
+                    if(!this.showQualification && this.model.sub_category_id != null) {
+                        console.log('sub_category_id', this.model.sub_category_id)
+                        let sub_category = this.sub_categories.find(category => { return category.id == this.model.sub_category_id});
+                        this.showQualification = sub_category.qualification == 1 ? true : false;
+                    }
                 }
-                this.showPayer = this.model.qualification == 5 ? true : false;
-                this.showCapturePhase =  p_category.capture_phase == 1 ? true : false;
+
             },
             changeSubCategory() {
                 const sub_category = this.sub_categories.find(category => {
@@ -364,6 +378,7 @@ export default (config = {}) => {
                 this.showLiegenschaft = false;
                 this.showUmgebung = false;
                 this.showWohnung = false;
+                this.showQualification = false;
 
                 if(sub_category.room == 1) {
                     this.showWohnung = true;
@@ -373,6 +388,9 @@ export default (config = {}) => {
                 }
                 else if(sub_category.location == 0 && sub_category.room == 0) {
                     this.showUmgebung = true;
+                }
+                if(sub_category.qualification == 1) {
+                    this.showQualification = true;
                 }
             },
             changeQualification() {
@@ -469,8 +487,11 @@ export default (config = {}) => {
                     }
                 }
             },
+            changeContract( val ) {
+                console.log(val)
+            },
             changeResident( resident_id ) {
-
+                this.model.contract_id = null
                 this.resident = this.residents.find(resident => resident.id == resident_id)
                 // this.contracts = this.resident.contracts.filter( contract => contract.status == 1)
                 this.contracts = this.resident.contracts
@@ -636,8 +657,8 @@ export default (config = {}) => {
                         this.$set(this.model, 'created_by', data.created_by);
                         this.$set(this.model, 'building', data.resident.building.name);
 
-                        this.contracts = resp.data.resident.contracts.filter(item => item.status == 1)
-
+                        //this.contracts = resp.data.resident.contracts.filter(item => item.status == 1)
+                        this.model.contract_id = data.contract.id
                         await this.getConversations();
                         
                         if (data.resident) {

@@ -178,7 +178,7 @@
             </el-col>
         </el-row>
         <template v-if="resident_type_check == 1">
-        <ui-divider v-if="model.unit_id" content-position="left">
+        <!-- <ui-divider v-if="model.unit_id" content-position="left">
             {{ $t('models.resident.contract.deposit_amount') }}
         </ui-divider>
 
@@ -296,7 +296,7 @@
                     </el-input>
                 </el-form-item>
             </el-col>
-        </el-row>
+        </el-row> -->
         <!-- <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
                 <el-form-item :label="$t('models.resident.contract.deposit_status.label')"
@@ -327,7 +327,7 @@
                     class="contract-file-table"
                     >
                     <el-table-column
-                        :label="$t('models.contract.filename')"
+                        :label="$t('models.resident.contract.filename')"
                         prop="name"
                     >
                         <template slot-scope="scope">

@@ -438,7 +438,7 @@
                             v-if="model.id"
                         />
 
-                        <div v-if="!!alreadyAssigned.quarters.length || !!alreadyAssigned.buildings.length">
+                        <div v-if="!!model.quarter_ids.length || !!model.building_ids.length">
                             <el-divider></el-divider>
 
                             <div class="switch-wrapper">
@@ -603,7 +603,7 @@
                         id: this.model.id,
                         toAssignId: toUnassign.id
                     });
-                    this.alreadyAssigned.buildings = this.alreadyAssigned.buildings.filter(building => {
+                    this.model.building_ids = this.model.building_ids.filter(building => {
                         return building != toUnassign.id
                     });
                 } else {
@@ -611,7 +611,7 @@
                         id: this.model.id,
                         toAssignId: toUnassign.id
                     });
-                    this.alreadyAssigned.quarters = this.alreadyAssigned.quarters.filter(quarter => {
+                    this.model.quarter_ids = this.model.building_ids.filter(quarter => {
                         return quarter != toUnassign.id
                     });
                 }
@@ -631,7 +631,7 @@
                     toAssignId: toUnassign.id
                 });
 
-                this.alreadyAssigned.providers = this.alreadyAssigned.providers.filter(provider => {
+                this.model.provider_ids = this.model.provider_ids.filter(provider => {
                     return provider != toUnassign.id
                 });
 

@@ -125,6 +125,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          type="string"
  *      ),
  *      @SWG\Property(
+ *          property="email_receptionist_ids",
+ *          description="email_receptionist_ids",
+ *          type="array",
+ *          @SWG\Items(
+ *              type="integer"
+ *          )
+ *      ),
+ *      @SWG\Property(
  *          property="created_at",
  *          description="created_at",
  *          type="string",
@@ -267,6 +275,7 @@ class Settings extends AuditableModel
         'cleanify_enable',
         'cleanify_email',
         'pinboard_receiver_ids',
+        'email_receptionist_ids',
         'mail_host',
         'mail_port',
         'mail_username',
@@ -313,6 +322,7 @@ class Settings extends AuditableModel
         'iframe_enable' => 'boolean',
         'cleanify_email' => 'string',
         'pinboard_receiver_ids' => 'array',
+        'email_receptionist_ids' => 'array',
         'mail_host' => 'string',
         'mail_port' => 'integer',
         'mail_username' => 'string',
@@ -334,8 +344,8 @@ class Settings extends AuditableModel
     public static function rules()
     {
         return [
-            'name' => 'required',
-            'language' => 'required',
+            'name' => 'string',
+            'language' => 'string',
             'cleanify_email' => 'email',
             'mail_from_address' => 'email',
             'iframe_url' => function($attr, $val, $fail) {
@@ -353,6 +363,15 @@ class Settings extends AuditableModel
                     }
                 }
             },
+            'email_receptionist_ids' => [
+                'array',
+                function($attr, $val, $fail) {
+                    $propertyManagers = PropertyManager::whereIn('id', $val)->count();
+                    if (count($val) != $propertyManagers) {
+                        $fail('One of email_receptionist_ids is not correct');
+                    }
+                },
+            ]
         ];
     }
 

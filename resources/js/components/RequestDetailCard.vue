@@ -221,7 +221,7 @@ export default {
     methods: {
       
         handleSelectionChanged(val) {
-            this.$emit('selectionChanged', this.item);
+            this.$emit('selectionChanged', this.item, val);
         },
         edit() {
             this.$emit('editAction', this.item);

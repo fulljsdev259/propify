@@ -75,7 +75,7 @@
             </like>
             
             <comments ref="comments" :id="data.id" type="pinboard" :use-placeholder="false" :with-scroller="true" @update-dynamic-scroller="$emit('update-dynamic-scroller')"/>
-            <add-comment ref="addComment" :id="data.id" type="pinboard"/>
+            <add-comment ref="addComment" :id="data.id" type="pinboard" @update-dynamic-scroller="$emit('update-dynamic-scroller')"/>
         </div>
     </el-card>
 </template>

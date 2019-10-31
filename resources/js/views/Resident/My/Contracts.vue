@@ -27,7 +27,7 @@
                         <b>{{$t('resident.unit_number')}}:</b>
                         {{contract.unit.room_no}}
                     </div>
-                    <div class="item">
+                    <!-- <div class="item">
                         <b>{{$t('resident.floor')}}:</b>
                         {{contract.unit.floor}}
                     </div>
@@ -50,21 +50,21 @@
                     <div class="item">
                         <b>{{$t('general.gross_rent')}}:</b>
                         {{contract.monthly_rent_gross}}
-                    </div>
-                    <template v-if="contract.rent_start">
+                    </div> -->
+                    <!-- <template v-if="contract.start_date">
                         <el-divider content-position="left">{{$t('resident.rent_date')}}</el-divider>
                         <el-tag class="rent" type="warning" disable-transitions>
                             {{$t('resident.start_date')}}:
-                            <el-tag type="warning" effect="plain" disable-transitions>{{contract.rent_start | formatDate}}</el-tag>
-                            <template v-if="contract.rent_end">
-                                End date: <el-tag type="warning" effect="plain" disable-transitions>{{contract.rent_end | formatDate}}</el-tag>
+                            <el-tag type="warning" effect="plain" disable-transitions>{{contract.start_date | formatDate}}</el-tag>
+                            <template v-if="contract.end_date">
+                                End date: <el-tag type="warning" effect="plain" disable-transitions>{{contract.end_date | formatDate}}</el-tag>
                             </template>
                         </el-tag>
-                    </template>
+                    </template> -->
                     <template v-if="contract.media">
                         <el-divider content-position="left">{{$t('resident.contract_file')}}</el-divider>
                         <template  v-for="file in contract.media">
-                            <embed :key="file.id" :src="file.url" style="height: 200px;"/>
+                            <embed :key="file.id" :src="file.url" style="height: 500px;"/>
                             <!-- <el-image :key="file.id" :src="file.url" v-if="isFileImage(file)" />
                             <embed :key="file.id" :src="file.url" v-else /> -->
                         </template>

@@ -460,6 +460,7 @@
             padding: 0 !important;
             flex-direction: column;
             overflow: hidden !important;
+            min-height: 100%;
 
             .inner-container {
                 height: 100%;

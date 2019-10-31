@@ -42,8 +42,13 @@ class BuildingTransformer extends BaseTransformer
             'residents_count' => 0,
             'active_residents_count' => 0,
             'in_active_residents_count' => 0,
-            'property_managers_count' => 0
+            'property_managers_count' => 0,
+            'global_email_receptionist' => $model->global_email_receptionist
         ];
+
+        if ($model->hasAttribute('has_email_receptionists')) {
+            $response['has_email_receptionists'] = $model->has_email_receptionists;
+        }
 
         $withCount = $model->getStatusRelationCounts();
         $response = array_merge($response, $withCount);

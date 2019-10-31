@@ -65,6 +65,9 @@ return [
             'update' => "Errore nell'aggiornamento del residente: ",
             'deleted' => "Residente Cancella errore: ",
             'not_allowed_change_status' => "Non è consentito modificare lo stato.",
+            'not_allowed_change_type_has_request_contract' => 'Non puoi cambiare tipo, dato che questo residente ha :contract_status contratti e :requests_status richieste',
+            'not_allowed_change_type_has_contract' => 'Non è possibile cambiare tipo in quanto questo residente ha :contract_status contratti',
+            'not_allowed_change_type_has_request' => 'Non è possibile cambiare tipo in quanto questo residente ha :requests_status richieste',
         ],        
         "personal_details_card" => "Dati personali",
         "account_info_card" => "Accesso utente",
@@ -80,6 +83,7 @@ return [
                 'limited' => 'Limitato',
             ],
             'contract_pdf' => "Contratto PDF",
+            'filename' => 'Nome',
             'deposit_amount' => 'Importo del deposito',
             'type_of_deposit' => 'Tipo di deposito',
             'deposit_types' => [

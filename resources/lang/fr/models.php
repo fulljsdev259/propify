@@ -65,6 +65,9 @@ return [
             'update' => "Erreur de mise à jour résidente : ",
             'deleted' => "Résident Supprimer erreur : ",
             'not_allowed_change_status' => "Vous n'êtes pas autorisé à changer de statut.",
+            'not_allowed_change_type_has_request_contract' => 'Vous ne pouvez pas changer de type car ce résident a :contract_status contrats et :requests_status requêtes',
+            'not_allowed_change_type_has_contract' => 'Vous ne pouvez pas changer de type car ce résident a :contract_status contrats',
+            'not_allowed_change_type_has_request' => 'Vous ne pouvez pas changer de type car ce résident a :requests_status requêtes',
         ],        
         "personal_details_card" => "Données personnelles",
         "account_info_card" => "Connexion de l'utilisateur",
@@ -80,6 +83,7 @@ return [
                 'limited' => 'Limitée',
             ],
             'contract_pdf' => 'Contrat PDF',
+            'filename' => 'Nom',
             'deposit_amount' => 'Montant du dépôt',
             'type_of_deposit' => 'Type de dépôt',
             'deposit_types' => [
