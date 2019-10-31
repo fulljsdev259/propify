@@ -18,7 +18,6 @@ export default (config = {}) => {
                     house_num: 'house_num',
                     media: [],
                     internal_quarter_id: '',
-
                 },
                 quarter_format: '',
                 validationRules: {

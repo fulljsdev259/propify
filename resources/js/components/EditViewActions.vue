@@ -42,6 +42,7 @@
         },
         methods: {
             goToListing() {
+                console.log('go to listing');
                 let route = {};
                 if(this.role) {
                     route = {

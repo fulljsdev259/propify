@@ -228,10 +228,10 @@ export default (config = {}) => {
                                     //     name: 'adminResidentsEdit',
                                     //     params: {id: resp.data.id}
                                     // })
-                                    this.$router.push({
-                                        name: 'adminResidentsView',
-                                        params: {id: resp.data.id}
-                                    })
+                                    // this.$router.push({
+                                    //     name: 'adminResidentsView',
+                                    //     params: {id: resp.data.id}
+                                    // })
                                 }
                             } catch (err) {
                                 displayError(err);

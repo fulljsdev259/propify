@@ -14,7 +14,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                align="right"
+                align="left"
             >
                 <template slot-scope="scope">
                     <a :href="scope.row.url" class="file-name" target="_blank">
@@ -23,6 +23,7 @@
                 </template>
             </el-table-column>
             <el-table-column
+                width="80"
                 align="right"
             >
                 <template slot-scope="scope">
