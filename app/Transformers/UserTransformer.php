@@ -26,8 +26,8 @@ class UserTransformer extends BaseTransformer
             'name' => $model->name,
             'email' => $model->email,
             'phone' => $model->phone,
-            'avatar' => getDefaultAvatar($model),
-            'avatar_variations' => getUserAvatars($model)
+            'avatar' => $model->avatar,
+            'avatar_variations' => $model->avatar_variations
         ];
 
         if ($model->relationExists('settings')) {

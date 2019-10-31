@@ -8,29 +8,37 @@ class ConstantsHelpers
         'care_instructions',
         'other',
     ];
+    
+}
+class AvatarHelper
+{
     const AVATAR_SIZES = [
         32,
         48,
         64,
         800
     ];
+    public $id;
+    public $avatar;
 }
-function getDefaultAvatar($user, $default = '32x32')
+function getDefaultAvatar($user, $pixel = '32')
 {   
-    $avatarPath = $user->avatar;
-    if($user->avatar) $avatarPath = 'storage/avatar/' . $user->id . '/' . $default . '/' . $user->avatar;
-
-    return $avatarPath;
+    if(!$user->avatar){
+        return null;
+    } else{
+        return 'storage/avatar/' . $user->id . '/' . $pixel  . 'x' . $pixel . '/' . $user->avatar;
+    }
 }
 function getUserAvatars($user)
 {
-    $avatarVariations = [];
-    foreach (ConstantsHelpers::AVATAR_SIZES as $pixel) {
-        $avatarPath = $user->avatar;
-        if($user->avatar) $avatarPath = 'storage/avatar/' . $user->id . '/' . $pixel  . 'x' . $pixel . '/' . $user->avatar;
-        $avatarVariations[] =  $avatarPath;
+    if(!$user->avatar){
+        return null;
     }
-    return   $avatarVariations;
+    $avatarVariations = [];
+    foreach (AvatarHelper::AVATAR_SIZES as $pixel) {
+        $avatarVariations[] = 'storage/avatar/' . $user->id . '/' . $pixel  . 'x' . $pixel . '/' . $user->avatar;
+    }
+    return $avatarVariations;
 }
 
 
