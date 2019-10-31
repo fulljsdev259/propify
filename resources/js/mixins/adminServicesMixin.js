@@ -247,43 +247,46 @@ export default (config = {}) => {
 
                 mixin.methods = {
                     async submit(afterValid = false) {
-                        this.isFormSubmission = true;
-                        const valid = await this.form.validate();
-                        this.isFormSubmission = false;
-                        if (valid) {
-                            this.loading.state = true;
-                            try {
+                        return new Promise((resolve, reject) => {
+                            this.isFormSubmission = true;
+                            const valid = await this.form.validate();
+                            this.isFormSubmission = false;
+                            if (valid) {
+                                this.loading.state = true;
+                                try {
 
-                                this.model.user.password = this.model.password
-                                this.model.user.password_confirmation = this.model.password_confirmation
-                                this.model.user.avatar = this.model.avatar
-                                this.model.user.email = this.model.email
-                                const resp = await this.createService(this.model);
+                                    this.model.user.password = this.model.password
+                                    this.model.user.password_confirmation = this.model.password_confirmation
+                                    this.model.user.avatar = this.model.avatar
+                                    this.model.user.email = this.model.email
+                                    const resp = await this.createService(this.model);
 
 
-                                if (resp.data.user && resp.data.user.id) {
-                                    await this.uploadAvatarIfNeeded(resp.data.user.id);
+                                    if (resp.data.user && resp.data.user.id) {
+                                        await this.uploadAvatarIfNeeded(resp.data.user.id);
+                                    }
+
+                                    displaySuccess(resp);
+
+                                    this.form.resetFields();
+                                    if (!!afterValid) {
+                                        afterValid(resp);
+                                    } else {
+                                        // this.$router.push({
+                                        //     name: 'adminServicesEdit',
+                                        //     params: {id: resp.data.id}
+                                        // })
+                                        resolve(resp)
+                                    }
+                                    return resp;
+                                } catch (err) {
+                                    displayError(err);
+                                    reject(err);
+                                } finally {
+                                    this.loading.state = false;
                                 }
-
-                                displaySuccess(resp);
-
-                                this.form.resetFields();
-                                if (!!afterValid) {
-                                    afterValid(resp);
-                                } else {
-                                    this.$router.push({
-                                        name: 'adminServicesEdit',
-                                        params: {id: resp.data.id}
-                                    })
-                                }
-                                return resp;
-                            } catch (err) {
-                                displayError(err);
-                            } finally {
-                                this.loading.state = false;
                             }
-                        }
-
+                        });
                     },
 
                     ...mixin.methods,

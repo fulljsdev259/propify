@@ -64,7 +64,9 @@
             },
             async saveAndClose() {
                 try {
+                    console.log('save and close')
                     const resp = await this.saveAction();
+                    
                     if(resp) {
                         this.goToListing();
                     }
@@ -82,7 +84,9 @@
             },
             async SaveAndEdit() {
                 try {
+                    console.log('save and Edit')
                     const resp = await this.saveAction();
+                    console.log('save and Edit', resp)
                     if (resp && resp.data) {
                         this.$router.push({
                             name: this.editRoute,

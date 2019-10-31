@@ -534,7 +534,7 @@ export default (config = {}) => {
                     ...mixin.methods,
                     ...mapActions(['createRequest', 'createRequestTags', 'getTags']),
                     async saveRequest() {
-                        this.model.category_id = this.model.category_id
+                        this.model.category = this.model.category_id
                         this.model.sub_category = this.model.sub_category_id 
 
                         const resp = await this.createRequest(this.model);

@@ -28,7 +28,7 @@
                 <el-col :md="24">
                     <el-form-item :label="$t('general.email_receptionist.email_receptionist_of', {category: $t(`models.request.category_list.${category.name}`) })"
                         :rules="validationRules.assign"
-                        :prop="'assign[$index]'"
+                        :prop="'assign.' + $index"
                         class="label-block"
                         >
                         <el-select
@@ -135,12 +135,15 @@
                             
                         }
 
-                        if(this.isBuilding == false) {
+                        if(this.isBuilding == true) {
                             let payload = {
                                 quarter_id : this.quarter_id,
+                                building_id : this.building_id,
                                 global: this.global,
                                 categories: categories
                             }
+
+                            console.log('payload', payload)
 
                             const resp = await this.saveBuildingEmailReceptionists(payload)
 
@@ -150,17 +153,20 @@
 
                         if(this.isBuilding == false)
                         {
-                            payload = {
+                            let payload = {
                                 quarter_id : this.quarter_id,
                                 categories: categories
                             }
+
+                            console.log('payload', payload)
+                            
                             const resp = await this.saveQuarterEmailReceptionists(payload)
 
                             if(resp.data.success)
                                 displaySuccess(resp.data.message);
                         }
                         
-                        console.log('payload', payload)
+                        
                         
                         
                     }

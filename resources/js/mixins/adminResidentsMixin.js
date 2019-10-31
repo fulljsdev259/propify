@@ -177,67 +177,67 @@ export default (config = {}) => {
 
                 mixin.methods = {
                     submit(afterValid = false) {
-                        this.form.validate(async valid => {
-                            if (!valid) {
-                                return false;
-                            }
-
-                            this.loading.state = true;
-                            
-                            this.model.contracts.forEach(contract => {
-                                contract.monthly_rent_gross = Number(contract.monthly_rent_net) + Number(contract.monthly_maintenance)
-                            })
-
-                            let {email, password, password_confirmation, ...resident} = this.model;
-
-                            try {
-
-                                resident.status = 2
-                                const today = new Date().getTime();
-                                resident.contracts.forEach(contract => {
-                                    const start_date = new Date(contract.start_date).getTime();
-                                    const end_date = new Date(contract.end_date).getTime();
-                                    if(contract.duration == 1 && start_date <= today )
-                                        resident.status = 1
-                                    if(contract.duration == 2 && start_date <= today && end_date > today)
-                                        resident.status = 1
-                                        
-                                })
-                                const resp = await this.createResident({
-                                    user: {
-                                        email,
-                                        password,
-                                        password_confirmation: password_confirmation
-                                    },
-                                    ...resident
-                                });
-
-                                if (resp.data.user && resp.data.user.id) {
-                                    this.uploadAvatarIfNeeded(resp.data.user.id);
+                        return new Promise((resolve, reject) => {
+                            this.form.validate(async valid => {
+                                if (!valid) {
+                                    return reject(valid);
                                 }
 
+                                this.loading.state = true;
                                 
-                                displaySuccess(resp);
+                                this.model.contracts.forEach(contract => {
+                                    contract.monthly_rent_gross = Number(contract.monthly_rent_net) + Number(contract.monthly_maintenance)
+                                })
 
-                                this.model.rent_start = '';
-                                this.form.resetFields();
-                                if (!!afterValid) {
-                                    afterValid(resp);
-                                } else {
-                                    // this.$router.push({
-                                    //     name: 'adminResidentsEdit',
-                                    //     params: {id: resp.data.id}
-                                    // })
-                                    // this.$router.push({
-                                    //     name: 'adminResidentsView',
-                                    //     params: {id: resp.data.id}
-                                    // })
+                                let {email, password, password_confirmation, ...resident} = this.model;
+
+                                try {
+
+                                    resident.status = 2
+                                    const today = new Date().getTime();
+                                    resident.contracts.forEach(contract => {
+                                        const start_date = new Date(contract.start_date).getTime();
+                                        const end_date = new Date(contract.end_date).getTime();
+                                        if(contract.duration == 1 && start_date <= today )
+                                            resident.status = 1
+                                        if(contract.duration == 2 && start_date <= today && end_date > today)
+                                            resident.status = 1
+                                            
+                                    })
+                                    const resp = await this.createResident({
+                                        user: {
+                                            email,
+                                            password,
+                                            password_confirmation: password_confirmation
+                                        },
+                                        ...resident
+                                    });
+
+                                    if (resp.data.user && resp.data.user.id) {
+                                        this.uploadAvatarIfNeeded(resp.data.user.id);
+                                    }
+
+                                    
+                                    displaySuccess(resp);
+
+                                    this.model.rent_start = '';
+                                    this.form.resetFields();
+                                    if (!!afterValid) {
+                                        afterValid(resp);
+                                    } else {
+                                        // this.$router.push({
+                                        //     name: 'adminResidentsView',
+                                        //     params: {id: resp.data.id}
+                                        // })
+                                        resolve(resp)
+                                    }
+                                } catch (err) {
+                                    displayError(err);
+                                    reject(err);
+                                } finally {
+                                    this.loading.state = false;
                                 }
-                            } catch (err) {
-                                displayError(err);
-                            } finally {
-                                this.loading.state = false;
-                            }
+                            });
                         });
                     },
 
