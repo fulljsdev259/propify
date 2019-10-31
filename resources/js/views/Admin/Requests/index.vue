@@ -9,7 +9,7 @@
             {{selectedItems.map(item => item.id)}}
             <template v-if="$can($permissions.assign.manager)">
                 <el-dropdown split-button 
-                            :disabled="!selectedItems.length || selectedItems.length == 0" 
+                            :disabled="!selectedItems.length" 
                             size="mini"
                             type="info" 
                             trigger="click" 
@@ -18,7 +18,7 @@
                     {{$t('models.request.mass_edit.label')}}
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item 
-                            :disabled="!selectedItems.length || selectedItems.length == 0" 
+                            :disabled="!selectedItems.length" 
                             :command="option"
                             :key="option"
                             v-for="option in massEditOptions">
