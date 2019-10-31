@@ -143,9 +143,7 @@
                         
                         console.log('payload', payload)
                         
-                        const resp = await this.saveQuarterEmailReceptionists({
-                            payload
-                        })
+                        const resp = await this.saveQuarterEmailReceptionists(payload)
                         
                         // if(resp.data.success)
                         //     displaySuccess(resp.data.message);

@@ -92,7 +92,7 @@
                 </div>
             </el-form>
 
-            <el-form :model="managersForm" v-if="activeMassEditOption == 'property_manager'">
+            <el-form :model="managersForm" v-else-if="activeMassEditOption == 'property_manager'">
                 <el-form-item :label="$t('models.request.mass_edit.property_manager.modal.content_label')">
                     <el-select
                         :loading="remoteLoading"
@@ -118,9 +118,9 @@
                 </el-form-item>
             </el-form>
             
-            <el-form :model="managersForm" v-if="activeMassEditOption == 'change_status'">
-                <el-form-item :label="$t('models.request.status.label')">
-                    <el-select :placeholder="$t('models.request.mass_edit.change_status.modal.content_label')"
+            <el-form :model="managersForm" v-else-if="activeMassEditOption == 'change_status'">
+                <el-form-item :label="$t('models.request.mass_edit.change_status.modal.content_label')">
+                    <el-select :placeholder="$t('general.placeholders.select')"
                             class="custom-select"
                             v-model="massStatus">
                         <el-option
@@ -480,6 +480,7 @@
             handleCommand( option ) {
                 this.activeMassEditOption = option
                 this.batchEditVisible = true
+                this.resetToAssignList();
             },
             async massEditAction( option ) {
                 if(option == 'service_provider') {

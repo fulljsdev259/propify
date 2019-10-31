@@ -189,8 +189,8 @@
                             <el-col :sm="12" :xs="12">{{$t('models.unit.type.label')}}:</el-col>
                             <el-col :sm="12" :xs="12" class="text-secondary">
                                 {{
-                                !!$constants.units.type[contract.rent_type] ?
-                                $t('models.unit.type.' + $constants.units.type[contract.rent_type])
+                                !!$constants.units.type[contract.type] ?
+                                $t('models.unit.type.' + $constants.units.type[contract.type])
                                 : '&nbsp;'
                                 }}
                             </el-col>
