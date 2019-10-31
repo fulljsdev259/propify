@@ -46,8 +46,9 @@
                                             <template
                                                 >
                                                 <el-button
-                                                    type="success"
                                                     size="mini"
+                                                    round
+                                                    icon="ti-search"
                                                     @click="viewPage(element,fetchAction)"
                                                 >
                                                    {{$t('general.actions.view')}}
@@ -58,11 +59,12 @@
                                 </h4>
                             <p class="subtitle text-secondary" v-if="element.category.name">
                                 <el-tooltip
-                                    :content="(element.category.parentCategory && element.category.parentCategory.name ? '' : '') + $t('models.pinboard.category.label')"
+                                    :content="(element.category.name ? '' : '') + $t('models.pinboard.category.label')"
                                     class="item"
                                     effect="light" placement="top">
                                     <span>
-                                        {{element.category.parentCategory && element.category.parentCategory.name ? element.category.parentCategory.name + ' >'  : ''}} {{ element.category.name}}
+                                        {{ $t(`models.request.category_list.${element.category.name}`) }} 
+                                        {{element.sub_category ? ' > ' + $t(`models.request.sub_category.${element.sub_category.name}`)   : ''}} 
                                     </span>
                                 </el-tooltip>
                             </p>
@@ -71,7 +73,8 @@
                                     :content="$t('models.resident.created_date')"
                                     class="item"
                                     effect="light" placement="top">
-                                        <span>{{ new Date(element.created_at) | formatDate}}</span>
+                                        <span v-if="fetchAction == 'getRequests'">{{ extractDate(element.created_at) }}</span>
+                                        <span v-if="fetchAction == 'getPinboardTruncated'">{{ new Date(element.created_at) | formatDate}}</span>
                                 </el-tooltip> 
                             </p>
                              <div class="reactions" v-if="fetchAction == 'getListings'">
@@ -102,6 +105,7 @@
 <script>
     import TimelineStatus from 'components/TimelineStatus';
     import {format} from 'date-fns'
+    
 import { mapGetters } from 'vuex';
     export default {
         async created() {
@@ -136,7 +140,7 @@ import { mapGetters } from 'vuex';
         },
         filters: {
             formatDate(date) {
-                return format(date, 'DD.MM.YYYY')
+                return format(date, 'DD.MM.YYYY, HH:mm')
             }
         },
         computed: {
@@ -145,6 +149,10 @@ import { mapGetters } from 'vuex';
             })
         },
         methods: {
+            extractDate(date) {
+                var res = date.split(" ");
+                return res[0] + ', ' +res[1].substr(0, 5);
+            },
             viewPage(data, action) {
                 if (action === 'getRequests') {
                     this.$router.push({

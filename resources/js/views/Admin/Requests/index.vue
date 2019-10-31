@@ -58,7 +58,7 @@
                     </span>
                 </template>
             </span>
-            <el-form :model="managersForm"  v-if="activeMassEditOption == 'service_provider'">
+            <el-form :model="servicesForm"  v-if="activeMassEditOption == 'service_provider'">
                 <el-form-item :label="$t('models.request.mass_edit.service_provider.modal.content_label')">
                     <el-select
                         :loading="remoteLoading"
@@ -118,7 +118,7 @@
                 </el-form-item>
             </el-form>
             
-            <el-form :model="managersForm" v-else-if="activeMassEditOption == 'change_status'">
+            <el-form :model="statusForm" v-else-if="activeMassEditOption == 'change_status'">
                 <el-form-item :label="$t('models.request.mass_edit.change_status.modal.content_label')">
                     <el-select :placeholder="$t('general.placeholders.select')"
                             class="custom-select"
@@ -204,6 +204,8 @@
                 send_email_service_provider: true,
                 remoteLoading: false,
                 managersForm: {},
+                servicesForm: {},
+                statusForm: {},
                 activeMassEditOption: 'service_provider',
                 massStatus: '',
                 massEditOptions : [
