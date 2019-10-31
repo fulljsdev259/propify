@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Mails\NewRequestForReceptionist;
 use App\Models\PropertyManager;
 use App\Models\Request;
 use App\Models\Settings;
@@ -13,6 +14,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class NewAdminNotification
@@ -54,7 +56,12 @@ class SendNewRequestEmailToReceptionists
             return;
         }
 
-        // @TODO notify as single or cc, bcc
+        // @TODO save audit
+        foreach ($users as $user) {
+            Mail::to($user)
+                ->queue(new NewRequestForReceptionist($user, $this->request));
+        }
+
     }
 
     protected function getReceptionistUsers($building, $category)
