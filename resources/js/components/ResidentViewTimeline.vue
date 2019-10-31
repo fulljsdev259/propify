@@ -68,7 +68,7 @@
                                         </span>
                                     </el-tooltip>
                                 </p>
-                                <p class="activity-date text-secondary">
+                                <p class="activity-date text-secondary" v-if="fetchAction == 'getPinboardTruncated'">
                                     <el-tooltip
                                         :content="$t('models.resident.created_date')"
                                         class="item"
