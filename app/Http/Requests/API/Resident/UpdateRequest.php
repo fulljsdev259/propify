@@ -37,7 +37,7 @@ class UpdateRequest extends BaseRequest
                     }
 
                     if ($resident->type == $value) {
-                        return;
+                        return true;
                     }
 
                     if ($resident->requests_count && $resident->contracts_count) {

@@ -103,6 +103,7 @@
                         multiple
                         remote
                         reserve-keyword
+                        id="manager-select"
                         style="width: 100%;"
                         v-model="toAssign"
                     >
@@ -478,11 +479,13 @@
                 this.batchEditVisible = false;
                 this.toAssign = [];
                 this.toAssignList = [];
+                this.massStatus = ''
             },
             handleCommand( option ) {
+                this.massStatus = ''
+                this.resetToAssignList();
                 this.activeMassEditOption = option
                 this.batchEditVisible = true
-                this.resetToAssignList();
             },
             async massEditAction( option ) {
                 if(option == 'service_provider') {

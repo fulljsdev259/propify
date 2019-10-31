@@ -243,7 +243,7 @@ return [
         'type' => [
             'label' => 'Typ',
             'apartment' => 'Wohnung',
-            'business' => 'Gewerbefläche',
+            'business' => 'Gewerbe',
             'hobby_room' => 'Hobbyraum',
             'storeroom' => 'Abstellraum',
             'underground_parking_space' => 'Tiefgaragenplatz',

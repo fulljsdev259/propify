@@ -75,6 +75,22 @@ class TemplateRepository extends BaseRepository
     }
 
     /**
+     * @param User $user
+     * @param Request $request
+     * @return array
+     */
+    public function getRequestEmailReceiverTemplate(User $user, Request $request): array
+    {
+        $template = $this->getByCategoryName('request_email_receiver');
+        $context = [
+            'user' => $user,
+            'request' => $request,
+        ];
+        $tags = $this->getTags($template->category->tag_map, $context);
+        return $this->getParsedTemplateData($template, $tags);
+    }
+
+    /**
      * @param $templateName
      * @return mixed
      */
