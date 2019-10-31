@@ -6,7 +6,6 @@
                     {{$t('models.request.add_title')}}
                 </el-button>
             </template>
-            {{selectedItems.map(item => item.id)}}
             <template v-if="$can($permissions.assign.manager)">
                 <el-dropdown split-button 
                             :disabled="!selectedItems.length" 
