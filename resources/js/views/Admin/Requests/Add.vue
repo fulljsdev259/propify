@@ -193,11 +193,19 @@
                             </el-form-item>
                         </el-col>
                         <el-col :md="24" v-if="model.is_public">
-                            <el-form-item :label="$t('models.request.send_notification_desc')"
+                            <div class="switch-wrapper">
+                                <el-form-item :label="$t('models.request.send_notification_title')" prop="send_notification">
+                                    <el-switch v-model="model.send_notification"/>
+                                </el-form-item>
+                                <div class="switcher__desc">
+                                    {{ $t('models.request.send_notification_desc') }}
+                                </div>
+                            </div>
+                            <!-- <el-form-item :label="$t('models.request.send_notification_desc')"
                                         prop="send_notification"
                             >
                                 <el-switch v-model="model.send_notification"/>
-                            </el-form-item>
+                            </el-form-item> -->
                         </el-col>
                         <el-col :md="12">
                             <el-form-item :label="$t('models.request.due_date')" :rules="validationRules.due_date"

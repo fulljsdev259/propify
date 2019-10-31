@@ -199,6 +199,13 @@
                 this.model.assign.push([])
                 this.model.assign[i] = []
             }
+
+            if(this.quarter_id)
+            {
+                const resp = await this.getQuarterEmailReceptionists({quarter_id: this.quarter_id})
+                console.log('getemailrecp', resp.data)
+            }
+                
             
         }
     }

@@ -418,15 +418,15 @@
                     label: 'general.name',
                     type: 'residentName'
                 }, {
-                    prop: 'statusString',
-                    label: 'models.request.user_type.label',
+                    prop: 'type',
+                    label: 'models.resident.type.label',
                     i18n: this.translateType
-                }, {
+                }/*, {
                     prop: 'status',
                     i18n: this.residentStatusLabel,
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
-                }],
+                }*/],
                 assigneesActions: [{
                     width: '100px',
                     buttons: [{
@@ -458,7 +458,9 @@
                 "uploadUnitFile", 
                 "deleteUnitFile",
             ]),
-            
+            translateType(type) {
+                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+            },
             toggleDrawer() {
                 this.visibleDrawer = true;
                 this.isAddContract = true;

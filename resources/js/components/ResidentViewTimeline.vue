@@ -7,7 +7,7 @@
                         :key="index"
                         :color="'var(--primary-color)'">
                         <el-row :gutter="20" class="main-section">
-                            <el-col :md="2" class="avatar-square" v-if="element.media.length > 0">
+                            <el-col class="avatar-square" v-if="element.media.length > 0">
                                  <el-tooltip
                                     :content="$t('models.pinboard.images')"
                                     class="item"
@@ -17,7 +17,7 @@
                                     </span>
                                  </el-tooltip>
                             </el-col>
-                            <el-col :md="fetchAction == 'getPinboardTruncated' && element.media.length > 0 ? 22 : 24">
+                            <el-col style="flex: 1;">
                                 <h4>
                                     {{element.title}} 
                                     <TimelineStatus v-if="fetchAction == 'getRequests'" :status="element.status" />
@@ -39,15 +39,16 @@
                                             </span>
                                          </el-tooltip>
                                     </template>
-                                     <template v-if="loggedInUser.roles[0].name === 'administrator' || fetchAction === 'getRequests'">
+                                    <template v-if="loggedInUser.roles[0].name === 'administrator' || fetchAction === 'getRequests'">
                                         <span
                                             class="btn-view"
                                           >
                                             <template
                                                 >
                                                 <el-button
-                                                    type="success"
                                                     size="mini"
+                                                    round
+                                                    icon="ti-search"
                                                     @click="viewPage(element,fetchAction)"
                                                 >
                                                    {{$t('general.actions.view')}}
@@ -56,29 +57,43 @@
                                         </span>
                                     </template>
                                 </h4>
-                            <p class="subtitle text-secondary" v-if="element.category.name">
-                                <el-tooltip
-                                    :content="(element.category.parentCategory && element.category.parentCategory.name ? '' : '') + $t('models.pinboard.category.label')"
-                                    class="item"
-                                    effect="light" placement="top">
-                                    <span>
-                                        {{element.category.parentCategory && element.category.parentCategory.name ? element.category.parentCategory.name + ' >'  : ''}} {{ element.category.name}}
-                                    </span>
-                                </el-tooltip>
-                            </p>
-                            <p class="activity-date text-secondary">
-                                <el-tooltip
-                                    :content="$t('models.resident.created_date')"
-                                    class="item"
-                                    effect="light" placement="top">
-                                        <span>{{ new Date(element.created_at) | formatDate}}</span>
-                                </el-tooltip> 
-                            </p>
-                             <div class="reactions" v-if="fetchAction == 'getListings'">
-                                <div><i class="ti-thumb-up"  />{{element.likes_count}}</div>
-                                <div><i class="ti-comments" /> {{element.comments_count}} </div>
-                                <div><i class="ti-gallery"  /> {{element.media.length}}</div>
-                            </div>
+                                <p class="subtitle text-secondary" v-if="element.category.name">
+                                    <el-tooltip
+                                        :content="(element.category.name ? '' : '') + $t('models.pinboard.category.label')"
+                                        class="item"
+                                        effect="light" placement="top">
+                                        <span>
+                                            {{ $t(`models.request.category_list.${element.category.name}`) }} 
+                                            {{element.sub_category ? ' > ' + $t(`models.request.sub_category.${element.sub_category.name}`)   : ''}} 
+                                        </span>
+                                    </el-tooltip>
+                                </p>
+                                <p class="activity-date text-secondary" v-if="fetchAction == 'getPinboardTruncated'">
+                                    <el-tooltip
+                                        :content="$t('models.resident.created_date')"
+                                        class="item"
+                                        effect="light" placement="top">
+                                            <!-- <span v-if="fetchAction == 'getRequests'">{{ extractDate(element.created_at) }}</span> -->
+                                            <span v-if="fetchAction == 'getPinboardTruncated'">{{ new Date(element.created_at) | formatDate}}</span>
+                                    </el-tooltip> 
+                                </p>
+                                <div class="reactions" v-if="fetchAction == 'getListings'">
+                                    <div><i class="ti-thumb-up"  />{{element.likes_count}}</div>
+                                    <div><i class="ti-comments" /> {{element.comments_count}} </div>
+                                    <div><i class="ti-gallery"  /> {{element.media.length}}</div>
+                                </div>
+                            </el-col>
+                        </el-row>
+                        <el-row :gutter="20">
+                            <el-col :md="24" v-if="fetchAction == 'getRequests'">
+                                <p class="activity-date text-secondary">
+                                    <el-tooltip
+                                        :content="$t('models.resident.created_date')"
+                                        class="item"
+                                        effect="light" placement="top">
+                                            <span v-if="fetchAction == 'getRequests'">{{ extractDate(element.created_at) }}</span>
+                                    </el-tooltip> 
+                                </p>
                             </el-col>
                         </el-row>
                 </el-timeline-item>
@@ -102,6 +117,7 @@
 <script>
     import TimelineStatus from 'components/TimelineStatus';
     import {format} from 'date-fns'
+    
 import { mapGetters } from 'vuex';
     export default {
         async created() {
@@ -136,7 +152,7 @@ import { mapGetters } from 'vuex';
         },
         filters: {
             formatDate(date) {
-                return format(date, 'DD.MM.YYYY')
+                return format(date, 'DD.MM.YYYY, HH:mm')
             }
         },
         computed: {
@@ -145,6 +161,10 @@ import { mapGetters } from 'vuex';
             })
         },
         methods: {
+            extractDate(date) {
+                var res = date.split(" ");
+                return res[0] + ', ' +res[1].substr(0, 5);
+            },
             viewPage(data, action) {
                 if (action === 'getRequests') {
                     this.$router.push({
@@ -226,7 +246,11 @@ import { mapGetters } from 'vuex';
         text-decoration: none;
         cursor: text;
     }
+    .main-section {
+        display: flex;
+    }
     .avatar-square{
+        width: 50px;
         padding-top: 5px;
     }
     .el-timeline {
