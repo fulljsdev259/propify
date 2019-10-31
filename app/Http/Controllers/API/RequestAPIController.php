@@ -362,12 +362,6 @@ class RequestAPIController extends AppBaseController
      * )
      *
      * @param $id
-     * @param UpdateRequest $request
-     * @return mixed
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     */
-    /**
-     * @param $id
      * @param UpdateRequest $updateRequest
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
