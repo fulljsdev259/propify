@@ -42,6 +42,11 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  *          type="integer"
  *      ),
  *      @SWG\Property(
+ *          property="type",
+ *          description="type",
+ *          type="integer"
+ *      ),
+ *      @SWG\Property(
  *          property="description",
  *          description="description",
  *          type="string"
@@ -115,15 +120,6 @@ class Quarter extends AuditableModel implements HasMedia
     ];
 
     /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'name' => 'required|string',
-    ];
-
-    /**
      * @var string
      */
     public $table = 'quarters';
@@ -138,6 +134,7 @@ class Quarter extends AuditableModel implements HasMedia
         'count_of_buildings',
         'address_id',
         'internal_quarter_id',
+        'type',
     ];
     /**
      * @var array
@@ -156,6 +153,7 @@ class Quarter extends AuditableModel implements HasMedia
         'quarter_format' => 'string',
         'internal_quarter_id' => 'string',
         'count_of_buildings' => 'integer',
+        'type' => 'integer',
     ];
 
     protected $permittedExtensions = [
