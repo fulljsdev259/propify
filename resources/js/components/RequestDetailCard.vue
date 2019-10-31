@@ -221,7 +221,8 @@ export default {
     methods: {
       
         handleSelectionChanged(val) {
-            this.$emit('selectionChanged', this.item);
+            console.log('handle in detail card', this.item, val);
+            this.$emit('selectionChanged', this.item, val);
         },
         edit() {
             this.$emit('editAction', this.item);
