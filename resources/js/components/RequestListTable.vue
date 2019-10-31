@@ -509,18 +509,33 @@
                 this.selectedItems = val;
                 this.$emit('selectionChanged', this.selectedItems);
             },
-            handleRequestSelectionChange(val) {
-                var exist = -1;
-                this.selectedItems.map((item, index) => {
-                    if(item.id == val.id)
-                        exist = index;
-                });
-                if(exist == -1) {
-                    this.selectedItems.push(val)
-                } else {
-                    this.selectedItems.slice(exist, 1);
+            handleRequestSelectionChange(selectedItem, isChecked) {
+                // var exist = -1;
+                
+                // this.selectedItems.map((item, index) => {
+                //     if(item.id == selectedItem.id)
+                //         exist = index;
+                // });
+                // console.log('exist', exist);
+                // if(exist == -1) {
+                //     this.selectedItems.push(selectedItem)
+                // } else {
+                //     this.selectedItems = this.selectedItems.splice(exist, 1);
+                // }
+                // console.log('selectedItems', this.selectedItems)
+                // this.handleSelectionChange(this.selectedItems);
+                console.log(isChecked);
+                if(isChecked) {
+                    this.selectedItems.push(selectedItem)
                 }
-                this.handleSelectionChange(this.selectedItems);
+                else {
+                    var deleteIndex = -1;
+                    this.selectedItems.map((item, index) => {
+                        if(item.id == selectedItem.id)
+                            deleteIndex = index;
+                    });
+                    this.selectedItems.splice(deleteIndex, 1)
+                }
             },
             batchDelete() {
                 this.$emit('batchDelete', this.selectedItems);
