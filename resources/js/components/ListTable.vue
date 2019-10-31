@@ -158,23 +158,6 @@
             <el-table-column
                 :key="column.prop"
                 :label="$t(column.label)"
-                :prop="column.prop"
-                :width="column.width"
-                v-for="column in headerWithoutActions"/>
-
-            <el-table-column
-                :key="column.prop"
-                :label="$t(column.label)"
-                :width="column.width"
-                v-for="column in headerWithRoles">
-                <template slot-scope="scope">
-                    {{$t(`general.roles.${$constants.propertyManager.type[scope.row[column.prop]]}`)}}
-                </template>
-            </el-table-column>
-
-            <el-table-column
-                :key="column.prop"
-                :label="$t(column.label)"
                 :width="column.width"
                 v-for="column in headerWithAvatars" class="request-table">
                 
@@ -191,6 +174,45 @@
                     </div>
                 </template>
             </el-table-column>
+
+            <el-table-column
+                :key="column.label + key"
+                :label="$t(column.label)"
+                :width="column.width"
+                v-for="(column, key) in headerAvatarWithMultipleProps"
+            >
+                <template slot-scope="scope">
+                    <div class="avatar-with-multiprops">
+                        <table-avatar :src="scope.row['user'].avatar" :name="scope.row['user'].name" :size="33" />
+                        <div class="avatar-info">
+                            <component :class="{'listing-link': column.withLinks}" :is="column.withLinks ? 'router-link':'div'"
+                                    :key="prop" :to="{name: 'adminUnits', query: { page : 1, per_page : 20, building_id : scope.row.id }}"
+                                    v-for="(prop, ind) in column.props" v-if="scope.row[prop]">
+                                {{scope.row[prop]}}
+                            </component>
+                        </div>
+                    </div>
+                </template>
+            </el-table-column>
+
+            <el-table-column
+                :key="column.prop"
+                :label="$t(column.label)"
+                :prop="column.prop"
+                :width="column.width"
+                v-for="column in headerWithoutActions"/>
+
+            <el-table-column
+                :key="column.prop"
+                :label="$t(column.label)"
+                :width="column.width"
+                v-for="column in headerWithRoles">
+                <template slot-scope="scope">
+                    {{$t(`general.roles.${$constants.propertyManager.type[scope.row[column.prop]]}`)}}
+                </template>
+            </el-table-column>
+
+            
             
             <el-table-column
                 :key="column.label + key"
@@ -542,6 +564,7 @@
                 && !row.select
                 && !row.withUsers
                 && !row.withAvatars
+                && !row.withAvatarsAndProps
                 && !row.withCounts
                 && !row.withMultipleProps
                 && !row.withCollapsables
@@ -562,6 +585,9 @@
             },
             headerWithAvatars() {
                 return this.header.reduce((acc, row) => (row.withAvatars && acc.push(row), acc), []);
+            },
+            headerAvatarWithMultipleProps() {
+                return this.header.reduce((acc, row) => (row.withAvatarsAndProps && acc.push(row), acc), []);
             },
             headerWithUsers() {
                 return this.header.reduce((acc, row) => (row.withUsers && acc.push(row), acc), []);
@@ -1056,6 +1082,14 @@
                     text-overflow: ellipsis;
                 }
             }
+        }
+    }
+
+    .avatar-with-multiprops {
+        display: flex;
+        align-items: center;
+        .avatar-info {
+            margin-left: 15px;
         }
     }
 
