@@ -84,7 +84,7 @@
 
                         <el-row class="last-form-row" :gutter="20">
                             <el-col :md="24">
-                                <el-form-item :label="$t('general.language')" prop="settings.language">
+                                <el-form-item :label="$t('general.language')" :rules="validationRules.language" prop="settings.language">
                                     <select-language :activeLanguage.sync="model.settings.language"/>
                                 </el-form-item>
                             </el-col>

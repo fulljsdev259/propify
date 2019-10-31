@@ -127,6 +127,10 @@ export default (config = {}) => {
                         required: true,
                         message: this.$t('validation.required', {attribute: this.$t('general.zip')})
                     }],
+                    language: [{
+                        required: true,
+                        message: this.$t('validation.general.required')
+                    }],
                 },
                 loading: {
                     state: false,
@@ -246,8 +250,8 @@ export default (config = {}) => {
                 }), UploadUserAvatarMixin];
 
                 mixin.methods = {
-                    async submit(afterValid = false) {
-                        return new Promise((resolve, reject) => {
+                     submit(afterValid = false) {
+                        return new Promise(async (resolve, reject) => {
                             this.isFormSubmission = true;
                             const valid = await this.form.validate();
                             this.isFormSubmission = false;

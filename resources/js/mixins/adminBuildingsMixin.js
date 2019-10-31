@@ -272,39 +272,42 @@ export default (config = {}) => {
         switch (config.mode) {
             case 'add':
                 mixin.methods = {
-                    async submit(afterValid = false) {
-                        const valid = await this.form.validate();
-                        if (valid) {
-                            this.loading.state = true;
-                            try {
-                                const {state_id, city, street, house_num, zip, ...restParams} = this.model;
-                                const response = await this.createBuilding({
-                                    address: {
-                                        state_id,
-                                        city,
-                                        street,
-                                        house_num,
-                                        zip
-                                    },
-                                    ...restParams
-                                });
-                                displaySuccess(response);
-                                this.form.resetFields();
-                                if (!!afterValid) {
-                                    afterValid(response);
-                                } else {
-                                    this.$router.push({
-                                        name: 'adminBuildingsEdit',
-                                        params: {id: response.data.id}
-                                    })
+                    submit(afterValid = false) {
+                        return new Promise(async (resolve, reject) => {
+                            const valid = await this.form.validate();
+                            if (valid) {
+                                this.loading.state = true;
+                                try {
+                                    const {state_id, city, street, house_num, zip, ...restParams} = this.model;
+                                    const response = await this.createBuilding({
+                                        address: {
+                                            state_id,
+                                            city,
+                                            street,
+                                            house_num,
+                                            zip
+                                        },
+                                        ...restParams
+                                    });
+                                    displaySuccess(response);
+                                    this.form.resetFields();
+                                    if (!!afterValid) {
+                                        afterValid(response);
+                                    } else {
+                                        // this.$router.push({
+                                        //     name: 'adminBuildingsEdit',
+                                        //     params: {id: response.data.id}
+                                        // })
+                                        resolve(response);
+                                    }
+                                } catch (err) {
+                                    displayError(err);
+                                    reject(err);
+                                } finally {
+                                    this.loading.state = false;
                                 }
-                            } catch (err) {
-                                displayError(err);
-                            } finally {
-                                this.loading.state = false;
                             }
-                        }
-
+                        });
                     },
 
                     ...mixin.methods,

@@ -570,32 +570,34 @@ export default (config = {}) => {
                         return resp;
 
                     },
-                    async submit(afterValid = false) {
-                        const valid = await this.form.validate();
-                        if (valid) {
-                            this.loading.state = true;
-                            try {
-                                const resp = await this.saveRequest();
-        
-                                displaySuccess(resp);
+                    submit(afterValid = false) {
+                        return new Promise(async (resolve, reject) => {
+                            const valid = await this.form.validate();
+                            if (valid) {
+                                this.loading.state = true;
+                                try {
+                                    const resp = await this.saveRequest();
+            
+                                    displaySuccess(resp);
 
-                                this.form.resetFields();
-                                if (!!afterValid) {
-                                    afterValid(resp);
-                                } else {
-                                    this.$router.push({
-                                        name: 'adminRequestsEdit',
-                                        params: {id: resp.data.id}
-                                    })
+                                    this.form.resetFields();
+                                    if (!!afterValid) {
+                                        afterValid(resp);
+                                    } else {
+                                        // this.$router.push({
+                                        //     name: 'adminRequestsEdit',
+                                        //     params: {id: resp.data.id}
+                                        // })
+                                        resolve(resp)
+                                    }
+                                    
+                                } catch (err) {
+                                    displayError(err);
+                                } finally {
+                                    this.loading.state = false;
                                 }
-                                
-                            } catch (err) {
-                                displayError(err);
-                            } finally {
-                                this.loading.state = false;
                             }
-                        }
-
+                        });
                     },
                 };
 
