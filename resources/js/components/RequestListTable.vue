@@ -524,7 +524,7 @@
                 // }
                 // console.log('selectedItems', this.selectedItems)
                 // this.handleSelectionChange(this.selectedItems);
-                console.log(isChecked);
+                console.log(selectedItem, isChecked);
                 if(isChecked) {
                     this.selectedItems.push(selectedItem)
                 }
@@ -536,6 +536,7 @@
                     });
                     this.selectedItems.splice(deleteIndex, 1)
                 }
+                this.handleSelectionChange(this.selectedItems);
             },
             batchDelete() {
                 this.$emit('batchDelete', this.selectedItems);
