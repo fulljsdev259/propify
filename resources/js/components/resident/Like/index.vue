@@ -141,5 +141,10 @@
                 filter: opacity(1);
             }
         }
+        .icon-picture {
+            margin-left: 10px;
+            padding-left: 5px;
+            color: var(--primary-color);
+        }
     }
 </style>
