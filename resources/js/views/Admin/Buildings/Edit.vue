@@ -16,7 +16,7 @@
                 </div>
             </template>
         </heading>
-        <div class="warning-bar">
+        <div class="warning-bar" v-if="!model.has_email_receptionists">
             <div class="message" type="info">
                 <i class="icon-info-circled"></i>{{$t('models.building.warning_bar.message')}}
             </div>
@@ -493,11 +493,15 @@
                     label: 'general.name',
                     type: 'residentName'
                 }, {
+                    prop: 'type',
+                    label: 'models.resident.type.label',
+                    i18n: this.translateResidentType
+                }/*, {
                     prop: 'status',
                     i18n: this.residentStatusLabel,
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
-                }],
+                }*/],
                 residentActions: [{
                     buttons: [{
                         title: 'models.resident.view',
@@ -623,6 +627,9 @@
             translateType(type) {
                 return this.$t(`general.assignment_types.${type}`);
             },
+            translateResidentType(type) {
+                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+            },
             fetchSettings() {
                 this.getSettings().then((resp) => {
                     this.contactUseGlobalAddition = resp.data.contact_enable ? this.$t('settings.contact_enable.show') : this.$t('settings.contact_enable.hide');
@@ -711,10 +718,13 @@
                 }).then((resp) => {
                     displaySuccess(resp);
                     this.model.media.push(resp.media);
-                    return true;
+                    if(this.fileCount){
+                        this.fileCount ++;
+                    } else {
+                        this.fileCount = 1;
+                    }
                 }).catch((err) => {
                     displayError(err);
-                    return false;
                 });
             },
             deleteDocument(prop, index) {
@@ -751,14 +761,7 @@
                 this.setOrder();
             },
             uploadFiles(file) {
-                let success = this.insertDocument(this.selectedFileCategory, file);
-                if(!success)
-                    return;
-                if(this.fileCount){
-                    this.fileCount ++;
-                } else {
-                    this.fileCount = 1;
-                }
+                this.insertDocument(this.selectedFileCategory, file);
             },
             removeService(service) {
                 this.deleteBuildingService({

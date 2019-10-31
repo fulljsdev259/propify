@@ -436,7 +436,7 @@ class Request extends AuditableModel implements HasMedia
 
         ],
         self::CategoryMalfunction => [
-
+            self::CapturePhaseAttr
         ],
         self::CategoryDeficiency => [
             self::CapturePhaseAttr
@@ -587,7 +587,7 @@ class Request extends AuditableModel implements HasMedia
         'description' => 'required|string',
 //        'priority' => 'required|integer',
 //        'internal_priority' => 'integer',
-        'qualification' => 'integer',
+        'qualification' => 'nullable|integer',
         'due_date' => 'required|date',
 //        'category' => 'required|integer', //@TODO
 //        'sub_category' => 'integer',
@@ -623,7 +623,7 @@ class Request extends AuditableModel implements HasMedia
         'description' => 'string',
 //        'priority' => 'integer',
 //        'internal_priority' => 'integer',
-        'qualification' => 'integer',
+        'qualification' => 'nullable|integer',
         'status' => 'integer',
         'due_date' => 'date',
 //        'category' => 'integer', //@TODO

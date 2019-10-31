@@ -50,4 +50,21 @@ trait BaseModelTrait
     {
         return parent::relationLoaded($key) && isset($this->$key);
     }
+
+    /**
+     * @param $relation
+     */
+    public function setHasRelation($relation)
+    {
+        $this->setAttribute('has_' . $relation, $this->{$relation}()->exists());
+    }
+
+    /**
+     * @param $attribute
+     * @return bool
+     */
+    public function hasAttribute($attribute)
+    {
+        return key_exists($attribute, $this->getAttributes());
+    }
 }

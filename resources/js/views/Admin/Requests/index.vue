@@ -58,7 +58,7 @@
                     </span>
                 </template>
             </span>
-            <el-form :model="managersForm"  v-if="activeMassEditOption == 'service_provider'">
+            <el-form :model="servicesForm"  v-if="activeMassEditOption == 'service_provider'">
                 <el-form-item :label="$t('models.request.mass_edit.service_provider.modal.content_label')">
                     <el-select
                         :loading="remoteLoading"
@@ -92,7 +92,7 @@
                 </div>
             </el-form>
 
-            <el-form :model="managersForm" v-if="activeMassEditOption == 'property_manager'">
+            <el-form :model="managersForm" v-else-if="activeMassEditOption == 'property_manager'">
                 <el-form-item :label="$t('models.request.mass_edit.property_manager.modal.content_label')">
                     <el-select
                         :loading="remoteLoading"
@@ -103,6 +103,7 @@
                         multiple
                         remote
                         reserve-keyword
+                        id="manager-select"
                         style="width: 100%;"
                         v-model="toAssign"
                     >
@@ -118,9 +119,9 @@
                 </el-form-item>
             </el-form>
             
-            <el-form :model="managersForm" v-if="activeMassEditOption == 'change_status'">
-                <el-form-item :label="$t('models.request.status.label')">
-                    <el-select :placeholder="$t('models.request.mass_edit.change_status.modal.content_label')"
+            <el-form :model="statusForm" v-else-if="activeMassEditOption == 'change_status'">
+                <el-form-item :label="$t('models.request.mass_edit.change_status.modal.content_label')">
+                    <el-select :placeholder="$t('general.placeholders.select')"
                             class="custom-select"
                             v-model="massStatus">
                         <el-option
@@ -204,6 +205,8 @@
                 send_email_service_provider: true,
                 remoteLoading: false,
                 managersForm: {},
+                servicesForm: {},
+                statusForm: {},
                 activeMassEditOption: 'service_provider',
                 massStatus: '',
                 massEditOptions : [
@@ -476,8 +479,11 @@
                 this.batchEditVisible = false;
                 this.toAssign = [];
                 this.toAssignList = [];
+                this.massStatus = ''
             },
             handleCommand( option ) {
+                this.massStatus = ''
+                this.resetToAssignList();
                 this.activeMassEditOption = option
                 this.batchEditVisible = true
             },

@@ -418,15 +418,15 @@
                     label: 'general.name',
                     type: 'residentName'
                 }, {
-                    prop: 'statusString',
-                    label: 'models.request.user_type.label',
+                    prop: 'type',
+                    label: 'models.resident.type.label',
                     i18n: this.translateType
-                }, {
+                }/*, {
                     prop: 'status',
                     i18n: this.residentStatusLabel,
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
-                }],
+                }*/],
                 assigneesActions: [{
                     width: '100px',
                     buttons: [{
@@ -458,7 +458,9 @@
                 "uploadUnitFile", 
                 "deleteUnitFile",
             ]),
-            
+            translateType(type) {
+                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+            },
             toggleDrawer() {
                 this.visibleDrawer = true;
                 this.isAddContract = true;
@@ -475,14 +477,7 @@
                 this.setOrder();
             },
             uploadFiles(file) {
-                let success = this.insertDocument(this.selectedFileCategory, file);
-                if(!success)
-                    return;
-                if(this.fileCount){
-                    this.fileCount++;
-                } else {
-                    this.fileCount = 1;
-                }
+                this.insertDocument(this.selectedFileCategory, file);
             },
             insertDocument(prop, file) {
                 console.log('media', this.model)
@@ -493,10 +488,13 @@
                 }).then((resp) => {
                     displaySuccess(resp);
                     this.model.media.push(resp.media);
-                    return true;
+                    if(this.fileCount){
+                        this.fileCount++;
+                    } else {
+                        this.fileCount = 1;
+                    }
                 }).catch((err) => {
                     displayError(err);
-                    return false;
                 });
             },
             deleteDocument(prop, index) {

@@ -35,7 +35,7 @@
                         </div>
                     </div>
                 </div>                  
-                <div class="category" @click="$emit('toggle-drawer')">
+                <div class="category">
                     {{ $t(`models.request.category_list.${data.category.name}`) }}
                     {{ data.sub_category ? " > " + $t(`models.request.sub_category.${data.sub_category.name}`) : ""}}
                 </div>                
@@ -225,7 +225,6 @@
                             text-overflow: ellipsis
                             overflow: hidden
                             white-space: nowrap
-                            cursor: pointer
 
                         .category
                             font-size: 15px
@@ -237,6 +236,7 @@
                             font-weight: 600
                             margin-top: 12px
                             color: var(--color-primary)
+                            cursor: pointer
 
                         .description
                             margin-top: 16px

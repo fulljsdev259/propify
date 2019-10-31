@@ -7,6 +7,7 @@ use App\Traits\BaseModelTrait;
 use App\Traits\BuildingRelation;
 use App\Traits\OldChagesAttribute;
 use App\Traits\RequestRelation;
+use AvatarHelper;
 use BeyondCode\Comments\Contracts\Commentator;
 use Cog\Contracts\Love\Liker\Models\Liker as LikerContract;
 use Cog\Laravel\Love\Liker\Models\Traits\Liker;
@@ -160,6 +161,7 @@ class User extends Authenticatable implements LikerContract, Commentator, Audita
         'last_login_at',
         'password'
     ];
+    protected $appends = ['avatar_variations'];
 
     protected $hidden = [
         'password', 'remember_token',
@@ -315,4 +317,24 @@ class User extends Authenticatable implements LikerContract, Commentator, Audita
 
         return $a->url;
     }
+
+    public function getAvatarAttribute(){
+        $avatar = new AvatarHelper();
+        $avatar->id = $this->id;
+        $avatar->avatar = $this->attributes['avatar'];
+        return getDefaultAvatar($avatar);
+    }
+
+    public function getAvatarVariationsAttribute(){
+        $avatar = new AvatarHelper();
+        $avatar->id = $this->id;
+        $avatar->avatar = $this->attributes['avatar'];
+        return getUserAvatars($avatar);
+    }
+
+    public function setAvatarAttribute($value){
+        $avatar = explode('/', $value);
+        $this->attributes['avatar'] = end($avatar);
+    }
+
 }

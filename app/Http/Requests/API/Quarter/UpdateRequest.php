@@ -24,6 +24,9 @@ class UpdateRequest extends BaseRequest
      */
     public function rules()
     {
-        return Quarter::$rules;
+        return [
+            'name' => 'string',
+            'type' => $this->getInRuleByClassConstants(Quarter::Type)
+        ];
     }
 }

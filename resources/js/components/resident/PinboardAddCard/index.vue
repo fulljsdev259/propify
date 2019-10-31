@@ -105,16 +105,22 @@
 
                     params.type = 1
                     params.status = 1
-                    const resp = await this.$store.dispatch('newPinboard/create', params);
-
                     
-                    const data = resp.data
+                    params.media = media.map(item => {
+                        //console.log(item.file)
+                        return item.file.src;
+                    });
+
+                    const resp = await this.$store.dispatch('newPinboard/create', params);
+                    this.$refs.media.clearUploader();
+                    
+                    //const data = resp.data
                     //const {data: {data}} = await this.axios.post('pinboard', params);
-                    if (data.hasOwnProperty('id') && this.model.media.length) { 
-                        this.pinboard_id = data.id;
-                        this.audit_id = data.audit_id;
-                        this.$refs.media.startUploading();
-                    }
+                    // if (data.hasOwnProperty('id') && this.model.media.length) { 
+                    //     this.pinboard_id = data.id;
+                    //     this.audit_id = data.audit_id;
+                    //     this.$refs.media.startUploading();
+                    // }
                     displaySuccess(resp.message)
                     this.model.content = ''
                    

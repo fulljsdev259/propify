@@ -47,6 +47,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/residents/latest', 'ResidentAPIController@latest')->name('residents.latest');
     Route::get('/residents/me', 'ResidentAPIController@showLoggedIn')->name('residents.me');
     Route::get('/residents/{id}', 'ResidentAPIController@show')->name('residents.show');
+    Route::get('/residents/{id}/type', 'ResidentAPIController@checkResidentHasContractOrRequest')->name('residents.has.contract-or-requests');
     Route::get('/residents/{id}/statistics', 'DashboardAPIController@residentStatistics')->name('residents.statistics.show');
     Route::get('/my/documents', 'ResidentAPIController@myDocuments')->name('my.documents');
 
@@ -103,6 +104,10 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::post('/buildings/deletewithids', 'BuildingAPIController@destroyWithIds')->name('buildings.destroyWithIds');
     Route::post('/buildings/checkunitrequest', 'BuildingAPIController@checkUnitRequest')->name('buildings.checkUnitRequest');
 
+    Route::get('/buildings/{id}/email-receptionists', 'BuildingAPIController@getEmailReceptionists')->name('buildings.email-receptionists.get');
+    Route::post('/buildings/{id}/email-receptionists', 'BuildingAPIController@storeEmailReceptionists')->name('buildings.email-receptionists.store');
+
+
     Route::put('/buildings/{id}', 'BuildingAPIController@update')->name('buildings.update');
 
     Route::delete('/buildings/{id}', 'BuildingAPIController@destroy')->name('buildings.destroy');
@@ -151,6 +156,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::delete('/quarters/{id}', 'QuarterAPIController@destroy')->name('quarters.destroy');
     Route::post('/quarters/deletewithids', 'QuarterAPIController@destroyWithIds')->name('quarters.destroyWithIds');
     Route::post('/quarters/{id}/media', 'MediaAPIController@quarterUpload')->name('quarters.media.upload');
+
     Route::get('/quarters/{id}/email-receptionists', 'QuarterAPIController@getEmailReceptionists')->name('quarters.email-receptionists.get');
     Route::post('/quarters/{id}/email-receptionists', 'QuarterAPIController@storeEmailReceptionists')->name('quarters.email-receptionists.store');
 

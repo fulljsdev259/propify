@@ -10,6 +10,7 @@ use App\Http\Requests\API\Building\AssignRequest;
 use App\Http\Requests\API\Building\BatchAssignManagers;
 use App\Http\Requests\API\Building\BatchAssignUsers;
 use App\Http\Requests\API\Building\CreateRequest;
+use App\Http\Requests\API\Building\EmailReceptionistRequest;
 use App\Http\Requests\API\Building\UnAssignRequest;
 use App\Http\Requests\API\Building\DeleteRequest;
 use App\Http\Requests\API\Building\ListRequest;
@@ -30,6 +31,7 @@ use App\Repositories\UnitRepository;
 use App\Repositories\RequestRepository;
 use App\Transformers\BuildingAssigneeTransformer;
 use App\Transformers\BuildingTransformer;
+use App\Transformers\EmailReceptionistTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
@@ -326,6 +328,13 @@ class BuildingAPIController extends AppBaseController
                 $q->with('building.address', 'unit', 'resident.user');
             },
         ]);
+
+        if ($building->global_email_receptionist) {
+            $building->setAttribute('has_email_receptionists', true);
+        } else {
+            $building->setHasRelation('email_receptionists');
+        }
+
         if ($building && isset($address)) {
             $building->addDataInAudit(AuditableModel::MergeInMainData, $address);
         }
@@ -395,6 +404,13 @@ class BuildingAPIController extends AppBaseController
                 'quarter',
                 'users'
             ]);
+
+        if ($building->global_email_receptionist) {
+            $building->setAttribute('has_email_receptionists', true);
+        } else {
+            $building->setHasRelation('email_receptionists');
+        }
+
         $response = (new BuildingTransformer)->transform($building);
         $response['media_category'] = \ConstantsHelpers::MediaFileCategories; // @TODO delete
 
@@ -498,6 +514,13 @@ class BuildingAPIController extends AppBaseController
                 $q->with('building.address', 'unit', 'resident.user');
             },
         ]);
+
+        if ($building->global_email_receptionist) {
+            $building->setAttribute('has_email_receptionists', true);
+        } else {
+            $building->setHasRelation('email_receptionists');
+        }
+
         $response = (new BuildingTransformer)->transform($building);
         return $this->sendResponse($response, __('models.building.saved'));
     }
@@ -548,7 +571,7 @@ class BuildingAPIController extends AppBaseController
         if (empty($building)) {
             return $this->sendError(__('models.building.errors.not_found'));
         }
-dd(1);
+
         try {
             $this->buildingRepository->delete($building->id);
         } catch (\Exception $e) {
@@ -1127,5 +1150,192 @@ dd(1);
             'longitude' => $response['lng'],
             'latitude' => $response['lat']
         ];
+    }
+
+
+    /**
+     * @SWG\Get(
+     *      path="/buildings/{id}/email-receptionists",
+     *      summary="get quarter email-receptionists",
+     *      tags={"Building", "EmailReceptionists"},
+     *      description="get quarter email-receptionists",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="id",
+     *          description="id of quarter",
+     *          type="integer",
+     *          required=true,
+     *          in="query",
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  type="integer",
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     *
+     * @param $quarterId
+     * @param EmailReceptionistRequest $emailReceptionistRequest
+     * @return mixed
+     */
+    public function getEmailReceptionists($buildingId, EmailReceptionistRequest $emailReceptionistRequest)
+    {
+        /** @var Building $building */
+        $building = $this->buildingRepository->findWithoutFail($buildingId);
+        if (empty($building)) {
+            return $this->sendError(__('models.building.errors.not_found'));
+        }
+
+        if ($building->global_email_receptionist) {
+            $response = [
+                'global_email_receptionist' => true,
+                'building_id' => $buildingId,
+                'email_receptionists' => []
+            ];
+            return $this->sendResponse($response, __('Email Receptionist get successfully'));
+        }
+
+        $building->load([
+            'email_receptionists:id,category,property_manager_id,model_id',
+            'email_receptionists.property_manager:id,first_name,last_name'
+        ]);
+        $response['email_receptionists'] = (new EmailReceptionistTransformer())->transformEmailReceptionists($building->email_receptionists);
+        $response['global_email_receptionist'] = false;
+        $response['building_id'] = $buildingId;
+        return $this->sendResponse($response, __('Email Receptionist get successfully'));
+    }
+
+    /**
+     *  @SWG\Post(
+     *      path="/buildings/{id}/email-receptionists",
+     *      summary="set quarter email-receptionists",
+     *      tags={"Building", "EmailReceptionist"},
+     *      description="set quarter email-receptionists",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="id",
+     *          description="id of quarter",
+     *          type="integer",
+     *          required=true,
+     *          in="query",
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  type="integer",
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     * @param $buildingId
+     * @param EmailReceptionistRequest $emailReceptionistRequest
+     * @return mixed
+     */
+    public function storeEmailReceptionists($buildingId, EmailReceptionistRequest $emailReceptionistRequest)
+    {
+        /** @var Building $building */
+        $building = $this->buildingRepository->findWithoutFail($buildingId);
+        if (empty($building)) {
+            return $this->sendError(__('models.building.errors.not_found'));
+        }
+
+        // @TODO audit
+        if ($emailReceptionistRequest->global_email_receptionist || $emailReceptionistRequest->global) {// @TODO delete global
+
+            if (! $building->global_email_receptionist) {
+                $building->global_email_receptionist = true;
+                $building->save();
+            }
+            $building->email_receptionists()->delete();
+
+            $response = [
+                'global_email_receptionist' => true,
+                'building_id' => $buildingId,
+                'email_receptionists' => []
+            ];
+            return  $this->sendResponse($response, __('Email Receptionists get successfully'));
+        }
+
+        if ($building->global_email_receptionist) {
+            $building->global_email_receptionist = false;
+            $building->save();
+        }
+
+        $modelType = get_morph_type_of(Building::class);
+        $data = $emailReceptionistRequest->toArray();
+        $emailReceptionists = $building->email_receptionists()->get(['category', 'id', 'property_manager_id']);
+        $needDelete = $emailReceptionists->whereNotIn('category', collect($data)->pluck('category'));
+
+        foreach ($data as $single) {
+            if (empty($single['category']) || ! key_exists($single['category'], \App\Models\Request::Category))  {
+                continue;
+            }
+
+            $category = $single['category'];
+            $categoryEmailReceptionists = $emailReceptionists->where('category', $category);
+
+            if (empty($single['property_manager_ids']) || ! is_array($single['property_manager_ids']))  {
+                $needDelete = $needDelete->merge($categoryEmailReceptionists);
+                continue;
+            }
+
+            $deletedEmailReceptionists = $categoryEmailReceptionists->whereNotIn('property_manager_id', $single['property_manager_ids']);
+            $needDelete = $needDelete->merge($deletedEmailReceptionists);
+
+            foreach ($single['property_manager_ids'] as $propertyManagerId) {
+                if ($categoryEmailReceptionists->contains('property_manager_id', $propertyManagerId)) {
+                    continue;
+                }
+                $savedData = [
+                    'category' => $category,
+                    'property_manager_id' => $propertyManagerId,
+                    'model_type' => $modelType,
+                ];
+                $new = $building->email_receptionists()->create($savedData);
+                $emailReceptionists->push($new);
+                $categoryEmailReceptionists->push($new);
+            }
+        }
+
+        //@TODO audit
+        foreach ($needDelete as $emailReceptionist) {
+            $emailReceptionist->delete();
+        }
+
+
+        $building->load([
+            'email_receptionists:id,category,property_manager_id,model_id',
+            'email_receptionists.property_manager:id,first_name,last_name'
+        ]);
+        $response['email_receptionists'] = (new EmailReceptionistTransformer())->transformEmailReceptionists($building->email_receptionists);
+        $response['global_email_receptionist'] = false;
+        $response['building_id'] = $buildingId;
+        return $this->sendResponse($response, __('Email Receptionists get successfully'));
     }
 }

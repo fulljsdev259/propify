@@ -509,16 +509,17 @@
                 this.selectedItems = val;
                 this.$emit('selectionChanged', this.selectedItems);
             },
-            handleRequestSelectionChange(val) {
-                var exist = -1;
-                this.selectedItems.map((item, index) => {
-                    if(item.id == val.id)
-                        exist = index;
-                });
-                if(exist == -1) {
-                    this.selectedItems.push(val)
-                } else {
-                    this.selectedItems.slice(exist, 1);
+            handleRequestSelectionChange(selectedItem, isChecked) {
+                if(isChecked) {
+                    this.selectedItems.push(selectedItem)
+                }
+                else {
+                    var deleteIndex = -1;
+                    this.selectedItems.map((item, index) => {
+                        if(item.id == selectedItem.id)
+                            deleteIndex = index;
+                    });
+                    this.selectedItems.splice(deleteIndex, 1)
                 }
                 this.handleSelectionChange(this.selectedItems);
             },

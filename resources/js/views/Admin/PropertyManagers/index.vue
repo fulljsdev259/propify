@@ -106,9 +106,10 @@
         },
         data() {
             return {
-                header: [{
+                header: [ {
                     label: 'general.name',
-                    prop: 'name'
+                    withAvatars: true,
+                    props: ['user']
                 }, {
                     label: 'general.email',
                     prop: 'user.email'

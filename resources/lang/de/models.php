@@ -42,7 +42,7 @@ return [
         'password_reset' => 'Passwort wurde erfolgreich zurückgesetzt',
         'update' => 'Update',
         'birth_date' => 'Geburtsdatum',
-        'nation' => 'Nationanalität',
+        'nation' => 'Nationalität',
         'mobile_phone' => 'Mobil',
         'work_phone' => 'Geschäft',
         'private_phone' => 'Telefon privat',
@@ -65,6 +65,9 @@ return [
             'update' => "Fehler bei der Aktualisierung des Bewohners: ",
             'deleted' => "Bewohner Löschfehler: ",
             'not_allowed_change_status' => 'Sie können den Status nicht ändern.',
+            'not_allowed_change_type_has_request_contract' => 'Sie können den Typ nicht ändern, da dieser Bewohner :contracts_count Verträge und :requests_count requests hat.',
+            'not_allowed_change_type_has_contract' => 'Du kannst den Typ nicht ändern, da dieser Bewohner :contracts_count Verträge hat.',
+            'not_allowed_change_type_has_request' => 'Du kannst den Typ nicht ändern, da dieser Bewohner :requests_count requests hat.',
         ],        
         'personal_details_card' => 'Persönliche Angaben',
         'account_info_card' => 'Benutzer-Login',
@@ -139,8 +142,8 @@ return [
             'your_administration' => 'Ihre Verwaltung'
         ],
         'type' => [
-            'label' => 'Typ',
-            'tenant' => 'Mieterin',
+            'label' => 'Geschäftsbeziehung',
+            'tenant' => 'Mieter',
             'owner' => 'Eigentümer',
         ],
     ],
@@ -240,7 +243,7 @@ return [
         'type' => [
             'label' => 'Typ',
             'apartment' => 'Wohnung',
-            'business' => 'Gewerbefläche',
+            'business' => 'Gewerbe',
             'hobby_room' => 'Hobbyraum',
             'storeroom' => 'Abstellraum',
             'underground_parking_space' => 'Tiefgaragenplatz',
@@ -452,8 +455,8 @@ return [
         'assigned_to' => 'Zuständig',
         'assign_providers' => 'Zuweisen',
         'assign_managers' => 'Zuweisen',
-        'assigned_service_providers' => 'Zugewiesene Dienstleister',
-        'assigned_property_managers' => 'Zugewiesen intern',
+        'assigned_service_providers' => 'Dienstleister',
+        'assigned_property_managers' => 'Verantwortlich',
         'notify' => 'Kommunikation',
         'public_legend' => 'Setzen Sie diese Option, um die Anfrage für alle ansässigen Nachbarn sichtbar zu machen.',
         'conversation' => 'Chat-Mitteilungen',
@@ -478,7 +481,7 @@ return [
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',
         'category_list' => [
-            'general' => ' Allgemeine Anliegen',
+            'general' => ' Allg. Anliegen',
             'malfunction' => 'Fehlfunktion',
             'deficiency' => 'Mangel'
         ],

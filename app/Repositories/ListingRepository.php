@@ -37,24 +37,24 @@ class ListingRepository extends BaseRepository
         return Listing::class;
     }
 
-    public function create(array $atts)
+    public function create(array $attributes)
     {
         $u = \Auth::user();
         if ($u->resident()->exists() && !$u->resident->homeless()) {
             $firstContractBuilding = $u->resident->contracts->first()->building; // @TODO contract related
-            $atts['address_id'] = $firstContractBuilding->address_id;
-            $atts['quarter_id'] = $firstContractBuilding->quarter_id;
+            $attributes['address_id'] = $firstContractBuilding->address_id;
+            $attributes['quarter_id'] = $firstContractBuilding->quarter_id;
         }
 
-        if ($atts['visibility'] != Listing::VisibilityAll &&
-            !isset($atts['address_id']) && (!isset($atts['quarter_id']))
+        if ($attributes['visibility'] != Listing::VisibilityAll &&
+            !isset($attributes['address_id']) && (!isset($attributes['quarter_id']))
         ) {
             throw new \Exception("Missing address or missing quarter for new listing");
         }
 
-        $model = parent::create($atts);
+        $model = parent::create($attributes);
 
-        if (!$atts['needs_approval']) {
+        if (!$attributes['needs_approval']) {
             return $this->setStatusExisting($model, Listing::StatusPublished);
         }
 

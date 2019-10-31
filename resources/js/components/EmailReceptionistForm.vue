@@ -108,7 +108,7 @@
             }
         },
         methods: {
-            ...mapActions(['getPropertyManagers']),
+            ...mapActions(['getPropertyManagers', 'getQuarterEmailReceptionists', 'saveQuarterEmailReceptionists']),
             async submit () {
                 try {
                     const valid = await this.$refs.form.validate();
@@ -143,10 +143,7 @@
                         
                         console.log('payload', payload)
                         
-                        // const resp = await this.saveEmailReceptionist({
-                        //     request_ids, 
-                        //     service_provider_ids
-                        // })
+                        const resp = await this.saveQuarterEmailReceptionists(payload)
                         
                         // if(resp.data.success)
                         //     displaySuccess(resp.data.message);
@@ -202,6 +199,13 @@
                 this.model.assign.push([])
                 this.model.assign[i] = []
             }
+
+            if(this.quarter_id)
+            {
+                const resp = await this.getQuarterEmailReceptionists({quarter_id: this.quarter_id})
+                console.log('getemailrecp', resp.data)
+            }
+                
             
         }
     }
