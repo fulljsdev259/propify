@@ -138,88 +138,76 @@
                         </el-row>
                     </el-card>
                 </el-col>
-                <el-col :md="7" class="left-card">
+                <el-col :md="9" class="left-card">
                    <el-card class="chart-card left-card-data-section">
                         <h3 class="right-card">
                             <i class="ti-user"/>
                             {{$t('models.resident.contract.title')}}
                         </h3>
-                        <el-row :gutter="20">
-                            <el-col :sm="8" :xs="12">{{$t('models.resident.contract.rent_start')}}:</el-col>
-                            <el-col :sm="16" :xs="12" class="text-secondary" v-if="model.start_date">
-                                {{new Date(model.start_date) | formatDate }}
-                            </el-col>
-                            <el-col :sm="16" :xs="12" class="text-secondary" v-else>
-                               &#8203;
-                            </el-col>
-
-                            <el-col :sm="8" :xs="12">{{$t('models.resident.contract.rent_end')}}:</el-col>
-                            <el-col :sm="16" :xs="12" class="text-secondary" v-if="model.end_date">
-                                {{  new Date(model.end_date) | formatDate }}
-                            </el-col>
-                            <el-col :sm="16" :xs="12" class="text-secondary" v-else>
-                                &#8203;
+                        <el-row :gutter="20"
+                                :key="contract.id"
+                                v-for="(contract, $index) in model.contracts">
+                            <el-divider v-if="$index > 0" style="margin: 0;"></el-divider>
+                            <el-col :sm="12" :xs="12" v-if="contract.start_date">{{$t('models.resident.contract.rent_start')}}:</el-col>
+                            <el-col :sm="12" :xs="12" class="text-secondary" v-if="contract.start_date">
+                                {{new Date(contract.start_date) | formatDate }}
                             </el-col>
 
-                            <el-col :sm="8" :xs="12">{{$t('general.street')}}:</el-col>
-                            <el-col :sm="16" :xs="12" class="text-secondary">
+                            <el-col :sm="12" :xs="12" v-if="contract.end_date">{{$t('models.resident.contract.rent_end')}}:</el-col>
+                            <el-col :sm="12" :xs="12" class="text-secondary" v-if="contract.end_date">
+                                {{  new Date(contract.end_date) | formatDate }}
+                            </el-col>
+
+                            <el-col :sm="12" :xs="12">{{$t('general.street')}}:</el-col>
+                            <el-col :sm="12" :xs="12" class="text-secondary">
                                 {{
-                                buildings.filter(building => building.id==model.building_id).length>0 ?
-                                buildings.filter(building => building.id==model.building_id)[0].address.street
-                                : '&nbsp;'
+                                    (contract.address ? contract.address.street : "")
                                 }}
                             </el-col>
 
-                            <el-col :sm="8" :xs="12">{{$t('models.building.house_num')}}:</el-col>
-                            <el-col :sm="16" :xs="12" class="text-secondary">
+                            <el-col :sm="12" :xs="12">{{$t('models.building.house_num')}}:</el-col>
+                            <el-col :sm="12" :xs="12" class="text-secondary">
                                 {{
-                                buildings.filter(building => building.id==model.building_id).length>0 ?
-                                buildings.filter(building => building.id==model.building_id)[0].address.house_num
-                                : '&nbsp;'
+                                    (contract.address ? contract.address.house_num : "")
                                 }}
                             </el-col>
 
-                            <el-col :sm="8" :xs="12">{{$t('general.zip')}}:</el-col>
-                            <el-col :sm="16" :xs="12" class="text-secondary">
+                            <el-col :sm="12" :xs="12">{{$t('general.zip')}}:</el-col>
+                            <el-col :sm="12" :xs="12" class="text-secondary">
                                 {{
-                                buildings.filter(building => building.id==model.building_id).length>0 ?
-                                buildings.filter(building => building.id==model.building_id)[0].address.zip
-                                : '&nbsp;'
+                                    contract.address ? contract.address.zip : ""
                                 }}
                             </el-col>
 
-                            <el-col :sm="8" :xs="12">{{$t('general.city')}}:</el-col>
-                            <el-col :sm="16" :xs="12" class="text-secondary">
+                            <el-col :sm="12" :xs="12">{{$t('general.city')}}:</el-col>
+                            <el-col :sm="12" :xs="12" class="text-secondary">
                                 {{
-                                buildings.filter(building => building.id==model.building_id).length>0 ?
-                                buildings.filter(building => building.id==model.building_id)[0].address.city
-                                : '&nbsp;'
+                                    contract.address ? contract.address.city : ""
                                 }}
                             </el-col>
 
                             <el-col :sm="12" :xs="12">{{$t('models.unit.type.label')}}:</el-col>
                             <el-col :sm="12" :xs="12" class="text-secondary">
-
                                 {{
-                                !!$constants.units.type[unit.type] ?
-                                $t('models.unit.type.' + $constants.units.type[unit.type])
+                                !!$constants.units.type[contract.type] ?
+                                $t('models.unit.type.' + $constants.units.type[contract.type])
                                 : '&nbsp;'
                                 }}
                             </el-col>
 
                             <el-col :sm="12" :xs="12">{{$t('models.unit.room_no')}}:</el-col>
                             <el-col :sm="12" :xs="12" class="text-secondary">
-                                {{unit.room_no}}&nbsp;
+                                {{contract.unit.room_no}}&nbsp;
                             </el-col>
 
-                            <el-col v-if="lastMedia" class="media">
-                                <a :href="lastMedia.url" target="_blank"><strong>{{lastMedia.name}}</strong></a>
+                            <el-col v-if="contract.media.length > 0" class="media">
+                                <a :href="contract.media[contract.media.length-1].url" target="_blank"><strong>{{contract.media[contract.media.length-1].name}}</strong></a>
                             </el-col>
 
-                            <el-col v-if="lastMedia">
-                                <template v-if="lastMedia && lastMedia.name">
-                                    <el-image :src="lastMedia.url" style="width: 100%" v-if="isFileImage(lastMedia)"/>
-                                    <embed :src="lastMedia.url" style="width: 100%" v-else/>
+                            <el-col v-if="contract.media.length > 0">
+                                <template v-if="contract.media[contract.media.length-1] && contract.media[contract.media.length-1].name">
+                                    <el-image :src="contract.media[contract.media.length-1].url" style="width: 100%" v-if="isFileImage(contract.media[contract.media.length-1])"/>
+                                    <embed :src="contract.media[contract.media.length-1].url" style="width: 100%" v-else/>
                                 </template>
                             </el-col>
                         </el-row>
@@ -332,7 +320,7 @@
                         </el-row>
                     </el-card> -->
                 </el-col>
-                <el-col :md="17">
+                <el-col :md="15">
                     <el-row :gutter="20">
                         <el-col>
                            <el-card class="chart-card">
@@ -364,7 +352,7 @@
                                 />
                             </el-card>
                         </el-col>
-                        <el-col>
+                        <!-- <el-col>
                             <el-card class="chart-card">
                                 <h3 class="right-card">
                                     <i class="icon-basket icon"/>
@@ -378,7 +366,7 @@
                                         v-if="!_.isEmpty(user)"
                                 />
                             </el-card>
-                        </el-col>
+                        </el-col> -->
                     </el-row>
                 </el-col>
             </el-row>

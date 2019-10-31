@@ -105,6 +105,12 @@
 
                     params.type = 1
                     params.status = 1
+                    
+                    params.media = media.map(item => {
+                        //console.log(item.file)
+                        return item.file.src;
+                    });
+
                     const resp = await this.$store.dispatch('newPinboard/create', params);
 
                     

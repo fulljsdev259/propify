@@ -27,7 +27,9 @@
                             </el-form-item>
                         </el-col>
                         <el-col :md="12" v-if="this.showSubCategory == true">
-                            <el-form-item :label="$t('models.request.defect_location.label')">
+                            <el-form-item :label="$t('models.request.defect_location.label')" 
+                                        :rules="validationRules.sub_category"
+                                        prop="sub_category_id">
                                 <el-select :disabled="$can($permissions.update.serviceRequest)"
                                             :placeholder="$t(`general.placeholders.select`)"
                                             class="custom-select"
@@ -96,7 +98,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :md="12"
-                                v-if="model.category_id && selectedCategoryHasQualification(model.category_id)">
+                                v-if="this.showQualification == true">
                             <el-form-item :label="$t('models.request.qualification.label')"
                                         :rules="validationRules.qualification"
                                         prop="qualification">
@@ -114,7 +116,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :md="12"
-                                v-if="model.category_id && selectedCategoryHasQualification(model.category_id) && this.showPayer == true">
+                                v-if="this.showQualification == true && this.showPayer == true">
                             <el-form-item :label="$t('models.request.category_options.cost')">
                                 <el-select :disabled="$can($permissions.update.serviceRequest)"
                                             :placeholder="$t(`general.placeholders.select`)"
@@ -158,11 +160,19 @@
                             </el-form-item>
                         </el-col>
                         <el-col :md="24">
-                            <el-form-item :label="$t('models.request.public_desc')"
+                            <!-- <el-form-item :label="$t('models.request.public_desc')"
                                         prop="is_public"
                             >
                                 <el-switch v-model="model.is_public" @change="changePublic"/>
-                            </el-form-item>
+                            </el-form-item> -->
+                            <div class="switch-wrapper">
+                                <el-form-item :label="$t('models.request.public_title')" prop="is_public">
+                                    <el-switch v-model="model.is_public" @change="changePublic"/>
+                                </el-form-item>
+                                <div class="switcher__desc">
+                                    {{ $t('models.request.public_desc') }}
+                                </div>
+                            </div>
                         </el-col>
                         <el-col :md="24" v-if="model.is_public">
                             <el-form-item :label="$t('models.request.visibility.label')"
@@ -239,11 +249,15 @@
                                               prop="contract_id">
                                 <el-select v-model="model.contract_id" 
                                             :placeholder="$t('resident.placeholder.contract')"
+                                            @change="changeContract"
                                             class="custom-select">
                                     <el-option v-for="contract in contracts" 
                                                 :key="contract.id" 
                                                 :label="contract.building_room_floor_unit" 
-                                                :value="contract.id" />
+                                                :value="contract.id" >
+                                            <span><i class="icon-dot-circled" :class="[constants.contracts.status[contract.status] === 'active' ? 'icon-success' : 'icon-danger']"></i></span>
+                                            <span>{{ contract.building_room_floor_unit }}</span>
+                                    </el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
@@ -322,7 +336,7 @@
     import {displayError} from "helpers/messages";
     import AddActions from 'components/EditViewActions';
     import EditorConfig from 'mixins/adminEditorConfig';
-    import { mapActions } from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
 
     export default {
         name: 'AdminRequestsEdit',
@@ -338,6 +352,11 @@
             return {
                 couldSaveWithService: false,
             }
+        },
+        computed: {
+            ...mapGetters('application', {
+                constants: 'constants'
+            }),
         },
         methods: {
             async saveWithService(serviceAttachModel) {
@@ -382,6 +401,13 @@
     .custom-select {
         display: block;
     }
+
+    /deep/ i.icon-success {
+        color: #5fad64;
+    }
+    /deep/ i.icon-danger {
+        color: #dd6161;
+    }
 </style>
 <style lang="scss">
     .label-block .el-form-item__label {
@@ -396,6 +422,20 @@
         }
         .el-select__tags {
             top: 70% !important;
+        }
+
+        .switch-wrapper {
+            .switcher__label {
+                text-align: left;
+                line-height: 1.4em;
+                color: #606266;
+            }
+            .switcher__desc {
+                margin-top: 0.5em;
+                display: block;
+                font-size: 0.9em;
+            }
+
         }
     }
 
