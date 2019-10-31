@@ -348,12 +348,11 @@ class PinboardRepository extends BaseRepository
 
         $pinboard = $this->create([
             'visibility' => Pinboard::VisibilityAddress,
-            'status' => Pinboard::StatusNew,
+            'status' => Pinboard::StatusPublished,
             'type' => Pinboard::TypeNewNeighbour,
             'content' => "New neighbour",
             'user_id' => $contract->resident->user->id,
             'building_ids' => [$contract->building_id],
-            'needs_approval' => false,
             'notify_email' => true,
         ]);
 
