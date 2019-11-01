@@ -319,9 +319,6 @@ export default (config = {}) => {
                             required: true,
                             message: this.$t('validation.general.required')
                         },{
-                            type: Number,
-                            message: this.$t('validation.general.required')
-                        },{
                             validator: this.checkavailabilityResidentType
                         }]
                     } catch (err) {
