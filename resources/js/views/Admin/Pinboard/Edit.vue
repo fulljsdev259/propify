@@ -38,7 +38,7 @@
                                     </el-select>
                                 </el-form-item>
                             </el-col>
-                            <el-col :lg="8" v-if="this.model.type != 3">
+                            <el-col :lg="8">
                                 <el-form-item :label="$t('models.pinboard.status.label')">
                                     <el-select style="display: block" v-model="model.status">
                                         <el-option
@@ -50,35 +50,31 @@
                                     </el-select>
                                 </el-form-item>
                             </el-col>
-                            <el-col :lg="16" v-if="this.model.type == 3">
-                                <el-row :gutter="20">
-                                    <el-col :lg="model.sub_type == 3 ? 12 : 24">
-                                        <el-form-item :label="$t('models.pinboard.sub_type.label')">
-                                            <el-select style="display: block" v-model="model.sub_type" @change="changeSubType">
-                                                <el-option
-                                                        :key="key"
-                                                        :label="$t(`models.pinboard.sub_type.${subtype}`)"
-                                                        :value="parseInt(key)"
-                                                        v-for="(subtype, key) in pinboardConstants.sub_type[3]">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :lg="12" v-if="model.sub_type == 3">
-                                        <el-form-item :label="$t('models.pinboard.category.label')">
-                                            <el-select style="display: block" v-model="model.category">
-                                                <el-option
-                                                        :key="key"
-                                                        :label="$t(`models.pinboard.category.${category}`)"
-                                                        :value="parseInt(key)"
-                                                        v-for="(category, key) in pinboardConstants.category">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
+                            <el-col v-if="model.type == 3" :lg="8">
+                                <el-form-item :label="$t('models.pinboard.sub_type.label')">
+                                    <el-select style="display: block" v-model="model.sub_type" @change="changeSubType">
+                                        <el-option
+                                                :key="key"
+                                                :label="$t(`models.pinboard.sub_type.${subtype}`)"
+                                                :value="parseInt(key)"
+                                                v-for="(subtype, key) in pinboardConstants.sub_type[3]">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
                             </el-col>
-                            <el-col :lg="8" v-else>
+                            <el-col :lg="8" v-if="model.type == 3 && model.sub_type == 3">
+                                <el-form-item :label="$t('models.pinboard.category.label')">
+                                    <el-select style="display: block" v-model="model.category">
+                                        <el-option
+                                                :key="key"
+                                                :label="$t(`models.pinboard.category.${category}`)"
+                                                :value="parseInt(key)"
+                                                v-for="(category, key) in pinboardConstants.category">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :lg="8" v-if="model.type != 3">
                                 <el-form-item :label="$t('models.pinboard.visibility.label')">
                                     <el-select style="display: block" v-model="model.visibility">
                                         <el-option
