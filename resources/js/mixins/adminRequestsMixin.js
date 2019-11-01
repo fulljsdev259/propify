@@ -373,7 +373,6 @@ export default (config = {}) => {
 
                 this.model.room = null;
                 this.model.location = null;
-                this.model.qualification = null;
                 this.showRoom = sub_category.room == 1 ? true : false;
                 this.showLocation = sub_category.location == 1 ? true : false;
                 this.showQualification = sub_category.qualification == 1 ? true : false;
