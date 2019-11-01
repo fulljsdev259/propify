@@ -270,6 +270,10 @@ class Resident extends AuditableModel implements HasMedia
         'nation' => 'string',
     ];
 
+    protected $appends = [
+        'created_by'
+    ];
+
     const templateMap = [
         'first_name' => 'resident.first_name',
         'last_name' => 'resident.last_name',
@@ -416,5 +420,13 @@ class Resident extends AuditableModel implements HasMedia
     public function getNameAttribute()
     {
         return $this->title . " " . $this->first_name . " " . $this->last_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatedByAttribute()
+    {
+        return $this->created_at ? $this->created_at->format('d.m.Y') : '';
     }
 }

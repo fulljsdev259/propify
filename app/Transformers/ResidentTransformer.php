@@ -39,6 +39,7 @@ class ResidentTransformer extends BaseTransformer
             'type' => $model->type,
             'review' => $model->review,
             'rating' => $model->rating,
+            'created_by' => $model->created_by,
         ];
 
         if ($model->relationExists('settings')) {
