@@ -60,7 +60,7 @@ class PinboardRepository extends BaseRepository
         $u = \Auth::user();
 
         if ($u->resident()->exists()) {
-            $contracts = $u->resident->active_contracts_with_building()->get(['building_id']);
+            $contracts = $u->resident->active_contracts()->get(['building_id']);
             if ($contracts->isEmpty()) {
                 throw new \Exception("Your resident account does not have any active contract");
             }
