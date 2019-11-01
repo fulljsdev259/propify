@@ -608,7 +608,7 @@
                     this.remoteLoading = true;
 
                     try {
-                        const {data} = await this.getResidents({get_all: true, has_building: true,search});
+                        const {data} = await this.getResidents({get_all: true,search});
                         this.residents = data;
                         this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
                     } catch (err) {
