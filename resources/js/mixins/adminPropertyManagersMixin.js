@@ -301,46 +301,50 @@ export default (config = {}) => {
                 }), UploadUserAvatarMixin, PropertyManagerTitlesMixin];
 
                 mixin.methods = {
-                    async submit(afterValid = false) {
-                        this.isFormSubmission = true;
-                        const valid = await this.form.validate();
-                        this.isFormSubmission = false;
-                        if (valid) {
-                            this.loading.state = true;
-                            try {
+                    submit(afterValid = false) {
+                        return new Promise(async (resolve, reject) => {
+                            this.isFormSubmission = true;
+                            const valid = await this.form.validate();
+                            this.isFormSubmission = false;
+                            if (valid) {
+                                this.loading.state = true;
+                                try {
 
-                                this.model.user.password = this.model.password
-                                this.model.user.password_confirmation = this.model.password_confirmation
-                                this.model.user.email = this.model.email
-                                this.model.user.name = this.model.name
-                                this.model.user.phone = this.model.phone
+                                    this.model.user.password = this.model.password
+                                    this.model.user.password_confirmation = this.model.password_confirmation
+                                    this.model.user.email = this.model.email
+                                    this.model.user.name = this.model.name
+                                    this.model.user.phone = this.model.phone
 
-                                const resp = await this.createPropertyManager(this.model);
+                                    const resp = await this.createPropertyManager(this.model);
 
-                                if (resp.data.user && resp.data.user.id) {
-                                    await this.uploadAvatarIfNeeded(resp.data.user.id, resp.data.audit_id);
-                                }                                  
-                                displaySuccess(resp);
+                                    if (resp.data.user && resp.data.user.id) {
+                                        await this.uploadAvatarIfNeeded(resp.data.user.id, resp.data.audit_id);
+                                    }                                  
+                                    displaySuccess(resp);
 
-                                this.form.resetFields();
+                                    this.form.resetFields();
 
-                                this.saveAddedAssigmentList(resp.data.id, resp.data.audit_id);
+                                    this.saveAddedAssigmentList(resp.data.id, resp.data.audit_id);
 
-                                if (!!afterValid) {
-                                    afterValid(resp);
-                                } else {
-                                    this.$router.push({
-                                        name: 'adminPropertyManagersEdit',
-                                        params: {id: resp.data.id}
-                                    })
+                                    if (!!afterValid) {
+                                        afterValid(resp);
+                                    } else {
+                                        // this.$router.push({
+                                        //     name: 'adminPropertyManagersEdit',
+                                        //     params: {id: resp.data.id}
+                                        // })
+                                        resolve(resp)
+                                    }
+                                    return resp;
+                                } catch (err) {
+                                    displayError(err);
+                                    reject(err);
+                                } finally {
+                                    this.loading.state = false;
                                 }
-                                return resp;
-                            } catch (err) {
-                                displayError(err);
-                            } finally {
-                                this.loading.state = false;
                             }
-                        }
+                        });
                     },
 
                     ...mixin.methods,

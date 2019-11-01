@@ -525,7 +525,7 @@
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{
-                    width: 80,
+                    width: 70,
                     buttons: [{
                         icon: 'el-icon-close',
                         title: 'general.unassign',
@@ -540,7 +540,7 @@
                     type: 'serviceName'
                 }],
                 assignmentsProviderActions: [{
-                    width: 80,
+                    width: 70,
                     buttons: [{
                         icon: 'el-icon-close',
                         title: 'general.unassign',

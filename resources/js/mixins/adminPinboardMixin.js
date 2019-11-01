@@ -422,54 +422,59 @@ export default (config = {}) => {
                 mixin.methods = {
                     ...mixin.methods,
                     ...mapActions(['createPinboard', 'changePinboardPublish']),
-                    async submit(afterValid = false) {
-                        const valid = await this.form.validate();
-                        
-                        if (!valid) {
-                            return false;
-                        }
-
-                        this.loading.state = true;
-
-                        try {
-                            this.model.pinned = this.model.type == 3 ? true : false;
-                            const resp = await this.createPinboard(this.model);
-
-                            if (resp && resp.data.id) {
-                                this.$set(this.model, 'id', resp.data.id);
-                                await this.uploadNewMedia(resp.data.id, resp.data.audit_id);
-                                if (this.toAssign) {
-                                    await this.attachBuilding();
-                                }
-
-                                if (this.toAssignProvider) {
-                                    await this.attachProvider();
-                                }
-
-                                await this.changePinboardPublish({
-                                    id: resp.data.id,
-                                    status: this.model.status
-                                })
+                    submit(afterValid = false) {
+                        return new Promise(async (resolve, reject) => {
+                            const valid = await this.form.validate();
+                            
+                            if (!valid) {
+                                return false;
                             }
-                            this.form.resetFields();
 
-                            this.media = [];
-                            displaySuccess(resp);
-                            if (!!afterValid) {
-                                afterValid(resp);
-                            } else {
-                                this.$router.push({
-                                    name: 'adminServicesEdit',
-                                    params: {id: resp.data.id}
-                                })
+                            this.loading.state = true;
+
+                            try {
+                                this.model.pinned = this.model.type == 3 ? true : false;
+                                
+                                this.model.media = this.media.map(item => item.file.src)
+                                const resp = await this.createPinboard(this.model);
+
+                                if (resp && resp.data.id) {
+                                    this.$set(this.model, 'id', resp.data.id);
+                                    //await this.uploadNewMedia(resp.data.id, resp.data.audit_id);
+                                    if (this.toAssign) {
+                                        await this.attachBuilding();
+                                    }
+
+                                    if (this.toAssignProvider) {
+                                        await this.attachProvider();
+                                    }
+
+                                    await this.changePinboardPublish({
+                                        id: resp.data.id,
+                                        status: this.model.status
+                                    })
+                                }
+                                this.form.resetFields();
+
+                                this.media = [];
+                                displaySuccess(resp);
+                                if (!!afterValid) {
+                                    afterValid(resp);
+                                } else {
+                                    // this.$router.push({
+                                    //     name: 'adminServicesEdit',
+                                    //     params: {id: resp.data.id}
+                                    // })
+                                    resolve(resp);
+                                }
+                                return resp;
+                            } catch (err) {
+                                displayError(err);
+                                reject(resp);
+                            } finally {
+                                this.loading.state = false;
                             }
-                            return resp;
-                        } catch (err) {
-                            displayError(err);
-                        } finally {
-                            this.loading.state = false;
-                        }
-
+                        });
                     },
 
                 };

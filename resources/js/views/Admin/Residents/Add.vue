@@ -2,7 +2,7 @@
     <div class="residents-add">
         <div class="main-content">
         <heading :title="$t('models.resident.add')" icon="icon-group" shadow="heavy">
-            <add-actions :saveAction="submit" editRoute="adminResidentsEdit" route="adminResidents"/>
+            <add-actions :saveAction="submit" editRoute="adminResidentsView" route="adminResidents"/>
         </heading>
         <div class="crud-view">
             <el-form :model="model" ref="form">
