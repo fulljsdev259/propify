@@ -206,7 +206,6 @@
                     if (!state) {
                         this.editingPinboard = null
                     }
-                    console.log('changed');
                 }
             }
         },
