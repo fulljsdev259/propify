@@ -33,6 +33,7 @@ class AuditTransformer extends BaseTransformer
         $response = [
             'id' => $model->id,
             'event' => $model->event,
+            'user_type' => $model->user_type,
             'auditable_type' => $model->auditable_type,
             'auditable_id' => $model->auditable_id,
             'user_id' => $model->user_id,
