@@ -58,6 +58,11 @@ body {
 }
 
 .admin-layout {
+    .el-alert--info.no_data_box{
+        padding-left: 35%;
+        align-items: center;
+        line-height: inherit;
+    }
     .heading {
         height: 60px;
         background: #ebeef5;

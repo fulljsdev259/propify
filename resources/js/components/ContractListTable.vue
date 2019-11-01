@@ -10,6 +10,7 @@
                     :title="$t('general.no_data_available')"
                     type="info"
                     show-icon
+                    class="no_data_box"
                     :closable="false"
                 >
                 </el-alert>
