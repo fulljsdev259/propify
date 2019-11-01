@@ -24,8 +24,8 @@ class RequestTransformer extends BaseTransformer
             'title' => $model->title,
             'description' => $model->description,
             'status' => $model->status,
-            'category' => $model->category,
-            'sub_category' => $model->sub_category,
+            'category_id' => $model->category_id,
+            'sub_category_id' => $model->sub_category_id,
             //'priority' => $model->priority,
             //'internal_priority' => $model->internal_priority,
             'qualification' => $model->qualification,
@@ -77,12 +77,12 @@ class RequestTransformer extends BaseTransformer
             $response['assignedUsers'] = [];
         }
 
-        if ($model->category) {
-            $response['category'] = get_category_details($model->category);
+        if ($model->category_id) {
+            $response['category'] = get_category_details($model->category_id);
         }
 
-        if ($model->sub_category) {
-            $response['sub_category'] = get_sub_category_details($model->sub_category);
+        if ($model->sub_category_id) {
+            $response['sub_category'] = get_sub_category_details($model->sub_category_id);
         }
 
         if ($model->relationExists('remainder_user')) {
