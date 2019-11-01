@@ -115,6 +115,8 @@
                 
                 let i, items
 
+                this.$emit('closeDrawer')
+
                 if (item.key.includes('.')) {
                     i = this.submenu.items.length
                     items = this.submenu.items
@@ -175,6 +177,7 @@
 //                        this.$router.push(item.route)
                     }
                 }
+
             },
             onMouseOver (e) {
                 if (!this.submenu.visible) {
@@ -494,7 +497,7 @@
             padding: 0 !important;
 
             @media screen and (max-width: 812px) {
-                height: 80px;
+                height: 74px;
             }
             
             /deep/ &::-webkit-scrollbar {
