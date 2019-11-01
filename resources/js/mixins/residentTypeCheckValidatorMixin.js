@@ -4,8 +4,9 @@ export default (config = {}) => {
     return {
         methods: {
             async checkavailabilityResidentType(rule, value, callback) {
-                console.log('checkavailabilityResidentType', validateObject)
                 let validateObject = this[model];
+                console.log('checkavailabilityResidentType', validateObject)
+                if(validateObject.id)
                 {
                     try {
                         const resp = await axios.get(`/residents/${validateObject.id}/type`);                 
@@ -14,6 +15,10 @@ export default (config = {}) => {
                             callback(new Error(error.response.data.message));
                         }
                     }
+                }
+                else {
+                    if(validateObject.type == 2 && validateObject.contracts.length > 0)
+                        callback(new Error('You can\'t change the type to Owner'));
                 }
             }
         }
