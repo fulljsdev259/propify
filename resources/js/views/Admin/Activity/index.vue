@@ -4,8 +4,8 @@
         <el-row :gutter="20" class="crud-view">
             <el-col :md="24">
                 <el-card class="mt15">                  
-                    <audit showFilter type="all" filterPosition="left" />  
-                    <!--<audit :showFilter="false" />-->
+                    <!-- <audit showFilter type="all" filterPosition="left" />   -->
+                    <audit :showFilter="false" />
                 </el-card>
             </el-col>
         </el-row>
