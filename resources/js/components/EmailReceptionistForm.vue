@@ -66,7 +66,7 @@
 </template>
 
 <script>
-    import {displayError} from "../helpers/messages";
+    import {displayError, displaySuccess} from "../helpers/messages";
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
@@ -112,7 +112,7 @@
             }
         },
         methods: {
-            ...mapActions(['getPropertyManagers', 'getQuarterEmailReceptionists', 'saveQuarterEmailReceptionists', 'getBuildingEmailReceptionists', 'saveBuildingEmailReceptionists']),
+            ...mapActions(['getPropertyManagers', 'getQuarterEmailReceptionists', 'saveQuarterEmailReceptionists', 'getBuildingEmailReceptionists', 'saveBuildingEmailReceptionists', 'getBuilding']),
             async submit () {
                 try {
                     const valid = await this.$refs.form.validate();
@@ -130,9 +130,6 @@
                                 property_manager_ids: this.model.assign[i]
                             })
 
-                            console.log(this.model.assignList[0]);
-                            //console.log('category, assign', this.categories[i].name, this.assign[i])
-                            
                         }
 
                         if(this.isBuilding == true) {
@@ -143,31 +140,32 @@
                                 categories: categories
                             }
 
-                            console.log('payload', payload)
-
                             const resp = await this.saveBuildingEmailReceptionists(payload)
 
-                            if(resp.data.success)
-                                displaySuccess(resp.data.message);
-                        }
+                            if(resp.success)
+                            {
+                                displaySuccess(resp.message);
+                                const data = await this.getBuilding({id: this.$route.params.id});
 
-                        if(this.isBuilding == false)
-                        {
+                                if(data.has_email_receptionists) {
+                                    this.$emit('update-has-email-receptionists', true);
+                                }
+                            }
+                            this.$emit('update:visible', false);
+                        }
+                        else {
                             let payload = {
                                 quarter_id : this.quarter_id,
                                 categories: categories
                             }
 
-                            console.log('payload', payload)
-                            
                             const resp = await this.saveQuarterEmailReceptionists(payload)
 
-                            if(resp.data.success)
-                                displaySuccess(resp.data.message);
+                            if(resp.success)
+                                displaySuccess(resp.message);
+                            
+                            this.$emit('update:visible', false);
                         }
-                        
-                        this.$emit('update:visible', false);
-                        
                         
                     }
                 }
@@ -244,9 +242,6 @@
             }
 
             this.loading = false;
-            console.log('assign', this.model.assign)
-            
-                
             
         }
     }

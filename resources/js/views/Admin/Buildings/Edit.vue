@@ -425,7 +425,13 @@
                         </div>
                         
                         <div class="content" v-if="visibleDrawer">
-                            <email-receptionist-form :is-building="true" :building_id="model.id" :quarter_id="model.quarter_id" :visible.sync="visibleDrawer"/>
+                            <email-receptionist-form 
+                                        :is-building="true" 
+                                        :building_id="model.id" 
+                                        :quarter_id="model.quarter_id" 
+                                        :visible.sync="visibleDrawer"
+                                        @update-has-email-receptionists="updateHasEmailReceptionists"
+                                        />
                         </div>
 
                     </el-tab-pane>
@@ -625,6 +631,9 @@
                 'deleteBuildingWithIds', 
                 'checkUnitRequestWidthIds'
             ]),
+            updateHasEmailReceptionists(flag) {
+                this.model.has_email_receptionists = flag
+            },
             translateType(type) {
                 return this.$t(`general.assignment_types.${type}`);
             },
