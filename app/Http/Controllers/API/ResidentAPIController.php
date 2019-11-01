@@ -129,7 +129,6 @@ class ResidentAPIController extends AppBaseController
                     $q->with('building.address', 'unit');
                 },])
                 ->get();
-            $this->fixCreatedBy($residents);
             foreach ($residents as $resident) {
                 $resident->setRelation('contracts', collect((new ContractTransformer())->transformCollection($resident->contracts)));
             }
@@ -147,7 +146,6 @@ class ResidentAPIController extends AppBaseController
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit');
             }])->paginate($perPage);
-        $this->fixCreatedBy($residents);
         $response = (new ResidentTransformer())->transformPaginator($residents);
         return $this->sendResponse($response, 'Residents retrieved successfully');
     }
@@ -227,19 +225,8 @@ class ResidentAPIController extends AppBaseController
                 $q->with('building.address', 'unit', 'media');
             }])
             ->get(['id', 'first_name', 'last_name', 'status', 'created_at']);
-        $this->fixCreatedBy($residents);
         $response = (new ResidentTransformer())->transformCollection($residents);
         return $this->sendResponse($response, 'Residents retrieved successfully');
-    }
-
-    /**
-     * @param $residents
-     */
-    protected function fixCreatedBy($residents)
-    {
-        foreach ($residents as $resident) {
-            $resident->created_by = $resident->created_at->format('d.m.Y');
-        }
     }
 
     /**

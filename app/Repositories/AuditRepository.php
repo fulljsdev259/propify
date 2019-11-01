@@ -13,7 +13,7 @@ use App\Models\ServiceProvider;
 use App\Models\Country;
 use App\Models\Address;
 use App\Models\State;
-use OwenIt\Auditing\Models\Audit;
+use App\Models\Audit;
 
 /**
  * Class AuditRepository

@@ -354,7 +354,7 @@
                 :width="column.width"
                 v-for="(column, key) in headerWithSelect">
                 <template slot-scope="scope">
-                    <el-select class="select-icon" :class="column.class" @change="column.select.onChange(scope.row)" v-model="scope.row[column.prop]" :style="{width: column.ShowCircleIcon != undefined? '120px': '150px'}">
+                    <el-select class="select-icon" :class="column.class" @change="column.select.onChange(scope.row)" v-model="scope.row[column.prop]" :style="{width: '100%', maxWidth: column.ShowCircleIcon != undefined? '120px': '150px'}">
                         <template slot="prefix">
                             <i class="icon-dot-circled" :class="scope.row[column.prop] == 1 ? 'icon-success':'icon-danger'"  v-if="column.ShowCircleIcon"></i>
                         </template>
