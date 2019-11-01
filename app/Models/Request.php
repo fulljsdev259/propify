@@ -849,14 +849,12 @@ class Request extends AuditableModel implements HasMedia
     }
 
     public function setDownloadPdf(){
-
        $data = [
             'category' => get_category_details($this->category),
             'subCategory' => get_sub_category_details($this->sub_category),
             'request' => $this,
             'resident' => $this->resident,
-            'contract' => $this->contract,
-            'language'  => $this->resident->settings->language
+            'contract' => $this->contract
         ];
 
         $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('pdfs.request.requestDownload', $data);
@@ -871,7 +869,7 @@ class Request extends AuditableModel implements HasMedia
 
     public function pdfFileName()
     {
-        $language  = $this->resident->settings->language;
+        $language  = \App::getLocale();
 
         return $this->id . '-'. $this->resident->id .'-' . $language . '.pdf';
     }
