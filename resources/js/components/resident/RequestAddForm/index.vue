@@ -147,7 +147,7 @@
                     visibility: '',
                     description: '',
                     media: [],
-                    sub_category_id:'',
+                    sub_category_id: null,
                     location: '',
                     room: '',
                     capture_phase: '',

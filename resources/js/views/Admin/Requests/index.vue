@@ -25,15 +25,6 @@
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
-                <el-dropdown split-button 
-                            :disabled="!selectedItems.length" 
-                            size="mini"
-                            type="info" 
-                            trigger="click" 
-                            class="round"
-                            @command="handleCommand">
-                    {{$t('models.request.mass_edit.label')}}
-                </el-dropdown>
             </template>
             <template v-if="$can($permissions.delete.request)">
                 <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"

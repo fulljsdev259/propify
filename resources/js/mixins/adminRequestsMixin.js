@@ -350,7 +350,7 @@ export default (config = {}) => {
                 this.showSubCategory = children.length > 0 ? true : false;
                 let p_category = this.categories.find(category => { return category.id == this.model.category_id});
 
-                this.model.category = p_category
+                //this.model.category = p_category
                 
                 this.showCapturePhase =  p_category.capture_phase == 1 ? true : false;
                 this.showQualification = p_category.qualification == 1 ? true : false;
@@ -369,7 +369,7 @@ export default (config = {}) => {
                     return category.id == this.model.sub_category_id;
                 });
                 
-                this.model.sub_category = sub_category
+                //this.model.sub_category = sub_category
 
                 this.model.room = '';
                 this.model.location = '';
