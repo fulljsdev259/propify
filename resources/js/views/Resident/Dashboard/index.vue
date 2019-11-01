@@ -216,7 +216,7 @@
         overflow: auto;
         padding: 16px;
         
-        @media screen and (max-width: 414px), (min-width: 1025px) {
+        @media screen and (max-width: 414px), (min-width: 1301px) {
             :global(.ui-heading__content__title) {
                 font-size: 24px;
             }
@@ -224,7 +224,7 @@
                 display: none;
             }
         }
-        @media screen and (max-width: 1024px) and (min-width: 415px) {
+        @media screen and (max-width: 1300px) and (min-width: 415px) {
             .second-rate {
                 display: none;
             }
