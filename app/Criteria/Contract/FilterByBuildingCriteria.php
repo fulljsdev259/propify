@@ -35,12 +35,6 @@ class FilterByBuildingCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        // @TODO delete has_building related
-        $hasBuilding = $this->request->get('has_building', null);
-        if ($hasBuilding) {
-            $model = $model->whereNotNull('building_id');
-        }
-
         $buildingId = $this->request->get('building_id', null);
         if ($buildingId) {
             $model = $model->where('building_id', (int)$buildingId);
