@@ -14,8 +14,8 @@ $factory->define(App\Models\Request::class, function (Faker $faker) {
     
     return [
         'creator_user_id' => App\Models\User::withRole('administrator')->inRandomOrder()->first()->id ?? null,
-        'category' => $randCategory,
-        'sub_category' => ! empty(Request::CategorySubCategory[$randCategory]) ? \Illuminate\Support\Arr::random(Request::CategorySubCategory[$randCategory]) : null,
+        'category_id' => $randCategory,
+        'sub_category_id' => ! empty(Request::CategorySubCategory[$randCategory]) ? \Illuminate\Support\Arr::random(Request::CategorySubCategory[$randCategory]) : null,
         'resident_id' => $resident->id,
         'contract_id' => $resident->contracts->first()->id ?? null,
         'title' => $faker->sentence(4),
