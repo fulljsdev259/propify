@@ -81,9 +81,9 @@
         </div>
         
         <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked @update:visibleDrawer="resetDataFromDrawer" :class="{'full-width': !openedRequest}">
-            <a class="a-close-button" :class="{'display-block': !openedRequest}" @click="visibleDrawer=!visibleDrawer">
+            <!-- <a class="a-close-button" :class="{'display-block': !openedRequest}" @click="visibleDrawer=!visibleDrawer">
                 <span class="el-icon-close"></span>
-            </a>
+            </a> -->
             <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="openedRequest">
                 <el-tab-pane name="chat" lazy>
                     <div slot="label">

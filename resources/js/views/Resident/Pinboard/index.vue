@@ -36,9 +36,9 @@
             
         </div>
         <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-            <a class="a-close-button" @click="visibleDrawer=!visibleDrawer">
+            <!-- <a class="a-close-button" @click="visibleDrawer=!visibleDrawer">
                 <span class="el-icon-close"></span>
-            </a>
+            </a> -->
             <ui-divider content-position="left" v-if="editingPinboard"><i class="ti-pencil"></i> {{$t('resident.edit_pinboard')}}</ui-divider>
             <div class="content">
                 <pinboard-edit-form :data="editingPinboard" v-if="editingPinboard" :visible.sync="visibleDrawer"/>
@@ -138,6 +138,7 @@
         methods: {
             onResize() {
                 force_scroller_update();
+                console.log('click');
             },
             force_scroller_update() {
                  this.$refs['dynamic-scroller'].forceUpdate();
@@ -192,6 +193,10 @@
             editPinboard(event, data) {
                this.editingPinboard = data;
                this.visibleDrawer = true;
+            },
+            closeDrawer() {
+                this.resetDataFromDrawer();
+                this.visibleDrawer = false;
             }
         },
         watch: {
@@ -202,6 +207,7 @@
                     if (!state) {
                         this.editingPinboard = null
                     }
+                    console.log('changed');
                 }
             }
         },
@@ -216,9 +222,9 @@
             }
         },
         async mounted() {
-            await this.$store.dispatch('newPinboard/reset')
-            await this.$store.dispatch('comments/reset')
-            await this.getPinboards()
+            // await this.$store.dispatch('newPinboard/reset')
+            // await this.$store.dispatch('comments/reset')
+            // await this.getPinboards()
         }
     }
 </script>
