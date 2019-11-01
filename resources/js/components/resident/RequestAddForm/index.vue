@@ -42,7 +42,7 @@
         </el-form-item>
 
         <el-form-item :label="$t('models.request.category_options.range')" 
-                    v-if="this.showSubCategory == true && this.showLiegenschaft == true && this.showWohnung == false">
+                    v-if="this.showSubCategory == true && this.showLocation == true && this.showRoom == false">
             <el-select :disabled="$can($permissions.update.serviceRequest)"
                         :placeholder="$t(`general.placeholders.select`)"
                         filterable
@@ -57,7 +57,7 @@
             </el-select>
         </el-form-item>
         <el-form-item :label="$t('models.request.category_options.room')"
-                    v-if="this.showSubCategory == true && this.showWohnung == true && this.showLiegenschaft == false">
+                    v-if="this.showSubCategory == true && this.showRoom == true && this.showLocation == false">
             <el-select :disabled="$can($permissions.update.serviceRequest)"
                         :placeholder="$t(`general.placeholders.select`)"
                         filterable
@@ -197,9 +197,8 @@
                 mediaUploadMaxSize: MEDIA_UPLOAD_MAX_SIZE,
                 showSubCategory: false,
                 showPayer: false,
-                showUmgebung: false,
-                showLiegenschaft: false,
-                showWohnung: false,
+                showLocation: false,
+                showRoom: false,
                 request_id: null,
                 audit_id: null,
                 default_contract_id: ''
@@ -222,18 +221,14 @@
 
                 this.model.room = '';
                 this.model.location = '';
-                this.showLiegenschaft = false;
-                this.showUmgebung = false;
-                this.showWohnung = false;
+                this.showLocation = false;
+                this.showRoom = false;
 
                 if(subcategory.room == 1) {
-                    this.showWohnung = true;
+                    this.showRoom = true;
                 }
                 else if(subcategory.location == 1) {
-                    this.showLiegenschaft = true;
-                }
-                else if(subcategory.location == 0 && subcategory.room == 0) {
-                    this.showUmgebung = true;
+                    this.showLocation = true;
                 }
             },
             getLanguageI18n() {

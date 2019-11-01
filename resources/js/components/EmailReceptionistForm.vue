@@ -166,7 +166,7 @@
                                 displaySuccess(resp.data.message);
                         }
                         
-                        
+                        this.$emit('update:visible', false);
                         
                         
                     }
