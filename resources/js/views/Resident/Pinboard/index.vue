@@ -138,7 +138,6 @@
         methods: {
             onResize() {
                 force_scroller_update();
-                console.log('click');
             },
             force_scroller_update() {
                  this.$refs['dynamic-scroller'].forceUpdate();
