@@ -147,7 +147,7 @@
                     visibility: '',
                     description: '',
                     media: [],
-                    sub_category_id:'',
+                    sub_category_id: null,
                     location: '',
                     room: '',
                     capture_phase: '',
@@ -254,8 +254,8 @@
 
                             //const data = await this.$store.dispatch('createRequest', params)
 
-                            params.category = params.category_id
-                            params.sub_category = params.sub_category_id
+                            // params.category = params.category_id
+                            // params.sub_category = params.sub_category_id
 
                             const resp = await this.$store.dispatch('newRequests/create', params);
                             

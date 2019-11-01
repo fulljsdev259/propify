@@ -156,7 +156,7 @@ export default (config = {}) => {
                     this.remoteLoading = true;
 
                     try {
-                        const {data} = await this.getResidents({get_all: true, has_building: true,search});
+                        const {data} = await this.getResidents({get_all: true, search});
                         this.residents = data;
                         this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
                     } catch (err) {
@@ -350,16 +350,14 @@ export default (config = {}) => {
                 this.showSubCategory = children.length > 0 ? true : false;
                 let p_category = this.categories.find(category => { return category.id == this.model.category_id});
 
-                this.model.category = p_category
+                //this.model.category = p_category
                 
                 this.showCapturePhase =  p_category.capture_phase == 1 ? true : false;
                 this.showQualification = p_category.qualification == 1 ? true : false;
-                console.log('qualification', this.model.qualification)
                 if(this.showSubCategory) {
                     this.sub_categories = p_category ? p_category.sub_categories : [];
 
                     if(!this.showQualification && this.model.sub_category_id != null) {
-                        console.log('sub_category_id', this.model.sub_category_id)
                         let sub_category = this.sub_categories.find(category => { return category.id == this.model.sub_category_id});
                         this.showQualification = sub_category.qualification == 1 ? true : false;
                     }
@@ -371,7 +369,7 @@ export default (config = {}) => {
                     return category.id == this.model.sub_category_id;
                 });
                 
-                this.model.sub_category = sub_category
+                //this.model.sub_category = sub_category
 
                 this.model.room = '';
                 this.model.location = '';
@@ -534,8 +532,8 @@ export default (config = {}) => {
                     ...mixin.methods,
                     ...mapActions(['createRequest', 'createRequestTags', 'getTags']),
                     async saveRequest() {
-                        this.model.category = this.model.category_id
-                        this.model.sub_category = this.model.sub_category_id 
+                        // this.model.category = this.model.category_id
+                        // this.model.sub_category = this.model.sub_category_id 
 
                         const resp = await this.createRequest(this.model);
                         
@@ -680,8 +678,8 @@ export default (config = {}) => {
                                 this.loading.state = true;
                                 let {service_providers, property_managers, ...params} = this.model;
                                 
-                                params.category = this.model.category_id
-                                params.sub_category = this.model.sub_category_id
+                                // params.category = this.model.category_id
+                                // params.sub_category = this.model.sub_category_id
 
                                 let existingsKeys = [];
                                 let newTags = [];
