@@ -489,15 +489,7 @@
 
 
            .el-table__empty-text {
-                width: 100%;
-
-                .el-alert--info.is-light {
-                    padding-left: 35%;
-                    -webkit-box-align: center;
-                    -ms-flex-align: center;
-                    align-items: center;
-                    line-height: inherit;
-                }
+                width: 100%;                
             }
         
         }
