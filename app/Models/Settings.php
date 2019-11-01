@@ -364,8 +364,13 @@ class Settings extends AuditableModel
                 }
             },
             'email_receptionist_ids' => [
+                'nullable',
                 'array',
                 function($attr, $val, $fail) {
+                    if (empty($val)) {
+                        return;
+                    }
+
                     $propertyManagers = PropertyManager::whereIn('id', $val)->count();
                     if (count($val) != $propertyManagers) {
                         $fail('One of email_receptionist_ids is not correct');
