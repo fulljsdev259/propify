@@ -220,9 +220,9 @@
             }
         },
         async mounted() {
-            // await this.$store.dispatch('newPinboard/reset')
-            // await this.$store.dispatch('comments/reset')
-            // await this.getPinboards()
+            await this.$store.dispatch('newPinboard/reset')
+            await this.$store.dispatch('comments/reset')
+            await this.getPinboards()
         }
     }
 </script>
