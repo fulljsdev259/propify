@@ -58,6 +58,7 @@ class PinboardRepository extends BaseRepository
         $attributes['building_ids'] = $attributes['building_ids'] ?? [];
         $attributes['quarter_ids'] = $attributes['quarter_ids'] ?? [];
         $u = \Auth::user();
+
         if ($u->resident()->exists()) {
             $contracts = $u->resident->active_contracts_with_building()->get(['building_id']);
             if ($contracts->isEmpty()) {
@@ -74,19 +75,8 @@ class PinboardRepository extends BaseRepository
             }
         }
 
-        if (isset($attributes['category_image'])) {
-            $attributes['category_image'] = ($attributes['category_image'] == 'true') ? 1 : 0;
-        } else {
-            $attributes['category_image'] = 0;
-        }
-
-        $attributes = $this->fixBollInt($attributes, 'is_execution_time', 1);
-
-        if (! $attributes['needs_approval']) {
-            // @TODO correct this things
-            $attributes['status'] = Pinboard::StatusPublished;
-        }
-
+        // this mean if resident make pinboard then must be publish
+        $attributes['status'] = $attributes['status'] ?? Pinboard::StatusPublished;
         if (Pinboard::StatusPublished == $attributes['status']) {
             $attributes['published_at'] = now();
         }
@@ -187,7 +177,6 @@ class PinboardRepository extends BaseRepository
      */
     public function updateExisting(Model $model, $attributes)
     {
-        $attributes = $this->fixBollInt($attributes, 'is_execution_time', 1);
         $status= $attributes['status'] ?? null;
         if (Pinboard::StatusPublished == $status) {
             $attributes['published_at'] = now();
@@ -359,12 +348,11 @@ class PinboardRepository extends BaseRepository
 
         $pinboard = $this->create([
             'visibility' => Pinboard::VisibilityAddress,
-            'status' => Pinboard::StatusNew,
+            'status' => Pinboard::StatusPublished,
             'type' => Pinboard::TypeNewNeighbour,
             'content' => "New neighbour",
             'user_id' => $contract->resident->user->id,
             'building_ids' => [$contract->building_id],
-            'needs_approval' => false,
             'notify_email' => true,
         ]);
 

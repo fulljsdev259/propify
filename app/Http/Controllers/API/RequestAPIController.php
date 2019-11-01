@@ -812,8 +812,8 @@ class RequestAPIController extends AppBaseController
      */
     public function assignProvider(int $id, int $pid, ServiceProviderRepository $serviceProviderRepository, AssignRequest $assignRequest)
     {
-        $sr = $this->requestRepository->findWithoutFail($id);
-        if (empty($sr)) {
+        $request = $this->requestRepository->findWithoutFail($id);
+        if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
         }
         $sp = $serviceProviderRepository->findWithoutFail($pid);
@@ -821,20 +821,20 @@ class RequestAPIController extends AppBaseController
             return $this->sendError(__('models.request.errors.provider_not_found'));
         }
 
-        $sr->providers()->sync([$pid => ['created_at' => now()]], false);
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
+        $request->providers()->sync([$pid => ['created_at' => now()]], false);
+        $request->load('media', 'resident.user', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
 
-        foreach ($sr->managers as $manager) {
+        foreach ($request->managers as $manager) {
             if ($manager->user) {
-                $sr->conversationFor($manager->user, $sp->user);
+                $request->conversationFor($manager->user, $sp->user);
             }
         }
 
-        $sr->conversationFor(Auth::user(), $sp->user);
-        $sr->touch();
+        $request->conversationFor(Auth::user(), $sp->user);
+        $request->touch();
         $sp->touch();
-        return $this->sendResponse($sr, __('general.attached.provider'));
+        return $this->sendResponse($request, __('general.attached.provider'));
     }
     
     /**
@@ -873,8 +873,8 @@ class RequestAPIController extends AppBaseController
      */
     public function assignUser(int $id, int $uid, UserRepository $uRepo, AssignRequest $r)
     {
-        $sr = $this->requestRepository->findWithoutFail($id);
-        if (empty($sr)) {
+        $request = $this->requestRepository->findWithoutFail($id);
+        if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
         }
 
@@ -884,17 +884,17 @@ class RequestAPIController extends AppBaseController
         }
         // @TODO check admin or super admin
 
-        $sr->users()->sync([$uid => ['created_at' => now()]], false);
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
+        $request->users()->sync([$uid => ['created_at' => now()]], false);
+        $request->load('media', 'resident.user', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
 
-        foreach ($sr->providers as $p) {
-            $sr->conversationFor($p->user, $u);
+        foreach ($request->providers as $p) {
+            $request->conversationFor($p->user, $u);
         }
 
-        $sr->touch();
+        $request->touch();
         $u->touch();
-        return $this->sendResponse($sr, __('general.attached.user'));
+        return $this->sendResponse($request, __('general.attached.user'));
     }
 
     /**
