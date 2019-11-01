@@ -191,9 +191,7 @@ class AuditTransformer extends BaseTransformer
         }
 
         $sMsgs = [
-            Pinboard::StatusNew . Pinboard::StatusPublished => "published",
             Pinboard::StatusUnpublished . Pinboard::StatusPublished => "published",
-            Pinboard::StatusNotApproved . Pinboard::StatusPublished => "published",
             Pinboard::StatusPublished . Pinboard::StatusUnpublished => "unpublished",
         ];
         if (Arr::has($a->new_values, 'status') &&

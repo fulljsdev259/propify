@@ -425,7 +425,7 @@
                         </div>
                         
                         <div class="content" v-if="visibleDrawer">
-                            <email-receptionist-form :is-building="true" :quarter_id="model.quarter_id" :visible.sync="visibleDrawer"/>
+                            <email-receptionist-form :is-building="true" :building_id="model.id" :quarter_id="model.quarter_id" :visible.sync="visibleDrawer"/>
                         </div>
 
                     </el-tab-pane>
@@ -503,6 +503,7 @@
                     label: 'models.resident.status.label'
                 }*/],
                 residentActions: [{
+                    width: 70,
                     buttons: [{
                         title: 'models.resident.view',
                         onClick: this.residentEditView,
@@ -523,7 +524,7 @@
                     i18n: this.translateType
                 }],
                 assigneesActions: [{
-                    width: 80,
+                    width: 70,
                     buttons: [{
                         title: 'models.building.unassign_manager',
                         type: 'danger',
@@ -545,7 +546,7 @@
                     type: 'unitResidentAvatar',
                 }],
                 unitActions: [{
-                    width: 80,
+                    width: 70,
                     buttons: [{
                         title: 'general.actions.edit',
                         onClick: this.unitEditView,
@@ -567,7 +568,7 @@
                     label: 'models.request.status.label'
                 }],
                 requestActions: [{
-                    width: 120,
+                    width: 70,
                     buttons: [{
                         icon: 'ti-search',
                         title: 'general.actions.edit',
@@ -581,7 +582,7 @@
                     type: 'serviceName'
                 }],
                 assignmentsProviderActions: [{
-                    width: 80,
+                    width: 70,
                     buttons: [{
                         icon: 'el-icon-close',
                         title: 'general.unassign',

@@ -328,6 +328,7 @@ class RequestRepository extends BaseRepository
 
         $u = \Auth::user();
         $conversation = $request->conversationFor($u, $provider->user);
+        dd($request);
         $comment = $mailDetails['title'] . "\n\n" . strip_tags($mailDetails['body']);
         $conversation->comment($comment);
 

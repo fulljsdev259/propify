@@ -184,12 +184,6 @@ class PinboardAPIController extends AppBaseController
         $input['provider_ids'] = $request->provider_ids ?? [];
         $input['media'] = $request->media ?? [];
 
-        if (! Auth::user()->hasRole('administrator')) {
-            $input['status'] = Pinboard::StatusNew;
-        } else {
-            $input['status'] = $input['status'] ?? Pinboard::StatusNew;
-        }
-
         if ($request->has('pinned')) {
             $input['announcement'] = $request->pinned;
         }
@@ -198,16 +192,6 @@ class PinboardAPIController extends AppBaseController
             $input['type'] = Pinboard::TypeAnnouncement;
         } else {
             $input['type'] =  $input['type'] ?? Pinboard::TypePost;
-        }
-
-        //$input['needs_approval'] = true; // @TODO
-        $input['needs_approval'] = ! Auth::user()->hasRole('administrator');
-        if (! empty($input['type']) && $input['type'] == Pinboard::TypePost) {
-            $input['notify_email'] = true;
-            $settings = $settingsRepository->first();
-            if ($settings) {
-                $input['needs_approval'] = $settings->pinboard_approval_enable;
-            }
         }
 
         $pinboard = $this->pinboardRepository->create($input);
