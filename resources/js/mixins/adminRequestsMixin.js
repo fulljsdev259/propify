@@ -646,7 +646,7 @@ export default (config = {}) => {
                         this.showWohnung = resp.data.room != null ? true : false;
                         this.showPayer = resp.data.qualification == 5 ? true : false;
                         this.showCapturePhase =  resp.data.category.capture_phase == 1 ? true : false;
-                        
+                        this.showQualification =  resp.data.category.qualification == 1 || (resp.data.sub_category && resp.data.sub_category.qualification == 1) ? true : false;
                         const data = resp.data;
 
                         this.model = Object.assign({}, this.model, data);
