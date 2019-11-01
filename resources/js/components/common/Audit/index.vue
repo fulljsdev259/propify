@@ -256,7 +256,9 @@
 
             // this.categories = flattenCategories(data)
             this.categories = this.$constants.requests.categories_data.tree
-            await this.filterReset();            
+            if(this.showFilter){
+                await this.filterReset();            
+            }            
             await this.fetch();            
         }
     }
