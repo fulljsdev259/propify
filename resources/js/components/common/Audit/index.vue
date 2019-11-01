@@ -20,7 +20,10 @@
             <el-timeline v-else>
                 <template v-for="audit in list">
                     <el-timeline-item  :key="audit.id" :timestamp="`${audit.user.name} • ${formatDatetime(audit.updated_at)}`">
-                        <span>{{audit.statement}}</span>
+                        <span>
+                            {{audit.statement}}                            
+                            <el-badge v-if="type == 'all'" :value="audit.auditable_format" class="item" type="primary"></el-badge>
+                        </span>                                                
                     </el-timeline-item>
                 </template>
                 <el-timeline-item v-if="loading">
@@ -78,8 +81,8 @@
                 auditFilter: auditFilter,
                 categories: [],
                 loading: true,
-                currentAuditableType: null,
-                currentEvent: null,
+                /*currentAuditableType: null,
+                currentEvent: null,*/
             }
         },
         methods: {
@@ -100,7 +103,7 @@
                         value: null
                     }
                 });
-                if(this.type === 'all'){                      
+                /*if(this.type === 'all'){                      
                     // If there is no type prop on audit component then show type select
                     // Get filter translations from file
                     filter_name = 'auditable_type'                    
@@ -114,7 +117,7 @@
                             }
                         })
                     });                                       
-                } else{                     
+                } else{                     */
                     // If there is type then only show event options
                     // Get type options from translation files
                     filter_name = 'event'
@@ -129,7 +132,7 @@
                             }
                         })
                     }); 
-                }
+                // }
                 this.filters.schema.push({
                     type: 'el-select',
                     title: 'resident.type',
@@ -141,7 +144,8 @@
                 })
             },
             async filtersChanged (filters) {                                                                                 
-                if((filters.auditable_type) && (filters.auditable_type != '') && (filters.auditable_type !== this.currentAuditableType)){                    
+                // if((filters.auditable_type) && (filters.auditable_type != '') && (filters.auditable_type !== this.currentAuditableType)){                    
+                if((filters.auditable_type) && (filters.auditable_type != '')){
                     let schema_children = [];
                     schema_children.push({
                         type: 'el-option',
@@ -177,13 +181,15 @@
                         },
                         children: schema_children
                     });
-                    this.currentAuditableType = filters.auditable_type;
-                } else if((filters.event) && (filters.event !== this.currentEvent)){                    
+                    // this.currentAuditableType = filters.auditable_type;
+                } 
+                // else if((filters.event) && (filters.event !== this.currentEvent)){                    
+                else if(filters.event){                    
                     // this.filters.schema.splice(1,1)                                    
                     if(this.filters.schema.findIndex(x => x.name == 'type') != -1){
                         this.filters.data.event = null
                     }
-                    this.currentEvent = filters.event;
+                    // this.currentEvent = filters.event;
                 }
                 this.list = undefined
                 this.meta.current_page = undefined
@@ -236,6 +242,11 @@
                 return !this.loading && !Object.keys(this.list).length
             }
         },
+        watch: {
+            '$i18n.locale' : function(val) {                
+                this.fetch();
+            },
+        },
         async mounted () {               
             // const {data:{data}} = await this.axios.get('requestCategories/tree?get_all=true');
             // // Get filter options from translation file and add the to filter object
@@ -253,7 +264,9 @@
 
             // this.categories = flattenCategories(data)
             this.categories = this.$constants.requests.categories_data.tree
-            await this.filterReset();            
+            if(this.showFilter){
+                await this.filterReset();            
+            }            
             await this.fetch();            
         }
     }
@@ -264,6 +277,10 @@
         height: 100%;
         display: flex;
         flex-direction: column;
+        .el-badge {
+            display: inline-block;
+            margin: 2px 0 0 5px;
+        }
         .placeholder {
             font-size: 16px;
             small {

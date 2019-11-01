@@ -29,11 +29,12 @@ export default (config = {}) => {
                     content: '',
                     visibility: 1,
                     status: 1,
+                    type: '',
                     sub_type: 1,
                     media: [],
                     published_at: '',
                     user_id: '',
-                    pinned: '',
+                    announcement: '',
                     notify_email: false,
                     category: '',
                     execution_period: 2,
@@ -421,7 +422,7 @@ export default (config = {}) => {
             case 'add':
                 mixin.methods = {
                     ...mixin.methods,
-                    ...mapActions(['createPinboard', 'changePinboardPublish']),
+                    ...mapActions(['createPinboard']),
                     submit(afterValid = false) {
                         return new Promise(async (resolve, reject) => {
                             const valid = await this.form.validate();
@@ -433,7 +434,7 @@ export default (config = {}) => {
                             this.loading.state = true;
 
                             try {
-                                this.model.pinned = this.model.type == 3 ? true : false;
+                                this.model.announcement = this.model.type == 3 ? true : false;
                                 
                                 this.model.media = this.media.map(item => item.file.src)
                                 const resp = await this.createPinboard(this.model);
@@ -448,11 +449,6 @@ export default (config = {}) => {
                                     if (this.toAssignProvider) {
                                         await this.attachProvider();
                                     }
-
-                                    await this.changePinboardPublish({
-                                        id: resp.data.id,
-                                        status: this.model.status
-                                    })
                                 }
                                 this.form.resetFields();
 
@@ -483,7 +479,7 @@ export default (config = {}) => {
             case 'edit':
                 mixin.methods = {
                     ...mixin.methods,
-                    ...mapActions(['getPinboard', 'updatePinboard', 'changePinboardPublish']),
+                    ...mapActions(['getPinboard', 'updatePinboard']),
                     submit() {
                         return new Promise((resolve, reject) => {
                             this.form.validate(async valid => {
@@ -495,7 +491,7 @@ export default (config = {}) => {
                                 try {
                                     this.loading.state = true;
                                     this.model.status = 2;
-                                    this.model.pinned = this.model.type == 3 ? true : false;
+                                    this.model.announcement = this.model.type == 3 ? true : false;
 
                                     await this.uploadNewMedia(this.model.id);
 
@@ -504,11 +500,6 @@ export default (config = {}) => {
                                     this.model = Object.assign({}, this.model, resp.data);
                                     this.media = [];
 
-
-                                    await this.changePinboardPublish({
-                                        id: resp.data.id,
-                                        status: this.model.status
-                                    });
                                     displaySuccess(resp);
                                     resolve(true);
                                 } catch (err) {

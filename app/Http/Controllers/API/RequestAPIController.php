@@ -90,7 +90,7 @@ class RequestAPIController extends AppBaseController
      *          required=false,
      *      ),
      *     @SWG\Parameter(
-     *          name="category",
+     *          name="category_id",
      *          in="query",
      *          type="integer",
      *          description=" Filter by Category",
@@ -225,9 +225,6 @@ class RequestAPIController extends AppBaseController
     public function store(CreateRequest $createRequest)
     {
         $input = $createRequest->all();
-        if (isset($input['category_id'])) {
-            $input['category'] = $input['category_id']; // @TODO delete
-        }
 //        $input['internal_priority'] = $input['internal_priority'] ?? $input['priority'];
         $request = $this->requestRepository->create($input);
         $this->requestRepository->notifyNewRequest($request);
@@ -375,9 +372,6 @@ class RequestAPIController extends AppBaseController
     public function update($id, UpdateRequest $updateRequest)
     {
         $input = $updateRequest->only(Request::Fillable);
-        if (isset($updateRequest->category_id)) {
-            $input['category'] = $updateRequest->category_id; // @TODO delete
-        }
         /** @var Request $request */
         $request = $this->requestRepository->findWithoutFail($id);
         if (empty($request)) {

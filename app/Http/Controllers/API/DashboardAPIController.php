@@ -979,14 +979,14 @@ class DashboardAPIController extends AppBaseController
         $period = $this->getPeriod($request);
         [$periodValues, $raw] = $this->getPeriodRelatedData($period, $startDate, $endDate);
 
-        $requests = Request::selectRaw($raw . ', category')
+        $requests = Request::selectRaw($raw . ', category_id')
             ->whereDate('requests.created_at', '>=', $startDate->format('Y-m-d'))
             ->whereDate('requests.created_at', '<=', $endDate->format('Y-m-d'))
             ->groupBy('period')
-            ->groupBy('category')
+            ->groupBy('category_id')
             ->get();
 
-        $ret = $this->formatResponseGropedPeriodAndCol($periodValues, $requests, 'category', Request::Category);
+        $ret = $this->formatResponseGropedPeriodAndCol($periodValues, $requests, 'category_id', Request::Category);
         $isConvertResponse = $optionalArgs['isConvertResponse'] ?? true;
         return $isConvertResponse
             ? $this->sendResponse($ret, 'Request services statistics formatted successfully')
@@ -1349,10 +1349,10 @@ class DashboardAPIController extends AppBaseController
     {
         [$startDate, $endDate] = $this->getStartDateEndDate($request, $optionalArgs);
 
-        $requests = Request::selectRaw('count(requests.id) as count, category')
+        $requests = Request::selectRaw('count(requests.id) as count, category_id')
             ->when($startDate, function ($q) use ($startDate) {$q->whereDate('requests.created_at', '>=', $startDate->format('Y-m-d'));})
             ->when($endDate, function ($q) use ($endDate) {$q->whereDate('requests.created_at', '<=', $endDate->format('Y-m-d'));})
-            ->groupBy('category')
+            ->groupBy('category_id')
             ->get();
 
         $statisticData = collect();
@@ -1363,12 +1363,12 @@ class DashboardAPIController extends AppBaseController
         }
 
         foreach ($requests as $_request) {
-            if (empty($parentCategories[$_request->category])) {
+            if (empty($parentCategories[$_request->category_id])) {
                 // when inserted wrong category
                 continue;
             }
-            $category = $parentCategories[$_request->category];
-            $statisticData[$category] = $this->thousandsFormat($_request->count);
+            $categoryId = $parentCategories[$_request->category_id];
+            $statisticData[$categoryId] = $this->thousandsFormat($_request->count);
         }
 
         $response = [
@@ -1445,13 +1445,13 @@ class DashboardAPIController extends AppBaseController
 
         $requestCount = Request
             ::when($startDate, function ($q) use ($startDate) {$q->whereDate('requests.created_at', '>=', $startDate->format('Y-m-d'));})
-            ->whereIn('category', [1, 2])
+            ->whereIn('category_id', [1, 2])
             ->when($endDate, function ($q) use ($endDate) {$q->whereDate('requests.created_at', '<=', $endDate->format('Y-m-d'));})
             ->count();
 
         $requestHasProviderCount = Request
             ::has('providers')
-            ->whereIn('category', [1, 2])
+            ->whereIn('category_id', [1, 2])
             ->when($startDate, function ($q) use ($startDate) {$q->whereDate('requests.created_at', '>=', $startDate->format('Y-m-d'));})
             ->when($endDate, function ($q) use ($endDate) {$q->whereDate('requests.created_at', '<=', $endDate->format('Y-m-d'));})
             ->count();
