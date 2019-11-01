@@ -5,7 +5,7 @@
             <el-col :md="24">
                 <el-card class="mt15">                  
                     <!-- <audit showFilter type="all" filterPosition="left" />   -->
-                    <audit :showFilter="false" />
+                    <audit :showFilter="false" type="all"/>
                 </el-card>
             </el-col>
         </el-row>

@@ -20,7 +20,10 @@
             <el-timeline v-else>
                 <template v-for="audit in list">
                     <el-timeline-item  :key="audit.id" :timestamp="`${audit.user.name} • ${formatDatetime(audit.updated_at)}`">
-                        <span>{{audit.statement}}</span>
+                        <span>
+                            {{audit.statement}}                            
+                            <el-badge v-if="type == 'all'" :value="audit.auditable_format" class="item" type="primary"></el-badge>
+                        </span>                                                
                     </el-timeline-item>
                 </template>
                 <el-timeline-item v-if="loading">
@@ -239,6 +242,11 @@
                 return !this.loading && !Object.keys(this.list).length
             }
         },
+        watch: {
+            '$i18n.locale' : function(val) {                
+                this.fetch();
+            },
+        },
         async mounted () {               
             // const {data:{data}} = await this.axios.get('requestCategories/tree?get_all=true');
             // // Get filter options from translation file and add the to filter object
@@ -269,6 +277,10 @@
         height: 100%;
         display: flex;
         flex-direction: column;
+        .el-badge {
+            display: inline-block;
+            margin: 2px 0 0 5px;
+        }
         .placeholder {
             font-size: 16px;
             small {

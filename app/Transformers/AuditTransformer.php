@@ -35,6 +35,7 @@ class AuditTransformer extends BaseTransformer
             'event' => $model->event,
             'auditable_type' => $model->auditable_type,
             'auditable_id' => $model->auditable_id,
+            'auditable_format' => $model->auditable_format,
             'user_id' => $model->user_id,
             'url' => $model->url,
             'message' => $this->getMessage($model),
