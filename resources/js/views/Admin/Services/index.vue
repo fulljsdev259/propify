@@ -58,7 +58,7 @@
             return {
                 header: [{
                     label: 'general.name',
-                    withMultipleProps: true,
+                    withAvatarsAndProps: true,
                     props: ['name', 'addr', 'cty']
                 }, {
                     label: 'models.service.contact_details',

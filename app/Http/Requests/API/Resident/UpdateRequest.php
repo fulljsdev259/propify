@@ -32,16 +32,24 @@ class UpdateRequest extends BaseRequest
                     $residentId = $this->route('id');
                     $resident = Resident::withCount('requests', 'contracts')->find($residentId);
 
+                    if (empty($resident)) {
+                        return $fails(__('models.resident.errors.not_found'));
+                    }
+
+                    if ($resident->type == $value) {
+                        return true;
+                    }
+
                     if ($resident->requests_count && $resident->contracts_count) {
-                        return $fails(__('models.resident.errors.not_allowed_change_type_has_request_contract'));
+                        return $fails(__('models.resident.errors.not_allowed_change_type_has_request_contract', $resident->only('contracts_count', 'requests_count')));
                     }
 
                     if ($resident->contracts_count) {
-                        return $fails(__('models.resident.errors.not_allowed_change_type_has_contract'));
+                        return $fails(__('models.resident.errors.not_allowed_change_type_has_contract', $resident->only('contracts_count')));
                     }
 
                     if ($resident->requests_count) {
-                        return $fails(__('models.resident.errors.not_allowed_change_type_has_request'));
+                        return $fails(__('models.resident.errors.not_allowed_change_type_has_request', $resident->only('requests_count')));
                     }
                 }
             ],

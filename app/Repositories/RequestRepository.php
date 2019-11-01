@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Jobs\SendNewRequestEmailToReceptionists;
 use App\Models\AuditableModel;
 use App\Mails\NotifyServiceProvider;
 use App\Models\Comment;
@@ -77,6 +78,7 @@ class RequestRepository extends BaseRepository
         $model = parent::create($attributes);
         if ($model)  {
             $model = $this->saveMediaUploads($model, $attributes);
+            dispatch(new SendNewRequestEmailToReceptionists($model));
         }
         return $model;
     }
@@ -326,6 +328,7 @@ class RequestRepository extends BaseRepository
 
         $u = \Auth::user();
         $conversation = $request->conversationFor($u, $provider->user);
+        dd($request);
         $comment = $mailDetails['title'] . "\n\n" . strip_tags($mailDetails['body']);
         $conversation->comment($comment);
 

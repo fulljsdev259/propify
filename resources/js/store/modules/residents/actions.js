@@ -132,4 +132,10 @@ export default {
                 }).catch((error) => reject(error));
         });
     },
+    getMyDocuments() {
+        return new Promise((resolve, reject) =>
+            axios.get(`my/documents`)
+                .then(({data: r}) => (resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
 }

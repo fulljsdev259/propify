@@ -47,6 +47,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/residents/latest', 'ResidentAPIController@latest')->name('residents.latest');
     Route::get('/residents/me', 'ResidentAPIController@showLoggedIn')->name('residents.me');
     Route::get('/residents/{id}', 'ResidentAPIController@show')->name('residents.show');
+    Route::get('/residents/{id}/type', 'ResidentAPIController@checkResidentHasContractOrRequest')->name('residents.has.contract-or-requests');
     Route::get('/residents/{id}/statistics', 'DashboardAPIController@residentStatistics')->name('residents.statistics.show');
     Route::get('/my/documents', 'ResidentAPIController@myDocuments')->name('my.documents');
 
@@ -237,12 +238,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::delete('/requests/{id}/tags', 'RequestAPIController@unassignManyTags')->name('request.unassign.many-tags');
     Route::delete('/requests/{id}/tags/{tag_id}', 'RequestAPIController@unassignTag');
     Route::delete('/requests-assignees/{requests_assignee_id}', 'RequestAPIController@deleteRequestAssignee');
-
-    // @TODO remove later
-    Route::post('/requests/{id}/assignees/{assignee_id}', 'RequestAPIController@assignTmpManager');
-    Route::delete('/requests/{id}/assignees/{assignee_id}', 'RequestAPIController@unassignUser');
-    Route::delete('/requests/{id}/providers/{provider_id}', 'RequestAPIController@unassignProvider');
-
 
     Route::get('/requests/{id}/communicationTemplates', 'RequestAPIController@getCommunicationTemplates');
     Route::get('/requests/{id}/serviceCommunicationTemplates', 'RequestAPIController@getServiceCommunicationTemplates');

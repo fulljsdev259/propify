@@ -67,11 +67,11 @@
             <likes type="pinboard" :data="data.likes" layout="row" />
             <like :id="data.id" type="pinboard">
                 <el-button @click="$refs.addComment.focus()" icon="ti-comment-alt" type="text"> &nbsp;{{$t('resident.comment')}}</el-button>
-                <el-button icon="icon-picture" type="text" v-if="data.announcement === false && data.media.length">
+                <span class="icon-picture" v-if="data.announcement === false && data.media.length">
                     <template v-if="data.media.length">
-                        {{data.media.length}} {{data.media.length > 1 ? $t('resident.images') : $t('resident.image')}}
+                        <span>{{data.media.length}} {{data.media.length > 1 ? $t('resident.images') : $t('resident.image')}}</span>
                     </template>
-                </el-button>
+                </span>
             </like>
             
             <comments ref="comments" :id="data.id" type="pinboard" :use-placeholder="false" :with-scroller="true" @update-dynamic-scroller="$emit('update-dynamic-scroller')"/>

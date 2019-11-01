@@ -106,17 +106,15 @@ export default {
             }
         );
     },
-    getQuarterEmailReceptionists({commit}, {quarter_id, ...restPayload}) {
-        
+    getQuarterEmailReceptionists({commit}, {quarter_id}) {
         return new Promise((resolve, reject) =>
-            axios.get(buildFetchUrl(`quarters/${quarter_id}/email-receptionists`, restPayload))
+            axios.get(buildFetchUrl(`quarters/${quarter_id}/email-receptionists`))
                 .then(({data: r}) => (r && resolve(r)))
                 .catch(({response: {data: err}}) => reject(err)));
     },
     saveQuarterEmailReceptionists({commit}, {quarter_id, ...restPayload}) {
-        console.log(quarter_id, restPayload.categories)
         return new Promise((resolve, reject) =>
-            axios.post(buildFetchUrl(`quarters/${quarter_id}/email-receptionists`, restPayload.categories))
+            axios.post(buildFetchUrl(`quarters/${quarter_id}/email-receptionists`), restPayload.categories)
                 .then(({data: r}) => (r && resolve(r)))
                 .catch(({response: {data: err}}) => reject(err)));
     },

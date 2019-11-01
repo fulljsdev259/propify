@@ -122,7 +122,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="24">
-                                    <el-form-item class="label-block" :label="$t('general.language')" prop="settings.language">
+                                    <el-form-item class="label-block" :rules="validationRules.language" :label="$t('general.language')" prop="settings.language">
                                         <select-language :activeLanguage.sync="model.settings.language"/>
                                     </el-form-item>
                                 </el-col>

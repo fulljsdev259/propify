@@ -362,12 +362,6 @@ class RequestAPIController extends AppBaseController
      * )
      *
      * @param $id
-     * @param UpdateRequest $request
-     * @return mixed
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     */
-    /**
-     * @param $id
      * @param UpdateRequest $updateRequest
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
@@ -818,8 +812,8 @@ class RequestAPIController extends AppBaseController
      */
     public function assignProvider(int $id, int $pid, ServiceProviderRepository $serviceProviderRepository, AssignRequest $assignRequest)
     {
-        $sr = $this->requestRepository->findWithoutFail($id);
-        if (empty($sr)) {
+        $request = $this->requestRepository->findWithoutFail($id);
+        if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
         }
         $sp = $serviceProviderRepository->findWithoutFail($pid);
@@ -827,62 +821,22 @@ class RequestAPIController extends AppBaseController
             return $this->sendError(__('models.request.errors.provider_not_found'));
         }
 
-        $sr->providers()->sync([$pid => ['created_at' => now()]], false);
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
+        $request->providers()->sync([$pid => ['created_at' => now()]], false);
+        $request->load('media', 'resident.user', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
 
-        foreach ($sr->managers as $manager) {
+        foreach ($request->managers as $manager) {
             if ($manager->user) {
-                $sr->conversationFor($manager->user, $sp->user);
+                $request->conversationFor($manager->user, $sp->user);
             }
         }
 
-        $sr->conversationFor(Auth::user(), $sp->user);
-        $sr->touch();
+        $request->conversationFor(Auth::user(), $sp->user);
+        $request->touch();
         $sp->touch();
-        return $this->sendResponse($sr, __('general.attached.provider'));
+        return $this->sendResponse($request, __('general.attached.provider'));
     }
-
-    /**
-     * @SWG\Delete(
-     *      path="/requests/{id}/providers/{pid}",
-     *      summary="Unassign the provided service provider from the request",
-     *      tags={"Request"},
-     *      description="use <a href='http://dev.propify.ch/api/docs#/Request/delete_requests_assignees__requests_assignee_id_'>/requests-assignees/{requests_assignee_id}</a>",
-     *      deprecated=true,
-     *      produces={"application/json"},
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Request"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     *
-     * @param int $id
-     * @param int $pid
-     * @param ServiceProviderRepository $spRepo
-     * @param UnAssignRequest $r
-     * @return mixed
-     */
-    public function unassignProvider(int $id, int $pid, ServiceProviderRepository $spRepo, UnAssignRequest $r)
-    {
-        return $this->deleteRequestAssignee($pid, $r);
-    }
-
+    
     /**
      * @SWG\Post(
      *      path="/requests/{id}/users/{user_id}",
@@ -919,8 +873,8 @@ class RequestAPIController extends AppBaseController
      */
     public function assignUser(int $id, int $uid, UserRepository $uRepo, AssignRequest $r)
     {
-        $sr = $this->requestRepository->findWithoutFail($id);
-        if (empty($sr)) {
+        $request = $this->requestRepository->findWithoutFail($id);
+        if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
         }
 
@@ -930,69 +884,17 @@ class RequestAPIController extends AppBaseController
         }
         // @TODO check admin or super admin
 
-        $sr->users()->sync([$uid => ['created_at' => now()]], false);
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
+        $request->users()->sync([$uid => ['created_at' => now()]], false);
+        $request->load('media', 'resident.user', 'comments.user', 'users',
             'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
 
-        foreach ($sr->providers as $p) {
-            $sr->conversationFor($p->user, $u);
+        foreach ($request->providers as $p) {
+            $request->conversationFor($p->user, $u);
         }
 
-        $sr->touch();
+        $request->touch();
         $u->touch();
-        return $this->sendResponse($sr, __('general.attached.user'));
-    }
-
-    /**
-     * @TODO delete this method
-     * @SWG\Post(
-     *      path="/requests/{id}/assignees/{uid}",
-     *      summary="Assign the provided user to the request",
-     *      tags={"Request"},
-     *      description="use <a href='http://dev.propify.ch/api/docs#/Request/pinboard_requests__id__managers__pmid_'>/requests/{id}/managers/{pmid}</a>",
-     *      deprecated=true,
-     *      produces={"application/json"},
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Request"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     * @param int $id
-     * @param int $uid
-     * @param UserRepository $uRepo
-     * @param AssignRequest $r
-     * @return mixed
-     */
-    public function assignTmpManager(int $id, int $uid, UserRepository $uRepo, AssignRequest $r)
-    {
-        $sr = $this->requestRepository->findWithoutFail($id);
-        if (empty($sr)) {
-            return $this->sendError(__('models.request.errors.not_found'));
-        }
-
-        $u = $uRepo->findWithoutFail($uid);
-        if (empty($u)) {
-            return $this->sendError(__('models.request.errors.user_not_found'));
-        }
-
-        // @TODO remove,
-        $managerId = PropertyManager::where('user_id', $u->id)->value('id');
-        return $this->assignManager($id, $managerId, $uRepo, $r);
+        return $this->sendResponse($request, __('general.attached.user'));
     }
 
     /**
@@ -1052,46 +954,6 @@ class RequestAPIController extends AppBaseController
         $request->touch();
         $manager->touch();
         return $this->sendResponse($request, __('general.attached.manager'));
-    }
-
-    /**
-     * @SWG\Delete(
-     *      path="/requests/{id}/assignees/{uid}",
-     *      summary="Unassign the provided user to the request",
-     *      tags={"Request"},
-     *      description="use <a href='http://dev.propify.ch/api/docs#/Request/delete_requests_assignees__requests_assignee_id_'>/requests-assignees/{requests_assignee_id}</a>",
-     *      deprecated=true,
-     *      produces={"application/json"},
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Request"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     *
-     * @param int $id
-     * @param int $uid
-     * @param UserRepository $uRepo
-     * @param UnAssignRequest $r
-     * @return mixed
-     */
-    public function unassignUser(int $id, int $uid, UserRepository $uRepo, UnAssignRequest $r)
-    {
-        return $this->deleteRequestAssignee($uid, $r);
     }
 
     /**

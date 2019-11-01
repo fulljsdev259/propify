@@ -402,7 +402,7 @@
                     label: 'models.request.status.label'
                 }],
                 requestActions: [{
-                    width: 120,
+                    width: 70,
                     buttons: [{
                         icon: 'ti-search',
                         title: 'general.actions.edit',
@@ -428,7 +428,7 @@
                     label: 'models.resident.status.label'
                 }*/],
                 assigneesActions: [{
-                    width: '100px',
+                    width: 70,
                     buttons: [{
                         title: 'general.unassign',
                         tooltipMode: true,

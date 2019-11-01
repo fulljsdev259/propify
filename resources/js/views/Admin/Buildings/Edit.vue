@@ -16,7 +16,7 @@
                 </div>
             </template>
         </heading>
-        <div class="warning-bar">
+        <div class="warning-bar" v-if="!model.has_email_receptionists">
             <div class="message" type="info">
                 <i class="icon-info-circled"></i>{{$t('models.building.warning_bar.message')}}
             </div>
@@ -425,7 +425,7 @@
                         </div>
                         
                         <div class="content" v-if="visibleDrawer">
-                            <email-receptionist-form :is-building="true" :quarter_id="model.quarter_id" :visible.sync="visibleDrawer"/>
+                            <email-receptionist-form :is-building="true" :building_id="model.id" :quarter_id="model.quarter_id" :visible.sync="visibleDrawer"/>
                         </div>
 
                     </el-tab-pane>
@@ -493,12 +493,17 @@
                     label: 'general.name',
                     type: 'residentName'
                 }, {
+                    prop: 'type',
+                    label: 'models.resident.type.label',
+                    i18n: this.translateResidentType
+                }/*, {
                     prop: 'status',
                     i18n: this.residentStatusLabel,
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
-                }],
+                }*/],
                 residentActions: [{
+                    width: 70,
                     buttons: [{
                         title: 'models.resident.view',
                         onClick: this.residentEditView,
@@ -519,7 +524,7 @@
                     i18n: this.translateType
                 }],
                 assigneesActions: [{
-                    width: 80,
+                    width: 70,
                     buttons: [{
                         title: 'models.building.unassign_manager',
                         type: 'danger',
@@ -541,7 +546,7 @@
                     type: 'unitResidentAvatar',
                 }],
                 unitActions: [{
-                    width: 80,
+                    width: 70,
                     buttons: [{
                         title: 'general.actions.edit',
                         onClick: this.unitEditView,
@@ -563,7 +568,7 @@
                     label: 'models.request.status.label'
                 }],
                 requestActions: [{
-                    width: 120,
+                    width: 70,
                     buttons: [{
                         icon: 'ti-search',
                         title: 'general.actions.edit',
@@ -577,7 +582,7 @@
                     type: 'serviceName'
                 }],
                 assignmentsProviderActions: [{
-                    width: 80,
+                    width: 70,
                     buttons: [{
                         icon: 'el-icon-close',
                         title: 'general.unassign',
@@ -622,6 +627,9 @@
             ]),
             translateType(type) {
                 return this.$t(`general.assignment_types.${type}`);
+            },
+            translateResidentType(type) {
+                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
             },
             fetchSettings() {
                 this.getSettings().then((resp) => {

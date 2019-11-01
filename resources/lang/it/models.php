@@ -65,9 +65,9 @@ return [
             'update' => "Errore nell'aggiornamento del residente: ",
             'deleted' => "Residente Cancella errore: ",
             'not_allowed_change_status' => "Non è consentito modificare lo stato.",
-            'not_allowed_change_type_has_request_contract' => 'Non puoi cambiare tipo, dato che questo residente ha :contract_status contratti e :requests_status richieste',
-            'not_allowed_change_type_has_contract' => 'Non è possibile cambiare tipo in quanto questo residente ha :contract_status contratti',
-            'not_allowed_change_type_has_request' => 'Non è possibile cambiare tipo in quanto questo residente ha :requests_status richieste',
+            'not_allowed_change_type_has_request_contract' => 'Non puoi cambiare tipo, dato che questo residente ha :contracts_count contratti e :requests_count richieste',
+            'not_allowed_change_type_has_contract' => 'Non è possibile cambiare tipo in quanto questo residente ha :contracts_count contratti',
+            'not_allowed_change_type_has_request' => 'Non è possibile cambiare tipo in quanto questo residente ha :requests_count richieste',
         ],        
         "personal_details_card" => "Dati personali",
         "account_info_card" => "Accesso utente",
@@ -308,10 +308,8 @@ return [
         ],
         'status' => [
             "label" => "Situazione",
-            "new" => "Nuovo",
             "published" => "Pubblicato",
             "unpublished" => "Inedito",
-            "not_approved" => "Non approvato",
         ],
         'visibility' => [
             "label" => "Visibilità",

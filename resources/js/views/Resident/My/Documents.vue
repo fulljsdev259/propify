@@ -55,7 +55,6 @@
         data() {
             return {
                 documents: {},
-                media: [],
                 building_media: [],
                 unit_media: [],
                 quarter_media: [],
@@ -79,24 +78,12 @@
 
             try {
 
-                const {media} = await this.$store.dispatch('getBuilding', {id: this.$store.getters.loggedInUser.resident.building.id})
+                const { data } = await this.$store.dispatch('getMyDocuments', {id: this.$store.getters.loggedInUser.resident.building.id})
                 
-                this.building_media = media
+                this.building_media = data.building
+                this.unit_media = data.unit
+                this.quarter_media = data.quarter
 
-                // const {media1} = await this.$store.dispatch('getUnit', {id: this.$store.getters.loggedInUser.resident.unit.id})
-                
-                // this.unit_media = media1
-
-                // const {media2} = await this.$store.dispatch('getQuarter', {id: this.$store.getters.loggedInUser.resident.building.quarter_id})
-                
-                // this.quarter_media = media2
-
-                // this.documents = media.reduce((obj, file) => {
-                //     obj[file.collection_name] = obj[file.collection_name] || []
-                //     obj[file.collection_name].push(file)
-
-                //     return obj
-                // }, {})
             } catch (err) {
                 displayError(err)
             } finally {

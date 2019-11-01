@@ -24,6 +24,6 @@ class PinboardDeleteRequest extends BaseRequest
             return false;
         }
 
-        return $p->status == Pinboard::StatusNew;
+        return $p->status == Pinboard::StatusPublished;
     }
 }
