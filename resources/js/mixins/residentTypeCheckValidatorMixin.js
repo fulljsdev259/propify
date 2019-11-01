@@ -6,10 +6,9 @@ export default (config = {}) => {
             async checkavailabilityResidentType(rule, value, callback) {
                 console.log('checkavailabilityResidentType', validateObject)
                 let validateObject = this[model];
-                console.log('checkavailabilityResidentType', validateObject)
                 {
                     try {
-                        const resp = await axios.get('resident/get_residents__id__type?id=' + validateObject.id);                 
+                        const resp = await axios.get(`/residents/${validateObject.id}/type`);                 
                     } catch(error) {
                         if(error.response.data.success == false) {
                             callback(new Error(error.response.data.message));
