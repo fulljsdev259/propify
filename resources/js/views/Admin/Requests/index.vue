@@ -33,7 +33,6 @@
                             class="round"
                             @command="handleCommand">
                     {{$t('models.request.mass_edit.label')}}
-                    
                 </el-dropdown>
             </template>
             <template v-if="$can($permissions.delete.request)">
