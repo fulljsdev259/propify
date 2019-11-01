@@ -32,6 +32,7 @@ use App\Models\User;
 use App\Repositories\PropertyManagerRepository;
 use App\Repositories\ServiceProviderRepository;
 use App\Repositories\RequestRepository;
+use App\Repositories\SettingsRepository;
 use App\Repositories\TagRepository;
 use App\Repositories\TemplateRepository;
 use App\Repositories\UserRepository;
@@ -51,6 +52,9 @@ use InfyOm\Generator\Criteria\LimitOffsetCriteria;
  */
 class RequestAPIController extends AppBaseController
 {
+    /** @var  SettingsRepository */
+    private $settingsRepository;
+
     /** @var  RequestRepository */
     private $requestRepository;
 
@@ -58,8 +62,9 @@ class RequestAPIController extends AppBaseController
      * RequestAPIController constructor.
      * @param RequestRepository $requestRepository
      */
-    public function __construct(RequestRepository $requestRepository)
+    public function __construct(RequestRepository $requestRepository, SettingsRepository $settingsRepo)
     {
+        $this->settingsRepository = $settingsRepo;
         $this->requestRepository = $requestRepository;
     }
 
@@ -1693,7 +1698,8 @@ class RequestAPIController extends AppBaseController
      */
     protected function getPdfName(Request $request)
     {
-        $request->setDownloadPdf();
+        $settings = $this->settingsRepository->first();
+        $request->setDownloadPdf($settings);
         $pdfName = $request->pdfFileName();
 
         return $pdfName ;

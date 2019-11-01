@@ -40,7 +40,7 @@
                                 </td>
 
                                 <td style="text-align:right;vertical-align:top;" class="table_header">
-                                    <img class="logo" src="http://dev.propify.ch/storage/fortimo-ag-1.png"/>
+                                    <img class="logo" src="{{public_path($logo)}}"/>
                                 </td>
                             </tr>
                         </tbody>
