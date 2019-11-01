@@ -17,8 +17,8 @@ export default (config = {}) => {
                     }
                 }
                 else {
-                    if(validateObject.type == 2 && validateObject.contracts.length > 0)
-                        callback(new Error('You can\'t change the type to Owner'));
+                    if(validateObject.type != '' && validateObject.contracts.length > 0)
+                        callback(new Error("You can't change type as this resident has " + validateObject.contracts.length + " contracts"));
                 }
             }
         }

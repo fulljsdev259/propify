@@ -14,7 +14,7 @@
                 <div class="title">{{$t(item.title)}}</div>
                 </template>
             </div>
-            <div :class="['item', 'mobile-sidebar', {'active': item.active}]" v-for="item in items" :key="item.title + '1'" :style="item.style" @click.stop="handleRoute($event, item)">
+            <div :class="['item', 'mobile-sidebar', {'active': item.active}]" v-for="item in items" :key="item.title + '1'" :style="item.style" @mouseover="handleMouseRoute($event, item)" @click.stop="handleRoute($event, item)">
                 <router-link 
                     :to="{name: item.route.name}" v-if="!item.children">
                     <i :class="['icon', item.icon]"></i>
@@ -96,6 +96,7 @@
                 //this.submenu.visible = false
             },
             handleMouseRoute (e, item) {
+                console.log('mouse')
                 // if (!this.submenu.visible) {
                 //     if (this.direction === 'horizontal') {
                 //         this.origin.x = 50
@@ -112,7 +113,6 @@
                     this.submenu.items = item.children
             },
             handleRoute (e, item) {
-                
                 let i, items
 
                 this.$emit('closeDrawer')
