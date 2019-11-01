@@ -691,11 +691,11 @@ class Request extends AuditableModel implements HasMedia
             $text = '';
 
             if ($internalId) {
-                $text .= $internalId;
+                $text .= $internalId .  '_';
             }
 
             if ($unit) {
-                $text .= '_' . $unit;
+                $text .= $unit;
             }
 
             return $text ? $text . '-ID' : 'ID';
