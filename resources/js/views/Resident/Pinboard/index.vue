@@ -36,9 +36,9 @@
             
         </div>
         <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-            <a class="a-close-button" @click="visibleDrawer=!visibleDrawer">
+            <!-- <a class="a-close-button" @click="visibleDrawer=!visibleDrawer">
                 <span class="el-icon-close"></span>
-            </a>
+            </a> -->
             <ui-divider content-position="left" v-if="editingPinboard"><i class="ti-pencil"></i> {{$t('resident.edit_pinboard')}}</ui-divider>
             <div class="content">
                 <pinboard-edit-form :data="editingPinboard" v-if="editingPinboard" :visible.sync="visibleDrawer"/>
@@ -192,6 +192,10 @@
             editPinboard(event, data) {
                this.editingPinboard = data;
                this.visibleDrawer = true;
+            },
+            closeDrawer() {
+                this.resetDataFromDrawer();
+                this.visibleDrawer = false;
             }
         },
         watch: {

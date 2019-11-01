@@ -14,7 +14,7 @@ $factory->define(App\Models\Contract::class, function (Faker $faker) {
         'resident_id' => \App\Models\Resident::inRandomOrder()->value('id'),
         'building_id' => $unit->building->id,
         'unit_id' => $unit->id,
-        'type' => array_rand(\App\Models\Contract::Type),
+        'type' => array_rand(\App\Models\Unit::Type),
         'duration'=> $duration,
         'status' => array_rand(\App\Models\Contract::Status),
         'deposit_type' => array_rand(\App\Models\Contract::DepositType),
