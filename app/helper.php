@@ -145,29 +145,29 @@ function get_type_correspond_role($type)
     return \App\Models\PropertyManager::Type[$type] ?? \App\Models\PropertyManager::TypeManager;
 }
 
-function get_category_details($category)
+function get_category_details($categoryId)
 {
     $values = \App\Models\Request::CategoryAttributes;
     return [
-        'id' => $category,
-        'name' => \App\Models\Request::Category[$category] ?? 'not exists',
-        'capture_phase' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $category),
-        'qualification' => get_category_attribute(\App\Models\Request::QualificationAttr, $values, $category),
-        'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $category),
-        'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $category),
+        'id' => $categoryId,
+        'name' => \App\Models\Request::Category[$categoryId] ?? 'not exists',
+        'capture_phase' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $categoryId),
+        'qualification' => get_category_attribute(\App\Models\Request::QualificationAttr, $values, $categoryId),
+        'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $categoryId),
+        'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $categoryId),
     ];
 }
 
-function get_sub_category_details($subCategory)
+function get_sub_category_details($subCategoryId)
 {
-    if (is_null($subCategory)) {
+    if (is_null($subCategoryId)) {
         return [];
     }
 
     $config = \App\Models\Request::CategorySubCategory;
     $parentId = null;
     foreach ($config as $id => $values) {
-        if (in_array($subCategory, $values)) {
+        if (in_array($subCategoryId, $values)) {
             $parentId = $id;
             break;
         }
@@ -176,13 +176,13 @@ function get_sub_category_details($subCategory)
 
     $values = \App\Models\Request::SubCategoryAttributes;
     return [
-        'id' => $subCategory,
+        'id' => $subCategoryId,
         'parent_id' => $parentId,
-        'name' => \App\Models\Request::SubCategory[$subCategory] ?? 'not exists',
-        'capture_phase' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $subCategory),
-        'qualification' => get_category_attribute(\App\Models\Request::QualificationAttr, $values, $subCategory),
-        'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $subCategory),
-        'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $subCategory),
+        'name' => \App\Models\Request::SubCategory[$subCategoryId] ?? 'not exists',
+        'capture_phase' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $subCategoryId),
+        'qualification' => get_category_attribute(\App\Models\Request::QualificationAttr, $values, $subCategoryId),
+        'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $subCategoryId),
+        'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $subCategoryId),
     ];
 }
 
