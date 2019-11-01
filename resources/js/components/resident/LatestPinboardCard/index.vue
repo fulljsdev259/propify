@@ -2,7 +2,7 @@
     <ui-card shadow="always" class="latest-pinboard-card">
         <template #header>
             <i class="icon-megaphone-1"></i> {{$t('resident.latest_pinboard')}}
-            <el-button type="text" @click="$router.push({name: 'residentPinboard'})">{{$t('resident.actions.view_all')}}</el-button>
+            <el-button type="text" @click="$router.push({name: 'residentPinboards'})">{{$t('resident.actions.view_all')}}</el-button>
         </template>
         <loader v-if="loading" />
         <div class="placeholder" v-else-if="!loading && !pinboard.length">

@@ -233,7 +233,7 @@
             :global(.ui-card__header) {
                 position: relative;
                 :global(.el-button) {
-                    @media screen and (max-width: 414px) {
+                    @media screen and (max-width: 414px), screen and (min-width: 1301px) and (max-width: 1700px), screen and (min-width: 676px) and (max-width: 1200px) {
                         position: absolute;
                         bottom: 5px;
                         right: 16px;
