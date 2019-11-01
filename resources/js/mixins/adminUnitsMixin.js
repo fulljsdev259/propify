@@ -243,30 +243,34 @@ export default (config = {}) => {
         switch (config.mode) {
             case 'add':
                 mixin.methods = {
-                    async submit(afterValid = false) {
-                        const valid = await this.form.validate();
-                        if (valid) {
-                            this.loading.state = true;
-                            try {
-                                const response = await this.createUnit(this.model);
-                                displaySuccess(response);
-                                
+                    submit(afterValid = false) {
+                        return new Promise(async (resolve, reject) => {
+                            const valid = await this.form.validate();
+                            if (valid) {
+                                this.loading.state = true;
+                                try {
+                                    const response = await this.createUnit(this.model);
+                                    displaySuccess(response);
+                                    
 
-                                this.form.resetFields();
-                                if (!!afterValid) {
-                                    afterValid(response);
-                                } else {
-                                    this.$router.push({
-                                        name: 'adminUnitsEdit',
-                                        params: {id: response.data.id}
-                                    })
+                                    this.form.resetFields();
+                                    if (!!afterValid) {
+                                        afterValid(response);
+                                    } else {
+                                        // this.$router.push({
+                                        //     name: 'adminUnitsEdit',
+                                        //     params: {id: response.data.id}
+                                        // })
+                                        resolve(resp);
+                                    }
+                                } catch (err) {
+                                    displayError(err);
+                                    reject(err);
+                                } finally {
+                                    this.loading.state = false;
                                 }
-                            } catch (err) {
-                                displayError(err);
-                            } finally {
-                                this.loading.state = false;
                             }
-                        }
+                        });
                     },
 
                     ...mixin.methods,

@@ -534,7 +534,7 @@ export default (config = {}) => {
                     ...mixin.methods,
                     ...mapActions(['createRequest', 'createRequestTags', 'getTags']),
                     async saveRequest() {
-                        this.model.category_id = this.model.category_id
+                        this.model.category = this.model.category_id
                         this.model.sub_category = this.model.sub_category_id 
 
                         const resp = await this.createRequest(this.model);
@@ -570,32 +570,34 @@ export default (config = {}) => {
                         return resp;
 
                     },
-                    async submit(afterValid = false) {
-                        const valid = await this.form.validate();
-                        if (valid) {
-                            this.loading.state = true;
-                            try {
-                                const resp = await this.saveRequest();
-        
-                                displaySuccess(resp);
+                    submit(afterValid = false) {
+                        return new Promise(async (resolve, reject) => {
+                            const valid = await this.form.validate();
+                            if (valid) {
+                                this.loading.state = true;
+                                try {
+                                    const resp = await this.saveRequest();
+            
+                                    displaySuccess(resp);
 
-                                this.form.resetFields();
-                                if (!!afterValid) {
-                                    afterValid(resp);
-                                } else {
-                                    this.$router.push({
-                                        name: 'adminRequestsEdit',
-                                        params: {id: resp.data.id}
-                                    })
+                                    this.form.resetFields();
+                                    if (!!afterValid) {
+                                        afterValid(resp);
+                                    } else {
+                                        // this.$router.push({
+                                        //     name: 'adminRequestsEdit',
+                                        //     params: {id: resp.data.id}
+                                        // })
+                                        resolve(resp)
+                                    }
+                                    
+                                } catch (err) {
+                                    displayError(err);
+                                } finally {
+                                    this.loading.state = false;
                                 }
-                                
-                            } catch (err) {
-                                displayError(err);
-                            } finally {
-                                this.loading.state = false;
                             }
-                        }
-
+                        });
                     },
                 };
 

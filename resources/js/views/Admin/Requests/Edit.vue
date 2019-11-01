@@ -593,7 +593,7 @@
                     i18n: this.translateType
                 }],
                 assigneesActions: [{
-                    width: '180px',
+                    width: 120,
                     buttons: [{
                         title: 'models.request.notify',
                         tooltipMode: true,

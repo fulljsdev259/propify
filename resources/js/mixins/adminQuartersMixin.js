@@ -18,7 +18,6 @@ export default (config = {}) => {
                     house_num: 'house_num',
                     media: [],
                     internal_quarter_id: '',
-
                 },
                 quarter_format: '',
                 validationRules: {
@@ -185,30 +184,34 @@ export default (config = {}) => {
                         });
                         return resp;
                     },
-                    async submit(afterValid = false) {
-                        const valid = await this.form.validate();
-                        if (valid) {
-                            this.loading.state = true;
-                            try {
-                                const resp = await this.saveQuarter();
-                                displaySuccess(resp);
-                                
-                                this.form.resetFields();
-                                if (!!afterValid) {
-                                    afterValid(resp);
-                                } else {
-                                    this.$router.push({
-                                        name: 'adminQuartersEdit',
-                                        params: {id: resp.data.id}
-                                    })
+                    submit(afterValid = false) {
+                        return new Promise(async (resolve, reject) => {
+                            const valid = await this.form.validate();
+                            if (valid) {
+                                this.loading.state = true;
+                                try {
+                                    const resp = await this.saveQuarter();
+                                    displaySuccess(resp);
+                                    
+                                    this.form.resetFields();
+                                    if (!!afterValid) {
+                                        afterValid(resp);
+                                    } else {
+                                        // this.$router.push({
+                                        //     name: 'adminQuartersEdit',
+                                        //     params: {id: resp.data.id}
+                                        // })
+                                        resolve(resp);
+                                    }
+                                    
+                                } catch (err) {
+                                    displayError(err);
+                                    reject(err);
+                                } finally {
+                                    this.loading.state = false;
                                 }
-                                
-                            } catch (err) {
-                                displayError(err);
-                            } finally {
-                                this.loading.state = false;
                             }
-                        }
+                        });
                     },
                 };
 

@@ -66,7 +66,7 @@
             </el-table-column>
             <el-table-column
                 align="right"
-                :width="80"
+                :width="70"
             >
                 <template slot-scope="scope">
                     <el-tooltip

@@ -229,7 +229,7 @@
                     label: 'models.request.status.label'
                 }],
                 requestActions: [{
-                    width: '120',
+                    width: '70',
                     buttons: [{
                         icon: 'ti-search',
                         title: 'general.actions.edit',
@@ -246,7 +246,7 @@
                     i18n: this.translateType
                 }],
                 assignmentsActions: [{
-                    width: 80,
+                    width: 70,
                     buttons: [{
                         title: 'general.unassign',
                         type: 'danger',

@@ -14,15 +14,16 @@
                 </template>
             </el-table-column>
             <el-table-column
-                align="right"
+                align="left"
             >
-                <template slot-scope="scope">
+                <template slot-scope="scope" >
                     <a :href="scope.row.url" class="file-name" target="_blank">
                         {{scope.row.name}}
                     </a>
                 </template>
             </el-table-column>
             <el-table-column
+                width="70"
                 align="right"
             >
                 <template slot-scope="scope">
@@ -80,17 +81,15 @@
 </script>
 
 <style lang="scss" scoped>
-    .contract-table {
-        .clickable {
-            display: block;
-            cursor: pointer;
-            width: 100%;
-        }
-        .icon-success {
-            color: #5fad64;
-        }
-        .icon-danger {
-            color: #dd6161;
-        }
+
+    /deep/ .file-name {
+        color: var(--primary-color);
+        text-decoration: none;
     }
+
+    /deep/ .file-name:hover {
+        text-decoration: none;
+        color: var(--primary-color-lighter);
+    }
+    
 </style>

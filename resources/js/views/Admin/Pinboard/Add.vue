@@ -22,7 +22,7 @@
                                         >
                                         </el-option>
                                     </el-select> -->
-                                    <el-select style="display: block" v-model="model.type" @change="() => {changeAnnouncement(); replacePinboardTitle()}">
+                                    <el-select style="display: block" v-model="model.type" @change="replacePinboardTitle()">
                                         <el-option
                                             :label="$t(`models.pinboard.type.post`)"
                                             :value="1"
@@ -379,7 +379,7 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
-                    prop: 'role',
+                    prop: 'type',
                     label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
@@ -412,6 +412,20 @@
         },
         mounted() {
             this.rolename = this.$store.getters.loggedInUser.roles[0].name;
+
+            if (this.$route.params.type && this.$route.params.type !== 'new') {
+                switch (this.$route.params.type) {
+                    case 'post':
+                        this.model.type = 1;
+                        break;
+                    case 'announcement':
+                        this.model.type = 3;
+                        break;
+                    case 'article':
+                        this.model.type = 4;
+                        break;
+                }
+            }
         },
         methods: {
             notifyUnassignment(row) {
@@ -454,13 +468,6 @@
                 const executionStart = new Date(this.model.execution_start).getTime();
                 return d <= executionStart;
             },
-            changeAnnouncement(nValue) {
-                if(nValue) {
-                    this.model.status = 2;
-                }else {
-                    this.model.status = 1;
-                }
-            }
         }
     }
 </script>

@@ -68,6 +68,6 @@ class BaseRequest extends APIRequest
      */
     protected function getInRuleByClassConstants($constants)
     {
-        return 'in:' . implode(array_keys($constants));
+        return 'in:' . implode(',', array_keys($constants));
     }
 }

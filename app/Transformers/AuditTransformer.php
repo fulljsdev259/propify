@@ -33,8 +33,10 @@ class AuditTransformer extends BaseTransformer
         $response = [
             'id' => $model->id,
             'event' => $model->event,
+            'user_type' => $model->user_type,
             'auditable_type' => $model->auditable_type,
             'auditable_id' => $model->auditable_id,
+            'auditable_format' => $model->auditable_format,
             'user_id' => $model->user_id,
             'url' => $model->url,
             'message' => $this->getMessage($model),
@@ -191,9 +193,7 @@ class AuditTransformer extends BaseTransformer
         }
 
         $sMsgs = [
-            Pinboard::StatusNew . Pinboard::StatusPublished => "published",
             Pinboard::StatusUnpublished . Pinboard::StatusPublished => "published",
-            Pinboard::StatusNotApproved . Pinboard::StatusPublished => "published",
             Pinboard::StatusPublished . Pinboard::StatusUnpublished => "unpublished",
         ];
         if (Arr::has($a->new_values, 'status') &&
