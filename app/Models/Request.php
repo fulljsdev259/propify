@@ -433,13 +433,10 @@ class Request extends AuditableModel implements HasMedia
 
     const CategoryAttributes = [
         self::CategoryGeneral => [
-
         ],
         self::CategoryMalfunction => [
-            self::CapturePhaseAttr
         ],
         self::CategoryDeficiency => [
-            self::CapturePhaseAttr
         ],
     ];
 
