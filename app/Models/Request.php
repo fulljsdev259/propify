@@ -590,7 +590,7 @@ class Request extends AuditableModel implements HasMedia
         'qualification' => 'nullable|integer',
         'due_date' => 'required|date',
         'category_id' => 'required|integer',
-        'sub_category_id' => 'integer',
+        'sub_category_id' => 'nullable|integer',
         'visibility' => 'nullable|integer',
     ];
 
@@ -605,7 +605,7 @@ class Request extends AuditableModel implements HasMedia
         'title' => 'required|string',
         'description' => 'required|string',
         'category_id' => 'required|integer',
-        'sub_category_id' => 'integer',
+        'sub_category_id' => 'nullable|integer',
 //        'priority' => 'required|integer',
 //        'internal_priority' => 'integer',
         'visibility' => 'nullable|integer',
@@ -627,7 +627,7 @@ class Request extends AuditableModel implements HasMedia
         'status' => 'integer',
         'due_date' => 'date',
         'category_id' => 'integer',
-        'sub_category_id' => 'integer',
+        'sub_category_id' => 'nullable|integer',
         'visibility' => 'nullable|integer',
         'active_reminder' => 'boolean',
     ];
@@ -670,6 +670,7 @@ class Request extends AuditableModel implements HasMedia
             $q->with('unit', 'building.quarter:id,internal_quarter_id');
         }]);
         $contract = $this->contract;
+
         if (empty($contract)) {
             $this->load(['resident' => function ($q) {
                 $q->with([
@@ -680,15 +681,27 @@ class Request extends AuditableModel implements HasMedia
             }]);
             $contract = $this->resident->contracts->first() ?? null;
         }
+
         if ($contract) {
             $internalId = $contract->building->internal_building_id
                 ?? $contract->building->quarter->internal_quarter_id
                 ?? '';
 
             $unit = $contract->unit->name ?? '';
-            return $internalId .'_' . $unit. '_ID';
+            $text = '';
+
+            if ($internalId) {
+                $text .= $internalId;
+            }
+
+            if ($unit) {
+                $text .= '_' . $unit;
+            }
+
+            return $text ? $text . '-ID' : 'ID';
         }
-        return 'RE_ID';
+
+        return 'RE-ID';
     }
 
 
