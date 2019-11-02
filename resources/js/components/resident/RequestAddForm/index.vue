@@ -196,7 +196,6 @@
                 contracts: [],
                 mediaUploadMaxSize: MEDIA_UPLOAD_MAX_SIZE,
                 showSubCategory: false,
-                showPayer: false,
                 showLocation: false,
                 showRoom: false,
                 request_id: null,
@@ -212,7 +211,6 @@
                 if(this.showSubCategory) {
                     this.sub_categories = p_category ? p_category.sub_categories : [];
                 }
-                this.showPayer = this.model.qualification == 5 ? true : false;
             },
             changeSubCategory() {
                 const subcategory = this.sub_categories.find(category => {

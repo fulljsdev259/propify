@@ -15,7 +15,7 @@
                             class="round"
                             @command="handleCommand">
                     {{$t('models.request.mass_edit.label')}}
-                    <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-menu slot="dropdown" :disabled="!selectedItems.length">
                         <el-dropdown-item 
                             :disabled="!selectedItems.length" 
                             :command="option"
