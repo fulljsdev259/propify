@@ -1,6 +1,7 @@
 import {mapActions, mapGetters} from 'vuex';
 import PasswordValidatorMixin from './passwordValidatorMixin';
 import EmailCheckValidatorMixin from './emailCheckValidatorMixin';
+import residentTypeCheckValidatorMixin from './residentTypeCheckValidatorMixin';
 import ResidentTitleTypes from './methods/residentTitleTypes';
 import {displayError, displaySuccess} from '../helpers/messages';
 import UploadUserAvatarMixin from './adminUploadUserAvatarMixin';
@@ -42,7 +43,7 @@ export default (config = {}) => {
                         language: '',
                     },
                     nation: '',
-                    type: null,
+                    type: '',
                     contracts: [],
                     status: 1
                 },
@@ -173,7 +174,7 @@ export default (config = {}) => {
     if (config.mode) {
         switch (config.mode) {
             case 'add':
-                mixin.mixins = [PasswordValidatorMixin(), EmailCheckValidatorMixin(), ResidentTitleTypes, UploadUserAvatarMixin];
+                mixin.mixins = [PasswordValidatorMixin(), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), ResidentTitleTypes, UploadUserAvatarMixin];
 
                 mixin.methods = {
                     submit(afterValid = false) {
@@ -247,7 +248,7 @@ export default (config = {}) => {
 
                 break;
             case 'edit':
-                mixin.mixins = [PasswordValidatorMixin({required: false}), EmailCheckValidatorMixin(), ResidentTitleTypes, UploadUserAvatarMixin];
+                mixin.mixins = [PasswordValidatorMixin({required: false}), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), ResidentTitleTypes, UploadUserAvatarMixin];
 
                 mixin.methods = {
                     submit() {
@@ -314,6 +315,12 @@ export default (config = {}) => {
                         this.model.avatar = user.avatar;
                         this.model.nation = +this.model.nation
 
+                        // this.validationRules.type = [{
+                        //     required: true,
+                        //     message: this.$t('validation.general.required')
+                        // }, {
+                        //     validator: this.checkavailabilityResidentType
+                        // }]
                     } catch (err) {
                         this.$router.replace({
                             name: 'adminResidents'

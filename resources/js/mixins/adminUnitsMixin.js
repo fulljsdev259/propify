@@ -261,7 +261,7 @@ export default (config = {}) => {
                                         //     name: 'adminUnitsEdit',
                                         //     params: {id: response.data.id}
                                         // })
-                                        resolve(resp);
+                                        resolve(response);
                                     }
                                 } catch (err) {
                                     displayError(err);

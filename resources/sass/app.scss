@@ -110,9 +110,11 @@ body {
             }
         }
         div {
-            min-height: 40px;
             display: flex;
             align-items: center;
+        }
+        .switcher__desc {
+            min-height: 20px;
         }
     }
     .attic-label {

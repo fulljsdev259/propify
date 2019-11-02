@@ -24,8 +24,8 @@ use Storage;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="category",
- *          description="category",
+ *          property="category_id",
+ *          description="category_id",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -134,7 +134,7 @@ use Storage;
  * )
  * @property int $id
  * @property int|null $creator_user_id
- * @property int $category
+ * @property int $category_id
  * @property int $resident_id
  * @property int|null $contract_id
  * @property string $request_format
@@ -433,13 +433,10 @@ class Request extends AuditableModel implements HasMedia
 
     const CategoryAttributes = [
         self::CategoryGeneral => [
-
         ],
         self::CategoryMalfunction => [
-            self::CapturePhaseAttr
         ],
         self::CategoryDeficiency => [
-            self::CapturePhaseAttr
         ],
     ];
 
@@ -477,8 +474,8 @@ class Request extends AuditableModel implements HasMedia
     const Fillable = [
         'creator_user_id',
         'reminder_user_id',
-        'category',
-        'sub_category',
+        'category_id',
+        'sub_category_id',
         'subject_id',
         'resident_id',
         'contract_id',
@@ -520,7 +517,7 @@ class Request extends AuditableModel implements HasMedia
      * @var array
      */
     protected $casts = [
-        'category' => 'integer',
+        'category_id' => 'integer',
         'creator_user_id' => 'integer',
         'reminder_user_id' => 'integer',
         'resident_id' => 'integer',
@@ -589,8 +586,8 @@ class Request extends AuditableModel implements HasMedia
 //        'internal_priority' => 'integer',
         'qualification' => 'nullable|integer',
         'due_date' => 'required|date',
-//        'category' => 'required|integer', //@TODO
-//        'sub_category' => 'integer',
+        'category_id' => 'required|integer',
+        'sub_category_id' => 'nullable|integer',
         'visibility' => 'nullable|integer',
     ];
 
@@ -604,8 +601,8 @@ class Request extends AuditableModel implements HasMedia
         'contract_id' => 'required|exists:contracts,id',
         'title' => 'required|string',
         'description' => 'required|string',
-//        'category' => 'required|integer', //@TODO
-//        'sub_category' => 'integer',
+        'category_id' => 'required|integer',
+        'sub_category_id' => 'nullable|integer',
 //        'priority' => 'required|integer',
 //        'internal_priority' => 'integer',
         'visibility' => 'nullable|integer',
@@ -626,8 +623,8 @@ class Request extends AuditableModel implements HasMedia
         'qualification' => 'nullable|integer',
         'status' => 'integer',
         'due_date' => 'date',
-//        'category' => 'integer', //@TODO
-//        'sub_category' => 'integer',
+        'category_id' => 'integer',
+        'sub_category_id' => 'nullable|integer',
         'visibility' => 'nullable|integer',
         'active_reminder' => 'boolean',
     ];
@@ -670,6 +667,7 @@ class Request extends AuditableModel implements HasMedia
             $q->with('unit', 'building.quarter:id,internal_quarter_id');
         }]);
         $contract = $this->contract;
+
         if (empty($contract)) {
             $this->load(['resident' => function ($q) {
                 $q->with([
@@ -680,15 +678,27 @@ class Request extends AuditableModel implements HasMedia
             }]);
             $contract = $this->resident->contracts->first() ?? null;
         }
+
         if ($contract) {
             $internalId = $contract->building->internal_building_id
                 ?? $contract->building->quarter->internal_quarter_id
                 ?? '';
 
             $unit = $contract->unit->name ?? '';
-            return $internalId .'_' . $unit. '_ID';
+            $text = '';
+
+            if ($internalId) {
+                $text .= $internalId .  '_';
+            }
+
+            if ($unit) {
+                $text .= $unit;
+            }
+
+            return $text ? $text . '-ID' : 'ID';
         }
-        return 'RE_ID';
+
+        return 'RE-ID';
     }
 
 
@@ -850,8 +860,8 @@ class Request extends AuditableModel implements HasMedia
 
     public function setDownloadPdf(){
        $data = [
-            'category' => get_category_details($this->category),
-            'subCategory' => get_sub_category_details($this->sub_category),
+            'category' => get_category_details($this->category_id),
+            'subCategory' => get_sub_category_details($this->sub_category_id),
             'request' => $this,
             'resident' => $this->resident,
             'contract' => $this->contract

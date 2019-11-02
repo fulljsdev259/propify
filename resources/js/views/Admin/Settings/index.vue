@@ -122,14 +122,14 @@
                                         <!--                            </el-form>-->
                                         <!--                        </el-card>-->
 
-                                        <el-card :header="$t('settings.settings')">
-                                            <!-- <el-form-item :label="$t('settings.quarter_enable')" prop="quarter_enable">
+                                        <!-- <el-card :header="$t('settings.settings')">
+                                            <el-form-item :label="$t('settings.quarter_enable')" prop="quarter_enable">
                                                 <el-switch v-model="model.quarter_enable"/>
                                             </el-form-item>
                                             <el-form-item :label="$t('settings.listing_approval_enable')"
                                                           prop="listing_approval_enable">
                                                 <el-switch v-model="model.listing_approval_enable"/>
-                                            </el-form-item> -->
+                                            </el-form-item>
                                             <div class="switch-wrapper">
                                                 <el-form-item :label="$t('settings.pinboard_approval_enable')" prop="pinboard_approval_enable">
                                                     <el-switch v-model="model.pinboard_approval_enable"/>
@@ -156,7 +156,7 @@
                                                     </el-form-item>
                                                 </el-col>
                                             </el-row>
-                                        </el-card>
+                                        </el-card> -->
 
                                         <el-card :header="$t('settings.email')">
                                             <el-row :gutter="20">
