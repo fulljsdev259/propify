@@ -12,10 +12,10 @@
                             size="mini"
                             type="info" 
                             trigger="click" 
-                            class="round"
+                            class="round mass-edit-dropdown"
                             @command="handleCommand">
                     {{$t('models.request.mass_edit.label')}}
-                    <el-dropdown-menu slot="dropdown" :disabled="!selectedItems.length">
+                    <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item 
                             :disabled="!selectedItems.length" 
                             :command="option"
@@ -591,6 +591,20 @@
                 this.toAssignList = [];
                 this.toAssign = [];
             },
+            disableMassEditButton(flag) {
+                let element = document.getElementsByClassName("mass-edit-dropdown");
+                let buttons = element[0].getElementsByTagName("button");
+                for(let i = 0; i < 2; i ++) {
+                    if(flag) {
+                        buttons[i].disabled = true;
+                        buttons[i].classList.add("is-disabled");
+                    }
+                    else {
+                        buttons[i].disabled = false;
+                        buttons[i].classList.remove("is-disabled");
+                    }
+                }
+            }
         },
         async created(){
             this.isLoadingFilters = true;
@@ -598,30 +612,15 @@
             const states = await this.axios.get('states?filters=true')
             this.states = states.data.data;
 
-            
             this.categories = await this.getFilterCategories()
-
-            // const quarters = await this.axios.get('quarters')
-            // this.quarters = quarters.data.data.data;
-
-            // const propertyManagers = await this.axios.get('propertyManagers?get_all=true')
-            // this.propertyManagers = propertyManagers.data.data.map((propertyManager) => {
-            //     return {
-            //         id: propertyManager.id,
-            //         name: propertyManager.user.name
-            //     }
-            // });
-
-            
-            //this.buildings = await this.getFilterBuildings()
-            // this.services = await this.fetchRemoteServices()
-            // this.residents = await this.fetchRemoteResidents()
-
             this.isLoadingFilters = false;
 
-            //const routeName = this.$route.name;
+            this.disableMassEditButton(true)
         },
-        async mounted() {
+        watch: {
+            selectedItems: function(items) {   
+                this.disableMassEditButton(items.length == 0)
+            },
         },
     }
 </script>
