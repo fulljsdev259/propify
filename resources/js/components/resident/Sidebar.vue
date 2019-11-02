@@ -3,7 +3,7 @@
         <div :class="['toggler', direction === 'vertical' && {'icon-left': visible, 'icon-right': !visible}, direction === 'horizontal' && {'icon-down': visible, 'icon-up': !visible}]" v-if="showToggler && !submenu.visible" @click="handleVisibility"></div>
         <div ref="menu" class="menu">
             
-            <div :class="['item', 'desktop-sidebar', {'active': item.active}]" v-for="item in items" :key="item.title" :style="item.style" @mouseover="handleMouseRoute($event, item)" @click.stop="handleRoute($event, item)">
+            <div :class="['item', 'desktop-sidebar', {'active': item.active}]" v-for="item in parsedRoutes" :key="item.title" :style="item.style" @mouseover="handleMouseRoute($event, item)" @click.stop="handleRoute($event, item)">
                 <router-link 
                     :to="{name: item.route.name}" v-if="!item.children">
                     <i :class="['icon', item.icon]"></i>
@@ -14,7 +14,7 @@
                 <div class="title">{{$t(item.title)}}</div>
                 </template>
             </div>
-            <div :class="['item', 'mobile-sidebar', {'active': item.active}]" v-for="item in items" :key="item.title + '1'" :style="item.style" @mouseover="handleMouseRoute($event, item)" @click.stop="handleRoute($event, item)">
+            <div :class="['item', 'mobile-sidebar', {'active': item.active}]" v-for="item in parsedRoutes" :key="item.title + '1'" :style="item.style" @mouseover="handleMouseRoute($event, item)" @click.stop="handleRoute($event, item)">
                 <router-link 
                     :to="{name: item.route.name}" v-if="!item.children">
                     <i :class="['icon', item.icon]"></i>
@@ -373,6 +373,59 @@
             },
             showSettings () {
                 return this.showSettingsMenu
+            },
+            parsedRoutes() {
+                 let idx = 0
+                return this.newRoutes.reduce((items, item, i) => {
+                    item.key = `${i}`
+
+                    item.active = false
+
+                    if (item.children) {
+                        
+                        if (!this.submenu.items.length) {
+                            this.submenu.items = item.children
+                        }
+
+                        item.children = item.children.reduce((children, child, childIdx) => {
+                            if ('visible' in child && !child.visible) {
+                                return children
+                            }
+
+                            child.active = false
+                            child.key = `${item.key}.${childIdx}`
+
+                            if (child.route) {
+                                if (child.route.name === this.$route.name) {
+                                    item.active = true
+
+                                    child.active = true
+                                }
+                            }
+
+                            children.push(child)
+
+                            return children
+                        }, [])
+
+                    } else if (item.route && item.route.name === this.$route.name) {
+                        item.active = true
+                    }
+
+                    if (item.positionedBottom) {
+                        if (!items.find(item => item.positionedBottom)) {
+                            item.style = 'margin-top: auto'
+                        }
+
+                        items.push(item)
+                    } else {
+                        items.splice(idx, 0, item)
+
+                        idx++
+                    }
+
+                    return items
+                }, [])
             }
         },
         watch: {
@@ -481,8 +534,8 @@
             '$route': {
                 immediate: true,
                 handler (routes) {
-                    console.log('newRoutes', this.newRoutes)
-                    this.parseRoutes(this.newRoutes)
+                    //console.log('newRoutes', this.newRoutes)
+                    //this.parseRoutes(this.newRoutes)
                 }
             }
         },
