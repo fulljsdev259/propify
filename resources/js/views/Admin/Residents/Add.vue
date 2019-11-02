@@ -267,11 +267,7 @@
         /deep/ .contract-box.el-card {
             .el-card__header {
                 display: block;
-            }
-
-            .el-table__empty-text {
-                width: 100%;                
-            }
+            }            
  
         }
 
