@@ -33,7 +33,6 @@
                     :to="{name: item.route.name}" >
                 <i :class="['icon', item.icon]"></i>
                 <div class="title">{{$t(item.title)}}</div>
-                {{item.visible}}
                 </router-link>
             </div>
         </div>
@@ -78,7 +77,12 @@
                     horizontal: null,
                     vertical: null
                 },
-                mouseIn: false
+                mouseIn: false,
+                showPropertyManagerMenu: true,
+                showMyNeighbourMenu: true,
+                showCleanifyMenu: true,
+                showMyContractsMenu: true,
+                showSettingsMenu: false,
             }
         },
         methods: {
@@ -96,7 +100,6 @@
                 //this.submenu.visible = false
             },
             handleMouseRoute (e, item) {
-                console.log('mouse')
                 // if (!this.submenu.visible) {
                 //     if (this.direction === 'horizontal') {
                 //         this.origin.x = 50
@@ -221,13 +224,14 @@
             },
             parseRoutes (routes) {
                 let idx = 0
-
+                console.log('parse routes', routes)
                 this.items = routes.reduce((items, item, i) => {
                     item.key = `${i}`
 
                     item.active = false
 
                     if (item.children) {
+                        
                         if (!this.submenu.items.length) {
                             this.submenu.items = item.children
                         }
@@ -252,6 +256,7 @@
 
                             return children
                         }, [])
+
                     } else if (item.route && item.route.name === this.$route.name) {
                         item.active = true
                     }
@@ -270,6 +275,104 @@
 
                     return items
                 }, [])
+            }
+        },
+        computed: {
+            newRoutes() {
+                return [{
+                        icon: 'icon-th',
+                        title: 'resident.dashboard',
+                        route: {
+                            name: 'residentDashboard'
+                        }
+                    }, 
+                    {
+                        icon: 'icon-vcard',
+                        title: 'resident.my_tenancy',
+                        children: [{
+                            icon: 'icon-user',
+                            title: 'resident.my_personal_data',
+                            route: {
+                                name: 'residentMyPersonal'
+                            }
+                        }, {
+                            icon: 'icon-handshake-o',
+                            title: 'resident.my_recent_contract',
+                            route: {
+                                name: 'residentMyContracts'
+                            },
+                            visible: this.showContract
+                        }, {
+                            icon: 'icon-doc-text',
+                            title: 'resident.my_documents',
+                            route: {
+                                name: 'residentMyDocuments'
+                            },
+                            // do not show if no documents
+                        }, {
+                            icon: 'icon-contacts',
+                            title: 'resident.my_contact_persons',
+                            route: {
+                                name: 'residentMyContacts'
+                            },
+                            visible: this.showSettings 
+                        }, {
+                            icon: 'icon-users',
+                            title: 'resident.property_managers',
+                            route: {
+                                name: 'residentPropertyManagers'
+                            },
+                            visible: this.showProperty
+                        }, {
+                            icon: 'icon-group',
+                            title: 'resident.my_neighbours',
+                            route: {
+                                name: 'residentMyNeighbours'
+                            },
+                            visible: this.showNeighbour
+                        }]
+                    }, {
+                        icon: 'icon-megaphone-1',
+                        title: 'resident.pinboard',
+                        route: {
+                            name: 'residentPinboards'
+                        }
+                    }, {
+                        icon: 'icon-chat-empty',
+                        title: 'resident.requests',
+                        route: {
+                            name: 'residentRequests'
+                        }
+                    }, {
+                        icon: 'icon-water',
+                        title: 'resident.cleanify',
+                        route: {
+                            name: 'cleanifyRequest'
+                        },
+                        visible: this.showCleanify
+                    }, {
+                        icon: 'icon-cog',
+                        title: 'resident.settings',
+                        positionedBottom: true,
+                        route: {
+                            name: 'residentSettings'
+                        }
+                    }]
+            },
+            showContract () {
+                return this.$store.getters.loggedInUser.resident.type == 1 ? true : false
+            },
+            showCleanify() {
+                return this.showCleanifyMenu
+            },
+            showNeighbour () {
+                return this.showMyNeighbourMenu
+            },
+            showProperty () {
+                return this.showPropertyManagerMenu
+            },
+            showSettings () {
+                return this.showSettingsMenu
             }
         },
         watch: {
@@ -378,12 +481,34 @@
             '$route': {
                 immediate: true,
                 handler (routes) {
-                    this.parseRoutes(this.routes)
+                    console.log('newRoutes', this.newRoutes)
+                    this.parseRoutes(this.newRoutes)
                 }
             }
         },
-        mounted () {
+        async mounted () {
             this.doAnimeOnDirection(this.direction)
+            this.$root.$on('hide-property-manager-card', () => {
+                this.showPropertyManagerMenu = false
+                console.log('hide property')
+            });
+            this.$root.$on('hide-my-neighbour-card', () => {
+                this.showMyNeighbourMenu = false
+                console.log('hide neibour')
+            });
+
+            await this.$store.dispatch('getSettings').then((resp) => {
+                this.Settings = resp.data;
+                if(this.Settings && this.Settings.contact_enable) {
+                    this.showSettingsMenu = true
+                }
+                
+                if( resp.data.cleanify_enable == false )
+                {
+                    this.showCleanifyMenu = false;
+                }
+                }).catch((error) => {
+            });
 //            this.onSiblingElementClickHandler = () => this.submenu.visible = false
 
 //            this.$el.nextElementSibling.addEventListener('click', this.onSiblingElementClickHandler)
