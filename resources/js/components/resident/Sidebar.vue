@@ -224,7 +224,7 @@
             },
             parseRoutes (routes) {
                 let idx = 0
-                console.log('parse routes', routes)
+
                 this.items = routes.reduce((items, item, i) => {
                     item.key = `${i}`
 
@@ -377,6 +377,10 @@
             parsedRoutes() {
                  let idx = 0
                 return this.newRoutes.reduce((items, item, i) => {
+                    if ('visible' in item && !item.visible) {
+                        return items
+                    }
+                    
                     item.key = `${i}`
 
                     item.active = false
@@ -534,8 +538,7 @@
             '$route': {
                 immediate: true,
                 handler (routes) {
-                    //console.log('newRoutes', this.newRoutes)
-                    //this.parseRoutes(this.newRoutes)
+                    //this.parseRoutes(this.routes)
                 }
             }
         },

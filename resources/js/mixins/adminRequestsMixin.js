@@ -521,7 +521,7 @@ export default (config = {}) => {
                     async saveRequest() {
                         // this.model.category = this.model.category_id
                         // this.model.sub_category = this.model.sub_category_id 
-
+                        this.model.media = this.media.map(item => item.file.src)
                         const resp = await this.createRequest(this.model);
                         
                         let requestId = resp.data.id;
@@ -546,7 +546,7 @@ export default (config = {}) => {
 
 
                         let audit_id = resp.data.audit_id;
-                        await this.uploadNewMedia(resp.data.id, audit_id);
+                        //await this.uploadNewMedia(resp.data.id, audit_id);
     
                         this.media = [];
 
@@ -703,7 +703,7 @@ export default (config = {}) => {
 
                                 try {
                                     
-                                    
+                                    params.media = this.media.map(item => item.file.src)
                                     const resp = await this.updateRequest(params);
 
                                     await this.uploadNewMedia(params.id, null);
