@@ -379,13 +379,6 @@
     .el-table .cell, .el-table th div{
         overflow: hidden;
         text-overflow: unset;
-    }
-    .el-table__empty-text{
-        width: 100%;
-        .el-alert{
-            padding: 0 0;
-        }        
-
     }    
 </style>
 <style lang="scss" scoped>    

@@ -168,90 +168,82 @@
                     }
                 }],
                 routes: [{
-                    icon: 'icon-th',
-                    title: 'resident.dashboard',
-                    route: {
-                        name: 'residentDashboard'
-                    }
-                }, 
-                {
-                    icon: 'icon-vcard',
-                    title: 'resident.my_tenancy',
-                    children: [{
-                        icon: 'icon-user',
-                        title: 'resident.my_personal_data',
+                        icon: 'icon-th',
+                        title: 'resident.dashboard',
                         route: {
-                            name: 'residentMyPersonal'
+                            name: 'residentDashboard'
+                        }
+                    }, 
+                    {
+                        icon: 'icon-vcard',
+                        title: 'resident.my_tenancy',
+                        children: [{
+                            icon: 'icon-user',
+                            title: 'resident.my_personal_data',
+                            route: {
+                                name: 'residentMyPersonal'
+                            }
+                        }, {
+                            icon: 'icon-handshake-o',
+                            title: 'resident.my_recent_contract',
+                            route: {
+                                name: 'residentMyContracts'
+                            }
+                        }, {
+                            icon: 'icon-doc-text',
+                            title: 'resident.my_documents',
+                            route: {
+                                name: 'residentMyDocuments'
+                            },
+                            // do not show if no documents
+                        }, {
+                            icon: 'icon-contacts',
+                            title: 'resident.my_contact_persons',
+                            route: {
+                                name: 'residentMyContacts'
+                            },
+                            visible: this.Settings && this.Settings.contact_enable // OR no service partners for the building
+                        }, {
+                            icon: 'icon-users',
+                            title: 'resident.property_managers',
+                            route: {
+                                name: 'residentPropertyManagers'
+                            }
+                        }, {
+                            icon: 'icon-group',
+                            title: 'resident.my_neighbours',
+                            route: {
+                                name: 'residentMyNeighbours'
+                            }
+                        }]
+                    }, {
+                        icon: 'icon-megaphone-1',
+                        title: 'resident.pinboard',
+                        route: {
+                            name: 'residentPinboards'
                         }
                     }, {
-                        icon: 'icon-handshake-o',
-                        title: 'resident.my_recent_contract',
+                        icon: 'icon-chat-empty',
+                        title: 'resident.requests',
                         route: {
-                            name: 'residentMyContracts'
+                            name: 'residentRequests'
                         }
                     }, {
-                        icon: 'icon-doc-text',
-                        title: 'resident.my_documents',
+                        icon: 'icon-water',
+                        title: 'resident.cleanify',
                         route: {
-                            name: 'residentMyDocuments'
-                        }
-                        // do not show if no documents
-                    }, {
-                        icon: 'icon-contacts',
-                        title: 'resident.my_contact_persons',
-                        route: {
-                            name: 'residentMyContacts'
+                            name: 'cleanifyRequest'
                         },
-                        visible: this.Settings && this.Settings.contact_enable // OR no service partners for the building
                     }, {
-                        icon: 'icon-users',
-                        title: 'resident.property_managers',
+                        icon: 'icon-cog',
+                        title: 'resident.settings',
+                        positionedBottom: true,
                         route: {
-                            name: 'residentPropertyManagers'
-                        }
-                    }, {
-                        icon: 'icon-group',
-                        title: 'resident.my_neighbours',
-                        route: {
-                            name: 'residentMyNeighbours'
+                            name: 'residentSettings'
                         }
                     }]
-                }, {
-                    icon: 'icon-megaphone-1',
-                    title: 'resident.pinboard',
-                    route: {
-                        name: 'residentPinboards'
-                    }
-                }, {
-                    icon: 'icon-chat-empty',
-                    title: 'resident.requests',
-                    route: {
-                        name: 'residentRequests'
-                    }
-                }, {
-                    icon: 'icon-water',
-                    title: 'Cleanify',
-                    route: {
-                        name: 'cleanifyRequest'
-                    },
-                }, {
-                    icon: 'icon-cog',
-                    title: 'resident.settings',
-                    positionedBottom: true,
-                    route: {
-                        name: 'residentSettings'
-                    }
-                }]
+                ,
             }
-        },
-        computed: {
-            resident_logo() {
-                if(localStorage.getItem('resident_logo_src') != this.$constants.logo.resident_logo ) {
-                    localStorage.setItem('resident_logo_src', this.$constants.logo.resident_logo);
-                }
-
-                return localStorage.getItem('resident_logo_src') ? `/${localStorage.getItem('resident_logo_src')}` : '';
-            },
         },
         methods: {
             test () {
@@ -335,7 +327,6 @@
             ...mapGetters('notifications', {
                 unreadNotifications: 'unread'
             }),
-
             breakpoints () {
                 return {
                     md: el => {
@@ -352,6 +343,13 @@
                     }
                 }
             },
+            resident_logo() {
+                if(localStorage.getItem('resident_logo_src') != this.$constants.logo.resident_logo ) {
+                    localStorage.setItem('resident_logo_src', this.$constants.logo.resident_logo);
+                }
+
+                return localStorage.getItem('resident_logo_src') ? `/${localStorage.getItem('resident_logo_src')}` : '';
+            }
         },
         beforeCreate() {
             document.getElementById('viewport').setAttribute('content', 'width=device-width, initial-scale=1.0')
@@ -362,6 +360,7 @@
         async mounted () {
             this.loading = true
             this.resident_logo_src = "/" + this.$constants.logo.resident_logo;
+            
             await this.$store.dispatch('getSettings').then((resp) => {
                 this.Settings = resp.data;
                     if( resp.data.cleanify_enable == false )

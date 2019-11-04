@@ -485,12 +485,7 @@
 
             .right-col{
                 padding-right: 10px!important;
-            }
-
-
-           .el-table__empty-text {
-                width: 100%;                
-            }
+            }        
         
         }
 

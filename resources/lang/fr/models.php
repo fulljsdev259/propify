@@ -609,7 +609,8 @@ return [
             "label" => "Type",
             "provider" => "Service",
             "manager" => "Directeur",
-            'user' => 'Administrator',
+            'user' => 'Administrateur',
+            'administrator' => 'Administrateur',
         ],
         'visibility' => [
             "label" => "Visibilité",

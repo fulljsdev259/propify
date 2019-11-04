@@ -289,7 +289,7 @@ export default (config = {}) => {
                 };
 
             case 'view':
-                mixin.mixins = [PasswordValidatorMixin({required: false}), EmailCheckValidatorMixin(), ResidentTitleTypes, UploadUserAvatarMixin];
+                mixin.mixins = [PasswordValidatorMixin({required: false}), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), ResidentTitleTypes, UploadUserAvatarMixin];
                 mixin.methods = {
                     ...mixin.methods,
                     ...mapActions(['getResident'])
@@ -315,12 +315,12 @@ export default (config = {}) => {
                         this.model.avatar = user.avatar;
                         this.model.nation = +this.model.nation
 
-                        // this.validationRules.type = [{
-                        //     required: true,
-                        //     message: this.$t('validation.general.required')
-                        // }, {
-                        //     validator: this.checkavailabilityResidentType
-                        // }]
+                        this.validationRules.type = [{
+                            required: true,
+                            message: this.$t('validation.general.required')
+                        }, {
+                            validator: this.checkavailabilityResidentType
+                        }]
                     } catch (err) {
                         this.$router.replace({
                             name: 'adminResidents'

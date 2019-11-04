@@ -3,7 +3,7 @@
         <div :class="['toggler', direction === 'vertical' && {'icon-left': visible, 'icon-right': !visible}, direction === 'horizontal' && {'icon-down': visible, 'icon-up': !visible}]" v-if="showToggler && !submenu.visible" @click="handleVisibility"></div>
         <div ref="menu" class="menu">
             
-            <div :class="['item', 'desktop-sidebar', {'active': item.active}]" v-for="item in items" :key="item.title" :style="item.style" @mouseover="handleMouseRoute($event, item)" @click.stop="handleRoute($event, item)">
+            <div :class="['item', 'desktop-sidebar', {'active': item.active}]" v-for="item in parsedRoutes" :key="item.title" :style="item.style" @mouseover="handleMouseRoute($event, item)" @click.stop="handleRoute($event, item)">
                 <router-link 
                     :to="{name: item.route.name}" v-if="!item.children">
                     <i :class="['icon', item.icon]"></i>
@@ -14,7 +14,7 @@
                 <div class="title">{{$t(item.title)}}</div>
                 </template>
             </div>
-            <div :class="['item', 'mobile-sidebar', {'active': item.active}]" v-for="item in items" :key="item.title + '1'" :style="item.style" @click.stop="handleRoute($event, item)">
+            <div :class="['item', 'mobile-sidebar', {'active': item.active}]" v-for="item in parsedRoutes" :key="item.title + '1'" :style="item.style" @mouseover="handleMouseRoute($event, item)" @click.stop="handleRoute($event, item)">
                 <router-link 
                     :to="{name: item.route.name}" v-if="!item.children">
                     <i :class="['icon', item.icon]"></i>
@@ -33,7 +33,6 @@
                     :to="{name: item.route.name}" >
                 <i :class="['icon', item.icon]"></i>
                 <div class="title">{{$t(item.title)}}</div>
-                {{item.visible}}
                 </router-link>
             </div>
         </div>
@@ -78,7 +77,12 @@
                     horizontal: null,
                     vertical: null
                 },
-                mouseIn: false
+                mouseIn: false,
+                showPropertyManagerMenu: true,
+                showMyNeighbourMenu: true,
+                showCleanifyMenu: true,
+                showMyContractsMenu: true,
+                showSettingsMenu: false,
             }
         },
         methods: {
@@ -112,7 +116,6 @@
                     this.submenu.items = item.children
             },
             handleRoute (e, item) {
-                
                 let i, items
 
                 this.$emit('closeDrawer')
@@ -228,6 +231,7 @@
                     item.active = false
 
                     if (item.children) {
+                        
                         if (!this.submenu.items.length) {
                             this.submenu.items = item.children
                         }
@@ -252,6 +256,162 @@
 
                             return children
                         }, [])
+
+                    } else if (item.route && item.route.name === this.$route.name) {
+                        item.active = true
+                    }
+
+                    if (item.positionedBottom) {
+                        if (!items.find(item => item.positionedBottom)) {
+                            item.style = 'margin-top: auto'
+                        }
+
+                        items.push(item)
+                    } else {
+                        items.splice(idx, 0, item)
+
+                        idx++
+                    }
+
+                    return items
+                }, [])
+            }
+        },
+        computed: {
+            newRoutes() {
+                return [{
+                        icon: 'icon-th',
+                        title: 'resident.dashboard',
+                        route: {
+                            name: 'residentDashboard'
+                        }
+                    }, 
+                    {
+                        icon: 'icon-vcard',
+                        title: 'resident.my_tenancy',
+                        children: [{
+                            icon: 'icon-user',
+                            title: 'resident.my_personal_data',
+                            route: {
+                                name: 'residentMyPersonal'
+                            }
+                        }, {
+                            icon: 'icon-handshake-o',
+                            title: 'resident.my_recent_contract',
+                            route: {
+                                name: 'residentMyContracts'
+                            },
+                            visible: this.showContract
+                        }, {
+                            icon: 'icon-doc-text',
+                            title: 'resident.my_documents',
+                            route: {
+                                name: 'residentMyDocuments'
+                            },
+                            // do not show if no documents
+                        }, {
+                            icon: 'icon-contacts',
+                            title: 'resident.my_contact_persons',
+                            route: {
+                                name: 'residentMyContacts'
+                            },
+                            visible: this.showSettings 
+                        }, {
+                            icon: 'icon-users',
+                            title: 'resident.property_managers',
+                            route: {
+                                name: 'residentPropertyManagers'
+                            },
+                            visible: this.showProperty
+                        }, {
+                            icon: 'icon-group',
+                            title: 'resident.my_neighbours',
+                            route: {
+                                name: 'residentMyNeighbours'
+                            },
+                            visible: this.showNeighbour
+                        }]
+                    }, {
+                        icon: 'icon-megaphone-1',
+                        title: 'resident.pinboard',
+                        route: {
+                            name: 'residentPinboards'
+                        }
+                    }, {
+                        icon: 'icon-chat-empty',
+                        title: 'resident.requests',
+                        route: {
+                            name: 'residentRequests'
+                        }
+                    }, {
+                        icon: 'icon-water',
+                        title: 'resident.cleanify',
+                        route: {
+                            name: 'cleanifyRequest'
+                        },
+                        visible: this.showCleanify
+                    }, {
+                        icon: 'icon-cog',
+                        title: 'resident.settings',
+                        positionedBottom: true,
+                        route: {
+                            name: 'residentSettings'
+                        }
+                    }]
+            },
+            showContract () {
+                return this.$store.getters.loggedInUser.resident.type == 1 ? true : false
+            },
+            showCleanify() {
+                return this.showCleanifyMenu
+            },
+            showNeighbour () {
+                return this.showMyNeighbourMenu
+            },
+            showProperty () {
+                return this.showPropertyManagerMenu
+            },
+            showSettings () {
+                return this.showSettingsMenu
+            },
+            parsedRoutes() {
+                 let idx = 0
+                return this.newRoutes.reduce((items, item, i) => {
+                    if ('visible' in item && !item.visible) {
+                        return items
+                    }
+                    
+                    item.key = `${i}`
+
+                    item.active = false
+
+                    if (item.children) {
+                        
+                        if (!this.submenu.items.length) {
+                            this.submenu.items = item.children
+                        }
+
+                        item.children = item.children.reduce((children, child, childIdx) => {
+                            if ('visible' in child && !child.visible) {
+                                return children
+                            }
+
+                            child.active = false
+                            child.key = `${item.key}.${childIdx}`
+
+                            if (child.route) {
+                                if (child.route.name === this.$route.name) {
+                                    item.active = true
+
+                                    child.active = true
+                                }
+                            }
+
+                            children.push(child)
+
+                            return children
+                        }, [])
+
                     } else if (item.route && item.route.name === this.$route.name) {
                         item.active = true
                     }
@@ -378,12 +538,33 @@
             '$route': {
                 immediate: true,
                 handler (routes) {
-                    this.parseRoutes(this.routes)
+                    //this.parseRoutes(this.routes)
                 }
             }
         },
-        mounted () {
+        async mounted () {
             this.doAnimeOnDirection(this.direction)
+            this.$root.$on('hide-property-manager-card', () => {
+                this.showPropertyManagerMenu = false
+                console.log('hide property')
+            });
+            this.$root.$on('hide-my-neighbour-card', () => {
+                this.showMyNeighbourMenu = false
+                console.log('hide neibour')
+            });
+
+            await this.$store.dispatch('getSettings').then((resp) => {
+                this.Settings = resp.data;
+                if(this.Settings && this.Settings.contact_enable) {
+                    this.showSettingsMenu = true
+                }
+                
+                if( resp.data.cleanify_enable == false )
+                {
+                    this.showCleanifyMenu = false;
+                }
+                }).catch((error) => {
+            });
 //            this.onSiblingElementClickHandler = () => this.submenu.visible = false
 
 //            this.$el.nextElementSibling.addEventListener('click', this.onSiblingElementClickHandler)

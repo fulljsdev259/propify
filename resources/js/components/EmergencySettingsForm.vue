@@ -3,13 +3,21 @@
         
         <el-row :gutter="20">
             <el-col :md="24">
-                <el-form-item class="switcher">
+                <!-- <el-form-item class="switcher">
                     <label class="switcher__label">
                         {{$t('general.emergency.activate_title')}}
                         <span class="switcher__desc">{{$t('general.emergency.activate_desc')}}</span>
                     </label>
                     <el-switch v-model="model.activate_emergency"/>
-                </el-form-item>
+                </el-form-item> -->
+                <div class="switch-wrapper">
+                    <el-form-item :label="$t('general.emergency.activate_title')">
+                        <el-switch v-model="model.activate_emergency"/>
+                    </el-form-item>
+                    <div class="switcher__desc">
+                        {{ $t('general.emergency.activate_desc') }}
+                    </div>
+                </div>
             </el-col>
         </el-row>
         <el-row>

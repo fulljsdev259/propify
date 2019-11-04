@@ -227,8 +227,20 @@
             ContractListTable,
             RelationListing
         },
+        data() {
+            return {
+                oldType: null,
+            }
+        },
         mounted() {
             this.$root.$on('changeLanguage', () => this.getCountries());
+
+            // this.validationRules.type = [{
+            //     required: true,
+            //     message: this.$t('validation.general.required')
+            // }, {
+            //     validator: this.checkavailabilityResidentType
+            // }]
         },
         computed: {
             ...mapGetters('application', {
@@ -267,11 +279,7 @@
         /deep/ .contract-box.el-card {
             .el-card__header {
                 display: block;
-            }
-
-            .el-table__empty-text {
-                width: 100%;                
-            }
+            }            
  
         }
 
