@@ -54,13 +54,13 @@
                                             <el-col :md="8">
                                                 <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
                                                             prop="zip">
-                                                    <el-input type="text" v-model="model.zip"></el-input>
+                                                    <el-input type="text" v-model="model.zip"/>
                                                 </el-form-item>
                                             </el-col>
                                             <el-col :md="16">
                                                 <el-form-item :label="$t('general.city')" :rules="validationRules.city"
                                                             prop="city">
-                                                    <el-input type="text" v-model="model.city"></el-input>
+                                                    <el-input type="text" v-model="model.city"/>
                                                 </el-form-item>
                                             </el-col>
                                         </el-row>
@@ -275,7 +275,7 @@
             <template v-if="editingContract || isAddContract">
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider>
                     
-                <div class="content" v-if="visibleDrawer">
+                <div class="content" v-if="visibleDrawer"> 
                     <contract-form v-if="editingContract" 
                                 mode="edit" 
                                 :quarter_id="model.id" 

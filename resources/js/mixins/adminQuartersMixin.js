@@ -252,13 +252,18 @@ export default (config = {}) => {
                     async fetchCurrentQuarter() {
                         const resp = await this.getQuarter({id: this.$route.params.id});
                         
-                        this.model = {...resp}
+                        const {
+                            address: {
+                                state: {
+                                    id: state_id
+                                },
+                                ...restAddress
+                            },
+                           
+                            ...restData
+                        } = resp
 
-                        if(resp.address != undefined) {
-                            this.model.zip = this.model.address.zip;
-                            this.model.city = this.model.address.city;
-                            this.model.state_id = this.model.address.state.id;
-                        }
+                        this.model = {state_id, ...restAddress, ...restData};
 
                         this.fileCount = this.model.media.length
                         this.contractCount = this.model.contracts.length
