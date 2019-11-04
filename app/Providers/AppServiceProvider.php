@@ -29,7 +29,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
-use OwenIt\Auditing\Models\Audit;
+use App\Models\Audit;
 
 class AppServiceProvider extends ServiceProvider
 {

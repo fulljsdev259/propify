@@ -369,11 +369,6 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
                     $fail($attribute.' must be false.');
                 }
             },
-            'pinned' => function ($attribute, $value, $fail) {      // @TODO delete
-                if ($value && !\Auth::user()->can('announcement-pinboard')) {
-                    $fail($attribute.' must be false.');
-                }
-            },
             'execution_start' => 'nullable|date',
             'execution_end' => 'nullable|date|after_or_equal:execution_start',
         ];
