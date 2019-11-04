@@ -12,8 +12,8 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\User;
 
 /**
- * Class PinboardNotify
- * @package App\Jobs
+ * Class NotifyAdminNewResidentPinboard
+ * @package App\Jobs\Notify
  */
 class NotifyAdminNewResidentPinboard
 {
