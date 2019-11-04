@@ -173,6 +173,7 @@ class PinboardAPIController extends AppBaseController
      * @param SettingsRepository $settingsRepository
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateRequest $request, SettingsRepository $settingsRepository)

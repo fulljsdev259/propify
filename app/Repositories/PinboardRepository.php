@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\Model;
 use App\Models\Quarter;
@@ -50,7 +51,8 @@ class PinboardRepository extends BaseRepository
 
     /**
      * @param array $attributes
-     * @return Pinboard|mixed
+     * @return Model|Pinboard|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function create(array $attributes)
@@ -90,16 +92,17 @@ class PinboardRepository extends BaseRepository
         }
 
         $model = $this->saveMediaUploads($model, $attributes);
+
         if (!empty($attributes['quarter_ids'])) {
-            $model->quarters()->sync($attributes['quarter_ids']);
+            $this->assignWithMergeAudit($model, 'quarters', $attributes, 'quarter_ids');
         }
 
         if (!empty($attributes['building_ids'])) {
-            $model->buildings()->sync($attributes['building_ids']);
+            $this->assignWithMergeAudit($model, 'buildings', $attributes, 'building_ids');
         }
 
         if (!empty($attributes['provider_ids'])) {
-            $model->providers()->sync($attributes['provider_ids']);
+            $this->assignWithMergeAudit($model, 'providers', $attributes, 'provider_ids');
         }
 
         $notificationsData = collect();
@@ -113,6 +116,26 @@ class PinboardRepository extends BaseRepository
         return $model;
     }
 
+    /**
+     * @param AuditableModel $model
+     * @param $method
+     * @param $data
+     * @param $key
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function assignWithMergeAudit($model, $method, $data, $key)
+    {
+        $model->disableAuditing();
+        $model->{$method}()->sync($data[$key]);
+        $model->enableAuditing();
+        //$model->addAssigneesDataInAudit($key, $data[$key]);
+    }
+
+    /**
+     * @param Pinboard $pinboard
+     * @param $notificationsData
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
     protected function saveNotificationAuditsAndLogs(Pinboard $pinboard, $notificationsData)
     {
         $announcementPinboardPublished = get_morph_type_of(AnnouncementPinboardPublished::class);
@@ -132,7 +155,8 @@ class PinboardRepository extends BaseRepository
      * @param int $id
      * @param $status
      * @param $publishedAt
-     * @return Pinboard|mixed
+     * @return Model|Pinboard|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function setStatus(int $id, $status, $publishedAt)
@@ -145,7 +169,8 @@ class PinboardRepository extends BaseRepository
      * @param Pinboard $pinboard
      * @param $status
      * @param $publishedAt
-     * @return Pinboard|mixed
+     * @return Model|Pinboard|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function setStatusExisting(Pinboard $pinboard, $status, $publishedAt)
@@ -161,6 +186,7 @@ class PinboardRepository extends BaseRepository
      * @param array $attributes
      * @param $id
      * @return Model|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function update(array $attributes, $id)
@@ -173,6 +199,7 @@ class PinboardRepository extends BaseRepository
      * @param Model $model
      * @param $attributes
      * @return Model|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function updateExisting(Model $model, $attributes)
@@ -313,6 +340,10 @@ class PinboardRepository extends BaseRepository
         // @TODO
     }
 
+    /**
+     * @param Pinboard $pinboard
+     * @return \Illuminate\Support\Collection
+     */
     public function notifyAdminNewResidentPinboard(Pinboard $pinboard)
     {
         $newResidentPinboard = get_morph_type_of(NewResidentPinboard::class);
@@ -336,7 +367,8 @@ class PinboardRepository extends BaseRepository
 
     /**
      * @param Contract $contract
-     * @return Pinboard|bool|mixed
+     * @return Model|Pinboard|bool|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */

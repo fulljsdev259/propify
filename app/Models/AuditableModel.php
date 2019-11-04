@@ -192,6 +192,32 @@ class AuditableModel extends Model implements Auditable
     }
 
     /**
+     * @param $key
+     * @param $value
+     * @param null $audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function addAssigneesDataInAudit($key, $value, $audit = null)
+    {
+        $audit = $this->getAudit($audit);
+        if (empty($audit)) {
+            return;
+        }
+
+        if (self::EventCreated == $audit->event) {
+            $newValues =  $audit->new_values;
+            $newValues['assignees'][$key] = $value;
+            $audit->new_values = $newValues;
+            $audit->save();
+        } elseif (self::EventUpdated == $audit->event) {
+            dd('@TODO');
+        } else {
+            dd('@TODO');
+        }
+    }
+
+
+    /**
      * @param $audit
      * @param $key
      * @param $value
