@@ -279,6 +279,9 @@ export default (config = {}) => {
                     await this.fetchCurrentRequest();
                     this.toAssign = '';
                     this.$refs.assigneesList.fetch();
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                     displaySuccess(resp.data)
                 }
             },
@@ -339,6 +342,9 @@ export default (config = {}) => {
                 });
 
                 this.model.media.splice(index, 1)
+                if(this.$refs.auditList){
+                    this.$refs.auditList.fetch();
+                }
                 displaySuccess(resp);
             },
             changeCategory() {
@@ -715,6 +721,9 @@ export default (config = {}) => {
                                     //this.$set(this.model, 'service_providers', resp.data.service_providers);
                                     //this.$set(this.model, 'media', resp.data.media);
                                     //this.$set(this.model, 'property_managers', resp.data.property_managers);
+                                    if(this.$refs.auditList){
+                                        this.$refs.auditList.fetch();
+                                    }
                                     displaySuccess(resp);
                                     resolve(true);
                                 } catch (err) {

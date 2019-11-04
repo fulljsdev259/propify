@@ -221,6 +221,9 @@ export default (config = {}) => {
 
                         if (resp && resp.data && config.mode === 'edit') {
                             this.$refs.assignmentsList.fetch();
+                            if(this.$refs.auditList){
+                                this.$refs.auditList.fetch();
+                            }
                             this.toAssign = '';
                             displaySuccess(resp)
                         }
@@ -336,7 +339,9 @@ export default (config = {}) => {
                                     if (resp.data.user && resp.data.user.id) {
                                         await this.uploadAvatarIfNeeded(resp.data.user.id);
                                     }
-
+                                    if(this.$refs.auditList){
+                                        this.$refs.auditList.fetch();
+                                    }
                                     displaySuccess(resp);
                                     resolve(true);
                                 } catch (err) {
