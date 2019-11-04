@@ -397,6 +397,11 @@ return [
             'not_found' => "Quarter not found",
             'deleted' => "Quarter deleted error: ",
         ],
+        'types' => [
+            'label' => 'Type',
+            'rent' => 'Rent',
+            'sell' => 'Sell'
+        ]
     ],
     'request' => [        
         'deleted' => 'Request deleted',

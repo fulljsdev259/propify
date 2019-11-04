@@ -21,6 +21,10 @@ export default (config = {}) => {
                 },
                 quarter_format: '',
                 validationRules: {
+                    type: [{
+                        required: true,
+                        message: this.$t('models.quarter.required')
+                    }], 
                     name: [{
                         required: true,
                         message: this.$t('models.quarter.required')
@@ -167,7 +171,19 @@ export default (config = {}) => {
                 })
 
             },
-        }
+            getLanguageI18n() {
+                this.getStates();
+                this.types = Object.entries(this.$constants.quarters.type).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.types.${label}`)}))
+            },
+        },
+        watch: {
+            "$i18n.locale": {
+                immediate: true,
+                handler(val) {
+                    this.getLanguageI18n();
+                }
+            }
+        },
     };
 
     if (config.mode) {
@@ -223,7 +239,7 @@ export default (config = {}) => {
 
                 mixin.created = async function () {
                     this.loading.state = true;
-                    this.getStates();
+                    this.getLanguageI18n();
                     this.loading.state = false;
                 };
 
@@ -289,7 +305,7 @@ export default (config = {}) => {
 
                 mixin.created = async function () {
                     this.loading.state = true;
-                    this.getStates();
+                    this.getLanguageI18n();
                     await this.fetchCurrentQuarter();
                     this.loading.state = false;
                 };

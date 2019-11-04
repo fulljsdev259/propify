@@ -398,6 +398,11 @@ return [
             'not_found' => "Projekt nicht gefunden.",
             'deleted' => "Fehler beim Löschen des Projekts: ",
         ],
+        'types' => [
+            'label' => 'Typ',
+            'rent' => 'Miete',
+            'sell' => 'Verkaufen'
+        ]
     ],
     'request' => [        
         'deleted' => 'Anfrage gelöscht',

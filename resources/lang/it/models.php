@@ -397,6 +397,11 @@ return [
             'not_found' => "Quartiere non trovato",
             'deleted' => "Errore al quarto eliminato: ",
         ],
+        'types' => [
+            'label' => 'Tipo',
+            'rent' => 'Affitto',
+            'sell' => 'Vendere'
+        ]
     ],
     'request' => [        
         "deleted" => "Richiesta supprimée",

@@ -397,6 +397,11 @@ return [
             'not_found' => "Trimestre non trouvé",
             'deleted' => "Erreur d'effacement trimestriel : ",
         ],
+        'types' => [
+            'label' => 'Type',
+            'rent' => 'Loyer',
+            'sell' => 'Vendre'
+        ]
     ],
     'request' => [        
         "deleted" => "Richiesta supprimée",

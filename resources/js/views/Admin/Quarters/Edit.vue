@@ -15,6 +15,21 @@
                             <el-form :model="model" ref="form">
                                 <el-row :gutter="20">
                                     <el-col :md="12">
+                                        <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.type"
+                                                prop="type">
+                                            <el-select placeholder="Select"
+                                                        v-model="model.type">
+                                                <el-option
+                                                        :key="type.value"
+                                                        :label="type.name"
+                                                        :value="type.value"
+                                                        v-for="type in types">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                
+                                    <el-col :md="12">
                                         <el-form-item :label="$t('resident.name')" :rules="validationRules.name"
                                                     prop="name">
                                             <el-input type="text" v-model="model.name"/>
@@ -579,7 +594,6 @@
             },
         },
         mounted() {
-            this.$root.$on('changeLanguage', () => this.getStates());
 
             EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;
