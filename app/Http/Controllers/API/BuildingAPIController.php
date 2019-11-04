@@ -730,7 +730,7 @@ class BuildingAPIController extends AppBaseController
             'users'
         ]);
         $response = (new BuildingTransformer)->transform($building);
-        return $this->sendResponse($response, __('models.building.managers_assigned'));
+        return $this->sendResponse($response, __('models.building.service_assigned'));
     }
 
     /**
