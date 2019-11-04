@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Notifications\AnnouncementPinboardPublished;
+use App\Notifications\NewResidentInNeighbour;
+use App\Notifications\NewResidentPinboard;
+use App\Notifications\PinboardPublished;
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use OwenIt\Auditing\Contracts\Auditable;
-use OwenIt\Auditing\Models\Audit;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 /**
@@ -137,11 +140,81 @@ class AuditableModel extends Model implements Auditable
      * @return Audit
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
+    public function newSystemNotificationAudit($value, $event = null, $isSingle = true, $tags = [], $changeOldValues = false)
+    {
+        $key = self::MergeInMainData;
+        $event = $event ?? AuditableModel::EventCreated;
+        $this->auditEvent = self::EventUpdated;
+        $audit =  new Audit($this->toAudit());
+        $audit->event = $event;
+        $audit->user_type = self::System;
+        $audit->auditable_id = $audit->auditable_id ?? 0;
+        $audit->auditable_type = $audit->auditable_id ? $audit->auditable_type  :  'system';
+        $audit->new_values = [];
+        $audit->old_values = [];
+
+        if (!empty($tags)) {
+            $tags = Arr::wrap($tags);
+            $audit->tags = json_encode($tags); // @TODO correct later
+        }
+
+        $announcementPinboardPublished = get_morph_type_of(AnnouncementPinboardPublished::class);
+        $pinboardPublished = get_morph_type_of(PinboardPublished::class);
+        $pinboardNewResidentNeighbor = get_morph_type_of(NewResidentInNeighbour::class);
+        $pinboardNewResidentPinboard = get_morph_type_of(NewResidentPinboard::class);
+
+        $_value = [];
+        foreach ($value as $morph => $data) {
+            if ($morph ==  get_morph_type_of($pinboardNewResidentPinboard)) {
+                if ($data->pluck('id')->isEmpty()) {
+                    continue;
+                }
+                $_value[$morph] = [
+                    'admin_user_ids' => $data->pluck('id')->all(),
+                    'failed_admin_user_ids' => []
+                ];
+            } elseif (in_array($morph, [$announcementPinboardPublished, $pinboardPublished, $pinboardNewResidentNeighbor])) {
+                if ($data->pluck('resident.id')->isEmpty()) {
+                    continue;
+                }
+                $_value[$morph] = [
+                    'resident_ids' => $data->pluck('resident.id')->all(),
+                    'failed_resident_ids' => []
+                ];
+            } else {
+                dd('@TODO', $morph);
+            }
+        }
+
+        $value = $_value;
+
+        if (AuditableModel::EventCreated == $event) {
+            $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
+        } elseif (AuditableModel::EventUpdated == $event) {
+            dd('@TODO');
+            $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle, $changeOldValues);
+        } else {
+            dd('@TODO');
+        }
+
+        return $audit;
+    }
+
+    /**
+     * @param $key
+     * @param $value
+     * @param null $event
+     * @param bool $isSingle
+     * @param array $tags
+     * @param bool $changeOldValues
+     * @return Audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
     public function newSystemAudit($key, $value, $event = null, $isSingle = true, $tags = [], $changeOldValues = false)
     {
         $event = $event ?? AuditableModel::EventCreated;
         $this->auditEvent = self::EventUpdated;
-        $audit =  new Audit($this->toAudit());
+        $audit = new Audit($this->toAudit());
         $audit->event = $event;
         $audit->user_type = self::System;
         $audit->auditable_id = $audit->auditable_id ?? 0;
@@ -190,6 +263,32 @@ class AuditableModel extends Model implements Auditable
             // @TODO
         }
     }
+
+    /**
+     * @param $key
+     * @param $value
+     * @param null $audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function addAssigneesDataInAudit($key, $value, $audit = null)
+    {
+        $audit = $this->getAudit($audit);
+        if (empty($audit)) {
+            return;
+        }
+
+        if (self::EventCreated == $audit->event) {
+            $newValues =  $audit->new_values;
+            $newValues['assignees'][$key] = $value;
+            $audit->new_values = $newValues;
+            $audit->save();
+        } elseif (self::EventUpdated == $audit->event) {
+            dd('@TODO');
+        } else {
+            dd('@TODO');
+        }
+    }
+
 
     /**
      * @param $audit

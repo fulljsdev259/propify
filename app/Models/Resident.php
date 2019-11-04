@@ -366,18 +366,10 @@ class Resident extends AuditableModel implements HasMedia
         return $this->belongsTo(Contract::class);
     }
 
-    public function homeless()
-    {
-        return ! $this->contracts()
-            ->where('contracts.status', Contract::StatusActive)
-            ->whereNotNull('contracts.building_id')->count();
-    }
 
-    public function active_contracts_with_building()
+    public function active_contracts()
     {
-        return $this->contracts()
-            ->where('contracts.status', Contract::StatusActive)
-            ->whereNotNull('contracts.building_id');
+        return $this->contracts()->where('contracts.status', Contract::StatusActive);
     }
 
     /**

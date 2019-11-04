@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Mail;
  * Class NewAdminNotification
  * @package App\Jobs
  */
-class SendNewRequestEmailToReceptionists
+class SendNewRequestEmailToReceptionists implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

@@ -40,10 +40,11 @@ class ListingRepository extends BaseRepository
     public function create(array $attributes)
     {
         $u = \Auth::user();
-        if ($u->resident()->exists() && !$u->resident->homeless()) {
-            $firstContractBuilding = $u->resident->contracts->first()->building; // @TODO contract related
-            $attributes['address_id'] = $firstContractBuilding->address_id;
-            $attributes['quarter_id'] = $firstContractBuilding->quarter_id;
+
+        if ($u->resident ) {
+            $firstContractBuilding = $u->resident->contracts()->first()->building ?? null;
+            $attributes['address_id'] = $firstContractBuilding->address_id ?? null;
+            $attributes['quarter_id'] = $firstContractBuilding->quarter_id ?? null;
         }
 
         if ($attributes['visibility'] != Listing::VisibilityAll &&

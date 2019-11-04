@@ -16,7 +16,7 @@
                 </div>
             </template>
         </heading>
-        <div class="warning-bar" v-if="!model.has_email_receptionists">
+        <div class="warning-bar" v-if="!loading.state && !model.has_email_receptionists">
             <div class="message" type="info">
                 <i class="icon-info-circled"></i>{{$t('models.building.warning_bar.message')}}
             </div>
@@ -378,7 +378,7 @@
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
             <template v-if="editingContract || isAddContract">
-                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider>
                     
                 <div class="content" v-if="visibleDrawer">
                     <contract-form v-if="editingContract" 
@@ -425,7 +425,13 @@
                         </div>
                         
                         <div class="content" v-if="visibleDrawer">
-                            <email-receptionist-form :is-building="true" :building_id="model.id" :quarter_id="model.quarter_id" :visible.sync="visibleDrawer"/>
+                            <email-receptionist-form 
+                                        :is-building="true" 
+                                        :building_id="model.id" 
+                                        :quarter_id="model.quarter_id" 
+                                        :visible.sync="visibleDrawer"
+                                        @update-has-email-receptionists="updateHasEmailReceptionists"
+                                        />
                         </div>
 
                     </el-tab-pane>
@@ -625,6 +631,9 @@
                 'deleteBuildingWithIds', 
                 'checkUnitRequestWidthIds'
             ]),
+            updateHasEmailReceptionists(flag) {
+                this.model.has_email_receptionists = flag
+            },
             translateType(type) {
                 return this.$t(`general.assignment_types.${type}`);
             },

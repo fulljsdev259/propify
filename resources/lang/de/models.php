@@ -611,6 +611,7 @@ return [
             'provider' => 'Dienstleister',
             'manager' => 'Bewirtschafter',
             'user' => 'Administrator',
+            'administrator' => 'Administrator',
         ],
         'visibility' => [
             'label' => 'Sichtbarkeit',

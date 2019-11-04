@@ -112,14 +112,13 @@
         watch: {
             links() {
                 const routeName = this.$route.name;
-
                 this.links.map(link => {
-                    if (link.route && link.route.name == routeName) {
+                    if (link.route && routeName.includes(link.route.name)) {
                         this.currActive = link.title;
                     } else if (link.children) {
                         let dActive = '';
                         link.children.map(child => {
-                            if (child.route && child.route.name == routeName) {
+                            if (child.route && routeName.includes(child.route.name)) {
                                 this.currActive = child.title;
                             }
                         });
@@ -133,6 +132,7 @@
                     this.links.map(link => {
                         if (link.route && link.route.name == routeName) {
                             this.currActive = link.title;
+                            
                         } else if (link.children) {
                             let dActive = '';
                             link.children.map(child => {
