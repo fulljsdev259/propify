@@ -11,7 +11,6 @@ use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use OwenIt\Auditing\Contracts\Auditable;
-use OwenIt\Auditing\Models\Audit;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 /**
@@ -215,7 +214,7 @@ class AuditableModel extends Model implements Auditable
     {
         $event = $event ?? AuditableModel::EventCreated;
         $this->auditEvent = self::EventUpdated;
-        $audit =  new Audit($this->toAudit());
+        $audit = new Audit($this->toAudit());
         $audit->event = $event;
         $audit->user_type = self::System;
         $audit->auditable_id = $audit->auditable_id ?? 0;
