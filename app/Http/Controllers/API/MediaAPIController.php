@@ -761,7 +761,8 @@ class MediaAPIController extends AppBaseController
      * @param int $id
      * @param int $mediaId
      * @param RequestDeleteRequest $r
-     * @return Response
+     * @return mixed
+     * @throws \Exception
      */
     public function requestDestroy(int $id, int $mediaId, RequestDeleteRequest $r)
     {
