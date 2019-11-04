@@ -86,8 +86,7 @@
                                                   :rules="validationRules.type"
                                                   prop="type">
                                         <el-select style="display: block"
-                                                   v-model="model.type"
-                                                   @change="changeType">
+                                                   v-model="model.type">
                                             <el-option
                                                 :key="k"
                                                 :label="$t(`models.resident.type.${type}`)"
@@ -162,7 +161,15 @@
                         <card class="mt15 contract-box">
                             <template slot="header">
                                 {{ $t('models.resident.contract.title') }}
-                                <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                                <el-button style="float:right" 
+                                        type="primary" 
+                                        @click="toggleDrawer" 
+                                        icon="icon-plus" 
+                                        size="mini" 
+                                        :disabled="model.type == ''" 
+                                        round>
+                                        {{$t('models.resident.contract.add')}}
+                                </el-button>
                             </template>
                             
                             <contract-list-table
@@ -231,11 +238,6 @@
         data() {
             return {
                 oldType: null,
-            }
-        },
-        methods: {
-            changeType (val) {
-                
             }
         },
         mounted() {

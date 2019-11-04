@@ -163,7 +163,7 @@
                     </el-input>
                 </el-form-item> 
             </el-col> -->
-            <el-col :md="12" v-if="resident_type_check == 1 && !isFuture">
+            <el-col :md="12" v-if="resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.status.label')" prop="status" class="label-block">
                     <el-select placeholder="Select" style="display: block" 
                                 v-model="model.status">
@@ -598,8 +598,8 @@
                 const today = new Date().getTime();
 
                 this.isFuture = start_date > today
-                if(this.isFuture)
-                    this.model.status = 2
+                // if(this.isFuture)
+                //     this.model.status = 2
             },
             async remoteSearchResidents(search) {
                 if (search === '') {
