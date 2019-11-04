@@ -46,7 +46,7 @@ class SettingsTransformer extends TransformerAbstract
             'cleanify_enable' => $model->cleanify_enable,
             'listing_approval_enable' => $model->listing_approval_enable,
             'pinboard_approval_enable' => $model->pinboard_approval_enable,
-            'comment_update_timeout' => $model->comment_update_timeout,
+//            'comment_update_timeout' => $model->comment_update_timeout,
             'free_apartments_enable' => $model->free_apartments_enable,
             'free_apartments_url' => $model->free_apartments_url,
             'opening_hours' => $model->opening_hours,

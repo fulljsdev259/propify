@@ -424,9 +424,9 @@ class CommentAPIController extends AppBaseController
         }
 
         $timeout = 120;
-        if ($settings = $this->settingsRepository->first()) {
-            $timeout = $settings->comment_update_timeout;
-        }
+//        if ($settings = $this->settingsRepository->first()) {
+//            $timeout = $settings->comment_update_timeout;
+//        }
         $isAdmin = $request->user()->hasRole('administrator') ||
             $request->user()->hasRole('administrator');
         if (!$isAdmin && $comment->created_at->addMinutes($timeout)->lessThan(now())) {
