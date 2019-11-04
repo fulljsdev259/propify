@@ -2,22 +2,19 @@
 
 namespace App\Repositories;
 
+use App\Jobs\Notify\PinboardNotify;
 use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\Model;
 use App\Models\Quarter;
 use App\Models\Pinboard;
 use App\Models\Contract;
-use App\Models\Resident;
 use App\Models\Settings;
 use App\Models\User;
-use App\Notifications\NewResidentInNeighbour;
 use App\Notifications\NewResidentPinboard;
 use App\Notifications\AnnouncementPinboardPublished;
-use App\Notifications\PinboardPublished;
 use App\Traits\SaveMediaUploads;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -106,9 +103,11 @@ class PinboardRepository extends BaseRepository
         }
 
         $notificationsData = collect();
+
         if (Pinboard::StatusPublished == $attributes['status']) {
-            $notificationsData = $this->notify($model);
+            $notificationsData = dispatch_now(new PinboardNotify($model));
         }
+        
         $adminNotificationsData = $this->notifyAdminNewResidentPinboard($model);
         $notificationsData = $notificationsData->merge($adminNotificationsData);
         $this->saveNotificationAuditsAndLogs($model, $notificationsData);
@@ -224,109 +223,7 @@ class PinboardRepository extends BaseRepository
      */
     public function notify(Pinboard $pinboard)
     {
-        if (!$pinboard->notify_email) {
-            return collect();
-        }
-
-        $usersToNotify = $this->getNotifiedResidentUsers($pinboard);
-
-        $announcementPinboardPublished = get_morph_type_of(AnnouncementPinboardPublished::class);
-        $pinboardPublished = get_morph_type_of(PinboardPublished::class);
-        $pinboardNewResidentNeighbor = get_morph_type_of(NewResidentInNeighbour::class);
-        $notificationsData = collect([
-            $announcementPinboardPublished => collect(),
-            $pinboardPublished => collect(),
-            $pinboardNewResidentNeighbor => collect(),
-        ]);
-
-        if ($usersToNotify->isEmpty()) {
-            return $notificationsData;
-        }
-
-        $usersToNotify->load('settings:user_id,admin_notification,pinboard_notification', 'resident:id,user_id,first_name,last_name');
-        $i = 0;
-        foreach ($usersToNotify as $u) {
-            $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
-            $u->redirect = '/news';
-            if ($u->settings && $u->settings->admin_notification && $pinboard->announcement) {
-                $notificationsData[$announcementPinboardPublished]->push($u);
-                $u->notify((new AnnouncementPinboardPublished($pinboard))
-                    ->delay(now()->addSeconds($delay)));
-                continue;
-            }
-            if ($u->settings && $u->settings->pinboard_notification && ! $pinboard->announcement) {
-                if ($pinboard->type == Pinboard::TypePost) {
-                    $notificationsData[$pinboardPublished]->push($u);
-                    $u->notify(new PinboardPublished($pinboard));
-                }
-                if ($pinboard->type == Pinboard::TypeNewNeighbour) {
-                    $notificationsData[$pinboardNewResidentNeighbor]->push($u);
-                    $u->notify((new NewResidentInNeighbour($pinboard))->delay($pinboard->published_at));
-                }
-            }
-        }
-
-        return $notificationsData;
-    }
-
-    /**
-     * @param Pinboard $pinboard
-     * @return Collection
-     */
-    protected function getNotifiedResidentUsers(Pinboard $pinboard)
-    {
-        if ($pinboard->visibility == Pinboard::VisibilityAll) {
-            return User::whereHas('resident', function ($q) {
-                    $q->whereNull('residents.deleted_at');
-                })
-                ->where('id', '!=', $pinboard->user_id)
-                ->get();
-        }
-
-        $quarterIds = $buildingIds = [];
-        if ($pinboard->visibility == Pinboard::VisibilityQuarter || $pinboard->announcement) {
-            $quarterIds = $pinboard->quarters()->pluck('id')->toArray();
-        }
-
-        if ($pinboard->visibility == Pinboard::VisibilityAddress  || $pinboard->announcement) {
-            $buildingIds = $pinboard->buildings()->pluck('id')->toArray();
-        }
-        if (empty($quarterIds) && empty($buildingIds)) {
-            return $pinboard->newCollection();
-        }
-
-        return User::whereHas('resident', function ($q) use ($quarterIds, $buildingIds) {
-            $q->whereNull('residents.deleted_at')
-                ->where('residents.status', Resident::StatusActive)
-                ->whereHas('contracts', function ($q) use ($quarterIds, $buildingIds) {
-
-                    $q->where('status', Contract::StatusActive)
-                        ->when(
-                            ! empty($quarterIds) && !empty($buildingIds),
-                            function ($q)  use ($quarterIds, $buildingIds) {
-                                $q->whereHas('building', function ($q) use ($quarterIds, $buildingIds) {
-                                    $q->where(function ($q) use ($quarterIds, $buildingIds) {
-                                        $q->whereIn('id', $buildingIds)->orWhereIn('quarter_id', $quarterIds);
-                                    })->whereNull('buildings.deleted_at');
-                                });
-                            },
-                            function ($q) use ($quarterIds, $buildingIds) {
-                                $q->when(
-                                    !empty($quarterIds),
-                                    function ($q) use ($quarterIds) {
-                                        $q->whereHas('building', function ($q) use ($quarterIds) {
-                                            $q  ->whereIn('quarter_id', $quarterIds)
-                                                ->whereNull('buildings.deleted_at');
-                                        });
-                                    },
-                                    function ($q) use ($buildingIds) {
-                                        $q->whereIn('building_id', $buildingIds);
-                                    }
-                                );
-                            }
-                        );
-                });
-        })->get();
+        return dispatch_now(new PinboardNotify($pinboard));
     }
 
     /**
