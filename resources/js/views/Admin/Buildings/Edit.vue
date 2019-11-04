@@ -360,7 +360,7 @@
                             {{ $t('general.audits') }}
                             <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
                         </span>
-                        <audit v-if="model.id" :id="model.id" type="building" showFilter/>
+                        <audit v-if="model.id" :id="model.id" type="building" ref="auditList" showFilter/>
                     </el-tab-pane>
                     <!-- <el-tab-pane name="settings" :disabled="true">
                         <span slot="label" class="icon-cog" @click="toggleDrawer">
@@ -658,7 +658,9 @@
                         });
 
                         displaySuccess(resp);
-
+                        if(this.$refs.auditList){
+                            this.$refs.auditList.fetch();
+                        }
                         this.$refs.assigneesList.fetch();
 
                     } catch (e) {
@@ -732,6 +734,9 @@
                     } else {
                         this.fileCount = 1;
                     }
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                 }).catch((err) => {
                     displayError(err);
                 });
@@ -745,6 +750,9 @@
                     this.fileCount--;
                     this.model[prop].splice(index, 1);
                     this.setOrder(prop);
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                 }).catch((error) => {
                     displayError(error);
                 })
@@ -769,7 +777,7 @@
             sortFiles() {
                 this.setOrder();
             },
-            uploadFiles(file) {
+            uploadFiles(file) {                
                 this.insertDocument(this.selectedFileCategory, file);
             },
             removeService(service) {
@@ -890,6 +898,9 @@
                 });
 
                 this.$refs.assignmentsProviderList.fetch(); 
+                if(this.$refs.auditList){
+                    this.$refs.auditList.fetch();
+                }
                 this.resetToAssignProviderList();
                 this.serviceCount--;
                 displaySuccess(resp.data)

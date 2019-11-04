@@ -189,6 +189,9 @@ export default (config = {}) => {
                     displaySuccess(resp.data)                           
                     this.resetToAssignList();
                     this.$refs.assigneesList.fetch();                    
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                 }
             },
             async remoteSearchQuarters(search) {
@@ -244,8 +247,14 @@ export default (config = {}) => {
                             toAssignId: this.toAssignProvider
                         });
 
-                        if (resp && resp.data && config.mode === 'edit') {                            
+                        if (resp && resp.data && config.mode === 'edit') {   
+                            if(this.$refs.auditList){
+                                this.$refs.auditList.fetch();
+                            }                         
                             this.$refs.assignmentsProviderList.fetch(); 
+                            if(this.$refs.auditList){
+                                this.$refs.auditList.fetch();
+                            }
                             this.resetToAssignProviderList();
                             this.serviceCount++;
                             displaySuccess(resp.data)                            
@@ -348,7 +357,9 @@ export default (config = {}) => {
                                     this.model.service_providers = data.data.service_providers;
                                     this.serviceCount = this.model.service_providers.length
                                     this.model.service_providers_ids = [];
-
+                                    if(this.$refs.auditList){
+                                        this.$refs.auditList.fetch();
+                                    }
                                     displaySuccess(data);
                                     resolve(true);
                                 } catch (err) {

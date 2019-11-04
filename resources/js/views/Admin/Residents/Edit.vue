@@ -265,7 +265,7 @@
                                     <div slot="header" class="clearfix">
                                         <span>{{$t('general.audits')}}</span>
                                     </div>
-                                    <audit v-if="model.id" :id="model.id" type="resident" showFilter/>
+                                    <audit v-if="model.id" :id="model.id" type="resident" ref="auditList" showFilter/>
                                 </el-card>
                             </el-col>    
                         </el-row>

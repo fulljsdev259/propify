@@ -219,6 +219,9 @@ export default (config = {}) => {
                     if (resp && resp.data) {
                         await this.fetchCurrentManager();
                         this.$refs.assignmentsList.fetch();
+                        if(this.$refs.auditList){
+                            this.$refs.auditList.fetch();
+                        }
                         this.toAssign = '';
                         this.toAssignList = [];                        
                         displaySuccess(resp)
@@ -285,7 +288,9 @@ export default (config = {}) => {
                 if (resp) {
                     await this.fetchCurrentManager();
                     this.$refs.assignmentsList.fetch();
-
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                     this.toAssign = '';
                     const type = toUnassign.aType == 1 ? 'Building' : 'Quarter';
                     displaySuccess(resp);
@@ -390,6 +395,9 @@ export default (config = {}) => {
                                     }
 
                                     this.model = Object.assign({}, this.model, resp.data);                                    
+                                    if(this.$refs.auditList){
+                                        this.$refs.auditList.fetch();
+                                    }
                                     displaySuccess(resp);
                                     resolve(true);
                                 } catch (err) {
