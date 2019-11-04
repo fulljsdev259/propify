@@ -421,12 +421,12 @@
                     prop: 'type',
                     label: 'models.resident.type.label',
                     i18n: this.translateType
-                }/*, {
+                }, {
                     prop: 'status',
                     i18n: this.residentStatusLabel,
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
-                }*/],
+                }],
                 assigneesActions: [{
                     width: 70,
                     buttons: [{

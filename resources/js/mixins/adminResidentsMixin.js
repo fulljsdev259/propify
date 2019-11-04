@@ -2,7 +2,6 @@ import {mapActions, mapGetters} from 'vuex';
 import PasswordValidatorMixin from './passwordValidatorMixin';
 import EmailCheckValidatorMixin from './emailCheckValidatorMixin';
 import residentTypeCheckValidatorMixin from './residentTypeCheckValidatorMixin';
-import ResidentTitleTypes from './methods/residentTitleTypes';
 import {displayError, displaySuccess} from '../helpers/messages';
 import UploadUserAvatarMixin from './adminUploadUserAvatarMixin';
 import { parse } from 'querystring';
@@ -181,7 +180,7 @@ export default (config = {}) => {
     if (config.mode) {
         switch (config.mode) {
             case 'add':
-                mixin.mixins = [PasswordValidatorMixin(), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), ResidentTitleTypes, UploadUserAvatarMixin];
+                mixin.mixins = [PasswordValidatorMixin(), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), UploadUserAvatarMixin];
 
                 mixin.methods = {
                     submit(afterValid = false) {
@@ -255,7 +254,7 @@ export default (config = {}) => {
 
                 break;
             case 'edit':
-                mixin.mixins = [PasswordValidatorMixin({required: false}), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), ResidentTitleTypes, UploadUserAvatarMixin];
+                mixin.mixins = [PasswordValidatorMixin({required: false}), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), UploadUserAvatarMixin];
 
                 mixin.methods = {
                     submit() {
@@ -298,7 +297,7 @@ export default (config = {}) => {
                 };
 
             case 'view':
-                mixin.mixins = [PasswordValidatorMixin({required: false}), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), ResidentTitleTypes, UploadUserAvatarMixin];
+                mixin.mixins = [PasswordValidatorMixin({required: false}), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), UploadUserAvatarMixin];
                 mixin.methods = {
                     ...mixin.methods,
                     ...mapActions(['getResident'])
