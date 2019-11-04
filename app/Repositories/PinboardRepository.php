@@ -12,7 +12,6 @@ use App\Models\Pinboard;
 use App\Models\Contract;
 use App\Traits\SaveMediaUploads;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Class PinboardRepository

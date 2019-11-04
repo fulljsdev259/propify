@@ -181,6 +181,9 @@ export default (config = {}) => {
                     id: this.model.id,
                     media_id: this.model.media[index].id
                 });
+                if(this.$refs.auditList){
+                    this.$refs.auditList.fetch();
+                }
                 this.model.media.splice(index, 1)                 
                 displaySuccess(resp);
             },
@@ -277,6 +280,9 @@ export default (config = {}) => {
 
                         if (resp && resp.data && config.mode === 'edit') {
                             this.$refs.assignmentsList.fetch();
+                            if(this.$refs.auditList){
+                                this.$refs.auditList.fetch();
+                            }
                             this.toAssign = '';                            
                             displaySuccess(resp)
                         }
@@ -340,6 +346,9 @@ export default (config = {}) => {
 
                         if (resp && resp.data && config.mode === 'edit') {
                             this.$refs.assignmentsProviderList.fetch();
+                            if(this.$refs.auditList){
+                                this.$refs.auditList.fetch();
+                            }
                             this.toAssignProvider = '';
                             displaySuccess(resp)
                         }
@@ -501,6 +510,9 @@ export default (config = {}) => {
                                     this.media = [];
 
                                     displaySuccess(resp);
+                                    if(this.$refs.auditList){
+                                        this.$refs.auditList.fetch();
+                                    }
                                     resolve(true);
                                 } catch (err) {
                                     displayError(err);

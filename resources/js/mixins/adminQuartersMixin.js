@@ -86,7 +86,10 @@ export default (config = {}) => {
                 if (resp && resp.data) {             
                     displaySuccess(resp.data)                           
                     this.resetToAssignList();
-                    this.$refs.assigneesList.fetch();                    
+                    this.$refs.assigneesList.fetch();    
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }                
                 }
             },
             async remoteSearchAssignees(search) {
@@ -150,6 +153,9 @@ export default (config = {}) => {
                         displaySuccess(resp);
 
                         this.$refs.assigneesList.fetch();
+                        if(this.$refs.auditList){
+                            this.$refs.auditList.fetch();
+                        }
 
                     } catch (e) {
                         displayError(e);
@@ -264,7 +270,10 @@ export default (config = {}) => {
                                             zip
                                         },
                                         ...restParams
-                                    });                                 
+                                    });    
+                                    if(this.$refs.auditList){
+                                        this.$refs.auditList.fetch();
+                                    }                                    
                                     displaySuccess(resp);
                                     resolve(true);
                                 } catch (err) {

@@ -478,7 +478,7 @@
                         <div slot="header" class="clearfix">
                             <span>{{$t('general.audits')}}</span>
                         </div>
-                        <audit v-if="model.id" :id="model.id" type="pinboard" showFilter/>
+                        <audit v-if="model.id" :id="model.id" type="pinboard" ref="auditList" showFilter/>
                     </el-card>
                 </el-col>
             </el-form>
@@ -614,7 +614,9 @@
 
                 if (resp) {
                     this.$refs.assignmentsList.fetch();
-
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                     this.toAssign = '';
 
                     const type = toUnassign.aType == 1 ? 'building' : 'quarter';
@@ -632,7 +634,9 @@
                 });
 
                 this.$refs.assignmentsProviderList.fetch();
-
+                if(this.$refs.auditList){
+                    this.$refs.auditList.fetch();
+                }
                 this.toAssignProvider = '';
                 displaySuccess(resp)
             },
