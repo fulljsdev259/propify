@@ -26,7 +26,13 @@ trait SaveMediaUploads
             $media->delete();
         });
 
-        $audit = $model->relationExists('audit') ? $model->audit : null;
+        if ($model->wasRecentlyCreated) {
+            $audit = null; // not need merge in audit
+            $disableAuditing = true;
+        } else {
+            $audit = $model->relationExists('audit') ? $model->audit : null;
+        }
+
         $savedMedia = [];
         foreach ($media as $mediaData) {
             if (is_string($mediaData)) {

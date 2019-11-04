@@ -147,7 +147,7 @@ class PinboardRepository extends BaseRepository
             ]);
         }
 
-        $pinboard->addDataInAudit('notifications', $notificationsData);
+//        $pinboard->addDataInAudit('notifications', $notificationsData);
     }
 
 
