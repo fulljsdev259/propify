@@ -620,8 +620,7 @@
             ...mapActions([
                 'getSettings',
                 "uploadBuildingFile",
-                "deleteBuildingFile",
-                "deleteBuildingService",
+                "deleteBuildingFile",                
                 "getBuildingAssignees",
                 "assignManagerToBuilding",
                 "unassignBuildingAssignee",
@@ -885,9 +884,9 @@
                 });
             },
             async unassignProvider(toUnassign) {
-                const resp = await this.unassignServiceBuilding({
-                    id: toUnassign.id,
-                    toAssignId: this.model.id
+                const resp = await this.unassignProviderToBuilding({
+                    id: this.model.id,
+                    toAssignId: toUnassign.id
                 });
 
                 this.$refs.assignmentsProviderList.fetch(); 
