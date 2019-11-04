@@ -110,6 +110,7 @@ return [
                 'active' => 'Active contracts',
                 'inactive' => 'Inactive contracts',
             ],
+            'type_validation_error' => "Looks like you've already added contract(s), first delete them and then you will be able to change resident type."
         ],      
         'status' => [
             'label' => 'Status',

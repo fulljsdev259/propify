@@ -86,7 +86,8 @@
                                                   :rules="validationRules.type"
                                                   prop="type">
                                         <el-select style="display: block"
-                                                   v-model="model.type">
+                                                   v-model="model.type"
+                                                   @change="changeType">
                                             <el-option
                                                 :key="k"
                                                 :label="$t(`models.resident.type.${type}`)"
@@ -232,15 +233,17 @@
                 oldType: null,
             }
         },
+        methods: {
+            changeType (val) {
+                console.log('changeType')
+                if(this.original_type == null)
+                {
+                    this.original_type = val
+                }
+            }
+        },
         mounted() {
             this.$root.$on('changeLanguage', () => this.getCountries());
-
-            // this.validationRules.type = [{
-            //     required: true,
-            //     message: this.$t('validation.general.required')
-            // }, {
-            //     validator: this.checkavailabilityResidentType
-            // }]
         },
         computed: {
             ...mapGetters('application', {

@@ -110,6 +110,7 @@ return [
                 'active' => 'Aktive Verträge',
                 'inactive' => 'Inaktive Verträge',
             ],
+            'type_validation_error' => "Sieht so aus, als hätten Sie bereits Verträge hinzugefügt, zuerst löschen und dann können Sie den Bewohnertyp ändern."
         ],
         'status' => [
             'label' => 'Status',

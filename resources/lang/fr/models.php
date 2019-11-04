@@ -110,6 +110,7 @@ return [
                 'active' => 'Contrats en cours',
                 'inactive' => 'Contrats inactifs',
             ],
+            'type_validation_error' => "On dirait que vous avez déjà ajouté des contrats, supprimez-les d'abord et vous pourrez ensuite changer le type de résident."
         ],       
         'status' => [
             "label" => "Statut",

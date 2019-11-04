@@ -47,6 +47,7 @@ export default (config = {}) => {
                     contracts: [],
                     status: 1
                 },
+                original_type: null,
                 visibleDrawer: false,
                 editingContract: null,
                 editingContractIndex: -1,
@@ -92,7 +93,10 @@ export default (config = {}) => {
                     type: [{
                         required: true,
                         message: this.$t('validation.general.required')
-                    }]
+                    }, {
+                        validator: this.checkavailabilityResidentType
+                    }
+                    ]
                 },
                 loading: {
                     state: false,
@@ -311,16 +315,11 @@ export default (config = {}) => {
                         this.user = user;
                         this.model = Object.assign({}, this.model, r);
                         this.original_email = this.user.email;
+                        this.original_type = this.model.type;
                         this.model.email = user.email;
                         this.model.avatar = user.avatar;
                         this.model.nation = +this.model.nation
 
-                        this.validationRules.type = [{
-                            required: true,
-                            message: this.$t('validation.general.required')
-                        }, {
-                            validator: this.checkavailabilityResidentType
-                        }]
                     } catch (err) {
                         this.$router.replace({
                             name: 'adminResidents'
