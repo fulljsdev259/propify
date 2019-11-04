@@ -127,6 +127,7 @@ return [
     "my_dashboard" => "Mein Dashboard",
     'dashboard' => 'Dashboard',
     'my_tenancy' => 'Mein Dossier',
+    'my_data' => 'Meine Daten',
     'my_personal_data' => 'Persönliche Angaben',
     'my_recent_contract' => 'Mietvertrag',
     'documents' => 'Objekt-Dokumentation',

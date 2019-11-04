@@ -127,6 +127,7 @@ return [
     "my_dashboard" => "Il mio cruscotto",
     'dashboard' => 'Cruscotto',
     'my_tenancy' => 'La mia locazione',
+    'my_data' => 'I miei dati',
     'my_personal_data' => 'I miei dati personali',
     'my_recent_contract' => 'Il mio recente contratto',
     'documents' => 'Documenti',

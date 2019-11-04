@@ -1,5 +1,5 @@
 <template>
-    <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
+    <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading" >
 
         <el-row :gutter="20">
             <el-col :md="12" v-if="!hideBuildingAndUnits && !hideBuilding">
@@ -154,7 +154,7 @@
             </el-col>
         </el-row>
         <el-row :gutter="20" v-if="model.unit_id">
-            <el-col :md="12">
+            <!-- <el-col :md="12">
                 <el-form-item :label="$t('models.resident.contract.contract_id')"
                                 class="label-block">
                     <el-input
@@ -162,7 +162,7 @@
                         :disabled="true">
                     </el-input>
                 </el-form-item> 
-            </el-col>
+            </el-col> -->
             <el-col :md="12" v-if="resident_type_check == 1 && !isFuture">
                 <el-form-item :label="$t('models.resident.status.label')" prop="status" class="label-block">
                     <el-select placeholder="Select" style="display: block" 
@@ -729,11 +729,17 @@
             ...mapActions(['getBuildings', 'getUnits', 'getResidents']),
         },
         async created () {
+
+            this.loading = true;
+
             let parent_obj = this
             this.deposit_types = Object.entries(this.$constants.contracts.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.deposit_types.${label}`)}))
             this.rent_durations = Object.entries(this.$constants.contracts.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.rent_durations.${label}`)}))
             this.deposit_statuses = Object.entries(this.$constants.contracts.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.deposit_status.${label}`)}));
             this.contract_statuses = Object.entries(this.$constants.contracts.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.rent_status.${label}`)}));
+
+            if(this.resident_type)
+                this.resident_type_check = this.resident_type
 
             if(this.mode == "edit") {
                 this.model = Object.assign({}, this.data)
@@ -802,8 +808,7 @@
                 await this.searchContractUnits(true)
             }
 
-            if(this.resident_type)
-                this.resident_type_check = this.resident_type
+            this.loading = false;
         },
         mounted() {
             this.$refs.form.$el.focus()
