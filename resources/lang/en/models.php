@@ -103,6 +103,7 @@ return [
                 'inactive' => 'Inactive',
             ],
             'add' => 'Add new contract',
+            'add_sell_contract' => 'Add Sell Contract',
             'pdf_only_desc' => 'Please note that only PDF files can be uploaded',
             'saved' => 'Contract saved',
             'status_count' => [

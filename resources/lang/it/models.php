@@ -103,6 +103,7 @@ return [
                 'inactive' => 'Inattivo',
             ],
             'add' => 'Aggiungere un nuovo contratto',
+            'add_sell_contract' => 'Aggiungi contratto di vendita',
             'pdf_only_desc' => 'Si prega di notare che solo i file PDF possono essere caricati',
             'saved' => 'Contratto salvato',
             'status_count' => [

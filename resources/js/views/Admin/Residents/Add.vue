@@ -168,7 +168,7 @@
                                         size="mini" 
                                         :disabled="model.type == ''" 
                                         round>
-                                        {{$t('models.resident.contract.add')}}
+                                        {{ model.type == 1 ? $t('models.resident.contract.add') : $t('models.resident.contract.add_sell_contract')}}
                                 </el-button>
                             </template>
                             

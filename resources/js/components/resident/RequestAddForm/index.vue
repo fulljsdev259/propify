@@ -272,6 +272,8 @@
                             // params.category = params.category_id
                             // params.sub_category = params.sub_category_id
 
+                            params.media = this.model.media.map(item => item.file.src)
+
                             const resp = await this.$store.dispatch('newRequests/create', params);
                             
                             displaySuccess(resp.message)
@@ -285,6 +287,7 @@
                                     this.$refs.media.startUploading();
                                 }
                             }
+
                             // const {id} = resp.data
                             // if (media.length) {
                             //     const queue = new PQueue({concurrency: 1})

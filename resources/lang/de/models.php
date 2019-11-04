@@ -102,7 +102,8 @@ return [
                 'active' => 'Aktiv',
                 'inactive' => 'Inaktiv',
             ],
-            'add' => 'Vertrag erstellen',            
+            'add' => 'Vertrag erstellen',
+            'add_sell_contract' => 'Verkaufsvertrag hinzufügen',
             'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',
             'saved' => 'Vertrag gespeichert',
             'status_count' => [
