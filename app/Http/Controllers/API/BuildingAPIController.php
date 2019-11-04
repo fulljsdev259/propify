@@ -1263,9 +1263,11 @@ class BuildingAPIController extends AppBaseController
      *          )
      *      )
      * )
+     *
      * @param $buildingId
      * @param EmailReceptionistRequest $emailReceptionistRequest
      * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function storeEmailReceptionists($buildingId, EmailReceptionistRequest $emailReceptionistRequest)
     {
@@ -1279,9 +1281,14 @@ class BuildingAPIController extends AppBaseController
         if ($emailReceptionistRequest->global_email_receptionist || $emailReceptionistRequest->global) {// @TODO delete global
 
             if (! $building->global_email_receptionist) {
-                $building->global_email_receptionist = true;
+                $building->disableAuditing();
+                $building->global_email_receptionist = 1;
                 $building->save();
+                $building->enableAuditing();
+                $building->auditEmailReceptionists($building->email_receptionists, collect(), true);
             }
+
+            // @TODO discuss is need delete. If need only tmp switch to  global_email_receptionist then I think not need
             $building->email_receptionists()->delete();
 
             $response = [
@@ -1290,11 +1297,6 @@ class BuildingAPIController extends AppBaseController
                 'email_receptionists' => []
             ];
             return  $this->sendResponse($response, __('Email Receptionists get successfully'));
-        }
-
-        if ($building->global_email_receptionist) {
-            $building->global_email_receptionist = false;
-            $building->save();
         }
 
         $modelType = get_morph_type_of(Building::class);
@@ -1328,7 +1330,6 @@ class BuildingAPIController extends AppBaseController
                     'model_type' => $modelType,
                 ];
                 $new = $building->email_receptionists()->create($savedData);
-                $emailReceptionists->push($new);
                 $categoryEmailReceptionists->push($new);
             }
         }
@@ -1343,9 +1344,21 @@ class BuildingAPIController extends AppBaseController
             'email_receptionists:id,category,property_manager_id,model_id',
             'email_receptionists.property_manager:id,first_name,last_name'
         ]);
+
+        if ($building->global_email_receptionist) {
+            $building->disableAuditing();
+            $building->global_email_receptionist = 0;
+            $building->save();
+            $building->enableAuditing();
+            $building->auditEmailReceptionists($emailReceptionists, $building->email_receptionists, false);
+        } else {
+            $building->auditEmailReceptionists($emailReceptionists, $building->email_receptionists);
+        }
+
         $response['email_receptionists'] = (new EmailReceptionistTransformer())->transformEmailReceptionists($building->email_receptionists);
         $response['global_email_receptionist'] = false;
         $response['building_id'] = $buildingId;
+
         return $this->sendResponse($response, __('Email Receptionists get successfully'));
     }
 }

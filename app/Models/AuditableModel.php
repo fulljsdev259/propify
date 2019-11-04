@@ -629,16 +629,27 @@ class AuditableModel extends Model implements Auditable
     /**
      * @param $old
      * @param $new
+     * @param null $globalEmailReceptionist
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function auditEmailReceptionists($old, $new)
+    public function auditEmailReceptionists($old, $new, $globalEmailReceptionist = null)
     {
         $this->auditEvent = self::EventUpdated;
         $audit = new Audit($this->toAudit());
         $audit->event = self::EventManageEmailReceptionists;
-        $audit->old_values = $this->fixEmailReceptionists($old);
-        $audit->new_values = $this->fixEmailReceptionists($new);
-        $audit->save();
+        $oldValues = $this->fixEmailReceptionists($old);
+        $newValues = $this->fixEmailReceptionists($new);
+
+        if (! is_null($globalEmailReceptionist)) {
+            $oldValues['global_email_receptionist'] = ! $globalEmailReceptionist;
+            $newValues['global_email_receptionist'] = $globalEmailReceptionist;
+        }
+
+        $audit->old_values = $oldValues;
+        $audit->new_values = $newValues;
+        if ($audit->old_values != $audit->new_values) {
+            $audit->save();
+        }
     }
 
     /**
@@ -648,9 +659,14 @@ class AuditableModel extends Model implements Auditable
     protected function fixEmailReceptionists($items)
     {
         $data = [];
+
         foreach ($items->groupBy('category') as $category => $_item) {
-            $data[$category] = $_item->pluck('property_manager_id')->all();
+            $data['email_receptionists'][] = [
+                'category' => $category,
+                'property_manager_ids' => $_item->pluck('property_manager_id')->all()
+            ];
         }
+
         return $data;
     }
 }
