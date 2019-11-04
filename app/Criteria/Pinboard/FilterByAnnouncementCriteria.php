@@ -36,14 +36,11 @@ class FilterByAnnouncementCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        if ($this->request->has('announcement')) {
-            $announcement = $this->request->get('announcement');
-        } elseif ($this->request->has('pinned')) { // @TODO delete
-            $announcement = $this->request->get('pinned');// @TODO delete
-        } else {
-            return $model;
+        $announcement = $this->request->get('announcement');
+        if ($announcement) {
+            $model = $model->where('announcement', $announcement);
         }
 
-        return $model->where('announcement', $announcement);
+        return $model;
     }
 }

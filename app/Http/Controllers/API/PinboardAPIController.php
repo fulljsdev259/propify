@@ -184,11 +184,7 @@ class PinboardAPIController extends AppBaseController
         $input['provider_ids'] = $request->provider_ids ?? [];
         $input['media'] = $request->media ?? [];
 
-        if ($request->has('pinned')) {
-            $input['announcement'] = $request->pinned;
-        }
-
-        if ($request->announcement  == true || $request->pinned  == true) { // @TODO delete pinned
+        if ($request->announcement  == true) {
             $input['type'] = Pinboard::TypeAnnouncement;
         } else {
             $input['type'] =  $input['type'] ?? Pinboard::TypePost;
@@ -351,7 +347,7 @@ class PinboardAPIController extends AppBaseController
     public function update($id, UpdateRequest $request)
     {
         $input = $request->only(Pinboard::Fillable);
-        if ($request->announcement || $request->pinned) { // @TODO delete
+        if ($request->announcement) {
             $input['type'] = Pinboard::TypeAnnouncement;
         } else {
             $input['type'] =  $input['type'] ?? Pinboard::TypePost;
