@@ -1,5 +1,5 @@
 <template>
-    <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading" >
+    <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
 
         <el-row :gutter="20">
             <el-col :md="12" v-if="!hideBuildingAndUnits && !hideBuilding">

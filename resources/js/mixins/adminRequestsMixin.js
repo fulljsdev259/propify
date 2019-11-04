@@ -499,7 +499,7 @@ export default (config = {}) => {
                     {
                         floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
                     }
-                    c0ontract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                    contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
                     
                     return contract
                 });
