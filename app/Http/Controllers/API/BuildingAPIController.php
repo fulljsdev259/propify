@@ -252,6 +252,9 @@ class BuildingAPIController extends AppBaseController
                     $q->select('id', 'country_id', 'state_id', 'city', 'street', 'house_num', 'zip')
                         ->with(['state', 'country']);
                 },
+                'contracts' => function ($q) {
+                    $q->select('building_id', 'resident_id');
+                }
             ])->withCount([
                 'units',
                 'propertyManagers',
@@ -261,6 +264,13 @@ class BuildingAPIController extends AppBaseController
                 'users'
             ])->allRequestStatusCount()
             ->get();
+
+        foreach ($buildings as $building) {
+            $contracts = $building->contracts;
+            unset($building->contracts);
+            $building->residents_count = $contracts->pluck('resident_id')->unique()->count();
+        }
+
         return $this->sendResponse($buildings->toArray(), 'Buildings retrieved successfully');
     }
 
