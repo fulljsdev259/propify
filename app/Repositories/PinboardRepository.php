@@ -136,7 +136,7 @@ class PinboardRepository extends BaseRepository
         ]);
 
         // @TODO save only single system audit with notification data or save 2 system audit
-        $pinboard->makeAuditAsSystem();
+        $pinboard->makeAuditAsSystem(AuditableModel::NewResidentPinboardCreated);
         return $pinboard;
     }
 

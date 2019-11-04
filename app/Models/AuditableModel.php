@@ -50,6 +50,9 @@ class AuditableModel extends Model implements Auditable
     const EventMediaUploaded = 'media_uploaded';
     const EventMediaDeleted = 'media_deleted';
     const EventManageEmailReceptionists = 'manage_email_receptionists';
+    const BuildingUnitsCreated = 'building_units\y_created';
+    const NewResidentPinboardCreated = 'new_resident_pinboard_created';
+    const NotificationsSent = 'notifications_sent';
 
     const SyncAuditConfig = [
         'attach' => [
@@ -141,7 +144,7 @@ class AuditableModel extends Model implements Auditable
      * @return Audit
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function newSystemNotificationAudit($value, $event = null, $isSingle = true, $tags = [], $changeOldValues = false)
+    public function newSystemNotificationAudit($value, $event = self::NotificationsSent, $isSingle = true, $tags = [], $changeOldValues = false)
     {
         $key = self::MergeInMainData;
         $event = $event ?? AuditableModel::EventCreated;
@@ -189,13 +192,18 @@ class AuditableModel extends Model implements Auditable
 
         $value = $_value;
 
-        if (AuditableModel::EventCreated == $event) {
+        $createdEvents = [
+            AuditableModel::EventCreated,
+            AuditableModel::NotificationsSent
+        ];
+
+        if (in_array($event, $createdEvents)) {
             $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
         } elseif (AuditableModel::EventUpdated == $event) {
-            dd('@TODO');
+            dd('@TODO', $event);
             $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle, $changeOldValues);
         } else {
-            dd('@TODO');
+            dd('@TODO', $event);
         }
 
         return $audit;
@@ -226,12 +234,17 @@ class AuditableModel extends Model implements Auditable
             $audit->tags = json_encode($tags); // @TODO correct later
         }
 
-        if (AuditableModel::EventCreated == $event) {
+        $createdEvents = [
+            AuditableModel::EventCreated,
+            AuditableModel::BuildingUnitsCreated,
+        ];
+
+        if (in_array($event, $createdEvents)) {
             $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
         } elseif (AuditableModel::EventUpdated == $event) {
             $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle, $changeOldValues);
         } else {
-            dd('@TODO');
+            dd('@TODO', $event);
         }
 
         return $audit;
@@ -284,9 +297,9 @@ class AuditableModel extends Model implements Auditable
             $audit->new_values = $newValues;
             $audit->save();
         } elseif (self::EventUpdated == $audit->event) {
-            dd('@TODO');
+            dd('@TODO', $audit->event);
         } else {
-            dd('@TODO');
+            dd('@TODO', $audit->event);
         }
     }
 
@@ -404,10 +417,10 @@ class AuditableModel extends Model implements Auditable
         }
 
         if (is_a($value, Collection::class)) {
-            dd('@TODO');
+            dd('@TODO', $value);
             $value = [];
         } else {
-            dd('@TODO');
+            dd('@TODO', $value);
         }
 
         return $value;
@@ -450,7 +463,7 @@ class AuditableModel extends Model implements Auditable
             }
         } else  {
             if (self::MergeInMainData == $key) {
-                dd('@TODO');
+                dd('@TODO', $key, $savedValues);
             } else {
                 $savedValues[$key][] = $newValue;
             }
@@ -600,12 +613,15 @@ class AuditableModel extends Model implements Auditable
     }
 
     /**
-     *
+     * @param null $event
      */
-    public function makeAuditAsSystem()
+    public function makeAuditAsSystem($event = null)
     {
         if ($this->audit) {
             $this->audit->user_type = self::System;
+            if ($event) {
+                $this->audit->event = $event;
+            }
             $this->audit->save();
         }
     }

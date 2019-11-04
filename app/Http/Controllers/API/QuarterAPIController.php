@@ -791,7 +791,7 @@ class QuarterAPIController extends AppBaseController
      *          )
      *      )
      * )
-     * 
+     *
      * @param $quarterId
      * @param EmailReceptionistRequest $emailReceptionistRequest
      * @return mixed
