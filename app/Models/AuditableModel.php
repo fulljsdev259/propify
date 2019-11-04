@@ -49,6 +49,7 @@ class AuditableModel extends Model implements Auditable
     const EventProviderNotified = 'provider_notified';
     const EventMediaUploaded = 'media_uploaded';
     const EventMediaDeleted = 'media_deleted';
+    const EventManageEmailReceptionists = 'manage_email_receptionists';
 
     const SyncAuditConfig = [
         'attach' => [
@@ -607,5 +608,33 @@ class AuditableModel extends Model implements Auditable
             $this->audit->user_type = self::System;
             $this->audit->save();
         }
+    }
+
+    /**
+     * @param $old
+     * @param $new
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function auditEmailReceptionists($old, $new)
+    {
+        $this->auditEvent = self::EventUpdated;
+        $audit = new Audit($this->toAudit());
+        $audit->event = self::EventManageEmailReceptionists;
+        $audit->old_values = $this->fixEmailReceptionists($old);
+        $audit->new_values = $this->fixEmailReceptionists($new);
+        $audit->save();
+    }
+
+    /**
+     * @param $items
+     * @return array
+     */
+    protected function fixEmailReceptionists($items)
+    {
+        $data = [];
+        foreach ($items->groupBy('category') as $category => $_item) {
+            $data[$category] = $_item->pluck('property_manager_id')->all();
+        }
+        return $data;
     }
 }
