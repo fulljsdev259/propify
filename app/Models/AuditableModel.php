@@ -597,4 +597,15 @@ class AuditableModel extends Model implements Auditable
 
         return $data;
     }
+
+    /**
+     *
+     */
+    public function makeAuditAsSystem()
+    {
+        if ($this->audit) {
+            $this->audit->user_type = self::System;
+            $this->audit->save();
+        }
+    }
 }
