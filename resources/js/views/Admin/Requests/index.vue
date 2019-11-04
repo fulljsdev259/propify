@@ -655,7 +655,7 @@
                 border-bottom-left-radius: unset;
             }
 
-            .el-dropdown .el-dropdown__caret-button::before {
+            .el-dropdown__caret-button::before {
                 content: '';
                 position: absolute;
                 display: block;
@@ -667,7 +667,9 @@
                 background: rgba(255,255,255,.5);
             }
         }
+
     }
+
 
     /deep/ .el-dialog {
         /deep/ .el-dialog__body {
