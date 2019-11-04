@@ -235,11 +235,7 @@
         },
         methods: {
             changeType (val) {
-                console.log('changeType')
-                if(this.original_type == null)
-                {
-                    this.original_type = val
-                }
+                
             }
         },
         mounted() {

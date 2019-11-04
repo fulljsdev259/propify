@@ -117,6 +117,9 @@ export default (config = {}) => {
                 return ['.pdf'].includes(ext);
             },
             addContract (data) {
+                if(config.mode == 'add') {
+                    this.original_type = this.model.type
+                }
                 this.model.contracts.push(data);
             },
             editContract(index) {
