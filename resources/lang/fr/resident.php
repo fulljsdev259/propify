@@ -263,5 +263,6 @@ return [
     ],
     "message" => "Message",
     "my_offerings" => "Mes offrandes",
-    "default_contract_expired" => "Votre dernier contrat par défaut est expiré, vous devez sélectionner un autre contrat."
+    "default_contract_expired" => "Votre dernier contrat par défaut est expiré, vous devez sélectionner un autre contrat.",
+    "cleanify" => "Nettoyer"
 ];

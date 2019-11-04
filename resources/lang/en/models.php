@@ -610,6 +610,7 @@ return [
             'provider' => 'Service',
             'manager' => 'Manager',
             'user' => 'Administrator',
+            'administrator' => 'Administrator',
         ],
         'visibility' => [
             'label' => 'Visibility',
