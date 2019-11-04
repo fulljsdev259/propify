@@ -74,11 +74,11 @@ return [
         "contact_info_card" => "Dati di contatto",
         "contract" => [
             'title' => "Contratto",
-            "rent_end" => "Fine affitto",
-            "rent_start" => "Inizio affitto",
-            'rent_type' => 'Tipo di affitto',            
-            'rent_duration' => "Durata dell'affitto",
-            'rent_durations' => [
+            "end_date" => "Data di fine",
+            "start_date" => "Data d'inizio",
+            'type' => 'Tipo',            
+            'duration' => "Durata",
+            'durations' => [
                 'unlimited' => 'Illimitato',
                 'limited' => 'Limitato',
             ],
@@ -98,7 +98,7 @@ return [
                 'no' => 'No',
             ],
             'contract_id' => 'ID contratto',
-            'rent_status' => [
+            'status' => [
                 'active' => 'Attivo',
                 'inactive' => 'Inattivo',
             ],

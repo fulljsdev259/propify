@@ -228,7 +228,7 @@ export default (config = {}) => {
                                     
                                     displaySuccess(resp);
 
-                                    this.model.rent_start = '';
+                                    this.model.start_date = '';
                                     this.form.resetFields();
                                     if (!!afterValid) {
                                         afterValid(resp);

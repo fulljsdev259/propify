@@ -119,9 +119,9 @@
 
             this.contracts = this.$store.getters.loggedInUser.resident.contracts
             // try {
-            //     const {data: {unit, media, address, rent_start, rent_end, }} = await this.$store.dispatch('myTenancy')
+            //     const {data: {unit, media, address, start_date, end_date, }} = await this.$store.dispatch('myTenancy')
 
-            //     this.contract = {unit, address, rent_start, rent_end}
+            //     this.contract = {unit, address, start_date, end_date}
 
             //     if (media.length) {
             //         this.contract.file = media[media.length - 1]

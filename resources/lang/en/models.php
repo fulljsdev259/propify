@@ -74,11 +74,11 @@ return [
         'contact_info_card' => 'Contact details',        
         'contract' => [
             'title' => 'Contract',
-            'rent_end' => 'Rent end',
-            'rent_start' => 'Rent start',
-            'rent_type' => 'Rent type',            
-            'rent_duration' => 'Rent duration',
-            'rent_durations' => [
+            'end_date' => 'End date',
+            'start_date' => 'Start date',
+            'type' => 'Type',            
+            'duration' => 'Duration',
+            'durations' => [
                 'unlimited' => 'Unlimited',
                 'limited' => 'Limited',
             ],
@@ -98,7 +98,7 @@ return [
                 'no' => 'No',
             ],
             'contract_id' => 'Contract ID',
-            'rent_status' => [
+            'status' => [
                 'active' => 'Active',
                 'inactive' => 'Inactive',
             ],

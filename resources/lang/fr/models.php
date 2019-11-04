@@ -74,11 +74,11 @@ return [
         "contact_info_card" => "Coordonnées de contact",
         "contract" => [
             "title" => "Contrat",
-            "rent_end" => "Fin du loyer",
-            "rent_start" => "Début du loyer",
-            'rent_type' => 'Type de loyer',            
-            'rent_duration' => 'Durée du loyer',
-            'rent_durations' => [
+            "end_date" => "Date de fin",
+            "start_date" => "Date de début",
+            'type' => 'Type',            
+            'duration' => 'Durée du projet',
+            'durations' => [
                 'unlimited' => 'Illimité',
                 'limited' => 'Limitée',
             ],
@@ -98,7 +98,7 @@ return [
                 'no' => 'Non',
             ],
             'contract_id' => 'ID du contrat',
-            'rent_status' => [
+            'status' => [
                 'active' => 'Actif',
                 'inactive' => 'Inactif',
             ],

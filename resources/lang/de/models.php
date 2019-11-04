@@ -74,11 +74,11 @@ return [
         'contact_info_card' => 'Kontaktdaten',
         'contract' => [
             'title' => 'Mietvertrag',
-            'rent_end' => 'Mietende',
-            'rent_start' => 'Mietbeginn',
-            'rent_type' => 'Objekttyp',            
-            'rent_duration' => 'Vertragslaufzeit',
-            'rent_durations' => [
+            'end_date' => 'Enddatum',
+            'start_date' => 'Startdatum',
+            'type' => 'Typ',            
+            'duration' => 'Vertragslaufzeit',
+            'durations' => [
                 'unlimited' => 'Unbefristet',
                 'limited' => 'Befristet',
             ],
@@ -98,7 +98,7 @@ return [
                 'no' => 'Nein',
             ],
             'contract_id' => 'Vertrags-ID',
-            'rent_status' => [
+            'status' => [
                 'active' => 'Aktiv',
                 'inactive' => 'Inaktiv',
             ],
