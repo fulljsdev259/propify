@@ -2,17 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Jobs\Notify\PinboardNotify;
+use App\Jobs\Notify\NotifyAdminNewResidentPinboard;
+use App\Jobs\Notify\NotifyNewPinboard;
 use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\Model;
 use App\Models\Quarter;
 use App\Models\Pinboard;
 use App\Models\Contract;
-use App\Models\Settings;
-use App\Models\User;
-use App\Notifications\NewResidentPinboard;
-use App\Notifications\AnnouncementPinboardPublished;
 use App\Traits\SaveMediaUploads;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -76,7 +73,7 @@ class PinboardRepository extends BaseRepository
 
         // this mean if resident make pinboard then must be publish
         $attributes['status'] = $attributes['status'] ?? Pinboard::StatusPublished;
-        if (Pinboard::StatusPublished == $attributes['status']) {
+        if (Pinboard::StatusPublished == $attributes['status'] && ! isset($attributes['published_at'])) {
             $attributes['published_at'] = now();
         }
 
@@ -105,80 +102,39 @@ class PinboardRepository extends BaseRepository
         $notificationsData = collect();
 
         if (Pinboard::StatusPublished == $attributes['status']) {
-            $notificationsData = dispatch_now(new PinboardNotify($model));
+            $notificationsData = dispatch_now(new NotifyNewPinboard($model, false));
         }
-        
-        $adminNotificationsData = $this->notifyAdminNewResidentPinboard($model);
+
+        $adminNotificationsData = dispatch_now(new NotifyAdminNewResidentPinboard($model, false));
         $notificationsData = $notificationsData->merge($adminNotificationsData);
-        $this->saveNotificationAuditsAndLogs($model, $notificationsData);
-//        $this->notifyAdminActions($model);
+        $model->newSystemNotificationAudit($notificationsData);
+
         return $model;
     }
 
     /**
-     * @param AuditableModel $model
-     * @param $method
-     * @param $data
-     * @param $key
-     * @throws \OwenIt\Auditing\Exceptions\AuditingException
-     */
-    public function assignWithMergeAudit($model, $method, $data, $key)
-    {
-        $model->disableAuditing();
-        $model->{$method}()->sync($data[$key]);
-        $model->enableAuditing();
-        //$model->addAssigneesDataInAudit($key, $data[$key]);
-    }
-
-    /**
-     * @param Pinboard $pinboard
-     * @param $notificationsData
-     * @throws \OwenIt\Auditing\Exceptions\AuditingException
-     */
-    protected function saveNotificationAuditsAndLogs(Pinboard $pinboard, $notificationsData)
-    {
-        $announcementPinboardPublished = get_morph_type_of(AnnouncementPinboardPublished::class);
-        $announcementPinboardPublishedUsers = $notificationsData[$announcementPinboardPublished] ?? collect();
-        if ($announcementPinboardPublishedUsers->isNotEmpty()) {
-            $pinboard->announcement_email_receptionists()->create([
-                'resident_ids' => $announcementPinboardPublishedUsers->pluck('resident.id'),
-                'failed_resident_ids' => []
-            ]);
-        }
-
-//        $pinboard->addDataInAudit('notifications', $notificationsData);
-    }
-
-
-    /**
-     * @param int $id
-     * @param $status
-     * @param $publishedAt
-     * @return Model|Pinboard|mixed
+     * @param Contract $contract
+     * @return Model|Pinboard|bool|mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function setStatus(int $id, $status, $publishedAt)
+    public function newResidentContractPinboard(Contract $contract)
     {
-        $pinboard = $this->find($id);
-        return $this->setStatusExisting($pinboard, $status, $publishedAt);
-    }
-
-    /**
-     * @param Pinboard $pinboard
-     * @param $status
-     * @param $publishedAt
-     * @return Model|Pinboard|mixed
-     * @throws \OwenIt\Auditing\Exceptions\AuditingException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     */
-    public function setStatusExisting(Pinboard $pinboard, $status, $publishedAt)
-    {
-        if ($pinboard->status == $status) {
-            return $pinboard;
+        if (empty($contract->building_id)) {
+            return false;
         }
 
-        return $this->updateExisting($pinboard, ['status' => $status]);
+        return $this->create([
+            'visibility' => Pinboard::VisibilityAddress,
+            'status' => Pinboard::StatusPublished,
+            'type' => Pinboard::TypeNewNeighbour,
+            'content' => "New neighbour",
+            'user_id' => $contract->resident->user->id,
+            'building_ids' => [$contract->building_id],
+            'notify_email' => true,
+            'published_at' => $contract->start_date ?? Carbon::now()
+        ]);
     }
 
     /**
@@ -210,11 +166,28 @@ class PinboardRepository extends BaseRepository
         $model = parent::updateExisting($model, $attributes);
 
         if (Pinboard::StatusPublished == $status) {
-            $notificationsData = $this->notify($model);
-            $this->saveNotificationAuditsAndLogs($model, $notificationsData);
+            // @TODO correct when need send
+            dispatch_now(new NotifyNewPinboard($model));;
         }
 
         return $model;
+    }
+
+    /**
+     * @param Pinboard $pinboard
+     * @param $status
+     * @param $publishedAt
+     * @return Model|Pinboard|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function setStatusExisting(Pinboard $pinboard, $status, $publishedAt)
+    {
+        if ($pinboard->status == $status) {
+            return $pinboard;
+        }
+
+        return $this->updateExisting($pinboard, ['status' => $status, ['published_at' => $publishedAt]]);
     }
 
     /**
@@ -223,75 +196,7 @@ class PinboardRepository extends BaseRepository
      */
     public function notify(Pinboard $pinboard)
     {
-        return dispatch_now(new PinboardNotify($pinboard));
-    }
-
-    /**
-     * @param Pinboard $pinboard
-     */
-    public function notifyAdminActions(Pinboard $pinboard)
-    {
-        if (! Auth::user()->hasRole('administrator')) {
-            return;
-        }
-        // @TODO
-    }
-
-    /**
-     * @param Pinboard $pinboard
-     * @return \Illuminate\Support\Collection
-     */
-    public function notifyAdminNewResidentPinboard(Pinboard $pinboard)
-    {
-        $newResidentPinboard = get_morph_type_of(NewResidentPinboard::class);
-        if (empty($pinboard->user->resident)) {
-            return collect([$newResidentPinboard => collect()]);
-        }
-
-        $settings = Settings::firstOrFail();
-        $admins = User::whereIn('id', $settings->pinboard_receiver_ids)->get();
-        $i = 0;
-        foreach ($admins as $admin) {
-            $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
-            $admin->redirect = '/admin/pinboard';
-
-            $notif = (new NewResidentPinboard($pinboard, $admin))->delay(now()->addSeconds($delay));
-            $admin->notify($notif);
-        }
-
-        return collect([$newResidentPinboard => $admins]);
-    }
-
-    /**
-     * @param Contract $contract
-     * @return Model|Pinboard|bool|mixed
-     * @throws \OwenIt\Auditing\Exceptions\AuditingException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function newResidentContractPinboard(Contract $contract)
-    {
-        if (empty($contract->building_id)) {
-            return false;
-        }
-
-        $pinboard = $this->create([
-            'visibility' => Pinboard::VisibilityAddress,
-            'status' => Pinboard::StatusPublished,
-            'type' => Pinboard::TypeNewNeighbour,
-            'content' => "New neighbour",
-            'user_id' => $contract->resident->user->id,
-            'building_ids' => [$contract->building_id],
-            'notify_email' => true,
-        ]);
-
-        $publishStart = $contract->start_date ?? Carbon::now();
-        if ($publishStart->isBefore(Carbon::now())) {
-            $publishStart = Carbon::now();
-        }
-
-        $this->setStatusExisting($pinboard, Pinboard::StatusPublished, $publishStart);
-        return $pinboard;
+        return dispatch_now(new NotifyNewPinboard($pinboard));
     }
 
     /**
@@ -310,5 +215,19 @@ class PinboardRepository extends BaseRepository
             ->where('pinboard_quarter.pinboard_id', $p->id);
 
         return $pbs->union($pds);
+    }
+
+    /**
+     * @param AuditableModel $model
+     * @param $method
+     * @param $data
+     * @param $key
+     */
+    protected function assignWithMergeAudit($model, $method, $data, $key)
+    {
+        $model->disableAuditing();
+        $model->{$method}()->sync($data[$key]);
+        $model->enableAuditing();
+        //$model->addAssigneesDataInAudit($key, $data[$key]);
     }
 }

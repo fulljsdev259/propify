@@ -498,6 +498,7 @@ class PinboardAPIController extends AppBaseController
      * @param $id
      * @param PublishRequest $request
      * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function publish($id, PublishRequest $request)

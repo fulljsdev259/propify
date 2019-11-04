@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Notifications\AnnouncementPinboardPublished;
+use App\Notifications\NewResidentInNeighbour;
+use App\Notifications\NewResidentPinboard;
+use App\Notifications\PinboardPublished;
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use OwenIt\Auditing\Contracts\Auditable;
-use OwenIt\Auditing\Models\Audit;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 /**
@@ -154,15 +157,33 @@ class AuditableModel extends Model implements Auditable
             $tags = Arr::wrap($tags);
             $audit->tags = json_encode($tags); // @TODO correct later
         }
+
+        $announcementPinboardPublished = get_morph_type_of(AnnouncementPinboardPublished::class);
+        $pinboardPublished = get_morph_type_of(PinboardPublished::class);
+        $pinboardNewResidentNeighbor = get_morph_type_of(NewResidentInNeighbour::class);
+        $pinboardNewResidentPinboard = get_morph_type_of(NewResidentPinboard::class);
+
         $_value = [];
         foreach ($value as $morph => $data) {
-            if ($data->pluck('resident.id')->isEmpty()) {
-                continue;
+            if ($morph ==  get_morph_type_of($pinboardNewResidentPinboard)) {
+                if ($data->pluck('id')->isEmpty()) {
+                    continue;
+                }
+                $_value[$morph] = [
+                    'admin_user_ids' => $data->pluck('id')->all(),
+                    'failed_admin_user_ids' => []
+                ];
+            } elseif (in_array($morph, [$announcementPinboardPublished, $pinboardPublished, $pinboardNewResidentNeighbor])) {
+                if ($data->pluck('resident.id')->isEmpty()) {
+                    continue;
+                }
+                $_value[$morph] = [
+                    'resident_ids' => $data->pluck('resident.id')->all(),
+                    'failed_resident_ids' => []
+                ];
+            } else {
+                dd('@TODO', $morph);
             }
-            $_value[$morph] = [
-                'resident_ids' => $data->pluck('resident.id')->all(),
-                'failed_resident_ids' => []
-            ];
         }
 
         $value = $_value;
@@ -193,7 +214,7 @@ class AuditableModel extends Model implements Auditable
     {
         $event = $event ?? AuditableModel::EventCreated;
         $this->auditEvent = self::EventUpdated;
-        $audit =  new Audit($this->toAudit());
+        $audit = new Audit($this->toAudit());
         $audit->event = $event;
         $audit->user_type = self::System;
         $audit->auditable_id = $audit->auditable_id ?? 0;

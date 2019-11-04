@@ -19,7 +19,7 @@ use App\Models\User;
  * Class PinboardNotify
  * @package App\Jobs
  */
-class PinboardNotify
+class NotifyNewPinboard
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -98,6 +98,14 @@ class PinboardNotify
 
         if ($this->saveSystemAudit) {
             $pinboard->newSystemNotificationAudit($notificationsData);
+        }
+
+        $announcementPinboardPublishedUsers = $notificationsData[$announcementPinboardPublished] ?? collect();
+        if ($announcementPinboardPublishedUsers->isNotEmpty()) {
+            $pinboard->announcement_email_receptionists()->create([
+                'resident_ids' => $announcementPinboardPublishedUsers->pluck('resident.id'),
+                'failed_resident_ids' => []
+            ]);
         }
 
         return $notificationsData;
