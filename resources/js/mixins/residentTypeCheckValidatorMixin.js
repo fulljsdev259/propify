@@ -5,8 +5,6 @@ export default (config = {}) => {
         methods: {
             async checkavailabilityResidentType(rule, value, callback) {
                 let validateObject = this[model];
-                console.log('checkavailabilityResidentType', validateObject)
-                console.log('original type', this.original_type, validateObject.type)
                 if(validateObject.id)
                 {
                     if(this.original_type !== validateObject.type) {
