@@ -111,10 +111,9 @@ export default (config = {}) => {
                 costs: [],
                 showSubCategory: false,
                 showPayer: false,
-                showUmgebung: false,
-                showLiegenschaft: false,
+                showLocation: false,
                 showCapturePhase: false,
-                showWohnung: false,
+                showRoom: false,
                 showQualification: false,
                 createTag: false,
                 editTag: false,
@@ -360,6 +359,7 @@ export default (config = {}) => {
                     if(!this.showQualification && this.model.sub_category_id != null) {
                         let sub_category = this.sub_categories.find(category => { return category.id == this.model.sub_category_id});
                         this.showQualification = sub_category.qualification == 1 ? true : false;
+                        this.showCapturePhase =  sub_category.capture_phase == 1 ? true : false;
                     }
                 }
 
@@ -371,25 +371,12 @@ export default (config = {}) => {
                 
                 //this.model.sub_category = sub_category
 
-                this.model.room = '';
-                this.model.location = '';
-                this.showLiegenschaft = false;
-                this.showUmgebung = false;
-                this.showWohnung = false;
-                this.showQualification = false;
-
-                if(sub_category.room == 1) {
-                    this.showWohnung = true;
-                }
-                else if(sub_category.location == 1) {
-                    this.showLiegenschaft = true;
-                }
-                else if(sub_category.location == 0 && sub_category.room == 0) {
-                    this.showUmgebung = true;
-                }
-                if(sub_category.qualification == 1) {
-                    this.showQualification = true;
-                }
+                this.model.room = null;
+                this.model.location = null;
+                this.showRoom = sub_category.room == 1 ? true : false;
+                this.showLocation = sub_category.location == 1 ? true : false;
+                this.showQualification = sub_category.qualification == 1 ? true : false;
+                this.showCapturePhase = sub_category.capture_phase == 1 ? true : false;
             },
             changeQualification() {
                 this.model.payer = '';
@@ -534,7 +521,7 @@ export default (config = {}) => {
                     async saveRequest() {
                         // this.model.category = this.model.category_id
                         // this.model.sub_category = this.model.sub_category_id 
-
+                        this.model.media = this.media.map(item => item.file.src)
                         const resp = await this.createRequest(this.model);
                         
                         let requestId = resp.data.id;
@@ -559,7 +546,7 @@ export default (config = {}) => {
 
 
                         let audit_id = resp.data.audit_id;
-                        await this.uploadNewMedia(resp.data.id, audit_id);
+                        //await this.uploadNewMedia(resp.data.id, audit_id);
     
                         this.media = [];
 
@@ -642,11 +629,12 @@ export default (config = {}) => {
                         }
 
                         this.showSubCategory = resp.data.sub_category ? true : false;
-                        this.showLiegenschaft = resp.data.location != null ? true : false;
-                        this.showWohnung = resp.data.room != null ? true : false;
-                        this.showPayer = resp.data.qualification == 5 ? true : false;
-                        this.showCapturePhase =  resp.data.category.capture_phase == 1 ? true : false;
+                        this.showLocation = resp.data.sub_category && resp.data.sub_category.location == 1 ? true : false;
+                        this.showRoom = resp.data.sub_category && resp.data.sub_category.room == 1 ? true : false;
+                        
+                        this.showCapturePhase =  resp.data.category.capture_phase == 1 || (resp.data.sub_category && resp.data.sub_category.capture_phase == 1) ? true : false;
                         this.showQualification =  resp.data.category.qualification == 1 || (resp.data.sub_category && resp.data.sub_category.qualification == 1) ? true : false;
+                        this.showPayer = this.showQualification && resp.data.qualification == 5 ? true : false;
                         const data = resp.data;
 
                         this.model = Object.assign({}, this.model, data);
@@ -715,7 +703,7 @@ export default (config = {}) => {
 
                                 try {
                                     
-                                    
+                                    params.media = this.media.map(item => item.file.src)
                                     const resp = await this.updateRequest(params);
 
                                     await this.uploadNewMedia(params.id, null);

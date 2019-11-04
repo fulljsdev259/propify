@@ -45,7 +45,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :md="12" 
-                                v-if="this.showSubCategory == true && this.showLiegenschaft == true && this.showWohnung == false">
+                                v-if="this.showSubCategory == true && this.showLocation == true && this.showRoom == false">
                             <el-form-item :label="$t('models.request.category_options.range')">
                                 <el-select :disabled="$can($permissions.update.serviceRequest)"
                                             :placeholder="$t(`general.placeholders.select`)"
@@ -61,7 +61,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :md="12"
-                                v-if="this.showSubCategory == true && this.showWohnung == true && this.showLiegenschaft == false">
+                                v-if="this.showSubCategory == true && this.showRoom == true && this.showLocation == false">
                             <el-form-item :label="$t('models.request.category_options.room')">
                                 <el-select :disabled="$can($permissions.update.serviceRequest)"
                                             :placeholder="$t(`general.placeholders.select`)"
