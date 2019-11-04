@@ -59,13 +59,21 @@ export default {
                 }).catch(({response: {data: err}}) => reject(err))
         });
     },
-    deleteBuildingService(_, {building_id, id}) {
+    unassignProviderToBuilding({}, payload) {
         return new Promise((resolve, reject) => {
-            axios.delete(`buildings/${building_id}/service/${id}`).then((resp) => {
+            axios.delete(`buildings/${payload.id}/service/${payload.toAssignId}`).then((resp) => {                
                 resolve(resp.data);
             }).catch(({response: {data: err}}) => reject(err))
         });
     },
+    assignProviderToBuilding({}, payload){
+        return new Promise((resolve, reject) => {
+            axios.post(`buildings/${payload.id}/service/${payload.toAssignId}`)
+                .then((resp) => {                    
+                    resolve(resp.data);
+                }).catch(({response: {data: err}}) => reject(err))
+        });
+    },   
     assignManagerToBuilding({}, payload) {
         return new Promise((resolve, reject) => {
             axios.post(`buildings/${payload.id}/propertyManagers`, {managerIds: [payload.toAssignId]})

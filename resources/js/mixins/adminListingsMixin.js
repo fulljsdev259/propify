@@ -134,7 +134,9 @@ export default (config = {}) => {
                     id: this.model.id,
                     media_id: this.model.media[index].id
                 });
-                
+                if(this.$refs.auditList){
+                    this.$refs.auditList.fetch();
+                }
                 this.model.media.splice(index, 1)
                 displaySuccess(resp);
             },
