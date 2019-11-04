@@ -137,6 +137,58 @@ class AuditableModel extends Model implements Auditable
      * @return Audit
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
+    public function newSystemNotificationAudit($value, $event = null, $isSingle = true, $tags = [], $changeOldValues = false)
+    {
+        $key = self::MergeInMainData;
+        $event = $event ?? AuditableModel::EventCreated;
+        $this->auditEvent = self::EventUpdated;
+        $audit =  new Audit($this->toAudit());
+        $audit->event = $event;
+        $audit->user_type = self::System;
+        $audit->auditable_id = $audit->auditable_id ?? 0;
+        $audit->auditable_type = $audit->auditable_id ? $audit->auditable_type  :  'system';
+        $audit->new_values = [];
+        $audit->old_values = [];
+
+        if (!empty($tags)) {
+            $tags = Arr::wrap($tags);
+            $audit->tags = json_encode($tags); // @TODO correct later
+        }
+        $_value = [];
+        foreach ($value as $morph => $data) {
+            if ($data->pluck('resident.id')->isEmpty()) {
+                continue;
+            }
+            $_value[$morph] = [
+                'resident_ids' => $data->pluck('resident.id')->all(),
+                'failed_resident_ids' => []
+            ];
+        }
+
+        $value = $_value;
+
+        if (AuditableModel::EventCreated == $event) {
+            $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
+        } elseif (AuditableModel::EventUpdated == $event) {
+            dd('@TODO');
+            $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle, $changeOldValues);
+        } else {
+            dd('@TODO');
+        }
+
+        return $audit;
+    }
+
+    /**
+     * @param $key
+     * @param $value
+     * @param null $event
+     * @param bool $isSingle
+     * @param array $tags
+     * @param bool $changeOldValues
+     * @return Audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
     public function newSystemAudit($key, $value, $event = null, $isSingle = true, $tags = [], $changeOldValues = false)
     {
         $event = $event ?? AuditableModel::EventCreated;
@@ -190,6 +242,32 @@ class AuditableModel extends Model implements Auditable
             // @TODO
         }
     }
+
+    /**
+     * @param $key
+     * @param $value
+     * @param null $audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function addAssigneesDataInAudit($key, $value, $audit = null)
+    {
+        $audit = $this->getAudit($audit);
+        if (empty($audit)) {
+            return;
+        }
+
+        if (self::EventCreated == $audit->event) {
+            $newValues =  $audit->new_values;
+            $newValues['assignees'][$key] = $value;
+            $audit->new_values = $newValues;
+            $audit->save();
+        } elseif (self::EventUpdated == $audit->event) {
+            dd('@TODO');
+        } else {
+            dd('@TODO');
+        }
+    }
+
 
     /**
      * @param $audit

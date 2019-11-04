@@ -2,21 +2,19 @@
 
 namespace App\Repositories;
 
+use App\Jobs\Notify\PinboardNotify;
+use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\Model;
 use App\Models\Quarter;
 use App\Models\Pinboard;
 use App\Models\Contract;
-use App\Models\Resident;
 use App\Models\Settings;
 use App\Models\User;
-use App\Notifications\NewResidentInNeighbour;
 use App\Notifications\NewResidentPinboard;
 use App\Notifications\AnnouncementPinboardPublished;
-use App\Notifications\PinboardPublished;
 use App\Traits\SaveMediaUploads;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -50,7 +48,8 @@ class PinboardRepository extends BaseRepository
 
     /**
      * @param array $attributes
-     * @return Pinboard|mixed
+     * @return Model|Pinboard|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function create(array $attributes)
@@ -90,22 +89,25 @@ class PinboardRepository extends BaseRepository
         }
 
         $model = $this->saveMediaUploads($model, $attributes);
+
         if (!empty($attributes['quarter_ids'])) {
-            $model->quarters()->sync($attributes['quarter_ids']);
+            $this->assignWithMergeAudit($model, 'quarters', $attributes, 'quarter_ids');
         }
 
         if (!empty($attributes['building_ids'])) {
-            $model->buildings()->sync($attributes['building_ids']);
+            $this->assignWithMergeAudit($model, 'buildings', $attributes, 'building_ids');
         }
 
         if (!empty($attributes['provider_ids'])) {
-            $model->providers()->sync($attributes['provider_ids']);
+            $this->assignWithMergeAudit($model, 'providers', $attributes, 'provider_ids');
         }
 
         $notificationsData = collect();
+
         if (Pinboard::StatusPublished == $attributes['status']) {
-            $notificationsData = $this->notify($model);
+            $notificationsData = dispatch_now(new PinboardNotify($model));
         }
+        
         $adminNotificationsData = $this->notifyAdminNewResidentPinboard($model);
         $notificationsData = $notificationsData->merge($adminNotificationsData);
         $this->saveNotificationAuditsAndLogs($model, $notificationsData);
@@ -113,6 +115,26 @@ class PinboardRepository extends BaseRepository
         return $model;
     }
 
+    /**
+     * @param AuditableModel $model
+     * @param $method
+     * @param $data
+     * @param $key
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function assignWithMergeAudit($model, $method, $data, $key)
+    {
+        $model->disableAuditing();
+        $model->{$method}()->sync($data[$key]);
+        $model->enableAuditing();
+        //$model->addAssigneesDataInAudit($key, $data[$key]);
+    }
+
+    /**
+     * @param Pinboard $pinboard
+     * @param $notificationsData
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
     protected function saveNotificationAuditsAndLogs(Pinboard $pinboard, $notificationsData)
     {
         $announcementPinboardPublished = get_morph_type_of(AnnouncementPinboardPublished::class);
@@ -124,7 +146,7 @@ class PinboardRepository extends BaseRepository
             ]);
         }
 
-        $pinboard->addDataInAudit('notifications', $notificationsData);
+//        $pinboard->addDataInAudit('notifications', $notificationsData);
     }
 
 
@@ -132,7 +154,8 @@ class PinboardRepository extends BaseRepository
      * @param int $id
      * @param $status
      * @param $publishedAt
-     * @return Pinboard|mixed
+     * @return Model|Pinboard|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function setStatus(int $id, $status, $publishedAt)
@@ -145,7 +168,8 @@ class PinboardRepository extends BaseRepository
      * @param Pinboard $pinboard
      * @param $status
      * @param $publishedAt
-     * @return Pinboard|mixed
+     * @return Model|Pinboard|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function setStatusExisting(Pinboard $pinboard, $status, $publishedAt)
@@ -161,6 +185,7 @@ class PinboardRepository extends BaseRepository
      * @param array $attributes
      * @param $id
      * @return Model|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function update(array $attributes, $id)
@@ -173,6 +198,7 @@ class PinboardRepository extends BaseRepository
      * @param Model $model
      * @param $attributes
      * @return Model|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function updateExisting(Model $model, $attributes)
@@ -197,109 +223,7 @@ class PinboardRepository extends BaseRepository
      */
     public function notify(Pinboard $pinboard)
     {
-        if (!$pinboard->notify_email) {
-            return collect();
-        }
-
-        $usersToNotify = $this->getNotifiedResidentUsers($pinboard);
-
-        $announcementPinboardPublished = get_morph_type_of(AnnouncementPinboardPublished::class);
-        $pinboardPublished = get_morph_type_of(PinboardPublished::class);
-        $pinboardNewResidentNeighbor = get_morph_type_of(NewResidentInNeighbour::class);
-        $notificationsData = collect([
-            $announcementPinboardPublished => collect(),
-            $pinboardPublished => collect(),
-            $pinboardNewResidentNeighbor => collect(),
-        ]);
-
-        if ($usersToNotify->isEmpty()) {
-            return $notificationsData;
-        }
-
-        $usersToNotify->load('settings:user_id,admin_notification,pinboard_notification', 'resident:id,user_id,first_name,last_name');
-        $i = 0;
-        foreach ($usersToNotify as $u) {
-            $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
-            $u->redirect = '/news';
-            if ($u->settings && $u->settings->admin_notification && $pinboard->announcement) {
-                $notificationsData[$announcementPinboardPublished]->push($u);
-                $u->notify((new AnnouncementPinboardPublished($pinboard))
-                    ->delay(now()->addSeconds($delay)));
-                continue;
-            }
-            if ($u->settings && $u->settings->pinboard_notification && ! $pinboard->announcement) {
-                if ($pinboard->type == Pinboard::TypePost) {
-                    $notificationsData[$pinboardPublished]->push($u);
-                    $u->notify(new PinboardPublished($pinboard));
-                }
-                if ($pinboard->type == Pinboard::TypeNewNeighbour) {
-                    $notificationsData[$pinboardNewResidentNeighbor]->push($u);
-                    $u->notify((new NewResidentInNeighbour($pinboard))->delay($pinboard->published_at));
-                }
-            }
-        }
-
-        return $notificationsData;
-    }
-
-    /**
-     * @param Pinboard $pinboard
-     * @return Collection
-     */
-    protected function getNotifiedResidentUsers(Pinboard $pinboard)
-    {
-        if ($pinboard->visibility == Pinboard::VisibilityAll) {
-            return User::whereHas('resident', function ($q) {
-                    $q->whereNull('residents.deleted_at');
-                })
-                ->where('id', '!=', $pinboard->user_id)
-                ->get();
-        }
-
-        $quarterIds = $buildingIds = [];
-        if ($pinboard->visibility == Pinboard::VisibilityQuarter || $pinboard->announcement) {
-            $quarterIds = $pinboard->quarters()->pluck('id')->toArray();
-        }
-
-        if ($pinboard->visibility == Pinboard::VisibilityAddress  || $pinboard->announcement) {
-            $buildingIds = $pinboard->buildings()->pluck('id')->toArray();
-        }
-        if (empty($quarterIds) && empty($buildingIds)) {
-            return $pinboard->newCollection();
-        }
-
-        return User::whereHas('resident', function ($q) use ($quarterIds, $buildingIds) {
-            $q->whereNull('residents.deleted_at')
-                ->where('residents.status', Resident::StatusActive)
-                ->whereHas('contracts', function ($q) use ($quarterIds, $buildingIds) {
-
-                    $q->where('status', Contract::StatusActive)
-                        ->when(
-                            ! empty($quarterIds) && !empty($buildingIds),
-                            function ($q)  use ($quarterIds, $buildingIds) {
-                                $q->whereHas('building', function ($q) use ($quarterIds, $buildingIds) {
-                                    $q->where(function ($q) use ($quarterIds, $buildingIds) {
-                                        $q->whereIn('id', $buildingIds)->orWhereIn('quarter_id', $quarterIds);
-                                    })->whereNull('buildings.deleted_at');
-                                });
-                            },
-                            function ($q) use ($quarterIds, $buildingIds) {
-                                $q->when(
-                                    !empty($quarterIds),
-                                    function ($q) use ($quarterIds) {
-                                        $q->whereHas('building', function ($q) use ($quarterIds) {
-                                            $q  ->whereIn('quarter_id', $quarterIds)
-                                                ->whereNull('buildings.deleted_at');
-                                        });
-                                    },
-                                    function ($q) use ($buildingIds) {
-                                        $q->whereIn('building_id', $buildingIds);
-                                    }
-                                );
-                            }
-                        );
-                });
-        })->get();
+        return dispatch_now(new PinboardNotify($pinboard));
     }
 
     /**
@@ -313,6 +237,10 @@ class PinboardRepository extends BaseRepository
         // @TODO
     }
 
+    /**
+     * @param Pinboard $pinboard
+     * @return \Illuminate\Support\Collection
+     */
     public function notifyAdminNewResidentPinboard(Pinboard $pinboard)
     {
         $newResidentPinboard = get_morph_type_of(NewResidentPinboard::class);
@@ -336,7 +264,8 @@ class PinboardRepository extends BaseRepository
 
     /**
      * @param Contract $contract
-     * @return Pinboard|bool|mixed
+     * @return Model|Pinboard|bool|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
