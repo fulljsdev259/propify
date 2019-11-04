@@ -66,6 +66,9 @@
                     @media screen and (max-width: 360px)
                         font-size: 22px
 
+            .el-textarea__inner
+                font-family: inherit
+
             .el-button
                 width: 100%
                 margin-top: 16px

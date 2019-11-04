@@ -127,6 +127,7 @@ return [
     "my_dashboard" => "Mon tableau de bord",
     'dashboard' => 'Tableau de bord',
     'my_tenancy' => 'Mon bail',
+    'my_data' => 'Mes données',
     'my_personal_data' => 'Mes données personnelles',
     'my_recent_contract' => 'Mon récent contrat',
     'documents' => 'Les documents',

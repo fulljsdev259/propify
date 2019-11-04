@@ -500,6 +500,7 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
      * @param $value
      * @param null $audit
      * @param bool $isSingle
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function addDataInAudit($key, $value, $audit = null, $isSingle = true)
     {

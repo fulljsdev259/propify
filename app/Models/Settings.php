@@ -180,6 +180,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $iframe_enable
  * @property bool $contact_enable
  * @property array|null $pinboard_receiver_ids
+ * @property array|null $email_receptionist_ids
  * @property string|null $mail_host
  * @property int|null $mail_port
  * @property string|null $mail_username
