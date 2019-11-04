@@ -2,7 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Jobs\Notify\PinboardNotify;
+use App\Jobs\Notify\NotifyAdminNewResidentPinboard;
+use App\Jobs\Notify\NotifyNewPinboard;
 use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\Model;
@@ -105,12 +106,13 @@ class PinboardRepository extends BaseRepository
         $notificationsData = collect();
 
         if (Pinboard::StatusPublished == $attributes['status']) {
-            $notificationsData = dispatch_now(new PinboardNotify($model));
+            $notificationsData = dispatch_now(new NotifyNewPinboard($model, false));
         }
-        
-        $adminNotificationsData = $this->notifyAdminNewResidentPinboard($model);
+
+        $adminNotificationsData = dispatch_now(new NotifyAdminNewResidentPinboard($model, false));
         $notificationsData = $notificationsData->merge($adminNotificationsData);
-        $this->saveNotificationAuditsAndLogs($model, $notificationsData);
+        $model->newSystemNotificationAudit($notificationsData);
+
 //        $this->notifyAdminActions($model);
         return $model;
     }
@@ -130,24 +132,6 @@ class PinboardRepository extends BaseRepository
         //$model->addAssigneesDataInAudit($key, $data[$key]);
     }
 
-    /**
-     * @param Pinboard $pinboard
-     * @param $notificationsData
-     * @throws \OwenIt\Auditing\Exceptions\AuditingException
-     */
-    protected function saveNotificationAuditsAndLogs(Pinboard $pinboard, $notificationsData)
-    {
-        $announcementPinboardPublished = get_morph_type_of(AnnouncementPinboardPublished::class);
-        $announcementPinboardPublishedUsers = $notificationsData[$announcementPinboardPublished] ?? collect();
-        if ($announcementPinboardPublishedUsers->isNotEmpty()) {
-            $pinboard->announcement_email_receptionists()->create([
-                'resident_ids' => $announcementPinboardPublishedUsers->pluck('resident.id'),
-                'failed_resident_ids' => []
-            ]);
-        }
-
-//        $pinboard->addDataInAudit('notifications', $notificationsData);
-    }
 
 
     /**
@@ -210,8 +194,8 @@ class PinboardRepository extends BaseRepository
         $model = parent::updateExisting($model, $attributes);
 
         if (Pinboard::StatusPublished == $status) {
-            $notificationsData = $this->notify($model);
-            $this->saveNotificationAuditsAndLogs($model, $notificationsData);
+            // @TODO correct when need send
+            dispatch_now(new NotifyNewPinboard($model));;
         }
 
         return $model;
@@ -223,7 +207,7 @@ class PinboardRepository extends BaseRepository
      */
     public function notify(Pinboard $pinboard)
     {
-        return dispatch_now(new PinboardNotify($pinboard));
+        return dispatch_now(new NotifyNewPinboard($pinboard));
     }
 
     /**
@@ -235,31 +219,6 @@ class PinboardRepository extends BaseRepository
             return;
         }
         // @TODO
-    }
-
-    /**
-     * @param Pinboard $pinboard
-     * @return \Illuminate\Support\Collection
-     */
-    public function notifyAdminNewResidentPinboard(Pinboard $pinboard)
-    {
-        $newResidentPinboard = get_morph_type_of(NewResidentPinboard::class);
-        if (empty($pinboard->user->resident)) {
-            return collect([$newResidentPinboard => collect()]);
-        }
-
-        $settings = Settings::firstOrFail();
-        $admins = User::whereIn('id', $settings->pinboard_receiver_ids)->get();
-        $i = 0;
-        foreach ($admins as $admin) {
-            $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
-            $admin->redirect = '/admin/pinboard';
-
-            $notif = (new NewResidentPinboard($pinboard, $admin))->delay(now()->addSeconds($delay));
-            $admin->notify($notif);
-        }
-
-        return collect([$newResidentPinboard => $admins]);
     }
 
     /**
