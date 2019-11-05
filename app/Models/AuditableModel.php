@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Notifications\AnnouncementPinboardPublished;
 use App\Notifications\NewResidentInNeighbour;
 use App\Notifications\NewResidentPinboard;
+use App\Notifications\NewResidentRequest;
 use App\Notifications\PinboardPublished;
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
@@ -168,10 +169,19 @@ class AuditableModel extends Model implements Auditable
         $pinboardPublished = get_morph_type_of(PinboardPublished::class);
         $pinboardNewResidentNeighbor = get_morph_type_of(NewResidentInNeighbour::class);
         $pinboardNewResidentPinboard = get_morph_type_of(NewResidentPinboard::class);
+        $newResidentPinboard = get_morph_type_of(NewResidentRequest::class);
 
         $_value = [];
         foreach ($value as $morph => $data) {
-            if ($morph ==  get_morph_type_of($pinboardNewResidentPinboard)) {
+            if ($morph ==  get_morph_type_of($newResidentPinboard)) {
+                if ($data->pluck('id')->isEmpty()) {
+                    continue;
+                }
+                $_value[$morph] = [
+                    'property_manager_ids' => $data->pluck('id')->all(),
+                    'failed_property_manager_ids' => []
+                ];
+            } elseif ($morph ==  get_morph_type_of($pinboardNewResidentPinboard)) {
                 if ($data->pluck('id')->isEmpty()) {
                     continue;
                 }

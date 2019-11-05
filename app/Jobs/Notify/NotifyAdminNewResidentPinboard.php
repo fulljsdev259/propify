@@ -60,8 +60,8 @@ class NotifyAdminNewResidentPinboard
             $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
             $admin->redirect = '/admin/pinboard';
 
-            $notif = (new NewResidentPinboard($pinboard, $admin))->delay(now()->addSeconds($delay));
-            $admin->notify($notif);
+            $notify = (new NewResidentPinboard($pinboard, $admin))->delay(now()->addSeconds($delay));
+            $admin->notify($notify);
         }
 
         $notificationsData = collect([$newResidentPinboard => $admins]);
