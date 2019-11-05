@@ -378,7 +378,7 @@ class AuditableModel extends Model implements Auditable
 
         $this->auditEvent = self::EventUpdated;
         $audit = new Audit($this->toAudit());
-        if ($audit) {
+        if ($event) {
             $audit->event = $event;
         }
 
