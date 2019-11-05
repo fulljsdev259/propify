@@ -234,6 +234,28 @@
                 this.building_locations = Object.entries(this.$constants.requests.location).map(([value, label]) => ({value: +value, name: this.$t(`models.request.location.${label}`)}))
                 this.apartment_rooms = Object.entries(this.$constants.requests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
                 
+                this.contracts = this.$store.getters.loggedInUser.resident.contracts.filter( contract => contract.status == 1)
+
+                this.contracts.forEach(contract => {
+                    let floor_label;
+                    if(contract.unit.attic == 'attic')
+                    {
+                        floor_label = this.$t('models.unit.floor_title.top_floor')
+                    }
+                    else if(contract.unit.floor > 0)
+                    {
+                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                    }
+                    else if(contract.unit.floor == 0)
+                    {
+                        floor_label = this.$t('models.unit.floor_title.ground_floor')
+                    }
+                    else if(contract.unit.floor < 0)
+                    {
+                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                    }
+                    contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                })
             },
             submit () {
                 this.$refs.form.validate(async valid => {
@@ -250,6 +272,8 @@
                             // params.category = params.category_id
                             // params.sub_category = params.sub_category_id
 
+                            params.media = this.model.media.map(item => item.file.src)
+
                             const resp = await this.$store.dispatch('newRequests/create', params);
                             
                             displaySuccess(resp.message)
@@ -263,6 +287,7 @@
                                     this.$refs.media.startUploading();
                                 }
                             }
+
                             // const {id} = resp.data
                             // if (media.length) {
                             //     const queue = new PQueue({concurrency: 1})

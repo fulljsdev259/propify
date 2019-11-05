@@ -86,7 +86,7 @@
 
         <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
-                <el-form-item :label="$t('models.resident.contract.rent_type')"
+                <el-form-item :label="$t('models.resident.contract.type')"
                             prop="type"
                             class="label-block">
                     <!-- <el-select placeholder="Select" style="display: block" 
@@ -110,7 +110,7 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
-                <el-form-item :label="$t('models.resident.contract.rent_duration')"
+                <el-form-item :label="$t('models.resident.contract.duration')"
                             prop="duration"
                             class="label-block">
                     <el-select placeholder="Select" style="display: block" 
@@ -119,7 +119,7 @@
                                 :key="type.value"
                                 :label="type.name"
                                 :value="type.value"
-                                v-for="type in rent_durations">
+                                v-for="type in durations">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -127,11 +127,11 @@
         </el-row>
         <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
-                <el-form-item :label="$t('models.resident.contract.rent_start')"
+                <el-form-item :label="$t('models.resident.contract.start_date')"
                         prop="start_date">
                     <el-date-picker
                             :picker-options="{disabledDate: disabledRentStart}"
-                            :placeholder="$t('models.resident.contract.rent_start')"
+                            :placeholder="$t('models.resident.contract.start_date')"
                             format="dd.MM.yyyy"
                             style="width: 100%;"
                             type="date"
@@ -141,10 +141,10 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12" v-if="model.unit_id && model.duration == 2 && resident_type_check == 1">
-                <el-form-item :label="$t('models.resident.contract.rent_end')">
+                <el-form-item :label="$t('models.resident.contract.end_date')">
                     <el-date-picker
                         :picker-options="{disabledDate: disabledRentEnd}"
-                        :placeholder="$t('models.resident.contract.rent_end')"
+                        :placeholder="$t('models.resident.contract.end_date')"
                         format="dd.MM.yyyy"
                         style="width: 100%;"
                         type="date"
@@ -163,7 +163,7 @@
                     </el-input>
                 </el-form-item> 
             </el-col> -->
-            <el-col :md="12" v-if="resident_type_check == 1 && !isFuture">
+            <el-col :md="12" v-if="resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.status.label')" prop="status" class="label-block">
                     <el-select placeholder="Select" style="display: block" 
                                 v-model="model.status">
@@ -442,7 +442,7 @@
                 buildings: [],
                 units: [],
                 options: [],
-                rent_durations: [],
+                durations: [],
                 deposit_statuses: [],
                 contract_statuses: [],
                 deposit_types: [],
@@ -490,15 +490,15 @@
                     }],
                     start_date: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.rent_start')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.start_date')})
                     }],
                     type: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.rent_type')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.type')})
                     }],
                     duration: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.rent_duration')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.duration')})
                     }],
                     status: [{
                         required: true,
@@ -598,8 +598,8 @@
                 const today = new Date().getTime();
 
                 this.isFuture = start_date > today
-                if(this.isFuture)
-                    this.model.status = 2
+                // if(this.isFuture)
+                //     this.model.status = 2
             },
             async remoteSearchResidents(search) {
                 if (search === '') {
@@ -734,9 +734,9 @@
 
             let parent_obj = this
             this.deposit_types = Object.entries(this.$constants.contracts.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.deposit_types.${label}`)}))
-            this.rent_durations = Object.entries(this.$constants.contracts.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.rent_durations.${label}`)}))
+            this.durations = Object.entries(this.$constants.contracts.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.durations.${label}`)}))
             this.deposit_statuses = Object.entries(this.$constants.contracts.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.deposit_status.${label}`)}));
-            this.contract_statuses = Object.entries(this.$constants.contracts.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.rent_status.${label}`)}));
+            this.contract_statuses = Object.entries(this.$constants.contracts.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.status.${label}`)}));
 
             if(this.resident_type)
                 this.resident_type_check = this.resident_type

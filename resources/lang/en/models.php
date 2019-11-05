@@ -74,11 +74,11 @@ return [
         'contact_info_card' => 'Contact details',        
         'contract' => [
             'title' => 'Contract',
-            'rent_end' => 'Rent end',
-            'rent_start' => 'Rent start',
-            'rent_type' => 'Rent type',            
-            'rent_duration' => 'Rent duration',
-            'rent_durations' => [
+            'end_date' => 'End date',
+            'start_date' => 'Start date',
+            'type' => 'Type',            
+            'duration' => 'Duration',
+            'durations' => [
                 'unlimited' => 'Unlimited',
                 'limited' => 'Limited',
             ],
@@ -98,11 +98,12 @@ return [
                 'no' => 'No',
             ],
             'contract_id' => 'Contract ID',
-            'rent_status' => [
+            'status' => [
                 'active' => 'Active',
                 'inactive' => 'Inactive',
             ],
             'add' => 'Add new contract',
+            'add_sell_contract' => 'Add Sell Contract',
             'pdf_only_desc' => 'Please note that only PDF files can be uploaded',
             'saved' => 'Contract saved',
             'status_count' => [
@@ -110,6 +111,7 @@ return [
                 'active' => 'Active contracts',
                 'inactive' => 'Inactive contracts',
             ],
+            'type_validation_error' => "Looks like you've already added contract(s), first delete them and then you will be able to change resident type."
         ],      
         'status' => [
             'label' => 'Status',
@@ -395,6 +397,11 @@ return [
             'not_found' => "Quarter not found",
             'deleted' => "Quarter deleted error: ",
         ],
+        'types' => [
+            'label' => 'Type',
+            'rent' => 'Rent',
+            'sell' => 'Sell'
+        ]
     ],
     'request' => [        
         'deleted' => 'Request deleted',
