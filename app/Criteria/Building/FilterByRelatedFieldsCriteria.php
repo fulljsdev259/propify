@@ -5,6 +5,7 @@ namespace App\Criteria\Building;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
@@ -46,6 +47,12 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
         $quarterId = $this->request->get('quarter_id', null);
         if ($quarterId) {
             $model->where('quarter_id', $quarterId);
+        }
+
+        $excludeQuarterIds = $this->request->exclude_quarter_ids ?? [];
+        if ($excludeQuarterIds) {
+            $excludeQuarterIds = Arr::wrap($excludeQuarterIds);
+            $model->whereNotIn('quarter_id', $excludeQuarterIds);
         }
 
         $managerId = $this->request->get('manager_id', null);
