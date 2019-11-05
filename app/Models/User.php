@@ -332,9 +332,14 @@ class User extends Authenticatable implements LikerContract, Commentator, Audita
         return getUserAvatars($avatar);
     }
 
-    public function setAvatarAttribute($value){
-        $avatar = explode('/', $value);
-        $this->attributes['avatar'] = end($avatar);
+    public function setAvatarAttribute($value)
+    {
+        if ($value) {
+            $avatar = explode('/', $value);
+            $this->attributes['avatar'] = end($avatar);
+        } else {
+            $this->attributes['avatar'] = $value;
+        }
     }
 
 }

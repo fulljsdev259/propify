@@ -269,6 +269,8 @@ return [
         'files_extension_images' => 'Si accettano solo file jpg e png',
     ],
     'date_time_format' => '{date} in {time}',
+    'day_at_time_period' => '{date} in {time1} - {time2}',
+    'two_days_at_time' => '{date1} in {time1} - {date2} in {time2}',
     'date_range' => [
         'range_separator' => "in",
         'start_date' => "Data d'inizio",

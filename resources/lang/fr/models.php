@@ -74,11 +74,11 @@ return [
         "contact_info_card" => "Coordonnées de contact",
         "contract" => [
             "title" => "Contrat",
-            "rent_end" => "Fin du loyer",
-            "rent_start" => "Début du loyer",
-            'rent_type' => 'Type de loyer',            
-            'rent_duration' => 'Durée du loyer',
-            'rent_durations' => [
+            "end_date" => "Date de fin",
+            "start_date" => "Date de début",
+            'type' => 'Type',            
+            'duration' => 'Durée du projet',
+            'durations' => [
                 'unlimited' => 'Illimité',
                 'limited' => 'Limitée',
             ],
@@ -98,11 +98,12 @@ return [
                 'no' => 'Non',
             ],
             'contract_id' => 'ID du contrat',
-            'rent_status' => [
+            'status' => [
                 'active' => 'Actif',
                 'inactive' => 'Inactif',
             ],
             'add' => 'Ajouter un nouveau contrat',
+            'add_sell_contract' => 'Ajouter un contrat de vente',
             'pdf_only_desc' => 'Veuillez noter que seuls les fichiers PDF peuvent être téléchargés.',
             'saved' => 'Contrat sauvegardé',
             'status_count' => [
@@ -110,6 +111,7 @@ return [
                 'active' => 'Contrats en cours',
                 'inactive' => 'Contrats inactifs',
             ],
+            'type_validation_error' => "On dirait que vous avez déjà ajouté des contrats, supprimez-les d'abord et vous pourrez ensuite changer le type de résident."
         ],       
         'status' => [
             "label" => "Statut",
@@ -395,6 +397,11 @@ return [
             'not_found' => "Trimestre non trouvé",
             'deleted' => "Erreur d'effacement trimestriel : ",
         ],
+        'types' => [
+            'label' => 'Type',
+            'rent' => 'Loyer',
+            'sell' => 'Vendre'
+        ]
     ],
     'request' => [        
         "deleted" => "Richiesta supprimée",

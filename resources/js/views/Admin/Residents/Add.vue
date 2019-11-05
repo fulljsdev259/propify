@@ -161,7 +161,15 @@
                         <card class="mt15 contract-box">
                             <template slot="header">
                                 {{ $t('models.resident.contract.title') }}
-                                <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                                <el-button style="float:right" 
+                                        type="primary" 
+                                        @click="toggleDrawer" 
+                                        icon="icon-plus" 
+                                        size="mini" 
+                                        :disabled="model.type == ''" 
+                                        round>
+                                        {{ model.type == 1 ? $t('models.resident.contract.add') : $t('models.resident.contract.add_sell_contract')}}
+                                </el-button>
                             </template>
                             
                             <contract-list-table
@@ -234,13 +242,6 @@
         },
         mounted() {
             this.$root.$on('changeLanguage', () => this.getCountries());
-
-            // this.validationRules.type = [{
-            //     required: true,
-            //     message: this.$t('validation.general.required')
-            // }, {
-            //     validator: this.checkavailabilityResidentType
-            // }]
         },
         computed: {
             ...mapGetters('application', {

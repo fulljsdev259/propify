@@ -247,7 +247,14 @@
                                             <h3 class="chart-card-header">
                                                 <i class="icon-handshake-o ti-user icon "/>
                                                     &nbsp;{{ $t('models.resident.contract.title') }}
-                                                <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                                                <el-button style="float:right" 
+                                                        type="primary" 
+                                                        @click="toggleDrawer" 
+                                                        icon="icon-plus" 
+                                                        size="mini" 
+                                                        round>
+                                                        {{ model.type == 1 ? $t('models.resident.contract.add') : $t('models.resident.contract.add_sell_contract')}}
+                                                </el-button>
                                             </h3>
                                             
                                         </el-row>

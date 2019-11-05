@@ -157,12 +157,12 @@
                                 :key="contract.id"
                                 v-for="(contract, $index) in model.contracts">
                             <el-divider v-if="$index > 0" style="margin: 0;"></el-divider>
-                            <el-col :sm="12" :xs="12" v-if="contract.start_date">{{$t('models.resident.contract.rent_start')}}:</el-col>
+                            <el-col :sm="12" :xs="12" v-if="contract.start_date">{{$t('models.resident.contract.start_date')}}:</el-col>
                             <el-col :sm="12" :xs="12" class="text-secondary" v-if="contract.start_date">
                                 {{new Date(contract.start_date) | formatDate }}
                             </el-col>
 
-                            <el-col :sm="12" :xs="12" v-if="contract.end_date">{{$t('models.resident.contract.rent_end')}}:</el-col>
+                            <el-col :sm="12" :xs="12" v-if="contract.end_date">{{$t('models.resident.contract.end_date')}}:</el-col>
                             <el-col :sm="12" :xs="12" class="text-secondary" v-if="contract.end_date">
                                 {{  new Date(contract.end_date) | formatDate }}
                             </el-col>

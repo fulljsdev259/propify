@@ -74,11 +74,11 @@ return [
         'contact_info_card' => 'Kontaktdaten',
         'contract' => [
             'title' => 'Mietvertrag',
-            'rent_end' => 'Mietende',
-            'rent_start' => 'Mietbeginn',
-            'rent_type' => 'Objekttyp',            
-            'rent_duration' => 'Vertragslaufzeit',
-            'rent_durations' => [
+            'end_date' => 'Enddatum',
+            'start_date' => 'Startdatum',
+            'type' => 'Typ',            
+            'duration' => 'Vertragslaufzeit',
+            'durations' => [
                 'unlimited' => 'Unbefristet',
                 'limited' => 'Befristet',
             ],
@@ -98,11 +98,12 @@ return [
                 'no' => 'Nein',
             ],
             'contract_id' => 'Vertrags-ID',
-            'rent_status' => [
+            'status' => [
                 'active' => 'Aktiv',
                 'inactive' => 'Inaktiv',
             ],
-            'add' => 'Vertrag erstellen',            
+            'add' => 'Vertrag erstellen',
+            'add_sell_contract' => 'Verkaufsvertrag hinzufügen',
             'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',
             'saved' => 'Vertrag gespeichert',
             'status_count' => [
@@ -110,6 +111,7 @@ return [
                 'active' => 'Aktive Verträge',
                 'inactive' => 'Inaktive Verträge',
             ],
+            'type_validation_error' => "Sieht so aus, als hätten Sie bereits Verträge hinzugefügt, zuerst löschen und dann können Sie den Bewohnertyp ändern."
         ],
         'status' => [
             'label' => 'Status',
@@ -396,6 +398,11 @@ return [
             'not_found' => "Projekt nicht gefunden.",
             'deleted' => "Fehler beim Löschen des Projekts: ",
         ],
+        'types' => [
+            'label' => 'Typ',
+            'rent' => 'Miete',
+            'sell' => 'Verkaufen'
+        ]
     ],
     'request' => [        
         'deleted' => 'Anfrage gelöscht',
