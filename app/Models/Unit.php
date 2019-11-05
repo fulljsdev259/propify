@@ -267,7 +267,7 @@ class Unit extends AuditableModel implements HasMedia
 
         if (
             key_exists('description', $oldValues) && key_exists('description', $newValues)
-            && empty($oldValues['description'] && empty($newValues['description']))
+            && empty($oldValues['description']) && empty($newValues['description'])
         ) {
             unset($oldValues['description'], $newValues['description']);
         }
