@@ -107,41 +107,6 @@
                                                 :items="model.media" 
                                                 @delete-document="deleteDocument">
                                         </building-file-list-table>
-                                        <!-- <el-table
-                                            :data="model.media"
-                                            style="width: 100%"
-                                            v-if="model.media && model.media.length"
-                                            :show-header="false"
-                                            >
-                                            <el-table-column
-                                                prop="collection_name"
-                                            >
-                                                <template slot-scope="scope">
-                                                    <strong>{{$t(`models.building.media_category.${scope.row.collection_name}`)}}</strong>
-                                                </template>
-                                            </el-table-column>
-                                            <el-table-column
-                                                align="right"
-                                            >
-                                                <template slot-scope="scope">
-                                                    <a :href="scope.row.url" class="file-name" target="_blank">
-                                                        {{scope.row.name}}
-                                                    </a>
-                                                </template>
-                                            </el-table-column>
-                                            <el-table-column
-                                                align="right"
-                                            >
-                                                <template slot-scope="scope">
-                                                    <el-tooltip
-                                                        :content="$t('general.actions.delete')"
-                                                        class="item" effect="light" placement="top-end"
-                                                    >
-                                                        <el-button icon="ti-trash" type="danger" round @click="deleteDocument('media', scope.$index)" size="mini"/>
-                                                    </el-tooltip>
-                                                </template>
-                                            </el-table-column>
-                                        </el-table> -->
                                     </div>
                                 </transition-group>
                             </draggable>
