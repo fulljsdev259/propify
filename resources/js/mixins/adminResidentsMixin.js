@@ -175,6 +175,9 @@ export default (config = {}) => {
                 }
             }
         },
+        created() {
+            this.titles = Object.entries(this.$constants.residents.title).map(([value, label]) => ({value: label, name: this.$t(`general.salutation_option.${label}`)}))
+        },
     };
 
     if (config.mode) {
@@ -311,7 +314,7 @@ export default (config = {}) => {
                     const {password, password_confirmation} = this.validationRules;
 
                     [...password, ...password_confirmation].forEach(rule => rule.required = false);
-
+                    this.titles = Object.entries(this.$constants.residents.title).map(([value, label]) => ({value: label, name: this.$t(`general.salutation_option.${label}`)}))
                     try {
                         this.loading.state = true;
 

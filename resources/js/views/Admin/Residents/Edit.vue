@@ -67,9 +67,9 @@
                                                                     prop="title">
                                                             <el-select placeholder="Select" style="display: block" v-model="model.title">
                                                                 <el-option
-                                                                        :key="title"
-                                                                        :label="$t(`general.salutation_option.${title}`)"
-                                                                        :value="title"
+                                                                        :key="title.value"
+                                                                        :label="title.name"
+                                                                        :value="title.value"
                                                                         v-for="title in titles">
                                                                 </el-option>
                                                             </el-select>
@@ -78,7 +78,7 @@
                                                     <el-col :md="6">
                                                         <el-form-item :label="$t('models.resident.company')" :rules="validationRules.company"
                                                                     prop="company"
-                                                                    v-if="model.title === titles.company">
+                                                                    v-if="model.title === 'company'">
                                                             <el-input autocomplete="off" type="text" v-model="model.company"></el-input>
                                                         </el-form-item>
                                                     </el-col>
