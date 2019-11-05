@@ -646,6 +646,7 @@ return [
             'contact_details' => 'Kontaktdaten',
             'contact_text' => 'Dies sind die Kontaktdaten des aktuellen Bewohners/Besitzers der Wohneinheit.',
         ],
+        'attachments' => 'Anhänge',
         'go_to_building' => 'Zum Objekt gehen'
 
     ],

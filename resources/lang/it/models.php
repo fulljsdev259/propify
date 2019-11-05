@@ -645,6 +645,7 @@ return [
             'contact_details' => 'Contact Details',
             'contact_text' => "Questi sono i dati di contatto dell'attuale residente/proprietario dell'unità abitativa.",
         ],
+        'attachments' => 'Attacchi',
         'go_to_building' => 'vai al palazzo'
     ],
     'request_category' => [
