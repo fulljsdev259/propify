@@ -61,7 +61,7 @@ class AuditTransformer extends BaseTransformer
         if($model->event == 'updated'){            
             $statement = "";
             foreach($model->new_values as $field => $fieldvalue){                
-                if(in_array($field,['category_id', 'internal_priority', 'priority','notifications'])){
+                if(in_array($field,['internal_priority', 'priority','notifications'])){
                     continue;
                 }
                 $old_value = (isset($model->old_values[$field])) ? $model->old_values[$field] : "";
@@ -91,10 +91,18 @@ class AuditTransformer extends BaseTransformer
                     $old_value = ($old_value) ? __('general.salutation_option.'.$old_value) : "";
                     $new_value = ($new_value) ? __('general.salutation_option.'.$new_value) : "";
                 }
-                elseif(in_array($field, ['type','status','visibility','building_id','resident_id', 'quarter_id','unit_id','address_id','internal_priority','priority','is_public','category','nation','state_id'])){
+                elseif(in_array($model->auditable_type,['manager','resident','provider']) && $field == 'language'){
+                    $old_value = ($old_value) ? __('general.languages.'.$old_value) : "";
+                    $new_value = ($new_value) ? __('general.languages.'.$new_value) : "";
+                }
+                elseif(in_array($field, ['location','type','status','visibility','building_id','resident_id', 'quarter_id','unit_id','address_id','internal_priority','priority','is_public','category','nation','state_id','category_id','sub_category_id','capture_phase','qualification'])){
                     $old_value = ($old_value) ? (AuditRepository::getDataFromField($field, $old_value, $model->auditable_type)) : "";
                     $new_value = ($new_value) ? (AuditRepository::getDataFromField($field, $new_value, $model->auditable_type)) : "";
-                }                                
+                }                
+                elseif(in_array($field, ['attic','announcement'])){
+                    $old_value = ($old_value == 1) ? __('general.enabled') : __('general.disabled');
+                    $new_value = ($new_value == 1) ? __('general.enabled') : __('general.disabled');                                    
+                }
                 elseif(in_array($field, ['due_date','solved_date','published_at','birth_date','execution_start','execution_end'])){
                     $old_value = ($old_value) ? Helper::formatedDate($old_value) : "";
                     $new_value = ($new_value) ? Helper::formatedDate($new_value) : "";
