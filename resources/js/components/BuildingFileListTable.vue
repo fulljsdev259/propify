@@ -31,7 +31,7 @@
                         :content="$t('general.actions.delete')"
                         class="item" effect="light" placement="top-end"
                     >
-                        <el-button icon="icon-trash-empty" type="danger" round @click="$emit('delete-document', 'media', scope.$index)" size="mini"/>
+                        <el-button icon="icon-trash-empty" type="danger" round @click="deleteFile(scope.$index)" size="mini"/>
                     </el-tooltip>
                 </template>
             </el-table-column>
@@ -52,7 +52,6 @@
         mixins: [
             ResponsiveMixin
         ],
-        
         props: {
             items: {
                 type: Array,
@@ -60,22 +59,42 @@
                     return [];
                 }
             },
-            hideContractId: {
-                type: Boolean,
-                default: false
-            },
         },
-        data() {
+        data () {
             return {
-                // showItems: [],
-                totalLength: 0,
-                showLength: 0,
+                clicks: [],
+                delay: 700
+            }
+        },
+        methods: {
+            deleteFile( index ) {
+                this.clicks[index] ++
+                if(this.clicks[index] === 1) {
+                    this.$emit('delete-document', 'media', index)
+                    this.timer = setTimeout(() => {
+                        this.clicks[index] = 0
+                    }, this.delay);
+                }
             }
         },
         computed: {
             ...mapGetters('application', {
                 constants: 'constants'
             }),
+        },
+        mounted() {
+            this.clicks = this.items.map(item => {disabled : false})
+        },
+        watch: {
+            'items': {
+                immediate: false,
+                handler () {
+                    // TODO - auto blur container if visible is true first
+                    this.clicks = this.items.map(item => 0)
+                   
+                    console.log(this.clicks)
+                }
+            }
         },
     }
 </script>
