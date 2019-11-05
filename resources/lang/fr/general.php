@@ -46,6 +46,8 @@ return [
     'unassign' => "Désassigner",
     'assign' => "Affecter",
     'requests' => 'Demandes',
+    'enabled' => 'Activé',
+    'disabled' => 'Désactivé',
     'salutation' => 'Apostrophe',
     'salutation_option' => [
         "mr" => "Monsieur",

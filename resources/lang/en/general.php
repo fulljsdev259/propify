@@ -46,6 +46,8 @@ return [
     'unassign' => 'Unassign',
     'assign' => 'Assign',
     'requests' => 'Requests',
+    'enabled' => 'Enabled',
+    'disabled' => 'Disabled',
     'salutation' => 'Salutation',
     'salutation_option' => [
         'mr' => 'Mr.',
