@@ -637,6 +637,7 @@ return [
             'contact_details' => 'Contact Details',
             'contact_text' => 'Voici les coordonnées du résident/propriétaire actuel du logement.',
         ],
+        'attachments' => 'Pièces Jointes',
         'go_to_building' => 'Aller au bâtiment'
     ],
     'request_category' => [

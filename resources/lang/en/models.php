@@ -637,6 +637,7 @@ return [
             'contact_details' => 'Contact Details',
             'contact_text' => 'These are the contact details of the current resident/owner of the housing unit.',
         ],
+        'attachments' => 'Attachements',
         'go_to_building' => 'go to building'
     ],
     'request_category' => [
