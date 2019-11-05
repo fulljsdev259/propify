@@ -9,7 +9,7 @@
                     closable
                     @close="selectItem(selectedItems[0], true)"
                 >
-                    {{ $t(`models.request.category_list.${options[selectedItems[0]].name}`) }}
+                    {{ $t(`models.request.category_list.${options[selectedItems[0] - 1].name}`) }}
                 </el-tag>
                 <el-tag
                     v-if="selectedItems.length > 1"
@@ -58,7 +58,7 @@
                 <el-divider></el-divider>
                 <div class="actions">
                     <el-button type="text" @click="handleReset()">Reset</el-button>
-                    <el-button v-if="JSON.stringify(originItems) === JSON.stringify(selectedItems)" type="text" :disabled="true">Select</el-button>
+                    <el-button v-if="compareArray(originItems, selectedItems)" type="text" :disabled="true">Select</el-button>
                     <el-button v-else type="primary" @click="handleSelect()"><el-dropdown-item>Select</el-dropdown-item></el-button>
                 </div>
             </el-dropdown-menu>
@@ -110,12 +110,24 @@
                 if(visible) {
                     this.originItems = this.selectedItems.slice();
                     this.clearSearch();
-                }
-                if(!visible && (JSON.stringify(this.originItems) !== JSON.stringify(this.selectedItems)))
+                }else if(!this.compareArray(this.originItems, this.selectedItems))
                     this.$emit('select-changed', this.selectedItems);
             },
             clearSearch() {
                 this.search = '';
+            },
+            compareArray(arrA, arrB){
+                let result = true;
+                arrA.forEach((item) => {
+                    if(arrB.indexOf(item) === -1)
+                        result = false;
+                });
+                
+                arrB.forEach((item) => {
+                    if(arrA.indexOf(item) === -1)
+                        result = false;
+                });
+                return result;
             },
             hasSearch() {
                 return this.options.filter((option) => this.search ==='' || this.search !== '' && option.name.includes(this.search));
@@ -124,7 +136,7 @@
                 let label = this.placeholder;
                 let count = this.selectedItems.length;
                 if(count) {
-                    label = `<el-tag type="info">${this.$t(`models.request.category_list.${this.options[this.selectedItems[0]].name}`)}</el-tag>`;
+                    label = `<el-tag type="info">${this.$t(`models.request.category_list.${this.options[this.selectedItems[0]-1].name}`)}</el-tag>`;
                     if(count > 1)
                         label = label + `<el-tag>+${count - 1}</el-tag>`
                 }
