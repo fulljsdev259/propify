@@ -424,7 +424,7 @@ class ServiceProviderAPIController extends AppBaseController
         if (isset($input['address'])) {
             try {
                 unset($input['address']['house_num']);
-                $this->addressRepository->update($input['address'], $serviceProvider->address_id);
+                $address = $this->addressRepository->update($input['address'], $serviceProvider->address_id);
             } catch (Exception $e) {
                 return $this->sendError(__('models.service.errors.update') . $e->getMessage());
             }
