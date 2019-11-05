@@ -340,7 +340,18 @@
                     // }
                 }                
                 if (this.rolename == 'administrator') {
-                   links = Object.values(menu_items);
+                   //links = Object.values(menu_items);
+                   links = [
+                            menu_items.dashboard,
+                            menu_items.buildings,
+                            menu_items.requests, 
+                            menu_items.activity,
+                            menu_items.residents,
+                            menu_items.propertyManagers,
+                            menu_items.services,
+                            menu_items.pinboard,
+                            // menu_items.listings,
+                       ];
                 }
                 else if (this.rolename == 'manager') {
                    links = [
