@@ -91,8 +91,6 @@
                 handler () {
                     // TODO - auto blur container if visible is true first
                     this.clicks = this.items.map(item => 0)
-                   
-                    console.log(this.clicks)
                 }
             }
         },
