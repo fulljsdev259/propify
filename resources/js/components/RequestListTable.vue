@@ -51,6 +51,7 @@
                                     v-if="filter.key == 'category_id'"
                                     :placeholder="filter.name"
                                     :options="filter.data"
+                                    :selectedOptions="filterModel[filter.key]"
                                     @select-changed="handleSelectChange($event, filter)"
                                 >
 
@@ -632,7 +633,19 @@
                 const queryFilterValue = this.$route.query[filter.key];
                 const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
 //                const value = queryFilterValue && queryFilterValue.match(dateReg) ? queryFilterValue : parseInt(queryFilterValue); 
-                const value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
+                let value;
+
+                if((filter.key=='category_id' || filter.key == 'status') && queryFilterValue !== undefined && !Array.isArray(queryFilterValue))
+                    value = [queryFilterValue];
+                else
+                    value = queryFilterValue;
+                    
+                if(!Array.isArray(value))
+                    value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
+                else
+                    for(let i = 0; i < value.length; i ++)
+                        value[i] = parseInt(value[i]);
+
                 this.$set(this.filterModel, filter.key, value);
 
                 if (!this.filterModel[filter.key]) {

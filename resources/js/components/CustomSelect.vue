@@ -17,7 +17,7 @@
                 >
                     +{{ selectedItems.length - 1 }}
                 </el-tag>
-                <span v-if="selectedItems.length" class="dropdown-icon el-icon-close" @click="handleReset(true)"></span>
+                <span v-if="selectedItems.length" class="dropdown-icon el-icon-close" @click.prevent.stop="handleReset(true)"></span>
                 <span v-else-if="!selecting" class="dropdown-icon el-icon-arrow-down"></span>
                 <span v-else-if="selecting" class="dropdown-icon el-icon-arrow-up"></span>
             </el-button>
