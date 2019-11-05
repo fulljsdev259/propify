@@ -29,7 +29,7 @@
                         <template v-if="!filter.parentKey || filterModel[filter.parentKey]">
                             <el-form-item
                                 v-if="filter.type === filterTypes.select && filter.data &&  filter.data.length">
-                                <el-select
+                                <!-- <el-select
                                     v-if="filter.key == 'category_id'"
                                     clearable
                                     :filterable="true"
@@ -46,7 +46,14 @@
                                         :value="item.id"
                                         v-for="item in filter.data">
                                     </el-option>
-                                </el-select>
+                                </el-select> -->
+                                <custom-select
+                                    v-if="filter.key == 'category_id'"
+                                    :placeholder="filter.name"
+                                    :options="filter.data"
+                                >
+
+                                </custom-select>
                                 <el-select
                                     v-else-if="filter.key == 'status' || filter.key == 'internal_priority'"
                                     clearable
@@ -211,13 +218,14 @@
 
 <script>
     // TODO - add transition to do things smoothly
-    import {Avatar} from 'vue-avatar'
-    import uuid from 'uuid/v1'
-    import RequestCount from 'components/RequestCount.vue'
+    import { mapActions } from 'vuex';
+    import {Avatar} from 'vue-avatar';
+    import uuid from 'uuid/v1';
+    import RequestCount from 'components/RequestCount.vue';
     import tableAvatar from 'components/Avatar';
     import RequestDetailCard from 'components/RequestDetailCard';
+    import CustomSelect from 'components/CustomSelect';
     import filters from 'components/Filters';
-    import { mapActions } from 'vuex';
     
     import {ResponsiveMixin} from 'vue-responsive-components'
 
@@ -231,7 +239,8 @@
             RequestCount,
             'table-avatar': tableAvatar,
             RequestDetailCard,
-            filters
+            filters,
+            CustomSelect
         },
         props: {
             header: {
