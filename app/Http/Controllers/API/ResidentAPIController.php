@@ -875,6 +875,7 @@ class ResidentAPIController extends AppBaseController
             return $this->sendError($this->credentialsFileNotFound);
         }
 
+        //@TODO audit
         $resident->user->notify(new ResidentCredentials($resident));
 
         $resident->addDataInAudit('pdf_name', $pdfName, AuditableModel::UpdateOrCreate, true, AuditableModel::SendCredentials);
