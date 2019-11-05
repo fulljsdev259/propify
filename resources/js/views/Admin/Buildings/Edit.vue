@@ -502,12 +502,12 @@
                     prop: 'type',
                     label: 'models.resident.type.label',
                     i18n: this.translateResidentType
-                }/*, {
+                }, {
                     prop: 'status',
                     i18n: this.residentStatusLabel,
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
-                }*/],
+                }],
                 residentActions: [{
                     width: 70,
                     buttons: [{
