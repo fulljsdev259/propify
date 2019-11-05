@@ -77,7 +77,7 @@
                                         :class="'flag-icon flag-icon-' + model.settings.language">
                                     </span>
                                 </h3>
-                                <p class="user-info text-secondary" v-if="model.title === titles.company">{{model.company}}</p>
+                                <p class="user-info text-secondary" v-if="model.title === 'company'">{{model.company}}</p>
                                 <i class="icon-dot-circled" :class="[constants.residents.status[model.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
                                 {{ constants.residents.status[model.status] ? $t('models.resident.status.' + constants.residents.status[model.status]) : ''}}
                             </el-col>

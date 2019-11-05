@@ -791,9 +791,11 @@ class QuarterAPIController extends AppBaseController
      *          )
      *      )
      * )
+     *
      * @param $quarterId
      * @param EmailReceptionistRequest $emailReceptionistRequest
      * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function storeEmailReceptionists($quarterId, EmailReceptionistRequest $emailReceptionistRequest)
     {
@@ -834,7 +836,6 @@ class QuarterAPIController extends AppBaseController
                     'model_type' => $modelType,
                 ];
                 $new = $quarter->email_receptionists()->create($savedData);
-                $emailReceptionists->push($new);
                 $categoryEmailReceptionists->push($new);
             }
         }
@@ -849,8 +850,11 @@ class QuarterAPIController extends AppBaseController
             'email_receptionists:id,category,property_manager_id,model_id',
             'email_receptionists.property_manager:id,first_name,last_name'
         ]);
+
+        $quarter->auditEmailReceptionists($emailReceptionists, $quarter->email_receptionists);
         $response['email_receptionists'] = (new EmailReceptionistTransformer())->transformEmailReceptionists($quarter->email_receptionists);
         $response['quarter_id'] = $quarterId;
+
         return $this->sendResponse($response, __('Email Receptionists get successfully'));
     }
 }
