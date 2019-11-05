@@ -593,6 +593,8 @@
             },
             disableMassEditButton(flag) {
                 let element = document.getElementsByClassName("mass-edit-dropdown");
+                if(element.length == 0)
+                    return
                 let buttons = element[0].getElementsByTagName("button");
                 for(let i = 0; i < 2; i ++) {
                     if(flag) {
