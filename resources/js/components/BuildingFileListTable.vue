@@ -83,7 +83,7 @@
             }),
         },
         mounted() {
-            this.clicks = this.items.map(item => {disabled : false})
+            this.clicks = this.items.map(item => 0)
         },
         watch: {
             'items': {
