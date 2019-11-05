@@ -33,7 +33,7 @@ export default [{
         name: 'adminPropertyManagersEdit',
         path: ':id',
         component: () => import ( /* : "admin/propertyManagers/edit" */ 'views/Admin/PropertyManagers/Edit'),
-        beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.create.request)]),
+        beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.update.propertyManager)]),
         props: {
             title: 'Edit property manager'
         },
