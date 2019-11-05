@@ -495,14 +495,16 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
         return $uv;
     }
 
+
     /**
      * @param $key
      * @param $value
      * @param null $audit
      * @param bool $isSingle
+     * @param null $event
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function addDataInAudit($key, $value, $audit = null, $isSingle = true)
+    public function addDataInAudit($key, $value, $audit = null, $isSingle = true, $event = null)
     {
         if ('notifications' == $key) {
             $_value = [];

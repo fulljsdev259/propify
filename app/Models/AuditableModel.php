@@ -53,6 +53,8 @@ class AuditableModel extends Model implements Auditable
     const BuildingUnitsCreated = 'building_units\y_created';
     const NewResidentPinboardCreated = 'new_resident_pinboard_created';
     const NotificationsSent = 'notifications_sent';
+    const DownloadCredentials = 'download_credentials';
+    const SendCredentials = 'send_credentials';
 
     const SyncAuditConfig = [
         'attach' => [
@@ -256,11 +258,12 @@ class AuditableModel extends Model implements Auditable
      * @param $value
      * @param null $audit
      * @param bool $isSingle
+     * @param null $event
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function addDataInAudit($key, $value, $audit = null, $isSingle = true)
+    public function addDataInAudit($key, $value, $audit = null, $isSingle = true, $event = null)
     {
-        $audit = $this->getAudit($audit);
+        $audit = $this->getAudit($audit, $event);
         if (empty($audit)) {
             return;
         }
@@ -269,11 +272,12 @@ class AuditableModel extends Model implements Auditable
             $value = $this->getMediaAudit($value);
         }
 
-        if (self::EventCreated == $audit->event) {
+        if (in_array($audit->event, [self::EventCreated, self::DownloadCredentials, self::SendCredentials])) {
             $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
         } elseif (self::EventUpdated == $audit->event) {
             $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle);
         } else {
+            dd('@TODO5', $audit->event);
             // @TODO
         }
     }
@@ -340,10 +344,11 @@ class AuditableModel extends Model implements Auditable
 
     /**
      * @param $audit
-     * @return mixed|Audit
+     * @param null $event
+     * @return Audit|mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    protected function getAudit($audit)
+    protected function getAudit($audit, $event = null)
     {
         if (is_null($audit)) {
             $audit = $this->audit;
@@ -362,7 +367,12 @@ class AuditableModel extends Model implements Auditable
         }
 
         $this->auditEvent = self::EventUpdated;
-        return new Audit($this->toAudit());
+        $audit = new Audit($this->toAudit());
+        if ($audit) {
+            $audit->event = $event;
+        }
+
+        return $audit;
     }
 
     /**
@@ -393,6 +403,10 @@ class AuditableModel extends Model implements Auditable
             return $this->getManyRelationAuditData($value);
         }
 
+        if (is_string($value)) {
+            return $value;
+        }
+
         dd('@TODO1');
     }
 
@@ -417,10 +431,12 @@ class AuditableModel extends Model implements Auditable
         }
 
         if (is_a($value, Collection::class)) {
-            dd('@TODO', $value);
+            dd('@TODO2', $value);
             $value = [];
+        } elseif (is_string($value)) {
+            return $value;
         } else {
-            dd('@TODO', $value);
+            dd('@TODO3', $value);
         }
 
         return $value;
