@@ -300,7 +300,7 @@
                                 {{ $t('general.audits') }}
                                 <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
                             </span>
-                            <audit v-if="model.id" :id="model.id" type="unit" showFilter/>
+                            <audit v-if="model.id" :id="model.id" type="unit" ref="auditList" showFilter/>
                         </el-tab-pane>
                     </el-tabs>
                 </el-col>
@@ -308,7 +308,7 @@
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
             <template v-if="editingContract || isAddContract">
-                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider>
                 <div class="content" v-if="visibleDrawer">
                     <contract-form v-if="editingContract" 
                                 mode="edit" 
@@ -421,12 +421,12 @@
                     prop: 'type',
                     label: 'models.resident.type.label',
                     i18n: this.translateType
-                }/*, {
+                }, {
                     prop: 'status',
                     i18n: this.residentStatusLabel,
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
-                }*/],
+                }],
                 assigneesActions: [{
                     width: 70,
                     buttons: [{
@@ -493,6 +493,9 @@
                     } else {
                         this.fileCount = 1;
                     }
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                 }).catch((err) => {
                     displayError(err);
                 });
@@ -506,6 +509,9 @@
                     this.fileCount--;
                     this.model[prop].splice(index, 1);
                     this.setOrder(prop);
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                 }).catch((error) => {
                     displayError(error);
                 })

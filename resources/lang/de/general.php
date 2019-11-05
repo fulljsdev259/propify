@@ -46,6 +46,8 @@ return [
     'unassign' => 'Entfernen',
     'assign' => 'Zuweisen',
     'requests' => 'Anfragen',
+    'enabled' => 'Aktiviert',
+    'disabled' => 'Deaktiviert',
     'salutation' => 'Anrede',
     'salutation_option' => [
         'mr' => 'Herr',
@@ -269,6 +271,8 @@ return [
         'files_extension_images' => 'Nur Dateien in der Formaten .jpg und .png erlaubt.',
     ],
     'date_time_format' => '{date} um {time} Uhr',
+    'day_at_time_period' => '{date} von {time1} - {time2} Uhr',
+    'two_days_at_time' => 'Vom {date1}, {time1} bis {date2}, {time2}',
     'date_range' => [
         'range_separator' => 'Bis',
         'start_date' => 'Startdatum',

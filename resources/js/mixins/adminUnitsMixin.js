@@ -164,6 +164,9 @@ export default (config = {}) => {
                     this.toAssign = '';
                     this.toAssignList = [];
                     this.$refs.assigneesList.fetch();
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                     displaySuccess(resp.data)
                 }
             },
@@ -186,11 +189,14 @@ export default (config = {}) => {
                                     this.addedAssigmentList.splice(index, 1);
                                 }
                             });
-                        } catch {
+                        } catch(e) {
                             console.log(e);
                         }
 
                         if (resp && resp.data) {
+                            if(this.$refs.auditList){
+                                this.$refs.auditList.fetch();
+                            }
                             this.$refs.assigneesList.fetch();
                             displaySuccess(resp.data)
                         }
@@ -294,6 +300,9 @@ export default (config = {}) => {
                                     this.model.monthly_rent_gross = ( Number(this.model.monthly_rent_net) + Number(this.model.monthly_maintenance) ).toFixed(2)
                                     const resp = await this.updateUnit(this.model)
                                     displaySuccess(resp);
+                                    if(this.$refs.auditList){
+                                        this.$refs.auditList.fetch();
+                                    }
                                     resolve(true);
                                     return resp;
                                 } catch (err) {

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Jobs\Notify\NotifyNewRequest;
 use App\Jobs\SendNewRequestEmailToReceptionists;
 use App\Models\AuditableModel;
 use App\Mails\NotifyServiceProvider;
@@ -75,12 +76,26 @@ class RequestRepository extends BaseRepository
 
         $attributes = $this->fixContractRelated($attributes);
         $attributes['creator_user_id'] = Auth::id();
-        $model = parent::create($attributes);
-        if ($model)  {
-            $model = $this->saveMediaUploads($model, $attributes);
-            dispatch(new SendNewRequestEmailToReceptionists($model));
+        /**
+         * @var  $request Request
+         */
+        $request = parent::create($attributes);
+
+        if (empty($request))  {
+            return $request;
         }
-        return $model;
+
+        $request = $this->saveMediaUploads($request, $attributes);
+        dispatch(new NotifyNewRequest($request));
+
+        if (! empty($attributes['send_notification'])) {
+            dispatch(new SendNewRequestEmailToReceptionists($request));
+        }
+        if ($request->due_date) {
+            $this->notifyDue($request);
+        }
+
+        return $request;
     }
 
     /**
@@ -328,7 +343,6 @@ class RequestRepository extends BaseRepository
 
         $u = \Auth::user();
         $conversation = $request->conversationFor($u, $provider->user);
-        dd($request);
         $comment = $mailDetails['title'] . "\n\n" . strip_tags($mailDetails['body']);
         $conversation->comment($comment);
 

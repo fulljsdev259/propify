@@ -17,15 +17,15 @@
                                                   class="label-block">
                                         <el-select placeholder="Select" style="display: block" v-model="model.title">
                                             <el-option
-                                                    :key="title"
-                                                    :label="$t(`general.salutation_option.${title}`)"
-                                                    :value="title"
+                                                    :key="title.value"
+                                                    :label="title.name"
+                                                    :value="title.value"
                                                     v-for="title in titles">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12" v-if="model.title === titles.company">
+                                <el-col :md="12" v-if="model.title === 'company'">
                                     <el-form-item :label="$t('models.resident.company')" :rules="validationRules.company"
                                                   prop="company">
                                         <el-input autocomplete="off" type="text" v-model="model.company"></el-input>
@@ -161,7 +161,15 @@
                         <card class="mt15 contract-box">
                             <template slot="header">
                                 {{ $t('models.resident.contract.title') }}
-                                <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                                <el-button style="float:right" 
+                                        type="primary" 
+                                        @click="toggleDrawer" 
+                                        icon="icon-plus" 
+                                        size="mini" 
+                                        :disabled="model.type == ''" 
+                                        round>
+                                        {{ $t('models.resident.contract.add') }}
+                                </el-button>
                             </template>
                             
                             <contract-list-table
@@ -234,13 +242,6 @@
         },
         mounted() {
             this.$root.$on('changeLanguage', () => this.getCountries());
-
-            // this.validationRules.type = [{
-            //     required: true,
-            //     message: this.$t('validation.general.required')
-            // }, {
-            //     validator: this.checkavailabilityResidentType
-            // }]
         },
         computed: {
             ...mapGetters('application', {

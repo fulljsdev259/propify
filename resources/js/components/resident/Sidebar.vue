@@ -288,7 +288,7 @@
                     }, 
                     {
                         icon: 'icon-vcard',
-                        title: 'resident.my_tenancy',
+                        title: this.$store.getters.loggedInUser.resident.type == 1 ? 'resident.my_tenancy' : 'resident.my_data',
                         children: [{
                             icon: 'icon-user',
                             title: 'resident.my_personal_data',

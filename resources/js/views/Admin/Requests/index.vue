@@ -593,15 +593,19 @@
             },
             disableMassEditButton(flag) {
                 let element = document.getElementsByClassName("mass-edit-dropdown");
+                if(element.length == 0)
+                    return
                 let buttons = element[0].getElementsByTagName("button");
                 for(let i = 0; i < 2; i ++) {
                     if(flag) {
                         buttons[i].disabled = true;
                         buttons[i].classList.add("is-disabled");
+                        element[0].classList.add("is-disabled");
                     }
                     else {
                         buttons[i].disabled = false;
                         buttons[i].classList.remove("is-disabled");
+                        element[0].classList.remove("is-disabled");
                     }
                 }
             }
@@ -668,8 +672,12 @@
             }
         }
 
+        &.is-disabled {
+            cursor: not-allowed;
+        }
     }
 
+    
 
     /deep/ .el-dialog {
         /deep/ .el-dialog__body {

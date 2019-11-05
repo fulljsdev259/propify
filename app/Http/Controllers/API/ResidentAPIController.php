@@ -836,10 +836,14 @@ class ResidentAPIController extends AppBaseController
     /**
      * @param $id
      * @param DownloadCredentialsRequest $r
-     * @return mixed
+     * @return mixed|\Symfony\Component\HttpFoundation\StreamedResponse
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function downloadCredentials($id, DownloadCredentialsRequest $r)
     {
+        /**
+         * @var $resident Resident
+         */
         $resident = $this->residentRepository->findForCredentials($id);
         if (empty($resident)) {
             return $this->sendError(__('models.resident.errors.not_found'));
@@ -849,6 +853,8 @@ class ResidentAPIController extends AppBaseController
         if (!\Storage::disk('resident_credentials')->exists($pdfName)) {
             return $this->sendError($this->credentialsFileNotFound);
         }
+
+        $resident->addDataInAudit('pdf_name', $pdfName, AuditableModel::UpdateOrCreate, true, AuditableModel::DownloadCredentials);
         return \Storage::disk('resident_credentials')->download($pdfName, $pdfName);
     }
 
@@ -869,8 +875,10 @@ class ResidentAPIController extends AppBaseController
             return $this->sendError($this->credentialsFileNotFound);
         }
 
+        //@TODO audit
         $resident->user->notify(new ResidentCredentials($resident));
 
+        $resident->addDataInAudit('pdf_name', $pdfName, AuditableModel::UpdateOrCreate, true, AuditableModel::SendCredentials);
         return $this->sendResponse($id, __('models.resident.credentials_sent'));
     }
 

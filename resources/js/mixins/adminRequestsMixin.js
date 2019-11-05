@@ -279,6 +279,9 @@ export default (config = {}) => {
                     await this.fetchCurrentRequest();
                     this.toAssign = '';
                     this.$refs.assigneesList.fetch();
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                     displaySuccess(resp.data)
                 }
             },
@@ -339,6 +342,9 @@ export default (config = {}) => {
                 });
 
                 this.model.media.splice(index, 1)
+                if(this.$refs.auditList){
+                    this.$refs.auditList.fetch();
+                }
                 displaySuccess(resp);
             },
             changeCategory() {
@@ -413,6 +419,34 @@ export default (config = {}) => {
                     });
 
                     this.sub_categories = p_category ? p_category.sub_categories : [];
+                }
+
+                this.resident = this.residents.find(resident => resident.id == this.model.resident_id)
+                if(this.resident && this.resident.contracts) {
+                    this.contracts = this.resident.contracts
+
+                    this.contracts = this.contracts.map(contract => { 
+                        let floor_label;
+                        if(contract.unit.attic == 'attic')
+                        {
+                            floor_label = this.$t('models.unit.floor_title.top_floor')
+                        }
+                        else if(contract.unit.floor > 0)
+                        {
+                            floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                        }
+                        else if(contract.unit.floor == 0)
+                        {
+                            floor_label = this.$t('models.unit.floor_title.ground_floor')
+                        }
+                        else if(contract.unit.floor < 0)
+                        {
+                            floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                        }
+                        contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                        
+                        return contract
+                    });
                 }
             },
             async deleteTag(tag) {
@@ -715,6 +749,9 @@ export default (config = {}) => {
                                     //this.$set(this.model, 'service_providers', resp.data.service_providers);
                                     //this.$set(this.model, 'media', resp.data.media);
                                     //this.$set(this.model, 'property_managers', resp.data.property_managers);
+                                    if(this.$refs.auditList){
+                                        this.$refs.auditList.fetch();
+                                    }
                                     displaySuccess(resp);
                                     resolve(true);
                                 } catch (err) {

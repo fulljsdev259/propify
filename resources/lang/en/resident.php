@@ -127,6 +127,7 @@ return [
     "my_dashboard" => "My dashboard",
     'dashboard' => 'Dashboard',
     'my_tenancy' => 'My tenancy',
+    'my_data' => 'My Data',
     'my_personal_data' => 'My personal data',
     'my_recent_contract' => 'My recent contract',
     'documents' => 'Documents',

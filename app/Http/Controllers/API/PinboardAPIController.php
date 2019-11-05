@@ -173,6 +173,7 @@ class PinboardAPIController extends AppBaseController
      * @param SettingsRepository $settingsRepository
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateRequest $request, SettingsRepository $settingsRepository)
@@ -342,6 +343,7 @@ class PinboardAPIController extends AppBaseController
      * @param UpdateRequest $request
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function update($id, UpdateRequest $request)
@@ -352,8 +354,6 @@ class PinboardAPIController extends AppBaseController
         } else {
             $input['type'] =  $input['type'] ?? Pinboard::TypePost;
         }
-
-        $status = $request->get('status');
 
         /** @var Pinboard $pinboard */
         $pinboard = $this->pinboardRepository->findWithoutFail($id);
@@ -376,7 +376,7 @@ class PinboardAPIController extends AppBaseController
             'providers',
             'views',
         ])->withCount('allComments')->findWithoutFail($id);
-        $pinboard->status = $status;
+
         $data = $this->transformer->transform($pinboard);
         return $this->sendResponse($data, __('models.pinboard.saved'));
     }
@@ -497,6 +497,7 @@ class PinboardAPIController extends AppBaseController
      * @param $id
      * @param PublishRequest $request
      * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function publish($id, PublishRequest $request)
