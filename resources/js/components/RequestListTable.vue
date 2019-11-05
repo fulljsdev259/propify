@@ -51,6 +51,7 @@
                                     v-if="filter.key == 'category_id'"
                                     :placeholder="filter.name"
                                     :options="filter.data"
+                                    @select-changed="handleSelectChange($event, filter)"
                                 >
 
                                 </custom-select>
@@ -517,6 +518,10 @@
             handleSelectionChange(val) {
                 this.selectedItems = val;
                 this.$emit('selectionChanged', this.selectedItems);
+            },
+            handleSelectChange(val, filter) {
+                this.filterModel[filter.key] = val;
+                this.filterChanged(filter);
             },
             handleRequestSelectionChange(selectedItem, isChecked) {
                 if(isChecked) {
