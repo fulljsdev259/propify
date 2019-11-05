@@ -35,6 +35,7 @@ class ResidentsTableSeeder extends Seeder
             }
 
             $data = factory(App\Models\Resident::class)->make()->toArray();
+            unset($data['created_by']);
             $date = $this->getRandomTime();
 
             if ($email == 'resident@example.com' || rand(0, 1)) {
