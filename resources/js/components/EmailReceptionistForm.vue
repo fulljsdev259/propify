@@ -23,7 +23,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <template v-if="activeCommand == 'assign'">
+        <template v-if="!loading && activeCommand == 'assign'">
             <el-row v-for="(category, $index) in categories" :key="category.id">
                 <el-col :md="24">
                     <el-form-item :label="$t('general.email_receptionist.email_receptionist_of', {category: $t(`models.request.category_list.${category.name}`) })"
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-    import {displayError} from "../helpers/messages";
+    import {displayError, displaySuccess} from "../helpers/messages";
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
@@ -112,15 +112,16 @@
             }
         },
         methods: {
-            ...mapActions(['getPropertyManagers', 'getQuarterEmailReceptionists', 'saveQuarterEmailReceptionists', 'getBuildingEmailReceptionists', 'saveBuildingEmailReceptionists']),
+            ...mapActions(['getPropertyManagers', 'getQuarterEmailReceptionists', 'saveQuarterEmailReceptionists', 'getBuildingEmailReceptionists', 'saveBuildingEmailReceptionists', 'getBuilding']),
             async submit () {
                 try {
                     const valid = await this.$refs.form.validate();
                     if (valid) {
+                        let global_email_receptionist = null
                         if(this.activeCommand == 'global')
-                            this.global = 1
+                            global_email_receptionist = true
                         else if(this.activeCommand == 'assign')
-                            this.global = 0
+                            global_email_receptionist = false
                         
                         let categories = [];
                         for(let i = 0; i < this.categories.length; i ++)
@@ -130,44 +131,43 @@
                                 property_manager_ids: this.model.assign[i]
                             })
 
-                            console.log(this.model.assignList[0]);
-                            //console.log('category, assign', this.categories[i].name, this.assign[i])
-                            
                         }
 
                         if(this.isBuilding == true) {
-                            let payload = {
-                                quarter_id : this.quarter_id,
-                                building_id : this.building_id,
-                                global: this.global,
-                                categories: categories
-                            }
 
-                            console.log('payload', payload)
+                            let payload = {
+                                building_id : this.building_id,
+                                global_email_receptionist,
+                                categories
+                            }
+                            
 
                             const resp = await this.saveBuildingEmailReceptionists(payload)
 
-                            if(resp.data.success)
-                                displaySuccess(resp.data.message);
-                        }
+                            if(resp.success)
+                            {
+                                displaySuccess(resp.message);
+                                const data = await this.getBuilding({id: this.$route.params.id});
 
-                        if(this.isBuilding == false)
-                        {
+                                if(data.has_email_receptionists) {
+                                    this.$emit('update-has-email-receptionists', true);
+                                }
+                            }
+                            this.$emit('update:visible', false);
+                        }
+                        else {
                             let payload = {
                                 quarter_id : this.quarter_id,
                                 categories: categories
                             }
 
-                            console.log('payload', payload)
-                            
                             const resp = await this.saveQuarterEmailReceptionists(payload)
 
-                            if(resp.data.success)
-                                displaySuccess(resp.data.message);
+                            if(resp.success)
+                                displaySuccess(resp.message);
+                            
+                            this.$emit('update:visible', false);
                         }
-                        
-                        
-                        
                         
                     }
                 }
@@ -244,9 +244,6 @@
             }
 
             this.loading = false;
-            console.log('assign', this.model.assign)
-            
-                
             
         }
     }

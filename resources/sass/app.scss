@@ -58,6 +58,17 @@ body {
 }
 
 .admin-layout {
+    .el-table__empty-text{
+        width: 100%;
+        .el-alert{
+            padding: 0 0;
+        }
+    }
+    .el-alert--info.no_data_box{
+        padding-left: 35%;
+        align-items: center;
+        line-height: inherit;
+    }
     .heading {
         height: 60px;
         background: #ebeef5;
@@ -99,9 +110,11 @@ body {
             }
         }
         div {
-            min-height: 40px;
             display: flex;
             align-items: center;
+        }
+        .switcher__desc {
+            min-height: 20px;
         }
     }
     .attic-label {

@@ -16,14 +16,13 @@
             </div>
             <div class="item divider" :style="[el.is.md && {'display': 'none'}]"></div>
             <div class="item">
-                <el-button 
+                <!-- <el-button 
                     v-if="visibleDrawer && drawerTabsModel=='notifications'" 
                     icon="el-icon-error" 
                     class="mobile-button"
                     circle 
-                    @click="openNotificationsDrawer()" />
+                    @click="openNotificationsDrawer()" /> -->
                 <el-badge 
-                    v-else 
                     type="danger" 
                     class="mobile-button" 
                     :value="unreadNotifications.length" 
@@ -47,14 +46,13 @@
                 </el-badge>
             </div>
             <div class="item">
-                <el-button 
+                <!-- <el-button 
                     v-if="visibleDrawer && drawerTabsModel=='settings'" 
                     icon="el-icon-error" 
                     class="mobile-button"
                     circle 
-                    @click="openSettingsDrawer()" />
+                    @click="openSettingsDrawer()" /> -->
                 <user 
-                    v-else 
                     class="mobile-button"
                     @avatar-click="openSettingsDrawer()" 
                     :only-avatar="el.is.md" />
@@ -69,14 +67,33 @@
                 </el-tooltip>
             </div>
         </div>
+        <sidebar 
+            v-if="sidebarDirection === 'horizontal' && visibleDrawer"
+            ref="sidebar" 
+            :key="sidebarKey" 
+            :routes="routes" 
+            :visible.sync="visibleSidebar" 
+            :direction="sidebarDirection" 
+            :show-toggler="false" 
+            @closeDrawer="handleLogoClick" 
+            class="fixed-sidebar" 
+        />
         <div ref="container" class="container">
             <div ref="content" id="layout-content" :class="['content', {'fill': !visibleSidebar}]">
-                <sidebar ref="sidebar" :key="sidebarKey" :routes="routes" :visible.sync="visibleSidebar" :direction="sidebarDirection" :show-toggler="false" />
+                <sidebar 
+                    v-if="!(sidebarDirection === 'horizontal' && visibleDrawer)"
+                    ref="sidebar" 
+                    :key="sidebarKey" 
+                    :routes="routes" 
+                    :visible.sync="visibleSidebar" 
+                    :direction="sidebarDirection" 
+                    :show-toggler="false" @closeDrawer="handleLogoClick"
+                />
                 <transition @enter="onEnterTransition" @leave="onLeaveTransition" mode="out-in" :css="false" appear>
                     <router-view class="view" ref="routeComponent"/>
                 </transition>
             </div>
-            <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
+            <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked  :class="{'fixed-sidebar': sidebarDirection==='horizontal'}">
                 <el-tabs v-model="drawerTabsModel" type="card" stretch>
                     <el-tab-pane name="notifications">
                         <div slot="label"><i class="icon-bell"></i> {{$t('resident.notification_label')}}</div>
@@ -151,90 +168,82 @@
                     }
                 }],
                 routes: [{
-                    icon: 'icon-th',
-                    title: 'resident.dashboard',
-                    route: {
-                        name: 'residentDashboard'
-                    }
-                }, 
-                {
-                    icon: 'icon-vcard',
-                    title: 'resident.my_tenancy',
-                    children: [{
-                        icon: 'icon-user',
-                        title: 'resident.my_personal_data',
+                        icon: 'icon-th',
+                        title: 'resident.dashboard',
                         route: {
-                            name: 'residentMyPersonal'
+                            name: 'residentDashboard'
+                        }
+                    }, 
+                    {
+                        icon: 'icon-vcard',
+                        title: 'resident.my_tenancy',
+                        children: [{
+                            icon: 'icon-user',
+                            title: 'resident.my_personal_data',
+                            route: {
+                                name: 'residentMyPersonal'
+                            }
+                        }, {
+                            icon: 'icon-handshake-o',
+                            title: 'resident.my_recent_contract',
+                            route: {
+                                name: 'residentMyContracts'
+                            }
+                        }, {
+                            icon: 'icon-doc-text',
+                            title: 'resident.my_documents',
+                            route: {
+                                name: 'residentMyDocuments'
+                            },
+                            // do not show if no documents
+                        }, {
+                            icon: 'icon-contacts',
+                            title: 'resident.my_contact_persons',
+                            route: {
+                                name: 'residentMyContacts'
+                            },
+                            visible: this.Settings && this.Settings.contact_enable // OR no service partners for the building
+                        }, {
+                            icon: 'icon-users',
+                            title: 'resident.property_managers',
+                            route: {
+                                name: 'residentPropertyManagers'
+                            }
+                        }, {
+                            icon: 'icon-group',
+                            title: 'resident.my_neighbours',
+                            route: {
+                                name: 'residentMyNeighbours'
+                            }
+                        }]
+                    }, {
+                        icon: 'icon-megaphone-1',
+                        title: 'resident.pinboard',
+                        route: {
+                            name: 'residentPinboards'
                         }
                     }, {
-                        icon: 'icon-handshake-o',
-                        title: 'resident.my_recent_contract',
+                        icon: 'icon-chat-empty',
+                        title: 'resident.requests',
                         route: {
-                            name: 'residentMyContracts'
+                            name: 'residentRequests'
                         }
                     }, {
-                        icon: 'icon-doc-text',
-                        title: 'resident.my_documents',
+                        icon: 'icon-water',
+                        title: 'resident.cleanify',
                         route: {
-                            name: 'residentMyDocuments'
-                        }
-                        // do not show if no documents
-                    }, {
-                        icon: 'icon-contacts',
-                        title: 'resident.my_contact_persons',
-                        route: {
-                            name: 'residentMyContacts'
+                            name: 'cleanifyRequest'
                         },
-                        visible: this.Settings && this.Settings.contact_enable // OR no service partners for the building
                     }, {
-                        icon: 'icon-users',
-                        title: 'resident.property_managers',
+                        icon: 'icon-cog',
+                        title: 'resident.settings',
+                        positionedBottom: true,
                         route: {
-                            name: 'residentPropertyManagers'
-                        }
-                    }, {
-                        icon: 'icon-group',
-                        title: 'resident.my_neighbours',
-                        route: {
-                            name: 'residentMyNeighbours'
+                            name: 'residentSettings'
                         }
                     }]
-                }, {
-                    icon: 'icon-megaphone-1',
-                    title: 'resident.pinboard',
-                    route: {
-                        name: 'residentPinboards'
-                    }
-                }, {
-                    icon: 'icon-chat-empty',
-                    title: 'resident.requests',
-                    route: {
-                        name: 'residentRequests'
-                    }
-                }, {
-                    icon: 'icon-water',
-                    title: 'Cleanify',
-                    route: {
-                        name: 'cleanifyRequest'
-                    },
-                }, {
-                    icon: 'icon-cog',
-                    title: 'resident.settings',
-                    positionedBottom: true,
-                    route: {
-                        name: 'residentSettings'
-                    }
-                }]
+                ,
             }
-        },
-        computed: {
-            resident_logo() {
-                if(localStorage.getItem('resident_logo_src') != this.$constants.logo.resident_logo ) {
-                    localStorage.setItem('resident_logo_src', this.$constants.logo.resident_logo);
-                }
-
-                return localStorage.getItem('resident_logo_src') ? `/${localStorage.getItem('resident_logo_src')}` : '';
-            },
         },
         methods: {
             test () {
@@ -305,14 +314,19 @@
             },
             handleLogoClick() {
                 this.visibleDrawer = false;
-                this.$refs.routeComponent.closeDrawer();
+                if(this.$refs.routeComponent !== undefined) {
+                    if(this.$refs.routeComponent.visibleDrawer !== undefined)
+                        this.$refs.routeComponent.visibleDrawer = false;
+                    else 
+                        this.$refs.routeComponent.$children[0].visibleDrawer = false;
+                
+                }
             }
         },
         computed: {
             ...mapGetters('notifications', {
                 unreadNotifications: 'unread'
             }),
-
             breakpoints () {
                 return {
                     md: el => {
@@ -329,6 +343,13 @@
                     }
                 }
             },
+            resident_logo() {
+                if(localStorage.getItem('resident_logo_src') != this.$constants.logo.resident_logo ) {
+                    localStorage.setItem('resident_logo_src', this.$constants.logo.resident_logo);
+                }
+
+                return localStorage.getItem('resident_logo_src') ? `/${localStorage.getItem('resident_logo_src')}` : '';
+            }
         },
         beforeCreate() {
             document.getElementById('viewport').setAttribute('content', 'width=device-width, initial-scale=1.0')
@@ -339,6 +360,7 @@
         async mounted () {
             this.loading = true
             this.resident_logo_src = "/" + this.$constants.logo.resident_logo;
+            
             await this.$store.dispatch('getSettings').then((resp) => {
                 this.Settings = resp.data;
                     if( resp.data.cleanify_enable == false )
@@ -439,6 +461,16 @@
             height: 100%;
             display: flex;
             overflow: hidden;
+
+            .sidebar.fixed-sidebar {
+                position: fixed;
+                bottom: 0px;
+                height: 66px !important;
+            }
+            .ui-drawer.sidebar.fixed-sidebar {
+                height: calc(100% - 66px) !important;
+            }
+            
 
             :global(.a-close-button) {
                 font-size: 25px;

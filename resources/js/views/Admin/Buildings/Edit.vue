@@ -16,7 +16,7 @@
                 </div>
             </template>
         </heading>
-        <div class="warning-bar" v-if="!model.has_email_receptionists">
+        <div class="warning-bar" v-if="!loading.state && !model.has_email_receptionists">
             <div class="message" type="info">
                 <i class="icon-info-circled"></i>{{$t('models.building.warning_bar.message')}}
             </div>
@@ -360,7 +360,7 @@
                             {{ $t('general.audits') }}
                             <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
                         </span>
-                        <audit v-if="model.id" :id="model.id" type="building" showFilter/>
+                        <audit v-if="model.id" :id="model.id" type="building" ref="auditList" showFilter/>
                     </el-tab-pane>
                     <!-- <el-tab-pane name="settings" :disabled="true">
                         <span slot="label" class="icon-cog" @click="toggleDrawer">
@@ -378,7 +378,7 @@
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
             <template v-if="editingContract || isAddContract">
-                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider>
                     
                 <div class="content" v-if="visibleDrawer">
                     <contract-form v-if="editingContract" 
@@ -425,7 +425,13 @@
                         </div>
                         
                         <div class="content" v-if="visibleDrawer">
-                            <email-receptionist-form :is-building="true" :building_id="model.id" :quarter_id="model.quarter_id" :visible.sync="visibleDrawer"/>
+                            <email-receptionist-form 
+                                        :is-building="true" 
+                                        :building_id="model.id" 
+                                        :quarter_id="model.quarter_id" 
+                                        :visible.sync="visibleDrawer"
+                                        @update-has-email-receptionists="updateHasEmailReceptionists"
+                                        />
                         </div>
 
                     </el-tab-pane>
@@ -496,12 +502,12 @@
                     prop: 'type',
                     label: 'models.resident.type.label',
                     i18n: this.translateResidentType
-                }/*, {
+                }, {
                     prop: 'status',
                     i18n: this.residentStatusLabel,
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
-                }*/],
+                }],
                 residentActions: [{
                     width: 70,
                     buttons: [{
@@ -614,8 +620,7 @@
             ...mapActions([
                 'getSettings',
                 "uploadBuildingFile",
-                "deleteBuildingFile",
-                "deleteBuildingService",
+                "deleteBuildingFile",                
                 "getBuildingAssignees",
                 "assignManagerToBuilding",
                 "unassignBuildingAssignee",
@@ -625,6 +630,9 @@
                 'deleteBuildingWithIds', 
                 'checkUnitRequestWidthIds'
             ]),
+            updateHasEmailReceptionists(flag) {
+                this.model.has_email_receptionists = flag
+            },
             translateType(type) {
                 return this.$t(`general.assignment_types.${type}`);
             },
@@ -650,7 +658,9 @@
                         });
 
                         displaySuccess(resp);
-
+                        if(this.$refs.auditList){
+                            this.$refs.auditList.fetch();
+                        }
                         this.$refs.assigneesList.fetch();
 
                     } catch (e) {
@@ -724,6 +734,9 @@
                     } else {
                         this.fileCount = 1;
                     }
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                 }).catch((err) => {
                     displayError(err);
                 });
@@ -737,6 +750,9 @@
                     this.fileCount--;
                     this.model[prop].splice(index, 1);
                     this.setOrder(prop);
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                 }).catch((error) => {
                     displayError(error);
                 })
@@ -761,7 +777,7 @@
             sortFiles() {
                 this.setOrder();
             },
-            uploadFiles(file) {
+            uploadFiles(file) {                
                 this.insertDocument(this.selectedFileCategory, file);
             },
             removeService(service) {
@@ -876,12 +892,15 @@
                 });
             },
             async unassignProvider(toUnassign) {
-                const resp = await this.unassignServiceBuilding({
-                    id: toUnassign.id,
-                    toAssignId: this.model.id
+                const resp = await this.unassignProviderToBuilding({
+                    id: this.model.id,
+                    toAssignId: toUnassign.id
                 });
 
                 this.$refs.assignmentsProviderList.fetch(); 
+                if(this.$refs.auditList){
+                    this.$refs.auditList.fetch();
+                }
                 this.resetToAssignProviderList();
                 this.serviceCount--;
                 displaySuccess(resp.data)

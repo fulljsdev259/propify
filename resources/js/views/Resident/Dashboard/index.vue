@@ -31,9 +31,9 @@
 
     </div>
     <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked @update:visibleDrawer="resetDataFromDrawer">
-            <a class="a-close-button" @click="visibleDrawer=!visibleDrawer">
+            <!-- <a class="a-close-button" @click="visibleDrawer=!visibleDrawer">
                 <span class="el-icon-close"></span>
-            </a>
+            </a> -->
             <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="openedRequest">
                 <el-tab-pane name="chat" lazy>
                     <div slot="label">
@@ -216,7 +216,7 @@
         overflow: auto;
         padding: 16px;
         
-        @media screen and (max-width: 414px), (min-width: 1025px) {
+        @media screen and (max-width: 414px), (min-width: 1301px) {
             :global(.ui-heading__content__title) {
                 font-size: 24px;
             }
@@ -224,7 +224,7 @@
                 display: none;
             }
         }
-        @media screen and (max-width: 1024px) and (min-width: 415px) {
+        @media screen and (max-width: 1300px) and (min-width: 415px) {
             .second-rate {
                 display: none;
             }
@@ -233,7 +233,7 @@
             :global(.ui-card__header) {
                 position: relative;
                 :global(.el-button) {
-                    @media screen and (max-width: 414px) {
+                    @media screen and (max-width: 414px), screen and (min-width: 1301px) and (max-width: 1700px), screen and (min-width: 676px) and (max-width: 1200px) {
                         position: absolute;
                         bottom: 5px;
                         right: 16px;

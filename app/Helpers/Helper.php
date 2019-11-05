@@ -63,6 +63,8 @@ class Helper
                 'execution_period' => __('models.pinboard.execution_period.label'),
                 'type' => __('models.pinboard.type.label'),
                 'visibility' => __('models.pinboard.visibility.label'),
+                'execution_start' => __('models.pinboard.execution_interval.start'),
+                'execution_end' => __('models.pinboard.execution_interval.end'),
             ],
             'provider' => [
                 'category' => __('models.service.category.label'),

@@ -40,9 +40,9 @@ class FilterByContractRelatedCriteria implements CriteriaInterface
         $buildingId = $this->request->get('building_id', null);
         $unitId = $this->request->get('unit_id', null);
         $stateId = $this->request->get('state_id', null);
+
+        // @TODO delete has_building related
         $hasBuilding = $this->request->get('has_building', null);
-
-
 
         if (!( $buildingId || $quarterId || $hasBuilding || $unitId || $stateId) ) {
             return $model;

@@ -80,6 +80,7 @@
                 let {residents} = await this.$store.dispatch('getBuilding', {
                     id: resident.building.id
                 })
+                
 
                 // exclude the loggedin resident
                 residents = residents.filter(resident => resident.id != this.$store.getters.loggedInUser.resident.id) 
@@ -88,8 +89,10 @@
                     residents = residents.slice(0, this.limit)
                 }
 
-                if(residents.length == 0)
+
+                if(residents.length == 0) {
                     this.$root.$emit('hide-my-neighbour-card');
+                }
 
                 const unorderedList = residents.reduce((obj, resident) => {
                     obj[resident.first_name[0]] = obj[resident.first_name[0]] || []

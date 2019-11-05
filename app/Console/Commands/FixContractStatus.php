@@ -40,7 +40,7 @@ class FixContractStatus extends Command
     {
         Resident::disableAuditing();
         $auditData = $this->makeActiveContractToInActiveIfNeed();
-        $auditData = $this->makeInactiveContractToActiveIfNeed($auditData);
+//        $auditData = $this->makeInactiveContractToActiveIfNeed($auditData);
         Resident::enableAuditing();
 
         if (!empty($auditData)) {
@@ -129,58 +129,58 @@ class FixContractStatus extends Command
         return $auditData;
     }
 
-    /**
-     *
-     */
-    protected function makeInactiveContractToActiveIfNeed($auditData)
-    {
-        // get all not active contract started today
-        $contracts = Contract::where('status', Contract::StatusInActive)
-            ->where('start_date', '=', now()->format('Y-m-d'))
-            ->get(['id', 'resident_id']);
-
-        $contractIds = $contracts->pluck('id')->all();
-
-        if (empty($contractIds)) {
-            return $auditData;
-        }
-
-        // make  contracts active
-        Contract::whereIn('id', $contractIds)->update(['status' => Contract::StatusActive]);
-        $auditData['contracts'][] = [
-            'ids' => $contractIds,
-            'status' => [
-                'old' => Contract::StatusInActive,
-                'new' => Contract::StatusActive,
-            ]
-        ];
-
-
-        $residentIds = $contracts->pluck('resident_id')->unique()->toArray();
-        if (empty($residentIds)) {
-            return $auditData;
-        }
-
-
-        // make  inactive resident to active
-        $residents = Resident::whereIn('id', $residentIds)
-            ->where('status', Resident::StatusInActive)
-            ->get(['id']);
-
-        $notActiveResidentIds = $residents->pluck('id')->all();
-        if (empty($notActiveResidentIds)) {
-            return $auditData;
-        }
-
-        $auditData['residents'][] = [
-            'ids' => $notActiveResidentIds,
-            'status' => [
-                'old' => Resident::StatusInActive,
-                'new' => Resident::StatusActive,
-            ]
-        ];
-        Resident::whereIn('id', $notActiveResidentIds)->update(['status' => Resident::StatusActive]);
-        return $auditData;
-    }
+//    /**
+//     *
+//     */
+//    protected function makeInactiveContractToActiveIfNeed($auditData)
+//    {
+//        // get all not active contract started today
+//        $contracts = Contract::where('status', Contract::StatusInActive)
+//            ->where('start_date', '=', now()->format('Y-m-d'))
+//            ->get(['id', 'resident_id']);
+//
+//        $contractIds = $contracts->pluck('id')->all();
+//
+//        if (empty($contractIds)) {
+//            return $auditData;
+//        }
+//
+//        // make  contracts active
+//        Contract::whereIn('id', $contractIds)->update(['status' => Contract::StatusActive]);
+//        $auditData['contracts'][] = [
+//            'ids' => $contractIds,
+//            'status' => [
+//                'old' => Contract::StatusInActive,
+//                'new' => Contract::StatusActive,
+//            ]
+//        ];
+//
+//
+//        $residentIds = $contracts->pluck('resident_id')->unique()->toArray();
+//        if (empty($residentIds)) {
+//            return $auditData;
+//        }
+//
+//
+//        // make  inactive resident to active
+//        $residents = Resident::whereIn('id', $residentIds)
+//            ->where('status', Resident::StatusInActive)
+//            ->get(['id']);
+//
+//        $notActiveResidentIds = $residents->pluck('id')->all();
+//        if (empty($notActiveResidentIds)) {
+//            return $auditData;
+//        }
+//
+//        $auditData['residents'][] = [
+//            'ids' => $notActiveResidentIds,
+//            'status' => [
+//                'old' => Resident::StatusInActive,
+//                'new' => Resident::StatusActive,
+//            ]
+//        ];
+//        Resident::whereIn('id', $notActiveResidentIds)->update(['status' => Resident::StatusActive]);
+//        return $auditData;
+//    }
 
 }

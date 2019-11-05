@@ -37,7 +37,7 @@
                     type: 'resident-details',
                     label: 'general.name',
                     props: ['name', 'image_url'],
-                    minWidth: '100px'
+                    minWidth: 200,
                 }, {
                     type: 'plain',
                     label: 'general.address',

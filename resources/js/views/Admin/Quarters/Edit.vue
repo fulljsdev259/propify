@@ -15,6 +15,21 @@
                             <el-form :model="model" ref="form">
                                 <el-row :gutter="20">
                                     <el-col :md="12">
+                                        <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.type"
+                                                prop="type">
+                                            <el-select placeholder="Select"
+                                                        v-model="model.type">
+                                                <el-option
+                                                        :key="type.value"
+                                                        :label="type.name"
+                                                        :value="type.value"
+                                                        v-for="type in types">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                
+                                    <el-col :md="12">
                                         <el-form-item :label="$t('resident.name')" :rules="validationRules.name"
                                                     prop="name">
                                             <el-input type="text" v-model="model.name"/>
@@ -39,13 +54,13 @@
                                             <el-col :md="8">
                                                 <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
                                                             prop="zip">
-                                                    <el-input type="text" v-model="model.zip"></el-input>
+                                                    <el-input type="text" v-model="model.zip"/>
                                                 </el-form-item>
                                             </el-col>
                                             <el-col :md="16">
                                                 <el-form-item :label="$t('general.city')" :rules="validationRules.city"
                                                             prop="city">
-                                                    <el-input type="text" v-model="model.city"></el-input>
+                                                    <el-input type="text" v-model="model.city"/>
                                                 </el-form-item>
                                             </el-col>
                                         </el-row>
@@ -246,7 +261,7 @@
                                 {{ $t('general.audits') }}
                                 <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
                             </span>
-                            <audit v-if="model.id" :id="model.id" type="quarter" showFilter/>
+                            <audit v-if="model.id" :id="model.id" type="quarter" ref="auditList" showFilter/>
                         </el-tab-pane>
                         <!-- <el-tab-pane name="settings" :disabled="true">
                             <span slot="label" class="icon-cog" @click="toggleDrawer">
@@ -258,9 +273,9 @@
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
             <template v-if="editingContract || isAddContract">
-                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider>
                     
-                <div class="content" v-if="visibleDrawer">
+                <div class="content" v-if="visibleDrawer"> 
                     <contract-form v-if="editingContract" 
                                 mode="edit" 
                                 :quarter_id="model.id" 
@@ -492,6 +507,9 @@
                     } else {
                         this.fileCount = 1;
                     }
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                 }).catch((err) => {
                     displayError(err);
                 });
@@ -505,6 +523,9 @@
                     this.fileCount--;
                     this.model[prop].splice(index, 1);
                     this.setOrder(prop);
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                 }).catch((error) => {
                     displayError(error);
                 })
@@ -573,7 +594,6 @@
             },
         },
         mounted() {
-            this.$root.$on('changeLanguage', () => this.getStates());
 
             EventBus.$on('request-get-counted', request_count => {
                 this.requestCount = request_count;

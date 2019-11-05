@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Mail;
  * Class NewAdminNotification
  * @package App\Jobs
  */
-class SendNewRequestEmailToReceptionists
+class SendNewRequestEmailToReceptionists implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -43,7 +43,7 @@ class SendNewRequestEmailToReceptionists
      */
     public function handle()
     {
-        $this->request->load('contract:id,building_id', 'contract.building:id,quarter_id,global_email_receptionist');
+        $this->request->load('contract:id,building_id,resident_id', 'contract.building:id,quarter_id,global_email_receptionist');
         $building = $this->request->contract->building ?? null;
 
         if (empty($building)) {

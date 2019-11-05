@@ -95,7 +95,7 @@ class AuditTransformer extends BaseTransformer
                     $old_value = ($old_value) ? (AuditRepository::getDataFromField($field, $old_value, $model->auditable_type)) : "";
                     $new_value = ($new_value) ? (AuditRepository::getDataFromField($field, $new_value, $model->auditable_type)) : "";
                 }                                
-                elseif(in_array($field, ['due_date','solved_date','published_at','birth_date'])){                    
+                elseif(in_array($field, ['due_date','solved_date','published_at','birth_date','execution_start','execution_end'])){
                     $old_value = ($old_value) ? Helper::formatedDate($old_value) : "";
                     $new_value = ($new_value) ? Helper::formatedDate($new_value) : "";
                 }                
@@ -150,13 +150,13 @@ class AuditTransformer extends BaseTransformer
             $response['statement'] = __("general.components.common.audit.content.general.quarter_assigned",['quarterName' => $model->new_values['quarter_name']]);
         }
         elseif($model->event == 'quarter_unassigned'){
-            $response['statement'] = __("general.components.common.audit.content.general.quarter_assigned",['quarterName' => $model->old_values['quarter_name']]);
+            $response['statement'] = __("general.components.common.audit.content.general.quarter_unassigned",['quarterName' => $model->old_values['quarter_name']]);
         }
         elseif($model->event == 'building_assigned'){
             $response['statement'] = __("general.components.common.audit.content.general.building_assigned",['buildingName' => $model->new_values['building_name']]);
         }
         elseif($model->event == 'building_unassigned'){
-            $response['statement'] = __("general.components.common.audit.content.general.building_assigned",['buildingName' => $model->old_values['building_name']]);
+            $response['statement'] = __("general.components.common.audit.content.general.building_unassigned",['buildingName' => $model->old_values['building_name']]);
         }
         return $response;
     }

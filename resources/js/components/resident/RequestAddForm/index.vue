@@ -42,7 +42,7 @@
         </el-form-item>
 
         <el-form-item :label="$t('models.request.category_options.range')" 
-                    v-if="this.showSubCategory == true && this.showLiegenschaft == true && this.showWohnung == false">
+                    v-if="this.showSubCategory == true && this.showLocation == true && this.showRoom == false">
             <el-select :disabled="$can($permissions.update.serviceRequest)"
                         :placeholder="$t(`general.placeholders.select`)"
                         filterable
@@ -57,7 +57,7 @@
             </el-select>
         </el-form-item>
         <el-form-item :label="$t('models.request.category_options.room')"
-                    v-if="this.showSubCategory == true && this.showWohnung == true && this.showLiegenschaft == false">
+                    v-if="this.showSubCategory == true && this.showRoom == true && this.showLocation == false">
             <el-select :disabled="$can($permissions.update.serviceRequest)"
                         :placeholder="$t(`general.placeholders.select`)"
                         filterable
@@ -147,7 +147,7 @@
                     visibility: '',
                     description: '',
                     media: [],
-                    sub_category_id:'',
+                    sub_category_id: null,
                     location: '',
                     room: '',
                     capture_phase: '',
@@ -196,10 +196,8 @@
                 contracts: [],
                 mediaUploadMaxSize: MEDIA_UPLOAD_MAX_SIZE,
                 showSubCategory: false,
-                showPayer: false,
-                showUmgebung: false,
-                showLiegenschaft: false,
-                showWohnung: false,
+                showLocation: false,
+                showRoom: false,
                 request_id: null,
                 audit_id: null,
                 default_contract_id: ''
@@ -213,7 +211,6 @@
                 if(this.showSubCategory) {
                     this.sub_categories = p_category ? p_category.sub_categories : [];
                 }
-                this.showPayer = this.model.qualification == 5 ? true : false;
             },
             changeSubCategory() {
                 const subcategory = this.sub_categories.find(category => {
@@ -222,18 +219,14 @@
 
                 this.model.room = '';
                 this.model.location = '';
-                this.showLiegenschaft = false;
-                this.showUmgebung = false;
-                this.showWohnung = false;
+                this.showLocation = false;
+                this.showRoom = false;
 
                 if(subcategory.room == 1) {
-                    this.showWohnung = true;
+                    this.showRoom = true;
                 }
                 else if(subcategory.location == 1) {
-                    this.showLiegenschaft = true;
-                }
-                else if(subcategory.location == 0 && subcategory.room == 0) {
-                    this.showUmgebung = true;
+                    this.showLocation = true;
                 }
             },
             getLanguageI18n() {
@@ -241,6 +234,28 @@
                 this.building_locations = Object.entries(this.$constants.requests.location).map(([value, label]) => ({value: +value, name: this.$t(`models.request.location.${label}`)}))
                 this.apartment_rooms = Object.entries(this.$constants.requests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
                 
+                this.contracts = this.$store.getters.loggedInUser.resident.contracts.filter( contract => contract.status == 1)
+
+                this.contracts.forEach(contract => {
+                    let floor_label;
+                    if(contract.unit.attic == 'attic')
+                    {
+                        floor_label = this.$t('models.unit.floor_title.top_floor')
+                    }
+                    else if(contract.unit.floor > 0)
+                    {
+                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                    }
+                    else if(contract.unit.floor == 0)
+                    {
+                        floor_label = this.$t('models.unit.floor_title.ground_floor')
+                    }
+                    else if(contract.unit.floor < 0)
+                    {
+                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                    }
+                    contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                })
             },
             submit () {
                 this.$refs.form.validate(async valid => {
@@ -254,8 +269,10 @@
 
                             //const data = await this.$store.dispatch('createRequest', params)
 
-                            params.category = params.category_id
-                            params.sub_category = params.sub_category_id
+                            // params.category = params.category_id
+                            // params.sub_category = params.sub_category_id
+
+                            params.media = this.model.media.map(item => item.file.src)
 
                             const resp = await this.$store.dispatch('newRequests/create', params);
                             
@@ -270,6 +287,7 @@
                                     this.$refs.media.startUploading();
                                 }
                             }
+
                             // const {id} = resp.data
                             // if (media.length) {
                             //     const queue = new PQueue({concurrency: 1})
