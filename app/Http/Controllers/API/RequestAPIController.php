@@ -227,10 +227,6 @@ class RequestAPIController extends AppBaseController
         $input = $createRequest->all();
 //        $input['internal_priority'] = $input['internal_priority'] ?? $input['priority'];
         $request = $this->requestRepository->create($input);
-        $this->requestRepository->notifyNewRequest($request);
-        if (isset($input['due_date'])) {
-            $this->requestRepository->notifyDue($request);
-        }
         $request->load([
             'media',
             'resident.user',

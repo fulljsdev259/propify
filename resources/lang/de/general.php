@@ -46,6 +46,8 @@ return [
     'unassign' => 'Entfernen',
     'assign' => 'Zuweisen',
     'requests' => 'Anfragen',
+    'enabled' => 'Aktiviert',
+    'disabled' => 'Deaktiviert',
     'salutation' => 'Anrede',
     'salutation_option' => [
         'mr' => 'Herr',
