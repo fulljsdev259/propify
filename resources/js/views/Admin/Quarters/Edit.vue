@@ -16,8 +16,10 @@
                                 <el-row :gutter="20">
                                     <el-col :md="12">
                                         <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.type"
+                                                class="label-block"
                                                 prop="type">
                                             <el-select placeholder="Select"
+                                                        style="display: block"
                                                         v-model="model.type">
                                                 <el-option
                                                         :key="type.value"
