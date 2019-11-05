@@ -19,7 +19,7 @@ $factory->define(App\Models\Pinboard::class, function (Faker $faker) {
     $ret = [
         'user_id' => $u->id,
         'type' => $type,
-        'status' => Pinboard::StatusNew,
+        'status' => Pinboard::StatusPublished,
         'visibility' => Pinboard::VisibilityAll,
         'content' => $faker->paragraph(),
         'notify_email' => false,

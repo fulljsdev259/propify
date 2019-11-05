@@ -136,8 +136,8 @@ class ResidentRepository extends BaseRepository
         Media::enableAuditing();
 
         $resident->setRelation('contracts', $contractSavedData);
-        $auditData = $resident->getModelRelationAuditData($contractSavedData);
-        $resident->addDataInAudit('contracts', $auditData);
+//        $auditData = $resident->getModelRelationAuditData($contractSavedData);
+//        $resident->addDataInAudit('contracts', $auditData);
         return $resident;
     }
 

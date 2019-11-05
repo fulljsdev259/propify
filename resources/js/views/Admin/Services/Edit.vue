@@ -185,7 +185,7 @@
                     <div slot="header" class="clearfix">
                         <span>{{$t('general.audits')}}</span>
                     </div>
-                    <audit v-if="model.id" :id="model.id" type="provider" showFilter/>
+                    <audit v-if="model.id" :id="model.id" type="provider" ref="auditList" showFilter/>
                 </el-card>
             </el-col>
         </el-row>
@@ -316,8 +316,10 @@
 
                     this.toAssign = '';
 
-                    const type = toUnassign.aType == 1 ? 'building' : 'quarter';
-
+                    const type = toUnassign.aType == 1 ? 'building' : 'quarter';                    
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                     displaySuccess(resp)
                 }
             }

@@ -148,6 +148,13 @@ function get_type_correspond_role($type)
 function get_category_details($categoryId)
 {
     $values = \App\Models\Request::CategoryAttributes;
+    if ($categoryId != \App\Models\Request::CategoryGeneral) {
+        return [
+            'id' => $categoryId,
+            'name' => \App\Models\Request::Category[$categoryId] ?? 'not exists',
+        ];
+    }
+
     return [
         'id' => $categoryId,
         'name' => \App\Models\Request::Category[$categoryId] ?? 'not exists',
@@ -179,7 +186,8 @@ function get_sub_category_details($subCategoryId)
         'id' => $subCategoryId,
         'parent_id' => $parentId,
         'name' => \App\Models\Request::SubCategory[$subCategoryId] ?? 'not exists',
-        'capture_phase' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $subCategoryId),
+//        'capture_phase' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $subCategoryId),
+        'capture_phase' => 1, //in all sub categories we have to return capture_phase : 1
         'qualification' => get_category_attribute(\App\Models\Request::QualificationAttr, $values, $subCategoryId),
         'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $subCategoryId),
         'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $subCategoryId),

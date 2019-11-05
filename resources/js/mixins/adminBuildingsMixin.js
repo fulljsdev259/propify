@@ -114,7 +114,7 @@ export default (config = {}) => {
             };
         },
         methods: {
-            ...mapActions(['getStates', 'getPropertyManagers','getQuarters','getUsers','assignBuildingProvider','getServices','assignServiceBuilding','unassignServiceBuilding']),
+            ...mapActions(['getStates', 'getPropertyManagers','getQuarters','getUsers','getServices','assignProviderToBuilding','unassignProviderToBuilding']),
             async remoteSearchAssignees(search) {
 
                 if (!this.$can(this.$permissions.assign.request)) {
@@ -189,6 +189,9 @@ export default (config = {}) => {
                     displaySuccess(resp.data)                           
                     this.resetToAssignList();
                     this.$refs.assigneesList.fetch();                    
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                 }
             },
             async remoteSearchQuarters(search) {
@@ -239,13 +242,19 @@ export default (config = {}) => {
 
                     try {
 
-                        const resp = await this.assignServiceBuilding({
-                            id: this.toAssignProvider,
-                            toAssignId: this.model.id
+                        const resp = await this.assignProviderToBuilding({
+                            id: this.model.id,
+                            toAssignId: this.toAssignProvider
                         });
 
-                        if (resp && resp.data && config.mode === 'edit') {                            
+                        if (resp && resp.data && config.mode === 'edit') {   
+                            if(this.$refs.auditList){
+                                this.$refs.auditList.fetch();
+                            }                         
                             this.$refs.assignmentsProviderList.fetch(); 
+                            if(this.$refs.auditList){
+                                this.$refs.auditList.fetch();
+                            }
                             this.resetToAssignProviderList();
                             this.serviceCount++;
                             displaySuccess(resp.data)                            
@@ -348,7 +357,9 @@ export default (config = {}) => {
                                     this.model.service_providers = data.data.service_providers;
                                     this.serviceCount = this.model.service_providers.length
                                     this.model.service_providers_ids = [];
-
+                                    if(this.$refs.auditList){
+                                        this.$refs.auditList.fetch();
+                                    }
                                     displaySuccess(data);
                                     resolve(true);
                                 } catch (err) {

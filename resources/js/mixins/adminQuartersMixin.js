@@ -21,6 +21,10 @@ export default (config = {}) => {
                 },
                 quarter_format: '',
                 validationRules: {
+                    type: [{
+                        required: true,
+                        message: this.$t('models.quarter.required')
+                    }], 
                     name: [{
                         required: true,
                         message: this.$t('models.quarter.required')
@@ -86,7 +90,10 @@ export default (config = {}) => {
                 if (resp && resp.data) {             
                     displaySuccess(resp.data)                           
                     this.resetToAssignList();
-                    this.$refs.assigneesList.fetch();                    
+                    this.$refs.assigneesList.fetch();    
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }                
                 }
             },
             async remoteSearchAssignees(search) {
@@ -150,6 +157,9 @@ export default (config = {}) => {
                         displaySuccess(resp);
 
                         this.$refs.assigneesList.fetch();
+                        if(this.$refs.auditList){
+                            this.$refs.auditList.fetch();
+                        }
 
                     } catch (e) {
                         displayError(e);
@@ -161,7 +171,19 @@ export default (config = {}) => {
                 })
 
             },
-        }
+            getLanguageI18n() {
+                this.getStates();
+                this.types = Object.entries(this.$constants.quarters.type).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.types.${label}`)}))
+            },
+        },
+        watch: {
+            "$i18n.locale": {
+                immediate: true,
+                handler(val) {
+                    this.getLanguageI18n();
+                }
+            }
+        },
     };
 
     if (config.mode) {
@@ -217,7 +239,7 @@ export default (config = {}) => {
 
                 mixin.created = async function () {
                     this.loading.state = true;
-                    this.getStates();
+                    this.getLanguageI18n();
                     this.loading.state = false;
                 };
 
@@ -230,13 +252,18 @@ export default (config = {}) => {
                     async fetchCurrentQuarter() {
                         const resp = await this.getQuarter({id: this.$route.params.id});
                         
-                        this.model = {...resp}
+                        const {
+                            address: {
+                                state: {
+                                    id: state_id
+                                },
+                                ...restAddress
+                            },
+                           
+                            ...restData
+                        } = resp
 
-                        if(resp.address != undefined) {
-                            this.model.zip = this.model.address.zip;
-                            this.model.city = this.model.address.city;
-                            this.model.state_id = this.model.address.state.id;
-                        }
+                        this.model = {state_id, ...restAddress, ...restData};
 
                         this.fileCount = this.model.media.length
                         this.contractCount = this.model.contracts.length
@@ -264,7 +291,10 @@ export default (config = {}) => {
                                             zip
                                         },
                                         ...restParams
-                                    });                                 
+                                    });    
+                                    if(this.$refs.auditList){
+                                        this.$refs.auditList.fetch();
+                                    }                                    
                                     displaySuccess(resp);
                                     resolve(true);
                                 } catch (err) {
@@ -280,7 +310,7 @@ export default (config = {}) => {
 
                 mixin.created = async function () {
                     this.loading.state = true;
-                    this.getStates();
+                    this.getLanguageI18n();
                     await this.fetchCurrentQuarter();
                     this.loading.state = false;
                 };

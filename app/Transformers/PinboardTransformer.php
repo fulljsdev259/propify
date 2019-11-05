@@ -43,7 +43,6 @@ class PinboardTransformer extends BaseTransformer
             'likes_count' => $model->likesCount,
             'comments_count' => $model->all_comments_count,
             'announcement' => $model->announcement,
-            'pinned' => $model->announcement,           // @TODO delete
             'notify_email' => $model->notify_email,
         ];
 

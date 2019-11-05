@@ -111,10 +111,9 @@ export default (config = {}) => {
                 costs: [],
                 showSubCategory: false,
                 showPayer: false,
-                showUmgebung: false,
-                showLiegenschaft: false,
+                showLocation: false,
                 showCapturePhase: false,
-                showWohnung: false,
+                showRoom: false,
                 showQualification: false,
                 createTag: false,
                 editTag: false,
@@ -156,7 +155,7 @@ export default (config = {}) => {
                     this.remoteLoading = true;
 
                     try {
-                        const {data} = await this.getResidents({get_all: true, has_building: true,search});
+                        const {data} = await this.getResidents({get_all: true, search});
                         this.residents = data;
                         this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
                     } catch (err) {
@@ -280,6 +279,9 @@ export default (config = {}) => {
                     await this.fetchCurrentRequest();
                     this.toAssign = '';
                     this.$refs.assigneesList.fetch();
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                     displaySuccess(resp.data)
                 }
             },
@@ -340,6 +342,9 @@ export default (config = {}) => {
                 });
 
                 this.model.media.splice(index, 1)
+                if(this.$refs.auditList){
+                    this.$refs.auditList.fetch();
+                }
                 displaySuccess(resp);
             },
             changeCategory() {
@@ -350,18 +355,17 @@ export default (config = {}) => {
                 this.showSubCategory = children.length > 0 ? true : false;
                 let p_category = this.categories.find(category => { return category.id == this.model.category_id});
 
-                this.model.category = p_category
+                //this.model.category = p_category
                 
                 this.showCapturePhase =  p_category.capture_phase == 1 ? true : false;
                 this.showQualification = p_category.qualification == 1 ? true : false;
-                console.log('qualification', this.model.qualification)
                 if(this.showSubCategory) {
                     this.sub_categories = p_category ? p_category.sub_categories : [];
 
                     if(!this.showQualification && this.model.sub_category_id != null) {
-                        console.log('sub_category_id', this.model.sub_category_id)
                         let sub_category = this.sub_categories.find(category => { return category.id == this.model.sub_category_id});
                         this.showQualification = sub_category.qualification == 1 ? true : false;
+                        this.showCapturePhase =  sub_category.capture_phase == 1 ? true : false;
                     }
                 }
 
@@ -371,27 +375,14 @@ export default (config = {}) => {
                     return category.id == this.model.sub_category_id;
                 });
                 
-                this.model.sub_category = sub_category
+                //this.model.sub_category = sub_category
 
-                this.model.room = '';
-                this.model.location = '';
-                this.showLiegenschaft = false;
-                this.showUmgebung = false;
-                this.showWohnung = false;
-                this.showQualification = false;
-
-                if(sub_category.room == 1) {
-                    this.showWohnung = true;
-                }
-                else if(sub_category.location == 1) {
-                    this.showLiegenschaft = true;
-                }
-                else if(sub_category.location == 0 && sub_category.room == 0) {
-                    this.showUmgebung = true;
-                }
-                if(sub_category.qualification == 1) {
-                    this.showQualification = true;
-                }
+                this.model.room = null;
+                this.model.location = null;
+                this.showRoom = sub_category.room == 1 ? true : false;
+                this.showLocation = sub_category.location == 1 ? true : false;
+                this.showQualification = sub_category.qualification == 1 ? true : false;
+                this.showCapturePhase = sub_category.capture_phase == 1 ? true : false;
             },
             changeQualification() {
                 this.model.payer = '';
@@ -428,6 +419,34 @@ export default (config = {}) => {
                     });
 
                     this.sub_categories = p_category ? p_category.sub_categories : [];
+                }
+
+                this.resident = this.residents.find(resident => resident.id == this.model.resident_id)
+                if(this.resident && this.resident.contracts) {
+                    this.contracts = this.resident.contracts
+
+                    this.contracts = this.contracts.map(contract => { 
+                        let floor_label;
+                        if(contract.unit.attic == 'attic')
+                        {
+                            floor_label = this.$t('models.unit.floor_title.top_floor')
+                        }
+                        else if(contract.unit.floor > 0)
+                        {
+                            floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                        }
+                        else if(contract.unit.floor == 0)
+                        {
+                            floor_label = this.$t('models.unit.floor_title.ground_floor')
+                        }
+                        else if(contract.unit.floor < 0)
+                        {
+                            floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                        }
+                        contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                        
+                        return contract
+                    });
                 }
             },
             async deleteTag(tag) {
@@ -534,9 +553,9 @@ export default (config = {}) => {
                     ...mixin.methods,
                     ...mapActions(['createRequest', 'createRequestTags', 'getTags']),
                     async saveRequest() {
-                        this.model.category = this.model.category_id
-                        this.model.sub_category = this.model.sub_category_id 
-
+                        // this.model.category = this.model.category_id
+                        // this.model.sub_category = this.model.sub_category_id 
+                        this.model.media = this.media.map(item => item.file.src)
                         const resp = await this.createRequest(this.model);
                         
                         let requestId = resp.data.id;
@@ -561,7 +580,7 @@ export default (config = {}) => {
 
 
                         let audit_id = resp.data.audit_id;
-                        await this.uploadNewMedia(resp.data.id, audit_id);
+                        //await this.uploadNewMedia(resp.data.id, audit_id);
     
                         this.media = [];
 
@@ -644,11 +663,12 @@ export default (config = {}) => {
                         }
 
                         this.showSubCategory = resp.data.sub_category ? true : false;
-                        this.showLiegenschaft = resp.data.location != null ? true : false;
-                        this.showWohnung = resp.data.room != null ? true : false;
-                        this.showPayer = resp.data.qualification == 5 ? true : false;
-                        this.showCapturePhase =  resp.data.category.capture_phase == 1 ? true : false;
+                        this.showLocation = resp.data.sub_category && resp.data.sub_category.location == 1 ? true : false;
+                        this.showRoom = resp.data.sub_category && resp.data.sub_category.room == 1 ? true : false;
                         
+                        this.showCapturePhase =  resp.data.category.capture_phase == 1 || (resp.data.sub_category && resp.data.sub_category.capture_phase == 1) ? true : false;
+                        this.showQualification =  resp.data.category.qualification == 1 || (resp.data.sub_category && resp.data.sub_category.qualification == 1) ? true : false;
+                        this.showPayer = this.showQualification && resp.data.qualification == 5 ? true : false;
                         const data = resp.data;
 
                         this.model = Object.assign({}, this.model, data);
@@ -680,8 +700,8 @@ export default (config = {}) => {
                                 this.loading.state = true;
                                 let {service_providers, property_managers, ...params} = this.model;
                                 
-                                params.category = this.model.category_id
-                                params.sub_category = this.model.sub_category_id
+                                // params.category = this.model.category_id
+                                // params.sub_category = this.model.sub_category_id
 
                                 let existingsKeys = [];
                                 let newTags = [];
@@ -717,7 +737,7 @@ export default (config = {}) => {
 
                                 try {
                                     
-                                    
+                                    params.media = this.media.map(item => item.file.src)
                                     const resp = await this.updateRequest(params);
 
                                     await this.uploadNewMedia(params.id, null);
@@ -729,6 +749,9 @@ export default (config = {}) => {
                                     //this.$set(this.model, 'service_providers', resp.data.service_providers);
                                     //this.$set(this.model, 'media', resp.data.media);
                                     //this.$set(this.model, 'property_managers', resp.data.property_managers);
+                                    if(this.$refs.auditList){
+                                        this.$refs.auditList.fetch();
+                                    }
                                     displaySuccess(resp);
                                     resolve(true);
                                 } catch (err) {

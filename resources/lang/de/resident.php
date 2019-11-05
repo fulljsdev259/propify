@@ -127,6 +127,7 @@ return [
     "my_dashboard" => "Mein Dashboard",
     'dashboard' => 'Dashboard',
     'my_tenancy' => 'Mein Dossier',
+    'my_data' => 'Meine Daten',
     'my_personal_data' => 'Persönliche Angaben',
     'my_recent_contract' => 'Mietvertrag',
     'documents' => 'Objekt-Dokumentation',
@@ -262,5 +263,6 @@ return [
     ],
     "message" => "Nachricht",
     "my_offerings" => "Meine Offerten",
-    "default_contract_expired" => "Ihr letzter Standardvertrag ist abgelaufen, Sie sollten einen anderen Vertrag auswählen."
+    "default_contract_expired" => "Ihr letzter Standardvertrag ist abgelaufen, Sie sollten einen anderen Vertrag auswählen.",
+    "cleanify" => "Cleanify"
 ];

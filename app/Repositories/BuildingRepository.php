@@ -124,7 +124,7 @@ class BuildingRepository extends BaseRepository
         if ($data) {
             $units = $building->units()->createMany($data);
             Unit::enableAuditing();
-            $building->newSystemAudit('units', $units);
+            $building->newSystemAudit(AuditableModel::MergeInMainData, $units, AuditableModel::BuildingUnitsCreated);
             $building->setRelation('units', $units);
         } else {
             Unit::enableAuditing();

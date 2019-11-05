@@ -63,7 +63,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12"
-                                        v-if="this.showSubCategory == true && this.showLiegenschaft == true">
+                                        v-if="this.showSubCategory == true && this.showLocation == true">
                                     <el-form-item :label="$t('models.request.category_options.range')">
                                         <el-select 
                                             :disabled="$can($permissions.update.serviceRequest)"
@@ -81,7 +81,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12"
-                                        v-if="this.showSubCategory == true && this.showWohnung == true">
+                                        v-if="this.showSubCategory == true && this.showRoom == true">
                                     <el-form-item :label="$t('models.request.category_options.room')">
                                         <el-select 
                                             :disabled="$can($permissions.update.serviceRequest)"
@@ -511,7 +511,7 @@
                                         {{ $t('general.audits') }}
                                         <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
                                     </span>
-                                    <audit v-if="model.id" :id="model.id" type="request" showFilter/>
+                                    <audit v-if="model.id" :id="model.id" type="request" ref="auditList" showFilter/>
                                 </el-tab-pane>
                             </el-tabs>
                         </card>
@@ -642,6 +642,11 @@
         },
         async mounted() {
             this.rolename = this.$store.getters.loggedInUser.roles[0].name;
+            this.$root.$on('media-upload-finished', () => {
+                if(this.$refs.auditList){
+                    this.$refs.auditList.fetch();
+                }
+            });
             this.$root.$on('changeLanguage', () => {
                 //this.fetchCurrentRequest();
             });
@@ -697,6 +702,9 @@
                         if (resp && resp.data) {
                             await this.fetchCurrentRequest();
                             this.$refs.assigneesList.fetch();
+                            if(this.$refs.auditList){
+	                            this.$refs.auditList.fetch();
+                            }
                             const detachedType = provider.uType === 1 ? 'service' : 'manager';
                             displaySuccess(resp.data);
                         }

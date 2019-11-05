@@ -67,9 +67,9 @@
                                                                     prop="title">
                                                             <el-select placeholder="Select" style="display: block" v-model="model.title">
                                                                 <el-option
-                                                                        :key="title"
-                                                                        :label="$t(`general.salutation_option.${title}`)"
-                                                                        :value="title"
+                                                                        :key="title.value"
+                                                                        :label="title.name"
+                                                                        :value="title.value"
                                                                         v-for="title in titles">
                                                                 </el-option>
                                                             </el-select>
@@ -78,7 +78,7 @@
                                                     <el-col :md="6">
                                                         <el-form-item :label="$t('models.resident.company')" :rules="validationRules.company"
                                                                     prop="company"
-                                                                    v-if="model.title === titles.company">
+                                                                    v-if="model.title === 'company'">
                                                             <el-input autocomplete="off" type="text" v-model="model.company"></el-input>
                                                         </el-form-item>
                                                     </el-col>
@@ -247,7 +247,14 @@
                                             <h3 class="chart-card-header">
                                                 <i class="icon-handshake-o ti-user icon "/>
                                                     &nbsp;{{ $t('models.resident.contract.title') }}
-                                                <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                                                <el-button style="float:right" 
+                                                        type="primary" 
+                                                        @click="toggleDrawer" 
+                                                        icon="icon-plus" 
+                                                        size="mini" 
+                                                        round>
+                                                        {{ model.type == 1 ? $t('models.resident.contract.add') : $t('models.resident.contract.add_sell_contract')}}
+                                                </el-button>
                                             </h3>
                                             
                                         </el-row>
@@ -265,7 +272,7 @@
                                     <div slot="header" class="clearfix">
                                         <span>{{$t('general.audits')}}</span>
                                     </div>
-                                    <audit v-if="model.id" :id="model.id" type="resident" showFilter/>
+                                    <audit v-if="model.id" :id="model.id" type="resident" ref="auditList" showFilter/>
                                 </el-card>
                             </el-col>    
                         </el-row>
@@ -274,7 +281,7 @@
                 </el-row>
             </div>
             <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider>
                 
                 <div class="content" v-if="visibleDrawer">
                     <contract-form v-if="editingContract" 
@@ -485,20 +492,7 @@
 
             .right-col{
                 padding-right: 10px!important;
-            }
-
-
-           .el-table__empty-text {
-                width: 100%;
-
-                .el-alert--info.is-light {
-                    padding-left: 35%;
-                    -webkit-box-align: center;
-                    -ms-flex-align: center;
-                    align-items: center;
-                    line-height: inherit;
-                }
-            }
+            }        
         
         }
 

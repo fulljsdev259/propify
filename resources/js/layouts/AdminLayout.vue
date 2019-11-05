@@ -480,8 +480,7 @@
             this.rolename = this.$store.getters.loggedInUser.roles[0].name;
 
             this.$root.$on('avatar-update', () => {
-                //window.location.reload();
-                //vm.$forceUpdate();
+                this.user.avatar += "?"
             });
             
         },

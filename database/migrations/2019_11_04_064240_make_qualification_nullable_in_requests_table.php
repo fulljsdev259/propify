@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRentContractIdInRequestsTable extends Migration
+class MakeQualificationNullableInRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,7 @@ class AddRentContractIdInRequestsTable extends Migration
     public function up()
     {
         Schema::table('requests', function (Blueprint $table) {
-            $table->integer('rent_contract_id')->unsigned()->after('tenant_id')->nullable();
-            $table->foreign('rent_contract_id')->references('id')->on('tenant_rent_contracts')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+            $table->integer('qualification')->unsigned()->default(0)->nullable()->change();
         });
     }
 
@@ -27,8 +26,7 @@ class AddRentContractIdInRequestsTable extends Migration
     public function down()
     {
         Schema::table('requests', function (Blueprint $table) {
-            $table->dropForeign('requests_rent_contract_id_foreign');
-            $table->dropColumn('rent_contract_id');
+            $table->integer('qualification')->unsigned()->default(0)->change();
         });
     }
 }

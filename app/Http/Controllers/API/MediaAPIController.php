@@ -137,7 +137,8 @@ class MediaAPIController extends AppBaseController
      *
      * @param int $id
      * @param BuildingUploadRequest $request
-     * @return Response
+     * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function buildingUpload(int $id, BuildingUploadRequest $request)
     {
@@ -252,7 +253,8 @@ class MediaAPIController extends AppBaseController
      *
      * @param int $id
      * @param UnitUploadRequest $request
-     * @return Response
+     * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function unitUpload(int $id, UnitUploadRequest $request)
     {
@@ -366,7 +368,8 @@ class MediaAPIController extends AppBaseController
      *
      * @param int $id
      * @param QuarterUploadRequest $request
-     * @return Response
+     * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function quarterUpload(int $id, QuarterUploadRequest $request)
     {
@@ -481,7 +484,8 @@ class MediaAPIController extends AppBaseController
      *
      * @param int $id
      * @param PinboardUploadRequest $request
-     * @return Response
+     * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function pinboardUpload(int $id, PinboardUploadRequest $request)
     {
@@ -537,7 +541,8 @@ class MediaAPIController extends AppBaseController
      * @param int $id
      * @param int $media_id
      * @param PinboardDeleteRequest $r
-     * @return Response
+     * @return mixed
+     * @throws \Exception
      */
     public function pinboardDestroy(int $id, int $media_id, PinboardDeleteRequest $r)
     {
@@ -593,7 +598,8 @@ class MediaAPIController extends AppBaseController
      *
      * @param int $id
      * @param ContractUploadRequest $request
-     * @return Response
+     * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function contractUpload(int $id, ContractUploadRequest $request)
     {
@@ -705,7 +711,8 @@ class MediaAPIController extends AppBaseController
      *
      * @param int $id
      * @param RequestUploadRequest $requestUploadRequest
-     * @return Response
+     * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function requestUpload(int $id, RequestUploadRequest $requestUploadRequest)
     {
@@ -761,7 +768,8 @@ class MediaAPIController extends AppBaseController
      * @param int $id
      * @param int $mediaId
      * @param RequestDeleteRequest $r
-     * @return Response
+     * @return mixed
+     * @throws \Exception
      */
     public function requestDestroy(int $id, int $mediaId, RequestDeleteRequest $r)
     {
@@ -815,10 +823,10 @@ class MediaAPIController extends AppBaseController
      *      )
      * )
      *
-     *
      * @param int $id
      * @param ListingUploadRequest $request
-     * @return Response
+     * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function listingUpload(int $id, ListingUploadRequest $request)
     {
@@ -874,8 +882,8 @@ class MediaAPIController extends AppBaseController
      * @param int $id
      * @param int $media_id
      * @param ListingDeleteRequest $r
-     * @return Response
-     *
+     * @return mixed
+     * @throws \Exception
      */
     public function listingDestroy(int $id, int $media_id, ListingDeleteRequest $r)
     {

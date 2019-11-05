@@ -180,6 +180,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $iframe_enable
  * @property bool $contact_enable
  * @property array|null $pinboard_receiver_ids
+ * @property array|null $email_receptionist_ids
  * @property string|null $mail_host
  * @property int|null $mail_port
  * @property string|null $mail_username
@@ -265,7 +266,7 @@ class Settings extends AuditableModel
         'contact_enable',
         'listing_approval_enable',
         'pinboard_approval_enable',
-        'comment_update_timeout',
+//        'comment_update_timeout',
         'free_apartments_enable',
         'free_apartments_url',
         'opening_hours',
@@ -314,7 +315,7 @@ class Settings extends AuditableModel
         'cleanify_enable' => 'boolean',
         'listing_approval_enable' => 'boolean',
         'pinboard_approval_enable' => 'boolean',
-        'comment_update_timeout' => 'integer',
+//        'comment_update_timeout' => 'integer',
         'free_apartments_enable' => 'boolean',
         'free_apartments_url' => 'string',
         'opening_hours' => 'array',
@@ -364,8 +365,13 @@ class Settings extends AuditableModel
                 }
             },
             'email_receptionist_ids' => [
+                'nullable',
                 'array',
                 function($attr, $val, $fail) {
+                    if (empty($val)) {
+                        return;
+                    }
+
                     $propertyManagers = PropertyManager::whereIn('id', $val)->count();
                     if (count($val) != $propertyManagers) {
                         $fail('One of email_receptionist_ids is not correct');

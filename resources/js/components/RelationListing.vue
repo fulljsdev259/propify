@@ -10,6 +10,7 @@
                     type="info"
                     show-icon
                     :closable="false"
+                    class="no_data_box"
                 >
                 </el-alert>
             </div>
@@ -378,18 +379,6 @@
     .el-table .cell, .el-table th div{
         overflow: hidden;
         text-overflow: unset;
-    }
-    .el-table__empty-text{
-        width: 100%;
-        .el-alert{
-            padding: 0 0;
-        }
-        .el-alert--info.is-light{
-            padding-left: 35%;
-            align-items: center;
-            line-height: inherit;
-        }
-
     }    
 </style>
 <style lang="scss" scoped>    

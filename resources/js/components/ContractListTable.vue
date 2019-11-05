@@ -10,6 +10,7 @@
                     :title="$t('general.no_data_available')"
                     type="info"
                     show-icon
+                    class="no_data_box"
                     :closable="false"
                 >
                 </el-alert>
@@ -61,7 +62,7 @@
             >
                 <template slot-scope="scope">
                     <i class="icon-dot-circled" :class="[constants.contracts.status[scope.row.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
-                    {{ constants.contracts.status[scope.row.status] ? $t('models.resident.contract.rent_status.' + constants.contracts.status[scope.row.status]) : ''}}
+                    {{ constants.contracts.status[scope.row.status] ? $t('models.resident.contract.status.' + constants.contracts.status[scope.row.status]) : ''}}
                 </template>
             </el-table-column>
             <el-table-column
