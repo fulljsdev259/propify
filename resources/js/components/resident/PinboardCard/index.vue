@@ -143,12 +143,15 @@
                 return this.$store.getters['application/constants'].pinboard.type[this.data.type] === 'new_neighbour'
             },
             execution() {
-                const {execution_start, execution_end} = this.data
+                const {execution_start, execution_end} = this.data;
 
-                const start = this.formatDatetime(execution_start)
-                const end = isSameDay(execution_start, execution_end) ? format(execution_end, 'HH:mm') : this.formatDatetime(execution_end);
-                
-                return `${start} - ${end}`
+                if (execution_end) {
+                    return isSameDay(execution_start, execution_end)
+                        ? this.formatDayAtTimePeriod(execution_start, execution_end)
+                        : this.formatTwoDaysAtTime(execution_start, execution_end);
+                } else {
+                    return this.formatDatetime(execution_start);
+                }
             },
             resident() {
                 const {title, first_name, last_name} = this.data.resident;
