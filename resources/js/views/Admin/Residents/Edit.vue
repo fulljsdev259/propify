@@ -253,7 +253,7 @@
                                                         icon="icon-plus" 
                                                         size="mini" 
                                                         round>
-                                                        {{ model.type == 1 ? $t('models.resident.contract.add') : $t('models.resident.contract.add_sell_contract')}}
+                                                        {{ $t('models.resident.contract.add') }}
                                                 </el-button>
                                             </h3>
                                             

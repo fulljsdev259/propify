@@ -254,6 +254,26 @@
                             }
                         }]
                     },
+                    "managerRequests": {
+                        icon: 'icon-chat-empty',
+                        title: this.$t('general.admin_menu.requests'),
+                        permission: this.$permissions.list.request,
+                        children: [{
+                            title: this.$t('general.admin_menu.all_requests'),
+                            permission: this.$permissions.list.request,
+                            value: this.all_request_count,
+                            route: {
+                                name: 'adminRequests'
+                            }
+                        },  {
+                            title: this.$t('general.admin_menu.my_requests'),
+                            permission: this.$permissions.list.request,
+                            value: this.my_request_count,
+                            route: {
+                                name: 'adminMyRequests'
+                            }
+                        }]
+                    },
                     "activity": {
                         icon: 'icon-gauge-1',
                         title: this.$t('general.admin_menu.activity'),
@@ -325,7 +345,7 @@
                 else if (this.rolename == 'manager') {
                    links = [
                             menu_items.buildings,
-                            menu_items.requests, 
+                            menu_items.managerRequests, 
                             menu_items.activity,
                             menu_items.residents,
                             menu_items.propertyManagers,
