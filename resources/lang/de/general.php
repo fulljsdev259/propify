@@ -540,4 +540,5 @@ return [
         'rd' => '.',
         'th' => '.',
     ],
+    'notification_residents_sent' => 'Die Benachrichtigung wurde am {date} um {time} Uhr an {number} Bewohner gesendet.',
 ];

@@ -104,7 +104,8 @@ export default (config = {}) => {
                     hideSelectFilesButton: false
                 },
                 pinboard_id: null,
-                audit_id: null
+                audit_id: null,
+                onload_notify_email: null
             }
         },
         computed: {
@@ -199,13 +200,17 @@ export default (config = {}) => {
                             resp = await this.getBuildings({
                                 get_all: true,
                                 search,
+                                exclude_quarter_ids: this.model.quarter_ids.join()
                             });
 
                             resp.data = resp.data.filter((building) => {
                                 return !this.model.building_ids.includes(building.id)
                             });
                         } else {
-                            resp = await this.getQuarters({get_all: true, search});
+                            resp = await this.getQuarters({
+                                get_all: true,
+                                search
+                            });
 
                             resp.data = resp.data.filter((quarter) => {
                                 return !this.model.quarter_ids.includes(quarter.id)
@@ -504,6 +509,7 @@ export default (config = {}) => {
                                     await this.uploadNewMedia(this.model.id);
 
                                     const resp = await this.updatePinboard(this.model);
+                                    this.onload_notify_email = this.model.notify_email;
 
                                     this.model = Object.assign({}, this.model, resp.data);
                                     this.media = [];
@@ -542,6 +548,8 @@ export default (config = {}) => {
 
                         this.model.execution_start ? this.executionStartTime = this.model.execution_start.split(' ')[1] : '';
                         this.model.execution_end ? this.executionEndTime = this.model.execution_end.split(' ')[1] : '';
+
+                        this.onload_notify_email = this.model.notify_email;
 
                         return this.model;
                     }

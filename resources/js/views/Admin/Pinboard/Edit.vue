@@ -414,18 +414,7 @@
                     </el-card>
 
                     <el-card :header="$t('general.box_titles.buildings_and_quarters')" class="mt15">
-                        <assignment-by-type
-                            :resetToAssignList="resetToAssignList"
-                            :assignmentType.sync="assignmentType"
-                            :toAssign.sync="toAssign"
-                            :assignmentTypes="assignmentTypes"
-                            :assign="attachBuilding"
-                            :toAssignList="toAssignList"
-                            :remoteLoading="remoteLoading"
-                            :remoteSearch="remoteSearchBuildings"
-                        />
                         <relation-list
-                            :actions="assignmentsActions"
                             :columns="assignmentsColumns"
                             :filterValue="model.id"
                             fetchAction="getPinboardAssignments"
@@ -439,26 +428,24 @@
 
                             <div class="switch-wrapper">
                                 <el-form-item :label="$t('models.pinboard.notify_email')" prop="notify_email">
-                                    <el-switch v-model="model.notify_email"/>
+                                    <el-switch :disabled="onload_notify_email" v-model="model.notify_email"/>
                                 </el-form-item>
                                 <div class="switcher__desc">
                                     {{$t('models.pinboard.notify_email_description')}}
+                                </div>
+                                <div v-if="onload_notify_email" class="switcher__desc">
+                                    {{$t('general.notification_residents_sent', {
+                                        number: 100,
+                                        time: '17:00',
+                                        date: '19.10.2019'
+                                    })}}
                                 </div>
                             </div>
                         </div>
                     </el-card>
 
                     <el-card :header="$t('models.pinboard.placeholders.search_provider')" v-if="model.type == 3 && model.sub_type == 3" class="mt15">
-                        <assignment-by-type
-                            :resetToAssignList="resetToAssignProviderList"
-                            :toAssign.sync="toAssignProvider"
-                            :assign="attachProvider"
-                            :toAssignList="toAssignProviderList"
-                            :remoteLoading="remoteLoading"
-                            :remoteSearch="remoteSearchProviders"
-                        />
                         <relation-list
-                            :actions="assignmentsProviderActions"
                             :columns="assignmentsProviderColumns"
                             :filterValue="model.id"
                             fetchAction="getServices"
@@ -520,30 +507,10 @@
                     label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
-                assignmentsActions: [{
-                    width: 70,
-                    buttons: [{
-                        icon: 'el-icon-close',
-                        title: 'general.unassign',
-                        type: 'danger',
-                        onClick: this.notifyUnassignment,
-                        tooltipMode: true,
-                    }]
-                }],
                 assignmentsProviderColumns: [{
                     prop: 'name',
                     label: 'general.name',
                     type: 'serviceName'
-                }],
-                assignmentsProviderActions: [{
-                    width: 70,
-                    buttons: [{
-                        icon: 'el-icon-close',
-                        title: 'general.unassign',
-                        type: 'danger',
-                        onClick: this.notifyProviderUnassignment,
-                        tooltipMode: true
-                    }]
                 }],
                 activeTab1: "details",
             }
@@ -571,26 +538,6 @@
                 const d = new Date(date).getTime();
                 const executionStart = new Date(this.model.execution_start).getTime();
                 return d <= executionStart;
-            },
-            notifyUnassignment(row) {
-                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
-                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
-                    type: 'warning'
-                }).then(async () => {
-                    try {
-                        this.loading.status = true;
-
-                        await this.unassign(row);
-
-                    } catch (err) {
-                        displayError(err);
-                    } finally {
-                        this.loading.status = false;
-                    }
-                }).catch(async () => {
-                    this.loading.status = false;
-                });
             },
             async unassign(toUnassign) {
                 let resp;
@@ -640,26 +587,6 @@
                 this.toAssignProvider = '';
                 displaySuccess(resp)
             },
-            notifyProviderUnassignment(row) {
-                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
-                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
-                    type: 'warning'
-                }).then(async () => {
-                    try {
-                        this.loading.status = true;
-
-                        await this.unassignProvider(row);
-
-                    } catch (err) {
-                        displayError(err);
-                    } finally {
-                        this.loading.status = false;
-                    }
-                }).catch(async () => {
-                    this.loading.status = false;
-                });
-            }
         }
     }
 </script>
