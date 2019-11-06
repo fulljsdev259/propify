@@ -58,24 +58,6 @@ class ResidentTransformer extends BaseTransformer
         if ($model->contracts || $model->relationExists('contracts')) { // @TODO delete reloading
             $response['contracts'] = (new ContractTransformer())->transformCollection($model->contracts);
 
-            $response['buildings'] = collect($response['contracts'])->pluck('building')->unique()->all();
-            if (!empty($response['contracts'][0]['building'])) {
-                $response['building'] = $response['contracts'][0]['building'];
-            }
-
-            $response['units'] = collect($response['contracts'])->pluck('unit')->unique()->all();
-            if (!empty($response['contracts'][0]['unit'])) {
-                $response['unit'] = $response['contracts'][0]['unit'];
-            }
-
-            if (!empty($response['contracts'][0]['media'])) {
-                $response['media'] = $response['contracts'][0]['media'];
-            }
-
-            if (!empty($response['contracts'][0]['address'])) {
-                $response['address'] = $response['contracts'][0]['address'];
-            }
-
             $allCount = $model->contracts->count();
             $activeCount = $model->contracts->where('status', Contract::StatusActive)->count();
 
