@@ -288,9 +288,18 @@ class Building extends AuditableModel implements HasMedia
     }
 
     /**
+     * @TODO remove
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function propertyManagers()
+    {
+        return $this->morphedByMany(PropertyManager::class, 'assignee', 'building_assignees', 'building_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function property_managers()
     {
         return $this->morphedByMany(PropertyManager::class, 'assignee', 'building_assignees', 'building_id');
     }
