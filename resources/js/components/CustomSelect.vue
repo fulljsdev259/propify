@@ -40,12 +40,12 @@
                 </el-input>
                 <div class="dropdown-container">
                     <div
-                        :key="placeholder + option.id"
+                        :key="placeholder + option.id + 'selected'"
                         class="dropdown-item" 
                         :class="[{'selected': selected(option.id) !== -1}]"
                         @click="selectItem(option.id)"
                         v-for="option in options" 
-                        :style="{display: isContained($t(`models.request.category_list.${option.name}`))? 'flex':'none'}"
+                        :style="{display: selected(option.id) !== -1 && isContained($t(`models.request.category_list.${option.name}`))? 'flex':'none'}"
                     >
                         <span v-html="filterSearch($t(`models.request.category_list.${option.name}`))"></span>
                         <span
@@ -53,6 +53,15 @@
                             class="el-icon-check"
                         >
                         </span>
+                    </div>
+                    <div
+                        :key="placeholder + option.id"
+                        class="dropdown-item" 
+                        @click="selectItem(option.id)"
+                        v-for="option in options" 
+                        :style="{display: selected(option.id) === -1 && isContained($t(`models.request.category_list.${option.name}`))? 'flex':'none'}"
+                    >
+                        <span v-html="filterSearch($t(`models.request.category_list.${option.name}`))"></span>
                     </div>
                 </div>
                 <el-divider></el-divider>
