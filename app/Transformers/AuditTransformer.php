@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use App\Models\Pinboard;
 use App\Models\Listing;
 use App\Models\Request;
+use App\Models\User;
 use App\Repositories\AuditRepository;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use OwenIt\Auditing\Models\Audit;
@@ -133,6 +134,9 @@ class AuditTransformer extends BaseTransformer
         elseif($model->event == 'created'){                        
             $response['statement'] = __("general.components.common.audit.content.general.created",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
         }
+        elseif($model->event == 'deleted'){
+            $response['statement'] = __("general.components.common.audit.content.general.deleted",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
+        }
         elseif($model->event == 'manager_assigned'){            
             $response['statement'] = __("general.components.common.audit.content.general.manager_assigned",['propertyManagerFirstName' => $model->new_values['property_manager_first_name'],'propertyManagerLastName' => $model->new_values['property_manager_last_name']]);
         }
@@ -165,6 +169,18 @@ class AuditTransformer extends BaseTransformer
         }
         elseif($model->event == 'building_unassigned'){
             $response['statement'] = __("general.components.common.audit.content.general.building_unassigned",['buildingName' => $model->old_values['building_name']]);
+        }
+        elseif($model->event == 'notifications_sent'){
+            $response['statement'] = __("general.components.common.audit.content.general.notifications_sent",['auditable_type' => $model->auditable_type]);
+        }
+        elseif($model->event == 'new_resident_pinboard_created'){
+            $pinboard = Pinboard::find($model->auditable_id);
+            if($pinboard){
+                $user = User::find($pinboard->user_id);
+                if($user){
+                    $response['statement'] = __("general.components.common.audit.content.general.new_resident_pinboard_created",['userName' => $user->name]);
+                }                
+            }            
         }
         return $response;
     }

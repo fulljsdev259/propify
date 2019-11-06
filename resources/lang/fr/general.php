@@ -347,6 +347,7 @@ return [
                     'general' => [
                         'created' => 'Créé',
                         'updated' => 'Mises à jour',
+                        'deleted' => 'Supprimé',
                         'provider_assigned' => 'Fournisseur assigné',
                         'provider_unassigned' => 'Fournisseur non assigné',
                         'provider_notified' => 'Fournisseur notifiés', 
@@ -357,13 +358,16 @@ return [
                         'building_assigned' => 'Bâtiment assigné',
                         'building_unassigned' => 'Bâtiment non assigné',
                         'media_uploaded' => 'Média téléchargé',
-                        'media_deleted' => 'Médias supprimés'
+                        'media_deleted' => 'Médias supprimés',
+                        'notifications_sent' => 'Notification envoyée',
+                        'new_resident_pinboard_created' => "Panneau d'affichage du nouveau voisin",
                     ]                  
                 ],
                 'content' => [                    
                     'general' => [
                         'created' => ':userName a créé cette :auditable_type',
                         'updated' => 'La :fieldname est passée de :old au :new.',
+                        'deleted' => ':userName a effacé ceci :auditable_type',
                         'provider_assigned' => ':providerName a été affecté en tant que prestataire.',
                         'provider_unassigned' => "Prestataire :providerName n'a pas été affecté.",
                         'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName a été affecté au poste de gestionnaire.',
@@ -376,6 +380,8 @@ return [
                         'quarter_unassigned' => ':quarterName Trimestre non attribué',
                         'building_assigned' => ':buildingName Bâtiment affecté',
                         'building_unassigned' => ':buildingNam Bâtiment non assigné',
+                        'notifications_sent' => 'Une notification a été envoyée pour ce :auditable_type',
+                        'new_resident_pinboard_created' => "Ajout d'un nouveau voisin pour user :userName",
                     ],                                      
                 ],
             ],
