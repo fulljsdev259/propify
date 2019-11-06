@@ -325,7 +325,8 @@ export default (config = {}) => {
                         this.original_type = this.model.type;
                         this.model.email = user.email;
                         this.model.avatar = user.avatar;
-                        this.model.nation = +this.model.nation
+                        if(this.model.nation)
+                            this.model.nation = +this.model.nation
 
                     } catch (err) {
                         this.$router.replace({

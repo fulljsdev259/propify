@@ -121,4 +121,18 @@ class ResidentTransformer extends BaseTransformer
 
         return $this->item($address, new AddressTransformer);
     }
+
+    /**
+     * @param Resident $model
+     * @return array
+     */
+    public function myNeighbours(Resident $model)
+    {
+        return [
+            'id' => $model->id,
+            'first_name' => $model->first_name,
+            'last_name' => $model->last_name,
+            'avatar' => $model->user->avatar ?? '',
+        ];
+    }
 }
