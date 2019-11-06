@@ -1,5 +1,5 @@
 <template>
-    <div class="buildings-add ">
+    <div class="buildings-add" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.building.add')" icon="icon-commerical-building" shadow="heavy">
             <add-actions :saveAction="submit" route="adminBuildings" editRoute="adminBuildingsEdit"/>
         </heading>
@@ -7,7 +7,7 @@
             <el-form :model="model" ref="form">
                 <el-row :gutter="20">
                     <el-col :md="12">
-                        <card :header="$t('models.property_manager.details_card')" :loading="loading">
+                        <card :header="$t('models.property_manager.details_card')">
                             <el-row :gutter="20">
                                 <el-col :md="10">
                                     <el-form-item :label="$t('general.street')" :rules="validationRules.street" prop="street">
@@ -88,7 +88,7 @@
 
                 <el-row :gutter="20" class="mt15">
                     <el-col :md="12">
-                        <card :header="$t('models.unit.floor')" :loading="loading">
+                        <card :header="$t('models.unit.floor')">
                     <!--<el-form-item prop="description" :label="$t('general.description')" :rules="validationRules.description" style="max-width: 512px;">-->
                     <!--<el-input type="textarea" v-model="model.description"></el-input>-->
                     <!--</el-form-item>-->

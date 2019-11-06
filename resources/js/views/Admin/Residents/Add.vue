@@ -1,5 +1,5 @@
 <template>
-    <div class="residents-add">
+    <div class="residents-add" v-loading.fullscreen.lock="loading.state">
         <div class="main-content">
         <heading :title="$t('models.resident.add')" icon="icon-group" shadow="heavy">
             <add-actions :saveAction="submit" editRoute="adminResidentsView" route="adminResidents"/>
@@ -8,7 +8,7 @@
             <el-form :model="model" ref="form">
                 <el-row :gutter="20">
                     <el-col :lg="12" :sm="24">
-                        <card :loading="loading" :header="$t('models.resident.personal_details_card')">
+                        <card :header="$t('models.resident.personal_details_card')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item :rules="validationRules.title"
@@ -98,7 +98,7 @@
                                 </el-col>
                             </el-row>
                         </card>
-                        <card class="mt15" :loading="loading" :header="$t('models.resident.contact_info_card')">
+                        <card class="mt15" :header="$t('models.resident.contact_info_card')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item :label="$t('general.email')" :rules="validationRules.email" prop="email" >
@@ -130,7 +130,7 @@
                         </card>
                     </el-col>
                     <el-col :lg="12" :sm="24">
-                        <card :loading="loading" :header="$t('models.resident.account_info_card')">
+                        <card :header="$t('models.resident.account_info_card')">
                             <!--                            <el-form-item :label="$t('models.user.profile_image')">-->
                             <!--                                <cropper :resize="false" :viewportType="'circle'" @cropped="cropped"/>-->
                             <!--                            </el-form-item>-->
