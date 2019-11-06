@@ -17,6 +17,7 @@ use App\Http\Requests\API\Resident\DeleteRequest;
 use App\Http\Requests\API\Resident\DownloadCredentialsRequest;
 use App\Http\Requests\API\Resident\ListRequest;
 use App\Http\Requests\API\Resident\MyDocumentsRequest;
+use App\Http\Requests\API\Resident\MyNeighboursRequest;
 use App\Http\Requests\API\Resident\SendCredentialsRequest;
 use App\Http\Requests\API\Resident\ShowRequest;
 use App\Http\Requests\API\Resident\UpdateDefaultContractRequest;
@@ -1239,6 +1240,35 @@ class ResidentAPIController extends AppBaseController
             return $this->sendError(__('models.resident.errors.not_allowed_change_type_has_request', $resident->only('requests_count')));
         }
         return $this->sendResponse($id, '');
+    }
+
+    /**
+     * @param MyNeighboursRequest $myNeighboursRequest
+     * @return mixed
+     */
+    public function myNeighbours(MyNeighboursRequest $myNeighboursRequest)
+    {
+        $resident = Auth::user()->resident;
+        $contracts = $resident->contracts()
+            ->select('unit_id', 'building_id')
+            ->where('status', Contract::StatusActive)
+            ->with([
+                'building:id',
+                'building.contracts' => function ($q) use ($resident) {
+                    $q->select('building_id', 'resident_id')
+                        ->where('resident_id', '!=', $resident->id)
+                        ->with([
+                            'resident' => function ($q) {
+                                $q->select('id', 'first_name', 'last_name', 'user_id')
+                                    ->with('user:id,avatar');
+                            }
+                        ]);
+                },
+            ])->get();
+
+        $residents = $contracts->pluck('building.contracts.*.resident')->collapse()->unique();
+        $response = (new ResidentTransformer())->transformCollectionBy($residents, 'myNeighbours');
+        return $this->sendResponse($response, 'my products');
     }
 
 }
