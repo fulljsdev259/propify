@@ -427,16 +427,18 @@
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
                 }],
-                assigneesActions: [{
+                assigneesActions: [
+                    {
                     width: 70,
-                    buttons: [{
+                    buttons: [/*{
                         title: 'general.unassign',
                         tooltipMode: true,
                         type: 'danger',
                         icon: 'el-icon-close',
                         onClick: this.notifyUnassignment
-                    }]
-                }],
+                    }*/]
+                }
+                ],
                 multiple: false,
                 visibleDrawer: false,
                 fileCount: 0,
