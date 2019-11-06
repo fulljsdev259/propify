@@ -46,6 +46,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/residents/age-statistics', 'DashboardAPIController@residentsAgeStatistics')->name('residents.age-statistics');
     Route::get('/residents/latest', 'ResidentAPIController@latest')->name('residents.latest');
     Route::get('/residents/my-neighbours', 'ResidentAPIController@myNeighbours')->name('residents.my-neighbours');
+    Route::get('/residents/my-property-managers', 'ResidentAPIController@myPropertyManagers')->name('residents.my-property-managers');
     Route::get('/residents/me', 'ResidentAPIController@showLoggedIn')->name('residents.me');
     Route::get('/residents/{id}', 'ResidentAPIController@show')->name('residents.show');
     Route::get('/residents/{id}/type', 'ResidentAPIController@checkResidentHasContractOrRequest')->name('residents.has.contract-or-requests');

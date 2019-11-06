@@ -18,6 +18,7 @@ use App\Http\Requests\API\Resident\DownloadCredentialsRequest;
 use App\Http\Requests\API\Resident\ListRequest;
 use App\Http\Requests\API\Resident\MyDocumentsRequest;
 use App\Http\Requests\API\Resident\MyNeighboursRequest;
+use App\Http\Requests\API\Resident\MyPropertyManagersRequest;
 use App\Http\Requests\API\Resident\SendCredentialsRequest;
 use App\Http\Requests\API\Resident\ShowRequest;
 use App\Http\Requests\API\Resident\UpdateDefaultContractRequest;
@@ -36,6 +37,7 @@ use App\Repositories\ResidentRepository;
 use App\Repositories\UserRepository;
 use App\Transformers\ContractTransformer;
 use App\Transformers\MediaTransformer;
+use App\Transformers\PropertyManagerTransformer;
 use App\Transformers\ResidentTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -1243,6 +1245,7 @@ class ResidentAPIController extends AppBaseController
     }
 
     /**
+     * @TODO add docs
      * @param MyNeighboursRequest $myNeighboursRequest
      * @return mixed
      */
@@ -1250,7 +1253,7 @@ class ResidentAPIController extends AppBaseController
     {
         $resident = Auth::user()->resident;
         $contracts = $resident->contracts()
-            ->select('unit_id', 'building_id')
+            ->select('building_id')
             ->where('status', Contract::StatusActive)
             ->with([
                 'building:id',
@@ -1268,7 +1271,30 @@ class ResidentAPIController extends AppBaseController
 
         $residents = $contracts->pluck('building.contracts.*.resident')->collapse()->unique();
         $response = (new ResidentTransformer())->transformCollectionBy($residents, 'myNeighbours');
-        return $this->sendResponse($response, 'my products');
+        return $this->sendResponse($response, 'my neighbours');
+    }
+
+    /**
+     * @TODO add docs
+     * @param MyPropertyManagersRequest $myPropertyManagersRequest
+     * @return mixed
+     */
+    public function myPropertyManagers(MyPropertyManagersRequest $myPropertyManagersRequest)
+    {
+        $resident = Auth::user()->resident;
+        $contracts = $resident->contracts()
+            ->select('building_id')
+            ->where('status', Contract::StatusActive)
+            ->with([
+                'building.property_managers' => function ($q) {
+                    $q->select('property_managers.id', 'user_id', 'slogan', 'first_name', 'last_name')
+                        ->with('user:id,avatar,phone,email');
+                },
+            ])->get();
+
+        $propertyManagers = $contracts->pluck('building.property_managers')->collapse()->keyBy('id')->values();
+        $response = (new PropertyManagerTransformer())->transformCollectionBy($propertyManagers, 'residentPropertyManagers');
+        return $this->sendResponse($response, 'my property managers');
     }
 
 }

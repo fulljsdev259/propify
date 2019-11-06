@@ -56,4 +56,24 @@ class PropertyManagerTransformer extends BaseTransformer
 
         return $this->addAuditIdInResponseIfNeed($model, $response);
     }
+
+    /**
+     * Transform the Building entity.
+     *
+     * @param PropertyManager $model
+     *
+     * @return array
+     */
+    public function residentPropertyManagers(PropertyManager $model)
+    {
+        return [
+            'id' => $model->id,
+            'slogan' => $model->slogan,
+            'first_name' => $model->first_name,
+            'last_name' => $model->last_name,
+            'email' => $model->user->email ?? '',
+            'phone' => $model->user->phone ?? '',
+            'avatar' => $model->user->avatar ?? '',
+        ];
+    }
 }
