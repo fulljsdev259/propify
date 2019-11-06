@@ -23,6 +23,9 @@ class Helper
         return [            
             'request' => [
                 'category_id' => __('models.request.category'),
+                'sub_category_id' => __('models.request.defect_location.label'),
+                'location' => __('models.request.category_options.range'),
+                'capture_phase' => __('models.request.category_options.capture_phase'),
                 'unit_id' => __('models.resident.unit.name'),
                 'resident_id' => __('general.resident'),
                 'title' => __('general.title'),
@@ -58,18 +61,27 @@ class Helper
                 'first_name' => __('general.first_name'),
                 'last_name' => __('general.last_name'),
                 'type' => __('models.property_manager.assign_type'),
+                'language' => __('general.language')
             ],
             'pinboard' => [
                 'execution_period' => __('models.pinboard.execution_period.label'),
                 'type' => __('models.pinboard.type.label'),
+                'status' => __('models.pinboard.status.label'),
                 'visibility' => __('models.pinboard.visibility.label'),
                 'execution_start' => __('models.pinboard.execution_interval.start'),
                 'execution_end' => __('models.pinboard.execution_interval.end'),
+                'sub_type' => __('models.pinboard.sub_type.label'),
+                'is_execution_time' => __('models.pinboard.execution_interval.label')
             ],
             'provider' => [
                 'category' => __('models.service.category.label'),
                 'name' => __('general.name'),
-                'phone' => __('general.phone')
+                'phone' => __('general.phone'),
+                'language' => __('general.language'),
+                'state_id' => __('general.state'),
+                'city' => __('general.city'),
+                'street' => __('general.street'),
+                'zip' => __('general.zip')
             ],                      
             'resident' => [
                 'title' => __('general.salutation'),
@@ -78,7 +90,8 @@ class Helper
                 'status' => __('models.resident.status.label'),
                 'address_id' => __('general.address'),
                 'building_id' => __('models.resident.building.name'),
-                'unit_id' => __('models.resident.unit.name')
+                'unit_id' => __('models.resident.unit.name'),
+                'language' => __('general.language')
             ],
             'settings' => [],
             'unit' => [
@@ -86,7 +99,8 @@ class Helper
                 'building_id' => __('general.assignment_types.building'),
                 'monthly_rent_net' => __('general.monthly_rent_net'),
                 'monthly_maintenance' => __('general.maintenance'),
-                'monthly_rent_gross' => __('general.gross_rent'),                
+                'monthly_rent_gross' => __('general.gross_rent'),    
+                'type' => __('models.unit.type.label')            
             ],
             'user' => [],   
         ];

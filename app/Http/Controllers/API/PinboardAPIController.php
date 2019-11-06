@@ -24,6 +24,7 @@ use App\Http\Requests\API\Pinboard\UpdateRequest;
 use App\Http\Requests\API\Pinboard\ListViewsRequest;
 use App\Http\Requests\API\Pinboard\ViewRequest;
 use App\Models\Pinboard;
+use App\Models\PinboardView;
 use App\Notifications\PinboardLiked;
 use App\Repositories\BuildingRepository;
 use App\Repositories\QuarterRepository;
@@ -343,6 +344,7 @@ class PinboardAPIController extends AppBaseController
      * @param UpdateRequest $request
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function update($id, UpdateRequest $request)
@@ -353,8 +355,6 @@ class PinboardAPIController extends AppBaseController
         } else {
             $input['type'] =  $input['type'] ?? Pinboard::TypePost;
         }
-
-        $status = $request->get('status');
 
         /** @var Pinboard $pinboard */
         $pinboard = $this->pinboardRepository->findWithoutFail($id);
@@ -377,7 +377,7 @@ class PinboardAPIController extends AppBaseController
             'providers',
             'views',
         ])->withCount('allComments')->findWithoutFail($id);
-        $pinboard->status = $status;
+
         $data = $this->transformer->transform($pinboard);
         return $this->sendResponse($data, __('models.pinboard.saved'));
     }
@@ -1081,16 +1081,36 @@ class PinboardAPIController extends AppBaseController
      *
      * @param int $id
      * @return mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function incrementViews(int $id)
     {
-        $p = $this->pinboardRepository->findWithoutFail($id);
-        if (empty($p)) {
+        $pinboard = $this->pinboardRepository->findWithoutFail($id);
+        if (empty($pinboard)) {
             return $this->sendError(__('models.pinboard.errors.not_found'));
         }
 
-        $p->incrementViews(\Auth::id());
-        return $this->sendResponse($id, 'Views increased successfully');
+        $resident = \Auth::user()->resident;
+
+        if (empty($resident))  {
+            return $this->sendError('Logged user must be tenant'); // @TODO translate
+        }
+
+        $pinboardView = $pinboard->views()
+            ->where('resident_id', $resident->id)
+            ->first();
+
+        if ($pinboardView) {
+            $pinboardView->views += 1;
+            $pinboardView->save();
+        } else {
+            $pinboardView = $pinboard->views()->create([
+                'resident_id' => $resident->id,
+                'views' => 1
+            ]);
+        }
+
+        return $this->sendResponse((new PinboardViewTransformer)->transform($pinboardView), 'Views increased successfully');
     }
 
     /**
@@ -1126,17 +1146,17 @@ class PinboardAPIController extends AppBaseController
      * @param ListViewsRequest $req
      * @return mixed
      */
-    public function indexViews(int $id, PinboardViewTransformer $pvt, ListViewsRequest $req)
+    public function indexViews(int $id,  ListViewsRequest $req)
     {
-        $p = $this->pinboardRepository->findWithoutFail($id);
-        if (empty($p)) {
+        $pinboard = $this->pinboardRepository->findWithoutFail($id);
+        if (empty($pinboard)) {
             return $this->sendError(__('models.pinboard.errors.not_found'));
         }
 
         $perPage = $req->get('per_page', env('APP_PAGINATE', 10));
-        $vs = $p->views()->with('user')->paginate($perPage);
-        $ret = $pvt->transformPaginator($vs);
-        return $this->sendResponse($ret, 'Views retrieved successfully');
+        $pinboardView = $pinboard->views()->with('resident')->paginate($perPage);
+        $response = (new PinboardViewTransformer())->transformPaginator($pinboardView);
+        return $this->sendResponse($response, 'Views retrieved successfully');
     }
 
     /**

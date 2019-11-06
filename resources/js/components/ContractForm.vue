@@ -22,22 +22,6 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-            <!-- <el-col :md="12" v-if="model.building_id">
-                <el-form-item prop="unit_id" :label="$t('models.resident.unit.name')"
-                            class="label-block">
-                    <el-select :placeholder="$t('models.resident.search_unit')" 
-                            style="display: block"
-                            v-model="model.unit_id"
-                            @change="changeContractUnit">
-                        <el-option
-                                :key="unit.id"
-                                :label="unit.name"
-                                :value="unit.id"
-                                v-for="unit in units">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-            </el-col> -->
             <el-col :md="12" v-if="!hideBuildingAndUnits && model.building_id">
                 <el-form-item prop="unit_id" :label="$t('models.resident.unit.name')"
                             class="label-block">
@@ -82,23 +66,13 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-        </el-row>
-
-        <el-row :gutter="20" v-if="model.unit_id">
-            <el-col :md="12">
+        
+            <el-col :md="12" v-if="model.unit_id">
                 <el-form-item :label="$t('models.resident.contract.type')"
                             prop="type"
                             class="label-block">
-                    <!-- <el-select placeholder="Select" style="display: block" 
-                                v-model="model.type">
-                        <el-option
-                                :key="type.value"
-                                :label="type.name"
-                                :value="type.value"
-                                v-for="type in rent_types">
-                        </el-option>
-                    </el-select> -->
                     <el-select :placeholder="$t('models.unit.type.label')"
+                                style="display: block;"
                                 v-model="model.type">
                         <el-option
                                 :key="key"
@@ -124,9 +98,8 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-        </el-row>
-        <el-row :gutter="20" v-if="model.unit_id">
-            <el-col :md="12">
+
+            <el-col :md="12" v-if="model.unit_id">
                 <el-form-item :label="$t('models.resident.contract.start_date')"
                         prop="start_date">
                     <el-date-picker
@@ -152,18 +125,8 @@
                         value-format="yyyy-MM-dd"/>
                 </el-form-item>
             </el-col>
-        </el-row>
-        <el-row :gutter="20" v-if="model.unit_id">
-            <!-- <el-col :md="12">
-                <el-form-item :label="$t('models.resident.contract.contract_id')"
-                                class="label-block">
-                    <el-input
-                        v-model="model.contract_format"
-                        :disabled="true">
-                    </el-input>
-                </el-form-item> 
-            </el-col> -->
-            <el-col :md="12" v-if="resident_type_check == 1">
+   
+            <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.status.label')" prop="status" class="label-block">
                     <el-select placeholder="Select" style="display: block" 
                                 v-model="model.status">

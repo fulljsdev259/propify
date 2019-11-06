@@ -274,12 +274,12 @@
             showServiceMailModal(newVal) {
                 const prop = this.selectedServiceRequest.uType === 1 ? 'provider' : 'manager';
                 if (newVal) {
-                    this.model[prop] = this.selectedServiceRequest;
+                    this.model[prop] = this.selectedServiceRequest.edit_id;
                 } else {
                     this.model[prop] = '';
                 }
             }
-        },
+        }
     };
 </script>
 <style>

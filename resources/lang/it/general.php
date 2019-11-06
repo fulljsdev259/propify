@@ -46,6 +46,8 @@ return [
     'unassign' => "Disassegnare",
     'assign' => "Assegnare",
     'requests' => 'Richieste',
+    'enabled' => 'Abilitato',
+    'disabled' => 'Disabili',
     'salutation' => 'Saluto',
     'salutation_option' => [
         "mr" => "Signor",

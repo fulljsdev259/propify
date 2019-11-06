@@ -91,6 +91,14 @@ class AuditRepository extends BaseRepository
             elseif(($auditable_type == 'pinboard') && ($fieldname == 'type')){   
                 return __('models.pinboard.type.' . Pinboard::Type[$fieldvalue]);
             }
+            elseif(($auditable_type == 'pinboard') && ($fieldname == 'execution_period')){   
+                return __('models.pinboard.execution_period.' . Pinboard::ExecutionPeriod[$fieldvalue]);
+            }            
+            elseif(($auditable_type == 'pinboard') && ($fieldname == 'sub_type')){   
+                if(isset(Pinboard::SubType[Pinboard::TypeAnnouncement][$fieldvalue])){
+                    return __('models.pinboard.sub_type.' . Pinboard::SubType[Pinboard::TypeAnnouncement][$fieldvalue]);
+                }                
+            }            
             elseif(($auditable_type == 'manager') && ($fieldname == 'type')){
                 if($fieldvalue == PropertyManager::TypeManager){
                     return __('general.assignment_types.managers');
@@ -99,11 +107,32 @@ class AuditRepository extends BaseRepository
                     return __('general.assignment_types.administrator');
                 }
             }
+            elseif(($auditable_type == 'unit') && ($fieldname == 'type')){
+                return __('models.unit.type.' . Unit::Type[$fieldvalue]);
+            }
             elseif(($auditable_type == 'pinboard') && ($fieldname == 'visibility')){
                 return __('models.pinboard.visibility.' . Pinboard::Visibility[$fieldvalue]);
+            }  
+            elseif(($auditable_type == 'pinboard') && ($fieldname == 'status')){
+                return __('models.pinboard.status.' . Pinboard::Status[$fieldvalue]);
             }            
             elseif(($auditable_type == 'provider') && ($fieldname == 'category')){
                 return __('models.service.category.' . ServiceProvider::ServiceProviderCategory[$fieldvalue]);
+            }
+            elseif(($auditable_type == 'request') && ($fieldname == 'category_id')){
+                return __('models.request.category_list.' . Request::Category[$fieldvalue]);
+            }
+            elseif(($auditable_type == 'request') && ($fieldname == 'sub_category_id')){
+                return __('models.request.sub_category.' . Request::SubCategory[$fieldvalue]);
+            }
+            elseif(($auditable_type == 'request') && ($fieldname == 'location')){
+                return __('models.request.location.' . Request::Location[$fieldvalue]);
+            }
+            elseif(($auditable_type == 'request') && ($fieldname == 'capture_phase')){
+                return __('models.request.capture_phase.' . Request::CapturePhase[$fieldvalue]);
+            }
+            elseif(($auditable_type == 'request') && ($fieldname == 'qualification')){
+                return __('models.request.qualification.' . Request::Qualification[$fieldvalue]);
             }
         }
         else {

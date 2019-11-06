@@ -355,6 +355,12 @@
         .heading {
             margin-bottom: 20px;
         }
+
+        .crud-view {
+            > .el-col {
+                margin-bottom: 1em;
+            }
+        }
     }
 
     .group-name {
