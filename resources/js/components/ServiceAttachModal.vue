@@ -279,7 +279,7 @@
                     this.model[prop] = '';
                 }
             }
-        },
+        }
     };
 </script>
 <style>

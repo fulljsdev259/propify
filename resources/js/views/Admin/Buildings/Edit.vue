@@ -1059,6 +1059,9 @@
                 }
             }
 
+            .crud-view > .el-col {
+                margin-bottom: 1em;
+            }
             .action-group > .el-button:not(:first-child) {
                 margin-left: 0px;
             }
