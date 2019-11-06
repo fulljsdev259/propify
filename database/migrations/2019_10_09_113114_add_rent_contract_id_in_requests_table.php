@@ -16,7 +16,6 @@ class AddRentContractIdInRequestsTable extends Migration
         Schema::table('requests', function (Blueprint $table) {
             $table->integer('rent_contract_id')->unsigned()->after('tenant_id')->nullable();
             $table->foreign('rent_contract_id')->references('id')->on('tenant_rent_contracts')->onUpdate('RESTRICT')->onDelete('RESTRICT');
-
         });
     }
 

@@ -480,29 +480,16 @@ class Pinboard extends AuditableModel implements HasMedia, LikeableContract
         return self::Category[$this->category];
     }
 
-    public function incrementViews(int $userID)
-    {
-        $uv = PinboardView::where('pinboard_id', $this->id)
-            ->where('user_id', $userID)
-            ->first();
-        if (!$uv) {
-            $uv = new PinboardView();
-            $uv->user_id = $userID;
-            $uv->pinboard_id = $this->id;
-        }
-        $uv->views += 1;
-        $uv->save();
-        return $uv;
-    }
 
     /**
      * @param $key
      * @param $value
      * @param null $audit
      * @param bool $isSingle
+     * @param null $event
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function addDataInAudit($key, $value, $audit = null, $isSingle = true)
+    public function addDataInAudit($key, $value, $audit = null, $isSingle = true, $event = null)
     {
         if ('notifications' == $key) {
             $_value = [];

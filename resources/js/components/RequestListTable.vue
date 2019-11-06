@@ -29,7 +29,7 @@
                         <template v-if="!filter.parentKey || filterModel[filter.parentKey]">
                             <el-form-item
                                 v-if="filter.type === filterTypes.select && filter.data &&  filter.data.length">
-                                <el-select
+                                <!-- <el-select
                                     v-if="filter.key == 'category_id'"
                                     clearable
                                     :filterable="true"
@@ -46,7 +46,17 @@
                                         :value="item.id"
                                         v-for="item in filter.data">
                                     </el-option>
-                                </el-select>
+                                </el-select> -->
+                                <custom-select
+                                    v-if="filter.key == 'category_id'"
+                                    :spanKey="filter.key"
+                                    :placeholder="filter.name"
+                                    :options="filter.data"
+                                    :selectedOptions="filterModel[filter.key]"
+                                    @select-changed="handleSelectChange($event, filter)"
+                                >
+
+                                </custom-select>
                                 <el-select
                                     v-else-if="filter.key == 'status' || filter.key == 'internal_priority'"
                                     clearable
@@ -211,13 +221,14 @@
 
 <script>
     // TODO - add transition to do things smoothly
-    import {Avatar} from 'vue-avatar'
-    import uuid from 'uuid/v1'
-    import RequestCount from 'components/RequestCount.vue'
+    import { mapActions } from 'vuex';
+    import {Avatar} from 'vue-avatar';
+    import uuid from 'uuid/v1';
+    import RequestCount from 'components/RequestCount.vue';
     import tableAvatar from 'components/Avatar';
     import RequestDetailCard from 'components/RequestDetailCard';
+    import CustomSelect from 'components/CustomSelect';
     import filters from 'components/Filters';
-    import { mapActions } from 'vuex';
     
     import {ResponsiveMixin} from 'vue-responsive-components'
 
@@ -231,7 +242,8 @@
             RequestCount,
             'table-avatar': tableAvatar,
             RequestDetailCard,
-            filters
+            filters,
+            CustomSelect
         },
         props: {
             header: {
@@ -509,6 +521,10 @@
                 this.selectedItems = val;
                 this.$emit('selectionChanged', this.selectedItems);
             },
+            handleSelectChange(val, filter) {
+                this.filterModel[filter.key] = val;
+                this.filterChanged(filter);
+            },
             handleRequestSelectionChange(selectedItem, isChecked) {
                 if(isChecked) {
                     this.selectedItems.push(selectedItem)
@@ -618,7 +634,19 @@
                 const queryFilterValue = this.$route.query[filter.key];
                 const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
 //                const value = queryFilterValue && queryFilterValue.match(dateReg) ? queryFilterValue : parseInt(queryFilterValue); 
-                const value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
+                let value;
+
+                if((filter.key=='category_id' || filter.key == 'status') && queryFilterValue !== undefined && !Array.isArray(queryFilterValue))
+                    value = [queryFilterValue];
+                else
+                    value = queryFilterValue;
+                    
+                if(!Array.isArray(value))
+                    value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
+                else
+                    for(let i = 0; i < value.length; i ++)
+                        value[i] = parseInt(value[i]);
+
                 this.$set(this.filterModel, filter.key, value);
 
                 if (!this.filterModel[filter.key]) {

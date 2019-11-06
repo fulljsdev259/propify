@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Notifications\AnnouncementPinboardPublished;
 use App\Notifications\NewResidentInNeighbour;
 use App\Notifications\NewResidentPinboard;
+use App\Notifications\NewResidentRequest;
 use App\Notifications\PinboardPublished;
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
@@ -49,6 +50,12 @@ class AuditableModel extends Model implements Auditable
     const EventProviderNotified = 'provider_notified';
     const EventMediaUploaded = 'media_uploaded';
     const EventMediaDeleted = 'media_deleted';
+    const EventManageEmailReceptionists = 'manage_email_receptionists';
+    const BuildingUnitsCreated = 'building_units\y_created';
+    const NewResidentPinboardCreated = 'new_resident_pinboard_created';
+    const NotificationsSent = 'notifications_sent';
+    const DownloadCredentials = 'download_credentials';
+    const SendCredentials = 'send_credentials';
 
     const SyncAuditConfig = [
         'attach' => [
@@ -140,7 +147,7 @@ class AuditableModel extends Model implements Auditable
      * @return Audit
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function newSystemNotificationAudit($value, $event = null, $isSingle = true, $tags = [], $changeOldValues = false)
+    public function newSystemNotificationAudit($value, $event = self::NotificationsSent, $isSingle = true, $tags = [], $changeOldValues = false)
     {
         $key = self::MergeInMainData;
         $event = $event ?? AuditableModel::EventCreated;
@@ -162,10 +169,19 @@ class AuditableModel extends Model implements Auditable
         $pinboardPublished = get_morph_type_of(PinboardPublished::class);
         $pinboardNewResidentNeighbor = get_morph_type_of(NewResidentInNeighbour::class);
         $pinboardNewResidentPinboard = get_morph_type_of(NewResidentPinboard::class);
+        $newResidentPinboard = get_morph_type_of(NewResidentRequest::class);
 
         $_value = [];
         foreach ($value as $morph => $data) {
-            if ($morph ==  get_morph_type_of($pinboardNewResidentPinboard)) {
+            if ($morph ==  get_morph_type_of($newResidentPinboard)) {
+                if ($data->pluck('id')->isEmpty()) {
+                    continue;
+                }
+                $_value[$morph] = [
+                    'property_manager_ids' => $data->pluck('id')->all(),
+                    'failed_property_manager_ids' => []
+                ];
+            } elseif ($morph ==  get_morph_type_of($pinboardNewResidentPinboard)) {
                 if ($data->pluck('id')->isEmpty()) {
                     continue;
                 }
@@ -188,13 +204,18 @@ class AuditableModel extends Model implements Auditable
 
         $value = $_value;
 
-        if (AuditableModel::EventCreated == $event) {
+        $createdEvents = [
+            AuditableModel::EventCreated,
+            AuditableModel::NotificationsSent
+        ];
+
+        if (in_array($event, $createdEvents)) {
             $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
         } elseif (AuditableModel::EventUpdated == $event) {
-            dd('@TODO');
+            dd('@TODO', $event);
             $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle, $changeOldValues);
         } else {
-            dd('@TODO');
+            dd('@TODO', $event);
         }
 
         return $audit;
@@ -225,12 +246,17 @@ class AuditableModel extends Model implements Auditable
             $audit->tags = json_encode($tags); // @TODO correct later
         }
 
-        if (AuditableModel::EventCreated == $event) {
+        $createdEvents = [
+            AuditableModel::EventCreated,
+            AuditableModel::BuildingUnitsCreated,
+        ];
+
+        if (in_array($event, $createdEvents)) {
             $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
         } elseif (AuditableModel::EventUpdated == $event) {
             $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle, $changeOldValues);
         } else {
-            dd('@TODO');
+            dd('@TODO', $event);
         }
 
         return $audit;
@@ -242,11 +268,12 @@ class AuditableModel extends Model implements Auditable
      * @param $value
      * @param null $audit
      * @param bool $isSingle
+     * @param null $event
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function addDataInAudit($key, $value, $audit = null, $isSingle = true)
+    public function addDataInAudit($key, $value, $audit = null, $isSingle = true, $event = null)
     {
-        $audit = $this->getAudit($audit);
+        $audit = $this->getAudit($audit, $event);
         if (empty($audit)) {
             return;
         }
@@ -255,11 +282,12 @@ class AuditableModel extends Model implements Auditable
             $value = $this->getMediaAudit($value);
         }
 
-        if (self::EventCreated == $audit->event) {
+        if (in_array($audit->event, [self::EventCreated, self::DownloadCredentials, self::SendCredentials])) {
             $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
         } elseif (self::EventUpdated == $audit->event) {
             $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle);
         } else {
+            dd('@TODO5', $audit->event);
             // @TODO
         }
     }
@@ -283,9 +311,9 @@ class AuditableModel extends Model implements Auditable
             $audit->new_values = $newValues;
             $audit->save();
         } elseif (self::EventUpdated == $audit->event) {
-            dd('@TODO');
+            dd('@TODO', $audit->event);
         } else {
-            dd('@TODO');
+            dd('@TODO', $audit->event);
         }
     }
 
@@ -326,10 +354,11 @@ class AuditableModel extends Model implements Auditable
 
     /**
      * @param $audit
-     * @return mixed|Audit
+     * @param null $event
+     * @return Audit|mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    protected function getAudit($audit)
+    protected function getAudit($audit, $event = null)
     {
         if (is_null($audit)) {
             $audit = $this->audit;
@@ -348,7 +377,12 @@ class AuditableModel extends Model implements Auditable
         }
 
         $this->auditEvent = self::EventUpdated;
-        return new Audit($this->toAudit());
+        $audit = new Audit($this->toAudit());
+        if ($event) {
+            $audit->event = $event;
+        }
+
+        return $audit;
     }
 
     /**
@@ -379,6 +413,10 @@ class AuditableModel extends Model implements Auditable
             return $this->getManyRelationAuditData($value);
         }
 
+        if (is_string($value)) {
+            return $value;
+        }
+
         dd('@TODO1');
     }
 
@@ -403,10 +441,12 @@ class AuditableModel extends Model implements Auditable
         }
 
         if (is_a($value, Collection::class)) {
-            dd('@TODO');
+            dd('@TODO2', $value);
             $value = [];
+        } elseif (is_string($value)) {
+            return $value;
         } else {
-            dd('@TODO');
+            dd('@TODO3', $value);
         }
 
         return $value;
@@ -449,7 +489,7 @@ class AuditableModel extends Model implements Auditable
             }
         } else  {
             if (self::MergeInMainData == $key) {
-                dd('@TODO');
+                dd('@TODO', $key, $savedValues);
             } else {
                 $savedValues[$key][] = $newValue;
             }
@@ -594,6 +634,64 @@ class AuditableModel extends Model implements Auditable
         if (method_exists($this, 'getFormatColumnName')) {
             $data['auditable_format'] = $this->{$this->getFormatColumnName()};
         };
+
+        return $data;
+    }
+
+    /**
+     * @param null $event
+     */
+    public function makeAuditAsSystem($event = null)
+    {
+        if ($this->audit) {
+            $this->audit->user_type = self::System;
+            if ($event) {
+                $this->audit->event = $event;
+            }
+            $this->audit->save();
+        }
+    }
+
+    /**
+     * @param $old
+     * @param $new
+     * @param null $globalEmailReceptionist
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function auditEmailReceptionists($old, $new, $globalEmailReceptionist = null)
+    {
+        $this->auditEvent = self::EventUpdated;
+        $audit = new Audit($this->toAudit());
+        $audit->event = self::EventManageEmailReceptionists;
+        $oldValues = $this->fixEmailReceptionists($old);
+        $newValues = $this->fixEmailReceptionists($new);
+
+        if (! is_null($globalEmailReceptionist)) {
+            $oldValues['global_email_receptionist'] = ! $globalEmailReceptionist;
+            $newValues['global_email_receptionist'] = $globalEmailReceptionist;
+        }
+
+        $audit->old_values = $oldValues;
+        $audit->new_values = $newValues;
+        if ($audit->old_values != $audit->new_values) {
+            $audit->save();
+        }
+    }
+
+    /**
+     * @param $items
+     * @return array
+     */
+    protected function fixEmailReceptionists($items)
+    {
+        $data = [];
+
+        foreach ($items->groupBy('category') as $category => $_item) {
+            $data['email_receptionists'][] = [
+                'category' => $category,
+                'property_manager_ids' => $_item->pluck('property_manager_id')->all()
+            ];
+        }
 
         return $data;
     }

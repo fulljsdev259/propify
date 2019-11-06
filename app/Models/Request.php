@@ -858,15 +858,21 @@ class Request extends AuditableModel implements HasMedia
         ], $providers->all(), $this->users->all()) ;
     }
 
-    public function setDownloadPdf(){
+    public function setDownloadPdf($settings = null){
+        $media = $this->media->reject(function($m){
+            return  ($m->mime_type != config('filesystems.mime_types.jpeg') && $m->mime_type != config('filesystems.mime_types.png'));
+        })->map(function($m){
+            return ['title' => $m->name, 'file_path' => $m->getPath()];
+        });
        $data = [
             'category' => get_category_details($this->category_id),
             'subCategory' => get_sub_category_details($this->sub_category_id),
             'request' => $this,
             'resident' => $this->resident,
-            'contract' => $this->contract
+            'contract' => $this->contract,
+            'logo' => $settings->logo ?? null,
+            'media' => $media
         ];
-
         $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('pdfs.request.requestDownload', $data);
 
         return Storage::disk('request_downloads')->put($this->pdfFileName(), $pdf->output());

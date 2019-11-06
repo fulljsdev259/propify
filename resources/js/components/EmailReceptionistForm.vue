@@ -117,10 +117,11 @@
                 try {
                     const valid = await this.$refs.form.validate();
                     if (valid) {
+                        let global_email_receptionist = null
                         if(this.activeCommand == 'global')
-                            this.global = 1
+                            global_email_receptionist = true
                         else if(this.activeCommand == 'assign')
-                            this.global = 0
+                            global_email_receptionist = false
                         
                         let categories = [];
                         for(let i = 0; i < this.categories.length; i ++)
@@ -133,18 +134,19 @@
                         }
 
                         if(this.isBuilding == true) {
+
                             let payload = {
-                                quarter_id : this.quarter_id,
                                 building_id : this.building_id,
-                                global: this.global,
-                                categories: categories
+                                global_email_receptionist,
+                                categories
                             }
+                            
 
                             const resp = await this.saveBuildingEmailReceptionists(payload)
 
                             if(resp.success)
                             {
-                                displaySuccess(resp.message);
+                                displaySuccess(resp);
                                 const data = await this.getBuilding({id: this.$route.params.id});
 
                                 if(data.has_email_receptionists) {
@@ -162,7 +164,7 @@
                             const resp = await this.saveQuarterEmailReceptionists(payload)
 
                             if(resp.success)
-                                displaySuccess(resp.message);
+                                displaySuccess(resp);
                             
                             this.$emit('update:visible', false);
                         }

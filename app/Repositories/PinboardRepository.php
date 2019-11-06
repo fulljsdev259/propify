@@ -124,7 +124,7 @@ class PinboardRepository extends BaseRepository
             return false;
         }
 
-        return $this->create([
+        $pinboard =  $this->create([
             'visibility' => Pinboard::VisibilityAddress,
             'status' => Pinboard::StatusPublished,
             'type' => Pinboard::TypeNewNeighbour,
@@ -134,6 +134,10 @@ class PinboardRepository extends BaseRepository
             'notify_email' => true,
             'published_at' => $contract->start_date ?? Carbon::now()
         ]);
+
+        // @TODO save only single system audit with notification data or save 2 system audit
+        $pinboard->makeAuditAsSystem(AuditableModel::NewResidentPinboardCreated);
+        return $pinboard;
     }
 
     /**

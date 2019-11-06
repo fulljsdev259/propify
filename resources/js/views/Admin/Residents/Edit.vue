@@ -67,9 +67,9 @@
                                                                     prop="title">
                                                             <el-select placeholder="Select" style="display: block" v-model="model.title">
                                                                 <el-option
-                                                                        :key="title"
-                                                                        :label="$t(`general.salutation_option.${title}`)"
-                                                                        :value="title"
+                                                                        :key="title.value"
+                                                                        :label="title.name"
+                                                                        :value="title.value"
                                                                         v-for="title in titles">
                                                                 </el-option>
                                                             </el-select>
@@ -78,7 +78,7 @@
                                                     <el-col :md="6">
                                                         <el-form-item :label="$t('models.resident.company')" :rules="validationRules.company"
                                                                     prop="company"
-                                                                    v-if="model.title === titles.company">
+                                                                    v-if="model.title === 'company'">
                                                             <el-input autocomplete="off" type="text" v-model="model.company"></el-input>
                                                         </el-form-item>
                                                     </el-col>
@@ -247,7 +247,14 @@
                                             <h3 class="chart-card-header">
                                                 <i class="icon-handshake-o ti-user icon "/>
                                                     &nbsp;{{ $t('models.resident.contract.title') }}
-                                                <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                                                <el-button style="float:right" 
+                                                        type="primary" 
+                                                        @click="toggleDrawer" 
+                                                        icon="icon-plus" 
+                                                        size="mini" 
+                                                        round>
+                                                        {{ $t('models.resident.contract.add') }}
+                                                </el-button>
                                             </h3>
                                             
                                         </el-row>
@@ -261,7 +268,7 @@
                                 </el-card>
                             </el-col>
                             <el-col :md="12">
-                                <el-card class="mt15">
+                                <el-card>
                                     <div slot="header" class="clearfix">
                                         <span>{{$t('general.audits')}}</span>
                                     </div>
@@ -526,7 +533,7 @@
         }
 
         .chart-card{
-            margin-bottom: 30px!important;
+            margin-bottom: 1em !important;
             padding: 20px;
             background-color: #fff;
             border: 1px solid #ededed;

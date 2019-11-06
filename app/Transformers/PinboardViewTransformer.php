@@ -14,15 +14,12 @@ class PinboardViewTransformer extends BaseTransformer
     protected $defaultIncludes = [];
 
     /**
-     * Transform the PinboardViewTransformer entity.
-     *
-     * @param \App\Models\PinboardView $model
-     *
+     * @param PinboardView $model
      * @return array
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(PinboardView $model)
     {
-        $ut = new UserTransformer();
         $ret = [
             'id' => $model->id,
             'views' => $model->views,
@@ -31,8 +28,8 @@ class PinboardViewTransformer extends BaseTransformer
             'resident_id' => $model->resident_id,
         ];
 
-        if ($model->relationExists('user')) {
-            $ret['user'] = $ut->transform($model->user);
+        if ($model->relationExists('resident')) {
+            $ret['resident'] = (new ResidentTransformer())->transform($model->resident);
         }
 
         return $ret;

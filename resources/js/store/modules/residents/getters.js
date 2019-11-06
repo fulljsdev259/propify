@@ -1,5 +1,4 @@
 import {format} from 'date-fns';
-import residentTitleTypes from '../../../mixins/methods/residentTitleTypes';
 
 export default {
     residents({residents: {data = []}}) {

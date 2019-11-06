@@ -2,7 +2,6 @@ import {mapActions, mapGetters} from 'vuex';
 import PasswordValidatorMixin from './passwordValidatorMixin';
 import EmailCheckValidatorMixin from './emailCheckValidatorMixin';
 import residentTypeCheckValidatorMixin from './residentTypeCheckValidatorMixin';
-import ResidentTitleTypes from './methods/residentTitleTypes';
 import {displayError, displaySuccess} from '../helpers/messages';
 import UploadUserAvatarMixin from './adminUploadUserAvatarMixin';
 import { parse } from 'querystring';
@@ -47,6 +46,7 @@ export default (config = {}) => {
                     contracts: [],
                     status: 1
                 },
+                original_type: null,
                 visibleDrawer: false,
                 editingContract: null,
                 editingContractIndex: -1,
@@ -92,7 +92,10 @@ export default (config = {}) => {
                     type: [{
                         required: true,
                         message: this.$t('validation.general.required')
-                    }]
+                    }, {
+                        validator: this.checkavailabilityResidentType
+                    }
+                    ]
                 },
                 loading: {
                     state: false,
@@ -113,6 +116,9 @@ export default (config = {}) => {
                 return ['.pdf'].includes(ext);
             },
             addContract (data) {
+                if(config.mode == 'add') {
+                    this.original_type = this.model.type
+                }
                 this.model.contracts.push(data);
             },
             editContract(index) {
@@ -169,12 +175,15 @@ export default (config = {}) => {
                 }
             }
         },
+        created() {
+            this.titles = Object.entries(this.$constants.residents.title).map(([value, label]) => ({value: label, name: this.$t(`general.salutation_option.${label}`)}))
+        },
     };
 
     if (config.mode) {
         switch (config.mode) {
             case 'add':
-                mixin.mixins = [PasswordValidatorMixin(), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), ResidentTitleTypes, UploadUserAvatarMixin];
+                mixin.mixins = [PasswordValidatorMixin(), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), UploadUserAvatarMixin];
 
                 mixin.methods = {
                     submit(afterValid = false) {
@@ -221,7 +230,7 @@ export default (config = {}) => {
                                     
                                     displaySuccess(resp);
 
-                                    this.model.rent_start = '';
+                                    this.model.start_date = '';
                                     this.form.resetFields();
                                     if (!!afterValid) {
                                         afterValid(resp);
@@ -248,7 +257,7 @@ export default (config = {}) => {
 
                 break;
             case 'edit':
-                mixin.mixins = [PasswordValidatorMixin({required: false}), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), ResidentTitleTypes, UploadUserAvatarMixin];
+                mixin.mixins = [PasswordValidatorMixin({required: false}), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), UploadUserAvatarMixin];
 
                 mixin.methods = {
                     submit() {
@@ -291,7 +300,7 @@ export default (config = {}) => {
                 };
 
             case 'view':
-                mixin.mixins = [PasswordValidatorMixin({required: false}), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), ResidentTitleTypes, UploadUserAvatarMixin];
+                mixin.mixins = [PasswordValidatorMixin({required: false}), EmailCheckValidatorMixin(), residentTypeCheckValidatorMixin(), UploadUserAvatarMixin];
                 mixin.methods = {
                     ...mixin.methods,
                     ...mapActions(['getResident'])
@@ -305,7 +314,7 @@ export default (config = {}) => {
                     const {password, password_confirmation} = this.validationRules;
 
                     [...password, ...password_confirmation].forEach(rule => rule.required = false);
-
+                    this.titles = Object.entries(this.$constants.residents.title).map(([value, label]) => ({value: label, name: this.$t(`general.salutation_option.${label}`)}))
                     try {
                         this.loading.state = true;
 
@@ -313,16 +322,11 @@ export default (config = {}) => {
                         this.user = user;
                         this.model = Object.assign({}, this.model, r);
                         this.original_email = this.user.email;
+                        this.original_type = this.model.type;
                         this.model.email = user.email;
                         this.model.avatar = user.avatar;
                         this.model.nation = +this.model.nation
 
-                        this.validationRules.type = [{
-                            required: true,
-                            message: this.$t('validation.general.required')
-                        }, {
-                            validator: this.checkavailabilityResidentType
-                        }]
                     } catch (err) {
                         this.$router.replace({
                             name: 'adminResidents'
