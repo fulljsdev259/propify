@@ -432,6 +432,7 @@
                                         :quarter_id="model.quarter_id" 
                                         :visible.sync="visibleDrawer"
                                         @update-has-email-receptionists="updateHasEmailReceptionists"
+                                        :is_global="model.global_email_receptionist"
                                         />
                         </div>
 

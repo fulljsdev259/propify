@@ -76,10 +76,10 @@
                         <el-option v-for="priority in priorities" :key="priority.value" :label="$t(`models.request.priority.${priority.label}`)" :value="priority.value" />
                     </el-select>
                 </el-form-item> -->
-        <el-form-item prop="title" :label="$t('resident.title')" required>
+        <el-form-item prop="title" :label="$t('resident.title')">
             <el-input v-model="model.title" />
         </el-form-item>
-        <el-form-item prop="description" :label="$t('resident.description')" required class="full-width">
+        <el-form-item prop="description" :label="$t('resident.description')" class="full-width">
             <el-input type="textarea" ref="description" v-model="model.description" :autosize="{minRows: 4, maxRows: 16}" />
         </el-form-item>
         <!-- <el-form-item prop="visibility" :label="$t('resident.visibility')" required>
