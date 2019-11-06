@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\BaseModelTrait;
+use App\Traits\OldChagesAttribute;
 use Zizaco\Entrust\EntrustRole;
 
 
@@ -57,7 +58,7 @@ use Zizaco\Entrust\EntrustRole;
  */
 class Role extends EntrustRole
 {
-    use BaseModelTrait;
+    use BaseModelTrait, OldChagesAttribute;
 
     /**
      * @param $permissionName
