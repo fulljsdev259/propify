@@ -1,5 +1,5 @@
 <template>
-    <div class="services-add">
+    <div class="services-add" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.service.add_title')" icon="icon-tools" shadow="heavy">
             <add-actions :saveAction="submit" route="adminServices" editRoute="adminServicesEdit"/>
         </heading>
@@ -7,7 +7,7 @@
             <el-form :model="model" :rules="validationRules" ref="form">
                 <el-row :gutter="20">
                     <el-col :md="12">
-                        <card :loading="loading" :header="$t('models.service.company_details')">
+                        <card :header="$t('models.service.company_details')">
                         <el-row :gutter="20">
                             <el-col :md="12">
                                 <el-form-item class="label-block" :label="$t('models.service.category.label')" :rules="validationRules.category" prop="category">
@@ -30,7 +30,7 @@
                         </el-row>
                     </card>
 
-                        <card class="mt15" :loading="loading" :header="$t('models.service.user_credentials')">
+                        <card class="mt15" :header="$t('models.service.user_credentials')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.user.profile_image')">
@@ -81,7 +81,7 @@
                     </el-col>
 
                     <el-col :md="12">
-                        <card :loading="loading" :header="$t('models.service.contact_details')">
+                        <card :header="$t('models.service.contact_details')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item :label="$t('general.street')" :rules="validationRules.street" prop="address.street">

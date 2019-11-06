@@ -1,11 +1,11 @@
 <template>
-    <div class="quarters-edit">
+    <div class="quarters-edit" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.quarter.add')" icon="icon-share" shadow="heavy">
             <add-actions :saveAction="submit" route="adminQuarters" editRoute="adminQuartersEdit"/>
         </heading>
         <el-row :gutter="20" class="crud-view">
             <el-col :md="12">
-                <card :loading="loading" :header="$t('general.box_titles.details')">                    
+                <card :header="$t('general.box_titles.details')">                    
                     <el-form :model="model" ref="form">
                         <el-row :gutter="20">
                             <el-col :md="12">

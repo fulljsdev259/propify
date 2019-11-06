@@ -685,7 +685,7 @@ export default (config = {}) => {
                         
                         if (data.resident) {
                             this.model.resident_id = data.resident.id;
-                            await this.getBuildingAddress(data.resident.building.address_id);
+                            // await this.getBuildingAddress(data.resident.building.address_id);
                         }
                     },
                     submit() {
@@ -772,9 +772,9 @@ export default (config = {}) => {
                             this.conversations = resp.data;
                         }
                     },
-                    async getBuildingAddress(building_id) {
+                    async getBuildingAddress(address_id) {
                         const resp = await this.getAddress({
-                            id: building_id
+                            id: address_id
                         });
                         if (resp) {
                             this.address = resp;
