@@ -78,7 +78,7 @@
 
             try {
 
-                const { data } = await this.$store.dispatch('getMyDocuments', {id: this.$store.getters.loggedInUser.resident.building.id})
+                const { data } = await this.$store.dispatch('getMyDocuments')
                 
                 this.building_media = data.building
                 this.unit_media = data.unit

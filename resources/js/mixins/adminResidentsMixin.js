@@ -318,7 +318,7 @@ export default (config = {}) => {
                     try {
                         this.loading.state = true;
 
-                        const {address, building, unit, user, ...r} = await this.getResident({id: this.$route.params.id});
+                        const {building, unit, user, ...r} = await this.getResident({id: this.$route.params.id});
                         this.user = user;
                         this.model = Object.assign({}, this.model, r);
                         this.original_email = this.user.email;
