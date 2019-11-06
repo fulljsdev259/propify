@@ -28,6 +28,7 @@ export default (config = {}) => {
                         password: '',
                         password_confirmation: '',
                         avatar: '',
+                        avatar_variations: '',
                         id: '',
                         email: ''
                     },
@@ -369,6 +370,7 @@ export default (config = {}) => {
                         this.model.category = +data.category;
                         
                         this.model.user.avatar = data.user.avatar;
+                        this.model.user.avatar_variations = data.user.avatar_variations;
                         this.model.user.id = data.user.id;
                         this.model.service_provider_format = data.service_provider_format;
 
