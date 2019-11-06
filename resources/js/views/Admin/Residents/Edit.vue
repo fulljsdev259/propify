@@ -268,7 +268,7 @@
                                 </el-card>
                             </el-col>
                             <el-col :md="12">
-                                <el-card class="mt15">
+                                <el-card>
                                     <div slot="header" class="clearfix">
                                         <span>{{$t('general.audits')}}</span>
                                     </div>
@@ -533,7 +533,7 @@
         }
 
         .chart-card{
-            margin-bottom: 30px!important;
+            margin-bottom: 1em !important;
             padding: 20px;
             background-color: #fff;
             border: 1px solid #ededed;
