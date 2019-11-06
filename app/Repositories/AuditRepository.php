@@ -90,6 +90,14 @@ class AuditRepository extends BaseRepository
             }            
             elseif(($auditable_type == 'pinboard') && ($fieldname == 'type')){   
                 return __('models.pinboard.type.' . Pinboard::Type[$fieldvalue]);
+            }
+            elseif(($auditable_type == 'pinboard') && ($fieldname == 'execution_period')){   
+                return __('models.pinboard.execution_period.' . Pinboard::ExecutionPeriod[$fieldvalue]);
+            }            
+            elseif(($auditable_type == 'pinboard') && ($fieldname == 'sub_type')){   
+                if(isset(Pinboard::SubType[Pinboard::TypeAnnouncement][$fieldvalue])){
+                    return __('models.pinboard.sub_type.' . Pinboard::SubType[Pinboard::TypeAnnouncement][$fieldvalue]);
+                }                
             }            
             elseif(($auditable_type == 'manager') && ($fieldname == 'type')){
                 if($fieldvalue == PropertyManager::TypeManager){
