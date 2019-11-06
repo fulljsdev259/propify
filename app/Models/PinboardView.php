@@ -78,9 +78,9 @@ class PinboardView extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function user()
+    public function resident()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Resident::class);
     }
 
     /**
