@@ -81,8 +81,8 @@ export default (config = {}) => {
                     text: 'general.please_wait'
                 },
                 media: [],
-                assignmentTypes: ['building', 'quarter'],
-                assignmentType: 'building',
+                assignmentTypes: ['quarter', 'building'],
+                assignmentType: 'quarter',
                 toAssign: '',
                 toAssignList: [],
                 addedAssigmentList: [],
@@ -499,7 +499,6 @@ export default (config = {}) => {
 
                                 try {
                                     this.loading.state = true;
-                                    this.model.status = 2;
                                     this.model.announcement = this.model.type == 3 ? true : false;
 
                                     await this.uploadNewMedia(this.model.id);

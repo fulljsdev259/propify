@@ -124,8 +124,8 @@ export default (config = {}) => {
                     text: 'general.please_wait'
                 },
                 requests: [],
-                assignmentTypes: ['building', 'quarter'],
-                assignmentType: 'building',
+                assignmentTypes: ['quarter', 'building'],
+                assignmentType: 'quarter',
                 toAssign: '',
                 toAssignList: [],
                 alreadyAssigned: {
