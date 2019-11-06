@@ -102,7 +102,9 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @property-read \App\Models\PropertyManager $propertyManager
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Request[] $requests
  * @property-read int|null $requests_count
- * @property-read \App\Models\Resident $resident
+ * @property \App\Models\Resident $resident
+ * @property \App\Models\PropertyManager $property_manager
+ * @property \App\Models\ServiceProvider $service_provider
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[] $roles
  * @property-read int|null $roles_count
  * @property-read \App\Models\ServiceProvider $serviceProvider
@@ -264,8 +266,9 @@ class User extends Authenticatable implements LikerContract, Commentator, Audita
     }
 
     /**
-    * @return \Illuminate\Database\Eloquent\Relations\HasOne
-    **/
+     * @TODO delete
+     *
+     * */
     public function propertyManager()
     {
         return $this->hasOne(PropertyManager::class);
@@ -273,8 +276,25 @@ class User extends Authenticatable implements LikerContract, Commentator, Audita
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function property_manager()
+    {
+        return $this->hasOne(PropertyManager::class);
+    }
+
+    /**
+     * @TODO delete
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      **/
     public function serviceProvider()
+    {
+        return $this->hasOne(ServiceProvider::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     **/
+    public function service_provider()
     {
         return $this->hasOne(ServiceProvider::class);
     }

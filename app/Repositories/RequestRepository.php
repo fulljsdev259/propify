@@ -3,7 +3,8 @@
 namespace App\Repositories;
 
 use App\Jobs\Notify\NotifyNewRequest;
-use App\Jobs\SendNewRequestEmailToReceptionists;
+use App\Jobs\Notify\NotifyEmailReceptionistsNewPublicRequest;
+use App\Jobs\Notify\NotifyRequestDue;
 use App\Models\AuditableModel;
 use App\Mails\NotifyServiceProvider;
 use App\Models\Comment;
@@ -61,7 +62,8 @@ class RequestRepository extends BaseRepository
 
     /**
      * @param array $attributes
-     * @return mixed
+     * @return Model|Request|mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function create(array $attributes)
@@ -76,25 +78,34 @@ class RequestRepository extends BaseRepository
 
         $attributes = $this->fixContractRelated($attributes);
         $attributes['creator_user_id'] = Auth::id();
+
+        if (key_exists('send_notification', $attributes)) {
+            $attributes['notify_email'] = $attributes['send_notification'];
+        }
+
         /**
          * @var  $request Request
          */
         $request = parent::create($attributes);
-
         if (empty($request))  {
             return $request;
         }
 
         $request = $this->saveMediaUploads($request, $attributes);
-        dispatch(new NotifyNewRequest($request));
+        $notificationsData = dispatch_now(new NotifyNewRequest($request, false));
 
-        if (! empty($attributes['send_notification'])) {
-            dispatch(new SendNewRequestEmailToReceptionists($request));
+        if ($request->notify_email) {
+            $receptionistsNotifications = dispatch_now(new NotifyEmailReceptionistsNewPublicRequest($request, false));
+            $notificationsData = $notificationsData->merge($receptionistsNotifications);
         }
+
         if ($request->due_date) {
-            $this->notifyDue($request);
+            $dueNotifications  = dispatch_now(new NotifyRequestDue($request, false));
+            $notificationsData = $notificationsData->merge($dueNotifications);
         }
 
+        // save all sent notification data
+        $request->newSystemNotificationAudit($notificationsData);
         return $request;
     }
 

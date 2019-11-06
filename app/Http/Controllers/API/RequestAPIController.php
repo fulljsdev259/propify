@@ -220,6 +220,7 @@ class RequestAPIController extends AppBaseController
      * @param CreateRequest $createRequest
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateRequest $createRequest)

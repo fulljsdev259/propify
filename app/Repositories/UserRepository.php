@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Notifications\PasswordResetSuccess;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use App\Repositories\File;
 use Intervention\Image\ImageManager as Image;
 use OwenIt\Auditing\Models\Audit;
 use Prettus\Repository\Events\RepositoryEntityUpdated;
@@ -108,7 +107,12 @@ class UserRepository extends BaseRepository
         if (isset($attributes['role'])) {
             $role = (new RoleRepository(app()))->getRoleByName($attributes['role']);
             if ($role) {
-                $model->roles()->sync($role);
+                $result = $model->roles()->sync($role);
+                // Need for audit
+                if (!empty($result['detached'])) {
+                    $oldRoleName = App\Models\Role::whereIn('id', $result['detached'])->value('name');
+                    $role->setOldChanges(['role' => $oldRoleName]);
+                }
                 // for audit
                 $model->setRelation('role', $role);
             }
@@ -137,21 +141,24 @@ class UserRepository extends BaseRepository
     public function uploadImage(string $fileData, User $user, $mergeInAudit = null)
     {
         $pixels = \AvatarHelper::AVATAR_SIZES;
+        $avatar = Str::slug(sprintf($user->name)) .'.png';
+
         foreach($pixels as $pixel){
-            $avatar = Str::slug(sprintf($user->name)) .'.png';
-            $path = storage_path('app/public/avatar/'.$user->id .'/'. $pixel  . 'x' . $pixel);          
+            $path = storage_path('app/public/avatar/'.$user->id .'/'. $pixel  . 'x' . $pixel);
             if(!file_exists($path)){
                 \File::makeDirectory($path, $mode = 0777, true, true);
             }
             $imgPath = storage_path(sprintf('app/public/avatar/' .$user->id .'/' . $pixel . 'x' . $pixel . '/' . $avatar));
             (new Image)->make($fileData)->encode('png', 100)->fit($pixel, $pixel)->save($imgPath);
-            if ($mergeInAudit) {
-                $audit = is_integer($mergeInAudit)
-                    ? Audit::find($mergeInAudit)
-                    : $mergeInAudit;
-                (new App\Models\AuditableModel())->addDataInAudit('avatar', $avatar, $audit);
-            }
         }
+
+        if ($mergeInAudit) {
+            $audit = is_integer($mergeInAudit)
+                ? Audit::find($mergeInAudit)
+                : $mergeInAudit;
+            (new App\Models\AuditableModel())->addDataInAudit('avatar', $avatar, $audit);
+        }
+
         return sprintf($avatar);
     }
 
