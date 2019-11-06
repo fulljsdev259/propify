@@ -130,6 +130,7 @@
                                 >
                                 </el-alert>
                                 <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple
+                                                accept-type=".pdf, .doc, .docx, .xls, .xlsx"
                                                 v-if="selectedFileCategory"/><!-- @TODO this is uploading file on the spot, is it okay? need to confirm -->
                                 
                             </div>
