@@ -661,12 +661,12 @@
                 };
 
                 let params = this.$route.params;
-
-                if (this.search) {
-                    query = {search: this.search, ...query};
-                } else if (this.withSearch) {
-                    delete query.search;
-                }
+                console.log('search', this.search)
+                // if (this.search) {
+                //     query = {...query, search: this.search};
+                // } else if (this.withSearch) {
+                //     delete query.search;
+                // }
                 for(var filter in this.filterModel) {
                     if((this.filterModel[filter] == '' || this.filterModel[filter] == null) && (query[filter] != undefined || query[filter] == null))
                     {
@@ -823,7 +823,10 @@
                         return;
                     }
 
+                    console.log('route query watch')
+
                     if (!page || !per_page && prevQuery) {
+                        console.log('init', page, per_page, prevQuery)
                         this.page.currPage = 1;
                         this.page.currSize = 20;
                         this.filterModel = {};
@@ -855,15 +858,17 @@
                 const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
                 const value = queryFilterValue && (queryFilterValue.toString().match(dateReg) || filter.key == 'search')  ? queryFilterValue : parseInt(queryFilterValue);
                 this.$set(this.filterModel, filter.key, value);
-                if(filter.key == "search")
-                    this.filterModel[filter.key] = queryFilterValue;
-                
+                //this.$set(this.filterModel, 'search', '1');
+                if(filter.key == "search") {
+                    this.$set(this.filterModel, 'search', queryFilterValue);
+                }
 
                 if (!this.filterModel[filter.key]) {
                     delete this.filterModel[filter.key];
                 }
 
                 if (this.filterModel[filter.key] || (!filter.parentKey && filter.fetch)) {
+                    console.log('filter change call', filter.key, this.filterModel[filter.key])
                     this.filterChanged(filter, true);
                 }
             });
