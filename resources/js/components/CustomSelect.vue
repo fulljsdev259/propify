@@ -186,7 +186,6 @@
                 spanText.innerHTML = text; 
     
                 var width = Math.ceil(spanText.clientWidth); 
-                console.log(width);
                 return width;
             },
             makeEllipis(text) {
