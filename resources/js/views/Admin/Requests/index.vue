@@ -512,7 +512,7 @@
                 this.closeModal();
                 this.fetchMore();
                 if(resp.data.success)
-                    displaySuccess(resp.data.message);
+                    displaySuccess(resp.data);
 
             },
             async massAssignManagers() {
@@ -528,7 +528,7 @@
                 this.closeModal();
                 this.fetchMore();
                 if(resp.data.success)
-                    displaySuccess(resp.data.message);
+                    displaySuccess(resp.data);
 
             },
             async massChangeStatus() {
@@ -544,7 +544,7 @@
                 this.closeModal();
                 this.fetchMore();
                 if(resp.data.success)
-                    displaySuccess(resp.data.message);
+                    displaySuccess(resp.data);
                 
             },
             async remoteSearchManagers(search) {
@@ -696,6 +696,7 @@
         }
 
         .switch-wrapper {
+            margin-top: 10px;
             margin-bottom: 0;
 
             .switcher__desc {
