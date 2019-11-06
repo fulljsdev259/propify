@@ -661,9 +661,8 @@
                 };
 
                 let params = this.$route.params;
-
                 if (this.search) {
-                    query = {search: this.search, ...query};
+                    query = {...query, search: this.search};
                 } else if (this.withSearch) {
                     delete query.search;
                 }
@@ -823,6 +822,7 @@
                         return;
                     }
 
+
                     if (!page || !per_page && prevQuery) {
                         this.page.currPage = 1;
                         this.page.currSize = 20;
@@ -855,9 +855,9 @@
                 const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
                 const value = queryFilterValue && (queryFilterValue.toString().match(dateReg) || filter.key == 'search')  ? queryFilterValue : parseInt(queryFilterValue);
                 this.$set(this.filterModel, filter.key, value);
-                if(filter.key == "search")
-                    this.filterModel[filter.key] = queryFilterValue;
-                
+                if(filter.key == "search") {
+                    this.$set(this.filterModel, 'search', queryFilterValue);
+                }
 
                 if (!this.filterModel[filter.key]) {
                     delete this.filterModel[filter.key];
