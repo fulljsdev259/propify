@@ -132,9 +132,7 @@ class ResidentTransformer extends BaseTransformer
             'id' => $model->id,
             'first_name' => $model->first_name,
             'last_name' => $model->last_name,
-            'user' => [
-                'avatar' => $model->user->avatar ?? '',
-            ]
+            'avatar' => $model->user->avatar ?? '',
         ];
     }
 }
