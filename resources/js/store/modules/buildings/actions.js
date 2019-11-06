@@ -148,12 +148,12 @@ export default {
     saveBuildingEmailReceptionists({commit}, {building_id, ...restPayload}) {
         if(restPayload.global_email_receptionist) {
             return new Promise((resolve, reject) =>
-                axios.post(buildFetchUrl(`buildings/${building_id}/email-receptionists`), { global_email_receptionist : restPayload.global_email_receptionist} )
+                axios.post(buildFetchUrl(`buildings/${building_id}/email-receptionists`), { global_email_receptionist : restPayload.global_email_receptionist } )
                     .then(({data: r}) => (r && resolve(r)))
                     .catch(({response: {data: err}}) => reject(err)));
         } else {
             return new Promise((resolve, reject) =>
-                axios.post(buildFetchUrl(`buildings/${building_id}/email-receptionists`), restPayload.categories)
+                axios.post(buildFetchUrl(`buildings/${building_id}/email-receptionists`), {...restPayload})
                     .then(({data: r}) => (r && resolve(r)))
                     .catch(({response: {data: err}}) => reject(err)));
         }
