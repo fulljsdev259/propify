@@ -66,6 +66,8 @@ class PropertyManagerTransformer extends BaseTransformer
      */
     public function residentPropertyManagers(PropertyManager $model)
     {
+        $avatar = $model->user->avatar ?? null;
+
         return [
             'id' => $model->id,
             'slogan' => $model->slogan,
@@ -73,7 +75,7 @@ class PropertyManagerTransformer extends BaseTransformer
             'last_name' => $model->last_name,
             'email' => $model->user->email ?? '',
             'phone' => $model->user->phone ?? '',
-            'avatar' => $model->user->avatar ?? '',
+            'avatar' => empty($avatar) ? null : $avatar
         ];
     }
 }
