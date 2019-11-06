@@ -72,6 +72,7 @@
                             prop="type"
                             class="label-block">
                     <el-select :placeholder="$t('models.unit.type.label')"
+                                style="display: block;"
                                 v-model="model.type">
                         <el-option
                                 :key="key"

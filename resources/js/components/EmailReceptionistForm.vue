@@ -146,7 +146,7 @@
 
                             if(resp.success)
                             {
-                                displaySuccess(resp.message);
+                                displaySuccess(resp);
                                 const data = await this.getBuilding({id: this.$route.params.id});
 
                                 if(data.has_email_receptionists) {
@@ -164,7 +164,7 @@
                             const resp = await this.saveQuarterEmailReceptionists(payload)
 
                             if(resp.success)
-                                displaySuccess(resp.message);
+                                displaySuccess(resp);
                             
                             this.$emit('update:visible', false);
                         }

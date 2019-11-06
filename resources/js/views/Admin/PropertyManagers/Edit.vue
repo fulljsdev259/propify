@@ -363,5 +363,11 @@
         .heading {
             margin-bottom: 20px;
         }
+
+        .crud-view {
+            > .el-form > .el-row > .el-col {
+                margin-bottom: 1em;
+            }
+        }
     }
 </style>

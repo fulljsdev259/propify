@@ -909,6 +909,9 @@
     }
 
     #edit_request {
+        .el-form > .el-row > .el-col {
+            margin-bottom: 1em;
+        }
         .image-tab-title {
             display: block;
             margin-bottom: 5px;
