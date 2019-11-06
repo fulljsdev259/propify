@@ -137,8 +137,8 @@ export default (config = {}) => {
                     state: false,
                     text: 'general.please_wait'
                 },
-                assignmentTypes: ['building', 'quarter'],
-                assignmentType: 'building',
+                assignmentTypes: ['quarter', 'building'],
+                assignmentType: 'quarter',
                 toAssign: '',
                 toAssignList: [],
                 isFormSubmission: false,
