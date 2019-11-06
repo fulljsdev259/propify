@@ -9,7 +9,7 @@
                     closable
                     @close="selectItem(selectedItems[0], true)"
                 >
-                    {{ $t(`models.request.category_list.${options[selectedItems[0] - 1].name}`) }}
+                    {{ makeEllipis($t(`models.request.category_list.${options[selectedItems[0] - 1].name}`)) }}
                 </el-tag>
                 <el-tag
                     v-if="selectedItems.length > 1"
@@ -63,6 +63,7 @@
                 </div>
             </el-dropdown-menu>
         </el-dropdown>
+        <span :id="spanKey" style="visibility: hidden" ></span>
     </div>
 </template>
 <script>
@@ -91,6 +92,10 @@
           selectedOptions: {
               type: Array,
               default: () => []
+          },
+          spanKey: {
+              type: String,
+              default: () => 'span'
           }
         },
         components: {
@@ -172,6 +177,27 @@
             handleSelect() {
                 this.selectClicked = true;
                 this.$emit('select-changed', this.selectedItems);
+            },
+            getTextWidth(text) { 
+                var spanText = document.getElementById(this.spanKey);
+                spanText.style.position = 'absolute'; 
+                spanText.style.left = '0';
+                spanText.style.whiteSpace = 'no-wrap'; 
+                spanText.innerHTML = text; 
+    
+                var width = Math.ceil(spanText.clientWidth); 
+                console.log(width);
+                return width;
+            },
+            makeEllipis(text) {
+                let result = text, i;
+                for(i = 0; i < text.length; i++) {
+                    if(this.getTextWidth(text.slice(0, i)) > 100)
+                        break;
+                }
+                if(i < text.length)
+                    result = `${text.slice(0, i - 1)}...`;
+                return result;
             }
         },
         mounted() {
