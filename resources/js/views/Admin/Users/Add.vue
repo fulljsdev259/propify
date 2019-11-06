@@ -1,10 +1,10 @@
 <template>
-    <div class="users-add">
+    <div class="users-add" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.user.add_admin')" icon="icon-user" shadow="heavy">
             <add-actions :saveAction="submit" :role="this.$route.params.role" route="adminUsers" editRoute="adminUsersEdit"/>
         </heading>
         <div class="crud-view">
-            <card :loading="loading">
+            <card>
                 <el-form :model="model" label-width="192px" ref="form" style="max-width: 641px;">
                     <el-form-item :label="$t('general.name')" :rules="validationRules.name" prop="name">
                         <el-input type="text" v-model="model.name"/>
