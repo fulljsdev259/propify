@@ -27,6 +27,18 @@ class BaseTransformer extends TransformerAbstract
     }
 
     /**
+     * @param Collection $collection
+     * @param string $method
+     * @return array
+     */
+    public function transformCollectionBy(Collection $collection, $method = 'transform')
+    {
+        return $collection->transform(function ($value) use ($method) {
+            return $this->{$method}($value);
+        })->toArray();
+    }
+
+    /**
      * @param LengthAwarePaginator $paginator
      * @param string $method
      * @return LengthAwarePaginator
