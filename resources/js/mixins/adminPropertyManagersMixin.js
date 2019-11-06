@@ -21,6 +21,8 @@ export default (config = {}) => {
                         password_confirmation: '',
                         name: '',
                         phone: '',
+                        avatar: '',
+                        avatar_variations: '',
                     },
                     settings: {
                         language: ''

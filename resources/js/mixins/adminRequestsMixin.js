@@ -677,7 +677,7 @@ export default (config = {}) => {
                         if(data.sub_category)
                             this.$set(this.model, 'sub_category_id', data.sub_category.id);
                         this.$set(this.model, 'created_by', data.created_by);
-                        this.$set(this.model, 'building', data.resident.building.name);
+                        this.$set(this.model, 'building', data.contract.building.name);
 
                         //this.contracts = resp.data.resident.contracts.filter(item => item.status == 1)
                         this.model.contract_id = data.contract.id
@@ -685,7 +685,6 @@ export default (config = {}) => {
                         
                         if (data.resident) {
                             this.model.resident_id = data.resident.id;
-                            // await this.getBuildingAddress(data.resident.building.address_id);
                         }
                     },
                     submit() {
@@ -772,14 +771,6 @@ export default (config = {}) => {
                             this.conversations = resp.data;
                         }
                     },
-                    async getBuildingAddress(address_id) {
-                        const resp = await this.getAddress({
-                            id: address_id
-                        });
-                        if (resp) {
-                            this.address = resp;
-                        }
-                    }
                 };
 
                 mixin.created = async function () {
