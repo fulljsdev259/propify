@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Notifications\PasswordResetSuccess;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use App\Repositories\File;
 use Intervention\Image\ImageManager as Image;
 use OwenIt\Auditing\Models\Audit;
 use Prettus\Repository\Events\RepositoryEntityUpdated;
@@ -108,7 +107,12 @@ class UserRepository extends BaseRepository
         if (isset($attributes['role'])) {
             $role = (new RoleRepository(app()))->getRoleByName($attributes['role']);
             if ($role) {
-                $model->roles()->sync($role);
+                $result = $model->roles()->sync($role);
+                // Need for audit
+                if (!empty($result['detached'])) {
+                    $oldRoleName = App\Models\Role::whereIn('id', $result['detached'])->value('name');
+                    $role->setOldChanges(['role' => $oldRoleName]);
+                }
                 // for audit
                 $model->setRelation('role', $role);
             }

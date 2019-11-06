@@ -192,6 +192,11 @@ class PropertyManager extends AuditableModel
         AuditableModel::EventBuildingUnassigned => 'getDetachedEventAttributes',
     ];
 
+    protected $auditExclude = [
+        'type',
+    ];
+
+
     /**
      * The attributes that should be casted to native types.
      *

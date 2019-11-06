@@ -574,9 +574,8 @@ class AuditableModel extends Model implements Auditable
     protected function getUpdatedUserOriginalData(User $user)
     {
         $auditData = $user->getOldChanges();
-
         if ($user->relationExists('role')) {
-            $auditData['role'] = $user->role->name;
+            $auditData = array_merge($auditData, $user->role->getOldChanges());
         }
 
         if ($user->relationExists('settings')) {
