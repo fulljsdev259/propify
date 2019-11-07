@@ -588,6 +588,8 @@ return [
             'component' => 'Composante',
             'capture_phase' => 'Phase de capture',
             'payer' => 'Incidence sur les coûts',
+            'payer_percent' => 'Partager Fortimo',
+            'payer_amount' => 'Montant',
             'keywords' => 'Mots-clés',
         ],
         'placeholders' => [

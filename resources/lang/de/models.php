@@ -589,6 +589,8 @@ return [
             'component' => 'Bauteil',
             'capture_phase' => 'Erfassungsphase',
             'payer' => 'Zu Lasten von',
+            'payer_percent' => 'Anteil Fortimo',
+            'payer_amount' => 'Betrag',
             'keywords' => 'Tags',
         ],
         'placeholders' => [

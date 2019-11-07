@@ -588,6 +588,8 @@ return [
             'component' => 'Componente',
             'capture_phase' => 'Fase di cattura',
             'payer' => 'Costo Impatto',
+            'payer_percent' => 'Condividi Fortimo',
+            'payer_amount' => 'Importo',
             'keywords' => 'Parole chiave',
         ],
         'placeholders' => [

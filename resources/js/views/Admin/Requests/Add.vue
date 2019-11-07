@@ -115,7 +115,7 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="12"
+                        <!-- <el-col :md="12"
                                 v-if="this.showQualification == true && this.showPayer == true">
                             <el-form-item :label="$t('models.request.category_options.payer')">
                                 <el-select :disabled="$can($permissions.update.serviceRequest)"
@@ -129,6 +129,32 @@
                                         v-for="payer in payers">
                                     </el-option>
                                 </el-select>
+                            </el-form-item>
+                        </el-col> -->
+                        <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true">
+                            <el-form-item 
+                                :label="$t('models.request.category_options.payer_percent')"
+                                :rules="validationRules.payer_percent"
+                                prop="payer_percent">
+                                <el-input 
+                                    type="number"
+                                    v-model="model.payer_percent" 
+                                >
+                                    <template slot="prepend">%</template>
+                                </el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true">
+                            <el-form-item 
+                                :label="$t('models.request.category_options.payer_amount')"
+                                :rules="validationRules.payer_amount"
+                                prop="payer_amount">
+                                <el-input 
+                                    type="number"
+                                    v-model="model.payer_amount" 
+                                >
+                                    <template slot="prepend">CHF</template>
+                                </el-input>
                             </el-form-item>
                         </el-col>
                         <!-- <el-col :md="12">
