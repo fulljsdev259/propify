@@ -139,7 +139,7 @@ export default (config = {}) => {
                             resp = await this.getPropertyManagers({
                                 get_all: true,
                                 search,
-                                exclude_ids
+                                exclude_ids: exclude_ids.join(',')
                             });
                         } else if(this.assignmentType === 'administrator'){
                             buildingAssignee.data.data.map(item => {
@@ -150,7 +150,7 @@ export default (config = {}) => {
                             resp = await this.getUsers({
                                 get_all: true,
                                 search,
-                                exclude_ids,
+                                exclude_ids: exclude_ids.join(','),
                                 role: 'administrator'
                             });
                         }
