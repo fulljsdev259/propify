@@ -20,7 +20,18 @@ class Helper
         return $token;
     }
     public static function mapAuditFieldToLanguage(){
-        return [            
+        return [      
+            'settings' => [
+                'name' => __('general.name'),
+                'iframe_enable' => __('settings.iframe'),
+                'email_receptionist_ids' => __('general.recipients'),
+                'email' => __('general.email'),
+                'phone' => __('general.phone'),                
+            ],
+            'templates' => [
+                'category_id' => __('models.template.category'),
+                'body' => __('models.template.body'),
+            ],    
             'request' => [
                 'category_id' => __('models.request.category'),
                 'sub_category_id' => __('models.request.defect_location.label'),
@@ -92,8 +103,7 @@ class Helper
                 'building_id' => __('models.resident.building.name'),
                 'unit_id' => __('models.resident.unit.name'),
                 'language' => __('general.language')
-            ],
-            'settings' => [],
+            ],            
             'unit' => [
                 'description' => __('general.description'),                
                 'building_id' => __('general.assignment_types.building'),
