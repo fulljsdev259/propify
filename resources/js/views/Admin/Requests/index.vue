@@ -682,10 +682,16 @@
     /deep/ .el-dialog {
         /deep/ .el-dialog__body {
             padding: 10px 20px;
+            word-break: break-word;
         }
 
         .el-form-item {
             margin-bottom: 0;
+
+            .el-form-item__label {
+                line-height: 20px;
+                text-align: left;
+            }
         }
         .el-select {
             width: 100%;
