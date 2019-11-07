@@ -357,7 +357,7 @@
                                         :noDataMessage="$t('general.no_pinboard')"
                                         fetchAction="getPinboardTruncated"
                                         filter="user_id"
-                                        v-if="!_.isEmpty(user)"
+                                        v-if="user && user.id"
                                 />
                             </el-card>
                         </el-col>
