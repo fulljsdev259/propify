@@ -206,8 +206,11 @@ class PinboardAPIController extends AppBaseController
             'providers',
             'views',
         ])->loadCount('allComments');
-        $data = $this->transformer->transform($pinboard);
+        if ($pinboard->announcement) {
+            $pinboard->load('announcement_email_receptionists');
+        }
 
+        $data = $this->transformer->transform($pinboard);
         return $this->sendResponse($data, __('models.pinboard.saved'));
     }
 
@@ -377,7 +380,9 @@ class PinboardAPIController extends AppBaseController
             'providers',
             'views',
         ])->withCount('allComments')->findWithoutFail($id);
-
+        if ($pinboard->announcement) {
+            $pinboard->load('announcement_email_receptionists');
+        }
         $data = $this->transformer->transform($pinboard);
         return $this->sendResponse($data, __('models.pinboard.saved'));
     }

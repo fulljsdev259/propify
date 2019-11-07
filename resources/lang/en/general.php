@@ -348,6 +348,7 @@ return [
                     'general' => [
                         'created' => 'Created',
                         'updated' => 'Updates',
+                        'deleted' => 'Deleted',
                         'provider_assigned' => 'Provider assigned',
                         'provider_unassigned' => 'Provider unassigned',
                         'provider_notified' => 'Provider notified',                        
@@ -358,13 +359,18 @@ return [
                         'building_assigned' => 'Building assigned',
                         'building_unassigned' => 'Building unassigned',
                         'media_uploaded' => 'Media uploaded',
-                        'media_deleted' => 'Media deleted'
+                        'media_deleted' => 'Media deleted',
+                        'notifications_sent' => 'Notification sent',
+                        'new_resident_pinboard_created' => 'New neighbour pinboard',
+                        'avatar_uploaded' => 'Profile image uploaded',
+                        'contract_created' => 'Contract created',
                     ],
                 ],
                 'content' => [
                     'general' => [
                         'created' => ':userName has created this :auditable_type',
                         'updated' => 'The :fieldname changed from :old to :new.',
+                        'deleted' => ':userName has deleted this :auditable_type',
                         'provider_assigned' => ':providerName has been assigned as provider.',
                         'provider_unassigned' => 'Provider :providerName has been unassigned.',
                         'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName has been assigned as manager.',
@@ -377,6 +383,10 @@ return [
                         'quarter_unassigned' => ':quarterName quarter unassigned',
                         'building_assigned' => ':buildingName building assigned',
                         'building_unassigned' => ':buildingName buiding unassigned',
+                        'notifications_sent' => 'Notification has been sent for this :auditable_type',
+                        'new_resident_pinboard_created' => 'New neighbour added for user :userName',
+                        'avatar_uploaded' => 'Profile image uploaded for :auditable_type',
+                        'contract_created' => 'Contract created for resident :userName',
                     ],                    
                 ],
             ],
@@ -535,4 +545,5 @@ return [
         'rd' => 'rd',
         'th' => 'th',
     ],
+    'notification_residents_sent' => 'Notification was sent to {number} residents at {time} on {date}.',
 ];

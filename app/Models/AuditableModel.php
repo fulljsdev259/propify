@@ -53,6 +53,7 @@ class AuditableModel extends Model implements Auditable
     const EventMediaUploaded = 'media_uploaded';
     const EventMediaDeleted = 'media_deleted';
     const EventManageEmailReceptionists = 'manage_email_receptionists';
+    const EventAvatarUploaded = 'avatar_uploaded';
     const BuildingUnitsCreated = 'building_units\y_created';
     const NewResidentPinboardCreated = 'new_resident_pinboard_created';
     const NotificationsSent = 'notifications_sent';
@@ -295,9 +296,9 @@ class AuditableModel extends Model implements Auditable
             $value = $this->getMediaAudit($value);
         }
 
-        if (in_array($audit->event, [self::EventCreated, self::DownloadCredentials, self::SendCredentials])) {
+        if (in_array($audit->event, [self::EventCreated, self::DownloadCredentials, self::SendCredentials, self::EventAvatarUploaded])) {
             $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
-        } elseif (self::EventUpdated == $audit->event) {
+        } elseif (in_array($audit->event, [self::EventUpdated])) {
             $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle);
         } else {
             dd('@TODO5', $audit->event);
@@ -706,5 +707,22 @@ class AuditableModel extends Model implements Auditable
         }
 
         return $data;
+    }
+
+    /**
+     * @param null $event
+     * @return Audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function makeNewAudit($event = null)
+    {
+        $this->setAuditEvent(self::EventUpdated);
+        $audit = new Audit($this->toAudit());
+
+        if ($event) {
+            $audit->event = $event;
+        }
+
+        return $audit;
     }
 }

@@ -58,22 +58,6 @@ class ResidentTransformer extends BaseTransformer
         if ($model->contracts || $model->relationExists('contracts')) { // @TODO delete reloading
             $response['contracts'] = (new ContractTransformer())->transformCollection($model->contracts);
 
-            if (!empty($response['contracts'][0]['building'])) {
-                $response['building'] = $response['contracts'][0]['building'];
-            }
-
-            if (!empty($response['contracts'][0]['unit'])) {
-                $response['unit'] = $response['contracts'][0]['unit'];
-            }
-
-            if (!empty($response['contracts'][0]['media'])) {
-                $response['media'] = $response['contracts'][0]['media'];
-            }
-
-            if (!empty($response['contracts'][0]['address'])) {
-                $response['address'] = $response['contracts'][0]['address'];
-            }
-
             $allCount = $model->contracts->count();
             $activeCount = $model->contracts->where('status', Contract::StatusActive)->count();
 
@@ -120,5 +104,19 @@ class ResidentTransformer extends BaseTransformer
         $address = $building->address;
 
         return $this->item($address, new AddressTransformer);
+    }
+
+    /**
+     * @param Resident $model
+     * @return array
+     */
+    public function myNeighbours(Resident $model)
+    {
+        return [
+            'id' => $model->id,
+            'first_name' => $model->first_name,
+            'last_name' => $model->last_name,
+            'avatar' => $model->user->avatar ?? '',
+        ];
     }
 }

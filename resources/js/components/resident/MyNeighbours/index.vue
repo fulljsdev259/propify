@@ -17,8 +17,8 @@
                             {{letter}}
                         </el-divider>
                     </el-timeline-item>
-                    <el-timeline-item v-for="{id, title, first_name, last_name, user} in residents" :key="id">
-                        <ui-avatar :src="user.avatar" :size="36" :name="user.name" shadow="hover" />
+                    <el-timeline-item v-for="{id, title, first_name, last_name, name, avatar} in residents" :key="id">
+                        <ui-avatar :src="avatar" :size="36" :name="name" shadow="hover" />
                         <div class="content">
                             <!-- <div class="title">
                                 {{title}}
@@ -72,48 +72,37 @@
             })
         },
         async mounted () {
-            const {resident} = this.user
+            this.loading = true
 
-            if (resident.building) {
-                this.loading = true
+            let resp = await this.$store.dispatch('getMyNeighbours')
+            
+            let residents = resp.data
 
-                let {residents} = await this.$store.dispatch('getBuilding', {
-                    id: resident.building.id
-                })
-                
+            // exclude the loggedin resident
+            //residents = residents.filter(resident => resident.id != this.$store.getters.loggedInUser.resident.id) 
+            residents.map(item => item.name = item.first_name + '' + item.last_name)
 
-                // exclude the loggedin resident
-                residents = residents.filter(resident => resident.id != this.$store.getters.loggedInUser.resident.id) 
+            if (this.limit > -1) {
+                residents = residents.slice(0, this.limit)
+            }
 
-                if (this.limit > -1) {
-                    residents = residents.slice(0, this.limit)
-                }
+            const unorderedList = residents.reduce((obj, resident) => {
+                obj[resident.first_name[0]] = obj[resident.first_name[0]] || []
+                obj[resident.first_name[0]].push(resident)
 
+                return obj
+            }, {})
 
-                if(residents.length == 0) {
-                    this.$root.$emit('hide-my-neighbour-card');
-                }
-
-                const unorderedList = residents.reduce((obj, resident) => {
-                    obj[resident.first_name[0]] = obj[resident.first_name[0]] || []
-                    obj[resident.first_name[0]].push(resident)
+            this.groupedResidents = Object.keys(unorderedList)
+                .sort((a, b) => a.localeCompare(b))
+                .reduce((obj, key) => {
+                    obj[key] = unorderedList[key].sort((a, b) => a.first_name.localeCompare(b.first_name))
 
                     return obj
                 }, {})
 
-                this.groupedResidents = Object.keys(unorderedList)
-                    .sort((a, b) => a.localeCompare(b))
-                    .reduce((obj, key) => {
-                        obj[key] = unorderedList[key].sort((a, b) => a.first_name.localeCompare(b.first_name))
-
-                        return obj
-                    }, {})
-
-                this.timeout = setTimeout(() => this.loading = false, EXTRA_LOADING_SECONDS)
-            }
-            else {
-                this.$root.$emit('hide-my-neighbour-card');
-            }
+            this.timeout = setTimeout(() => this.loading = false, EXTRA_LOADING_SECONDS)
+           
         },
         beforeDestroy () {
             clearTimeout(this.timeout)

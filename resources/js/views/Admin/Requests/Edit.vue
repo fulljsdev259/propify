@@ -269,16 +269,7 @@
                                         :closable="false"
                                     >
                                     </el-alert> -->
-                                    <!-- <upload-document
-                                        @fileUploaded="uploadFiles"
-                                        class="drag-custom mt15"
-                                        drag
-                                        multiple
-                                    />
-                                    <div class="mt15">
-                                        <request-media :data="[...model.media, ...media]" @deleteMedia="deleteMedia"
-                                                       v-if="media.length || (model.media && model.media.length)"></request-media>
-                                    </div> -->
+
                                     <span class="image-tab-title">Files</span>
                                     <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex" :show-description="false"/>
                                     <span class="image-tab-title">Upload</span>

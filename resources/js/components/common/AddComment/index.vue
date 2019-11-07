@@ -142,7 +142,7 @@
                             resp = await this.getPropertyManagers({
                                 get_all: true,
                                 search,
-                                exclude_ids
+                                exclude_ids: exclude_ids.join(',')
                             });
                         this.managerLists = resp.data;
                     } catch (err) {

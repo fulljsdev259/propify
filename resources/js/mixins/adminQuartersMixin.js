@@ -120,7 +120,7 @@ export default (config = {}) => {
                             resp = await this.getPropertyManagers({
                                 get_all: true,
                                 search,
-                                exclude_ids
+                                exclude_ids: exclude_ids.join(',')
                             });
                         } else if(this.assignmentType === 'administrator'){
                             quarterAssignee.data.data.map(item => {
@@ -131,7 +131,7 @@ export default (config = {}) => {
                             resp = await this.getUsers({
                                 get_all: true,
                                 search,
-                                exclude_ids,
+                                exclude_ids: exclude_ids.join(','),
                                 role: 'administrator'
                             });
                         }
@@ -239,7 +239,7 @@ export default (config = {}) => {
 
                 mixin.created = async function () {
                     this.loading.state = true;
-                    this.getLanguageI18n();
+                    //this.getLanguageI18n();
                     this.loading.state = false;
                 };
 
@@ -310,7 +310,7 @@ export default (config = {}) => {
 
                 mixin.created = async function () {
                     this.loading.state = true;
-                    this.getLanguageI18n();
+                    //this.getLanguageI18n();
                     await this.fetchCurrentQuarter();
                     this.loading.state = false;
                 };

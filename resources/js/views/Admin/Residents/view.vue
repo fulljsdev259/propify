@@ -1,5 +1,5 @@
 <template>
-    <div class="residents-view">
+    <div class="residents-view" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.resident.view_title')" icon="icon-group">
             <template slot="description" v-if="model.resident_format">
                 <div class="subtitle">{{model.resident_format}}</div>
@@ -357,7 +357,7 @@
                                         :noDataMessage="$t('general.no_pinboard')"
                                         fetchAction="getPinboardTruncated"
                                         filter="user_id"
-                                        v-if="!_.isEmpty(user)"
+                                        v-if="user && user.id"
                                 />
                             </el-card>
                         </el-col>
@@ -372,7 +372,7 @@
                                         :noDataMessage="$t('general.no_listings')"
                                         fetchAction="getListings"
                                         filter="user_id"
-                                        v-if="!_.isEmpty(user)"
+                                        v-if="user && user.id"
                                 />
                             </el-card>
                         </el-col> -->

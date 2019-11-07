@@ -21,6 +21,8 @@ export default (config = {}) => {
                         password_confirmation: '',
                         name: '',
                         phone: '',
+                        avatar: '',
+                        avatar_variations: '',
                     },
                     settings: {
                         language: ''
@@ -142,7 +144,7 @@ export default (config = {}) => {
             },
         },
         methods: {
-            ...mapActions(['getBuildings', 'getQuarters', 'assignBuilding', 'assignQuarter', 'unassignBuilding', 'unassignQuarter']),
+            ...mapActions(['getBuildings', 'getQuarters', 'assignBuilding', 'assignQuarter', 'unassignBuilding', 'unassignQuarter', 'getAssignments']),
             async remoteSearchBuildings(search) {
                 if (search === '') {
                     this.resetToAssignList();
@@ -150,21 +152,41 @@ export default (config = {}) => {
                     this.remoteLoading = true;
 
                     try {
-                        let resp = [];
+                        let resp = [],
+                            exclude_ids = [],
+                            propertyManagersAssignments;
+
+                        config.mode == 'edit'
+                            ? propertyManagersAssignments = await this.getAssignments({manager_id: this.$route.params.id})
+                            : '';
+
                         if (this.assignmentType === 'building') {
+                            config.mode == 'add'
+                                ? exclude_ids = this.alreadyAssigned.buildings
+                                : propertyManagersAssignments.data.data.map(item => {
+                                    if(item.assignmentType === 'building'){
+                                        exclude_ids.push(item.id);
+                                    }
+                                });
+
                             resp = await this.getBuildings({
                                 get_all: true,
                                 search,
-                            });
-
-                            resp.data = resp.data.filter((building) => {
-                                return !this.alreadyAssigned.buildings.includes(building.id)
+                                exclude_ids: exclude_ids.join(',')
                             });
                         } else {
-                            resp = await this.getQuarters({get_all: true, search});
+                            config.mode == 'add'
+                                ? exclude_ids = this.alreadyAssigned.quarters
+                                : propertyManagersAssignments.data.data.map(item => {
+                                    if (item.assignmentType === 'quarter') {
+                                        exclude_ids.push(item.id);
+                                    }
+                                });
 
-                            resp.data = resp.data.filter((quarter) => {
-                                return !this.alreadyAssigned.quarters.includes(quarter.id)
+                            resp = await this.getQuarters({
+                                get_all: true,
+                                search,
+                                exclude_ids: exclude_ids.join(',')
                             });
                         }
 
@@ -175,7 +197,7 @@ export default (config = {}) => {
                         this.remoteLoading = false;
                     }
                 }
-            },  
+            },
             async checkavailabilityEmail(rule, value, callback) {
                 let validateObject = this.model;
                 
@@ -268,8 +290,7 @@ export default (config = {}) => {
                 this.alreadyAssigned.buildings = this.addedAssigmentList.filter(item => item['type'] === 'building').map((building) => building.id);
                 this.alreadyAssigned.quarters = this.addedAssigmentList.filter(item => item['type'] === 'quarter').map((quarter) => quarter.id);
 
-                this.toAssign = '';
-                this.toAssignList = [];
+                this.resetToAssignList();
             },
             async unassign(toUnassign) {
                 let resp;
@@ -291,7 +312,7 @@ export default (config = {}) => {
                     if(this.$refs.auditList){
                         this.$refs.auditList.fetch();
                     }
-                    this.toAssign = '';
+                    this.resetToAssignList();
                     const type = toUnassign.aType == 1 ? 'Building' : 'Quarter';
                     displaySuccess(resp);
                 }
