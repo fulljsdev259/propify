@@ -1,30 +1,28 @@
 <template>
     <div class="custom-select">
        <el-dropdown trigger="click" placement="bottom-start" @visible-change="handleVisibleChange">
-            <el-button>
-                <span v-if="selectedItems.length === 0">{{ placeholder }}</span>
+            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]">
+                <span v-if="findSelectedOne.count === 0">{{ placeholder }}</span>
                 <el-tag 
                     v-else
                     size="mini"
                     closable
-                    @close="selectItem(selectedItems[0], true)"
+                    @close="selectItem(findSelectedOne.index, true)"
                 >
-                    {{ makeEllipis($t(`models.request.category_list.${options[selectedItems[0] - 1].name}`)) }}
+                    {{ $t(`models.request.category_list.${findSelectedOne.label}`) }}
                 </el-tag>
                 <el-tag
-                    v-if="selectedItems.length > 1"
+                    v-if="findSelectedOne.count > 1"
                     size="mini"    
                 >
-                    +{{ selectedItems.length - 1 }}
+                    +{{ findSelectedOne.count - 1 }}
                 </el-tag>
-                <span v-if="selectedItems.length" class="dropdown-icon el-icon-close" @click.prevent.stop="handleReset(true)"></span>
-                <span v-else-if="!selecting" class="dropdown-icon el-icon-arrow-down"></span>
-                <span v-else-if="selecting" class="dropdown-icon el-icon-arrow-up"></span>
+                <span v-if="findSelectedOne.count != 0" class="dropdown-icon el-icon-close" @click.prevent.stop="handleReset(true)"></span>
             </el-button>
             <el-dropdown-menu slot="dropdown">
                 <el-input
                     v-model="search"
-                    placeholder="Search..."
+                    :placeholder="`${$t('general.placeholders.search')}...`"
                 >
                     <i 
                         v-if="search === ''"
@@ -40,53 +38,37 @@
                 </el-input>
                 <div class="dropdown-container">
                     <div
-                        :key="placeholder + option.id + 'selected'"
+                        :key="placeholder + item.id + 'selected'"
                         class="dropdown-item" 
-                        :class="[{'selected': selected(option.id) !== -1}]"
-                        @click="selectItem(option.id)"
-                        v-for="option in options" 
-                        :style="{display: selected(option.id) !== -1 && isContained($t(`models.request.category_list.${option.name}`))? 'flex':'none'}"
+                        :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained($t(`models.request.category_list.${item.name}`))}]"
+                        @click="selectItem(index)"
+                        v-for="(item, index) in items" 
                     >
-                        <span v-html="filterSearch($t(`models.request.category_list.${option.name}`))"></span>
-                        <span
-                            v-if="selected(option.id) !== -1" 
-                            class="el-icon-check"
-                        >
-                        </span>
+                        <span v-html="filterSearch($t(`models.request.category_list.${item.name}`))"></span>
+                        <span class="el-icon-check"></span>
                     </div>
-                    <div
-                        :key="placeholder + option.id"
-                        class="dropdown-item" 
-                        @click="selectItem(option.id)"
-                        v-for="option in options" 
-                        :style="{display: selected(option.id) === -1 && isContained($t(`models.request.category_list.${option.name}`))? 'flex':'none'}"
-                    >
-                        <span v-html="filterSearch($t(`models.request.category_list.${option.name}`))"></span>
-                    </div>
+                    
                 </div>
                 <el-divider></el-divider>
                 <div class="actions">
-                    <el-button type="text" @click="handleReset()">Reset</el-button>
-                    <el-button v-if="compareArray(originItems, selectedItems)" type="text" :disabled="true">Select</el-button>
-                    <el-button v-else type="primary" @click="handleSelect()"><el-dropdown-item>Select</el-dropdown-item></el-button>
+                    <el-button type="text" @click="handleReset()">{{ $t('general.reset') }}</el-button>
+                    <el-button v-if="!isChanged()" type="text" :disabled="true">{{ $t('general.placeholders.select') }}</el-button>
+                    <el-button v-else type="primary"><el-dropdown-item >{{ $t('general.placeholders.select') }}</el-dropdown-item></el-button>
                 </div>
             </el-dropdown-menu>
         </el-dropdown>
-        <span :id="spanKey" style="visibility: hidden" ></span>
     </div>
 </template>
 <script>
-    import {Avatar} from 'vue-avatar';
-
     export default {
-        name: 'ContractCount',
+        name: 'CustomSelect',
         data() {
             return {
-               selectedItems: [],
                originItems: [],
                selectClicked: false,
                search: '',
                selecting: false,
+               items: [],
             }
         },
         props: {
@@ -102,10 +84,6 @@
               type: Array,
               default: () => []
           },
-          spanKey: {
-              type: String,
-              default: () => 'span'
-          }
         },
         components: {
            
@@ -113,60 +91,82 @@
         computed: {
             filteredOptions() {
                 return this.options.filter((option) => this.search ==='' || this.search !== '' && option.name.includes(this.search));
-            }
+            },
+            findSelectedOne() {
+                let first_item = null;
+                let count = 0;
+                let idx = -1;
+                this.items.forEach((item, index) => {
+                    if(item.selected) {
+                        count ++;
+                        if(count == 1) {
+                            first_item = item;
+                            idx = index;
+                        }
+                    }
+                });
+                return { 
+                    label:first_item?first_item.name:null,
+                    index: idx, 
+                    count: count
+                };
+            },
         },
         methods: {
             isContained(str) {
                 return str.toLowerCase().includes(this.search.toLowerCase());
             },
+            handleDropdownClick() {
+                this.clearSearch();
+            },
             handleVisibleChange(visible) {
-                this.selecting = visible;
+                let selected = [], unselected = [];
                 if(visible) {
-                    this.originItems = this.selectedItems.slice();
-                    this.clearSearch();
-                }else if(!this.compareArray(this.originItems, this.selectedItems))
-                    this.$emit('select-changed', this.selectedItems);
+                    this.selecting = visible;
+                    this.items.forEach((item) => {
+                        if(item.selected) {
+                            selected.push(item);
+                        } else {
+                            unselected.push(item);
+                        }
+                    });
+                    unselected.sort((a ,b ) => {
+                        return a.id - b.id;
+                    });
+                    this.items = selected.concat(unselected);
+                    this.originItems = [];
+                    this.items.forEach((item) => {
+                        this.originItems.push({id:item.id, name:item.name, selected:item.selected});
+                    });
+                }
+                if(!visible)
+                    this.handleSelect();
             },
             clearSearch() {
                 this.search = '';
             },
-            compareArray(arrA, arrB){
-                let result = true;
-                arrA.forEach((item) => {
-                    if(arrB.indexOf(item) === -1)
-                        result = false;
-                });
-                
-                arrB.forEach((item) => {
-                    if(arrA.indexOf(item) === -1)
-                        result = false;
-                });
+            isChanged() {
+                let result = false;
+                console.log(this.selecting);
+                console.log(this.originItems, this.items);
+                if(this.selecting) {
+                    for(let i = 0; i < this.items.length; i++)
+                        if(this.items[i].selected != this.originItems[i].selected)
+                            result = true;
+                }
+                console.log(result);
                 return result;
             },
             hasSearch() {
                 return this.options.filter((option) => this.search ==='' || this.search !== '' && option.name.includes(this.search));
             },
-            getLabel() {
-                let label = this.placeholder;
-                let count = this.selectedItems.length;
-                if(count) {
-                    label = `<el-tag type="info">${this.$t(`models.request.category_list.${this.options[this.selectedItems[0]-1].name}`)}</el-tag>`;
-                    if(count > 1)
-                        label = label + `<el-tag>+${count - 1}</el-tag>`
-                }
-                return label;
-            },
             selectItem(index, notifyChange = false) {
-                let pos = this.selected(index);
-                if(pos === -1)
-                    this.selectedItems.push(index);
-                else   
-                    this.selectedItems.splice(pos, 1);
+                this.items[index].selected = !this.items[index].selected;
                 if(notifyChange)
                     this.handleSelect();
             },
             selected(index) {
-                return this.selectedItems.indexOf(index);
+                return this.items[index].selected;
             },
             filterSearch(name) {
                 let result = name;
@@ -179,37 +179,32 @@
                 return result;
             },
             handleReset(notifyChange = false) {
-                this.selectedItems = [];
-                if(notifyChange)
-                    this.handleSelect();
+                this.items.forEach((item)=> {
+                    item.selected = false;
+                    this.originItems.push({id:item.id, name:item.name, selected:item.selected});
+                });
+                this.handleSelect();
             },
             handleSelect() {
+                let result = [];
                 this.selectClicked = true;
-                this.$emit('select-changed', this.selectedItems);
+                this.items.forEach((item) => {
+                    if(item.selected) {
+                        result.push(item.id);
+                    } 
+                });
+                this.$emit('select-changed', result);
             },
-            getTextWidth(text) { 
-                var spanText = document.getElementById(this.spanKey);
-                spanText.style.position = 'absolute'; 
-                spanText.style.left = '0';
-                spanText.style.whiteSpace = 'no-wrap'; 
-                spanText.innerHTML = text; 
-    
-                var width = Math.ceil(spanText.clientWidth); 
-                return width;
-            },
-            makeEllipis(text) {
-                let result = text, i;
-                for(i = 0; i < text.length; i++) {
-                    if(this.getTextWidth(text.slice(0, i)) > 100)
-                        break;
-                }
-                if(i < text.length)
-                    result = `${text.slice(0, i - 1)}...`;
-                return result;
-            }
         },
-        mounted() {
-            this.selectedItems = this.selectedOptions.slice();
+        created() {
+            this.options.forEach((option) => {
+                this.items.push({
+                    id: option.id,
+                    name: option.name,
+                    selected: this.selectedOptions.includes(option.id),
+                })
+            });
+
         }
     }
 </script>
@@ -221,14 +216,17 @@
             padding: 0 10px;
             width: 100%;
             text-align: left;
-            color: var(--color-text-placeholder);
+            color: var(--color-text-primary);
             height: 40px;
             position: relative;
+            background-color: var(--background-color-base);
+            border-color: transparent;
+
             &:hover, &:focus {
-                background-color: inherit;
+                background-color: var(--color-main-background-base);
             }
-            &:focus {
-                border-color: var(--color-primary);
+            &.selected {
+                background-color: var(--color-text-primary);
             }
 
             .dropdown-icon {
@@ -237,6 +235,13 @@
                 top: 13px;
                 color: var(--color-text-placeholder);
             }
+            span.el-tag {
+                background-color: var(--color-white);
+            }
+            &.selected-button {
+                background-color: var(--color-primary);
+            }
+
         }
     }
     .el-dropdown-menu {
@@ -265,6 +270,9 @@
                 border-radius: 4px;
                 cursor: pointer;
 
+                span:last-child {
+                    display: none;
+                }
                 &:hover {
                     background-color: var(--background-color-base);
                 }
@@ -275,6 +283,12 @@
                     span {
                         font-weight: 700;
                     }
+                    span:last-child {
+                        display: block;
+                    }
+                }
+                &.hide-unmatching {
+                    display: none;
                 }
             }
         }

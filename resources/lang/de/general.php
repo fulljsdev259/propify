@@ -129,6 +129,7 @@ return [
     'logged_in' => 'Eingeloggt',
     'invalid_credentials' => 'Die eingegebenen Daten stimmen nicht.',
     'server_error' => 'Server Fehler, bitter erneut versuchen.',
+    'reset' => 'Zurücksetzen',
     'reset_password' => 'Passwort zurücksetzen',
     'reset_password_mail' => 'Passwort per E-Mail zurücksetzen.',
     'reset_password_mail_sent' => 'Wir haben Ihnen eine E-Mail mit weiteren Anweisungen gesendet. Bitte prüfen Sie Ihren Posteingang.',
