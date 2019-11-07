@@ -362,6 +362,7 @@ return [
                         'notifications_sent' => 'Notifica inviata',
                         'new_resident_pinboard_created' => 'Nuova bacheca vicina',
                         'avatar_uploaded' => 'Immagine del profilo caricata',
+                        'contract_created' => 'Contratto creato',
                     ]                    
                 ],
                 'content' => [                    
@@ -384,6 +385,7 @@ return [
                         'notifications_sent' => 'È stata inviata una notifica per questo tipo :auditable_type',
                         'new_resident_pinboard_created' => "Aggiunto un nuovo vicino di casa per l'utente :userName",
                         'avatar_uploaded' => 'Immagine del profilo caricata per :auditable_type',
+                        'contract_created' => 'Contratto creato per i residenti :userName',
                     ],                                   
                 ],
             ],
