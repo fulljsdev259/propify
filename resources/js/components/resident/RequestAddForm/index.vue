@@ -301,6 +301,13 @@
                             this.showSubCategory = this.showLocation = this.showRoom = false
                             
                             this.$refs.form.resetFields()
+
+                            if(this.contracts.find(item => item.id == this.default_contract_id)) {
+                                this.model.contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
+                            }
+                            else if(this.contracts.length == 1) {
+                                this.model.contract_id = this.contracts[0].id
+                            }
                             this.$emit('update:visible', false)
                             
                         } catch (err) {
