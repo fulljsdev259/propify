@@ -239,7 +239,7 @@ export default (config = {}) => {
 
                 mixin.created = async function () {
                     this.loading.state = true;
-                    this.getLanguageI18n();
+                    //this.getLanguageI18n();
                     this.loading.state = false;
                 };
 
@@ -310,7 +310,7 @@ export default (config = {}) => {
 
                 mixin.created = async function () {
                     this.loading.state = true;
-                    this.getLanguageI18n();
+                    //this.getLanguageI18n();
                     await this.fetchCurrentQuarter();
                     this.loading.state = false;
                 };
