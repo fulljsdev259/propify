@@ -361,6 +361,7 @@ return [
                         'media_deleted' => 'Medien gelöscht',
                         'notifications_sent' => 'Benachrichtigung gesendet',
                         'new_resident_pinboard_created' => 'Neue Nachbar Pinnwand',
+                        'avatar_uploaded' => 'Profil-Bild hochgeladen',
                     ],
                 ],
                 'content' => [                    
@@ -382,6 +383,7 @@ return [
                         'building_unassigned' => 'Liegenschaft :buildingName wurde entfernt',
                         'notifications_sent' => 'Für diesen :auditable_type wurde eine Benachrichtigung gesendet.',
                         'new_resident_pinboard_created' => "Neuer Nachbar für Benutzer :userName hinzugefügt",
+                        'avatar_uploaded' => 'Profil-Bild hochgeladen für :auditable_type',
                     ],                    
                 ],
             ],
