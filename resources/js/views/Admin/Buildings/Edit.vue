@@ -506,8 +506,6 @@
                     i18n: this.translateResidentType
                 }, {
                     type: 'residentContract',
-                    label: 'models.resident.contract.title',
-                    type: 'residentContract',
                     label: 'models.resident.contract.title'
                 }, {
                     prop: 'status',
