@@ -678,7 +678,7 @@ export default (config = {}) => {
                             this.$set(this.model, 'sub_category_id', data.sub_category.id);
                         this.$set(this.model, 'created_by', data.created_by);
                         this.$set(this.model, 'building', data.contract.building.name);
-
+                        this.address = data.contract.address
                         //this.contracts = resp.data.resident.contracts.filter(item => item.status == 1)
                         this.model.contract_id = data.contract.id
                         await this.getConversations();
