@@ -401,7 +401,7 @@ return [
         'types' => [
             'label' => 'Typ',
             'rent' => 'Miete',
-            'sell' => 'Verkaufen'
+            'sell' => 'Verkauf'
         ]
     ],
     'request' => [        
