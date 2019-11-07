@@ -15,17 +15,17 @@ use App\Http\Requests\API\User\ShowRequest;
 use App\Http\Requests\API\User\UpdateLoggedInRequest;
 use App\Http\Requests\API\User\UpdateRequest;
 use App\Http\Requests\API\User\UploadImageRequest;
+use App\Models\Audit;
+use App\Models\AuditableModel;
 use App\Models\Building;
+use App\Models\Contract;
 use App\Models\Settings;
 use App\Models\User;
 use App\Repositories\UserRepository;
-use App\Repositories\File;
-use App\Transformers\MediaTransformer;
 use App\Transformers\ResidentTransformer;
 use App\Transformers\UserTransformer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 
 /**
@@ -294,24 +294,44 @@ class UserAPIController extends AppBaseController
             'propertyManager:id,user_id',
             'serviceProvider:id,user_id'
         ]);
-        if ($user->propertyManager) {
-            $user->property_manager_id = $user->propertyManager->id;
+        if ($user->property_manager) {
+            $user->property_manager_id = $user->property_manager->id;
         }
 
-        if ($user->serviceProvider) {
-            $user->service_privider_id = $user->serviceProvider->id;
+        if ($user->service_privider) {
+            $user->service_privider_id = $user->service_privider->id;
         }
 
-        unset($user->serviceProvider);
-        unset($user->propertyManager);
+        unset($user->service_privider);
+        unset($user->property_manager);
         $user->unread_notifications_count = $user->unreadNotifications()->count();
         $resident = $user->resident;
 
         if ($resident) {
             unset($user->resident);
+            $resident->load(['contracts' => function($q) {
+                $q->where('status' , Contract::StatusActive);
+            }]);
+
             $contactEnable = (bool) $this->getResidentContactEnable($resident);
             $resident = (new ResidentTransformer())->transform($resident);
+
+            $buildingIds = collect($resident['contracts'])->pluck('building_id');
+            $buildings = Building::select('id')
+                ->whereIn('id', $buildingIds)
+                ->with('property_managers:property_managers.id')
+                ->with([
+                    'contracts' => function ($q) use ($resident) {
+                        $q->where('status', Contract::StatusActive)
+                            ->where('resident_id', '!=', $resident)
+                            ->select('building_id', 'resident_id');
+                    }
+                ])
+                ->get();
+
             $resident['contact_enable'] = $contactEnable;
+            $resident['neighbour_count'] = $buildings->pluck('contracts.*.resident_id')->collapse()->unique()->count();;
+            $resident['property_manager_count'] = $buildings->pluck('property_managers.*.id')->collapse()->unique()->count();
             $user->setAttribute('resident', $resident);
         }
 
@@ -557,6 +577,7 @@ class UserAPIController extends AppBaseController
      * @param int $id
      * @param UploadImageRequest $request
      * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function uploadImage(int $id, UploadImageRequest $request)
@@ -570,19 +591,48 @@ class UserAPIController extends AppBaseController
 
         // image upload
         $fileData = base64_decode($request->get('image_upload', ''));
-
         if ($fileData) {
+            $mergeInAudit = $this->getMergedAudit($user, $request);
             try {
-                $input['avatar'] = $this->userRepository->uploadImage($fileData, $user, $request->merge_in_audit);
+                $input['avatar'] = $this->userRepository->uploadImage($fileData, $user, $mergeInAudit);
             } catch (\Exception $e) {                
                 return $this->sendError(__('models.user.errors.image_upload') . $e->getMessage());
             }
         }
 
+        User::disableAuditing();
         $user = $this->userRepository->with(['settings'])->update($input, $id);
+        User::enableAuditing();
 
         $response = (new UserTransformer)->transform($user);
         return $this->sendResponse($response, __('models.user.saved'));
+    }
+
+    /**
+     * @param User $user
+     * @param $request
+     * @return Audit|null
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    protected function getMergedAudit(User $user, $request)
+    {
+        if ($request->merge_in_audit) {
+            return $request->merge_in_audit;
+        }
+
+        if ($user->resident) {
+            return $user->resident->makeNewAudit(AuditableModel::EventAvatarUploaded);
+        }
+
+        if ($user->service_provider) {
+            return $user->service_provider->makeNewAudit(AuditableModel::EventAvatarUploaded);
+        }
+
+        if ($user->property_manager) {
+            return $user->property_manager->makeNewAudit(AuditableModel::EventAvatarUploaded);
+        }
+
+        return null;
     }
 
     /**

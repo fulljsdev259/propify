@@ -4,8 +4,10 @@ namespace App\Transformers;
 
 use App\Helpers\Helper;
 use App\Models\Pinboard;
+use App\Models\Resident;
 use App\Models\Listing;
 use App\Models\Request;
+use App\Models\User;
 use App\Repositories\AuditRepository;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use OwenIt\Auditing\Models\Audit;
@@ -66,6 +68,9 @@ class AuditTransformer extends BaseTransformer
                 }
                 $old_value = (isset($model->old_values[$field])) ? $model->old_values[$field] : "";
                 $new_value = (isset($model->new_values[$field])) ? $model->new_values[$field] : "";
+                if(is_array($old_value) || is_array($new_value)){
+                    continue;
+                }
                 $language_map = $model->auditable_type;
                 if($model->auditable_type == 'manager'){
                     $language_map = 'property_manager';
@@ -99,7 +104,7 @@ class AuditTransformer extends BaseTransformer
                     $old_value = ($old_value) ? (AuditRepository::getDataFromField($field, $old_value, $model->auditable_type)) : "";
                     $new_value = ($new_value) ? (AuditRepository::getDataFromField($field, $new_value, $model->auditable_type)) : "";
                 }                
-                elseif(in_array($field, ['attic','announcement','is_execution_time'])){
+                elseif(in_array($field, ['attic','announcement','is_execution_time','iframe_enable'])){
                     $old_value = ($old_value == 1) ? __('general.enabled') : __('general.disabled');
                     $new_value = ($new_value == 1) ? __('general.enabled') : __('general.disabled');                                    
                 }
@@ -133,6 +138,9 @@ class AuditTransformer extends BaseTransformer
         elseif($model->event == 'created'){                        
             $response['statement'] = __("general.components.common.audit.content.general.created",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
         }
+        elseif($model->event == 'deleted'){
+            $response['statement'] = __("general.components.common.audit.content.general.deleted",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
+        }
         elseif($model->event == 'manager_assigned'){            
             $response['statement'] = __("general.components.common.audit.content.general.manager_assigned",['propertyManagerFirstName' => $model->new_values['property_manager_first_name'],'propertyManagerLastName' => $model->new_values['property_manager_last_name']]);
         }
@@ -151,6 +159,9 @@ class AuditTransformer extends BaseTransformer
         elseif($model->event == 'media_deleted'){            
             $response['statement'] = __("general.components.common.audit.content.general.media_deleted");
         }
+        elseif($model->event == 'avatar_uploaded'){            
+            $response['statement'] = __("general.components.common.audit.content.general.avatar_uploaded",['auditable_type' => $model->auditable_type]);
+        }
         elseif($model->event == 'provider_notified'){
             $response['statement'] = __("general.components.common.audit.content.general.provider_notified",['providerName' => $model->new_values['service_provider']['name']]);
         }  
@@ -165,6 +176,24 @@ class AuditTransformer extends BaseTransformer
         }
         elseif($model->event == 'building_unassigned'){
             $response['statement'] = __("general.components.common.audit.content.general.building_unassigned",['buildingName' => $model->old_values['building_name']]);
+        }
+        elseif($model->event == 'notifications_sent'){
+            $response['statement'] = __("general.components.common.audit.content.general.notifications_sent",['auditable_type' => $model->auditable_type]);
+        }
+        elseif($model->event == 'new_resident_pinboard_created'){
+            $pinboard = Pinboard::find($model->auditable_id);
+            if($pinboard){
+                $user = User::find($pinboard->user_id);
+                if($user){
+                    $response['statement'] = __("general.components.common.audit.content.general.new_resident_pinboard_created",['userName' => $user->name]);
+                }                
+            }            
+        }
+        elseif($model->event == 'contract_created'){
+            $resident = Resident::find($model->auditable_id);
+            if($resident){                                
+                $response['statement'] = __("general.components.common.audit.content.general.contract_created",['userName' => $resident->getNameAttribute()]);
+            }            
         }
         return $response;
     }

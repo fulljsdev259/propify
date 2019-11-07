@@ -1,12 +1,12 @@
 <template>
-    <div class="services-edit">
+    <div class="services-edit" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.request.add_title')" icon="icon-chat-empty" shadow="heavy">
             <add-actions :saveAction="submit" route="adminRequests" editRoute="adminRequestsEdit"/>
         </heading>
         <el-row :gutter="20" class="crud-view" id="add_request">
             <el-col :md="12">
-                <el-form :model="model" :rules="validationRules" ref="form">
-                <card :loading="loading">
+                <el-form :model="model" label-position="top" :rules="validationRules" ref="form">
+                <card >
                     <el-row :gutter="20">
                         <el-col :md="12">
                             <el-form-item :label="$t('models.request.category')"
@@ -425,9 +425,6 @@
     }
 
     #add_request {
-        .el-input__suffix {
-            height: 120px !important;
-        }
         .el-select__tags {
             top: 70% !important;
         }

@@ -176,7 +176,7 @@ export default (config = {}) => {
                         const {data} = await this.getUsers({
                             get_all: true,
                             search,
-                            exclude_ids,
+                            exclude_ids: exclude_ids.join(','),
                             roles: ['manager', 'administrator']
                         });
 
@@ -212,7 +212,7 @@ export default (config = {}) => {
                             resp = await this.getPropertyManagers({
                                 get_all: true,
                                 search,
-                                exclude_ids
+                                exclude_ids: exclude_ids.join(',')
                             });
                         } else if(this.assignmentType === 'administrator'){
                             respAssignee.data.data.map(item => {
@@ -223,7 +223,7 @@ export default (config = {}) => {
                             resp = await this.getUsers({
                                 get_all: true,
                                 search,
-                                exclude_ids,
+                                exclude_ids: exclude_ids.join(','),
                                 role: 'administrator'
                             });
                         }
@@ -236,7 +236,7 @@ export default (config = {}) => {
                             resp = await this.getServices({
                                 get_all: true, 
                                 search,
-                                exclude_ids
+                                exclude_ids: exclude_ids.join(',')
                             });
                         }
 
@@ -677,7 +677,7 @@ export default (config = {}) => {
                         if(data.sub_category)
                             this.$set(this.model, 'sub_category_id', data.sub_category.id);
                         this.$set(this.model, 'created_by', data.created_by);
-                        this.$set(this.model, 'building', data.resident.building.name);
+                        this.$set(this.model, 'building', data.contract.building.name);
 
                         //this.contracts = resp.data.resident.contracts.filter(item => item.status == 1)
                         this.model.contract_id = data.contract.id
@@ -685,7 +685,6 @@ export default (config = {}) => {
                         
                         if (data.resident) {
                             this.model.resident_id = data.resident.id;
-                            await this.getBuildingAddress(data.resident.building.address_id);
                         }
                     },
                     submit() {
@@ -772,14 +771,6 @@ export default (config = {}) => {
                             this.conversations = resp.data;
                         }
                     },
-                    async getBuildingAddress(building_id) {
-                        const resp = await this.getAddress({
-                            id: building_id
-                        });
-                        if (resp) {
-                            this.address = resp;
-                        }
-                    }
                 };
 
                 mixin.created = async function () {

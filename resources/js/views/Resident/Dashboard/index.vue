@@ -12,8 +12,8 @@
             <div class="column">
                 <emergency-card class="widget" />
                 <weather-card class="widget" />
-                <latest-property-managers-card v-if="!hidePropertyManagerCard" class="widget" />
-                <latest-my-neighbours-card v-if="!hideMyNeighbourCard" class="widget" />
+                <latest-property-managers-card v-if="this.loggedInUser.resident.property_manager_count > 0" class="widget" />
+                <latest-my-neighbours-card v-if="this.loggedInUser.resident.neighbour_count > 0" class="widget" />
                 <rate-card v-if="this.loggedInUser.resident.review == null" class="first-rate"/>
             </div>
             <div class="column">
@@ -200,12 +200,6 @@
             }
         },
         mounted () {
-            this.$root.$on('hide-property-manager-card', () => {
-                this.hidePropertyManagerCard = true
-            });
-            this.$root.$on('hide-my-neighbour-card', () => {
-                this.hideMyNeighbourCard = true
-            });
             // TweenMax.staggerFrom(, 2, {scale:0.5, opacity:0, delay:0.5, ease:Elastic.easeOut, force3D:true}, 0.2)
         }
     }

@@ -114,7 +114,6 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  * @property-read int|null $contracts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Resident[] $inActiveResidents
  * @property-read int|null $in_active_residents_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PropertyManager[] $lastPropertyManagers
  * @property-read int|null $last_property_managers_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Resident[] $lastResidents
  * @property-read int|null $last_residents_count
@@ -288,9 +287,18 @@ class Building extends AuditableModel implements HasMedia
     }
 
     /**
+     * @TODO remove
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function propertyManagers()
+    {
+        return $this->morphedByMany(PropertyManager::class, 'assignee', 'building_assignees', 'building_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function property_managers()
     {
         return $this->morphedByMany(PropertyManager::class, 'assignee', 'building_assignees', 'building_id');
     }
@@ -306,14 +314,6 @@ class Building extends AuditableModel implements HasMedia
     public function assignees()
     {
         return $this->hasMany(BuildingAssignee::class, 'building_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function lastPropertyManagers()
-    {
-        return $this->propertyManagers()->orderBy('id', 'DESC');
     }
 
     /**

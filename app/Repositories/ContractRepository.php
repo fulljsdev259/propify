@@ -43,6 +43,7 @@ class ContractRepository extends BaseRepository
      */
     public function create(array $attributes)
     {
+        \DB::beginTransaction();
         if ( !isset($attributes['status'])) {
             $attributes['status'] = Contract::StatusActive;
         }
@@ -53,16 +54,19 @@ class ContractRepository extends BaseRepository
          */
         $model = parent::create($attributes);
 
-        if ($model)  {
-            $model = $this->saveMediaUploads($model, $attributes);
-            /**
-             * @var $pinboardRepository PinboardRepository
-             */
-            $pinboardRepository = App::make(PinboardRepository::class);
-            $pinboardRepository->newResidentContractPinboard($model);
+        if (empty($model))  {
+            \DB::rollBack();
+            return $model;
         }
 
-       $this->setAsResidentDefaultContractIfNeed($model);
+        $model = $this->saveMediaUploads($model, $attributes);
+        /**
+         * @var $pinboardRepository PinboardRepository
+         */
+        $pinboardRepository = App::make(PinboardRepository::class);
+        $pinboardRepository->newResidentContractPinboard($model);
+        $this->setAsResidentDefaultContractIfNeed($model);
+        \DB::commit();
 
         return $model;
     }

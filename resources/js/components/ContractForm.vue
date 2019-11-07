@@ -327,7 +327,7 @@
         
         </el-row>
         </template>
-        <ui-divider></ui-divider>
+        <ui-divider style="margin-top: 16px;"></ui-divider>
         <div class="contract-form-actions">
             <div class="button-group">
                 <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" round>{{ edit_index == undefined ? $t('general.actions.add') : $t('general.actions.edit')}}</el-button>

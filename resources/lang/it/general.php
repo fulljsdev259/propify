@@ -347,6 +347,7 @@ return [
                     'general' => [
                         'created' => 'Creato',
                         'updated' => 'Aggiornamenti',
+                        'deleted' => 'Cancellata',
                         'provider_assigned' => 'Fornitore assegnato',
                         'provider_unassigned' => 'Fornitore disimpegnato',
                         'provider_notified' => 'Fornitore notificato',
@@ -357,13 +358,18 @@ return [
                         'building_assigned' => 'Costruire assegnato',
                         'building_unassigned' => 'Costruire disimpegnato',
                         'media_uploaded' => 'Media caricati',
-                        'media_deleted' => 'Supporti cancellati'
+                        'media_deleted' => 'Supporti cancellati',
+                        'notifications_sent' => 'Notifica inviata',
+                        'new_resident_pinboard_created' => 'Nuova bacheca vicina',
+                        'avatar_uploaded' => 'Immagine del profilo caricata',
+                        'contract_created' => 'Contratto creato',
                     ]                    
                 ],
                 'content' => [                    
                     'general' => [
                         'created' => ':userName ha creato questo :auditable_type',
                         'updated' => 'La :fieldname è cambiata da :old al :new.',
+                        'deleted' => ':userName ha cancellato questo :auditable_type',
                         'provider_assigned' => ':providerName è stato assegnato come fornitore.',
                         'provider_unassigned' => 'Fornitore di servizi :providerName non è stato assegnato.',
                         'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName è stato assegnato come manager.',
@@ -376,6 +382,10 @@ return [
                         'quarter_unassigned' => ':quarterName Quartiere non assegnato',
                         'building_assigned' => ':buildingName Costruire assegnato',
                         'building_unassigned' => ':buildingNam Costruire senza assegnazione',
+                        'notifications_sent' => 'È stata inviata una notifica per questo tipo :auditable_type',
+                        'new_resident_pinboard_created' => "Aggiunto un nuovo vicino di casa per l'utente :userName",
+                        'avatar_uploaded' => 'Immagine del profilo caricata per :auditable_type',
+                        'contract_created' => 'Contratto creato per i residenti :userName',
                     ],                                   
                 ],
             ],
@@ -534,4 +544,5 @@ return [
         'rd' => 'º',
         'th' => 'º',
     ],
+    'notification_residents_sent' => 'la notifica è stata inviata a {number} residenti alle {time} il {date}.',
 ];

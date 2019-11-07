@@ -53,7 +53,7 @@ class NotifyNewRequest
         $request = $this->request;
         $contract = $this->request->contract;
         if (empty($contract->building)) {
-            return true;
+            return collect();
         }
 
         $propertyManagers = PropertyManager::whereHas('buildings', function ($q) use ($contract) {

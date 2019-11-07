@@ -104,7 +104,7 @@
                                                 height: 250
                                             }"
                                             :resize="false"
-                                            :defaultAvatarSrc="!avatar.length && model.avatar ? '/'+model.avatar : ''"
+                                            :defaultAvatarSrc="model.user.avatar_variations[3] ? '/'+model.user.avatar_variations[3] : ''"
                                             @cropped="cropped"/>
                                 </el-form-item>
                             </el-col>
@@ -314,7 +314,7 @@
                 if (resp) {
                     this.$refs.assignmentsList.fetch();
 
-                    this.toAssign = '';
+                    this.resetToAssignList();
 
                     const type = toUnassign.aType == 1 ? 'building' : 'quarter';                    
                     if(this.$refs.auditList){

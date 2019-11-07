@@ -81,8 +81,8 @@ export default (config = {}) => {
                     text: 'general.please_wait'
                 },
                 media: [],
-                assignmentTypes: ['building', 'quarter'],
-                assignmentType: 'building',
+                assignmentTypes: ['quarter', 'building'],
+                assignmentType: 'quarter',
                 toAssign: '',
                 toAssignList: [],
                 addedAssigmentList: [],
@@ -104,7 +104,8 @@ export default (config = {}) => {
                     hideSelectFilesButton: false
                 },
                 pinboard_id: null,
-                audit_id: null
+                audit_id: null,
+                onload_notify_email: null
             }
         },
         computed: {
@@ -199,16 +200,14 @@ export default (config = {}) => {
                             resp = await this.getBuildings({
                                 get_all: true,
                                 search,
-                            });
-
-                            resp.data = resp.data.filter((building) => {
-                                return !this.model.building_ids.includes(building.id)
+                                exclude_ids: this.model.building_ids.join(),
+                                exclude_quarter_ids: this.model.quarter_ids.join()
                             });
                         } else {
-                            resp = await this.getQuarters({get_all: true, search});
-
-                            resp.data = resp.data.filter((quarter) => {
-                                return !this.model.quarter_ids.includes(quarter.id)
+                            resp = await this.getQuarters({
+                                get_all: true,
+                                search,
+                                exclude_ids: this.model.quarter_ids.join()
                             });
                         }
 
@@ -313,8 +312,10 @@ export default (config = {}) => {
                     this.remoteLoading = true;
 
                     try {
-
-                        const resp = await this.getServices({get_all: true, search});
+                        const resp = await this.getServices({
+                            get_all: true,
+                            search
+                        });
 
                         resp.data = resp.data.filter((provider) => {
                             return !this.model.provider_ids.includes(provider.id)
@@ -499,12 +500,12 @@ export default (config = {}) => {
 
                                 try {
                                     this.loading.state = true;
-                                    this.model.status = 2;
                                     this.model.announcement = this.model.type == 3 ? true : false;
 
                                     await this.uploadNewMedia(this.model.id);
 
                                     const resp = await this.updatePinboard(this.model);
+                                    this.onload_notify_email = this.model.notify_email;
 
                                     this.model = Object.assign({}, this.model, resp.data);
                                     this.media = [];
@@ -543,6 +544,8 @@ export default (config = {}) => {
 
                         this.model.execution_start ? this.executionStartTime = this.model.execution_start.split(' ')[1] : '';
                         this.model.execution_end ? this.executionEndTime = this.model.execution_end.split(' ')[1] : '';
+
+                        this.onload_notify_email = this.model.notify_email;
 
                         return this.model;
                     }

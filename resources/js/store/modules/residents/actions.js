@@ -138,4 +138,16 @@ export default {
                 .then(({data: r}) => (resolve(r)))
                 .catch(({response: {data: err}}) => reject(err)));
     },
+    getMyPropertyManagers() {
+        return new Promise((resolve, reject) =>
+            axios.get(`residents/my-property-managers`)
+                .then(({data: r}) => (resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
+    getMyNeighbours() {
+        return new Promise((resolve, reject) =>
+            axios.get(`residents/my-neighbours`)
+                .then(({data: r}) => (resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
 }
