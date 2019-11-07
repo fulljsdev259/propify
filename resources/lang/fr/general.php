@@ -362,6 +362,7 @@ return [
                         'notifications_sent' => 'Notification envoyée',
                         'new_resident_pinboard_created' => "Panneau d'affichage du nouveau voisin",
                         'avatar_uploaded' => 'Image de profil téléchargée',
+                        'contract_created' => 'Contrat créé',
                     ]                  
                 ],
                 'content' => [                    
@@ -384,6 +385,7 @@ return [
                         'notifications_sent' => 'Une notification a été envoyée pour ce :auditable_type',
                         'new_resident_pinboard_created' => "Ajout d'un nouveau voisin pour user :userName",
                         'avatar_uploaded' => 'Image de profil téléchargée pour :auditable_type',
+                        'contract_created' => 'Contrat créé pour le résident :userName',
                     ],                                      
                 ],
             ],

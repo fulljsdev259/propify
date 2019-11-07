@@ -362,6 +362,7 @@ return [
                         'notifications_sent' => 'Notification sent',
                         'new_resident_pinboard_created' => 'New neighbour pinboard',
                         'avatar_uploaded' => 'Profile image uploaded',
+                        'contract_created' => 'Contract created',
                     ],
                 ],
                 'content' => [
@@ -384,6 +385,7 @@ return [
                         'notifications_sent' => 'Notification has been sent for this :auditable_type',
                         'new_resident_pinboard_created' => 'New neighbour added for user :userName',
                         'avatar_uploaded' => 'Profile image uploaded for :auditable_type',
+                        'contract_created' => 'Contract created for resident :userName',
                     ],                    
                 ],
             ],
