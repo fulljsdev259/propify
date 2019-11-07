@@ -390,3 +390,14 @@
         }
     };
 </script>
+
+<style lang="scss" scoped>
+
+    /deep/ .el-dialog {
+        /deep/ .el-dialog__body {
+            padding: 10px 20px;
+            word-break: break-word;
+        }
+    }
+
+</style>

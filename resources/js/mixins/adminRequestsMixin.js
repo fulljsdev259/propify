@@ -176,7 +176,7 @@ export default (config = {}) => {
                         const {data} = await this.getUsers({
                             get_all: true,
                             search,
-                            exclude_ids,
+                            exclude_ids: exclude_ids.join(','),
                             roles: ['manager', 'administrator']
                         });
 
@@ -212,7 +212,7 @@ export default (config = {}) => {
                             resp = await this.getPropertyManagers({
                                 get_all: true,
                                 search,
-                                exclude_ids
+                                exclude_ids: exclude_ids.join(',')
                             });
                         } else if(this.assignmentType === 'administrator'){
                             respAssignee.data.data.map(item => {
@@ -223,7 +223,7 @@ export default (config = {}) => {
                             resp = await this.getUsers({
                                 get_all: true,
                                 search,
-                                exclude_ids,
+                                exclude_ids: exclude_ids.join(','),
                                 role: 'administrator'
                             });
                         }
@@ -236,7 +236,7 @@ export default (config = {}) => {
                             resp = await this.getServices({
                                 get_all: true, 
                                 search,
-                                exclude_ids
+                                exclude_ids: exclude_ids.join(',')
                             });
                         }
 

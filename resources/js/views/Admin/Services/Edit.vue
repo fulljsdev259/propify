@@ -314,7 +314,7 @@
                 if (resp) {
                     this.$refs.assignmentsList.fetch();
 
-                    this.toAssign = '';
+                    this.resetToAssignList();
 
                     const type = toUnassign.aType == 1 ? 'building' : 'quarter';                    
                     if(this.$refs.auditList){

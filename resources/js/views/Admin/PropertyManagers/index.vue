@@ -305,6 +305,11 @@
 
 <style lang="scss" scoped>
     .delete_width_reassign_modal {
+
+        /deep/ .el-dialog__body {
+            word-break: break-word;
+        }
+
         .el-row {
             margin-bottom: 20px;
             &:last-child {

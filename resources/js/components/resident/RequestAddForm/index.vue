@@ -248,23 +248,24 @@
 
                 this.contracts.forEach(contract => {
                     let floor_label;
-                    if(contract.unit.attic == 'attic')
-                    {
-                        floor_label = this.$t('models.unit.floor_title.top_floor')
-                    }
-                    else if(contract.unit.floor > 0)
-                    {
-                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
-                    }
-                    else if(contract.unit.floor == 0)
-                    {
-                        floor_label = this.$t('models.unit.floor_title.ground_floor')
-                    }
-                    else if(contract.unit.floor < 0)
-                    {
-                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
-                    }
-                    contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                    // if(contract.unit.attic == 'attic')
+                    // {
+                    //     floor_label = this.$t('models.unit.floor_title.top_floor')
+                    // }
+                    // else if(contract.unit.floor > 0)
+                    // {
+                    //     floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                    // }
+                    // else if(contract.unit.floor == 0)
+                    // {
+                    //     floor_label = this.$t('models.unit.floor_title.ground_floor')
+                    // }
+                    // else if(contract.unit.floor < 0)
+                    // {
+                    //     floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                    // }
+                    // contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                    contract.building_room_floor_unit = contract.id
                 })
             },
             submit () {
@@ -325,23 +326,24 @@
 
             this.contracts.forEach(contract => {
                 let floor_label;
-                if(contract.unit.attic == 'attic')
-                {
-                    floor_label = this.$t('models.unit.floor_title.top_floor')
-                }
-                else if(contract.unit.floor > 0)
-                {
-                    floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
-                }
-                else if(contract.unit.floor == 0)
-                {
-                    floor_label = this.$t('models.unit.floor_title.ground_floor')
-                }
-                else if(contract.unit.floor < 0)
-                {
-                    floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
-                }
-                contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                // if(contract.unit.attic == 'attic')
+                // {
+                //     floor_label = this.$t('models.unit.floor_title.top_floor')
+                // }
+                // else if(contract.unit.floor > 0)
+                // {
+                //     floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                // }
+                // else if(contract.unit.floor == 0)
+                // {
+                //     floor_label = this.$t('models.unit.floor_title.ground_floor')
+                // }
+                // else if(contract.unit.floor < 0)
+                // {
+                //     floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                // }
+                // contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                contract.building_room_floor_unit = contract.id
             })
 
             this.default_contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
@@ -438,6 +440,20 @@
 
             .el-select {
                 width: 100%;
+
+                // /deep/ .el-input__suffix {
+                //     width: 41px;
+                //     margin-right: -8px;
+
+                //     .el-input__suffix-inner {
+                //         height: 40px;
+                //         width: 100%;
+                //         display: block;
+                //     }
+                //     .el-input__icon {
+                //         width: 100%;
+                //     }
+                // }
             }
             :global(.el-input__inner),
             :global(.el-textarea__inner) {

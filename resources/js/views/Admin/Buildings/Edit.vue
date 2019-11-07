@@ -324,7 +324,7 @@
                             <el-col id="providerAssignBtn">
                                 <el-button :disabled="!toAssignProvider" @click="attachProvider" class="full-button"
                                             icon="ti-save" type="primary">
-                                    {{$t('general.assign')}}
+                                    &nbsp;{{$t('general.assign')}}
                                 </el-button>
                             </el-col>
                         </el-row>
