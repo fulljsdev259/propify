@@ -587,7 +587,7 @@ return [
             'range' => 'Range',
             'component' => 'Component',
             'capture_phase' => 'Capture Phase',
-            'cost' => 'Cost Impact',
+            'payer' => 'Cost Impact',
             'keywords' => 'Keywords',
         ],
         'placeholders' => [

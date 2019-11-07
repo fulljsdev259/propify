@@ -216,6 +216,7 @@
                     align-items: center;
                     justify-content: center;
                     opacity: 0;
+                    z-index: 1;
                     transition: opacity .32s cubic-bezier(.17,.67,1,1.23);
                     div {
                         color: #fff;
@@ -242,7 +243,7 @@
                     position: absolute;
                     right: 2px;
                     top: 2px;
-                    z-index: 1;
+                    z-index: 0;
                     overflow: hidden;
                     width: 200px;
                     height: 200px;

@@ -587,7 +587,7 @@ return [
             'range' => 'Gamme',
             'component' => 'Composante',
             'capture_phase' => 'Phase de capture',
-            'cost' => 'Incidence sur les coûts',
+            'payer' => 'Incidence sur les coûts',
             'keywords' => 'Mots-clés',
         ],
         'placeholders' => [

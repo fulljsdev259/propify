@@ -140,16 +140,16 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12" v-if="this.showQualification == true && this.showPayer == true">
-                                    <el-form-item :label="$t('models.request.category_options.cost')">
+                                    <el-form-item :label="$t('models.request.category_options.payer')">
                                         <el-select :disabled="$can($permissions.update.serviceRequest)"
                                                    :placeholder="$t(`general.placeholders.select`)"
                                                    class="custom-select"
                                                    v-model="model.payer">
                                             <el-option
-                                                :key="cost.value"
-                                                :label="cost.name"
-                                                :value="cost.value"
-                                                v-for="cost in costs">
+                                                :key="payer.value"
+                                                :label="payer.name"
+                                                :value="payer.value"
+                                                v-for="payer in payers">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
@@ -617,6 +617,7 @@
                 }
             },
             selectedRequestData() {
+                console.log(this.model)
                 return {
                     resident: this.model.resident,
                     request_format: this.model.request_format,

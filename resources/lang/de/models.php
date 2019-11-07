@@ -588,7 +588,7 @@ return [
             'range' => 'Bereich',
             'component' => 'Bauteil',
             'capture_phase' => 'Erfassungsphase',
-            'cost' => 'Zu Lasten von',
+            'payer' => 'Zu Lasten von',
             'keywords' => 'Tags',
         ],
         'placeholders' => [
