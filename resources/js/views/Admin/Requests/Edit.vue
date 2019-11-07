@@ -269,6 +269,7 @@
                                         :closable="false"
                                     >
                                     </el-alert> -->
+
                                     <span class="image-tab-title">Files</span>
                                     <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex" :show-description="false"/>
                                     <span class="image-tab-title">Upload</span>

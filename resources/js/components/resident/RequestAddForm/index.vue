@@ -1,7 +1,7 @@
 <template>
     <el-form ref="form" class="request-add" :model="model" label-position="top" :rules="validationRules" v-loading="loading">
         
-        <el-form-item prop="contract_id" :label="$t('resident.contract')" v-if="contracts.length > 1" required>
+        <el-form-item prop="contract_id" :label="$t('resident.contract')" v-if="contracts.length > 1">
             <el-select v-model="model.contract_id" 
                         :placeholder="$t('resident.placeholder.contract')"
                         class="custom-select"
@@ -13,7 +13,7 @@
             </el-select>
         </el-form-item>
 
-        <el-form-item prop="category_id" :label="$t('resident.category')" required>
+        <el-form-item prop="category_id" :label="$t('resident.category')">
             <el-select v-model="model.category_id" 
                         :placeholder="$t('resident.placeholder.category')"
                         filterable
@@ -27,7 +27,7 @@
             </el-select>
         </el-form-item>
 
-        <el-form-item prop="sub_category_id" :label="$t('resident.defect_location')" v-if="this.showSubCategory == true" required>
+        <el-form-item prop="sub_category_id" :label="$t('resident.defect_location')" v-if="this.showSubCategory == true">
             <el-select v-model="model.sub_category_id" 
                         :placeholder="$t('resident.placeholder.defect_location')"
                         filterable
@@ -71,18 +71,18 @@
                 </el-option>
             </el-select>
         </el-form-item>
-        <!-- <el-form-item prop="priority" :label="$t('resident.priority')" required>
+        <!-- <el-form-item prop="priority" :label="$t('resident.priority')">
                     <el-select :placeholder="$t('resident.placeholder.priority')" filterable v-model="model.priority">
                         <el-option v-for="priority in priorities" :key="priority.value" :label="$t(`models.request.priority.${priority.label}`)" :value="priority.value" />
                     </el-select>
                 </el-form-item> -->
-        <el-form-item prop="title" :label="$t('resident.title')" required>
+        <el-form-item prop="title" :label="$t('resident.title')">
             <el-input v-model="model.title" />
         </el-form-item>
-        <el-form-item prop="description" :label="$t('resident.description')" required class="full-width">
+        <el-form-item prop="description" :label="$t('resident.description')" class="full-width">
             <el-input type="textarea" ref="description" v-model="model.description" :autosize="{minRows: 4, maxRows: 16}" />
         </el-form-item>
-        <!-- <el-form-item prop="visibility" :label="$t('resident.visibility')" required>
+        <!-- <el-form-item prop="visibility" :label="$t('resident.visibility')">
             <el-select v-model="model.visibility" :placeholder="$t('resident.choose_visibility')">
                 <el-option :key="k" :label="$t(`models.request.visibility.${visibility}`)" :value="parseInt(k)" v-for="(visibility, k) in $constants.requests.visibility">
                 </el-option>
@@ -169,6 +169,10 @@
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('resident.category')})
                     },
+                    sub_category_id: {
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('resident.defect_location')})
+                    },
                     // priority: {
                     //     required: true,
                     //     message: this.$t('validation.required',{attribute: this.$t('resident.priority')})
@@ -211,6 +215,9 @@
                 if(this.showSubCategory) {
                     this.sub_categories = p_category ? p_category.sub_categories : [];
                 }
+
+                this.$refs.form.clearValidate('title')
+                this.$refs.form.clearValidate('description')
             },
             changeSubCategory() {
                 const subcategory = this.sub_categories.find(category => {
@@ -228,6 +235,9 @@
                 else if(subcategory.location == 1) {
                     this.showLocation = true;
                 }
+                
+                this.$refs.form.clearValidate('title')
+                this.$refs.form.clearValidate('description')
             },
             getLanguageI18n() {
 
@@ -288,27 +298,18 @@
                                 }
                             }
 
-                            // const {id} = resp.data
-                            // if (media.length) {
-                            //     const queue = new PQueue({concurrency: 1})
-
-                            //     media.forEach(
-                            //         ({file}) => queue.add(
-                            //             async () => { 
-                            //                 const mediaResp = await this.$store.dispatch('newRequests/uploadMedia', {
-                            //                     id, media: file.src,
-                            //                     merge_in_audit: resp.data.audit_id
-                            //                 }) 
-                            //             }
-                            //         )
-                            //     )
-
-                            //     await queue.onIdle()
-                            // }
-
-                            this.$emit('update:visible', false)
+                            this.showSubCategory = this.showLocation = this.showRoom = false
+                            
                             this.$refs.form.resetFields()
-                            //this.$refs.upload.clear()
+
+                            if(this.contracts.find(item => item.id == this.default_contract_id)) {
+                                this.model.contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
+                            }
+                            else if(this.contracts.length == 1) {
+                                this.model.contract_id = this.contracts[0].id
+                            }
+                            this.$emit('update:visible', false)
+                            
                         } catch (err) {
                             displayError(err);
                         } finally {

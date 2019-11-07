@@ -361,6 +361,7 @@ return [
                         'media_deleted' => 'Supporti cancellati',
                         'notifications_sent' => 'Notifica inviata',
                         'new_resident_pinboard_created' => 'Nuova bacheca vicina',
+                        'avatar_uploaded' => 'Immagine del profilo caricata',
                     ]                    
                 ],
                 'content' => [                    
@@ -382,6 +383,7 @@ return [
                         'building_unassigned' => ':buildingNam Costruire senza assegnazione',
                         'notifications_sent' => 'È stata inviata una notifica per questo tipo :auditable_type',
                         'new_resident_pinboard_created' => "Aggiunto un nuovo vicino di casa per l'utente :userName",
+                        'avatar_uploaded' => 'Immagine del profilo caricata per :auditable_type',
                     ],                                   
                 ],
             ],

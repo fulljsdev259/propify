@@ -153,7 +153,7 @@ export default {
                     .catch(({response: {data: err}}) => reject(err)));
         } else {
             return new Promise((resolve, reject) =>
-                axios.post(buildFetchUrl(`buildings/${building_id}/email-receptionists`), {...restPayload})
+                axios.post(buildFetchUrl(`buildings/${building_id}/email-receptionists`), {...restPayload.categories, global_email_receptionist : restPayload.global_email_receptionist})
                     .then(({data: r}) => (r && resolve(r)))
                     .catch(({response: {data: err}}) => reject(err)));
         }
