@@ -18,6 +18,7 @@ use App\Http\Requests\API\User\UploadImageRequest;
 use App\Models\Audit;
 use App\Models\AuditableModel;
 use App\Models\Building;
+use App\Models\Contract;
 use App\Models\Settings;
 use App\Models\User;
 use App\Repositories\UserRepository;
@@ -293,24 +294,44 @@ class UserAPIController extends AppBaseController
             'propertyManager:id,user_id',
             'serviceProvider:id,user_id'
         ]);
-        if ($user->propertyManager) {
-            $user->property_manager_id = $user->propertyManager->id;
+        if ($user->property_manager) {
+            $user->property_manager_id = $user->property_manager->id;
         }
 
-        if ($user->serviceProvider) {
-            $user->service_privider_id = $user->serviceProvider->id;
+        if ($user->service_privider) {
+            $user->service_privider_id = $user->service_privider->id;
         }
 
-        unset($user->serviceProvider);
-        unset($user->propertyManager);
+        unset($user->service_privider);
+        unset($user->property_manager);
         $user->unread_notifications_count = $user->unreadNotifications()->count();
         $resident = $user->resident;
 
         if ($resident) {
             unset($user->resident);
+            $resident->load(['contracts' => function($q) {
+                $q->where('status' , Contract::StatusActive);
+            }]);
+
             $contactEnable = (bool) $this->getResidentContactEnable($resident);
             $resident = (new ResidentTransformer())->transform($resident);
+
+            $buildingIds = collect($resident['contracts'])->pluck('building_id');
+            $buildings = Building::select('id')
+                ->whereIn('id', $buildingIds)
+                ->with('property_managers:property_managers.id')
+                ->with([
+                    'contracts' => function ($q) use ($resident) {
+                        $q->where('status', Contract::StatusActive)
+                            ->where('resident_id', '!=', $resident)
+                            ->select('building_id', 'resident_id');
+                    }
+                ])
+                ->get();
+
             $resident['contact_enable'] = $contactEnable;
+            $resident['neighbour_count'] = $buildings->pluck('contracts.*.resident_id')->collapse()->unique()->count();;
+            $resident['property_manager_count'] = $buildings->pluck('property_managers.*.id')->collapse()->unique()->count();
             $user->setAttribute('resident', $resident);
         }
 

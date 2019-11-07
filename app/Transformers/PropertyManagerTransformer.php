@@ -73,7 +73,7 @@ class PropertyManagerTransformer extends BaseTransformer
             'last_name' => $model->last_name,
             'email' => $model->user->email ?? '',
             'phone' => $model->user->phone ?? '',
-            'avatar' => $model->user->avatar ?? '',
+            'avatar' => $model->user->avatar ?? ''
         ];
     }
 }
