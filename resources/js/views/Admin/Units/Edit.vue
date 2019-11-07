@@ -423,6 +423,9 @@
                     label: 'models.resident.type.label',
                     i18n: this.translateType
                 }, {
+                    type: 'residentContract',
+                    label: 'models.resident.contract.title'
+                }, {
                     prop: 'status',
                     i18n: this.residentStatusLabel,
                     withBadge: this.residentStatusBadge,
