@@ -243,7 +243,7 @@
                             v-if="model.id"
                         />
                     </el-tab-pane>
-                    <el-tab-pane name="contracts">
+                    <!-- <el-tab-pane name="contracts">
                         <span slot="label">
                             <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
                         </span>
@@ -255,7 +255,7 @@
                                     @edit-contract="editContract"
                                     @delete-contract="deleteContract">
                         </contract-list-table>
-                    </el-tab-pane>
+                    </el-tab-pane> -->
                     <el-tab-pane name="managers">
                         <span slot="label">
                             <el-badge :value="managerCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
