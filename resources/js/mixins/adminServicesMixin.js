@@ -153,7 +153,7 @@ export default (config = {}) => {
         },
         methods: {
             ...mapActions(['getStates', 'getBuildings', 'getQuarters', 'assignServiceBuilding',
-                'assignServiceQuarter']),
+                'assignServiceQuarter', 'getServiceAssignments']),
             translateType(type) {
                 return this.$t(`general.assignment_types.${type}`);
             },
@@ -164,14 +164,35 @@ export default (config = {}) => {
                     this.remoteLoading = true;
 
                     try {
-                        let resp = [];
+                        let resp = [],
+                            exclude_ids = [];
+
+                        const serviceAssignments = await this.getServiceAssignments({provider_id: this.$route.params.id});
+
                         if (this.assignmentType === 'building') {
+                            serviceAssignments.data.data.map(item => {
+                                if(item.assignmentType === 'building'){
+                                    exclude_ids.push(item.id);
+                                }
+                            });
+
                             resp = await this.getBuildings({
                                 get_all: true,
                                 search,
+                                exclude_ids: exclude_ids.join(',')
                             });
                         } else {
-                            resp = await this.getQuarters({get_all: true, search});
+                            serviceAssignments.data.data.map(item => {
+                                if(item.assignmentType === 'quarter'){
+                                    exclude_ids.push(item.id);
+                                }
+                            });
+
+                            resp = await this.getQuarters({
+                                get_all: true,
+                                search,
+                                exclude_ids: exclude_ids.join(',')
+                            });
                         }
 
                         this.toAssignList = resp.data;
@@ -225,7 +246,7 @@ export default (config = {}) => {
                             if(this.$refs.auditList){
                                 this.$refs.auditList.fetch();
                             }
-                            this.toAssign = '';
+                            this.resetToAssignList();
                             displaySuccess(resp)
                         }
 
