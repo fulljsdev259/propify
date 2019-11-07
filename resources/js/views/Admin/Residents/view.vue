@@ -1,5 +1,5 @@
 <template>
-    <div class="residents-view">
+    <div class="residents-view" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.resident.view_title')" icon="icon-group">
             <template slot="description" v-if="model.resident_format">
                 <div class="subtitle">{{model.resident_format}}</div>

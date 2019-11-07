@@ -382,7 +382,7 @@
                 pointer-events: none;
             }
 
-            .ui-divider {
+            /deep/ .ui-divider {
                 margin: 32px 16px 10px 16px;
 
                 :global(.ui-divider__content) {

@@ -120,6 +120,7 @@
                                 </el-row>
 
                                 <el-form-item :label="$t('models.user.profile_image')">
+                                    {{model.user}}
                                     <cropper
                                             :boundary="{
                                                 width: 250,

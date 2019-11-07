@@ -8,15 +8,15 @@
         <template v-else-if="!loading && managers">
             <el-carousel :autoplay="false" :arrow="managers.length > 1 ? 'hover': 'never'" indicator-position="none" height="256" v-if="managers.length">
                 <el-carousel-item v-for="manager in managers" :key="manager.id">
-                    <ui-avatar :size="96" :src="manager.user.avatar" :name="manager.user.name" shadow="hover" />
+                    <ui-avatar :size="96" :src="manager.avatar" :name="manager.name" shadow="hover" />
                     <div class="name">
-                        {{manager.user.name}}
+                        {{manager.name}}
                     </div>
                     <div class="email">
-                        {{manager.user.email}}
+                        {{manager.email}}
                     </div>
                     <div class="phone">
-                        {{manager.user.phone}}
+                        {{manager.phone}}
                     </div>
                     <div class="slogan">
                         {{manager.slogan}}
@@ -47,7 +47,7 @@
         data () {
             return {
                 loading: false,
-                managers: null,
+                managers: [],
                 timeout: null
             }
         },
@@ -61,28 +61,17 @@
             }
         },
         async mounted () {
-            
-            const {resident} = this.user
+            this.loading = true
 
-            if (resident.building) {
-                this.loading = true
+            let resp = await this.$store.dispatch('getMyPropertyManagers')
 
-                const {managers_last} = await this.$store.dispatch('getBuilding', {
-                    id: resident.building.id
-                })
+            this.managers = (resp && resp.data) ? resp.data : []
 
-                if (managers_last) {
-                    this.managers = managers_last
-                }
+            this.managers.map( item => item.name = item.first_name + ' ' + item.last_name)
 
-                if(managers_last.length == 0)
-                    this.$root.$emit('hide-property-manager-card');
-                this.timeout = setTimeout(() => this.loading = false, EXTRA_LOADING_SECONDS)
-            }
-            else {
+            if(this.managers.length == 0)
                 this.$root.$emit('hide-property-manager-card');
-            }
-
+            this.timeout = setTimeout(() => this.loading = false, EXTRA_LOADING_SECONDS)
         },
         beforeDestroy () {
             clearTimeout(this.timeout)

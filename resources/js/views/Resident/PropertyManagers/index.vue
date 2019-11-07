@@ -21,7 +21,7 @@
                             {{letter}}
                         </el-divider>
                     </el-timeline-item>
-                    <el-timeline-item v-for="{id, slogan, user} in managers" :key="id">
+                    <el-timeline-item v-for="user in managers" :key="user.id">
                         <ui-avatar :size="40" :src="user.avatar" :name="user.name" shadow="hover" />
                         <div class="content">
                             <div class="name">
@@ -34,7 +34,7 @@
                                 {{user.email}}
                             </div>
                             <div class="slogan">
-                                {{slogan}}
+                                {{user.slogan}}
                             </div>
                         </div>
                     </el-timeline-item>
@@ -77,36 +77,38 @@ import Heading from 'components/Heading'
             }
         },
         async mounted () {
-            const {resident} = this.user
-            
-            if (resident.building) {
-                this.loading = true
 
-                let {managers_last} = await this.$store.dispatch('getBuilding', {
-                    id: resident.building.id
-                })
+            this.loading = true
 
-                if (this.limit > -1) {
-                    managers_last = managers_last.slice(0, this.limit)
-                }
+            let resp = await this.$store.dispatch('getMyPropertyManagers')
 
-                const unorderedList = managers_last.reduce((obj, manager) => {
-                    obj[manager.user.name[0]] = obj[manager.user[0]] || []
-                    obj[manager.user.name[0]].push(manager)
+            let managers = (resp && resp.data) ? resp.data : []
+
+            if (this.limit > -1) {
+                managers = managers.slice(0, this.limit)
+            }
+
+            managers.map( item => item.name = item.first_name + ' ' + item.last_name)
+
+            console.log(managers)
+
+            const unorderedList = managers.reduce((obj, manager) => {
+                obj[manager.name[0]] = obj[manager] || []
+                obj[manager.name[0]].push(manager)
+
+                return obj
+            }, {})
+
+            this.groupedManagers = Object.keys(unorderedList)
+                .sort((a, b) => a.localeCompare(b))
+                .reduce((obj, key) => {
+                    obj[key] = unorderedList[key].sort((a, b) => a.name.localeCompare(b.name))
 
                     return obj
                 }, {})
 
-                this.groupedManagers = Object.keys(unorderedList)
-                    .sort((a, b) => a.localeCompare(b))
-                    .reduce((obj, key) => {
-                        obj[key] = unorderedList[key].sort((a, b) => a.user.name.localeCompare(b.user.name))
-
-                        return obj
-                    }, {})
-
-                this.loading = false
-            }
+            console.log(this.groupedManagers);
+            this.loading = false
         }
     }
 </script>
