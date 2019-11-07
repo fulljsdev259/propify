@@ -69,8 +69,6 @@
 
             this.managers.map( item => item.name = item.first_name + ' ' + item.last_name)
 
-            if(this.managers.length == 0)
-                this.$root.$emit('hide-property-manager-card');
             this.timeout = setTimeout(() => this.loading = false, EXTRA_LOADING_SECONDS)
         },
         beforeDestroy () {

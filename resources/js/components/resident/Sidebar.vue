@@ -78,10 +78,7 @@
                     vertical: null
                 },
                 mouseIn: false,
-                showPropertyManagerMenu: true,
-                showMyNeighbourMenu: true,
                 showCleanifyMenu: true,
-                showMyContractsMenu: true,
                 showSettingsMenu: false,
             }
         },
@@ -301,7 +298,7 @@
                             route: {
                                 name: 'residentMyContracts'
                             },
-                            visible: this.showContract
+                            visible: this.$store.getters.loggedInUser.resident.type == 1
                         }, {
                             icon: 'icon-doc-text',
                             title: 'resident.my_documents',
@@ -322,14 +319,14 @@
                             route: {
                                 name: 'residentPropertyManagers'
                             },
-                            visible: this.showProperty
+                            visible: this.$store.getters.loggedInUser.resident.property_manager_count > 0
                         }, {
                             icon: 'icon-group',
                             title: 'resident.my_neighbours',
                             route: {
                                 name: 'residentMyNeighbours'
                             },
-                            visible: this.showNeighbour
+                            visible: this.$store.getters.loggedInUser.resident.neighbour_count > 0
                         }]
                     }, {
                         icon: 'icon-megaphone-1',
@@ -359,17 +356,8 @@
                         }
                     }]
             },
-            showContract () {
-                return this.$store.getters.loggedInUser.resident.type == 1 ? true : false
-            },
             showCleanify() {
                 return this.showCleanifyMenu
-            },
-            showNeighbour () {
-                return this.showMyNeighbourMenu
-            },
-            showProperty () {
-                return this.showPropertyManagerMenu
             },
             showSettings () {
                 return this.showSettingsMenu
@@ -544,14 +532,6 @@
         },
         async mounted () {
             this.doAnimeOnDirection(this.direction)
-            this.$root.$on('hide-property-manager-card', () => {
-                this.showPropertyManagerMenu = false
-                console.log('hide property')
-            });
-            this.$root.$on('hide-my-neighbour-card', () => {
-                this.showMyNeighbourMenu = false
-                console.log('hide neibour')
-            });
 
             await this.$store.dispatch('getSettings').then((resp) => {
                 this.Settings = resp.data;

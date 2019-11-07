@@ -327,9 +327,6 @@
             ...mapGetters('notifications', {
                 unreadNotifications: 'unread'
             }),
-            ...mapGetters({
-                user: 'loggedInUser'
-            }),
             breakpoints () {
                 return {
                     md: el => {
@@ -364,8 +361,6 @@
             this.loading = true
             this.resident_logo_src = "/" + this.$constants.logo.resident_logo;
             
-            console.log('neighbour_count', this.user.resident.neighbour_count)
-            console.log('property_manager_count', this.user.resident.property_manager_count)
             await this.$store.dispatch('getSettings').then((resp) => {
                 this.Settings = resp.data;
                     if( resp.data.cleanify_enable == false )
