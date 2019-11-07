@@ -871,9 +871,11 @@ class Request extends AuditableModel implements HasMedia
             'resident' => $this->resident,
             'contract' => $this->contract,
             'logo' => $settings->logo ?? null,
-            'media' => $media
+            'media' => $media,
+            'blank_pdf'=>$settings->blank_pdf,
+            'pdf_font_family'=>$settings->pdf_font_family,
         ];
-        $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('pdfs.request.requestDownload', $data);
+        $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('pdfs.request.requestDownloadPdf', $data);
 
         return Storage::disk('request_downloads')->put($this->pdfFileName(), $pdf->output());
     }

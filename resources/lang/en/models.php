@@ -644,8 +644,13 @@ return [
             'service_request' => 'Service Request',
             'contact_details' => 'Contact Details',
             'contact_text' => 'These are the contact details of the current resident/owner of the housing unit.',
+            'captured_by' => 'Captured by',
+            'request_number' => 'Request Number',
+            'details'=>'Details',
+            'blank_pdf'=>'After the completion of the defects please return the attached form signed immediately to the site management.',
+
         ],
-        'attachments' => 'Attachements',
+        'pictures_of' => 'Photos of the request',
         'go_to_building' => 'go to building'
     ],
     'request_category' => [

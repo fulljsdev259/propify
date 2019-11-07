@@ -643,10 +643,15 @@ return [
             'entrepreneur_signature'=> 'Entrepreneur unterschreiben',
             'customer_signature'=> 'Kundenunterschrift',
             'service_request' => 'Serviceanfrage',
-            'contact_details' => 'Kontaktdaten',
+            'contact_details' => 'Kontaktinformationen',
             'contact_text' => 'Dies sind die Kontaktdaten des aktuellen Bewohners/Besitzers der Wohneinheit.',
+            'captured_by' => 'Erfasst von',
+            'request_number' => 'Anforderungsnummer',
+            'details'=>'Details',
+            'blank_pdf'=>'Nach der Mängelerledigung bitte, das beiliegende Formular umgehend unterzeichnet der Bauleitung retournieren.',
+
         ],
-        'attachments' => 'Anhänge',
+        'pictures_of' => 'Fotos des Anliegens',
         'go_to_building' => 'Zum Objekt gehen'
 
     ],

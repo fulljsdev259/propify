@@ -644,8 +644,13 @@ return [
             'service_request' => 'Service Request',
             'contact_details' => 'Contact Details',
             'contact_text' => 'Voici les coordonnées du résident/propriétaire actuel du logement.',
+            'captured_by' => 'Capturé par',
+            'request_number' => 'Numéro de demande',
+            'details'=>'Précisions',
+            'blank_pdf'=>`Après l'achèvement des défauts, veuillez renvoyer immédiatement à la direction du site le formulaire ci-joint, signé et signé.`,
+
         ],
-        'attachments' => 'Pièces Jointes',
+        'pictures_of' => 'Photos de la demande',
         'go_to_building' => 'Aller au bâtiment'
     ],
     'request_category' => [
