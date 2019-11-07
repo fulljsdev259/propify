@@ -201,7 +201,8 @@
                             >
                             </el-alert>
                             <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple
-                                             v-if="selectedFileCategory"/><!-- @TODO this is uploading file on the spot, is it okay? need to confirm -->
+                                            accept-type=".pdf, .doc, .docx, .xls, .xlsx"
+                                            v-if="selectedFileCategory"/><!-- @TODO this is uploading file on the spot, is it okay? need to confirm -->
                             
                         </div>
                     </el-tab-pane>
@@ -431,6 +432,7 @@
                                         :quarter_id="model.quarter_id" 
                                         :visible.sync="visibleDrawer"
                                         @update-has-email-receptionists="updateHasEmailReceptionists"
+                                        :is_global="model.global_email_receptionist"
                                         />
                         </div>
 

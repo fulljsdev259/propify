@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\Notify;
 
 use App\Mails\NewRequestForReceptionist;
 use App\Models\PropertyManager;
 use App\Models\Request;
 use App\Models\Settings;
 use App\Models\User;
-use App\Notifications\NewAdmin;
-use App\Repositories\TemplateRepository;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -20,7 +17,7 @@ use Illuminate\Support\Facades\Mail;
  * Class NewAdminNotification
  * @package App\Jobs
  */
-class SendNewRequestEmailToReceptionists //implements ShouldQueue
+class NotifyEmailReceptionistsNewPublicRequest
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -30,16 +27,24 @@ class SendNewRequestEmailToReceptionists //implements ShouldQueue
     private $request;
 
     /**
-     * SendNewRequstNotificationToEmailReceptionist constructor.
-     * @param Request $request
+     * @var
      */
-    public function __construct(Request $request)
+    private $saveSystemAudit;
+
+    /**
+     * NotifyEmailReceptionistsNewPublicRequest constructor.
+     * @param Request $request
+     * @param bool $saveSystemAudit
+     */
+    public function __construct(Request $request, $saveSystemAudit = true)
     {
         $this->request = $request;
+        $this->saveSystemAudit = $saveSystemAudit;
     }
 
     /**
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @return \Illuminate\Support\Collection
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function handle()
     {
@@ -47,29 +52,40 @@ class SendNewRequestEmailToReceptionists //implements ShouldQueue
         $building = $this->request->contract->building ?? null;
 
         if (empty($building)) {
-            return;
+            return collect();
         }
 
-        $users = $this->getReceptionistUsers($building,  $this->request->category);
-
-        if ($users->isEmpty()) {
-            return;
+        $propertyManagers = $this->getReceptionistUsers($building,  $this->request->category_id);
+        if ($propertyManagers->isEmpty()) {
+            return collect();
         }
 
-        // @TODO save audit
+        $users = $propertyManagers->pluck('user');
         foreach ($users as $user) {
+            // @TODO maybe rename NewRequestForReceptionist to NewPublicRequest
             $mail = (new NewRequestForReceptionist($user, $this->request))->onQueue('high');
             Mail::to($user)->queue($mail);
         }
 
+        $newRequestForReceptionist = get_morph_type_of(NewRequestForReceptionist::class);
+        $notificationsData = collect([$newRequestForReceptionist => $propertyManagers]);
+        if ($this->saveSystemAudit) {
+            $this->request->newSystemNotificationAudit($notificationsData);
+        }
+
+        return $notificationsData;
     }
 
+    /**
+     * @param $building
+     * @param $category
+     * @return \Illuminate\Support\Collection|mixed
+     */
     protected function getReceptionistUsers($building, $category)
     {
         if (! $building->global_email_receptionist) {
             return $this->getBuildingReceptionistUsers($building, $category);
         }
-
         $building->load('quarter:id');
         if ($building->quarter) {
             $users = $this->getQuarterReceptionistUsers($building->quarter, $category);
@@ -88,7 +104,7 @@ class SendNewRequestEmailToReceptionists //implements ShouldQueue
             ->with('user:id,name,email')
             ->get();
 
-        return $propertyManagers->pluck('user');
+        return $propertyManagers;
     }
 
     /**
@@ -105,7 +121,8 @@ class SendNewRequestEmailToReceptionists //implements ShouldQueue
                     $q->select('id', 'user_id')->with('user:id,name,email');
                 }]);
         }]);
-        return $building->email_receptionists->pluck('property_manager.user');
+
+        return $building->email_receptionists->pluck('property_manager');
     }
 
     /**
@@ -127,7 +144,7 @@ class SendNewRequestEmailToReceptionists //implements ShouldQueue
                 }]);
         }]);
 
-        $users = $quarter->email_receptionists->pluck('property_manager.user');
+        $users = $quarter->email_receptionists->pluck('property_manager');
         return $users->isNotEmpty() ? $users : collect();
     }
 }

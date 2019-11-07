@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Mails\NewRequestForReceptionist;
 use App\Notifications\AnnouncementPinboardPublished;
 use App\Notifications\NewResidentInNeighbour;
 use App\Notifications\NewResidentPinboard;
 use App\Notifications\NewResidentRequest;
 use App\Notifications\PinboardPublished;
+use App\Notifications\RequestDue;
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Illuminate\Support\Arr;
@@ -51,6 +53,7 @@ class AuditableModel extends Model implements Auditable
     const EventMediaUploaded = 'media_uploaded';
     const EventMediaDeleted = 'media_deleted';
     const EventManageEmailReceptionists = 'manage_email_receptionists';
+    const EventAvatarUploaded = 'avatar_uploaded';
     const BuildingUnitsCreated = 'building_units\y_created';
     const NewResidentPinboardCreated = 'new_resident_pinboard_created';
     const NotificationsSent = 'notifications_sent';
@@ -170,10 +173,13 @@ class AuditableModel extends Model implements Auditable
         $pinboardNewResidentNeighbor = get_morph_type_of(NewResidentInNeighbour::class);
         $pinboardNewResidentPinboard = get_morph_type_of(NewResidentPinboard::class);
         $newResidentPinboard = get_morph_type_of(NewResidentRequest::class);
+        $newRequestForReceptionist = get_morph_type_of(NewRequestForReceptionist::class);
+        $requestDue = get_morph_type_of(RequestDue::class);
 
         $_value = [];
+        // @TODO do this code more elegant way
         foreach ($value as $morph => $data) {
-            if ($morph ==  get_morph_type_of($newResidentPinboard)) {
+            if (in_array($morph, [$newResidentPinboard, $newRequestForReceptionist])) {
                 if ($data->pluck('id')->isEmpty()) {
                     continue;
                 }
@@ -181,7 +187,15 @@ class AuditableModel extends Model implements Auditable
                     'property_manager_ids' => $data->pluck('id')->all(),
                     'failed_property_manager_ids' => []
                 ];
-            } elseif ($morph ==  get_morph_type_of($pinboardNewResidentPinboard)) {
+            } elseif ($morph ==  $requestDue) {
+                if ($data->pluck('id')->isEmpty()) {
+                    continue;
+                }
+                $_value[$morph] = [
+                    'pm_or_sp_user_ids' => $data->pluck('id')->all(),
+                    'failed_pm_or_sp_user_ids' => []
+                ];
+            } elseif ($morph ==  $pinboardNewResidentPinboard) {
                 if ($data->pluck('id')->isEmpty()) {
                     continue;
                 }
@@ -282,9 +296,9 @@ class AuditableModel extends Model implements Auditable
             $value = $this->getMediaAudit($value);
         }
 
-        if (in_array($audit->event, [self::EventCreated, self::DownloadCredentials, self::SendCredentials])) {
+        if (in_array($audit->event, [self::EventCreated, self::DownloadCredentials, self::SendCredentials, self::EventAvatarUploaded])) {
             $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
-        } elseif (self::EventUpdated == $audit->event) {
+        } elseif (in_array($audit->event, [self::EventUpdated])) {
             $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle);
         } else {
             dd('@TODO5', $audit->event);
@@ -561,9 +575,8 @@ class AuditableModel extends Model implements Auditable
     protected function getUpdatedUserOriginalData(User $user)
     {
         $auditData = $user->getOldChanges();
-
         if ($user->relationExists('role')) {
-            $auditData['role'] = $user->role->name;
+            $auditData = array_merge($auditData, $user->role->getOldChanges());
         }
 
         if ($user->relationExists('settings')) {
@@ -694,5 +707,22 @@ class AuditableModel extends Model implements Auditable
         }
 
         return $data;
+    }
+
+    /**
+     * @param null $event
+     * @return Audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function makeNewAudit($event = null)
+    {
+        $this->setAuditEvent(self::EventUpdated);
+        $audit = new Audit($this->toAudit());
+
+        if ($event) {
+            $audit->event = $event;
+        }
+
+        return $audit;
     }
 }

@@ -88,7 +88,11 @@
             },
             building_id: {
                 type: Number
-            }
+            },
+            is_global: {
+                type: Boolean,
+                default: true
+            },
         },
         data () {
             return {
@@ -213,6 +217,8 @@
             if(!this.isBuilding)
                 this.activeCommand = 'assign'
             else if(this.isBuilding && !this.quarter_id)
+                this.activeCommand = 'assign'
+            else if(this.isBuilding && !this.is_global)
                 this.activeCommand = 'assign'
 
             this.model.assignList = []

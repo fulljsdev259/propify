@@ -347,6 +347,7 @@ return [
                     'general' => [
                         'created' => 'Erstellt',
                         'updated' => 'Aktualisiert',
+                        'deleted' => 'Gelöscht',
                         'provider_assigned' => 'Dienstleister zugewiesen',
                         'provider_unassigned' => 'Dienstleister entfernt', 
                         'provider_notified' => 'Dienstleisterin benachrichtigt',                       
@@ -358,12 +359,17 @@ return [
                         'building_unassigned' => 'Liegenschaft entfernt',
                         'media_uploaded' => 'Medien hinaufgeladen',
                         'media_deleted' => 'Medien gelöscht',
+                        'notifications_sent' => 'Benachrichtigung gesendet',
+                        'new_resident_pinboard_created' => 'Neue Nachbar Pinnwand',
+                        'avatar_uploaded' => 'Profil-Bild hochgeladen',
+                        'contract_created' => 'Mietvertrag erstellt',
                     ],
                 ],
                 'content' => [                    
                     'general' => [
                         'created' => ':userName hat diese :auditable_type erstellt',
                         'updated' => 'Das Feld :fieldname wurde von :old zu :new geändert',
+                        'deleted' => ':userName hat diese :auditable_type Gelöscht',
                         'provider_assigned' => ':providerName wurde als Dienstleister hinzugezogen.',
                         'provider_unassigned' => 'Dienstleister :providerName wurde nicht entfernt.',
                         'manager_assigned' => ':propertyManagerFirstName :propertyManagerLastName wurde als zustätige Person zugewiesen.',
@@ -376,6 +382,10 @@ return [
                         'quarter_unassigned' => 'Projekt :quarterName wurde entfernt',
                         'building_assigned' => 'Liegenschaft :buildingName wurde zugewiesen.',
                         'building_unassigned' => 'Liegenschaft :buildingName wurde entfernt',
+                        'notifications_sent' => 'Für diesen :auditable_type wurde eine Benachrichtigung gesendet.',
+                        'new_resident_pinboard_created' => "Neuer Nachbar für Benutzer :userName hinzugefügt",
+                        'avatar_uploaded' => 'Profil-Bild hochgeladen für :auditable_type',
+                        'contract_created' => 'Mietvertrag für Bewohner angelegt :userName',
                     ],                    
                 ],
             ],
@@ -534,4 +544,5 @@ return [
         'rd' => '.',
         'th' => '.',
     ],
+    'notification_residents_sent' => 'Die Benachrichtigung wurde am {date} um {time} Uhr an {number} Bewohner gesendet.',
 ];

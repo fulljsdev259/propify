@@ -14,6 +14,7 @@ use App\Models\Country;
 use App\Models\Address;
 use App\Models\State;
 use App\Models\Audit;
+use App\Models\TemplateCategory;
 
 /**
  * Class AuditRepository
@@ -133,6 +134,13 @@ class AuditRepository extends BaseRepository
             }
             elseif(($auditable_type == 'request') && ($fieldname == 'qualification')){
                 return __('models.request.qualification.' . Request::Qualification[$fieldvalue]);
+            }
+            elseif(($auditable_type == 'templates') && ($fieldname == 'category_id')){
+                $model = TemplateCategory::find($fieldvalue);
+                if($model){
+                    return $model->name;
+                }
+                return "";
             }
         }
         else {

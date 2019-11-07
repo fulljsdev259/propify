@@ -21,6 +21,8 @@ export default (config = {}) => {
                         password_confirmation: '',
                         name: '',
                         phone: '',
+                        avatar: '',
+                        avatar_variations: '',
                     },
                     settings: {
                         language: ''
@@ -124,8 +126,8 @@ export default (config = {}) => {
                     text: 'general.please_wait'
                 },
                 requests: [],
-                assignmentTypes: ['building', 'quarter'],
-                assignmentType: 'building',
+                assignmentTypes: ['quarter', 'building'],
+                assignmentType: 'quarter',
                 toAssign: '',
                 toAssignList: [],
                 alreadyAssigned: {

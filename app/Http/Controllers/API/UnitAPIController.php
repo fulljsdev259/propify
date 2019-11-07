@@ -190,7 +190,8 @@ class UnitAPIController extends AppBaseController
      *
      * @param CreateRequest $request
      * @param PinboardRepository $pinboardRepository
-     * @return Response
+     * @return mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function store(CreateRequest $request, PinboardRepository $pinboardRepository)
     {
@@ -261,9 +262,10 @@ class UnitAPIController extends AppBaseController
      *      )
      * )
      *
-     * @param int $id
+     * @param $id
      * @param ViewRequest $r
-     * @return Response
+     * @return mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function show($id, ViewRequest $r)
     {
@@ -330,8 +332,7 @@ class UnitAPIController extends AppBaseController
      * @param UpdateRequest $request
      * @param PinboardRepository $pinboardRepository
      * @return mixed
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function update($id, UpdateRequest $request, PinboardRepository $pinboardRepository)
     {
@@ -510,11 +511,13 @@ class UnitAPIController extends AppBaseController
      * @param $residentId
      * @param AssignRequest $r
      * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function assignResident($unitId, $residentId, AssignRequest $r)
     {
+        // @TODO need this one or not
         $unit = $this->unitRepository->find($unitId, ['id']);
         if (empty($unit)) {
             return $this->sendError(__('models.unit.errors.not_found'));

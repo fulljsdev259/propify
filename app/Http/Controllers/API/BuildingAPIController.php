@@ -147,7 +147,6 @@ class BuildingAPIController extends AppBaseController
                     $q->with('building.address', 'unit', 'resident.user');
                 },
                 'propertyManagers',
-                'lastPropertyManagers.user',
                 'users'
             ])->withCount([
                 'units',
@@ -409,7 +408,6 @@ class BuildingAPIController extends AppBaseController
                     $q->with('building.address', 'unit', 'resident.user');
                 },
                 'propertyManagers',
-                'lastPropertyManagers.user',
                 'media',
                 'quarter',
                 'users'
@@ -726,7 +724,6 @@ class BuildingAPIController extends AppBaseController
             'media',
             'service_providers',
             'propertyManagers',
-            'lastPropertyManagers.user',
             'users'
         ]);
         $response = (new BuildingTransformer)->transform($building);
@@ -955,7 +952,6 @@ class BuildingAPIController extends AppBaseController
             'media',
             'service_providers',
             'propertyManagers',
-            'lastPropertyManagers.user',
             'users'
         ]);
         $response = (new BuildingTransformer)->transform($building);
@@ -1040,7 +1036,6 @@ class BuildingAPIController extends AppBaseController
             'media',
             'service_providers',
             'propertyManagers',
-            'lastPropertyManagers.user',
             'users'
         ]);
         $response = (new BuildingTransformer)->transform($building);

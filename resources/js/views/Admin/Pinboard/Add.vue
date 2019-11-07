@@ -1,12 +1,12 @@
 <template>
-    <div class="units-add">
+    <div class="units-add" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.pinboard.add')" icon="icon-megaphone-1" shadow="heavy" style="margin-bottom: 20px;">
             <add-actions :saveAction="submit" route="adminPinboard" editRoute="adminPinboardEdit"/>
         </heading>
         <el-row :gutter="20" class="crud-view">
             <el-form :model="model" label-position="top" label-width="192px" ref="form">
                 <el-col :md="12">
-                    <card :header="$t('models.property_manager.details_card')" :loading="loading" class="mb20">
+                    <card :header="$t('models.property_manager.details_card')" class="mb20">
                         <el-row :gutter="20">
                             <el-col :lg="model.announcement? 12 : 8">
                                 <el-form-item :label="$t('models.pinboard.type.label')">
@@ -162,7 +162,7 @@
 
                 </el-col>
                 <el-col :md="12">
-                    <card :loading="loading" class="mb20" :header="$t('general.box_titles.buildings_and_quarters')">
+                    <card class="mb20" :header="$t('general.box_titles.buildings_and_quarters')">
                         <assignment-by-type
                             :resetToAssignList="resetToAssignList"
                             :assignmentType.sync="assignmentType"
@@ -200,7 +200,6 @@
                     <template v-if="this.model.type == 3">
 
                         <card v-if="this.model.type == 3 && this.model.sub_type == 3"
-                              :loading="loading"
                               class="mt15"
                               :header="$t('models.pinboard.placeholders.search_provider')">
                             <assignment-by-type
@@ -223,7 +222,7 @@
                             />
                         </card>
 
-                        <card :loading="loading" class="mt15" :header="$t('models.pinboard.announcement')">
+                        <card class="mt15" :header="$t('models.pinboard.announcement')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.pinboard.execution_period.label')">

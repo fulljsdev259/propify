@@ -1,5 +1,5 @@
 <template>
-    <div class="services-add">
+    <div class="services-add" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.property_manager.add')" icon="icon-users" shadow="heavy">
             <add-actions :saveAction="submit" route="adminPropertyManagers" editRoute="adminPropertyManagersEdit"/>
         </heading>
@@ -7,7 +7,7 @@
             <el-form :model="model" ref="form">
                 <el-row :gutter="20">
                     <el-col :md="12">
-                        <card :loading="loading" :header="$t('models.property_manager.details_card')">
+                        <card :header="$t('models.property_manager.details_card')">
 
                             <el-row :gutter="20">
                                 <el-col :md="8">
@@ -81,7 +81,7 @@
                             </el-row>
                         </card>
 
-                        <card class="mt15" :loading="loading" :header="$t('models.property_manager.social_card')">
+                        <card class="mt15" :header="$t('models.property_manager.social_card')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.property_manager.linkedin_url')"
@@ -108,7 +108,7 @@
                         </card>
                     </el-col>
                     <el-col :md="12">
-                        <card :loading="loading" :header="$t('models.property_manager.profile_card')">
+                        <card :header="$t('models.property_manager.profile_card')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item :label="$t('general.password')" :rules="validationRules.password" autocomplete="off"
@@ -149,7 +149,7 @@
                             </el-form-item>
                         </card>
 
-                        <card :loading="loading" class="mt15" :header="$t('general.box_titles.buildings_and_quarters')">
+                        <card class="mt15" :header="$t('general.box_titles.buildings_and_quarters')">
                             <assignment-by-type
                                     :resetToAssignList="resetToAssignList"
                                     :assignmentType.sync="assignmentType"

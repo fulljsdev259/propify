@@ -32,4 +32,13 @@ trait OldChagesAttribute
         return $this->oldChanges;
     }
 
+    /**
+     * @param $changes
+     * @return mixed
+     */
+    public function setOldChanges($changes)
+    {
+        return $this->oldChanges = $changes;
+    }
+
 }

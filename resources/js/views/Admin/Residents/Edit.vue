@@ -34,7 +34,7 @@
                                                         :resize="false"
                                                         :defaultAvatarSrc="
                                                             !avatar.length && user.avatar
-                                                                ? '/'+user.avatar
+                                                                ? '/'+user.avatar_variations[3]
                                                                 : model.avatar==null && model.title == 'mr'
                                                                     ? '/images/man.png'
                                                                     : model.avatar==null && model.title == 'mrs'

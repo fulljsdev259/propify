@@ -450,7 +450,8 @@ class Request extends AuditableModel implements HasMedia
 
         ],
         self::SubCategoryFlat => [
-            self::CapturePhaseAttr,
+	        self::QualificationAttr,
+	        self::CapturePhaseAttr,
             self::RoomAttr
         ],
     ];

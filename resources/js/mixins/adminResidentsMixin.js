@@ -19,7 +19,9 @@ export default (config = {}) => {
                 remoteLoading: false,
                 buildings: [],
                 units: [],
-                user: {},
+                user: {
+                    avatar_variations: ''
+                },
                 unit: {},
                 birthDatePickerOptions: {
                     disabledDate(time) {
@@ -318,14 +320,17 @@ export default (config = {}) => {
                     try {
                         this.loading.state = true;
 
-                        const {address, building, unit, user, ...r} = await this.getResident({id: this.$route.params.id});
+                        const {building, unit, user, ...r} = await this.getResident({id: this.$route.params.id});
                         this.user = user;
+                        console.log(this.user)
                         this.model = Object.assign({}, this.model, r);
+                        console.log('model', this.model)
                         this.original_email = this.user.email;
                         this.original_type = this.model.type;
                         this.model.email = user.email;
                         this.model.avatar = user.avatar;
-                        this.model.nation = +this.model.nation
+                        if(this.model.nation)
+                            this.model.nation = +this.model.nation
 
                     } catch (err) {
                         this.$router.replace({

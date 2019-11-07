@@ -115,7 +115,7 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12" v-if="this.showSubCategory == true">
+                                <el-col :md="12">
                                     <el-form-item :label="$t('models.request.category_options.component')">
                                         <el-input v-model="model.component"></el-input>
                                     </el-form-item>
@@ -269,16 +269,7 @@
                                         :closable="false"
                                     >
                                     </el-alert> -->
-                                    <!-- <upload-document
-                                        @fileUploaded="uploadFiles"
-                                        class="drag-custom mt15"
-                                        drag
-                                        multiple
-                                    />
-                                    <div class="mt15">
-                                        <request-media :data="[...model.media, ...media]" @deleteMedia="deleteMedia"
-                                                       v-if="media.length || (model.media && model.media.length)"></request-media>
-                                    </div> -->
+
                                     <span class="image-tab-title">Files</span>
                                     <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex" :show-description="false"/>
                                     <span class="image-tab-title">Upload</span>
