@@ -138,8 +138,7 @@
                     this.items.forEach((item) => {
                         this.originItems.push({id:item.id, name:item.name, selected:item.selected});
                     });
-                }
-                if(!visible)
+                } else
                     this.handleSelect();
             },
             clearSearch() {
@@ -147,14 +146,11 @@
             },
             isChanged() {
                 let result = false;
-                console.log(this.selecting);
-                console.log(this.originItems, this.items);
                 if(this.selecting) {
                     for(let i = 0; i < this.items.length; i++)
                         if(this.items[i].selected != this.originItems[i].selected)
                             result = true;
                 }
-                console.log(result);
                 return result;
             },
             hasSearch() {
@@ -183,6 +179,7 @@
                     item.selected = false;
                     this.originItems.push({id:item.id, name:item.name, selected:item.selected});
                 });
+                this.handleVisibleChange(true);
                 this.handleSelect();
             },
             handleSelect() {
@@ -259,6 +256,7 @@
             }
             :global(.el-input__icon) {
                 font-size: 16px;
+                line-height: 36px;
             }
         }
         .dropdown-container {
