@@ -155,6 +155,9 @@ class AuditTransformer extends BaseTransformer
         elseif($model->event == 'media_deleted'){            
             $response['statement'] = __("general.components.common.audit.content.general.media_deleted");
         }
+        elseif($model->event == 'avatar_uploaded'){            
+            $response['statement'] = __("general.components.common.audit.content.general.avatar_uploaded",['auditable_type' => $model->auditable_type]);
+        }
         elseif($model->event == 'provider_notified'){
             $response['statement'] = __("general.components.common.audit.content.general.provider_notified",['providerName' => $model->new_values['service_provider']['name']]);
         }  

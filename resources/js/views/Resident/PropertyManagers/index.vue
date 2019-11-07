@@ -90,8 +90,6 @@ import Heading from 'components/Heading'
 
             managers.map( item => item.name = item.first_name + ' ' + item.last_name)
 
-            console.log(managers)
-
             const unorderedList = managers.reduce((obj, manager) => {
                 obj[manager.name[0]] = obj[manager] || []
                 obj[manager.name[0]].push(manager)

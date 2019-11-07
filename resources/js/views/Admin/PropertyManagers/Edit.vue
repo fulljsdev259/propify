@@ -119,8 +119,7 @@
                                     </el-col>
                                 </el-row>
 
-                                <el-form-item :label="$t('models.user.profile_image')">
-                                    {{model.user}}
+                                <el-form-item :label="$t('models.user.profile_image')">                                    
                                     <cropper
                                             :boundary="{
                                                 width: 250,
