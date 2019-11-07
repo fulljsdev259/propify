@@ -4,6 +4,7 @@ namespace App\Transformers;
 
 use App\Helpers\Helper;
 use App\Models\Pinboard;
+use App\Models\Resident;
 use App\Models\Listing;
 use App\Models\Request;
 use App\Models\User;
@@ -67,6 +68,9 @@ class AuditTransformer extends BaseTransformer
                 }
                 $old_value = (isset($model->old_values[$field])) ? $model->old_values[$field] : "";
                 $new_value = (isset($model->new_values[$field])) ? $model->new_values[$field] : "";
+                if(is_array($old_value) || is_array($new_value)){
+                    continue;
+                }
                 $language_map = $model->auditable_type;
                 if($model->auditable_type == 'manager'){
                     $language_map = 'property_manager';
@@ -183,6 +187,12 @@ class AuditTransformer extends BaseTransformer
                 if($user){
                     $response['statement'] = __("general.components.common.audit.content.general.new_resident_pinboard_created",['userName' => $user->name]);
                 }                
+            }            
+        }
+        elseif($model->event == 'contract_created'){
+            $resident = Resident::find($model->auditable_id);
+            if($resident){                                
+                $response['statement'] = __("general.components.common.audit.content.general.contract_created",['userName' => $resident->getNameAttribute()]);
             }            
         }
         return $response;
