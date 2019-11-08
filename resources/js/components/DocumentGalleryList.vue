@@ -2,14 +2,15 @@
     <div class="media-gallery" :style="[cols > 1 ? {margin: '-4px'} : {margin: '0px'}]" v-if="media.length">
         <gallery :images="images" :index="galleryIndex" :options="galleryOptions" @close="galleryIndex = null" />
         <!-- <transition-group tag="div" class="media-list" name="media-item-fade"> -->
-            <div class="filter-list">
-                <span @click="filterOption = ''">All</span>
-                <span v-for="item in $constants.file_categories" 
+            <ul class="filter-list">
+                <li :class="filterOption == '' ? 'active' : ''" @click="filterOption = ''">All</li>
+                <li v-for="item in $constants.file_categories" 
                         :key="item" 
+                        :class="filterOption == item ? 'active' : ''"
                         @click="filterOption = item">
                     {{$t('resident.media_category.' + item)}}
-                </span>
-            </div>
+                </li>
+            </ul>
             <isotope :options='option' :list="filteredMedia" class="media-list" key="iso-top">
                 
                 <div class="media-item" v-for="(file, idx) in filteredMedia" :key="file.id" :style="itemStyle">
@@ -172,6 +173,19 @@
 
 
 <style lang="scss" scoped>
+    .filter-list {
+        display: flex;
+        list-style: none;
+        cursor: pointer;
+
+        li {
+            margin: 10px;
+        }
+
+        li.active, li:hover {
+            border-bottom: 1px solid #222328;
+        }
+    }
     .media-list {
         width: 100%;
         display: flex;
