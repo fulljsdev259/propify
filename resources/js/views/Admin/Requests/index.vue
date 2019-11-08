@@ -610,16 +610,16 @@
                 }
             }
         },
-        async created(){
-            this.isLoadingFilters = true;
+        async mounted(){
+            this.disableMassEditButton(true)
 
+            this.isLoadingFilters = true;
+            
             const states = await this.axios.get('states?filters=true')
             this.states = states.data.data;
 
             this.categories = await this.getFilterCategories()
             this.isLoadingFilters = false;
-
-            this.disableMassEditButton(true)
         },
         watch: {
             selectedItems: function(items) {   
