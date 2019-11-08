@@ -117,7 +117,7 @@
                         <router-link :to="{name: 'adminResidentsView', params: {id: scope.row.id}}">
                             {{scope.row.name}}
                         </router-link>
-                        <div>{{column.translate(scope.row.type)}}</div>
+                        <div class="type">{{column.translate(scope.row.type)}}</div>
                     </div>
 
                     <div v-else-if="column.type === 'residentContract'">
@@ -497,6 +497,8 @@
                     text-decoration: none;
                     color:var(--primary-color-lighter);
                 }
+
+                
             }
         }
     }
@@ -513,6 +515,10 @@
         &:hover {
             text-decoration: none;
             color:var(--primary-color-lighter);
+        }
+
+        .type {
+            color: black;
         }
     }
 </style>
