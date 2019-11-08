@@ -146,7 +146,6 @@
                 all_unassigned_count: null,
                 my_request_count: null,
                 my_pending_count: null,
-                rolename: null,
                 unreadNotifications: 0
             }
         },
@@ -344,7 +343,6 @@
                 }                
                 if (this.role_name == 'administrator') {
                    //links = Object.values(menu_items);
-                   console.log('administrator')
                    links = [
                             menu_items.dashboard,
                             menu_items.buildings,
@@ -358,7 +356,6 @@
                        ];
                 }
                 else if (this.role_name == 'manager') {
-                    console.log('manager')
                    links = [
                             menu_items.buildings,
                             menu_items.managerRequests,
@@ -512,8 +509,6 @@
                 }
             });
 
-            console.log('admin layout mounted')
-            this.rolename = this.$store.getters.loggedInUser.roles[0].name;
 
             this.$root.$on('avatar-update', () => {
                 this.user.avatar += "?"
