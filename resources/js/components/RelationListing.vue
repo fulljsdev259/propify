@@ -78,6 +78,10 @@
                         </el-tooltip>
                     </div>
 
+                    <div v-else-if="column.type === 'residentContract'">
+                        <contract-count :countsData="scope.row" ></contract-count>
+                    </div>
+
                     <div v-else-if="column.type === 'buildingResidentAvatars'" class="avatars-wrapper">
                         <span class="resident-item" :key="uuid()" v-for="(resident) in scope.row[column.prop].slice(0, column.propLimit)">
                               <el-tooltip
@@ -247,10 +251,12 @@
 <script>
     import {Avatar} from 'vue-avatar'
     import uuid from 'uuid/v1'
+    import ContractCount from 'components/ContractCount'
 
     export default {
         components: {
             Avatar,
+            ContractCount
         },
         props: {
             filter: {

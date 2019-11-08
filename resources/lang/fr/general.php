@@ -129,6 +129,7 @@ return [
     'logged_in' => 'Connecté(e)',
     'invalid_credentials' => 'Pouvoirs non valides',
     'server_error' => 'Erreur de serveur',
+    'reset' => 'Réinitialiser',
     'reset_password' => 'Réinitialiser le mot de passe',
     'reset_password_mail' => 'Envoyer un e-mail avec mot de passe réinitialisé',
     'reset_password_mail_sent' => "Nous vous avons envoyé un e-mail avec d'autres instructions. Veuillez vérifier votre boîte de réception.",

@@ -7,7 +7,7 @@
 
     * {
         font-size: 14px;
-        font-family: {{$re->pdf_font_family ?? 'arial'}};
+        font-family: {{$pdf_font_family ?? 'arial'}};
     }
     body {
         padding-left: 42px;
@@ -24,10 +24,10 @@
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
         border: 1px var(--border-color-base) solid;
         margin-bottom: 15px;
-        text-center;
-        width:295px;
-        height:250px;
+        width:100%;
         display:inlne-block;
+        top: 0;
+        vertical-align: top;
     }
     .sepearation{
         margin:0px 5px!important;
@@ -38,9 +38,9 @@
 table.data_table th, table.data_table td {
     text-align: left;
     font-size:13px;
-    font-family:{{$re->pdf_font_family ?? 'arial'}}
+    font-family:{{$pdf_font_family ?? 'arial'}}
 }
-    table.data_table strong{font-size:13px;font-family:{{$re->pdf_font_family ?? 'arial'}}}
+    table.data_table strong{font-size:13px;font-family:{{$pdf_font_family ?? 'arial'}}}
     .inner_table{width:100%;}
 .inner_table td{padding:7px 0;}
     table.data_table td{border-top:1px solid #eee;}

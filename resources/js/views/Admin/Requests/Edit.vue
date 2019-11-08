@@ -139,19 +139,45 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12" v-if="this.showQualification == true && this.showPayer == true">
-                                    <el-form-item :label="$t('models.request.category_options.cost')">
+                                <!-- <el-col :md="12" v-if="this.showQualification == true && this.showPayer == true">
+                                    <el-form-item :label="$t('models.request.category_options.payer')">
                                         <el-select :disabled="$can($permissions.update.serviceRequest)"
                                                    :placeholder="$t(`general.placeholders.select`)"
                                                    class="custom-select"
                                                    v-model="model.payer">
                                             <el-option
-                                                :key="cost.value"
-                                                :label="cost.name"
-                                                :value="cost.value"
-                                                v-for="cost in costs">
+                                                :key="payer.value"
+                                                :label="payer.name"
+                                                :value="payer.value"
+                                                v-for="payer in payers">
                                             </el-option>
                                         </el-select>
+                                    </el-form-item>
+                                </el-col> -->
+                                <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true">
+                                    <el-form-item 
+                                        :label="$t('models.request.category_options.payer_percent')"
+                                        :rules="validationRules.payer_percent"
+                                        prop="payer_percent">
+                                        <el-input 
+                                            type="number"
+                                            v-model="model.payer_percent" 
+                                        >
+                                            <template slot="prepend">%</template>
+                                        </el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true">
+                                    <el-form-item 
+                                        :label="$t('models.request.category_options.payer_amount')"
+                                        :rules="validationRules.payer_amount"
+                                        prop="payer_amount">
+                                        <el-input 
+                                            type="number"
+                                            v-model="model.payer_amount" 
+                                        >
+                                            <template slot="prepend">CHF</template>
+                                        </el-input>
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
@@ -793,9 +819,20 @@
     .ui-media-gallery {
         margin-bottom: 10px;
     }
+
 </style>
 
 <style lang="scss">
+    #request_details {
+        .el-form-item__content {
+            .el-input.el-input-group {
+                .el-input-group__prepend {
+                    padding: 2px 8px 0;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
 
     .switch-item {
         display: flex;
