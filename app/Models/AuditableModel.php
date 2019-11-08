@@ -169,7 +169,7 @@ class AuditableModel extends Model implements Auditable
      */
     public function addMediaInAudit($audit, Collection $existing, Collection $created, Collection $deleted)
     {
-        if (empty($audit)) {
+        if (empty($audit)|| ($created->isEmpty() && $deleted->isEmpty())) {
             return $audit;
         }
 
