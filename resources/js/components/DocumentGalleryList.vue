@@ -1,33 +1,43 @@
 <template>
     <div class="media-gallery" :style="[cols > 1 ? {margin: '-4px'} : {margin: '0px'}]" v-if="media.length">
         <gallery :images="images" :index="galleryIndex" :options="galleryOptions" @close="galleryIndex = null" />
-        <transition-group tag="div" class="media-list" name="media-item-fade">
-            <div class="media-item" v-for="(file, idx) in localMedia" :key="file.id" :style="itemStyle">
-                <div class="media-content">
-                    <template v-if="isFileImage(file)">
-                        <el-image :src="file.url" fit="cover" :alt="file.name" :lazy="lazy" :scroll-container="lazyScrollContainer">
-                            <div slot="error" class="error" style="color: red;">
-                                <i class="el-icon-document-delete" />
-                            </div>
-                            <div slot="placeholder" class="placeholder el-icon-loading"></div>
-                        </el-image>
-                    </template>
-                    <template v-else>
-                        <i class="icon-file-pdf" />
-                        <!-- <i class="media-icon ti-file" /> -->
-                        <!-- <div class="media-filename">{{file.name}}</div> -->
-                    </template>
-                    <div class="media-actions">
-                        <div class="el-icon-zoom-in" @click="openFile(file, idx)" v-if="canFileBePreviewed(file)"></div>
-                        <div class="el-icon-delete remove" v-if="removeable" @click="removeFile(file)"></div>
-                    </div>
-                    <div class="badge" v-if="file.collection_name">
-                        <span> {{ $t(`resident.media_category.${file.collection_name}`) }}</span>
+        <!-- <transition-group tag="div" class="media-list" name="media-item-fade"> -->
+            <ul class="filter-list">
+                <li :class="filterOption == '' ? 'active' : ''" @click="filterOption = ''">{{$t('resident.media_category.all')}}</li>
+                <li v-for="item in $constants.file_categories" 
+                        :key="item" 
+                        :class="filterOption == item ? 'active' : ''"
+                        @click="filterOption = item">
+                    {{$t('resident.media_category.' + item)}}
+                </li>
+            </ul>
+            <isotope :options='option' :list="filteredMedia" class="media-list" key="iso-top">
+                
+                <div class="media-item" v-for="(file, idx) in filteredMedia" :key="file.id" :style="itemStyle">
+                    <div class="media-content">
+                        <template v-if="isFileImage(file)">
+                            <el-image :src="file.url" fit="cover" :alt="file.name" :lazy="lazy" :scroll-container="lazyScrollContainer">
+                                <div slot="error" class="error" style="color: red;">
+                                    <i class="el-icon-document-delete" />
+                                </div>
+                                <div slot="placeholder" class="placeholder el-icon-loading"></div>
+                            </el-image>
+                        </template>
+                        <template v-else>
+                            <i class="icon-file-pdf" />
+                        </template>
+                        <div class="media-actions">
+                            <div class="el-icon-zoom-in" @click="openFile(file, idx)" v-if="canFileBePreviewed(file)"></div>
+                            <div class="el-icon-delete remove" v-if="removeable" @click="removeFile(file)"></div>
+                        </div>
+                        <div class="badge" v-if="file.collection_name">
+                            <span> {{ $t(`resident.media_category.${file.collection_name}`) }}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </isotope>
             <slot :itemStyle="itemStyle" />
-        </transition-group>
+        <!-- </transition-group> -->
     </div>
     <placeholder :src="require('img/5c98a90bb5c05.png')" v-else-if="!media.length && usePlaceholder">
         {{$t('resident.no_data.media')}}
@@ -38,6 +48,8 @@
 <script>
     import Gallery from './MediaGallery'
     import Placeholder from './Placeholder'
+    import isotope from 'vueisotope'
+    import {mapActions, mapGetters} from 'vuex';
 
     export default {
         props: {
@@ -73,11 +85,19 @@
         },
         components: {
             Gallery,
-            Placeholder
+            Placeholder,
+            isotope
         },
         data () {
             return {
-                galleryIndex: null
+                galleryIndex: null,
+                option: {
+                    getSortData: {
+                        id: "id"
+                    },
+                    sortBy : "id"
+                },
+                filterOption: ''
             }
         },
         methods: {
@@ -110,6 +130,12 @@
             }
         },
         computed: {
+            ...mapGetters('application', {
+                constants: 'constants'
+            }),
+            filteredMedia() {
+                return this.localMedia.filter(item => (item.collection_name == this.filterOption)|| (this.filterOption == '') )
+            },
             localMedia () {
                 if (this.limit) {
                     return this.media.slice(0, this.limit)
@@ -147,6 +173,22 @@
 
 
 <style lang="scss" scoped>
+    .filter-list {
+        display: flex;
+        list-style: none;
+        cursor: pointer;
+
+        li {
+            margin: 10px;
+            transition: 300ms;
+            color: #909498;
+        }
+
+        li.active, li:hover {
+            color: #222328;
+            border-bottom: 1px solid #222328;
+        }
+    }
     .media-list {
         width: 100%;
         display: flex;
