@@ -3,7 +3,7 @@
         <gallery :images="images" :index="galleryIndex" :options="galleryOptions" @close="galleryIndex = null" />
         <!-- <transition-group tag="div" class="media-list" name="media-item-fade"> -->
             <ul class="filter-list">
-                <li :class="filterOption == '' ? 'active' : ''" @click="filterOption = ''">All</li>
+                <li :class="filterOption == '' ? 'active' : ''" @click="filterOption = ''">Show All</li>
                 <li v-for="item in $constants.file_categories" 
                         :key="item" 
                         :class="filterOption == item ? 'active' : ''"
@@ -180,9 +180,12 @@
 
         li {
             margin: 10px;
+            transition: 300ms;
+            color: #909498;
         }
 
         li.active, li:hover {
+            color: #222328;
             border-bottom: 1px solid #222328;
         }
     }
