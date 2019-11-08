@@ -358,8 +358,7 @@
                     console.log('manager')
                    links = [
                             menu_items.buildings,
-                            menu_items.managerRequests, 
-                            menu_items.activity,
+                            menu_items.managerRequests,
                             menu_items.residents,
                             menu_items.propertyManagers,
                             menu_items.services,

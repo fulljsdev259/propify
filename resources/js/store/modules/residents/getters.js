@@ -24,7 +24,9 @@ export default {
         return residents.map(resident => {
             resident.name = `${resident.first_name} ${resident.last_name}`;
             resident.status_label = `models.resident.status.${constants.residents.status[resident.status]}`;
-            resident.address = resident.address ? resident.address['street'] + ' ' + resident.address['house_num'] : ''; // @TODO : this address should be checked once the api is done
+            resident.address = ''
+            if(resident.contracts.length)
+                resident.address = resident.contracts[0].address['street'] + ' ' + resident.contracts[0].address['house_num']; // @TODO : this address should be checked once the api is done
             resident.status_class_suffix = constants.residents.status[resident.status];
 
             return resident;
