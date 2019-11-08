@@ -587,7 +587,9 @@ return [
             'range' => 'Range',
             'component' => 'Component',
             'capture_phase' => 'Capture Phase',
-            'cost' => 'Cost Impact',
+            'payer' => 'Cost Impact',
+            'payer_percent' => 'Share Fortimo',
+            'payer_amount' => 'Amount',
             'keywords' => 'Keywords',
         ],
         'placeholders' => [

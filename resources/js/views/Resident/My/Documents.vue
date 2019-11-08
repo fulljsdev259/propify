@@ -8,12 +8,20 @@
         </ui-heading>
         <ui-divider />
         <el-row>
+            <el-col :span="24" v-if="quarter_media.length">
+                <div class="title">
+                    {{ $t('resident.quarter') }}
+                    <small>{{ quarter_media.length > 1 ? $t('resident.doc_available.multiple',{num: quarter_media.length}) : $t('resident.doc_available.single',{num: quarter_media.length}) }}</small>
+                </div>
+                <document-gallery-list :media="quarter_media" :cols="4" />
+                <el-divider />
+            </el-col>
             <el-col :span="24" v-if="building_media.length">
                 <div class="title">
                     {{ $t('resident.building') }}
                     <small>{{ building_media.length > 1 ? $t('resident.doc_available.multiple',{num: building_media.length}) : $t('resident.doc_available.single',{num: building_media.length}) }}</small>
                 </div>
-                <gallery-list :media="building_media" :cols="4" />
+                <document-gallery-list :media="building_media" :cols="4" />
                 <el-divider />
             </el-col>
             <el-col :span="24" v-if="unit_media.length">
@@ -21,15 +29,7 @@
                     {{ $t('resident.unit') }}
                     <small>{{ unit_media.length > 1 ? $t('resident.doc_available.multiple',{num: unit_media.length}) : $t('resident.doc_available.single',{num: unit_media.length}) }}</small>
                 </div>
-                <gallery-list :media="unit_media" :cols="4" />
-                <el-divider />
-            </el-col>
-            <el-col :span="24" v-if="quarter_media.length">
-                <div class="title">
-                    {{ $t('resident.quarter') }}
-                    <small>{{ quarter_media.length > 1 ? $t('resident.doc_available.multiple',{num: quarter_media.length}) : $t('resident.doc_available.single',{num: quarter_media.length}) }}</small>
-                </div>
-                <gallery-list :media="quarter_media" :cols="4" />
+                <document-gallery-list :media="unit_media" :cols="4" />
                 <el-divider />
             </el-col>
         </el-row>
@@ -40,14 +40,14 @@
     import Heading from 'components/Heading';
     import {displayError} from "helpers/messages";
     import Placeholder from 'components/Placeholder'
-    import GalleryList from 'components/MediaGalleryList'
+    import DocumentGalleryList from 'components/DocumentGalleryList'
     import VueSticky from 'vue-sticky'
 
     export default {
         components: {
             Heading,
             Placeholder,
-            GalleryList,
+            DocumentGalleryList
         },
         directives: {
             sticky: VueSticky
@@ -61,7 +61,7 @@
                 loader: {
                     visible: true
                 },
-                imageIdx: null
+                imageIdx: null,
             }
         },
         computed: {

@@ -587,7 +587,9 @@ return [
             'range' => 'Gamma',
             'component' => 'Componente',
             'capture_phase' => 'Fase di cattura',
-            'cost' => 'Costo Impatto',
+            'payer' => 'Costo Impatto',
+            'payer_percent' => 'Condividi Fortimo',
+            'payer_amount' => 'Importo',
             'keywords' => 'Parole chiave',
         ],
         'placeholders' => [

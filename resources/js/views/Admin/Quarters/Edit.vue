@@ -194,7 +194,20 @@
                                 v-if="model.id"
                             />
                         </el-tab-pane>
-                        <el-tab-pane name="contracts">
+                        <el-tab-pane name="residents">                        
+                            <span slot="label">
+                                <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.residents') }}</el-badge>
+                            </span>
+                            <relation-list
+                                :actions="residentActions"
+                                :columns="residentColumns"
+                                :filterValue="model.id"
+                                fetchAction="getResidents"
+                                filter="quarter_id"
+                                v-if="model.id"
+                            />
+                        </el-tab-pane>
+                        <!-- <el-tab-pane name="contracts">
                             <span slot="label">
                                 <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
                             </span>
@@ -205,7 +218,7 @@
                                     @edit-contract="editContract"
                                     @delete-contract="deleteContract">
                             </contract-list-table>
-                        </el-tab-pane>
+                        </el-tab-pane> -->
                     </el-tabs>
                     
                     <el-tabs type="border-card" v-model="activeRequestTab">
@@ -405,6 +418,35 @@
                         tooltipMode: true
                     }]
                 }],
+                residentColumns: [{
+                    type: 'requestResidentAvatar',
+                    width: 70                    
+                }, {
+                    prop: 'name',
+                    label: 'general.name',
+                    type: 'residentName'
+                }, {
+                    prop: 'type',
+                    label: 'models.resident.type.label',
+                    i18n: this.translateResidentType
+                }, {
+                    type: 'residentContract',
+                    label: 'models.resident.contract.title'
+                }, {
+                    prop: 'status',
+                    i18n: this.residentStatusLabel,
+                    withBadge: this.residentStatusBadge,
+                    label: 'models.resident.status.label'
+                }],
+                residentActions: [{
+                    width: 70,
+                    buttons: [{
+                        title: 'models.resident.view',
+                        onClick: this.residentEditView,
+                        icon: 'el-icon-user',
+                        tooltipMode: true
+                    }]
+                }],
                 visibleDrawer: false,
                 auditCount: 0,
                 fileCount: 0,
@@ -412,6 +454,7 @@
                 assigneeCount: 0,
                 buildingCount: 0,
                 contractCount: 0,
+                residentCount: 0,
                 activeTab1: 'details',
                 activeRightTab: 'assignees',
                 activeRequestTab: 'requests',
@@ -431,6 +474,9 @@
             ]),
             translateType(type) {
                 return this.$t(`general.assignment_types.${type}`);
+            },
+            translateResidentType(type) {
+                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
             },
             requestEditView(row) {
                 this.$router.push({
@@ -571,9 +617,14 @@
                 this.assigneeCount = assignee_count;
             });
 
+            EventBus.$on('resident-get-counted', resident_count => {                
+                this.residentCount = resident_count;
+            });
+
             EventBus.$on('building-get-counted', building_count => {
                 this.buildingCount = building_count;
             });
+
             EventBus.$on('audit-get-counted', audit_count => {
                 this.auditCount = audit_count;
             });
