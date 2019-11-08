@@ -518,7 +518,7 @@
         }
 
         .type {
-            color: black;
+            color: var(--color-text-regular);
         }
     }
 </style>
