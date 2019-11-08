@@ -57,7 +57,7 @@ class AuditTransformer extends BaseTransformer
                 'name' => 'Deleted user',
                 'email' => 'dummy@email.com',
                 'phone' => '',
-                'avatar' => '',
+                'avatar' => null,
             ];
         }        
         if($model->event == 'updated'){            
