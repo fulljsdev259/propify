@@ -196,6 +196,7 @@ return [
     ],
     'token_invalid' => 'Jeton non valable',
     'login' => 'Connexion',
+    'last_login_at' => 'Dernière connexion à',
     'support' => 'Support',
     'actions' => [
         "label" => "Opérations",

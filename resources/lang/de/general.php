@@ -196,6 +196,7 @@ return [
     ],
     'token_invalid' => 'Invalid token',
     'login' => 'Login',
+    'last_login_at' => 'Letzter Login bei',
     'support' => 'Support',
     'actions' => [
         'label' => 'Aktionen',

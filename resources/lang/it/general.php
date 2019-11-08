@@ -196,6 +196,7 @@ return [
     ],
     'token_invalid' => 'Gettone non valido',
     'login' => 'Accedi',
+    'last_login_at' => 'Ultimo login su',
     'support' => 'Support',
     'actions' => [
         "label" => "Operazioni",
