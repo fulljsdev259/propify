@@ -444,11 +444,13 @@ class Request extends AuditableModel implements HasMedia
     const SubCategoryAttributes = [
         self::SubCategorySurrounding => [
             self::QualificationAttr,
-            self::ComponentAttr,
+	        self::CapturePhaseAttr,
+	        self::ComponentAttr,
         ],
         self::SubCategoryRealEstate => [
             self::QualificationAttr,
-            self::LocationAttr,
+	        self::CapturePhaseAttr,
+	        self::LocationAttr,
             self::ComponentAttr,
 
         ],
