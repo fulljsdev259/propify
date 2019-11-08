@@ -3,7 +3,7 @@
         <gallery :images="images" :index="galleryIndex" :options="galleryOptions" @close="galleryIndex = null" />
         <!-- <transition-group tag="div" class="media-list" name="media-item-fade"> -->
             <ul class="filter-list">
-                <li :class="filterOption == '' ? 'active' : ''" @click="filterOption = ''">Show All</li>
+                <li :class="filterOption == '' ? 'active' : ''" @click="filterOption = ''">{{$t('resident.media_category.all')}}</li>
                 <li v-for="item in $constants.file_categories" 
                         :key="item" 
                         :class="filterOption == item ? 'active' : ''"
