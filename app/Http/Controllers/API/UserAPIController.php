@@ -298,11 +298,11 @@ class UserAPIController extends AppBaseController
             $user->property_manager_id = $user->property_manager->id;
         }
 
-        if ($user->service_privider) {
-            $user->service_privider_id = $user->service_privider->id;
+        if ($user->service_provider) {
+            $user->service_provider_id = $user->service_provider->id;
         }
 
-        unset($user->service_privider);
+        unset($user->service_provider);
         unset($user->property_manager);
         $user->unread_notifications_count = $user->unreadNotifications()->count();
         $resident = $user->resident;
