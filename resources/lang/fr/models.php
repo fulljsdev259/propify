@@ -649,7 +649,7 @@ return [
             'captured_by' => 'Capturé par',
             'request_number' => 'Numéro de demande',
             'details'=>'Précisions',
-            'blank_pdf'=>`Après l'achèvement des défauts, veuillez renvoyer immédiatement à la direction du site le formulaire ci-joint, signé et signé.`,
+            'blank_pdf'=>'Après l\'achèvement des défauts, veuillez renvoyer immédiatement à la direction du site le formulaire ci-joint, signé et signé.',
 
         ],
         'pictures_of' => 'Photos de la demande',
