@@ -78,6 +78,48 @@
                         </el-tooltip>
                     </div>
 
+                    <div v-else-if="column.type === 'residentAvatarWithType'">
+                        <router-link v-if="column.prop" :to="{name: 'adminResidentsEdit', params: {id: scope.row[column.prop].id}}"
+                                     class="resident-link">
+                            <el-tooltip
+                                    :content="`${scope.row[column.prop].first_name} ${scope.row[column.prop].last_name}`"
+                                    class="item"
+                                    effect="light" placement="top"
+                            >
+                                <avatar :size="30"
+                                        :src="'/' + scope.row[column.prop].user.avatar"
+                                        v-if="scope.row[column.prop].user.avatar"></avatar>
+                                <avatar :size="28"
+                                        backgroundColor="rgb(205, 220, 57)"
+                                        color="#fff"
+                                        :username="scope.row[column.prop].user.first_name ? `${scope.row[column.prop].user.first_name} ${scope.row[column.prop].user.last_name}`: `${scope.row[column.prop].user.name}`"
+                                        v-if="!scope.row[column.prop].user.avatar"></avatar>
+                            </el-tooltip>
+                        </router-link>
+                        <el-tooltip v-else
+                                :content="`${scope.row.first_name} ${scope.row.last_name}`"
+                                class="item"
+                                effect="light" placement="top"
+                        >
+                            <avatar :size="30"
+                                    :src="'/' + scope.row.user.avatar"
+                                    v-if="scope.row.user.avatar"></avatar>
+                            <avatar :size="28"
+                                    backgroundColor="rgb(205, 220, 57)"
+                                    color="#fff"
+                                    :username="scope.row.user.first_name ? `${scope.row.user.first_name} ${scope.row.user.last_name}`: `${scope.row.user.name}`"
+                                    v-if="!scope.row.user.avatar"></avatar>
+                        </el-tooltip>
+                        <span>{{column.translate(scope.row.type)}}</span>
+                    </div>
+
+                    <div v-else-if="column.type === 'residentNameAndType'" class="normal">
+                        <router-link :to="{name: 'adminResidentsView', params: {id: scope.row.id}}">
+                            {{scope.row.name}}
+                        </router-link>
+                        <div class="type">{{column.translate(scope.row.type)}}</div>
+                    </div>
+
                     <div v-else-if="column.type === 'residentContract'">
                         <contract-count :countsData="scope.row" ></contract-count>
                     </div>
@@ -175,7 +217,7 @@
                     <div v-else-if="column.type === 'residentName'" class="normal"> 
                         <router-link :to="{name: 'adminResidentsView', params: {id: scope.row.id}}">
                             {{scope.row.name}}
-                        </router-link>                        
+                        </router-link>
                     </div>
                     <div v-else-if="column.type === 'serviceName'" class="normal">                        
                         <router-link :to="{name: 'adminServicesEdit', params: {id: scope.row.id}}">
@@ -455,6 +497,8 @@
                     text-decoration: none;
                     color:var(--primary-color-lighter);
                 }
+
+                
             }
         }
     }
@@ -471,6 +515,10 @@
         &:hover {
             text-decoration: none;
             color:var(--primary-color-lighter);
+        }
+
+        .type {
+            color: black;
         }
     }
 </style>

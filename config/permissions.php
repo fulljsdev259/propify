@@ -52,6 +52,7 @@ return [
         'delete-pinboard',
         'list-provider',
         'add-provider',
+        'announcement-pinboard',
         'view-provider',
         'edit-provider',
         'delete-provider',
@@ -68,6 +69,7 @@ return [
         'add-building',
         'edit-building',
         'assign-building',
+        'view-buildings_statistics',
         'list-address',
         'view-address',
         'add-address',
@@ -109,7 +111,6 @@ return [
         'delete_media_upload-resident',
         'add_media_upload-request',
         'delete_media_upload-request',
-        'view-property_manager',
     ],
     'all' => [
         ['list-user', 'List Users', 'list all users'],
