@@ -361,6 +361,8 @@ return [
             'key_service' => 'Key service',
             'caretaker' => 'Caretaker',
             'real_estate_service' => 'Real estate service',
+            'business_person' => 'Business Person',
+            'tu-gu' => 'TU/GU',
         ],
         'contact_details' => 'Contact details',
         'user_credentials' => 'User credentials',
