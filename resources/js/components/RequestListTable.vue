@@ -49,7 +49,6 @@
                                 </el-select> -->
                                 <custom-select
                                     v-if="filter.key == 'category_id'"
-                                    :spanKey="filter.key"
                                     :placeholder="filter.name"
                                     :options="filter.data"
                                     :selectedOptions="filterModel[filter.key]"

@@ -122,7 +122,7 @@ class NotifyNewPinboard
             return User::whereHas('resident', function ($q) {
                     $q->whereNull('residents.deleted_at');
                 })
-                ->where('id', '!=', $pinboard->user_id)
+                ->where('id', '!=', $pinboard->user_id) // not sent notification pinboard author
                 ->get();
         }
 
@@ -139,8 +139,9 @@ class NotifyNewPinboard
             return $pinboard->newCollection();
         }
 
-        return User::whereHas('resident', function ($q) use ($quarterIds, $buildingIds) {
+        return User::whereHas('resident', function ($q) use ($quarterIds, $buildingIds, $pinboard) {
             $q->whereNull('residents.deleted_at')
+                ->where('id', '!=', $pinboard->user_id) // not sent notification pinboard author
                 ->where('residents.status', Resident::StatusActive)
                 ->whereHas('contracts', function ($q) use ($quarterIds, $buildingIds) {
                     $this->setNeededFiltersInQuery($q, $buildingIds, $quarterIds);

@@ -172,6 +172,7 @@ return [
         "multiple" => ":num documents available"
     ],
     'media_category' => [
+        "all" => "Select All",
         'house_rules' => 'House rules',
         'operating_instructions' => 'Operating instructions',
         'care_instructions' => 'Care instructions',

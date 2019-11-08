@@ -108,7 +108,7 @@ export default (config = {}) => {
                 locations: [],
                 rooms: [],
                 capture_phases: [],
-                costs: [],
+                payers: [],
                 showSubCategory: false,
                 showPayer: false,
                 showLocation: false,
@@ -176,7 +176,7 @@ export default (config = {}) => {
                         const {data} = await this.getUsers({
                             get_all: true,
                             search,
-                            exclude_ids,
+                            exclude_ids: exclude_ids.join(','),
                             roles: ['manager', 'administrator']
                         });
 
@@ -212,7 +212,7 @@ export default (config = {}) => {
                             resp = await this.getPropertyManagers({
                                 get_all: true,
                                 search,
-                                exclude_ids
+                                exclude_ids: exclude_ids.join(',')
                             });
                         } else if(this.assignmentType === 'administrator'){
                             respAssignee.data.data.map(item => {
@@ -223,7 +223,7 @@ export default (config = {}) => {
                             resp = await this.getUsers({
                                 get_all: true,
                                 search,
-                                exclude_ids,
+                                exclude_ids: exclude_ids.join(','),
                                 role: 'administrator'
                             });
                         }
@@ -236,7 +236,7 @@ export default (config = {}) => {
                             resp = await this.getServices({
                                 get_all: true, 
                                 search,
-                                exclude_ids
+                                exclude_ids: exclude_ids.join(',')
                             });
                         }
 
@@ -355,7 +355,7 @@ export default (config = {}) => {
                 this.showSubCategory = children.length > 0 ? true : false;
                 let p_category = this.categories.find(category => { return category.id == this.model.category_id});
 
-                //this.model.category = p_category
+                this.model.category = p_category
                 
                 this.showCapturePhase =  p_category.capture_phase == 1 ? true : false;
                 this.showQualification = p_category.qualification == 1 ? true : false;
@@ -375,7 +375,7 @@ export default (config = {}) => {
                     return category.id == this.model.sub_category_id;
                 });
                 
-                //this.model.sub_category = sub_category
+                this.model.sub_category = sub_category
 
                 this.model.room = null;
                 this.model.location = null;
@@ -409,7 +409,7 @@ export default (config = {}) => {
                 this.rooms = Object.entries(this.$constants.requests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
                 this.capture_phases = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
                 this.qualifications = Object.entries(this.$constants.requests.qualification).map(([value, label]) => ({value: +value, name: this.$t(`models.request.qualification.${label}`)}))
-                this.costs = Object.entries(this.$constants.requests.payer).map(([value, label]) => ({value: +value, name: this.$t(`models.request.payer.${label}`)}))
+                this.payers = Object.entries(this.$constants.requests.payer).map(([value, label]) => ({value: +value, name: this.$t(`models.request.payer.${label}`)}))
                 this.categories = this.$constants.requests.categories_data.tree
 
                 if(this.model.category_id)
@@ -678,7 +678,7 @@ export default (config = {}) => {
                             this.$set(this.model, 'sub_category_id', data.sub_category.id);
                         this.$set(this.model, 'created_by', data.created_by);
                         this.$set(this.model, 'building', data.contract.building.name);
-
+                        this.address = data.contract.address
                         //this.contracts = resp.data.resident.contracts.filter(item => item.status == 1)
                         this.model.contract_id = data.contract.id
                         await this.getConversations();

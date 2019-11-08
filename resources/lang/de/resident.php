@@ -157,7 +157,7 @@ return [
     "building" => "Liegenschaften",
     "name" => "Name",
     "unit" => "Einheit",
-    "quarter" => "Quartal",
+    "quarter" => "Überbauung",
     "unit_number" => "Einheit-Nummer",
     "type" => "Typ",
     "floor" => "Etage",
@@ -167,10 +167,11 @@ return [
     "my_documents" => "Liegenschaft Dokumentation",
     "doc_list" => "Eine Liste mit allen Dokumenten des Gebäudes und der Einheit.",
     "doc_available" => [
-        "single" => ":num verfügbare Dokument",
+        "single" => ":num verfügbares Dokument",
         "multiple" => ":num verfügbare Dokumente"
     ],
     'media_category' => [
+        "all" => "Alle auswählen",
         'house_rules' => 'Hausordnung',
         'operating_instructions' => 'Benutzungsanleitungen',
         'care_instructions' => 'Pflegehinweise',

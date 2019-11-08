@@ -587,7 +587,9 @@ return [
             'range' => 'Gamma',
             'component' => 'Componente',
             'capture_phase' => 'Fase di cattura',
-            'cost' => 'Costo Impatto',
+            'payer' => 'Costo Impatto',
+            'payer_percent' => 'Condividi Fortimo',
+            'payer_amount' => 'Importo',
             'keywords' => 'Parole chiave',
         ],
         'placeholders' => [
@@ -644,8 +646,13 @@ return [
             'service_request' => 'Service Request',
             'contact_details' => 'Contact Details',
             'contact_text' => "Questi sono i dati di contatto dell'attuale residente/proprietario dell'unità abitativa.",
+            'captured_by' => 'Catturato da',
+            'request_number' => 'Numero della richiesta',
+            'details'=>'Dettagli',
+            'blank_pdf'=>'Dopo il completamento dei difetti si prega di restituire il modulo allegato firmato immediatamente alla direzione del sito.',
+
         ],
-        'attachments' => 'Attacchi',
+        'pictures_of' => 'Foto della richiesta',
         'go_to_building' => 'vai al palazzo'
     ],
     'request_category' => [

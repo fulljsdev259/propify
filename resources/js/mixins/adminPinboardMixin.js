@@ -200,20 +200,14 @@ export default (config = {}) => {
                             resp = await this.getBuildings({
                                 get_all: true,
                                 search,
+                                exclude_ids: this.model.building_ids.join(),
                                 exclude_quarter_ids: this.model.quarter_ids.join()
-                            });
-
-                            resp.data = resp.data.filter((building) => {
-                                return !this.model.building_ids.includes(building.id)
                             });
                         } else {
                             resp = await this.getQuarters({
                                 get_all: true,
-                                search
-                            });
-
-                            resp.data = resp.data.filter((quarter) => {
-                                return !this.model.quarter_ids.includes(quarter.id)
+                                search,
+                                exclude_ids: this.model.quarter_ids.join()
                             });
                         }
 
@@ -318,8 +312,10 @@ export default (config = {}) => {
                     this.remoteLoading = true;
 
                     try {
-
-                        const resp = await this.getServices({get_all: true, search});
+                        const resp = await this.getServices({
+                            get_all: true,
+                            search
+                        });
 
                         resp.data = resp.data.filter((provider) => {
                             return !this.model.provider_ids.includes(provider.id)

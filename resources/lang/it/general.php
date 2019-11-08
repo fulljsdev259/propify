@@ -129,6 +129,7 @@ return [
     'logged_in' => 'Loggato',
     'invalid_credentials' => 'Credenziali non valide',
     'server_error' => 'Errore del server',
+    'reset' => 'Reset',
     'reset_password' => 'Reimpostare la password',
     'reset_password_mail' => 'Inviare la mail di reset della password',
     'reset_password_mail_sent' => "Le abbiamo inviato un'e-mail con ulteriori istruzioni. Controlla la tua casella di posta in arrivo.",

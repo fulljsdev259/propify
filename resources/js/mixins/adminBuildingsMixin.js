@@ -139,7 +139,7 @@ export default (config = {}) => {
                             resp = await this.getPropertyManagers({
                                 get_all: true,
                                 search,
-                                exclude_ids
+                                exclude_ids: exclude_ids.join(',')
                             });
                         } else if(this.assignmentType === 'administrator'){
                             buildingAssignee.data.data.map(item => {
@@ -150,7 +150,7 @@ export default (config = {}) => {
                             resp = await this.getUsers({
                                 get_all: true,
                                 search,
-                                exclude_ids,
+                                exclude_ids: exclude_ids.join(','),
                                 role: 'administrator'
                             });
                         }
@@ -222,8 +222,18 @@ export default (config = {}) => {
                     this.remoteLoading = true;
 
                     try {
+                        const buildingAssignedProviders = await this.getServices({building_id: this.$route.params.id});
+                        let exclude_ids = [];
 
-                        const resp = await this.getServices({get_all: true, search});
+                        buildingAssignedProviders.data.data.map(item => {
+                            exclude_ids.push(item.id);
+                        });
+
+                        const resp = await this.getServices({
+                            get_all: true,
+                            search,
+                            exclude_ids: exclude_ids.join(',')
+                        });
 
                         this.toAssignProviderList = resp.data;
                     } catch (err) {

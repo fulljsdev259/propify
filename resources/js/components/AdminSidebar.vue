@@ -14,6 +14,7 @@
                     <el-menu-item
                             :class="{nested: link.nestedItem }"
                             :index="link.title"
+                            @click="selectActiveMenu"
                             >
                             <i :class="[link.icon, 'icon']"/>
                             <span class="title" v-if="!collapsed">{{ link.title }}</span>
@@ -31,6 +32,7 @@
                         :to="child.route">
                         <el-menu-item
                                 :index="child.title"
+                                @click="selectActiveMenu"
                                 >
                                 <i :class="['icon-right-open', 'icon']"/>
                                 <span class="title">{{ child.title }}</span>
@@ -61,6 +63,7 @@
         data() {
             return {
                 currActive: '',
+                menuSelected: true
             }
         },
         methods: {
@@ -102,6 +105,22 @@
                         
                     }
                 }
+            },
+            selectActiveMenu(data) {
+                console.log('selectActiveMenu', data)
+                const routeName = this.$route.name;
+                this.links.map(link => {
+                    if (link.route && routeName.includes(link.route.name)) {
+                        this.currActive = link.title;
+                    } else if (link.children) {
+                        let dActive = '';
+                        link.children.map(child => {
+                            if (child.route && routeName.includes(child.route.name)) {
+                                this.currActive = child.title;
+                            }
+                        });
+                    }
+                }); 
             }
         },
         computed: {
@@ -130,13 +149,13 @@
                 handler({page, per_page}, prevQuery) {
                     const routeName = this.$route.name;
                     this.links.map(link => {
-                        if (link.route && link.route.name == routeName) {
+                        if (link.route && routeName.includes(link.route.name)) {
                             this.currActive = link.title;
                             
                         } else if (link.children) {
                             let dActive = '';
                             link.children.map(child => {
-                                if (child.route && child.route.name == routeName) {
+                                if (child.route && routeName.includes(child.route.name)) {
                                     this.currActive = child.title;
                                 }
                             });
