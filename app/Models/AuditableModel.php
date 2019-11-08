@@ -195,7 +195,7 @@ class AuditableModel extends Model implements Auditable
         if ($needUpdate) {
             $audit->new_values = $newValues;
             $audit->old_values = $oldValues;
-            $audit->update();
+            $audit->save();
         }
 
         return $audit;

@@ -7,6 +7,11 @@ use Illuminate\Support\Arr;
 
 trait SaveMediaUploads
 {
+    /**
+     * @param \App\Models\Model $model
+     * @param $data
+     * @return \App\Models\Model
+     */
     public function saveMediaUploads(\App\Models\Model $model, $data)
     {
         $audit = $this->getAudit($model);
@@ -21,7 +26,7 @@ trait SaveMediaUploads
 
         $media = Arr::wrap($data['media']);
         $deletedMedia = $existingMedia->whereNotIn('id', collect($media)->pluck('id'));
-        $this->deleteOldImages($existingMedia, $audit);
+        $this->deleteOldImages($deletedMedia, $audit);
 
         $savedMedia = [];
         foreach ($media as $mediaData) {
@@ -38,9 +43,9 @@ trait SaveMediaUploads
             }
         }
 
-
-        $model->addMediaInAudit($audit, $existingMedia, collect(), $deletedMedia);
-        $model->setRelation('media', $model->newCollection($savedMedia));
+        $savedMedia = $model->newCollection($savedMedia);
+        $model->addMediaInAudit($audit, $existingMedia, $savedMedia, $deletedMedia);
+        $model->setRelation('media', $savedMedia);
         return $model;
     }
 
