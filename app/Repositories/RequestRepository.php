@@ -69,8 +69,8 @@ class RequestRepository extends BaseRepository
     public function create(array $attributes)
     {
         $attributes = self::getPostAttributes($attributes);
-        if (isset($attributes['category'])) {
-            $categoryAttributes = Request::CategoryAttributes[$attributes['category']] ?? [];
+        if (isset($attributes['category_id'])) {
+            $categoryAttributes = Request::CategoryAttributes[$attributes['category_id']] ?? [];
             if (empty($categoryAttributes) || ! in_array(Request::QualificationAttr, $categoryAttributes)) {
                 unset($attributes['qualification']);
             }
@@ -117,7 +117,7 @@ class RequestRepository extends BaseRepository
     {
         $user = Auth::user();
         if ($user->resident) {
-
+            // @TODO later unset not permitted fields
             $attr = [];
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
@@ -135,6 +135,8 @@ class RequestRepository extends BaseRepository
             $attr = self::fixNeededData($attr, $attributes, 'location');
             $attr = self::fixNeededData($attr, $attributes, 'is_public');
             $attr = self::fixNeededData($attr, $attributes, 'room');
+            $attr = self::fixNeededData($attr, $attributes, 'percentage');
+            $attr = self::fixNeededData($attr, $attributes, 'amount');
 
             // @TODO maybe need
 //            $attr = self::fixNeededData($attr, $attributes, 'capture_phase');
