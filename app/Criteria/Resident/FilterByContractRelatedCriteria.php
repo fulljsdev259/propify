@@ -40,18 +40,14 @@ class FilterByContractRelatedCriteria implements CriteriaInterface
         $buildingId = $this->request->get('building_id', null);
         $unitId = $this->request->get('unit_id', null);
         $stateId = $this->request->get('state_id', null);
+        $hasContract = $this->request->get('has_contract', null);
 
-        // @TODO delete has_building related
-        $hasBuilding = $this->request->get('has_building', null);
-
-        if (!( $buildingId || $quarterId || $hasBuilding || $unitId || $stateId) ) {
+        if (!( $buildingId || $quarterId || $unitId || $stateId || $hasContract) ) {
             return $model;
         }
 
-        $model->whereHas('contracts', function ($q) use($buildingId, $quarterId, $hasBuilding, $unitId, $stateId) {
-            $q->when($hasBuilding, function ($q) {
-                    $q->whereNotNull('building_id');
-                })->when($buildingId, function ($q) use ($buildingId) {
+        $model->whereHas('contracts', function ($q) use($buildingId, $quarterId, $unitId, $stateId) {
+            $q->when($buildingId, function ($q) use ($buildingId) {
                     $q->where('building_id', $buildingId);
                 })->when($unitId, function ($q) use ($unitId) {
                     $q->where('unit_id', $unitId);
