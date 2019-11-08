@@ -196,6 +196,7 @@ return [
     ],
     'token_invalid' => 'Jeton non valable',
     'login' => 'Connexion',
+    'last_login_at' => 'Dernière connexion à',
     'support' => 'Support',
     'actions' => [
         "label" => "Opérations",
@@ -387,6 +388,7 @@ return [
                         'new_resident_pinboard_created' => "Ajout d'un nouveau voisin pour user :userName",
                         'avatar_uploaded' => 'Image de profil téléchargée pour :auditable_type',
                         'contract_created' => 'Contrat créé pour le résident :userName',
+                        'update_no_fieldvalue' => 'Le :fieldname a changé',
                     ],                                      
                 ],
             ],

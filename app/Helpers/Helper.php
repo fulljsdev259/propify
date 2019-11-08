@@ -26,7 +26,22 @@ class Helper
                 'iframe_enable' => __('settings.iframe'),
                 'email_receptionist_ids' => __('general.recipients'),
                 'email' => __('general.email'),
-                'phone' => __('general.phone'),                
+                'phone' => __('general.phone'),
+                'blank_pdf' => __('settings.blank_pdf'),
+                'pdf_font_family' => __('settings.font_family'),
+                'mail_from_name' => __('settings.mail_from_name.label'),
+                'mail_from_address' => __('settings.mail_from_address.label'),
+                'mail_host' => __('settings.mail_host.label'),
+                'mail_port' => __('settings.mail_port.label'),
+                'mail_username' => __('settings.mail_username.label'),
+                'mail_encryption' => __('settings.mail_encryption'),
+                'mail_password' => __('settings.mail_password.label'),
+                'logo' => __('models.user.logo'),
+                'circle_logo' => __('models.user.circle_logo'),
+                'resident_logo' => __('models.user.resident_logo'),
+                'favicon_icon' => __('models.user.favicon_icon'),
+                'primary_color' => __('settings.primary_color'),
+                'primary_color_lighter' => __('settings.accent_color'),
             ],
             'templates' => [
                 'category_id' => __('models.template.category'),
@@ -112,7 +127,9 @@ class Helper
                 'monthly_rent_gross' => __('general.gross_rent'),    
                 'type' => __('models.unit.type.label')            
             ],
-            'user' => [],   
+            'user' => [
+                'last_login_at' => __('general.last_login_at')
+            ],   
         ];
     }  
     public static function shortenString($str){

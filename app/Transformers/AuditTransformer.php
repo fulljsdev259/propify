@@ -63,7 +63,7 @@ class AuditTransformer extends BaseTransformer
         if($model->event == 'updated'){            
             $statement = "";
             foreach($model->new_values as $field => $fieldvalue){                
-                if(in_array($field,['internal_priority', 'priority','notifications'])){
+                if(in_array($field,['internal_priority', 'priority','notifications','avatar'])){
                     continue;
                 }
                 $old_value = (isset($model->old_values[$field])) ? $model->old_values[$field] : "";
@@ -104,11 +104,11 @@ class AuditTransformer extends BaseTransformer
                     $old_value = ($old_value) ? (AuditRepository::getDataFromField($field, $old_value, $model->auditable_type)) : "";
                     $new_value = ($new_value) ? (AuditRepository::getDataFromField($field, $new_value, $model->auditable_type)) : "";
                 }                
-                elseif(in_array($field, ['attic','announcement','is_execution_time','iframe_enable'])){
+                elseif(in_array($field, ['attic','announcement','is_execution_time','iframe_enable','blank_pdf'])){
                     $old_value = ($old_value == 1) ? __('general.enabled') : __('general.disabled');
                     $new_value = ($new_value == 1) ? __('general.enabled') : __('general.disabled');                                    
                 }
-                elseif(in_array($field, ['due_date','solved_date','published_at','birth_date','execution_start','execution_end'])){
+                elseif(in_array($field, ['due_date','solved_date','published_at','birth_date','execution_start','execution_end','last_login_at'])){
                     $old_value = ($old_value) ? Helper::formatedDate($old_value) : "";
                     $new_value = ($new_value) ? Helper::formatedDate($new_value) : "";
                 }                
@@ -128,8 +128,13 @@ class AuditTransformer extends BaseTransformer
                         $old_value = $old_category->name;
                         $new_value = $new_category->name;
                     }
-                }*/                
-                $statement .= __("general.components.common.audit.content.general.updated",['fieldname' => $fieldname, 'old' => $old_value, 'new' => $new_value]);
+                }*/    
+                if(in_array($field, ['logo','circle_logo','resident_logo','favicon_icon','mail_password','password'])){
+                    $statement .= __("general.components.common.audit.content.general.update_no_fieldvalue",['fieldname' => $fieldname]);
+                }
+                else{
+                    $statement .= __("general.components.common.audit.content.general.updated",['fieldname' => $fieldname, 'old' => $old_value, 'new' => $new_value]);
+                }                
                 $statement .= " ";
             }
             $statement = rtrim($statement, ',');
