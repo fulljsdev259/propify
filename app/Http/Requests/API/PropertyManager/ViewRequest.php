@@ -3,6 +3,7 @@
 namespace App\Http\Requests\API\PropertyManager;
 
 use App\Http\Requests\BaseRequest;
+use App\Models\PropertyManager;
 
 class ViewRequest extends BaseRequest
 {
@@ -13,6 +14,10 @@ class ViewRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('view-property_manager');
+        if ($this->can('view-property_manager')) {
+            return true;
+        }
+
+        return PropertyManager::where('id', $this->route('id'))->where('user_id', $this->user()->id)->exists();
     }
 }
