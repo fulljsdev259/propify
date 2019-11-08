@@ -341,6 +341,7 @@
                 }                
                 if (this.rolename == 'administrator') {
                    //links = Object.values(menu_items);
+                   console.log('administrator')
                    links = [
                             menu_items.dashboard,
                             menu_items.buildings,
@@ -354,6 +355,7 @@
                        ];
                 }
                 else if (this.rolename == 'manager') {
+                    console.log('manager')
                    links = [
                             menu_items.buildings,
                             menu_items.managerRequests, 

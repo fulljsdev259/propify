@@ -92,7 +92,7 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="12">
+                        <el-col :md="12" v-if="this.showComponent == true">
                             <el-form-item :label="$t('models.request.category_options.component')">
                                 <el-input v-model="model.component"></el-input>
                             </el-form-item>
