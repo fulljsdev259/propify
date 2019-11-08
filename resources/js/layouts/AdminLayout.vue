@@ -178,6 +178,9 @@
                     this.value = newValue;
                 }                
             },
+            role_name() {
+                return this.$store.getters.loggedInUser.roles[0].name;
+            },
             links() {
                 let links = [];
                 let menu_items = {
@@ -339,7 +342,7 @@
                     //     }
                     // }
                 }                
-                if (this.rolename == 'administrator') {
+                if (this.role_name == 'administrator') {
                    //links = Object.values(menu_items);
                    console.log('administrator')
                    links = [
@@ -354,7 +357,7 @@
                             // menu_items.listings,
                        ];
                 }
-                else if (this.rolename == 'manager') {
+                else if (this.role_name == 'manager') {
                     console.log('manager')
                    links = [
                             menu_items.buildings,
@@ -366,7 +369,7 @@
                             // menu_items.listings,
                        ];
                 }
-                else if (this.rolename == 'service') {
+                else if (this.role_name == 'service') {
                      links = [                            
                             menu_items.requests,                             
                        ];
@@ -509,6 +512,7 @@
                 }
             });
 
+            console.log('admin layout mounted')
             this.rolename = this.$store.getters.loggedInUser.roles[0].name;
 
             this.$root.$on('avatar-update', () => {
