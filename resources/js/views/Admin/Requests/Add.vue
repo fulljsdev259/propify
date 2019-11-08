@@ -451,6 +451,16 @@
     }
 
     #add_request {
+
+        .el-form-item__content {
+            .el-input.el-input-group {
+                .el-input-group__prepend {
+                    padding: 2px 8px 0;
+                    font-weight: 600;
+                }
+            }
+        }
+
         .el-select__tags {
             top: 70% !important;
         }
