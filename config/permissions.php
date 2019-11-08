@@ -111,7 +111,6 @@ return [
         'delete_media_upload-resident',
         'add_media_upload-request',
         'delete_media_upload-request',
-        'view-property_manager',
     ],
     'all' => [
         ['list-user', 'List Users', 'list all users'],
