@@ -386,6 +386,7 @@ return [
                         'new_resident_pinboard_created' => "Aggiunto un nuovo vicino di casa per l'utente :userName",
                         'avatar_uploaded' => 'Immagine del profilo caricata per :auditable_type',
                         'contract_created' => 'Contratto creato per i residenti :userName',
+                        'update_no_fieldvalue' => 'La :fieldname è cambiata',
                     ],                                   
                 ],
             ],
