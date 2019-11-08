@@ -308,7 +308,7 @@
                     try {
                         const resp = await this.changeDetails(payload);
                         await this.upload();
-                        await this.me();
+                        this.me();
                         displaySuccess(resp);
                     } catch (e) {
                         displayError(e);

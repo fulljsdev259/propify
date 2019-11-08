@@ -226,7 +226,7 @@ export default (config = {}) => {
                                     });
 
                                     if (resp.data.user && resp.data.user.id) {
-                                        this.uploadAvatarIfNeeded(resp.data.user.id);
+                                        await this.uploadAvatarIfNeeded(resp.data.user.id);
                                     }
 
                                     
@@ -279,8 +279,8 @@ export default (config = {}) => {
                                 try {
                                     const resp = await this.updateResident(params);
 
-                                    if (resp.data.user && resp.data.user.id) {
-                                        this.uploadAvatarIfNeeded(resp.data.user.id);
+                                    if (resp.data.user && resp.data.user.id) {                                        
+                                        await this.uploadAvatarIfNeeded(resp.data.user.id);
                                     }
                                     if(this.$refs.auditList){
                                         this.$refs.auditList.fetch();

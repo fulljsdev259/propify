@@ -361,6 +361,8 @@ return [
             "key_service" => "Service clé",
             "caretaker" => "Concierge",
             "real_estate_service" => "Service immobilier",
+            'business_person' => 'Unternehmer', // @TODO translate (problem with deepl)
+            'tu-gu' => 'TU/GU',
         ],
         "contact_details" => "Coordonnées de contact",
         "user_credentials" => "Informations d'identification de l'utilisateur",
