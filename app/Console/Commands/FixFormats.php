@@ -88,13 +88,6 @@ class FixFormats extends Command
             });
         }
 
-        if (in_array('requests', $tables)) {
-            Request::get(['id', 'resident_id', 'contract_id', 'created_at'])->each(function (Request $request) {
-                $request->request_format  = $request->getUniqueIDFormat($request->id);
-                $request->save();
-            });
-        }
-
         if (in_array('service_providers', $tables)) {
             ServiceProvider::get(['id', 'created_at'])->each(function (ServiceProvider $serviceProvider) {
                 $serviceProvider->service_provider_format  = $serviceProvider->getUniqueIDFormat($serviceProvider->id);
@@ -129,6 +122,14 @@ class FixFormats extends Command
                 $propertyManager->save();
             });
         }
+
+        if (in_array('requests', $tables)) {
+            Request::get(['id', 'resident_id', 'contract_id', 'created_at'])->each(function (Request $request) {
+                $request->request_format  = $request->getUniqueIDFormat($request->id);
+                $request->save();
+            });
+        }
+
         echo sprintf('[%s] tables _formats correct successfully', implode(', ', $tables)) . PHP_EOL;
     }
 }
