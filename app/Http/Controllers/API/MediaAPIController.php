@@ -270,7 +270,7 @@ class MediaAPIController extends AppBaseController
         }
 
         $response = (new MediaTransformer)->transform($media);
-        return $this->sendResponse($response, __('models.unit.document.uploaded'));
+        return $this->sendResponse($response, __('general.swal.media.added'));
     }
 
     /**
@@ -328,7 +328,7 @@ class MediaAPIController extends AppBaseController
 
         $media->delete();
 
-        return $this->sendResponse($media_id, __('models.unit.document.deleted'));
+        return $this->sendResponse($media_id, __('general.swal.media.deleted'));
     }
 
     /**
