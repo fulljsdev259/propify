@@ -460,6 +460,7 @@ export default (config = {}) => {
                         const {data: {address, unit, user, ...r}} = await this.getService({id: this.$route.params.id});
                         
                         this.user = user;
+                        console.log(this.user)
                         
                         this.model = Object.assign({}, this.model, r);
                         this.original_email = this.user.email;
