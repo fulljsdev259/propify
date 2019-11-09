@@ -47,6 +47,11 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  *          type="integer"
  *      ),
  *      @SWG\Property(
+ *          property="assignment_type",
+ *          description="assignment_type",
+ *          type="integer"
+ *      ),
+ *      @SWG\Property(
  *          property="description",
  *          description="description",
  *          type="string"
@@ -125,18 +130,18 @@ class Quarter extends AuditableModel implements HasMedia
         self::TypeMultiStoreyCarPark => 'multi-storey_car_park',
     ];
 
-    const AssignmentTypesFortimoEmployees = 1;
-    const AssignmentTypesManagement = 2;
-    const AssignmentTypesInitialLetting = 3;
-    const AssignmentTypesCaretaker = 4;
-    const AssignmentTypesAdministration = 5;
+    const AssignmentTypeFortimoEmployees = 1;
+    const AssignmentTypeManagement = 2;
+    const AssignmentTypeInitialLetting = 3;
+    const AssignmentTypeCaretaker = 4;
+    const AssignmentTypeAdministration = 5;
 
-    const AssignmentTypes = [
-        self::AssignmentTypesFortimoEmployees => 'fortimo_employees',
-        self::AssignmentTypesManagement => 'management',
-        self::AssignmentTypesInitialLetting => 'initial_letting',
-        self::AssignmentTypesCaretaker => 'caretaker',
-        self::AssignmentTypesAdministration => 'administration',
+    const AssignmentType = [
+        self::AssignmentTypeFortimoEmployees => 'fortimo_employees',
+        self::AssignmentTypeManagement => 'management',
+        self::AssignmentTypeInitialLetting => 'initial_letting',
+        self::AssignmentTypeCaretaker => 'caretaker',
+        self::AssignmentTypeAdministration => 'administration',
     ];
 
     /**
@@ -155,6 +160,7 @@ class Quarter extends AuditableModel implements HasMedia
         'address_id',
         'internal_quarter_id',
         'type',
+        'assignment_type',
     ];
     /**
      * @var array
@@ -174,6 +180,7 @@ class Quarter extends AuditableModel implements HasMedia
         'internal_quarter_id' => 'string',
         'count_of_buildings' => 'integer',
         'type' => 'integer',
+        'assignment_type' => 'integer',
     ];
 
     protected $permittedExtensions = [

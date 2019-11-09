@@ -273,7 +273,7 @@ class UtilsAPIController extends AppBaseController
     {
         $result = [
             'type' => App\Models\Quarter::Type,
-            'assignment_types' => App\Models\Quarter::AssignmentTypes,
+            'assignment_type' => App\Models\Quarter::AssignmentType,
         ];
 
         return $result;
