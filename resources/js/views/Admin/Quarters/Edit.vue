@@ -214,6 +214,20 @@
                                                 v-for="assignee in toAssignList"/>
                                     </el-select>
                                 </el-col>
+                                <el-col id="managerDropdown">
+                                    <el-select
+                                            :placeholder="$t('general.placeholders.select')"
+                                            style="display: block"
+                                            v-model="model.assignment_type"
+                                            filterable>
+                                        <el-option
+                                                :key="type.value"
+                                                :label="type.name"
+                                                :value="type.value"
+                                                v-for="type in assignment_types">
+                                        </el-option>
+                                    </el-select>
+                                </el-col>
                                 <el-col id="managerAssignBtn">
                                     <el-button :disabled="!toAssign" @click="assignUser" class="full-button"
                                                 icon="ti-save" type="primary">
