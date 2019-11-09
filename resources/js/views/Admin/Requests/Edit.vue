@@ -115,7 +115,7 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12">
+                                <el-col :md="12" v-if="this.showComponent == true">
                                     <el-form-item :label="$t('models.request.category_options.component')">
                                         <el-input v-model="model.component"></el-input>
                                     </el-form-item>
@@ -428,22 +428,23 @@
                                     <el-row :gutter="10"> 
                                         <el-col :md="12" v-if="model.active_reminder">
                                             <el-form-item :label="$t('models.request.days_left')"
-                                                        prop="days_left">
-                                                <el-input v-model="model.days_left" type="number"></el-input>
+                                                        prop="days_left_due_date">
+                                                <el-input v-model="model.days_left_due_date" type="number"></el-input>
                                             </el-form-item>
                                         </el-col>
                                         <el-col :md="12" v-if="model.active_reminder">
                                             <el-form-item :label="$t('models.request.send_person')"
-                                                        prop="person_id">
+                                                        prop="reminder_user_id">
                                                 <el-select
                                                     :loading="remoteLoading"
                                                     :placeholder="$t('models.request.placeholders.person')"
                                                     :remote-method="remoteSearchPersons"
                                                     filterable
+                                                    multiple
                                                     remote
                                                     reserve-keyword
                                                     style="width: 100%;"
-                                                    v-model="model.person_id">
+                                                    v-model="model.reminder_user_id">
                                                     <el-option
                                                         :key="person.id"
                                                         :label="person.name"

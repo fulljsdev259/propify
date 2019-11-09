@@ -146,7 +146,6 @@
                 all_unassigned_count: null,
                 my_request_count: null,
                 my_pending_count: null,
-                rolename: null,
                 unreadNotifications: 0
             }
         },
@@ -177,6 +176,9 @@
                 set: function (newValue) {
                     this.value = newValue;
                 }                
+            },
+            role_name() {
+                return this.$store.getters.loggedInUser.roles[0].name;
             },
             links() {
                 let links = [];
@@ -339,7 +341,7 @@
                     //     }
                     // }
                 }                
-                if (this.rolename == 'administrator') {
+                if (this.role_name == 'administrator') {
                    //links = Object.values(menu_items);
                    links = [
                             menu_items.dashboard,
@@ -353,11 +355,10 @@
                             // menu_items.listings,
                        ];
                 }
-                else if (this.rolename == 'manager') {
+                else if (this.role_name == 'manager') {
                    links = [
                             menu_items.buildings,
-                            menu_items.managerRequests, 
-                            menu_items.activity,
+                            menu_items.managerRequests,
                             menu_items.residents,
                             menu_items.propertyManagers,
                             menu_items.services,
@@ -365,7 +366,7 @@
                             // menu_items.listings,
                        ];
                 }
-                else if (this.rolename == 'service') {
+                else if (this.role_name == 'service') {
                      links = [                            
                             menu_items.requests,                             
                        ];
@@ -508,7 +509,6 @@
                 }
             });
 
-            this.rolename = this.$store.getters.loggedInUser.roles[0].name;
 
             this.$root.$on('avatar-update', () => {
                 this.user.avatar += "?"
