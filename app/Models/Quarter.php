@@ -113,10 +113,30 @@ class Quarter extends AuditableModel implements HasMedia
 
     const TypeRent = 1;
     const TypeSell = 2;
+    const TypeBuildingLand = 3;
+    const TypeTrade = 4;
+    const TypeMultiStoreyCarPark = 5;
 
     const Type = [
         self::TypeRent => 'rent',
         self::TypeSell => 'sell',
+        self::TypeBuildingLand => 'building_land',
+        self::TypeTrade => 'trade',
+        self::TypeMultiStoreyCarPark => 'multi-storey_car_park',
+    ];
+
+    const AssignmentTypesFortimoEmployees = 1;
+    const AssignmentTypesManagement = 2;
+    const AssignmentTypesInitialLetting = 3;
+    const AssignmentTypesCaretaker = 4;
+    const AssignmentTypesAdministration = 5;
+
+    const AssignmentTypes = [
+        self::AssignmentTypesFortimoEmployees => 'fortimo_employees',
+        self::AssignmentTypesManagement => 'management',
+        self::AssignmentTypesInitialLetting => 'initial_letting',
+        self::AssignmentTypesCaretaker => 'caretaker',
+        self::AssignmentTypesAdministration => 'administration',
     ];
 
     /**
