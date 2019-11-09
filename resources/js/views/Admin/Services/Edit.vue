@@ -111,6 +111,7 @@
                                                         ? '/images/company.png'
                                                         : ''
                                             "
+                                            :showCamera="model.avatar==null"
                                             @cropped="cropped"/>
                                 </el-form-item>
                             </el-col>
