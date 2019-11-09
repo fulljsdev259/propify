@@ -600,9 +600,11 @@
                 }
             }
         },
-        async created(){
-            this.isLoadingFilters = true;
+        async mounted(){
+            this.disableMassEditButton(true)
 
+            this.isLoadingFilters = true;
+            
             const states = await this.axios.get('states?filters=true')
             this.states = states.data.data;
 
@@ -615,8 +617,6 @@
             this.services = await this.fetchRemoteServices();
             this.residents = await this.fetchRemoteResidents();
             
-
-            this.disableMassEditButton(true)
         },
         watch: {
             selectedItems: function(items) {   
@@ -673,8 +673,6 @@
             cursor: not-allowed;
         }
     }
-
-    
 
     /deep/ .el-dialog {
         /deep/ .el-dialog__body {

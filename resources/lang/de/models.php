@@ -362,6 +362,8 @@ return [
             'key_service' => 'Schlüsseldienst',
             'caretaker' => 'Hauswart',
             'real_estate_service' => 'Liegenschaftsdienst',
+            'business_person' => 'Unternehmer',
+            'tu-gu' => 'TU/GU',
         ],
         'contact_details' => 'Kontaktdaten',
         'user_credentials' => 'Logindaten',

@@ -43,6 +43,8 @@ class RequestTransformer extends BaseTransformer
             'reminder_user_id' => $model->reminder_user_id,
             'days_left_due_date' => $model->days_left_due_date,
             'sent_reminder_user_ids' => $model->sent_reminder_user_ids,
+            'percentage' => $model->percentage,
+            'amount' => $model->amount,
         ];
 
         if ($model->due_date) {

@@ -58,7 +58,7 @@ class AvatarEdit extends Command
             if(\File::exists($user->avatar)){
                 unlink($user->avatar);
             }else{
-                $avatar='';
+                $avatar = null;
             }
             $user->avatar = $avatar;
             $user->save();

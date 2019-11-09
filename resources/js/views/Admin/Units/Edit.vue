@@ -415,14 +415,18 @@
                     type: 'requestResidentAvatar',
                     width: 70                    
                 }, {
-                    prop: 'name',
+                    type: 'residentNameAndType',
                     label: 'general.name',
-                    type: 'residentName'
+                    translate: this.translateType
                 }, {
-                    prop: 'type',
-                    label: 'models.resident.type.label',
-                    i18n: this.translateType
-                }, {
+                //     prop: 'name',
+                //     label: 'general.name',
+                //     type: 'residentName'
+                // }, {
+                //     prop: 'type',
+                //     label: 'models.resident.type.label',
+                //     i18n: this.translateType
+                // }, {
                     type: 'residentContract',
                     label: 'models.resident.contract.title'
                 }, {

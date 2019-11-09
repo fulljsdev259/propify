@@ -416,8 +416,7 @@
                         </div>
                         <div class="content" v-if="visibleDrawer">
                             <emergency-settings-form :visible.sync="visibleDrawer"/>
-                        </div>
-                        
+                        </div>   
                     </el-tab-pane>
                     <el-tab-pane name="email_receptionist" lazy>
                         <div slot="label">
@@ -495,16 +494,20 @@
                 activeRequestTab: 'requests',
                 residentColumns: [{
                     type: 'requestResidentAvatar',
-                    width: 70                    
+                    width: 70
                 }, {
-                    prop: 'name',
+                    type: 'residentNameAndType',
                     label: 'general.name',
-                    type: 'residentName'
+                    translate: this.translateResidentType
                 }, {
-                    prop: 'type',
-                    label: 'models.resident.type.label',
-                    i18n: this.translateResidentType
-                }, {
+                //     prop: 'name',
+                //     label: 'general.name',
+                //     type: 'residentName'
+                // }, {
+                //     prop: 'type',
+                //     label: 'models.resident.type.label',
+                //     i18n: this.translateResidentType
+                // }, {
                     type: 'residentContract',
                     label: 'models.resident.contract.title'
                 }, {

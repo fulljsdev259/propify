@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API\User;
 
-use App\Models\User;
+use App\Models\PropertyManager;
 use App\Http\Requests\BaseRequest;
 
 class CheckEmailRequest extends BaseRequest
@@ -14,6 +14,10 @@ class CheckEmailRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('add-user');
+        if ($this->can('add-user')) {
+            return true;
+        }
+
+        return PropertyManager::where('user_id', $this->user()->id)->exists();
     }
 }

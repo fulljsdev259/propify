@@ -110,6 +110,16 @@ use Storage;
  *          type="int32"
  *      ),
  *     @SWG\Property(
+ *          property="percentage",
+ *          description="percentage",
+ *          type="float"
+ *      ),
+ *     @SWG\Property(
+ *          property="amount",
+ *          description="amount",
+ *          type="float"
+ *      ),
+ *     @SWG\Property(
  *          property="is_public",
  *          description="is_public",
  *          type="boolean"
@@ -137,6 +147,8 @@ use Storage;
  * @property int $category_id
  * @property int $resident_id
  * @property int|null $contract_id
+ * @property float|null $amount
+ * @property float|null $percentage
  * @property string $request_format
  * @property string $title
  * @property string $description
@@ -427,6 +439,7 @@ class Request extends AuditableModel implements HasMedia
     const LocationAttr = 'location';
     const QualificationAttr = 'qualification';
     const CapturePhaseAttr = 'capture_phase';
+    const ComponentAttr = 'component';
 
     const SubCategories = 'sub_categories';
     const Attributes = 'attributes';
@@ -442,17 +455,22 @@ class Request extends AuditableModel implements HasMedia
 
     const SubCategoryAttributes = [
         self::SubCategorySurrounding => [
-            self::QualificationAttr
+            self::QualificationAttr,
+	        self::CapturePhaseAttr,
+	        self::ComponentAttr,
         ],
         self::SubCategoryRealEstate => [
             self::QualificationAttr,
-            self::LocationAttr,
+	        self::CapturePhaseAttr,
+	        self::LocationAttr,
+            self::ComponentAttr,
 
         ],
         self::SubCategoryFlat => [
 	        self::QualificationAttr,
 	        self::CapturePhaseAttr,
-            self::RoomAttr
+            self::RoomAttr,
+            self::ComponentAttr,
         ],
     ];
 
@@ -501,6 +519,8 @@ class Request extends AuditableModel implements HasMedia
         'active_reminder',
         'is_public',
         'notify_email',
+        'percentage',
+        'amount'
     ];
 
     public $fillable = self::Fillable;
@@ -545,6 +565,8 @@ class Request extends AuditableModel implements HasMedia
         'active_reminder' => 'boolean',
         'is_public' => 'boolean',
         'notify_email' => 'boolean',
+        'percentage' => 'float',
+        'amount' => 'float',
     ];
 
 
