@@ -414,7 +414,7 @@ return [
             'management' => "Gestion de l'entreprise",
             'initial_letting' => 'Location initiale',
             'caretaker' => 'Concierge',
-            'administrator' => 'Administrateur'
+            'administration' => 'Administration'
         ],
         'url' => 'Url'
     ],

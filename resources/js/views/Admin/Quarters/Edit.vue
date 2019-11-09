@@ -180,7 +180,7 @@
                             <span slot="label">
                                 <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
                             </span>
-                            <assignment-by-type
+                            <!-- <assignment-by-type
                                 :resetToAssignList="resetToAssignList"
                                 :assignmentType.sync="assignmentType"
                                 :toAssign.sync="toAssign"
@@ -189,7 +189,7 @@
                                 :toAssignList="toAssignList"
                                 :remoteLoading="remoteLoading"
                                 :remoteSearch="remoteSearchAssignees"
-                            />
+                            /> -->
                             <el-row :gutter="10" id="managerAssignBox">
                                 <el-col id="managerSelect">
                                     <el-select
@@ -214,7 +214,7 @@
                                                 v-for="assignee in toAssignList"/>
                                     </el-select>
                                 </el-col>
-                                <el-col id="managerDropdown">
+                                <el-col>
                                     <el-select
                                             :placeholder="$t('general.placeholders.select')"
                                             style="display: block"

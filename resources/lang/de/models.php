@@ -415,7 +415,7 @@ return [
             'management' => 'Bewirtschaftung',
             'initial_letting' => 'Erstvermietung',
             'caretaker' => 'Hauswart',
-            'administrator' => 'Verwaltung'
+            'administration' => 'Verwaltung'
         ],
         'url' => 'Url'
     ],
