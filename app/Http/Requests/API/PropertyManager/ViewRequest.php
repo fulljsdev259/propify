@@ -14,8 +14,8 @@ class ViewRequest extends BaseRequest
      */
     public function authorize()
     {
-        if ($this->can('view-property_manager')) {
-            return true;
+        if ( ! $this->can('view-property_manager')) {
+            return false;
         }
 
         return PropertyManager::where('id', $this->route('id'))->where('user_id', $this->user()->id)->exists();

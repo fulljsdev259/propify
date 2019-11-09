@@ -115,6 +115,7 @@ export default (config = {}) => {
                 showCapturePhase: false,
                 showRoom: false,
                 showQualification: false,
+                showComponent: false,
                 createTag: false,
                 editTag: false,
                 tags: [],
@@ -155,8 +156,9 @@ export default (config = {}) => {
                     this.remoteLoading = true;
 
                     try {
-                        const {data} = await this.getResidents({get_all: true, search});
-                        this.residents = data;
+                        const {data} = await this.getResidents({has_contract: true, search});
+                        
+                        this.residents = data.data;
                         this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
                     } catch (err) {
                         displayError(err);
@@ -359,6 +361,9 @@ export default (config = {}) => {
                 
                 this.showCapturePhase =  p_category.capture_phase == 1 ? true : false;
                 this.showQualification = p_category.qualification == 1 ? true : false;
+                this.showComponent = p_category.component == 1 ? true : false;
+                
+
                 if(this.showSubCategory) {
                     this.sub_categories = p_category ? p_category.sub_categories : [];
 
@@ -366,6 +371,7 @@ export default (config = {}) => {
                         let sub_category = this.sub_categories.find(category => { return category.id == this.model.sub_category_id});
                         this.showQualification = sub_category.qualification == 1 ? true : false;
                         this.showCapturePhase =  sub_category.capture_phase == 1 ? true : false;
+                        this.showComponent =  sub_category.component == 1 ? true : false;
                     }
                 }
 
@@ -383,6 +389,7 @@ export default (config = {}) => {
                 this.showLocation = sub_category.location == 1 ? true : false;
                 this.showQualification = sub_category.qualification == 1 ? true : false;
                 this.showCapturePhase = sub_category.capture_phase == 1 ? true : false;
+                this.showComponent = sub_category.component == 1 ? true : false;
             },
             changeQualification() {
                 this.model.payer = '';
@@ -665,10 +672,12 @@ export default (config = {}) => {
                         this.showSubCategory = resp.data.sub_category ? true : false;
                         this.showLocation = resp.data.sub_category && resp.data.sub_category.location == 1 ? true : false;
                         this.showRoom = resp.data.sub_category && resp.data.sub_category.room == 1 ? true : false;
-                        
+                        this.showPayer = this.showQualification && resp.data.qualification == 5 ? true : false;
                         this.showCapturePhase =  resp.data.category.capture_phase == 1 || (resp.data.sub_category && resp.data.sub_category.capture_phase == 1) ? true : false;
                         this.showQualification =  resp.data.category.qualification == 1 || (resp.data.sub_category && resp.data.sub_category.qualification == 1) ? true : false;
+                        this.showComponent =  resp.data.category.component == 1 || (resp.data.sub_category && resp.data.sub_category.component == 1) ? true : false;
                         this.showPayer = this.showQualification && resp.data.qualification == 5 ? true : false;
+                        
                         const data = resp.data;
 
                         this.model = Object.assign({}, this.model, data);

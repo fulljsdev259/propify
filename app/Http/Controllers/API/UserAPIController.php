@@ -311,7 +311,7 @@ class UserAPIController extends AppBaseController
             unset($user->resident);
             $resident->load(['contracts' => function($q) {
                 $q->where('status' , Contract::StatusActive)
-                    ->with('building', 'unit');
+                    ->with('building.address', 'unit');
             }]);
 
             $contactEnable = (bool) $this->getResidentContactEnable($resident);
