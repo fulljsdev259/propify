@@ -21,7 +21,9 @@ export default {
             }
         },
         cropped(e) {
+            
             this.avatar = e;
+            console.log('cropped avatar', this.avatar)
         },
         async uploadAvatarIfNeeded(userId, merge_in_audit) {
             if (this.avatar.length) {

@@ -399,8 +399,8 @@ export default (config = {}) => {
                         this.model.avatar = data.user.avatar;
 
                         this.user = data.user
-                        console.log(this.user)
-                        console.log(this.avatar)
+                        console.log('user', this.user)
+                        console.log('avatar', this.avatar)
 
                         this.model.settings = data.settings;
 

@@ -833,6 +833,9 @@
                 }
             }
         }
+        .el-input {
+            height: 40px;
+        }
     }
 
     .switch-item {
