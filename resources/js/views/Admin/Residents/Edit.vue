@@ -43,6 +43,7 @@
                                                                             ? '/images/company.png'
                                                                             : ''
                                                         "
+                                                        :showCamera="model.avatar==null"
                                                         @cropped="cropped"/>
 <!--                                                <img-->
 <!--                                                    src="~img/man.png"-->
