@@ -386,9 +386,6 @@ export default (config = {}) => {
                         // TODO - do not like this, there is an alternative
                         this.$set(this.model, 'id', data.id);
 
-                        
-                        
-
                         this.model.name = data.name;
                         this.model.email = data.email;
                         this.model.phone = data.phone;
