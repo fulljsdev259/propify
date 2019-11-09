@@ -43,7 +43,6 @@
                                                     width: 250,
                                                     height: 250
                                                 }"
-                                                :defaultAvatarSrc="'/images/company.png'"
                                                 :resize="false"
                                                 @cropped="cropped"/>
                                     </el-form-item>

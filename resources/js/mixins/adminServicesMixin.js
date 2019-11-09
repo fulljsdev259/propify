@@ -385,6 +385,10 @@ export default (config = {}) => {
 
                         // TODO - do not like this, there is an alternative
                         this.$set(this.model, 'id', data.id);
+
+                        
+                        
+
                         this.model.name = data.name;
                         this.model.email = data.email;
                         this.model.phone = data.phone;
@@ -394,8 +398,12 @@ export default (config = {}) => {
                         this.model.user.avatar_variations = data.user.avatar_variations;
                         this.model.user.id = data.user.id;
                         this.model.service_provider_format = data.service_provider_format;
-
+                        
                         this.model.avatar = data.user.avatar;
+
+                        this.user = data.user
+                        console.log(this.user)
+                        console.log(this.avatar)
 
                         this.model.settings = data.settings;
 
@@ -460,7 +468,6 @@ export default (config = {}) => {
                         const {data: {address, unit, user, ...r}} = await this.getService({id: this.$route.params.id});
                         
                         this.user = user;
-                        console.log(this.user)
                         
                         this.model = Object.assign({}, this.model, r);
                         this.original_email = this.user.email;
