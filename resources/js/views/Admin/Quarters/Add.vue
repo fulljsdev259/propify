@@ -12,7 +12,7 @@
                                 <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.type"
                                         class="label-block"
                                         prop="type">
-                                    <el-select placeholder="Select"
+                                    <el-select :placeholder="$t('general.placeholders.select')"
                                                 style="display: block"
                                                 v-model="model.type">
                                         <el-option

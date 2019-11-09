@@ -434,7 +434,7 @@
                                         </el-col>
                                         <el-col :md="12" v-if="model.active_reminder">
                                             <el-form-item :label="$t('models.request.send_person')"
-                                                        prop="reminder_user_id">
+                                                        prop="reminder_user_ids ">
                                                 <el-select
                                                     :loading="remoteLoading"
                                                     :placeholder="$t('models.request.placeholders.person')"
@@ -444,7 +444,7 @@
                                                     remote
                                                     reserve-keyword
                                                     style="width: 100%;"
-                                                    v-model="model.reminder_user_id">
+                                                    v-model="model.reminder_user_ids ">
                                                     <el-option
                                                         :key="person.id"
                                                         :label="person.name"

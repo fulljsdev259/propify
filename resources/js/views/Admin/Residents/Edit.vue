@@ -66,7 +66,7 @@
                                                     <el-col :md="6">
                                                         <el-form-item :label="$t('general.salutation')" :rules="validationRules.title"
                                                                     prop="title">
-                                                            <el-select placeholder="Select" style="display: block" v-model="model.title">
+                                                            <el-select :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.title">
                                                                 <el-option
                                                                         :key="title.value"
                                                                         :label="title.name"
@@ -136,7 +136,7 @@
                                                         <el-form-item :label="$t('models.resident.type.label')" :rules="validationRules.type"
                                                                     prop="type">
                                                             
-                                                            <el-select placeholder="Select" style="display: block" v-model="model.type">
+                                                            <el-select :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.type">
                                                                 <el-option
                                                                     :key="k"
                                                                     :label="$t(`models.resident.type.${type}`)"

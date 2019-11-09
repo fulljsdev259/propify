@@ -402,8 +402,21 @@ return [
         'types' => [
             'label' => 'Tipo',
             'rent' => 'Affitto',
-            'sell' => 'Vendere'
-        ]
+            'sell' => 'Vendere',
+            'property' => 'Proprietà',
+            'building_land' => 'Terreno edificabile',
+            'trade' => 'Il commercio',
+            'multi-storey_car_park' => 'Parcheggio multipiano'
+        ],
+        'assignment_types' => [
+            'label' => 'Tipo',
+            'fortimo_employees' => 'Fortimo dipendenti',
+            'management' => 'Gestione',
+            'initial_letting' => 'Locazione iniziale',
+            'caretaker' => 'Custode',
+            'administrator' => 'Amministratore'
+        ],
+        'url' => 'Url'
     ],
     'request' => [        
         "deleted" => "Richiesta supprimée",

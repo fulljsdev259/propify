@@ -403,8 +403,21 @@ return [
         'types' => [
             'label' => 'Typ',
             'rent' => 'Miete',
-            'sell' => 'Verkauf'
-        ]
+            'sell' => 'Verkauf',
+            'property' => 'Eigentum',
+            'building_land' => 'Bauland',
+            'trade' => 'Gewerbe',
+            'multi-storey_car_park' => 'Parkhaus'
+        ],
+        'assignment_types' => [
+            'label' => 'Typ',
+            'fortimo_employees' => 'Fortimo-Mitarbeiter',
+            'management' => 'Bewirtschaftung',
+            'initial_letting' => 'Erstvermietung',
+            'caretaker' => 'Hauswart',
+            'administrator' => 'Verwaltung'
+        ],
+        'url' => 'Url'
     ],
     'request' => [        
         'deleted' => 'Anfrage gelöscht',
