@@ -677,8 +677,6 @@
         }
     }
 
-    
-
     /deep/ .el-dialog {
         /deep/ .el-dialog__body {
             padding: 10px 20px;
