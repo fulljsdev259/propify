@@ -130,7 +130,15 @@
                                                 height: 250
                                             }"
                                             :resize="false"
-                                            :defaultAvatarSrc="model.user.avatar_variations[3] ? '/'+model.user.avatar_variations[3] : ''"
+                                            :defaultAvatarSrc="
+                                                !avatar.length && user.avatar
+                                                    ? '/'+user.avatar_variations[3]
+                                                    : model.avatar==null && model.title == 'mr'
+                                                        ? '/images/man.png'
+                                                        : model.avatar==null && model.title == 'mrs'
+                                                            ? '/images/woman.png'
+                                                            : ''
+                                            "
                                             @cropped="cropped"/>
                                 </el-form-item>
 
