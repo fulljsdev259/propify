@@ -169,6 +169,7 @@ export default (config = {}) => {
                 this.toAssign = '';
             },
             async assignUser() {
+                console.log('assignUser called')
                 if (!this.toAssign || !this.model.id) {
                     return false;
                 }
@@ -245,6 +246,7 @@ export default (config = {}) => {
                 }
             },
             attachProvider() {
+                console.log('attachProvider called')
                 return new Promise(async (resolve, reject) => {
                     if (!this.toAssignProvider || (!this.model.id && config.mode === 'edit')) {
                         reject(false);

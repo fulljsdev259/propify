@@ -167,7 +167,7 @@
                                         </el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true">
+                                <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true" style="height: 97px">
                                     <el-form-item 
                                         :label="$t('models.request.category_options.payer_amount')"
                                         :rules="validationRules.payer_amount"

@@ -24,6 +24,7 @@ export default {
     updateRequest({commit}, payload) {
         return new Promise((resolve, reject) => {
             axios.put(`requests/${payload.id}`, payload).then((response) => {
+                EventBus.$emit('update-request-counts')
                 resolve(response.data);
             }).catch(({response: {data: err}}) => reject(err));
         });
@@ -117,6 +118,7 @@ export default {
     massEdit({}, payload) {
         return new Promise((resolve, reject) => {
             axios.put(`requests/massedit`, payload).then((resp) => {
+                EventBus.$emit('update-request-counts')
                 resolve(resp);
             }).catch(({response: {data: err}}) => reject(err))
         });
