@@ -254,13 +254,21 @@
                 border-color: transparent;
                 color: var(--color-white);
                 :global(i.el-tag__close) {
-                    color: var(--color-white) !important;
                     right: 0;
                     font-size: 14px;
+                    font-weight: 700;
+                    color: var(--color-white);
                     &:hover {
                         border-radius: 50%;
-                        background-color: var(--primary-color-lighter);
+                        color: var(--color-primary);
+                        background-color: var(--color-white);
                     }
+                }
+                &:last-child {
+                    width: 20px;
+                    text-align: center;
+                    border-radius: 4px;
+                    border: 1px solid var(--color-white);
                 }
             }
             &.selected-button {
