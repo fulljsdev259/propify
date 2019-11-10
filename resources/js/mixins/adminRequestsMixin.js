@@ -605,7 +605,6 @@ export default (config = {}) => {
                                 try {
                                     const resp = await this.saveRequest();
                                     
-                                    this.$root.$emit('add-new-request')
                                     displaySuccess(resp);
 
                                     this.form.resetFields();
