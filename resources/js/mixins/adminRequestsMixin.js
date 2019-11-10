@@ -517,9 +517,6 @@ export default (config = {}) => {
                     }
                 }
             },
-            changeContract( val ) {
-                console.log(val)
-            },
             changeResident( resident_id ) {
                 this.model.contract_id = null
                 this.resident = this.residents.find(resident => resident.id == resident_id)
@@ -607,7 +604,8 @@ export default (config = {}) => {
                                 this.loading.state = true;
                                 try {
                                     const resp = await this.saveRequest();
-            
+                                    
+                                    this.$root.$emit('add-new-request')
                                     displaySuccess(resp);
 
                                     this.form.resetFields();

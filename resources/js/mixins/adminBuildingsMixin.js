@@ -17,6 +17,7 @@ export default (config = {}) => {
                 remoteLoading: false,
                 assignmentTypes: ['managers'],
                 assignmentType: 'managers',
+                serviceAssignmentTypes: ['providers'],
                 toAssignList: [],
                 toAssign: '',
                 toAssignProvider: '',

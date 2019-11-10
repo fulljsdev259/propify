@@ -513,6 +513,10 @@
             this.$root.$on('avatar-update', () => {
                 this.user.avatar += "?"
             });
+
+            this.$root.$on('add-new-request', () => {
+                this.all_request_count ++
+            });
             
         },
         
