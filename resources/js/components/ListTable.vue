@@ -396,7 +396,6 @@
     import SelectLanguage from 'components/SelectLanguage';
     import ListTableSelect from 'components/ListTableSelect';
     import ListFilterSelect from 'components/ListFilterSelect';
-    import ListFilterLanguage from 'components/ListFilterLanguage';
 
     export default {
         name: 'ListTable',
@@ -409,7 +408,6 @@
             SelectLanguage,
             ListTableSelect,
             ListFilterSelect,
-            ListFilterLanguage,
         },
         props: {
             header: {
