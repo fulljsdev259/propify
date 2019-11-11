@@ -215,7 +215,7 @@
            </tr>
 
         <tr>
-                <td @if(!empty($media)) colspan='2' @else colspan='6'@endif width="100%" class="no_border">
+                <td @if(count($media)==0) colspan='2' @else colspan='6'@endif width="100%" class="no_border">
                     <table width="100%">
                         <tbody>
                             <tr>
