@@ -70,6 +70,7 @@ class CreateRequest extends BaseRequest
             $rules['qualification'] = 'required_if:category,'  .implode(',', $categories) .  '|integer';// todo improve permit only specific integers
         }
         $rules['reminder_user_ids'] = [
+            'nullable',
             Rule::requiredIf(function () {
                 return $this->active_reminder == true;
             }),
