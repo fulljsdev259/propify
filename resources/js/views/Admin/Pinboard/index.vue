@@ -123,6 +123,8 @@
                 quarters:{},
                 buildings:{},
                 residents:{},
+                status: {},
+                type: {},
                 isLoadingFilters: false,
             };
         },
@@ -157,17 +159,17 @@
                         name: this.$t('models.pinboard.status.label'),
                         type: 'select',
                         key: 'status',
-                        data: this.prepareFilters("status"),
+                        data: this.status,
                     },
                     {
                         name: this.$t('models.pinboard.type.label'),
                         type: 'select',
                         key: 'type',
-                        data: this.prepareFilters("type"),
+                        data: this.type,
                     },
                     {
                         name: this.$t('general.filters.quarters'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'quarter_id',
                         data: this.quarters,
                         remoteLoading: false,
@@ -175,7 +177,7 @@
                     },
                     {
                         name: this.$t('general.filters.buildings'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'building_id',
                         data: this.buildings,
                         remoteLoading: false,
@@ -183,7 +185,7 @@
                     },
                     {
                         name: this.$t('general.filters.resident'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'resident_id',
                         data: this.residents,
                         remoteLoading: false,
@@ -258,23 +260,32 @@
                     };
                 });
             },
-            async fetchRemoteResidents(search) {
-                if(search) {
-                    const residents = await this.getResidents({get_all: true, search});
+            async fetchRemoteResidents(search = '') {
+                const residents = await this.getResidents({get_all: true, search});
 
-                    return residents.data.map((resident) => {
-                        return {
-                            name: `${resident.first_name} ${resident.last_name}`,
-                            id: resident.id
-                        };
-                    });
-                }
+                return residents.data.map((resident) => {
+                    return {
+                        name: `${resident.first_name} ${resident.last_name}`,
+                        id: resident.id
+                    };
+                });
             },
         },
-        async created(){
+        async created() {
             this.isLoadingFilters = true;
-            this.residents = this.fetchRemoteResidents();
+            this.quarters = await this.fetchRemoteQuarters();
             this.isLoadingFilters = false;
+            
+            this.buildings = await this.fetchRemoteBuildings();
+            this.residents = await this.fetchRemoteResidents();
+            this.status = this.prepareFilters('status');
+            this.type = this.prepareFilters('type');
+        },
+        watch: {
+            '$i18n.locale' () {
+                this.status = this.prepareFilters('status');
+                this.type = this.prepareFilters('type');
+            }
         }
     }
 </script>
