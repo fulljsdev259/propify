@@ -38,6 +38,7 @@ export default ({
                 this.loading = true;
                 let assignee_id = this.$store.getters.loggedInUser.id;
 
+                console.log('fetch More called')
                 if (getParams) {
                     params = {...params, ...getParams};
                 }
@@ -87,11 +88,11 @@ export default ({
         batchDeleteWithIds(){
             this.$confirm(this.$t('general.swal.delete.text'), this.$t('general.swal.delete.title'), {
                 type: 'warning'
-            }).then(() => {                
+            }).then(() => {
                 return this[deleteAction](this.selectedItems)
-                .then(r => {                    
+                .then(r => {
                     this.fetchMore();
-                    displaySuccess(r);                    
+                    displaySuccess(r);
                 })
                 .catch(err => displayError(err));                
             }).catch(() => {

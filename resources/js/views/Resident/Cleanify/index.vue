@@ -14,7 +14,7 @@
                         <el-row :gutter="10">
                             <el-col :md="8">
                                 <el-form-item :label="$t('general.salutation')" prop="title">
-                                    <el-select placeholder="Select" style="display: block" v-model="model.title">
+                                    <el-select :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.title">
                                         <el-option
                                             :key="title"
                                             :label="$t(`resident.salutation_option.${title}`)"
