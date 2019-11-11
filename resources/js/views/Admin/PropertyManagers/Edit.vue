@@ -118,7 +118,6 @@
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
-
                                 <el-form-item :label="$t('models.user.profile_image')">                                    
                                     <cropper
                                             :boundary="{
