@@ -76,7 +76,7 @@
                                 <td width="100%" class="no_border">
                                     <table class="inner_table" width="100%">
                                         <tbody>
-   
+
                                             @if( (!empty($category['capture_phase']) && $category['capture_phase'] == 1)
                                             || (!empty($subCategory['capture_phase']) && $subCategory['capture_phase']
                                             == 1) || (!empty($category['qualification']) && $category['qualification'] == 1)
@@ -117,6 +117,7 @@
    
    
                                             <tr>
+                                                @if($category['component']!=0)
                                                 <td class="border_btm" @if (
                                                     !((((!empty($category['location']) && $category['location'] == 1) ||
                                                     (!empty($subCategory['location']) && $subCategory['location'] == 1))) ||
@@ -128,7 +129,9 @@
                                                     <strong>@lang('models.request.category_options.component'): 
                                                     </strong>
                                                     {{ $request->component }}
+                                                    
                                                 </td>
+                                                @endif
    
    
    
