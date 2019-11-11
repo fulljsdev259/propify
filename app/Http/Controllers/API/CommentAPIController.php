@@ -12,6 +12,7 @@ use App\Http\Requests\API\Comment\CreateRequest;
 use App\Http\Requests\API\Comment\DeleteRequest;
 use App\Http\Requests\API\Comment\ListRequest;
 use App\Http\Requests\API\Comment\UpdateRequest;
+use App\Jobs\Notify\NotifyPinboardNewComment;
 use App\Jobs\Notify\NotifyRequestNewComment;
 use App\Notifications\PinboardCommented;
 use App\Notifications\ListingCommented;
@@ -129,16 +130,10 @@ class CommentAPIController extends AppBaseController
         $comment = $pinboard->comment($createRequest->comment, $createRequest->parent_id);
         $comment->load('user');
 
-
-        // if logged in user is resident and
-        // author of pinboard is resident and
-        // author of pinboard is different than liker
-        $u = \Auth::user();
-        if ($u->resident && $pinboard->user->resident && $u->id != $pinboard->user_id) {
-            $pinboard->user->notify(new PinboardCommented($pinboard, $u->resident, $comment));
-        }
-        $out = $this->transformer->transform($comment);
-        return $this->sendResponse($out, __('general.comment_created'));
+        $user = \Auth::user();
+        dispatch_now(new NotifyPinboardNewComment($pinboard, $comment, $user));
+        $response = $this->transformer->transform($comment);
+        return $this->sendResponse($response, __('general.comment_created'));
     }
 
     /**

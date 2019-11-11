@@ -20,6 +20,7 @@ use App\Notifications\NewResidentInNeighbour;
 use App\Notifications\NewResidentPinboard;
 use App\Notifications\NewResidentRequest;
 use App\Notifications\AnnouncementPinboardPublished;
+use App\Notifications\PinboardCommented;
 use App\Notifications\PinboardLiked;
 use App\Notifications\PinboardPublished;
 use App\Notifications\ListingPublished;
@@ -82,6 +83,7 @@ class AppServiceProvider extends ServiceProvider
             'request_commented' => RequestCommented::class,
             'request_media' => RequestMedia::class,
             'pinboard_liked' => PinboardLiked::class,
+            'pinboard_commented' => PinboardCommented::class,
         ]);
 
         if (!Collection::hasMacro('paginate')) {
