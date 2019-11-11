@@ -139,6 +139,7 @@
                                                             ? '/images/woman.png'
                                                             : ''
                                             "
+                                            :showCamera="model.avatar==null"
                                             @cropped="cropped"/>
                                 </el-form-item>
 
