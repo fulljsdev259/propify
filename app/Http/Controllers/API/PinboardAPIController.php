@@ -23,6 +23,7 @@ use App\Http\Requests\API\Pinboard\UnAssignRequest;
 use App\Http\Requests\API\Pinboard\UpdateRequest;
 use App\Http\Requests\API\Pinboard\ListViewsRequest;
 use App\Http\Requests\API\Pinboard\ViewRequest;
+use App\Jobs\Notify\NotifyPinboardLiked;
 use App\Models\Pinboard;
 use App\Models\PinboardView;
 use App\Notifications\PinboardLiked;
@@ -556,27 +557,22 @@ class PinboardAPIController extends AppBaseController
      * )
      *
      * @param $id
-     * @param LikeRequest $r
+     * @param LikeRequest $likeRequest
      * @return mixed
      */
-    public function like($id, LikeRequest $r)
+    public function like($id, LikeRequest $likeRequest)
     {
+        /* @var $pinboard Pinboard*/
         $pinboard = $this->pinboardRepository->findWithoutFail($id);
         if (empty($pinboard)) {
             return $this->sendError(__('models.pinboard.errors.not_found'));
         }
 
-        $u = \Auth::user();
-        $u->like($pinboard);
+        $user = \Auth::user();
+        $user->like($pinboard);
 
-        // if logged in user is resident and
-        // author of pinboard is resident and
-        // author of pinboard is different than liker
-        if ($u->resident && $pinboard->user->resident && $u->id != $pinboard->user_id) {
-            $pinboard->user->notify(new PinboardLiked($pinboard, $u->resident));
-        }
-        return $this->sendResponse($this->uTransformer->transform($u),
-        __('models.pinboard.liked'));
+        dispatch_now(new NotifyPinboardLiked($pinboard, $user));
+        return $this->sendResponse($this->uTransformer->transform($user), __('models.pinboard.liked'));
     }
 
     /**
