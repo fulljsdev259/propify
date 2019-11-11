@@ -10,6 +10,7 @@ use App\Notifications\NewResidentRequest;
 use App\Notifications\PinboardPublished;
 use App\Notifications\RequestCommented;
 use App\Notifications\RequestDue;
+use App\Notifications\RequestMedia;
 use App\Notifications\StatusChangedRequest;
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
@@ -241,6 +242,7 @@ class AuditableModel extends Model implements Auditable
         $requestDue = get_morph_type_of(RequestDue::class);
         $statusChangedRequest = get_morph_type_of(StatusChangedRequest::class);
         $requestCommented = get_morph_type_of(RequestCommented::class);
+        $requestMedia = get_morph_type_of(RequestMedia::class);
 
         $_value = [];
         // @TODO do this code more elegant way
@@ -269,7 +271,7 @@ class AuditableModel extends Model implements Auditable
                     'pm_or_sp_user_ids' => $data->pluck('id')->all(),
                     'failed_pm_or_sp_user_ids' => []
                 ];
-            } elseif ($morph ==  $requestCommented) {
+            } elseif (in_array($morph, [$requestCommented, $requestMedia])) {
                 if ($data->pluck('id')->isEmpty()) {
                     continue;
                 }

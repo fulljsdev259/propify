@@ -298,24 +298,6 @@ class RequestRepository extends BaseRepository
 
     /**
      * @param Request $request
-     * @param User $uploader
-     * @param Media $media
-     */
-    public function notifyMedia(Request $request, User $uploader, Media $media)
-    {
-        $i = 0;
-        foreach ($request->allPeople as $person) {
-            $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
-
-            if ($person->id != $uploader->id) {
-                $person->notify((new RequestMedia($request, $uploader, $media))
-                    ->delay(now()->addSeconds($delay)));
-            }
-        }
-    }
-
-    /**
-     * @param Request $request
      * @param ServiceProvider $provider
      * @param $manager
      * @param $mailDetails

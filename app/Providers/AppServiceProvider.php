@@ -24,6 +24,7 @@ use App\Notifications\PinboardPublished;
 use App\Notifications\ListingPublished;
 use App\Notifications\RequestCommented;
 use App\Notifications\RequestDue;
+use App\Notifications\RequestMedia;
 use App\Notifications\StatusChangedRequest;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -78,6 +79,7 @@ class AppServiceProvider extends ServiceProvider
             'new_request_for_receptionist' => NewRequestForReceptionist::class,
             'request_due' => RequestDue::class,
             'request_commented' => RequestCommented::class,
+            'request_media' => RequestMedia::class,
         ]);
 
         if (!Collection::hasMacro('paginate')) {
