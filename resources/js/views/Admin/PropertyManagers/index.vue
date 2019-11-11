@@ -159,7 +159,7 @@
                     },
                     {
                         name: this.$t('general.filters.quarters'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'quarter_id',
                         data: this.quarters,
                         remoteLoading: false,
@@ -167,7 +167,7 @@
                     },
                     {
                         name: this.$t('general.filters.buildings'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'building_id',
                         data: this.buildings,
                         remoteLoading: false,
@@ -175,8 +175,8 @@
                     },
                     {
                         name: this.$t('general.roles.label'),
-                        type: 'role',
-                        key: 'type',
+                        type: 'select',
+                        key: 'role',
                         data: this.roles
                     },
                     {
@@ -296,7 +296,8 @@
             
         },
         async created(){
-        
+            this.quarters = await this.fetchRemoteQuarters();
+            this.buildings = await this.fetchRemoteBuildings();
         },
         mounted() {
         }

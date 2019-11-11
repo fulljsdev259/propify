@@ -14,6 +14,7 @@
                 <el-tag
                     v-if="findSelectedOne.count > 1"
                     size="mini"    
+                    class="select-count"
                 >
                     +{{ findSelectedOne.count - 1 }}
                 </el-tag>
@@ -42,9 +43,9 @@
                         @click="clearSearch()">
                     </i>
                 </el-input>
-                <div class="dropdown-container">
+                <div class="dropdown-container" v-if="items.length">
                     <div
-                        :key="filter.name + item.id + 'selected'"
+                        :key="`${filter.name}${item.name}${item.id}selected`"
                         class="dropdown-item" 
                         :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
                         @click="selectItem(index)"
@@ -199,17 +200,26 @@
                 let result = str;
                 if(this.filter.key == 'category_id') {
                     result = this.$t(`models.request.category_list.${str}`);
+                } else if(this.filter.key == 'role') {
+                    result = this.$t(`general.roles.${str}`)
                 }
                 return result;
             },
             initFilter() {
+                this.items = [];
+                this.originItems = [];
                 this.options = this.filter.data;
                 if(this.options.length) {
                     this.options.forEach((option) => {
                         this.items.push({
                             id: option.id,
                             name: option.name,
-                            selected: this.selectedOptions.includes(option.id),
+                            selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
+                        });
+                        this.originItems.push({
+                            id: option.id,
+                            name: option.name,
+                            selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
                         })
                     });
                 }
@@ -220,7 +230,7 @@
 
         },
         updated() {
-            if(this.items.length == 0)
+            if(JSON.stringify(this.options) !== JSON.stringify(this.filter.data))
                 this.initFilter();
         }
     }
@@ -264,7 +274,7 @@
                         background-color: var(--color-white);
                     }
                 }
-                &:last-child {
+                &.select-count {
                     width: 20px;
                     text-align: center;
                     border-radius: 4px;
