@@ -71,7 +71,11 @@ class RequestRepository extends BaseRepository
         $attributes = self::getPostAttributes($attributes);
         if (isset($attributes['category_id'])) {
             $categoryAttributes = Request::CategoryAttributes[$attributes['category_id']] ?? [];
-            $subCategoryAttributes = Request::SubCategoryAttributes[$attributes['sub_category_id']] ?? [];
+            if (isset($attributes['sub_category_id'])) {
+                $subCategoryAttributes = Request::SubCategoryAttributes[$attributes['sub_category_id']] ?? [];
+            } else {
+                $subCategoryAttributes = [];
+            }
             if (
                 (empty($categoryAttributes) || ! in_array(Request::QualificationAttr, $categoryAttributes))
                 && (empty($subCategoryAttributes) || ! in_array(Request::QualificationAttr, $subCategoryAttributes))
@@ -172,6 +176,7 @@ class RequestRepository extends BaseRepository
         }
         return $attributes;
     }
+
 
     /**
      * @param $attributes

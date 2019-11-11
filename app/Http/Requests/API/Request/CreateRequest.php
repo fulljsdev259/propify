@@ -5,6 +5,7 @@ namespace App\Http\Requests\API\Request;
 use App\Models\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\BaseRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * Class CreateRequest
@@ -31,10 +32,34 @@ class CreateRequest extends BaseRequest
     {
         $user = Auth::user();
         if ($user->resident) {
-            return Request::$rulesPostResident;
+            return [
+                'resident_id' => 'exists:residents,id',
+                'contract_id' => 'required|exists:contracts,id',
+                'title' => 'required|string',
+                'description' => 'required|string',
+                'category_id' => 'required|integer',
+                'sub_category_id' => 'nullable|integer',
+//        'priority' => 'required|integer',
+//        'internal_priority' => 'integer',
+                'visibility' => 'nullable|integer',
+            ];
         }
 
-        $rules = Request::$rulesPost;
+        $rules = [
+            'resident_id' => 'required|exists:residents,id',
+            'contract_id' => 'required|exists:contracts,id',
+            'title' => 'required|string',
+            'description' => 'required|string',
+//        'priority' => 'required|integer',
+//        'internal_priority' => 'integer',
+            'qualification' => 'nullable|integer',
+            'due_date' => 'required|date',
+            'category_id' => 'required|integer',
+            'sub_category_id' => 'nullable|integer',
+            'visibility' => 'nullable|integer',
+        ];
+
+
         $categories = [];
         foreach (Request::CategoryAttributes as $key => $attributes) {
             if (in_array(Request::QualificationAttr, $attributes)) {
@@ -44,6 +69,16 @@ class CreateRequest extends BaseRequest
         if ($categories) {
             $rules['qualification'] = 'required_if:category,'  .implode(',', $categories) .  '|integer';// todo improve permit only specific integers
         }
+        $rules['reminder_user_ids'] = [
+            Rule::requiredIf(function () {
+                return $this->active_reminder == true;
+            }),
+            'array'
+        ];
+        $rules['days_left_due_date'] = Rule::requiredIf(function () {
+            return $this->active_reminder == true;
+        });
+
         return $rules;
     }
 }
