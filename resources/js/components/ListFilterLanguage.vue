@@ -1,67 +1,33 @@
 <template>
     <div class="custom-select">
        <el-dropdown trigger="click" placement="bottom" @visible-change="handleVisibleChange">
-            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]">
-                <span v-if="findSelectedOne.count === 0">{{ filter.name }}</span>
+            <el-button @click="handleDropdownClick" :class="[{'selected-button': getSelected.length}]">
+                <span >{{ role }}: </span>
                 <el-tag 
-                    v-else-if="this.filter.key !== 'language'"
                     size="mini"
                     closable
-                    @close="selectItem(findSelectedOne.index, true)"
+                    :key="item + index + 'selected'"
+                    v-for="(item, index) in getSelected"
                 >
-                    {{ `${filter.name}: ${getLanguageStr(findSelectedOne.label)}` }}
-                </el-tag>
-                <el-tag 
-                    v-else
-                    size="mini"
-                    closable
-                    @close="selectItem(findSelectedOne.index, true)"
-                >
-                    {{ `${filter.name}:` }}
-                    <span :class="items[findSelectedOne.index].flag" ></span>
-                </el-tag>
-                <el-tag
-                    v-if="findSelectedOne.count > 1"
-                    size="mini"    
-                    class="select-count"
-                >
-                    +{{ findSelectedOne.count - 1 }}
+                   <span :class="item.flag" v-if="showFlag"></span>
                 </el-tag>
             </el-button>
             <el-button 
-                v-if="findSelectedOne.count != 0" 
+                v-if="getSelected.length > 1" 
                 icon="el-icon-close"
                 class="close-button" 
                 @click.prevent.stop="handleReset(true)">
             </el-button>
             <el-dropdown-menu slot="dropdown">
-                <el-input
-                    v-if="searchBar"
-                    v-model="search"
-                    :placeholder="`${$t('general.placeholders.search')}...`"
-                >
-                    <i 
-                        v-if="search === ''"
-                        slot="prefix" 
-                        class="el-input__icon el-icon-search">
-                    </i>
-                    <i 
-                        v-else
-                        slot="prefix" 
-                        class="el-input__icon el-icon-close" 
-                        @click="clearSearch()">
-                    </i>
-                </el-input>
-                <div class="dropdown-container" v-if="items.length">
+                <div class="dropdown-container">
                     <div
-                        :key="`${filter.name}${item.name}${item.id}selected`"
+                        :key="`${language.symbol}${index}selected`"
                         class="dropdown-item" 
-                        :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
+                        :class="[{'selected': language.selected == true}]"
                         @click="selectItem(index)"
-                        v-for="(item, index) in items" 
+                        v-for="(language, index) in languages" 
                     >
-                        <span v-if="filter.key !== 'language'" v-html="filterSearch(getLanguageStr(item.name))"></span>
-                        <span v-else><span :class="item.flag"></span>&nbsp;&nbsp;{{ $t(`general.languages.`+item.symbol) }}</span>
+                        <span :class="language.flag" v-if="showFlag">&nbsp;&nbsp;{{$t(`general.languages.`+ language.symbol)}}</span>
                         <span class="el-icon-check"></span>
                     </div>
                     
@@ -80,27 +46,37 @@
     export default {
         data() {
             return {
-               originItems: [],
+               origin: [],
                selectClicked: false,
                search: '',
                selecting: false,
                items: [],
-               options: ''
+               options: '',
+               
+                languages: [],
+                showFlag: true
             }
         },
         props: {
-          filter: {
-              type: Object,
-              default: () => {}
-          },
-          selectedOptions: {
-              type: Array,
-              default: () => []
-          },
-          searchBar: {
-              type: Boolean,
-              default: () => true
-          }
+            searchBar: {
+                type: Boolean,
+                default: () => true
+            },
+            activeLanguage: {
+                required: true
+            },
+            role: {
+                type: String,
+                default: ()=> {
+                    return `general.placeholders.select`;
+                }
+            },
+            isTable: {
+                type: Boolean,
+                default: () => {
+                    return false;
+                }
+            }
         },
         components: {
            
@@ -109,87 +85,48 @@
             filteredOptions() {
                 return this.options.filter((option) => this.search ==='' || this.search !== '' && option.name.includes(this.search));
             },
-            findSelectedOne() {
-                let first_item = null;
-                let count = 0;
-                let idx = -1;
-                this.items.forEach((item, index) => {
+            getSelected() {
+                let result = [];
+                this.languages.forEach((item, index) => {
                     if(item.selected) {
-                        count ++;
-                        if(count == 1) {
-                            first_item = item;
-                            idx = index;
-                        }
+                        result.push(item);
                     }
                 });
-                return { 
-                    label:first_item?first_item.name:null,
-                    index: idx, 
-                    count: count
-                };
+                return result;
+            },
+            activeLanguages: function () {
+                return this.languages.filter((lang) => {
+                    return lang.symbol == this.activeLanguage;
+                })
             },
         },
         methods: {
-            isContained(str) {
-                return str.toLowerCase().includes(this.search.toLowerCase());
-            },
             handleDropdownClick() {
                 this.clearSearch();
             },
-            handleVisibleChange(visible) {
-                let selected = [], unselected = [];
-                if(visible) {
-                    this.selecting = visible;
-                    this.items.forEach((item) => {
-                        if(item.selected) {
-                            selected.push(item);
-                        } else {
-                            unselected.push(item);
-                        }
-                    });
-                    unselected.sort((a ,b ) => {
-                        return a.id - b.id;
-                    });
-                    this.items = selected.concat(unselected);
-                    this.originItems = [];
-                    this.items.forEach((item) => {
-                        this.originItems.push({id:item.id, name:item.name, selected:item.selected});
-                    });
-                } else
-                    this.handleSelect();
-            },
-            clearSearch() {
-                this.search = '';
-            },
             isChanged() {
                 let result = false;
+                return false;
                 if(this.selecting) {
-                    for(let i = 0; i < this.items.length; i++)
-                        if(this.items[i].selected != this.originItems[i].selected)
+                    for(let i = 0; i < this.languages.length; i++)
+                        if(this.languages[i].selected != this.origin[i].selected)
                             result = true;
                 }
                 return result;
             },
+            handleVisibleChange(notifyChange = false) {
+
+            },
             selectItem(index, notifyChange = false) {
-                this.items[index].selected = !this.items[index].selected;
+                this.languages[index].selected = !this.languages[index].selected;
                 if(notifyChange)
                     this.handleSelect();
             },
             selected(index) {
-                return this.items[index].selected;
-            },
-            filterSearch(name) {
-                let result = name;
-                if(this.search !== '') {
-                    let pos = name.toLowerCase().indexOf(this.search.toLowerCase());
-                    if(pos !== -1) {
-                        result = `${name.slice(0, pos)}<b>${name.slice(pos, pos + this.search.length)}</b>${name.slice(pos + this.search.length)}`;
-                    }
-                }
-                return result;
+                return this.languages[index].selected;
             },
             handleReset(notifyChange = false) {
-                this.items.forEach((item)=> {
+                this.languages.forEach((item)=> {
                     item.selected = false;
                     this.originItems.push({id:item.id, name:item.name, selected:item.selected});
                 });
@@ -199,81 +136,36 @@
             handleSelect() {
                 let result = [];
                 this.selectClicked = true;
-                this.items.forEach((item) => {
+                this.languages.forEach((item) => {
                     if(item.selected) {
                         result.push(item.id);
                     } 
                 });
                 this.$emit('select-changed', result);
             },
-            getLanguageStr(str) {
-                let result = str;
-                if(this.filter.key == 'category_id') {
-                    result = this.$t(`models.request.category_list.${str}`);
-                } else if(this.filter.key == 'role') {
-                    result = this.$t(`general.roles.${str}`)
-                }
-                return result;
-            },
-            initFilter() {
-                this.items = [];
-                this.originItems = [];
-                this.options = this.filter.data;
-                if(this.filter.key == 'language') {
-                    let languagesObject = this.$constants.app.languages;
-                    let languagesArray = Object.keys(languagesObject).map(function(key) {
-                        return [String(key), languagesObject[key]];
-                    });
-                
-                    this.items = languagesArray.map((item, index) => { 
-                        let flag_class = 'flag-icon flag-icon-';
-                        let flag = flag_class + item[0];
-                        if( item[0] == 'en')
-                        {
-                            flag = flag_class + 'us'
-                        }
-                        return {
-                            id: index + 1,
-                            name: item[1],
-                            symbol: item[0],
-                            flag: flag,
-                            selected: this.selectedOptions? this.selectedOptions.includes(index+1): false,
-                        }
-                    });
-                    this.items.forEach((item) => {
-                        this.originItems.push({
-                            id: item.id,
-                            name: item.name,
-                            symbol: item.symbol,
-                            flag: item.flag,
-                            selected: item.selected,
-                        });
-                    });
-                } else if(this.options.length) {
-                    this.options.forEach((option) => {
-                        this.items.push({
-                            id: option.id,
-                            name: option.name,
-                            selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
-                        });
-                        this.originItems.push({
-                            id: option.id,
-                            name: option.name,
-                            selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
-                        })
-                    });
-                }
-                
-            }
         },
-        created() {
-            
-
+        mounted() {
+            let languagesObject = this.$constants.app.languages;
+            let languagesArray = Object.keys(languagesObject).map(function(key) {
+                return [String(key), languagesObject[key]];
+            });
+        
+            this.languages = languagesArray.map(item => { 
+                let flag_class = 'flag-icon flag-icon-';
+                let flag = flag_class + item[0];
+                let selected = false;
+                if( item[0] == 'en')
+                {
+                    flag = flag_class + 'us';
+                }
+                return {
+                    name: item[1],
+                    symbol: item[0],
+                    flag: flag,
+                    selected: selected,
+                }
+            });
         },
-        updated() {
-            if(JSON.stringify(this.options) !== JSON.stringify(this.filter.data))
-                this.initFilter();
-        }
     }
 </script>
 <style lang="scss" scoped>
@@ -316,19 +208,16 @@
                     }
                 }
                 &.select-count {
-                    margin-right: 4px;
                     width: 20px;
                     text-align: center;
                     border-radius: 4px;
                     border: 1px solid var(--color-white);
                 }
-                span {
-                    margin-right: 5px;
-                }
             }
             &.selected-button {
                 background-color: var(--color-primary);
                 padding-right: 40px;
+                color: var(--color-white);
             }
 
         }
@@ -369,7 +258,7 @@
             }
         }
         .dropdown-container {
-            padding: 0 16px;
+            padding: 16px;
             max-height: 310px;
             overflow-y: auto;
             
@@ -399,7 +288,7 @@
                 span {
                     user-select: none;
                 }
-                span:not(:first-child) {
+                span:last-child {
                     display: none;
                     position: absolute;
                     right: 8px;
@@ -415,7 +304,7 @@
                     span {
                         font-weight: 700;
                     }
-                    span:not(:first-child) {
+                    span:last-child {
                         display: block;
                     }
                 }
@@ -425,7 +314,7 @@
             }
         }
         .el-divider {
-            margin: 16px 0px 0px;
+            margin: 0px;
         }
         .actions {
             padding: 8px 16px;

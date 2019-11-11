@@ -121,8 +121,9 @@
                     // },
                     {
                         name: this.$t('general.filters.language'),
-                        type: 'language',
-                        key: 'language'
+                        type: 'select',
+                        key: 'language',
+                        data: []
                     }
                 ]
             }

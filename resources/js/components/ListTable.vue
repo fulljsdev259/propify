@@ -62,13 +62,13 @@
                                 </el-date-picker>
                             </el-form-item>
                              <el-form-item v-else-if="filter.type === filterTypes.language">
-                                <select-language
+                                <!-- <select-language
                                     class="label-block"
                                     :role="'settings.language'"
                                     :activeLanguage.sync="filterModel['language']"
                                     @change="filterChanged(filter)"
                                     :isTable="true"
-                                />
+                                /> -->
                             </el-form-item>
                         </template>
 
@@ -396,6 +396,7 @@
     import SelectLanguage from 'components/SelectLanguage';
     import ListTableSelect from 'components/ListTableSelect';
     import ListFilterSelect from 'components/ListFilterSelect';
+    import ListFilterLanguage from 'components/ListFilterLanguage';
 
     export default {
         name: 'ListTable',
@@ -407,7 +408,8 @@
             RequestDetailCard,
             SelectLanguage,
             ListTableSelect,
-            ListFilterSelect
+            ListFilterSelect,
+            ListFilterLanguage,
         },
         props: {
             header: {
@@ -802,7 +804,19 @@
                 let queryFilterValue = this.$route.query[filter.key];
                 
                 const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
-                const value = queryFilterValue && (queryFilterValue.toString().match(dateReg) || filter.key == 'search')  ? queryFilterValue : parseInt(queryFilterValue);
+                let value;
+
+                if((filter.key !== 'search') && queryFilterValue !== undefined && !Array.isArray(queryFilterValue))
+                    value = [queryFilterValue];
+                else
+                    value = queryFilterValue;
+                    
+                if(!Array.isArray(value))
+                    value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
+                else
+                    for(let i = 0; i < value.length; i ++)
+                        value[i] = parseInt(value[i]);
+
                 this.$set(this.filterModel, filter.key, value);
                 if(filter.key == "search") {
                     this.$set(this.filterModel, 'search', queryFilterValue);
@@ -837,6 +851,7 @@
     }
     .el-col {
         width: auto !important;
+        height: 62px;
     }
     .avatar-count{
         min-width: 28px;
