@@ -14,7 +14,7 @@ class FixOldReminderUserIdInReqiuestsTable extends Migration
     public function up()
     {
         Schema::table('requests', function (Blueprint $table) {
-            $table->text('reminder_user_ids')->nullable()->change();
+            $table->text('reminder_user_ids', 65535)->nullable()->change();
         });
         $requests = DB::table('requests')->whereNotNull('reminder_user_ids')->get();
         foreach ($requests as $request) {
