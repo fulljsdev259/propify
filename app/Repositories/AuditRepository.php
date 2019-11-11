@@ -108,6 +108,9 @@ class AuditRepository extends BaseRepository
                     return __('general.assignment_types.administrator');
                 }
             }
+            elseif(($auditable_type == 'quarter') && ($fieldname == 'type')){
+                return __('models.quarter.types.' . Quarter::Type[$fieldvalue]);
+            }
             elseif(($auditable_type == 'unit') && ($fieldname == 'type')){
                 return __('models.unit.type.' . Unit::Type[$fieldvalue]);
             }
