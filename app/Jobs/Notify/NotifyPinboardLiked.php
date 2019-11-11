@@ -3,11 +3,8 @@
 namespace App\Jobs\Notify;
 
 use App\Models\Pinboard;
-use App\Models\Request;
-use App\Models\Resident;
 use App\Models\User;
 use App\Notifications\PinboardLiked;
-use App\Notifications\StatusChangedRequest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;

@@ -43,6 +43,8 @@ class AuditableModel extends Model implements Auditable
     const EventCreated = 'created';
     const EventUpdated = 'updated';
     const EventDeleted = 'deleted';
+    const EventLiked = 'liked';
+    const EventUnLiked = 'unliked';
     const EventContractCreated = 'contract_created';
     const EventContractUpdated = 'contract_updated';
     const EventContractDeleted = 'contract_deleted';
@@ -207,23 +209,13 @@ class AuditableModel extends Model implements Auditable
 
 
     /**
-     * @param $key
      * @param $value
-     * @param null $event
-     * @param bool $isSingle
-     * @param array $tags
-     * @param bool $changeOldValues
      * @return Audit
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function newSystemNotificationAudit($value)
     {
         $audit = $this->makeNewSystemAudit(self::NotificationsSent);
-
-        if (!empty($tags)) {
-            $tags = Arr::wrap($tags);
-            $audit->tags = json_encode($tags); // @TODO correct later
-        }
 
         $_value = [];
         foreach ($value as $morph => $data) {
@@ -246,6 +238,28 @@ class AuditableModel extends Model implements Auditable
         }
 
         $audit->new_values = $_value;
+        $audit->save();
+        return $audit;
+    }
+
+    /**
+     * @param $user
+     * @param $event
+     * @return Audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function newLikedAudit($user, $event)
+    {
+        $event = $event == self::EventLiked ? self::EventLiked : self::EventUnLiked;
+        $audit = $this->makeNewAudit($event);
+
+        if (self::EventLiked == $event) {
+            $audit->new_values = ['user_id' => $user->id];
+        } else {
+            // when unliked
+            $audit->old_values = ['user_id' => $user->id];
+        }
+
         $audit->save();
         return $audit;
     }
