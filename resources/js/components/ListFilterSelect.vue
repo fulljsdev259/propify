@@ -4,16 +4,26 @@
             <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]">
                 <span v-if="findSelectedOne.count === 0">{{ filter.name }}</span>
                 <el-tag 
-                    v-else
+                    v-else-if="this.filter.key !== 'language'"
                     size="mini"
                     closable
                     @close="selectItem(findSelectedOne.index, true)"
                 >
                     {{ `${filter.name}: ${getLanguageStr(findSelectedOne.label)}` }}
                 </el-tag>
+                <el-tag 
+                    v-else
+                    size="mini"
+                    closable
+                    @close="selectItem(findSelectedOne.index, true)"
+                >
+                    {{ `${filter.name}:` }}
+                    <span :class="items[findSelectedOne.index].flag" ></span>
+                </el-tag>
                 <el-tag
                     v-if="findSelectedOne.count > 1"
                     size="mini"    
+                    class="select-count"
                 >
                     +{{ findSelectedOne.count - 1 }}
                 </el-tag>
@@ -42,15 +52,16 @@
                         @click="clearSearch()">
                     </i>
                 </el-input>
-                <div class="dropdown-container">
+                <div class="dropdown-container" v-if="items.length">
                     <div
-                        :key="filter.name + item.id + 'selected'"
+                        :key="`${filter.name}${item.name}${item.id}selected`"
                         class="dropdown-item" 
                         :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
                         @click="selectItem(index)"
                         v-for="(item, index) in items" 
                     >
-                        <span v-html="filterSearch(getLanguageStr(item.name))"></span>
+                        <span v-if="filter.key !== 'language'" v-html="filterSearch(getLanguageStr(item.name))"></span>
+                        <span v-else><span :class="item.flag"></span>&nbsp;&nbsp;{{ $t(`general.languages.`+item.symbol) }}</span>
                         <span class="el-icon-check"></span>
                     </div>
                     
@@ -199,20 +210,60 @@
                 let result = str;
                 if(this.filter.key == 'category_id') {
                     result = this.$t(`models.request.category_list.${str}`);
+                } else if(this.filter.key == 'role') {
+                    result = this.$t(`general.roles.${str}`)
                 }
                 return result;
             },
             initFilter() {
+                this.items = [];
+                this.originItems = [];
                 this.options = this.filter.data;
-                if(this.options.length) {
+                if(this.filter.key == 'language') {
+                    let languagesObject = this.$constants.app.languages;
+                    let languagesArray = Object.keys(languagesObject).map(function(key) {
+                        return [String(key), languagesObject[key]];
+                    });
+                
+                    this.items = languagesArray.map((item, index) => { 
+                        let flag_class = 'flag-icon flag-icon-';
+                        let flag = flag_class + item[0];
+                        if( item[0] == 'en')
+                        {
+                            flag = flag_class + 'us'
+                        }
+                        return {
+                            id: index + 1,
+                            name: item[1],
+                            symbol: item[0],
+                            flag: flag,
+                            selected: this.selectedOptions? this.selectedOptions.includes(index+1): false,
+                        }
+                    });
+                    this.items.forEach((item) => {
+                        this.originItems.push({
+                            id: item.id,
+                            name: item.name,
+                            symbol: item.symbol,
+                            flag: item.flag,
+                            selected: item.selected,
+                        });
+                    });
+                } else if(this.options.length) {
                     this.options.forEach((option) => {
                         this.items.push({
                             id: option.id,
                             name: option.name,
-                            selected: this.selectedOptions.includes(option.id),
+                            selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
+                        });
+                        this.originItems.push({
+                            id: option.id,
+                            name: option.name,
+                            selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
                         })
                     });
                 }
+                
             }
         },
         created() {
@@ -220,7 +271,7 @@
 
         },
         updated() {
-            if(this.items.length == 0)
+            if(JSON.stringify(this.options) !== JSON.stringify(this.filter.data))
                 this.initFilter();
         }
     }
@@ -254,13 +305,25 @@
                 border-color: transparent;
                 color: var(--color-white);
                 :global(i.el-tag__close) {
-                    color: var(--color-white) !important;
                     right: 0;
                     font-size: 14px;
+                    font-weight: 700;
+                    color: var(--color-white);
                     &:hover {
                         border-radius: 50%;
-                        background-color: var(--primary-color-lighter);
+                        color: var(--color-primary);
+                        background-color: var(--color-white);
                     }
+                }
+                &.select-count {
+                    margin-right: 4px;
+                    width: 20px;
+                    text-align: center;
+                    border-radius: 4px;
+                    border: 1px solid var(--color-white);
+                }
+                span {
+                    margin-right: 5px;
                 }
             }
             &.selected-button {
@@ -336,7 +399,7 @@
                 span {
                     user-select: none;
                 }
-                span:last-child {
+                span:not(:first-child) {
                     display: none;
                     position: absolute;
                     right: 8px;
@@ -352,7 +415,7 @@
                     span {
                         font-weight: 700;
                     }
-                    span:last-child {
+                    span:not(:first-child) {
                         display: block;
                     }
                 }

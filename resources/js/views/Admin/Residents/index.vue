@@ -149,6 +149,10 @@
 
             this.isLoadingFilters = false;
 
+            this.buildings = await this.fetchRemoteBuildings();
+            this.units = await this.fetchRemoteUnits();
+            this.quarters = await this.fetchRemoteQuarters();
+
         },
         methods: {
             ...mapActions(['getBuildings', 'getQuarters', 'getUnits', 'changeResidentStatus']),
@@ -250,21 +254,21 @@
                         data: this.states,
                     }, {
                         name: this.$t('general.filters.buildings'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'building_id',
                         data: this.buildings,
                         remoteLoading: false,
                         fetch: this.fetchRemoteBuildings
                     }, {
                         name: this.$t('general.filters.units'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'unit_id',
                         data: this.units,
                         remoteLoading: false,
                         fetch: this.fetchRemoteUnits
                     }, {
                         name: this.$t('general.filters.quarters'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'quarter_id',
                         data: this.quarters,
                         remoteLoading: false,
@@ -282,8 +286,9 @@
                     },
                     {
                         name: this.$t('general.filters.language'),
-                        type: 'language',
-                        key: 'language'
+                        type: 'select',
+                        key: 'language',
+                        data: []
                     },
                     {
                         name: this.$t('general.filters.type'),
