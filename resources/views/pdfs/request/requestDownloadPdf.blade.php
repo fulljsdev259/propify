@@ -38,7 +38,18 @@
                                             @lang('models.request.status.'.\App\Models\Request::Status[$request->status])
                                             ({{ now()->format('d.m.Y, H:i') }})
                                         </p>
-                                        <p style="margin:7px 0 0;">
+                                    </td>
+                                    
+                                    @if(!$blank_pdf)
+                                    <td style="text-align:right;vertical-align:top;" class="table_header">
+                                        <img class="logo" src="{{public_path($logo)}}" />
+                                    </td>
+                                    @endif
+                                </tr>
+                                <tr>
+                                    <td class="no_border" colspan="2">
+
+                                        <p style="margin:0;">
                                             <b>@lang('general.address'):</b>
                                             {{ @$contract->building->address->street }}
                                             {{ @$contract->building->address->house_num }},
@@ -47,12 +58,6 @@
         
                                         </p>
                                     </td>
-                                    
-                                    @if(!$blank_pdf)
-                                    <td style="text-align:right;vertical-align:top;" class="table_header">
-                                        <img class="logo" src="{{public_path($logo)}}" />
-                                    </td>
-                                    @endif
                                 </tr>
                             </tbody>
                         </table>
@@ -72,6 +77,11 @@
                                     <table class="inner_table" width="100%">
                                         <tbody>
    
+                                            @if( (!empty($category['capture_phase']) && $category['capture_phase'] == 1)
+                                            || (!empty($subCategory['capture_phase']) && $subCategory['capture_phase']
+                                            == 1) || (!empty($category['qualification']) && $category['qualification'] == 1)
+                                            || (!empty($subCategory['qualification']) && $subCategory['qualification']
+                                            == 1) )
                                             <tr>
                                                 @if( (!empty($category['capture_phase']) && $category['capture_phase'] == 1)
                                                 || (!empty($subCategory['capture_phase']) && $subCategory['capture_phase']
@@ -103,6 +113,7 @@
    
                                                 @endif
                                             </tr>
+                                            @endif
    
    
                                             <tr>
