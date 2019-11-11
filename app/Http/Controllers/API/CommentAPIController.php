@@ -12,6 +12,7 @@ use App\Http\Requests\API\Comment\CreateRequest;
 use App\Http\Requests\API\Comment\DeleteRequest;
 use App\Http\Requests\API\Comment\ListRequest;
 use App\Http\Requests\API\Comment\UpdateRequest;
+use App\Jobs\Notify\NotifyRequestNewComment;
 use App\Notifications\PinboardCommented;
 use App\Notifications\ListingCommented;
 use App\Repositories\CommentRepository;
@@ -189,7 +190,7 @@ class CommentAPIController extends AppBaseController
         $comment = $request->comment($createRequest->comment, $createRequest->parent_id);
         $comment->load('user');
         $out = $this->transformer->transform($comment);
-        $this->requestRepository->notifyNewComment($request, $comment);
+        dispatch_now(new NotifyRequestNewComment($request, $comment));
 
         return $this->sendResponse($out, __('general.comment_created'));
     }

@@ -8,6 +8,7 @@ use App\Notifications\NewResidentInNeighbour;
 use App\Notifications\NewResidentPinboard;
 use App\Notifications\NewResidentRequest;
 use App\Notifications\PinboardPublished;
+use App\Notifications\RequestCommented;
 use App\Notifications\RequestDue;
 use App\Notifications\StatusChangedRequest;
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
@@ -239,6 +240,7 @@ class AuditableModel extends Model implements Auditable
         $newRequestForReceptionist = get_morph_type_of(NewRequestForReceptionist::class);
         $requestDue = get_morph_type_of(RequestDue::class);
         $statusChangedRequest = get_morph_type_of(StatusChangedRequest::class);
+        $requestCommented = get_morph_type_of(RequestCommented::class);
 
         $_value = [];
         // @TODO do this code more elegant way
@@ -266,6 +268,14 @@ class AuditableModel extends Model implements Auditable
                 $_value[$morph] = [
                     'pm_or_sp_user_ids' => $data->pluck('id')->all(),
                     'failed_pm_or_sp_user_ids' => []
+                ];
+            } elseif ($morph ==  $requestCommented) {
+                if ($data->pluck('id')->isEmpty()) {
+                    continue;
+                }
+                $_value[$morph] = [
+                    'user_ids' => $data->pluck('id')->all(),
+                    'failed_user_ids' => []
                 ];
             } elseif ($morph ==  $pinboardNewResidentPinboard) {
                 if ($data->pluck('id')->isEmpty()) {

@@ -298,48 +298,6 @@ class RequestRepository extends BaseRepository
 
     /**
      * @param Request $request
-     */
-    public function notifyNewRequest(Request $request)
-    {
-        $contract = $request->contract;
-        if (! $contract->building) {
-            return;
-        }
-
-        $propertyManagers = PropertyManager::whereHas('buildings', function ($q) use ($contract) {
-            $q->where('buildings.id', $contract->building->id);
-        })->get();
-
-        $i = 0;
-        foreach ($propertyManagers as $propertyManager) {
-            $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
-            $propertyManager->user->redirect = "/admin/requests/" . $request->id;
-
-            $propertyManager->user
-                ->notify((new NewResidentRequest($request, $propertyManager->user, $contract->resident->user))
-                    ->delay(now()->addSeconds($delay)));
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @param Comment $comment
-     */
-    public function notifyNewComment(Request $request, Comment $comment)
-    {
-        $i = 0;
-        foreach ($request->allPeople as $person) {
-            $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
-
-            if ($person->id != $comment->user->id) {
-                $person->notify((new RequestCommented($request, $person, $comment))
-                    ->delay(now()->addSeconds($delay)));
-            }
-        }
-    }
-
-    /**
-     * @param Request $request
      * @param User $uploader
      * @param Media $media
      */

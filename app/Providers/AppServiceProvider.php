@@ -22,6 +22,7 @@ use App\Notifications\NewResidentRequest;
 use App\Notifications\AnnouncementPinboardPublished;
 use App\Notifications\PinboardPublished;
 use App\Notifications\ListingPublished;
+use App\Notifications\RequestCommented;
 use App\Notifications\RequestDue;
 use App\Notifications\StatusChangedRequest;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -76,6 +77,7 @@ class AppServiceProvider extends ServiceProvider
             'status_change_request' => StatusChangedRequest::class,
             'new_request_for_receptionist' => NewRequestForReceptionist::class,
             'request_due' => RequestDue::class,
+            'request_commented' => RequestCommented::class,
         ]);
 
         if (!Collection::hasMacro('paginate')) {
