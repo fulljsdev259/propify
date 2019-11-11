@@ -1,26 +1,42 @@
 <template>
     <div class="custom-select">
-       <el-dropdown trigger="click" placement="bottom-start" @visible-change="handleVisibleChange">
+       <el-dropdown trigger="click" placement="bottom" @visible-change="handleVisibleChange">
             <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]">
-                <span v-if="findSelectedOne.count === 0">{{ placeholder }}</span>
+                <span v-if="findSelectedOne.count === 0">{{ filter.name }}</span>
+                <el-tag 
+                    v-else-if="this.filter.key !== 'language'"
+                    size="mini"
+                    closable
+                    @close="selectItem(findSelectedOne.index, true)"
+                >
+                    {{ `${filter.name}: ${getLanguageStr(findSelectedOne.label)}` }}
+                </el-tag>
                 <el-tag 
                     v-else
                     size="mini"
                     closable
                     @close="selectItem(findSelectedOne.index, true)"
                 >
-                    {{ $t(`models.request.category_list.${findSelectedOne.label}`) }}
+                    {{ `${filter.name}:` }}
+                    <span :class="items[findSelectedOne.index].flag" ></span>
                 </el-tag>
                 <el-tag
                     v-if="findSelectedOne.count > 1"
                     size="mini"    
+                    class="select-count"
                 >
                     +{{ findSelectedOne.count - 1 }}
                 </el-tag>
-                <span v-if="findSelectedOne.count != 0" class="dropdown-icon el-icon-close" @click.prevent.stop="handleReset(true)"></span>
+            </el-button>
+            <el-button 
+                v-if="findSelectedOne.count != 0" 
+                icon="el-icon-close"
+                class="close-button" 
+                @click.prevent.stop="handleReset(true)">
             </el-button>
             <el-dropdown-menu slot="dropdown">
                 <el-input
+                    v-if="searchBar"
                     v-model="search"
                     :placeholder="`${$t('general.placeholders.search')}...`"
                 >
@@ -36,22 +52,23 @@
                         @click="clearSearch()">
                     </i>
                 </el-input>
-                <div class="dropdown-container">
+                <div class="dropdown-container" v-if="items.length">
                     <div
-                        :key="placeholder + item.id + 'selected'"
+                        :key="`${filter.name}${item.name}${item.id}selected`"
                         class="dropdown-item" 
-                        :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained($t(`models.request.category_list.${item.name}`))}]"
+                        :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
                         @click="selectItem(index)"
                         v-for="(item, index) in items" 
                     >
-                        <span v-html="filterSearch($t(`models.request.category_list.${item.name}`))"></span>
+                        <span v-if="filter.key !== 'language'" v-html="filterSearch(getLanguageStr(item.name))"></span>
+                        <span v-else><span :class="item.flag"></span>&nbsp;&nbsp;{{ $t(`general.languages.`+item.symbol) }}</span>
                         <span class="el-icon-check"></span>
                     </div>
                     
                 </div>
                 <el-divider></el-divider>
                 <div class="actions">
-                    <el-button type="text" @click="handleReset()">{{ $t('general.reset') }}</el-button>
+                    <el-button type="text" @click="handleReset()"><el-dropdown-item >{{ $t('general.reset') }}</el-dropdown-item ></el-button>
                     <el-button v-if="!isChanged()" type="text" :disabled="true">{{ $t('general.placeholders.select') }}</el-button>
                     <el-button v-else type="primary"><el-dropdown-item >{{ $t('general.placeholders.select') }}</el-dropdown-item></el-button>
                 </div>
@@ -61,7 +78,6 @@
 </template>
 <script>
     export default {
-        name: 'CustomSelect',
         data() {
             return {
                originItems: [],
@@ -69,21 +85,22 @@
                search: '',
                selecting: false,
                items: [],
+               options: ''
             }
         },
         props: {
-          options: {
-              type: Array,
-              default: () => []
-          },
-          placeholder: {
-              type: String,
-              default: () => ''
+          filter: {
+              type: Object,
+              default: () => {}
           },
           selectedOptions: {
               type: Array,
               default: () => []
           },
+          searchBar: {
+              type: Boolean,
+              default: () => true
+          }
         },
         components: {
            
@@ -153,9 +170,6 @@
                 }
                 return result;
             },
-            hasSearch() {
-                return this.options.filter((option) => this.search ==='' || this.search !== '' && option.name.includes(this.search));
-            },
             selectItem(index, notifyChange = false) {
                 this.items[index].selected = !this.items[index].selected;
                 if(notifyChange)
@@ -192,16 +206,73 @@
                 });
                 this.$emit('select-changed', result);
             },
+            getLanguageStr(str) {
+                let result = str;
+                if(this.filter.key == 'category_id') {
+                    result = this.$t(`models.request.category_list.${str}`);
+                } else if(this.filter.key == 'role') {
+                    result = this.$t(`general.roles.${str}`)
+                }
+                return result;
+            },
+            initFilter() {
+                this.items = [];
+                this.originItems = [];
+                this.options = this.filter.data;
+                if(this.filter.key == 'language') {
+                    let languagesObject = this.$constants.app.languages;
+                    let languagesArray = Object.keys(languagesObject).map(function(key) {
+                        return [String(key), languagesObject[key]];
+                    });
+                
+                    this.items = languagesArray.map((item, index) => { 
+                        let flag_class = 'flag-icon flag-icon-';
+                        let flag = flag_class + item[0];
+                        if( item[0] == 'en')
+                        {
+                            flag = flag_class + 'us'
+                        }
+                        return {
+                            id: index + 1,
+                            name: item[1],
+                            symbol: item[0],
+                            flag: flag,
+                            selected: this.selectedOptions? this.selectedOptions.includes(index+1): false,
+                        }
+                    });
+                    this.items.forEach((item) => {
+                        this.originItems.push({
+                            id: item.id,
+                            name: item.name,
+                            symbol: item.symbol,
+                            flag: item.flag,
+                            selected: item.selected,
+                        });
+                    });
+                } else if(this.options.length) {
+                    this.options.forEach((option) => {
+                        this.items.push({
+                            id: option.id,
+                            name: option.name,
+                            selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
+                        });
+                        this.originItems.push({
+                            id: option.id,
+                            name: option.name,
+                            selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
+                        })
+                    });
+                }
+                
+            }
         },
         created() {
-            this.options.forEach((option) => {
-                this.items.push({
-                    id: option.id,
-                    name: option.name,
-                    selected: this.selectedOptions.includes(option.id),
-                })
-            });
+            
 
+        },
+        updated() {
+            if(JSON.stringify(this.options) !== JSON.stringify(this.filter.data))
+                this.initFilter();
         }
     }
 </script>
@@ -218,35 +289,73 @@
             position: relative;
             background-color: var(--background-color-base);
             border-color: transparent;
+            border-radius: 6px;
 
             &:hover, &:focus {
                 background-color: var(--color-main-background-base);
             }
             &.selected {
+                border-color: 1px solid var(--color-text-primary);
                 background-color: var(--color-text-primary);
             }
 
-            .dropdown-icon {
-                position: absolute;
-                right: 6px;
-                top: 13px;
-                color: var(--color-text-placeholder);
-            }
             span.el-tag {
-                background-color: var(--color-white);
+                padding: 0 !important;
+                background-color: transparent;
+                border-color: transparent;
+                color: var(--color-white);
+                :global(i.el-tag__close) {
+                    right: 0;
+                    font-size: 14px;
+                    font-weight: 700;
+                    color: var(--color-white);
+                    &:hover {
+                        border-radius: 50%;
+                        color: var(--color-primary);
+                        background-color: var(--color-white);
+                    }
+                }
+                &.select-count {
+                    margin-right: 4px;
+                    width: 20px;
+                    text-align: center;
+                    border-radius: 4px;
+                    border: 1px solid var(--color-white);
+                }
+                span {
+                    margin-right: 5px;
+                }
             }
             &.selected-button {
                 background-color: var(--color-primary);
+                padding-right: 40px;
             }
 
+        }
+        .close-button {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: auto;
+            margin: 0;
+            padding: 0 7px;
+            font-size: 20px;
+            border-radius: 0 4px 4px 0;
+            border-left: 1px solid var(--color-white);
+            background-color: transparent;
+            color: white;
+            &:hover {
+                background-color: transparent;
+            }
         }
     }
     .el-dropdown-menu {
         margin-bottom: 0px;
         padding: 0px;
         width: 288px;
+        border-radius: 12px;
         .el-input {
-            margin: 16px 16px 10px;
+            margin: 16px;
             width: calc(100% - 32px);
             :global(.el-input__inner) {
                 border-color: transparent;
@@ -261,15 +370,40 @@
         }
         .dropdown-container {
             padding: 0 16px;
+            max-height: 310px;
+            overflow-y: auto;
+            
+            &::-webkit-scrollbar{
+                width: 8px;
+            }
+            &::-webkit-scrollbar-thumb{
+                background-color: var(--color-text-placeholder);
+                border: 1px solid transparent;
+                border-radius: 11px;
+                background-clip: content-box;
+            }
+            &::-webkit-scrollbar * {
+                background: transparent;
+            }
+
             .dropdown-item {
-                padding: 5.5px;
-                margin-top: 8px;
+                padding: 4px;
+                &:not(:last-child) {
+                    margin-bottom: 6px;
+                }
                 border: 1px solid var(--border-color-base);
                 border-radius: 4px;
                 cursor: pointer;
+                position: relative;
 
-                span:last-child {
+                span {
+                    user-select: none;
+                }
+                span:not(:first-child) {
                     display: none;
+                    position: absolute;
+                    right: 8px;
+                    top: 8px;
                 }
                 &:hover {
                     background-color: var(--background-color-base);
@@ -281,7 +415,7 @@
                     span {
                         font-weight: 700;
                     }
-                    span:last-child {
+                    span:not(:first-child) {
                         display: block;
                     }
                 }
@@ -291,10 +425,10 @@
             }
         }
         .el-divider {
-            margin: 25px 0px 0px;
+            margin: 16px 0px 0px;
         }
         .actions {
-            padding: 10px 16px;
+            padding: 8px 16px;
             text-align: right;
             .el-button--text {
                 &:hover {
@@ -303,14 +437,38 @@
             }
             .el-button {
                 width: 50%;
+                padding: 0;
                 &:first-child {
                     width: 40%;
+                    .el-dropdown-menu__item:hover {
+                        background-color: transparent;
+                    }
                 }
                 &:last-child {
-                    padding: 0;
                     .el-dropdown-menu__item {
                         color: inherit;
                     }
+                }
+            }
+        }
+
+        &.el-popper {
+            :global(&[x-placement^=bottom] .popper__arrow) {
+                top: -12px;
+                &::after {
+                    margin-left: -10px;  
+                }
+            }
+            :global(.popper__arrow) {
+                border-bottom-width: 12px;
+                border-left-width: 10px;
+                border-right-width: 10px;
+                border-top-width: 0;      
+                &::after {
+                    border-width: 12px;
+                    border-left-width: 10px;
+                    border-right-width: 10px;
+                    border-top-width: 0;
                 }
             }
         }

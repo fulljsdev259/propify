@@ -14,7 +14,11 @@ class UnAssignRequest extends BaseRequest
      */
     public function authorize()
     {
-        if ($this->can('assign-property_manager')) {
+        if ( ! $this->can('assign-property_manager')) {
+            return false;
+        }
+
+        if ($this->user()->hasRole('administrator')) {
             return true;
         }
 

@@ -92,7 +92,7 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="12">
+                        <el-col :md="12" v-if="this.showComponent == true">
                             <el-form-item :label="$t('models.request.category_options.component')">
                                 <el-input v-model="model.component"></el-input>
                             </el-form-item>
@@ -283,7 +283,6 @@
                                               prop="contract_id">
                                 <el-select v-model="model.contract_id" 
                                             :placeholder="$t('resident.placeholder.contract')"
-                                            @change="changeContract"
                                             class="custom-select">
                                     <el-option v-for="contract in contracts" 
                                                 :key="contract.id" 
@@ -451,6 +450,16 @@
     }
 
     #add_request {
+
+        .el-form-item__content {
+            .el-input.el-input-group {
+                .el-input-group__prepend {
+                    padding: 2px 8px 0;
+                    font-weight: 600;
+                }
+            }
+        }
+
         .el-select__tags {
             top: 70% !important;
         }

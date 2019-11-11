@@ -16,6 +16,7 @@ export default {
     createRequest({commit}, payload) {
         return new Promise((resolve, reject) => {
             axios.post('requests', payload).then((response) => {
+                EventBus.$emit('update-request-counts')
                 resolve(response.data);
             }).catch(({response: {data: err}}) => reject(err));
         });
@@ -23,6 +24,7 @@ export default {
     updateRequest({commit}, payload) {
         return new Promise((resolve, reject) => {
             axios.put(`requests/${payload.id}`, payload).then((response) => {
+                EventBus.$emit('update-request-counts')
                 resolve(response.data);
             }).catch(({response: {data: err}}) => reject(err));
         });
@@ -49,13 +51,15 @@ export default {
     deleteRequest({commit}, payload) {
         return new Promise((resolve, reject) => {
             axios.delete(`requests/${payload.id}`).then((response) => {
+                EventBus.$emit('update-request-counts')
                 resolve(response.data)
             }).catch(({response: {data: err}}) => reject(err))
         })
     },
     deleteRequestWithIds({}, payload) {        
         return new Promise((resolve, reject) => {
-            axios.post(`requests/deletewithids`, {ids: _.map(payload, 'id')}).then((resp) => {                
+            axios.post(`requests/deletewithids`, {ids: _.map(payload, 'id')}).then((resp) => {               
+                EventBus.$emit('update-request-counts') 
                 resolve(resp.data);
             }).catch(({response: {data: err}}) => reject(err))
         });
@@ -114,6 +118,7 @@ export default {
     massEdit({}, payload) {
         return new Promise((resolve, reject) => {
             axios.put(`requests/massedit`, payload).then((resp) => {
+                EventBus.$emit('update-request-counts')
                 resolve(resp);
             }).catch(({response: {data: err}}) => reject(err))
         });

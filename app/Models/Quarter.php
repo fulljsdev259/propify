@@ -47,6 +47,11 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  *          type="integer"
  *      ),
  *      @SWG\Property(
+ *          property="assignment_type",
+ *          description="assignment_type",
+ *          type="integer"
+ *      ),
+ *      @SWG\Property(
  *          property="description",
  *          description="description",
  *          type="string"
@@ -113,10 +118,30 @@ class Quarter extends AuditableModel implements HasMedia
 
     const TypeRent = 1;
     const TypeSell = 2;
+    const TypeBuildingLand = 3;
+    const TypeTrade = 4;
+    const TypeMultiStoreyCarPark = 5;
 
     const Type = [
         self::TypeRent => 'rent',
         self::TypeSell => 'sell',
+        self::TypeBuildingLand => 'building_land',
+        self::TypeTrade => 'trade',
+        self::TypeMultiStoreyCarPark => 'multi-storey_car_park',
+    ];
+
+    const AssignmentTypeFortimoEmployees = 1;
+    const AssignmentTypeManagement = 2;
+    const AssignmentTypeInitialLetting = 3;
+    const AssignmentTypeCaretaker = 4;
+    const AssignmentTypeAdministration = 5;
+
+    const AssignmentType = [
+        self::AssignmentTypeFortimoEmployees => 'fortimo_employees',
+        self::AssignmentTypeManagement => 'management',
+        self::AssignmentTypeInitialLetting => 'initial_letting',
+        self::AssignmentTypeCaretaker => 'caretaker',
+        self::AssignmentTypeAdministration => 'administration',
     ];
 
     /**
@@ -135,6 +160,7 @@ class Quarter extends AuditableModel implements HasMedia
         'address_id',
         'internal_quarter_id',
         'type',
+        'assignment_type',
     ];
     /**
      * @var array
@@ -154,6 +180,7 @@ class Quarter extends AuditableModel implements HasMedia
         'internal_quarter_id' => 'string',
         'count_of_buildings' => 'integer',
         'type' => 'integer',
+        'assignment_type' => 'integer',
     ];
 
     protected $permittedExtensions = [

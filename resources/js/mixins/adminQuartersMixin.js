@@ -13,11 +13,14 @@ export default (config = {}) => {
                     count_of_buildings: null,
                     state_id: '',
                     city: '',
-                    zip: '',    
+                    zip: '',
                     street: 'street',
                     house_num: 'house_num',
                     media: [],
                     internal_quarter_id: '',
+                    type: '',
+                    types: '',
+                    url: ''
                 },
                 quarter_format: '',
                 validationRules: {
@@ -109,21 +112,28 @@ export default (config = {}) => {
                     
                     try {
                         let resp = [];
-                        const quarterAssignee = await this.getQuarterAssignees({quarter_id: this.$route.params.id});
+                        const quarterAssignee = await this.getQuarterAssignees({get_all: true, quarter_id: this.$route.params.id});
                         let exclude_ids = [];
                         if (this.assignmentType === 'managers') {
-                            quarterAssignee.data.data.map(item => {
+                            quarterAssignee.data.map(item => {
                                 if(item.type === 'manager'){
                                     exclude_ids.push(item.edit_id);
                                 }                                
                             })
-                            resp = await this.getPropertyManagers({
+                            // resp = await this.getPropertyManagers({
+                            //     get_all: true,
+                            //     search,
+                            //     exclude_ids: exclude_ids.join(',')
+                            // });
+                            const resp = await this.getUsers({
                                 get_all: true,
+                                get_role: true,
                                 search,
-                                exclude_ids: exclude_ids.join(',')
+                                exclude_ids: exclude_ids.join(','),
+                                roles: ['manager', 'administrator', 'provider']
                             });
                         } else if(this.assignmentType === 'administrator'){
-                            quarterAssignee.data.data.map(item => {
+                            quarterAssignee.data.map(item => {
                                 if(item.type === 'user'){                                    
                                     exclude_ids.push(item.edit_id);
                                 }                                
@@ -174,6 +184,7 @@ export default (config = {}) => {
             getLanguageI18n() {
                 this.getStates();
                 this.types = Object.entries(this.$constants.quarters.type).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.types.${label}`)}))
+                this.assignment_types = Object.entries(this.$constants.quarters.assignment_type).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.assignment_types.${label}`)}))
             },
         },
         watch: {

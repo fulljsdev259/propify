@@ -362,6 +362,8 @@ return [
             'key_service' => 'Schlüsseldienst',
             'caretaker' => 'Hauswart',
             'real_estate_service' => 'Liegenschaftsdienst',
+            'business_person' => 'Unternehmer',
+            'tu-gu' => 'TU/GU',
         ],
         'contact_details' => 'Kontaktdaten',
         'user_credentials' => 'Logindaten',
@@ -401,8 +403,21 @@ return [
         'types' => [
             'label' => 'Typ',
             'rent' => 'Miete',
-            'sell' => 'Verkauf'
-        ]
+            'sell' => 'Verkauf',
+            'property' => 'Eigentum',
+            'building_land' => 'Bauland',
+            'trade' => 'Gewerbe',
+            'multi-storey_car_park' => 'Parkhaus'
+        ],
+        'assignment_types' => [
+            'label' => 'Typ',
+            'fortimo_employees' => 'Fortimo-Mitarbeiter',
+            'management' => 'Bewirtschaftung',
+            'initial_letting' => 'Erstvermietung',
+            'caretaker' => 'Hauswart',
+            'administration' => 'Verwaltung'
+        ],
+        'url' => 'Url'
     ],
     'request' => [        
         'deleted' => 'Anfrage gelöscht',

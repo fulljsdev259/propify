@@ -146,7 +146,6 @@
                 all_unassigned_count: null,
                 my_request_count: null,
                 my_pending_count: null,
-                rolename: null,
                 unreadNotifications: 0
             }
         },
@@ -177,6 +176,9 @@
                 set: function (newValue) {
                     this.value = newValue;
                 }                
+            },
+            role_name() {
+                return this.$store.getters.loggedInUser.roles[0].name;
             },
             links() {
                 let links = [];
@@ -339,7 +341,7 @@
                     //     }
                     // }
                 }                
-                if (this.rolename == 'administrator') {
+                if (this.role_name == 'administrator') {
                    //links = Object.values(menu_items);
                    links = [
                             menu_items.dashboard,
@@ -353,11 +355,10 @@
                             // menu_items.listings,
                        ];
                 }
-                else if (this.rolename == 'manager') {
+                else if (this.role_name == 'manager') {
                    links = [
                             menu_items.buildings,
-                            menu_items.managerRequests, 
-                            menu_items.activity,
+                            menu_items.managerRequests,
                             menu_items.residents,
                             menu_items.propertyManagers,
                             menu_items.services,
@@ -365,7 +366,7 @@
                             // menu_items.listings,
                        ];
                 }
-                else if (this.rolename == 'service') {
+                else if (this.role_name == 'service') {
                      links = [                            
                             menu_items.requests,                             
                        ];
@@ -476,6 +477,14 @@
                 else {
                     Itag.removeAttribute('style');
                 }
+            },
+            async getRequestCounts() {
+                const requestsCounts = await this.axios.get('requestsCounts');
+                this.all_request_count = requestsCounts.data.data.all_request_count;
+                this.all_pending_count = requestsCounts.data.data.all_pending_request_count;
+                this.all_unassigned_count = requestsCounts.data.data.all_unassigned_request_count;
+                this.my_request_count = requestsCounts.data.data.my_request_count;
+                this.my_pending_count = requestsCounts.data.data.my_pending_request_count;
             }
         },
         beforeCreate() {
@@ -508,23 +517,21 @@
                 }
             });
 
-            this.rolename = this.$store.getters.loggedInUser.roles[0].name;
 
-            this.$root.$on('avatar-update', () => {
+            EventBus.$on('avatar-update', () => {
                 this.user.avatar += "?"
             });
-            
+
+            EventBus.$on('update-request-counts', () => {
+                this.getRequestCounts()
+            });
+
         },
         
-        async created(){            
-            const requestsCounts = await this.axios.get('requestsCounts');
-            this.all_request_count = requestsCounts.data.data.all_request_count;
-            this.all_pending_count = requestsCounts.data.data.all_pending_request_count;
-            this.all_unassigned_count = requestsCounts.data.data.all_unassigned_request_count;
-            this.my_request_count = requestsCounts.data.data.my_request_count;
-            this.my_pending_count = requestsCounts.data.data.my_pending_request_count;
-        }
 
+        async created() {
+            this.getRequestCounts()
+        }
 
     }
 </script>

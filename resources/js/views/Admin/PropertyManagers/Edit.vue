@@ -118,7 +118,6 @@
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
-
                                 <el-form-item :label="$t('models.user.profile_image')">                                    
                                     <cropper
                                             :boundary="{
@@ -130,7 +129,16 @@
                                                 height: 250
                                             }"
                                             :resize="false"
-                                            :defaultAvatarSrc="model.user.avatar_variations[3] ? '/'+model.user.avatar_variations[3] : ''"
+                                            :defaultAvatarSrc="
+                                                !avatar.length && user.avatar
+                                                    ? '/'+user.avatar_variations[3]
+                                                    : model.avatar==null && model.title == 'mr'
+                                                        ? '/images/man.png'
+                                                        : model.avatar==null && model.title == 'mrs'
+                                                            ? '/images/woman.png'
+                                                            : ''
+                                            "
+                                            :showCamera="model.avatar==null"
                                             @cropped="cropped"/>
                                 </el-form-item>
 

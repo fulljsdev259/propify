@@ -169,7 +169,7 @@
                     },
                     {
                         name: this.$t('general.filters.quarters'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'quarter_id',
                         data: this.quarters,
                         remoteLoading: false,
@@ -177,7 +177,7 @@
                     },
                     {
                         name: this.$t('general.filters.buildings'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'building_id',
                         data: this.buildings,
                         remoteLoading: false,
@@ -185,7 +185,7 @@
                     },
                     {
                         name: this.$t('general.filters.property_managers'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'manager_id',
                         data: this.propertyManagers,
                         remoteLoading: false,
@@ -209,8 +209,8 @@
                 ];
             }
         },
-        mounted() {
-            this.$root.$on('changeLanguage', () => this.types = Object.entries(this.$constants.units.type).map(([value, label]) => ({value: +value, name: this.$t(`models.unit.type.${label}`)})));
+        async mounted() {
+            this.$root.$on('changeLanguage', () => this.types = Object.entries(this.$constants.units.type).map(([value, label]) => ({id: value, value: +value, name: this.$t(`models.unit.type.${label}`)})));
         },
         async created() {
             this.isLoadingFilters = true;
@@ -219,9 +219,12 @@
             const states = await this.axios.get('states?filters=true')
             this.states = states.data.data;
 
-            
-            this.types = Object.entries(this.$constants.units.type).map(([value, label]) => ({value: +value, name: this.$t(`models.unit.type.${label}`)}))
+            this.types = Object.entries(this.$constants.units.type).map(([value, label]) => ({id: value, value: +value, name: this.$t(`models.unit.type.${label}`)}))
             this.isLoadingFilters = false;
+
+            this.quarters = await this.fetchRemoteQuarters();
+            this.buildings = await this.fetchRemoteBuildings();
+            this.propertyManagers = await this.fetchRemotePropertyManagers();
         }
     }
 </script>

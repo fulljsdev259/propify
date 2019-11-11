@@ -136,6 +136,7 @@ export default (config = {}) => {
                 },
                 remoteLoading: false,
                 isFormSubmission: false,
+                user: {},
             };
         },
         computed: {
@@ -440,6 +441,8 @@ export default (config = {}) => {
                         this.model.name = this.model.user.name
                         this.model.phone = this.model.user.phone
 
+                        this.user = this.model.user
+
                         this.alreadyAssigned.buildings = this.model.buildings.map((building) => building.id);
                         this.alreadyAssigned.quarters = this.model.quarters.map((quarter) => quarter.id);
 
@@ -465,6 +468,7 @@ export default (config = {}) => {
                     this.loading.state = true;
 
                     await this.fetchCurrentManager();
+
 
                     this.loading.state = false;
                 };

@@ -63,7 +63,6 @@ return [
         'edit-request',
         'delete-request',
         'assign-request',
-        'list-audit',
         'list-building',
         'view-building',
         'add-building',
@@ -111,6 +110,10 @@ return [
         'delete_media_upload-resident',
         'add_media_upload-request',
         'delete_media_upload-request',
+        'view-property_manager',
+        'edit-property_manager',
+        'delete-property_manager',
+        'assign-property_manager',
     ],
     'all' => [
         ['list-user', 'List Users', 'list all users'],

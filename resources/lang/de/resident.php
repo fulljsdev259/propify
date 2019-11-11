@@ -105,7 +105,7 @@ return [
         "my_contract" => "Mein Mietvertrag",
         "my_contact" => "Meine Kontakte",
     ],
-    "you" => "Dir",
+    "you" => "Du",
     "and" => "und",
     "liked_this" => "gefällt das",
     "media_info" => "Nutzen Sie die Upload-Funktion.",

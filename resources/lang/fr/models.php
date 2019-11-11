@@ -361,6 +361,8 @@ return [
             "key_service" => "Service clé",
             "caretaker" => "Concierge",
             "real_estate_service" => "Service immobilier",
+            'business_person' => 'Unternehmer', // @TODO translate (problem with deepl)
+            'tu-gu' => 'TU/GU',
         ],
         "contact_details" => "Coordonnées de contact",
         "user_credentials" => "Informations d'identification de l'utilisateur",
@@ -400,8 +402,21 @@ return [
         'types' => [
             'label' => 'Type',
             'rent' => 'Loyer',
-            'sell' => 'Vendre'
-        ]
+            'sell' => 'Vendre',
+            'property' => 'Propriété',
+            'building_land' => 'Terrain à bâtir',
+            'trade' => 'Commerce',
+            'multi-storey_car_park' => 'Parking à plusieurs étages'
+        ],
+        'assignment_types' => [
+            'label' => 'Type',
+            'fortimo_employees' => 'Employés Fortimo',
+            'management' => "Gestion de l'entreprise",
+            'initial_letting' => 'Location initiale',
+            'caretaker' => 'Concierge',
+            'administration' => 'Administration'
+        ],
+        'url' => 'Url'
     ],
     'request' => [        
         "deleted" => "Richiesta supprimée",

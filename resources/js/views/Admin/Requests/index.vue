@@ -261,43 +261,33 @@
                     // },
                     {
                         name: this.$t('general.filters.quarters'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'quarter_id',
                         data: this.quarters,
-                        remoteLoading: false,
-                        fetch: this.fetchRemoteQuarters
                     },
                     {
                         name: this.$t('general.filters.buildings'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'building_id',
                         data: this.buildings,
-                        remoteLoading: false,
-                        fetch: this.fetchRemoteBuildings
                     },
                     {
                         name: this.$t('general.filters.property_managers'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'property_manager_id',
                         data: this.propertyManagers,
-                        remoteLoading: false,
-                        fetch: this.fetchRemoteManagers
                     },
                     {
                         name: this.$t('general.filters.services'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'service_provider_id',
                         data: this.services,
-                        remoteLoading: false,
-                        fetch: this.fetchRemoteServices
                     },
                     {
                         name: this.$t('general.filters.resident'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'resident_id',
                         data: this.residents,
-                        remoteLoading: false,
-                        fetch: this.fetchRemoteResidents
                     },
                     {
                         name: this.$t('general.filters.created_from'),
@@ -610,16 +600,23 @@
                 }
             }
         },
-        async created(){
-            this.isLoadingFilters = true;
+        async mounted(){
+            this.disableMassEditButton(true)
 
+            this.isLoadingFilters = true;
+            
             const states = await this.axios.get('states?filters=true')
             this.states = states.data.data;
 
-            this.categories = await this.getFilterCategories()
+            this.categories = await this.getFilterCategories();
             this.isLoadingFilters = false;
-
-            this.disableMassEditButton(true)
+            
+            this.quarters = await this.fetchRemoteQuarters();
+            this.buildings = await this.fetchRemoteBuildings();
+            this.propertyManagers = await this.fetchRemoteManagers();
+            this.services = await this.fetchRemoteServices();
+            this.residents = await this.fetchRemoteResidents();
+            
         },
         watch: {
             selectedItems: function(items) {   
@@ -676,8 +673,6 @@
             cursor: not-allowed;
         }
     }
-
-    
 
     /deep/ .el-dialog {
         /deep/ .el-dialog__body {
