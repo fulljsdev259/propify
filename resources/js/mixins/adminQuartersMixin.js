@@ -184,7 +184,7 @@ export default (config = {}) => {
             getLanguageI18n() {
                 this.getStates();
                 this.types = Object.entries(this.$constants.quarters.type).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.types.${label}`)}))
-                //this.assignment_types = Object.entries(this.$constants.quarters.assignment_types).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.assignment_types.${label}`)}))
+                this.assignment_types = Object.entries(this.$constants.quarters.assignment_type).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.assignment_types.${label}`)}))
                 let temp_assignment_constants = {
                     1: "fortimo_employees",
                     2: "management",
@@ -192,7 +192,7 @@ export default (config = {}) => {
                     4: "caretaker",
                     5: "administration"
                 }
-                this.assignment_types = Object.entries(temp_assignment_constants).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.assignment_types.${label}`)}))
+                //this.assignment_types = Object.entries(temp_assignment_constants).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.assignment_types.${label}`)}))
 
             },
         },

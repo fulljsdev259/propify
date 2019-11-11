@@ -414,7 +414,7 @@ return [
             'management' => 'Management',
             'initial_letting' => 'Initial Letting',
             'caretaker' => 'Caretaker',
-            'administration' => 'Administrator'
+            'administration' => 'Administration'
         ],
         'url' => 'Url'
     ],
