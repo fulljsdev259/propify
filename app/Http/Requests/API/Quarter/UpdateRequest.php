@@ -26,7 +26,11 @@ class UpdateRequest extends BaseRequest
     {
         return [
             'name' => 'string',
-            'type' => $this->getInRuleByClassConstants(Quarter::Type)
+            'type' => $this->getInRuleByClassConstants(Quarter::Type),
+            'assignment_type' => [
+                'nullable',
+                $this->getInRuleByClassConstants(Quarter::AssignmentType)
+            ]
         ];
     }
 }
