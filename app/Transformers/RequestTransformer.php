@@ -40,7 +40,7 @@ class RequestTransformer extends BaseTransformer
             'updated_at' => $model->updated_at->toDateTimeString(),
             'visibility' => $model->visibility,
             'active_reminder' => $model->active_reminder,
-            'reminder_user_id' => $model->reminder_user_id,
+            'reminder_user_ids' => $model->reminder_user_ids,
             'days_left_due_date' => $model->days_left_due_date,
             'sent_reminder_user_ids' => $model->sent_reminder_user_ids,
             'percentage' => $model->percentage,
@@ -85,10 +85,6 @@ class RequestTransformer extends BaseTransformer
 
         if ($model->sub_category_id) {
             $response['sub_category'] = get_sub_category_details($model->sub_category_id);
-        }
-
-        if ($model->relationExists('remainder_user')) {
-            $response['remainder_user'] = (new UserTransformer())->transform($model->remainder_user);
         }
 
         if ($model->relationExists('resident')) {
