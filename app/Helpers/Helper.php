@@ -61,7 +61,8 @@ class Helper
                 'internal_priority' => __('models.request.internal_priority.label'),
                 'priority' => __('models.request.priority.label'),
                 'qualification' => __('models.request.qualification.label'),
-                'visibility' => __('models.request.visibility.label'),                 
+                'visibility' => __('models.request.visibility.label'),     
+                'request_format' => __('models.request.title')." ".__('general.format'),                            
             ],
             'quarter' => [
                 'internal_quarter_id' => __('general.internal_quarter_id'),
@@ -70,6 +71,7 @@ class Helper
                 'city' => __('general.city'),
                 'state_id' => __('general.state'),
                 'house_num' => __('general.house_num'),
+                'quarter_format' => __('models.quarter.title')." ".__('general.format'),            
             ],
             'building' => [
                 'quarter_id' => __('general.assignment_types.quarter'),
@@ -78,16 +80,20 @@ class Helper
                 'zip' => __('general.zip'),
                 'city' => __('general.city'),
                 'state_id' => __('general.state'),
-                'house_num' => __('general.house_num'),              
+                'house_num' => __('general.house_num'),  
+                'building_format' => __('models.building.title')." ".__('general.format'),            
             ],
-            'contract' => [],
+            'contract' => [
+                'contract_format' => __('models.contract.title')." ".__('general.format'),
+            ],
             'listing' => [],
             'manager' => [
                 'title' => __('general.salutation'),
                 'first_name' => __('general.first_name'),
                 'last_name' => __('general.last_name'),
                 'type' => __('models.property_manager.assign_type'),
-                'language' => __('general.language')
+                'language' => __('general.language'),
+                'property_manager_format' => __('models.property_manager.title')." ".__('general.format'),
             ],
             'pinboard' => [
                 'execution_period' => __('models.pinboard.execution_period.label'),
@@ -107,7 +113,8 @@ class Helper
                 'state_id' => __('general.state'),
                 'city' => __('general.city'),
                 'street' => __('general.street'),
-                'zip' => __('general.zip')
+                'zip' => __('general.zip'),
+                'service_provider_format' => __('models.service.title')." ".__('general.format'),            
             ],                      
             'resident' => [
                 'title' => __('general.salutation'),
@@ -117,7 +124,8 @@ class Helper
                 'address_id' => __('general.address'),
                 'building_id' => __('models.resident.building.name'),
                 'unit_id' => __('models.resident.unit.name'),
-                'language' => __('general.language')
+                'language' => __('general.language'),
+                'resident_format' => __('models.resident.name')." ".__('general.format'),
             ],            
             'unit' => [
                 'description' => __('general.description'),                
@@ -125,7 +133,8 @@ class Helper
                 'monthly_rent_net' => __('general.monthly_rent_net'),
                 'monthly_maintenance' => __('general.maintenance'),
                 'monthly_rent_gross' => __('general.gross_rent'),    
-                'type' => __('models.unit.type.label')            
+                'type' => __('models.unit.type.label'),
+                'unit_format' => __('models.unit.title')." ".__('general.format'),            
             ],
             'user' => [
                 'last_login_at' => __('general.last_login_at')

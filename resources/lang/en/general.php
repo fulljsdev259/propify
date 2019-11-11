@@ -35,6 +35,7 @@ return [
         'saturday' => 'Saturday',
         'sunday' => 'Sunday',
     ],
+    'format' => 'Format',
     'audits' => 'Audits',
     'user' => 'User',
     'resident' => 'Resident',
