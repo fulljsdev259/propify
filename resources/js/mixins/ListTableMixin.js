@@ -70,12 +70,14 @@ export default ({
             this.selectedItems = rows;
         },
         batchDelete() {
+            console.log('batch delete')
             this.$confirm(this.$t('general.swal.delete.text'), this.$t('general.swal.delete.title'), {
                 type: 'warning'
             }).then(() => {
                 Promise.all(this.selectedItems.map((item) => {
                     return this[deleteAction](item)
                         .then(r => {
+
                             displaySuccess(r);
                         })
                         .catch(err => displayError(err));
@@ -92,6 +94,7 @@ export default ({
                 return this[deleteAction](this.selectedItems)
                 .then(r => {
                     this.fetchMore();
+                    this.selectedItems = []
                     displaySuccess(r);
                 })
                 .catch(err => displayError(err));                
@@ -116,7 +119,9 @@ export default ({
     },
     watch: {
         [items](newValue) {
+            console.log([items], newValue)
             this.items = newValue;
+            console.log(this.selectedItems)
         }
     }
 });
