@@ -14,14 +14,11 @@ class FixOldReminderUserIdInReqiuestsTable extends Migration
     public function up()
     {
         Schema::table('requests', function (Blueprint $table) {
-            $table->text('reminder_user_ids')->nullable()->change();
+            $table->dropColumn('reminder_user_ids');
         });
-        $requests = DB::table('requests')->whereNotNull('reminder_user_ids')->get();
-        foreach ($requests as $request) {
-            DB::table('requests')->where('id', $request->id)->update([
-                'reminder_user_ids' => json_encode([$request->reminder_user_ids])
-            ]);
-        }
+        Schema::table('requests', function (Blueprint $table) {
+            $table->text('reminder_user_ids', 65535)->nullable();
+        });
     }
 
     /**
@@ -33,7 +30,10 @@ class FixOldReminderUserIdInReqiuestsTable extends Migration
     {
 
         Schema::table('requests', function (Blueprint $table) {
-            $table->integer('reminder_user_ids')->unsigned()->nullable()->change();
+            $table->dropColumn('reminder_user_ids');
+        });
+        Schema::table('requests', function (Blueprint $table) {
+            $table->integer('reminder_user_ids')->unsigned()->nullable();
         });
     }
 }
