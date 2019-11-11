@@ -495,6 +495,8 @@ return [
         'assignment' => 'Manager/Servizi',
         'active_reminder_switcher' => 'Promemoria',
         'days_left' => "Quanti giorni prima dovrebbe essere inviata l'e-mail?",
+        'days_left_due_date' => "Giorni prima della scadenza",
+        'notified_persons' => '',
         'send_person' => 'Quale persona deve essere informata?',
         'sort' => 'In scadenza il',
         'reset_sort' => 'Ripristina ordinamento',
