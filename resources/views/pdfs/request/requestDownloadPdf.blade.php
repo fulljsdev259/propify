@@ -72,6 +72,11 @@
                                     <table class="inner_table" width="100%">
                                         <tbody>
    
+                                            @if( (!empty($category['capture_phase']) && $category['capture_phase'] == 1)
+                                            || (!empty($subCategory['capture_phase']) && $subCategory['capture_phase']
+                                            == 1) || (!empty($category['qualification']) && $category['qualification'] == 1)
+                                            || (!empty($subCategory['qualification']) && $subCategory['qualification']
+                                            == 1) )
                                             <tr>
                                                 @if( (!empty($category['capture_phase']) && $category['capture_phase'] == 1)
                                                 || (!empty($subCategory['capture_phase']) && $subCategory['capture_phase']
@@ -103,6 +108,7 @@
    
                                                 @endif
                                             </tr>
+                                            @endif
    
    
                                             <tr>
