@@ -38,14 +38,6 @@
                                             @lang('models.request.status.'.\App\Models\Request::Status[$request->status])
                                             ({{ now()->format('d.m.Y, H:i') }})
                                         </p>
-                                        <p style="margin:7px 0 0;">
-                                            <b>@lang('general.address'):</b>
-                                            {{ @$contract->building->address->street }}
-                                            {{ @$contract->building->address->house_num }},
-                                            {{ @$contract->building->address->zip }}
-                                            {{ @$contract->building->address->city }}
-        
-                                        </p>
                                     </td>
                                     
                                     @if(!$blank_pdf)
@@ -53,6 +45,20 @@
                                         <img class="logo" src="{{public_path($logo)}}" />
                                     </td>
                                     @endif
+                                </tr>
+                                <tr>
+                                    <td class="no_border" colspan="2">
+
+                                        <p style="margin:0;">
+                                            <b>@lang('general.address'):</b>
+                                            {{ @$contract->building->address->street }}
+                                            {{ @$contract->building->address->house_num }},
+                                            {{ @$contract->building->address->zip }}
+                                            {{ @$contract->building->address->city }}
+                                            kasjggbfh alisefhyi ashdf laiues slfrh aksdfh
+        
+                                        </p>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
