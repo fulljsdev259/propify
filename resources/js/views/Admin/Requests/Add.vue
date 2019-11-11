@@ -283,7 +283,6 @@
                                               prop="contract_id">
                                 <el-select v-model="model.contract_id" 
                                             :placeholder="$t('resident.placeholder.contract')"
-                                            @change="changeContract"
                                             class="custom-select">
                                     <el-option v-for="contract in contracts" 
                                                 :key="contract.id" 

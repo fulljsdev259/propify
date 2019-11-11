@@ -18,9 +18,22 @@
                                         <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.type"
                                                 class="label-block"
                                                 prop="type">
-                                            <el-select placeholder="Select"
+                                            <!-- <el-select :placeholder="$t('general.placeholders.select')"
                                                         style="display: block"
                                                         v-model="model.type">
+                                                <el-option
+                                                        :key="type.value"
+                                                        :label="type.name"
+                                                        :value="type.value"
+                                                        v-for="type in types">
+                                                </el-option>
+                                            </el-select> -->
+                                            <el-select
+                                                    :placeholder="$t('general.placeholders.select')"
+                                                    style="display: block"
+                                                    v-model="model.types"
+                                                    multiple
+                                                    filterable>
                                                 <el-option
                                                         :key="type.value"
                                                         :label="type.name"
@@ -32,7 +45,7 @@
                                     </el-col>
                                 
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('resident.name')" :rules="validationRules.name"
+                                        <el-form-item :label="$t('general.name')" :rules="validationRules.name"
                                                     prop="name">
                                             <el-input type="text" v-model="model.name"/>
                                         </el-form-item>
@@ -90,6 +103,12 @@
                                         <el-form-item :label="$t('general.internal_quarter_id')" :rules="validationRules.internal_quarter_id"
                                                         prop="internal_quarter_id">
                                             <el-input type="text" v-model="model.internal_quarter_id"></el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :md="12">
+                                        <el-form-item :label="$t('models.quarter.url')" :rules="validationRules.url"
+                                                        prop="url">
+                                            <el-input type="text" v-model="model.url"></el-input>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -161,7 +180,7 @@
                             <span slot="label">
                                 <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
                             </span>
-                            <assignment-by-type
+                            <!-- <assignment-by-type
                                 :resetToAssignList="resetToAssignList"
                                 :assignmentType.sync="assignmentType"
                                 :toAssign.sync="toAssign"
@@ -170,7 +189,52 @@
                                 :toAssignList="toAssignList"
                                 :remoteLoading="remoteLoading"
                                 :remoteSearch="remoteSearchAssignees"
-                            />
+                            /> -->
+                            <el-row :gutter="10" id="managerAssignBox">
+                                <el-col id="managerSelect">
+                                    <el-select
+                                        clearable
+                                        :loading="remoteLoading"
+                                        :placeholder="$t('general.placeholders.search')"
+                                        :remote-method="remoteSearchAssignees"
+                                        class="custom-remote-select"
+                                        filterable
+                                        remote
+                                        reserve-keyword
+                                        style="width: 100%;"
+                                        v-model="toAssign"
+                                    >
+                                        <div class="custom-prefix-wrapper" slot="prefix">
+                                            <i class="el-icon-search custom-icon"></i>
+                                        </div>
+                                        <el-option
+                                                :key="assignee.id"
+                                                :label="assignee.name"
+                                                :value="assignee.id"
+                                                v-for="assignee in toAssignList"/>
+                                    </el-select>
+                                </el-col>
+                                <el-col>
+                                    <el-select
+                                            :placeholder="$t('general.placeholders.select')"
+                                            style="display: block"
+                                            v-model="model.assignment_type"
+                                            filterable>
+                                        <el-option
+                                                :key="type.value"
+                                                :label="type.name"
+                                                :value="type.value"
+                                                v-for="type in assignment_types">
+                                        </el-option>
+                                    </el-select>
+                                </el-col>
+                                <el-col id="managerAssignBtn">
+                                    <el-button :disabled="!toAssign" @click="assignUser" class="full-button"
+                                                icon="ti-save" type="primary">
+                                        &nbsp;{{$t('general.assign')}}
+                                    </el-button>
+                                </el-col>
+                            </el-row>
                             <relation-list
                                 :actions="assigneesActions"
                                 :columns="assigneesColumns"
@@ -482,6 +546,17 @@
             translateResidentType(type) {
                 return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
             },
+            residentStatusBadge(status) {
+                const classObject = {
+                    1: 'icon-success',
+                    2: 'icon-danger'
+                };
+
+                return classObject[status];
+            },
+            residentStatusLabel(status) {
+                return this.$t(`models.resident.status.${this.residentStatusConstants[status]}`)
+            },
             requestEditView(row) {
                 this.$router.push({
                     name: 'adminRequestsEdit',
@@ -724,6 +799,18 @@
     span.icon-cog {
         cursor: pointer;
         float: right;
+    }
+    
+    #managerAssignBox {
+        display: flex;
+
+        #managerSelect {
+            width: 100%;
+        }
+
+        #managerAssignBtn {
+            flex: 1;
+        }
     }
     
     .ui-drawer {

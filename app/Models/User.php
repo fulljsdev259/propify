@@ -359,7 +359,13 @@ class User extends Authenticatable implements LikerContract, Commentator, Audita
     public function getAvatarVariationsAttribute()
     {
         if (empty($this->attributes['avatar'])) {
-            return null;
+            // @TODO this is tmp. I will return only null
+            return [
+                null,
+                null,
+                null,
+                null
+            ];
         }
 
         $avatar = new AvatarHelper();

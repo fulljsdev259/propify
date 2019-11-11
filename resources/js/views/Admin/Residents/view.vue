@@ -62,7 +62,7 @@
                                     style="width: 100%;"
                                     class="user-image"
                                     :src="`/${user.avatar_variations[3]}?${Date.now()}`"
-                                    v-else
+                                    v-else-if="!avatar.length && user.avatar"
                                 />
                             </el-col>
                             <el-col :md="7">
