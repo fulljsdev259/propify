@@ -26,7 +26,11 @@ class CreateRequest extends BaseRequest
     {
         return [
             'name' => 'required|string',
-            'type' => $this->getInRuleByClassConstants(Quarter::Type)
+            'type' => $this->getInRuleByClassConstants(Quarter::Type),
+            'assignment_type' => [
+                'nullable',
+                $this->getInRuleByClassConstants(Quarter::AssignmentType)
+            ]
         ];
     }
 }

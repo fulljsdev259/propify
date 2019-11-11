@@ -156,9 +156,13 @@ export default (config = {}) => {
                     this.remoteLoading = true;
 
                     try {
-                        const {data} = await this.getResidents({has_contract: true, search});
+                        const {data} = await this.getResidents({
+                            get_all: true,
+                            has_contract: true,
+                            search
+                        });
                         
-                        this.residents = data.data;
+                        this.residents = data;
                         this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
                     } catch (err) {
                         displayError(err);
@@ -173,7 +177,7 @@ export default (config = {}) => {
                     this.persons = [];
                 } else {
                     this.remoteLoading = true;
-                    let exclude_ids = [];
+                    let exclude_ids = []; //@TODO : get sent reminder ids and show them , check sent_reminder_user_ids variable
                     try {
                         const {data} = await this.getUsers({
                             get_all: true,
@@ -513,9 +517,6 @@ export default (config = {}) => {
                     }
                 }
             },
-            changeContract( val ) {
-                console.log(val)
-            },
             changeResident( resident_id ) {
                 this.model.contract_id = null
                 this.resident = this.residents.find(resident => resident.id == resident_id)
@@ -603,7 +604,7 @@ export default (config = {}) => {
                                 this.loading.state = true;
                                 try {
                                     const resp = await this.saveRequest();
-            
+                                    
                                     displaySuccess(resp);
 
                                     this.form.resetFields();

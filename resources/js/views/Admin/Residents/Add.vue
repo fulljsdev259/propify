@@ -15,7 +15,7 @@
                                                   :label="$t('general.salutation')"
                                                   prop="title"
                                                   class="label-block">
-                                        <el-select placeholder="Select" style="display: block" v-model="model.title">
+                                        <el-select :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.title">
                                             <el-option
                                                     :key="title.value"
                                                     :label="title.name"

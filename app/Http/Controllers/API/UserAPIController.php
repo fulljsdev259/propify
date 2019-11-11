@@ -87,6 +87,9 @@ class UserAPIController extends AppBaseController
 
         $getAll = $request->get('get_all', false);
         if ($getAll) {
+            if ($request->get_role) {
+                $this->userRepository->with('roles');
+            }
             $users = $this->userRepository->get();
             return $this->sendResponse($users->toArray(), 'Users retrieved successfully');
         }
