@@ -27,6 +27,7 @@ use App\Notifications\ListingPublished;
 use App\Notifications\RequestCommented;
 use App\Notifications\RequestDue;
 use App\Notifications\RequestMedia;
+use App\Notifications\ResidentCredentials;
 use App\Notifications\StatusChangedRequest;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -84,6 +85,7 @@ class AppServiceProvider extends ServiceProvider
             'request_media' => RequestMedia::class,
             'pinboard_liked' => PinboardLiked::class,
             'pinboard_commented' => PinboardCommented::class,
+            'resident_credentials' => ResidentCredentials::class,
         ]);
 
         if (!Collection::hasMacro('paginate')) {
