@@ -55,7 +55,6 @@
                                             {{ @$contract->building->address->house_num }},
                                             {{ @$contract->building->address->zip }}
                                             {{ @$contract->building->address->city }}
-                                            kasjggbfh alisefhyi ashdf laiues slfrh aksdfh
         
                                         </p>
                                     </td>
