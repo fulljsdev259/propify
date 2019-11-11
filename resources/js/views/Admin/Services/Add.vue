@@ -44,6 +44,8 @@
                                                     height: 250
                                                 }"
                                                 :resize="false"
+                                                :defaultAvatarSrc="'/images/company.png'"
+                                                :showCamera="model.avatar==''"
                                                 @cropped="cropped"/>
                                     </el-form-item>
                                 </el-col>
