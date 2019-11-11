@@ -9,6 +9,7 @@ use App\Notifications\NewResidentPinboard;
 use App\Notifications\NewResidentRequest;
 use App\Notifications\PinboardPublished;
 use App\Notifications\RequestDue;
+use App\Notifications\StatusChangedRequest;
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Illuminate\Support\Arr;
@@ -237,6 +238,7 @@ class AuditableModel extends Model implements Auditable
         $newResidentPinboard = get_morph_type_of(NewResidentRequest::class);
         $newRequestForReceptionist = get_morph_type_of(NewRequestForReceptionist::class);
         $requestDue = get_morph_type_of(RequestDue::class);
+        $statusChangedRequest = get_morph_type_of(StatusChangedRequest::class);
 
         $_value = [];
         // @TODO do this code more elegant way
@@ -248,6 +250,14 @@ class AuditableModel extends Model implements Auditable
                 $_value[$morph] = [
                     'property_manager_ids' => $data->pluck('id')->all(),
                     'failed_property_manager_ids' => []
+                ];
+            } elseif ($morph ==  $statusChangedRequest) {
+                if (empty($data)) {
+                    continue;
+                }
+                $_value[$morph] = [
+                    'resident_user_id' => $data->id,
+                    'failed_resident_user_id' => []
                 ];
             } elseif ($morph ==  $requestDue) {
                 if ($data->pluck('id')->isEmpty()) {
@@ -274,7 +284,7 @@ class AuditableModel extends Model implements Auditable
                     'failed_resident_ids' => []
                 ];
             } else {
-                dd('@TODO', $morph);
+                dd('@TODO6', $morph);
             }
         }
 
