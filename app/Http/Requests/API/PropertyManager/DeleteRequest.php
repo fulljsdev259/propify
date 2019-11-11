@@ -18,6 +18,10 @@ class DeleteRequest extends BaseRequest
             return false;
         }
 
+        if ($this->user()->hasRole('administrator')) {
+            return true;
+        }
+
         return PropertyManager::where('id', $this->route('id'))->where('user_id', $this->user()->id)->exists();
     }
 }

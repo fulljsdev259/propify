@@ -108,9 +108,10 @@
                                                 !avatar.length && user.avatar
                                                     ? '/'+user.avatar_variations[3]
                                                     : model.avatar==null
-                                                        ? '/images/man.png'
+                                                        ? '/images/company.png'
                                                         : ''
                                             "
+                                            :showCamera="model.avatar==null"
                                             @cropped="cropped"/>
                                 </el-form-item>
                             </el-col>

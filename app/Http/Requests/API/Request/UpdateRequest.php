@@ -28,14 +28,44 @@ class UpdateRequest extends BaseRequest
     {
         $user = Auth::user();
         if ($user->resident) {
-            return Request::$rulesPutResident;
+            return [
+                'resident_id' => 'exists:residents,id',
+                'contract_id' => 'exists:contracts,id',
+                'title' => 'string',
+                'description' => 'string',
+                'status' => 'integer',
+//        'priority' => 'required|integer',
+//        'internal_priority' => 'integer',
+                'visibility' => 'nullable|integer',
+            ];
         }
 
-        $putRoles =  Request::$rulesPut;
-        $putRoles['reminder_user_id'] = Rule::requiredIf(function () {
+        $putRoles = [
+
+            'resident_id' => 'exists:residents,id',
+            'contract_id' => 'exists:contracts,id',
+            'title' => 'string',
+            'description' => 'string',
+//        'priority' => 'integer',
+//        'internal_priority' => 'integer',
+            'qualification' => 'nullable|integer',
+            'status' => 'integer',
+            'due_date' => 'date',
+            'category_id' => 'integer',
+            'sub_category_id' => 'nullable|integer',
+            'visibility' => 'nullable|integer',
+//            'active_reminder' => 'boolean',
+        ];
+        $putRoles['reminder_user_ids'] = [
+            Rule::requiredIf(function () {
+                return $this->active_reminder == true;
+            }),
+            'nullable',
+            'array'
+        ];
+        $putRoles['days_left_due_date'] = Rule::requiredIf(function () {
             return $this->active_reminder == true;
         });
-        $putRoles['days_left_due_date'] = $putRoles['reminder_user_id'];
 
         return $putRoles;
     }

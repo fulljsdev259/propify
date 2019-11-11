@@ -38,14 +38,6 @@
                                             @lang('models.request.status.'.\App\Models\Request::Status[$request->status])
                                             ({{ now()->format('d.m.Y, H:i') }})
                                         </p>
-                                        <p style="margin:7px 0 0;">
-                                            <b>@lang('general.address'):</b>
-                                            {{ @$contract->building->address->street }}
-                                            {{ @$contract->building->address->house_num }},
-                                            {{ @$contract->building->address->zip }}
-                                            {{ @$contract->building->address->city }}
-        
-                                        </p>
                                     </td>
                                     
                                     @if(!$blank_pdf)
@@ -54,13 +46,26 @@
                                     </td>
                                     @endif
                                 </tr>
+                                <tr>
+                                    <td class="no_border" colspan="2">
+
+                                        <p style="margin:0;">
+                                            <b>@lang('general.address'):</b>
+                                            {{ @$contract->building->address->street }}
+                                            {{ @$contract->building->address->house_num }},
+                                            {{ @$contract->building->address->zip }}
+                                            {{ @$contract->building->address->city }}
+        
+                                        </p>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
             </td>
         </tr>
         <tr>
             <td class="no_border" width="100%">
-                <h2 style="margin-bottom:10px;margin-top:0;font-size: 25px;">@lang('models.request.download_pdf.details')</h2>
+                <h2 style="margin-bottom:10px;margin-top:15px;font-size: 25px;">@lang('models.request.download_pdf.details')</h2>
             </td>
         </tr>
         <tr>
@@ -72,6 +77,11 @@
                                     <table class="inner_table" width="100%">
                                         <tbody>
    
+                                            @if( (!empty($category['capture_phase']) && $category['capture_phase'] == 1)
+                                            || (!empty($subCategory['capture_phase']) && $subCategory['capture_phase']
+                                            == 1) || (!empty($category['qualification']) && $category['qualification'] == 1)
+                                            || (!empty($subCategory['qualification']) && $subCategory['qualification']
+                                            == 1) )
                                             <tr>
                                                 @if( (!empty($category['capture_phase']) && $category['capture_phase'] == 1)
                                                 || (!empty($subCategory['capture_phase']) && $subCategory['capture_phase']
@@ -103,6 +113,7 @@
    
                                                 @endif
                                             </tr>
+                                            @endif
    
    
                                             <tr>
@@ -171,7 +182,7 @@
            </tr>
            <tr>
                <td class="no_border">
-                   <h4 style="margin-bottom:0;font-size: 20px;">@lang('models.request.download_pdf.contact_details'):</h4>
+                   <h4 style="margin-bottom:0;font-size: 20px;">@lang('models.request.download_pdf.contact_details')</h4>
                </td>
            </tr>
            <tr>
@@ -210,9 +221,12 @@
                    </table>
                </td>
            </tr>
+           <tr>
+               <td colspan="2" width="100%" height="20px" style="border:none;"></td>
+           </tr>
 
         <tr>
-                <td colspan="6" width="100%" class="no_border">
+                <td @if(count($media)==0) colspan='2' @else colspan='6'@endif width="100%" class="no_border">
                     <table width="100%">
                         <tbody>
                             <tr>
@@ -222,20 +236,20 @@
                                             <tr>
                                                 <td class="no_border" width="115%" style="margin:50px 0;">
                                                     <span
-                                                        style="margin-top:20px;border-bottom:2px dotted #888;padding-bottom:30px;display:inline-block;width:85%;float:left;">
+                                                        style="margin-top:20px;border-bottom:2px dotted #888;padding-bottom:30px;display:inline-block;width:85%;float:left;height:35px;">
                                                         @lang('models.request.download_pdf.customer_signature')
                                                     </span>
                                                 </td>
                                                 <td class="no_border" width="100%" style="margin:50px 0;">
                                                     <span
-                                                        style="margin-top:20px;border-bottom:2px dotted #888;padding-bottom:30px;display:inline-block;width:95%;float:left;">
+                                                        style="margin-top:20px;border-bottom:2px dotted #888;padding-bottom:30px;display:inline-block;width:95%;float:left;height:35px;">
                                                         @lang('models.request.download_pdf.entrepreneur_signature')
                                                     </span>
                                                 </td>
                                                 
                                             </tr>
                                             <tr>
-                                                <td style="width:100%;height:50px;border:none;">
+                                                <td style="width:100%;height:75px;border:none;">
                                                 </td>
                                             </tr>
                                             @if($category['name'])
@@ -265,10 +279,7 @@
                         @if($i==0)
                         <tr>
                                 <td class="no_border" width="100%">
-                                    <h4 style="font-size: 14px;margin-buttom:45px;">@lang('models.request.pictures_of') 
-                                        @if (! empty($category['name']))
-                                            {{$category['name']}}
-                                        @endif
+                                    <h4 style="font-size: 20px;margin-buttom:45px;">@lang('models.request.pictures_of')
                                     </h4>
                                             
                                 </td>

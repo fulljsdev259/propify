@@ -402,8 +402,21 @@ return [
         'types' => [
             'label' => 'Type',
             'rent' => 'Rent',
-            'sell' => 'Sell'
-        ]
+            'sell' => 'Sell',
+            'property' => 'Property',
+            'building_land' => 'Building Land',
+            'trade' => 'Trade',
+            'multi-storey_car_park' => 'Multi-storey Car Park'
+        ],
+        'assignment_types' => [
+            'label' => 'Type',
+            'fortimo_employees' => 'Fortimo employees',
+            'management' => 'Management',
+            'initial_letting' => 'Initial Letting',
+            'caretaker' => 'Caretaker',
+            'administration' => 'Administration'
+        ],
+        'url' => 'Url'
     ],
     'request' => [        
         'deleted' => 'Request deleted',

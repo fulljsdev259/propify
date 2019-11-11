@@ -28,51 +28,18 @@
                     <el-col :key="key" :span="filterColSize" v-for="(filter, key) in filters">
                         <template v-if="!filter.parentKey || filterModel[filter.parentKey]">
                             <el-form-item
-                                v-if="filter.type === filterTypes.select && filter.data &&  filter.data.length">
-                                <el-select
-                                    clearable
-                                    :filterable="true"
-                                    :placeholder="filter.name"
-                                    @change="filterChanged(filter)"
-                                    class="filter-select"
-                                    v-model="filterModel[filter.key]">
-                                    <el-option 
-                                        v-if="filterModel[filter.key]!=='' && filterModel[filter.key]!==undefined" 
-                                        :label="`${$t('general.placeholders.select') + ' ' + filter.name}`" 
-                                        value="">
-                                    </el-option>
-                                    <el-option
-                                        :key="item.id + item.name"
-                                        :label="item.name"
-                                        :value="+item.id"
-                                        v-for="item in filter.data">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item> 
-                            <el-form-item
-                                v-if="filter.type === filterTypes.role && filter.data &&  filter.data.length">
-                                <el-select
-                                    clearable
-                                    :filterable="true"
-                                    :placeholder="filter.name"
-                                    @change="filterChanged(filter)"
-                                    class="filter-select"
-                                    v-model="filterModel[filter.key]">
-                                    <el-option 
-                                        v-if="filterModel[filter.key]!=='' && filterModel[filter.key]!==undefined" 
-                                        :label="`${$t('general.placeholders.select') + ' ' + filter.name}`" 
-                                        value="">
-                                    </el-option>
-                                    <el-option
-                                        :key="item.id + item.name"
-                                        :label="$t(`general.roles.${item.name}`)"
-                                        :value="+item.id"
-                                        v-for="item in filter.data">
-                                    </el-option>
-                                </el-select>
+                                v-if="filter.type === filterTypes.select && filter.data ">
+                        
+                                <list-filter-select
+                                    :filter="filter"
+                                    :selectedOptions="filterModel[filter.key]"
+                                    @select-changed="handleSelectChange($event, filter)"
+                                >
+
+                                </list-filter-select>
                             </el-form-item>
                             <el-form-item
-                                v-else-if="filter.type === filterTypes.text || filter.type === filterTypes.number">
+                                v-if="filter.type === filterTypes.text || filter.type === filterTypes.number">
                                 <el-input
                                     clearable
                                     :placeholder="filter.name"
@@ -94,38 +61,14 @@
                                 >
                                 </el-date-picker>
                             </el-form-item>
-                            <el-form-item v-else-if="filter.type === filterTypes.remoteSelect">
-                                <el-select
-                                    :loading="filter.remoteLoading"
-                                    :placeholder="filter.name"
-                                    :remote-method="data => remoteFilter(filter,data)"
-                                    @change="filterChanged(filter)"
-                                    filterable
-                                    clearable
-                                    remote
-                                    reserve-keyword
-                                    class="remote-select"
-                                    v-model="filterModel[filter.key]">
-                                    <el-option
-                                        :label="$t('general.all')"
-                                        value=""
-                                    >
-                                    </el-option>
-                                    <el-option
-                                        :key="item.id"
-                                        :label="item.name"
-                                        :value="item.id"
-                                        v-for="item in filter.data"/>
-                                </el-select>
-                            </el-form-item>
                              <el-form-item v-else-if="filter.type === filterTypes.language">
-                                <select-language
+                                <!-- <select-language
                                     class="label-block"
                                     :role="'settings.language'"
                                     :activeLanguage.sync="filterModel['language']"
                                     @change="filterChanged(filter)"
                                     :isTable="true"
-                                />
+                                /> -->
                             </el-form-item>
                         </template>
 
@@ -452,6 +395,7 @@
     import RequestDetailCard from 'components/RequestDetailCard';
     import SelectLanguage from 'components/SelectLanguage';
     import ListTableSelect from 'components/ListTableSelect';
+    import ListFilterSelect from 'components/ListFilterSelect';
 
     export default {
         name: 'ListTable',
@@ -462,7 +406,8 @@
             'table-avatar': tableAvatar,
             RequestDetailCard,
             SelectLanguage,
-            ListTableSelect
+            ListTableSelect,
+            ListFilterSelect,
         },
         props: {
             header: {
@@ -630,6 +575,10 @@
             selectChanged(e, row, column) {
                 row[column.prop] = e;
                 column.select.onChange(row);
+            },
+            handleSelectChange(val, filter) {
+                this.filterModel[filter.key] = val;
+                this.filterChanged(filter);
             },
             clearSearch() {
                 this.search = '';
@@ -853,7 +802,19 @@
                 let queryFilterValue = this.$route.query[filter.key];
                 
                 const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
-                const value = queryFilterValue && (queryFilterValue.toString().match(dateReg) || filter.key == 'search')  ? queryFilterValue : parseInt(queryFilterValue);
+                let value;
+
+                if((filter.key !== 'search') && queryFilterValue !== undefined && !Array.isArray(queryFilterValue))
+                    value = [queryFilterValue];
+                else
+                    value = queryFilterValue;
+                    
+                if(!Array.isArray(value))
+                    value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
+                else
+                    for(let i = 0; i < value.length; i ++)
+                        value[i] = parseInt(value[i]);
+
                 this.$set(this.filterModel, filter.key, value);
                 if(filter.key == "search") {
                     this.$set(this.filterModel, 'search', queryFilterValue);
@@ -885,6 +846,10 @@
         :global(.el-input__inner) {
             padding-right: 15px !important;
         }
+    }
+    .el-col {
+        width: auto !important;
+        height: 62px;
     }
     .avatar-count{
         min-width: 28px;

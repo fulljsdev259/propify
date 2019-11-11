@@ -152,7 +152,7 @@
                     },
                     {
                         name: this.$t('general.filters.resident'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'resident_id',
                         data: this.residents,
                         remoteLoading: false,
@@ -223,10 +223,11 @@
         },
         async created(){
             this.isLoadingFilters = true;
-            this.residents = await this.fetchRemoteResidents();
             const quarters = await this.axios.get('quarters')
             this.quarters = quarters.data.data.data;
             this.isLoadingFilters = false;
+
+            this.residents = await this.fetchRemoteResidents();
         }
     }
 </script>

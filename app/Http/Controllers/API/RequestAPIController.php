@@ -302,7 +302,6 @@ class RequestAPIController extends AppBaseController
             'resident.user',
             'managers',
             'users',
-            'remainder_user',
             'comments.user',
             'providers.address:id,country_id,state_id,city,street,zip',
             'providers',
@@ -390,7 +389,6 @@ class RequestAPIController extends AppBaseController
             },
             'managers.user',
             'users',
-            'remainder_user',
             'resident.contracts' => function ($q) {
                 $q->with('building.address', 'unit');
             },
@@ -493,7 +491,6 @@ class RequestAPIController extends AppBaseController
                 },
                 'managers.user',
                 'users',
-                'remainder_user',
                 'resident.contracts' => function ($q) {
                     $q->with('building.address', 'unit');
                 },

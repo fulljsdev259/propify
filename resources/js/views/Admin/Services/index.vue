@@ -102,7 +102,7 @@
                         data: this.states,
                     }, {
                         name: this.$t('general.filters.buildings'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'building_id',
                         data: this.buildings,
                         remoteLoading: false,
@@ -121,8 +121,9 @@
                     // },
                     {
                         name: this.$t('general.filters.language'),
-                        type: 'language',
-                        key: 'language'
+                        type: 'select',
+                        key: 'language',
+                        data: []
                     }
                 ]
             }
@@ -170,6 +171,8 @@
 
             this.categories = await this.getFilterCategories()
             this.isLoadingFilters = false;
+
+            this.buildings = await this.fetchRemoteBuildings();
         },
     }
 </script>

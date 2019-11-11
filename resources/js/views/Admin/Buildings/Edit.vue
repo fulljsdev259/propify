@@ -297,7 +297,17 @@
                                     v-for="contactEnableValue in contactEnableValues"/>
                         </el-select>
                         <el-divider class="mt15" /> -->
-                        <el-row :gutter="10" id="providerAssignBox">
+                        <assignment-by-type
+                            :resetToAssignList="resetToAssignProviderList"
+                            :assignmentType.sync="assignmentType"
+                            :toAssign.sync="toAssignProvider"
+                            :assignmentTypes="serviceAssignmentTypes"
+                            :assign="attachProvider"
+                            :toAssignList="toAssignProviderList"
+                            :remoteLoading="remoteLoading"
+                            :remoteSearch="remoteSearchProviders"
+                        />
+                        <!-- <el-row :gutter="10" id="providerAssignBox">
                             <el-col id="providerSelect">
                                 <el-select
                                     clearable
@@ -327,7 +337,7 @@
                                     &nbsp;{{$t('general.assign')}}
                                 </el-button>
                             </el-col>
-                        </el-row>
+                        </el-row> -->
                        <relation-list
                             :actions="assignmentsProviderActions"
                             :columns="assignmentsProviderColumns"
@@ -591,6 +601,9 @@
                     }]
                 }],
                 assignmentsProviderColumns: [{
+                //     type: 'assignProviderManagerAvatars',
+                //     width: 70,
+                // }, {
                     prop: 'name',
                     label: 'general.name',
                     type: 'serviceName'
