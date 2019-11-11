@@ -60,6 +60,7 @@ class UpdateRequest extends BaseRequest
             Rule::requiredIf(function () {
                 return $this->active_reminder == true;
             }),
+            'nullable',
             'array'
         ];
         $putRoles['days_left_due_date'] = Rule::requiredIf(function () {
