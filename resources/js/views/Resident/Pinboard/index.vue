@@ -1,6 +1,6 @@
 <template>
     <div :class="['pinboard-box']">
-        <div :class="['pinboard']" >
+        <div :class="['pinboard']" @scroll="checkScroll()" >
             <ui-heading icon="icon-megaphone-1" :title="$t('resident.pinboard')" :description="$t('resident.heading_info.pinboard')" />
             
                 <ui-divider />
@@ -22,8 +22,10 @@
                         </template>
                         <template v-slot="{item, index, active}">
                             <dynamic-scroller-item :item="item" :active="active" :data-index="index" :size-dependencies="[item]">
-                                <pinboard-new-resident-card :data="item" v-if="$constants.pinboard.type[item.type] === 'new_neighbour' && item.user_id != $store.getters.loggedInUser.id" @update-dynamic-scroller="force_scroller_update()"/>
-                                <pinboard-card :data="item" @edit-pinboard="editPinboard" @delete-pinboard="deletePinboard" v-else-if="$constants.pinboard.type[item.type] !== 'new_neighbour'" @update-dynamic-scroller="force_scroller_update()"/>
+                                <div :ref="'pinboard_'+item.id">
+                                    <pinboard-new-resident-card :data="item" v-if="$constants.pinboard.type[item.type] === 'new_neighbour' && item.user_id != $store.getters.loggedInUser.id" @update-dynamic-scroller="force_scroller_update()"/>
+                                    <pinboard-card :data="item" @edit-pinboard="editPinboard" @delete-pinboard="deletePinboard" v-else-if="$constants.pinboard.type[item.type] !== 'new_neighbour'" @update-dynamic-scroller="force_scroller_update()"/>
+                                </div>
                             </dynamic-scroller-item>
                         </template>
                         <template #after v-if="loading && filteredPinboards.length">
@@ -50,13 +52,15 @@
 
 <script>
     import Loader from 'components/resident/PinboardCard/Loader'
-    import {mapState} from 'vuex'
+    import {mapState, mapActions} from 'vuex'
 
     import PinboardCardLoader from 'components/resident/PinboardCard/Loader'
     import PinboardCardErrorFallback from 'components/resident/PinboardCard/Error'
 
     import PinboardNewResidentCardLoader from 'components/resident/PinboardNewResidentCard/Loader'
     import PinboardNewResidentCardFallbackError from 'components/resident/PinboardNewResidentCard/Error'
+
+    import {displayError} from "../../../helpers/messages";
 
     export default {
         components: {
@@ -132,10 +136,48 @@
                 editingPinboard: null,
                 visibleDrawer: false,
                 deleteModalVisible: false,
-                delPinboardStatus: -1
+                delPinboardStatus: -1,
+                viewedPinboards: [],
             }
         },
         methods: {
+            ...mapActions(['incrementViews']),
+            checkScroll() {
+                let pinboards = [];
+
+                let addViewedPinbord = async (item) => {
+                    let id = +item.split('_')[1];
+
+                    this.viewedPinboards.push(item);
+
+                    try {
+                        await this.incrementViews({id});
+                    } catch (e) {
+                        displayError(e);
+                    }
+                };
+
+                for (let key in this.$refs) {
+                    if (key.split('_')[0] === 'pinboard' && this.viewedPinboards.indexOf(key) === -1) {
+                        pinboards.push(key);
+                    }
+                }
+
+                pinboards.forEach(item => {
+                    if (this.isScrolledIntoView(this.$refs[item])) {
+                        this.viewedPinboards.indexOf(item) === -1
+                            ? addViewedPinbord(item)
+                            : '';
+                    }
+                })
+            },
+            isScrolledIntoView(el) {
+                let rect = el.getBoundingClientRect(),
+                    elemTop = rect.top,
+                    elemBottom = rect.bottom;
+
+                return (elemTop >= 0) && (elemBottom <= window.innerHeight);
+            },
             onResize() {
                 force_scroller_update();
             },
@@ -223,6 +265,9 @@
             await this.$store.dispatch('newPinboard/reset')
             await this.$store.dispatch('comments/reset')
             await this.getPinboards()
+            setTimeout(() => {
+                this.checkScroll();
+            }, 2000)
         }
     }
 </script>
