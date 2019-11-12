@@ -553,4 +553,5 @@ return [
         'th' => 'º',
     ],
     'notification_residents_sent' => 'la notifica è stata inviata a {number} residenti alle {time} il {date}.',
+    'workflow' => 'Workflow'
 ];

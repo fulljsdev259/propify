@@ -263,7 +263,7 @@
                                 <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.residents') }}</el-badge>
                             </span>
                             <relation-list
-                                :actions="residentActions"
+                                :actions="residentActions" 
                                 :columns="residentColumns"
                                 :filterValue="model.id"
                                 fetchAction="getResidents"
@@ -307,6 +307,109 @@
                                 <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
                             </span>
                             <audit v-if="model.id" :id="model.id" type="quarter" ref="auditList" showFilter/>
+                        </el-tab-pane>
+                        <el-tab-pane name="workflow">
+                            <span slot="label">
+                                {{ $t('general.workflow') }}
+                            </span>
+                            <el-collapse accordion>
+                                <el-collapse-item name="general_concerns">
+                                    <template slot="title">
+                                        General concerns <i class="header-icon el-pencil"></i>
+                                    </template>
+                                    <el-row>
+                                        <el-col :md="1">
+                                            <span>Van</span>
+                                        </el-col>
+                                        <el-col :md="7">
+                                                <el-select
+                                                    :loading="remoteLoading"
+                                                    :placeholder="$t('general.placeholders.search')"
+                                                    :remote-method="remoteSearchBuildings"
+                                                    class="custom-remote-select"
+                                                    filterable
+                                                    multiple
+                                                    remote
+                                                    reserve-keyword
+                                                    style="width: 100%;"
+                                                    v-model="selectedWorkflowBuilding"
+                                                >
+                                                    <div class="custom-prefix-wrapper" slot="prefix">
+                                                        <i class="el-icon-search custom-icon"></i>
+                                                    </div>
+                                                    <el-option
+                                                        :key="building.id"
+                                                        :label="`${building.name}`"
+                                                        :value="building.id"
+                                                        v-for="building in workflowBuildingList"/>
+                                                </el-select>
+                                        </el-col>
+                                        <el-col :md="1">
+                                            <span>{{$t('models.request.mail.to')}}</span>
+                                        </el-col>
+                                        <el-col :md="7">
+                                                <el-select
+                                                    :loading="remoteLoading"
+                                                    :placeholder="$t('general.placeholders.search')"
+                                                    :remote-method="remoteSearchToUsers"
+                                                    class="custom-remote-select"
+                                                    filterable
+                                                    multiple
+                                                    remote
+                                                    reserve-keyword
+                                                    style="width: 100%;"
+                                                    v-model="selectedWorkflowToUser"
+                                                >
+                                                    <div class="custom-prefix-wrapper" slot="prefix">
+                                                        <i class="el-icon-search custom-icon"></i>
+                                                    </div>
+                                                    <el-option
+                                                        :key="user.id"
+                                                        :label="`${user.name}`"
+                                                        :value="user.id"
+                                                        v-for="user in workflowToUserList"/>
+                                                </el-select>
+                                        </el-col>
+                                        <el-col :md="1">
+                                            <span>{{$t('models.request.mail.cc')}}</span>
+                                        </el-col>
+                                        <el-col :md="7">
+                                                <el-select
+                                                    :loading="remoteLoading"
+                                                    :placeholder="$t('general.placeholders.search')"
+                                                    :remote-method="remoteSearchCcUsers"
+                                                    class="custom-remote-select"
+                                                    filterable
+                                                    multiple
+                                                    remote
+                                                    reserve-keyword
+                                                    style="width: 100%;"
+                                                    v-model="selectedWorkflowCcUser"
+                                                >
+                                                    <div class="custom-prefix-wrapper" slot="prefix">
+                                                        <i class="el-icon-search custom-icon"></i>
+                                                    </div>
+                                                    <el-option
+                                                        :key="user.id"
+                                                        :label="`${user.name}`"
+                                                        :value="user.id"
+                                                        v-for="user in workflowCcUserList"/>
+                                                </el-select>
+                                        </el-col>
+                                    </el-row>
+                                </el-collapse-item>
+                                <el-collapse-item name="malfunction">
+                                    <template slot="title">
+                                        Malfunction
+                                    </template>
+                                    
+                                </el-collapse-item>
+                                <el-collapse-item name="deficiency">
+                                    <template slot="title">
+                                        Mangel
+                                    </template>
+                                </el-collapse-item>
+                            </el-collapse>
                         </el-tab-pane>
                         <!-- <el-tab-pane name="settings" :disabled="true">
                             <span slot="label" class="icon-cog" @click="toggleDrawer">
@@ -529,7 +632,13 @@
                 editingContract: null,
                 isAddContract: false,
                 editingContractIndex: -1,
-                activeDrawerTab: "emergency"
+                activeDrawerTab: "emergency",
+                workflowBuildingList: [],
+                selectedWorkflowBuilding: [],
+                workflowToUserList: [],
+                selectedWorkflowToUser: [],
+                workflowCcUserList: [],
+                selectedWorkflowCcUser: [],
             }
         },
         methods: {
@@ -660,6 +769,84 @@
                     this.visibleDrawer = false;
                 }).catch(() => {
                 });
+            },
+            async remoteSearchBuildings(search) {
+                if (search === '') {
+                    this.resetBuildingList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const resp = await this.getBuildings({
+                            get_all: true,
+                            quarter_id: this.model.id,
+                            search
+                        });
+
+                        this.workflowBuildingList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            resetBuildingList() {
+                this.workflowBuildingList = [];
+                this.selectedWorkflowBuilding = [];
+            },
+            async remoteSearchToUsers(search) {
+                if (search === '') {
+                    this.resetToUserList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const resp = await this.getUsers({
+                            get_all: true,
+                            get_role: true,
+                            search,
+                            roles: ['manager', 'administrator', 'provider']
+                        });
+
+
+                        this.workflowToUserList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            resetToUserList() {
+                this.workflowToUserList = [];
+                this.selectedWorkflowToUser = [];
+            },
+            async remoteSearchCcUsers(search) {
+                if (search === '') {
+                    this.resetCcUserList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                       const resp = await this.getUsers({
+                            get_all: true,
+                            get_role: true,
+                            search,
+                            roles: ['manager', 'administrator', 'provider']
+                        });
+
+                        this.workflowCcUserList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            resetCcUserList() {
+                this.workflowCcUserList = [];
+                this.selectedWorkflowCcUser = [];
             },
         },
         computed: {
