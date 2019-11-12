@@ -561,7 +561,6 @@
                 let value;
                 if((filter.key.indexOf('id') !== -1 || filter.key == 'status') && queryFilterValue !== undefined && !Array.isArray(queryFilterValue)) {
                     value = [queryFilterValue];
-                    console.log(filter.key);
                 }
                 else
                     value = queryFilterValue;
