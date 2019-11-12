@@ -2,13 +2,7 @@
 
 namespace App\Models;
 
-use App\Mails\NewRequestForReceptionist;
-use App\Notifications\AnnouncementPinboardPublished;
-use App\Notifications\NewResidentInNeighbour;
-use App\Notifications\NewResidentPinboard;
-use App\Notifications\NewResidentRequest;
-use App\Notifications\PinboardPublished;
-use App\Notifications\RequestDue;
+use App\Mails\NotifyServiceProvider;
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Illuminate\Support\Arr;
@@ -39,6 +33,8 @@ class AuditableModel extends Model implements Auditable
     const EventCreated = 'created';
     const EventUpdated = 'updated';
     const EventDeleted = 'deleted';
+    const EventLiked = 'liked';
+    const EventUnLiked = 'unliked';
     const EventContractCreated = 'contract_created';
     const EventContractUpdated = 'contract_updated';
     const EventContractDeleted = 'contract_deleted';
@@ -57,7 +53,7 @@ class AuditableModel extends Model implements Auditable
     const EventMediaDeleted = 'media_deleted';
     const EventManageEmailReceptionists = 'manage_email_receptionists';
     const EventAvatarUploaded = 'avatar_uploaded';
-    const BuildingUnitsCreated = 'building_units\y_created';
+    const BuildingUnitsCreated = 'building_units_created';
     const NewResidentPinboardCreated = 'new_resident_pinboard_created';
     const NotificationsSent = 'notifications_sent';
     const DownloadCredentials = 'download_credentials';
@@ -99,6 +95,8 @@ class AuditableModel extends Model implements Auditable
         self::EventCreated,
         self::EventUpdated,
         self::EventDeleted,
+        self::EventLiked,
+        self::EventUnLiked,
         self::EventContractCreated,
         self::EventContractUpdated,
         self::EventContractDeleted,
@@ -203,105 +201,83 @@ class AuditableModel extends Model implements Auditable
 
 
     /**
-     * @param $key
      * @param $value
-     * @param null $event
-     * @param bool $isSingle
-     * @param array $tags
-     * @param bool $changeOldValues
      * @return Audit
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function newSystemNotificationAudit($value, $event = self::NotificationsSent, $isSingle = true, $tags = [], $changeOldValues = false)
+    public function newSystemNotificationAudit($value)
     {
-        $key = self::MergeInMainData;
-        $event = $event ?? AuditableModel::EventCreated;
-        $this->auditEvent = self::EventUpdated;
-        $audit =  new Audit($this->toAudit());
-        $audit->event = $event;
-        $audit->user_type = self::System;
-        $audit->auditable_id = $audit->auditable_id ?? 0;
-        $audit->auditable_type = $audit->auditable_id ? $audit->auditable_type  :  'system';
-        $audit->new_values = [];
-        $audit->old_values = [];
-
-        if (!empty($tags)) {
-            $tags = Arr::wrap($tags);
-            $audit->tags = json_encode($tags); // @TODO correct later
-        }
-
-        $announcementPinboardPublished = get_morph_type_of(AnnouncementPinboardPublished::class);
-        $pinboardPublished = get_morph_type_of(PinboardPublished::class);
-        $pinboardNewResidentNeighbor = get_morph_type_of(NewResidentInNeighbour::class);
-        $pinboardNewResidentPinboard = get_morph_type_of(NewResidentPinboard::class);
-        $newResidentPinboard = get_morph_type_of(NewResidentRequest::class);
-        $newRequestForReceptionist = get_morph_type_of(NewRequestForReceptionist::class);
-        $requestDue = get_morph_type_of(RequestDue::class);
-
+        $audit = $this->makeNewSystemAudit(self::NotificationsSent);
+        $notifyServiceProvider = get_morph_type_of(NotifyServiceProvider::class);
         $_value = [];
-        // @TODO do this code more elegant way
+
         foreach ($value as $morph => $data) {
-            if (in_array($morph, [$newResidentPinboard, $newRequestForReceptionist])) {
+            if (is_a($data, Collection::class)) {
                 if ($data->pluck('id')->isEmpty()) {
                     continue;
                 }
                 $_value[$morph] = [
-                    'property_manager_ids' => $data->pluck('id')->all(),
-                    'failed_property_manager_ids' => []
+                    'user_ids' => $data->pluck('id')->all(),
+                    'failed_user_ids' => []
                 ];
-            } elseif ($morph ==  $requestDue) {
-                if ($data->pluck('id')->isEmpty()) {
-                    continue;
-                }
+            } elseif (is_a($data, \Illuminate\Database\Eloquent\Model::class)) {
                 $_value[$morph] = [
-                    'pm_or_sp_user_ids' => $data->pluck('id')->all(),
-                    'failed_pm_or_sp_user_ids' => []
+                    'user_ids' => [$data->id],
+                    'failed_user_ids' => []
                 ];
-            } elseif ($morph ==  $pinboardNewResidentPinboard) {
-                if ($data->pluck('id')->isEmpty()) {
-                    continue;
-                }
+            } elseif ($notifyServiceProvider == $morph) {
+                $userIds = $data['users']->pluck('id')->all();
                 $_value[$morph] = [
-                    'admin_user_ids' => $data->pluck('id')->all(),
-                    'failed_admin_user_ids' => []
-                ];
-            } elseif (in_array($morph, [$announcementPinboardPublished, $pinboardPublished, $pinboardNewResidentNeighbor])) {
-                if ($data->pluck('resident.id')->isEmpty()) {
-                    continue;
-                }
-                $_value[$morph] = [
-                    'resident_ids' => $data->pluck('resident.id')->all(),
-                    'failed_resident_ids' => []
+                    'user_id' => $userIds,
+                    'failed_user_id' => [],
+                    'to' => $data['to'],
+                    'cc' => $data['cc'],
+                    'bcc' => $data['bcc'],
                 ];
             } else {
-                dd('@TODO', $morph);
+                dd('@TODO6', $morph);
             }
         }
 
-        $value = $_value;
-
-        $createdEvents = [
-            AuditableModel::EventCreated,
-            AuditableModel::EventContractCreated,
-            AuditableModel::NotificationsSent
-        ];
-
-        $updatedEvents = [
-            AuditableModel::EventUpdated,
-            AuditableModel::EventContractUpdated,
-        ];
-
-        if (in_array($event, $createdEvents)) {
-            $this->saveCreatedEventMerging($audit, $key, $value, $isSingle);
-        } elseif (in_array($event, $updatedEvents)) {
-            dd('@TODO', $event);
-            $this->saveUpdatedEventMerging($audit, $key, $value, $isSingle, $changeOldValues);
-        } else {
-            dd('@TODO', $event);
-        }
-
+        $audit->new_values = $_value;
+        $audit->save();
         return $audit;
     }
+
+    /**
+     * @param $user
+     * @param $event
+     * @return Audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function newLikedAudit($user, $event)
+    {
+        $event = $event == self::EventLiked ? self::EventLiked : self::EventUnLiked;
+        $audit = $this->makeNewAudit($event);
+
+        if (self::EventLiked == $event) {
+            $audit->new_values = ['user_id' => $user->id];
+        } else {
+            // when unliked
+            $audit->old_values = ['user_id' => $user->id];
+        }
+
+        $audit->save();
+        return $audit;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * @param $key
@@ -817,6 +793,19 @@ class AuditableModel extends Model implements Auditable
         return $data;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * @param null $event
      * @return Audit
@@ -830,6 +819,23 @@ class AuditableModel extends Model implements Auditable
         if ($event) {
             $audit->event = $event;
         }
+
+        return $audit;
+    }
+
+    /**
+     * @param null $event
+     * @return Audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function makeNewSystemAudit($event = null)
+    {
+        $audit = $this->makeNewAudit($event);
+        $audit->user_type = self::System;
+        $audit->auditable_id = $audit->auditable_id ?? 0;
+        $audit->auditable_type = $audit->auditable_id ? $audit->auditable_type  :  'system';
+        $audit->new_values = [];
+        $audit->old_values = [];
 
         return $audit;
     }

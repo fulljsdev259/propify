@@ -100,11 +100,11 @@ class AuditTransformer extends BaseTransformer
                     $old_value = ($old_value) ? __('general.languages.'.$old_value) : "";
                     $new_value = ($new_value) ? __('general.languages.'.$new_value) : "";
                 }
-                elseif(in_array($field, ['location','type','status','visibility','building_id','resident_id', 'quarter_id','unit_id','address_id','internal_priority','priority','is_public','category','nation','state_id','category_id','sub_category_id','sub_type','capture_phase','qualification','execution_period'])){
+                elseif(in_array($field, ['location','type','status','visibility','building_id','resident_id', 'quarter_id','unit_id','address_id','internal_priority','priority','is_public','category','nation','state_id','category_id','sub_category_id','sub_type','capture_phase','qualification','execution_period','reminder_user_ids'])){
                     $old_value = ($old_value) ? (AuditRepository::getDataFromField($field, $old_value, $model->auditable_type)) : "";
                     $new_value = ($new_value) ? (AuditRepository::getDataFromField($field, $new_value, $model->auditable_type)) : "";
                 }                
-                elseif(in_array($field, ['attic','announcement','is_execution_time','iframe_enable','blank_pdf'])){
+                elseif(in_array($field, ['attic','announcement','is_execution_time','iframe_enable','blank_pdf','active_reminder','notify_email'])){
                     $old_value = ($old_value == 1) ? __('general.enabled') : __('general.disabled');
                     $new_value = ($new_value == 1) ? __('general.enabled') : __('general.disabled');                                    
                 }
@@ -184,6 +184,12 @@ class AuditTransformer extends BaseTransformer
         }
         elseif($model->event == 'notifications_sent'){
             $response['statement'] = __("general.components.common.audit.content.general.notifications_sent",['auditable_type' => $model->auditable_type]);
+        }
+        elseif($model->event == 'liked'){
+            $response['statement'] = __("general.components.common.audit.content.general.liked", ['userName' => $response['user']['name']]);
+        }
+        elseif($model->event == 'unliked'){
+            $response['statement'] = __("general.components.common.audit.content.general.unliked", ['userName' => $response['user']['name']]);
         }
         elseif($model->event == 'new_resident_pinboard_created'){
             $pinboard = Pinboard::find($model->auditable_id);

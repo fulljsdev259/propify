@@ -496,6 +496,8 @@ return [
         'assignment' => 'Zuständigkeit',        
         'active_reminder_switcher' => 'Erinnerung',
         'days_left' => 'Wie viele Tage vorher?',
+        'days_left_due_date' => 'Verbleibende Tage vor Fälligkeitsdatum',
+        'notified_persons' => 'Benannte Personen',
         'send_person' => 'Wer soll benachrichtigt werden?',
         'sort' => 'Sortierung',
         'reset_sort' => 'Sortierung zurücksetzen',

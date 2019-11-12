@@ -290,6 +290,18 @@
                         data: this.residents,
                     },
                     {
+                        name: this.$t('general.filters.phase'),
+                        type: 'select',
+                        key: 'phase_id',
+                        data: this.prepareFilters("capture_phase"),
+                    },
+                    {
+                        name: this.$t('general.filters.qualification'),
+                        type: 'select',
+                        key: 'qualification_id',
+                        data: this.prepareFilters("qualification"),
+                    },
+                    {
                         name: this.$t('general.filters.created_from'),
                         type: 'date',
                         key: 'created_from',

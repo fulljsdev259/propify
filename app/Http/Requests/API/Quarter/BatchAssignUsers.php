@@ -3,6 +3,7 @@
 namespace App\Http\Requests\API\Quarter;
 
 use App\Http\Requests\BaseRequest;
+use App\Models\Quarter;
 
 class BatchAssignUsers extends BaseRequest
 {
@@ -24,8 +25,13 @@ class BatchAssignUsers extends BaseRequest
     public function rules()
     {
         return [
-            'userIds' => 'required|array',
-            'userIds.*' => 'integer'
+            'user_id' => 'required|integer',
+            'role' => 'required|string|in:administrator,manager,provider',
+            'assignment_type' => [
+                'required',
+                'nullable',
+                $this->getInRuleByClassConstants(Quarter::AssignmentType)
+            ]
         ];
     }
 }

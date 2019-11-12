@@ -668,6 +668,10 @@ export default (config = {}) => {
                                 manager.name = `${manager.first_name} ${manager.last_name}`;
                                 return manager
                             });
+                            if(resp.data.hasOwnProperty('reminder_user_ids') && resp.data.reminder_user_ids.length) {
+                                const {data} = await this.getUsers({get_all: true,roles: ['manager', 'administrator']});    
+                                this.persons = data
+                            }
                         }
 
                         this.showSubCategory = resp.data.sub_category ? true : false;

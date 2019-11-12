@@ -6113,6 +6113,10 @@
     .el-message-box {
         width: 90%;
     }
+
+    .el-dialog {
+        width: 90% !important;
+    }
 }
 @media only screen and (min-width:768px){
     .el-col-sm-0{

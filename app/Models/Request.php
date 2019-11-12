@@ -48,8 +48,8 @@ use Storage;
  *          format="int32"
  *      ),
  *     @SWG\Property(
- *          property="reminder_user_id",
- *          description="reminder_user_id",
+ *          property="reminder_user_ids",
+ *          description="reminder_user_ids",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -167,7 +167,7 @@ use Storage;
  * @property int $resolution_time in seconds
  * @property bool $active_reminder
  * @property int $days_left_due_date
- * @property int|null $reminder_user_id
+ * @property int|null $reminder_user_ids
  * @property array $sent_reminder_user_ids
  * @property bool $is_public
  * @property bool $notify_email
@@ -194,7 +194,6 @@ use Storage;
  * @property-read int|null $media_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ServiceProvider[] $providers
  * @property-read int|null $providers_count
- * @property-read \App\Models\User|null $remainder_user
  * @property-read \App\Models\Resident $resident
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tag[] $tags
  * @property-read int|null $tags_count
@@ -492,7 +491,7 @@ class Request extends AuditableModel implements HasMedia
 
     const Fillable = [
         'creator_user_id',
-        'reminder_user_id',
+        'reminder_user_ids',
         'category_id',
         'sub_category_id',
         'subject_id',
@@ -540,7 +539,7 @@ class Request extends AuditableModel implements HasMedia
     protected $casts = [
         'category_id' => 'integer',
         'creator_user_id' => 'integer',
-        'reminder_user_id' => 'integer',
+        'reminder_user_ids' => 'array',
         'resident_id' => 'integer',
         'contract_id' => 'integer',
         'title' => 'string',
@@ -600,73 +599,9 @@ class Request extends AuditableModel implements HasMedia
      *
      * @var array
      */
-    public static $rulesPost = [
-        'resident_id' => 'required|exists:residents,id',
-        'contract_id' => 'required|exists:contracts,id',
-        'title' => 'required|string',
-        'description' => 'required|string',
-//        'priority' => 'required|integer',
-//        'internal_priority' => 'integer',
-        'qualification' => 'nullable|integer',
-        'due_date' => 'required|date',
-        'category_id' => 'required|integer',
-        'sub_category_id' => 'nullable|integer',
-        'visibility' => 'nullable|integer',
-    ];
-
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rulesPostResident = [
-        'resident_id' => 'exists:residents,id',
-        'contract_id' => 'required|exists:contracts,id',
-        'title' => 'required|string',
-        'description' => 'required|string',
-        'category_id' => 'required|integer',
-        'sub_category_id' => 'nullable|integer',
-//        'priority' => 'required|integer',
-//        'internal_priority' => 'integer',
-        'visibility' => 'nullable|integer',
-    ];
-
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
     public static $rulesPut = [
-        'resident_id' => 'exists:residents,id',
-        'contract_id' => 'exists:contracts,id',
-        'title' => 'string',
-        'description' => 'string',
-//        'priority' => 'integer',
-//        'internal_priority' => 'integer',
-        'qualification' => 'nullable|integer',
-        'status' => 'integer',
-        'due_date' => 'date',
-        'category_id' => 'integer',
-        'sub_category_id' => 'nullable|integer',
-        'visibility' => 'nullable|integer',
-        'active_reminder' => 'boolean',
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rulesPutResident = [
-        'resident_id' => 'exists:residents,id',
-        'contract_id' => 'exists:contracts,id',
-        'title' => 'string',
-        'description' => 'string',
-        'status' => 'integer',
-//        'priority' => 'required|integer',
-//        'internal_priority' => 'integer',
-        'visibility' => 'nullable|integer',
-    ];
 
     /**
      * @var array
@@ -735,10 +670,7 @@ class Request extends AuditableModel implements HasMedia
         $mailDetails = $this->auditData['mailDetails'];
         unset($this->auditData);
         $newValues = [
-            'service_provider' => [
-                'id' => $sp->id,
-                'name' => $sp->name
-            ],
+            'service_provider' => $sp->id,
             'email_title' => $mailDetails['title'],
             'email_cc' => $mailDetails['cc'],
             'email_bcc' => $mailDetails['bcc'],
@@ -747,13 +679,8 @@ class Request extends AuditableModel implements HasMedia
         ];
 
         if ($propertyManager) {
-            $newValues['property_manager'] = [
-                'id' => $propertyManager->id,
-                'first_name' => $propertyManager->first_name,
-                'last_name' => $propertyManager->last_name,
-            ];
+            $newValues['property_manager_id'] = $propertyManager->id;
         }
-
 
         return [
             [],
@@ -887,7 +814,7 @@ class Request extends AuditableModel implements HasMedia
         })->map(function($m){
             return ['title' => $m->name, 'file_path' => $m->getPath()];
         });
-       $data = [
+        $data = [
             'category' => get_category_details($this->category_id),
             'subCategory' => get_sub_category_details($this->sub_category_id),
             'request' => $this,
@@ -913,11 +840,6 @@ class Request extends AuditableModel implements HasMedia
         $language  = \App::getLocale();
 
         return $this->id . '-'. $this->resident->id .'-' . $language . '.pdf';
-    }
-
-    public function remainder_user()
-    {
-        return $this->belongsTo(User::class, 'reminder_user_id');
     }
 
     /**

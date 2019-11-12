@@ -495,6 +495,8 @@ return [
         'assignment' => 'Gestionnaires/Services',        
         'active_reminder_switcher' => 'Rappel',
         'days_left' => "Combien de jours avant l'envoi de l'email ?",
+        'days_left_due_date' => "Jours restants avant la date d'échéance",
+        'notified_persons' => 'Personnes notifiées',
         'send_person' => 'Quelle personne doit être notifiée ?',
         'sort' => 'Trier',
         'reset_sort' => 'Réinitialiser le tri',
