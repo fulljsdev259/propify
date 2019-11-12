@@ -71,7 +71,7 @@ class NotifyNewRequest
         }
 
         $newResidentPinboard = get_morph_type_of(NewResidentRequest::class);
-        $notificationsData = collect([$newResidentPinboard => $propertyManagers]);
+        $notificationsData = collect([$newResidentPinboard => $propertyManagers->pluck('user')]);
         if ($this->saveSystemAudit) {
             $request->newSystemNotificationAudit($notificationsData);
         }

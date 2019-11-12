@@ -670,10 +670,7 @@ class Request extends AuditableModel implements HasMedia
         $mailDetails = $this->auditData['mailDetails'];
         unset($this->auditData);
         $newValues = [
-            'service_provider' => [
-                'id' => $sp->id,
-                'name' => $sp->name
-            ],
+            'service_provider' => $sp->id,
             'email_title' => $mailDetails['title'],
             'email_cc' => $mailDetails['cc'],
             'email_bcc' => $mailDetails['bcc'],
@@ -682,13 +679,8 @@ class Request extends AuditableModel implements HasMedia
         ];
 
         if ($propertyManager) {
-            $newValues['property_manager'] = [
-                'id' => $propertyManager->id,
-                'first_name' => $propertyManager->first_name,
-                'last_name' => $propertyManager->last_name,
-            ];
+            $newValues['property_manager_id'] = $propertyManager->id;
         }
-
 
         return [
             [],
@@ -822,7 +814,7 @@ class Request extends AuditableModel implements HasMedia
         })->map(function($m){
             return ['title' => $m->name, 'file_path' => $m->getPath()];
         });
-       $data = [
+        $data = [
             'category' => get_category_details($this->category_id),
             'subCategory' => get_sub_category_details($this->sub_category_id),
             'request' => $this,

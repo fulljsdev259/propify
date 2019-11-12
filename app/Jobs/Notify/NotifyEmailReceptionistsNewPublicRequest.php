@@ -68,7 +68,7 @@ class NotifyEmailReceptionistsNewPublicRequest
         }
 
         $newRequestForReceptionist = get_morph_type_of(NewRequestForReceptionist::class);
-        $notificationsData = collect([$newRequestForReceptionist => $propertyManagers]);
+        $notificationsData = collect([$newRequestForReceptionist => $users]);
         if ($this->saveSystemAudit) {
             $this->request->newSystemNotificationAudit($notificationsData);
         }
