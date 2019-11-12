@@ -59,6 +59,7 @@ export default (config = {}) => {
                 toAssignList: [],
                 assignmentTypes: ['managers'],
                 assignmentType: 'managers',
+                userAssignmentType: null,
             }
         },
         computed: {
@@ -68,7 +69,7 @@ export default (config = {}) => {
             ...mapGetters(['states'])
         },
         methods: {
-            ...mapActions(['getStates','assignManagerToQuarter','assignUsersToQuarter','getQuarter','getUsers','getPropertyManagers','unassignQuarterAssignee']),
+            ...mapActions(['getStates', 'assignUserToQuarter','getQuarter','getUsers','getPropertyManagers','unassignQuarterAssignee']),
             resetToAssignList() {
                 this.toAssignList = [];
                 this.toAssign = '';
@@ -79,17 +80,26 @@ export default (config = {}) => {
                 }
                 let resp;
 
-                if (this.assignmentType === 'managers') {
-                    resp = await this.assignManagerToQuarter({
-                        id: this.model.id,
-                        toAssignId: this.toAssign   
-                    });
-                } else if (this.assignmentType === 'administrator') {
-                    resp = await this.assignUsersToQuarter({
-                        id: this.model.id,
-                        toAssignId: this.toAssign
-                    });
-                }
+                // if (this.assignmentType === 'managers') {
+                //     resp = await this.assignManagerToQuarter({
+                //         id: this.model.id,
+                //         toAssignId: this.toAssign   
+                //     });
+                // } else if (this.assignmentType === 'administrator') {
+                //     resp = await this.assignUsersToQuarter({
+                //         id: this.model.id,
+                //         toAssignId: this.toAssign
+                //     });
+                // }
+
+
+                resp = await this.assignUserToQuarter({
+                            id: this.model.id,
+                            user_id: this.toAssign,
+                            role: 'manager',
+                            assignment_type: this.userAssignmentType
+                        });
+
                 if (resp && resp.data) {             
                     displaySuccess(resp.data)                           
                     this.resetToAssignList();
@@ -111,40 +121,48 @@ export default (config = {}) => {
                     this.remoteLoading = true;
                     
                     try {
-                        let resp = [];
-                        const quarterAssignee = await this.getQuarterAssignees({get_all: true, quarter_id: this.$route.params.id});
-                        let exclude_ids = [];
-                        if (this.assignmentType === 'managers') {
-                            quarterAssignee.data.map(item => {
-                                if(item.type === 'manager'){
-                                    exclude_ids.push(item.edit_id);
-                                }                                
-                            })
-                            // resp = await this.getPropertyManagers({
-                            //     get_all: true,
-                            //     search,
-                            //     exclude_ids: exclude_ids.join(',')
-                            // });
-                            const resp = await this.getUsers({
-                                get_all: true,
-                                get_role: true,
-                                search,
-                                exclude_ids: exclude_ids.join(','),
-                                roles: ['manager', 'administrator', 'provider']
-                            });
-                        } else if(this.assignmentType === 'administrator'){
-                            quarterAssignee.data.map(item => {
-                                if(item.type === 'user'){                                    
-                                    exclude_ids.push(item.edit_id);
-                                }                                
-                            })
-                            resp = await this.getUsers({
-                                get_all: true,
-                                search,
-                                exclude_ids: exclude_ids.join(','),
-                                role: 'administrator'
-                            });
-                        }
+                        //let resp = [];
+
+                        //const quarterAssignee = await this.getQuarterAssignees({get_all: true, quarter_id: this.$route.params.id});
+
+                        // console.log('quarterAssignee', quarterAssignee)
+                        // let exclude_ids = [];
+                        // if (this.assignmentType === 'managers') {
+                        //     quarterAssignee.data.map(item => {
+                        //         if(item.type === 'manager'){
+                        //             exclude_ids.push(item.edit_id);
+                        //         }                                
+                        //     })
+                        //     /
+                        //     const resp = await this.getUsers({
+                        //         get_all: true,
+                        //         get_role: true,
+                        //         search,
+                        //         exclude_ids: exclude_ids.join(','),
+                        //         roles: ['manager', 'administrator', 'provider']
+                        //     });
+                        // } else if(this.assignmentType === 'administrator'){
+                        //     quarterAssignee.data.map(item => {
+                        //         if(item.type === 'user'){                                    
+                        //             exclude_ids.push(item.edit_id);
+                        //         }                                
+                        //     })
+                        //     resp = await this.getUsers({
+                        //         get_all: true,
+                        //         search,
+                        //         exclude_ids: exclude_ids.join(','),
+                        //         role: 'administrator'
+                        //     });
+                        // }
+
+                        //    exclude_assignees_quarter_id: this.$route.params.id,
+                        const resp = await this.getUsers({
+                                    get_all: true,
+                                    get_role: true,
+                                    search,
+                                    roles: ['manager', 'administrator', 'provider']
+                                });
+                        console.log(resp)
                         this.toAssignList = resp.data;                        
                     } catch (err) {
                         displayError(err);

@@ -218,7 +218,7 @@
                                     <el-select
                                             :placeholder="$t('general.placeholders.select')"
                                             style="display: block"
-                                            v-model="model.assignment_type"
+                                            v-model="userAssignmentType"
                                             filterable>
                                         <el-option
                                                 :key="type.value"
@@ -455,7 +455,7 @@
                 }, {
                     prop: 'role',
                     label: 'general.assignment_types.label',
-                    i18n: this.translateType
+                    i18n: this.translateAssignmentType
                 }],
                 quarterColumns: [{
                     type: 'buildingName',
@@ -545,6 +545,9 @@
             },
             translateResidentType(type) {
                 return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+            },
+            translateAssignmentType(type) {
+                return this.$t(`models.quarter.assignment_types.${this.constants.quarters.assignment_type[type]}`);
             },
             residentStatusBadge(status) {
                 const classObject = {
