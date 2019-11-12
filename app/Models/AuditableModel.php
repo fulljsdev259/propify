@@ -53,7 +53,7 @@ class AuditableModel extends Model implements Auditable
     const EventMediaDeleted = 'media_deleted';
     const EventManageEmailReceptionists = 'manage_email_receptionists';
     const EventAvatarUploaded = 'avatar_uploaded';
-    const BuildingUnitsCreated = 'building_units\y_created';
+    const BuildingUnitsCreated = 'building_units_created';
     const NewResidentPinboardCreated = 'new_resident_pinboard_created';
     const NotificationsSent = 'notifications_sent';
     const DownloadCredentials = 'download_credentials';
