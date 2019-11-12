@@ -168,6 +168,12 @@
             margin: 20px 0;
         }
 
+        .el-row {
+            .el-col {
+                margin-bottom: 1em;
+            }
+        }
+
         .name-line {
             display: flex;
 

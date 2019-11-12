@@ -194,15 +194,6 @@ class PinboardRepository extends BaseRepository
     }
 
     /**
-     * @param Pinboard $pinboard
-     * @return \Illuminate\Support\Collection
-     */
-    public function notify(Pinboard $pinboard)
-    {
-        return dispatch_now(new NotifyNewPinboard($pinboard));
-    }
-
-    /**
      * @param Pinboard $p
      * @return mixed
      */
