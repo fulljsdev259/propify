@@ -50,7 +50,7 @@
                                 </el-input>
                             </el-form-item>
                             <el-form-item v-else-if="filter.type === filterTypes.date">
-                                <el-date-picker
+                                <!-- <el-date-picker
                                     :format="filter.format"
                                     :placeholder="filter.name"
                                     :value-format="filter.format"
@@ -59,7 +59,13 @@
                                     type="date"
                                     v-model="filterModel[filter.key]"
                                 >
-                                </el-date-picker>
+                                </el-date-picker> -->
+                                <list-filter-date-picker
+                                    :filter="filter"
+                                    :selected="filterModel[filter.key]"
+                                    @date-changed="handleSelectChange($event, filter)"
+                                >
+                                </list-filter-date-picker>
                             </el-form-item>
                         </template>
 
@@ -104,7 +110,7 @@
             @row-click="editLink">
 
             <el-table-column
-                :key="'OneCol'"
+                :key="'OneCol' + key"
                 :width="column.width"
                 v-for="(column, key) in headerWithOneCol"
             >
@@ -144,6 +150,7 @@
     import tableAvatar from 'components/Avatar';
     import RequestDetailCard from 'components/RequestDetailCard';
     import ListFilterSelect from 'components/ListFilterSelect';
+    import ListFilterDatePicker from 'components/ListFilterDatePicker';
     import filters from 'components/Filters';
     
     import {ResponsiveMixin} from 'vue-responsive-components'
@@ -159,7 +166,8 @@
             'table-avatar': tableAvatar,
             RequestDetailCard,
             filters,
-            ListFilterSelect
+            ListFilterSelect,
+            ListFilterDatePicker
         },
         props: {
             header: {
@@ -551,14 +559,14 @@
                 const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
 //                const value = queryFilterValue && queryFilterValue.match(dateReg) ? queryFilterValue : parseInt(queryFilterValue); 
                 let value;
-
-                if((filter.key.indexOf('id') || filter.key == 'status') && queryFilterValue !== undefined && !Array.isArray(queryFilterValue))
+                if((filter.key.indexOf('id') !== -1 || filter.key == 'status') && queryFilterValue !== undefined && !Array.isArray(queryFilterValue)) {
                     value = [queryFilterValue];
+                    console.log(filter.key);
+                }
                 else
                     value = queryFilterValue;
-                    
                 if(!Array.isArray(value))
-                    value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
+                    value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search' || filter.key==='solved_date' || filter.key==='created_from' || filter.key==='created_to') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
                 else
                     for(let i = 0; i < value.length; i ++)
                         value[i] = parseInt(value[i]);
