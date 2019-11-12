@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Mails\NewRequestForReceptionist;
+use App\Mails\NotifyServiceProvider;
 use App\Models\Building;
 use App\Models\Quarter;
 use App\Models\Pinboard;
@@ -20,9 +21,14 @@ use App\Notifications\NewResidentInNeighbour;
 use App\Notifications\NewResidentPinboard;
 use App\Notifications\NewResidentRequest;
 use App\Notifications\AnnouncementPinboardPublished;
+use App\Notifications\PinboardCommented;
+use App\Notifications\PinboardLiked;
 use App\Notifications\PinboardPublished;
 use App\Notifications\ListingPublished;
+use App\Notifications\RequestCommented;
 use App\Notifications\RequestDue;
+use App\Notifications\RequestMedia;
+use App\Notifications\ResidentCredentials;
 use App\Notifications\StatusChangedRequest;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -76,6 +82,12 @@ class AppServiceProvider extends ServiceProvider
             'status_change_request' => StatusChangedRequest::class,
             'new_request_for_receptionist' => NewRequestForReceptionist::class,
             'request_due' => RequestDue::class,
+            'request_commented' => RequestCommented::class,
+            'request_media' => RequestMedia::class,
+            'pinboard_liked' => PinboardLiked::class,
+            'pinboard_commented' => PinboardCommented::class,
+            'resident_credentials' => ResidentCredentials::class,
+            'notify_service_provider' => NotifyServiceProvider::class,
         ]);
 
         if (!Collection::hasMacro('paginate')) {
