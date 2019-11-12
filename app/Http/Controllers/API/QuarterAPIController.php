@@ -21,6 +21,7 @@ use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
 use App\Models\Contract;
+use App\Models\ServiceProvider;
 use App\Models\User;
 use App\Repositories\AddressRepository;
 use App\Repositories\QuarterRepository;
@@ -509,6 +510,7 @@ class QuarterAPIController extends AppBaseController
         $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class]);
 
         $response = (new QuarterAssigneeTransformer())->transformPaginator($assignees) ;
+
         return $this->sendResponse($response, 'Assignees retrieved successfully');
     }
 
@@ -636,22 +638,37 @@ class QuarterAPIController extends AppBaseController
             return $this->sendError(__('models.quarter.errors.not_found'));
         }
 
-        $userIds = $request->get('userIds');
-        try {
-            $currentUsers = $quarter->users()
-                ->whereIn('users.id', $userIds)
-                ->pluck('users.id')
-                ->toArray();
-
-            $newUsers = array_diff($userIds, $currentUsers);
-            $attachData  = [];
-            foreach ($newUsers as $userId) {
-                $attachData[$userId] = ['created_at' => now()];
-            }
-            $quarter->users()->syncWithoutDetaching($attachData);
-        } catch (\Exception $e) {
-            return $this->sendError( __('models.quarter.errors.user_assigned') . $e->getMessage());
+        $userId = $request->get('user_id');
+        $user = User::find($userId);
+        if (empty($user)) {
+            return $this->sendError(__('models.user.errors.not_found'));
         }
+
+        $role = $request->role;
+        if (in_array($role, ['manager', 'administrator'])) {
+            $propertyManagerId = PropertyManager::where('user_id', $user->id)->value('id');
+            if (empty($propertyManagerId)) {
+                return $this->sendError('Something is wrong. Check role or user_id');
+            }
+            $assigneeId = $propertyManagerId;
+            $assigneeType = get_morph_type_of(PropertyManager::class);
+        } else {
+            $serviceProviderId = ServiceProvider::where('user_id', $user->id)->value('id');
+            if (empty($serviceProviderId)) {
+                return $this->sendError('Something is wrong. Check role or user_id');
+            }
+            $assigneeId = $serviceProviderId;
+            $assigneeType = get_morph_type_of(ServiceProvider::class);
+        }
+
+        QuarterAssignee::updateOrCreate([
+            'user_id' => $userId,
+            'assignee_id' => $assigneeId,
+            'assignee_type' => $assigneeType,
+        ], [
+            'assignment_type' => $request->assignment_type,
+            'created_at' => now()
+        ]);
 
         $response = (new QuarterTransformer)->transform($quarter);
         return $this->sendResponse($response, __('models.quarter.user_assigned'));
