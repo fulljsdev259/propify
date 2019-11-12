@@ -16,10 +16,12 @@ class FillUserIdInQuarterAssifneesTable extends Migration
         \App\Models\QuarterAssignee::get()->each(function (\App\Models\QuarterAssignee $quarterAssignee) {
             if ($quarterAssignee->assignee_type == get_morph_type_of(\App\Models\PropertyManager::class)) {
                 $quarterAssignee->user_id = \App\Models\PropertyManager::find($quarterAssignee->assignee_id)->user_id ?? null;
+                $quarterAssignee->assignment_type = \App\Models\Quarter::AssignmentTypeFortimoEmployees;
                 $quarterAssignee->save();
             }
             if ($quarterAssignee->assignee_type == get_morph_type_of(\App\Models\ServiceProvider::class)) {
                 $quarterAssignee->user_id = \App\Models\ServiceProvider::find($quarterAssignee->assignee_id)->user_id ?? null;
+                $quarterAssignee->assignment_type = \App\Models\Quarter::AssignmentTypeFortimoEmployees;
                 $quarterAssignee->save();
             }
         });
