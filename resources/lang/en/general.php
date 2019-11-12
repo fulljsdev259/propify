@@ -95,6 +95,8 @@ return [
         'resident' => 'Resident',        
         'type' => 'Type',
         'language' => 'Language',
+        'phase' => 'Phase',
+        'qualification' => 'Qualification',
     ],    
     'no' => 'No',
     'first_name' => 'First name',

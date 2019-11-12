@@ -1,38 +1,38 @@
 <template>
     <div class="custom-date-picker">
-        
-            <el-date-picker
-                ref="datePicker"
-                :format="filter.format"
-                :placeholder="filter.name"
-                :value-format="filter.format"
-                style="width: 100%"
-                type="date"
-                align="center"
-                v-model="selectedDate"
+        <el-date-picker
+            ref="datePicker"
+            :format="filter.format"
+            :placeholder="filter.name"
+            :value-format="filter.format"
+            style="width: 100%"
+            type="date"
+            align="center"
+            v-model="selectedDate"
+            popper-class="request-date-panel"
+        >
+        </el-date-picker>
+        <div class="actions">
+            <el-button 
+                ref="pickerButton"
+                @click="handleClick" 
+                :class="[{'selected-button': selectedDate !== ''}]"
             >
-            </el-date-picker>
-            <div class="actions">
-                <el-button 
-                    ref="pickerButton"
-                    @click="handleClick" 
-                    :class="[{'selected-button': selectedDate !== ''}]"
+                <span>{{ filter.name }}</span>
+                <el-tag 
+                    v-if="selectedDate !== ''"
+                    size="mini"
                 >
-                    <span>{{ filter.name }}</span>
-                    <el-tag 
-                        v-if="selectedDate !== ''"
-                        size="mini"
-                    >
-                        {{ `: ${selectedDate}` }}
-                    </el-tag>
-                </el-button>
-                 <el-button 
-                    v-if="selectedDate !== ''" 
-                    icon="el-icon-close"
-                    class="close-button" 
-                    @click.prevent.stop="handleReset(true)">
-                </el-button>
-            </div>
+                    {{ `: ${selectedDate}` }}
+                </el-tag>
+            </el-button>
+                <el-button 
+                v-if="selectedDate !== ''" 
+                icon="el-icon-close"
+                class="close-button" 
+                @click.prevent.stop="handleReset(true)">
+            </el-button>
+        </div>
     </div>
 </template>
 <script>
@@ -162,6 +162,29 @@
                 &:hover {
                     background-color: transparent;
                 }
+            }
+        }
+         
+    }
+</style>
+<style lang="scss">
+    .request-date-panel.el-popper {
+        :global(&[x-placement^=bottom] .popper__arrow) {
+            top: -12px;
+            &::after {
+                margin-left: -10px;  
+            }
+        }
+        :global(.popper__arrow) {
+            border-bottom-width: 12px;
+            border-left-width: 10px;
+            border-right-width: 10px;
+            border-top-width: 0;      
+            &::after {
+                border-width: 12px;
+                border-left-width: 10px;
+                border-right-width: 10px;
+                border-top-width: 0;
             }
         }
     }
