@@ -185,6 +185,12 @@ class AuditTransformer extends BaseTransformer
         elseif($model->event == 'notifications_sent'){
             $response['statement'] = __("general.components.common.audit.content.general.notifications_sent",['auditable_type' => $model->auditable_type]);
         }
+        elseif($model->event == 'liked'){
+            $response['statement'] = __("general.components.common.audit.content.general.liked", ['userName' => $response['user']['name']]);
+        }
+        elseif($model->event == 'unliked'){
+            $response['statement'] = __("general.components.common.audit.content.general.unliked", ['userName' => $response['user']['name']]);
+        }
         elseif($model->event == 'new_resident_pinboard_created'){
             $pinboard = Pinboard::find($model->auditable_id);
             if($pinboard){
