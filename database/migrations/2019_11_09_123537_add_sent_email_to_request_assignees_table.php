@@ -14,7 +14,7 @@ class AddSendEmailToRequestAssigneesTable extends Migration
     public function up()
     {
         Schema::table('request_assignees', function (Blueprint $table) {
-            $table->tinyInteger('send_email')->default(0);
+            $table->tinyInteger('sent_email')->default(0);
         });
     }
 
@@ -26,7 +26,7 @@ class AddSendEmailToRequestAssigneesTable extends Migration
     public function down()
     {
         Schema::table('request_assignees', function (Blueprint $table) {
-            $table->dropForeign('send_email');
+            $table->dropForeign('sent_email');
         });
     }
 }
