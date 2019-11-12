@@ -392,6 +392,8 @@ return [
                         'avatar_uploaded' => 'Profile image uploaded for :auditable_type.',
                         'contract_created' => 'Contract created for resident :userName.',
                         'update_no_fieldvalue' => 'The :fieldname changed.',
+                        'liked' => ':userName liked this pinboard',
+                        'unliked' => ':userName unliked this pinboard',
                     ],                    
                 ],
             ],
