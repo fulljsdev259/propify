@@ -510,6 +510,7 @@ class QuarterAPIController extends AppBaseController
         $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class]);
 
         $response = (new QuarterAssigneeTransformer())->transformPaginator($assignees) ;
+
         return $this->sendResponse($response, 'Assignees retrieved successfully');
     }
 
@@ -665,7 +666,8 @@ class QuarterAPIController extends AppBaseController
             'assignee_id' => $assigneeId,
             'assignee_type' => $assigneeType,
         ], [
-            'assignment_type' => $request->assignment_type
+            'assignment_type' => $request->assignment_type,
+            'created_at' => now()
         ]);
 
         $response = (new QuarterTransformer)->transform($quarter);
