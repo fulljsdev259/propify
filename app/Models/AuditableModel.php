@@ -95,6 +95,8 @@ class AuditableModel extends Model implements Auditable
         self::EventCreated,
         self::EventUpdated,
         self::EventDeleted,
+        self::EventLiked,
+        self::EventUnLiked,
         self::EventContractCreated,
         self::EventContractUpdated,
         self::EventContractDeleted,
