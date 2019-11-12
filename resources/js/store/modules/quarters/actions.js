@@ -78,7 +78,7 @@ export default {
     assignUserToQuarter({}, {id, ...payload}) {
         console.log(payload)
         return new Promise((resolve, reject) => {
-            axios.post(`quarters/${payload.id}/users`, payload)
+            axios.post(`quarters/${id}/users`, payload)
                 .then((resp) => {
                     resolve(resp.data);
                 }).catch(({response: {data: err}}) => reject(err))
