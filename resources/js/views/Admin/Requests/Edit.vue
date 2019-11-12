@@ -157,11 +157,11 @@
                                 <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true">
                                     <el-form-item 
                                         :label="$t('models.request.category_options.payer_percent')"
-                                        :rules="validationRules.payer_percent"
-                                        prop="payer_percent">
+                                        :rules="validationRules.percentage"
+                                        prop="percentage">
                                         <el-input 
                                             type="number"
-                                            v-model="model.payer_percent" 
+                                            v-model="model.percentage" 
                                         >
                                             <template slot="prepend">%</template>
                                         </el-input>
@@ -170,11 +170,11 @@
                                 <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true" style="height: 97px">
                                     <el-form-item 
                                         :label="$t('models.request.category_options.payer_amount')"
-                                        :rules="validationRules.payer_amount"
-                                        prop="payer_amount">
+                                        :rules="validationRules.amount"
+                                        prop="amount">
                                         <el-input 
                                             type="number"
-                                            v-model="model.payer_amount" 
+                                            v-model="model.amount" 
                                         >
                                             <template slot="prepend">CHF</template>
                                         </el-input>
