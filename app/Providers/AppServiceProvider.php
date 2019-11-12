@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Mails\NewRequestForReceptionist;
+use App\Mails\NotifyServiceProvider;
 use App\Models\Building;
 use App\Models\Quarter;
 use App\Models\Pinboard;
@@ -86,6 +87,7 @@ class AppServiceProvider extends ServiceProvider
             'pinboard_liked' => PinboardLiked::class,
             'pinboard_commented' => PinboardCommented::class,
             'resident_credentials' => ResidentCredentials::class,
+            'notify_service_provider' => NotifyServiceProvider::class,
         ]);
 
         if (!Collection::hasMacro('paginate')) {

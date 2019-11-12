@@ -2,17 +2,7 @@
 
 namespace App\Models;
 
-use App\Mails\NewRequestForReceptionist;
-use App\Notifications\AnnouncementPinboardPublished;
-use App\Notifications\NewResidentInNeighbour;
-use App\Notifications\NewResidentPinboard;
-use App\Notifications\NewResidentRequest;
-use App\Notifications\PinboardLiked;
-use App\Notifications\PinboardPublished;
-use App\Notifications\RequestCommented;
-use App\Notifications\RequestDue;
-use App\Notifications\RequestMedia;
-use App\Notifications\StatusChangedRequest;
+use App\Mails\NotifyServiceProvider;
 use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Illuminate\Support\Arr;
@@ -216,8 +206,9 @@ class AuditableModel extends Model implements Auditable
     public function newSystemNotificationAudit($value)
     {
         $audit = $this->makeNewSystemAudit(self::NotificationsSent);
-
+        $notifyServiceProvider = get_morph_type_of(NotifyServiceProvider::class);
         $_value = [];
+
         foreach ($value as $morph => $data) {
             if (is_a($data, Collection::class)) {
                 if ($data->pluck('id')->isEmpty()) {
@@ -229,8 +220,17 @@ class AuditableModel extends Model implements Auditable
                 ];
             } elseif (is_a($data, \Illuminate\Database\Eloquent\Model::class)) {
                 $_value[$morph] = [
-                    'user_id' => [$data->id],
-                    'failed_user_id' => []
+                    'user_ids' => [$data->id],
+                    'failed_user_ids' => []
+                ];
+            } elseif ($notifyServiceProvider == $morph) {
+                $userIds = $data['users']->pluck('id')->all();
+                $_value[$morph] = [
+                    'user_id' => $userIds,
+                    'failed_user_id' => [],
+                    'to' => $data['to'],
+                    'cc' => $data['cc'],
+                    'bcc' => $data['bcc'],
                 ];
             } else {
                 dd('@TODO6', $morph);

@@ -296,50 +296,6 @@ class RequestRepository extends BaseRepository
         return true;
     }
 
-    /**
-     * @param Request $request
-     * @param ServiceProvider $provider
-     * @param $manager
-     * @param $mailDetails
-     */
-    public function notifyProvider(Request $request, ServiceProvider $provider, $manager, $mailDetails)
-    {
-        $toEmails = [$provider->user->email];
-        if (!empty($mailDetails['to'])) {
-            $toEmails[] = $mailDetails['to'];
-        }
-
-        $ccEmails = $manager ? [$manager->user->email] : [];
-        if (!empty($mailDetails['cc']) && is_array($mailDetails['cc'])) {
-            $ccEmails = array_merge($ccEmails, $mailDetails['cc']);
-        }
-
-        $bccEmails = $mailDetails['bcc'] ?? [];
-        \Mail::to($toEmails)
-            ->cc($ccEmails)
-            ->bcc($bccEmails)
-            ->send( new NotifyServiceProvider($provider, $request, $mailDetails));
-
-        $auditData = [
-            'serviceProvider' => $provider,
-            'propertyManager' => $manager,
-            'mailDetails' => $mailDetails
-        ];
-        $request->registerAuditEvent(AuditableModel::EventProviderNotified, $auditData);
-
-        $u = \Auth::user();
-        $conversation = $request->conversationFor($u, $provider->user);
-        $comment = $mailDetails['title'] . "\n\n" . strip_tags($mailDetails['body']);
-        $conversation->comment($comment);
-
-        if ($manager && $manager->user) {
-            $conversation = $request->conversationFor($u, $manager->user);
-            if ($conversation) {
-                $conversation->comment($comment);
-            }
-        }
-    }
-
     public function deleteRequesetWithUnitIds($ids)
     {
         return $this->model->whereHas('contract', function ($q) use ($ids) {
