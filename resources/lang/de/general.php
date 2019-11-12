@@ -95,6 +95,8 @@ return [
         'resident' => 'Bewohner',        
         'type' => 'Typ',
         'language' => 'Sprache',
+        'phase' => 'Phase',
+        'qualification' => 'Qualifizierung',
     ],
     'no' => 'Nein',
     'first_name' => 'Vorname',
