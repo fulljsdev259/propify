@@ -1,6 +1,6 @@
 <template>
     <div :class="['user', !onlyAvatar && {[`is-aligned-${contentPosition}`]: true}]">
-        <ui-avatar :size="40" :src="loggedInUser.avatar" :name="loggedInUser.name" shadow="hover" @click="$emit('avatar-click')" />
+        <ui-avatar :key="avatarKey" :size="40" :src="loggedInUser.avatar_variations[1]" :name="loggedInUser.name" shadow="hover" @click="$emit('avatar-click')" />
         <div class="content" v-if="!onlyAvatar">
             <div class="name">{{loggedInUser.name}}</div>
             <div class="email">{{loggedInUser.email}}</div>
@@ -24,11 +24,19 @@
                 validator: value => ['left', 'right'].includes(value)
             }
         },
+        data() {
+            return {
+                avatarKey: 0,
+            }
+        },
         computed: {
             ...mapGetters(['loggedInUser']),
             ...mapGetters('notifications', {
                 unreadNotifications: 'unread'
             })
+        },
+        mounted() {
+            this.$root.$on('changedAvatar', () => {this.avatarKey++});
         }
     }
 </script>

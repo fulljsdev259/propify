@@ -19,7 +19,7 @@
                                                 height: 250
                                             }"
                                             :resize="false"
-                                            :defaultAvatarSrc="loggedInUser.avatar ? '/'+loggedInUser.avatar : ''"
+                                            :defaultAvatarSrc="loggedInUser.avatar_variations[3] ? '/'+loggedInUser.avatar_variations[3] : ''"
                                             @cropped="cropped"/>
 
                                 </el-form-item>
@@ -308,7 +308,10 @@
                     try {
                         const resp = await this.changeDetails(payload);
                         await this.upload();
-                        this.me();
+                        await this.me();
+
+                        this.$root.$emit('changedAvatar');
+
                         displaySuccess(resp);
                     } catch (e) {
                         displayError(e);
