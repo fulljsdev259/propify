@@ -25,6 +25,7 @@ use App\Http\Requests\API\Resident\UpdateDefaultContractRequest;
 use App\Http\Requests\API\Resident\UpdateLoggedInRequest;
 use App\Http\Requests\API\Resident\UpdateRequest;
 use App\Http\Requests\API\Resident\UpdateStatusRequest;
+use App\Jobs\Notify\NotifyResidentCredentials;
 use App\Models\AuditableModel;
 use App\Models\Contract;
 use App\Models\Settings;
@@ -866,9 +867,11 @@ class ResidentAPIController extends AppBaseController
      * @param SendCredentialsRequest $r
      * @param TemplateRepository $tRepo
      * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function sendCredentials($id, SendCredentialsRequest $r, TemplateRepository $tRepo)
     {
+        /* @var $resident Resident */
         $resident = $this->residentRepository->findForCredentials($id);
         if (empty($resident)) {
             return $this->sendError(__('models.resident.errors.not_found'));
@@ -878,10 +881,8 @@ class ResidentAPIController extends AppBaseController
             return $this->sendError($this->credentialsFileNotFound);
         }
 
-        //@TODO audit
-        $resident->user->notify(new ResidentCredentials($resident));
-
         $resident->addDataInAudit('pdf_name', $pdfName, AuditableModel::UpdateOrCreate, true, AuditableModel::SendCredentials);
+        dispatch_now(new NotifyResidentCredentials($resident));
         return $this->sendResponse($id, __('models.resident.credentials_sent'));
     }
 

@@ -6,7 +6,7 @@
                 <el-tag 
                     v-else-if="this.filter.key !== 'language'"
                     size="mini"
-                    closable
+                    :closable="findSelectedOne.count !== 1"
                     @close="selectItem(findSelectedOne.index, true)"
                 >
                     {{ `${filter.name}: ${getLanguageStr(findSelectedOne.label)}` }}
@@ -306,6 +306,7 @@
                 color: var(--color-white);
                 :global(i.el-tag__close) {
                     right: 0;
+                    line-height: 1.4;
                     font-size: 14px;
                     font-weight: 700;
                     color: var(--color-white);
@@ -316,19 +317,15 @@
                     }
                 }
                 &.select-count {
-                    margin-right: 4px;
-                    width: 20px;
+                    padding: 0 3px !important;
                     text-align: center;
                     border-radius: 4px;
                     border: 1px solid var(--color-white);
                 }
-                span {
-                    margin-right: 5px;
-                }
             }
             &.selected-button {
                 background-color: var(--color-primary);
-                padding-right: 40px;
+                padding-right: 45px;
             }
 
         }

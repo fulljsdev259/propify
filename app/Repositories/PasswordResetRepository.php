@@ -7,6 +7,8 @@ use App\Models\PasswordReset;
 use App\Notifications\PasswordResetRequest;
 
 /**
+ * @TODO delete not used
+ *
  * Class UserRepository
  * @package App\Repositories
  * @version January 11, 2019, 12:27 pm UTC

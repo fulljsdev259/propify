@@ -73,25 +73,25 @@ class NotifyNewPinboard
 
         $usersToNotify->load('settings:user_id,admin_notification,pinboard_notification', 'resident:id,user_id,first_name,last_name');
         $i = 0;
-        foreach ($usersToNotify as $u) {
+        foreach ($usersToNotify as $user) {
             $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
-            $u->redirect = '/news';
+            $user->redirect = '/news';
 
-            if ($u->settings && $u->settings->admin_notification && $pinboard->announcement) {
-                $notificationsData[$announcementPinboardPublished]->push($u);
-                $u->notify((new AnnouncementPinboardPublished($pinboard))
+            if ($user->settings && $user->settings->admin_notification && $pinboard->announcement) {
+                $notificationsData[$announcementPinboardPublished]->push($user);
+                $user->notify((new AnnouncementPinboardPublished($pinboard))
                     ->delay(now()->addSeconds($delay)));
                 continue;
             }
 
-            if ($u->settings && $u->settings->pinboard_notification && ! $pinboard->announcement) {
+            if ($user->settings && $user->settings->pinboard_notification && ! $pinboard->announcement) {
                 if ($pinboard->type == Pinboard::TypePost) {
-                    $notificationsData[$pinboardPublished]->push($u);
-                    $u->notify(new PinboardPublished($pinboard));
+                    $notificationsData[$pinboardPublished]->push($user);
+                    $user->notify(new PinboardPublished($pinboard));
                 }
                 if ($pinboard->type == Pinboard::TypeNewNeighbour) {
-                    $notificationsData[$pinboardNewResidentNeighbor]->push($u);
-                    $u->notify((new NewResidentInNeighbour($pinboard))->delay($pinboard->published_at));
+                    $notificationsData[$pinboardNewResidentNeighbor]->push($user);
+                    $user->notify((new NewResidentInNeighbour($pinboard))->delay($pinboard->published_at));
                 }
             }
         }

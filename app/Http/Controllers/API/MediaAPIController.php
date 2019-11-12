@@ -17,6 +17,7 @@ use App\Http\Requests\API\Media\RequestDeleteRequest;
 use App\Http\Requests\API\Media\RequestUploadRequest;
 use App\Http\Requests\API\Media\ContractDeleteRequest;
 use App\Http\Requests\API\Media\ContractUploadRequest;
+use App\Jobs\Notify\NotifyRequestMedia;
 use App\Models\Building;
 use App\Repositories\AddressRepository;
 use App\Repositories\BuildingRepository;
@@ -725,7 +726,7 @@ class MediaAPIController extends AppBaseController
             return $this->sendError(__('general.upload_error'));
         }
         $request->touch();
-        $this->requestRepository->notifyMedia($request, \Auth::user(), $media);
+        dispatch_now(new NotifyRequestMedia($request, $media, \Auth::user()));
         $response = (new MediaTransformer)->transform($media);
         return $this->sendResponse($response, __('general.swal.media.added'));
     }

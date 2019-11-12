@@ -24,6 +24,7 @@ use App\Http\Requests\API\Request\UnAssignRequest;
 use App\Http\Requests\API\Request\UpdateRequest;
 use App\Http\Requests\API\Request\ViewRequest;
 use App\Http\Requests\API\Resident\DownloadPdfRequest;
+use App\Jobs\Notify\NotifyRequestProvider;
 use App\Models\PropertyManager;
 use App\Models\ServiceProvider;
 use App\Models\Request;
@@ -762,10 +763,8 @@ class RequestAPIController extends AppBaseController
 
         $propertyManager = $managerId ? $propertyManagerRepository->with('user:email,id')->find($managerId) : null;
         $mailDetails = $notifyProviderRequest->only(['title', 'to', 'cc', 'bcc', 'body']);
+        dispatch_now(new  NotifyRequestProvider($request, $serviceProvider, $propertyManager, $mailDetails));
 
-        $this->requestRepository->notifyProvider($request, $serviceProvider, $propertyManager, $mailDetails);
-        $request->touch();
-        $serviceProvider->touch();
         return $this->sendResponse($request, __('models.request.mail.success'));
     }
 
