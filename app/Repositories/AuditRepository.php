@@ -14,6 +14,7 @@ use App\Models\Country;
 use App\Models\Address;
 use App\Models\State;
 use App\Models\Audit;
+use App\Models\User;
 use App\Models\TemplateCategory;
 
 /**
@@ -88,7 +89,19 @@ class AuditRepository extends BaseRepository
             }
             elseif(($auditable_type == 'request') && ($fieldname == 'visibility')){
                 return __('models.request.visibility.' . Request::Visibility[$fieldvalue]);
-            }            
+            }       
+            elseif(($auditable_type == 'request') && ($fieldname == 'reminder_user_ids')){
+                $ids = json_decode($fieldvalue);
+                $user_name = '';
+                if(is_array($ids)){                      
+                    $users = User::whereIn('id', $ids)->get();
+                    foreach($users as $user){
+                        $user_name .= $user->name;
+                        $user_name .= ', ';
+                    }                    
+                }      
+                return rtrim($user_name,', ');
+            }
             elseif(($auditable_type == 'pinboard') && ($fieldname == 'type')){   
                 return __('models.pinboard.type.' . Pinboard::Type[$fieldvalue]);
             }
