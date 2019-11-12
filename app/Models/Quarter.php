@@ -249,4 +249,12 @@ class Quarter extends AuditableModel implements HasMedia
         return $this->hasMany(Building::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function workflows()
+    {
+        return $this->hasMany(Workflow::class);
+    }
+
 }
