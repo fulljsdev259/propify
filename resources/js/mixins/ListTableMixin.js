@@ -70,7 +70,6 @@ export default ({
             this.selectedItems = rows;
         },
         batchDelete() {
-            console.log('batch delete')
             this.$confirm(this.$t('general.swal.delete.text'), this.$t('general.swal.delete.title'), {
                 type: 'warning'
             }).then(() => {
