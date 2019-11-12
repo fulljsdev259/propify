@@ -814,7 +814,7 @@ class Request extends AuditableModel implements HasMedia
         })->map(function($m){
             return ['title' => $m->name, 'file_path' => $m->getPath()];
         });
-       $data = [
+        $data = [
             'category' => get_category_details($this->category_id),
             'subCategory' => get_sub_category_details($this->sub_category_id),
             'request' => $this,

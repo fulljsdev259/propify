@@ -117,7 +117,7 @@
    
    
                                             <tr>
-                                                @if($category['component']!=0)
+                                                @if(key_exists('component', $category) && $category['component']!=0)
                                                 <td class="border_btm" @if (
                                                     !((((!empty($category['location']) && $category['location'] == 1) ||
                                                     (!empty($subCategory['location']) && $subCategory['location'] == 1))) ||
