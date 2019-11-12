@@ -165,6 +165,11 @@ class Unit extends AuditableModel implements HasMedia
     const TypeUndergroundParkingSpace = 5;
     const TypeOutdoorParking = 6;
     const TypeMotorbikePitch = 7;
+    const TypeUndergroundParkingSpaceCS = 8;
+    const TypeUndergroundParkingSpaceSR = 9;
+    const TypeDoubleParking = 10;
+    const TypeSchedulingSpace = 11;
+
 
     const Type = [
         self::TypeApartment => 'apartment',
@@ -174,6 +179,12 @@ class Unit extends AuditableModel implements HasMedia
         self::TypeUndergroundParkingSpace => 'underground_parking_space',
         self::TypeOutdoorParking => 'outdoor_parking',
         self::TypeMotorbikePitch => 'motorbike_pitch',
+        self::TypeUndergroundParkingSpaceCS => 'underground_parking_space_cs',
+        self::TypeUndergroundParkingSpaceSR => 'underground_parking_space_sr',
+        self::TypeDoubleParking => 'double_parking',
+        self::TypeSchedulingSpace => 'scheduling_parking',
+
+
     ];
 
     public $fillable = [
