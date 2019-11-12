@@ -361,6 +361,8 @@ return [
             "key_service" => "Servizio chiave",
             "caretaker" => "Custode",
             "real_estate_service" => "Servizio immobiliare",
+            'business_person' => 'Unternehmer', // @TODO translate (problem with deepl)
+            'tu-gu' => 'TU/GU',
         ],
         "contact_details" => "Dati di contatto",
         "user_credentials" => "Credenziali utente",
@@ -400,8 +402,21 @@ return [
         'types' => [
             'label' => 'Tipo',
             'rent' => 'Affitto',
-            'sell' => 'Vendere'
-        ]
+            'sell' => 'Vendere',
+            'property' => 'Proprietà',
+            'building_land' => 'Terreno edificabile',
+            'trade' => 'Il commercio',
+            'multi-storey_car_park' => 'Parcheggio multipiano'
+        ],
+        'assignment_types' => [
+            'label' => 'Tipo',
+            'fortimo_employees' => 'Fortimo dipendenti',
+            'management' => 'Gestione',
+            'initial_letting' => 'Locazione iniziale',
+            'caretaker' => 'Custode',
+            'administration' => 'Amministrazione'
+        ],
+        'url' => 'Url'
     ],
     'request' => [        
         "deleted" => "Richiesta supprimée",
@@ -480,6 +495,8 @@ return [
         'assignment' => 'Manager/Servizi',
         'active_reminder_switcher' => 'Promemoria',
         'days_left' => "Quanti giorni prima dovrebbe essere inviata l'e-mail?",
+        'days_left_due_date' => "Giorni prima della scadenza",
+        'notified_persons' => '',
         'send_person' => 'Quale persona deve essere informata?',
         'sort' => 'In scadenza il',
         'reset_sort' => 'Ripristina ordinamento',

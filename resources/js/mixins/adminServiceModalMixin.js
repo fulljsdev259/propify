@@ -29,6 +29,7 @@ export default (config = {}) => {
                 }
             },
             async sendServiceMail(serviceAttachModel) {
+                console.log('provider', serviceAttachModel)
                 if (serviceAttachModel.provider) {
                     this.mailSending = true;
 
@@ -53,7 +54,7 @@ export default (config = {}) => {
                                 body: serviceAttachModel.body,
                                 cc: serviceAttachModel.cc,
                                 bcc: serviceAttachModel.bcc,
-                                property_manager_id: serviceAttachModel.manager.edit_id,
+                                property_manager_id: serviceAttachModel.manager,
                                 to: serviceAttachModel.to
                             });
                         }

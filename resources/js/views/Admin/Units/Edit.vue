@@ -438,7 +438,12 @@
                 assigneesActions: [
                     {
                     width: 70,
-                    buttons: [/*{
+                    buttons: [{
+                        title: 'models.resident.view',
+                        onClick: this.residentEditView,
+                        icon: 'el-icon-user',
+                        tooltipMode: true
+                    }/*, {
                         title: 'general.unassign',
                         tooltipMode: true,
                         type: 'danger',
@@ -571,6 +576,14 @@
             },
             residentStatusLabel(status) {
                 return this.$t(`models.resident.status.${this.residentStatusConstants[status]}`)
+            },
+            residentEditView(row) {
+                this.$router.push({
+                    name: 'adminResidentsView',
+                    params: {
+                        id: row.id
+                    }
+                });
             },
         },
         mounted() {

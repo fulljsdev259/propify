@@ -47,11 +47,10 @@
         },
         computed: {
             ...mapGetters(['loggedInUser']),
-
       
         },
         async mounted () {
-          
+            console.log(this.data.user)
         }
     }
 </script>

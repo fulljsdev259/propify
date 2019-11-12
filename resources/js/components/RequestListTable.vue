@@ -28,74 +28,15 @@
                     <el-col :key="key" :span="filterColSize" v-for="(filter, key) in filters">
                         <template v-if="!filter.parentKey || filterModel[filter.parentKey]">
                             <el-form-item
-                                v-if="filter.type === filterTypes.select && filter.data &&  filter.data.length">
-                                <!-- <el-select
-                                    v-if="filter.key == 'category_id'"
-                                    clearable
-                                    :filterable="true"
-                                    :placeholder="filter.name"
-                                    @change="filterChanged(filter)"
-                                    class="filter-select"
-                                    multiple
-                                    collapse-tags
-                                    v-model="filterModel[filter.key]">
-                                    <el-option :label="`${$t('general.placeholders.select')+' '+filter.name}`" value=""></el-option>
-                                    <el-option
-                                        :key="item.id + item.name "
-                                        :label="$t(`models.request.category_list.${item.name}`)"
-                                        :value="item.id"
-                                        v-for="item in filter.data">
-                                    </el-option>
-                                </el-select> -->
-                                <custom-select
-                                    v-if="filter.key == 'category_id'"
-                                    :placeholder="filter.name"
-                                    :options="filter.data"
+                                v-if="filter.type === filterTypes.select && filter.data ">
+                        
+                                <list-filter-select
+                                    :filter="filter"
                                     :selectedOptions="filterModel[filter.key]"
                                     @select-changed="handleSelectChange($event, filter)"
                                 >
 
-                                </custom-select>
-                                <el-select
-                                    v-else-if="filter.key == 'status' || filter.key == 'internal_priority'"
-                                    clearable
-                                    :filterable="true"
-                                    :placeholder="filter.name"
-                                    @change="filterChanged(filter)"
-                                    class="filter-select"
-                                    multiple
-                                    collapse-tags
-                                    v-model="filterModel[filter.key]">
-                                    <el-option :label="`${$t('general.placeholders.select')+' '+filter.name}`" value=""></el-option>
-                                    <el-option
-                                        :key="item.id + item.name "
-                                        :label="item.name"
-                                        :value="item.id"
-                                        v-for="item in filter.data">
-                                    </el-option>
-                                </el-select>
-                                <el-select
-                                    v-else
-                                    clearable
-                                    :filterable="true"
-                                    :placeholder="filter.name"
-                                    @change="filterChanged(filter)"
-                                    class="filter-select"
-                                    v-model="filterModel[filter.key]">
-                                    <el-option 
-                                        v-if="filterModel[filter.key]!=='' && filterModel[filter.key]!==undefined" 
-                                        :label="`${$t('general.placeholders.select')+' '+filter.name}`" 
-                                        value="">
-                                    </el-option>
-                                    <el-option
-                                        :key="item.id + item.name"
-                                        :label="item.name"
-                                        :value="item.id"
-                                        v-for="item in filter.data">
-                                    </el-option>
-                                </el-select>
-
-                               
+                                </list-filter-select>
                             </el-form-item>
                             <el-form-item
                                 v-else-if="filter.type === filterTypes.text || filter.type === filterTypes.number">
@@ -109,7 +50,7 @@
                                 </el-input>
                             </el-form-item>
                             <el-form-item v-else-if="filter.type === filterTypes.date">
-                                <el-date-picker
+                                <!-- <el-date-picker
                                     :format="filter.format"
                                     :placeholder="filter.name"
                                     :value-format="filter.format"
@@ -118,31 +59,13 @@
                                     type="date"
                                     v-model="filterModel[filter.key]"
                                 >
-                                </el-date-picker>
-                            </el-form-item>
-                            <el-form-item v-else-if="filter.type === filterTypes.remoteSelect">
-                                <el-select
-                                    clearable
-                                    :loading="filter.remoteLoading"
-                                    :placeholder="filter.name"
-                                    :remote-method="data => remoteFilter(filter,data)"
-                                    @change="filterChanged(filter)"
-                                    filterable
-                                    remote
-                                    reserve-keyword
-                                    class="remote-select"
-                                    v-model="filterModel[filter.key]">
-                                    <el-option
-                                        :label="$t('general.all')"
-                                        value=""
-                                    >
-                                    </el-option>
-                                    <el-option
-                                        :key="item.id"
-                                        :label="item.name"
-                                        :value="item.id"
-                                        v-for="item in filter.data"/>
-                                </el-select>
+                                </el-date-picker> -->
+                                <list-filter-date-picker
+                                    :filter="filter"
+                                    :selected="filterModel[filter.key]"
+                                    @date-changed="handleSelectChange($event, filter)"
+                                >
+                                </list-filter-date-picker>
                             </el-form-item>
                         </template>
 
@@ -187,7 +110,7 @@
             @row-click="editLink">
 
             <el-table-column
-                :key="'OneCol'"
+                :key="'OneCol' + key"
                 :width="column.width"
                 v-for="(column, key) in headerWithOneCol"
             >
@@ -226,7 +149,8 @@
     import RequestCount from 'components/RequestCount.vue';
     import tableAvatar from 'components/Avatar';
     import RequestDetailCard from 'components/RequestDetailCard';
-    import CustomSelect from 'components/CustomSelect';
+    import ListFilterSelect from 'components/ListFilterSelect';
+    import ListFilterDatePicker from 'components/ListFilterDatePicker';
     import filters from 'components/Filters';
     
     import {ResponsiveMixin} from 'vue-responsive-components'
@@ -242,7 +166,8 @@
             'table-avatar': tableAvatar,
             RequestDetailCard,
             filters,
-            CustomSelect
+            ListFilterSelect,
+            ListFilterDatePicker
         },
         props: {
             header: {
@@ -634,14 +559,13 @@
                 const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
 //                const value = queryFilterValue && queryFilterValue.match(dateReg) ? queryFilterValue : parseInt(queryFilterValue); 
                 let value;
-
-                if((filter.key=='category_id' || filter.key == 'status') && queryFilterValue !== undefined && !Array.isArray(queryFilterValue))
+                if((filter.key.indexOf('id') !== -1 || filter.key == 'status') && queryFilterValue !== undefined && !Array.isArray(queryFilterValue)) {
                     value = [queryFilterValue];
+                }
                 else
                     value = queryFilterValue;
-                    
                 if(!Array.isArray(value))
-                    value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
+                    value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search' || filter.key==='solved_date' || filter.key==='created_from' || filter.key==='created_to') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
                 else
                     for(let i = 0; i < value.length; i ++)
                         value[i] = parseInt(value[i]);
@@ -677,6 +601,10 @@
             justify-content: center;
             margin-right: 20px;
         }
+    }
+    .el-col {
+        width: auto !important;
+        height: 62px;
     }
     .el-input {
         &.el-input--suffix {

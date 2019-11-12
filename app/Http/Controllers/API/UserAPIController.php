@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Criteria\Common\RequestCriteria;
+use App\Criteria\User\FilterByExcludeAssigneesCriteria;
 use App\Criteria\User\FilterByRolesCriteria;
 use App\Criteria\User\WhereCriteria;
 use App\Http\Controllers\AppBaseController;
@@ -83,10 +84,14 @@ class UserAPIController extends AppBaseController
     {
         $this->userRepository->pushCriteria(new RequestCriteria($request));
         $this->userRepository->pushCriteria(new FilterByRolesCriteria($request));
+        $this->userRepository->pushCriteria(new FilterByExcludeAssigneesCriteria($request));
         $this->userRepository->pushCriteria(new LimitOffsetCriteria($request));
 
         $getAll = $request->get('get_all', false);
         if ($getAll) {
+            if ($request->get_role) {
+                $this->userRepository->with('roles');
+            }
             $users = $this->userRepository->get();
             return $this->sendResponse($users->toArray(), 'Users retrieved successfully');
         }
@@ -311,7 +316,7 @@ class UserAPIController extends AppBaseController
             unset($user->resident);
             $resident->load(['contracts' => function($q) {
                 $q->where('status' , Contract::StatusActive)
-                    ->with('building', 'unit');
+                    ->with('building.address', 'unit');
             }]);
 
             $contactEnable = (bool) $this->getResidentContactEnable($resident);

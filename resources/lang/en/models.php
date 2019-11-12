@@ -361,6 +361,8 @@ return [
             'key_service' => 'Key service',
             'caretaker' => 'Caretaker',
             'real_estate_service' => 'Real estate service',
+            'business_person' => 'Business Person',
+            'tu-gu' => 'TU/GU',
         ],
         'contact_details' => 'Contact details',
         'user_credentials' => 'User credentials',
@@ -400,8 +402,21 @@ return [
         'types' => [
             'label' => 'Type',
             'rent' => 'Rent',
-            'sell' => 'Sell'
-        ]
+            'sell' => 'Sell',
+            'property' => 'Property',
+            'building_land' => 'Building Land',
+            'trade' => 'Trade',
+            'multi-storey_car_park' => 'Multi-storey Car Park'
+        ],
+        'assignment_types' => [
+            'label' => 'Type',
+            'fortimo_employees' => 'Fortimo employees',
+            'management' => 'Management',
+            'initial_letting' => 'Initial Letting',
+            'caretaker' => 'Caretaker',
+            'administration' => 'Administration'
+        ],
+        'url' => 'Url'
     ],
     'request' => [        
         'deleted' => 'Request deleted',
@@ -480,6 +495,8 @@ return [
         'assignment' => 'Managers/service providers',        
         'active_reminder_switcher' => 'Reminder',
         'days_left' => 'How many days before should the email be sent?',
+        'days_left_due_date' => 'Days left before due date',
+        'notified_persons' => 'Notified persons',
         'send_person' => 'Which person should be notified?',
         'sort' => 'Sort',
         'reset_sort' => 'Reset Sort',

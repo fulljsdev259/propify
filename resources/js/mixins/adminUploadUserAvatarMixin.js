@@ -1,4 +1,5 @@
 import {mapActions} from 'vuex';
+import { EventBus } from '../event-bus.js';
 
 export default {
     data() {
@@ -17,7 +18,7 @@ export default {
 
             console.log(this.$store.getters.loggedInUser.avatar)
             if( this.$store.getters.loggedInUser.id == userId ) {
-                this.$root.$emit('avatar-update');
+                EventBus.$emit('avatar-update');
             }
         },
         cropped(e) {

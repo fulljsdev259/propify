@@ -87,7 +87,7 @@
                 <el-form-item :label="$t('models.resident.contract.duration')"
                             prop="duration"
                             class="label-block">
-                    <el-select placeholder="Select" style="display: block" 
+                    <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
                                 v-model="model.duration">
                         <el-option
                                 :key="type.value"
@@ -128,7 +128,7 @@
    
             <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.status.label')" prop="status" class="label-block">
-                    <el-select placeholder="Select" style="display: block" 
+                    <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
                                 v-model="model.status">
                         <el-option
                                 :key="status.value"
@@ -157,7 +157,7 @@
             <el-col :md="12">
                 <el-form-item :label="$t('models.resident.contract.type_of_deposit')"
                             prop="deposit_type">
-                    <el-select placeholder="Select" style="display: block" 
+                    <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
                                 v-model="model.deposit_type">
                         <el-option
                                 :key="type.value"

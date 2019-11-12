@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Jobs\Notify\NotifyNewRequest;
 use App\Jobs\Notify\NotifyEmailReceptionistsNewPublicRequest;
 use App\Jobs\Notify\NotifyRequestDue;
+use App\Jobs\Notify\NotifyRequestStatusChange;
 use App\Models\AuditableModel;
 use App\Mails\NotifyServiceProvider;
 use App\Models\Comment;
@@ -69,9 +70,17 @@ class RequestRepository extends BaseRepository
     public function create(array $attributes)
     {
         $attributes = self::getPostAttributes($attributes);
-        if (isset($attributes['category'])) {
-            $categoryAttributes = Request::CategoryAttributes[$attributes['category']] ?? [];
-            if (empty($categoryAttributes) || ! in_array(Request::QualificationAttr, $categoryAttributes)) {
+        if (isset($attributes['category_id'])) {
+            $categoryAttributes = Request::CategoryAttributes[$attributes['category_id']] ?? [];
+            if (isset($attributes['sub_category_id'])) {
+                $subCategoryAttributes = Request::SubCategoryAttributes[$attributes['sub_category_id']] ?? [];
+            } else {
+                $subCategoryAttributes = [];
+            }
+            if (
+                (empty($categoryAttributes) || ! in_array(Request::QualificationAttr, $categoryAttributes))
+                && (empty($subCategoryAttributes) || ! in_array(Request::QualificationAttr, $subCategoryAttributes))
+            ) {
                 unset($attributes['qualification']);
             }
         }
@@ -117,7 +126,7 @@ class RequestRepository extends BaseRepository
     {
         $user = Auth::user();
         if ($user->resident) {
-
+            // @TODO later unset not permitted fields
             $attr = [];
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
@@ -135,6 +144,8 @@ class RequestRepository extends BaseRepository
             $attr = self::fixNeededData($attr, $attributes, 'location');
             $attr = self::fixNeededData($attr, $attributes, 'is_public');
             $attr = self::fixNeededData($attr, $attributes, 'room');
+            $attr = self::fixNeededData($attr, $attributes, 'percentage');
+            $attr = self::fixNeededData($attr, $attributes, 'amount');
 
             // @TODO maybe need
 //            $attr = self::fixNeededData($attr, $attributes, 'capture_phase');
@@ -166,6 +177,7 @@ class RequestRepository extends BaseRepository
         }
         return $attributes;
     }
+
 
     /**
      * @param $attributes
@@ -204,19 +216,27 @@ class RequestRepository extends BaseRepository
      */
     public function updateExisting(Model $model, $attributes)
     {
+        \DB::beginTransaction();
         $attributes = $this->getPutAttributes($attributes, $model);
         $attributes = $this->getStatusRelatedAttributes($attributes, $model);
         $attributes = $this->fixContractRelated($attributes);
         $oldModel = clone $model;
         $updatedModel =  parent::updateExisting($model, $attributes);
 
-        if ($updatedModel) {
-            $this->notifyStatusChangeIfNeed($oldModel, $updatedModel);
-
-            if ($updatedModel->due_date && $updatedModel->due_date != $oldModel->due_date) {
-                $this->notifyDue($updatedModel);
-            }
+        if (!$updatedModel) {
+            \DB::rollBack();
+            return $updatedModel;
         }
+
+        $notificationsData = dispatch_now(new NotifyRequestStatusChange($oldModel, $updatedModel, false));
+        if ($updatedModel->due_date && $updatedModel->due_date != $oldModel->due_date) {
+            $notifyRequestDue = dispatch_now(new NotifyRequestDue($updatedModel, false));
+            $notificationsData = $notificationsData->merge($notifyRequestDue);
+        }
+
+        // save all sent notification data
+        $updatedModel->newSystemNotificationAudit($notificationsData);
+        \DB::commit();
 
         return $updatedModel;
     }
@@ -274,136 +294,6 @@ class RequestRepository extends BaseRepository
         }
 
         return true;
-    }
-
-    /**
-     * @param Request $originalRequest
-     * @param Request $request
-     */
-    public function notifyStatusChangeIfNeed(Request $originalRequest, Request $request)
-    {
-        if ($originalRequest->status != $request->status) {
-            $user = $request->resident->user;
-            $user->notify(new StatusChangedRequest($request, $originalRequest, $user));
-        }
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function notifyNewRequest(Request $request)
-    {
-        $contract = $request->contract;
-        if (! $contract->building) {
-            return;
-        }
-
-        $propertyManagers = PropertyManager::whereHas('buildings', function ($q) use ($contract) {
-            $q->where('buildings.id', $contract->building->id);
-        })->get();
-
-        $i = 0;
-        foreach ($propertyManagers as $propertyManager) {
-            $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
-            $propertyManager->user->redirect = "/admin/requests/" . $request->id;
-
-            $propertyManager->user
-                ->notify((new NewResidentRequest($request, $propertyManager->user, $contract->resident->user))
-                    ->delay(now()->addSeconds($delay)));
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @param Comment $comment
-     */
-    public function notifyNewComment(Request $request, Comment $comment)
-    {
-        $i = 0;
-        foreach ($request->allPeople as $person) {
-            $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
-
-            if ($person->id != $comment->user->id) {
-                $person->notify((new RequestCommented($request, $person, $comment))
-                    ->delay(now()->addSeconds($delay)));
-            }
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @param User $uploader
-     * @param Media $media
-     */
-    public function notifyMedia(Request $request, User $uploader, Media $media)
-    {
-        $i = 0;
-        foreach ($request->allPeople as $person) {
-            $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
-
-            if ($person->id != $uploader->id) {
-                $person->notify((new RequestMedia($request, $uploader, $media))
-                    ->delay(now()->addSeconds($delay)));
-            }
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @param ServiceProvider $provider
-     * @param $manager
-     * @param $mailDetails
-     */
-    public function notifyProvider(Request $request, ServiceProvider $provider, $manager, $mailDetails)
-    {
-        $toEmails = [$provider->user->email];
-        if (!empty($mailDetails['to'])) {
-            $toEmails[] = $mailDetails['to'];
-        }
-
-        $ccEmails = $manager ? [$manager->user->email] : [];
-        if (!empty($mailDetails['cc']) && is_array($mailDetails['cc'])) {
-            $ccEmails = array_merge($ccEmails, $mailDetails['cc']);
-        }
-
-        $bccEmails = $mailDetails['bcc'] ?? [];
-        \Mail::to($toEmails)
-            ->cc($ccEmails)
-            ->bcc($bccEmails)
-            ->send( new NotifyServiceProvider($provider, $request, $mailDetails));
-
-        $auditData = [
-            'serviceProvider' => $provider,
-            'propertyManager' => $manager,
-            'mailDetails' => $mailDetails
-        ];
-        $request->registerAuditEvent(AuditableModel::EventProviderNotified, $auditData);
-
-        $u = \Auth::user();
-        $conversation = $request->conversationFor($u, $provider->user);
-        $comment = $mailDetails['title'] . "\n\n" . strip_tags($mailDetails['body']);
-        $conversation->comment($comment);
-
-        if ($manager && $manager->user) {
-            $conversation = $request->conversationFor($u, $manager->user);
-            if ($conversation) {
-                $conversation->comment($comment);
-            }
-        }
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function notifyDue(Request $request)
-    {
-        $beforeHours = env('REQUEST_DUE_MAIL', 24);
-        $providerUsers = $request->providers()->with('user')->get()->pluck('user')->all();
-        $managerUsers = $request->managers()->with('user')->get()->pluck('user')->all();
-
-        foreach (array_merge($providerUsers, $managerUsers) as $u) {
-            $u->notify((new RequestDue($request))->delay($request->due_date->subHours($beforeHours)));
-        }
     }
 
     public function deleteRequesetWithUnitIds($ids)

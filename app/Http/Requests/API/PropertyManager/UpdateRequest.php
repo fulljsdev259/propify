@@ -14,7 +14,11 @@ class UpdateRequest extends BaseRequest
      */
     public function authorize()
     {
-        if ($this->can('edit-property_manager')) {
+        if ( ! $this->can('edit-property_manager')) {
+            return false;
+        }
+
+        if ($this->user()->hasRole('administrator')) {
             return true;
         }
 

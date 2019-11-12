@@ -151,6 +151,8 @@ class ServiceProvider extends AuditableModel
     const ServiceProviderCategoryKeyService = 5;
     const ServiceProviderCategoryCaretaker = 6;
     const ServiceProviderCategoryRealEstateService = 7;
+    const ServiceProviderCategoryBusinessPerson = 8;
+    const ServiceProviderCategoryTuGu = 9;
 
     const ServiceProviderCategory = [
         self::ServiceProviderCategoryElectrician => 'electrician',
@@ -160,6 +162,8 @@ class ServiceProvider extends AuditableModel
         self::ServiceProviderCategoryKeyService => 'key_service',
         self::ServiceProviderCategoryCaretaker => 'caretaker',
         self::ServiceProviderCategoryRealEstateService => 'real_estate_service',
+        self::ServiceProviderCategoryBusinessPerson => 'business_person',
+        self::ServiceProviderCategoryTuGu => 'tu-gu',
     ];
 
     public $fillable = [

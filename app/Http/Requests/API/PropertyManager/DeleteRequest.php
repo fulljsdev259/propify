@@ -14,7 +14,11 @@ class DeleteRequest extends BaseRequest
      */
     public function authorize()
     {
-        if ($this->can('delete-property_manager')) {
+        if ( ! $this->can('delete-property_manager')) {
+            return false;
+        }
+
+        if ($this->user()->hasRole('administrator')) {
             return true;
         }
 

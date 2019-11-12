@@ -224,7 +224,7 @@
                     },
                     {
                         name: this.$t('general.filters.quarters'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'quarter_id',
                         data: this.quarters,
                         remoteLoading: false,
@@ -232,7 +232,7 @@
                     },
                     {
                         name: this.$t('general.filters.property_managers'),
-                        type: 'remote-select',
+                        type: 'select',
                         key: 'manager_id',
                         data: this.propertyManagers,
                         remoteLoading: false,
@@ -387,6 +387,10 @@
             closeDeleteBuildModal() {
                 this.deleteBuildingVisible = false;
             },            
+        },
+        async mounted() {
+            this.quarters = await this.fetchRemoteQuarters();
+            this.propertyManagers = await this.fetchRemotePropertyManagers();
         }
     };
 </script>
@@ -399,5 +403,4 @@
             word-break: break-word;
         }
     }
-
 </style>

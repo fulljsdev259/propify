@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Settings\UpdateRequest;
 use App\Http\Requests\API\Settings\ViewRequest;
+use App\Models\AuditableModel;
 use App\Models\Settings;
 use App\Models\User;
 use App\Repositories\AddressRepository;
@@ -121,6 +122,7 @@ class SettingsAPIController extends AppBaseController
      * @param UpdateRequest $request
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function update(UpdateRequest $request)
     {
@@ -141,21 +143,28 @@ class SettingsAPIController extends AppBaseController
         $residentLogoFileData = base64_decode($request->get('resident_logo_upload', ''));
         $faviconIconFileData = base64_decode($request->get('favicon_icon_upload', ''));
 
+        $auditData = [];
+
         try {
             if ($logoFileData) {
-                $input['logo'] = $this->settingsRepository->uploadImage($logoFileData, $settings);
+                $fileName = Str::slug(sprintf('%s-%d', $settings->name, $settings->id)) . '.png';
+                $input['logo'] = $this->settingsRepository->uploadImage($logoFileData, $settings, $fileName);
+                $auditData['logo'] = $fileName;
             }
             if ($circleLogoFileData) {
                 $fileName = Str::slug(sprintf('%s-%d', $settings->name, $settings->id)) . '-circle-logo.png';
                 $input['circle_logo'] = $this->settingsRepository->uploadImage($circleLogoFileData, $settings, $fileName);
+                $auditData['circle_logo'] = $fileName;
             }
             if ($residentLogoFileData) {
                 $fileName = Str::slug(sprintf('%s-%d', $settings->name, $settings->id)) . '-resident-logo.png';
                 $input['resident_logo'] = $this->settingsRepository->uploadImage($residentLogoFileData, $settings, $fileName);
+                $auditData['resident_logo'] = $fileName;
             }
             if ($faviconIconFileData) {
                 $fileName = Str::slug(sprintf('%s-%d', $settings->name, $settings->id)) . '-favicon-icon.png';
                 $input['favicon_icon'] = $this->settingsRepository->uploadImage($faviconIconFileData, $settings, $fileName);
+                $auditData['favicon_icon'] = $fileName;
             }
         } catch (\Exception $e) {
             return $this->sendError(__('models.user.errors.image_upload') . $e->getMessage());
@@ -163,7 +172,7 @@ class SettingsAPIController extends AppBaseController
 
         try {
             if (isset($input['address'])) {
-                $this->addressRepository->update($input['address'], $settings->address_id);
+                $address = $this->addressRepository->update($input['address'], $settings->address_id);
             }
             $input['address_id'] = $settings->address_id;
             if (isset($input['login_variation_2_slider'])) {
@@ -176,8 +185,12 @@ class SettingsAPIController extends AppBaseController
         } catch (\Exception $e) {
             return $this->sendError(__('settings.errors.update'));
         }
-        $settings->pinboard_receivers = User::whereIn('id', $settings->pinboard_receiver_ids)->get();
 
+        if (isset($address)) {
+            $settings->addDataInAudit(AuditableModel::MergeInMainData, $address, AuditableModel::UpdateOrCreate);
+        }
+        $settings->addDataInAudit(AuditableModel::MergeInMainData, $auditData, AuditableModel::UpdateOrCreate);
+        $settings->pinboard_receivers = User::whereIn('id', $settings->pinboard_receiver_ids)->get();
         $response = (new SettingsTransformer)->transform($settings);
         return $this->sendResponse($response, __('settings.saved'));
     }

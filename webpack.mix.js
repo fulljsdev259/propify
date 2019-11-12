@@ -3,7 +3,7 @@ require('laravel-mix-alias')
 require('laravel-mix-auto-extract')
 
 const mix = require('laravel-mix');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CompressionPlugin = require('compression-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
@@ -122,11 +122,11 @@ if (mix.inProduction()) {
             filename: '[name].js',
             chunkFilename: 'js/[name].js',
         },
-        plugins: [
+        /*plugins: [
             new BundleAnalyzerPlugin({
                 openAnalyzer: false
             })
-        ]
+        ]*/
     }).sourceMaps();
 }
 

@@ -39,7 +39,7 @@
             </el-avatar>
             <i v-else class="el-icon-s-custom def-icon"></i>
 
-            <div v-if="uploaded || defaultAvatarSrc" class="avatar-box__btn">
+            <div v-if="uploaded || (defaultAvatarSrc && !showCamera)" class="avatar-box__btn">
                 <i class="ti-pencil"></i>
             </div>
             <upload-avatar v-else @file="upload"/>
@@ -96,6 +96,10 @@
             defaultAvatarSrc: {
                 type: String,
                 default: ''
+            },
+            showCamera: {
+                type: Boolean,
+                default: false
             }
         },
         data() {

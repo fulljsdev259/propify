@@ -115,7 +115,7 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12">
+                                <el-col :md="12" v-if="this.showComponent == true">
                                     <el-form-item :label="$t('models.request.category_options.component')">
                                         <el-input v-model="model.component"></el-input>
                                     </el-form-item>
@@ -157,24 +157,24 @@
                                 <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true">
                                     <el-form-item 
                                         :label="$t('models.request.category_options.payer_percent')"
-                                        :rules="validationRules.payer_percent"
-                                        prop="payer_percent">
+                                        :rules="validationRules.percentage"
+                                        prop="percentage">
                                         <el-input 
                                             type="number"
-                                            v-model="model.payer_percent" 
+                                            v-model="model.percentage" 
                                         >
                                             <template slot="prepend">%</template>
                                         </el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true">
+                                <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true" style="height: 97px">
                                     <el-form-item 
                                         :label="$t('models.request.category_options.payer_amount')"
-                                        :rules="validationRules.payer_amount"
-                                        prop="payer_amount">
+                                        :rules="validationRules.amount"
+                                        prop="amount">
                                         <el-input 
                                             type="number"
-                                            v-model="model.payer_amount" 
+                                            v-model="model.amount" 
                                         >
                                             <template slot="prepend">CHF</template>
                                         </el-input>
@@ -428,22 +428,23 @@
                                     <el-row :gutter="10"> 
                                         <el-col :md="12" v-if="model.active_reminder">
                                             <el-form-item :label="$t('models.request.days_left')"
-                                                        prop="days_left">
-                                                <el-input v-model="model.days_left" type="number"></el-input>
+                                                        prop="days_left_due_date">
+                                                <el-input v-model="model.days_left_due_date" type="number"></el-input>
                                             </el-form-item>
                                         </el-col>
                                         <el-col :md="12" v-if="model.active_reminder">
                                             <el-form-item :label="$t('models.request.send_person')"
-                                                        prop="person_id">
+                                                        prop="reminder_user_ids ">
                                                 <el-select
                                                     :loading="remoteLoading"
                                                     :placeholder="$t('models.request.placeholders.person')"
                                                     :remote-method="remoteSearchPersons"
                                                     filterable
+                                                    multiple
                                                     remote
                                                     reserve-keyword
                                                     style="width: 100%;"
-                                                    v-model="model.person_id">
+                                                    v-model="model.reminder_user_ids ">
                                                     <el-option
                                                         :key="person.id"
                                                         :label="person.name"
@@ -832,6 +833,9 @@
                 }
             }
         }
+        // .el-input {
+        //     height: 40px;
+        // }
     }
 
     .switch-item {
