@@ -495,6 +495,8 @@ return [
         'assignment' => 'Managers/service providers',        
         'active_reminder_switcher' => 'Reminder',
         'days_left' => 'How many days before should the email be sent?',
+        'days_left_due_date' => 'Days left before due date',
+        'notified_persons' => 'Notified persons',
         'send_person' => 'Which person should be notified?',
         'sort' => 'Sort',
         'reset_sort' => 'Reset Sort',
