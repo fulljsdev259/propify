@@ -313,9 +313,14 @@
                                 {{ $t('general.workflow') }}
                             </span>
                             <el-collapse accordion>
-                                <el-collapse-item name="general_concerns">
+                                 <el-collapse-item
+                                        :key="category"
+                                        :label="`${category.name}`"
+                                        :value="category"
+                                        :name="category"
+                                        v-for="category in workflowCategories">
                                     <template slot="title">
-                                        General concerns <i class="header-icon el-pencil"></i>
+                                        {{category}} <i class="header-icon el-pencil"></i>
                                     </template>
                                     <el-row>
                                         <el-col :md="1">
@@ -397,17 +402,6 @@
                                                 </el-select>
                                         </el-col>
                                     </el-row>
-                                </el-collapse-item>
-                                <el-collapse-item name="malfunction">
-                                    <template slot="title">
-                                        Malfunction
-                                    </template>
-                                    
-                                </el-collapse-item>
-                                <el-collapse-item name="deficiency">
-                                    <template slot="title">
-                                        Mangel
-                                    </template>
                                 </el-collapse-item>
                             </el-collapse>
                         </el-tab-pane>
@@ -639,6 +633,7 @@
                 selectedWorkflowToUser: [],
                 workflowCcUserList: [],
                 selectedWorkflowCcUser: [],
+                workflowCategories: []
             }
         },
         methods: {
@@ -897,6 +892,12 @@
             EventBus.$on('audit-get-counted', audit_count => {
                 this.auditCount = audit_count;
             });
+
+            this.workflowCategories = [
+                'General options',
+                'Malfunction',
+                'Mangel'
+            ]
         },
         watch: {
             'visibleDrawer': {
