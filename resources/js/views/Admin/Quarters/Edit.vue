@@ -316,7 +316,7 @@
                                 <div class="workflow-button-bar">
                                     <el-button 
                                             type="primary" 
-                                            @click="toggleWorkflowDrawer" 
+                                            @click="showAddWorkflow" 
                                             icon="icon-plus" 
                                             size="mini" 
                                             round>
@@ -324,6 +324,11 @@
                                     </el-button>
                                 </div>
                             </el-row>
+                            <workflow-form v-if="isAddWorkflow"
+                                mode="add" 
+                                :quarter_id="model.id" 
+                                :visible.sync="visibleDrawer"
+                                @add-workflow="addWorkflow"/>
                             <el-collapse accordion>
                                  <el-collapse-item
                                         :key="workflow.title"
@@ -334,7 +339,14 @@
                                     <template slot="title">
                                         {{workflow.title}}
                                     </template>
-                                    <el-row>
+                                    <workflow-form v-if="isEditingWorkflow[$index]"
+                                            mode="edit" 
+                                            :quarter_id="model.id" 
+                                            :data="workflow"
+                                            :editing_index="$index"
+                                            :visible.sync="visibleDrawer"
+                                            @update-workflow="updateWorkflow"/>
+                                    <el-row v-else>
                                         <el-col :md="5" class="workflow-label">
                                             <span>{{$t(`models.request.category_list.${workflow.categoryData.name}`)}}</span>
                                         </el-col>
@@ -371,11 +383,11 @@
                                             </el-tag>
                                         </el-col>
                                     </el-row>
-                                    <el-row>
+                                    <el-row v-if="!isEditingWorkflow[$index]">
                                         <el-col class="edit workflow-button-bar">
                                             <el-button 
                                                 type="primary" 
-                                                @click="editWorkflowDrawer($index)" 
+                                                @click="showEditWorkflow($index)"
                                                 icon="icon-search" 
                                                 size="mini" 
                                                 round>
@@ -630,7 +642,7 @@
                 isAddContract: false,
                 isWorkflow: false,
                 isAddWorkflow: false,
-                isEditWorkflow: false,
+                isEditingWorkflow: [],
                 editingContractIndex: -1,
                 editingWorkflowIndex: -1,
                 activeDrawerTab: "emergency",
@@ -746,6 +758,13 @@
                 this.isWorkflow = true
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
+            showAddWorkflow() {
+                this.isAddWorkflow = true
+            },
+            showEditWorkflow(index) {
+                this.$set(this.isEditingWorkflow, index, true)
+                this.isEditingWorkflow[index] = true
+            },
             editWorkflowDrawer(index) {
                 this.visibleDrawer = true
                 this.isWorkflow = true
@@ -859,8 +878,14 @@
                 this.selectedWorkflowCcUser = [];
             },
             addWorkflow(flow) {
-                console.log('flow', flow)
+                console.log('add flow', flow)
+                this.isEditingWorkflow.push(false)
                 this.workflows.push(flow)
+                this.isAddWorkflow = false
+            },
+            updateWorkflow(index, flow) {
+                console.log('update flow', index, flow)
+                this.$set(this.isEditingWorkflow, index, false)
             }
         },
         computed: {

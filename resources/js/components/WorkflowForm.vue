@@ -115,10 +115,11 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        
-        <div class="drawer-actions">
-            <el-button type="primary" @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
-        </div>
+        <el-row :gutter="20" style="margin-top: 10px;">
+            <el-col :md="24" class="drawer-actions">
+                <el-button type="primary" @click="submit" icon="ti-save" round>&nbsp;{{ $t('general.actions.save') }}</el-button>
+            </el-col>
+        </el-row>
         
 
     </el-form>
@@ -143,6 +144,9 @@
             },
             mode: {
                 type: String
+            },
+            editing_index: {
+                type: Number
             }
         },
         data () {
@@ -211,6 +215,12 @@
                             cc_users: this.model.selectedWorkflowCcUser
                         }
 
+                        if(this.mode == 'add') {
+                            this.$emit('add-workflow', payload);
+                        }
+                        else {
+                            this.$emit('update-workflow', this.editing_index, payload);
+                        }
                         // const resp = await this.saveBuildingEmailReceptionists(payload)
 
                         // if(resp.success)
@@ -220,7 +230,7 @@
                         // }
 
 
-                        this.$emit('add-workflow', payload);
+                        
                         this.$emit('update:visible', false);
 
                     }
@@ -338,7 +348,17 @@
             this.loading = true;
             
             this.categories = this.$constants.requests.categories_data.tree
+
+
             console.log(this.data);
+
+            if(this.mode == 'edit') {
+                this.model.title = this.data.title
+                this.model.category = this.data.category
+                this.model.selectedWorkflowBuilding = this.data.buildings
+                this.model.selectedWorkflowToUser = this.data.to_users
+                this.model.selectedWorkflowCcUser = this.data.cc_users
+            }
             
             this.loading = false;
             
@@ -419,18 +439,10 @@
         }
 
         /deep/ .drawer-actions {
-            width: 100%;
-            flex-grow: 1;
+            
             display: flex;
-            flex-direction: column;
             justify-content: flex-end;
 
-            button {
-                width: 100%;
-                i {
-                    padding-right: 5px;
-                }
-            }
         }
     }
 </style>
