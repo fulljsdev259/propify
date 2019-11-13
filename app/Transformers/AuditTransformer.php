@@ -133,6 +133,7 @@ class AuditTransformer extends BaseTransformer
                     $statement .= __("general.components.common.audit.content.general.update_no_fieldvalue",['fieldname' => $fieldname]);
                 }
                 else{
+                    $old_value = (empty($old_value)) ? __('general.empty') : $old_value;
                     $statement .= __("general.components.common.audit.content.general.updated",['fieldname' => $fieldname, 'old' => $old_value, 'new' => $new_value]);
                 }                
                 $statement .= " ";
