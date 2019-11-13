@@ -52,7 +52,7 @@ class QuarterRepository extends BaseRepository
     /**
      * @param Model $model
      * @param $attributes
-     * @return mixed
+     * @return Quarter|mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function updateExisting(Model $model, $attributes)
@@ -70,6 +70,7 @@ class QuarterRepository extends BaseRepository
      * @param Quarter $quarter
      * @param $data
      * @return Quarter
+     * @throws \Exception
      */
     protected function saveWorkflows(Quarter $quarter, $data)
     {
@@ -95,7 +96,11 @@ class QuarterRepository extends BaseRepository
             } else {
                 // @TODO validate and sure exists
                 $workflow = $existing->where('id', $workflowData['id'])->first();
-                $workflow->update($workflowData);
+                if ($workflow) {
+                    $workflow->update($workflowData);
+                } else {
+                    throw new \Exception('invalid workflow id');
+                }
             }
 
         }
