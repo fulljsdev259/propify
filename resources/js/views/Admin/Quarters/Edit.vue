@@ -359,7 +359,7 @@
                                                     type="primary" 
                                                     :key="building.id"
                                                     v-for="building in workflow.buildings">
-                                                    {{building.name}}
+                                                    {{building.address.house_num}}
                                             </el-tag>
                                         </el-col>
                                         <el-col :md="2" class="workflow-label">
@@ -369,8 +369,8 @@
                                             <el-tag 
                                                     type="primary" 
                                                     :key="user"
-                                                    v-for="user in workflow.to_user_ids">
-                                                {{user}}
+                                                    v-for="user in workflow.to_users">
+                                                {{user.name}}
                                             </el-tag>
                                         </el-col>
                                         <el-col :md="2" class="workflow-label">
@@ -379,8 +379,8 @@
                                         <el-col :md="4" class="workflow-label">
                                             <el-tag 
                                                     :key="user"
-                                                    v-for="user in workflow.cc_user_ids">
-                                                {{user}}
+                                                    v-for="user in workflow.cc_users">
+                                                {{user.name}}
                                             </el-tag>
                                         </el-col>
                                     </el-row>

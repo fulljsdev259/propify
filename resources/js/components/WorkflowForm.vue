@@ -204,8 +204,20 @@
                         
                         this.model.categoryData = this.categories.find(item => item.id == this.model.category)
 
-                        this.to_users = []
-                        this.cc_users = []
+                        let to_users = []
+
+                        let cc_users = []
+
+                        this.model.selectedWorkflowToUser.map( user_id => {
+                            let item = this.model.workflowToUserList.find(item => item.id == user_id)
+                            to_users.push(item)
+                        })
+
+                        this.model.selectedWorkflowCcUser.map( user_id => {
+                            let item = this.model.workflowCcUserList.find(item => item.id == user_id)
+                            cc_users.push(item)
+                        })
+
                         let payload = {
                             title: this.model.title,
                             category_id: this.model.category,
@@ -213,9 +225,9 @@
                             building_ids: this.model.selectedWorkflowBuilding,
                             buildings: this.model.selectedWorkflowBuildingData,
                             to_user_ids: this.model.selectedWorkflowToUser,
-                            to_users: this.to_users,
+                            to_users: to_users,
                             cc_user_ids: this.model.selectedWorkflowCcUser,
-                            cc_users: this.cc_users
+                            cc_users: cc_users
                         }
 
                         if(this.mode == 'add') {
