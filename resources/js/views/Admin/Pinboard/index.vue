@@ -1,6 +1,9 @@
 <template>
     <div class="pinboard">
         <heading :title="$t('models.pinboard.title')" icon="icon-megaphone-1" shadow="heavy">
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
+            </template>
             <template v-if="$can($permissions.create.pinboard)">
                 <el-button @click="add" icon="ti-plus" round size="mini" type="primary">
                     {{$t('models.pinboard.add')}}
@@ -17,7 +20,7 @@
             :fetchMore="fetchMore"
             :filters="filters"
             :filtersHeader="filtersHeader"
-            :header="header"
+            :header="headerFilter"
             :items="formattedItems"
             :loading="{state: loading}"
             :isLoadingFilters="{state: isLoadingFilters}"

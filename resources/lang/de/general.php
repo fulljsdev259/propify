@@ -104,6 +104,7 @@ return [
     'name' => "Name",
     'phone' => 'Telefon',
     'id' => "ID",
+    'field' => 'Feld',
     'address' => "Adresse",
     'city' => 'Ort',
     'state' => 'Kanton',
@@ -552,5 +553,6 @@ return [
         'rd' => '.',
         'th' => '.',
     ],
+    'empty' => "(leeres Feld)",
     'notification_residents_sent' => 'Die Benachrichtigung wurde am {date} um {time} Uhr an {number} Bewohner gesendet.',
 ];

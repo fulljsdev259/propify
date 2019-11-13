@@ -1,6 +1,7 @@
 import {mapActions, mapGetters} from 'vuex';
 import {displayError, displaySuccess} from 'helpers/messages';
 import ListTable from 'components/ListTable';
+import ListFieldFilter from 'components/ListFieldFilter';
 
 export default ({
                     header,
@@ -16,7 +17,8 @@ export default ({
                     }
                 }) => ({
     components: {
-        ListTable
+        ListTable,
+        ListFieldFilter
     },
     data() {
         return {
@@ -24,7 +26,8 @@ export default ({
             header: [],
             loading: false,
             filtersHeader: '',
-            selectedItems: []
+            selectedItems: [],
+            fields: [],
         };
     },
     methods: {
@@ -38,7 +41,6 @@ export default ({
                 this.loading = true;
                 let assignee_id = this.$store.getters.loggedInUser.id;
 
-                console.log('fetch More called')
                 if (getParams) {
                     params = {...params, ...getParams};
                 }
@@ -114,13 +116,16 @@ export default ({
         },
         currPage() {
             return parseInt(this[pagination].current_page);
+        },
+        headerFilter() {
+            return this.header.filter((item, index) => {
+                return !this.fields.includes(index);
+            });
         }
     },
     watch: {
         [items](newValue) {
-            console.log([items], newValue)
             this.items = newValue;
-            console.log(this.selectedItems)
         }
     }
 });

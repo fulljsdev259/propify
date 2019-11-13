@@ -105,6 +105,7 @@ return [
     'phone' => 'Phone',
     'id' => "ID",
     'address' => "Address",
+    'field' => 'Field',
     'city' => 'City',
     'state' => 'State',
     'street' => 'Street',
@@ -552,5 +553,6 @@ return [
         'rd' => 'rd',
         'th' => 'th',
     ],
+    'empty' => "(empty field)",
     'notification_residents_sent' => 'Notification was sent to {number} residents at {time} on {date}.',
 ];

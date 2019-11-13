@@ -104,6 +104,7 @@ return [
     "name" => "Nome",
     'phone' => "Telefono",
     'id' => "ID",
+    'field' => 'Campo',
     'address' => "Indirizzo",
     'city' => "cittadino",
     "state" => "Stato",
@@ -552,5 +553,6 @@ return [
         'rd' => 'º',
         'th' => 'º',
     ],
+    'empty' => "(campo vuoto)",
     'notification_residents_sent' => 'la notifica è stata inviata a {number} residenti alle {time} il {date}.',
 ];

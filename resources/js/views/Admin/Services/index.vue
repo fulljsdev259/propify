@@ -1,6 +1,9 @@
 <template>
     <div class="services">
         <heading :title="$t('models.service.title')" icon="icon-tools" shadow="heavy">
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
+            </template>
             <template v-if="$can($permissions.create.provider)">
                 <el-button @click="add" icon="ti-plus" round size="mini" type="primary">{{$t('models.service.add_title')}}
                 </el-button>
@@ -16,7 +19,7 @@
             :fetchMore="fetchMore"
             :filters="filters"
             :filtersHeader="filtersHeader"
-            :header="header"
+            :header="headerFilter"
             :items="items"
             :loading="{state: loading}"
             :isLoadingFilters="{state: isLoadingFilters}"
@@ -52,7 +55,7 @@
         name: 'AdminServices',
         mixins: [mixin, getFilterStates, getFilterQuarters, PrepareCategories],
         components: {
-            Heading
+            Heading,
         },
         data() {
             return {
@@ -126,7 +129,7 @@
                         data: []
                     }
                 ]
-            }
+            },
         },
         methods: {
             ...mapActions(['getBuildings']),

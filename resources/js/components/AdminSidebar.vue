@@ -1,5 +1,8 @@
 <template>
     <aside class="el-menu-aside">
+        <div class="logo-image">
+            <img :src="logo" v-show="logo" width="60"/>
+        </div>
         <el-menu :default-active="currActive" :unique-opened="true" class="el-menu-vertical-demo" :collapse="collapsed">
             <li class="slot" index="slot" v-if="hasSlot">
                 <slot/>
@@ -42,6 +45,7 @@
                 </el-submenu>
             </ul>
         </el-menu>
+        <slot name="header-action"/>
     </aside>
 </template>
 
@@ -126,7 +130,15 @@
         computed: {
             hasSlot() {
                 return !!this.$slots.default;
-            }
+            },
+            logo() {
+                
+                if(localStorage.getItem('logo') != this.$constants.logo.logo ) {
+                    localStorage.setItem('logo', this.$constants.logo.logo);
+                }
+
+                return localStorage.getItem('logo') ? `/${localStorage.getItem('logo')}` : '';
+            },
         },
         watch: {
             links() {
@@ -167,6 +179,33 @@
     }
 </script>
 <style lang="scss" scoped>
+    aside {
+        display: flex;
+        flex-direction: column;
+        border-right: 2px solid var(--border-color-base);
+        .logo-image {
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+            margin-bottom: 70px;
+        }
+        .el-menu {
+            flex-grow: 1;
+        }
+        .actions {
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            .notification-badge {
+                margin: 0 0 30px;
+            }
+            span {
+                text-align: center;
+            }
+        }
+    }
     /deep/ .el-submenu {
         /deep/ .el-submenu__title {
             .el-icon-arrow-right {
@@ -178,21 +217,38 @@
             display: block;
         }
     }
-    /deep/ .el-menu-item.is-active, .el-menu-item:hover {
-        font-weight: bolder;
-        background-color: var(--primary-color) !important;
-        color: white;
-
-        i {
-            color: white;
+    /deep/ .el-submenu.is-active, .el-menu-item.is-active, .el-menu-item:hover {
+        color: var(--primary-color);
+        background-color: var(--color-white);
+        i { 
+            color: var(--primary-color);
+        }
+        &:before {
+            content: '';
+            height: 70%;
+            width: 5px;
+            position: absolute;
+            left: 0;
+            top: 15%;
+            background-color: var(--primary-color);
+            border-radius: 0 16px 16px 0;
         }
     }
     /deep/ .el-submenu__title:hover {
-        background-color: var(--primary-color) !important;
-        color: white;
-
-        i {
-            color: white;
+        color: var(--primary-color);
+        background-color: var(--color-white);
+        i { 
+            color: var(--primary-color);
+        }
+         &:before {
+            content: '';
+            height: 70%;
+            width: 5px;
+            position: absolute;
+            left: 0;
+            top: 15%;
+            background-color: var(--primary-color);
+            border-radius: 0 16px 16px 0;
         }
     }
 </style>
@@ -207,6 +263,9 @@
             will-change: transform;
             span.title {
                 display: none;
+            }
+            :global(.el-tooltip) {
+                padding: 8px 36px !important;
             }
         }
         .el-submenu {
@@ -226,7 +285,7 @@
         }
     }
     .el-menu {
-        width: 56px;
+        width: 100px;
         display: flex;
         flex-direction: column;
         border-right: none !important;
@@ -254,12 +313,15 @@
             .el-menu-item,
             :global(.el-submenu__title) {
                 will-change: transform;
+                height: 70px;
+                padding-left: 36px !important;
+                padding-top: 8px;
                 .icon {
                     vertical-align: middle;
                     margin-right: 5px;
                     width: 24px;
                     text-align: center;
-                    font-size: 18px;
+                    font-size: 28px;
                 }
 
                 &.nested {

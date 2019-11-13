@@ -420,7 +420,12 @@ return [
             'caretaker' => 'Caretaker',
             'administration' => 'Administration'
         ],
-        'url' => 'Url'
+        'url' => 'Url',
+        'workflow' => [
+            'label' => 'Workflow',
+            'add' => 'Add Workflow',
+            'edit' => 'Edit Workflow'
+        ]
     ],
     'request' => [        
         'deleted' => 'Request deleted',

@@ -104,6 +104,7 @@ return [
     "name" => "Nom",
     'phone' => "Téléphone",
     'id' => "ID",
+    'field' => 'Champ',
     'address' => "Adresse",
     "city" => "Ville",
     "state" => "État",
@@ -552,5 +553,6 @@ return [
         'rd' => 'ème',
         'th' => 'ème',
     ],
+    'empty' => "(champ vide)",
     'notification_residents_sent' => 'la notification a été envoyée à {number} résidents à {time} le {date}.',
 ];

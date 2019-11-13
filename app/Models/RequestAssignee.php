@@ -73,6 +73,7 @@ class RequestAssignee extends AuditableModel
         'request_id',
         'assignee_id',
         'assignee_type',
+        'sent_email',
         'created_at',
     ];
 
