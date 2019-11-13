@@ -66,7 +66,9 @@ class QuarterAssignee extends AuditableModel
     public $fillable = [
         'quarter_id',
         'assignee_id',
+        'user_id',
         'assignee_type',
+        'assignment_type',
         'created_at',
     ];
 
