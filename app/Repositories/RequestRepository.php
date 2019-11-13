@@ -148,6 +148,7 @@ class RequestRepository extends BaseRepository
         }
 
         Request::disableAuditing();
+        // @TODO save system audit for assignment
         $propertyManagers = PropertyManager::whereIn('user_id', $userIds)->get(['id']);
         $data = [];
         foreach ($propertyManagers as $propertyManager) {
