@@ -132,14 +132,12 @@ class Quarter extends AuditableModel implements HasMedia
 
     const AssignmentTypeFortimoEmployees = 1;
     const AssignmentTypeManagement = 2;
-    const AssignmentTypeInitialLetting = 3;
-    const AssignmentTypeCaretaker = 4;
-    const AssignmentTypeAdministration = 5;
+    const AssignmentTypeCaretaker = 3;
+    const AssignmentTypeAdministration = 4;
 
     const AssignmentType = [
         self::AssignmentTypeFortimoEmployees => 'fortimo_employees',
         self::AssignmentTypeManagement => 'management',
-        self::AssignmentTypeInitialLetting => 'initial_letting',
         self::AssignmentTypeCaretaker => 'caretaker',
         self::AssignmentTypeAdministration => 'administration',
     ];
@@ -159,7 +157,8 @@ class Quarter extends AuditableModel implements HasMedia
         'count_of_buildings',
         'address_id',
         'internal_quarter_id',
-        'type',
+        'types',
+        'url',
         'assignment_type',
     ];
     /**
@@ -179,7 +178,8 @@ class Quarter extends AuditableModel implements HasMedia
         'quarter_format' => 'string',
         'internal_quarter_id' => 'string',
         'count_of_buildings' => 'integer',
-        'type' => 'integer',
+        'types' => 'array',
+        'url' => 'string',
         'assignment_type' => 'integer',
     ];
 
@@ -247,6 +247,14 @@ class Quarter extends AuditableModel implements HasMedia
     public function buildings()
     {
         return $this->hasMany(Building::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function workflows()
+    {
+        return $this->hasMany(Workflow::class);
     }
 
 }

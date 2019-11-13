@@ -25,7 +25,8 @@ class QuarterTransformer extends BaseTransformer
             'internal_quarter_id' => $model->internal_quarter_id,
             'description' => $model->description,
             'count_of_buildings' => $model->count_of_buildings,
-            'type' => $model->type,
+            'url' => $model->url,
+            'types' => $model->types,
             'assignment_type' => $model->assignment_type,
         ];
 
@@ -44,6 +45,10 @@ class QuarterTransformer extends BaseTransformer
 
         if ($model->relationExists('media')) {
             $response['media'] = (new MediaTransformer())->transformCollection($model->media);
+        }
+
+        if ($model->relationExists('workflows')) {
+            $response['workflows'] = (new WorkflowTransformer())->transformCollection($model->workflows);
         }
 
         return $response;

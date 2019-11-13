@@ -854,10 +854,6 @@
     .avatar-count{
         min-width: 28px;
     }
-    .list-table {
-        padding: 20px;
-       
-    }
     .el-divider.el-divider--horizontal {
         width: 90%;
         margin: 0 auto !important;
@@ -888,7 +884,6 @@
 
     .el-table {
         background: none;
-        padding: 2px;
 
         &:before {
             display: none;
@@ -1137,9 +1132,14 @@
     }
 
     .filters-card {
+        margin-bottom: 0 !important;
+        border: none !important;
         .el-card__body {
             padding: 22px;
             padding-bottom: 0;
+            .el-form-item {
+                margin-bottom: 0;
+            }
         }
     }
 
