@@ -1,9 +1,0 @@
-@font-face {
-    font-family: 'Arial';
-    src: url('~fonts/ArialMT.eot'); /* IE 9 Compatibility Mode */
-    src: url('~fonts/ArialMT.ttf') format('truetype'),
-        url('~fonts/ArialMT.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
-		url('~fonts/ArialMT.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */;
-    font-weight: normal;
-    font-style: normal;
-}

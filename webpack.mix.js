@@ -34,8 +34,6 @@ mix.options({
     // ], 'public/css/vendor.css')
     .sass('resources/sass/app.scss', 'public/css/app.css')
     .postCss('resources/css/fontello.css', 'public/css/fontello.css')
-    .postCss('resources/css/arial.css', 'public/css/arial.css')
-    .postCss('resources/css/times_new_roman.css', 'public/css/times_new_roman.css')
     .js('resources/js/index.js', 'public/js/app.js')
     .alias({
         '@': '/resources/js',
