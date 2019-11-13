@@ -1164,6 +1164,7 @@
     .el-tag {
         background-color: var(--primary-color);
         color: white;
+        border-radius: 6px;
     }
 
     .el-collapse {
