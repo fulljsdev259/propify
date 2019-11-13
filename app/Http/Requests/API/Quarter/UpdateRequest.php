@@ -4,6 +4,7 @@ namespace App\Http\Requests\API\Quarter;
 
 use App\Models\Quarter;
 use App\Http\Requests\BaseRequest;
+use App\Rules\WorkflowRule;
 
 class UpdateRequest extends BaseRequest
 {
@@ -37,6 +38,9 @@ class UpdateRequest extends BaseRequest
                         $fails(sprintf('This [%s] types is wrong', implode(', ', $diff)));
                     }
                 }
+            ],
+            'workflows' => [
+                new WorkflowRule()
             ]
         ];
     }
