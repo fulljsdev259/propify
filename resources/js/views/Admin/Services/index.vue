@@ -38,7 +38,6 @@
     import getFilterStates from 'mixins/methods/getFilterStates';
     import getFilterQuarters from 'mixins/methods/getFilterQuarters';
     import PrepareCategories from 'mixins/methods/prepareCategories';
-    import ListFieldFilter from 'components/ListFieldFilter';
 
 
     const mixin = ListTableMixin({
@@ -57,7 +56,6 @@
         mixins: [mixin, getFilterStates, getFilterQuarters, PrepareCategories],
         components: {
             Heading,
-            ListFieldFilter,
         },
         data() {
             return {
