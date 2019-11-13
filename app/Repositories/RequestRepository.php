@@ -147,6 +147,7 @@ class RequestRepository extends BaseRepository
             return $request;
         }
 
+        Request::disableAuditing();
         $propertyManagers = PropertyManager::whereIn('user_id', $userIds)->get(['id']);
         $data = [];
         foreach ($propertyManagers as $propertyManager) {
@@ -167,6 +168,7 @@ class RequestRepository extends BaseRepository
         if ($data) {
             $request->service_providers()->syncWithoutDetaching($data);
         }
+        Request::enableAuditing();
         return $request;
     }
 
