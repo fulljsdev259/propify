@@ -330,7 +330,7 @@
                                         :label="`${workflow.name}`"
                                         :value="workflow"
                                         :name="workflow"
-                                        v-for="workflow in workflows">
+                                        v-for="(workflow, $index) in workflows">
                                     <template slot="title">
                                         {{workflow.title}} <i class="header-icon el-pencil"></i>
                                     </template>
@@ -344,7 +344,7 @@
                                         <el-col>
                                             <el-button 
                                                 type="primary" 
-                                                @click="editWorkflowDrawer(scope.$index)" 
+                                                @click="editWorkflowDrawer($index)" 
                                                 icon="icon-plus" 
                                                 size="mini" 
                                                 round>
@@ -704,7 +704,7 @@
                 this.isAddWorkflow = false
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
-            editWorkflowDrawer() {
+            editWorkflowDrawer(index) {
                 this.visibleDrawer = true
                 this.isWorkflow = true
                 this.isEditWorkflow = true
