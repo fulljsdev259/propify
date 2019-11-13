@@ -3,7 +3,8 @@
         <el-row :gutter="20">
             <el-col :md="24">
                 <el-form-item :label="$t('general.title')"
-                                prop="title">
+                            :rules="validationRules.title"
+                            prop="title">
                     <el-input type="text"
                             v-model="model.title"
                     ></el-input>
@@ -13,12 +14,13 @@
         <el-row :gutter="20">
             <el-col :md="12">
                 <el-form-item :label="$t('models.request.category')"
+                            :rules="validationRules.category"
                             prop="category">
                     <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
                                 v-model="model.category">
                         <el-option
                                 :key="category.value"
-                                :label="category.name"
+                                :label="$t(`models.request.category_list.${category.name}`)"
                                 :value="category.value"
                                 v-for="category in categories">
                         </el-option>
@@ -27,8 +29,8 @@
             </el-col>
             <el-col :md="12">
                 <el-form-item :label="$t('models.resident.building.name')"
-                    :rules="validationRules.assign"
-                    :prop="'assign.' + $index"
+                    :rules="validationRules.building"
+                    :prop="selectedWorkflowBuilding"
                     class="label-block"
                     >
                     <el-select
@@ -41,7 +43,7 @@
                         remote
                         reserve-keyword
                         style="width: 100%;"
-                        v-model="selectedWorkflowBuilding"
+                        v-model="model.selectedWorkflowBuilding"
                     >
                         <div class="custom-prefix-wrapper" slot="prefix">
                             <i class="el-icon-search custom-icon"></i>
@@ -50,12 +52,69 @@
                             :key="building.id"
                             :label="`${building.name}`"
                             :value="building.id"
-                            v-for="building in workflowBuildingList"/>
+                            v-for="building in model.workflowBuildingList"/>
                     </el-select>
                 </el-form-item>
             </el-col>
         </el-row>
-            
+        <el-row :gutter="20">
+            <el-col :md="12">
+                <el-form-item :label="$t('models.request.mail.to')"
+                            :rules="validationRules.category"
+                            prop="category">
+                    <el-select
+                        :loading="remoteLoading"
+                        :placeholder="$t('general.placeholders.search')"
+                        :remote-method="remoteSearchToUsers"
+                        class="custom-remote-select"
+                        filterable
+                        multiple
+                        remote
+                        reserve-keyword
+                        style="width: 100%;"
+                        v-model="model.selectedWorkflowToUser"
+                    >
+                        <div class="custom-prefix-wrapper" slot="prefix">
+                            <i class="el-icon-search custom-icon"></i>
+                        </div>
+                        <el-option
+                            :key="user.id"
+                            :label="`${user.name}`"
+                            :value="user.id"
+                            v-for="user in model.workflowToUserList"/>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+            <el-col :md="12">
+                <el-form-item :label="$t('models.request.mail.cc')"
+                    :rules="validationRules.building"
+                    :prop="selectedWorkflowBuilding"
+                    class="label-block"
+                    >
+                    <el-select
+                        :loading="remoteLoading"
+                        :placeholder="$t('general.placeholders.search')"
+                        :remote-method="remoteSearchCcUsers"
+                        class="custom-remote-select"
+                        filterable
+                        multiple
+                        remote
+                        reserve-keyword
+                        style="width: 100%;"
+                        v-model="model.selectedWorkflowCcUser"
+                    >
+                        <div class="custom-prefix-wrapper" slot="prefix">
+                            <i class="el-icon-search custom-icon"></i>
+                        </div>
+                        <el-option
+                            :key="user.id"
+                            :label="`${user.name}`"
+                            :value="user.id"
+                            v-for="user in model.workflowCcUserList"/>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+        </el-row>
         
         <div class="drawer-actions">
             <el-button type="primary" @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
@@ -93,22 +152,39 @@
                     category: null,
                     assignList: '',
                     assign: [],
+                    selectedWorkflowBuilding: [],
+                    workflowBuildingList: [],
+                    workflowToUserList: [],
+                    selectedWorkflowToUser: [],
+                    workflowCcUserList: [],
+                    selectedWorkflowCcUser: [],
                 },
                 categories: [],
                 validationRules: {
-                    assign: [{
+                    title: [{
+                        required: true,
+                        message: this.$t('models.quarter.required')
+                    }],
+                    category: [{
+                        required: true,
+                        message: this.$t('models.quarter.required')
+                    }],
+                    building: [{
                         required: true,
                         message: this.$t('models.quarter.required')
                     }],
                 },
                 remoteLoading: false,
-                workflowBuildingList: [],
-                selectedWorkflowBuilding: [],
+                
+                
                 
             }
         },
         methods: {
-            ...mapActions(['getPropertyManagers', 'getQuarterEmailReceptionists', 'saveQuarterEmailReceptionists', 'getBuildingEmailReceptionists', 'saveBuildingEmailReceptionists', 'getBuilding']),
+            ...mapActions([
+                'getPropertyManagers', 
+                'getBuildings',
+                'getUsers']),
             async submit () {
                 try {
                     const valid = await this.$refs.form.validate();
@@ -208,7 +284,7 @@
                             search
                         });
 
-                        this.workflowBuildingList = resp.data;
+                        this.model.workflowBuildingList = resp.data;
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -217,8 +293,61 @@
                 }
             },
             resetBuildingList() {
-                this.workflowBuildingList = [];
-                this.selectedWorkflowBuilding = [];
+                this.model.workflowBuildingList = [];
+                this.model.selectedWorkflowBuilding = [];
+            },
+            async remoteSearchToUsers(search) {
+                if (search === '') {
+                    this.resetToUserList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const resp = await this.getUsers({
+                            get_all: true,
+                            get_role: true,
+                            search,
+                            roles: ['manager', 'administrator', 'provider']
+                        });
+
+
+                        this.model.workflowToUserList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            resetToUserList() {
+                this.model.workflowToUserList = [];
+                this.model.selectedWorkflowToUser = [];
+            },
+            async remoteSearchCcUsers(search) {
+                if (search === '') {
+                    this.resetCcUserList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                       const resp = await this.getUsers({
+                            get_all: true,
+                            get_role: true,
+                            search,
+                            roles: ['manager', 'administrator', 'provider']
+                        });
+
+                        this.model.workflowCcUserList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            resetCcUserList() {
+                this.model.workflowCcUserList = [];
+                this.model.selectedWorkflowCcUser = [];
             },
             
         },
