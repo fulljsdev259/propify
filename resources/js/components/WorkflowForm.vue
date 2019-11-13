@@ -190,6 +190,14 @@
                     const valid = await this.$refs.form.validate();
                     if (valid) {
 
+                        let payload = {
+                            quarter_id : this.quarter_id,
+                            title: this.model.category,
+                            buildings: this.model.selectedWorkflowBuilding,
+                            to_users: this.model.selectedWorkflowToUser,
+                            cc_users: this.model.selectedWorkflowCcUser
+                        }
+
                         // const resp = await this.saveBuildingEmailReceptionists(payload)
 
                         // if(resp.success)
@@ -198,60 +206,10 @@
 
                         // }
 
+
+                        this.$emit('add-workflow', payload);
                         this.$emit('update:visible', false);
 
-                        // let global_email_receptionist = null
-                        // if(this.activeCommand == 'global')
-                        //     global_email_receptionist = true
-                        // else if(this.activeCommand == 'assign')
-                        //     global_email_receptionist = false
-                        
-                        // let categories = [];
-                        // for(let i = 0; i < this.categories.length; i ++)
-                        // {
-                        //     categories.push({
-                        //         category : +this.categories[i].id,
-                        //         property_manager_ids: this.model.assign[i]
-                        //     })
-
-                        // }
-
-                        // if(this.isBuilding == true) {
-
-                        //     let payload = {
-                        //         building_id : this.building_id,
-                        //         global_email_receptionist,
-                        //         categories
-                        //     }
-                            
-
-                        //     const resp = await this.saveBuildingEmailReceptionists(payload)
-
-                        //     if(resp.success)
-                        //     {
-                        //         displaySuccess(resp);
-                        //         const data = await this.getBuilding({id: this.$route.params.id});
-
-                        //         if(data.has_email_receptionists) {
-                        //             this.$emit('update-has-email-receptionists', true);
-                        //         }
-                        //     }
-                        //     this.$emit('update:visible', false);
-                        // }
-                        // else {
-                        //     let payload = {
-                        //         quarter_id : this.quarter_id,
-                        //         categories: categories
-                        //     }
-
-                        //     const resp = await this.saveQuarterEmailReceptionists(payload)
-
-                        //     if(resp.success)
-                        //         displaySuccess(resp);
-                            
-                        //     this.$emit('update:visible', false);
-                        // }
-                        
                     }
                 }
                 catch(err) {

@@ -465,7 +465,7 @@
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.quarter.workflow.label') }} </ui-divider>
                 
                 <div class="content" v-if="visibleDrawer">
-                    <workflow-form :quarter_id="model.id" :visible.sync="visibleDrawer"/>
+                    <workflow-form :quarter_id="model.id" :visible.sync="visibleDrawer" @add-workflow="addWorkflow"/>
                 </div>
                     
             </template>
@@ -880,6 +880,9 @@
                 this.workflowCcUserList = [];
                 this.selectedWorkflowCcUser = [];
             },
+            addWorkflow(flow) {
+                console.log('flow', flow)
+            }
         },
         computed: {
             ...mapGetters('application', {
