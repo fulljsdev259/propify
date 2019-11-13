@@ -194,6 +194,8 @@
                     const valid = await this.$refs.form.validate();
                     if (valid) {
                         let buildings = []
+                        console.log('selected buildings', this.model.workflowBuildingList)
+                        
                         this.model.selectedWorkflowBuilding.map( building_id => {
                             let item = this.model.workflowBuildingList.find(item => item.id == building_id)
                             buildings.push(item)
@@ -204,11 +206,14 @@
                         let to_users = []
 
                         let cc_users = []
+                        console.log('selected to users', this.model.workflowToUserList)
 
                         this.model.selectedWorkflowToUser.map( user_id => {
                             let item = this.model.workflowToUserList.find(item => item.id == user_id)
                             to_users.push(item)
                         })
+
+                        console.log('selected cc users', this.model.workflowCcUserList)
 
                         this.model.selectedWorkflowCcUser.map( user_id => {
                             let item = this.model.workflowCcUserList.find(item => item.id == user_id)
@@ -358,9 +363,9 @@
                 this.model.selectedWorkflowBuilding = this.data.building_ids
                 this.model.selectedWorkflowToUser = this.data.to_user_ids
                 this.model.selectedWorkflowCcUser = this.data.cc_user_ids
-                this.model.workflowBuildingList = this.buildings
-                this.model.workflowToUserList = this.to_users
-                this.model.workflowCcUserList = this.cc_users
+                this.model.workflowBuildingList = this.data.buildings
+                this.model.workflowToUserList = this.data.to_users
+                this.model.workflowCcUserList = this.data.cc_users
             }
             
             this.loading = false;
@@ -399,7 +404,7 @@
             margin-bottom: 0;
 
             &.is-error {
-                margin-bottom: 10px;
+                margin-bottom: 20px;
             }
 
             &.info-label {
@@ -480,8 +485,5 @@
             background: transparent;
         }
 
-        /deep/ .el-form .el-form-item.is-error {
-            margin-bottom: 25px;
-        }
     }
 </style>
