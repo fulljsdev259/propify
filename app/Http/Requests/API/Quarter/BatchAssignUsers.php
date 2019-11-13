@@ -27,10 +27,15 @@ class BatchAssignUsers extends BaseRequest
         return [
             'user_id' => 'required|integer',
             'role' => 'required|string|in:administrator,manager,provider',
-            'assignment_type' => [
+            'assignment_types' => [
                 'required',
-                'nullable',
-                $this->getInRuleByClassConstants(Quarter::AssignmentType)
+                'array',
+                function ($attribute, $value, $fails) {
+                    $diff = array_diff($value, array_keys(Quarter::AssignmentType));
+                    if ($diff) {
+                        $fails(sprintf('This [%s] assignment_types is wrong', implode(', ', $diff)));
+                    }
+                }
             ]
         ];
     }
