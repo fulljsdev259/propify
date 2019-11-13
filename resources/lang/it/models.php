@@ -420,7 +420,12 @@ return [
             'caretaker' => 'Custode',
             'administration' => 'Amministrazione'
         ],
-        'url' => 'Url'
+        'url' => 'Url',
+        'workflow' => [
+            'label' => 'Flusso di lavoro',
+            'add' => 'Aggiungi flusso di lavoro',
+            'edit' => 'Modifica flusso di lavoro'
+        ]
     ],
     'request' => [        
         "deleted" => "Richiesta supprimée",
