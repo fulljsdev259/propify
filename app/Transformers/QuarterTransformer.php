@@ -46,6 +46,10 @@ class QuarterTransformer extends BaseTransformer
             $response['media'] = (new MediaTransformer())->transformCollection($model->media);
         }
 
+        if ($model->relationExists('workflows')) {
+            $response['workflows'] = (new WorkflowTransformer())->transformCollection($model->workflows);
+        }
+
         return $response;
     }
 
