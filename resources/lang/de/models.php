@@ -678,7 +678,7 @@ return [
             'request_number' => 'Defektnummer',
             'details'=>'Details',
             'blank_pdf'=>'Nach der Mängelerledigung bitte, das beiliegende Formular umgehend unterzeichnet der Bauleitung retournieren.',
-
+            'address'=>'Objekt',
         ],
         'pictures_of' => 'Fotos des Anliegens',
         'go_to_building' => 'Zum Objekt gehen'
