@@ -195,6 +195,31 @@
                 this.model.assignList[index] = [];
                 this.model.assign[index] = '';
             },
+            async remoteSearchBuildings(search) {
+                if (search === '') {
+                    this.resetBuildingList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const resp = await this.getBuildings({
+                            get_all: true,
+                            quarter_id: this.model.id,
+                            search
+                        });
+
+                        this.workflowBuildingList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            resetBuildingList() {
+                this.workflowBuildingList = [];
+                this.selectedWorkflowBuilding = [];
+            },
             
         },
         async created () {
