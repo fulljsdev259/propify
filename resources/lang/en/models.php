@@ -679,7 +679,7 @@ return [
             'request_number' => 'Request Number',
             'details'=>'Details',
             'blank_pdf'=>'After the completion of the defects please return the attached form signed immediately to the site management.',
-
+            'address'=>'Object'
         ],
         'pictures_of' => 'Photos of the request',
         'go_to_building' => 'go to building'

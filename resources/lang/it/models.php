@@ -679,6 +679,7 @@ return [
             'request_number' => 'Numero della richiesta',
             'details'=>'Dettagli',
             'blank_pdf'=>'Dopo il completamento dei difetti si prega di restituire il modulo allegato firmato immediatamente alla direzione del sito.',
+            'address'=>'Oggettino',
 
         ],
         'pictures_of' => 'Foto della richiesta',

@@ -13,18 +13,18 @@
                             <tbody>
                                 <tr>
                                     <td class="table_header" valign="middle">
-                                        <span class="text_font" style="display: inline-block;vertical-align:top;">@lang('models.request.download_pdf.captured_by') {{$request->creator->email}} {{ now()->format('d.m.Y, H:i') }}</span>
+                                        <span class="text_font" style="display: inline-block;vertical-align:top;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.download_pdf.captured_by') {{$request->creator->email}} {{ now()->format('d.m.Y, H:i') }}</span>
                                         <span style="display: inline-block;height:25px;width:100%;"></span>
         
-                                        <span>{{ $request->service_request_format }}</span> <br />
+                                        <span style="font-family: {{$pdf_font_family ?? 'Arial'}};">{{ $request->service_request_format }}</span> <br />
         
-                                        <p style="margin:7px 0 0;">
-                                                <b>@lang('models.request.download_pdf.request_number'):</b>
+                                        <p style="margin:7px 0 0;font-family: {{$pdf_font_family ?? 'Arial'}};">
+                                                <b style="font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.download_pdf.request_number'):</b>
                                                 {{ $request->request_format }}
         
                                             </p>
-                                        <p style="margin:7px 0 0;">
-                                            <b>@lang('models.request.category'):</b>
+                                        <p style="margin:7px 0 0;font-family: {{$pdf_font_family ?? 'Arial'}};">
+                                            <b style="font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.category'):</b>
                                             @if (! empty($subCategory))
                                             {{ !empty($category['name']) ? __('models.request.category_list.' . $category['name']) . ' > ' : ''  }}
                                             {{ __('models.request.sub_category.' . $subCategory['name']) }}
@@ -33,15 +33,15 @@
                                             @endif
         
                                         </p>
-                                        <p style="margin:7px 0 0;">
-                                            <b>@lang('models.request.status.label'):</b>
+                                        <p style="margin:7px 0 0;font-family: {{$pdf_font_family ?? 'Arial'}};">
+                                            <b style="font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.status.label') ({{ now()->format('d.m.Y, H:i') }}):</b>
                                             @lang('models.request.status.'.\App\Models\Request::Status[$request->status])
-                                            ({{ now()->format('d.m.Y, H:i') }})
+                                            
                                         </p>
                                     </td>
                                     
                                     @if(!$blank_pdf)
-                                    <td style="text-align:right;vertical-align:top;" class="table_header">
+                                    <td style="text-align:right;vertical-align:top;font-family: {{$pdf_font_family ?? 'Arial'}};" class="table_header">
                                         <img class="logo" src="{{public_path($logo)}}" />
                                     </td>
                                     @endif
@@ -49,8 +49,8 @@
                                 <tr>
                                     <td class="no_border" colspan="2">
 
-                                        <p style="margin:0;">
-                                            <b>@lang('general.address'):</b>
+                                        <p style="margin:0;font-family: {{$pdf_font_family ?? 'Arial'}};">
+                                            <b>@lang('models.request.download_pdf.address'):</b>
                                             {{ @$contract->building->address->street }}
                                             {{ @$contract->building->address->house_num }},
                                             {{ @$contract->building->address->zip }}
@@ -65,7 +65,7 @@
         </tr>
         <tr>
             <td class="no_border" width="100%">
-                <h2 style="margin-bottom:10px;margin-top:15px;font-size: 25px;">@lang('models.request.download_pdf.details')</h2>
+                <h2 style="margin-bottom:10px;margin-top:15px;font-size: 25px;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.download_pdf.details')</h2>
             </td>
         </tr>
         <tr>
@@ -87,8 +87,8 @@
                                                 || (!empty($subCategory['capture_phase']) && $subCategory['capture_phase']
                                                 == 1) )
    
-                                                <td class="no_border">
-                                                    <strong>
+                                                <td class="no_border" style="font-family: {{$pdf_font_family ?? 'Arial'}};">
+                                                    <strong style="font-family: {{$pdf_font_family ?? 'Arial'}};">
                                                         @lang('models.request.category_options.capture_phase'): 
                                                     </strong>
                                                     @if(key_exists($request->capture_phase,
@@ -104,8 +104,8 @@
                                                 @if( (!empty($category['qualification']) && $category['qualification'] == 1)
                                                 || (!empty($subCategory['qualification']) && $subCategory['qualification']
                                                 == 1) )
-                                                <td class="no_border">
-                                                   <strong>
+                                                <td class="no_border" style="font-family: {{$pdf_font_family ?? 'Arial'}};">
+                                                   <strong style="font-family: {{$pdf_font_family ?? 'Arial'}};">
                                                        @lang('models.request.qualification.label'): 
                                                    </strong>
                                                    @lang('models.request.qualification.'.\App\Models\Request::Qualification[$request->qualification])
@@ -124,7 +124,7 @@
                                             <tr>
                                                 @if((isset($category['component']) && $category['component']==1) || 
 +                                                (isset($subCategory['component']) && $subCategory['component']==1))
-                                                <td class="border_btm" @if (
+                                                <td class="border_btm" style="font-family: {{$pdf_font_family ?? 'Arial'}};" @if (
                                                     !((((!empty($category['location']) && $category['location'] == 1) ||
                                                     (!empty($subCategory['location']) && $subCategory['location'] == 1))) ||
                                                     ((!empty($category['room']) && $category['room'] == 1) ||
@@ -132,7 +132,7 @@
                                                 )
                                                     colspan="2"
                                                 @endif>
-                                                    <strong>@lang('models.request.category_options.component'): 
+                                                    <strong style="font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.category_options.component'): 
                                                     </strong>
                                                     {{ $request->component }}
                                                     
@@ -143,8 +143,8 @@
    
                                                 @if( (!empty($category['location']) && $category['location'] == 1) ||
                                                 (!empty($subCategory['location']) && $subCategory['location'] == 1) )
-                                                <td class="border_btm">
-                                                    <strong> @lang('models.request.category_options.range'): 
+                                                <td class="border_btm" style="font-family: {{$pdf_font_family ?? 'Arial'}};">
+                                                    <strong style="font-family: {{$pdf_font_family ?? 'Arial'}};"> @lang('models.request.category_options.range'): 
                                                     </strong>
                                                     @if(key_exists($request->location, \App\Models\Request::Location))
                                                     @lang('models.request.location.' .
@@ -155,8 +155,8 @@
    
                                                 @elseif( (!empty($category['room']) && $category['room'] == 1) ||
                                                 (!empty($subCategory['room']) && $subCategory['room'] == 1) )
-                                                <td class="border_btm">
-                                                   <strong>@lang('models.request.category_options.room'): 
+                                                <td class="border_btm" style="font-family: {{$pdf_font_family ?? 'Arial'}};">
+                                                   <strong style="font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.category_options.room'): 
                                                    </strong>
                                                    @if(key_exists($request->room, \App\Models\Request::Room))
                                                    @lang('models.request.room.' .
@@ -179,25 +179,25 @@
    
            </tr>
            <tr>
-               <td class="no_border" width="100%">
-                   <h4 style="margin-bottom:0;font-size: 14px;">@lang('general.title'):</h4>
-                   <p style="display:block;width:100%;margin-top:5px;">{{ $request->title }}</p>
+               <td class="no_border" width="100%" style="font-family: {{$pdf_font_family ?? 'Arial'}};">
+                   <h4 style="margin-bottom:0;font-size: 14px;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('general.title'):</h4>
+                   <p style="display:block;width:100%;margin-top:5px;font-family: {{$pdf_font_family ?? 'Arial'}};">{{ $request->title }}</p>
                </td>
            </tr>
            <tr>
-               <td colspan="2" class="no_border" width="100%">
-                   <h4 style="margin-bottom:0;font-size: 14px;">@lang('general.description'):</h4>
-                   <p style="display:block;width:100%;margin-top:5px;">{!! $request->description !!} </p>
+               <td colspan="2" class="no_border" width="100%" style="font-family: {{$pdf_font_family ?? 'Arial'}};">
+                   <h4 style="margin-bottom:0;font-size: 14px;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('general.description'):</h4>
+                   <p style="display:block;width:100%;margin-top:5px;font-family: {{$pdf_font_family ?? 'Arial'}};">{!! $request->description !!} </p>
                </td>
            </tr>
            <tr>
-               <td class="no_border">
-                   <h4 style="margin-bottom:0;font-size: 20px;">@lang('models.request.download_pdf.contact_details')</h4>
+               <td class="no_border" style="font-family: {{$pdf_font_family ?? 'Arial'}};">
+                   <h4 style="margin-bottom:0;font-size: 20px;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.download_pdf.contact_details')</h4>
                </td>
            </tr>
            <tr>
-               <td colspan="2" class="no_border" width="100%">
-                   <p style="display:block;width:100%;margin-top:5px;">@lang('models.request.download_pdf.contact_text')
+               <td colspan="2" class="no_border" width="100%" style="font-family: {{$pdf_font_family ?? 'Arial'}};">
+                   <p style="display:block;width:100%;margin-top:5px;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.download_pdf.contact_text')
                    </p>
                </td>
            </tr>
@@ -210,17 +210,17 @@
                                    <table class="info_table" width="100%">
                                        <tbody>
                                            <tr>
-                                               <td class="no_border" style="width:55%;"><strong>@lang('general.name'): </strong>{{ $resident->user->name }}</td>
-                                               <td class="no_border"><strong>@lang('general.email'): </strong>{{ $resident->user->email }}</td>
+                                               <td class="no_border" style="width:55%;font-family: {{$pdf_font_family ?? 'Arial'}};"><strong style="font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('general.name'): </strong>{{ $resident->user->name }}</td>
+                                               <td class="no_border" style="font-family: {{$pdf_font_family ?? 'Arial'}};"><strong style="font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('general.email'): </strong>{{ $resident->user->email }}</td>
                                            </tr>
    
                                            <tr>
                                                @if($resident->mobile != null)
-                                               <td class="border_btm" colspan="2">
-                                                   <strong>@lang('models.resident.mobile_phone'): </strong>{{ $resident->mobile }}</td>
+                                               <td class="border_btm" colspan="2" style="font-family: {{$pdf_font_family ?? 'Arial'}};">
+                                                   <strong style="font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.resident.mobile_phone'): </strong>{{ $resident->mobile }}</td>
                                                @else
-                                               <td class="border_btm" colspan="2">
-                                                   <strong>@lang('models.resident.private_phone'): </strong>{{ $resident->private_phone }}</td>
+                                               <td class="border_btm" colspan="2" style="font-family: {{$pdf_font_family ?? 'Arial'}};">
+                                                   <strong style="font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.resident.private_phone'): </strong>{{ $resident->private_phone }}</td>
                                                @endif
                                            </tr>
                                        </tbody>
@@ -232,11 +232,11 @@
                </td>
            </tr>
            <tr>
-               <td colspan="2" width="100%" height="20px" style="border:none;"></td>
+               <td colspan="2" width="100%" height="20px" style="border:none;font-family: {{$pdf_font_family ?? 'Arial'}};"></td>
            </tr>
 
         <tr>
-                <td @if(count($media)==0) colspan='2' @else colspan='6'@endif width="100%" class="no_border">
+                <td @if(count($media)==0) colspan='2' @else colspan='6'@endif width="100%" class="no_border" style="font-family: {{$pdf_font_family ?? 'Arial'}};">
                     <table width="100%">
                         <tbody>
                             <tr>
@@ -244,34 +244,32 @@
                                     <table class="info_table" width="100%">
                                         <tbody>
                                             <tr>
-                                                <td class="no_border" width="115%" style="margin:50px 0;">
+                                                <td class="no_border" width="115%" style="margin:50px 0;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                                     <span
-                                                        style="margin-top:20px;border-bottom:2px dotted #888;padding-bottom:30px;display:inline-block;width:85%;float:left;height:35px;">
+                                                        style="font-family: {{$pdf_font_family ?? 'Arial'}};margin-top:20px;border-bottom:2px dotted #888;padding-bottom:30px;display:inline-block;width:85%;float:left;height:35px;">
                                                         @lang('models.request.download_pdf.customer_signature')
                                                     </span>
                                                 </td>
-                                                <td class="no_border" width="100%" style="margin:50px 0;">
+                                                <td class="no_border" width="100%" style="margin:50px 0;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                                     <span
-                                                        style="margin-top:20px;border-bottom:2px dotted #888;padding-bottom:30px;display:inline-block;width:95%;float:left;height:35px;">
+                                                        style="font-family: {{$pdf_font_family ?? 'Arial'}};margin-top:20px;border-bottom:2px dotted #888;padding-bottom:30px;display:inline-block;width:95%;float:left;height:35px;">
                                                         @lang('models.request.download_pdf.entrepreneur_signature')
                                                     </span>
                                                 </td>
                                                 
                                             </tr>
                                             <tr>
-                                                <td style="width:100%;height:75px;border:none;">
+                                                <td style="width:100%;height:75px;border:none;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                                 </td>
                                             </tr>
-                                            @if($category['name'])
                                             <tr>
-                                                <td colspan="2" class="no_border" width="100%" style="margin-top:50px;">
+                                                <td colspan="2" class="no_border" width="100%" style="margin-top:50px;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                                     <span
-                                                        style="margin-top:20px;padding-bottom:30px;display:inline-block;width:100%;">
+                                                        style="font-family: {{$pdf_font_family ?? 'Arial'}};margin-top:20px;padding-bottom:30px;display:inline-block;width:100%;">
                                                         @lang('models.request.download_pdf.blank_pdf')
                                                     </span>
                                                 </td>
                                             </tr>
-                                            @endif
                                         </tbody>
                                     </table>
                                 </td>
@@ -289,7 +287,7 @@
                         @if($i==0)
                         <tr>
                                 <td class="no_border" width="100%">
-                                    <h4 style="font-size: 20px;margin-buttom:45px;">@lang('models.request.pictures_of')
+                                    <h4 style="font-size: 20px;margin-buttom:45px;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.pictures_of')
                                     </h4>
                                             
                                 </td>
@@ -299,14 +297,14 @@
                         <tr>
                             <td class="no_border" width="100%">
                                 @if($i==0)
-                                    <span style="display: inline-block;height:25px;width:100%; "></span>
+                                    <span style="display: inline-block;height:25px;width:100%; font-family: {{$pdf_font_family ?? 'Arial'}};"></span>
                                     @endif
                                 <table class="info_table" width="100%">
                                     <tbody>
                                         <tr style="vertical-align: top;">
 
                                             @endif  
-                                            <td class="no_border" style="top:0;width:292px;vertical-align: top;">
+                                            <td class="no_border" style="top:0;width:292px;vertical-align: top;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                                 
                                                     <img class="pdf_attached" src="{{$m['file_path']}}" @if($i==0) style="float: right;"@endif />
                                             </td>
