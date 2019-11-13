@@ -326,19 +326,36 @@
                             </el-row>
                             <el-collapse accordion>
                                  <el-collapse-item
-                                        :key="workflow"
+                                        :key="workflow.title"
                                         :label="`${workflow.name}`"
-                                        :value="workflow"
-                                        :name="workflow"
+                                        :value="workflow.title"
+                                        :name="workflow.title"
                                         v-for="(workflow, $index) in workflows">
                                     <template slot="title">
                                         {{workflow.title}} <i class="header-icon el-pencil"></i>
                                     </template>
                                     <el-row>
+                                        <el-col :md="5" class="workflow-label">
+                                            <span>{{workflow.category}}</span>
+                                        </el-col>
                                         <el-col :md="1" class="workflow-label">
                                             <span>Van</span>
                                         </el-col>
-                                        
+                                        <el-col :md="5" class="workflow-label">
+                                            <span>{{workflow.buildings}}</span>
+                                        </el-col>
+                                        <el-col :md="1" class="workflow-label">
+                                            <span>{{$t('models.request.mail.to')}}</span>
+                                        </el-col>
+                                        <el-col :md="5" class="workflow-label">
+                                            <span>{{workflow.to_users}}</span>
+                                        </el-col>
+                                        <el-col :md="1" class="workflow-label">
+                                            <span>{{$t('models.request.mail.cc')}}</span>
+                                        </el-col>
+                                        <el-col :md="5" class="workflow-label">
+                                            <span>{{workflow.cc_users}}</span>
+                                        </el-col>
                                     </el-row>
                                     <el-row>
                                         <el-col>
