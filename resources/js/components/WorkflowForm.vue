@@ -160,14 +160,11 @@
                     assignList: '',
                     assign: [],
                     selectedWorkflowBuilding: [],
-                    selectedWorkflowBuildingData: [],
                     workflowBuildingList: [],
                     workflowToUserList: [],
                     selectedWorkflowToUser: [],
-                    selectedWorkflowToUserData: [],
                     workflowCcUserList: [],
                     selectedWorkflowCcUser: [],
-                    selectedWorkflowCcUserData: [],
                 },
                 categories: [],
                 validationRules: {
@@ -196,10 +193,10 @@
                 try {
                     const valid = await this.$refs.form.validate();
                     if (valid) {
-
+                        let buildings = []
                         this.model.selectedWorkflowBuilding.map( building_id => {
                             let item = this.model.workflowBuildingList.find(item => item.id == building_id)
-                            this.model.selectedWorkflowBuildingData.push(item)
+                            buildings.push(item)
                         })
                         
                         let category = this.categories.find(item => item.id == this.model.category_id)
@@ -223,7 +220,7 @@
                             category_id: this.model.category_id,
                             category: category,
                             building_ids: this.model.selectedWorkflowBuilding,
-                            buildings: this.model.selectedWorkflowBuildingData,
+                            buildings: buildings,
                             to_user_ids: this.model.selectedWorkflowToUser,
                             to_users: to_users,
                             cc_user_ids: this.model.selectedWorkflowCcUser,
@@ -361,6 +358,9 @@
                 this.model.selectedWorkflowBuilding = this.data.building_ids
                 this.model.selectedWorkflowToUser = this.data.to_user_ids
                 this.model.selectedWorkflowCcUser = this.data.cc_user_ids
+                this.model.workflowBuildingList = this.buildings
+                this.model.workflowToUserList = this.to_users
+                this.model.workflowCcUserList = this.cc_users
             }
             
             this.loading = false;
@@ -480,8 +480,8 @@
             background: transparent;
         }
 
-        /deep/ .el-form .el-form-item.is-error[data-v-5a458b8e] {
-            margin-bottom: 10px;
+        /deep/ .el-form .el-form-item.is-error {
+            margin-bottom: 25px;
         }
     }
 </style>

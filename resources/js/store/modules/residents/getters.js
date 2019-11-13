@@ -21,7 +21,7 @@ export default {
         });
     },
     latestResidents({residents}, getters, { application: { constants } }) {
-        return residents.map(resident => {
+        return residents.data.map(resident => {
             resident.name = `${resident.first_name} ${resident.last_name}`;
             resident.status_label = `models.resident.status.${constants.residents.status[resident.status]}`;
             resident.address = ''

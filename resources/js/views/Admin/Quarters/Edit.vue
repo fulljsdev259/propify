@@ -567,7 +567,7 @@
                 }, {
                     prop: 'role',
                     label: 'general.assignment_types.label',
-                    i18n: this.translateAssignmentType
+                    i18n: this.translateType
                 }],
                 quarterColumns: [{
                     type: 'buildingName',
@@ -664,6 +664,7 @@
                 return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
             },
             translateAssignmentType(type) {
+                console.log(type)
                 return this.$t(`models.quarter.assignment_types.${this.constants.quarters.assignment_type[type]}`);
             },
             residentStatusBadge(status) {
@@ -877,14 +878,16 @@
                 this.workflowCcUserList = [];
                 this.selectedWorkflowCcUser = [];
             },
-            addWorkflow(flow) {
-                console.log('add flow', flow)
+            addWorkflow(workflow) {
+                console.log('add flow', workflow)
                 this.isEditingWorkflow.push(false)
-                this.model.workflows.push(flow)
+                this.model.workflows.push(workflow)
                 this.isAddWorkflow = false
             },
-            updateWorkflow(index, flow) {
-                console.log('update flow', index, flow)
+            updateWorkflow(index, workflow) {
+                console.log('update flow', index, workflow)
+                
+                this.$set(this.model.workflows, index, workflow)
                 this.$set(this.isEditingWorkflow, index, false)
             }
         },
@@ -1168,6 +1171,13 @@
     }
 
     .el-collapse {
+
+        .el-collapse-item__header.is-active {
+            padding-left: 10px;
+            background: lightgray;
+            border-radius: 6px;
+        }
+
         .el-collapse-item__content {
             padding-bottom: 10px;
         }
