@@ -1132,9 +1132,14 @@
     }
 
     .filters-card {
+        margin-bottom: 0 !important;
+        border: none !important;
         .el-card__body {
             padding: 22px;
             padding-bottom: 0;
+            .el-form-item {
+                margin-bottom: 0;
+            }
         }
     }
 
