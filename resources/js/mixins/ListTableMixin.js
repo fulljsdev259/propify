@@ -38,7 +38,6 @@ export default ({
                 this.loading = true;
                 let assignee_id = this.$store.getters.loggedInUser.id;
 
-                console.log('fetch More called')
                 if (getParams) {
                     params = {...params, ...getParams};
                 }
@@ -118,9 +117,7 @@ export default ({
     },
     watch: {
         [items](newValue) {
-            console.log([items], newValue)
             this.items = newValue;
-            console.log(this.selectedItems)
         }
     }
 });

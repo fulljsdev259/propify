@@ -104,7 +104,7 @@ class AuditTransformer extends BaseTransformer
                     $old_value = ($old_value) ? (AuditRepository::getDataFromField($field, $old_value, $model->auditable_type)) : "";
                     $new_value = ($new_value) ? (AuditRepository::getDataFromField($field, $new_value, $model->auditable_type)) : "";
                 }                
-                elseif(in_array($field, ['attic','announcement','is_execution_time','iframe_enable','blank_pdf','active_reminder'])){
+                elseif(in_array($field, ['attic','announcement','is_execution_time','iframe_enable','blank_pdf','active_reminder','notify_email'])){
                     $old_value = ($old_value == 1) ? __('general.enabled') : __('general.disabled');
                     $new_value = ($new_value == 1) ? __('general.enabled') : __('general.disabled');                                    
                 }
@@ -133,6 +133,7 @@ class AuditTransformer extends BaseTransformer
                     $statement .= __("general.components.common.audit.content.general.update_no_fieldvalue",['fieldname' => $fieldname]);
                 }
                 else{
+                    $old_value = (empty($old_value)) ? __('general.empty') : $old_value;
                     $statement .= __("general.components.common.audit.content.general.updated",['fieldname' => $fieldname, 'old' => $old_value, 'new' => $new_value]);
                 }                
                 $statement .= " ";
