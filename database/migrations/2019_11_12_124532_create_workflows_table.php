@@ -16,9 +16,11 @@ class CreateWorkflowsTable extends Migration
         Schema::create('workflows', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('quarter_id')->nullable();
+            $table->unsignedTinyInteger('category_id');
+            $table->string('title');
             $table->text('building_ids')->nullable();
-            $table->text('cc_property_manager_ids')->nullable();
-            $table->text('bcc_property_manager_ids')->nullable();
+            $table->text('to_user_ids')->nullable();
+            $table->text('cc_user_ids')->nullable();
             $table->timestamps();
         });
     }
