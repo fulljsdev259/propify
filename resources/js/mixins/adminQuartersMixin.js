@@ -24,7 +24,7 @@ export default (config = {}) => {
                 },
                 quarter_format: '',
                 validationRules: {
-                    type: [{
+                    types: [{
                         required: true,
                         message: this.$t('models.quarter.required')
                     }], 
@@ -69,7 +69,7 @@ export default (config = {}) => {
             ...mapGetters(['states'])
         },
         methods: {
-            ...mapActions(['getStates', 'assignUserToQuarter','getQuarter','getUsers','getPropertyManagers','unassignQuarterAssignee']),
+            ...mapActions(['getStates', 'assignUserToQuarter','getQuarter','getUsers','getAllAdminsForQuarter','getPropertyManagers','unassignQuarterAssignee']),
             resetToAssignList() {
                 this.toAssignList = [];
                 this.toAssign = '';
@@ -92,12 +92,13 @@ export default (config = {}) => {
                 //     });
                 // }
 
+                let assign_user = this.toAssignList.find(item => item.id == this.toAssign )
 
                 resp = await this.assignUserToQuarter({
                             id: this.model.id,
                             user_id: this.toAssign,
-                            role: 'manager',
-                            assignment_type: this.userAssignmentType
+                            role: assign_user.roles[0].name,
+                            assignment_types: this.userAssignmentType
                         });
 
                 if (resp && resp.data) {             
@@ -156,14 +157,15 @@ export default (config = {}) => {
                         // }
 
                         //    exclude_assignees_quarter_id: this.$route.params.id,
-                        const resp = await this.getUsers({
-                                    get_all: true,
-                                    get_role: true,
-                                    search,
-                                    roles: ['manager', 'administrator', 'provider']
-                                });
+                        // const resp = await this.getUsers({
+                        //             get_all: true,
+                        //             get_role: true,
+                        //             search,
+                        //             roles: ['manager', 'administrator', 'provider']
+                        //         });
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id})
                         console.log(resp)
-                        this.toAssignList = resp.data;                        
+                        this.toAssignList = resp;                        
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -297,6 +299,8 @@ export default (config = {}) => {
                         this.fileCount = this.model.media.length
                         this.contractCount = this.model.contracts.length
 
+                        console.log(this.model.types)
+
                     },
                     submit() {
                         return new Promise((resolve, reject) => {
@@ -319,6 +323,7 @@ export default (config = {}) => {
                                             house_num,
                                             zip
                                         },
+                                        workflows: this.workflows,
                                         ...restParams
                                     });    
                                     if(this.$refs.auditList){

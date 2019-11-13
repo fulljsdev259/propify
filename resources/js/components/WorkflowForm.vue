@@ -191,7 +191,7 @@
             ...mapActions([
                 'getPropertyManagers', 
                 'getBuildings',
-                'getUsers']),
+                'getAllAdminsForQuarter']),
             async submit () {
                 try {
                     const valid = await this.$refs.form.validate();
@@ -204,15 +204,30 @@
                         
                         this.model.categoryData = this.categories.find(item => item.id == this.model.category)
 
+                        let to_users = []
+
+                        let cc_users = []
+
+                        this.model.selectedWorkflowToUser.map( user_id => {
+                            let item = this.model.workflowToUserList.find(item => item.id == user_id)
+                            to_users.push(item)
+                        })
+
+                        this.model.selectedWorkflowCcUser.map( user_id => {
+                            let item = this.model.workflowCcUserList.find(item => item.id == user_id)
+                            cc_users.push(item)
+                        })
+
                         let payload = {
-                            quarter_id : this.quarter_id,
                             title: this.model.title,
-                            category: this.model.category,
-                            categoryData: this.model.categoryData,
-                            buildings: this.model.selectedWorkflowBuilding,
-                            buildingsData: this.model.selectedWorkflowBuildingData,
-                            to_users: this.model.selectedWorkflowToUser,
-                            cc_users: this.model.selectedWorkflowCcUser
+                            category_id: this.model.category,
+                            category: this.model.categoryData,
+                            building_ids: this.model.selectedWorkflowBuilding,
+                            buildings: this.model.selectedWorkflowBuildingData,
+                            to_user_ids: this.model.selectedWorkflowToUser,
+                            to_users: to_users,
+                            cc_user_ids: this.model.selectedWorkflowCcUser,
+                            cc_users: cc_users
                         }
 
                         if(this.mode == 'add') {
@@ -295,15 +310,9 @@
                     this.remoteLoading = true;
 
                     try {
-                        const resp = await this.getUsers({
-                            get_all: true,
-                            get_role: true,
-                            search,
-                            roles: ['manager', 'administrator', 'provider']
-                        });
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id})
 
-
-                        this.model.workflowToUserList = resp.data;
+                        this.model.workflowToUserList = resp;
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -322,14 +331,8 @@
                     this.remoteLoading = true;
 
                     try {
-                       const resp = await this.getUsers({
-                            get_all: true,
-                            get_role: true,
-                            search,
-                            roles: ['manager', 'administrator', 'provider']
-                        });
-
-                        this.model.workflowCcUserList = resp.data;
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id})
+                        this.model.workflowCcUserList = resp;
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -354,10 +357,10 @@
 
             if(this.mode == 'edit') {
                 this.model.title = this.data.title
-                this.model.category = this.data.category
-                this.model.selectedWorkflowBuilding = this.data.buildings
-                this.model.selectedWorkflowToUser = this.data.to_users
-                this.model.selectedWorkflowCcUser = this.data.cc_users
+                this.model.category = this.data.category_id
+                this.model.selectedWorkflowBuilding = this.data.building_ids
+                this.model.selectedWorkflowToUser = this.data.to_user_ids
+                this.model.selectedWorkflowCcUser = this.data.cc_user_ids
             }
             
             this.loading = false;

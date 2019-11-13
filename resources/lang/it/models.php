@@ -424,7 +424,10 @@ return [
         'workflow' => [
             'label' => 'Flusso di lavoro',
             'add' => 'Aggiungi flusso di lavoro',
-            'edit' => 'Modifica flusso di lavoro'
+            'edit' => 'Modifica flusso di lavoro',
+            'by' => 'da',
+            'to' => 'a',
+            'cc' => 'cc',
         ]
     ],
     'request' => [        

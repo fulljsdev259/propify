@@ -424,7 +424,10 @@ return [
         'workflow' => [
             'label' => 'Workflow',
             'add' => 'Ajouter un flux de travail',
-            'edit' => 'Modifier le flux de travail'
+            'edit' => 'Modifier le flux de travail',
+            'by' => 'à côté de',
+            'to' => "jusqu'à",
+            'cc' => 'cc',
         ]
     ],
     'request' => [        

@@ -63,7 +63,7 @@ export default {
                 reject(err);
             }));
     },
-
+    
     login({dispatch}, {email, password}) {
         return new Promise((resolve, reject) =>
             axios.post('auth/login', {email, password})
