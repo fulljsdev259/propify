@@ -383,7 +383,7 @@
                                             </el-tag>
                                         </el-col>
                                     </el-row>
-                                    <el-row>
+                                    <el-row v-if="!isEditingWorkflow[$index]">
                                         <el-col class="edit workflow-button-bar">
                                             <el-button 
                                                 type="primary" 
@@ -878,10 +878,14 @@
                 this.selectedWorkflowCcUser = [];
             },
             addWorkflow(flow) {
-                console.log('flow', flow)
+                console.log('add flow', flow)
                 this.isEditingWorkflow.push(false)
                 this.workflows.push(flow)
                 this.isAddWorkflow = false
+            },
+            updateWorkflow(index, flow) {
+                console.log('update flow', flow)
+                this.$set(this.isEditingWorkflow, index, false)
             }
         },
         computed: {
