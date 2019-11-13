@@ -348,13 +348,13 @@
                                             :visible.sync="visibleDrawer"
                                             @update-workflow="updateWorkflow"/>
                                     <el-row v-else>
-                                        <el-col :md="5" class="workflow-label">
+                                        <el-col :md="4" class="workflow-label">
                                             <span>{{$t(`models.request.category_list.${workflow.category.name}`)}}</span>
                                         </el-col>
-                                        <el-col :md="2" class="workflow-label">
+                                        <el-col :md="1" class="workflow-label">
                                             <span>{{$t('models.quarter.workflow.by')}}</span>
                                         </el-col>
-                                        <el-col :md="4" class="workflow-label">
+                                        <el-col :md="5" class="workflow-label">
                                             <el-tag 
                                                     type="primary" 
                                                     :key="building.id"
@@ -362,10 +362,10 @@
                                                     {{building.address.house_num}}
                                             </el-tag>
                                         </el-col>
-                                        <el-col :md="2" class="workflow-label">
+                                        <el-col :md="1" class="workflow-label">
                                             <span>{{$t('models.quarter.workflow.to')}}</span>
                                         </el-col>
-                                        <el-col :md="4" class="workflow-label">
+                                        <el-col :md="6" class="workflow-label">
                                             <el-tag 
                                                     type="primary" 
                                                     :key="user.id"
@@ -373,10 +373,10 @@
                                                 {{user.name}}
                                             </el-tag>
                                         </el-col>
-                                        <el-col :md="2" class="workflow-label">
+                                        <el-col :md="1" class="workflow-label">
                                             <span>{{$t('models.quarter.workflow.cc')}}</span>
                                         </el-col>
-                                        <el-col :md="4" class="workflow-label">
+                                        <el-col :md="6" class="workflow-label">
                                             <el-tag 
                                                     :key="user.id"
                                                     v-for="user in workflow.cc_users">

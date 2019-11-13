@@ -2,7 +2,7 @@
     <el-form :model="model" :rules="validationRules" label-position="top" ref="form" v-loading="loading">
         <el-row :gutter="20">
             <el-col :md="24">
-                <el-form-item :label="$t('general.title')"
+                <el-form-item 
                             :rules="validationRules.title"
                             prop="title">
                     <el-input type="text"
@@ -13,7 +13,7 @@
         </el-row>
         <el-row :gutter="20">
             <el-col :md="12">
-                <el-form-item :label="$t('models.request.category')"
+                <el-form-item 
                             :rules="validationRules.category"
                             prop="category">
                     <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
@@ -28,7 +28,7 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12">
-                <el-form-item :label="$t('models.resident.building.name')"
+                <el-form-item 
                     :rules="validationRules.building"
                     prop="selectedWorkflowBuilding"
                     class="label-block"
@@ -59,7 +59,7 @@
         </el-row>
         <el-row :gutter="20">
             <el-col :md="12">
-                <el-form-item :label="$t('models.request.mail.to')"
+                <el-form-item 
                             :rules="validationRules.category"
                             prop="selectedWorkflowToUser">
                     <el-select
@@ -86,7 +86,7 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12">
-                <el-form-item :label="$t('models.request.mail.cc')"
+                <el-form-item 
                     :rules="validationRules.building"
                     prop="selectedWorkflowCcUser"
                     class="label-block"
