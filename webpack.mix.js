@@ -25,7 +25,9 @@ mix.options({
     })
     .combine([
         'public/css/app.css',
-        'public/css/fontello.css'
+        'public/css/fontello.css',
+        'public/css/arial.css',
+        'public/css/times_new_roman.css',
     ], 'public/css/app.css')
     // .combine([
     //     'node_modules/animate.css/animate.min.css'

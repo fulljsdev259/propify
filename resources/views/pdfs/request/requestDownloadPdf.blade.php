@@ -13,7 +13,7 @@
                             <tbody>
                                 <tr>
                                     <td class="table_header" valign="middle">
-                                        <span style="display: inline-block;vertical-align:top;">@lang('models.request.download_pdf.captured_by') {{$request->creator->email}} {{ now()->format('d.m.Y, H:i') }}</span>
+                                        <span class="text_font" style="display: inline-block;vertical-align:top;">@lang('models.request.download_pdf.captured_by') {{$request->creator->email}} {{ now()->format('d.m.Y, H:i') }}</span>
                                         <span style="display: inline-block;height:25px;width:100%;"></span>
         
                                         <span>{{ $request->service_request_format }}</span> <br />
@@ -115,9 +115,15 @@
                                             </tr>
                                             @endif
    
-   
+                                            @if((isset($category['component']) && $category['component']==1) || 
++                                            (isset($subCategory['component']) && $subCategory['component']==1) || 
++                                            (!empty($category['location']) && $category['location'] == 1) ||
++                                            (!empty($subCategory['location']) && $subCategory['location'] == 1) ||
++                                            (!empty($category['room']) && $category['room'] == 1) ||
++                                            (!empty($subCategory['room']) && $subCategory['room'] == 1))
                                             <tr>
-                                                @if($category['component']!=0)
+                                                @if((isset($category['component']) && $category['component']==1) || 
++                                                (isset($subCategory['component']) && $subCategory['component']==1))
                                                 <td class="border_btm" @if (
                                                     !((((!empty($category['location']) && $category['location'] == 1) ||
                                                     (!empty($subCategory['location']) && $subCategory['location'] == 1))) ||
@@ -161,6 +167,7 @@
                                                 @endif
    
                                             </tr>
+                                            @endif
    
                                         </tbody>
                                     </table>
@@ -291,15 +298,17 @@
                         @endif
                         <tr>
                             <td class="no_border" width="100%">
-                                    <span style="display: inline-block;height:25px;width:100%;"></span>
+                                @if($i==0)
+                                    <span style="display: inline-block;height:25px;width:100%; "></span>
+                                    @endif
                                 <table class="info_table" width="100%">
                                     <tbody>
                                         <tr style="vertical-align: top;">
 
                                             @endif  
-                                            <td class="no_border" style="top:0;width:295px;vertical-align: top;">
+                                            <td class="no_border" style="top:0;width:292px;vertical-align: top;">
                                                 
-                                                    <img class="pdf_attached" src="{{$m['file_path']}}"  />
+                                                    <img class="pdf_attached" src="{{$m['file_path']}}" @if($i==0) style="float: right;"@endif />
                                             </td>
                                             @if($i%2==0)
                                             <td class="no_border">
