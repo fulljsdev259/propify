@@ -1,6 +1,9 @@
 <template>
     <div class="quarters">
         <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy">
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
+            </template>
             <template v-if="$can($permissions.create.quarter)">
                 <el-button @click="add" icon="ti-plus" round size="mini" type="primary">
                     {{$t('models.quarter.add')}}
@@ -17,7 +20,7 @@
             :fetchMore="fetchMore"
             :filters="filters"
             :filtersHeader="filtersHeader"
-            :header="header"
+            :header="headerFilter"
             :items="items"
             :loading="{state: loading}"
             :pagination="{total, currPage, currSize}"

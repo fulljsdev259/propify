@@ -1,6 +1,6 @@
 <template>
     <div :class="['heading', `${shadow}-shadow`]">
-        <i :class="['icon', icon]" v-if="icon"></i>
+        <!-- <i :class="['icon', icon]" v-if="icon"></i> -->
         <div class="content">
             <div class="title">{{title}}</div>
             <slot name="description" />
@@ -35,6 +35,7 @@
         flex-shrink: 0;
         position: relative;
         z-index: 1;
+        background-color: var(--color-white);
 
         &.light-shadow .icon {
             box-shadow: 0 1px 3px transparentize(#000, .88),
@@ -68,9 +69,10 @@
             flex-shrink: 0;
 
             .title {
+                padding-left: 20px;
                 color: var(--primary-color);
-                font-size: 24px;
-                font-weight: bold;
+                font-size: 32px;
+                font-weight: 900;
                 overflow: hidden;
                 min-width: 0;
                 text-overflow: ellipsis;

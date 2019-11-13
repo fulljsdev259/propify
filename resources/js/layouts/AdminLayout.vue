@@ -1,83 +1,57 @@
 <template>
     <el-container class="admin-layout" direction="vertical">
-        <a-header :toggleSidebar="toggleSidebar">
-            <div class="header-link">
-                <div v-bind:class="[{ active: showMenu }, language]">
-                    <div class="language-iconBorder" @click="toggleShow" v-click-outside="hideMenu">
-                        <div class="language-checked-img">
-                            <span v-bind:class="selectedFlag"></span>
-                        </div>
-                    </div>
-                    <div class="language-check-box">
-                        <div class="language-check-box-title">
-                            {{$t('general.choose_language')}}
-                        </div>
-                        <div class="language-check-box-body">
-                            <ul class="language-check-box-body-item" v-for='language in this.languages' :key="language.symbol" @click='itemClicked(language.symbol, language.flag)'>
-                                <li>
-                                    <span v-bind:class="language.flag"></span>
-                                    <p>{{language.name}}</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <el-badge class="notification-badge" type="danger" :value="unreadNotifications.length" :max="9" :hidden="!unreadNotifications.length">
-                <el-button icon="icon-bell-alt" circle />
-            </el-badge>
-            <div id="dropdown" class="dropdown-menu" ref="prev">
-                <el-dropdown trigger="click" @visible-change="handlerDropdownVisibleChange">
-                    <div>
-                        <avatar :src="user.avatar" :name="user.name" :size="33" />
-                        <span class="el-dropdown-link">
-                            {{user.name}}<i class="el-icon-arrow-down el-icon--right"></i>
-                        </span>
-                        
-                        <el-dropdown-menu slot="dropdown" :style="dropmenuwidth" @click.native="removeMenuActive">
-                                <!-- <router-link  v-if="this.user.roles[0].name != 'manager'" :to="{name: 'adminProfile'}" class="el-menu-item-link">
-                                    <el-dropdown-item>
-                                        <i class="icon-user"/>
-                                        {{$t('general.admin_menu.profile')}}
-                                    </el-dropdown-item>
-                                </router-link> -->
-                                <router-link  v-if="this.user.roles[0].name == 'administrator'" :to="{name: 'adminPropertyManagersEdit', params: {id: this.user.property_manager_id}}" class="el-menu-item-link">
-                                    <el-dropdown-item>
-                                        <i class="icon-user"/>
-                                        {{$t('general.admin_menu.profile')}}
-                                    </el-dropdown-item>
-                                </router-link>
-                                <router-link  v-else-if="this.user.roles[0].name == 'manager'" :to="{name: 'adminPropertyManagersEdit', params: {id: this.user.property_manager_id}}" class="el-menu-item-link">
-                                    <el-dropdown-item>
-                                        <i class="icon-user"/>
-                                        {{$t('general.admin_menu.profile')}}
-                                    </el-dropdown-item>
-                                </router-link>
-                                <router-link  v-else-if="this.user.roles[0].name == 'provider'" :to="{name: 'adminServicesEdit', params: {id: this.user.service_privider_id}}" class="el-menu-item-link">
-                                    <el-dropdown-item>
-                                        <i class="icon-user"/>
-                                        {{$t('general.admin_menu.profile')}}
-                                    </el-dropdown-item>
-                                </router-link>
-                                <template v-if="$can($permissions.view.settings) && this.user.roles[0].name != 'manager'">
-                                    <router-link :to="{name: 'adminSettings'}" class="el-menu-item-link">
-                                        <el-dropdown-item>
-                                            <i class="icon-cog"/>
-                                            {{$t('general.admin_menu.settings')}}
-                                        </el-dropdown-item>
-                                    </router-link>
-                                </template>
-                                <el-dropdown-item id="logout" @click.native="handleLogout">
-                                    <i class="icon-logout"/>
-                                    {{$t('general.admin_menu.logout')}}
-                                </el-dropdown-item>
-                        </el-dropdown-menu>
-                    </div>
-                </el-dropdown>
-            </div>
-        </a-header>
+        
         <el-container>
             <a-sidebar :links="links" :collapsed="isCallapsed">
+                <div class="actions" slot="header-action">
+                    <el-badge class="notification-badge" type="danger" :value="unreadNotifications.length" :max="9" :hidden="!unreadNotifications.length">
+                        <i class="el-icon-bell"></i>
+                    </el-badge>
+                    <el-popover
+                        placement="right"
+                        width="200"
+                        trigger="hover"
+                    >
+                        <!-- <router-link  v-if="this.user.roles[0].name != 'manager'" :to="{name: 'adminProfile'}" class="el-menu-item-link">
+                            <el-dropdown-item>
+                                <i class="icon-user"/>
+                                {{$t('general.admin_menu.profile')}}
+                            </el-dropdown-item>
+                        </router-link> -->
+                        <router-link  v-if="this.user.roles[0].name == 'administrator'" :to="{name: 'adminPropertyManagersEdit', params: {id: this.user.property_manager_id}}" class="el-menu-item-link">
+                            <el-dropdown-item>
+                                <i class="icon-user"/>
+                                {{$t('general.admin_menu.profile')}}
+                            </el-dropdown-item>
+                        </router-link>
+                        <router-link  v-else-if="this.user.roles[0].name == 'manager'" :to="{name: 'adminPropertyManagersEdit', params: {id: this.user.property_manager_id}}" class="el-menu-item-link">
+                            <el-dropdown-item>
+                                <i class="icon-user"/>
+                                {{$t('general.admin_menu.profile')}}
+                            </el-dropdown-item>
+                        </router-link>
+                        <router-link  v-else-if="this.user.roles[0].name == 'provider'" :to="{name: 'adminServicesEdit', params: {id: this.user.service_privider_id}}" class="el-menu-item-link">
+                            <el-dropdown-item>
+                                <i class="icon-user"/>
+                                {{$t('general.admin_menu.profile')}}
+                            </el-dropdown-item>
+                        </router-link>
+                        <template v-if="$can($permissions.view.settings) && this.user.roles[0].name != 'manager'">
+                            <router-link :to="{name: 'adminSettings'}" class="el-menu-item-link">
+                                <el-dropdown-item>
+                                    <i class="icon-cog"/>
+                                    {{$t('general.admin_menu.settings')}}
+                                </el-dropdown-item>
+                            </router-link>
+                        </template>
+                        <el-dropdown-item id="logout" @click.native="handleLogout">
+                            <i class="icon-logout"/>
+                            {{$t('general.admin_menu.logout')}}
+                        </el-dropdown-item>
+                        <avatar slot="reference" :src="user.avatar" :name="user.name" :size="33" />
+                    </el-popover>
+                    
+                </div>
             </a-sidebar>
             <el-main sticky-container>
                 <v-router-transition transition="slide-left">
@@ -137,7 +111,7 @@
 
                 languages: [],
 
-                isCallapsed: false,
+                isCallapsed: true,
                 dropdownwidth: 0,
                 currActive: '',
                 requests: [],
@@ -779,6 +753,11 @@
                 height: 100%;
                 width: 100%;
             }
+
+            i {
+                font-size: 32px;
+                color: var(--color-info);
+            }
         }
     }
 </style>
@@ -826,6 +805,31 @@
             transform: none;
             background-color: var(--primary-color) !important;
             margin-left: 5px;
+        }
+    }
+    .el-menu-item-link {
+        text-decoration: none;
+    }
+    .el-dropdown-menu {
+        &.el-popper {
+            :global(&[x-placement^=bottom] .popper__arrow) {
+                top: -12px;
+                &::after {
+                    margin-left: -10px;  
+                }
+            }
+            :global(.popper__arrow) {
+                border-bottom-width: 12px;
+                border-left-width: 10px;
+                border-right-width: 10px;
+                border-top-width: 0;      
+                &::after {
+                    border-width: 12px;
+                    border-left-width: 10px;
+                    border-right-width: 10px;
+                    border-top-width: 0;
+                }
+            }
         }
     }
 </style>

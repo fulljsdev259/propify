@@ -49,31 +49,31 @@ class AuditRepository extends BaseRepository
         if($fieldvalue){
             if($fieldname == 'resident_id'){            
                 $model = Resident::find($fieldvalue);
-                return $model->first_name . ' ' . $model->last_name;            
+                return ($model) ? $model->first_name . ' ' . $model->last_name : "";
             } 
             if($fieldname == 'address_id'){                
                 $model = Address::find($fieldvalue);
-                return $model->house_num. ' '. $model->street . ' '. $model->city;
+                return ($model) ? $model->house_num. ' '. $model->street . ' '. $model->city : "";
             }
             if($fieldname == 'building_id'){            
                 $model = Building::find($fieldvalue);
-                return $model->name;
+                return ($model) ? $model->name : "";
             } 
             if($fieldname == 'quarter_id'){                                            
                 $model = Quarter::find($fieldvalue);                
-                return $model->name;
+                return ($model) ? $model->name : "";
             } 
             elseif($fieldname == 'unit_id'){            
                 $model = Unit::find($fieldvalue);
-                return $model->name;            
+                return ($model) ? $model->name : "";
             }
             elseif($fieldname == 'nation'){
                 $model = Country::find($fieldvalue);
-                return $model->name;            
+                return ($model) ? $model->name : "";
             }
             elseif($fieldname == 'state_id'){
                 $model = State::find($fieldvalue);
-                return $model->name;
+                return ($model) ? $model->name : "";
             }
             elseif(($auditable_type == 'resident') && ($fieldname == 'status')){   
                 return __('models.resident.status.' . Resident::Status[$fieldvalue]);
