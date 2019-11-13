@@ -57,7 +57,6 @@
                 <v-router-transition transition="slide-left">
                     <router-view/>
                 </v-router-transition>
-                <a-footer />
             </el-main>
         </el-container>
     </el-container>
@@ -250,14 +249,14 @@
                             }
                         }]
                     },
-                    "activity": {
-                        icon: 'icon-gauge-1',
-                        title: this.$t('general.admin_menu.activity'),
-                        permission: this.$permissions.list.audit,
-                        route: {
-                            name: 'adminActivityList'
-                        }
-                    },
+                    // "activity": {
+                    //     icon: 'icon-gauge-1',
+                    //     title: this.$t('general.admin_menu.activity'),
+                    //     permission: this.$permissions.list.audit,
+                    //     route: {
+                    //         name: 'adminActivityList'
+                    //     }
+                    // },
                     "residents": {
                         title: this.$t('general.admin_menu.residents'),
                         icon: 'icon-group',
@@ -321,7 +320,7 @@
                             menu_items.dashboard,
                             menu_items.buildings,
                             menu_items.requests, 
-                            menu_items.activity,
+                            // menu_items.activity,
                             menu_items.residents,
                             menu_items.propertyManagers,
                             menu_items.services,
