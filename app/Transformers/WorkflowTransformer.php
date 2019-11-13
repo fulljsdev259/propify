@@ -35,8 +35,12 @@ class WorkflowTransformer extends BaseTransformer
         $userIds = array_merge($toUserIds, $ccUserIds);
         $users = User::whereIn('id', $userIds)->get(['id', 'name']);
 
-        $response['to_users'] = $users->whereIn('id', $toUserIds)->toArray();
-        $response['cc_users'] = $users->whereIn('id', $ccUserIds)->toArray();
+        $response['to_users'] = $users->whereIn('id', $toUserIds)->values()->transform( function ($user) {
+            return $user->only(['id', 'name']);
+        });
+        $response['cc_users'] = $users->whereIn('id', $ccUserIds)->values()->transform( function ($user) {
+            return $user->only(['id', 'name']);
+        });
 
         $buildingIds = $model->building_ids ?? [];
         $buildings = Building::whereIn('id', $buildingIds)->with('address')->get();
