@@ -368,7 +368,7 @@
                                         <el-col :md="4" class="workflow-label">
                                             <el-tag 
                                                     type="primary" 
-                                                    :key="user"
+                                                    :key="user.id"
                                                     v-for="user in workflow.to_users">
                                                 {{user.name}}
                                             </el-tag>
@@ -378,7 +378,7 @@
                                         </el-col>
                                         <el-col :md="4" class="workflow-label">
                                             <el-tag 
-                                                    :key="user"
+                                                    :key="user.id"
                                                     v-for="user in workflow.cc_users">
                                                 {{user.name}}
                                             </el-tag>
