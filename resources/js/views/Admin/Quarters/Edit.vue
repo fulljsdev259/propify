@@ -339,6 +339,7 @@
                                     <template slot="title">
                                         {{workflow.title}}
                                     </template>
+                                    {{isEditingWorkflow[$index]}}
                                     <workflow-form v-if="isEditingWorkflow[$index]"
                                             mode="edit" 
                                             :quarter_id="model.id" 
@@ -761,6 +762,7 @@
                 this.isAddWorkflow = true
             },
             showEditWorkflow(index) {
+                this.$set(this.isEditingWorkflow, index, true)
                 this.isEditingWorkflow[index] = true
             },
             editWorkflowDrawer(index) {

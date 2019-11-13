@@ -117,7 +117,7 @@
         </el-row>
         <el-row :gutter="20" style="margin-top: 10px;">
             <el-col :md="24" class="drawer-actions">
-                <el-button type="primary" @click="submit" icon="ti-save" round>&nbsp;{{ $t('general.actions.save') }}</el-button>
+                <el-button type="primary" @click="submit" icon="ti-save" size="mini" round>&nbsp;{{ $t('general.actions.save') }}</el-button>
             </el-col>
         </el-row>
         
