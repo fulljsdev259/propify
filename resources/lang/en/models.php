@@ -424,7 +424,10 @@ return [
         'workflow' => [
             'label' => 'Workflow',
             'add' => 'Add Workflow',
-            'edit' => 'Edit Workflow'
+            'edit' => 'Edit Workflow',
+            'by' => 'by',
+            'to' => 'to',
+            'cc' => 'cc',
         ]
     ],
     'request' => [        

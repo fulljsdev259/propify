@@ -352,7 +352,7 @@
                                             <span>{{$t(`models.request.category_list.${workflow.category.name}`)}}</span>
                                         </el-col>
                                         <el-col :md="2" class="workflow-label">
-                                            <span>Van</span>
+                                            <span>{{$t('models.quarter.workflow.by')}}</span>
                                         </el-col>
                                         <el-col :md="4" class="workflow-label">
                                             <el-tag 
@@ -363,7 +363,7 @@
                                             </el-tag>
                                         </el-col>
                                         <el-col :md="2" class="workflow-label">
-                                            <span>{{$t('models.request.mail.to')}}</span>
+                                            <span>{{$t('models.quarter.workflow.to')}}</span>
                                         </el-col>
                                         <el-col :md="4" class="workflow-label">
                                             <el-tag 
@@ -374,7 +374,7 @@
                                             </el-tag>
                                         </el-col>
                                         <el-col :md="2" class="workflow-label">
-                                            <span>{{$t('models.request.mail.cc')}}</span>
+                                            <span>{{$t('models.quarter.workflow.cc')}}</span>
                                         </el-col>
                                         <el-col :md="4" class="workflow-label">
                                             <el-tag 
