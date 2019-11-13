@@ -447,5 +447,41 @@
             justify-content: flex-end;
 
         }
+
+        /deep/ .el-tag {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 6px;
+            font-size: 15px;
+            
+            margin: 0;
+            padding: 0;
+            padding-left: 10px;
+            padding-right: 20px;
+            height: 40px;
+            line-height: 40px;
+
+            i {
+                color: white;
+                background: transparent;
+                font-size: 20px;
+                font-weight: 600;
+            }
+        }
+
+        /deep/ .el-select__tags {
+            padding-left: 30px;
+            input {
+                margin-left: 0;
+            }
+        }
+
+        /deep/ .el-tag.el-tag--info .el-tag__close:hover {
+            background: transparent;
+        }
+
+        /deep/ .el-form .el-form-item.is-error[data-v-5a458b8e] {
+            margin-bottom: 10px;
+        }
     }
 </style>

@@ -336,7 +336,7 @@
                                         :label="`${workflow.name}`"
                                         :value="workflow.title"
                                         :name="workflow.title"
-                                        v-for="(workflow, $index) in workflows">
+                                        v-for="(workflow, $index) in model.workflows">
                                     <template slot="title">
                                         {{workflow.title}}
                                     </template>
@@ -880,7 +880,7 @@
             addWorkflow(flow) {
                 console.log('add flow', flow)
                 this.isEditingWorkflow.push(false)
-                this.workflows.push(flow)
+                this.model.workflows.push(flow)
                 this.isAddWorkflow = false
             },
             updateWorkflow(index, flow) {
