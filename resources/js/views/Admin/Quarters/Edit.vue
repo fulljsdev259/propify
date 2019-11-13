@@ -263,7 +263,7 @@
                                 <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.residents') }}</el-badge>
                             </span>
                             <relation-list
-                                :actions="residentActions"
+                                :actions="residentActions" 
                                 :columns="residentColumns"
                                 :filterValue="model.id"
                                 fetchAction="getResidents"
@@ -308,6 +308,84 @@
                             </span>
                             <audit v-if="model.id" :id="model.id" type="quarter" ref="auditList" showFilter/>
                         </el-tab-pane>
+                        <el-tab-pane name="workflow">
+                            <span slot="label">
+                                {{ $t('models.quarter.workflow.label') }}
+                            </span>
+                            <el-row :gutter="20">
+                                <div class="workflow-button-bar">
+                                    <el-button 
+                                            type="primary" 
+                                            @click="toggleWorkflowDrawer" 
+                                            icon="icon-plus" 
+                                            size="mini" 
+                                            round>
+                                            {{ $t('models.quarter.workflow.add') }}
+                                    </el-button>
+                                </div>
+                            </el-row>
+                            <el-collapse accordion>
+                                 <el-collapse-item
+                                        :key="workflow.title"
+                                        :label="`${workflow.name}`"
+                                        :value="workflow.title"
+                                        :name="workflow.title"
+                                        v-for="(workflow, $index) in workflows">
+                                    <template slot="title">
+                                        {{workflow.title}}
+                                    </template>
+                                    <el-row>
+                                        <el-col :md="5" class="workflow-label">
+                                            <span>{{$t(`models.request.category_list.${workflow.categoryData.name}`)}}</span>
+                                        </el-col>
+                                        <el-col :md="2" class="workflow-label">
+                                            <span>Van</span>
+                                        </el-col>
+                                        <el-col :md="4" class="workflow-label">
+                                            <el-tag 
+                                                    type="primary" 
+                                                    :key="building.id"
+                                                    v-for="building in workflow.buildingsData">
+                                                    {{building.name}}
+                                            </el-tag>
+                                        </el-col>
+                                        <el-col :md="2" class="workflow-label">
+                                            <span>{{$t('models.request.mail.to')}}</span>
+                                        </el-col>
+                                        <el-col :md="4" class="workflow-label">
+                                            <el-tag 
+                                                    type="primary" 
+                                                    :key="user"
+                                                    v-for="user in workflow.to_users">
+                                                {{user}}
+                                            </el-tag>
+                                        </el-col>
+                                        <el-col :md="2" class="workflow-label">
+                                            <span>{{$t('models.request.mail.cc')}}</span>
+                                        </el-col>
+                                        <el-col :md="4" class="workflow-label">
+                                            <el-tag 
+                                                    :key="user"
+                                                    v-for="user in workflow.cc_users">
+                                                {{user}}
+                                            </el-tag>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col class="edit workflow-button-bar">
+                                            <el-button 
+                                                type="primary" 
+                                                @click="editWorkflowDrawer($index)" 
+                                                icon="icon-search" 
+                                                size="mini" 
+                                                round>
+                                                {{ $t('models.quarter.workflow.edit') }}
+                                            </el-button>
+                                        </el-col>
+                                    </el-row>
+                                </el-collapse-item>
+                            </el-collapse>
+                        </el-tab-pane>
                         <!-- <el-tab-pane name="settings" :disabled="true">
                             <span slot="label" class="icon-cog" @click="toggleDrawer">
                             </span>
@@ -343,6 +421,25 @@
                                 @delete-contract="deleteContract"
                                 :used_units="used_units"/>
                 </div>
+            </template>
+            <template v-else-if="isWorkflow">
+                
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.quarter.workflow.label') }} </ui-divider>
+                
+                <div class="content" v-if="visibleDrawer">
+                    <workflow-form v-if="editingWorkflow" 
+                                mode="edit" 
+                                :quarter_id="model.id" 
+                                :data="editingWorkflow" 
+                                :visible.sync="visibleDrawer"
+                                @update-workflow="addWorkflow"/>
+                    <workflow-form v-else 
+                                mode="add" 
+                                :quarter_id="model.id" 
+                                :visible.sync="visibleDrawer"
+                                @add-workflow="addWorkflow"/>
+                </div>
+                    
             </template>
             <template v-else>
                 <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="visibleDrawer">
@@ -383,6 +480,7 @@
     import AssignmentByType from 'components/AssignmentByType';
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
     import EmailReceptionistForm from 'components/EmailReceptionistForm';
+    import WorkflowForm from 'components/WorkflowForm';
     import UploadDocument from 'components/UploadDocument';
     import draggable from 'vuedraggable';
     import { EventBus } from '../../../event-bus.js';
@@ -404,6 +502,7 @@
             AssignmentByType,
             EmergencySettingsForm,
             EmailReceptionistForm,
+            WorkflowForm,
             UploadDocument,
             draggable,
             ContractForm,
@@ -527,9 +626,15 @@
                 activeRightTab: 'assignees',
                 activeRequestTab: 'requests',
                 editingContract: null,
+                editingWorkflow: null,
                 isAddContract: false,
+                isWorkflow: false,
+                isAddWorkflow: false,
+                isEditWorkflow: false,
                 editingContractIndex: -1,
-                activeDrawerTab: "emergency"
+                editingWorkflowIndex: -1,
+                activeDrawerTab: "emergency",
+                workflows: []
             }
         },
         methods: {
@@ -636,6 +741,20 @@
                 
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
+            toggleWorkflowDrawer() {
+                this.visibleDrawer = true
+                this.isWorkflow = true
+                document.getElementsByTagName('footer')[0].style.display = "none";
+            },
+            editWorkflowDrawer(index) {
+                this.visibleDrawer = true
+                this.isWorkflow = true
+
+                this.editingWorkflow = this.workflows[index];
+                this.editingWorkflowIndex = index;
+
+                document.getElementsByTagName('footer')[0].style.display = "none";
+            },
             addContract (data) {
                 this.model.contracts.push(data);
                 this.contractCount ++;
@@ -661,6 +780,88 @@
                 }).catch(() => {
                 });
             },
+            async remoteSearchBuildings(search) {
+                if (search === '') {
+                    this.resetBuildingList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const resp = await this.getBuildings({
+                            get_all: true,
+                            quarter_id: this.model.id,
+                            search
+                        });
+
+                        this.workflowBuildingList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            resetBuildingList() {
+                this.workflowBuildingList = [];
+                this.selectedWorkflowBuilding = [];
+            },
+            async remoteSearchToUsers(search) {
+                if (search === '') {
+                    this.resetToUserList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const resp = await this.getUsers({
+                            get_all: true,
+                            get_role: true,
+                            search,
+                            roles: ['manager', 'administrator', 'provider']
+                        });
+
+
+                        this.workflowToUserList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            resetToUserList() {
+                this.workflowToUserList = [];
+                this.selectedWorkflowToUser = [];
+            },
+            async remoteSearchCcUsers(search) {
+                if (search === '') {
+                    this.resetCcUserList();
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                       const resp = await this.getUsers({
+                            get_all: true,
+                            get_role: true,
+                            search,
+                            roles: ['manager', 'administrator', 'provider']
+                        });
+
+                        this.workflowCcUserList = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            resetCcUserList() {
+                this.workflowCcUserList = [];
+                this.selectedWorkflowCcUser = [];
+            },
+            addWorkflow(flow) {
+                console.log('flow', flow)
+                this.workflows.push(flow)
+            }
         },
         computed: {
             ...mapGetters('application', {
@@ -710,6 +911,12 @@
             EventBus.$on('audit-get-counted', audit_count => {
                 this.auditCount = audit_count;
             });
+
+            this.workflowCategories = [
+                'General options',
+                'Malfunction',
+                'Mangel'
+            ]
         },
         watch: {
             'visibleDrawer': {
@@ -719,6 +926,8 @@
                     if (!state) {
                         this.editingContract = null
                         this.isAddContract = false
+                        this.isWorkflow = false
+                        this.editingWorkflow = null
                         document.getElementsByTagName('footer')[0].style.display = "block";
                     }
                 }
@@ -913,4 +1122,28 @@
         width: 100%;
     }
 
+    .workflow-label {
+        line-height: 40px;
+    }
+
+    .workflow-button-bar {
+        display: flex;
+        justify-content: flex-end;
+        padding-bottom: 10px;
+
+        &.edit {
+            padding-top: 10px;
+        }
+    }
+
+    .el-tag {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .el-collapse {
+        .el-collapse-item__content {
+            padding-bottom: 10px;
+        }
+    }
 </style>

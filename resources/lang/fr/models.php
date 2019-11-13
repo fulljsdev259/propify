@@ -420,7 +420,12 @@ return [
             'caretaker' => 'Concierge',
             'administration' => 'Administration'
         ],
-        'url' => 'Url'
+        'url' => 'Url',
+        'workflow' => [
+            'label' => 'Workflow',
+            'add' => 'Ajouter un flux de travail',
+            'edit' => 'Modifier le flux de travail'
+        ]
     ],
     'request' => [        
         "deleted" => "Richiesta supprimée",

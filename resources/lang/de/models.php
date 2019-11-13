@@ -422,7 +422,12 @@ return [
             'caretaker' => 'Hauswart',
             'administration' => 'Verwaltung'
         ],
-        'url' => 'Url'
+        'url' => 'Url',
+        'workflow' => [
+            'label' => 'Workflow',
+            'add' => 'Workflow hinzufügen',
+            'edit' => 'Workflow bearbeiten'
+        ]
     ],
     'request' => [        
         'deleted' => 'Anfrage gelöscht',
