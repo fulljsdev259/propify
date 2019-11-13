@@ -69,7 +69,7 @@ export default (config = {}) => {
             ...mapGetters(['states'])
         },
         methods: {
-            ...mapActions(['getStates', 'assignUserToQuarter','getQuarter','getUsers','getPropertyManagers','unassignQuarterAssignee']),
+            ...mapActions(['getStates', 'assignUserToQuarter','getQuarter','getUsers','getAllAdminsForQuarter','getPropertyManagers','unassignQuarterAssignee']),
             resetToAssignList() {
                 this.toAssignList = [];
                 this.toAssign = '';
@@ -92,11 +92,12 @@ export default (config = {}) => {
                 //     });
                 // }
 
+                let assign_user = this.toAssignList.find(item => item.id == this.toAssign )
 
                 resp = await this.assignUserToQuarter({
                             id: this.model.id,
                             user_id: this.toAssign,
-                            role: 'manager',
+                            role: assign_user.role,
                             assignment_types: this.userAssignmentType
                         });
 
@@ -156,14 +157,15 @@ export default (config = {}) => {
                         // }
 
                         //    exclude_assignees_quarter_id: this.$route.params.id,
-                        const resp = await this.getUsers({
-                                    get_all: true,
-                                    get_role: true,
-                                    search,
-                                    roles: ['manager', 'administrator', 'provider']
-                                });
+                        // const resp = await this.getUsers({
+                        //             get_all: true,
+                        //             get_role: true,
+                        //             search,
+                        //             roles: ['manager', 'administrator', 'provider']
+                        //         });
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id})
                         console.log(resp)
-                        this.toAssignList = resp.data;                        
+                        this.toAssignList = resp;                        
                     } catch (err) {
                         displayError(err);
                     } finally {
