@@ -2,7 +2,9 @@
 
 namespace App\Transformers;
 
+use App\Models\Building;
 use App\Models\Quarter;
+use App\Models\User;
 use App\Models\Workflow;
 
 /**
@@ -27,6 +29,18 @@ class WorkflowTransformer extends BaseTransformer
             'to_user_ids' => $model->to_user_ids,
             'cc_user_ids' => $model->cc_user_ids,
         ];
+
+        $toUserIds = $model->to_user_ids ?? [];
+        $ccUserIds = $model->cc_user_ids ?? [];
+        $userIds = array_merge($toUserIds, $ccUserIds);
+        $users = User::whereIn('id', $userIds)->get(['id', 'name']);
+
+        $response['to_users'] = $users->whereIn('id', $toUserIds)->toArray();
+        $response['cc_users'] = $users->whereIn('id', $ccUserIds)->toArray();
+
+        $buildingIds = $model->building_ids ?? [];
+        $buildings = Building::whereIn('id', $buildingIds)->with('address')->get();
+        $response['buildings'] = (new BuildingTransformer())->transformCollection($buildings);
 
         return $response;
     }
