@@ -182,7 +182,7 @@
     aside {
         display: flex;
         flex-direction: column;
-        border-right: 2px solid var(--border-color-base);
+        border-right: 1px solid var(--border-color-base);
         .logo-image {
             display: flex;
             justify-content: center;
@@ -219,7 +219,7 @@
     }
     /deep/ .el-submenu.is-active, .el-menu-item.is-active, .el-menu-item:hover {
         color: var(--primary-color);
-        background-color: var(--color-white);
+        background-color: transparent;
         i { 
             color: var(--primary-color);
         }
