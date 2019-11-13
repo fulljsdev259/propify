@@ -117,7 +117,7 @@
         </el-row>
         <el-row :gutter="20" style="margin-top: 10px;">
             <el-col :md="24" class="drawer-actions">
-                <el-button type="primary" @click="submit" icon="ti-save" size="mini" round>&nbsp;{{ $t('general.actions.save') }}</el-button>
+                <el-button type="primary" @click="submit" icon="ti-save" round>&nbsp;{{ $t('general.actions.save') }}</el-button>
             </el-col>
         </el-row>
         
@@ -144,6 +144,9 @@
             },
             mode: {
                 type: String
+            },
+            editing_index: {
+                type: Number
             }
         },
         data () {
@@ -212,6 +215,12 @@
                             cc_users: this.model.selectedWorkflowCcUser
                         }
 
+                        if(this.mode == 'add') {
+                            this.$emit('add-workflow', payload);
+                        }
+                        else {
+                            this.$emit('update-workflow', this.editing_index, payload);
+                        }
                         // const resp = await this.saveBuildingEmailReceptionists(payload)
 
                         // if(resp.success)
@@ -221,7 +230,7 @@
                         // }
 
 
-                        this.$emit('add-workflow', payload);
+                        
                         this.$emit('update:visible', false);
 
                     }

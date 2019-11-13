@@ -344,6 +344,7 @@
                                             mode="edit" 
                                             :quarter_id="model.id" 
                                             :data="workflow"
+                                            :editing_index="$index"
                                             :visible.sync="visibleDrawer"
                                             @update-workflow="updateWorkflow"/>
                                     <el-row v-else>
@@ -884,7 +885,7 @@
                 this.isAddWorkflow = false
             },
             updateWorkflow(index, flow) {
-                console.log('update flow', flow)
+                console.log('update flow', index, flow)
                 this.$set(this.isEditingWorkflow, index, false)
             }
         },
