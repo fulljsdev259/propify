@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Criteria\Common\RequestCriteria;
+use App\Criteria\User\FilterByAdminCriteria;
 use App\Criteria\User\FilterByExcludeAssigneesCriteria;
 use App\Criteria\User\FilterByRolesCriteria;
 use App\Criteria\User\WhereCriteria;
@@ -84,6 +85,7 @@ class UserAPIController extends AppBaseController
     {
         $this->userRepository->pushCriteria(new RequestCriteria($request));
         $this->userRepository->pushCriteria(new FilterByRolesCriteria($request));
+        $this->userRepository->pushCriteria(new FilterByAdminCriteria($request));
         $this->userRepository->pushCriteria(new FilterByExcludeAssigneesCriteria($request));
         $this->userRepository->pushCriteria(new LimitOffsetCriteria($request));
 
@@ -99,6 +101,17 @@ class UserAPIController extends AppBaseController
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $users = $this->userRepository->with('roles')->paginate($perPage);
         return $this->sendResponse($users->toArray(), 'Users retrieved successfully');
+    }
+
+    /**
+     * @param ListRequest $request
+     * @return mixed
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function allAdmins(ListRequest $request)
+    {
+        $request->merge(['get_admins' => true]);
+        return $this->index($request);
     }
 
     /**
