@@ -110,7 +110,11 @@ class UserAPIController extends AppBaseController
      */
     public function allAdmins(ListRequest $request)
     {
-        $request->merge(['get_admins' => true]);
+        $request->merge([
+            'get_admins' => true,
+            'get_all' => true,
+            'get_role' => true,
+        ]);
         return $this->index($request);
     }
 
