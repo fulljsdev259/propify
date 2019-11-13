@@ -24,7 +24,7 @@ export default (config = {}) => {
                 },
                 quarter_format: '',
                 validationRules: {
-                    type: [{
+                    types: [{
                         required: true,
                         message: this.$t('models.quarter.required')
                     }], 
@@ -299,6 +299,8 @@ export default (config = {}) => {
                         this.fileCount = this.model.media.length
                         this.contractCount = this.model.contracts.length
 
+                        console.log(this.model.types)
+
                     },
                     submit() {
                         return new Promise((resolve, reject) => {
@@ -321,6 +323,7 @@ export default (config = {}) => {
                                             house_num,
                                             zip
                                         },
+                                        workflows: this.workflows,
                                         ...restParams
                                     });    
                                     if(this.$refs.auditList){

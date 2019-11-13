@@ -17,7 +17,7 @@
                                     <el-col :md="12">
                                         <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.type"
                                                 class="label-block"
-                                                prop="type">
+                                                prop="types">
                                             <!-- <el-select :placeholder="$t('general.placeholders.select')"
                                                         style="display: block"
                                                         v-model="model.type">
@@ -349,7 +349,7 @@
                                             @update-workflow="updateWorkflow"/>
                                     <el-row v-else>
                                         <el-col :md="5" class="workflow-label">
-                                            <span>{{$t(`models.request.category_list.${workflow.categoryData.name}`)}}</span>
+                                            <span>{{$t(`models.request.category_list.${workflow.category.name}`)}}</span>
                                         </el-col>
                                         <el-col :md="2" class="workflow-label">
                                             <span>Van</span>
@@ -358,7 +358,7 @@
                                             <el-tag 
                                                     type="primary" 
                                                     :key="building.id"
-                                                    v-for="building in workflow.buildingsData">
+                                                    v-for="building in workflow.buildings">
                                                     {{building.name}}
                                             </el-tag>
                                         </el-col>
@@ -369,7 +369,7 @@
                                             <el-tag 
                                                     type="primary" 
                                                     :key="user"
-                                                    v-for="user in workflow.to_users">
+                                                    v-for="user in workflow.to_user_ids">
                                                 {{user}}
                                             </el-tag>
                                         </el-col>
@@ -379,7 +379,7 @@
                                         <el-col :md="4" class="workflow-label">
                                             <el-tag 
                                                     :key="user"
-                                                    v-for="user in workflow.cc_users">
+                                                    v-for="user in workflow.cc_user_ids">
                                                 {{user}}
                                             </el-tag>
                                         </el-col>
