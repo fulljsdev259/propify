@@ -97,7 +97,7 @@ export default (config = {}) => {
                 resp = await this.assignUserToQuarter({
                             id: this.model.id,
                             user_id: this.toAssign,
-                            role: assign_user.role,
+                            role: assign_user.roles[0].name,
                             assignment_types: this.userAssignmentType
                         });
 
