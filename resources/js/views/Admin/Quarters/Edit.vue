@@ -218,6 +218,7 @@
                                     <el-select
                                             :placeholder="$t('general.placeholders.select')"
                                             style="display: block"
+                                            multiple
                                             v-model="userAssignmentType"
                                             filterable>
                                         <el-option

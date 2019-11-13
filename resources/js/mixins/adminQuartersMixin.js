@@ -97,7 +97,7 @@ export default (config = {}) => {
                             id: this.model.id,
                             user_id: this.toAssign,
                             role: 'manager',
-                            assignment_type: this.userAssignmentType
+                            assignment_types: this.userAssignmentType
                         });
 
                 if (resp && resp.data) {             
