@@ -164,6 +164,7 @@ class QuarterAPIController extends AppBaseController
      * @param CreateRequest $request
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateRequest $request)
@@ -192,7 +193,7 @@ class QuarterAPIController extends AppBaseController
             }
 
             DB::commit();
-            $quarter->load('address', 'media');
+            $quarter->load('address', 'media', 'workflows');
             $quarter->setHasRelation('email_receptionists');
             $response = (new QuarterTransformer)->transform($quarter);
 
@@ -255,6 +256,7 @@ class QuarterAPIController extends AppBaseController
         }
         $quarter->load([
             'media',
+            'workflows',
             'buildings' => function ($q) {
                 $q->with([
                     'contracts' => function ($q) {
@@ -383,7 +385,7 @@ class QuarterAPIController extends AppBaseController
             }
 
             DB::commit();
-            $quarter->load('address', 'media');
+            $quarter->load('address', 'media', 'workflows');
             $quarter->setHasRelation('email_receptionists');
             $response = (new QuarterTransformer)->transform($quarter);
 
