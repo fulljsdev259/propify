@@ -342,8 +342,13 @@
                                     </el-row>
                                     <el-row>
                                         <el-col>
-                                            <el-button class="full-button" size="mini" icon="ti-pencil" type="primary">
-                                                &nbsp;{{ $t('models.quarter.workflow.edit') }}
+                                            <el-button 
+                                                type="primary" 
+                                                @click="editWorkflowDrawer(scope.$index)" 
+                                                icon="icon-plus" 
+                                                size="mini" 
+                                                round>
+                                                {{ $t('models.quarter.workflow.edit') }}
                                             </el-button>
                                         </el-col>
                                     </el-row>
@@ -582,6 +587,8 @@
                 editingContract: null,
                 isAddContract: false,
                 isWorkflow: false,
+                isAddWorkflow: false,
+                isEditWorkflow: false,
                 editingContractIndex: -1,
                 activeDrawerTab: "emergency",
                 workflows: []
@@ -694,6 +701,13 @@
             toggleWorkflowDrawer() {
                 this.visibleDrawer = true
                 this.isWorkflow = true
+                this.isAddWorkflow = false
+                document.getElementsByTagName('footer')[0].style.display = "none";
+            },
+            editWorkflowDrawer() {
+                this.visibleDrawer = true
+                this.isWorkflow = true
+                this.isEditWorkflow = true
 
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
@@ -868,6 +882,9 @@
                     if (!state) {
                         this.editingContract = null
                         this.isAddContract = false
+                        this.isWorkflow = false
+                        this.isAddWorkflow = false
+                        this.isEditWorkflow = false
                         document.getElementsByTagName('footer')[0].style.display = "block";
                     }
                 }
