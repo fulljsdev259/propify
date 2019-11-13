@@ -326,93 +326,19 @@
                             </el-row>
                             <el-collapse accordion>
                                  <el-collapse-item
-                                        :key="category"
-                                        :label="`${category.name}`"
-                                        :value="category"
-                                        :name="category"
-                                        v-for="category in workflowCategories">
+                                        :key="workflow"
+                                        :label="`${workflow.name}`"
+                                        :value="workflow"
+                                        :name="workflow"
+                                        v-for="workflow in workflows">
                                     <template slot="title">
-                                        {{category}} <i class="header-icon el-pencil"></i>
+                                        {{workflow.title}} <i class="header-icon el-pencil"></i>
                                     </template>
                                     <el-row>
                                         <el-col :md="1" class="workflow-label">
                                             <span>Van</span>
                                         </el-col>
-                                        <el-col :md="7">
-                                                <el-select
-                                                    :loading="remoteLoading"
-                                                    :placeholder="$t('general.placeholders.search')"
-                                                    :remote-method="remoteSearchBuildings"
-                                                    class="custom-remote-select"
-                                                    filterable
-                                                    multiple
-                                                    remote
-                                                    reserve-keyword
-                                                    style="width: 100%;"
-                                                    v-model="selectedWorkflowBuilding"
-                                                >
-                                                    <div class="custom-prefix-wrapper" slot="prefix">
-                                                        <i class="el-icon-search custom-icon"></i>
-                                                    </div>
-                                                    <el-option
-                                                        :key="building.id"
-                                                        :label="`${building.name}`"
-                                                        :value="building.id"
-                                                        v-for="building in workflowBuildingList"/>
-                                                </el-select>
-                                        </el-col>
-                                        <el-col :md="1" class="workflow-label">
-                                            <span>{{$t('models.request.mail.to')}}</span>
-                                        </el-col>
-                                        <el-col :md="7">
-                                                <el-select
-                                                    :loading="remoteLoading"
-                                                    :placeholder="$t('general.placeholders.search')"
-                                                    :remote-method="remoteSearchToUsers"
-                                                    class="custom-remote-select"
-                                                    filterable
-                                                    multiple
-                                                    remote
-                                                    reserve-keyword
-                                                    style="width: 100%;"
-                                                    v-model="selectedWorkflowToUser"
-                                                >
-                                                    <div class="custom-prefix-wrapper" slot="prefix">
-                                                        <i class="el-icon-search custom-icon"></i>
-                                                    </div>
-                                                    <el-option
-                                                        :key="user.id"
-                                                        :label="`${user.name}`"
-                                                        :value="user.id"
-                                                        v-for="user in workflowToUserList"/>
-                                                </el-select>
-                                        </el-col>
-                                        <el-col :md="1" class="workflow-label">
-                                            <span>{{$t('models.request.mail.cc')}}</span>
-                                        </el-col>
-                                        <el-col :md="7">
-                                                <el-select
-                                                    :loading="remoteLoading"
-                                                    :placeholder="$t('general.placeholders.search')"
-                                                    :remote-method="remoteSearchCcUsers"
-                                                    class="custom-remote-select"
-                                                    filterable
-                                                    multiple
-                                                    remote
-                                                    reserve-keyword
-                                                    style="width: 100%;"
-                                                    v-model="selectedWorkflowCcUser"
-                                                >
-                                                    <div class="custom-prefix-wrapper" slot="prefix">
-                                                        <i class="el-icon-search custom-icon"></i>
-                                                    </div>
-                                                    <el-option
-                                                        :key="user.id"
-                                                        :label="`${user.name}`"
-                                                        :value="user.id"
-                                                        v-for="user in workflowCcUserList"/>
-                                                </el-select>
-                                        </el-col>
+                                        
                                     </el-row>
                                     <el-row>
                                         <el-col>
@@ -658,13 +584,7 @@
                 isWorkflow: false,
                 editingContractIndex: -1,
                 activeDrawerTab: "emergency",
-                workflowBuildingList: [],
-                selectedWorkflowBuilding: [],
-                workflowToUserList: [],
-                selectedWorkflowToUser: [],
-                workflowCcUserList: [],
-                selectedWorkflowCcUser: [],
-                workflowCategories: []
+                workflows: []
             }
         },
         methods: {
@@ -882,6 +802,7 @@
             },
             addWorkflow(flow) {
                 console.log('flow', flow)
+                this.workflows.push(flow)
             }
         },
         computed: {

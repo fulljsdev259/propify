@@ -192,7 +192,8 @@
 
                         let payload = {
                             quarter_id : this.quarter_id,
-                            title: this.model.category,
+                            title: this.model.title,
+                            category: this.model.category,
                             buildings: this.model.selectedWorkflowBuilding,
                             to_users: this.model.selectedWorkflowToUser,
                             cc_users: this.model.selectedWorkflowCcUser
