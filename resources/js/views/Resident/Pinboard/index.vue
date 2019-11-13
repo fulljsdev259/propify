@@ -261,7 +261,7 @@
                 return this.pinboard.data.filter( pinboard => {
                     return (this.filterCategory == null || pinboard.category == this.filterCategory)
                             && (this.$constants.pinboard.type[pinboard.type] === 'new_neighbour'
-                                ? pinboard.user_id != this.$store.getters.loggedInUser.id
+                                ? pinboard.user_id !== this.$store.getters.loggedInUser.id
                                 : true)
                 });
             }
