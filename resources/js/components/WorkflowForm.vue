@@ -2,7 +2,7 @@
     <el-form :model="model" :rules="validationRules" label-position="top" ref="form" v-loading="loading">
         <el-row :gutter="20">
             <el-col :md="24">
-                <el-form-item :label="$t('general.title')"
+                <el-form-item 
                             :rules="validationRules.title"
                             prop="title">
                     <el-input type="text"
@@ -13,11 +13,11 @@
         </el-row>
         <el-row :gutter="20">
             <el-col :md="12">
-                <el-form-item :label="$t('models.request.category')"
+                <el-form-item 
                             :rules="validationRules.category"
-                            prop="category">
+                            prop="category_id">
                     <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
-                                v-model="model.category">
+                                v-model="model.category_id">
                         <el-option
                                 :key="category.id"
                                 :label="$t(`models.request.category_list.${category.name}`)"
@@ -28,7 +28,7 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12">
-                <el-form-item :label="$t('models.resident.building.name')"
+                <el-form-item 
                     :rules="validationRules.building"
                     prop="selectedWorkflowBuilding"
                     class="label-block"
@@ -59,7 +59,7 @@
         </el-row>
         <el-row :gutter="20">
             <el-col :md="12">
-                <el-form-item :label="$t('models.request.mail.to')"
+                <el-form-item 
                             :rules="validationRules.category"
                             prop="selectedWorkflowToUser">
                     <el-select
@@ -86,7 +86,7 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12">
-                <el-form-item :label="$t('models.request.mail.cc')"
+                <el-form-item 
                     :rules="validationRules.building"
                     prop="selectedWorkflowCcUser"
                     class="label-block"
@@ -156,7 +156,7 @@
                 global: '',
                 model: {
                     title: '',
-                    category: null,
+                    category_id: null,
                     assignList: '',
                     assign: [],
                     selectedWorkflowBuilding: [],
@@ -175,7 +175,7 @@
                         required: true,
                         message: this.$t('models.quarter.required')
                     }],
-                    category: [{
+                    category_id: [{
                         required: true,
                         message: this.$t('models.quarter.required')
                     }],
@@ -202,7 +202,7 @@
                             this.model.selectedWorkflowBuildingData.push(item)
                         })
                         
-                        this.model.categoryData = this.categories.find(item => item.id == this.model.category)
+                        let category = this.categories.find(item => item.id == this.model.category_id)
 
                         let to_users = []
 
@@ -220,8 +220,8 @@
 
                         let payload = {
                             title: this.model.title,
-                            category_id: this.model.category,
-                            category: this.model.categoryData,
+                            category_id: this.model.category_id,
+                            category: category,
                             building_ids: this.model.selectedWorkflowBuilding,
                             buildings: this.model.selectedWorkflowBuildingData,
                             to_user_ids: this.model.selectedWorkflowToUser,
@@ -357,7 +357,7 @@
 
             if(this.mode == 'edit') {
                 this.model.title = this.data.title
-                this.model.category = this.data.category_id
+                this.model.category_id = this.data.category_id
                 this.model.selectedWorkflowBuilding = this.data.building_ids
                 this.model.selectedWorkflowToUser = this.data.to_user_ids
                 this.model.selectedWorkflowCcUser = this.data.cc_user_ids
