@@ -1,6 +1,9 @@
 <template>
     <div class="services">
-        <heading icon="icon-user" :title="$t('general.admin_menu.admins')" shadow="heavy">            
+        <heading icon="icon-user" :title="$t('general.admin_menu.admins')" shadow="heavy">  
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
+            </template>          
             <template v-if="$can($permissions.create.user)">
                 <el-button @click="add" icon="ti-plus" round size="mini" type="primary">{{$t('general.actions.add')}} {{ $t('general.roles.administrator') }}</el-button>
             </template>
@@ -15,7 +18,7 @@
             :fetchMore="fetchMore"
             :filters="filters"
             :filtersHeader="filtersHeader"
-            :header="header"
+            :header="headerFilter"
             :items="items"
             :loading="{state: loading}"
             :pagination="{total, currPage, currSize}"

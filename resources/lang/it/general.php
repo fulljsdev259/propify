@@ -104,6 +104,7 @@ return [
     "name" => "Nome",
     'phone' => "Telefono",
     'id' => "ID",
+    'field' => 'Campo',
     'address' => "Indirizzo",
     'city' => "cittadino",
     "state" => "Stato",

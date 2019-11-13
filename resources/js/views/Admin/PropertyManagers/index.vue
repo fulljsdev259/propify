@@ -1,6 +1,9 @@
 <template>
     <div class="services">
         <heading :title="$t('models.property_manager.title')" icon="icon-users" shadow="heavy">
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
+            </template>
             <template v-if="$can($permissions.create.propertyManager)">            
                 <el-button @click="add" icon="ti-plus" round size="mini" type="primary">
                     {{$t('models.property_manager.add')}}
@@ -18,7 +21,7 @@
             :fetchMore="fetchMore"
             :filters="filters"
             :filtersHeader="filtersHeader"
-            :header="header"
+            :header="headerFilter"
             :items="items"
             :loading="{state: loading}"
             :isLoadingFilters="{state: isLoadingFilters}"

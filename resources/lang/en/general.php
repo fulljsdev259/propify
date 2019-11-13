@@ -105,6 +105,7 @@ return [
     'phone' => 'Phone',
     'id' => "ID",
     'address' => "Address",
+    'field' => 'Field',
     'city' => 'City',
     'state' => 'State',
     'street' => 'Street',
