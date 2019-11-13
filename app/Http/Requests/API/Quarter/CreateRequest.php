@@ -26,10 +26,16 @@ class CreateRequest extends BaseRequest
     {
         return [
             'name' => 'required|string',
-            'type' => $this->getInRuleByClassConstants(Quarter::Type),
-            'assignment_type' => [
-                'nullable',
-                $this->getInRuleByClassConstants(Quarter::AssignmentType)
+            'types' => [
+                'required',
+                'array',
+                'bail',
+                function ($attribute, $value, $fails) {
+                    $diff = array_diff($value, array_keys(Quarter::Type));
+                    if ($diff) {
+                        $fails(sprintf('This [%s] types is wrong', implode(', ', $diff)));
+                    }
+                }
             ]
         ];
     }
