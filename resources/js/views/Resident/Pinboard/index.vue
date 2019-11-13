@@ -23,7 +23,7 @@
                         <template v-slot="{item, index, active}">
                             <dynamic-scroller-item :item="item" :active="active" :data-index="index" :size-dependencies="[item]">
                                 <div :ref="'pinboard_'+item.id">
-                                    <pinboard-new-resident-card :data="item" v-if="$constants.pinboard.type[item.type] === 'new_neighbour' && item.user_id != $store.getters.loggedInUser.id" @update-dynamic-scroller="force_scroller_update()"/>
+                                    <pinboard-new-resident-card :data="item" v-if="$constants.pinboard.type[item.type] === 'new_neighbour'" @update-dynamic-scroller="force_scroller_update()"/>
                                     <pinboard-card :data="item" @edit-pinboard="editPinboard" @delete-pinboard="deletePinboard" v-else-if="$constants.pinboard.type[item.type] !== 'new_neighbour'" @update-dynamic-scroller="force_scroller_update()"/>
                                 </div>
                             </dynamic-scroller-item>
@@ -258,7 +258,12 @@
             filteredPinboards() {
                 // if(this.$refs['dynamic-scroller'])
                 //     this.$refs['dynamic-scroller'].forceUpdate()
-                return this.pinboard.data.filter( pinboard => { return this.filterCategory == null || pinboard.category == this.filterCategory})
+                return this.pinboard.data.filter( pinboard => {
+                    return (this.filterCategory == null || pinboard.category == this.filterCategory)
+                            && (this.$constants.pinboard.type[pinboard.type] === 'new_neighbour'
+                                ? pinboard.user_id != this.$store.getters.loggedInUser.id
+                                : true)
+                });
             }
         },
         async mounted() {

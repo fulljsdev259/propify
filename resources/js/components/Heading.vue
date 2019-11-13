@@ -71,7 +71,7 @@
             .title {
                 padding-left: 20px;
                 color: var(--primary-color);
-                font-size: 32px;
+                font-size: 20px;
                 font-weight: 900;
                 overflow: hidden;
                 min-width: 0;
