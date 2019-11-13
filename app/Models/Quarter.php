@@ -157,7 +157,8 @@ class Quarter extends AuditableModel implements HasMedia
         'count_of_buildings',
         'address_id',
         'internal_quarter_id',
-        'type',
+        'types',
+        'url',
         'assignment_type',
     ];
     /**
@@ -177,7 +178,8 @@ class Quarter extends AuditableModel implements HasMedia
         'quarter_format' => 'string',
         'internal_quarter_id' => 'string',
         'count_of_buildings' => 'integer',
-        'type' => 'integer',
+        'types' => 'array',
+        'url' => 'string',
         'assignment_type' => 'integer',
     ];
 
