@@ -298,15 +298,17 @@
                         @endif
                         <tr>
                             <td class="no_border" width="100%">
-                                    <span style="display: inline-block;height:25px;width:100%;"></span>
+                                @if($i==0)
+                                    <span style="display: inline-block;height:25px;width:100%; "></span>
+                                    @endif
                                 <table class="info_table" width="100%">
                                     <tbody>
                                         <tr style="vertical-align: top;">
 
                                             @endif  
-                                            <td class="no_border" style="top:0;width:295px;vertical-align: top;">
+                                            <td class="no_border" style="top:0;width:292px;vertical-align: top;">
                                                 
-                                                    <img class="pdf_attached" src="{{$m['file_path']}}"  />
+                                                    <img class="pdf_attached" src="{{$m['file_path']}}" @if($i==0) style="float: right;"@endif />
                                             </td>
                                             @if($i%2==0)
                                             <td class="no_border">
