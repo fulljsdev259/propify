@@ -1,6 +1,9 @@
 <template>
     <div class="residents">
         <heading :title="$t('general.resident')" icon="icon-group" shadow="heavy">
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
+            </template>
             <template v-if="$can($permissions.create.resident)">
                 <el-button @click="add" icon="ti-plus" round size="mini" type="primary">{{$t('models.resident.add')}}
                 </el-button>
@@ -16,7 +19,7 @@
                 :fetchMore="fetchMore"
                 :filters="filters"
                 :filtersHeader="filtersHeader"
-                :header="header"
+                :header="headerFilter"
                 :items="items"
                 :loading="{state: loading}"
                 :isLoadingFilters="{state: isLoadingFilters}"

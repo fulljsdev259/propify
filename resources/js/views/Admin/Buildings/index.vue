@@ -1,6 +1,9 @@
 <template>
     <div class="buildings">
         <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy">
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
+            </template>
             <template v-if="$can($permissions.create.building)">
                 <el-button @click="add" icon="ti-plus" round size="mini" type="primary">{{$t('models.building.add')}}
                 </el-button>
@@ -23,7 +26,7 @@
             :fetchMore="fetchMore"
             :filters="filters"
             :filtersHeader="filtersHeader"
-            :header="header"
+            :header="headerFilter"
             :items="items"
             :loading="{state: loading}"
             :isLoadingFilters="{state: isLoadingFilters}"

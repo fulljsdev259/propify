@@ -1,6 +1,9 @@
 <template>
     <div class="units">
         <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy">
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
+            </template>
             <template v-if="$can($permissions.create.unit)">
                 <el-button @click="add" icon="ti-plus" round size="mini" type="primary">
                     {{$t('models.unit.add')}}
@@ -18,7 +21,7 @@
             :fetchMoreParams="fetchParams"
             :filters="filters"
             :filtersHeader="filtersHeader"
-            :header="header"
+            :header="headerFilter"
             :items="formattedItems"
             :loading="{state: loading}"
             :isLoadingFilters="{state: isLoadingFilters}"

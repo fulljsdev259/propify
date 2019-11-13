@@ -182,7 +182,7 @@
     aside {
         display: flex;
         flex-direction: column;
-        border-right: 1px solid var(--border-color-base);
+        border-right: 2px solid var(--border-color-base);
         .logo-image {
             display: flex;
             justify-content: center;
@@ -199,7 +199,7 @@
             justify-content: center;
             align-items: center;
             .notification-badge {
-                margin: 0 0 10px;
+                margin: 0 0 30px;
             }
             span {
                 text-align: center;

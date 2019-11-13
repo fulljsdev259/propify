@@ -5,7 +5,7 @@
             <a-sidebar :links="links" :collapsed="isCallapsed">
                 <div class="actions" slot="header-action">
                     <el-badge class="notification-badge" type="danger" :value="unreadNotifications.length" :max="9" :hidden="!unreadNotifications.length">
-                        <el-button icon="icon-bell-alt" circle />
+                        <i class="el-icon-bell"></i>
                     </el-badge>
                     <el-popover
                         placement="right"
@@ -753,6 +753,11 @@
                 height: 100%;
                 width: 100%;
             }
+
+            i {
+                font-size: 32px;
+                color: var(--color-info);
+            }
         }
     }
 </style>
@@ -804,5 +809,27 @@
     }
     .el-menu-item-link {
         text-decoration: none;
+    }
+    .el-dropdown-menu {
+        &.el-popper {
+            :global(&[x-placement^=bottom] .popper__arrow) {
+                top: -12px;
+                &::after {
+                    margin-left: -10px;  
+                }
+            }
+            :global(.popper__arrow) {
+                border-bottom-width: 12px;
+                border-left-width: 10px;
+                border-right-width: 10px;
+                border-top-width: 0;      
+                &::after {
+                    border-width: 12px;
+                    border-left-width: 10px;
+                    border-right-width: 10px;
+                    border-top-width: 0;
+                }
+            }
+        }
     }
 </style>
