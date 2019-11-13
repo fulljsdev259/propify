@@ -566,7 +566,6 @@
                     label: 'dashboard.buildings.total_units'
                 }, {
                     type: 'buildingResidentAvatars',
-                    align: 'center',
                     prop: 'residents',
                     propLimit: 2,
                     count: 'residents_count',

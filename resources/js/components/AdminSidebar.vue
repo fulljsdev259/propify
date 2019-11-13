@@ -182,7 +182,7 @@
     aside {
         display: flex;
         flex-direction: column;
-        border-right: 3px solid var(--border-color-base);
+        border-right: 1px solid var(--border-color-base);
         .logo-image {
             display: flex;
             justify-content: center;
