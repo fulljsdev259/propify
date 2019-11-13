@@ -249,7 +249,11 @@ return [
             'storeroom' => 'Sgabuzzino',
             'underground_parking_space' => 'Parcheggio sotterraneo',
             'outdoor_parking' => 'Parcheggio esterno',
-            'motorbike_pitch' => 'Passo moto'
+            'motorbike_pitch' => 'Passo moto',
+            'underground_parking_space_cs' => 'Parcheggio sotterraneo con stazione di ricarica E-mobile',
+            'underground_parking_space_sr' => 'Parcheggi sotterranei con ripostiglio',
+            'double_parking' => 'Doppio parcheggio',
+            'scheduling_parking' => 'Programmazione dello spazio'
         ],        
         'errors' => [
             'not_found' => "Unità non trovata",
@@ -416,7 +420,12 @@ return [
             'caretaker' => 'Custode',
             'administration' => 'Amministrazione'
         ],
-        'url' => 'Url'
+        'url' => 'Url',
+        'workflow' => [
+            'label' => 'Flusso di lavoro',
+            'add' => 'Aggiungi flusso di lavoro',
+            'edit' => 'Modifica flusso di lavoro'
+        ]
     ],
     'request' => [        
         "deleted" => "Richiesta supprimée",

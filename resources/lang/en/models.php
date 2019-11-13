@@ -249,7 +249,11 @@ return [
             'storeroom' => 'Storeroom',
             'underground_parking_space' => 'Underground parking space',
             'outdoor_parking' => 'Outdoor parking',
-            'motorbike_pitch' => 'Motorbike pitch'
+            'motorbike_pitch' => 'Motorbike pitch',
+            'underground_parking_space_cs' => 'Underground parking space with charging station E-mobile',
+            'underground_parking_space_sr' => 'Underground parking spaces with storage room',
+            'double_parking' => 'Double parking',
+            'scheduling_parking' => 'Scheduling space'
         ],
         'errors' => [
             'not_found' => "Unit not found",
@@ -416,7 +420,12 @@ return [
             'caretaker' => 'Caretaker',
             'administration' => 'Administration'
         ],
-        'url' => 'Url'
+        'url' => 'Url',
+        'workflow' => [
+            'label' => 'Workflow',
+            'add' => 'Add Workflow',
+            'edit' => 'Edit Workflow'
+        ]
     ],
     'request' => [        
         'deleted' => 'Request deleted',

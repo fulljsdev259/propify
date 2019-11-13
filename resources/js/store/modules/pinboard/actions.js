@@ -39,6 +39,12 @@ export default {
             }).catch(({response: {data: err}}) => reject(err))
         });
     },
+    incrementViews(_, payload) {
+        return new Promise((resolve, reject) =>
+            axios.put(`pinboard/${payload.id}/views`)
+                .then(({data: r}) => resolve(r))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
     likePinboard(_, id) {
         return new Promise((resolve, reject) =>
             axios.post(`pinboard/${id}/like`)

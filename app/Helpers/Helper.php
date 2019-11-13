@@ -95,6 +95,11 @@ class Helper
             ],
             'listing' => [],
             'manager' => [
+                'name' => __('general.name'),
+                'phone' => __('general.phone'),
+                'email' => __('general.email'),
+                'password' => __('general.password'),
+                'role' => __('general.roles.label'),
                 'title' => __('general.salutation'),
                 'first_name' => __('general.first_name'),
                 'last_name' => __('general.last_name'),
@@ -109,10 +114,13 @@ class Helper
                 'visibility' => __('models.pinboard.visibility.label'),
                 'execution_start' => __('models.pinboard.execution_interval.start'),
                 'execution_end' => __('models.pinboard.execution_interval.end'),
+                'category' => __('models.pinboard.category.label'),
                 'sub_type' => __('models.pinboard.sub_type.label'),
                 'is_execution_time' => __('models.pinboard.execution_interval.label')
             ],
             'provider' => [
+                'email' => __('general.email'),
+                'password' => __('general.password'),
                 'category' => __('models.service.category.label'),
                 'name' => __('general.name'),
                 'phone' => __('general.phone'),
@@ -124,6 +132,8 @@ class Helper
                 'service_provider_format' => __('models.service.title')." ".__('general.format'),            
             ],                      
             'resident' => [
+                'email' => __('general.email'),
+                'password' => __('general.password'),
                 'title' => __('general.salutation'),
                 'first_name' => __('general.first_name'),
                 'last_name' => __('general.last_name'),

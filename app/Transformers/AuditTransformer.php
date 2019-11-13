@@ -104,7 +104,7 @@ class AuditTransformer extends BaseTransformer
                     $old_value = ($old_value) ? (AuditRepository::getDataFromField($field, $old_value, $model->auditable_type)) : "";
                     $new_value = ($new_value) ? (AuditRepository::getDataFromField($field, $new_value, $model->auditable_type)) : "";
                 }                
-                elseif(in_array($field, ['attic','announcement','is_execution_time','iframe_enable','blank_pdf','active_reminder'])){
+                elseif(in_array($field, ['attic','announcement','is_execution_time','iframe_enable','blank_pdf','active_reminder','notify_email'])){
                     $old_value = ($old_value == 1) ? __('general.enabled') : __('general.disabled');
                     $new_value = ($new_value == 1) ? __('general.enabled') : __('general.disabled');                                    
                 }
@@ -184,6 +184,12 @@ class AuditTransformer extends BaseTransformer
         }
         elseif($model->event == 'notifications_sent'){
             $response['statement'] = __("general.components.common.audit.content.general.notifications_sent",['auditable_type' => $model->auditable_type]);
+        }
+        elseif($model->event == 'liked'){
+            $response['statement'] = __("general.components.common.audit.content.general.liked", ['userName' => $response['user']['name']]);
+        }
+        elseif($model->event == 'unliked'){
+            $response['statement'] = __("general.components.common.audit.content.general.unliked", ['userName' => $response['user']['name']]);
         }
         elseif($model->event == 'new_resident_pinboard_created'){
             $pinboard = Pinboard::find($model->auditable_id);

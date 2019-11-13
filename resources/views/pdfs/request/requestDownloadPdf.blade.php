@@ -115,15 +115,9 @@
                                             </tr>
                                             @endif
    
-                                            @if((isset($category['component']) && $category['component']==1) || 
-                                            (isset($subCategory['component']) && $subCategory['component']==1) || 
-                                            (!empty($category['location']) && $category['location'] == 1) ||
-                                            (!empty($subCategory['location']) && $subCategory['location'] == 1) ||
-                                            (!empty($category['room']) && $category['room'] == 1) ||
-                                            (!empty($subCategory['room']) && $subCategory['room'] == 1))
+   
                                             <tr>
-                                                @if((isset($category['component']) && $category['component']==1) || 
-                                                (isset($subCategory['component']) && $subCategory['component']==1))
+                                                @if($category['component']!=0)
                                                 <td class="border_btm" @if (
                                                     !((((!empty($category['location']) && $category['location'] == 1) ||
                                                     (!empty($subCategory['location']) && $subCategory['location'] == 1))) ||
@@ -167,7 +161,6 @@
                                                 @endif
    
                                             </tr>
-                                            @endif
    
                                         </tbody>
                                     </table>
