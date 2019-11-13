@@ -413,12 +413,13 @@
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.quarter.workflow.label') }} </ui-divider>
                 
                 <div class="content" v-if="visibleDrawer">
-                    <workflow-form v-if="isEditWorkflow" 
+                    <workflow-form v-if="editingWorkflow" 
                                 mode="edit" 
                                 :quarter_id="model.id" 
+                                :data="editingWorkflow" 
                                 :visible.sync="visibleDrawer"
                                 @update-workflow="addWorkflow"/>
-                    <workflow-form v-if="isAddWorkflow" 
+                    <workflow-form v-else 
                                 mode="add" 
                                 :quarter_id="model.id" 
                                 :visible.sync="visibleDrawer"
