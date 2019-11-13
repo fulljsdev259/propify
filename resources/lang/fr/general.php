@@ -392,6 +392,8 @@ return [
                         'avatar_uploaded' => 'Image de profil téléchargée pour :auditable_type',
                         'contract_created' => 'Contrat créé pour le résident :userName',
                         'update_no_fieldvalue' => 'Le :fieldname a changé',
+                        'liked' => ":userName aimait ce tableau d'affichage",
+                        'unliked' => ":userName n'aimait pas ce tableau d'affichage",
                     ],                                      
                 ],
             ],
@@ -550,5 +552,6 @@ return [
         'rd' => 'ème',
         'th' => 'ème',
     ],
+    'empty' => "(champ vide)",
     'notification_residents_sent' => 'la notification a été envoyée à {number} résidents à {time} le {date}.',
 ];

@@ -249,7 +249,11 @@ return [
             'storeroom' => 'Local de stockage',
             'underground_parking_space' => 'Place de parking souterrain',
             'outdoor_parking' => 'Parking extérieur',
-            'motorbike_pitch' => 'Emplacement moto'
+            'motorbike_pitch' => 'Emplacement moto',
+            'underground_parking_space_cs' => 'Place de parking souterrain avec station de recharge E-mobile',
+            'underground_parking_space_sr' => 'Places de stationnement souterrain avec débarras',
+            'double_parking' => 'Double stationnement',
+            'scheduling_parking' => 'Espace de planification'
         ],        
         'errors' => [
             'not_found' => "Unité non trouvée",
@@ -416,7 +420,12 @@ return [
             'caretaker' => 'Concierge',
             'administration' => 'Administration'
         ],
-        'url' => 'Url'
+        'url' => 'Url',
+        'workflow' => [
+            'label' => 'Workflow',
+            'add' => 'Ajouter un flux de travail',
+            'edit' => 'Modifier le flux de travail'
+        ]
     ],
     'request' => [        
         "deleted" => "Richiesta supprimée",

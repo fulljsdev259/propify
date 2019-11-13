@@ -392,6 +392,8 @@ return [
                         'avatar_uploaded' => 'Profil-Bild hochgeladen für :auditable_type.',
                         'contract_created' => 'Mietvertrag für Bewohner angelegt :userName.',
                         'update_no_fieldvalue' => 'Das :fieldname wurde geändert.',
+                        'liked' => ':userName hat diese Pinnwand gefallen',
+                        'unliked' => ':userName unsympathisch für diese Pinnwand',
                     ],                    
                 ],
             ],
@@ -550,5 +552,6 @@ return [
         'rd' => '.',
         'th' => '.',
     ],
+    'empty' => "(leeres Feld)",
     'notification_residents_sent' => 'Die Benachrichtigung wurde am {date} um {time} Uhr an {number} Bewohner gesendet.',
 ];

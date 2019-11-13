@@ -392,6 +392,8 @@ return [
                         'avatar_uploaded' => 'Immagine del profilo caricata per :auditable_type',
                         'contract_created' => 'Contratto creato per i residenti :userName',
                         'update_no_fieldvalue' => 'La :fieldname è cambiata',
+                        'liked' => ':userName piaceva questa bacheca',
+                        'unliked' => ' :userName non mi è piaciuta questa bacheca',
                     ],                                   
                 ],
             ],
@@ -550,5 +552,6 @@ return [
         'rd' => 'º',
         'th' => 'º',
     ],
+    'empty' => "(campo vuoto)",
     'notification_residents_sent' => 'la notifica è stata inviata a {number} residenti alle {time} il {date}.',
 ];

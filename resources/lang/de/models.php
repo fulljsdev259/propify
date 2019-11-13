@@ -250,7 +250,12 @@ return [
             'storeroom' => 'Abstellraum',
             'underground_parking_space' => 'Tiefgaragenplatz',
             'outdoor_parking' => 'Aussenparkplatz',
-            'motorbike_pitch' => 'Motorradplatz'
+            'motorbike_pitch' => 'Motorradplatz',
+            'underground_parking_space_cs' => 'Tiefgaragenplatz mit Ladestation E-Mobil',
+            'underground_parking_space_sr' => 'Tiefgaragenplätze mit Abstellraum',
+            'double_parking' => 'Doppelparkplatz',
+            'scheduling_parking' => 'Disponibelraum'
+
         ],
         'errors' => [
             'not_found' => "Einheit nicht gefunden",
@@ -417,7 +422,12 @@ return [
             'caretaker' => 'Hauswart',
             'administration' => 'Verwaltung'
         ],
-        'url' => 'Url'
+        'url' => 'Url',
+        'workflow' => [
+            'label' => 'Workflow',
+            'add' => 'Workflow hinzufügen',
+            'edit' => 'Workflow bearbeiten'
+        ]
     ],
     'request' => [        
         'deleted' => 'Anfrage gelöscht',

@@ -75,6 +75,15 @@ export default {
                 }).catch(({response: {data: err}}) => reject(err))
         });
     },
+    assignUserToQuarter({}, {id, ...payload}) {
+        console.log(payload)
+        return new Promise((resolve, reject) => {
+            axios.post(`quarters/${id}/users`, payload)
+                .then((resp) => {
+                    resolve(resp.data);
+                }).catch(({response: {data: err}}) => reject(err))
+        });
+    },
     unassignQuarterAssignee(_, {assignee_id}) {
         return new Promise((resolve, reject) => {
             axios.delete(`quarters-assignees/${assignee_id}`).then((resp) => {
