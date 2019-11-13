@@ -31,4 +31,40 @@ class QuarterRepository extends BaseRepository
     {
         return Quarter::class;
     }
+
+    /**
+     * @param array $attributes
+     * @return Quarter|mixed
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
+    public function create(array $attributes)
+    {
+        $quarter = parent::create($attributes);
+
+        if ($quarter) {
+            $quarter = $this->saveWorkflows($quarter, $attributes);
+        }
+
+        return $quarter;
+    }
+
+    /**
+     * @param Quarter $quarter
+     * @param $data
+     * @return Quarter
+     */
+    protected function saveWorkflows(Quarter $quarter, $data)
+    {
+        $workflows = $data['workflows'] ?? [];
+
+        if (empty($workflows)) {
+            return $quarter;
+        }
+
+        foreach ($workflows as $workflowData) {
+            $quarter->workflows()->create($workflowData);
+        }
+
+        return $quarter;
+    }
 }
