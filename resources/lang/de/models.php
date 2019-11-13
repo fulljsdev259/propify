@@ -675,7 +675,7 @@ return [
             'contact_details' => 'Kontaktinformationen',
             'contact_text' => 'Dies sind die Kontaktdaten des aktuellen Bewohners/Besitzers der Wohneinheit.',
             'captured_by' => 'Erfasst von',
-            'request_number' => 'Anforderungsnummer',
+            'request_number' => 'Defektnummer',
             'details'=>'Details',
             'blank_pdf'=>'Nach der Mängelerledigung bitte, das beiliegende Formular umgehend unterzeichnet der Bauleitung retournieren.',
 

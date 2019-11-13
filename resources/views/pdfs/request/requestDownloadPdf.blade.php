@@ -34,9 +34,9 @@
         
                                         </p>
                                         <p style="margin:7px 0 0;">
-                                            <b>@lang('models.request.status.label'):</b>
+                                            <b>@lang('models.request.status.label') ({{ now()->format('d.m.Y, H:i') }}):</b>
                                             @lang('models.request.status.'.\App\Models\Request::Status[$request->status])
-                                            ({{ now()->format('d.m.Y, H:i') }})
+                                            
                                         </p>
                                     </td>
                                     
@@ -262,7 +262,6 @@
                                                 <td style="width:100%;height:75px;border:none;">
                                                 </td>
                                             </tr>
-                                            @if($category['name'])
                                             <tr>
                                                 <td colspan="2" class="no_border" width="100%" style="margin-top:50px;">
                                                     <span
@@ -271,7 +270,6 @@
                                                     </span>
                                                 </td>
                                             </tr>
-                                            @endif
                                         </tbody>
                                     </table>
                                 </td>
