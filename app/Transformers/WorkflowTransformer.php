@@ -41,6 +41,7 @@ class WorkflowTransformer extends BaseTransformer
         $buildingIds = $model->building_ids ?? [];
         $buildings = Building::whereIn('id', $buildingIds)->with('address')->get();
         $response['buildings'] = (new BuildingTransformer())->transformCollection($buildings);
+        $response['category'] = $model->category_id ? get_category_details($model->category_id) : [];
 
         return $response;
     }
