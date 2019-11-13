@@ -372,7 +372,7 @@
                                         </el-col>
                                     </el-row>
                                     <el-row>
-                                        <el-col class="workflow-button-bar">
+                                        <el-col class="edit workflow-button-bar">
                                             <el-button 
                                                 type="primary" 
                                                 @click="editWorkflowDrawer($index)" 
@@ -1129,10 +1129,21 @@
     .workflow-button-bar {
         display: flex;
         justify-content: flex-end;
+        padding-bottom: 10px;
+
+        &.edit {
+            padding-top: 10px;
+        }
     }
 
     .el-tag {
         background-color: var(--primary-color);
         color: white;
+    }
+
+    .el-collapse {
+        .el-collapse-item__content {
+            padding-bottom: 10px;
+        }
     }
 </style>
