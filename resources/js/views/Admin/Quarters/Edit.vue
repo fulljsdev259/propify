@@ -310,8 +310,20 @@
                         </el-tab-pane>
                         <el-tab-pane name="workflow">
                             <span slot="label">
-                                {{ $t('general.workflow') }}
+                                {{ $t('models.quarter.workflow.label') }}
                             </span>
+                            <el-row :gutter="20">
+                                <h3 class="top-button-bar">
+                                    <el-button 
+                                            type="primary" 
+                                            @click="toggleWorkflowDrawer" 
+                                            icon="icon-plus" 
+                                            size="mini" 
+                                            round>
+                                            {{ $t('models.quarter.workflow.add') }}
+                                    </el-button>
+                                </h3>
+                            </el-row>
                             <el-collapse accordion>
                                  <el-collapse-item
                                         :key="category"
@@ -323,7 +335,7 @@
                                         {{category}} <i class="header-icon el-pencil"></i>
                                     </template>
                                     <el-row>
-                                        <el-col :md="1">
+                                        <el-col :md="1" class="workflow-label">
                                             <span>Van</span>
                                         </el-col>
                                         <el-col :md="7">
@@ -349,7 +361,7 @@
                                                         v-for="building in workflowBuildingList"/>
                                                 </el-select>
                                         </el-col>
-                                        <el-col :md="1">
+                                        <el-col :md="1" class="workflow-label">
                                             <span>{{$t('models.request.mail.to')}}</span>
                                         </el-col>
                                         <el-col :md="7">
@@ -375,7 +387,7 @@
                                                         v-for="user in workflowToUserList"/>
                                                 </el-select>
                                         </el-col>
-                                        <el-col :md="1">
+                                        <el-col :md="1" class="workflow-label">
                                             <span>{{$t('models.request.mail.cc')}}</span>
                                         </el-col>
                                         <el-col :md="7">
@@ -400,6 +412,13 @@
                                                         :value="user.id"
                                                         v-for="user in workflowCcUserList"/>
                                                 </el-select>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col>
+                                            <el-button class="full-button" size="mini" icon="ti-pencil" type="primary">
+                                                &nbsp;{{ $t('models.quarter.workflow.edit') }}
+                                            </el-button>
                                         </el-col>
                                     </el-row>
                                 </el-collapse-item>
@@ -441,6 +460,15 @@
                                 :used_units="used_units"/>
                 </div>
             </template>
+            <template v-else-if="isWorkflow">
+                
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.quarter.workflow.label') }} </ui-divider>
+                
+                <div class="content" v-if="visibleDrawer">
+                    <workflow-form :quarter_id="model.id" :visible.sync="visibleDrawer"/>
+                </div>
+                    
+            </template>
             <template v-else>
                 <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="visibleDrawer">
                     <el-tab-pane name="emergency" lazy>
@@ -480,6 +508,7 @@
     import AssignmentByType from 'components/AssignmentByType';
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
     import EmailReceptionistForm from 'components/EmailReceptionistForm';
+    import WorkflowForm from 'components/WorkflowForm';
     import UploadDocument from 'components/UploadDocument';
     import draggable from 'vuedraggable';
     import { EventBus } from '../../../event-bus.js';
@@ -501,6 +530,7 @@
             AssignmentByType,
             EmergencySettingsForm,
             EmailReceptionistForm,
+            WorkflowForm,
             UploadDocument,
             draggable,
             ContractForm,
@@ -625,6 +655,7 @@
                 activeRequestTab: 'requests',
                 editingContract: null,
                 isAddContract: false,
+                isWorkflow: false,
                 editingContractIndex: -1,
                 activeDrawerTab: "emergency",
                 workflowBuildingList: [],
@@ -738,6 +769,12 @@
                 this.isAddContract = true
                 this.visibleDrawer = true;
                 
+                document.getElementsByTagName('footer')[0].style.display = "none";
+            },
+            toggleWorkflowDrawer() {
+                this.visibleDrawer = true
+                this.isWorkflow = true
+
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
             addContract (data) {
@@ -1101,4 +1138,12 @@
         width: 100%;
     }
 
+    .workflow-label {
+        line-height: 40px;
+    }
+
+    .top-button-bar {
+        display: flex;
+        justify-content: flex-end;
+    }
 </style>

@@ -553,5 +553,4 @@ return [
         'th' => 'th',
     ],
     'notification_residents_sent' => 'Notification was sent to {number} residents at {time} on {date}.',
-    'workflow' => 'Workflow'
 ];
