@@ -339,7 +339,17 @@
             this.loading = true;
             
             this.categories = this.$constants.requests.categories_data.tree
+
+
             console.log(this.data);
+
+            if(this.mode == 'edit') {
+                this.model.title = this.data.title
+                this.model.category = this.data.category
+                this.model.selectedWorkflowBuilding = this.data.buildings
+                this.model.selectedWorkflowToUser = this.data.to_users
+                this.model.selectedWorkflowCcUser = this.data.cc_users
+            }
             
             this.loading = false;
             
