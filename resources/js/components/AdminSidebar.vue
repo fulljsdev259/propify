@@ -187,7 +187,7 @@
             display: flex;
             justify-content: center;
             margin-top: 25px;
-            margin-bottom: 70px;
+            margin-bottom: 15px;
         }
         .el-menu {
             flex-grow: 1;

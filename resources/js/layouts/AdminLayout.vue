@@ -503,7 +503,8 @@
         
 
         async created() {
-            this.getRequestCounts()
+            this.setLocale('de');
+            this.getRequestCounts();
         }
 
     }
