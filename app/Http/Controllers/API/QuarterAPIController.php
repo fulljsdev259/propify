@@ -669,9 +669,8 @@ class QuarterAPIController extends AppBaseController
             'quarter_id' => $id,
             'user_id' => $userId,
             'assignee_id' => $assigneeId,
-            'assignee_type' => $assigneeType,
         ], [
-            'assignment_type' => $request->assignment_type,
+            'assignment_types' => $request->assignment_types,
             'created_at' => now()
         ]);
 
