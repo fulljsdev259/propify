@@ -115,10 +115,11 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        
-        <div class="drawer-actions">
-            <el-button type="primary" @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
-        </div>
+        <el-row :gutter="20" style="margin-top: 10px;">
+            <el-col :md="24" class="drawer-actions">
+                <el-button type="primary" @click="submit" icon="ti-save" round>&nbsp;{{ $t('general.actions.save') }}</el-button>
+            </el-col>
+        </el-row>
         
 
     </el-form>
@@ -419,18 +420,10 @@
         }
 
         /deep/ .drawer-actions {
-            width: 100%;
-            flex-grow: 1;
+            
             display: flex;
-            flex-direction: column;
             justify-content: flex-end;
 
-            button {
-                width: 100%;
-                i {
-                    padding-right: 5px;
-                }
-            }
         }
     }
 </style>
