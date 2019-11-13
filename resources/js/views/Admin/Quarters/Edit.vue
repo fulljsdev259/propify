@@ -338,22 +338,22 @@
                                         <el-col :md="5" class="workflow-label">
                                             <span>{{workflow.category}}</span>
                                         </el-col>
-                                        <el-col :md="1" class="workflow-label">
+                                        <el-col :md="2" class="workflow-label">
                                             <span>Van</span>
                                         </el-col>
-                                        <el-col :md="5" class="workflow-label">
+                                        <el-col :md="4" class="workflow-label">
                                             <span>{{workflow.buildings}}</span>
                                         </el-col>
-                                        <el-col :md="1" class="workflow-label">
+                                        <el-col :md="2" class="workflow-label">
                                             <span>{{$t('models.request.mail.to')}}</span>
                                         </el-col>
-                                        <el-col :md="5" class="workflow-label">
+                                        <el-col :md="4" class="workflow-label">
                                             <span>{{workflow.to_users}}</span>
                                         </el-col>
-                                        <el-col :md="1" class="workflow-label">
+                                        <el-col :md="2" class="workflow-label">
                                             <span>{{$t('models.request.mail.cc')}}</span>
                                         </el-col>
-                                        <el-col :md="5" class="workflow-label">
+                                        <el-col :md="4" class="workflow-label">
                                             <span>{{workflow.cc_users}}</span>
                                         </el-col>
                                     </el-row>
@@ -413,7 +413,16 @@
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.quarter.workflow.label') }} </ui-divider>
                 
                 <div class="content" v-if="visibleDrawer">
-                    <workflow-form :quarter_id="model.id" :visible.sync="visibleDrawer" @add-workflow="addWorkflow"/>
+                    <workflow-form v-if="isEditWorkflow" 
+                                mode="edit" 
+                                :quarter_id="model.id" 
+                                :visible.sync="visibleDrawer"
+                                @update-workflow="addWorkflow"/>
+                    <workflow-form v-if="isAddWorkflow" 
+                                mode="add" 
+                                :quarter_id="model.id" 
+                                :visible.sync="visibleDrawer"
+                                @add-workflow="addWorkflow"/>
                 </div>
                     
             </template>
