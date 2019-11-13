@@ -339,7 +339,6 @@
                                     <template slot="title">
                                         {{workflow.title}}
                                     </template>
-                                    {{isEditingWorkflow[$index]}}
                                     <workflow-form v-if="isEditingWorkflow[$index]"
                                             mode="edit" 
                                             :quarter_id="model.id" 
