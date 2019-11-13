@@ -19,9 +19,9 @@
                     <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
                                 v-model="model.category">
                         <el-option
-                                :key="category.value"
+                                :key="category.id"
                                 :label="$t(`models.request.category_list.${category.name}`)"
-                                :value="category.value"
+                                :value="category.id"
                                 v-for="category in categories">
                         </el-option>
                     </el-select>
@@ -189,6 +189,17 @@
                 try {
                     const valid = await this.$refs.form.validate();
                     if (valid) {
+
+                        // const resp = await this.saveBuildingEmailReceptionists(payload)
+
+                        // if(resp.success)
+                        // {
+                        //     displaySuccess(resp);
+
+                        // }
+
+                        this.$emit('update:visible', false);
+
                         // let global_email_receptionist = null
                         // if(this.activeCommand == 'global')
                         //     global_email_receptionist = true
@@ -352,11 +363,10 @@
             
         },
         async created () {
-            let categories = this.$constants.requests.categories_data.categories
+        
             this.loading = true;
-            this.categories = Object.keys(categories).map(key => {
-                return { id : key, name : categories[key] }
-            })
+            
+            this.categories = this.$constants.requests.categories_data.tree
 
             
             this.loading = false;
