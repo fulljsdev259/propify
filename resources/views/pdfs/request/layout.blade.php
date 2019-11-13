@@ -8,19 +8,15 @@
 
     @font-face {
         font-family: 'Times New Roman';
-        src: url("{{ public_path('fonts/times_new_roman.ttf') }}") format('truetype');
+        src: url("fonts/times_new_roman.ttf") format('truetype');
     }
     @font-face {
         font-family: 'Arial';
-        src: url("{{public_path('fonts/ArialMT.ttf')}}") format('truetype');
+        src: url("fonts/ArialMT.ttf") format('truetype');
     }
     
     * {
-        @if($pdf_font_family=='Times New Roman')
         font-size: 14px;
-        @else
-        font-size: 13px;
-        @endif
         font-family: {{$pdf_font_family ?? 'Arial'}};
     }
     body {
@@ -42,6 +38,13 @@
     .sepearation{
         margin:0px 8px!important;
         display: inline-block;
+    }
+    .text_font{
+        @if($pdf_font_family=='Times New Roman')
+        font-size: 14px !important;
+        @else
+        font-size: 13px !important;
+        @endif
     }
 
 .data_table{width:100%;}

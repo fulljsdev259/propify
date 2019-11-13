@@ -13,7 +13,7 @@
                             <tbody>
                                 <tr>
                                     <td class="table_header" valign="middle">
-                                        <span style="display: inline-block;vertical-align:top;">@lang('models.request.download_pdf.captured_by') {{$request->creator->email}} {{ now()->format('d.m.Y, H:i') }}</span>
+                                        <span class="text_font" style="display: inline-block;vertical-align:top;">@lang('models.request.download_pdf.captured_by') {{$request->creator->email}} {{ now()->format('d.m.Y, H:i') }}</span>
                                         <span style="display: inline-block;height:25px;width:100%;"></span>
         
                                         <span>{{ $request->service_request_format }}</span> <br />

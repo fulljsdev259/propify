@@ -25,13 +25,17 @@ mix.options({
     })
     .combine([
         'public/css/app.css',
-        'public/css/fontello.css'
+        'public/css/fontello.css',
+        'public/css/arial.css',
+        'public/css/times_new_roman.css',
     ], 'public/css/app.css')
     // .combine([
     //     'node_modules/animate.css/animate.min.css'
     // ], 'public/css/vendor.css')
     .sass('resources/sass/app.scss', 'public/css/app.css')
     .postCss('resources/css/fontello.css', 'public/css/fontello.css')
+    .postCss('resources/css/arial.css', 'public/css/arial.css')
+    .postCss('resources/css/times_new_roman.css', 'public/css/times_new_roman.css')
     .js('resources/js/index.js', 'public/js/app.js')
     .alias({
         '@': '/resources/js',
