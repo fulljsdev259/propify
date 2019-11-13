@@ -75,6 +75,12 @@ export default {
                 }).catch(({response: {data: err}}) => reject(err))
         });
     },
+    getAllAdminsForQuarter(_, {quarter_id}) {
+        return new Promise((resolve, reject) =>
+            axios.get(`alladmins`, {exclude_assignees_quarter_id: quarter_id})
+                .then(({data: r}) => resolve(r.data))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
     assignUserToQuarter({}, {id, ...payload}) {
         console.log(payload)
         return new Promise((resolve, reject) => {
