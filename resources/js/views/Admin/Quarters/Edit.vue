@@ -313,7 +313,7 @@
                                 {{ $t('models.quarter.workflow.label') }}
                             </span>
                             <el-row :gutter="20">
-                                <h3 class="top-button-bar">
+                                <div class="workflow-button-bar">
                                     <el-button 
                                             type="primary" 
                                             @click="toggleWorkflowDrawer" 
@@ -322,7 +322,7 @@
                                             round>
                                             {{ $t('models.quarter.workflow.add') }}
                                     </el-button>
-                                </h3>
+                                </div>
                             </el-row>
                             <el-collapse accordion>
                                  <el-collapse-item
@@ -332,37 +332,51 @@
                                         :name="workflow.title"
                                         v-for="(workflow, $index) in workflows">
                                     <template slot="title">
-                                        {{workflow.title}} <i class="header-icon el-pencil"></i>
+                                        {{workflow.title}}
                                     </template>
                                     <el-row>
                                         <el-col :md="5" class="workflow-label">
-                                            <span>{{workflow.category}}</span>
+                                            <span>{{$t(`models.request.category_list.${workflow.categoryData.name}`)}}</span>
                                         </el-col>
                                         <el-col :md="2" class="workflow-label">
                                             <span>Van</span>
                                         </el-col>
                                         <el-col :md="4" class="workflow-label">
-                                            <span>{{workflow.buildings}}</span>
+                                            <el-tag 
+                                                    type="primary" 
+                                                    :key="building.id"
+                                                    v-for="building in workflow.buildingsData">
+                                                    {{building.name}}
+                                            </el-tag>
                                         </el-col>
                                         <el-col :md="2" class="workflow-label">
                                             <span>{{$t('models.request.mail.to')}}</span>
                                         </el-col>
                                         <el-col :md="4" class="workflow-label">
-                                            <span>{{workflow.to_users}}</span>
+                                            <el-tag 
+                                                    type="primary" 
+                                                    :key="user"
+                                                    v-for="user in workflow.to_users">
+                                                {{user}}
+                                            </el-tag>
                                         </el-col>
                                         <el-col :md="2" class="workflow-label">
                                             <span>{{$t('models.request.mail.cc')}}</span>
                                         </el-col>
                                         <el-col :md="4" class="workflow-label">
-                                            <span>{{workflow.cc_users}}</span>
+                                            <el-tag 
+                                                    :key="user"
+                                                    v-for="user in workflow.cc_users">
+                                                {{user}}
+                                            </el-tag>
                                         </el-col>
                                     </el-row>
                                     <el-row>
-                                        <el-col>
+                                        <el-col class="workflow-button-bar">
                                             <el-button 
                                                 type="primary" 
                                                 @click="editWorkflowDrawer($index)" 
-                                                icon="icon-plus" 
+                                                icon="icon-search" 
                                                 size="mini" 
                                                 round>
                                                 {{ $t('models.quarter.workflow.edit') }}
@@ -612,11 +626,13 @@
                 activeRightTab: 'assignees',
                 activeRequestTab: 'requests',
                 editingContract: null,
+                editingWorkflow: null,
                 isAddContract: false,
                 isWorkflow: false,
                 isAddWorkflow: false,
                 isEditWorkflow: false,
                 editingContractIndex: -1,
+                editingWorkflowIndex: -1,
                 activeDrawerTab: "emergency",
                 workflows: []
             }
@@ -728,13 +744,14 @@
             toggleWorkflowDrawer() {
                 this.visibleDrawer = true
                 this.isWorkflow = true
-                this.isAddWorkflow = false
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
             editWorkflowDrawer(index) {
                 this.visibleDrawer = true
                 this.isWorkflow = true
-                this.isEditWorkflow = true
+
+                this.editingWorkflow = this.workflows[index];
+                this.editingWorkflowIndex = index;
 
                 document.getElementsByTagName('footer')[0].style.display = "none";
             },
@@ -910,8 +927,7 @@
                         this.editingContract = null
                         this.isAddContract = false
                         this.isWorkflow = false
-                        this.isAddWorkflow = false
-                        this.isEditWorkflow = false
+                        this.editingWorkflow = null
                         document.getElementsByTagName('footer')[0].style.display = "block";
                     }
                 }
@@ -1110,8 +1126,13 @@
         line-height: 40px;
     }
 
-    .top-button-bar {
+    .workflow-button-bar {
         display: flex;
         justify-content: flex-end;
+    }
+
+    .el-tag {
+        background-color: var(--primary-color);
+        color: white;
     }
 </style>

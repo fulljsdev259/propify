@@ -140,6 +140,9 @@
             },
             quarter_id: {
                 type: Number
+            },
+            mode: {
+                type: String
             }
         },
         data () {
@@ -153,11 +156,14 @@
                     assignList: '',
                     assign: [],
                     selectedWorkflowBuilding: [],
+                    selectedWorkflowBuildingData: [],
                     workflowBuildingList: [],
                     workflowToUserList: [],
                     selectedWorkflowToUser: [],
+                    selectedWorkflowToUserData: [],
                     workflowCcUserList: [],
                     selectedWorkflowCcUser: [],
+                    selectedWorkflowCcUserData: [],
                 },
                 categories: [],
                 validationRules: {
@@ -175,9 +181,6 @@
                     }],
                 },
                 remoteLoading: false,
-                
-                
-                
             }
         },
         methods: {
@@ -190,11 +193,20 @@
                     const valid = await this.$refs.form.validate();
                     if (valid) {
 
+                        this.model.selectedWorkflowBuilding.map( building_id => {
+                            let item = this.model.workflowBuildingList.find(item => item.id == building_id)
+                            this.model.selectedWorkflowBuildingData.push(item)
+                        })
+                        
+                        this.model.categoryData = this.categories.find(item => item.id == this.model.category)
+
                         let payload = {
                             quarter_id : this.quarter_id,
                             title: this.model.title,
                             category: this.model.category,
+                            categoryData: this.model.categoryData,
                             buildings: this.model.selectedWorkflowBuilding,
+                            buildingsData: this.model.selectedWorkflowBuildingData,
                             to_users: this.model.selectedWorkflowToUser,
                             cc_users: this.model.selectedWorkflowCcUser
                         }
@@ -326,7 +338,7 @@
             this.loading = true;
             
             this.categories = this.$constants.requests.categories_data.tree
-
+            console.log(this.data);
             
             this.loading = false;
             
