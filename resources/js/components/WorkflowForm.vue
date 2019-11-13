@@ -30,7 +30,7 @@
             <el-col :md="12">
                 <el-form-item :label="$t('models.resident.building.name')"
                     :rules="validationRules.building"
-                    :prop="selectedWorkflowBuilding"
+                    prop="selectedWorkflowBuilding"
                     class="label-block"
                     >
                     <el-select
@@ -61,7 +61,7 @@
             <el-col :md="12">
                 <el-form-item :label="$t('models.request.mail.to')"
                             :rules="validationRules.category"
-                            prop="category">
+                            prop="selectedWorkflowToUser">
                     <el-select
                         :loading="remoteLoading"
                         :placeholder="$t('general.placeholders.search')"
@@ -88,7 +88,7 @@
             <el-col :md="12">
                 <el-form-item :label="$t('models.request.mail.cc')"
                     :rules="validationRules.building"
-                    :prop="selectedWorkflowBuilding"
+                    prop="selectedWorkflowCcUser"
                     class="label-block"
                     >
                     <el-select
@@ -280,7 +280,7 @@
                     try {
                         const resp = await this.getBuildings({
                             get_all: true,
-                            quarter_id: this.model.id,
+                            quarter_id: this.quarter_id,
                             search
                         });
 
