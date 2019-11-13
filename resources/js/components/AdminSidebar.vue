@@ -1,7 +1,9 @@
 <template>
     <aside class="el-menu-aside">
         <div class="logo-image">
-            <img :src="logo" v-show="logo" width="60"/>
+            <router-link :to="{name: 'adminDashboard', query: {}}">
+                <img :src="logo" v-show="logo" width="60"/>
+            </router-link>
         </div>
         <el-menu :default-active="currActive" :unique-opened="true" class="el-menu-vertical-demo" :collapse="collapsed">
             <li class="slot" index="slot" v-if="hasSlot">
