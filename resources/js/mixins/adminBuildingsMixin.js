@@ -120,9 +120,9 @@ export default (config = {}) => {
             ...mapActions(['getStates', 'getPropertyManagers','getAllAdminsForBuilding','assignUserToBuilding','getQuarters','getUsers','getServices','assignProviderToBuilding','unassignProviderToBuilding']),
             async remoteSearchAssignees(search) {
 
-                if (!this.$can(this.$permissions.assign.request)) {
-                    return false;
-                }
+                // if (!this.$can(this.$permissions.assign.request)) {
+                //     return false;
+                // }
 
                 if (search === '') {
                     this.resetToAssignList();
@@ -160,7 +160,7 @@ export default (config = {}) => {
                                                      
                         // this.toAssignList = resp.data;
 
-                        const resp = await this.getAllAdminsForBuilding({building_id: this.$route.params.id})
+                        const resp = await this.getAllAdminsForBuilding({building_id: this.$route.params.id, search})
                         
                         this.toAssignList = resp
                     } catch (err) {

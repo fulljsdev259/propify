@@ -707,7 +707,7 @@
                     translatedTypes.push(this.$t(`models.quarter.assignment_types.${this.constants.quarters.assignment_type[type]}`))
                 })
 
-                return translatedTypes.join(' , ')
+                return translatedTypes.join(', ')
             },
             residentStatusBadge(status) {
                 const classObject = {
