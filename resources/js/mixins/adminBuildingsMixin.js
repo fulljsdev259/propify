@@ -175,7 +175,6 @@ export default (config = {}) => {
                 this.toAssign = '';
             },
             async assignUser() {
-                console.log('assignUser called')
                 if (!this.toAssign || !this.model.id) {
                     return false;
                 }
@@ -193,14 +192,6 @@ export default (config = {}) => {
                 //     });
                 // }
 
-                // if (resp && resp.data) {             
-                //     displaySuccess(resp.data)                           
-                //     this.resetToAssignList();
-                //     this.$refs.assigneesList.fetch();                    
-                //     if(this.$refs.auditList){
-                //         this.$refs.auditList.fetch();
-                //     }
-                // }
                 let assign_user = this.toAssignList.find(item => item.id == this.toAssign )
 
                 resp = await this.assignUserToBuilding({
