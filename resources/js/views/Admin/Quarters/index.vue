@@ -102,7 +102,7 @@
                         required: true,
                         message: this.$t('models.quarter.required')
                     }],
-                }
+                },
             };
         },
         computed: {
@@ -151,6 +151,7 @@
         },
         created() {
             this.getState();
+            
         },
         mounted() {
             this.$root.$on('changeLanguage', () => {

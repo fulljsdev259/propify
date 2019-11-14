@@ -15,6 +15,17 @@
                                size="mini"/>
                 </template>
             </el-input>
+            <div class="sub-menu" key="sub-menu">
+                <router-link 
+                    :key="link.title + key"
+                    v-for="(link, key) in subMenu"
+                    v-if="$can(link.permission) || !link.permission"
+                    :class="{'is-active': link.route.name == $route.name}"
+                    :to="{name: link.route.name}"
+                >
+                    <span class="title">{{ link.title }}</span>
+                </router-link>
+            </div>
             <el-card :header="filtersHeader"
                      class="mb30 filters-card"
                      shadow="never"
@@ -24,7 +35,7 @@
                     :element-loading-text="$t(loading.text)"
                     v-loading="isLoadingFilters.state"
             >
-                <el-row :gutter="10">
+                <el-row :gutter="10" :class="{'filter-right': subMenu.length}">
                     <el-col :key="key" :span="filterColSize" v-for="(filter, key) in filters">
                         <template v-if="!filter.parentKey || filterModel[filter.parentKey]">
                             <el-form-item
@@ -472,7 +483,7 @@
             withCheckSelection: {
                 type: Boolean,
                 default: true
-            }
+            },
         },
         beforeMount() {
         },
@@ -491,6 +502,7 @@
                 filterModel: {},
                 uuid,
                 selectedItems: [],
+                subMenu: [],
             }
         },
         computed: {
@@ -791,7 +803,7 @@
                     this.fetch(this.page.currPage, this.page.currSize);
                     
                 }
-            }
+            },
         },
         created() {
             if (this.$route.query.search) {
@@ -828,11 +840,59 @@
                     this.filterChanged(filter, true);
                 }
             });
-        }
+
+            this.subMenu = this.$route.params.subMenu;
+            if(this.subMenu != undefined && this.subMenu.children != undefined) {
+                this.subMenu = this.subMenu.children;
+                localStorage.setItem('subMenu', JSON.stringify(this.subMenu));
+            } else {
+                this.subMenu = JSON.parse(localStorage.getItem('subMenu'));
+                if(!this.subMenu)
+                    this.subMenu = [];
+            }
+        },
     }
 </script>
 
 <style lang="scss" scoped>
+    .list-table {
+        position: relative;
+        .el-row {
+            &.filter-right {
+                float: right;
+            }
+        }
+        .sub-menu {
+            position: absolute;
+            top: 10px;
+            left: 40px;
+            z-index: 999;
+            font-size: 20px;
+            a {
+                margin-right: 25px;
+                text-decoration: none;
+                padding: 0 5px 25px;
+                color: var(--color-text-secondary);
+                font-weight: 500;
+                position: relative;
+                &:hover, &.is-active {
+                    color: var(--color-text-primary);
+                    font-weight: 700;
+                    font-size: 19.2px;
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 5px;
+                        background-color: var(--color-primary);
+                        border-radius: 12px 12px 0 0;
+                    }
+                }
+            }
+        }
+    }
     .remote-select {
         width: 100%;
         :global(input) {
@@ -1135,8 +1195,7 @@
         margin-bottom: 0 !important;
         border: none !important;
         .el-card__body {
-            padding: 22px;
-            padding-bottom: 0;
+            padding: 0 22px;
             .el-form-item {
                 margin-bottom: 0;
             }
