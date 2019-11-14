@@ -313,18 +313,17 @@
                             <span slot="label">
                                 <el-badge :value="workflowCount" :max="99" class="admin-layout">{{ $t('models.quarter.workflow.label') }} </el-badge>
                             </span>
-                            <el-row :gutter="20">
-                                <div class="workflow-button-bar">
-                                    <el-button 
-                                            type="primary" 
-                                            @click="showAddWorkflow" 
-                                            icon="icon-plus" 
-                                            size="mini" 
-                                            round>
-                                            {{ $t('models.quarter.workflow.add') }}
-                                    </el-button>
-                                </div>
-                            </el-row>
+                            <div class="workflow-button-bar">
+                                <el-button 
+                                        type="primary" 
+                                        @click="showAddWorkflow" 
+                                        icon="icon-plus" 
+                                        size="mini" 
+                                        round>
+                                        {{ $t('models.quarter.workflow.add') }}
+                                </el-button>
+                            </div>
+
                             <workflow-form v-if="isAddWorkflow"
                                 mode="add" 
                                 :quarter_id="model.id" 
@@ -414,7 +413,7 @@
                                         </el-col> -->
                                     </el-row>
                                     <el-row v-if="!isEditingWorkflow[$index]">
-                                        <el-col class="edit workflow-button-bar">
+                                        <el-col :md="24" class="edit workflow-button-bar">
                                             <el-button 
                                                 type="primary" 
                                                 @click="showEditWorkflow($index)"
@@ -1143,13 +1142,14 @@
     .el-collapse {
 
         /deep/ .el-collapse-item__header {
-            padding-left: 10px;
+            padding-left: 1em;
             background: #f6f5f7;
             border-radius: 6px;
         }
 
         /deep/ .el-collapse-item__content {
             padding-bottom: 0px;
+            padding-left: 1em;
         }
     }
 </style>

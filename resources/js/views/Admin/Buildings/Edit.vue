@@ -256,7 +256,7 @@
                                     @delete-contract="deleteContract">
                         </contract-list-table>
                     </el-tab-pane> -->
-                    <el-tab-pane name="managers">
+                    <!-- <el-tab-pane name="managers">
                         <span slot="label">
                             <el-badge :value="managerCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
                         </span>
@@ -279,11 +279,11 @@
                             ref="assigneesList"
                             v-if="model.id"
                         />
-                    </el-tab-pane>
-                    <el-tab-pane name="providers">
+                    </el-tab-pane> -->
+                    <!-- <el-tab-pane name="providers">
                         <span slot="label">
                             <el-badge :value="serviceCount" :max="99" class="admin-layout">{{ $t('models.building.providers') }}</el-badge>
-                        </span>                        
+                        </span>                         -->
                         <!-- <label class="card-label">{{$t('settings.contact_enable.label')}}</label>
                         <el-select
                                 placeholder="Chose"
@@ -297,7 +297,7 @@
                                     v-for="contactEnableValue in contactEnableValues"/>
                         </el-select>
                         <el-divider class="mt15" /> -->
-                        <assignment-by-type
+                        <!-- <assignment-by-type
                             :resetToAssignList="resetToAssignProviderList"
                             :assignmentType.sync="assignmentType"
                             :toAssign.sync="toAssignProvider"
@@ -306,7 +306,7 @@
                             :toAssignList="toAssignProviderList"
                             :remoteLoading="remoteLoading"
                             :remoteSearch="remoteSearchProviders"
-                        />
+                        /> -->
                         <!-- <el-row :gutter="10" id="providerAssignBox">
                             <el-col id="providerSelect">
                                 <el-select
@@ -338,13 +338,74 @@
                                 </el-button>
                             </el-col>
                         </el-row> -->
-                       <relation-list
+                        <!-- <relation-list
                             :actions="assignmentsProviderActions"
                             :columns="assignmentsProviderColumns"
                             :filterValue="model.id"
                             fetchAction="getServices"
                             filter="building_id"
                             ref="assignmentsProviderList"
+                            v-if="model.id"
+                        /> -->
+                    <!-- </el-tab-pane> -->
+                    
+                    <el-tab-pane name="assignees">                        
+                        <span slot="label">
+                            <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
+                        </span>
+                        <el-row :gutter="10" id="managerAssignBox">
+                            <el-col id="managerSelect">
+                                <el-select
+                                    clearable
+                                    :loading="remoteLoading"
+                                    :placeholder="$t('general.placeholders.search')"
+                                    :remote-method="remoteSearchAssignees"
+                                    class="custom-remote-select"
+                                    filterable
+                                    remote
+                                    reserve-keyword
+                                    style="width: 100%;"
+                                    v-model="toAssign"
+                                >
+                                    <div class="custom-prefix-wrapper" slot="prefix">
+                                        <i class="el-icon-search custom-icon"></i>
+                                    </div>
+                                    <el-option
+                                            :key="assignee.id"
+                                            :label="assignee.name"
+                                            :value="assignee.id"
+                                            v-for="assignee in toAssignList"/>
+                                </el-select>
+                            </el-col>
+                            <el-col>
+                                <el-select
+                                        :placeholder="$t('general.placeholders.select')"
+                                        style="display: block"
+                                        multiple
+                                        v-model="userAssignmentType"
+                                        filterable>
+                                    <el-option
+                                            :key="type.value"
+                                            :label="type.name"
+                                            :value="type.value"
+                                            v-for="type in assignment_types">
+                                    </el-option>
+                                </el-select>
+                            </el-col>
+                            <el-col id="managerAssignBtn">
+                                <el-button :disabled="!toAssign" @click="assignUser" class="full-button"
+                                            icon="ti-save" type="primary">
+                                    &nbsp;{{$t('general.assign')}}
+                                </el-button>
+                            </el-col>
+                        </el-row>
+                        <relation-list
+                            :actions="assigneesActions"
+                            :columns="assigneesColumns"
+                            :filterValue="model.id"
+                            fetchAction="getBuildingAssignees"
+                            filter="building_id"
+                            ref="assigneesList"
                             v-if="model.id"
                         />
                     </el-tab-pane>
@@ -628,6 +689,7 @@
                 managerCount: 0,
                 unitCount: 0,
                 requestCount: 0,
+                assigneeCount: 0,
                 contractCount: 0,
                 auditCount: 0,
                 visibleDrawer: false,
@@ -958,6 +1020,9 @@
             EventBus.$on('assignee-get-counted', manager_count => {                
                 this.managerCount = manager_count;
             });
+            // EventBus.$on('assignee-get-counted', assignee_count => {                
+            //     this.assigneeCount = assignee_count;
+            // });
             EventBus.$on('unit-get-counted', unit_count => {
                 this.unitCount = unit_count;
             });
@@ -1260,4 +1325,15 @@
         width: 100%;
     }
 
+    #managerAssignBox {
+        display: flex;
+
+        #managerSelect {
+            width: 100%;
+        }
+
+        #managerAssignBtn {
+            flex: 1;
+        }
+    }
 </style>
