@@ -211,7 +211,10 @@
                                                 :key="assignee.id"
                                                 :label="assignee.name"
                                                 :value="assignee.id"
-                                                v-for="assignee in toAssignList"/>
+                                                v-for="assignee in toAssignList">
+                                            <span style="float: left">{{ assignee.name }}</span>
+                                            <span style="float: right; color: #8492a6; font-size: 13px">{{ translateType(assignee.roles[0].name) }}</span>
+                                        </el-option>
                                     </el-select>
                                 </el-col>
                                 <el-col>
