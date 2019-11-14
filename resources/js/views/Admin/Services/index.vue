@@ -1,6 +1,6 @@
 <template>
     <div class="services">
-        <heading :title="$t('models.service.title')" icon="icon-tools" shadow="heavy">
+        <heading :title="$t('models.service.title')" icon="icon-tools" shadow="heavy" class="padding-right-300">
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
@@ -179,12 +179,3 @@
         },
     }
 </script>
-
-<style lang="scss" scoped>
-
-    .services {
-        .heading {
-            padding-right: 300px;
-        }
-    }
-</style>

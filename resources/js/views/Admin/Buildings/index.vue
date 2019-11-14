@@ -1,6 +1,6 @@
 <template>
     <div class="buildings">
-        <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy">
+        <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy" class="padding-right-300">
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
@@ -404,11 +404,6 @@
         /deep/ .el-dialog__body {
             padding: 10px 20px;
             word-break: break-word;
-        }
-    }
-    .buildings {
-        .heading {
-            padding-right: 300px;
         }
     }
 </style>

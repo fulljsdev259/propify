@@ -1,6 +1,6 @@
 <template>
     <div class="property-managers">
-        <heading :title="$t('models.property_manager.title')" icon="icon-users" shadow="heavy">
+        <heading :title="$t('models.property_manager.title')" icon="icon-users" shadow="heavy" class="padding-right-300">
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
@@ -324,12 +324,6 @@
 
         .description {
             margin-top: 0;
-        }
-    }
-    
-    .property-managers {
-        .heading {
-            padding-right: 300px;
         }
     }
 </style>

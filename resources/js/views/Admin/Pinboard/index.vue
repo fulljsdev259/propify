@@ -1,6 +1,6 @@
 <template>
     <div class="pinboard">
-        <heading :title="$t('models.pinboard.title')" icon="icon-megaphone-1" shadow="heavy">
+        <heading :title="$t('models.pinboard.title')" icon="icon-megaphone-1" shadow="heavy" class="padding-right-300">
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
@@ -292,11 +292,3 @@
         }
     }
 </script>
-
-<style lang="scss" scoped>
-    .pinboard {
-        .heading {
-            padding-right: 300px;
-        }
-    }
-</style>

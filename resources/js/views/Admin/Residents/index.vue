@@ -1,6 +1,6 @@
 <template>
     <div class="residents">
-        <heading :title="$t('general.resident')" icon="icon-group" shadow="heavy">
+        <heading :title="$t('general.resident')" icon="icon-group" shadow="heavy" class="padding-right-300">
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
@@ -304,12 +304,3 @@
         }
     };
 </script>
-
-<style lang="scss" scoped>
-
-    .residents {
-        .heading {
-            padding-right: 300px;
-        }
-    }
-</style>

@@ -1,6 +1,6 @@
 <template>
     <div class="units">
-        <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy">
+        <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy" class="padding-right-300">
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
@@ -231,12 +231,3 @@
         }
     }
 </script>
-
-<style lang="scss" scoped>
-
-    .units {
-        .heading {
-            padding-right: 300px;
-        }
-    }
-</style>

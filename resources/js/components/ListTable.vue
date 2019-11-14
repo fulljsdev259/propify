@@ -915,7 +915,7 @@
             }
         }
         .list-table-search {
-            position: fixed;
+            position: absolute;
             right: 40px;
             top: 30px;
             z-index: 99;

@@ -1,6 +1,6 @@
 <template>
     <div class="quarters">
-        <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy">
+        <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" class="padding-right-300">
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
@@ -160,12 +160,3 @@
         },
     }
 </script>
-
-<style lang="scss" scoped>
-    
-    .quarters {
-        .heading {
-            padding-right: 300px;
-        }
-    }
-</style>
