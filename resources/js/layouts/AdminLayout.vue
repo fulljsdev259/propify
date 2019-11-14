@@ -59,6 +59,7 @@
                 </v-router-transition>
             </el-main>
         </el-container>
+        <vue-snotify></vue-snotify>
     </el-container>
 </template>
 

@@ -3,6 +3,7 @@ import './window'
 
 import 'flag-icon-css/css/flag-icon.min.css'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+import 'vue-snotify/styles/material.css';
 
 import App from '@/App.vue'
 
@@ -31,6 +32,7 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import AnimatedNumber from 'animated-number-vue'
 import VueVirtualScroller from 'vue-virtual-scroller'
 import VueLocalStorage from 'vue-localstorage'
+import Snotify from 'vue-snotify';
 import {VueResponsiveComponents, ResponsiveMixin} from 'vue-responsive-components'
 
 Vue.use(Sticky)
@@ -46,7 +48,19 @@ Vue.use(ResidentComponents)
 Vue.use(VueVirtualScroller)
 Vue.use(VueLocalStorage, {name: 'localStorage', bind: true})
 Vue.use(VueSweetalert2, {confirmButtonColor: '#3085d6', cancelButtonColor: '#d33'})
-
+Vue.use(Snotify,{
+	toast: {
+		showProgressBar: true,
+		closeOnClick: true,
+		pauseOnHover: true,
+        timeout: 3000,
+        titleMaxLength: 15,
+        bodyMaxLength: 80,        
+	  },
+	  global:{
+		oneAtTime: true,
+	  }
+})
 const i18n = new VueI18n({messages, locale: DEFAULT_FALLBACK_LOCALE, fallbackLocale: DEFAULT_FALLBACK_LOCALE})
 
 Vue.use(ElementUI, {i18n: (key, value) => i18n.t(key, value)})
@@ -82,5 +96,8 @@ export default new Vue({
     mounted () {
         this.$i18n.locale = this.$store.state.application.locale
         this.$store.watch(({application}) => application.locale, locale => this.$i18n.locale = locale)
-    }
+    },
+    beforeCreate() {
+        Vue.$snotify = this.$snotify;
+    },
 })
