@@ -108,7 +108,8 @@ export default (config = {}) => {
                     this.$refs.assigneesList.fetch();    
                     if(this.$refs.auditList){
                         this.$refs.auditList.fetch();
-                    }                
+                    }
+                    this.userAssignmentType = null
                 }
             },
             async remoteSearchAssignees(search) {

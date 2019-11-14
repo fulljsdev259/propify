@@ -117,7 +117,7 @@ export default (config = {}) => {
             };
         },
         methods: {
-            ...mapActions(['getStates', 'getPropertyManagers','getAllAdminsForBuilding','getQuarters','getUsers','getServices','assignProviderToBuilding','unassignProviderToBuilding']),
+            ...mapActions(['getStates', 'getPropertyManagers','getAllAdminsForBuilding','assignUserToBuilding','getQuarters','getUsers','getServices','assignProviderToBuilding','unassignProviderToBuilding']),
             async remoteSearchAssignees(search) {
 
                 if (!this.$can(this.$permissions.assign.request)) {
@@ -181,25 +181,43 @@ export default (config = {}) => {
                 }
                 let resp;
 
-                if (this.assignmentType === 'managers') {
-                    resp = await this.assignManagerToBuilding({
-                        id: this.model.id,
-                        toAssignId: this.toAssign   
-                    });
-                } else if (this.assignmentType === 'administrator') {
-                    resp = await this.assignUsersToBuilding({
-                        id: this.model.id,
-                        toAssignId: this.toAssign
-                    });
-                }
+                // if (this.assignmentType === 'managers') {
+                //     resp = await this.assignManagerToBuilding({
+                //         id: this.model.id,
+                //         toAssignId: this.toAssign   
+                //     });
+                // } else if (this.assignmentType === 'administrator') {
+                //     resp = await this.assignUsersToBuilding({
+                //         id: this.model.id,
+                //         toAssignId: this.toAssign
+                //     });
+                // }
+
+                // if (resp && resp.data) {             
+                //     displaySuccess(resp.data)                           
+                //     this.resetToAssignList();
+                //     this.$refs.assigneesList.fetch();                    
+                //     if(this.$refs.auditList){
+                //         this.$refs.auditList.fetch();
+                //     }
+                // }
+                let assign_user = this.toAssignList.find(item => item.id == this.toAssign )
+
+                resp = await this.assignUserToBuilding({
+                            id: this.model.id,
+                            user_id: this.toAssign,
+                            role: assign_user.roles[0].name,
+                            assignment_types: this.userAssignmentType
+                        });
 
                 if (resp && resp.data) {             
                     displaySuccess(resp.data)                           
                     this.resetToAssignList();
-                    this.$refs.assigneesList.fetch();                    
+                    this.$refs.assigneesList.fetch();    
                     if(this.$refs.auditList){
                         this.$refs.auditList.fetch();
                     }
+                    this.userAssignmentType = null
                 }
             },
             async remoteSearchQuarters(search) {

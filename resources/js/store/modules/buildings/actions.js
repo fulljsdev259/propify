@@ -72,6 +72,15 @@ export default {
                 .then(({data: r}) => resolve(r.data))
                 .catch(({response: {data: err}}) => reject(err)));
     },
+    assignUserToBuilding({}, {id, ...payload}) {
+        console.log(payload)
+        return new Promise((resolve, reject) => {
+            axios.post(`buildings/${id}/users`, payload)
+                .then((resp) => {
+                    resolve(resp.data);
+                }).catch(({response: {data: err}}) => reject(err))
+        });
+    },
     assignProviderToBuilding({}, payload){
         return new Promise((resolve, reject) => {
             axios.post(`buildings/${payload.id}/service/${payload.toAssignId}`)
