@@ -593,11 +593,6 @@ return [
             'surrender' => 'Surrender',
             'inspection' => 'Acceptance'
         ],
-        'payer' => [
-            'landlord' => 'Landlord',
-            'resident' => 'Resident',
-            'resident/landlord' => 'Resident/Landlord'
-        ],
         'status' => [
             'label' => 'Status',
             'received' => 'Received',
@@ -617,7 +612,6 @@ return [
             'range' => 'Range',
             'component' => 'Component',
             'capture_phase' => 'Capture Phase',
-            'payer' => 'Cost Impact',
             'payer_percent' => 'Share Fortimo',
             'payer_amount' => 'Amount',
             'keywords' => 'Keywords',
