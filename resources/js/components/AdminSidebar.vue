@@ -126,7 +126,6 @@
                         });
                     }
                 }); 
-                this.$emit('route-changed', data);
             }
         },
         computed: {
@@ -148,13 +147,11 @@
                 this.links.map(link => {
                     if (link.route && routeName.includes(link.route.name)) {
                         this.currActive = link.title;
-                        this.$emit('route-changed', link);
                     } else if (link.children) {
                         let dActive = '';
                         link.children.map(child => {
                             if (child.route && routeName.includes(child.route.name)) {
                                 this.currActive = link.title;
-                                this.$emit('route-changed', link);
                             }
                         });
                     }

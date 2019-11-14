@@ -437,15 +437,9 @@
                 localStorage.setItem('selectedFlag', this.selectedFlag);
             },*/
 
-<<<<<<< HEAD
-            getDropdownWidth() {
-                this.dropdownwidth = this.$refs.prev != undefined?this.$refs.prev.clientWidth : 0;
-            },
-=======
             // getDropdownWidth() {
             //     this.dropdownwidth = this.$refs.prev.clientWidth;
             // },
->>>>>>> 4e628ad237d39929f0697c20ce95e941f32ba8fe
 
             handlerDropdownVisibleChange() {
                 let Itag = this.$el.querySelector("i[style]");
