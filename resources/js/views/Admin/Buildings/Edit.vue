@@ -604,9 +604,9 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
-                    prop: 'role',
+                    prop: 'assignment_types',
                     label: 'general.assignment_types.label',
-                    i18n: this.translateType
+                    i18n: this.translateAssignmentType
                 }],
                 assigneesActions: [{
                     width: 70,
@@ -721,6 +721,14 @@
             },
             translateResidentType(type) {
                 return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+            },
+            translateAssignmentType(types) {
+                let translatedTypes = []
+                types.map(type => {
+                    translatedTypes.push(this.$t(`models.quarter.assignment_types.${this.constants.quarters.assignment_type[type]}`))
+                })
+
+                return translatedTypes.join(', ')
             },
             fetchSettings() {
                 this.getSettings().then((resp) => {
@@ -1019,10 +1027,11 @@
 
             EventBus.$on('assignee-get-counted', manager_count => {                
                 this.managerCount = manager_count;
+                
             });
-            // EventBus.$on('assignee-get-counted', assignee_count => {                
-            //     this.assigneeCount = assignee_count;
-            // });
+            EventBus.$on('assignee-get-counted', assignee_count => {                
+                this.assigneeCount = assignee_count;
+            });
             EventBus.$on('unit-get-counted', unit_count => {
                 this.unitCount = unit_count;
             });

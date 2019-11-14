@@ -602,9 +602,9 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
-                    prop: 'role',
+                    prop: 'assignment_types',
                     label: 'general.assignment_types.label',
-                    i18n: this.translateType
+                    i18n: this.translateAssignmentType
                 }],
                 quarterColumns: [{
                     type: 'buildingName',
@@ -701,9 +701,13 @@
             translateResidentType(type) {
                 return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
             },
-            translateAssignmentType(type) {
-                console.log(type)
-                return this.$t(`models.quarter.assignment_types.${this.constants.quarters.assignment_type[type]}`);
+            translateAssignmentType(types) {
+                let translatedTypes = []
+                types.map(type => {
+                    translatedTypes.push(this.$t(`models.quarter.assignment_types.${this.constants.quarters.assignment_type[type]}`))
+                })
+
+                return translatedTypes.join(', ')
             },
             residentStatusBadge(status) {
                 const classObject = {

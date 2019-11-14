@@ -2,6 +2,7 @@
 
 namespace App\Criteria\User;
 
+use App\Models\BuildingAssignee;
 use App\Models\QuarterAssignee;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -37,12 +38,20 @@ class FilterByExcludeAssigneesCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
+        $userIds = collect();
         $excludeAssigneesQuarterId = $this->request->exclude_assignees_quarter_id;
         if ($excludeAssigneesQuarterId) {
-            $userIds = QuarterAssignee::where('quarter_id', $excludeAssigneesQuarterId)->pluck('user_id')->all();
-            if ($userIds) {
-                $model = $model->whereNotIn('id', $userIds);
-            }
+            $userIds = QuarterAssignee::where('quarter_id', $excludeAssigneesQuarterId)->pluck('user_id');
+        }
+
+        $excludeAssigneesBuildingId = $this->request->exclude_assignees_building_id;
+        if ($excludeAssigneesBuildingId) {
+            $buildingAssignedUserIds = BuildingAssignee::where('building_id', $excludeAssigneesBuildingId)->pluck('user_id');
+            $userIds = $userIds->merge($buildingAssignedUserIds);
+        }
+
+        if ($userIds->isNotEmpty()) {
+            $model = $model->whereNotIn('id', $userIds->all());
         }
 
         return $model;
