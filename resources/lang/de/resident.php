@@ -171,7 +171,7 @@ return [
         "multiple" => ":num verfügbare Dokumente"
     ],
     'media_category' => [
-        "all" => "Alle auswählen",
+        "all" => "Alle anzeigen",
         'house_rules' => 'Hausordnung',
         'operating_instructions' => 'Benutzungsanleitungen',
         'care_instructions' => 'Pflegehinweise',

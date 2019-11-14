@@ -397,7 +397,7 @@
                                             <el-button 
                                                 type="primary" 
                                                 @click="deleteWorkflow($index)"
-                                                icon="icon-trash" 
+                                                icon="el-trash" 
                                                 size="mini" 
                                                 round>
                                                 {{ $t('models.quarter.workflow.delete') }}
@@ -1178,11 +1178,15 @@
         border-radius: 6px;
     }
 
+    .el-collapse-item {
+        margin-bottom: 5px;
+    }
+
     .el-collapse {
 
-        /deep/ .el-collapse-item__header.is-active {
+        /deep/ .el-collapse-item__header {
             padding-left: 10px;
-            background: lightgray;
+            background: #efeeee;
             border-radius: 6px;
         }
 

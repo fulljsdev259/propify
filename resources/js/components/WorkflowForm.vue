@@ -221,6 +221,7 @@
                         })
 
                         let payload = {
+                            id: this.data.id,
                             title: this.model.title,
                             category_id: this.model.category_id,
                             category: category,
