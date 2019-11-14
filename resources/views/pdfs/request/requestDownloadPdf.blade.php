@@ -7,38 +7,35 @@
 <table class="data_table" cellpadding="0" cellspacing="0">
 
     <tbody>
-        @foreach ($datas as $data)
-            
-        
         <tr>
             <td colspan="2" width="100%" class="no_border">
                         <table width="100%" style="vertical-align:middle;margin-bottom: 15px;">
                             <tbody>
                                 <tr>
                                     <td class="table_header" valign="middle">
-                                        <span class="text_font" style="display: inline-block;vertical-align:top;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.download_pdf.captured_by') {{$data['request']->creator->email}} {{ now()->format('d.m.Y H:i') }}</span>
+                                        <span class="text_font" style="display: inline-block;vertical-align:top;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.download_pdf.captured_by') {{$request->creator->email}} {{ now()->format('d.m.Y H:i') }}</span>
                                         <span style="display: inline-block;height:25px;width:100%;"></span>
         
-                                        <span style="font-family: {{$pdf_font_family ?? 'Arial'}};">{{ $data['request']->service_request_format }}</span> <br />
+                                        <span style="font-family: {{$pdf_font_family ?? 'Arial'}};">{{ $request->service_request_format }}</span> <br />
         
                                         <p style="margin:7px 0 0;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                                 <b style="font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.download_pdf.request_number'):</b>
-                                                {{ $data['request']->request_format }}
+                                                {{ $request->request_format }}
         
                                             </p>
                                         <p style="margin:7px 0 0;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                             <b style="font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.category'):</b>
-                                            @if (! empty($data['subCategory']))
-                                            {{ !empty($data['category']['name']) ? __('models.request.category_list.' . $data['category']['name']) . ' > ' : ''  }}
-                                            {{ __('models.request.sub_category.' . $data['subCategory']['name']) }}
-                                            @elseif (! empty($data['category']['name']))
-                                            {{ __('models.request.category_list.' . $data['category']['name']) }}
+                                            @if (! empty($subCategory))
+                                            {{ !empty($category['name']) ? __('models.request.category_list.' . $category['name']) . ' > ' : ''  }}
+                                            {{ __('models.request.sub_category.' . $subCategory['name']) }}
+                                            @elseif (! empty($category['name']))
+                                            {{ __('models.request.category_list.' . $category['name']) }}
                                             @endif
         
                                         </p>
                                         <p style="margin:7px 0 0;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                             <b style="font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.status.label') ({{ now()->format('d.m.Y, H:i') }}):</b>
-                                            @lang('models.request.status.'.\App\Models\Request::Status[$data['request']->status])
+                                            @lang('models.request.status.'.\App\Models\Request::Status[$request->status])
                                             
                                         </p>
                                     </td>
@@ -54,10 +51,10 @@
 
                                         <p style="margin:0;margin-top:-30px;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                             <b>@lang('models.request.download_pdf.address'):</b>
-                                            {{ @$data['contract']->building->address->street }}
-                                            {{ @$data['contract']->building->address->house_num }},
-                                            {{ @$data['contract']->building->address->zip }}
-                                            {{ @$data['contract']->building->address->city }}
+                                            {{ @$contract->building->address->street }}
+                                            {{ @$contract->building->address->house_num }},
+                                            {{ @$contract->building->address->zip }}
+                                            {{ @$contract->building->address->city }}
         
                                         </p>
                                     </td>
@@ -66,8 +63,7 @@
                         </table>
             </td>
         </tr>
-        @endforeach
-        {{--  <tr>
+        <tr>
             <td class="no_border" width="100%">
                 <h2 style="margin-bottom:10px;margin-top:15px;font-size: 25px;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.download_pdf.details')</h2>
             </td>
@@ -328,7 +324,7 @@
             </td>
         </tr>
         @endif
-        @endforeach  --}}
+        @endforeach
     </tbody>
     
 </table>
