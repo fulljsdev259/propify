@@ -117,7 +117,7 @@ export default (config = {}) => {
             };
         },
         methods: {
-            ...mapActions(['getStates', 'getPropertyManagers','getQuarters','getUsers','getServices','assignProviderToBuilding','unassignProviderToBuilding']),
+            ...mapActions(['getStates', 'getPropertyManagers','getAllAdminsForBuilding','assignUserToBuilding','getQuarters','getUsers','getServices','assignProviderToBuilding','unassignProviderToBuilding']),
             async remoteSearchAssignees(search) {
 
                 if (!this.$can(this.$permissions.assign.request)) {
@@ -160,9 +160,9 @@ export default (config = {}) => {
                                                      
                         // this.toAssignList = resp.data;
 
-                        //const resp = await this.getBuildingAssignees({building_id: this.$route.params.id});       
+                        const resp = await this.getAllAdminsForBuilding({building_id: this.$route.params.id})
                         
-                        //this.toAssignList = resp
+                        this.toAssignList = resp
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -175,31 +175,40 @@ export default (config = {}) => {
                 this.toAssign = '';
             },
             async assignUser() {
-                console.log('assignUser called')
                 if (!this.toAssign || !this.model.id) {
                     return false;
                 }
                 let resp;
 
-                if (this.assignmentType === 'managers') {
-                    resp = await this.assignManagerToBuilding({
-                        id: this.model.id,
-                        toAssignId: this.toAssign   
-                    });
-                } else if (this.assignmentType === 'administrator') {
-                    resp = await this.assignUsersToBuilding({
-                        id: this.model.id,
-                        toAssignId: this.toAssign
-                    });
-                }
+                // if (this.assignmentType === 'managers') {
+                //     resp = await this.assignManagerToBuilding({
+                //         id: this.model.id,
+                //         toAssignId: this.toAssign   
+                //     });
+                // } else if (this.assignmentType === 'administrator') {
+                //     resp = await this.assignUsersToBuilding({
+                //         id: this.model.id,
+                //         toAssignId: this.toAssign
+                //     });
+                // }
+
+                let assign_user = this.toAssignList.find(item => item.id == this.toAssign )
+
+                resp = await this.assignUserToBuilding({
+                            id: this.model.id,
+                            user_id: this.toAssign,
+                            role: assign_user.roles[0].name,
+                            assignment_types: this.userAssignmentType
+                        });
 
                 if (resp && resp.data) {             
                     displaySuccess(resp.data)                           
                     this.resetToAssignList();
-                    this.$refs.assigneesList.fetch();                    
+                    this.$refs.assigneesList.fetch();    
                     if(this.$refs.auditList){
                         this.$refs.auditList.fetch();
                     }
+                    this.userAssignmentType = null
                 }
             },
             async remoteSearchQuarters(search) {

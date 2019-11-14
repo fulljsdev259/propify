@@ -78,7 +78,7 @@ export default {
     },
     getAllAdminsForQuarter(_, {quarter_id}) {
         return new Promise((resolve, reject) =>
-            axios.get(`alladmins`, {exclude_assignees_quarter_id: quarter_id})
+            axios.get(buildFetchUrl(`alladmins`, {exclude_assignees_quarter_id: quarter_id}))
                 .then(({data: r}) => resolve(r.data))
                 .catch(({response: {data: err}}) => reject(err)));
     },
