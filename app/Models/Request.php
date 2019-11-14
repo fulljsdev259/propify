@@ -709,7 +709,17 @@ class Request extends AuditableModel implements HasMedia
         return $this->morphedByMany(PropertyManager::class, 'assignee', 'request_assignees', 'request_id');
     }
 
+    public function property_managers()
+    {
+        return $this->morphedByMany(PropertyManager::class, 'assignee', 'request_assignees', 'request_id');
+    }
+
     public function providers()
+    {
+        return $this->morphedByMany(ServiceProvider::class, 'assignee', 'request_assignees', 'request_id');
+    }
+
+    public function service_providers()
     {
         return $this->morphedByMany(ServiceProvider::class, 'assignee', 'request_assignees', 'request_id');
     }

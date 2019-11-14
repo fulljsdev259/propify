@@ -4,6 +4,7 @@ namespace App\Http\Requests\API\Quarter;
 
 use App\Models\Quarter;
 use App\Http\Requests\BaseRequest;
+use App\Rules\WorkflowRule;
 
 class UpdateRequest extends BaseRequest
 {
@@ -27,9 +28,19 @@ class UpdateRequest extends BaseRequest
         return [
             'name' => 'string',
             'type' => $this->getInRuleByClassConstants(Quarter::Type),
-            'assignment_type' => [
-                'nullable',
-                $this->getInRuleByClassConstants(Quarter::AssignmentType)
+            'types' => [
+                'required',
+                'array',
+                'bail',
+                function ($attribute, $value, $fails) {
+                    $diff = array_diff($value, array_keys(Quarter::Type));
+                    if ($diff) {
+                        $fails(sprintf('This [%s] types is wrong', implode(', ', $diff)));
+                    }
+                }
+            ],
+            'workflows' => [
+                new WorkflowRule()
             ]
         ];
     }

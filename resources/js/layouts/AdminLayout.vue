@@ -437,9 +437,15 @@
                 localStorage.setItem('selectedFlag', this.selectedFlag);
             },*/
 
+<<<<<<< HEAD
             getDropdownWidth() {
                 this.dropdownwidth = this.$refs.prev != undefined?this.$refs.prev.clientWidth : 0;
             },
+=======
+            // getDropdownWidth() {
+            //     this.dropdownwidth = this.$refs.prev.clientWidth;
+            // },
+>>>>>>> 4e628ad237d39929f0697c20ce95e941f32ba8fe
 
             handlerDropdownVisibleChange() {
                 let Itag = this.$el.querySelector("i[style]");
@@ -465,11 +471,11 @@
         },
 
         mounted(){            
-            EventBus.$on('profile-username-change', () => {
-                this.dropdownwidth = this.$refs.prev.clientWidth;
-            });
+            // EventBus.$on('profile-username-change', () => {
+            //     this.dropdownwidth = this.$refs.prev.clientWidth;
+            // });
 
-            this.getDropdownWidth();
+            //this.getDropdownWidth();
             
             let languagesObject = this.$constants.app.languages;
             let languagesArray = Object.keys(languagesObject).map(function(key) {
