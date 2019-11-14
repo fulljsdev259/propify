@@ -308,7 +308,7 @@ class UtilsAPIController extends AppBaseController
             'location' => Request::Location,
             'room' => Request::Room,
             'capture_phase' => Request::CapturePhase,
-            'payer' => Request::Payer,
+            'payer' => Request::Payer, // @TODO delete
             'categories_data' =>  [
                 'categories' => Request::Category,
                 'sub_categories' => Request::SubCategory,
