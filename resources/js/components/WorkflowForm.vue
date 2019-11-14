@@ -50,7 +50,7 @@
                         </div>
                         <el-option
                             :key="building.id"
-                            :label="`${building.name}`"
+                            :label="`${building.address.house_num}`"
                             :value="building.id"
                             v-for="building in model.workflowBuildingList"/>
                     </el-select>
@@ -318,7 +318,7 @@
                     this.remoteLoading = true;
 
                     try {
-                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id})
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id, search})
 
                         this.model.workflowToUserList = resp;
                     } catch (err) {
@@ -498,6 +498,5 @@
             padding-left: 0 !important;
         }
     }
-
     
 </style>

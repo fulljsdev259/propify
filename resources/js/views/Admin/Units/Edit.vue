@@ -479,7 +479,6 @@
             toggleDrawer() {
                 this.visibleDrawer = true;
                 this.isAddContract = true;
-                document.getElementsByTagName('footer')[0].style.display = "none";
             },
 
             setOrder() {
@@ -549,7 +548,6 @@
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
-                document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
                 this.$set(this.model.contracts, index, params);
@@ -625,7 +623,6 @@
                     if (!state) {
                         this.editingContract = null
                         this.isAddContract = false
-                        document.getElementsByTagName('footer')[0].style.display = "block";
                     }
                 }
             }
