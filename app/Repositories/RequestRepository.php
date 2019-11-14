@@ -15,6 +15,7 @@ use App\Models\Contract;
 use App\Models\ServiceProvider;
 use App\Models\Request;
 use App\Models\User;
+use App\Models\Workflow;
 use App\Notifications\NewResidentRequest;
 use App\Notifications\RequestCommented;
 use App\Notifications\RequestDue;
@@ -100,6 +101,7 @@ class RequestRepository extends BaseRepository
             return $request;
         }
 
+        $request = $this->assignAdminsToRequest($request);
         $request = $this->saveMediaUploads($request, $attributes);
         $notificationsData = dispatch_now(new NotifyNewRequest($request, false));
 
@@ -115,6 +117,59 @@ class RequestRepository extends BaseRepository
 
         // save all sent notification data
         $request->newSystemNotificationAudit($notificationsData);
+        return $request;
+    }
+
+    /**
+     * @param Request $request
+     * @return Request
+     */
+    protected function assignAdminsToRequest(Request $request)
+    {
+        $building = $request->contract->building;
+        if (empty($building)) {
+            return $request;
+        }
+        $workflows = Workflow::where('category_id', $request->category_id)
+            ->where('quarter_id', $building->quarter_id)
+            ->where('building_ids', 'like', '%' . $building->id .'%')
+            ->get();
+        $workflows = $workflows->filter(function ($workflow) use ($building) {
+            return in_array($building->id, $workflow->building_ids);
+        });
+
+        $userIds = $workflows->pluck('to_user_ids')
+            ->merge($workflows->pluck('cc_user_ids'))
+            ->collapse()
+            ->unique();
+
+        if ($userIds->isEmpty()) {
+            return $request;
+        }
+
+        Request::disableAuditing();
+        // @TODO save system audit for assignment
+        $propertyManagers = PropertyManager::whereIn('user_id', $userIds)->get(['id']);
+        $data = [];
+        foreach ($propertyManagers as $propertyManager) {
+            $data[$propertyManager->id] = ['created_at' => now()];
+        }
+
+        if ($data) {
+            $request->property_managers()->syncWithoutDetaching($data);
+        }
+
+        $serviceProviders = ServiceProvider::whereIn('user_id', $userIds)->get(['id']);
+
+        $data = [];
+        foreach ($serviceProviders as $serviceProvider) {
+            $data[$serviceProvider->id] = ['created_at' => now()];
+        }
+
+        if ($data) {
+            $request->service_providers()->syncWithoutDetaching($data);
+        }
+        Request::enableAuditing();
         return $request;
     }
 
@@ -222,6 +277,7 @@ class RequestRepository extends BaseRepository
         $attributes = $this->fixContractRelated($attributes);
         $oldModel = clone $model;
         $updatedModel =  parent::updateExisting($model, $attributes);
+        $updatedModel = $this->saveMediaUploads($updatedModel, $attributes);
 
         if (!$updatedModel) {
             \DB::rollBack();

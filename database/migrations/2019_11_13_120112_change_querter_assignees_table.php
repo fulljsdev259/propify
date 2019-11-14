@@ -13,7 +13,6 @@ class ChangeQuerterAssigneesTable extends Migration
      */
     public function up()
     {
-
         Schema::table('quarter_assignees', function (Blueprint $table) {
             $table->text('assignment_types')->after('assignee_type')->nullable();
         });
