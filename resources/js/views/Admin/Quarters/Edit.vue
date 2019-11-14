@@ -702,7 +702,6 @@
                 return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
             },
             translateAssignmentType(types) {
-                console.log(types)
                 let translatedTypes = []
                 types.map(type => {
                     translatedTypes.push(this.$t(`models.quarter.assignment_types.${this.constants.quarters.assignment_type[type]}`))
