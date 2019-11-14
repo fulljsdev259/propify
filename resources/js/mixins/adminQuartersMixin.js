@@ -299,7 +299,7 @@ export default (config = {}) => {
 
                         this.fileCount = this.model.media.length
                         this.contractCount = this.model.contracts.length
-
+                        this.workflowCount = this.model.workflows.length
                         console.log(this.model.types)
 
                     },

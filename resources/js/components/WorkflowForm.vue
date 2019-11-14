@@ -220,8 +220,8 @@
                             cc_users.push(item)
                         })
 
+                        
                         let payload = {
-                            id: this.data.id,
                             title: this.model.title,
                             category_id: this.model.category_id,
                             category: category,
@@ -231,6 +231,11 @@
                             to_users: to_users,
                             cc_user_ids: this.model.selectedWorkflowCcUser,
                             cc_users: cc_users
+                        }
+
+                        if(this.id) 
+                        {
+                            payload.id = this.id
                         }
 
                         if(this.mode == 'add') {
