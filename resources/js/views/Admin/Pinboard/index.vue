@@ -292,3 +292,11 @@
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    .pinboard {
+        .heading {
+            padding-right: 300px;
+        }
+    }
+</style>

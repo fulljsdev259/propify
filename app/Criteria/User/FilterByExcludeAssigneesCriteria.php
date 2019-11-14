@@ -51,7 +51,9 @@ class FilterByExcludeAssigneesCriteria implements CriteriaInterface
         }
 
         if ($userIds->isNotEmpty()) {
-            $model = $model->whereNotIn('id', $userIds->all());
+            $userIds = $userIds->all();
+            $userIds = array_diff($userIds, [null]);
+            $model = $model->whereNotIn('id', $userIds);
         }
 
         return $model;

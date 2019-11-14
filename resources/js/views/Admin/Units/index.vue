@@ -231,3 +231,12 @@
         }
     }
 </script>
+
+<style lang="scss" scoped>
+
+    .units {
+        .heading {
+            padding-right: 300px;
+        }
+    }
+</style>

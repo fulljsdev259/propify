@@ -179,3 +179,12 @@
         },
     }
 </script>
+
+<style lang="scss" scoped>
+
+    .services {
+        .heading {
+            padding-right: 300px;
+        }
+    }
+</style>

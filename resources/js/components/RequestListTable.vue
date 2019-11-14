@@ -589,9 +589,6 @@
     .avatar-count{
         min-width: 28px;
     }
-    .list-table {
-        padding: 20px;
-    }
     .sorters {
         padding: 10px 0;
         display: flex;
@@ -854,8 +851,7 @@
 
     .filters-card {
         .el-card__body {
-            padding: 22px;
-            padding-bottom: 0;
+            padding: 0 22px;
         }
     }
 

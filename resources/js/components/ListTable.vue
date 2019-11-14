@@ -51,11 +51,22 @@
                             </el-form-item>
                             <el-form-item
                                 v-if="filter.type === filterTypes.text || filter.type === filterTypes.number">
+                                 <el-input
+                                    v-if="filter.key == 'search'"
+                                    :placeholder="filter.name"
+                                    :suffix-icon="filter.icon"
+                                    :type="filter.type"
+                                    class="list-table-search"
+                                    @change="filterChanged(filter)"
+                                    v-model="filterModel[filter.key]">
+                                </el-input>
                                 <el-input
+                                    v-else
                                     clearable
                                     :placeholder="filter.name"
                                     :prefix-icon="filter.icon"
                                     :type="filter.type"
+                                    class="list-table-search"
                                     @change="filterChanged(filter)"
                                     v-model="filterModel[filter.key]">
                                 </el-input>
@@ -849,6 +860,17 @@
                 this.subMenu = JSON.parse(localStorage.getItem('subMenu'));
                 if(!this.subMenu)
                     this.subMenu = [];
+                else {
+                    let result = false;
+                    this.subMenu.forEach((item) => {
+                        if(item.route.name == this.$route.name)
+                            result = true;
+                    });
+                    if(!result) {
+                        localStorage.setItem('subMenu', null);
+                        this.subMenu = [];
+                    }
+                }
             }
         },
     }
@@ -889,6 +911,24 @@
                         background-color: var(--color-primary);
                         border-radius: 12px 12px 0 0;
                     }
+                }
+            }
+        }
+        .list-table-search {
+            position: fixed;
+            right: 40px;
+            top: 30px;
+            z-index: 99;
+            width: 250px;
+            &.el-input {
+                :global(.el-input__inner) {
+                    border-color: transparent;
+                    color: var(--color-text-regular);
+                    background-color: var(--background-color-base);
+                }
+                :global(.el-input__icon) {
+                    font-size: 16px;
+                    line-height: 36px;
                 }
             }
         }
