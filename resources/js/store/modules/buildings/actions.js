@@ -68,7 +68,7 @@ export default {
     },
     getAllAdminsForBuilding(_, {building_id}) {
         return new Promise((resolve, reject) =>
-            axios.get(`alladmins`, {exclude_assignees_building_id: building_id})
+            axios.get(buildFetchUrl(`alladmins`, {exclude_assignees_building_id: building_id}))
                 .then(({data: r}) => resolve(r.data))
                 .catch(({response: {data: err}}) => reject(err)));
     },
