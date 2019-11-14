@@ -839,84 +839,6 @@
                 }).catch(() => {
                 });
             },
-            async remoteSearchBuildings(search) {
-                if (search === '') {
-                    this.resetBuildingList();
-                } else {
-                    this.remoteLoading = true;
-
-                    try {
-                        const resp = await this.getBuildings({
-                            get_all: true,
-                            quarter_id: this.model.id,
-                            search
-                        });
-
-                        this.workflowBuildingList = resp.data;
-                    } catch (err) {
-                        displayError(err);
-                    } finally {
-                        this.remoteLoading = false;
-                    }
-                }
-            },
-            resetBuildingList() {
-                this.workflowBuildingList = [];
-                this.selectedWorkflowBuilding = [];
-            },
-            async remoteSearchToUsers(search) {
-                if (search === '') {
-                    this.resetToUserList();
-                } else {
-                    this.remoteLoading = true;
-
-                    try {
-                        const resp = await this.getUsers({
-                            get_all: true,
-                            get_role: true,
-                            search,
-                            roles: ['manager', 'administrator', 'provider']
-                        });
-
-
-                        this.workflowToUserList = resp.data;
-                    } catch (err) {
-                        displayError(err);
-                    } finally {
-                        this.remoteLoading = false;
-                    }
-                }
-            },
-            resetToUserList() {
-                this.workflowToUserList = [];
-                this.selectedWorkflowToUser = [];
-            },
-            async remoteSearchCcUsers(search) {
-                if (search === '') {
-                    this.resetCcUserList();
-                } else {
-                    this.remoteLoading = true;
-
-                    try {
-                       const resp = await this.getUsers({
-                            get_all: true,
-                            get_role: true,
-                            search,
-                            roles: ['manager', 'administrator', 'provider']
-                        });
-
-                        this.workflowCcUserList = resp.data;
-                    } catch (err) {
-                        displayError(err);
-                    } finally {
-                        this.remoteLoading = false;
-                    }
-                }
-            },
-            resetCcUserList() {
-                this.workflowCcUserList = [];
-                this.selectedWorkflowCcUser = [];
-            },
             addWorkflow(workflow) {
                 console.log('add flow', workflow)
                 this.isEditingWorkflow.push(false)
@@ -1226,8 +1148,8 @@
             border-radius: 6px;
         }
 
-        .el-collapse-item__content {
-            padding-bottom: 10px;
+        /deep/ .el-collapse-item__content {
+            padding-bottom: 0px;
         }
     }
 </style>
