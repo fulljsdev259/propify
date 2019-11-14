@@ -21,6 +21,7 @@ use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\BuildingAssignee;
 use App\Models\PropertyManager;
+use App\Models\ServiceProvider;
 use App\Models\User;
 use App\Repositories\AddressRepository;
 use App\Repositories\BuildingRepository;
@@ -1014,30 +1015,43 @@ class BuildingAPIController extends AppBaseController
             return $this->sendError(__('models.building.errors.not_found'));
         }
 
-        $userIds = $request->get('userIds');
-        try {
-            $currentUsers = $building->users()
-                ->whereIn('users.id', $userIds)
-                ->pluck('users.id')
-                ->toArray();
-
-            $newUsers = array_diff($userIds, $currentUsers);
-            $attachData  = [];
-            foreach ($newUsers as $userId) {
-                $attachData[$userId] = ['created_at' => now()];
-            }
-            $building->users()->syncWithoutDetaching($attachData);
-        } catch (\Exception $e) {
-            return $this->sendError( __('models.building.errors.user_assigned') . $e->getMessage());
+        $userId = $request->get('user_id');
+        $user = User::find($userId);
+        if (empty($user)) {
+            return $this->sendError(__('models.user.errors.not_found'));
         }
 
-        $building->load([
-            'address.state',
-            'media',
-            'service_providers',
-            'propertyManagers',
-            'users'
+        $role = $request->role;
+        if (in_array($role, ['manager', 'administrator'])) {
+            $propertyManagerId = PropertyManager::where('user_id', $user->id)->value('id');
+            if (empty($propertyManagerId)) {
+                $assigneeId = $userId;
+                $assigneeType = get_morph_type_of(User::class);
+            } else {
+                $assigneeId = $propertyManagerId;
+                $assigneeType = get_morph_type_of(PropertyManager::class);
+            }
+        } else {
+            $serviceProviderId = ServiceProvider::where('user_id', $user->id)->value('id');
+            if (empty($serviceProviderId)) {
+                $assigneeId = $userId;
+                $assigneeType = get_morph_type_of(User::class);
+            } else {
+                $assigneeId = $serviceProviderId;
+                $assigneeType = get_morph_type_of(ServiceProvider::class);
+            }
+        }
+
+        BuildingAssignee::updateOrCreate([
+            'building_id' => $id,
+            'user_id' => $userId,
+            'assignee_id' => $assigneeId,
+            'assignee_type' => $assigneeType,
+        ], [
+            'assignment_types' => $request->assignment_types,
+            'created_at' => now()
         ]);
+
         $response = (new BuildingTransformer)->transform($building);
         return $this->sendResponse($response, __('models.building.user_assigned'));
     }

@@ -49,7 +49,7 @@
                                 <tr>
                                     <td class="no_border" colspan="2">
 
-                                        <p style="margin:0;font-family: {{$pdf_font_family ?? 'Arial'}};">
+                                        <p style="margin:0;margin-top:-30px;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                             <b>@lang('models.request.download_pdf.address'):</b>
                                             {{ @$contract->building->address->street }}
                                             {{ @$contract->building->address->house_num }},
@@ -192,7 +192,7 @@
            </tr>
            <tr>
                <td class="no_border" style="font-family: {{$pdf_font_family ?? 'Arial'}};">
-                   <h4 style="margin-bottom:0;font-size: 20px;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.download_pdf.contact_details')</h4>
+                   <h4 style="margin-bottom:0;margin-top:-10px;font-size: 20px;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.download_pdf.contact_details')</h4>
                </td>
            </tr>
            <tr>
@@ -263,7 +263,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2" class="no_border" width="100%" style="margin-top:50px;font-family: {{$pdf_font_family ?? 'Arial'}};">
+                                                <td colspan="2" class="no_border" width="100%" style="float:;margin-top:50px;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                                     <span
                                                         style="font-family: {{$pdf_font_family ?? 'Arial'}};margin-top:20px;padding-bottom:30px;display:inline-block;width:100%;">
                                                         @lang('models.request.download_pdf.blank_pdf')
@@ -291,7 +291,6 @@
                                     </h4>
                                             
                                 </td>
-                                <td></td>
                             </tr>
                         @endif
                         <tr>
@@ -306,7 +305,7 @@
                                             @endif  
                                             <td class="no_border" style="top:0;width:292px;vertical-align: top;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                                 
-                                                    <img class="pdf_attached" src="{{$m['file_path']}}" @if($i==0) style="float: right;"@endif />
+                                                    <img class="pdf_attached" src="{{$m['file_path']}}"/>
                                             </td>
                                             @if($i%2==0)
                                             <td class="no_border">
