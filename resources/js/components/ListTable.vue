@@ -861,10 +861,8 @@
                 if(!this.subMenu)
                     this.subMenu = [];
                 else {
-                    console.log('start');
                     let result = false;
                     this.subMenu.forEach((item) => {
-                        console.log(item.route.name, this.$route.path.name);
                         if(item.route.name == this.$route.name)
                             result = true;
                     });
