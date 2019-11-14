@@ -4,6 +4,7 @@ namespace App\Mails;
 
 use App\Models\Request;
 use App\Models\User;
+use App\Models\Workflow;
 use App\Repositories\TemplateRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -23,17 +24,21 @@ class NewRequestForReceptionist extends Mailable implements ShouldQueue
     /**
      * @var
      */
-    protected $user;
+    protected $workflow;
+    protected $toUsers;
+    protected $ccUsers;
 
     /**
      * NewRequestForReceptionist constructor.
-     * @param User $user
      * @param Request $request
+     * @param Workflow $workflow
+     * @param $toUsers
+     * @param $ccUsers
      */
-    public function __construct(User $user, Request $request)
+    public function __construct(Request $request, Workflow $workflow, $toUsers, $ccUsers)
     {
         $this->request = $request;
-        $this->user = $user;
+        $this->workflow = $workflow;
     }
 
     /**
@@ -42,7 +47,7 @@ class NewRequestForReceptionist extends Mailable implements ShouldQueue
      */
     public function build(TemplateRepository $templateRepository)
     {
-        $data = $templateRepository->getRequestEmailReceiverTemplate($this->user, $this->request);
+        $data = $templateRepository->getRequestEmailReceiverTemplate($this->request, $this->workflow);
 
         return $this->view('mails.requestEmailReceiver')
             ->subject(__("A new request was added"))
