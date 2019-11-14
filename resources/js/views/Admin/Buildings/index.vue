@@ -406,4 +406,9 @@
             word-break: break-word;
         }
     }
+    .buildings {
+        .heading {
+            padding-right: 300px;
+        }
+    }
 </style>
