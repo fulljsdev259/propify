@@ -53,7 +53,7 @@ Vue.use(Snotify,{
 		showProgressBar: true,
 		closeOnClick: true,
 		pauseOnHover: true,
-        timeout: 3000,
+        timeout: 1500,
         titleMaxLength: 15,
         bodyMaxLength: 80,        
 	  },
