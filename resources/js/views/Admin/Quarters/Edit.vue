@@ -524,8 +524,6 @@
                 <div class="content" v-if="visibleDrawer">
                     <emergency-settings-form :visible.sync="visibleDrawer"/>
                 </div>
-                   
-                    
             </template>
         </ui-drawer>
     </div>

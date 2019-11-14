@@ -16,14 +16,14 @@
                 </div>
             </template>
         </heading>
-        <div class="warning-bar" v-if="!loading.state && !model.has_email_receptionists">
+        <!-- <div class="warning-bar" v-if="!loading.state && !model.has_email_receptionists">
             <div class="message" type="info">
                 <i class="icon-info-circled"></i>{{$t('models.building.warning_bar.message')}}
             </div>
             <div class="title" @click="gotoEmailReceptionistDrawer">
                 {{$t('models.building.warning_bar.title')}}
             </div>
-        </div>
+        </div> -->
         <el-row :gutter="20" class="crud-view">
             
             <el-col :md="12">
@@ -479,7 +479,7 @@
                 </div>
             </template>
             <template v-else>
-                <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="visibleDrawer">
+                <!-- <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="visibleDrawer">
                     <el-tab-pane name="emergency" lazy>
                         <div slot="label">
                             <i class="icon-cog"></i>
@@ -507,7 +507,14 @@
                         </div>
 
                     </el-tab-pane>
-                </el-tabs>
+                </el-tabs> -->
+
+                <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;{{ $t('general.emergency.title') }} </ui-divider>
+                
+                <div class="content" v-if="visibleDrawer">
+                    <emergency-settings-form :visible.sync="visibleDrawer"/>
+                </div>
+
             </template>
         </ui-drawer>
         
@@ -1120,34 +1127,34 @@
                 //margin-bottom: 20px;
             }
 
-            .warning-bar {
-                background-color: var(--primary-color); 
-                color: white;
-                min-height: 20px;
-                padding: 10px;
-                margin-bottom: 10px;
-                display: flex;
+            // .warning-bar {
+            //     background-color: var(--primary-color); 
+            //     color: white;
+            //     min-height: 20px;
+            //     padding: 10px;
+            //     margin-bottom: 10px;
+            //     display: flex;
 
-                .message {
-                    flex-grow: 1;
-                    font-size: 13px;
-                    line-height: 20px;
+            //     .message {
+            //         flex-grow: 1;
+            //         font-size: 13px;
+            //         line-height: 20px;
 
-                    i {
-                        font-size: 15px;
-                        margin-right: 5px;
-                    }
-                }
+            //         i {
+            //             font-size: 15px;
+            //             margin-right: 5px;
+            //         }
+            //     }
 
-                .title {
-                    float: right;
-                    font-size: 15px;
-                    font-weight: bold;
-                    text-transform: uppercase;
-                    min-width: 140px;
-                    cursor: pointer;
-                }
-            }
+            //     .title {
+            //         float: right;
+            //         font-size: 15px;
+            //         font-weight: bold;
+            //         text-transform: uppercase;
+            //         min-width: 140px;
+            //         cursor: pointer;
+            //     }
+            // }
 
             .crud-view > .el-col {
                 margin-bottom: 1em;
