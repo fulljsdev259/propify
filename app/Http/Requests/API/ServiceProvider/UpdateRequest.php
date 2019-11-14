@@ -4,6 +4,7 @@ namespace App\Http\Requests\API\ServiceProvider;
 
 use App\Models\ServiceProvider;
 use App\Http\Requests\BaseRequest;
+use App\Models\Unit;
 
 class UpdateRequest extends BaseRequest
 {
@@ -24,6 +25,19 @@ class UpdateRequest extends BaseRequest
      */
     public function rules()
     {
-        return ServiceProvider::$rulesUpdate;
+        $rules = [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'phone' => 'required|string|max:255',
+            'type' => [
+                'nullable',
+                $this->getInRuleByClassConstants(ServiceProvider::Type),
+            ],
+            'category' => [
+                'required',
+                $this->getInRuleByClassConstants(ServiceProvider::ServiceProviderCategory),
+            ],
+        ];
+        return $rules;
     }
 }
