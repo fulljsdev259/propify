@@ -304,3 +304,12 @@
         }
     };
 </script>
+
+<style lang="scss" scoped>
+
+    .residents {
+        .heading {
+            padding-right: 300px;
+        }
+    }
+</style>

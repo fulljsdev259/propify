@@ -160,3 +160,12 @@
         },
     }
 </script>
+
+<style lang="scss" scoped>
+    
+    .quarters {
+        .heading {
+            padding-right: 300px;
+        }
+    }
+</style>
