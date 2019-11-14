@@ -339,7 +339,7 @@
                     this.remoteLoading = true;
 
                     try {
-                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id})
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id, search})
                         this.model.workflowCcUserList = resp;
                     } catch (err) {
                         displayError(err);

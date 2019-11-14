@@ -660,6 +660,7 @@ export default (config = {}) => {
                         const resp = await this.getRequest({id: this.$route.params.id});
 
                         if(resp) {
+                            console.log(resp.data.property_managers)
                             this.model.property_managers = resp.data.property_managers.map((manager) => {
                                 manager.name = `${manager.first_name} ${manager.last_name}`;
                                 return manager
