@@ -425,6 +425,7 @@ return [
             'label' => 'Workflow',
             'add' => 'Add Workflow',
             'edit' => 'Edit Workflow',
+            'delete' => 'Delete Workflow',
             'by' => 'by',
             'to' => 'to',
             'cc' => 'cc',

@@ -425,6 +425,7 @@ return [
             'label' => 'Workflow',
             'add' => 'Ajouter un flux de travail',
             'edit' => 'Modifier le flux de travail',
+            'delete' => 'Supprimer le workflow',
             'by' => 'à côté de',
             'to' => "jusqu'à",
             'cc' => 'cc',

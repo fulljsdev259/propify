@@ -17,6 +17,8 @@ export default (config = {}) => {
                 remoteLoading: false,
                 assignmentTypes: ['managers'],
                 assignmentType: 'managers',
+                assignment_types: [],
+                userAssignmentType: null,
                 serviceAssignmentTypes: ['providers'],
                 toAssignList: [],
                 toAssign: '',
@@ -128,35 +130,39 @@ export default (config = {}) => {
                     this.remoteLoading = true;
                     
                     try {
-                        let resp = [];
-                        const buildingAssignee = await this.getBuildingAssignees({building_id: this.$route.params.id});                        
-                        let exclude_ids = [];
-                        if (this.assignmentType === 'managers') {
-                            buildingAssignee.data.data.map(item => {
-                                if(item.type === 'manager'){
-                                    exclude_ids.push(item.edit_id);
-                                }                                
-                            })
-                            resp = await this.getPropertyManagers({
-                                get_all: true,
-                                search,
-                                exclude_ids: exclude_ids.join(',')
-                            });
-                        } else if(this.assignmentType === 'administrator'){
-                            buildingAssignee.data.data.map(item => {
-                                if(item.type === 'user'){                                    
-                                    exclude_ids.push(item.edit_id);
-                                }                                
-                            })
-                            resp = await this.getUsers({
-                                get_all: true,
-                                search,
-                                exclude_ids: exclude_ids.join(','),
-                                role: 'administrator'
-                            });
-                        }
+                        // let resp = [];
+                        // const buildingAssignee = await this.getBuildingAssignees({building_id: this.$route.params.id});                        
+                        // let exclude_ids = [];
+                        // if (this.assignmentType === 'managers') {
+                        //     buildingAssignee.data.data.map(item => {
+                        //         if(item.type === 'manager'){
+                        //             exclude_ids.push(item.edit_id);
+                        //         }                                
+                        //     })
+                        //     resp = await this.getPropertyManagers({
+                        //         get_all: true,
+                        //         search,
+                        //         exclude_ids: exclude_ids.join(',')
+                        //     });
+                        // } else if(this.assignmentType === 'administrator'){
+                        //     buildingAssignee.data.data.map(item => {
+                        //         if(item.type === 'user'){                                    
+                        //             exclude_ids.push(item.edit_id);
+                        //         }                                
+                        //     })
+                        //     resp = await this.getUsers({
+                        //         get_all: true,
+                        //         search,
+                        //         exclude_ids: exclude_ids.join(','),
+                        //         role: 'administrator'
+                        //     });
+                        // }
                                                      
-                        this.toAssignList = resp.data;
+                        // this.toAssignList = resp.data;
+
+                        //const resp = await this.getBuildingAssignees({building_id: this.$route.params.id});       
+                        
+                        //this.toAssignList = resp
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -394,7 +400,9 @@ export default (config = {}) => {
                         this.loading.state = true;
 
                         await this.getStates();
+                        this.assignment_types = Object.entries(this.$constants.quarters.assignment_type).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.assignment_types.${label}`)}))
 
+                        console.log(this.assignment_types)
                         // const {data} = await this.getServicesGroupedByCategory();
                         // this.allServices = data;
 

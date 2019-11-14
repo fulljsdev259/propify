@@ -20,7 +20,8 @@ export default (config = {}) => {
                     internal_quarter_id: '',
                     type: '',
                     types: '',
-                    url: ''
+                    url: '',
+                    workflows: [],
                 },
                 quarter_format: '',
                 validationRules: {
@@ -298,8 +299,7 @@ export default (config = {}) => {
 
                         this.fileCount = this.model.media.length
                         this.contractCount = this.model.contracts.length
-
-                        console.log(this.model.types)
+                        this.workflowCount = this.model.workflows.length
 
                     },
                     submit() {
@@ -315,6 +315,7 @@ export default (config = {}) => {
                                 try {
                                     
                                     const {state_id, city, street, house_num, zip, ...restParams} = this.model;
+
                                     const resp = await this.updateQuarter({
                                         address: {
                                             state_id,
@@ -323,7 +324,6 @@ export default (config = {}) => {
                                             house_num,
                                             zip
                                         },
-                                        workflows: this.workflows,
                                         ...restParams
                                     });    
                                     if(this.$refs.auditList){
