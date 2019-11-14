@@ -17,13 +17,16 @@ class ServiceProviderTransformer extends BaseTransformer
      *
      * @param \App\Models\ServiceProvider $model
      *
+     * @param ServiceProvider $model
      * @return array
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(ServiceProvider $model)
     {
         $response = [
             'id' => $model->id,
             'category' => $model->category,
+            'type' => $model->type,
             'name' => $model->name,
             'email' => $model->email,
             'phone' => $model->phone,

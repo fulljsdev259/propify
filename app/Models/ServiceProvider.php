@@ -37,6 +37,11 @@ use Illuminate\Notifications\Notifiable;
  *          type="string"
  *      ),
  *      @SWG\Property(
+ *          property="type",
+ *          description="type",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
  *          property="name",
  *          description="name",
  *          type="string"
@@ -121,27 +126,6 @@ class ServiceProvider extends AuditableModel
     use UniqueIDFormat;
     use RequestRelation;
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255',
-        'category' => 'required|integer|max:255',
-        'phone' => 'required|string|max:255',
-        'user' => 'required',
-        'address' => 'required',
-    ];
-
-    public static $rulesUpdate = [
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255',
-        'category' => 'required|integer|max:255',
-        'phone' => 'required|string|max:255',
-    ];
-
     public $table = 'service_providers';
 
     const ServiceProviderCategoryElectrician = 1;
@@ -166,6 +150,13 @@ class ServiceProvider extends AuditableModel
         self::ServiceProviderCategoryTuGu => 'tu-gu',
     ];
 
+    const TypeTuGu = 1;
+    const TypeBusinessPerson = 2;
+    const Type = [
+        self::TypeTuGu => 'tu-gu',
+        self::TypeBusinessPerson => 'business_person',
+    ];
+
     public $fillable = [
         'user_id',
         'address_id',
@@ -173,6 +164,7 @@ class ServiceProvider extends AuditableModel
         'name',
         'email',
         'phone',
+        'type',
     ];
     protected $dates = ['deleted_at'];
     /**
@@ -184,6 +176,7 @@ class ServiceProvider extends AuditableModel
         'user_id' => 'integer',
         'address_id' => 'integer',
         'category' => 'string',
+        'type' => 'integer',
         'name' => 'string',
         'email' => 'string',
         'phone' => 'string',
