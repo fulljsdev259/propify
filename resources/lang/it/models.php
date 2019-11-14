@@ -593,11 +593,6 @@ return [
             'surrender' => 'Arrendersi',
             'inspection' => 'Accettazione'
         ],
-        'payer' => [
-            'landlord' => 'Padrone di casa',
-            'resident' => 'Residente',
-            'resident/landlord' => 'Residente/Padrone di casa'
-        ],
         'status' => [
             "label" => "Situazione",
             "received" => "Ricevuto",
@@ -617,7 +612,6 @@ return [
             'range' => 'Gamma',
             'component' => 'Componente',
             'capture_phase' => 'Fase di cattura',
-            'payer' => 'Costo Impatto',
             'payer_percent' => 'Condividi Fortimo',
             'payer_amount' => 'Importo',
             'keywords' => 'Parole chiave',

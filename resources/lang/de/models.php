@@ -595,11 +595,6 @@ return [
             'surrender' => 'Übergabe (UEB)',
             'inspection' => 'Abnahme (AB)'
         ],
-        'payer' => [
-            'landlord' => 'Vermieter',
-            'resident' => 'Bewohner',
-            'resident/landlord' => 'Bewohner u. Vermieter'
-        ],
         'status' => [
             'label' => 'Status',
             'received' => 'Erhalten',
@@ -619,7 +614,6 @@ return [
             'range' => 'Bereich',
             'component' => 'Bauteil',
             'capture_phase' => 'Erfassungsphase',
-            'payer' => 'Zu Lasten von',
             'payer_percent' => 'Anteil Fortimo',
             'payer_amount' => 'Betrag',
             'keywords' => 'Tags',

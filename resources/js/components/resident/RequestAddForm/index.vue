@@ -154,7 +154,6 @@
                     component: '',
                     keyword: '',
                     keywords: [],
-                    payer: '',
                 },
                 validationRules: {
                     contract_id: {

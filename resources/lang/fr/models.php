@@ -593,11 +593,6 @@ return [
             'surrender' => 'Rendez-vous',
             'inspection' => 'Acceptation'
         ],
-        'payer' => [
-            'landlord' => 'Propriétaire',
-            'resident' => 'Résident',
-            'resident/landlord' => 'Résident/Propriétaire'
-        ],
         'status' => [
             "label" => "Statut",
             "received" => "Reçu",
@@ -617,7 +612,6 @@ return [
             'range' => 'Gamme',
             'component' => 'Composante',
             'capture_phase' => 'Phase de capture',
-            'payer' => 'Incidence sur les coûts',
             'payer_percent' => 'Partager Fortimo',
             'payer_amount' => 'Montant',
             'keywords' => 'Mots-clés',

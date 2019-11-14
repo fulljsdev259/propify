@@ -27,14 +27,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="statuses" v-if="this.data.sub_category && this.data.qualification == 5 && this.data.payer">
+                <!-- <div class="statuses" v-if="this.data.sub_category && this.data.qualification == 5 && this.data.payer">
                     <div class="item">
                         {{$t('resident.cost_impact')}}:
                         <div class="label">
                             {{$t(`models.request.payer.${$constants.requests.payer[data.payer]}`)}}
                         </div>
                     </div>
-                </div>                  
+                </div> -->
                 <div class="category">
                     {{ $t(`models.request.category_list.${data.category.name}`) }}
                     {{ data.sub_category ? " > " + $t(`models.request.sub_category.${data.sub_category.name}`) : ""}}
