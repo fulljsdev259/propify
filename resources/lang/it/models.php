@@ -429,6 +429,13 @@ return [
             'by' => 'da',
             'to' => 'a',
             'cc' => 'cc',
+            'placeholders' => [
+                'title' => 'Titolo del flusso di lavoro',
+                'category' => 'Seleziona la categoria',
+                'building' => 'Seleziona edificio',
+                'to_user' => 'Seleziona utente',
+                'cc_user' => 'Seleziona utente',
+            ]
         ]
     ],
     'request' => [        

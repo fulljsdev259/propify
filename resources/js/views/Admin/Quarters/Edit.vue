@@ -350,35 +350,29 @@
                                             :visible.sync="visibleDrawer"
                                             @update-workflow="updateWorkflow"/>
                                     <el-row v-else>
-                                        <el-col :md="4" class="workflow-label">
+                                        <el-col :md="24" class="workflow-label">
                                             <span>{{$t(`models.request.category_list.${workflow.category.name}`)}}</span>
-                                        </el-col>
-                                        <el-col :md="1" class="workflow-label">
+
                                             <span>{{$t('models.quarter.workflow.by')}}</span>
-                                        </el-col>
-                                        <el-col :md="5" class="workflow-label">
+                                        
                                             <el-tag 
                                                     type="primary" 
                                                     :key="building.id"
                                                     v-for="building in workflow.buildings">
                                                     {{building.address.house_num}}
                                             </el-tag>
-                                        </el-col>
-                                        <el-col :md="1" class="workflow-label">
+                                        
                                             <span>{{$t('models.quarter.workflow.to')}}</span>
-                                        </el-col>
-                                        <el-col :md="6" class="workflow-label">
+                                        
                                             <el-tag 
                                                     type="primary" 
                                                     :key="user.id"
                                                     v-for="user in workflow.to_users">
                                                 {{user.name}}
                                             </el-tag>
-                                        </el-col>
-                                        <el-col :md="1" class="workflow-label">
+
                                             <span>{{$t('models.quarter.workflow.cc')}}</span>
-                                        </el-col>
-                                        <el-col :md="6" class="workflow-label">
+                                        
                                             <el-tag 
                                                     :key="user.id"
                                                     v-for="user in workflow.cc_users">
@@ -1144,6 +1138,10 @@
         /deep/ .el-collapse-item__content {
             padding-bottom: 0px;
             padding-left: 1em;
+        }
+
+        /deep/ .el-collapse-item__wrap {
+            margin-top: 2px;
         }
     }
 </style>

@@ -431,6 +431,13 @@ return [
             'by' => 'von',
             'to' => 'an',
             'cc' => 'cc',
+            'placeholders' => [
+                'title' => 'Workflow benennen',
+                'category' => 'Kategorie wählen',
+                'building' => 'Bearbeiten wählen',
+                'to_user' => 'Benutzer wählen',
+                'cc_user' => 'Benutzer wählen',
+            ]
         ]
     ],
     'request' => [        

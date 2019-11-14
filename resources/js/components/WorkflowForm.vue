@@ -5,7 +5,7 @@
                 <el-form-item 
                             :rules="validationRules.title"
                             prop="title">
-                    <el-input type="text"
+                    <el-input type="text" :placeholder="$t('models.quarter.workflow.placeholders.title')"
                             v-model="model.title"
                     ></el-input>
                 </el-form-item>
@@ -16,7 +16,7 @@
                 <el-form-item 
                             :rules="validationRules.category"
                             prop="category_id">
-                    <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
+                    <el-select :placeholder="$t('models.quarter.workflow.placeholders.category')" style="display: block" 
                                 v-model="model.category_id">
                         <el-option
                                 :key="category.id"
@@ -35,7 +35,7 @@
                     >
                     <el-select
                         :loading="remoteLoading"
-                        :placeholder="$t('general.placeholders.search')"
+                        :placeholder="$t('models.quarter.workflow.placeholders.building')"
                         :remote-method="remoteSearchBuildings"
                         class="custom-remote-select"
                         filterable
@@ -45,9 +45,6 @@
                         style="width: 100%;"
                         v-model="model.selectedWorkflowBuilding"
                     >
-                        <div class="custom-prefix-wrapper" slot="prefix">
-                            <i class="el-icon-search custom-icon"></i>
-                        </div>
                         <el-option
                             :key="building.id"
                             :label="`${building.address.house_num}`"
@@ -64,7 +61,7 @@
                             prop="selectedWorkflowToUser">
                     <el-select
                         :loading="remoteLoading"
-                        :placeholder="$t('general.placeholders.search')"
+                        :placeholder="$t('models.quarter.workflow.placeholders.to_user')"
                         :remote-method="remoteSearchToUsers"
                         class="custom-remote-select"
                         filterable
@@ -74,9 +71,6 @@
                         style="width: 100%;"
                         v-model="model.selectedWorkflowToUser"
                     >
-                        <div class="custom-prefix-wrapper" slot="prefix">
-                            <i class="el-icon-search custom-icon"></i>
-                        </div>
                         <el-option
                             :key="user.id"
                             :label="`${user.name}`"
@@ -93,7 +87,7 @@
                     >
                     <el-select
                         :loading="remoteLoading"
-                        :placeholder="$t('general.placeholders.search')"
+                        :placeholder="$t('models.quarter.workflow.placeholders.cc_user')"
                         :remote-method="remoteSearchCcUsers"
                         class="custom-remote-select"
                         filterable
@@ -103,9 +97,6 @@
                         style="width: 100%;"
                         v-model="model.selectedWorkflowCcUser"
                     >
-                        <div class="custom-prefix-wrapper" slot="prefix">
-                            <i class="el-icon-search custom-icon"></i>
-                        </div>
                         <el-option
                             :key="user.id"
                             :label="`${user.name}`"
@@ -453,10 +444,9 @@
         }
 
         /deep/ .drawer-actions {
-            
             display: flex;
             justify-content: flex-end;
-
+            padding-bottom: 10px;
         }
 
         /deep/ .el-tag {
@@ -481,14 +471,20 @@
         }
 
         /deep/ .el-select__tags {
-            padding-left: 30px;
+            
             input {
                 margin-left: 0;
             }
         }
 
+        
+
         /deep/ .el-tag.el-tag--info .el-tag__close:hover {
             background: transparent;
+        }
+
+        /deep/ input {
+            background: #f6f5f7;
         }
 
     }
