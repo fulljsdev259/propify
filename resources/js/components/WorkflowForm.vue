@@ -160,14 +160,11 @@
                     assignList: '',
                     assign: [],
                     selectedWorkflowBuilding: [],
-                    selectedWorkflowBuildingData: [],
                     workflowBuildingList: [],
                     workflowToUserList: [],
                     selectedWorkflowToUser: [],
-                    selectedWorkflowToUserData: [],
                     workflowCcUserList: [],
                     selectedWorkflowCcUser: [],
-                    selectedWorkflowCcUserData: [],
                 },
                 categories: [],
                 validationRules: {
@@ -196,10 +193,12 @@
                 try {
                     const valid = await this.$refs.form.validate();
                     if (valid) {
-
+                        let buildings = []
+                        console.log('selected buildings', this.model.workflowBuildingList)
+                        
                         this.model.selectedWorkflowBuilding.map( building_id => {
                             let item = this.model.workflowBuildingList.find(item => item.id == building_id)
-                            this.model.selectedWorkflowBuildingData.push(item)
+                            buildings.push(item)
                         })
                         
                         let category = this.categories.find(item => item.id == this.model.category_id)
@@ -207,27 +206,36 @@
                         let to_users = []
 
                         let cc_users = []
+                        console.log('selected to users', this.model.workflowToUserList)
 
                         this.model.selectedWorkflowToUser.map( user_id => {
                             let item = this.model.workflowToUserList.find(item => item.id == user_id)
                             to_users.push(item)
                         })
 
+                        console.log('selected cc users', this.model.workflowCcUserList)
+
                         this.model.selectedWorkflowCcUser.map( user_id => {
                             let item = this.model.workflowCcUserList.find(item => item.id == user_id)
                             cc_users.push(item)
                         })
 
+                        
                         let payload = {
                             title: this.model.title,
                             category_id: this.model.category_id,
                             category: category,
                             building_ids: this.model.selectedWorkflowBuilding,
-                            buildings: this.model.selectedWorkflowBuildingData,
+                            buildings: buildings,
                             to_user_ids: this.model.selectedWorkflowToUser,
                             to_users: to_users,
                             cc_user_ids: this.model.selectedWorkflowCcUser,
                             cc_users: cc_users
+                        }
+
+                        if(this.id) 
+                        {
+                            payload.id = this.id
                         }
 
                         if(this.mode == 'add') {
@@ -361,6 +369,9 @@
                 this.model.selectedWorkflowBuilding = this.data.building_ids
                 this.model.selectedWorkflowToUser = this.data.to_user_ids
                 this.model.selectedWorkflowCcUser = this.data.cc_user_ids
+                this.model.workflowBuildingList = this.data.buildings
+                this.model.workflowToUserList = this.data.to_users
+                this.model.workflowCcUserList = this.data.cc_users
             }
             
             this.loading = false;
@@ -399,7 +410,7 @@
             margin-bottom: 0;
 
             &.is-error {
-                margin-bottom: 10px;
+                margin-bottom: 20px;
             }
 
             &.info-label {
@@ -447,5 +458,38 @@
             justify-content: flex-end;
 
         }
+
+        /deep/ .el-tag {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 6px;
+            font-size: 15px;
+            
+            margin: 0;
+            padding: 0;
+            padding-left: 10px;
+            padding-right: 20px;
+            height: 40px;
+            line-height: 40px;
+
+            i {
+                color: white;
+                background: transparent;
+                font-size: 20px;
+                font-weight: 600;
+            }
+        }
+
+        /deep/ .el-select__tags {
+            padding-left: 30px;
+            input {
+                margin-left: 0;
+            }
+        }
+
+        /deep/ .el-tag.el-tag--info .el-tag__close:hover {
+            background: transparent;
+        }
+
     }
 </style>
