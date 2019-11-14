@@ -950,17 +950,14 @@
             },
             toggleDrawer() {
                 this.visibleDrawer = true
-                document.getElementsByTagName('footer')[0].style.display = "none"
             },
             gotoEmailReceptionistDrawer() {
                 this.visibleDrawer = true
                 this.activeDrawerTab = "email_receptionist"
-                document.getElementsByTagName('footer')[0].style.display = "none"
             },
             toggleAddDrawer() {
                 this.visibleDrawer = true
                 this.isAddContract = true
-                document.getElementsByTagName('footer')[0].style.display = "none"
             },
              notifyProviderUnassignment(row) {
                 this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
@@ -1004,7 +1001,6 @@
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
-                document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
                 this.$set(this.model.contracts, index, params);
@@ -1082,7 +1078,6 @@
                     if (!state) {
                         this.editingContract = null
                         this.isAddContract = false
-                        document.getElementsByTagName('footer')[0].style.display = "block";
                     }
                 }
             }

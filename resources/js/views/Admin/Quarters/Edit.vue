@@ -277,7 +277,7 @@
                                 <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
                             </span>
                             
-                            <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                            <el-button style="float:right" type="primary" @click="toggleAddContractDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
                             <contract-list-table
                                     :items="model.contracts"
                                     @edit-contract="editContract"
@@ -472,7 +472,7 @@
                                 :used_units="used_units"/>
                 </div>
             </template>
-            <template v-else-if="isWorkflow">
+            <!-- <template v-else-if="isWorkflow">
                 
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.quarter.workflow.label') }} </ui-divider>
                 
@@ -490,8 +490,8 @@
                                 @add-workflow="addWorkflow"/>
                 </div>
                     
-            </template>
-            <template v-else>
+            </template> -->
+            <!-- <template v-else>
                 <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="visibleDrawer">
                     <el-tab-pane name="emergency" lazy>
                         <div slot="label">
@@ -514,6 +514,15 @@
                         </div>
                     </el-tab-pane>
                 </el-tabs>
+            </template> -->
+            <template v-else>
+                <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;{{ $t('general.emergency.title') }} </ui-divider>
+                
+                <div class="content" v-if="visibleDrawer">
+                    <emergency-settings-form :visible.sync="visibleDrawer"/>
+                </div>
+                   
+                    
             </template>
         </ui-drawer>
     </div>
@@ -788,34 +797,10 @@
             },
             toggleDrawer() {
                 this.visibleDrawer = true;
-                document.getElementsByTagName('footer')[0].style.display = "none";
             },
-            toggleAddDrawer() {
+            toggleAddContractDrawer() {
                 this.isAddContract = true
                 this.visibleDrawer = true;
-                
-                document.getElementsByTagName('footer')[0].style.display = "none";
-            },
-            toggleWorkflowDrawer() {
-                this.visibleDrawer = true
-                this.isWorkflow = true
-                document.getElementsByTagName('footer')[0].style.display = "none";
-            },
-            showAddWorkflow() {
-                this.isAddWorkflow = true
-            },
-            showEditWorkflow(index) {
-                this.$set(this.isEditingWorkflow, index, true)
-                this.isEditingWorkflow[index] = true
-            },
-            editWorkflowDrawer(index) {
-                this.visibleDrawer = true
-                this.isWorkflow = true
-
-                this.editingWorkflow = this.workflows[index];
-                this.editingWorkflowIndex = index;
-
-                document.getElementsByTagName('footer')[0].style.display = "none";
             },
             addContract (data) {
                 this.model.contracts.push(data);
@@ -825,7 +810,6 @@
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
-                document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
                 this.$set(this.model.contracts, index, params);
@@ -842,6 +826,13 @@
                 }).catch(() => {
                 });
             },
+            showAddWorkflow() {
+                this.isAddWorkflow = true
+            },
+            showEditWorkflow(index) {
+                this.$set(this.isEditingWorkflow, index, true)
+                this.isEditingWorkflow[index] = true
+            },
             addWorkflow(workflow) {
                 console.log('add flow', workflow)
                 this.isEditingWorkflow.push(false)
@@ -851,7 +842,6 @@
             },
             updateWorkflow(index, workflow) {
                 console.log('update flow', index, workflow)
-                
                 this.$set(this.model.workflows, index, workflow)
                 this.$set(this.isEditingWorkflow, index, false)
             },
@@ -925,7 +915,6 @@
                         this.isAddContract = false
                         this.isWorkflow = false
                         this.editingWorkflow = null
-                        document.getElementsByTagName('footer')[0].style.display = "block";
                     }
                 }
             }
