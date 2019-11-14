@@ -516,11 +516,8 @@
                 </el-tabs>
             </template> -->
             <template v-else>
+                <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;{{ $t('general.emergency.title') }} </ui-divider>
                 
-                <div slot="label">
-                    <i class="icon-cog"></i>
-                    {{$t('general.emergency.title')}}
-                </div>
                 <div class="content" v-if="visibleDrawer">
                     <emergency-settings-form :visible.sync="visibleDrawer"/>
                 </div>
