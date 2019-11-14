@@ -38,7 +38,9 @@ class FilterByAdminCriteria implements CriteriaInterface
     {
         $getAdmins = $this->request->get_admins;
         if ($getAdmins) {
-            $model->has('property_manager')->orHas('service_provider');
+            $model->where(function ($q) {
+                $q->has('property_manager')->orHas('service_provider');
+            });
         }
 
         return $model;
