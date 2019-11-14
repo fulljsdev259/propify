@@ -40,7 +40,13 @@ export const displayError = (err) => {
                 if (_.isArray(errorObj)) {
                     _.each(errorObj, (er) => {
                         if (isAdmin) {
-                            Vue.$snotify.error($i18n.t(er));                            
+                            $swal.fire({
+                                type: 'error',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                width: 'auto',
+                                title: $i18n.t(er)
+                            })
                         }
                         else {
                             $swal({
@@ -59,8 +65,13 @@ export const displayError = (err) => {
         } else {
             const msg = err.message;
             if (isAdmin) {
-                let msg = $i18n.t(typeof msg === 'string' ? msg : (typeof msg === 'object' ? msg[Object.keys(msg)[0]][0] : 'ERROR'));
-                Vue.$snotify.error(msg);               
+                $swal.fire({
+                    type: 'error',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    /*width: 'auto',*/
+                    title: $i18n.t(typeof msg === 'string' ? msg : (typeof msg === 'object' ? msg[Object.keys(msg)[0]][0] : 'ERROR'))
+                })
             }
             else {
                 $swal({
@@ -80,10 +91,26 @@ export const displayError = (err) => {
 
 export const displaySuccess = (resp) => {
     if (resp && resp.message) {
-        const {$i18n, $swal, $route} = Vue;        
+        const {$i18n, $swal, $route} = Vue;
+        /*$swal({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            type: 'success',
+            title: $i18n.t(resp.message)
+        });*/
 
         if ($route.path.includes('/admin')) {            
-            Vue.$snotify.success(resp.message);
+            $swal.fire(
+                {
+                    title: '',
+                    text: $i18n.t(resp.message),
+                    type: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                },
+            );
         }
         else {
             $swal({
