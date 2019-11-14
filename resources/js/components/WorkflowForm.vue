@@ -1,5 +1,5 @@
 <template>
-    <el-form :model="model" :rules="validationRules" label-position="top" ref="form" v-loading="loading">
+    <el-form :model="model" :rules="validationRules" label-position="top" ref="form" v-loading="loading" :class="mode == 'edit' ? 'edit-workflow-form' : ''">
         <el-row :gutter="20">
             <el-col :md="24">
                 <el-form-item 
@@ -492,4 +492,12 @@
         }
 
     }
+
+    .edit-workflow-form {
+        .el-col {
+            padding-left: 0 !important;
+        }
+    }
+
+    
 </style>
