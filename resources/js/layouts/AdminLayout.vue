@@ -438,7 +438,7 @@
             },*/
 
             getDropdownWidth() {
-                this.dropdownwidth = this.$refs.prev.clientWidth;
+                this.dropdownwidth = this.$refs.prev != undefined?this.$refs.prev.clientWidth : 0;
             },
 
             handlerDropdownVisibleChange() {

@@ -14,19 +14,19 @@
                 <router-link 
                     :key="link.title"
                     v-for="(link, key) in links"
-                    v-if="!link.children && ($can(link.permission) || !link.permission)"
-                    :to="{name: link.route.name}">
+                    v-if="$can(link.permission) || !link.permission"
+                    :to="{name: !link.children?link.route.name:link.children[0].route.name, params: { subMenu: link }}">
                     <el-menu-item
-                            :class="{nested: link.nestedItem }"
+                            :class="{nested: link.nestedItem}"
                             :index="link.title"
-                            @click="selectActiveMenu"
+                            @click="selectActiveMenu(link)"
                             >
                             <i :class="[link.icon, 'icon']"/>
                             <span class="title" v-if="!collapsed">{{ link.title }}</span>
                         <span class="title" slot="title" v-if="collapsed">{{ link.title }}</span>
                     </el-menu-item>
                 </router-link>
-                <el-submenu :index="link.title" v-else-if="($can(link.permission) || !link.permission)">
+                <!-- <el-submenu :index="link.title" v-else-if="($can(link.permission) || !link.permission)">
                     <template slot="title">
                         <i :class="[link.icon, 'icon']"/>
                         <span class="title" slot="title">{{ link.title }}</span>
@@ -44,7 +44,7 @@
                             <el-badge :value="child.value" class="item" type="primary"></el-badge>
                         </el-menu-item>
                     </router-link>
-                </el-submenu>
+                </el-submenu> -->
             </ul>
         </el-menu>
         <slot name="header-action"/>
@@ -113,7 +113,6 @@
                 }
             },
             selectActiveMenu(data) {
-                console.log('selectActiveMenu', data)
                 const routeName = this.$route.name;
                 this.links.map(link => {
                     if (link.route && routeName.includes(link.route.name)) {
@@ -122,11 +121,12 @@
                         let dActive = '';
                         link.children.map(child => {
                             if (child.route && routeName.includes(child.route.name)) {
-                                this.currActive = child.title;
+                                this.currActive = link.title;
                             }
                         });
                     }
                 }); 
+                this.$emit('route-changed', data);
             }
         },
         computed: {
@@ -148,11 +148,13 @@
                 this.links.map(link => {
                     if (link.route && routeName.includes(link.route.name)) {
                         this.currActive = link.title;
+                        this.$emit('route-changed', link);
                     } else if (link.children) {
                         let dActive = '';
                         link.children.map(child => {
                             if (child.route && routeName.includes(child.route.name)) {
-                                this.currActive = child.title;
+                                this.currActive = link.title;
+                                this.$emit('route-changed', link);
                             }
                         });
                     }
@@ -165,12 +167,11 @@
                     this.links.map(link => {
                         if (link.route && routeName.includes(link.route.name)) {
                             this.currActive = link.title;
-                            
                         } else if (link.children) {
                             let dActive = '';
                             link.children.map(child => {
                                 if (child.route && routeName.includes(child.route.name)) {
-                                    this.currActive = child.title;
+                                    this.currActive = link.title;
                                 }
                             });
                         }
