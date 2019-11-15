@@ -331,7 +331,8 @@
                                 mode="add" 
                                 :quarter_id="model.id" 
                                 :visible.sync="visibleDrawer"
-                                @add-workflow="addWorkflow"/>
+                                @add-workflow="addWorkflow"
+                                @cancel-add-workflow="cancelAddWorkflow"/>
                             <el-collapse accordion>
                                  <el-collapse-item
                                         :key="workflow.title"
@@ -348,7 +349,8 @@
                                             :data="workflow"
                                             :editing_index="$index"
                                             :visible.sync="visibleDrawer"
-                                            @update-workflow="updateWorkflow"/>
+                                            @update-workflow="updateWorkflow"
+                                            @cancel-edit-workflow="cancelEditWorkflow"/>
                                     <el-row v-else>
                                         <el-col :md="24" class="workflow-label">
                                             <span>{{$t(`models.request.category_list.${workflow.category.name}`)}}</span>
@@ -357,7 +359,7 @@
                                         
                                             <el-tag 
                                                     type="primary" 
-                                                    :key="building.id"
+                                                    :key="'building' + building.id"
                                                     v-for="building in workflow.buildings">
                                                     {{building.address.house_num}}
                                             </el-tag>
@@ -366,7 +368,7 @@
                                         
                                             <el-tag 
                                                     type="primary" 
-                                                    :key="user.id"
+                                                    :key="'to_user' + user.id"
                                                     v-for="user in workflow.to_users">
                                                 {{user.name}}
                                             </el-tag>
@@ -374,7 +376,8 @@
                                             <span>{{$t('models.quarter.workflow.cc')}}</span>
                                         
                                             <el-tag 
-                                                    :key="user.id"
+                                                    type="primary" 
+                                                    :key="'cc_user' + user.id"
                                                     v-for="user in workflow.cc_users">
                                                 {{user.name}}
                                             </el-tag>
@@ -414,7 +417,7 @@
                                             <el-button 
                                                 type="primary" 
                                                 @click="showEditWorkflow($index)"
-                                                icon="icon-search" 
+                                                icon="icon-pencil" 
                                                 size="mini" 
                                                 round>
                                                 {{ $t('models.quarter.workflow.edit') }}
@@ -423,7 +426,7 @@
                                             <el-button 
                                                 type="danger" 
                                                 @click="deleteWorkflow($index)"
-                                                icon="ti-trash" 
+                                                icon="icon-trash-empty" 
                                                 size="mini" 
                                                 round>
                                                 {{ $t('models.quarter.workflow.delete') }}
@@ -829,15 +832,19 @@
                 this.isEditingWorkflow[index] = true
             },
             addWorkflow(workflow) {
-                console.log('add flow', workflow)
                 this.isEditingWorkflow.push(false)
                 this.model.workflows.push(workflow)
                 this.isAddWorkflow = false
                 this.workflowCount ++
             },
+            cancelAddWorkflow() {
+                this.isAddWorkflow = false
+            },
             updateWorkflow(index, workflow) {
-                console.log('update flow', index, workflow)
                 this.$set(this.model.workflows, index, workflow)
+                this.$set(this.isEditingWorkflow, index, false)
+            },
+            cancelEditWorkflow(index) {
                 this.$set(this.isEditingWorkflow, index, false)
             },
             deleteWorkflow(index) {
@@ -1113,7 +1120,7 @@
         padding-bottom: 10px;
 
         &.edit {
-            padding-top: 10px;
+            padding-top: 30px;
         }
     }
 
@@ -1124,11 +1131,11 @@
     }
 
     .el-collapse-item {
-        margin-bottom: 5px;
+        margin-bottom: 7px;
     }
 
     .el-collapse {
-
+        border-bottom: 0;
         /deep/ .el-collapse-item__header {
             padding-left: 1em;
             background: #f6f5f7;
@@ -1141,7 +1148,8 @@
         }
 
         /deep/ .el-collapse-item__wrap {
-            margin-top: 2px;
+            margin-top: 5px;
+            border-bottom: 0;
         }
     }
 </style>

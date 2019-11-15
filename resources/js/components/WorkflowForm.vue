@@ -57,7 +57,7 @@
         <el-row :gutter="20">
             <el-col :md="12">
                 <el-form-item 
-                            :rules="validationRules.category"
+                            :rules="validationRules.to_users"
                             prop="selectedWorkflowToUser">
                     <el-select
                         :loading="remoteLoading"
@@ -81,7 +81,6 @@
             </el-col>
             <el-col :md="12">
                 <el-form-item 
-                    :rules="validationRules.building"
                     prop="selectedWorkflowCcUser"
                     class="label-block"
                     >
@@ -109,6 +108,7 @@
         <el-row :gutter="20" style="margin-top: 10px;">
             <el-col :md="24" class="drawer-actions">
                 <el-button type="primary" @click="submit" icon="ti-save" round>&nbsp;{{ $t('general.actions.save') }}</el-button>
+                <el-button type="default" @click="close" round>&nbsp;{{ $t('general.actions.close') }}</el-button>
             </el-col>
         </el-row>
         
@@ -171,6 +171,10 @@
                         required: true,
                         message: this.$t('models.quarter.required')
                     }],
+                    to_users: [{
+                        required: true,
+                        message: this.$t('models.quarter.required')
+                    }],
                 },
                 remoteLoading: false,
             }
@@ -185,32 +189,25 @@
                     const valid = await this.$refs.form.validate();
                     if (valid) {
                         let buildings = []
-                        console.log('selected buildings', this.model.workflowBuildingList)
-                        
+                        let to_users = []
+                        let cc_users = []
+
+                        let category = this.categories.find(item => item.id == this.model.category_id)
+
                         this.model.selectedWorkflowBuilding.map( building_id => {
                             let item = this.model.workflowBuildingList.find(item => item.id == building_id)
                             buildings.push(item)
                         })
                         
-                        let category = this.categories.find(item => item.id == this.model.category_id)
-
-                        let to_users = []
-
-                        let cc_users = []
-                        console.log('selected to users', this.model.workflowToUserList)
-
                         this.model.selectedWorkflowToUser.map( user_id => {
                             let item = this.model.workflowToUserList.find(item => item.id == user_id)
                             to_users.push(item)
                         })
 
-                        console.log('selected cc users', this.model.workflowCcUserList)
-
                         this.model.selectedWorkflowCcUser.map( user_id => {
                             let item = this.model.workflowCcUserList.find(item => item.id == user_id)
                             cc_users.push(item)
                         })
-
                         
                         let payload = {
                             title: this.model.title,
@@ -242,15 +239,18 @@
                         //     displaySuccess(resp);
 
                         // }
-
-
-                        
-                        this.$emit('update:visible', false);
-
                     }
                 }
                 catch(err) {
                     console.log(err)
+                }
+            },
+            close() {
+                if(this.mode == 'add') {
+                    this.$emit('cancel-add-workflow')
+                }
+                else {
+                    this.$emit('cancel-edit-workflow', this.editing_index)
                 }
             },
             async remoteSearchManagers(search, index) {
@@ -351,8 +351,6 @@
             
             this.categories = this.$constants.requests.categories_data.tree
 
-
-            console.log(this.data);
 
             if(this.mode == 'edit') {
                 this.model.title = this.data.title
@@ -471,12 +469,17 @@
         }
 
         /deep/ .el-select__tags {
-            
+            padding-left: 2px;
+
             input {
                 margin-left: 0;
             }
         }
 
+
+        /deep/ .el-row {
+            margin-bottom: 2px;
+        }
         
 
         /deep/ .el-tag.el-tag--info .el-tag__close:hover {
