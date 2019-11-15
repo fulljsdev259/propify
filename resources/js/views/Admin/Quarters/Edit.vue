@@ -1133,12 +1133,14 @@
 
         /deep/ .el-collapse-item__content {
             padding-bottom: 0px;
-            padding-left: 1em;
+            // padding-left: 1em;
+            padding-left: 0;
         }
 
         /deep/ .el-collapse-item__wrap {
             margin-top: 5px;
             border-bottom: 0;
+            border-left: red 1px solid
         }
     }
 
