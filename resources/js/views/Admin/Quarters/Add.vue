@@ -85,6 +85,12 @@
                                     <el-input type="text" v-model="model.internal_quarter_id"></el-input>
                                 </el-form-item>
                             </el-col>
+                            <el-col :md="12">
+                                <el-form-item :label="$t('models.quarter.url')" :rules="validationRules.url"
+                                                prop="url">
+                                    <el-input type="text" v-model="model.url"></el-input>
+                                </el-form-item>
+                            </el-col>
                         </el-row>
                     </el-form>
                 </card>

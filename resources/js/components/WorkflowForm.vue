@@ -484,14 +484,15 @@
             /deep/ .el-input__suffix {
                 i.el-select__caret {
                     display: block;
-                    &:after {
+                    &::after {
                         color:#565556;
                         content: "\E6DB";
                         display: block;
-                        align-items: center;
-                        justify-content: center;
-                        
                     }
+                }
+
+                .el-icon-circle-close::after {
+                    display: none !important;
                 }
             }
         }
