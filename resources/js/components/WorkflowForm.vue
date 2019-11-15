@@ -466,7 +466,7 @@
         }
 
         /deep/ .el-select__tags {
-            padding-left: 2px;
+            padding-left: 5px;
 
             input {
                 margin-left: 0;
@@ -527,10 +527,11 @@
 
     }
 
-    .edit-workflow-form {
-        .el-col {
-            padding-left: 0 !important;
-        }
+    
+    .el-col {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
+    
     
 </style>
