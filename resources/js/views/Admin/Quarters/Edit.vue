@@ -788,6 +788,7 @@
             },
             showAddWorkflow() {
                 this.isAddWorkflow = true
+
             },
             showEditWorkflow(index) {
                 this.$set(this.isEditingWorkflow, index, true)
@@ -798,6 +799,7 @@
                 this.model.workflows.push(workflow)
                 this.isAddWorkflow = false
                 this.workflowCount ++
+                saveWorkflow
             },
             cancelAddWorkflow() {
                 this.isAddWorkflow = false

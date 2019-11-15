@@ -436,7 +436,6 @@ return [
                 'to_user' => 'Select user',
                 'cc_user' => 'Select cc',
             ],
-            'required' => 'This is a mandatory field!',
             'tooltips' => [
                 'save' => "To save work flow us this button, main 'save' button will not save data"
             ]

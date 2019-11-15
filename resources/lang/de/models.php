@@ -438,9 +438,8 @@ return [
                 'to_user' => 'Verantwortlichen auswählen',
                 'cc_user' => 'CC auswählen',
             ],
-            'required' => 'Dies ist ein Pflichtfeld!',
             'tooltips' => [
-                'save' => "To save work flow us this button, main 'save' button will not save data"
+                'save' => "Um den Arbeitsablauf zu speichern, speichern wir diese Schaltfläche, die Haupttaste 'Speichern' speichert keine Daten."
             ]
         ]
     ],

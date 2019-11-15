@@ -169,7 +169,7 @@
                 validationRules: {
                     required: [{
                         required: true,
-                        message: this.$t('models.quarter.workflow.required')
+                        message: this.$t('validation.general.required')
                     }],
                 },
                 remoteLoading: false,

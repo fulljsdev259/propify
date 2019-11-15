@@ -436,9 +436,8 @@ return [
                 'to_user' => 'Sélectionner un utilisateur',
                 'cc_user' => 'Sélectionner cc',
             ],
-            'required' => 'Ce champ est obligatoire !',
             'tooltips' => [
-                'save' => "To save work flow us this button, main 'save' button will not save data"
+                'save' => "Pour sauvegarder le déroulement du travail, ce bouton, le bouton principal'sauvegarder' ne sauvegardera pas les données."
             ]
         ]
     ],
