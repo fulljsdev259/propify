@@ -181,7 +181,6 @@
                 'getBuildings',
                 'getAllAdminsForQuarter']),
             async submit () {
-                console.log('sbumit called')
                 try {
                     const valid = await this.$refs.form.validate();
                     if (valid) {
@@ -455,8 +454,8 @@
             padding: 0;
             padding-left: 10px;
             padding-right: 20px;
-            height: 40px;
-            line-height: 40px;
+            height: 30px;
+            line-height: 30px;
 
             i {
                 color: white;
