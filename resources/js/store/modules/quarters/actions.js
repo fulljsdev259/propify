@@ -134,4 +134,23 @@ export default {
                 .then(({data: r}) => (r && resolve(r)))
                 .catch(({response: {data: err}}) => reject(err)));
     },
+    saveQuarterWorkflow({commit}, payload) {
+        return new Promise((resolve, reject) =>
+            axios.post(`workflows`, payload)
+                .then(({data: r}) => (r && resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
+    updateQuarterWorkflow({commit}, {id, ...payload}) {
+        return new Promise((resolve, reject) =>
+            axios.put(`workflows/${id}`, payload)
+                .then(({data: r}) => (r && resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
+    deleteQuarterWorkflow({commit}, {id}) {
+        return new Promise((resolve, reject) =>
+            axios.delete(`workflows/${id}`)
+                .then(({data: r}) => (r && resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
+    
 }

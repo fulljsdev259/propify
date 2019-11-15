@@ -443,6 +443,9 @@ return [
                 'building' => 'Seleziona edificio',
                 'to_user' => 'Seleziona utente',
                 'cc_user' => 'Selezionare cc',
+            ],
+            'tooltips' => [
+                'save' => "Per salvare il flusso di lavoro ci questo pulsante, il pulsante principale 'salva' non salverà i dati."
             ]
         ]
     ],

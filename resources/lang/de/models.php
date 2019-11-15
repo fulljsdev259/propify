@@ -445,6 +445,9 @@ return [
                 'building' => 'Objekt auswählen',
                 'to_user' => 'Verantwortlichen auswählen',
                 'cc_user' => 'CC auswählen',
+            ],
+            'tooltips' => [
+                'save' => "Um den Arbeitsablauf zu speichern, speichern wir diese Schaltfläche, die Haupttaste 'Speichern' speichert keine Daten."
             ]
         ]
     ],
