@@ -65,12 +65,12 @@ class AnnouncementEmailReceptionistTransformer extends BaseTransformer
         }
 
         $residentsResponse = [];
-        $quarters = $class::whereIn('id', array_keys($residentsData[$key]))
+        $items = $class::whereIn('id', array_keys($residentsData[$key]))
             ->select('id', 'name', 'address_id')
             ->with('address:id,street,house_num')
             ->get();
         foreach ($residentsData[$key] as $id => $residentIds) {
-            $quarter = $quarters->where('id', $id)->first();
+            $item = $items->where('id', $id)->first();
 
             foreach ($residentIds as $residentId) {
                 $resident = $residents->where('id', $residentId)->first();
@@ -78,7 +78,10 @@ class AnnouncementEmailReceptionistTransformer extends BaseTransformer
                     // when resident deleted
                     continue;
                 }
-                $resident->setRelation(Str::singular($key), $quarter);
+
+                $resident->building_or_quarter = ! empty($item->address)
+                    ? $item->address->street . $item->address->house_num
+                    : '';
                 $residentsResponse[] = $resident->emptyAppends()->toArray();
             }
         }
