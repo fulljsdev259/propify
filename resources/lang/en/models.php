@@ -429,6 +429,13 @@ return [
             'by' => 'by',
             'to' => 'to',
             'cc' => 'cc',
+            'placeholders' => [
+                'title' => 'Workflow title',
+                'category' => 'Select category',
+                'building' => 'Select building',
+                'to_user' => 'Select user',
+                'cc_user' => 'Select user',
+            ]
         ]
     ],
     'request' => [        

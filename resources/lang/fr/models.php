@@ -429,6 +429,13 @@ return [
             'by' => 'à côté de',
             'to' => "jusqu'à",
             'cc' => 'cc',
+            'placeholders' => [
+                'title' => 'Titre du workflow',
+                'category' => 'Sélectionner une catégorie',
+                'building' => 'Choisir un bâtiment',
+                'to_user' => 'Sélectionner un utilisateur',
+                'cc_user' => 'Sélectionner un utilisateur',
+            ]
         ]
     ],
     'request' => [        
