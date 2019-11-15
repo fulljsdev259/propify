@@ -34,7 +34,6 @@ class RequestTransformer extends BaseTransformer
             'room' => $model->room,
             'capture_phase' => $model->capture_phase,
             'component' => $model->component,
-            'payer' => $model->payer,
             'location' => $model->location,
             'created_at' => $model->created_at->format('d.m.Y H:i:s'),
             'updated_at' => $model->updated_at->toDateTimeString(),

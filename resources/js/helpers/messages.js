@@ -92,7 +92,6 @@ export const displayError = (err) => {
 export const displaySuccess = (resp) => {
     if (resp && resp.message) {
         const {$i18n, $swal, $route} = Vue;
-
         /*$swal({
             toast: true,
             position: 'top-end',
@@ -102,7 +101,7 @@ export const displaySuccess = (resp) => {
             title: $i18n.t(resp.message)
         });*/
 
-        if ($route.path.includes('/admin')) {
+        if ($route.path.includes('/admin')) {            
             $swal.fire(
                 {
                     title: '',

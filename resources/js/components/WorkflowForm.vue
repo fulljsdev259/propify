@@ -5,7 +5,7 @@
                 <el-form-item 
                             :rules="validationRules.title"
                             prop="title">
-                    <el-input type="text"
+                    <el-input type="text" :placeholder="$t('models.quarter.workflow.placeholders.title')"
                             v-model="model.title"
                     ></el-input>
                 </el-form-item>
@@ -16,7 +16,7 @@
                 <el-form-item 
                             :rules="validationRules.category"
                             prop="category_id">
-                    <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
+                    <el-select :placeholder="$t('models.quarter.workflow.placeholders.category')" style="display: block" 
                                 v-model="model.category_id">
                         <el-option
                                 :key="category.id"
@@ -35,22 +35,20 @@
                     >
                     <el-select
                         :loading="remoteLoading"
-                        :placeholder="$t('general.placeholders.search')"
+                        :placeholder="$t('models.quarter.workflow.placeholders.building')"
                         :remote-method="remoteSearchBuildings"
                         class="custom-remote-select"
                         filterable
                         multiple
+                        clearable
                         remote
                         reserve-keyword
                         style="width: 100%;"
                         v-model="model.selectedWorkflowBuilding"
                     >
-                        <div class="custom-prefix-wrapper" slot="prefix">
-                            <i class="el-icon-search custom-icon"></i>
-                        </div>
                         <el-option
                             :key="building.id"
-                            :label="`${building.name}`"
+                            :label="`${building.address.house_num}`"
                             :value="building.id"
                             v-for="building in model.workflowBuildingList"/>
                     </el-select>
@@ -60,23 +58,21 @@
         <el-row :gutter="20">
             <el-col :md="12">
                 <el-form-item 
-                            :rules="validationRules.category"
+                            :rules="validationRules.to_users"
                             prop="selectedWorkflowToUser">
                     <el-select
                         :loading="remoteLoading"
-                        :placeholder="$t('general.placeholders.search')"
+                        :placeholder="$t('models.quarter.workflow.placeholders.to_user')"
                         :remote-method="remoteSearchToUsers"
                         class="custom-remote-select"
                         filterable
                         multiple
+                        clearable
                         remote
                         reserve-keyword
                         style="width: 100%;"
                         v-model="model.selectedWorkflowToUser"
                     >
-                        <div class="custom-prefix-wrapper" slot="prefix">
-                            <i class="el-icon-search custom-icon"></i>
-                        </div>
                         <el-option
                             :key="user.id"
                             :label="`${user.name}`"
@@ -87,25 +83,22 @@
             </el-col>
             <el-col :md="12">
                 <el-form-item 
-                    :rules="validationRules.building"
                     prop="selectedWorkflowCcUser"
                     class="label-block"
                     >
                     <el-select
                         :loading="remoteLoading"
-                        :placeholder="$t('general.placeholders.search')"
+                        :placeholder="$t('models.quarter.workflow.placeholders.cc_user')"
                         :remote-method="remoteSearchCcUsers"
                         class="custom-remote-select"
                         filterable
                         multiple
+                        clearable
                         remote
                         reserve-keyword
                         style="width: 100%;"
                         v-model="model.selectedWorkflowCcUser"
                     >
-                        <div class="custom-prefix-wrapper" slot="prefix">
-                            <i class="el-icon-search custom-icon"></i>
-                        </div>
                         <el-option
                             :key="user.id"
                             :label="`${user.name}`"
@@ -118,6 +111,7 @@
         <el-row :gutter="20" style="margin-top: 10px;">
             <el-col :md="24" class="drawer-actions">
                 <el-button type="primary" @click="submit" icon="ti-save" round>&nbsp;{{ $t('general.actions.save') }}</el-button>
+                <el-button type="default" @click="close" round>&nbsp;{{ $t('general.actions.close') }}</el-button>
             </el-col>
         </el-row>
         
@@ -180,6 +174,10 @@
                         required: true,
                         message: this.$t('models.quarter.required')
                     }],
+                    to_users: [{
+                        required: true,
+                        message: this.$t('models.quarter.required')
+                    }],
                 },
                 remoteLoading: false,
             }
@@ -194,32 +192,25 @@
                     const valid = await this.$refs.form.validate();
                     if (valid) {
                         let buildings = []
-                        console.log('selected buildings', this.model.workflowBuildingList)
-                        
+                        let to_users = []
+                        let cc_users = []
+
+                        let category = this.categories.find(item => item.id == this.model.category_id)
+
                         this.model.selectedWorkflowBuilding.map( building_id => {
                             let item = this.model.workflowBuildingList.find(item => item.id == building_id)
                             buildings.push(item)
                         })
                         
-                        let category = this.categories.find(item => item.id == this.model.category_id)
-
-                        let to_users = []
-
-                        let cc_users = []
-                        console.log('selected to users', this.model.workflowToUserList)
-
                         this.model.selectedWorkflowToUser.map( user_id => {
                             let item = this.model.workflowToUserList.find(item => item.id == user_id)
                             to_users.push(item)
                         })
 
-                        console.log('selected cc users', this.model.workflowCcUserList)
-
                         this.model.selectedWorkflowCcUser.map( user_id => {
                             let item = this.model.workflowCcUserList.find(item => item.id == user_id)
                             cc_users.push(item)
                         })
-
                         
                         let payload = {
                             title: this.model.title,
@@ -251,15 +242,18 @@
                         //     displaySuccess(resp);
 
                         // }
-
-
-                        
-                        this.$emit('update:visible', false);
-
                     }
                 }
                 catch(err) {
                     console.log(err)
+                }
+            },
+            close() {
+                if(this.mode == 'add') {
+                    this.$emit('cancel-add-workflow')
+                }
+                else {
+                    this.$emit('cancel-edit-workflow', this.editing_index)
                 }
             },
             async remoteSearchManagers(search, index) {
@@ -318,7 +312,7 @@
                     this.remoteLoading = true;
 
                     try {
-                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id})
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id, search})
 
                         this.model.workflowToUserList = resp;
                     } catch (err) {
@@ -339,7 +333,7 @@
                     this.remoteLoading = true;
 
                     try {
-                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id})
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id, search})
                         this.model.workflowCcUserList = resp;
                     } catch (err) {
                         displayError(err);
@@ -360,8 +354,6 @@
             
             this.categories = this.$constants.requests.categories_data.tree
 
-
-            console.log(this.data);
 
             if(this.mode == 'edit') {
                 this.model.title = this.data.title
@@ -453,10 +445,9 @@
         }
 
         /deep/ .drawer-actions {
-            
             display: flex;
             justify-content: flex-end;
-
+            padding-bottom: 10px;
         }
 
         /deep/ .el-tag {
@@ -481,14 +472,46 @@
         }
 
         /deep/ .el-select__tags {
-            padding-left: 30px;
+            padding-left: 2px;
+
             input {
                 margin-left: 0;
             }
+
         }
+
+        .el-select.custom-remote-select {
+            /deep/ .el-input__suffix {
+                i.el-select__caret {
+                    display: block;
+                    &::after {
+                        color:#565556;
+                        content: "\E6DB";
+                        display: block;
+                    }
+                }
+
+                .el-icon-circle-close::after {
+                    display: none !important;
+                }
+            }
+        }
+
+        /deep/ .el-row {
+            .el-col {
+                margin-bottom: 3px;
+            }
+            
+        }
+        
 
         /deep/ .el-tag.el-tag--info .el-tag__close:hover {
             background: transparent;
+        }
+
+        /deep/ input {
+            background: #f6f5f7;
+            border: none;
         }
 
     }
@@ -498,6 +521,5 @@
             padding-left: 0 !important;
         }
     }
-
     
 </style>

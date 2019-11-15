@@ -127,7 +127,6 @@ export default (config = {}) => {
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
-                document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
                 this.$set(this.model.contracts, index, params);
@@ -147,9 +146,6 @@ export default (config = {}) => {
             },
             toggleDrawer() {
                 this.visibleDrawer = true;
-                document.getElementsByTagName('footer')[0].style.display = "none";
-                //this.$root.$refs.footer.css('display: none');
-                //this.$el.querySelector('.footer').css('display: none');
             },
             ...mapActions(['getCountries', 'uploadMediaFile']),
         },
@@ -172,7 +168,6 @@ export default (config = {}) => {
                     // TODO - auto blur container if visible is true first
                     if (!state) {
                         this.editingContract = null
-                        document.getElementsByTagName('footer')[0].style.display = "block";
                     }
                 }
             }

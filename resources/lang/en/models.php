@@ -429,6 +429,13 @@ return [
             'by' => 'by',
             'to' => 'to',
             'cc' => 'cc',
+            'placeholders' => [
+                'title' => 'Workflow title',
+                'category' => 'Select category',
+                'building' => 'Select building',
+                'to_user' => 'Select user',
+                'cc_user' => 'Select user',
+            ]
         ]
     ],
     'request' => [        
@@ -593,11 +600,6 @@ return [
             'surrender' => 'Surrender',
             'inspection' => 'Acceptance'
         ],
-        'payer' => [
-            'landlord' => 'Landlord',
-            'resident' => 'Resident',
-            'resident/landlord' => 'Resident/Landlord'
-        ],
         'status' => [
             'label' => 'Status',
             'received' => 'Received',
@@ -617,7 +619,6 @@ return [
             'range' => 'Range',
             'component' => 'Component',
             'capture_phase' => 'Capture Phase',
-            'payer' => 'Cost Impact',
             'payer_percent' => 'Share Fortimo',
             'payer_amount' => 'Amount',
             'keywords' => 'Keywords',

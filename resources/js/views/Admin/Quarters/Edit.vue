@@ -18,16 +18,6 @@
                                         <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.type"
                                                 class="label-block"
                                                 prop="types">
-                                            <!-- <el-select :placeholder="$t('general.placeholders.select')"
-                                                        style="display: block"
-                                                        v-model="model.type">
-                                                <el-option
-                                                        :key="type.value"
-                                                        :label="type.name"
-                                                        :value="type.value"
-                                                        v-for="type in types">
-                                                </el-option>
-                                            </el-select> -->
                                             <el-select
                                                     :placeholder="$t('general.placeholders.select')"
                                                     style="display: block"
@@ -211,7 +201,10 @@
                                                 :key="assignee.id"
                                                 :label="assignee.name"
                                                 :value="assignee.id"
-                                                v-for="assignee in toAssignList"/>
+                                                v-for="assignee in toAssignList">
+                                            <span style="float: left">{{ assignee.name }}</span>
+                                            <span style="float: right; color: #8492a6; font-size: 13px">{{ translateType(assignee.roles[0].name) }}</span>
+                                        </el-option>
                                     </el-select>
                                 </el-col>
                                 <el-col>
@@ -230,7 +223,7 @@
                                     </el-select>
                                 </el-col>
                                 <el-col id="managerAssignBtn">
-                                    <el-button :disabled="!toAssign" @click="assignUser" class="full-button"
+                                    <el-button :disabled="!toAssign || userAssignmentType == null || userAssignmentType.length == 0" @click="assignUser" class="full-button"
                                                 icon="ti-save" type="primary">
                                         &nbsp;{{$t('general.assign')}}
                                     </el-button>
@@ -277,7 +270,7 @@
                                 <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
                             </span>
                             
-                            <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
+                            <el-button style="float:right" type="primary" @click="toggleAddContractDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
                             <contract-list-table
                                     :items="model.contracts"
                                     @edit-contract="editContract"
@@ -328,7 +321,8 @@
                                 mode="add" 
                                 :quarter_id="model.id" 
                                 :visible.sync="visibleDrawer"
-                                @add-workflow="addWorkflow"/>
+                                @add-workflow="addWorkflow"
+                                @cancel-add-workflow="cancelAddWorkflow"/>
                             <el-collapse accordion>
                                  <el-collapse-item
                                         :key="workflow.title"
@@ -345,39 +339,35 @@
                                             :data="workflow"
                                             :editing_index="$index"
                                             :visible.sync="visibleDrawer"
-                                            @update-workflow="updateWorkflow"/>
+                                            @update-workflow="updateWorkflow"
+                                            @cancel-edit-workflow="cancelEditWorkflow"/>
                                     <el-row v-else>
-                                        <el-col :md="4" class="workflow-label">
+                                        <el-col :md="24" class="workflow-label">
                                             <span>{{$t(`models.request.category_list.${workflow.category.name}`)}}</span>
-                                        </el-col>
-                                        <el-col :md="1" class="workflow-label">
+
                                             <span>{{$t('models.quarter.workflow.by')}}</span>
-                                        </el-col>
-                                        <el-col :md="5" class="workflow-label">
+                                        
                                             <el-tag 
                                                     type="primary" 
-                                                    :key="building.id"
+                                                    :key="'building' + building.id"
                                                     v-for="building in workflow.buildings">
                                                     {{building.address.house_num}}
                                             </el-tag>
-                                        </el-col>
-                                        <el-col :md="1" class="workflow-label">
+                                        
                                             <span>{{$t('models.quarter.workflow.to')}}</span>
-                                        </el-col>
-                                        <el-col :md="6" class="workflow-label">
+                                        
                                             <el-tag 
                                                     type="primary" 
-                                                    :key="user.id"
+                                                    :key="'to_user' + user.id"
                                                     v-for="user in workflow.to_users">
                                                 {{user.name}}
                                             </el-tag>
-                                        </el-col>
-                                        <el-col :md="1" class="workflow-label">
+
                                             <span>{{$t('models.quarter.workflow.cc')}}</span>
-                                        </el-col>
-                                        <el-col :md="6" class="workflow-label">
+                                        
                                             <el-tag 
-                                                    :key="user.id"
+                                                    type="primary" 
+                                                    :key="'cc_user' + user.id"
                                                     v-for="user in workflow.cc_users">
                                                 {{user.name}}
                                             </el-tag>
@@ -417,7 +407,7 @@
                                             <el-button 
                                                 type="primary" 
                                                 @click="showEditWorkflow($index)"
-                                                icon="icon-search" 
+                                                icon="icon-pencil" 
                                                 size="mini" 
                                                 round>
                                                 {{ $t('models.quarter.workflow.edit') }}
@@ -426,7 +416,7 @@
                                             <el-button 
                                                 type="danger" 
                                                 @click="deleteWorkflow($index)"
-                                                icon="ti-trash" 
+                                                icon="icon-trash-empty" 
                                                 size="mini" 
                                                 round>
                                                 {{ $t('models.quarter.workflow.delete') }}
@@ -472,7 +462,7 @@
                                 :used_units="used_units"/>
                 </div>
             </template>
-            <template v-else-if="isWorkflow">
+            <!-- <template v-else-if="isWorkflow">
                 
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.quarter.workflow.label') }} </ui-divider>
                 
@@ -490,8 +480,8 @@
                                 @add-workflow="addWorkflow"/>
                 </div>
                     
-            </template>
-            <template v-else>
+            </template> -->
+            <!-- <template v-else>
                 <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="visibleDrawer">
                     <el-tab-pane name="emergency" lazy>
                         <div slot="label">
@@ -514,6 +504,13 @@
                         </div>
                     </el-tab-pane>
                 </el-tabs>
+            </template> -->
+            <template v-else>
+                <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;{{ $t('general.emergency.title') }} </ui-divider>
+                
+                <div class="content" v-if="visibleDrawer">
+                    <emergency-settings-form :visible.sync="visibleDrawer"/>
+                </div>
             </template>
         </ui-drawer>
     </div>
@@ -788,34 +785,10 @@
             },
             toggleDrawer() {
                 this.visibleDrawer = true;
-                document.getElementsByTagName('footer')[0].style.display = "none";
             },
-            toggleAddDrawer() {
+            toggleAddContractDrawer() {
                 this.isAddContract = true
                 this.visibleDrawer = true;
-                
-                document.getElementsByTagName('footer')[0].style.display = "none";
-            },
-            toggleWorkflowDrawer() {
-                this.visibleDrawer = true
-                this.isWorkflow = true
-                document.getElementsByTagName('footer')[0].style.display = "none";
-            },
-            showAddWorkflow() {
-                this.isAddWorkflow = true
-            },
-            showEditWorkflow(index) {
-                this.$set(this.isEditingWorkflow, index, true)
-                this.isEditingWorkflow[index] = true
-            },
-            editWorkflowDrawer(index) {
-                this.visibleDrawer = true
-                this.isWorkflow = true
-
-                this.editingWorkflow = this.workflows[index];
-                this.editingWorkflowIndex = index;
-
-                document.getElementsByTagName('footer')[0].style.display = "none";
             },
             addContract (data) {
                 this.model.contracts.push(data);
@@ -825,7 +798,6 @@
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
-                document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
                 this.$set(this.model.contracts, index, params);
@@ -842,17 +814,27 @@
                 }).catch(() => {
                 });
             },
+            showAddWorkflow() {
+                this.isAddWorkflow = true
+            },
+            showEditWorkflow(index) {
+                this.$set(this.isEditingWorkflow, index, true)
+                this.isEditingWorkflow[index] = true
+            },
             addWorkflow(workflow) {
-                console.log('add flow', workflow)
                 this.isEditingWorkflow.push(false)
                 this.model.workflows.push(workflow)
                 this.isAddWorkflow = false
                 this.workflowCount ++
             },
+            cancelAddWorkflow() {
+                this.isAddWorkflow = false
+            },
             updateWorkflow(index, workflow) {
-                console.log('update flow', index, workflow)
-                
                 this.$set(this.model.workflows, index, workflow)
+                this.$set(this.isEditingWorkflow, index, false)
+            },
+            cancelEditWorkflow(index) {
                 this.$set(this.isEditingWorkflow, index, false)
             },
             deleteWorkflow(index) {
@@ -925,7 +907,6 @@
                         this.isAddContract = false
                         this.isWorkflow = false
                         this.editingWorkflow = null
-                        document.getElementsByTagName('footer')[0].style.display = "block";
                     }
                 }
             }
@@ -1129,7 +1110,7 @@
         padding-bottom: 10px;
 
         &.edit {
-            padding-top: 10px;
+            padding-top: 30px;
         }
     }
 
@@ -1140,11 +1121,11 @@
     }
 
     .el-collapse-item {
-        margin-bottom: 5px;
+        margin-bottom: 7px;
     }
 
     .el-collapse {
-
+        border-bottom: 0;
         /deep/ .el-collapse-item__header {
             padding-left: 1em;
             background: #f6f5f7;
@@ -1154,6 +1135,11 @@
         /deep/ .el-collapse-item__content {
             padding-bottom: 0px;
             padding-left: 1em;
+        }
+
+        /deep/ .el-collapse-item__wrap {
+            margin-top: 5px;
+            border-bottom: 0;
         }
     }
 </style>

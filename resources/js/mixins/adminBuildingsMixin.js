@@ -202,7 +202,7 @@ export default (config = {}) => {
                         });
 
                 if (resp && resp.data) {             
-                    displaySuccess(resp.data)                           
+                    displaySuccess(resp)                           
                     this.resetToAssignList();
                     this.$refs.assigneesList.fetch();    
                     if(this.$refs.auditList){

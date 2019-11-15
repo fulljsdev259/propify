@@ -429,6 +429,13 @@ return [
             'by' => 'da',
             'to' => 'a',
             'cc' => 'cc',
+            'placeholders' => [
+                'title' => 'Titolo del flusso di lavoro',
+                'category' => 'Seleziona la categoria',
+                'building' => 'Seleziona edificio',
+                'to_user' => 'Seleziona utente',
+                'cc_user' => 'Seleziona utente',
+            ]
         ]
     ],
     'request' => [        
@@ -593,11 +600,6 @@ return [
             'surrender' => 'Arrendersi',
             'inspection' => 'Accettazione'
         ],
-        'payer' => [
-            'landlord' => 'Padrone di casa',
-            'resident' => 'Residente',
-            'resident/landlord' => 'Residente/Padrone di casa'
-        ],
         'status' => [
             "label" => "Situazione",
             "received" => "Ricevuto",
@@ -617,7 +619,6 @@ return [
             'range' => 'Gamma',
             'component' => 'Componente',
             'capture_phase' => 'Fase di cattura',
-            'payer' => 'Costo Impatto',
             'payer_percent' => 'Condividi Fortimo',
             'payer_amount' => 'Importo',
             'keywords' => 'Parole chiave',

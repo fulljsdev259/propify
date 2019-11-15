@@ -18,7 +18,6 @@ export default (config = {}) => {
                     house_num: 'house_num',
                     media: [],
                     internal_quarter_id: '',
-                    type: '',
                     types: '',
                     url: '',
                     workflows: [],
@@ -102,8 +101,8 @@ export default (config = {}) => {
                             assignment_types: this.userAssignmentType
                         });
 
-                if (resp && resp.data) {             
-                    displaySuccess(resp.data)                           
+                if (resp && resp.data) {
+                    displaySuccess(resp)                           
                     this.resetToAssignList();
                     this.$refs.assigneesList.fetch();    
                     if(this.$refs.auditList){
