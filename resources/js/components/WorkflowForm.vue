@@ -489,8 +489,8 @@
         .el-select.custom-remote-select {
 
             /deep/ .el-input__suffix {
-
                 i.el-select__caret {
+                    height: 41px;
                     display: block;
                     &::after {
                         color:#565556;
