@@ -1,7 +1,7 @@
 <template>
     <div class="list-field-filter">
         <el-dropdown placement="bottom" size="medium" trigger="click">
-            <el-button type="primary" round size="mini">
+            <el-button type="primary" size="mini" class="transparent-button">
                 Field
             </el-button>
             <el-dropdown-menu slot="dropdown">

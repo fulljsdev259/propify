@@ -1,23 +1,38 @@
 <template>
     <div class="buildings">
-        <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy">
+        <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy" class="padding-right-300">
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.building)">
-                <el-button @click="add" icon="ti-plus" round size="mini" type="primary">{{$t('models.building.add')}}
+                <el-button 
+                    @click="add" 
+                    icon="ti-plus" 
+                    size="mini" 
+                    class="transparent-button"
+                >
+                    {{$t('models.building.add')}}
                 </el-button>
             </template>
             <template v-if="$can($permissions.assign.manager)">
-                <el-button :disabled="!selectedItems.length" @click="batchAssignManagers" icon="ti-user" round
-                           size="mini"
-                           type="info">
+                <el-button 
+                    :disabled="!selectedItems.length" 
+                    @click="batchAssignManagers" 
+                    icon="ti-user"
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('models.building.assign_managers')}}
                 </el-button>
             </template>
             <template v-if="$can($permissions.delete.building)">
-                <el-button :disabled="!selectedItems.length" @click="batchDeleteBuilding" icon="ti-trash" round size="mini"
-                           type="danger">
+                <el-button 
+                    :disabled="!selectedItems.length" 
+                    @click="batchDeleteBuilding" 
+                    icon="ti-trash" 
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('general.actions.delete')}}
                 </el-button>
             </template>
@@ -404,11 +419,6 @@
         /deep/ .el-dialog__body {
             padding: 10px 20px;
             word-break: break-word;
-        }
-    }
-    .buildings {
-        .heading {
-            padding-right: 300px;
         }
     }
 </style>

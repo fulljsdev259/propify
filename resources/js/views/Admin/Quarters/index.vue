@@ -1,17 +1,27 @@
 <template>
     <div class="quarters">
-        <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy">
+        <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" class="padding-right-300">
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.quarter)">
-                <el-button @click="add" icon="ti-plus" round size="mini" type="primary">
+                <el-button 
+                    @click="add" 
+                    icon="ti-plus" 
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('models.quarter.add')}}
                 </el-button>
             </template>
             <template v-if="$can($permissions.delete.quarter)">
-                <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"
-                           type="danger">
+                <el-button 
+                    :disabled="!selectedItems.length" 
+                    @click="batchDeleteWithIds" 
+                    icon="ti-trash" 
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('general.actions.delete')}}
                 </el-button>
             </template>
@@ -160,12 +170,3 @@
         },
     }
 </script>
-
-<style lang="scss" scoped>
-    
-    .quarters {
-        .heading {
-            padding-right: 300px;
-        }
-    }
-</style>
