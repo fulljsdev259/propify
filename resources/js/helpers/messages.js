@@ -68,7 +68,7 @@ export const displayError = (err) => {
                     timer: 3000,
                     type: 'error',
                     /*width: 'auto',*/
-                    title: $i18n.t(typeof msg === 'string' ? msg : (typeof msg === 'object' ? msg[Object.keys(msg)[0]][0] : 'ERROR'))
+                    title: $i18n.t((typeof msg === 'string') ? msg : ((typeof msg === 'object') ? msg[Object.keys(msg)[0]][0] : 'general.server_error'))
                 });
             }
         }
