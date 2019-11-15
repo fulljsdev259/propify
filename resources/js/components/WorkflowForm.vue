@@ -498,6 +498,9 @@
                         position: absolute;
                         left: 5px;
                     }
+                    &::before {
+                        color:#565556;
+                    }
                 }
 
                 .el-icon-circle-close::after {
