@@ -487,7 +487,7 @@
                     &:after {
                         color:#565556;
                         content: "\E6DB";
-                        display: flex;
+                        display: block;
                         align-items: center;
                         justify-content: center;
                         
