@@ -454,8 +454,8 @@
             padding: 0;
             padding-left: 10px;
             padding-right: 20px;
-            height: 30px;
-            line-height: 30px;
+            height: 40px;
+            line-height: 40px;
 
             i {
                 color: white;
@@ -464,16 +464,6 @@
                 font-weight: 600;
             }
         }
-
-        /deep/ .el-form-item__content {
-            line-height: 30px;
-            height: 30px;
-
-            .el-input {
-                height: 30px;
-            }
-        }
-
 
         /deep/ .el-select__tags {
             padding-left: 2px;
@@ -487,7 +477,6 @@
         /deep/ input {
             border: none;
             background: #f6f5f7;
-            height: 30px;
         }
 
         .el-select.custom-remote-select {
@@ -524,7 +513,7 @@
 
         /deep/ .el-row {
             .el-col {
-                margin-bottom: 5px;
+                margin-bottom: 3px;
             }
             
         }

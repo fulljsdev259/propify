@@ -315,11 +315,12 @@
                                         class="add-workflow-btn">
                                 </el-button>
                             </div>
-
+                            
                             <workflow-form v-if="isAddWorkflow"
                                 mode="add" 
                                 :quarter_id="model.id" 
                                 :visible.sync="visibleDrawer"
+                                class="add-work-flow"
                                 @add-workflow="addWorkflow"
                                 @cancel-add-workflow="cancelAddWorkflow"/>
                             <el-collapse accordion>
@@ -1138,12 +1139,15 @@
         }
 
         /deep/ .el-collapse-item__wrap {
-            margin-top: 5px;
+            padding-top: 5px;
             border-bottom: 0;
-            border-left: red 1px solid
         }
     }
 
+    .add-work-flow {
+        padding: 0px 25px;
+    }
+    
     .round-btn {
         border-radius: 3px;
     }
