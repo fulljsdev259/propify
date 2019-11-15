@@ -3,8 +3,10 @@
 namespace App\Transformers;
 
 use App\Models\AnnouncementEmailReceptionist;
+use App\Models\Building;
 use App\Models\Quarter;
 use App\Models\Resident;
+use Illuminate\Support\Str;
 
 /**
  * Class AnnouncementEmailReceptionistTransformer.
@@ -28,8 +30,17 @@ class AnnouncementEmailReceptionistTransformer extends BaseTransformer
         // @TODO in case when quarter deleted, building deleted
         $residentsData = $model->residents_data ?? [];
         $residentIds = collect($residentsData)->collapse()->collapse();
-        $residents = Resident::whereIn('id', $residentIds)->get(['id', 'first_name', 'last_name']);
-        $residentsResponse = $this->getResidentsDataBy($residentsData, $residents, 'quarters', Quarter::class);
+        $residents = Resident::whereIn('id', $residentIds)
+            ->select(['id', 'first_name', 'last_name'])
+            ->withCount([
+                'pinboard_views' => function ($q) use ($model) {
+                    $q->where('pinboard_id', $model->pinboard_id);
+                }
+            ])
+            ->get();
+        $quarterResidents = $this->getResidentsDataBy($residentsData, $residents, 'quarters', Quarter::class);
+        $buildingResidents = $this->getResidentsDataBy($residentsData, $residents, 'buildings', Building::class);
+        $residentsResponse = array_merge($quarterResidents, $buildingResidents);
 
         $response = [
             'pinboard_id' => $model->pinboard_id,
@@ -58,18 +69,17 @@ class AnnouncementEmailReceptionistTransformer extends BaseTransformer
             ->select('id', 'name', 'address_id')
             ->with('address:id,street,house_num')
             ->get();
-        foreach ($residentsData[$key] as $quarterId => $quarterResidentIds) {
-            $quarter = $quarters->where('id', $quarterId)->first();
+        foreach ($residentsData[$key] as $id => $residentIds) {
+            $quarter = $quarters->where('id', $id)->first();
 
-            foreach ($quarterResidentIds as $residentId) {
+            foreach ($residentIds as $residentId) {
                 $resident = $residents->where('id', $residentId)->first();
                 if (empty($resident)) {
                     // when resident deleted
                     continue;
                 }
-
-                $resident->setRelation('quarter', $quarter);
-                $residentsResponse[] = $resident->toArray();
+                $resident->setRelation(Str::singular($key), $quarter);
+                $residentsResponse[] = $resident->emptyAppends()->toArray();
             }
         }
 

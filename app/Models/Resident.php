@@ -361,6 +361,14 @@ class Resident extends AuditableModel implements HasMedia
     }
 
     /**
+     * @return HasMany
+     */
+    public function pinboard_views()
+    {
+        return $this->hasMany(PinboardView::class);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function default_contract()
