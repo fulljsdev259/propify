@@ -110,8 +110,8 @@
         </el-row>
         <el-row :gutter="20" style="margin-top: 10px;">
             <el-col :md="24" class="drawer-actions">
-                <el-button type="primary" @click="submit" icon="ti-save" round>&nbsp;{{ $t('general.actions.save') }}</el-button>
-                <el-button type="default" @click="close" round>&nbsp;{{ $t('general.actions.close') }}</el-button>
+                <el-button type="default" size="mini" @click="close" class="round-btn">&nbsp;{{ $t('general.actions.close') }}</el-button>
+                <el-button type="primary" size="mini" @click="submit" icon="ti-save" class="round-btn">&nbsp;{{ $t('general.actions.save') }}</el-button>
             </el-col>
         </el-row>
         
@@ -480,8 +480,15 @@
 
         }
 
+        /deep/ input {
+            border: none;
+            background: #f6f5f7;
+        }
+
         .el-select.custom-remote-select {
+
             /deep/ .el-input__suffix {
+
                 i.el-select__caret {
                     display: block;
                     &::after {
@@ -500,6 +507,11 @@
                     display: none !important;
                 }
             }
+
+            /deep/ .el-select__input {
+                background: transparent;
+                padding-left: 1em;
+            }
         }
 
         /deep/ .el-row {
@@ -514,10 +526,7 @@
             background: transparent;
         }
 
-        /deep/ input {
-            background: #f6f5f7;
-            border: none;
-        }
+        
 
     }
 
