@@ -40,6 +40,12 @@ class WorkflowAPIController extends AppBaseController
      *      tags={"Workflow"},
      *      description="Get all Workflows",
      *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="quarter_id",
+     *          in="query",
+     *          type="integer",
+     *          description="filter Workflow by quarter",
+     *      ),
      *      @SWG\Response(
      *          response=200,
      *          description="successful operation",
