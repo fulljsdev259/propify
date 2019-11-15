@@ -110,8 +110,8 @@
         </el-row>
         <el-row :gutter="20" style="margin-top: 10px;">
             <el-col :md="24" class="drawer-actions">
-                <el-button type="primary" @click="submit" icon="ti-save" round>&nbsp;{{ $t('general.actions.save') }}</el-button>
-                <el-button type="default" @click="close" round>&nbsp;{{ $t('general.actions.close') }}</el-button>
+                <el-button type="default" size="mini" @click="close" class="round-btn">&nbsp;{{ $t('general.actions.close') }}</el-button>
+                <el-button type="primary" size="mini" @click="submit" icon="ti-save" class="round-btn">&nbsp;{{ $t('general.actions.save') }}</el-button>
             </el-col>
         </el-row>
         
@@ -448,6 +448,7 @@
             display: flex;
             justify-content: flex-end;
             padding-bottom: 10px;
+            margin-top: 30px;
         }
 
         /deep/ .el-tag {
@@ -480,20 +481,40 @@
 
         }
 
+        /deep/ input {
+            border: none;
+            background: #f6f5f7;
+        }
+
         .el-select.custom-remote-select {
+
             /deep/ .el-input__suffix {
                 i.el-select__caret {
+                    height: 41px;
                     display: block;
                     &::after {
                         color:#565556;
                         content: "\E6DB";
-                        display: block;
+                        display: block !important;
+                        position: absolute;
+                        left: 5px;
+                    }
+                    &::before {
+                        color:#565556;
                     }
                 }
 
                 .el-icon-circle-close::after {
                     display: none !important;
                 }
+                .el-icon-circle-close::before {
+                    display: none !important;
+                }
+            }
+
+            /deep/ .el-select__input {
+                background: transparent;
+                padding-left: 1em;
             }
         }
 
@@ -509,10 +530,7 @@
             background: transparent;
         }
 
-        /deep/ input {
-            background: #f6f5f7;
-            border: none;
-        }
+        
 
     }
 

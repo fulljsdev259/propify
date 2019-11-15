@@ -434,7 +434,7 @@ return [
                 'category' => 'Seleziona la categoria',
                 'building' => 'Seleziona edificio',
                 'to_user' => 'Seleziona utente',
-                'cc_user' => 'Seleziona utente',
+                'cc_user' => 'Selezionare cc',
             ]
         ]
     ],

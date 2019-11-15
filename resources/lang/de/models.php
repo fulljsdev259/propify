@@ -434,9 +434,9 @@ return [
             'placeholders' => [
                 'title' => 'Workflow benennen',
                 'category' => 'Kategorie auswählen',
-                'building' => 'Bearbeiten auswählen',
-                'to_user' => 'Benutzer auswählen',
-                'cc_user' => 'Benutzer auswählen',
+                'building' => 'Objekt auswählen',
+                'to_user' => 'Verantwortlichen auswählen',
+                'cc_user' => 'CC auswählen',
             ]
         ]
     ],
