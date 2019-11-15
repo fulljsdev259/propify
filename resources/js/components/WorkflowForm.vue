@@ -454,8 +454,8 @@
             padding: 0;
             padding-left: 10px;
             padding-right: 20px;
-            height: 40px;
-            line-height: 40px;
+            //height: 40px;
+            //line-height: 40px;
 
             i {
                 color: white;
