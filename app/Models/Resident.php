@@ -51,6 +51,12 @@ use Illuminate\Support\Facades\Storage;
  *          format="int32"
  *      ),
  *      @SWG\Property(
+ *          property="sub_type",
+ *          description="sub_type",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
  *          property="title",
  *          description="title",
  *          type="string"
@@ -241,6 +247,7 @@ class Resident extends AuditableModel implements HasMedia
         'nation',
         'country_id',
         'type',
+        'sub_type',
     ];
 
     protected $appends = ['created_by'];
@@ -269,6 +276,7 @@ class Resident extends AuditableModel implements HasMedia
         'review' => 'string',
         'rating' => 'integer',
         'type' => 'integer',
+        'sub_type' => 'integer',
         'nation' => 'string',
     ];
 
