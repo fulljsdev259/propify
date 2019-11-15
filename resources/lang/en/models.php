@@ -434,7 +434,7 @@ return [
                 'category' => 'Select category',
                 'building' => 'Select building',
                 'to_user' => 'Select user',
-                'cc_user' => 'Select user',
+                'cc_user' => 'Select cc',
             ]
         ]
     ],
