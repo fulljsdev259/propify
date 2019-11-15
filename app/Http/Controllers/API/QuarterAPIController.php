@@ -120,7 +120,8 @@ class QuarterAPIController extends AppBaseController
                                     ]);
                             }]);
                 },
-                'media'
+                'media',
+                'address:id,city'
             ])->paginate($perPage);
         $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWIthStatistics');
         return $this->sendResponse($response, 'Quarters retrieved successfully');
