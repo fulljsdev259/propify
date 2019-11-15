@@ -663,8 +663,9 @@
                 'getBuildings',
                 "uploadQuarterFile", 
                 "deleteQuarterFile",
-                'saveWorkflow',
-                'updateWorkflow'
+                'saveQuarterWorkflow',
+                'updateQuarterWorkflow',
+                'deleteQuarterWorkflow'
             ]),
             translateType(type) {
                 return this.$t(`general.assignment_types.${type}`);
@@ -802,7 +803,7 @@
                 this.isAddWorkflow = false
                 this.workflowCount ++
                 workflow.quarter_id = this.model.id
-                this.saveWorkflow(workflow)
+                this.saveQuarterWorkflow(workflow)
             },
             cancelAddWorkflow() {
                 this.isAddWorkflow = false
@@ -810,8 +811,11 @@
             updateWorkflow(index, workflow) {
                 this.$set(this.model.workflows, index, workflow)
                 this.$set(this.isEditingWorkflow, index, false)
+                console.log('updateworkflow', index, workflow)
                 workflow.quarter_id = this.model.id
-                this.updateWorkflow(workflow)
+                console.log(this.model.workflows[index])
+                workflow.id = this.model.workflows[index].id
+                this.updateQuarterWorkflow(workflow)
             },
             cancelEditWorkflow(index) {
                 this.$set(this.isEditingWorkflow, index, false)
@@ -819,6 +823,7 @@
             deleteWorkflow(index) {
                 this.model.workflows.splice(index, 1)
                 this.workflowCount --
+                this.deleteQuarterWorkflow(index)
             }
         },
         computed: {

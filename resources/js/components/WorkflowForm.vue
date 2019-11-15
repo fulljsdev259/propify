@@ -181,6 +181,7 @@
                 'getBuildings',
                 'getAllAdminsForQuarter']),
             async submit () {
+                console.log('sbumit called')
                 try {
                     const valid = await this.$refs.form.validate();
                     if (valid) {
