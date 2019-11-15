@@ -1127,7 +1127,7 @@
         padding: 0px 25px;
 
         /deep/ .el-collapse-item__header {
-            padding-left: 1em;
+            padding-left: 10px;
             background: #f6f5f7;
             border-radius: 6px;
         }
