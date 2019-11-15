@@ -345,7 +345,7 @@
                                             <el-tag type="primary">
                                                     {{$t(`models.request.category_list.${workflow.category.name}`)}}
                                             </el-tag>
-                                            
+
                                             <span>{{$t('models.quarter.workflow.by')}}</span>
                                         
                                             <el-tag 
@@ -1119,7 +1119,7 @@
     }
 
     .round-btn {
-        border-radius: 5px;
+        border-radius: 3px;
     }
 
     .add-workflow-btn {
