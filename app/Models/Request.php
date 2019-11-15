@@ -405,15 +405,6 @@ class Request extends AuditableModel implements HasMedia
         self::CapturePhaseAcceptance => 'inspection',
     ];
 
-    const PayerLandlord = 1;
-    const PayerResident = 2;
-    const PayerResidentLandlord = 3;
-    const Payer = [
-        self::PayerLandlord => 'landlord',
-        self::PayerResident => 'resident',
-        self::PayerResidentLandlord => 'resident/landlord',
-    ];
-
     const CategoryGeneral = 1;
     const CategoryMalfunction = 2;
     const CategoryDeficiency = 3;
@@ -510,7 +501,6 @@ class Request extends AuditableModel implements HasMedia
         'room',
         'capture_phase',
         'component',
-        'payer',
         'location',
         'reactivation_date',
         'resolution_time',
@@ -556,7 +546,6 @@ class Request extends AuditableModel implements HasMedia
         'room' => 'integer',
         'capture_phase' => 'integer',
         'component' => 'string',
-        'payer' => 'integer',
         'location' => 'integer',
         'reactivation_date' => 'datetime',
         'resolution_time' => 'integer',
@@ -709,7 +698,17 @@ class Request extends AuditableModel implements HasMedia
         return $this->morphedByMany(PropertyManager::class, 'assignee', 'request_assignees', 'request_id');
     }
 
+    public function property_managers()
+    {
+        return $this->morphedByMany(PropertyManager::class, 'assignee', 'request_assignees', 'request_id');
+    }
+
     public function providers()
+    {
+        return $this->morphedByMany(ServiceProvider::class, 'assignee', 'request_assignees', 'request_id');
+    }
+
+    public function service_providers()
     {
         return $this->morphedByMany(ServiceProvider::class, 'assignee', 'request_assignees', 'request_id');
     }

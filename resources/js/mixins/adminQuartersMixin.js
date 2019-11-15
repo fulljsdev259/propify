@@ -18,13 +18,13 @@ export default (config = {}) => {
                     house_num: 'house_num',
                     media: [],
                     internal_quarter_id: '',
-                    type: '',
                     types: '',
-                    url: ''
+                    url: '',
+                    workflows: [],
                 },
                 quarter_format: '',
                 validationRules: {
-                    type: [{
+                    types: [{
                         required: true,
                         message: this.$t('models.quarter.required')
                     }], 
@@ -69,7 +69,7 @@ export default (config = {}) => {
             ...mapGetters(['states'])
         },
         methods: {
-            ...mapActions(['getStates', 'assignUserToQuarter','getQuarter','getUsers','getPropertyManagers','unassignQuarterAssignee']),
+            ...mapActions(['getStates', 'assignUserToQuarter','getQuarter','getUsers','getAllAdminsForQuarter','getPropertyManagers','unassignQuarterAssignee']),
             resetToAssignList() {
                 this.toAssignList = [];
                 this.toAssign = '';
@@ -92,21 +92,23 @@ export default (config = {}) => {
                 //     });
                 // }
 
+                let assign_user = this.toAssignList.find(item => item.id == this.toAssign )
 
                 resp = await this.assignUserToQuarter({
                             id: this.model.id,
                             user_id: this.toAssign,
-                            role: 'manager',
-                            assignment_type: this.userAssignmentType
+                            role: assign_user.roles[0].name,
+                            assignment_types: this.userAssignmentType
                         });
 
-                if (resp && resp.data) {             
-                    displaySuccess(resp.data)                           
+                if (resp && resp.data) {
+                    displaySuccess(resp)                           
                     this.resetToAssignList();
                     this.$refs.assigneesList.fetch();    
                     if(this.$refs.auditList){
                         this.$refs.auditList.fetch();
-                    }                
+                    }
+                    this.userAssignmentType = null
                 }
             },
             async remoteSearchAssignees(search) {
@@ -156,14 +158,15 @@ export default (config = {}) => {
                         // }
 
                         //    exclude_assignees_quarter_id: this.$route.params.id,
-                        const resp = await this.getUsers({
-                                    get_all: true,
-                                    get_role: true,
-                                    search,
-                                    roles: ['manager', 'administrator', 'provider']
-                                });
+                        // const resp = await this.getUsers({
+                        //             get_all: true,
+                        //             get_role: true,
+                        //             search,
+                        //             roles: ['manager', 'administrator', 'provider']
+                        //         });
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id, search})
                         console.log(resp)
-                        this.toAssignList = resp.data;                        
+                        this.toAssignList = resp;                        
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -296,6 +299,7 @@ export default (config = {}) => {
 
                         this.fileCount = this.model.media.length
                         this.contractCount = this.model.contracts.length
+                        this.workflowCount = this.model.workflows.length
 
                     },
                     submit() {
@@ -311,6 +315,7 @@ export default (config = {}) => {
                                 try {
                                     
                                     const {state_id, city, street, house_num, zip, ...restParams} = this.model;
+
                                     const resp = await this.updateQuarter({
                                         address: {
                                             state_id,

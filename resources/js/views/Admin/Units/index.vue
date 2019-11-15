@@ -1,17 +1,27 @@
 <template>
     <div class="units">
-        <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy">
+        <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy" class="padding-right-300">
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.unit)">
-                <el-button @click="add" icon="ti-plus" round size="mini" type="primary">
+                <el-button 
+                    @click="add" 
+                    icon="ti-plus" 
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('models.unit.add')}}
                 </el-button>
             </template>
             <template v-if="$can($permissions.delete.unit)">
-                <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"
-                           type="danger">
+                <el-button 
+                    :disabled="!selectedItems.length" 
+                    @click="batchDeleteWithIds" 
+                    icon="ti-trash" 
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('general.actions.delete')}}
                 </el-button>
             </template>
@@ -69,40 +79,35 @@
                 quarters:{},
                 buildings:{},
                 header: [{
-                    label: 'models.unit.name',
-                    prop: 'name'
+                    label: 'models.quarter.quarter_format',
+                    prop: 'unit_format'
                 }, {
-                    label: 'models.unit.building',
-                    prop: 'building.name'
+                    label: 'models.unit.unit_id',
+                    prop: 'name'
                 }, {
                     label: 'models.unit.type.label',
                     prop: 'formatted_type_label'
                 }, {
                     label: 'models.unit.floor',
                     prop: 'floor'
-                }, {
+                },{
                     label: 'models.unit.room_no',
                     prop: 'room_no'
-                }, {
-                    label: 'general.gross_rent',
-                    prop: 'monthly_rent_gross'
-                }, {
-                    label: 'general.resident',
-                    withUsers: true,
-                    prop: 'residents'
-                }, {
-                    width: 150,
-                    actions: [{
-                        type: '',
-                        icon: 'ti-search',
-                        title: 'general.actions.edit',
-                        onClick: this.edit,
-                        editUrl: 'adminUnitsEdit',
-                        permissions: [
-                            this.$permissions.update.unit
-                        ]
-                    }]
-                }],
+                },
+                //  {
+                //     width: 150,
+                //     actions: [{
+                //         type: '',
+                //         icon: 'ti-search',
+                //         title: 'general.actions.edit',
+                //         onClick: this.edit,
+                //         editUrl: 'adminUnitsEdit',
+                //         permissions: [
+                //             this.$permissions.update.unit
+                //         ]
+                //     }]
+                // }
+                ],
                 building: {},
                 isLoadingFilters: false,
             };

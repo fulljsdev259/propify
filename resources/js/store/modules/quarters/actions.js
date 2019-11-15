@@ -21,6 +21,7 @@ export default {
                 .catch(({response: {data: err}}) => reject(err)));
     },
     updateQuarter(_, {id, ...restPayload}) {
+        console.log('restPayload', restPayload)
         return new Promise((resolve, reject) =>
             axios.put(`quarters/${id}`, restPayload)
                 .then(({data: r}) => resolve(r))
@@ -74,6 +75,12 @@ export default {
                     resolve(resp.data);
                 }).catch(({response: {data: err}}) => reject(err))
         });
+    },
+    getAllAdminsForQuarter(_, {quarter_id, search}) {
+        return new Promise((resolve, reject) =>
+            axios.get(buildFetchUrl(`alladmins`, {exclude_assignees_quarter_id: quarter_id, search: search}))
+                .then(({data: r}) => resolve(r.data))
+                .catch(({response: {data: err}}) => reject(err)));
     },
     assignUserToQuarter({}, {id, ...payload}) {
         console.log(payload)

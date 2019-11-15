@@ -30,6 +30,7 @@ class BatchAssignUsers extends BaseRequest
             'assignment_types' => [
                 'required',
                 'array',
+                'bail',
                 function ($attribute, $value, $fails) {
                     $diff = array_diff($value, array_keys(Quarter::AssignmentType));
                     if ($diff) {

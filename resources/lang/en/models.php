@@ -166,6 +166,10 @@ return [
         'internal_building_id' => 'Internal Building Id',       
         'address_search' => 'Please enter address',
         'not_found' => 'Building not found',
+        'building_format' => 'Project No.',
+        'building_no' => 'Building No.',
+        'active_residents_count' => 'Living',
+        'request_status' => 'Request Status',
         'media_category' => [
             'house_rules' => 'House rules',
             'operating_instructions' => 'Operating instructions',
@@ -225,6 +229,7 @@ return [
         'deleted' => 'Unit deleted',
         'saved' => 'Unit saved',
         'floor' => 'Floor',
+        'unit_id' => 'Unit ID',
         'floor_title' => [
             'under_ground_floor' => "UG",
             'ground_floor' => "EG",
@@ -399,6 +404,9 @@ return [
         'occupied_units_count' => 'Count of occupied units',
         'active_residents_count' => 'Count of active residents',
         'assignment' => 'Assignment of managers/administrator',
+        'quarter_format' => 'Project No',
+        'type' => 'Project Type',
+        'project_ort' => 'Project Location',
         'errors' => [
             'not_found' => "Quarter not found",
             'deleted' => "Quarter deleted error: ",
@@ -424,7 +432,18 @@ return [
         'workflow' => [
             'label' => 'Workflow',
             'add' => 'Add Workflow',
-            'edit' => 'Edit Workflow'
+            'edit' => 'Edit Workflow',
+            'delete' => 'Delete Workflow',
+            'by' => 'by',
+            'to' => 'to',
+            'cc' => 'cc',
+            'placeholders' => [
+                'title' => 'Workflow title',
+                'category' => 'Select category',
+                'building' => 'Select building',
+                'to_user' => 'Select user',
+                'cc_user' => 'Select cc',
+            ]
         ]
     ],
     'request' => [        
@@ -589,11 +608,6 @@ return [
             'surrender' => 'Surrender',
             'inspection' => 'Acceptance'
         ],
-        'payer' => [
-            'landlord' => 'Landlord',
-            'resident' => 'Resident',
-            'resident/landlord' => 'Resident/Landlord'
-        ],
         'status' => [
             'label' => 'Status',
             'received' => 'Received',
@@ -613,7 +627,6 @@ return [
             'range' => 'Range',
             'component' => 'Component',
             'capture_phase' => 'Capture Phase',
-            'payer' => 'Cost Impact',
             'payer_percent' => 'Share Fortimo',
             'payer_amount' => 'Amount',
             'keywords' => 'Keywords',
@@ -676,7 +689,7 @@ return [
             'request_number' => 'Request Number',
             'details'=>'Details',
             'blank_pdf'=>'After the completion of the defects please return the attached form signed immediately to the site management.',
-
+            'address'=>'Object'
         ],
         'pictures_of' => 'Photos of the request',
         'go_to_building' => 'go to building'

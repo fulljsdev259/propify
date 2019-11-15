@@ -163,9 +163,13 @@ return [
         'basement' => 'Erdgeschoss',
         'attic' => 'Attikageschoss',
         'floor_nr' => 'Anzahl Etagen',
-        'internal_building_id' => "Interne Objekt-ID",        
+        'internal_building_id' => "Projektnummer",        
         'address_search' => 'Bitte Adresse eingeben.',
         'not_found' => 'Objekt nicht gefunden.',
+        'building_format' => 'Projectnr.',
+        'building_no' => 'Objektnr.',
+        'active_residents_count' => 'Wohnungen',
+        'request_status' => 'Anliegen-Status',
         'media_category' => [
             'house_rules' => 'Hausordnung',
             'operating_instructions' => 'Benutzungsanleitungen',
@@ -225,6 +229,7 @@ return [
         'deleted' => 'Einheit gelöscht',
         'saved' => 'Einheit gespeichert',
         'floor' => 'Etage',
+        'unit_id' => 'Einheit-ID',
         'floor_title' => [
             'under_ground_floor' => "UG",
             'ground_floor' => "EG",
@@ -233,7 +238,7 @@ return [
         ],
         'rooms' => 'Räume',
         'sq_meter' => 'Fläche',
-        'room_no' => 'Anzahl Zimmer',
+        'room_no' => 'Zimmer',
         'building' => 'Objekt',
         'basement' => 'Untergeschoss',
         'attic' => 'Attikageschoss',        
@@ -396,11 +401,14 @@ return [
         'required' => 'Projekt ist ein Pflichfeld!',
         'buildings' => 'Objekte',
         'count_of_buildings' => 'Anzahl Objekte',
-        'buildings_count' => 'Anzahl Objekte',
-        'total_units_count' => 'Anzahl Einheiten',
+        'buildings_count' => 'Objekte',
+        'total_units_count' => 'Wohnungen',
         'occupied_units_count' => 'Belegte Einheiten',
         'active_residents_count' => 'Aktive Bewohner',
         'assignment' => 'Zuständigkeit',
+        'quarter_format' => 'Projectnr.',
+        'type' => 'Projektart',
+        'project_ort' => 'Projektort',
         'errors' => [
             'not_found' => "Projekt nicht gefunden.",
             'deleted' => "Fehler beim Löschen des Projekts: ",
@@ -422,11 +430,22 @@ return [
             'caretaker' => 'Hauswart',
             'administration' => 'Verwaltung'
         ],
-        'url' => 'Url',
+        'url' => 'Projekturl',
         'workflow' => [
             'label' => 'Workflow',
             'add' => 'Workflow hinzufügen',
-            'edit' => 'Workflow bearbeiten'
+            'edit' => 'Workflow bearbeiten',
+            'delete' => 'Workflow löschen',
+            'by' => 'von',
+            'to' => 'an',
+            'cc' => 'cc',
+            'placeholders' => [
+                'title' => 'Workflow benennen',
+                'category' => 'Kategorie auswählen',
+                'building' => 'Objekt auswählen',
+                'to_user' => 'Verantwortlichen auswählen',
+                'cc_user' => 'CC auswählen',
+            ]
         ]
     ],
     'request' => [        
@@ -591,11 +610,6 @@ return [
             'surrender' => 'Übergabe (UEB)',
             'inspection' => 'Abnahme (AB)'
         ],
-        'payer' => [
-            'landlord' => 'Vermieter',
-            'resident' => 'Bewohner',
-            'resident/landlord' => 'Bewohner u. Vermieter'
-        ],
         'status' => [
             'label' => 'Status',
             'received' => 'Erhalten',
@@ -615,7 +629,6 @@ return [
             'range' => 'Bereich',
             'component' => 'Bauteil',
             'capture_phase' => 'Erfassungsphase',
-            'payer' => 'Zu Lasten von',
             'payer_percent' => 'Anteil Fortimo',
             'payer_amount' => 'Betrag',
             'keywords' => 'Tags',
@@ -675,10 +688,10 @@ return [
             'contact_details' => 'Kontaktinformationen',
             'contact_text' => 'Dies sind die Kontaktdaten des aktuellen Bewohners/Besitzers der Wohneinheit.',
             'captured_by' => 'Erfasst von',
-            'request_number' => 'Anforderungsnummer',
+            'request_number' => 'Defektnummer',
             'details'=>'Details',
             'blank_pdf'=>'Nach der Mängelerledigung bitte, das beiliegende Formular umgehend unterzeichnet der Bauleitung retournieren.',
-
+            'address'=>'Objekt',
         ],
         'pictures_of' => 'Fotos des Anliegens',
         'go_to_building' => 'Zum Objekt gehen'

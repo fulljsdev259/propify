@@ -15,14 +15,27 @@
                                size="mini"/>
                 </template>
             </el-input>
-            <el-card :header="filtersHeader"
-                     class="mb30 filters-card"
-                     shadow="never"
-                     v-if="this.filters.length"
-                    :element-loading-background="loading.background"
-                    :element-loading-spinner="loading.icon"
-                    :element-loading-text="$t(loading.text)"
-                    v-loading="isLoadingFilters.state"
+            <div class="sub-menu" key="sub-menu">
+                <router-link 
+                    :key="link.title + key"
+                    v-for="(link, key) in subMenu"
+                    v-if="$can(link.permission) || !link.permission"
+                    :class="{'is-active': link.route.name == $route.name}"
+                    :to="{name: link.route.name}"
+                >
+                    <span class="title">{{ link.title }}</span>
+                </router-link>
+            </div>
+            <el-card 
+                v-if="this.filters.length"
+                :header="filtersHeader"
+                class="mb30 filters-card"
+                :class="{'filter-right': subMenu.length}"
+                shadow="never"
+                :element-loading-background="loading.background"
+                :element-loading-spinner="loading.icon"
+                :element-loading-text="$t(loading.text)"
+                v-loading="isLoadingFilters.state"
             >
                 <el-row :gutter="10">
                     <el-col :key="key" :span="filterColSize" v-for="(filter, key) in filters">
@@ -40,11 +53,22 @@
                             </el-form-item>
                             <el-form-item
                                 v-if="filter.type === filterTypes.text || filter.type === filterTypes.number">
+                                 <el-input
+                                    v-if="filter.key == 'search'"
+                                    :placeholder="filter.name"
+                                    :suffix-icon="filter.icon"
+                                    :type="filter.type"
+                                    class="list-table-search"
+                                    @change="filterChanged(filter)"
+                                    v-model="filterModel[filter.key]">
+                                </el-input>
                                 <el-input
+                                    v-else
                                     clearable
                                     :placeholder="filter.name"
                                     :prefix-icon="filter.icon"
                                     :type="filter.type"
+                                    class="list-table-search"
                                     @change="filterChanged(filter)"
                                     v-model="filterModel[filter.key]">
                                 </el-input>
@@ -92,11 +116,6 @@
             :empty-text="emptyText"
             @selection-change="handleSelectionChange"
             v-loading="loading.state">
-            <el-table-column
-                type="selection"
-                v-if="withCheckSelection"
-                width="40">
-            </el-table-column>
 
             <el-table-column
                 :key="column.prop"
@@ -372,6 +391,11 @@
                     </span>
                 </template>
             </el-table-column>
+            <el-table-column
+                type="selection"
+                v-if="withCheckSelection"
+                width="40">
+            </el-table-column>
         </el-table>
         <el-pagination
             :current-page.sync="page.currPage"
@@ -472,7 +496,7 @@
             withCheckSelection: {
                 type: Boolean,
                 default: true
-            }
+            },
         },
         beforeMount() {
         },
@@ -491,6 +515,7 @@
                 filterModel: {},
                 uuid,
                 selectedItems: [],
+                subMenu: [],
             }
         },
         computed: {
@@ -791,7 +816,7 @@
                     this.fetch(this.page.currPage, this.page.currSize);
                     
                 }
-            }
+            },
         },
         created() {
             if (this.$route.query.search) {
@@ -828,11 +853,97 @@
                     this.filterChanged(filter, true);
                 }
             });
-        }
+
+            this.subMenu = this.$route.params.subMenu;
+            if(this.subMenu != undefined && this.subMenu.children != undefined) {
+                this.subMenu = this.subMenu.children;
+                localStorage.setItem('subMenu', JSON.stringify(this.subMenu));
+            } else {
+                this.subMenu = JSON.parse(localStorage.getItem('subMenu'));
+                if(!this.subMenu)
+                    this.subMenu = [];
+                else {
+                    let result = false;
+                    this.subMenu.forEach((item) => {
+                        if(item.route.name == this.$route.name)
+                            result = true;
+                    });
+                    if(!result) {
+                        localStorage.setItem('subMenu', null);
+                        this.subMenu = [];
+                    }
+                }
+                this.$forceUpdate();
+            }
+        },
     }
 </script>
 
 <style lang="scss" scoped>
+    .list-table {
+        position: relative;
+        :global(.el-card.filter-right .el-card__body) {
+            float: right;
+        }
+        .el-row {
+            &.filter-right {
+                float: right;
+            }
+        }
+        .sub-menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 999;
+            font-size: 18px;
+            a {
+                margin-right: 25px;
+                text-decoration: none;
+                padding: 0 5px 18px;
+                color: var(--color-text-secondary);
+                position: relative;
+                font-family: 'Radikal Thin';
+                &:hover, &.is-active {
+                    color: var(--color-text-primary);
+                    font-weight: 700;
+                    font-size: 18px;
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 5px;
+                        background-color: var(--color-primary);
+                        border-radius: 12px 12px 0 0;
+                    }
+                }
+            }
+        }
+        .list-table-search {
+            position: fixed;
+            right: 40px;
+            top: 30px;
+            z-index: 99;
+            width: 250px;
+            &.el-input {
+                :global(.el-input__inner) {
+                    border-color: transparent;
+                    color: var(--color-text-regular);
+                    background-color: var(--background-color-base);
+                }
+                :global(.el-input__icon) {
+                    font-size: 16px;
+                    line-height: 36px;
+                }
+            }
+        }
+        .custom-select {
+            :global(.el-button) {
+                font-family: inherit;
+            }
+        }
+    }
     .remote-select {
         width: 100%;
         :global(input) {
@@ -862,9 +973,11 @@
     .el-button {
         border-radius: 20px;
         padding: 8.65px 15px;
+        font-family: inherit;
     }
     
     .el-input {
+        font-family: inherit;
         &.el-input--suffix {
             :global(.el-input__inner) {
                 padding-right: 30px;
@@ -1132,9 +1245,13 @@
     }
 
     .filters-card {
+        margin-bottom: 0 !important;
+        border: none !important;
         .el-card__body {
-            padding: 22px;
-            padding-bottom: 0;
+            padding: 0 22px;
+            .el-form-item {
+                margin-bottom: 0;
+            }
         }
     }
 

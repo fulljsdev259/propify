@@ -166,6 +166,10 @@ return [
         "internal_building_id" => "Numéro d'identification interne de l'immeuble",       
         "address_search" => "Veuillez entrer l'adresse",
         "not_found" => "Bâtiment non trouvé",
+        'building_format' => 'Project No.',
+        'building_no' => 'Building No.',
+        'active_residents_count' => 'Vives',
+        'request_status' => 'Demande Statut',
         'media_category' => [
             "house_rules" => "Règlement intérieur",
             "operating_instructions" => "Notice d'utilisation",
@@ -225,6 +229,7 @@ return [
         "deleted" => "Unité supprimée",
         "saved" => "Unité sauvegardée",
         "floor" => "L'étage",
+        'unit_id' => "l'unité ID",
         'floor_title' => [
             'under_ground_floor' => "UG",
             'ground_floor' => "EG",
@@ -399,6 +404,11 @@ return [
         'occupied_units_count' => 'Nombre de logements occupés',
         'active_residents_count' => 'Nombre de résidents actifs',
         'assignment' => "Affectation des gestionnaires/administrateurs",
+        'quarter_format' => 'Projet No',
+        'type' => 'Project Type',
+        'project_ort' => 'Projet Location',
+        'building_format' => 'Project No.',
+        'building_no' => 'Building No.',
         'errors' => [
             'not_found' => "Trimestre non trouvé",
             'deleted' => "Erreur d'effacement trimestriel : ",
@@ -424,7 +434,18 @@ return [
         'workflow' => [
             'label' => 'Workflow',
             'add' => 'Ajouter un flux de travail',
-            'edit' => 'Modifier le flux de travail'
+            'edit' => 'Modifier le flux de travail',
+            'delete' => 'Supprimer le workflow',
+            'by' => 'à côté de',
+            'to' => "jusqu'à",
+            'cc' => 'cc',
+            'placeholders' => [
+                'title' => 'Titre du workflow',
+                'category' => 'Sélectionner une catégorie',
+                'building' => 'Choisir un bâtiment',
+                'to_user' => 'Sélectionner un utilisateur',
+                'cc_user' => 'Sélectionner cc',
+            ]
         ]
     ],
     'request' => [        
@@ -589,11 +610,6 @@ return [
             'surrender' => 'Rendez-vous',
             'inspection' => 'Acceptation'
         ],
-        'payer' => [
-            'landlord' => 'Propriétaire',
-            'resident' => 'Résident',
-            'resident/landlord' => 'Résident/Propriétaire'
-        ],
         'status' => [
             "label" => "Statut",
             "received" => "Reçu",
@@ -613,7 +629,6 @@ return [
             'range' => 'Gamme',
             'component' => 'Composante',
             'capture_phase' => 'Phase de capture',
-            'payer' => 'Incidence sur les coûts',
             'payer_percent' => 'Partager Fortimo',
             'payer_amount' => 'Montant',
             'keywords' => 'Mots-clés',
@@ -676,6 +691,7 @@ return [
             'request_number' => 'Numéro de demande',
             'details'=>'Précisions',
             'blank_pdf'=>'Après l\'achèvement des défauts, veuillez renvoyer immédiatement à la direction du site le formulaire ci-joint, signé et signé.',
+            'address'=>'Objecter'
 
         ],
         'pictures_of' => 'Photos de la demande',

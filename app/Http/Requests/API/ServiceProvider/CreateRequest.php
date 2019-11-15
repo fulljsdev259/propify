@@ -24,6 +24,21 @@ class CreateRequest extends BaseRequest
      */
     public function rules()
     {
-        return ServiceProvider::$rules;
+        // @TODO address , user validation correctly
+        return [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'phone' => 'required|string|max:255',
+            'user' => 'required',
+            'address' => 'required',
+            'type' => [
+                'nullable',
+                $this->getInRuleByClassConstants(ServiceProvider::Type),
+            ],
+            'category' => [
+                'required',
+                $this->getInRuleByClassConstants(ServiceProvider::ServiceProviderCategory),
+            ],
+        ];
     }
 }

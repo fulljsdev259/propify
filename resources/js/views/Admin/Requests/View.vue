@@ -137,21 +137,7 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12" v-if="model.category_id && selectedCategoryHasQualification(model.category_id) && this.showPayer == true">
-                                    <el-form-item :label="$t('models.request.category_options.payer')">
-                                        <el-select :disabled="$can($permissions.update.serviceRequest)"
-                                                   :placeholder="$t(`general.placeholders.select`)"
-                                                   class="custom-select"
-                                                   v-model="model.payer">
-                                            <el-option
-                                                :key="payer.value"
-                                                :label="payer.name"
-                                                :value="payer.value"
-                                                v-for="payer in payers">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </el-col>
+                                
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.request.category_options.keywords')">
                                         <el-select
