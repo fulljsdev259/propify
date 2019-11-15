@@ -56,13 +56,15 @@ class NotifyNewPinboard
             return collect();
         }
 
+        if ($pinboard->announcement) {
+            return $this->newAnnouncementPinboard($pinboard);
+        }
+
         $usersToNotify = $this->getNotifiedResidentUsers($pinboard);
 
-        $announcementPinboardPublished = get_morph_type_of(AnnouncementPinboardPublished::class);
         $pinboardPublished = get_morph_type_of(PinboardPublished::class);
         $pinboardNewResidentNeighbor = get_morph_type_of(NewResidentInNeighbour::class);
         $notificationsData = collect([
-            $announcementPinboardPublished => collect(),
             $pinboardPublished => collect(),
             $pinboardNewResidentNeighbor => collect(),
         ]);
@@ -74,30 +76,57 @@ class NotifyNewPinboard
         $usersToNotify->load('settings:user_id,admin_notification,pinboard_notification', 'resident:id,user_id,first_name,last_name');
         $i = 0;
         foreach ($usersToNotify as $user) {
-            $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
             $user->redirect = '/news';
 
-            if ($user->settings && $user->settings->admin_notification && $pinboard->announcement) {
-                $notificationsData[$announcementPinboardPublished]->push($user);
-                $user->notify((new AnnouncementPinboardPublished($pinboard))
-                    ->delay(now()->addSeconds($delay)));
+            if (empty($user->settings) || ! $user->settings->pinboard_notification) {
                 continue;
             }
 
-            if ($user->settings && $user->settings->pinboard_notification && ! $pinboard->announcement) {
-                if ($pinboard->type == Pinboard::TypePost) {
-                    $notificationsData[$pinboardPublished]->push($user);
-                    $user->notify(new PinboardPublished($pinboard));
-                }
-                if ($pinboard->type == Pinboard::TypeNewNeighbour) {
-                    $notificationsData[$pinboardNewResidentNeighbor]->push($user);
-                    $user->notify((new NewResidentInNeighbour($pinboard))->delay($pinboard->published_at));
-                }
+            if ($pinboard->type == Pinboard::TypePost) {
+                $notificationsData[$pinboardPublished]->push($user);
+                $user->notify(new PinboardPublished($pinboard));
+            }
+            
+            if ($pinboard->type == Pinboard::TypeNewNeighbour) {
+                $notificationsData[$pinboardNewResidentNeighbor]->push($user);
+                $user->notify((new NewResidentInNeighbour($pinboard))->delay($pinboard->published_at));
             }
         }
 
         if ($this->saveSystemAudit) {
             $pinboard->newSystemNotificationAudit($notificationsData);
+        }
+
+        return $notificationsData;
+    }
+
+    /**
+     * @param Pinboard $pinboard
+     * @return \Illuminate\Support\Collection
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    protected function newAnnouncementPinboard(Pinboard $pinboard)
+    {
+        $announcementPinboardPublished = get_morph_type_of(AnnouncementPinboardPublished::class);
+        $notificationsData = collect([
+            $announcementPinboardPublished => collect(),
+        ]);
+        $usersToNotify = $this->getNotifiedResidentUsers($pinboard);
+        if ($usersToNotify->isEmpty()) {
+            return $notificationsData;
+        }
+
+        $usersToNotify->load('settings:user_id,admin_notification,pinboard_notification', 'resident:id,user_id,first_name,last_name');
+        $i = 0;
+        foreach ($usersToNotify as $user) {
+            $delay = $i++ * env("DELAY_BETWEEN_EMAILS", 10);
+            $user->redirect = '/news';
+
+            if ($user->settings && $user->settings->admin_notification) { // @TODO correct U think it must be pinboard_notification ??
+                $notificationsData[$announcementPinboardPublished]->push($user);
+                $user->notify((new AnnouncementPinboardPublished($pinboard))
+                    ->delay(now()->addSeconds($delay)));
+            }
         }
 
         $announcementPinboardPublishedUsers = $notificationsData[$announcementPinboardPublished] ?? collect();
@@ -106,6 +135,10 @@ class NotifyNewPinboard
                 'resident_ids' => $announcementPinboardPublishedUsers->pluck('resident.id'),
                 'failed_resident_ids' => []
             ]);
+        }
+
+        if ($this->saveSystemAudit) {
+            $pinboard->newSystemNotificationAudit($notificationsData);
         }
 
         return $notificationsData;
