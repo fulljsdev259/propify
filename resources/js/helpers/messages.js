@@ -57,7 +57,7 @@ export const displayError = (err) => {
         } else {            
             let msg = err.message;
             if (isAdmin) {
-                msg = $i18n.t((typeof msg === 'string') ? msg : ((typeof msg === 'object') ? msg[Object.keys(msg)[0]][0] : 'ERROR'));
+                msg = $i18n.t((typeof msg === 'string') ? msg : ((typeof msg === 'object') ? msg[Object.keys(msg)[0]][0] : 'general.server_error'));
                 Vue.$snotify.error(msg);               
             }
             else {
