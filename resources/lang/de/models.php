@@ -163,7 +163,7 @@ return [
         'basement' => 'Erdgeschoss',
         'attic' => 'Attikageschoss',
         'floor_nr' => 'Anzahl Etagen',
-        'internal_building_id' => "Interne Objekt-ID",        
+        'internal_building_id' => "Projektnummer",        
         'address_search' => 'Bitte Adresse eingeben.',
         'not_found' => 'Objekt nicht gefunden.',
         'media_category' => [
