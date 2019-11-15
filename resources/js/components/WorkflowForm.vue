@@ -1,6 +1,6 @@
 <template>
     <el-form :model="model" :rules="validationRules" label-position="top" ref="form" v-loading="loading" :class="mode == 'edit' ? 'edit-workflow-form' : ''">
-        <el-row :gutter="20">
+        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="24">
                 <el-form-item 
                             :rules="validationRules.required"
@@ -11,7 +11,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="12">
                 <el-form-item 
                             :rules="validationRules.required"
@@ -55,7 +55,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="12">
                 <el-form-item 
                             :rules="validationRules.required"

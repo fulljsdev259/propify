@@ -1107,7 +1107,7 @@
         padding-bottom: 10px;
 
         &.edit {
-            padding-top: 30px;
+            padding-top: 40px;
         }
     }
 
