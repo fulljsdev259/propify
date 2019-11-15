@@ -111,7 +111,17 @@ class NotifyNewPinboard
         $notificationsData = collect([
             $announcementPinboardPublished => collect(),
         ]);
-        $usersToNotify = $this->getNotifiedResidentUsers($pinboard);
+
+        $quarterIds = $buildingIds = [];
+        if ($pinboard->visibility == Pinboard::VisibilityQuarter || $pinboard->announcement) {
+            $quarterIds = $pinboard->quarters()->pluck('id')->toArray();
+        }
+
+        if ($pinboard->visibility == Pinboard::VisibilityAddress  || $pinboard->announcement) {
+            $buildingIds = $pinboard->buildings()->pluck('id')->toArray();
+        }
+
+        $usersToNotify = $this->getNotifiedResidentUsers($pinboard, $quarterIds, $buildingIds);
         if ($usersToNotify->isEmpty()) {
             return $notificationsData;
         }
@@ -130,12 +140,8 @@ class NotifyNewPinboard
         }
 
         $announcementPinboardPublishedUsers = $notificationsData[$announcementPinboardPublished] ?? collect();
-        if ($announcementPinboardPublishedUsers->isNotEmpty()) {
-            $pinboard->announcement_email_receptionists()->create([
-                'resident_ids' => $announcementPinboardPublishedUsers->pluck('resident.id'),
-                'failed_resident_ids' => []
-            ]);
-        }
+        $this->saveAnnouncementEmailReceptionists($pinboard, $buildingIds, $quarterIds, $announcementPinboardPublishedUsers);
+
 
         if ($this->saveSystemAudit) {
             $pinboard->newSystemNotificationAudit($notificationsData);
@@ -144,12 +150,66 @@ class NotifyNewPinboard
         return $notificationsData;
     }
 
+    /**
+     * @param $pinboard
+     * @param $buildingIds
+     * @param $quarterIds
+     * @param $users
+     */
+    protected function saveAnnouncementEmailReceptionists($pinboard, $buildingIds, $quarterIds, $users)
+    {
+        $residents = Resident::whereIn('user_id', $users->pluck('id'))
+            ->select('id')
+            ->where('user_id', '!=', $pinboard->user_id)
+            ->where('residents.status', Resident::StatusActive)
+            ->whereNull('residents.deleted_at')
+            ->with([
+                'contracts' => function ($q) use ($buildingIds, $quarterIds) {
+                    $this->setNeededFiltersInQuery($q, $buildingIds, $quarterIds);
+                    $q->select('resident_id', 'building_id')
+                        ->with('building:id,quarter_id');
+                }
+            ])
+            ->get();
+
+        $data = [];
+        $residents->map(function ($resident) use ($buildingIds, $quarterIds, &$data) {
+            foreach ($resident->contracts as $contract) {
+                $building = $contract->building;
+                if (empty($building)) {
+                    // this case must be not happen in reality
+                    continue;
+                }
+
+                if (in_array($building->quarter_id, $quarterIds)) {
+                    // priority is quarter then building
+                    $data['quarters'][$building->quarter_id][] = $resident->id;
+                    continue;
+                }
+
+                if (in_array($building->id, $buildingIds)) {
+                    // priority is quarter then building
+                    $data['buildings'][$building->id][] = $resident->id;
+                    continue;
+                }
+
+                dd('something is not correct must be look');
+            }
+        });
+
+        if ($data) {
+            $pinboard->announcement_email_receptionists()->create([
+                'residents_data' => $data,
+                'failed_resident_ids' => []
+            ]);
+        }
+    }
 
     /**
      * @param Pinboard $pinboard
      * @return Collection
      */
-    protected function getNotifiedResidentUsers(Pinboard $pinboard)
+    protected function getNotifiedResidentUsers(Pinboard $pinboard, $quarterIds = null, $buildingIds = null)
     {
         if ($pinboard->visibility == Pinboard::VisibilityAll) {
             return User::whereHas('resident', function ($q) {
@@ -159,13 +219,18 @@ class NotifyNewPinboard
                 ->get();
         }
 
-        $quarterIds = $buildingIds = [];
-        if ($pinboard->visibility == Pinboard::VisibilityQuarter || $pinboard->announcement) {
-            $quarterIds = $pinboard->quarters()->pluck('id')->toArray();
+        if (is_null($quarterIds)) {
+            $quarterIds = [];
+            if ($pinboard->visibility == Pinboard::VisibilityQuarter || $pinboard->announcement) {
+                $quarterIds = $pinboard->quarters()->pluck('id')->toArray();
+            }
         }
 
-        if ($pinboard->visibility == Pinboard::VisibilityAddress  || $pinboard->announcement) {
-            $buildingIds = $pinboard->buildings()->pluck('id')->toArray();
+        if (is_null($buildingIds)) {
+            $buildingIds = [];
+            if ($pinboard->visibility == Pinboard::VisibilityAddress  || $pinboard->announcement) {
+                $buildingIds = $pinboard->buildings()->pluck('id')->toArray();
+            }
         }
 
         if (empty($quarterIds) && empty($buildingIds)) {
