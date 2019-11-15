@@ -166,6 +166,10 @@ return [
         'internal_building_id' => 'Internal Building Id',       
         'address_search' => 'Please enter address',
         'not_found' => 'Building not found',
+        'building_format' => 'Project No.',
+        'building_no' => 'Building No.',
+        'active_residents_count' => 'Living',
+        'request_status' => 'Request Status',
         'media_category' => [
             'house_rules' => 'House rules',
             'operating_instructions' => 'Operating instructions',
@@ -225,6 +229,7 @@ return [
         'deleted' => 'Unit deleted',
         'saved' => 'Unit saved',
         'floor' => 'Floor',
+        'unit_id' => 'Unit ID',
         'floor_title' => [
             'under_ground_floor' => "UG",
             'ground_floor' => "EG",
@@ -399,6 +404,9 @@ return [
         'occupied_units_count' => 'Count of occupied units',
         'active_residents_count' => 'Count of active residents',
         'assignment' => 'Assignment of managers/administrator',
+        'quarter_format' => 'Project No',
+        'type' => 'Project Type',
+        'project_ort' => 'Project Location',
         'errors' => [
             'not_found' => "Quarter not found",
             'deleted' => "Quarter deleted error: ",

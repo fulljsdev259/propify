@@ -132,33 +132,21 @@
                 remoteLoading: false,
                 delBuildingStatus: -1, // 0: unit, 1: request, 2: both
                 header: [{
-                    label: 'general.address',
-                    withMultipleProps: true,
-                    props: ['address_row', 'address_zip']
+                    label: 'models.building.building_format',
+                    props: 'building_format',
+                }, {
+                    label: 'models.building.building_no',
+                    prop: 'address.house_num'
                 }, {
                     label: 'models.building.units',
-                    withMultipleProps: true,
-                    withLinks: true,
-                    route: {
-                        name: 'adminBuildingUnits',
-                        paramsKeys: {
-                            model: 'building',
-                            props: ['id']
-                        }
-                    },
-                    props: ['units_count']
-                }, {
-                    label: 'general.residents',
-                    withUsers: true,
-                    count: 'residentscount',
-                    prop: 'residents'
+                    prop: 'units_count'
                 }, {
                     label: 'general.box_titles.managers',
                     withUsers: true,
                     prop: 'managers',
                     count: 'managerscount'
                 }, {
-                    label: 'general.requests',
+                    label: 'models.building.request_status',
                     withCounts: true,
                     counts: [
                         {
@@ -198,19 +186,24 @@
                             label: this.$t('models.request.status.archived')
                         }
                     ]
-                }, {
-                    width: 150,
-                    actions: [{
-                        type: '',
-                        icon: 'ti-search',
-                        title: 'general.actions.edit',
-                        onClick: this.edit,
-                        editUrl: 'adminBuildingsEdit',
-                        permissions: [
-                            this.$permissions.update.building
-                        ]
-                    }]
-                }]
+                },  {
+                    label: 'models.building.active_residents_count',
+                    prop: 'active_residents_count'
+                },
+                // {
+                //     width: 150,
+                //     actions: [{
+                //         type: '',
+                //         icon: 'ti-search',
+                //         title: 'general.actions.edit',
+                //         onClick: this.edit,
+                //         editUrl: 'adminBuildingsEdit',
+                //         permissions: [
+                //             this.$permissions.update.building
+                //         ]
+                //     }]
+                // }
+                ]
             };
         },
         async created(){
