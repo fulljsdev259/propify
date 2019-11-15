@@ -79,40 +79,35 @@
                 quarters:{},
                 buildings:{},
                 header: [{
-                    label: 'models.unit.name',
-                    prop: 'name'
+                    label: 'models.quarter.quarter_format',
+                    prop: 'unit_format'
                 }, {
-                    label: 'models.unit.building',
-                    prop: 'building.name'
+                    label: 'models.unit.unit_id',
+                    prop: 'name'
                 }, {
                     label: 'models.unit.type.label',
                     prop: 'formatted_type_label'
                 }, {
                     label: 'models.unit.floor',
                     prop: 'floor'
-                }, {
+                },{
                     label: 'models.unit.room_no',
                     prop: 'room_no'
-                }, {
-                    label: 'general.gross_rent',
-                    prop: 'monthly_rent_gross'
-                }, {
-                    label: 'general.resident',
-                    withUsers: true,
-                    prop: 'residents'
-                }, {
-                    width: 150,
-                    actions: [{
-                        type: '',
-                        icon: 'ti-search',
-                        title: 'general.actions.edit',
-                        onClick: this.edit,
-                        editUrl: 'adminUnitsEdit',
-                        permissions: [
-                            this.$permissions.update.unit
-                        ]
-                    }]
-                }],
+                },
+                //  {
+                //     width: 150,
+                //     actions: [{
+                //         type: '',
+                //         icon: 'ti-search',
+                //         title: 'general.actions.edit',
+                //         onClick: this.edit,
+                //         editUrl: 'adminUnitsEdit',
+                //         permissions: [
+                //             this.$permissions.update.unit
+                //         ]
+                //     }]
+                // }
+                ],
                 building: {},
                 isLoadingFilters: false,
             };
