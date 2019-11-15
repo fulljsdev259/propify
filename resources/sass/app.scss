@@ -203,3 +203,11 @@ body {
 		url('~fonts/times_new_roman.ttf') format('truetype'), /* Safari, Android, iOS */
 		url('~fonts/times_new_roman.svg#times_new_roman') format('svg'); /* Chrome < 4, Legacy iOS */
 }
+@font-face {
+    font-family: 'Radikal Bold';
+    src: url('~fonts/radikal/radikal_bold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Radikal';
+    src: url('~fonts/radikal/radikal_w03_regular.ttf') format('truetype');
+}

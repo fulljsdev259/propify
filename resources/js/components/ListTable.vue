@@ -906,7 +906,7 @@
                 &:hover, &.is-active {
                     color: var(--color-text-primary);
                     font-weight: 700;
-                    font-size: 17.2px;
+                    font-size: 18px;
                     &::after {
                         content: '';
                         position: absolute;
@@ -936,6 +936,11 @@
                     font-size: 16px;
                     line-height: 36px;
                 }
+            }
+        }
+        .custom-select {
+            :global(.el-button) {
+                font-family: inherit;
             }
         }
     }
@@ -968,9 +973,11 @@
     .el-button {
         border-radius: 20px;
         padding: 8.65px 15px;
+        font-family: inherit;
     }
     
     .el-input {
+        font-family: inherit;
         &.el-input--suffix {
             :global(.el-input__inner) {
                 padding-right: 30px;
