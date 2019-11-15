@@ -68,39 +68,43 @@
                 states: [],
                 i18nName: 'quarter',
                 header: [{
-                    label: 'general.name',
-                    width: 230,
-                    prop: 'name'
+                    label: 'models.quarter.quarter_format',
+                    prop: 'quarter_format'
                 }, 
                 // {
                 //     label: 'models.quarter.count_of_buildings',
                 //     prop: 'count_of_buildings'
                 // }, 
                 {
+                    label: 'models.quarter.url',
+                    prop: 'url'
+                },  {
+                    label: 'models.quarter.project_ort',
+                    prop: 'name'
+                }, {
+                    label: 'models.quarter.type',
+                    prop: 'types'
+                }, {
                     label: 'models.quarter.buildings_count',
                     prop: 'buildings_count'
                 }, {
                     label: 'models.quarter.total_units_count',
                     prop: 'total_units_count'
-                }, {
-                    label: 'models.quarter.occupied_units_count',
-                    prop: 'occupied_units_count'
-                }, {
-                    label: 'models.quarter.active_residents_count',
-                    prop: 'active_residents_count'
-                }, {
-                    width: 150,
-                    actions: [{
-                        type: '',
-                        icon: 'ti-search',
-                        title: 'general.actions.edit',
-                        editUrl: 'adminQuartersEdit',
-                        onClick: this.edit,
-                        permissions: [
-                            this.$permissions.update.quarter
-                        ]
-                    }]
-                }],
+                }, 
+                // {
+                //     width: 150,
+                //     actions: [{
+                //         type: '',
+                //         icon: 'ti-search',
+                //         title: 'general.actions.edit',
+                //         editUrl: 'adminQuartersEdit',
+                //         onClick: this.edit,
+                //         permissions: [
+                //             this.$permissions.update.quarter
+                //         ]
+                //     }]
+                // }
+                ],
                 model: {
                     id: '',
                     name: '',

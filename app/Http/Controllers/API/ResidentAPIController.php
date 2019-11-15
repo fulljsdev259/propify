@@ -1288,7 +1288,7 @@ class ResidentAPIController extends AppBaseController
             ->where('status', Contract::StatusActive)
             ->with([
                 'building.property_managers' => function ($q) {
-                    $q->select('property_managers.id', 'user_id', 'slogan', 'first_name', 'last_name')
+                    $q->select('property_managers.id', 'property_managers.user_id', 'property_managers.slogan', 'property_managers.first_name', 'property_managers.last_name')
                         ->with('user:id,avatar,phone,email');
                 },
             ])->get();
