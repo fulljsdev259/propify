@@ -28,6 +28,7 @@
             </div>
             <el-card :header="filtersHeader"
                      class="mb30 filters-card"
+                    :class="{'filter-right': subMenu.length}"
                      shadow="never"
                      v-if="this.filters.length"
                     :element-loading-background="loading.background"
@@ -35,7 +36,7 @@
                     :element-loading-text="$t(loading.text)"
                     v-loading="isLoadingFilters.state"
             >
-                <el-row :gutter="10" :class="{'filter-right': subMenu.length}">
+                <el-row :gutter="10">
                     <el-col :key="key" :span="filterColSize" v-for="(filter, key) in filters">
                         <template v-if="!filter.parentKey || filterModel[filter.parentKey]">
                             <el-form-item
@@ -871,6 +872,7 @@
                         this.subMenu = [];
                     }
                 }
+                this.$forceUpdate();
             }
         },
     }
@@ -879,6 +881,9 @@
 <style lang="scss" scoped>
     .list-table {
         position: relative;
+        :global(.el-card.filter-right .el-card__body) {
+            float: right;
+        }
         .el-row {
             &.filter-right {
                 float: right;
@@ -886,21 +891,21 @@
         }
         .sub-menu {
             position: absolute;
-            top: 10px;
-            left: 40px;
+            top: 20px;
+            left: 20px;
             z-index: 999;
-            font-size: 20px;
+            font-size: 18px;
             a {
                 margin-right: 25px;
                 text-decoration: none;
-                padding: 0 5px 25px;
+                padding: 0 5px 18px;
                 color: var(--color-text-secondary);
                 font-weight: 500;
                 position: relative;
                 &:hover, &.is-active {
                     color: var(--color-text-primary);
                     font-weight: 700;
-                    font-size: 19.2px;
+                    font-size: 17.2px;
                     &::after {
                         content: '';
                         position: absolute;
@@ -915,7 +920,7 @@
             }
         }
         .list-table-search {
-            position: absolute;
+            position: fixed;
             right: 40px;
             top: 30px;
             z-index: 99;
