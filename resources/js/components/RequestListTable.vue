@@ -597,6 +597,11 @@
 </script>
 
 <style lang="scss" scoped>
+    .custom-select, .custom-date-picker {
+        :global(.el-button) {
+            font-family: inherit;
+        }
+    }
     .avatar-count{
         min-width: 28px;
     }
