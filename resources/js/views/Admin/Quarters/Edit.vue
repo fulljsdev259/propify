@@ -663,7 +663,8 @@
                 'getBuildings',
                 "uploadQuarterFile", 
                 "deleteQuarterFile",
-                'saveWorkflow'
+                'saveWorkflow',
+                'updateWorkflow'
             ]),
             translateType(type) {
                 return this.$t(`general.assignment_types.${type}`);
@@ -809,6 +810,8 @@
             updateWorkflow(index, workflow) {
                 this.$set(this.model.workflows, index, workflow)
                 this.$set(this.isEditingWorkflow, index, false)
+                workflow.quarter_id = this.model.id
+                this.updateWorkflow(workflow)
             },
             cancelEditWorkflow(index) {
                 this.$set(this.isEditingWorkflow, index, false)

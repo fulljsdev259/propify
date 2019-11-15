@@ -134,10 +134,17 @@ export default {
                 .then(({data: r}) => (r && resolve(r)))
                 .catch(({response: {data: err}}) => reject(err)));
     },
-    saveWorkflow({commit}, {payload}) {
+    saveWorkflow({commit}, payload) {
         return new Promise((resolve, reject) =>
             axios.post(`workflows`, payload)
                 .then(({data: r}) => (r && resolve(r)))
                 .catch(({response: {data: err}}) => reject(err)));
     },
+    updateWorkflow({commit}, {id, ...payload}) {
+        return new Promise((resolve, reject) =>
+            axios.put(`workflows/${id}`, payload)
+                .then(({data: r}) => (r && resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
+    
 }
