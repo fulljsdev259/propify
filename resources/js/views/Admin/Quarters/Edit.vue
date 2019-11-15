@@ -1125,6 +1125,7 @@
     }
 
     .el-collapse {
+        border-top: 0;
         border-bottom: 0;
         /deep/ .el-collapse-item__header {
             padding-left: 1em;

@@ -487,11 +487,16 @@
                     &::after {
                         color:#565556;
                         content: "\E6DB";
-                        display: block;
+                        display: block !important;
+                        position: absolute;
+                        left: 5px;
                     }
                 }
 
                 .el-icon-circle-close::after {
+                    display: none !important;
+                }
+                .el-icon-circle-close::before {
                     display: none !important;
                 }
             }
