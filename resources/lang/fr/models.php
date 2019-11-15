@@ -169,6 +169,7 @@ return [
         'building_format' => 'Project No.',
         'building_no' => 'Building No.',
         'active_residents_count' => 'Vives',
+        'request_status' => 'Demande Statut',
         'media_category' => [
             "house_rules" => "Règlement intérieur",
             "operating_instructions" => "Notice d'utilisation",

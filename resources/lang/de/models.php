@@ -169,6 +169,7 @@ return [
         'building_format' => 'Projectnr.',
         'building_no' => 'Objektnr.',
         'active_residents_count' => 'Wohnungen',
+        'request_status' => 'Anliegen-Status',
         'media_category' => [
             'house_rules' => 'Hausordnung',
             'operating_instructions' => 'Benutzungsanleitungen',
@@ -237,7 +238,7 @@ return [
         ],
         'rooms' => 'Räume',
         'sq_meter' => 'Fläche',
-        'room_no' => 'Anzahl Zimmer',
+        'room_no' => 'Zimmer',
         'building' => 'Objekt',
         'basement' => 'Untergeschoss',
         'attic' => 'Attikageschoss',        
@@ -400,13 +401,13 @@ return [
         'required' => 'Projekt ist ein Pflichfeld!',
         'buildings' => 'Objekte',
         'count_of_buildings' => 'Anzahl Objekte',
-        'buildings_count' => 'Anzahl Objekte',
-        'total_units_count' => 'Anzahl Einheiten',
+        'buildings_count' => 'Objekte',
+        'total_units_count' => 'Wohnungen',
         'occupied_units_count' => 'Belegte Einheiten',
         'active_residents_count' => 'Aktive Bewohner',
         'assignment' => 'Zuständigkeit',
         'quarter_format' => 'Projectnr.',
-        'type' => 'Projektort',
+        'type' => 'Projektart',
         'project_ort' => 'Projektort',
         'errors' => [
             'not_found' => "Projekt nicht gefunden.",
@@ -429,7 +430,7 @@ return [
             'caretaker' => 'Hauswart',
             'administration' => 'Verwaltung'
         ],
-        'url' => 'Url',
+        'url' => 'Projekturl',
         'workflow' => [
             'label' => 'Workflow',
             'add' => 'Workflow hinzufügen',

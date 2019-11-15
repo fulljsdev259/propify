@@ -169,6 +169,7 @@ return [
         'building_format' => 'Project No.',
         'building_no' => 'Building No.',
         'active_residents_count' => 'Vivente',
+        'request_status' => 'Richiesta Stato',
         'media_category' => [
             "house_rules" => "Le regole della casa",
             "operating_instructions" => "Istruzioni per l'uso",

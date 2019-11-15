@@ -169,6 +169,7 @@ return [
         'building_format' => 'Project No.',
         'building_no' => 'Building No.',
         'active_residents_count' => 'Living',
+        'request_status' => 'Request Status',
         'media_category' => [
             'house_rules' => 'House rules',
             'operating_instructions' => 'Operating instructions',

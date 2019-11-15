@@ -146,7 +146,7 @@
                     prop: 'managers',
                     count: 'managerscount'
                 }, {
-                    label: 'general.requests',
+                    label: 'models.building.request_status',
                     withCounts: true,
                     counts: [
                         {
