@@ -16,4 +16,10 @@ use App\Traits\OldChagesAttribute;
 class Model extends \Illuminate\Database\Eloquent\Model
 {
     use OldChagesAttribute, BaseModelTrait;
+
+    public function emptyAppends()
+    {
+        $this->appends = [];
+        return $this;
+    }
 }
