@@ -142,13 +142,14 @@ class UnitAPIController extends AppBaseController
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
 
         $units = $this->unitRepository->with([
-            'building',
-            'media',
-            'contracts' => function ($q) {
-                $q->with('building.address', 'unit', 'resident.user');
-            },
-        ])->paginate($perPage);
-
+                'building',
+                'media',
+                'contracts' => function ($q) {
+                    $q->with('building.address', 'unit', 'resident.user');
+                },
+            ])
+            ->scope('allRequestStatusCount')
+            ->paginate($perPage);
         $response = (new UnitTransformer)->transformPaginator($units);
         return $this->sendResponse($response, 'Units retrieved successfully');
     }

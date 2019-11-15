@@ -36,7 +36,11 @@ class QuarterTransformer extends BaseTransformer
         }
 
         if ($model->relationExists('address')) {
-            $response['address'] = (new AddressTransformer)->transform($model->address);
+            if (array_keys($model->address->getAttributes()) == ['id', 'city']) {
+                $response['city'] = $model->address->city;
+            } else {
+                $response['address'] = (new AddressTransformer)->transform($model->address);
+            }
         }
 
         if ($model->relationExists('buildings')) {
