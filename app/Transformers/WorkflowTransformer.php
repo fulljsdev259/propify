@@ -20,6 +20,8 @@ class WorkflowTransformer extends BaseTransformer
      */
     public function transform(Workflow $model)
     {
+        // @TODO more clever way get all relations data for avoid many queries maybe use this package
+        // https://github.com/staudenmeir/eloquent-json-relations
         $response = [
             'id' => $model->id,
             'quarter_id' => $model->quarter_id,
@@ -27,7 +29,7 @@ class WorkflowTransformer extends BaseTransformer
             'title' => $model->title,
             'building_ids' => $model->building_ids,
             'to_user_ids' => $model->to_user_ids,
-            'cc_user_ids' => $model->cc_user_ids,
+            'cc_user_ids' => $model->cc_user_ids ?? [],
         ];
 
         $toUserIds = $model->to_user_ids ?? [];
@@ -46,6 +48,10 @@ class WorkflowTransformer extends BaseTransformer
         $buildings = Building::whereIn('id', $buildingIds)->with('address')->get();
         $response['buildings'] = (new BuildingTransformer())->transformCollection($buildings);
         $response['category'] = $model->category_id ? get_category_details($model->category_id) : [];
+
+        if ($model->relationExists('quarter')) {
+            $response['quarter'] = (new QuarterTransformer())->transform($model->quarter);
+        }
 
         return $response;
     }
