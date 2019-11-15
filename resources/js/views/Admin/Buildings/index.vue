@@ -1,23 +1,38 @@
 <template>
     <div class="buildings">
-        <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy">
+        <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy" class="padding-right-300">
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.building)">
-                <el-button @click="add" icon="ti-plus" round size="mini" type="primary">{{$t('models.building.add')}}
+                <el-button 
+                    @click="add" 
+                    icon="ti-plus" 
+                    size="mini" 
+                    class="transparent-button"
+                >
+                    {{$t('models.building.add')}}
                 </el-button>
             </template>
             <template v-if="$can($permissions.assign.manager)">
-                <el-button :disabled="!selectedItems.length" @click="batchAssignManagers" icon="ti-user" round
-                           size="mini"
-                           type="info">
+                <el-button 
+                    :disabled="!selectedItems.length" 
+                    @click="batchAssignManagers" 
+                    icon="ti-user"
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('models.building.assign_managers')}}
                 </el-button>
             </template>
             <template v-if="$can($permissions.delete.building)">
-                <el-button :disabled="!selectedItems.length" @click="batchDeleteBuilding" icon="ti-trash" round size="mini"
-                           type="danger">
+                <el-button 
+                    :disabled="!selectedItems.length" 
+                    @click="batchDeleteBuilding" 
+                    icon="ti-trash" 
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('general.actions.delete')}}
                 </el-button>
             </template>
@@ -117,33 +132,21 @@
                 remoteLoading: false,
                 delBuildingStatus: -1, // 0: unit, 1: request, 2: both
                 header: [{
-                    label: 'general.address',
-                    withMultipleProps: true,
-                    props: ['address_row', 'address_zip']
+                    label: 'models.building.building_format',
+                    props: 'building_format',
+                }, {
+                    label: 'models.building.building_no',
+                    prop: 'address.house_num'
                 }, {
                     label: 'models.building.units',
-                    withMultipleProps: true,
-                    withLinks: true,
-                    route: {
-                        name: 'adminBuildingUnits',
-                        paramsKeys: {
-                            model: 'building',
-                            props: ['id']
-                        }
-                    },
-                    props: ['units_count']
-                }, {
-                    label: 'general.residents',
-                    withUsers: true,
-                    count: 'residentscount',
-                    prop: 'residents'
+                    prop: 'units_count'
                 }, {
                     label: 'general.box_titles.managers',
                     withUsers: true,
                     prop: 'managers',
                     count: 'managerscount'
                 }, {
-                    label: 'general.requests',
+                    label: 'models.building.request_status',
                     withCounts: true,
                     counts: [
                         {
@@ -183,19 +186,24 @@
                             label: this.$t('models.request.status.archived')
                         }
                     ]
-                }, {
-                    width: 150,
-                    actions: [{
-                        type: '',
-                        icon: 'ti-search',
-                        title: 'general.actions.edit',
-                        onClick: this.edit,
-                        editUrl: 'adminBuildingsEdit',
-                        permissions: [
-                            this.$permissions.update.building
-                        ]
-                    }]
-                }]
+                },  {
+                    label: 'models.building.active_residents_count',
+                    prop: 'active_residents_count'
+                },
+                // {
+                //     width: 150,
+                //     actions: [{
+                //         type: '',
+                //         icon: 'ti-search',
+                //         title: 'general.actions.edit',
+                //         onClick: this.edit,
+                //         editUrl: 'adminBuildingsEdit',
+                //         permissions: [
+                //             this.$permissions.update.building
+                //         ]
+                //     }]
+                // }
+                ]
             };
         },
         async created(){

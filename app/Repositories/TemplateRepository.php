@@ -13,6 +13,7 @@ use App\Models\Template;
 use App\Models\TemplateCategory;
 use App\Models\Resident;
 use App\Models\User;
+use App\Models\Workflow;
 use Illuminate\Container\Container as Application;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
@@ -75,15 +76,15 @@ class TemplateRepository extends BaseRepository
     }
 
     /**
-     * @param User $user
      * @param Request $request
+     * @param Workflow $workflow
      * @return array
      */
-    public function getRequestEmailReceiverTemplate(User $user, Request $request): array
+    public function getRequestEmailReceiverTemplate(Request $request, Workflow $workflow): array
     {
         $template = $this->getByCategoryName('request_email_receiver');
         $context = [
-            'user' => $user,
+            'workflow' => $workflow,
             'request' => $request,
         ];
         $tags = $this->getTags($template->category->tag_map, $context);

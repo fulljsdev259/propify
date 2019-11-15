@@ -172,7 +172,7 @@ return [
         "multiple" => ":num documents disponibles"
     ],
     'media_category' => [
-        "all" => "Sélectionner tout",
+        "all" => "Montrer tout",
         "house_rules" => "Règlement intérieur",
         "operating_instructions" => "Notice d'utilisation",
         'care_instructions' => 'Conseils d\'entretien',

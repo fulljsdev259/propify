@@ -25,11 +25,13 @@ class QuarterTransformer extends BaseTransformer
             'internal_quarter_id' => $model->internal_quarter_id,
             'description' => $model->description,
             'count_of_buildings' => $model->count_of_buildings,
-            'type' => $model->type,
+            'url' => $model->url,
+            'types' => $model->types,
             'assignment_type' => $model->assignment_type,
         ];
 
         if ($model->hasAttribute('has_email_receptionists')) {
+            // @TODO kill
             $response['has_email_receptionists'] = $model->has_email_receptionists;
         }
 

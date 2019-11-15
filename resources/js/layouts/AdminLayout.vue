@@ -57,9 +57,9 @@
                 <v-router-transition transition="slide-left">
                     <router-view/>
                 </v-router-transition>
-                <a-footer />
             </el-main>
         </el-container>
+        <vue-snotify></vue-snotify>
     </el-container>
 </template>
 
@@ -250,14 +250,14 @@
                             }
                         }]
                     },
-                    "activity": {
-                        icon: 'icon-gauge-1',
-                        title: this.$t('general.admin_menu.activity'),
-                        permission: this.$permissions.list.audit,
-                        route: {
-                            name: 'adminActivityList'
-                        }
-                    },
+                    // "activity": {
+                    //     icon: 'icon-gauge-1',
+                    //     title: this.$t('general.admin_menu.activity'),
+                    //     permission: this.$permissions.list.audit,
+                    //     route: {
+                    //         name: 'adminActivityList'
+                    //     }
+                    // },
                     "residents": {
                         title: this.$t('general.admin_menu.residents'),
                         icon: 'icon-group',
@@ -321,7 +321,7 @@
                             menu_items.dashboard,
                             menu_items.buildings,
                             menu_items.requests, 
-                            menu_items.activity,
+                            // menu_items.activity,
                             menu_items.residents,
                             menu_items.propertyManagers,
                             menu_items.services,
@@ -438,9 +438,9 @@
                 localStorage.setItem('selectedFlag', this.selectedFlag);
             },*/
 
-            getDropdownWidth() {
-                this.dropdownwidth = this.$refs.prev.clientWidth;
-            },
+            // getDropdownWidth() {
+            //     this.dropdownwidth = this.$refs.prev.clientWidth;
+            // },
 
             handlerDropdownVisibleChange() {
                 let Itag = this.$el.querySelector("i[style]");
@@ -466,11 +466,11 @@
         },
 
         mounted(){            
-            EventBus.$on('profile-username-change', () => {
-                this.dropdownwidth = this.$refs.prev.clientWidth;
-            });
+            // EventBus.$on('profile-username-change', () => {
+            //     this.dropdownwidth = this.$refs.prev.clientWidth;
+            // });
 
-            this.getDropdownWidth();
+            //this.getDropdownWidth();
             
             let languagesObject = this.$constants.app.languages;
             let languagesArray = Object.keys(languagesObject).map(function(key) {
@@ -504,7 +504,8 @@
         
 
         async created() {
-            this.getRequestCounts()
+            this.setLocale('de');
+            this.getRequestCounts();
         }
 
     }
@@ -540,6 +541,15 @@
 </style>
 
 <style lang="scss" scoped>
+    .admin-layout {
+        font-family: 'Radikal';
+        :global(.heading .content .title) {
+            font-family: 'Radikal Bold';
+        }
+        :global(.heading .el-button) {
+            font-family: 'Radikal';
+        }
+    }
 
     .el-container {
         background-color: #F2F4F9;

@@ -509,7 +509,7 @@ class QuarterAPIController extends AppBaseController
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $assignees = $quarter->assignees()->paginate($perPage);
-        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class]);
+        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
 
         $response = (new QuarterAssigneeTransformer())->transformPaginator($assignees) ;
 
@@ -671,13 +671,14 @@ class QuarterAPIController extends AppBaseController
             'quarter_id' => $id,
             'user_id' => $userId,
             'assignee_id' => $assigneeId,
+            'assignee_type' => $assigneeType,
         ], [
             'assignment_types' => $request->assignment_types,
             'created_at' => now()
         ]);
 
         $response = (new QuarterTransformer)->transform($quarter);
-        return $this->sendResponse($response, __('models.quarter.user_assigned'));
+        return $this->sendResponse($response, __('general.attached.manager'));
     }
 
     /**

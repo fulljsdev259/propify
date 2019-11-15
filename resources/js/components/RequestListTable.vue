@@ -1,5 +1,5 @@
 <template>
-    <div class="list-table">
+    <div class="request-list-table">
         <el-form @submit.native.prevent="" label-position="top">
             <el-input
                 clearable 
@@ -41,6 +41,17 @@
                             <el-form-item
                                 v-else-if="filter.type === filterTypes.text || filter.type === filterTypes.number">
                                 <el-input
+                                    v-if="filter.key == 'search'"
+                                    clearable
+                                    :placeholder="filter.name"
+                                    :suffix-icon="filter.icon"
+                                    :type="filter.type"
+                                    class='list-table-search'
+                                    @change="filterChanged(filter)"
+                                    v-model="filterModel[filter.key]">
+                                </el-input>
+                                <el-input
+                                    v-else
                                     clearable
                                     :placeholder="filter.name"
                                     :prefix-icon="filter.icon"
@@ -586,11 +597,13 @@
 </script>
 
 <style lang="scss" scoped>
+    .custom-select, .custom-date-picker {
+        :global(.el-button) {
+            font-family: inherit;
+        }
+    }
     .avatar-count{
         min-width: 28px;
-    }
-    .list-table {
-        padding: 20px;
     }
     .sorters {
         padding: 10px 0;
@@ -827,6 +840,24 @@
             padding-right: 15px !important;
         }
     }
+    .list-table-search {
+        position: fixed;
+        right: 40px;
+        top: 30px;
+        z-index: 99;
+        width: 250px;
+        &.el-input {
+            :global(.el-input__inner) {
+                border-color: transparent;
+                color: var(--color-text-regular);
+                background-color: var(--background-color-base);
+            }
+            :global(.el-input__icon) {
+                font-size: 16px;
+                line-height: 36px;
+            }
+        }
+    }
 
 </style>
 
@@ -853,9 +884,9 @@
     }
 
     .filters-card {
+        border: none;
         .el-card__body {
-            padding: 22px;
-            padding-bottom: 0;
+            padding: 0 22px;
         }
     }
 

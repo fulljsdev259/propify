@@ -17,6 +17,8 @@ export default (config = {}) => {
                 remoteLoading: false,
                 assignmentTypes: ['managers'],
                 assignmentType: 'managers',
+                assignment_types: [],
+                userAssignmentType: null,
                 serviceAssignmentTypes: ['providers'],
                 toAssignList: [],
                 toAssign: '',
@@ -115,12 +117,12 @@ export default (config = {}) => {
             };
         },
         methods: {
-            ...mapActions(['getStates', 'getPropertyManagers','getQuarters','getUsers','getServices','assignProviderToBuilding','unassignProviderToBuilding']),
+            ...mapActions(['getStates', 'getPropertyManagers','getAllAdminsForBuilding','assignUserToBuilding','getQuarters','getUsers','getServices','assignProviderToBuilding','unassignProviderToBuilding']),
             async remoteSearchAssignees(search) {
 
-                if (!this.$can(this.$permissions.assign.request)) {
-                    return false;
-                }
+                // if (!this.$can(this.$permissions.assign.request)) {
+                //     return false;
+                // }
 
                 if (search === '') {
                     this.resetToAssignList();
@@ -128,35 +130,39 @@ export default (config = {}) => {
                     this.remoteLoading = true;
                     
                     try {
-                        let resp = [];
-                        const buildingAssignee = await this.getBuildingAssignees({building_id: this.$route.params.id});                        
-                        let exclude_ids = [];
-                        if (this.assignmentType === 'managers') {
-                            buildingAssignee.data.data.map(item => {
-                                if(item.type === 'manager'){
-                                    exclude_ids.push(item.edit_id);
-                                }                                
-                            })
-                            resp = await this.getPropertyManagers({
-                                get_all: true,
-                                search,
-                                exclude_ids: exclude_ids.join(',')
-                            });
-                        } else if(this.assignmentType === 'administrator'){
-                            buildingAssignee.data.data.map(item => {
-                                if(item.type === 'user'){                                    
-                                    exclude_ids.push(item.edit_id);
-                                }                                
-                            })
-                            resp = await this.getUsers({
-                                get_all: true,
-                                search,
-                                exclude_ids: exclude_ids.join(','),
-                                role: 'administrator'
-                            });
-                        }
+                        // let resp = [];
+                        // const buildingAssignee = await this.getBuildingAssignees({building_id: this.$route.params.id});                        
+                        // let exclude_ids = [];
+                        // if (this.assignmentType === 'managers') {
+                        //     buildingAssignee.data.data.map(item => {
+                        //         if(item.type === 'manager'){
+                        //             exclude_ids.push(item.edit_id);
+                        //         }                                
+                        //     })
+                        //     resp = await this.getPropertyManagers({
+                        //         get_all: true,
+                        //         search,
+                        //         exclude_ids: exclude_ids.join(',')
+                        //     });
+                        // } else if(this.assignmentType === 'administrator'){
+                        //     buildingAssignee.data.data.map(item => {
+                        //         if(item.type === 'user'){                                    
+                        //             exclude_ids.push(item.edit_id);
+                        //         }                                
+                        //     })
+                        //     resp = await this.getUsers({
+                        //         get_all: true,
+                        //         search,
+                        //         exclude_ids: exclude_ids.join(','),
+                        //         role: 'administrator'
+                        //     });
+                        // }
                                                      
-                        this.toAssignList = resp.data;
+                        // this.toAssignList = resp.data;
+
+                        const resp = await this.getAllAdminsForBuilding({building_id: this.$route.params.id, search})
+                        
+                        this.toAssignList = resp
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -169,31 +175,40 @@ export default (config = {}) => {
                 this.toAssign = '';
             },
             async assignUser() {
-                console.log('assignUser called')
                 if (!this.toAssign || !this.model.id) {
                     return false;
                 }
                 let resp;
 
-                if (this.assignmentType === 'managers') {
-                    resp = await this.assignManagerToBuilding({
-                        id: this.model.id,
-                        toAssignId: this.toAssign   
-                    });
-                } else if (this.assignmentType === 'administrator') {
-                    resp = await this.assignUsersToBuilding({
-                        id: this.model.id,
-                        toAssignId: this.toAssign
-                    });
-                }
+                // if (this.assignmentType === 'managers') {
+                //     resp = await this.assignManagerToBuilding({
+                //         id: this.model.id,
+                //         toAssignId: this.toAssign   
+                //     });
+                // } else if (this.assignmentType === 'administrator') {
+                //     resp = await this.assignUsersToBuilding({
+                //         id: this.model.id,
+                //         toAssignId: this.toAssign
+                //     });
+                // }
+
+                let assign_user = this.toAssignList.find(item => item.id == this.toAssign )
+
+                resp = await this.assignUserToBuilding({
+                            id: this.model.id,
+                            user_id: this.toAssign,
+                            role: assign_user.roles[0].name,
+                            assignment_types: this.userAssignmentType
+                        });
 
                 if (resp && resp.data) {             
-                    displaySuccess(resp.data)                           
+                    displaySuccess(resp)                           
                     this.resetToAssignList();
-                    this.$refs.assigneesList.fetch();                    
+                    this.$refs.assigneesList.fetch();    
                     if(this.$refs.auditList){
                         this.$refs.auditList.fetch();
                     }
+                    this.userAssignmentType = null
                 }
             },
             async remoteSearchQuarters(search) {
@@ -394,7 +409,9 @@ export default (config = {}) => {
                         this.loading.state = true;
 
                         await this.getStates();
+                        this.assignment_types = Object.entries(this.$constants.quarters.assignment_type).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.assignment_types.${label}`)}))
 
+                        console.log(this.assignment_types)
                         // const {data} = await this.getServicesGroupedByCategory();
                         // this.allServices = data;
 

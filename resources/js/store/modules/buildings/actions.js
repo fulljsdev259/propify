@@ -66,6 +66,21 @@ export default {
             }).catch(({response: {data: err}}) => reject(err))
         });
     },
+    getAllAdminsForBuilding(_, {building_id, search}) {
+        return new Promise((resolve, reject) =>
+            axios.get(buildFetchUrl(`alladmins`, {exclude_assignees_building_id: building_id, search: search}))
+                .then(({data: r}) => resolve(r.data))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
+    assignUserToBuilding({}, {id, ...payload}) {
+        console.log(payload)
+        return new Promise((resolve, reject) => {
+            axios.post(`buildings/${id}/users`, payload)
+                .then((resp) => {
+                    resolve(resp.data);
+                }).catch(({response: {data: err}}) => reject(err))
+        });
+    },
     assignProviderToBuilding({}, payload){
         return new Promise((resolve, reject) => {
             axios.post(`buildings/${payload.id}/service/${payload.toAssignId}`)

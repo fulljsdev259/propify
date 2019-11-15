@@ -101,9 +101,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     Route::post('/buildings', 'BuildingAPIController@store')->name('buildings.store');
     Route::post('/buildings/{id}/media', 'MediaAPIController@buildingUpload')->name('buildings.media.upload');
-    Route::post('/buildings/{id}/propertyManagers', 'BuildingAPIController@assignManagers')->name('buildings.assign.managers'); // @TODO delete
-    Route::post('/buildings/{id}/managers', 'BuildingAPIController@assignManagers')->name('buildings.assign.managers');
-    Route::post('/buildings/{id}/users', 'BuildingAPIController@assignUsers')->name('buildings.assign.users');
     Route::post('/buildings/deletewithids', 'BuildingAPIController@destroyWithIds')->name('buildings.destroyWithIds');
     Route::post('/buildings/checkunitrequest', 'BuildingAPIController@checkUnitRequest')->name('buildings.checkUnitRequest');
 
@@ -115,9 +112,14 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     Route::delete('/buildings/{id}', 'BuildingAPIController@destroy')->name('buildings.destroy');
     Route::delete('/buildings/{building_id}/media/{media_id}', 'MediaAPIController@buildingDestroy')->name('buildings.media.destroy');
-    Route::delete('/buildings/{building_id}/propertyManagers/{manager_id}', 'BuildingAPIController@unAssignPropertyManager')->name('buildings.manager.destroy');
+
+    Route::post('/buildings/{id}/users', 'BuildingAPIController@assignUsers')->name('buildings.assign.users');
     Route::delete('/buildings-assignees/{buildings_assignee_id}', 'BuildingAPIController@deleteBuildingAssignee');
 
+    // @TODO delete
+    Route::post('/buildings/{id}/propertyManagers', 'BuildingAPIController@assignManagers')->name('buildings.assign.managers'); // @TODO delete
+    Route::post('/buildings/{id}/managers', 'BuildingAPIController@assignManagers')->name('buildings.assign.managers');
+    Route::delete('/buildings/{building_id}/propertyManagers/{manager_id}', 'BuildingAPIController@unAssignPropertyManager')->name('buildings.manager.destroy');
     Route::post('/buildings/{building_id}/service/{service_id}', 'BuildingAPIController@assignService')->name('buildings.service.destroy');
     Route::delete('/buildings/{building_id}/service/{service_id}', 'BuildingAPIController@unAssignService')->name('buildings.service.destroy');
 
@@ -170,6 +172,14 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::post('/quarters/{id}/managers', 'QuarterAPIController@assignManagers')->name('quarters.assign.managers'); // @TODO delete
     Route::delete('/quarters-assignees/{quarters_assignee_id}', 'QuarterAPIController@deleteQuarterAssignee');
     Route::delete('/quarters/{quarter_id}/media/{media_id}', 'MediaAPIController@quarterDestroy')->name('quarters.media.destroy');
+
+    // Workflows
+    Route::get('/workflows', 'WorkflowAPIController@index')->name('workflows');
+    Route::get('/workflows/{id}', 'WorkflowAPIController@show')->name('workflows.show');
+    Route::post('/workflows', 'WorkflowAPIController@store')->name('workflows.store');
+    Route::put('/workflows/{id}', 'WorkflowAPIController@update')->name('workflows.update');
+    Route::delete('/workflows/{id}', 'WorkflowAPIController@destroy')->name('workflows.destroy');
+
 
     // Pinboard
     Route::get('pinboard/rss.xml', 'PinboardAPIController@showNewsRSS');
