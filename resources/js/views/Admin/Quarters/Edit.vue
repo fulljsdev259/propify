@@ -800,7 +800,7 @@
                 this.model.workflows.push(workflow)
                 this.isAddWorkflow = false
                 this.workflowCount ++
-                worflow.quarter_id = this.model.id
+                workflow.quarter_id = this.model.id
                 this.saveWorkflow(workflow)
             },
             cancelAddWorkflow() {
