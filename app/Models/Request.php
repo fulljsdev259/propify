@@ -405,15 +405,6 @@ class Request extends AuditableModel implements HasMedia
         self::CapturePhaseAcceptance => 'inspection',
     ];
 
-    const PayerLandlord = 1;
-    const PayerResident = 2;
-    const PayerResidentLandlord = 3;
-    const Payer = [
-        self::PayerLandlord => 'landlord',
-        self::PayerResident => 'resident',
-        self::PayerResidentLandlord => 'resident/landlord',
-    ];
-
     const CategoryGeneral = 1;
     const CategoryMalfunction = 2;
     const CategoryDeficiency = 3;

@@ -831,7 +831,7 @@ class BuildingAPIController extends AppBaseController
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $assignees = $building->assignees()->paginate($perPage);
-        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class]);
+        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
 
         $response = (new BuildingAssigneeTransformer())->transformPaginator($assignees) ;
         return $this->sendResponse($response, 'Assignees retrieved successfully');
@@ -1053,7 +1053,7 @@ class BuildingAPIController extends AppBaseController
         ]);
 
         $response = (new BuildingTransformer)->transform($building);
-        return $this->sendResponse($response, __('models.building.user_assigned'));
+        return $this->sendResponse($response, __('general.attached.manager'));
     }
 
     /**
