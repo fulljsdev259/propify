@@ -901,8 +901,8 @@
                 text-decoration: none;
                 padding: 0 5px 18px;
                 color: var(--color-text-secondary);
-                font-weight: 500;
                 position: relative;
+                font-family: 'Radikal Thin';
                 &:hover, &.is-active {
                     color: var(--color-text-primary);
                     font-weight: 700;
