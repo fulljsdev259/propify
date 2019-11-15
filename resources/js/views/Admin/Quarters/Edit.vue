@@ -312,7 +312,7 @@
                                         @click="showAddWorkflow" 
                                         icon="icon-plus" 
                                         size="mini" 
-                                        class="round-btn">
+                                        class="add-workflow-btn">
                                 </el-button>
                             </div>
 
@@ -342,7 +342,9 @@
                                             @cancel-edit-workflow="cancelEditWorkflow"/>
                                     <el-row v-else>
                                         <el-col :md="24" class="workflow-label">
-                                            <span>{{$t(`models.request.category_list.${workflow.category.name}`)}}</span>
+                                            <el-tag type="primary">
+                                                    {{$t(`models.request.category_list.${workflow.category.name}`)}}
+                                            </el-tag>
 
                                             <span>{{$t('models.quarter.workflow.by')}}</span>
                                         
@@ -1097,6 +1099,8 @@
     .el-collapse {
         border-top: 0;
         border-bottom: 0;
+        padding: 0px 25px;
+
         /deep/ .el-collapse-item__header {
             padding-left: 1em;
             background: #f6f5f7;
@@ -1115,6 +1119,11 @@
     }
 
     .round-btn {
+        border-radius: 3px;
+    }
+
+    .add-workflow-btn {
         border-radius: 5px;
+        padding: 3px;
     }
 </style>
