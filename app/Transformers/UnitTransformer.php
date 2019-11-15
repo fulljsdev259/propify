@@ -45,6 +45,10 @@ class UnitTransformer extends BaseTransformer
             'media' => [],
         ];
 
+        $withCount = $model->getStatusRelationCounts();
+        $response = array_merge($response, $withCount);
+
+        
         $attributes = $model->attributesToArray();
         if (key_exists('total_contracts_count', $attributes)) {
             $response['total_contracts_count'] = $attributes['total_contracts_count'];
