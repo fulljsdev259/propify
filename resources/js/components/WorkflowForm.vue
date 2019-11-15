@@ -3,7 +3,7 @@
         <el-row :gutter="20">
             <el-col :md="24">
                 <el-form-item 
-                            :rules="validationRules.title"
+                            :rules="validationRules.required"
                             prop="title">
                     <el-input type="text" :placeholder="$t('models.quarter.workflow.placeholders.title')"
                             v-model="model.title"
@@ -14,7 +14,7 @@
         <el-row :gutter="20">
             <el-col :md="12">
                 <el-form-item 
-                            :rules="validationRules.category"
+                            :rules="validationRules.required"
                             prop="category_id">
                     <el-select :placeholder="$t('models.quarter.workflow.placeholders.category')" style="display: block" 
                                 v-model="model.category_id">
@@ -29,7 +29,7 @@
             </el-col>
             <el-col :md="12">
                 <el-form-item 
-                    :rules="validationRules.building"
+                    :rules="validationRules.required"
                     prop="selectedWorkflowBuilding"
                     class="label-block"
                     >
@@ -58,7 +58,7 @@
         <el-row :gutter="20">
             <el-col :md="12">
                 <el-form-item 
-                            :rules="validationRules.to_users"
+                            :rules="validationRules.required"
                             prop="selectedWorkflowToUser">
                     <el-select
                         :loading="remoteLoading"
@@ -111,7 +111,12 @@
         <el-row :gutter="20" style="margin-top: 10px;">
             <el-col :md="24" class="drawer-actions">
                 <el-button type="default" size="mini" @click="close" class="round-btn">&nbsp;{{ $t('general.actions.close') }}</el-button>
-                <el-button type="primary" size="mini" @click="submit" icon="ti-save" class="round-btn">&nbsp;{{ $t('general.actions.save') }}</el-button>
+                <el-tooltip
+                        :content="$t('models.quarter.workflow.tooltips.save')"
+                        class="item" effect="light" placement="top-end"
+                    >
+                    <el-button type="primary" size="mini" @click="submit" icon="ti-save" class="round-btn">&nbsp;{{ $t('general.actions.save') }}</el-button>
+                </el-tooltip>
             </el-col>
         </el-row>
         
@@ -162,21 +167,9 @@
                 },
                 categories: [],
                 validationRules: {
-                    title: [{
+                    required: [{
                         required: true,
-                        message: this.$t('models.quarter.required')
-                    }],
-                    category_id: [{
-                        required: true,
-                        message: this.$t('models.quarter.required')
-                    }],
-                    building: [{
-                        required: true,
-                        message: this.$t('models.quarter.required')
-                    }],
-                    to_users: [{
-                        required: true,
-                        message: this.$t('models.quarter.required')
+                        message: this.$t('models.quarter.workflow.required')
                     }],
                 },
                 remoteLoading: false,

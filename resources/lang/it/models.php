@@ -435,6 +435,10 @@ return [
                 'building' => 'Seleziona edificio',
                 'to_user' => 'Seleziona utente',
                 'cc_user' => 'Selezionare cc',
+            ],
+            'required' => 'Questo è un campo obbligatorio!',
+            'tooltips' => [
+                'save' => "To save work flow us this button, main 'save' button will not save data"
             ]
         ]
     ],

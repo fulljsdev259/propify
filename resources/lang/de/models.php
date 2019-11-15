@@ -437,6 +437,10 @@ return [
                 'building' => 'Objekt auswählen',
                 'to_user' => 'Verantwortlichen auswählen',
                 'cc_user' => 'CC auswählen',
+            ],
+            'required' => 'Dies ist ein Pflichtfeld!',
+            'tooltips' => [
+                'save' => "To save work flow us this button, main 'save' button will not save data"
             ]
         ]
     ],
