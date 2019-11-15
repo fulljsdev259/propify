@@ -11,7 +11,7 @@
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
                     <el-tabs type="border-card" v-model="activeTab1">
-                        <el-tab-pane :label="$t('general.box_titles.details')" name="details">
+                        <el-tab-pane :label="$t('models.quarter.details')" name="details">
                             <el-form :model="model" ref="form">
                                 <el-row :gutter="20">
                                     <el-col :md="12">
@@ -1147,7 +1147,7 @@
     .add-work-flow {
         padding: 0px 25px;
     }
-    
+
     .round-btn {
         border-radius: 3px;
     }
