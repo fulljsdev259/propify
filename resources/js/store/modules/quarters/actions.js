@@ -147,7 +147,6 @@ export default {
                 .catch(({response: {data: err}}) => reject(err)));
     },
     deleteQuarterWorkflow({commit}, {id}) {
-        console.log('payload', id)
         return new Promise((resolve, reject) =>
             axios.delete(`workflows/${id}`)
                 .then(({data: r}) => (r && resolve(r)))

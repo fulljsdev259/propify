@@ -809,21 +809,25 @@
                 this.isAddWorkflow = false
             },
             updateWorkflow(index, workflow) {
-                this.$set(this.model.workflows, index, workflow)
-                this.$set(this.isEditingWorkflow, index, false)
-                console.log('updateworkflow', index, workflow)
                 workflow.quarter_id = this.model.id
-                console.log(this.model.workflows[index])
                 workflow.id = this.model.workflows[index].id
                 this.updateQuarterWorkflow(workflow)
+                this.$set(this.model.workflows, index, workflow)
+                this.$set(this.isEditingWorkflow, index, false)
+                
+                
+                
+                
+                
             },
             cancelEditWorkflow(index) {
                 this.$set(this.isEditingWorkflow, index, false)
             },
             deleteWorkflow(index) {
+                this.deleteQuarterWorkflow({id: this.model.workflows[index].id})
                 this.model.workflows.splice(index, 1)
                 this.workflowCount --
-                this.deleteQuarterWorkflow(index)
+                
             }
         },
         computed: {
