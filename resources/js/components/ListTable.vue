@@ -116,11 +116,6 @@
             :empty-text="emptyText"
             @selection-change="handleSelectionChange"
             v-loading="loading.state">
-            <el-table-column
-                type="selection"
-                v-if="withCheckSelection"
-                width="40">
-            </el-table-column>
 
             <el-table-column
                 :key="column.prop"
@@ -395,6 +390,11 @@
                         </template>
                     </span>
                 </template>
+            </el-table-column>
+            <el-table-column
+                type="selection"
+                v-if="withCheckSelection"
+                width="40">
             </el-table-column>
         </el-table>
         <el-pagination

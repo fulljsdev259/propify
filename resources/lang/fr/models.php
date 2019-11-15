@@ -166,6 +166,9 @@ return [
         "internal_building_id" => "Numéro d'identification interne de l'immeuble",       
         "address_search" => "Veuillez entrer l'adresse",
         "not_found" => "Bâtiment non trouvé",
+        'building_format' => 'Project No.',
+        'building_no' => 'Building No.',
+        'active_residents_count' => 'Vives',
         'media_category' => [
             "house_rules" => "Règlement intérieur",
             "operating_instructions" => "Notice d'utilisation",
@@ -225,6 +228,7 @@ return [
         "deleted" => "Unité supprimée",
         "saved" => "Unité sauvegardée",
         "floor" => "L'étage",
+        'unit_id' => "l'unité ID",
         'floor_title' => [
             'under_ground_floor' => "UG",
             'ground_floor' => "EG",
@@ -399,6 +403,11 @@ return [
         'occupied_units_count' => 'Nombre de logements occupés',
         'active_residents_count' => 'Nombre de résidents actifs',
         'assignment' => "Affectation des gestionnaires/administrateurs",
+        'quarter_format' => 'Projet No',
+        'type' => 'Project Type',
+        'project_ort' => 'Projet Location',
+        'building_format' => 'Project No.',
+        'building_no' => 'Building No.',
         'errors' => [
             'not_found' => "Trimestre non trouvé",
             'deleted' => "Erreur d'effacement trimestriel : ",

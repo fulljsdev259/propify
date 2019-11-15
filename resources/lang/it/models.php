@@ -166,6 +166,9 @@ return [
         "internal_building_id" => "Id edificio interno",        
         "address_search" => "Inserire l'indirizzo",
         "not_found" => "Edificio non trovato",
+        'building_format' => 'Project No.',
+        'building_no' => 'Building No.',
+        'active_residents_count' => 'Vivente',
         'media_category' => [
             "house_rules" => "Le regole della casa",
             "operating_instructions" => "Istruzioni per l'uso",
@@ -225,6 +228,7 @@ return [
         "deleted" => "Unità cancellata",
         "saved" => "Unità salvata",
         "floor" => "Piano",
+        'unit_id' => 'Unità ID',
         'floor_title' => [
             'under_ground_floor' => "UG",
             'ground_floor' => "EG",
@@ -399,6 +403,9 @@ return [
         'occupied_units_count' => 'Le unità occupate contano',
         'active_residents_count' => 'Nombre de résidents actifs',
         'assignment' => "Assegnazione di manager/amministratore",
+        'quarter_format' => 'Progetto n.',
+        'type' => 'Progetto tipo',
+        'project_ort' => 'Projekt Site',
         'errors' => [
             'not_found' => "Quartiere non trovato",
             'deleted' => "Errore al quarto eliminato: ",

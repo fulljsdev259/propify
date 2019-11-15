@@ -166,6 +166,9 @@ return [
         'internal_building_id' => "Interne Objekt-ID",        
         'address_search' => 'Bitte Adresse eingeben.',
         'not_found' => 'Objekt nicht gefunden.',
+        'building_format' => 'Projectnr.',
+        'building_no' => 'Objektnr.',
+        'active_residents_count' => 'Wohnungen',
         'media_category' => [
             'house_rules' => 'Hausordnung',
             'operating_instructions' => 'Benutzungsanleitungen',
@@ -225,6 +228,7 @@ return [
         'deleted' => 'Einheit gelöscht',
         'saved' => 'Einheit gespeichert',
         'floor' => 'Etage',
+        'unit_id' => 'Einheit-ID',
         'floor_title' => [
             'under_ground_floor' => "UG",
             'ground_floor' => "EG",
@@ -401,6 +405,9 @@ return [
         'occupied_units_count' => 'Belegte Einheiten',
         'active_residents_count' => 'Aktive Bewohner',
         'assignment' => 'Zuständigkeit',
+        'quarter_format' => 'Projectnr.',
+        'type' => 'Projektort',
+        'project_ort' => 'Projektort',
         'errors' => [
             'not_found' => "Projekt nicht gefunden.",
             'deleted' => "Fehler beim Löschen des Projekts: ",
