@@ -312,8 +312,7 @@
                                         @click="showAddWorkflow" 
                                         icon="icon-plus" 
                                         size="mini" 
-                                        round>
-                                        {{ $t('models.quarter.workflow.add') }}
+                                        class="round-btn">
                                 </el-button>
                             </div>
 
@@ -362,8 +361,8 @@
                                                     v-for="user in workflow.to_users">
                                                 {{user.name}}
                                             </el-tag>
-
-                                            <span>{{$t('models.quarter.workflow.cc')}}</span>
+                                            
+                                            <span v-if="workflow.cc_users.length > 0">{{$t('models.quarter.workflow.cc')}}</span>
                                         
                                             <el-tag 
                                                     type="primary" 
@@ -380,7 +379,7 @@
                                                 @click="deleteWorkflow($index)"
                                                 icon="icon-trash-empty" 
                                                 size="mini" 
-                                                round>
+                                                class="round-btn">
                                                 {{ $t('models.quarter.workflow.delete') }}
                                             </el-button>
 
@@ -389,7 +388,7 @@
                                                 @click="showEditWorkflow($index)"
                                                 icon="icon-pencil" 
                                                 size="mini" 
-                                                round>
+                                                class="round-btn">
                                                 {{ $t('models.quarter.workflow.edit') }}
                                             </el-button>
                                         </el-col>
@@ -1113,5 +1112,9 @@
             margin-top: 5px;
             border-bottom: 0;
         }
+    }
+
+    .round-btn {
+        border-radius: 5px;
     }
 </style>

@@ -110,8 +110,8 @@
         </el-row>
         <el-row :gutter="20" style="margin-top: 10px;">
             <el-col :md="24" class="drawer-actions">
-                <el-button type="default" size="mini" @click="close" round>&nbsp;{{ $t('general.actions.close') }}</el-button>
-                <el-button type="primary" size="mini" @click="submit" icon="ti-save" round>&nbsp;{{ $t('general.actions.save') }}</el-button>
+                <el-button type="default" size="mini" @click="close" class="round-btn">&nbsp;{{ $t('general.actions.close') }}</el-button>
+                <el-button type="primary" size="mini" @click="submit" icon="ti-save" class="round-btn">&nbsp;{{ $t('general.actions.save') }}</el-button>
             </el-col>
         </el-row>
         
