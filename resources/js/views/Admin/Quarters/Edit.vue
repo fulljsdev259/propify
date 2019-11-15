@@ -18,16 +18,6 @@
                                         <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.type"
                                                 class="label-block"
                                                 prop="types">
-                                            <!-- <el-select :placeholder="$t('general.placeholders.select')"
-                                                        style="display: block"
-                                                        v-model="model.type">
-                                                <el-option
-                                                        :key="type.value"
-                                                        :label="type.name"
-                                                        :value="type.value"
-                                                        v-for="type in types">
-                                                </el-option>
-                                            </el-select> -->
                                             <el-select
                                                     :placeholder="$t('general.placeholders.select')"
                                                     style="display: block"

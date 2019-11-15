@@ -40,6 +40,7 @@
                         class="custom-remote-select"
                         filterable
                         multiple
+                        clearable
                         remote
                         reserve-keyword
                         style="width: 100%;"
@@ -66,6 +67,7 @@
                         class="custom-remote-select"
                         filterable
                         multiple
+                        clearable
                         remote
                         reserve-keyword
                         style="width: 100%;"
@@ -91,6 +93,7 @@
                         class="custom-remote-select"
                         filterable
                         multiple
+                        clearable
                         remote
                         reserve-keyword
                         style="width: 100%;"
@@ -474,11 +477,30 @@
             input {
                 margin-left: 0;
             }
+
         }
 
+        .el-select.custom-remote-select {
+            /deep/ .el-input__suffix {
+                i.el-select__caret {
+                    display: block;
+                    &:after {
+                        color:#565556;
+                        content: "\E6DB";
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        
+                    }
+                }
+            }
+        }
 
         /deep/ .el-row {
-            margin-bottom: 2px;
+            .el-col {
+                margin-bottom: 3px;
+            }
+            
         }
         
 
@@ -488,6 +510,7 @@
 
         /deep/ input {
             background: #f6f5f7;
+            border: none;
         }
 
     }
