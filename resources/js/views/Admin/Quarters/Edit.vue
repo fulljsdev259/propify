@@ -797,37 +797,45 @@
                 this.$set(this.isEditingWorkflow, index, true)
                 this.isEditingWorkflow[index] = true
             },
-            addWorkflow(workflow) {
-                this.isEditingWorkflow.push(false)
-                this.model.workflows.push(workflow)
-                this.isAddWorkflow = false
-                this.workflowCount ++
+            async addWorkflow(workflow) {
                 workflow.quarter_id = this.model.id
-                this.saveQuarterWorkflow(workflow)
+                let resp = await this.saveQuarterWorkflow(workflow)
+
+                if(resp && resp.success) {
+                    displaySuccess(resp);
+                    this.isEditingWorkflow.push(false)
+                    this.model.workflows.push(workflow)
+                    this.isAddWorkflow = false
+                    this.workflowCount ++
+                }
+                
             },
             cancelAddWorkflow() {
                 this.isAddWorkflow = false
             },
-            updateWorkflow(index, workflow) {
+            async updateWorkflow(index, workflow) {
                 workflow.quarter_id = this.model.id
                 workflow.id = this.model.workflows[index].id
-                this.updateQuarterWorkflow(workflow)
-                this.$set(this.model.workflows, index, workflow)
-                this.$set(this.isEditingWorkflow, index, false)
+                let resp = await this.updateQuarterWorkflow(workflow)
                 
-                
-                
-                
+                if(resp && resp.success) {
+                    displaySuccess(resp);
+                    this.$set(this.model.workflows, index, workflow)
+                    this.$set(this.isEditingWorkflow, index, false)
+                }
                 
             },
             cancelEditWorkflow(index) {
                 this.$set(this.isEditingWorkflow, index, false)
             },
-            deleteWorkflow(index) {
-                this.deleteQuarterWorkflow({id: this.model.workflows[index].id})
-                this.model.workflows.splice(index, 1)
-                this.workflowCount --
-                
+            async deleteWorkflow(index) {
+                let resp = await this.deleteQuarterWorkflow({id: this.model.workflows[index].id})
+
+                if(resp && resp.success) {
+                    displaySuccess(resp);
+                    this.model.workflows.splice(index, 1)
+                    this.workflowCount --
+                }
             }
         },
         computed: {
