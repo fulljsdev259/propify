@@ -31,6 +31,7 @@ class QuarterTransformer extends BaseTransformer
         ];
 
         if ($model->hasAttribute('has_email_receptionists')) {
+            // @TODO kill
             $response['has_email_receptionists'] = $model->has_email_receptionists;
         }
 
