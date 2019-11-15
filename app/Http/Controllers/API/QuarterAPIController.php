@@ -678,7 +678,7 @@ class QuarterAPIController extends AppBaseController
         ]);
 
         $response = (new QuarterTransformer)->transform($quarter);
-        return $this->sendResponse($response, __('models.quarter.user_assigned'));
+        return $this->sendResponse($response, __('general.attached.manager'));
     }
 
     /**

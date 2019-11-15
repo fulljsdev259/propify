@@ -1053,7 +1053,7 @@ class BuildingAPIController extends AppBaseController
         ]);
 
         $response = (new BuildingTransformer)->transform($building);
-        return $this->sendResponse($response, __('models.building.user_assigned'));
+        return $this->sendResponse($response, __('general.attached.manager'));
     }
 
     /**
