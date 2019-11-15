@@ -5,12 +5,23 @@
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.provider)">
-                <el-button @click="add" icon="ti-plus" round size="mini" type="primary">{{$t('models.service.add_title')}}
+                <el-button 
+                    @click="add" 
+                    icon="ti-plus" 
+                    size="mini"
+                    class="transparent-button"
+                >
+                    {{$t('models.service.add_title')}}
                 </el-button>
             </template>
             <template v-if="$can($permissions.delete.provider)">
-                <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"
-                           type="danger">
+                <el-button 
+                    :disabled="!selectedItems.length" 
+                    @click="batchDeleteWithIds" 
+                    icon="ti-trash" 
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('general.actions.delete')}}
                 </el-button>
             </template>

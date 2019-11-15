@@ -1,8 +1,13 @@
 <template>  
     <div class="services" v-loading.fullscreen.lock="isDownloading">
-        <heading :title="$t('models.request.title')" icon="icon-chat-empty" shadow="heavy">
+        <heading :title="$t('models.request.title')" icon="icon-chat-empty" shadow="heavy" class="padding-right-300">
             <template v-if="$can($permissions.create.request)">
-                <el-button @click="add" icon="ti-plus" round size="mini" type="primary">
+                <el-button 
+                    @click="add" 
+                    icon="ti-plus" 
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('models.request.add_title')}}
                 </el-button>
             </template>
@@ -27,8 +32,13 @@
                 </el-dropdown>
             </template>
             <template v-if="$can($permissions.delete.request)">
-                <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"
-                           type="danger">
+                <el-button 
+                    :disabled="!selectedItems.length" 
+                    @click="batchDeleteWithIds" 
+                    icon="ti-trash" 
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('general.actions.delete')}}
                 </el-button>
             </template>

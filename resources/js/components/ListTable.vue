@@ -26,15 +26,16 @@
                     <span class="title">{{ link.title }}</span>
                 </router-link>
             </div>
-            <el-card :header="filtersHeader"
-                     class="mb30 filters-card"
-                    :class="{'filter-right': subMenu.length}"
-                     shadow="never"
-                     v-if="this.filters.length"
-                    :element-loading-background="loading.background"
-                    :element-loading-spinner="loading.icon"
-                    :element-loading-text="$t(loading.text)"
-                    v-loading="isLoadingFilters.state"
+            <el-card 
+                v-if="this.filters.length"
+                :header="filtersHeader"
+                class="mb30 filters-card"
+                :class="{'filter-right': subMenu.length}"
+                shadow="never"
+                :element-loading-background="loading.background"
+                :element-loading-spinner="loading.icon"
+                :element-loading-text="$t(loading.text)"
+                v-loading="isLoadingFilters.state"
             >
                 <el-row :gutter="10">
                     <el-col :key="key" :span="filterColSize" v-for="(filter, key) in filters">

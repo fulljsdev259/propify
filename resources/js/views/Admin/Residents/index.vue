@@ -5,12 +5,23 @@
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.resident)">
-                <el-button @click="add" icon="ti-plus" round size="mini" type="primary">{{$t('models.resident.add')}}
+                <el-button 
+                    @click="add" 
+                    icon="ti-plus" 
+                    size="mini"
+                    class="transparent-button"
+                >
+                    {{$t('models.resident.add')}}
                 </el-button>
             </template>
             <template v-if="$can($permissions.delete.resident)">
-                <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"
-                           type="danger">
+                <el-button 
+                    :disabled="!selectedItems.length" 
+                    @click="batchDeleteWithIds" 
+                    icon="ti-trash" 
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('general.actions.delete')}}
                 </el-button>
             </template>

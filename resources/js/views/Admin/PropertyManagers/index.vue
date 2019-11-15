@@ -5,14 +5,23 @@
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.propertyManager)">            
-                <el-button @click="add" icon="ti-plus" round size="mini" type="primary">
+                <el-button 
+                    @click="add" 
+                    icon="ti-plus" 
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('models.property_manager.add')}}
                 </el-button>
             </template>
             <template v-if="$can($permissions.delete.propertyManager)">
-                <el-button :disabled="!selectedItems.length" @click="openDeleteWithReassignment" icon="ti-trash" round
-                           size="mini"
-                           type="danger">
+                <el-button 
+                    :disabled="!selectedItems.length" 
+                    @click="openDeleteWithReassignment" 
+                    icon="ti-trash"
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('general.actions.delete')}}
                 </el-button>
             </template>
