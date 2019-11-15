@@ -372,47 +372,9 @@
                                                 {{user.name}}
                                             </el-tag>
                                         </el-col>
-                                        <!-- <el-col :md="24" class="workflow-label">
-                                            <span>{{$t(`models.request.category_list.${workflow.category.name}`)}}</span>
-                                        
-                                            <span>{{$t('models.quarter.workflow.by')}}</span>
-                                        
-                                            <el-tag 
-                                                    type="primary" 
-                                                    :key="building.id"
-                                                    v-for="building in workflow.buildings">
-                                                    {{building.address.house_num}}
-                                            </el-tag>
-                                        
-                                            <span>{{$t('models.quarter.workflow.to')}}</span>
-                                        
-                                            <el-tag 
-                                                    type="primary" 
-                                                    :key="user.id"
-                                                    v-for="user in workflow.to_users">
-                                                {{user.name}}
-                                            </el-tag>
-                                        
-                                            <span>{{$t('models.quarter.workflow.cc')}}</span>
-                                        
-                                            <el-tag 
-                                                    :key="user.id"
-                                                    v-for="user in workflow.cc_users">
-                                                {{user.name}}
-                                            </el-tag>
-                                        </el-col> -->
                                     </el-row>
                                     <el-row v-if="!isEditingWorkflow[$index]">
                                         <el-col :md="24" class="edit workflow-button-bar">
-                                            <el-button 
-                                                type="primary" 
-                                                @click="showEditWorkflow($index)"
-                                                icon="icon-pencil" 
-                                                size="mini" 
-                                                round>
-                                                {{ $t('models.quarter.workflow.edit') }}
-                                            </el-button>
-
                                             <el-button 
                                                 type="danger" 
                                                 @click="deleteWorkflow($index)"
@@ -420,6 +382,15 @@
                                                 size="mini" 
                                                 round>
                                                 {{ $t('models.quarter.workflow.delete') }}
+                                            </el-button>
+
+                                            <el-button 
+                                                type="primary" 
+                                                @click="showEditWorkflow($index)"
+                                                icon="icon-pencil" 
+                                                size="mini" 
+                                                round>
+                                                {{ $t('models.quarter.workflow.edit') }}
                                             </el-button>
                                         </el-col>
                                     </el-row>
@@ -1121,7 +1092,7 @@
     }
 
     .el-collapse-item {
-        margin-bottom: 7px;
+        margin-bottom: 10px;
     }
 
     .el-collapse {
