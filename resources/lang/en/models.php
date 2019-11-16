@@ -407,6 +407,7 @@ return [
         'quarter_format' => 'Project No',
         'type' => 'Project Type',
         'project_ort' => 'Project Location',
+        'details' => 'Project details',
         'errors' => [
             'not_found' => "Quarter not found",
             'deleted' => "Quarter deleted error: ",

@@ -409,6 +409,7 @@ return [
         'quarter_format' => 'Projectnr.',
         'type' => 'Projektart',
         'project_ort' => 'Projektort',
+        'details' => 'Projektdetails',
         'errors' => [
             'not_found' => "Projekt nicht gefunden.",
             'deleted' => "Fehler beim Löschen des Projekts: ",

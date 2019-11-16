@@ -409,6 +409,7 @@ return [
         'project_ort' => 'Projet Location',
         'building_format' => 'Project No.',
         'building_no' => 'Building No.',
+        'details' => 'Détails du projet',
         'errors' => [
             'not_found' => "Trimestre non trouvé",
             'deleted' => "Erreur d'effacement trimestriel : ",

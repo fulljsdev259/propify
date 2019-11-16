@@ -11,7 +11,7 @@
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
                     <el-tabs type="border-card" v-model="activeTab1">
-                        <el-tab-pane :label="$t('general.box_titles.details')" name="details">
+                        <el-tab-pane :label="$t('models.quarter.details')" name="details">
                             <el-form :model="model" ref="form">
                                 <el-row :gutter="20">
                                     <el-col :md="12">
@@ -315,16 +315,17 @@
                                         class="add-workflow-btn">
                                 </el-button>
                             </div>
-
+                            
                             <workflow-form v-if="isAddWorkflow"
                                 mode="add" 
                                 :quarter_id="model.id" 
                                 :visible.sync="visibleDrawer"
+                                class="add-work-flow"
                                 @add-workflow="addWorkflow"
                                 @cancel-add-workflow="cancelAddWorkflow"/>
                             <el-collapse accordion>
                                  <el-collapse-item
-                                        :key="workflow.title"
+                                        :key="'workflow' + $index + workflow.title"
                                         :label="`${workflow.name}`"
                                         :value="workflow.title"
                                         :name="workflow.title"
@@ -797,37 +798,45 @@
                 this.$set(this.isEditingWorkflow, index, true)
                 this.isEditingWorkflow[index] = true
             },
-            addWorkflow(workflow) {
-                this.isEditingWorkflow.push(false)
-                this.model.workflows.push(workflow)
-                this.isAddWorkflow = false
-                this.workflowCount ++
+            async addWorkflow(workflow) {
                 workflow.quarter_id = this.model.id
-                this.saveQuarterWorkflow(workflow)
+                let resp = await this.saveQuarterWorkflow(workflow)
+
+                if(resp && resp.success) {
+                    displaySuccess(resp);
+                    this.isEditingWorkflow.push(false)
+                    this.model.workflows.push(workflow)
+                    this.isAddWorkflow = false
+                    this.workflowCount ++
+                }
+                
             },
             cancelAddWorkflow() {
                 this.isAddWorkflow = false
             },
-            updateWorkflow(index, workflow) {
+            async updateWorkflow(index, workflow) {
                 workflow.quarter_id = this.model.id
                 workflow.id = this.model.workflows[index].id
-                this.updateQuarterWorkflow(workflow)
-                this.$set(this.model.workflows, index, workflow)
-                this.$set(this.isEditingWorkflow, index, false)
+                let resp = await this.updateQuarterWorkflow(workflow)
                 
-                
-                
-                
+                if(resp && resp.success) {
+                    displaySuccess(resp);
+                    this.$set(this.model.workflows, index, workflow)
+                    this.$set(this.isEditingWorkflow, index, false)
+                }
                 
             },
             cancelEditWorkflow(index) {
                 this.$set(this.isEditingWorkflow, index, false)
             },
-            deleteWorkflow(index) {
-                this.deleteQuarterWorkflow({id: this.model.workflows[index].id})
-                this.model.workflows.splice(index, 1)
-                this.workflowCount --
-                
+            async deleteWorkflow(index) {
+                let resp = await this.deleteQuarterWorkflow({id: this.model.workflows[index].id})
+
+                if(resp && resp.success) {
+                    displaySuccess(resp);
+                    this.model.workflows.splice(index, 1)
+                    this.workflowCount --
+                }
             }
         },
         computed: {
@@ -1098,7 +1107,7 @@
         padding-bottom: 10px;
 
         &.edit {
-            padding-top: 30px;
+            padding-top: 40px;
         }
     }
 
@@ -1118,20 +1127,25 @@
         padding: 0px 25px;
 
         /deep/ .el-collapse-item__header {
-            padding-left: 1em;
+            padding-left: 10px;
             background: #f6f5f7;
             border-radius: 6px;
         }
 
         /deep/ .el-collapse-item__content {
             padding-bottom: 0px;
-            padding-left: 1em;
+            // padding-left: 1em;
+            padding-left: 0;
         }
 
         /deep/ .el-collapse-item__wrap {
-            margin-top: 5px;
+            padding-top: 5px;
             border-bottom: 0;
         }
+    }
+
+    .add-work-flow {
+        padding: 0px 25px;
     }
 
     .round-btn {

@@ -1,6 +1,6 @@
 <template>
     <el-form :model="model" :rules="validationRules" label-position="top" ref="form" v-loading="loading" :class="mode == 'edit' ? 'edit-workflow-form' : ''">
-        <el-row :gutter="20">
+        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="24">
                 <el-form-item 
                             :rules="validationRules.required"
@@ -11,7 +11,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="12">
                 <el-form-item 
                             :rules="validationRules.required"
@@ -55,7 +55,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="12">
                 <el-form-item 
                             :rules="validationRules.required"
@@ -108,7 +108,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20" style="margin-top: 10px;">
+        <el-row :gutter="20" style="margin-top: 10px; margin-left: 0; margin-right: 0">
             <el-col :md="24" class="drawer-actions">
                 <el-button type="default" size="mini" @click="close" class="round-btn">&nbsp;{{ $t('general.actions.close') }}</el-button>
                 <el-tooltip
@@ -181,7 +181,6 @@
                 'getBuildings',
                 'getAllAdminsForQuarter']),
             async submit () {
-                console.log('sbumit called')
                 try {
                     const valid = await this.$refs.form.validate();
                     if (valid) {
@@ -449,25 +448,25 @@
             background-color: var(--primary-color);
             color: white;
             border-radius: 6px;
-            font-size: 15px;
+            font-size: 12px;
             
             margin: 0;
             padding: 0;
             padding-left: 10px;
             padding-right: 20px;
-            height: 40px;
-            line-height: 40px;
+            height: 30px;
+            line-height: 30px;
 
             i {
                 color: white;
                 background: transparent;
-                font-size: 20px;
+                font-size: 17px;
                 font-weight: 600;
             }
         }
 
         /deep/ .el-select__tags {
-            padding-left: 2px;
+            padding-left: 5px;
 
             input {
                 margin-left: 0;
@@ -508,7 +507,7 @@
 
             /deep/ .el-select__input {
                 background: transparent;
-                padding-left: 1em;
+                padding-left: 10px;
             }
         }
 
@@ -528,10 +527,27 @@
 
     }
 
-    .edit-workflow-form {
-        .el-col {
-            padding-left: 0 !important;
+    
+    /deep/ .el-select .el-input .el-select__caret {
+        color: #565556;
+    }
+
+    .el-col {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    @media only screen and (min-width:992px){
+        .el-row {
+            .el-col-md-12:first-child {
+                padding-right: 5px !important;
+            }
+
+            .el-col-md-12:last-child {
+                padding-left: 5px !important;
+            }
         }
     }
+    
     
 </style>
