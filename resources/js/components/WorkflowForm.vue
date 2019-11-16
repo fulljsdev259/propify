@@ -528,7 +528,7 @@
     }
 
     
-    .el-select .el-input .el-select__caret {
+    /deep/ .el-select .el-input .el-select__caret {
         color: #565556;
     }
 
