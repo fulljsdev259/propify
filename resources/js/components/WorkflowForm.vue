@@ -528,6 +528,10 @@
     }
 
     
+    .el-select .el-input .el-select__caret {
+        color: #565556;
+    }
+
     .el-col {
         padding-left: 0 !important;
         padding-right: 0 !important;
