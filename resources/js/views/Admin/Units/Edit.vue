@@ -14,7 +14,30 @@
                             <el-form :model="model" label-position="top" label-width="192px" ref="form">
                                 <el-row :gutter="20">
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.unit.building')" :rules="validationRules.building_id"
+                                        <el-form-item :label="$t('models.building.quarter')" 
+                                                :rules="validationRules.quarter_id" 
+                                                prop="quarter_id">
+                                            <el-select
+                                                    :loading="remoteLoading"
+                                                    :placeholder="$t('general.placeholders.search')"
+                                                    :remote-method="remoteSearchQuarters"
+                                                    filterable
+                                                    remote
+                                                    reserve-keyword
+                                                    style="width: 100%;"
+                                                    @change="changeQuarter"
+                                                    v-model="model.quarter_id">
+                                                <el-option
+                                                        :key="quarter.id"
+                                                        :label="quarter.name"
+                                                        :value="quarter.id"
+                                                        v-for="quarter in quarters"/>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :md="12">
+                                        <el-form-item :label="$t('models.unit.building')" 
+                                                    :rules="validationRules.building_id"
                                                     prop="building_id">
                                             <el-select
                                                 :loading="remoteLoading"
@@ -33,11 +56,7 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :md="12">
-                                        <el-form-item :label="$t('models.unit.name')" :rules="validationRules.name" prop="name">
-                                            <el-input autocomplete="off" type="text" v-model="model.name"></el-input>
-                                        </el-form-item>
-                                    </el-col>
+                                    
                                 </el-row>
                                 <el-row :gutter="20">
 
@@ -60,10 +79,18 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
+                                    <el-col :md="6">
+                                        <el-form-item :label="$t('models.unit.name')" :rules="validationRules.name" prop="name">
+                                            <el-input autocomplete="off" type="text" v-model="model.name"></el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :md="6">
+                                        <el-form-item :label="$t('models.unit.floor')" :rules="validationRules.floor" prop="floor">
+                                            <el-input autocomplete="off" type="number" v-model="model.floor" min="-3"></el-input>
+                                        </el-form-item>
+                                    </el-col>
 
-                                    
-
-                                    <el-col :md="6" v-if="model.type >= 3">
+                                    <el-col :md="12" v-if="model.type >= 3">
                                         <el-form-item :label="$t('general.monthly_rent_net')"
                                                     :rules="validationRules.monthly_rent_net"
                                                     prop="monthly_rent_net">
@@ -75,12 +102,6 @@
                                             >
                                                 <template slot="prepend">CHF</template>
                                             </el-input>
-                                        </el-form-item>
-                                    </el-col>
-
-                                    <el-col :md="6">
-                                        <el-form-item :label="$t('models.unit.floor')" :rules="validationRules.floor" prop="floor">
-                                            <el-input autocomplete="off" type="number" v-model="model.floor" min="-3"></el-input>
                                         </el-form-item>
                                     </el-col>
 

@@ -48,6 +48,7 @@ export default (config = {}) => {
                     }
                 },
                 model: {
+                    quarter_id: '',
                     name: '',
                     description: '',
                     floor_nr: 1,
