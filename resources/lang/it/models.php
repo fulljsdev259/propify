@@ -148,6 +148,11 @@ return [
             'tenant' => 'Affittuario',
             'owner' => 'Proprietario',
         ],
+        'tenant_type' => [
+            'label' => 'Tipo di inquilino',
+            'main' => 'Affittuario principale',
+            'garant' => 'Affittuario secondario',
+        ]
     ],
     'building' => [
         "title" => "Edifici",

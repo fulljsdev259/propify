@@ -92,12 +92,16 @@ export default (config = {}) => {
                         message: this.$t('validation.required',{attribute: this.$t('general.salutation')})
                     }],
                     type: [{
+                            required: true,
+                            message: this.$t('validation.general.required')
+                        }, {
+                            validator: this.checkavailabilityResidentType
+                        }
+                    ],
+                    tenant_type: [{
                         required: true,
-                        message: this.$t('validation.general.required')
-                    }, {
-                        validator: this.checkavailabilityResidentType
-                    }
-                    ]
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.tenant_type.label')})
+                    }],
                 },
                 loading: {
                     state: false,
@@ -174,6 +178,10 @@ export default (config = {}) => {
         },
         created() {
             this.titles = Object.entries(this.$constants.residents.title).map(([value, label]) => ({value: label, name: this.$t(`general.salutation_option.${label}`)}))
+            this.tenant_types = {
+                1: 'main',
+                2: 'garant'
+            }
         },
     };
 
@@ -309,7 +317,12 @@ export default (config = {}) => {
 
                 mixin.created = async function () {
                     const {password, password_confirmation} = this.validationRules;
-
+                    
+                    this.tenant_types = {
+                        1: 'main',
+                        2: 'garant'
+                    };
+                    
                     [...password, ...password_confirmation].forEach(rule => rule.required = false);
                     this.titles = Object.entries(this.$constants.residents.title).map(([value, label]) => ({value: label, name: this.$t(`general.salutation_option.${label}`)}))
                     try {
