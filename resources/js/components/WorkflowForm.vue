@@ -537,12 +537,6 @@
         padding-right: 0 !important;
     }
 
-    .el-row {
-        .el-col:not(first-child) {
-            //margin-left: 5px;
-        }
-    }
-
     @media only screen and (min-width:992px){
         .el-row {
             .el-col-md-12:first-child {
