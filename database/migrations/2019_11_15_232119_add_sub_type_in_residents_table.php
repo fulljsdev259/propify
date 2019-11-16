@@ -14,7 +14,7 @@ class AddSubTypeInResidentsTable extends Migration
     public function up()
     {
         Schema::table('residents', function (Blueprint $table) {
-            $table->unsignedTinyInteger('sub_type')->after('type')->nullable();
+            $table->unsignedTinyInteger('tenant_type')->after('type')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddSubTypeInResidentsTable extends Migration
     public function down()
     {
         Schema::table('residents', function (Blueprint $table) {
-            $table->dropColumn('sub_type');
+            $table->dropColumn('tenant_type');
         });
     }
 }

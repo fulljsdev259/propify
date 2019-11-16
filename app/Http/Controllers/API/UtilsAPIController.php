@@ -221,8 +221,8 @@ class UtilsAPIController extends AppBaseController
             'title' => Resident::Title,
             'status' => Resident::Status,
             'type' => Resident::Type,
-            'sub_type' => Resident::SubType,
-            'type_sub_type' => Resident::TypeSubType,
+            'tenant_type' => Resident::TenantType,
+            'type_tenant_type' => Resident::TypeTenantType,
         ];
 
         return $result;

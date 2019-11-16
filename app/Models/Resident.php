@@ -51,8 +51,8 @@ use Illuminate\Support\Facades\Storage;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="sub_type",
- *          description="sub_type",
+ *          property="tenant_type",
+ *          description="tenant_type",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -207,17 +207,17 @@ class Resident extends AuditableModel implements HasMedia
         self::TypeOwner => 'owner',
     ];
 
-    const SubTypeMain = 1;
-    const SubTypeGarant = 2;
-    const SubType = [
-        self::SubTypeMain => 'main',
-        self::SubTypeGarant => 'garant',
+    const TenantTypeMain = 1;
+    const TenantTypeGarant = 2;
+    const TenantType = [
+        self::TenantTypeMain => 'main',
+        self::TenantTypeGarant => 'garant',
     ];
 
-    const TypeSubType = [
+    const TypeTenantType = [
         self::TypeResident => [
-            self::SubTypeMain,
-            self::SubTypeGarant
+            self::TenantTypeMain,
+            self::TenantTypeGarant
         ]
     ];
     /**
@@ -261,7 +261,7 @@ class Resident extends AuditableModel implements HasMedia
         'nation',
         'country_id',
         'type',
-        'sub_type',
+        'tenant_type',
     ];
 
     protected $appends = ['created_by'];
@@ -290,7 +290,7 @@ class Resident extends AuditableModel implements HasMedia
         'review' => 'string',
         'rating' => 'integer',
         'type' => 'integer',
-        'sub_type' => 'integer',
+        'tenant_type' => 'integer',
         'nation' => 'string',
     ];
 
