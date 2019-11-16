@@ -325,7 +325,7 @@
                                 @cancel-add-workflow="cancelAddWorkflow"/>
                             <el-collapse accordion>
                                  <el-collapse-item
-                                        :key="workflow.title"
+                                        :key="$index + workflow.title"
                                         :label="`${workflow.name}`"
                                         :value="workflow.title"
                                         :name="workflow.title"
