@@ -108,7 +108,7 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20" style="margin-top: 10px;">
+        <el-row :gutter="20" style="margin-top: 10px; margin-left: 0; margin-right: 0">
             <el-col :md="24" class="drawer-actions">
                 <el-button type="default" size="mini" @click="close" class="round-btn">&nbsp;{{ $t('general.actions.close') }}</el-button>
                 <el-tooltip
@@ -448,7 +448,7 @@
             background-color: var(--primary-color);
             color: white;
             border-radius: 6px;
-            font-size: 15px;
+            font-size: 12px;
             
             margin: 0;
             padding: 0;
@@ -460,7 +460,7 @@
             i {
                 color: white;
                 background: transparent;
-                font-size: 20px;
+                font-size: 17px;
                 font-weight: 600;
             }
         }
@@ -507,7 +507,7 @@
 
             /deep/ .el-select__input {
                 background: transparent;
-                padding-left: 1em;
+                padding-left: 10px;
             }
         }
 
@@ -531,6 +531,24 @@
     .el-col {
         padding-left: 0 !important;
         padding-right: 0 !important;
+    }
+
+    .el-row {
+        .el-col:not(first-child) {
+            //margin-left: 5px;
+        }
+    }
+
+    @media only screen and (min-width:992px){
+        .el-row {
+            .el-col-md-12:first-child {
+                padding-right: 5px !important;
+            }
+
+            .el-col-md-12:last-child {
+                padding-left: 5px !important;
+            }
+        }
     }
     
     
