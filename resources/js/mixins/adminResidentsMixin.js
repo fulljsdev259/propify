@@ -317,7 +317,7 @@ export default (config = {}) => {
 
                 mixin.created = async function () {
                     const {password, password_confirmation} = this.validationRules;
-                    
+
                     this.tenant_types = {
                         1: 'main',
                         2: 'garant'
@@ -330,9 +330,9 @@ export default (config = {}) => {
 
                         const {building, unit, user, ...r} = await this.getResident({id: this.$route.params.id});
                         this.user = user;
-                        console.log(this.user)
+                        
                         this.model = Object.assign({}, this.model, r);
-                        console.log('model', this.model)
+                        
                         this.original_email = this.user.email;
                         this.original_type = this.model.type;
                         this.model.email = user.email;

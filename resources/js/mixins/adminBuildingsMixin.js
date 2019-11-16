@@ -262,7 +262,6 @@ export default (config = {}) => {
                 }
             },
             attachProvider() {
-                console.log('attachProvider called')
                 return new Promise(async (resolve, reject) => {
                     if (!this.toAssignProvider || (!this.model.id && config.mode === 'edit')) {
                         reject(false);
@@ -412,7 +411,6 @@ export default (config = {}) => {
                         await this.getStates();
                         this.assignment_types = Object.entries(this.$constants.quarters.assignment_type).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.assignment_types.${label}`)}))
 
-                        console.log(this.assignment_types)
                         // const {data} = await this.getServicesGroupedByCategory();
                         // this.allServices = data;
 

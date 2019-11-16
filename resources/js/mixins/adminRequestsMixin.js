@@ -23,7 +23,6 @@ export default (config = {}) => {
                 dueDatePickerOptions: {
                     disabledDate(time) {
                         // return time.getTime() < Date.now();
-                        // console.log(time.getDate())
                         return (compareAsc(time.getTime(), subDays(Date.now(),1)) == -1)
                     },
                 },

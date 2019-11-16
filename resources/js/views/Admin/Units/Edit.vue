@@ -515,7 +515,6 @@
                 this.insertDocument(this.selectedFileCategory, file);
             },
             insertDocument(prop, file) {
-                console.log('media', this.model)
                 file.order = this.model.media.length + 1;
                 this.uploadUnitFile({
                     id: this.model.id,
@@ -552,7 +551,6 @@
                 })
             },
             isNumber: function(evt) {
-                console.log(evt)
                 evt = (evt) ? evt : window.event;
                 var charCode = (evt.which) ? evt.which : evt.keyCode;
                 if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
