@@ -744,8 +744,10 @@ export default (config = {}) => {
                                 })
 
                                 try {
+                                    console.log(params.media)
+                                    console.log(this.media)
+                                    params.media = [...params.media, ...this.media.map(item => item.file.src)]
                                     
-                                    params.media = this.media.map(item => item.file.src)
                                     const resp = await this.updateRequest(params);
 
                                     await this.uploadNewMedia(params.id, null);
