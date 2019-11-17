@@ -409,6 +409,7 @@ return [
         'project_ort' => 'Projet Location',
         'building_format' => 'Project No.',
         'building_no' => 'Building No.',
+        'details' => 'Détails du projet',
         'errors' => [
             'not_found' => "Trimestre non trouvé",
             'deleted' => "Erreur d'effacement trimestriel : ",
@@ -445,6 +446,9 @@ return [
                 'building' => 'Choisir un bâtiment',
                 'to_user' => 'Sélectionner un utilisateur',
                 'cc_user' => 'Sélectionner cc',
+            ],
+            'tooltips' => [
+                'save' => "Pour sauvegarder le déroulement du travail, ce bouton, le bouton principal'sauvegarder' ne sauvegardera pas les données."
             ]
         ]
     ],

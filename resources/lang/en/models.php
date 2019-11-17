@@ -407,6 +407,7 @@ return [
         'quarter_format' => 'Project No',
         'type' => 'Project Type',
         'project_ort' => 'Project Location',
+        'details' => 'Project details',
         'errors' => [
             'not_found' => "Quarter not found",
             'deleted' => "Quarter deleted error: ",
@@ -443,6 +444,9 @@ return [
                 'building' => 'Select building',
                 'to_user' => 'Select user',
                 'cc_user' => 'Select cc',
+            ],
+            'tooltips' => [
+                'save' => "To save work flow us this button, main 'save' button will not save data"
             ]
         ]
     ],

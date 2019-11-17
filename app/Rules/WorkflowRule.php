@@ -123,12 +123,14 @@ class WorkflowRule implements Rule
 
         $value = collect($value);
         $buildingIds = $value->pluck('building_ids')->collapse()->unique();
+        // @TODO check building belong quarter
         $buildingsCount = Building::whereIn('id', $buildingIds)->count();
         if ($buildingIds->count() != $buildingsCount) {
             $this->message = 'One of selected building is not correct';
             return false;
         }
 
+        // @TODO check users exists and admins
         $userIds = $value->pluck('to_user_ids')->merge($value->pluck('cc_user_ids'))->collapse()->unique();
         $usersCount = User::whereIn('id', $userIds)->count();
         if ($userIds->count() != $usersCount) {

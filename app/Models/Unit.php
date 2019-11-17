@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasCategoryMediaTrait;
+use App\Traits\RequestRelation;
 use App\Traits\UniqueIDFormat;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -152,7 +153,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  */
 class Unit extends AuditableModel implements HasMedia
 {
-    use SoftDeletes, UniqueIDFormat, HasCategoryMediaTrait;
+    use SoftDeletes, UniqueIDFormat, HasCategoryMediaTrait, RequestRelation;
 
     public $table = 'units';
 
@@ -250,6 +251,14 @@ class Unit extends AuditableModel implements HasMedia
     public function building()
     {
         return $this->belongsTo(Building::class, 'building_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function requests()
+    {
+        return $this->hasManyThrough(Request::class, Contract::class);
     }
 
     /**

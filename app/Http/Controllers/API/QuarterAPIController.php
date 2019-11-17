@@ -118,11 +118,14 @@ class QuarterAPIController extends AppBaseController
                                              $q->where('status', Contract::StatusActive)->select('unit_id', 'resident_id');
                                         }
                                     ]);
-                            }]);
+                                },
+                            'requests:requests.id,requests.status'
+                            ]);
                 },
-                'media'
+                'media',
+                'address:id,city'
             ])->paginate($perPage);
-        $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWIthStatistics');
+        $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWithStatistics');
         return $this->sendResponse($response, 'Quarters retrieved successfully');
     }
 
@@ -509,7 +512,7 @@ class QuarterAPIController extends AppBaseController
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $assignees = $quarter->assignees()->paginate($perPage);
-        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class]);
+        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
 
         $response = (new QuarterAssigneeTransformer())->transformPaginator($assignees) ;
 
@@ -678,7 +681,7 @@ class QuarterAPIController extends AppBaseController
         ]);
 
         $response = (new QuarterTransformer)->transform($quarter);
-        return $this->sendResponse($response, __('models.quarter.user_assigned'));
+        return $this->sendResponse($response, __('general.attached.manager'));
     }
 
     /**

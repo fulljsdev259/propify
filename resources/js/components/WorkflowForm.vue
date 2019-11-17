@@ -1,9 +1,9 @@
 <template>
     <el-form :model="model" :rules="validationRules" label-position="top" ref="form" v-loading="loading" :class="mode == 'edit' ? 'edit-workflow-form' : ''">
-        <el-row :gutter="20">
+        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="24">
                 <el-form-item 
-                            :rules="validationRules.title"
+                            :rules="validationRules.required"
                             prop="title">
                     <el-input type="text" :placeholder="$t('models.quarter.workflow.placeholders.title')"
                             v-model="model.title"
@@ -11,10 +11,10 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="12">
                 <el-form-item 
-                            :rules="validationRules.category"
+                            :rules="validationRules.required"
                             prop="category_id">
                     <el-select :placeholder="$t('models.quarter.workflow.placeholders.category')" style="display: block" 
                                 v-model="model.category_id">
@@ -29,7 +29,7 @@
             </el-col>
             <el-col :md="12">
                 <el-form-item 
-                    :rules="validationRules.building"
+                    :rules="validationRules.required"
                     prop="selectedWorkflowBuilding"
                     class="label-block"
                     >
@@ -55,10 +55,10 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="12">
                 <el-form-item 
-                            :rules="validationRules.to_users"
+                            :rules="validationRules.required"
                             prop="selectedWorkflowToUser">
                     <el-select
                         :loading="remoteLoading"
@@ -108,10 +108,15 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20" style="margin-top: 10px;">
+        <el-row :gutter="20" style="margin-top: 10px; margin-left: 0; margin-right: 0">
             <el-col :md="24" class="drawer-actions">
                 <el-button type="default" size="mini" @click="close" class="round-btn">&nbsp;{{ $t('general.actions.close') }}</el-button>
-                <el-button type="primary" size="mini" @click="submit" icon="ti-save" class="round-btn">&nbsp;{{ $t('general.actions.save') }}</el-button>
+                <el-tooltip
+                        :content="$t('models.quarter.workflow.tooltips.save')"
+                        class="item" effect="light" placement="top-end"
+                    >
+                    <el-button type="primary" size="mini" @click="submit" icon="ti-save" class="round-btn">&nbsp;{{ $t('general.actions.save') }}</el-button>
+                </el-tooltip>
             </el-col>
         </el-row>
         
@@ -162,21 +167,9 @@
                 },
                 categories: [],
                 validationRules: {
-                    title: [{
+                    required: [{
                         required: true,
-                        message: this.$t('models.quarter.required')
-                    }],
-                    category_id: [{
-                        required: true,
-                        message: this.$t('models.quarter.required')
-                    }],
-                    building: [{
-                        required: true,
-                        message: this.$t('models.quarter.required')
-                    }],
-                    to_users: [{
-                        required: true,
-                        message: this.$t('models.quarter.required')
+                        message: this.$t('validation.general.required')
                     }],
                 },
                 remoteLoading: false,
@@ -455,25 +448,25 @@
             background-color: var(--primary-color);
             color: white;
             border-radius: 6px;
-            font-size: 15px;
+            font-size: 12px;
             
             margin: 0;
             padding: 0;
             padding-left: 10px;
             padding-right: 20px;
-            height: 40px;
-            line-height: 40px;
+            height: 30px;
+            line-height: 30px;
 
             i {
                 color: white;
                 background: transparent;
-                font-size: 20px;
+                font-size: 17px;
                 font-weight: 600;
             }
         }
 
         /deep/ .el-select__tags {
-            padding-left: 2px;
+            padding-left: 5px;
 
             input {
                 margin-left: 0;
@@ -514,7 +507,7 @@
 
             /deep/ .el-select__input {
                 background: transparent;
-                padding-left: 1em;
+                padding-left: 10px;
             }
         }
 
@@ -534,10 +527,27 @@
 
     }
 
-    .edit-workflow-form {
-        .el-col {
-            padding-left: 0 !important;
+    
+    /deep/ .el-select .el-input .el-select__caret {
+        color: #565556;
+    }
+
+    .el-col {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    @media only screen and (min-width:992px){
+        .el-row {
+            .el-col-md-12:first-child {
+                padding-right: 5px !important;
+            }
+
+            .el-col-md-12:last-child {
+                padding-left: 5px !important;
+            }
         }
     }
+    
     
 </style>

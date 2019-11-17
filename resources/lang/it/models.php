@@ -407,6 +407,7 @@ return [
         'quarter_format' => 'Progetto n.',
         'type' => 'Progetto tipo',
         'project_ort' => 'Projekt Site',
+        'details' => 'Dettagli del progetto',
         'errors' => [
             'not_found' => "Quartiere non trovato",
             'deleted' => "Errore al quarto eliminato: ",
@@ -443,6 +444,9 @@ return [
                 'building' => 'Seleziona edificio',
                 'to_user' => 'Seleziona utente',
                 'cc_user' => 'Selezionare cc',
+            ],
+            'tooltips' => [
+                'save' => "Per salvare il flusso di lavoro ci questo pulsante, il pulsante principale 'salva' non salverà i dati."
             ]
         ]
     ],
