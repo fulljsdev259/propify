@@ -121,10 +121,10 @@
                 :key="column.prop"
                 :label="$t(column.label)"
                 :width="column.width"
-                v-for="column in header">
+                v-for="column in headerWithAvatars" class="request-table">
                 
                 <template slot-scope="scope">
-                    <div v-if="column.withAvatars" class="avatars-wrapper">
+                    <div class="avatars-wrapper">
                         <div class="user-details" v-if="scope.row['user']">
                             <div class="image">
                                 <table-avatar :src="scope.row['user'].avatar" :name="scope.row['user'].name" :size="33" />
@@ -133,8 +133,18 @@
                                 {{ scope.row['user'].name }}
                             </div>
                         </div> 
-                    </div> 
-                    <div v-else-if="column.withAvatarsAndProps" class="avatar-with-multiprops">
+                    </div>
+                </template>
+            </el-table-column>
+
+            <el-table-column
+                :key="column.label + key"
+                :label="$t(column.label)"
+                :width="column.width"
+                v-for="(column, key) in headerAvatarWithMultipleProps"
+            >
+                <template slot-scope="scope">
+                    <div class="avatar-with-multiprops">
                         <table-avatar :src="scope.row['user'].avatar" :name="scope.row['user'].name" :size="33" />
                         <div class="avatar-info">
                             <component :class="{'listing-link': column.withLinks}" :is="column.withLinks ? 'router-link':'div'"
@@ -144,187 +154,243 @@
                             </component>
                         </div>
                     </div>
-                    <span v-else-if="column.roles">
-                        {{ $t(`general.roles.${$constants.propertyManager.type[scope.row[column.prop]]}`) }}
-                    </span>
-                    <div v-else-if="column.withMultipleProps">
-                         <template slot-scope="scope">
-                            <component :class="{'listing-link': column.withLinks}" :is="column.withLinks ? 'router-link':'div'"
-                                    :key="prop" :to="{name: 'adminUnits', query: { page : 1, per_page : 20, building_id : scope.row.id }}"
-                                    v-for="(prop, ind) in column.props" v-if="scope.row[prop]">
-                                {{scope.row[prop]}}
-                            </component>
-                        </template>
-                        <!-- <template slot-scope="scope">
-                            <component :class="{'listing-link': column.withLinks}" :is="column.withLinks ? 'router-link':'div'"
-                                    :key="prop" :to="buildRouteObject(column.route, scope.row)"
-                                    v-for="(prop, ind) in column.props" v-if="scope.row[prop]">
-                                {{scope.row[prop]}}
-                            </component>
-                        </template> -->
-                    </div>
-                    <div v-else-if="column.withCollapsables">
-                        <template v-if="column.props == 'building_names'">
-                            <span v-if="scope.row[column.props].length == 1">
-                                {{scope.row[column.props][0].row}}
-                                <br/>
-                                {{scope.row[column.props][0].zip}}
-                            </span>
-                            <el-collapse class="table-collapsable" v-if="scope.row[column.props].length > 1">
-                                <el-collapse-item>
-                                    <template slot="title">
-                                        <span>
-                                            {{scope.row[column.props][0].row}}
-                                            <br/>
-                                            {{scope.row[column.props][0].zip}}
-                                        </span>
-                                    </template>
-                                    <span
-                                        :key="value.row + value.zip"
-                                        v-for="(value,v_index) in scope.row[column.props]"
-                                        v-if="v_index > 0"
-                                    >
-                                        {{value.row}}
-                                        <br/>
-                                        {{value.zip}}
-                                    </span>
-                                </el-collapse-item>
-                            </el-collapse>
-                        </template>
-                        <template v-else>
-                            <span v-if="scope.row[column.props].length == 1">
-                                {{scope.row[column.props][0]}}
-                            </span>
-                            <el-collapse class="table-collapsable" v-if="scope.row[column.props].length > 1">
-                                <el-collapse-item :title="scope.row[column.props][0]">
-                                    <span
-                                        :key="value.row + value.zip"
-                                        v-for="(value,v_index) in scope.row[column.props]"
-                                        v-if="v_index > 0"
-                                    >
-                                        {{value}}
-                                    </span>
-                                </el-collapse-item>
-                            </el-collapse>
-                        </template>
-                    </div>
-                    <div v-else-if="column.withCounts">
-                        <request-count :countsData="items[scope.$index]" ></request-count>
-                        <contract-count :countsData="items[scope.$index]" ></contract-count>
-                    </div>
-                    <div v-else-if="column.withUsers">
-                        <div class="avatars-wrapper">
-                            <span :key="uuid()" v-for="(user) in scope.row[column.prop]">
-                                <el-tooltip
-                                    :content="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
-                                    class="item"
-                                    effect="light" placement="top">
-                                    <template v-if="user.user">
-                                        <avatar :size="28"
-                                                :username="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
-                                                backgroundColor="rgb(205, 220, 57)"
-                                                color="#fff"
-                                                v-if="!user.user.avatar"></avatar>
-                                        <avatar :size="28" :src="`/${user.user.avatar}`" v-else></avatar>
-                                    </template>
-                                    <template v-else>
-                                        <avatar :size="28"
-                                                :username="user.first_name ? `${user.first_name} ${user.last_name}`: `${user.name}`"
-                                                backgroundColor="rgb(205, 220, 57)"
-                                                color="#fff"
-                                                v-if="!user.avatar"></avatar>
-                                        <avatar :size="28" :src="`/${user.avatar}`" v-else></avatar>
-                                    </template>
-                                </el-tooltip>
-
-                            </span>
-                            <avatar class="avatar-count" :size="28" :username="`+ ${scope.row[column.count]}`"
-                                    color="#fff"
-                                    v-if="scope.row[column.count]"></avatar>
-                        </div>
-                    </div>
-                    <template v-else-if="column.withBadges">
-                        <el-button v-if="scope.row[column.prop] == 'low'" class="btn-priority-badge btn-badge" :size="column.size" round>{{ scope.row[column.prop] }}</el-button>
-                        <el-button v-else-if="scope.row[column.prop] == 'normal'" plain type="warning" class="btn-priority-badge btn-badge" :size="column.size" round>{{ scope.row[column.prop] }}</el-button>
-                        <el-button v-else-if="scope.row[column.prop] == 'urgent'" plain type="danger" class="btn-priority-badge btn-badge" :size="column.size" round>{{ scope.row[column.prop] }}</el-button>
-                    </template>
-                    <template v-else-if="column.select">
-                        <el-select class="select-icon" :class="column.class" @change="column.select.onChange(scope.row)" v-model="scope.row[column.prop]" :style="{width: '100%', maxWidth: column.ShowCircleIcon != undefined? '120px': '150px'}">
-                            <template slot="prefix">
-                                <i class="icon-dot-circled" :class="scope.row[column.prop] == 1 ? 'icon-success':'icon-danger'"  v-if="column.ShowCircleIcon"></i>
-                            </template>
-                            <el-option
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id"
-                                v-for="item in column.select.data">
-                                <i class="icon-dot-circled" :class="item.id == 1 ? 'icon-success':'icon-danger'"  v-if="column.ShowCircleIcon"></i> {{item.name}}
-                            </el-option>
-                        </el-select>
-                    
-                    </template>
-                    <template v-else-if="column.actions">
-                        <span
-                            :key="action.title"
-                            class="btn-wrap"
-                            v-for="action in column.actions">
-                            <template
-                                v-if="(!action.permissions || ( action.permissions && $can(action.permissions))) && (!action.hidden || (action.hidden && !action.hidden(scope.row)))">
-                                <template v-if="action.title.indexOf('edit') !== -1 && action.isTemplateEdit == undefined">
-                                    <router-link
-                                            :to="{
-                                                name: action.editUrl,
-                                                params: {
-                                                    type:$constants.pinboard.type[scope.row['type']],
-                                                    id:scope.row['id']}
-                                                }"
-                                            class="el-menu-item-link">
-                                        <el-button
-                                            :style="action.style"
-                                            :type="action.type"
-                                            size="mini"
-                                        >
-                                            <i class="ti-search"></i>
-                                            <span>{{ $t('general.actions.edit') }}</span>
-                                        </el-button>
-                                    </router-link>      
-                                </template>
-                                <el-button
-                                    v-else
-                                    :style="action.style"
-                                    :type="action.type"
-                                    @click="action.onClick(scope.row)"
-                                    size="mini"
-                                >
-                                    <template v-if="action.isTemplateEdit != undefined">
-                                        <i class="ti-search"></i>
-                                        <span>{{ $t('general.actions.edit') }}</span>    
-                                    </template>
-                                    <template v-else-if="action.title.indexOf('edit') !== -1">
-                                        <router-link :to="{name: 'adminPropertyManagersEdit',  params: { id:scope.row['id']}}" class="el-menu-item-link">
-                                            <i class="ti-search"></i>
-                                            <span>{{ $t('general.actions.edit') }}</span>
-                                        </router-link>      
-                                    </template>
-                                    <template v-else-if="action.title == 'Delete'">
-                                        <i class="ti-close"></i>
-                                        <span>{{$t(action.title)}}</span>    
-                                    </template>
-                                    <template v-else>
-                                        <i class="ti-search"></i>
-                                        <span>{{ $t(action.title) }}</span>
-                                    </template>
-                                </el-button>
-                            </template>
-                        </span>
-                    </template>
-                    <span v-else>
-                        {{ scope.row[column.prop] }}
-                    </span>
-                    
                 </template>
             </el-table-column>
 
+            <el-table-column
+                :key="column.prop"
+                :label="$t(column.label)"
+                :prop="column.prop"
+                :width="column.width"
+                v-for="column in headerWithoutActions"/>
+
+            <el-table-column
+                :key="column.prop"
+                :label="$t(column.label)"
+                :width="column.width"
+                v-for="column in headerWithRoles">
+                <template slot-scope="scope">
+                    {{$t(`general.roles.${$constants.propertyManager.type[scope.row[column.prop]]}`)}}
+                </template>
+            </el-table-column>
+
+            
+            
+            <el-table-column
+                :key="column.label + key"
+                :label="$t(column.label)"
+                :width="column.width"
+                v-for="(column, key) in headerWithMultipleProps"
+            >
+                <template slot-scope="scope">
+                    <component :class="{'listing-link': column.withLinks}" :is="column.withLinks ? 'router-link':'div'"
+                               :key="prop" :to="{name: 'adminUnits', query: { page : 1, per_page : 20, building_id : scope.row.id }}"
+                               v-for="(prop, ind) in column.props" v-if="scope.row[prop]">
+                        {{scope.row[prop]}}
+                    </component>
+                </template>
+                <!-- <template slot-scope="scope">
+                    <component :class="{'listing-link': column.withLinks}" :is="column.withLinks ? 'router-link':'div'"
+                               :key="prop" :to="buildRouteObject(column.route, scope.row)"
+                               v-for="(prop, ind) in column.props" v-if="scope.row[prop]">
+                        {{scope.row[prop]}}
+                    </component>
+                </template> -->
+            </el-table-column>
+
+            <el-table-column
+                :key="column.label"
+                :label="$t(column.label)"
+                :width="column.width"
+                v-for="(column, key) in headerWithCollapsables">
+                <template slot-scope="scope">
+                    <template v-if="column.props == 'building_names'">
+                    <span v-if="scope.row[column.props].length == 1">
+                        {{scope.row[column.props][0].row}}
+                        <br/>
+                        {{scope.row[column.props][0].zip}}
+                    </span>
+                    <el-collapse class="table-collapsable" v-if="scope.row[column.props].length > 1">
+                        <el-collapse-item>
+                            <template slot="title">
+                                <span>
+                                    {{scope.row[column.props][0].row}}
+                                    <br/>
+                                    {{scope.row[column.props][0].zip}}
+                                </span>
+                            </template>
+                            <span
+                                :key="value.row + value.zip"
+                                v-for="(value,v_index) in scope.row[column.props]"
+                                v-if="v_index > 0"
+                            >
+                                {{value.row}}
+                                <br/>
+                                {{value.zip}}
+                            </span>
+                        </el-collapse-item>
+                    </el-collapse>
+                    </template>
+                    <template v-else>
+                        <span v-if="scope.row[column.props].length == 1">
+                            {{scope.row[column.props][0]}}
+                        </span>
+                        <el-collapse class="table-collapsable" v-if="scope.row[column.props].length > 1">
+                            <el-collapse-item :title="scope.row[column.props][0]">
+                                <span
+                                    :key="value.row + value.zip"
+                                    v-for="(value,v_index) in scope.row[column.props]"
+                                    v-if="v_index > 0"
+                                >
+                                    {{value}}
+                                </span>
+                            </el-collapse-item>
+                        </el-collapse>
+                    </template>
+                </template>
+                
+            </el-table-column>
+
+            <el-table-column
+                :key="column.label"
+                :label="$t(column.label)"
+                :width="column.width"
+                v-for="(column, key) in headerWithCounts">
+                <template slot-scope="scope">
+                    <request-count :countsData="items[scope.$index]" ></request-count>
+                    <contract-count :countsData="items[scope.$index]" ></contract-count>
+                </template>
+            </el-table-column>
+
+             <el-table-column
+                :key="column.prop"
+                :label="$t(column.label)"
+                :width="column.width"
+                v-for="(column, key) in headerWithUsers">
+                <template slot-scope="scope">
+                    <div class="avatars-wrapper">
+                        <span :key="uuid()" v-for="(user) in scope.row[column.prop]">
+                              <el-tooltip
+                                  :content="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
+                                  class="item"
+                                  effect="light" placement="top">
+                                  <template v-if="user.user">
+                                      <avatar :size="28"
+                                              :username="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
+                                              backgroundColor="rgb(205, 220, 57)"
+                                              color="#fff"
+                                              v-if="!user.user.avatar"></avatar>
+                                      <avatar :size="28" :src="`/${user.user.avatar}`" v-else></avatar>
+                                  </template>
+                                  <template v-else>
+                                      <avatar :size="28"
+                                              :username="user.first_name ? `${user.first_name} ${user.last_name}`: `${user.name}`"
+                                              backgroundColor="rgb(205, 220, 57)"
+                                              color="#fff"
+                                              v-if="!user.avatar"></avatar>
+                                      <avatar :size="28" :src="`/${user.avatar}`" v-else></avatar>
+                                  </template>
+                              </el-tooltip>
+
+                        </span>
+                        <avatar class="avatar-count" :size="28" :username="`+ ${scope.row[column.count]}`"
+                                color="#fff"
+                                v-if="scope.row[column.count]"></avatar>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column
+                :key="column.prop"
+                :label="$t(column.label)"
+                :width="column.width"
+                v-for="(column, key) in headerWithBadges">
+                <template slot-scope="scope">
+                    <el-button v-if="scope.row[column.prop] == 'low'" class="btn-priority-badge btn-badge" :size="column.size" round>{{ scope.row[column.prop] }}</el-button>
+                    <el-button v-else-if="scope.row[column.prop] == 'normal'" plain type="warning" class="btn-priority-badge btn-badge" :size="column.size" round>{{ scope.row[column.prop] }}</el-button>
+                    <el-button v-else-if="scope.row[column.prop] == 'urgent'" plain type="danger" class="btn-priority-badge btn-badge" :size="column.size" round>{{ scope.row[column.prop] }}</el-button>
+                </template>
+            </el-table-column>
+            <el-table-column
+                :key="column.prop"
+                :label="$t(column.label)"
+                :width="column.width"
+                v-for="(column, key) in headerWithSelect">
+                <template slot-scope="scope">
+                    <el-select class="select-icon" :class="column.class" @change="column.select.onChange(scope.row)" v-model="scope.row[column.prop]" :style="{width: '100%', maxWidth: column.ShowCircleIcon != undefined? '120px': '150px'}">
+                        <template slot="prefix">
+                            <i class="icon-dot-circled" :class="scope.row[column.prop] == 1 ? 'icon-success':'icon-danger'"  v-if="column.ShowCircleIcon"></i>
+                        </template>
+                        <el-option
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id"
+                            v-for="item in column.select.data">
+                            <i class="icon-dot-circled" :class="item.id == 1 ? 'icon-success':'icon-danger'"  v-if="column.ShowCircleIcon"></i> {{item.name}}
+                        </el-option>
+                    </el-select>
+                   
+                </template>
+            </el-table-column>
+            <el-table-column
+                :key="key"
+                :width="column.width ? column.width : 200"
+                v-for="(column, key) in headerWithActions">
+                <template slot-scope="scope">
+                    <span
+                        :key="action.title"
+                        class="btn-wrap"
+                        v-for="action in column.actions">
+                        <template
+                            v-if="(!action.permissions || ( action.permissions && $can(action.permissions))) && (!action.hidden || (action.hidden && !action.hidden(scope.row)))">
+                            <template v-if="action.title.indexOf('edit') !== -1 && action.isTemplateEdit == undefined">
+                                <router-link
+                                        :to="{
+                                            name: action.editUrl,
+                                            params: {
+                                                type:$constants.pinboard.type[scope.row['type']],
+                                                id:scope.row['id']}
+                                            }"
+                                        class="el-menu-item-link">
+                                    <el-button
+                                        :style="action.style"
+                                        :type="action.type"
+                                        size="mini"
+                                    >
+                                        <i class="ti-search"></i>
+                                        <span>{{ $t('general.actions.edit') }}</span>
+                                    </el-button>
+                                </router-link>      
+                            </template>
+                            <el-button
+                                v-else
+                                :style="action.style"
+                                :type="action.type"
+                                @click="action.onClick(scope.row)"
+                                size="mini"
+                            >
+                                <template v-if="action.isTemplateEdit != undefined">
+                                    <i class="ti-search"></i>
+                                    <span>{{ $t('general.actions.edit') }}</span>    
+                                </template>
+                                <template v-else-if="action.title.indexOf('edit') !== -1">
+                                    <router-link :to="{name: 'adminPropertyManagersEdit',  params: { id:scope.row['id']}}" class="el-menu-item-link">
+                                        <i class="ti-search"></i>
+                                        <span>{{ $t('general.actions.edit') }}</span>
+                                    </router-link>      
+                                </template>
+                                <template v-else-if="action.title == 'Delete'">
+                                    <i class="ti-close"></i>
+                                    <span>{{$t(action.title)}}</span>    
+                                </template>
+                                <template v-else>
+                                    <i class="ti-search"></i>
+                                    <span>{{ $t(action.title) }}</span>
+                                </template>
+                            </el-button>
+                        </template>
+                    </span>
+                </template>
+            </el-table-column>
             <el-table-column
                 type="selection"
                 v-if="withCheckSelection"

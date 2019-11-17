@@ -133,7 +133,7 @@
                 delBuildingStatus: -1, // 0: unit, 1: request, 2: both
                 header: [{
                     label: 'models.building.building_format',
-                    props: 'building_format',
+                    prop: 'building_format',
                 }, {
                     label: 'models.building.building_no',
                     prop: 'address.house_num'
