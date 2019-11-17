@@ -535,7 +535,7 @@
             :requestData="selectedRequestData"
             @close="closeMailModal"
             @send="sendServiceMail"
-            v-if="(model.service_providers && model.service_providers.length) || (model.property_managers && model.property_managers.length)"
+            v-if="model.id && ((model.service_providers && model.service_providers.length) || (model.property_managers && model.property_managers.length))"
         />
 
     </div>
