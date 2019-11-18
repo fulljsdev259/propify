@@ -33,6 +33,7 @@ class UnitTransformer extends BaseTransformer
             'name' => $model->name,
             'description' => $model->description,
             'building_id' => $model->building_id,
+            'quarter_id' => $model->quarter_id,
             'floor' => $model->floor,
             'monthly_rent_net' => $model->monthly_rent_net,
             'monthly_rent_gross' => $model->monthly_rent_gross,
@@ -63,6 +64,14 @@ class UnitTransformer extends BaseTransformer
 
         if ($model->relationExists('building')) {
             $response['building'] = (new BuildingSimpleTransformer)->transform($model->building);
+            $response['quarter_id'] = $model->building->quarter_id;
+        } elseif(empty($response['quarter_id']) || ! empty($response['building_id'])) {
+            $model->load('building:quarter_id,id');
+            $response['quarter_id'] = $model->building->quarter_id ?? null;
+        }
+
+        if ($model->relationExists('quarter')) {
+            $response['quarter'] = (new QuarterTransformer())->transform($model->quarter);
         }
 
         if ($model->relationExists('media')) {
