@@ -146,6 +146,8 @@ class RelationRepository extends BaseRepository
         if ($model)  {
             $model = $this->saveMediaUploads($model, $attributes);
         }
+
+        // @TODO if status changed active to inactive how must be organize resident status
         return $model;
     }
 
