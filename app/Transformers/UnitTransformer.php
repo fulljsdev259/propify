@@ -70,6 +70,10 @@ class UnitTransformer extends BaseTransformer
 
         if ($model->relationExists('quarter')) {
             $response['quarter'] = (new QuarterTransformer())->transform($model->quarter);
+            $response[ 'internal_quarter_id'] = $model->quarter->internal_quarter_id ?? '';
+        } else  {
+            $model->load('quarter:id,internal_quarter_id');
+            $response[ 'internal_quarter_id'] = $model->quarter->internal_quarter_id ?? '';
         }
 
         if ($model->relationExists('media')) {
