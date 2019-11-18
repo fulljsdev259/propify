@@ -42,9 +42,9 @@ class ListingRepository extends BaseRepository
         $u = \Auth::user();
 
         if ($u->resident ) {
-            $firstContractBuilding = $u->resident->contracts()->first()->building ?? null;
-            $attributes['address_id'] = $firstContractBuilding->address_id ?? null;
-            $attributes['quarter_id'] = $firstContractBuilding->quarter_id ?? null;
+            $firstRelationBuilding = $u->resident->relations()->first()->building ?? null;
+            $attributes['address_id'] = $firstRelationBuilding->address_id ?? null;
+            $attributes['quarter_id'] = $firstRelationBuilding->quarter_id ?? null;
         }
 
         if ($attributes['visibility'] != Listing::VisibilityAll &&
@@ -86,7 +86,7 @@ class ListingRepository extends BaseRepository
 //            $users = User::all();
 //        }
 //        if ($listing->visibility == Listing::VisibilityQuarter) {
-//            // @TODO use where has and contract related
+//            // @TODO use where has and relation related
 //            $users = User::select('users.*')
 //                ->join('residents', 'residents.user_id', '=', 'users.id')
 //                ->join('buildings', 'buildings.id', '=', 'residents.building_id')
@@ -94,7 +94,7 @@ class ListingRepository extends BaseRepository
 //                ->get();
 //        }
 //        if ($listing->visibility == Listing::VisibilityAddress) {
-//            // @TODO use where has and contract related
+//            // @TODO use where has and relation related
 //            $users = User::select('users.*')
 //                ->join('residents', 'residents.user_id', '=', 'users.id')
 //                ->join('buildings', 'buildings.id', '=', 'residents.building_id')

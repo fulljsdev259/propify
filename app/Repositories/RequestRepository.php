@@ -6,25 +6,15 @@ use App\Jobs\Notify\NotifyNewRequest;
 use App\Jobs\Notify\NotifyEmailReceptionistsNewPublicRequest;
 use App\Jobs\Notify\NotifyRequestDue;
 use App\Jobs\Notify\NotifyRequestStatusChange;
-use App\Models\AuditableModel;
-use App\Mails\NotifyServiceProvider;
-use App\Models\Comment;
 use App\Models\Model;
 use App\Models\PropertyManager;
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Models\ServiceProvider;
 use App\Models\Request;
-use App\Models\User;
 use App\Models\Workflow;
-use App\Notifications\NewResidentRequest;
-use App\Notifications\RequestCommented;
-use App\Notifications\RequestDue;
-use App\Notifications\RequestMedia;
-use App\Notifications\StatusChangedRequest;
 use App\Traits\SaveMediaUploads;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Spatie\MediaLibrary\Models\Media;
 
 /**
  * Class RequestRepository
@@ -86,7 +76,7 @@ class RequestRepository extends BaseRepository
             }
         }
 
-        $attributes = $this->fixContractRelated($attributes);
+        $attributes = $this->fixRelationRelated($attributes);
         $attributes['creator_user_id'] = Auth::id();
 
         if (key_exists('send_notification', $attributes)) {
@@ -126,7 +116,7 @@ class RequestRepository extends BaseRepository
      */
     protected function assignAdminsToRequest(Request $request)
     {
-        $building = $request->contract->building;
+        $building = $request->relation->building ?? null;
         if (empty($building)) {
             return $request;
         }
@@ -185,7 +175,7 @@ class RequestRepository extends BaseRepository
             $attr = [];
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
-            $attr['contract_id'] = $attributes['contract_id'];
+            $attr['relation_id'] = $attributes['relation_id'];
             $attr['category_id'] = $attributes['category_id'];
 
             $attr['sub_category_id'] = $attributes['sub_category_id'];
@@ -273,7 +263,7 @@ class RequestRepository extends BaseRepository
         \DB::beginTransaction();
         $attributes = $this->getPutAttributes($attributes, $model);
         $attributes = $this->getStatusRelatedAttributes($attributes, $model);
-        $attributes = $this->fixContractRelated($attributes);
+        $attributes = $this->fixRelationRelated($attributes);
         $oldModel = clone $model;
         $updatedModel =  parent::updateExisting($model, $attributes);
         $updatedModel = $this->saveMediaUploads($updatedModel, $attributes);
@@ -300,12 +290,12 @@ class RequestRepository extends BaseRepository
      * @param $attributes
      * @return mixed
      */
-    protected function fixContractRelated($attributes)
+    protected function fixRelationRelated($attributes)
     {
-        if (!empty($attributes['contract_id'])) {
+        if (!empty($attributes['relation_id'])) {
             // already validated and it must be exists
-            $contract = Contract::find($attributes['contract_id'], ['id', 'resident_id']);
-            $attributes['resident_id'] = $contract->resident_id;
+            $relation = Relation::find($attributes['relation_id'], ['id', 'resident_id']);
+            $attributes['resident_id'] = $relation->resident_id;
         }
 
         return $attributes;
@@ -353,14 +343,14 @@ class RequestRepository extends BaseRepository
 
     public function deleteRequesetWithUnitIds($ids)
     {
-        return $this->model->whereHas('contract', function ($q) use ($ids) {
+        return $this->model->whereHas('relation', function ($q) use ($ids) {
             $q->whereIn('unit_id', $ids);
         })->delete();
     }
 
     public function getRequestCountWithUnitIds($ids)
     {
-        return $this->model->whereHas('contract', function ($q) use ($ids) {
+        return $this->model->whereHas('relation', function ($q) use ($ids) {
             $q->whereIn('unit_id', $ids);
         })->count();
     }
