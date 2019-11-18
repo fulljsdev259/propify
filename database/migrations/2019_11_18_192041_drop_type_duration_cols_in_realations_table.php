@@ -14,7 +14,7 @@ class DropTypeDurationColsInRealationsTable extends Migration
     public function up()
     {
         Schema::table('relations', function (Blueprint $table) {
-            $table->dropColumn('type', 'duration');
+            $table->dropColumn('duration');
         });
     }
 
@@ -26,7 +26,6 @@ class DropTypeDurationColsInRealationsTable extends Migration
     public function down()
     {
         Schema::table('relations', function (Blueprint $table) {
-            $table->smallInteger('type')->nullable()->default(1)->after('unit_id');
             $table->smallInteger('duration')->nullable()->default(1)->after('type');
         });
     }

@@ -20,8 +20,8 @@ class RelationTransformer extends BaseTransformer
         $response = [
             'id' => $model->id,
             'resident_id' => $model->resident_id,
-            'building_id' => $model->building_id,
             'unit_id' => $model->unit_id,
+            'type' => $model->type,
             'status' => $model->status,
             'relation_format' => $model->relation_format,
             'deposit_type' => $model->deposit_type,

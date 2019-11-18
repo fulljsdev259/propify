@@ -37,6 +37,11 @@ use App\Traits\HasMediaTrait;
  *          type="integer",
  *          format="int32"
  *      ),
+ *      @SWG\Property(
+ *          property="type",
+ *          description="type",
+ *          type="integer"
+ *      ),
  *     @SWG\Property(
  *          property="status",
  *          description="status",
@@ -111,6 +116,7 @@ use App\Traits\HasMediaTrait;
  * @property int|null $unit_id
  * @property int|null $status
  * @property string|null $relation_format
+ * @property int|null $type
  * @property int|null $deposit_type
  * @property int|null $deposit_status
  * @property int|null $deposit_amount
@@ -143,6 +149,7 @@ use App\Traits\HasMediaTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereMonthlyRentGross($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereMonthlyRentNet($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereResidentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereUnitId($value)
@@ -196,6 +203,7 @@ class Relation extends AuditableModel implements HasMedia
         'resident_id',
         'quarter_id',
         'unit_id',
+        'type',
         'relation_format',
         'deposit_type',
         'deposit_status',
@@ -221,6 +229,7 @@ class Relation extends AuditableModel implements HasMedia
         'resident_id' => 'integer',
         'quarter_id' => 'integer',
         'unit_id' => 'integer',
+        'type' => 'integer',
         'status' => 'integer',
         'relation_format' => 'string',
         'deposit_type' => 'integer',
