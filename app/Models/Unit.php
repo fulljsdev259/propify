@@ -21,6 +21,12 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  *          format="int32"
  *      ),
  *      @SWG\Property(
+ *          property="quarter_id",
+ *          description="quarter_id",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
  *          property="building_id",
  *          description="building_id",
  *          type="integer",
@@ -99,6 +105,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  * )
  * @property int $id
  * @property int $building_id
+ * @property int $quarter_id
  * @property string $unit_format
  * @property int $type
  * @property string $name
@@ -189,6 +196,7 @@ class Unit extends AuditableModel implements HasMedia
     ];
 
     public $fillable = [
+        'quarter_id',
         'building_id',
         'type',
         'name',
@@ -210,6 +218,7 @@ class Unit extends AuditableModel implements HasMedia
      * @var array
      */
     protected $casts = [
+        'quarter_id' => 'integer',
         'building_id' => 'integer',
         'type' => 'integer',
         'name' => 'string',
@@ -233,17 +242,6 @@ class Unit extends AuditableModel implements HasMedia
         'xlsx'
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'building_id' => 'required|integer',
-        'type' => 'required|integer',
-        'name' => 'required|string',
-        'floor' => 'required'
-    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -251,6 +249,14 @@ class Unit extends AuditableModel implements HasMedia
     public function building()
     {
         return $this->belongsTo(Building::class, 'building_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function quarter()
+    {
+        return $this->belongsTo(Quarter::class, 'quarter_id', 'id');
     }
 
     /**
