@@ -4,17 +4,17 @@ namespace App\Repositories;
 
 use App\Models\AuditableModel;
 use App\Models\Model;
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Models\Resident;
 use App\Models\Unit;
 use App\Traits\SaveMediaUploads;
 use Illuminate\Support\Facades\App;
 
 /**
- * Class ContractRepository
+ * Class RelationRepository
  * @package App\Repositories
  */
-class ContractRepository extends BaseRepository
+class RelationRepository extends BaseRepository
 {
     use  SaveMediaUploads;
 
@@ -23,7 +23,7 @@ class ContractRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
-        'contract_format' => 'like',
+        'relation_format' => 'like',
     ];
 
     /**
@@ -31,12 +31,12 @@ class ContractRepository extends BaseRepository
      **/
     public function model()
     {
-        return Contract::class;
+        return Relation::class;
     }
 
     /**
      * @param array $attributes
-     * @return Contract|Model|mixed
+     * @return Relation|Model|mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
@@ -45,12 +45,12 @@ class ContractRepository extends BaseRepository
     {
         \DB::beginTransaction();
         if ( !isset($attributes['status'])) {
-            $attributes['status'] = Contract::StatusActive;
+            $attributes['status'] = Relation::StatusActive;
         }
 
         $attributes = $this->fixBuildingData($attributes);
         /**
-         * @var Contract $model
+         * @var Relation $model
          */
         $model = parent::create($attributes);
 
@@ -64,34 +64,34 @@ class ContractRepository extends BaseRepository
          * @var $pinboardRepository PinboardRepository
          */
         $pinboardRepository = App::make(PinboardRepository::class);
-        $pinboardRepository->newResidentContractPinboard($model);
-        $this->setAsResidentDefaultContractIfNeed($model);
+        $pinboardRepository->newResidentRelationPinboard($model);
+        $this->setAsResidentDefaultRelationIfNeed($model);
         \DB::commit();
 
         return $model;
     }
 
     /**
-     * @param $contract
+     * @param $relation
      * @return mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    protected function setAsResidentDefaultContractIfNeed($contract)
+    protected function setAsResidentDefaultRelationIfNeed($relation)
     {
-        if ($contract->status != Contract::StatusActive) {
-            return $contract;
+        if ($relation->status != Relation::StatusActive) {
+            return $relation;
         }
 
-        // save default_contract_id if need
-        $contract->load('resident:id,default_contract_id');
-        $resident = $contract->resident;
+        // save default_relation_id if need
+        $relation->load('resident:id,default_relation_id');
+        $resident = $relation->resident;
 
-        if (! ($resident && is_null($resident->default_contract_id))) {
-            return $contract;
+        if (! ($resident && is_null($resident->default_relation_id))) {
+            return $relation;
         }
         
         Resident::disableAuditing();
-        $resident->update(['default_contract_id' => $contract->id]);
+        $resident->update(['default_relation_id' => $relation->id]);
         Resident::enableAuditing();
         (new AuditableModel())->newSystemAudit(
             'resident',
@@ -102,18 +102,18 @@ class ContractRepository extends BaseRepository
             true
         );
 
-        return $contract;
+        return $relation;
     }
 
     /**
      * @param $unit
      * @param $residentId
-     * @return Contract|Model|mixed
+     * @return Relation|Model|mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function newContractForUnit($unit, $residentId)
+    public function newRelationForUnit($unit, $residentId)
     {
         $attr = [
             // @TODO other attributes

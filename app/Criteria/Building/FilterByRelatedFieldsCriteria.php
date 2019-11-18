@@ -64,7 +64,7 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
 
         $requestStatus = $this->request->get('request_status', null);
         if ($requestStatus) {
-            return $model->whereHas('contracts', function ($q) use ($requestStatus) {
+            return $model->whereHas('relations', function ($q) use ($requestStatus) {
                 $q->whereHas('residents.requests', function ($query) use ($requestStatus) {
                     $query->where('status', $requestStatus);
                 });

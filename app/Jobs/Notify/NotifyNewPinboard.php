@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Notify;
 
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Models\Pinboard;
 use App\Models\Resident;
 use App\Notifications\AnnouncementPinboardPublished;
@@ -164,7 +164,7 @@ class NotifyNewPinboard
             ->where('residents.status', Resident::StatusActive)
             ->whereNull('residents.deleted_at')
             ->with([
-                'contracts' => function ($q) use ($buildingIds, $quarterIds) {
+                'relations' => function ($q) use ($buildingIds, $quarterIds) {
                     $this->setNeededFiltersInQuery($q, $buildingIds, $quarterIds);
                     $q->select('resident_id', 'building_id')
                         ->with('building:id,quarter_id');
@@ -174,8 +174,8 @@ class NotifyNewPinboard
 
         $data = [];
         $residents->map(function ($resident) use ($buildingIds, $quarterIds, &$data) {
-            foreach ($resident->contracts as $contract) {
-                $building = $contract->building;
+            foreach ($resident->relations as $relation) {
+                $building = $relation->building;
                 if (empty($building)) {
                     // this case must be not happen in reality
                     continue;
@@ -241,7 +241,7 @@ class NotifyNewPinboard
             $q->whereNull('residents.deleted_at')
                 ->where('id', '!=', $pinboard->user_id) // not sent notification pinboard author
                 ->where('residents.status', Resident::StatusActive)
-                ->whereHas('contracts', function ($q) use ($quarterIds, $buildingIds) {
+                ->whereHas('relations', function ($q) use ($quarterIds, $buildingIds) {
                     $this->setNeededFiltersInQuery($q, $buildingIds, $quarterIds);
                 });
         })->get();
@@ -254,7 +254,7 @@ class NotifyNewPinboard
      */
     public function setNeededFiltersInQuery($query, $buildingIds, $quarterIds)
     {
-        $query->where('status', Contract::StatusActive)
+        $query->where('status', Relation::StatusActive)
             ->when(
                 ! empty($quarterIds) && !empty($buildingIds),
                 function ($q)  use ($quarterIds, $buildingIds) {

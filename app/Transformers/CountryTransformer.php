@@ -14,7 +14,6 @@ class CountryTransformer extends BaseTransformer
     /**
      * @param Country $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(Country $model)
     {

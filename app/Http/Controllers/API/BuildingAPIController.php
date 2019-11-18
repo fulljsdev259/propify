@@ -144,7 +144,7 @@ class BuildingAPIController extends AppBaseController
         $buildings = $this->buildingRepository->with([
                 'address.state',
                 'service_providers',
-                'contracts' => function ($q) {
+                'relations' => function ($q) {
                     $q->with('building.address', 'unit', 'resident.user');
                 },
                 'propertyManagers',
@@ -225,7 +225,7 @@ class BuildingAPIController extends AppBaseController
         $model = $this->buildingRepository->getModel();
         $buildings = $model->select(['id', 'name'])->orderByDesc('id')->limit($limit)->withCount([
             'units',
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
         ])->get();
@@ -252,13 +252,13 @@ class BuildingAPIController extends AppBaseController
                     $q->select('id', 'country_id', 'state_id', 'city', 'street', 'house_num', 'zip')
                         ->with(['state', 'country']);
                 },
-                'contracts' => function ($q) {
+                'relations' => function ($q) {
                     $q->select('building_id', 'resident_id');
                 }
             ])->withCount([
                 'units',
                 'propertyManagers',
-                'contracts' => function ($q) {
+                'relations' => function ($q) {
                     $q->with('building.address', 'unit', 'resident.user');
                 },
                 'users'
@@ -266,9 +266,9 @@ class BuildingAPIController extends AppBaseController
             ->get();
 
         foreach ($buildings as $building) {
-            $contracts = $building->contracts;
-            unset($building->contracts);
-            $building->residents_count = $contracts->pluck('resident_id')->unique()->count();
+            $relations = $building->relations;
+            unset($building->relations);
+            $building->residents_count = $relations->pluck('resident_id')->unique()->count();
         }
 
         return $this->sendResponse($buildings->toArray(), 'Buildings retrieved successfully');
@@ -334,7 +334,7 @@ class BuildingAPIController extends AppBaseController
         $building = $this->buildingRepository->saveManyUnit($building, $floorData, $address->house_num);
 
         $building->load([
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
         ]);
@@ -405,7 +405,7 @@ class BuildingAPIController extends AppBaseController
             ->load([
                 'address.state',
                 'service_providers',
-                'contracts' => function ($q) {
+                'relations' => function ($q) {
                     $q->with('building.address', 'unit', 'resident.user');
                 },
                 'propertyManagers',
@@ -519,7 +519,7 @@ class BuildingAPIController extends AppBaseController
             'address.state',
             'media',
             'service_providers',
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
         ]);

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Quarter\FilterByStateCriteria;
 use App\Http\Controllers\AppBaseController;
-use App\Http\Requests\API\Quarter\AssigneeListRequest;
 use App\Http\Requests\API\Quarter\BatchAssignManagers;
 use App\Http\Requests\API\Quarter\BatchAssignUsers;
 use App\Http\Requests\API\Quarter\CreateRequest;
@@ -16,11 +15,10 @@ use App\Http\Requests\API\Quarter\ViewRequest;
 use App\Http\Requests\API\Quarter\DeleteRequest;
 use App\Models\Address;
 use App\Models\AuditableModel;
-use App\Models\EmailReceptionist;
 use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Models\ServiceProvider;
 use App\Models\User;
 use App\Repositories\AddressRepository;
@@ -28,8 +26,6 @@ use App\Repositories\QuarterRepository;
 use App\Transformers\EmailReceptionistTransformer;
 use App\Transformers\QuarterAssigneeTransformer;
 use App\Transformers\QuarterTransformer;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
@@ -114,8 +110,8 @@ class QuarterAPIController extends AppBaseController
                             'units' => function ($q) {
                                 $q ->select('id', 'building_id')
                                     ->with([
-                                        'contracts' => function ($q) {
-                                             $q->where('status', Contract::StatusActive)->select('unit_id', 'resident_id');
+                                        'relations' => function ($q) {
+                                             $q->where('status', Relation::StatusActive)->select('unit_id', 'resident_id');
                                         }
                                     ]);
                                 },
@@ -262,7 +258,7 @@ class QuarterAPIController extends AppBaseController
             'workflows',
             'buildings' => function ($q) {
                 $q->with([
-                    'contracts' => function ($q) {
+                    'relations' => function ($q) {
                         $q->with('building.address', 'unit', 'resident.user');
                     },
                 ]);

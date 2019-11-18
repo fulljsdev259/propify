@@ -22,7 +22,6 @@ class SettingsTransformer extends TransformerAbstract
      *
      * @param Settings $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(Settings $model)
     {

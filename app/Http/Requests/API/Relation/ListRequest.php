@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\API\Contract;
+namespace App\Http\Requests\API\Relation;
 
 use App\Http\Requests\BaseRequest;
 
@@ -13,6 +13,6 @@ class ListRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('list-resident'); // @TODO add new rule list-contract
+        return $this->can('list-resident'); // @TODO add new rule list-relation
     }
 }

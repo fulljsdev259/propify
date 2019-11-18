@@ -146,10 +146,10 @@ class RequestAPIController extends AppBaseController
             ->with([
                 'media',
                 'resident.user',
-                'resident.contracts' => function ($q) {
+                'resident.relations' => function ($q) {
                     $q->with('building.address', 'unit');
                 },
-                'contract' => function ($q) {
+                'relation' => function ($q) {
                     $q->with('building.address', 'unit');
                 },
                 'comments.user',
@@ -232,10 +232,10 @@ class RequestAPIController extends AppBaseController
         $request->load([
             'media',
             'resident.user',
-            'resident.contracts' => function ($q) {
+            'resident.relations' => function ($q) {
                 $q->with('building.address', 'unit');
             },
-            'contract'  => function ($q) {
+            'relation'  => function ($q) {
                 $q->with('building.address', 'unit');
             },
             'comments.user',
@@ -306,10 +306,10 @@ class RequestAPIController extends AppBaseController
             'comments.user',
             'providers.address:id,country_id,state_id,city,street,zip',
             'providers',
-            'resident.contracts' => function ($q) {
+            'resident.relations' => function ($q) {
                 $q->with('building.address', 'unit');
             },
-            'contract' => function ($q) {
+            'relation' => function ($q) {
                 $q->with('building.address', 'unit');
             },
             'creator'
@@ -385,12 +385,12 @@ class RequestAPIController extends AppBaseController
         $updatedRequest->load([
             'media',
             'resident.user',
-            'contract' => function ($q) {
+            'relation' => function ($q) {
                 $q->with('building.address', 'unit');
             },
             'managers.user',
             'users',
-            'resident.contracts' => function ($q) {
+            'resident.relations' => function ($q) {
                 $q->with('building.address', 'unit');
             },
             'comments.user',
@@ -487,12 +487,12 @@ class RequestAPIController extends AppBaseController
             $request->load([
                 'media',
                 'resident.user',
-                'contract' => function ($q) {
+                'relation' => function ($q) {
                     $q->with('building.address', 'unit');
                 },
                 'managers.user',
                 'users',
-                'resident.contracts' => function ($q) {
+                'resident.relations' => function ($q) {
                     $q->with('building.address', 'unit');
                 },
                 'comments.user',
@@ -1425,7 +1425,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'resident.user', 'contract.unit.building',
+            'media', 'resident.user', 'relation.unit.building',
         ]);
         $this->tmpSetUnit($request);
         $templates = $tempRepo->getParsedCommunicationTemplates($request, Auth::user());
@@ -1485,7 +1485,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'resident.user', 'contract.unit.building',
+            'media', 'resident.user', 'relation.unit.building',
         ]);
         $this->tmpSetUnit($request);
 
@@ -1546,7 +1546,7 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->load([
-            'media', 'resident.user', 'contract.unit.building',
+            'media', 'resident.user', 'relation.unit.building',
         ]);
         $this->tmpSetUnit($request);
 
@@ -1558,8 +1558,8 @@ class RequestAPIController extends AppBaseController
 
     protected function tmpSetUnit(Request $request)
     {
-        if (!empty($request->contract->unit)) {
-            $request->setRelation('unit', $request->contract->unit);
+        if (!empty($request->relation->unit)) {
+            $request->setRelation('unit', $request->relation->unit);
         } else {
             $request->setRelation('unit', null);
         }

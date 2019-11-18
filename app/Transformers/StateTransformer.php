@@ -17,7 +17,6 @@ class StateTransformer extends BaseTransformer
     /**
      * @param State $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(State $model)
     {

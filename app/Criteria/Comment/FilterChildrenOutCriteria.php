@@ -4,10 +4,8 @@ namespace App\Criteria\Comment;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
-use App\Models\Comment;
 
 /**
  * Class FilterChildrenOutCriteria

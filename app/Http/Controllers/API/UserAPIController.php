@@ -20,7 +20,7 @@ use App\Http\Requests\API\User\UploadImageRequest;
 use App\Models\Audit;
 use App\Models\AuditableModel;
 use App\Models\Building;
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Models\Settings;
 use App\Models\User;
 use App\Repositories\UserRepository;
@@ -308,7 +308,7 @@ class UserAPIController extends AppBaseController
             'roles.perms',
             'resident' => function ($q) {
                 $q->with([
-                    'contracts' => function ($q) {
+                    'relations' => function ($q) {
                         $q->with('building.address', 'unit', 'media');
                     },
                 ]);
@@ -331,21 +331,21 @@ class UserAPIController extends AppBaseController
 
         if ($resident) {
             unset($user->resident);
-            $resident->load(['contracts' => function($q) {
-                $q->where('status' , Contract::StatusActive)
+            $resident->load(['relations' => function($q) {
+                $q->where('status' , Relation::StatusActive)
                     ->with('building.address', 'unit');
             }]);
 
             $contactEnable = (bool) $this->getResidentContactEnable($resident);
             $resident = (new ResidentTransformer())->transform($resident);
 
-            $buildingIds = collect($resident['contracts'])->pluck('building_id');
+            $buildingIds = collect($resident['relations'])->pluck('building_id');
             $buildings = Building::select('id')
                 ->whereIn('id', $buildingIds)
                 ->with('property_managers:property_managers.id')
                 ->with([
-                    'contracts' => function ($q) use ($resident) {
-                        $q->where('status', Contract::StatusActive)
+                    'relations' => function ($q) use ($resident) {
+                        $q->where('status', Relation::StatusActive)
                             ->where('resident_id', '!=', $resident)
                             ->select('building_id', 'resident_id');
                     }
@@ -353,7 +353,7 @@ class UserAPIController extends AppBaseController
                 ->get();
 
             $resident['contact_enable'] = $contactEnable;
-            $resident['neighbour_count'] = $buildings->pluck('contracts.*.resident_id')->collapse()->unique()->count();;
+            $resident['neighbour_count'] = $buildings->pluck('relations.*.resident_id')->collapse()->unique()->count();;
             $resident['property_manager_count'] = $buildings->pluck('property_managers.*.id')->collapse()->unique()->count();
             $user->setAttribute('resident', $resident);
         }
@@ -819,7 +819,7 @@ class UserAPIController extends AppBaseController
      */
     protected function getResidentContactEnable($resident)
     {
-        $default = true; // @TODO contract related
+        $default = true; // @TODO relation related
 //        $building = $resident->building; // always null
         $building = null;
         if ( ! $building || Building::ContactEnablesBasedSettings == $building->contact_enable) {

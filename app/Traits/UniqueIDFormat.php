@@ -2,9 +2,6 @@
 
 namespace App\Traits;
 
-use BeyondCode\Comments\Traits\HasComments as OriginalHasTraits;
-use BeyondCode\Comments\Contracts\Commentator;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use OwenIt\Auditing\AuditableObserver;
 
