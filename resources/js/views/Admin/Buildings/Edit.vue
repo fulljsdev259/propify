@@ -245,7 +245,7 @@
                     </el-tab-pane>
                     <!-- <el-tab-pane name="relations">
                         <span slot="label">
-                            <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.relations') }}</el-badge>
+                            <el-badge :value="relationCount" :max="99" class="admin-layout">{{ $t('general.relations') }}</el-badge>
                         </span>
                         
                         <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.relation.add')}}</el-button>    
@@ -698,7 +698,7 @@
                 unitCount: 0,
                 requestCount: 0,
                 assigneeCount: 0,
-                contractCount: 0,
+                relationCount: 0,
                 auditCount: 0,
                 visibleDrawer: false,
                 editingContract: null,
@@ -1003,7 +1003,7 @@
             },
             addContract (data) {
                 this.model.relations.push(data);
-                this.contractCount ++;
+                this.relationCount ++;
             },
             editContract(index) {
                 this.editingContract = this.model.relations[index];
@@ -1020,7 +1020,7 @@
                 }).then(async () => {
                     await this.$store.dispatch('relations/delete', {id: this.model.relations[index].id})
                     this.model.relations.splice(index, 1)
-                    this.contractCount --;
+                    this.relationCount --;
                     this.visibleDrawer = false;
                 }).catch(() => {
                 });

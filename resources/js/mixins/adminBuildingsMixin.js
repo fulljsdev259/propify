@@ -433,7 +433,7 @@ export default (config = {}) => {
                         this.serviceCount = this.model.service_providers.length
                         this.fileCount = this.model.media.length
                         
-                        this.contractCount = this.model.relations.length
+                        this.relationCount = this.model.relations.length
 
                         this.model.residents = this.model.relations.map(relation => relation.resident);
 

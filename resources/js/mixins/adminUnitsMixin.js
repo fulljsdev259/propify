@@ -360,7 +360,7 @@ export default (config = {}) => {
 
                         this.model = await this.getUnit({id: this.$route.params.id});
 
-                        this.contractCount = this.model.relations.length
+                        this.relationCount = this.model.relations.length
 
 
                         this.addedAssigmentList = [];

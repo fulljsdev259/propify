@@ -29,7 +29,7 @@ import TagsStore from 'store/modules/tags'
 import NewPinboardStore from 'store/modules/newPinboard'
 import NewRequestsStore from 'store/modules/newRequests'
 import NewListingsStore from 'store/modules/newListings'
-import ContractsStore from 'store/modules/relations'
+import RelationsStore from 'store/modules/relations'
 import EmergencyStore from 'store/modules/emergency'
 
 import createPersistedState from 'vuex-persistedstate'
@@ -81,7 +81,7 @@ export default new Vuex.Store({
         newPinboard: NewPinboardStore,
         newListings: NewListingsStore,
         newRequests: NewRequestsStore,
-        relations: ContractsStore,
+        relations: RelationsStore,
         emergency: EmergencyStore,
     },
     plugins: [createPersistedState({
