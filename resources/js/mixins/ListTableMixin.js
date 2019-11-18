@@ -119,7 +119,7 @@ export default ({
         },
         headerFilter() {
             return this.header.filter((item, index) => {
-                return !this.fields.includes(index);
+                return !this.fields.includes(item.prop);
             });
         }
     },

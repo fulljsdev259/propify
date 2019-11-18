@@ -234,7 +234,6 @@
             }),
             formattedItems() {
                 return this.items.map((request) => {
-                    //console.log(request.qualification_label)
                     request.translated_qualification_label = request.qualification_label != "" ? this.$t(`models.request.qualification.${request.qualification_label}`) : "";
                     return request;
                 });

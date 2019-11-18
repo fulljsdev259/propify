@@ -118,11 +118,14 @@ class QuarterAPIController extends AppBaseController
                                              $q->where('status', Contract::StatusActive)->select('unit_id', 'resident_id');
                                         }
                                     ]);
-                            }]);
+                                },
+                            'requests:requests.id,requests.status'
+                            ]);
                 },
-                'media'
+                'media',
+                'address:id,city'
             ])->paginate($perPage);
-        $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWIthStatistics');
+        $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWithStatistics');
         return $this->sendResponse($response, 'Quarters retrieved successfully');
     }
 

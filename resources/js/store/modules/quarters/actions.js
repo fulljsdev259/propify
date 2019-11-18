@@ -21,7 +21,6 @@ export default {
                 .catch(({response: {data: err}}) => reject(err)));
     },
     updateQuarter(_, {id, ...restPayload}) {
-        console.log('restPayload', restPayload)
         return new Promise((resolve, reject) =>
             axios.put(`quarters/${id}`, restPayload)
                 .then(({data: r}) => resolve(r))
@@ -83,7 +82,6 @@ export default {
                 .catch(({response: {data: err}}) => reject(err)));
     },
     assignUserToQuarter({}, {id, ...payload}) {
-        console.log(payload)
         return new Promise((resolve, reject) => {
             axios.post(`quarters/${id}/users`, payload)
                 .then((resp) => {
@@ -134,4 +132,23 @@ export default {
                 .then(({data: r}) => (r && resolve(r)))
                 .catch(({response: {data: err}}) => reject(err)));
     },
+    saveQuarterWorkflow({commit}, payload) {
+        return new Promise((resolve, reject) =>
+            axios.post(`workflows`, payload)
+                .then(({data: r}) => (r && resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
+    updateQuarterWorkflow({commit}, {id, ...payload}) {
+        return new Promise((resolve, reject) =>
+            axios.put(`workflows/${id}`, payload)
+                .then(({data: r}) => (r && resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
+    deleteQuarterWorkflow({commit}, {id}) {
+        return new Promise((resolve, reject) =>
+            axios.delete(`workflows/${id}`)
+                .then(({data: r}) => (r && resolve(r)))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
+    
 }

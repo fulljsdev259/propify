@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Quarter;
+use App\Models\Request;
 
 /**
  * Class QuarterTransformer.
@@ -36,7 +37,11 @@ class QuarterTransformer extends BaseTransformer
         }
 
         if ($model->relationExists('address')) {
-            $response['address'] = (new AddressTransformer)->transform($model->address);
+            if (array_keys($model->address->getAttributes()) == ['id', 'city']) {
+                $response['city'] = $model->address->city;
+            } else {
+                $response['address'] = (new AddressTransformer)->transform($model->address);
+            }
         }
 
         if ($model->relationExists('buildings')) {
@@ -60,7 +65,7 @@ class QuarterTransformer extends BaseTransformer
      * @return array
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function transformWIthStatistics(Quarter $model)
+    public function transformWithStatistics(Quarter $model)
     {
         $response = $this->transform($model);
         $buildings = $model->buildings;
@@ -68,6 +73,15 @@ class QuarterTransformer extends BaseTransformer
         $occupiedUnits = $units->filter(function ($unit) {
             return $unit->contracts->isNotEmpty();
         });
+
+        $requestsCount = $buildings->pluck('requests')->collapse()->unique()->countBy('status');
+        $response['requests_archived_count'] = $requestsCount[Request::StatusArchived] ?? 0;
+        $response['requests_assigned_count'] = $requestsCount[Request::StatusAssigned] ?? 0;
+        $response['requests_count'] = $requestsCount->sum();
+        $response['requests_done_count'] = $requestsCount[Request::StatusDone] ?? 0;
+        $response['requests_in_processing_count'] = $requestsCount[Request::StatusInProcessing] ?? 0;
+        $response['requests_reactivated_count'] = $requestsCount[Request::StatusReactivated] ?? 0;
+        $response['requests_received_count'] = $requestsCount[Request::StatusReceived] ?? 0;
 
         $response['buildings_count'] = $buildings->count();
         $response['active_residents_count'] = $units->pluck('contracts.*.resident_id')->collapse()->unique()->count();

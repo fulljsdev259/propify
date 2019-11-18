@@ -245,9 +245,6 @@
                 this.length = 0
             }
         },
-        created () {
-            console.log('ui media uploader created')
-        }
     }
 </script>
 

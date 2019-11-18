@@ -308,6 +308,14 @@ class Contract extends AuditableModel implements HasMedia
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
+    }
+
+    /**
      * @param array $data
      * @return array
      */
