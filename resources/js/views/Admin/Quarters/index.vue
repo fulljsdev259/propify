@@ -31,7 +31,7 @@
             :filters="filters"
             :filtersHeader="filtersHeader"
             :header="headerFilter"
-            :items="items"
+            :items="computedItems"
             :loading="{state: loading}"
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
@@ -80,7 +80,7 @@
                     prop: 'url'
                 },  {
                     label: 'models.quarter.project_ort',
-                    prop: 'name'
+                    prop: 'city'
                 }, {
                     label: 'models.quarter.type',
                     prop: 'types'
@@ -134,6 +134,12 @@
                         data: this.states,
                     }
                 ]
+            },
+            computedItems() {
+                this.items.forEach((item) => {
+                    item.types = this.$t(`models.quarter.types.${this.$constants.quarters.type[item.types]}`);
+                });
+                return this.items;
             }
         },
         methods: {
