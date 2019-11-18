@@ -111,7 +111,7 @@
         <el-row :gutter="20" style="margin-top: 10px; margin-left: 0; margin-right: 0">
             <el-col :md="24" class="drawer-actions">
                 <el-button type="default" size="mini" @click="close" class="round-btn">&nbsp;{{ $t('general.actions.close') }}</el-button>
-                <el-button type="danger" size="mini" icon="icon-trash-empty" @click="$emit('delete-workflow', this.editing_index)" class="round-btn">&nbsp;{{ $t('models.quarter.workflow.delete') }}</el-button>
+                <el-button v-if="mode=='edit'" type="danger" size="mini" icon="icon-trash-empty" @click="deleteItem" class="round-btn">&nbsp;{{ $t('models.quarter.workflow.delete') }}</el-button>
                 <!-- <el-tooltip
                         :content="$t('models.quarter.workflow.tooltips.save')"
                         class="item" effect="light" placement="top-end"
@@ -250,6 +250,11 @@
                     this.$emit('cancel-edit-workflow', this.editing_index)
                 }
             },
+            deleteItem() {
+                if(this.mode == 'edit') {
+                    this.$emit('delete-workflow', this.editing_index)
+                }
+            },
             async remoteSearchManagers(search, index) {
                 if (search === '') {
                     this.resetToAssignList(index);
@@ -343,7 +348,6 @@
             
         },
         async created () {
-        
             this.loading = true;
             
             this.categories = this.$constants.requests.categories_data.tree
