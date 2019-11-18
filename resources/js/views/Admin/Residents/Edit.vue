@@ -159,7 +159,7 @@
                                                                     :key="k"
                                                                     :label="$t(`models.resident.tenant_type.${type}`)"
                                                                     :value="parseInt(k)"
-                                                                    v-for="(type, k) in constants.residents.tenant_type"> <!-- //@TODO : replace with constants.residents.tenant_type -->
+                                                                    v-for="(type, k) in constants.residents.tenant_type">
                                                                 </el-option>
                                                             </el-select>
                                                         </el-form-item>
