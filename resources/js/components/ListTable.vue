@@ -120,10 +120,10 @@
             v-loading="loading.state">
 
             <el-table-column
-                :key="column.prop"
+                :key="'header' + index"
                 :label="$t(column.label)"
                 :width="column.width"
-                v-for="column in computedHeader">
+                v-for="(column, index) in computedHeader">
                 
                 <template slot-scope="scope">
                     <div v-if="column.withAvatars" class="avatars-wrapper">
@@ -1083,7 +1083,7 @@
 
             & > div {
                 position: relative;
-                margin-right: -10px;
+                margin-right: 0px;
                 border: 1px solid #fff;
                 cursor: pointer;
 
