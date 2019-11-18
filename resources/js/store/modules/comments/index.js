@@ -234,8 +234,6 @@ export default {
             }
         },
         clear (state, {commentable}) {
-            console.log('state', state)
-            console.log('commentable', commentable)
             Object.assign(state[commentable], {})
         },
         reset: state => Object.assign(state, {

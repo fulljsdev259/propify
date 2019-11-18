@@ -109,7 +109,6 @@
         },
         methods: {
             async fetch (params) {
-                console.log('fetch called')
                 const {
                     current_page,
                     last_page
