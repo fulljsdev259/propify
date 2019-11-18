@@ -26,8 +26,8 @@ use App\Traits\HasMediaTrait;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="building_id",
- *          description="building_id",
+ *          property="quarter_id",
+ *          description="quarter_id",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -107,7 +107,7 @@ use App\Traits\HasMediaTrait;
  * )
  * @property int $id
  * @property int $resident_id
- * @property int|null $building_id
+ * @property int|null $quarter_id
  * @property int|null $unit_id
  * @property int|null $status
  * @property string|null $relation_format
@@ -123,7 +123,7 @@ use App\Traits\HasMediaTrait;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read int|null $audits_count
- * @property-read \App\Models\Building|null $building
+ * @property-read \App\Models\Quarter|null $quarter
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $media
  * @property-read int|null $media_count
  * @property-read \App\Models\Resident $resident
@@ -194,7 +194,7 @@ class Relation extends AuditableModel implements HasMedia
      */
     public $fillable = [
         'resident_id',
-        'building_id',
+        'quarter_id',
         'unit_id',
         'relation_format',
         'deposit_type',
@@ -219,7 +219,7 @@ class Relation extends AuditableModel implements HasMedia
      */
     protected $casts = [
         'resident_id' => 'integer',
-        'building_id' => 'integer',
+        'quarter_id' => 'integer',
         'unit_id' => 'integer',
         'status' => 'integer',
         'relation_format' => 'string',
@@ -261,9 +261,9 @@ class Relation extends AuditableModel implements HasMedia
     /**
      * @return BelongsTo
      **/
-    public function building()
+    public function quarter()
     {
-        return $this->belongsTo(Building::class, 'building_id', 'id');
+        return $this->belongsTo(Quarter::class, 'quarter_id', 'id');
     }
 
     /**

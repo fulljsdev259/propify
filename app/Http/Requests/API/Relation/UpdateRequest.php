@@ -25,7 +25,7 @@ class UpdateRequest extends BaseRequest
     {
         return [
             'resident_id' => 'required|integer|exists:residents,id',
-            'building_id' => 'required|integer|exists:buildings,id',
+            'quarter_id' => 'required|integer|exists:buildings,id',
             'unit_id' => 'required|integer|exists:units,id',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',

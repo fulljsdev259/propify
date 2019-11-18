@@ -25,8 +25,8 @@ class CreateRequest extends BaseRequest
     {
         return [
             'resident_id' => 'required|integer|exists:residents,id',
-            'building_id' => 'required|integer|exists:buildings,id',
-            'unit_id' => 'required|integer|exists:units,id',
+            'quarter_id' => 'required|integer|exists:buildings,id',
+            'unit_id' => 'required|integer|exists:units,id', // @TODO check in unit
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'status' => 'digits_between:1,2|numeric',

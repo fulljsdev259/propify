@@ -123,7 +123,8 @@ class PinboardRepository extends BaseRepository
         if (empty($relation->building_id)) {
             return false;
         }
-
+        // @TODO
+        return;
         $pinboard =  $this->create([
             'visibility' => Pinboard::VisibilityAddress,
             'status' => Pinboard::StatusPublished,
