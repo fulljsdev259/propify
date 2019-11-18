@@ -53,9 +53,9 @@ class UpdateRequest extends BaseRequest
                     }
                 }
             ],
-            'sub_type' => [
+            'tenant_type' => [
                 'nullable',
-                'in_sub:type,' . Resident::class . ',TypeSubType'
+                // @TODO validate properly
             ],
             'default_contract_id' => 'nullable|exists:contracts,id',// @TODO check own or not
             'title' => 'string',

@@ -34,9 +34,9 @@ class CreateRequest extends BaseRequest
                 'nullable',
                 'in:' . implode(',', array_keys(Resident::Type))
             ],
-            'sub_type' => [
+            'tenant_type' => [
                 'nullable',
-                'in_sub:type,' . Resident::class . ',TypeSubType'
+                // @TODO validate properly
             ],
         ];
     }
