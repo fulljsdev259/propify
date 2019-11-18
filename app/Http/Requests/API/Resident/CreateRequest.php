@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\API\Resident;
 
-use App\Models\Resident;
 use App\Http\Requests\BaseRequest;
+use App\Models\Resident;
 
 class CreateRequest extends BaseRequest
 {
@@ -24,6 +24,20 @@ class CreateRequest extends BaseRequest
      */
     public function rules()
     {
-        return Resident::$rules;
+        return [
+            'title' => 'required|string',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'birth_date' => 'date',
+            'status' => 'digits_between:1,2|numeric',
+            'type' => [
+                'nullable',
+                'in:' . implode(',', array_keys(Resident::Type))
+            ],
+            'sub_type' => [
+                'nullable',
+                'in_sub:type,' . Resident::class . ',TypeSubType'
+            ],
+        ];
     }
 }
