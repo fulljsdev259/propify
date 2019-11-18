@@ -113,6 +113,7 @@
             }
         },
         mounted () {
+            console.log('comment mounted')
             this.data.height =  this.$refs.container.clientHeight
         },
         methods: {

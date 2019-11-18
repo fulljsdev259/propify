@@ -460,6 +460,7 @@
                                                 <el-option :key="k" :label="$t(`models.request.visibility.${visibility}`)" :value="parseInt(k)" v-for="(visibility, k) in $constants.requests.visibility">
                                                 </el-option>
                                             </el-select>
+  
                                         </div>
                                     </el-form-item>
                                     <div v-if="model.is_public" class="switch-wrapper">
