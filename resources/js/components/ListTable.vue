@@ -722,9 +722,6 @@
                     
                 }
             },
-            header() {
-                console.log(this.header);
-            }
         },
         created() {
             if (this.$route.query.search) {
