@@ -44,9 +44,6 @@ class RelationRepository extends BaseRepository
     public function create(array $attributes)
     {
         \DB::beginTransaction();
-        if ( !isset($attributes['status'])) {
-            $attributes['status'] = Relation::StatusActive;
-        }
 
         $attributes = $this->fixBuildingData($attributes);
         /**
