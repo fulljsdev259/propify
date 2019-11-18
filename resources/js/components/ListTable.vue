@@ -321,7 +321,7 @@
                         </span>
                     </template>
                     <span v-else>
-                        {{ scope.row[column.prop] }}
+                        {{ _.get(scope.row, column.prop) }}
                     </span>
                     
                 </template>
@@ -1127,7 +1127,10 @@
     }
     .el-table {
         th.el-table-column--selection.is-leaf {
-            display: none;
+            .cell {
+                padding-left: 0px;
+                text-align: right;
+            }
         }
         tbody {
             tr {
