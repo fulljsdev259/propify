@@ -69,18 +69,18 @@ class ResidentsTableSeeder extends Seeder
 
             $data = array_merge($data, $this->getDateColumns($date));
             $resident = factory(App\Models\Resident::class)->create($data);
-            $this->saveContracts($resident);
+            $this->saveRelations($resident);
             $resident->setCredentialsPDF();
         }
     }
 
-    protected function saveContracts($resident)
+    protected function saveRelations($resident)
     {
         $data['resident_id'] = $resident->id;
-        $data['status'] = \App\Models\Contract::StatusActive;
+        $data['status'] = \App\Models\Relation::StatusActive;
 
-        $contract = factory(App\Models\Contract::class)->create($data);
-        $resident->default_contract_id = $contract->id;
+        $relation = factory(App\Models\Relation::class)->create($data);
+        $resident->default_relation_id = $relation->id;
         $resident->save();
     }
 
