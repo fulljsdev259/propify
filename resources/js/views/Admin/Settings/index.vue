@@ -746,10 +746,6 @@
                 });
             },
             saveSettings(form) {
-                // this.main_drawer = false;
-                // console.log("assas");
-                // return;
-                //console.log('=='); console.log(form);
                 this.$refs[form].validate((valid) => {
                     if (valid) {
                         this.model.primary_color_lighter = this.getLightenDarkenColor(this.model.primary_color, 90) + '59'

@@ -38,19 +38,9 @@
                 default: true
             },
         },
-        data() {
-            return {
-              
-            }
-        },
-        methods: {
-        },
         computed: {
             ...mapGetters(['loggedInUser']),
       
-        },
-        async mounted () {
-            console.log(this.data.user)
         }
     }
 </script>

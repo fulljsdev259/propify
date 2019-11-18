@@ -148,6 +148,11 @@ return [
             'tenant' => 'Locataire',
             'owner' => 'Propriétaire',
         ],
+        'tenant_type' => [
+            'label' => 'Type de locataire',
+            'main' => 'Locataire principal',
+            'garant' => 'Locataire secondaire',
+        ]
     ],
     'building' => [
         "title" => "Bâtiments",

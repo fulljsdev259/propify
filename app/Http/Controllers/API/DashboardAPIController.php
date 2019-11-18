@@ -306,10 +306,15 @@ class DashboardAPIController extends AppBaseController
 
         $residents = $building->contracts()
             ->where('status', Contract::StatusActive)
-            ->select('id', 'resident_id')
-            ->with('resident')->get()
-            ->pluck('resident');
+            ->distinct()
+            ->get(['resident_id'])->count();
+
         $units = Unit::where('building_id', $id)->count();
+        $activeContractUnits = Unit::where('building_id', $id)
+            ->whereHas('contracts', function($q) {
+                $q->where('status', Contract::StatusActive);
+            })
+            ->count();
 
         $occupiedUnitsCount = Unit::where('building_id', $id)->whereHas('contracts', function ($q) {
             $q->where('status', Contract::StatusActive);
@@ -326,9 +331,19 @@ class DashboardAPIController extends AppBaseController
         $response = [
             'total_residents' => $this->thousandsFormat($residents),
             'total_units' => $this->thousandsFormat($units),
+            'total_units_with_active_contracts' => $this->thousandsFormat($activeContractUnits),
             'occupied_units' => $this->thousandsFormat($occupiedUnits),
             'free_units' => $this->thousandsFormat($freeUnit),
         ];
+
+        $unitCountsByType = Unit::where('building_id', $id)
+            ->selectRaw('count(*) as count, type')
+            ->groupBy('type')
+            ->get()->keyBy('type');
+
+        foreach (Unit::Type as $type  => $name) {
+            $response['total_' . $name . '_units'] = $unitCountsByType[$type]->count ?? 0;
+        }
 
         return $this->sendResponse($response, 'Building statistics retrieved successfully');
     }

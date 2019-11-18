@@ -36,15 +36,12 @@
                     </el-tooltip>
                 </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                 :label="$t('models.resident.contract.contract_id')"
                 v-if="!hideContractId"
                 prop="contract_format"
             >
-                <!-- <template slot-scope="scope">
-                    <span class="clickable" @click="$emit('edit-contract', scope.$index)">{{scope.row.contract_format}}</span>
-                </template> -->
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
                 :label="$t('models.resident.building.name')"
                 v-if="!hideBuilding"

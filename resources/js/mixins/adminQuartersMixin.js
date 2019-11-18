@@ -127,7 +127,6 @@ export default (config = {}) => {
 
                         //const quarterAssignee = await this.getQuarterAssignees({get_all: true, quarter_id: this.$route.params.id});
 
-                        // console.log('quarterAssignee', quarterAssignee)
                         // let exclude_ids = [];
                         // if (this.assignmentType === 'managers') {
                         //     quarterAssignee.data.map(item => {
@@ -165,7 +164,6 @@ export default (config = {}) => {
                         //             roles: ['manager', 'administrator', 'provider']
                         //         });
                         const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id, search})
-                        console.log(resp)
                         this.toAssignList = resp;                        
                     } catch (err) {
                         displayError(err);
