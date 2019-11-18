@@ -28,8 +28,19 @@ class UnitsTableSeeder extends Seeder
 
                     $attr = [
                         'name' => sprintf('B%s - Unit %s', $building->id, $i),
-                        'building_id' => $building->id,
                     ];
+                    if (rand(1, 2) - 1) {
+                        if ($building->quarter_id) {
+                            if (rand(1, 2) - 1) {
+                                $attr['quarter_id'] = $building->quarter_id;
+                            } else {
+                                $attr['building_id'] = $building->id;
+                            }
+                        } else {
+                            $attr['building_id'] = $building->id;
+                        }
+                    }
+
                     $date = $this->getRandomTime($building->created_at);
                     $attr = array_merge($attr, $this->getDateColumns($date));
 
