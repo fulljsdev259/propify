@@ -15,9 +15,9 @@ use App\Http\Requests\API\Unit\ListRequest;
 use App\Http\Requests\API\Unit\UpdateRequest;
 use App\Http\Requests\API\Unit\ViewRequest;
 use App\Models\Building;
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Models\Unit;
-use App\Repositories\ContractRepository;
+use App\Repositories\RelationRepository;
 use App\Repositories\PinboardRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\UnitRepository;
@@ -38,23 +38,23 @@ class UnitAPIController extends AppBaseController
     private $residentRepository;
 
     /** @var  ResidentRepository */
-    private $contractRepository;
+    private $relationRepository;
 
     /**
      * UnitAPIController constructor.
      * @param UnitRepository $unitRepository
      * @param ResidentRepository $residentRepository
-     * @param ContractRepository $contractRepository
+     * @param RelationRepository $relationRepository
      */
     public function __construct(
         UnitRepository $unitRepository,
         ResidentRepository $residentRepository,
-        ContractRepository $contractRepository
+        RelationRepository $relationRepository
     )
     {
         $this->unitRepository = $unitRepository;
         $this->residentRepository = $residentRepository;
-        $this->contractRepository = $contractRepository;
+        $this->relationRepository = $relationRepository;
     }
 
     /**
@@ -97,20 +97,20 @@ class UnitAPIController extends AppBaseController
         $this->unitRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->unitRepository->pushCriteria(new LimitOffsetCriteria($request));
 
-        if ($request->show_contract_counts) {
+        if ($request->show_relation_counts) {
             $this->unitRepository->withCount([
-                'contracts as total_contracts_count',
-                'contracts as active_contracts_count' => function ($q) {
-                    $q->where('status', Contract::StatusActive);
+                'relations as total_relations_count',
+                'relations as active_relations_count' => function ($q) {
+                    $q->where('status', Relation::StatusActive);
                 }
             ]);
         }
 
         if ($request->group_by_floor) {
             $units = $this->unitRepository->get();
-            if ($request->show_contract_counts) {
+            if ($request->show_relation_counts) {
                 $units->each(function ($unit) {
-                    $unit->inactive_contracts_count = $unit->total_contracts_count - $unit->active_contracts_count;
+                    $unit->inactive_relations_count = $unit->total_relations_count - $unit->active_relations_count;
                 });
             }
             $units = $units->sortBy('name')->groupBy('floor')->sortKeys()->toArray();
@@ -130,9 +130,9 @@ class UnitAPIController extends AppBaseController
         if ($getAll) {
 
             $units = $this->unitRepository->get();
-            if ($request->show_contract_counts) {
+            if ($request->show_relation_counts) {
                 $units->each(function ($unit) {
-                    $unit->inactive_contracts_count = $unit->total_contracts_count - $unit->active_contracts_count;
+                    $unit->inactive_relations_count = $unit->total_relations_count - $unit->active_relations_count;
                 });
             }
 
@@ -145,7 +145,7 @@ class UnitAPIController extends AppBaseController
                 'building',
                 'quarter',
                 'media',
-                'contracts' => function ($q) {
+                'relations' => function ($q) {
                     $q->with('building.address', 'unit', 'resident.user');
                 },
             ])
@@ -211,8 +211,8 @@ class UnitAPIController extends AppBaseController
 
         if (isset($input['resident_id'])) {
             try {
-                $contract = $this->contractRepository->newContractForUnit($unit, $input['resident_id']);
-                $pinboardRepository->newResidentContractPinboard($contract); 
+                $relation = $this->relationRepository->newRelationForUnit($unit, $input['resident_id']);
+                $pinboardRepository->newResidentRelationPinboard($relation);
             } catch (\Exception $e) {
                 return $this->sendError(__('models.unit.errors.resident_assign') . $e->getMessage());
             }
@@ -221,7 +221,7 @@ class UnitAPIController extends AppBaseController
         $unit->load([
             'building',
             'quarter',
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
             'media'
@@ -281,7 +281,7 @@ class UnitAPIController extends AppBaseController
         $unit->load([
             'building',
             'quarter',
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
             'media'
@@ -358,12 +358,12 @@ class UnitAPIController extends AppBaseController
         }
 
 //        $currentResident = $unit->resident ? $unit->resident->id : 0;
-        $currentResident = 0; // @TODO correct contract related
+        $currentResident = 0; // @TODO correct relation related
         if (isset($input['resident_id']) && $input['resident_id'] != $currentResident) {
             try {
-                Contract::where('unit_id', $unit->id)->where('resident_id', $input['resident_id'])->delete(); // @TODO delete single or many
-                $contract = $this->contractRepository->newContractForUnit($unit, $input['resident_id']);
-                $pinboardRepository->newResidentContractPinboard($contract);
+                Relation::where('unit_id', $unit->id)->where('resident_id', $input['resident_id'])->delete(); // @TODO delete single or many
+                $relation = $this->relationRepository->newRelationForUnit($unit, $input['resident_id']);
+                $pinboardRepository->newResidentRelationPinboard($relation);
             } catch (\Exception $e) {
                 return $this->sendError(__('models.unit.errors.create') . $e->getMessage());
             }
@@ -372,7 +372,7 @@ class UnitAPIController extends AppBaseController
         $unit->load([
             'building',
             'quarter',
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
             'media'
@@ -533,7 +533,7 @@ class UnitAPIController extends AppBaseController
             return $this->sendError(__('models.unit.errors.not_found'));
         }
 
-        $contract = $this->contractRepository->newContractForUnit($unit, $resident);
+        $relation = $this->relationRepository->newRelationForUnit($unit, $resident);
 
         // @TODO need newResidentPinboard
         return $this->sendResponse($unitId, __('models.unit.resident_assigned'));
@@ -607,17 +607,17 @@ class UnitAPIController extends AppBaseController
      */
     public function unassignResident($unitId, $residentId, UnAssignRequest $r)
     {
-        $this->contractRepository->pushCriteria(new WhereCriteria('unit_id', $unitId));
-        $this->contractRepository->pushCriteria(new WhereCriteria('resident_id', $residentId));
+        $this->relationRepository->pushCriteria(new WhereCriteria('unit_id', $unitId));
+        $this->relationRepository->pushCriteria(new WhereCriteria('resident_id', $residentId));
 
-        $contracts = $this->contractRepository->get(['id']);
-        if ($contracts->isEmpty()) {
+        $relations = $this->relationRepository->get(['id']);
+        if ($relations->isEmpty()) {
             return $this->sendError(__('models.unit.errors.resident_not_assign'));
         }
 
-        // @TODO delete single contract or all
-        foreach ($contracts as $contract) {
-            $contract->delete();
+        // @TODO delete single relation or all
+        foreach ($relations as $relation) {
+            $relation->delete();
         }
 
         return $this->sendResponse($unitId, __('models.unit.resident_unassigned'));
