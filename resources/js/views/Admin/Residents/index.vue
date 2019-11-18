@@ -93,21 +93,21 @@
                     width: 150,
                     props: ['unit_names']
                 }*/, {
-                    label: 'models.resident.contract.title',
+                    label: 'models.resident.relation.title',
                     withCounts: true,
                     counts: [
                         {
-                            prop: 'total_contracts_count',
+                            prop: 'total_relations_count',
                             background: '#bbb',
                             color: '#fff',
                             label: this.$t('models.resident.status.total')
                         }, {
-                            prop: 'active_contracts_count',
+                            prop: 'active_relations_count',
                             background: '#5fad64',
                             color: '#fff',
                             label: this.$t('models.resident.status.active')
                         }, {
-                            prop: 'inactive_contracts_count',
+                            prop: 'inactive_relations_count',
                             background: '#dd6161',
                             color: '#fff',
                             label: this.$t('models.resident.status.not_active')

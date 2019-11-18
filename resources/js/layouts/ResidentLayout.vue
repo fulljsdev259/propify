@@ -185,9 +185,9 @@
                             }
                         }, {
                             icon: 'icon-handshake-o',
-                            title: 'resident.my_recent_contract',
+                            title: 'resident.my_recent_relation',
                             route: {
-                                name: 'residentMyContracts'
+                                name: 'residentMyRelations'
                             }
                         }, {
                             icon: 'icon-doc-text',

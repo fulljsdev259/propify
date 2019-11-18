@@ -23,25 +23,25 @@
     import {Avatar} from 'vue-avatar';
 
     export default {
-        name: 'ContractCount',
+        name: 'RelationCount',
         data() {
             return {
                 counts: [
                 {
-                    prop: 'total_contracts_count',
+                    prop: 'total_relations_count',
                     background: '#aaa',
                     color: '#fff',
-                    label: this.$t('models.resident.contract.status_count.total')
+                    label: this.$t('models.resident.relation.status_count.total')
                 }, {
-                    prop: 'active_contracts_count',
+                    prop: 'active_relations_count',
                     background: '#5fad64',
                     color: '#fff',
-                    label: this.$t('models.resident.contract.status_count.active')
+                    label: this.$t('models.resident.relation.status_count.active')
                 }, {
-                    prop: 'inactive_contracts_count',
+                    prop: 'inactive_relations_count',
                     background: '#dd6161',
                     color: '#fff',
-                    label: this.$t('models.resident.contract.status_count.inactive')
+                    label: this.$t('models.resident.relation.status_count.inactive')
                 }
                 ]
             }

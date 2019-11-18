@@ -7,8 +7,8 @@
                     <el-select
                             :loading="remoteLoading"
                             :placeholder="$t('models.resident.search_building')"
-                            :remote-method="remoteContractSearchBuildings"
-                            @change="searchContractUnits(false)"
+                            :remote-method="remoteRelationSearchBuildings"
+                            @change="searchRelationUnits(false)"
                             filterable
                             remote
                             reserve-keyword
@@ -28,7 +28,7 @@
                     <el-select :placeholder="$t('models.resident.search_unit')" 
                             style="display: block"
                             v-model="model.unit_id"
-                            @change="changeContractUnit">
+                            @change="changeRelationUnit">
                         <el-option-group
                             v-for="group in units"
                             :key="group.label"
@@ -39,7 +39,7 @@
                                 :label="item.name"
                                 :value="item.id">
                                 <span style="float: left">{{ item.name }}</span>
-                                <contract-count :countsData="item" style="float: right;"></contract-count>
+                                <relation-count :countsData="item" style="float: right;"></relation-count>
                             </el-option>
                         </el-option-group>
                         
@@ -68,7 +68,7 @@
             </el-col>
         
             <el-col :md="12" v-if="model.unit_id">
-                <el-form-item :label="$t('models.resident.contract.type')"
+                <el-form-item :label="$t('models.resident.relation.type')"
                             prop="type"
                             class="label-block">
                     <el-select :placeholder="$t('models.unit.type.label')"
@@ -84,7 +84,7 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
-                <el-form-item :label="$t('models.resident.contract.duration')"
+                <el-form-item :label="$t('models.resident.relation.duration')"
                             prop="duration"
                             class="label-block">
                     <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
@@ -100,11 +100,11 @@
             </el-col>
 
             <el-col :md="12" v-if="model.unit_id">
-                <el-form-item :label="$t('models.resident.contract.start_date')"
+                <el-form-item :label="$t('models.resident.relation.start_date')"
                         prop="start_date">
                     <el-date-picker
                             :picker-options="{disabledDate: disabledRentStart}"
-                            :placeholder="$t('models.resident.contract.start_date')"
+                            :placeholder="$t('models.resident.relation.start_date')"
                             format="dd.MM.yyyy"
                             style="width: 100%;"
                             type="date"
@@ -114,10 +114,10 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12" v-if="model.unit_id && model.duration == 2 && resident_type_check == 1">
-                <el-form-item :label="$t('models.resident.contract.end_date')">
+                <el-form-item :label="$t('models.resident.relation.end_date')">
                     <el-date-picker
                         :picker-options="{disabledDate: disabledRentEnd}"
-                        :placeholder="$t('models.resident.contract.end_date')"
+                        :placeholder="$t('models.resident.relation.end_date')"
                         format="dd.MM.yyyy"
                         style="width: 100%;"
                         type="date"
@@ -134,7 +134,7 @@
                                 :key="status.value"
                                 :label="status.name"
                                 :value="status.value"
-                                v-for="status in contract_statuses">
+                                v-for="status in relation_statuses">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -142,12 +142,12 @@
         </el-row>
         <template v-if="resident_type_check == 1">
         <!-- <ui-divider v-if="model.unit_id" content-position="left">
-            {{ $t('models.resident.contract.deposit_amount') }}
+            {{ $t('models.resident.relation.deposit_amount') }}
         </ui-divider>
 
         <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
-                <el-form-item :label="$t('models.resident.contract.deposit_amount')"
+                <el-form-item :label="$t('models.resident.relation.deposit_amount')"
                                 prop="deposit_amount">
                     <el-input type="text"
                             v-model="model.deposit_amount"
@@ -155,7 +155,7 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12">
-                <el-form-item :label="$t('models.resident.contract.type_of_deposit')"
+                <el-form-item :label="$t('models.resident.relation.type_of_deposit')"
                             prop="deposit_type">
                     <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
                                 v-model="model.deposit_type">
@@ -262,7 +262,7 @@
         </el-row> -->
         <!-- <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
-                <el-form-item :label="$t('models.resident.contract.deposit_status.label')"
+                <el-form-item :label="$t('models.resident.relation.deposit_status.label')"
                                 class="label-block">
                     <el-radio-group v-model="model.deposit_status">
                         <el-radio-button 
@@ -277,7 +277,7 @@
             </el-col>
         </el-row> -->
         <ui-divider v-if="model.unit_id" content-position="left">
-            {{ $t('models.resident.contract.contract_pdf') }}
+            {{ $t('models.resident.relation.relation_pdf') }}
         </ui-divider>
         <el-row :gutter="20"  v-if="model.unit_id">
             <el-col :md="24">
@@ -287,10 +287,10 @@
                     :data="model.media"
                     style="width: 100%"
                     v-if="model.media.length"
-                    class="contract-file-table"
+                    class="relation-file-table"
                     >
                     <el-table-column
-                        :label="$t('models.resident.contract.filename')"
+                        :label="$t('models.resident.relation.filename')"
                         prop="name"
                     >
                         <template slot-scope="scope">
@@ -306,21 +306,21 @@
                                 :content="$t('general.actions.delete')"
                                 class="item" effect="light" 
                                 placement="top-end">
-                                    <el-button @click="deletePDFfromContract(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
+                                    <el-button @click="deletePDFfromRelation(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
                             </el-tooltip>
                         </template>
                     </el-table-column>
                 </el-table>
 
                 <el-alert
-                    :title="$t('models.resident.contract.pdf_only_desc')"
+                    :title="$t('models.resident.relation.pdf_only_desc')"
                     type="info"
                     show-icon
                     :closable="false"
                 >
                 </el-alert>
 
-                <upload-contract @fileUploaded="addPDFtoContract" class="upload-custom" acceptType=".pdf" drag multiple/>
+                <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".pdf" drag multiple/>
                 
                 </el-form-item>
             </el-col>
@@ -328,11 +328,11 @@
         </el-row>
         </template>
         <ui-divider style="margin-top: 16px;"></ui-divider>
-        <div class="contract-form-actions">
+        <div class="relation-form-actions">
             <div class="button-group">
                 <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" round>{{ edit_index == undefined ? $t('general.actions.add') : $t('general.actions.edit')}}</el-button>
                 <el-button type="primary" v-else @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
-                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-contract', edit_index)" icon="ti-trash" round>{{$t('general.actions.delete')}}</el-button>
+                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-relation', edit_index)" icon="ti-trash" round>{{$t('general.actions.delete')}}</el-button>
             </div>
         </div>
         
@@ -344,15 +344,15 @@
 
 <script>
     import {displayError} from "../helpers/messages";
-    import UploadContract from 'components/UploadContract';
-    import ContractCount from 'components/ContractCount';
+    import UploadRelation from 'components/UploadRelation';
+    import RelationCount from 'components/RelationCount';
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
-        name: "ContractForm",
+        name: "RelationForm",
         components: {
-            UploadContract,
-            ContractCount
+            UploadRelation,
+            RelationCount
         },
         props: {
             mode: {
@@ -407,7 +407,7 @@
                 options: [],
                 durations: [],
                 deposit_statuses: [],
-                contract_statuses: [],
+                relation_statuses: [],
                 deposit_types: [],
                 residents: [],
                 loading: false,
@@ -445,23 +445,23 @@
                     }],
                     deposit_amount: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.deposit_amount')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.deposit_amount')})
                     }],
                     deposit_type: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.type_of_deposit')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.type_of_deposit')})
                     }],
                     start_date: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.start_date')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.start_date')})
                     }],
                     type: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.type')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.type')})
                     }],
                     duration: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.duration')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.duration')})
                     }],
                     status: [{
                         required: true,
@@ -509,10 +509,10 @@
                             params.building = this.buildings.find(item => item.id == this.model.building_id)
 
                             if (this.mode == "add") {
-                                this.$emit('add-contract', params)
+                                this.$emit('add-relation', params)
                             }
                             else {
-                                this.$emit('update-contract', this.edit_index, params)
+                                this.$emit('update-relation', this.edit_index, params)
                             }
                             
                         }
@@ -526,12 +526,12 @@
                             params.building = this.buildings.find(item => item.id == this.model.building_id)
 
                             if (this.mode == "add") {
-                                const resp = await this.$store.dispatch('contracts/create', params);
-                                this.$emit('add-contract', resp.data)
+                                const resp = await this.$store.dispatch('relations/create', params);
+                                this.$emit('add-relation', resp.data)
                             }
                             else {
-                                const resp = await this.$store.dispatch('contracts/update', params);
-                                this.$emit('update-contract', this.edit_index, params)
+                                const resp = await this.$store.dispatch('relations/update', params);
+                                this.$emit('update-relation', this.edit_index, params)
                             }
                         }
 
@@ -581,7 +581,7 @@
                     }
                 }
             },
-            async remoteContractSearchBuildings(search) {
+            async remoteRelationSearchBuildings(search) {
                 if (search === '') {
                     this.buildings = [];
                 } else {
@@ -604,7 +604,7 @@
                     }
                 }
             },
-            async searchContractUnits(shouldKeepValue) {
+            async searchRelationUnits(shouldKeepValue) {
                 if(!shouldKeepValue)
                     this.model.unit_id = '';
                 try {
@@ -612,7 +612,7 @@
                     let filtered_used_units = this.used_units.filter( unit => unit != this.original_unit_id && unit != "")
 
                     const resp1 = await this.getUnits({
-                        show_contract_counts: true,
+                        show_relation_counts: true,
                         group_by_floor: true,
                         building_id: this.model.building_id,
                         exclude_ids: filtered_used_units
@@ -663,7 +663,7 @@
                 let resident = this.residents.find(resident => resident.id == val)
                 this.resident_type_check = resident.type
             },
-            changeContractUnit() {
+            changeRelationUnit() {
 
                 let unit = null
                 this.units.forEach(group => {
@@ -681,12 +681,12 @@
                     this.model.duration = 1
                 }
             },
-            addPDFtoContract(file) {
-                //let toUploadContractFile = {...file, url: URL.createObjectURL(file.raw)}
-                let toUploadContractFile = {media : file.src, name: file.raw.name}
-                this.model.media.push(toUploadContractFile)
+            addPDFtoRelation(file) {
+                //let toUploadRelationFile = {...file, url: URL.createObjectURL(file.raw)}
+                let toUploadRelationFile = {media : file.src, name: file.raw.name}
+                this.model.media.push(toUploadRelationFile)
             },
-            deletePDFfromContract(index) {
+            deletePDFfromRelation(index) {
                 this.model.media.splice(index, 1)
             },
             ...mapActions(['getBuildings', 'getUnits', 'getResidents']),
@@ -696,10 +696,10 @@
             this.loading = true;
 
             let parent_obj = this
-            this.deposit_types = Object.entries(this.$constants.contracts.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.deposit_types.${label}`)}))
-            this.durations = Object.entries(this.$constants.contracts.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.durations.${label}`)}))
-            this.deposit_statuses = Object.entries(this.$constants.contracts.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.deposit_status.${label}`)}));
-            this.contract_statuses = Object.entries(this.$constants.contracts.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.status.${label}`)}));
+            this.deposit_types = Object.entries(this.$constants.relations.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_types.${label}`)}))
+            this.durations = Object.entries(this.$constants.relations.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.durations.${label}`)}))
+            this.deposit_statuses = Object.entries(this.$constants.relations.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_status.${label}`)}));
+            this.relation_statuses = Object.entries(this.$constants.relations.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.status.${label}`)}));
 
             if(this.resident_type)
                 this.resident_type_check = this.resident_type
@@ -750,8 +750,8 @@
 
                     if(this.model.building) {
                         this.buildings.push(this.model.building)
-                        await this.remoteContractSearchBuildings(this.model.building.name)
-                        await this.searchContractUnits(true)
+                        await this.remoteRelationSearchBuildings(this.model.building.name)
+                        await this.searchRelationUnits(true)
                     }
                 }
 
@@ -768,7 +768,7 @@
 
             if(this.hideBuilding) {
                 this.model.building_id = this.building_id
-                await this.searchContractUnits(true)
+                await this.searchRelationUnits(true)
             }
 
             this.loading = false;
@@ -897,7 +897,7 @@
     }
     
 
-    /deep/ .contract-form-actions {
+    /deep/ .relation-form-actions {
         // position: absolute;
         width: 100%;
         display: flex;
@@ -917,7 +917,7 @@
         }
     }
 
-    /deep/ .contract-file-table {
+    /deep/ .relation-file-table {
         margin-bottom: 10px;
     }
 

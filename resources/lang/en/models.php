@@ -73,7 +73,7 @@ return [
         'account_info_card' => 'User login',
         'contact_info_card' => 'Contact details',        
         'relation' => [
-            'title' => 'Contract',
+            'title' => 'Relation',
             'end_date' => 'End date',
             'start_date' => 'Start date',
             'type' => 'Type',            
@@ -82,7 +82,7 @@ return [
                 'unlimited' => 'Unlimited',
                 'limited' => 'Limited',
             ],
-            'relation_pdf' => 'Contract PDF',
+            'relation_pdf' => 'Relation PDF',
             'filename' => 'Name',
             'deposit_amount' => 'Deposit amount',
             'type_of_deposit' => 'Type of deposit',
@@ -97,21 +97,21 @@ return [
                 'yes' => 'Yes',
                 'no' => 'No',
             ],
-            'relation_id' => 'Contract ID',
+            'relation_id' => 'Relation ID',
             'status' => [
                 'active' => 'Active',
                 'inactive' => 'Inactive',
             ],
-            'add' => 'Add new contract',
-            'add_sell_relation' => 'Add Sell Contract',
+            'add' => 'Add new relation',
+            'add_sell_relation' => 'Add Sell Relation',
             'pdf_only_desc' => 'Please note that only PDF files can be uploaded',
-            'saved' => 'Contract saved',
+            'saved' => 'Relation saved',
             'status_count' => [
-                'total' => 'Total contracts',
-                'active' => 'Active contracts',
-                'inactive' => 'Inactive contracts',
+                'total' => 'Total relations',
+                'active' => 'Active relations',
+                'inactive' => 'Inactive relations',
             ],
-            'type_validation_error' => "Looks like you've already added contract(s), first delete them and then you will be able to change resident type."
+            'type_validation_error' => "Looks like you've already added relation(s), first delete them and then you will be able to change resident type."
         ],      
         'status' => [
             'label' => 'Status',

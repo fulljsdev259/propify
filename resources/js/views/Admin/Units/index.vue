@@ -156,7 +156,7 @@
             },
             formattedItems() {
                 return this.items.map((unit) => {
-                    unit.residents = unit.contracts.map(contract => contract.resident)
+                    unit.residents = unit.relations.map(relation => relation.resident)
                     unit.formatted_type_label = this.$t(`models.unit.type.${unit.typeLabel}`);
                     return unit
                 })
