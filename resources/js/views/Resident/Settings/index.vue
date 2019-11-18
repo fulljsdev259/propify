@@ -75,21 +75,21 @@
                         <card>
                             <el-form :model="defaultAddress" label-width="140px" ref="defaultAddressForm" size="medium">
                                 <!-- <el-alert                                     
-                                    :title="$t('resident.default_contract_expired')"
+                                    :title="$t('resident.default_relation_expired')"
                                     type="info"
                                     show-icon
                                     :closable="false"
                                     v-if="expired"
                                 >
                                 </el-alert> -->
-                                <el-form-item :label="$t('resident.default_contract_id')" :rules="defaultAddressValidationRules.default_contract_id"
-                                              prop="default_contract_id" class="relation">
-                                    <el-select v-model="defaultAddress.default_contract_id" 
+                                <el-form-item :label="$t('resident.default_relation_id')" :rules="defaultAddressValidationRules.default_relation_id"
+                                              prop="default_relation_id" class="relation">
+                                    <el-select v-model="defaultAddress.default_relation_id" 
                                                 :placeholder="$t('resident.placeholder.relation')"
                                                 class="custom-select"
                                                 filterable
-                                                value-key="loggedInUser.resident.default_contract_id">
-                                        <el-option v-for="relation in dirtyContracts" 
+                                                value-key="loggedInUser.resident.default_relation_id">
+                                        <el-option v-for="relation in dirtyRelations" 
                                                     :key="relation.id" 
                                                     :label="relation.building_room_floor_unit" 
                                                     :value="relation.id" />
@@ -222,7 +222,7 @@
                     ],
                 },
                 defaultAddressValidationRules: {
-                    default_contract_id: [
+                    default_relation_id: [
                         {
                             required: true,
                             message: this.$t("models.quarter.required")
@@ -235,7 +235,7 @@
                     password_confirmation: ''
                 },
                 defaultAddress: {
-                    default_contract_id: '',
+                    default_relation_id: '',
                 },
                 image: '',
                 summaryValues: [
@@ -254,7 +254,7 @@
                 }
             }),
             ...mapGetters(["getAllAvailableLanguages", "loggedInUser"]),
-            dirtyContracts() {
+            dirtyRelations() {
                 return this.relations.map(relation => { 
                     let floor_label;
                     if(relation.unit.attic == 'attic')
@@ -280,7 +280,7 @@
             
         },
         methods: {
-            ...mapActions(['updateUserSettings', 'changeUserPassword', 'changeDetails', 'uploadAvatar', 'me', 'updateDefaultContract']),
+            ...mapActions(['updateUserSettings', 'changeUserPassword', 'changeDetails', 'uploadAvatar', 'me', 'updateDefaultRelation']),
             cropped(e) {
                 this.image = e;
             },
@@ -339,11 +339,11 @@
                     }
 
                     const payload = {
-                        default_contract_id: this.defaultAddress.default_contract_id
+                        default_relation_id: this.defaultAddress.default_relation_id
                     };
 
                     try {
-                        const resp = await this.updateDefaultContract(payload);
+                        const resp = await this.updateDefaultRelation(payload);
                         await this.me();
                         displaySuccess(resp);
                     } catch (e) {
@@ -393,9 +393,9 @@
             }
         },
         mounted () {
-            this.defaultAddress.default_contract_id = this.loggedInUser.resident.default_contract_id
-            if(!this.relations.find(item => item.id == this.defaultAddress.default_contract_id)) {
-                this.defaultAddress.default_contract_id = undefined
+            this.defaultAddress.default_relation_id = this.loggedInUser.resident.default_relation_id
+            if(!this.relations.find(item => item.id == this.defaultAddress.default_relation_id)) {
+                this.defaultAddress.default_relation_id = undefined
             }
         }
     }

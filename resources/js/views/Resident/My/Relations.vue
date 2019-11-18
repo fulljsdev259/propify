@@ -4,7 +4,7 @@
         <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</small>
     </placeholder>
     <div class="relations" v-else-if="relations">
-        <ui-heading icon="ti-book" :title="$t('resident.my_contract')" :description="$t('resident.heading_info.my_contract')">
+        <ui-heading icon="ti-book" :title="$t('resident.my_relation')" :description="$t('resident.heading_info.my_relation')">
         </ui-heading>
         <ui-divider />
         <el-row :gutter="12">
@@ -62,7 +62,7 @@
                         </el-tag>
                     </template> -->
                     <template v-if="relation.media">
-                        <el-divider content-position="left">{{$t('resident.contract_file')}}</el-divider>
+                        <el-divider content-position="left">{{$t('resident.relation_file')}}</el-divider>
                         <template  v-for="file in relation.media">
                             <embed :key="file.id" :src="file.url" style="height: 500px;"/>
                             <!-- <el-image :key="file.id" :src="file.url" v-if="isFileImage(file)" />

@@ -194,8 +194,8 @@
                                         :items="model.relations"
                                         :hide-relation-id="true"
                                         :hide-avatar="true"
-                                        @edit-relation="editContract"
-                                        @delete-relation="deleteContract">
+                                        @edit-relation="editRelation"
+                                        @delete-relation="deleteRelation">
                             </relation-list-table>
                             
                         </card>
@@ -207,20 +207,20 @@
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
             <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }}</ui-divider>
             <div class="content" v-if="visibleDrawer">
-                <relation-form v-if="editingContract" 
+                <relation-form v-if="editingRelation" 
                                 mode="edit" 
-                                :data="editingContract" 
+                                :data="editingRelation" 
                                 :resident_type="model.type" 
                                 :visible.sync="visibleDrawer" 
-                                :edit_index="editingContractIndex" 
-                                @update-relation="updateContract"
-                                @delete-relation="deleteContract" 
+                                :edit_index="editingRelationIndex" 
+                                @update-relation="updateRelation"
+                                @delete-relation="deleteRelation" 
                                 :used_units="used_units"/>
                 <relation-form v-else mode="add" 
                                 :resident_type="model.type" 
                                 :visible.sync="visibleDrawer" 
-                                @add-relation="addContract" 
-                                @delete-relation="deleteContract"
+                                @add-relation="addRelation" 
+                                @delete-relation="deleteRelation"
                                 :used_units="used_units"/>
             </div>
         </ui-drawer>

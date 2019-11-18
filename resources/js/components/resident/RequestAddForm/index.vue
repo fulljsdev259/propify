@@ -1,8 +1,8 @@
 <template>
     <el-form ref="form" class="request-add" :model="model" label-position="top" :rules="validationRules" v-loading="loading">
         
-        <el-form-item prop="contract_id" :label="$t('resident.relation')" v-if="relations.length > 1">
-            <el-select v-model="model.contract_id" 
+        <el-form-item prop="relation_id" :label="$t('resident.relation')" v-if="relations.length > 1">
+            <el-select v-model="model.relation_id" 
                         :placeholder="$t('resident.placeholder.relation')"
                         class="custom-select"
                         filterable>
@@ -140,7 +140,7 @@
         data () {
             return {
                 model: {
-                    contract_id: '',
+                    relation_id: '',
                     title: '',
                     category_id: '',
                     priority: '',
@@ -156,7 +156,7 @@
                     keywords: [],
                 },
                 validationRules: {
-                    contract_id: {
+                    relation_id: {
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('resident.relation')})
                     },
@@ -203,7 +203,7 @@
                 showRoom: false,
                 request_id: null,
                 audit_id: null,
-                default_contract_id: ''
+                default_relation_id: ''
             }
         },
         methods: {
@@ -301,11 +301,11 @@
                             
                             this.$refs.form.resetFields()
 
-                            if(this.relations.find(item => item.id == this.default_contract_id)) {
-                                this.model.contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
+                            if(this.relations.find(item => item.id == this.default_relation_id)) {
+                                this.model.relation_id = this.$store.getters.loggedInUser.resident.default_relation_id
                             }
                             else if(this.relations.length == 1) {
-                                this.model.contract_id = this.relations[0].id
+                                this.model.relation_id = this.relations[0].id
                             }
                             this.$emit('update:visible', false)
                             
@@ -343,13 +343,13 @@
                 relation.building_room_floor_unit = relation.building.name + " -- " + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
             })
 
-            this.default_contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
+            this.default_relation_id = this.$store.getters.loggedInUser.resident.default_relation_id
             
-            if(this.relations.find(item => item.id == this.default_contract_id)) {
-                this.model.contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
+            if(this.relations.find(item => item.id == this.default_relation_id)) {
+                this.model.relation_id = this.$store.getters.loggedInUser.resident.default_relation_id
             }
             else if(this.relations.length == 1) {
-                this.model.contract_id = this.relations[0].id
+                this.model.relation_id = this.relations[0].id
             }
             
             try {

@@ -50,8 +50,8 @@ export default (config = {}) => {
                 },
                 original_type: null,
                 visibleDrawer: false,
-                editingContract: null,
-                editingContractIndex: -1,
+                editingRelation: null,
+                editingRelationIndex: -1,
                 validationRules: {
                     first_name: [{
                         required: true,
@@ -121,23 +121,23 @@ export default (config = {}) => {
                 const ext = file.name.split('.').pop()
                 return ['.pdf'].includes(ext);
             },
-            addContract (data) {
+            addRelation (data) {
                 if(config.mode == 'add') {
                     this.original_type = this.model.type
                 }
                 this.model.relations.push(data);
             },
-            editContract(index) {
-                this.editingContract = this.model.relations[index];
-                this.editingContractIndex = index;
+            editRelation(index) {
+                this.editingRelation = this.model.relations[index];
+                this.editingRelationIndex = index;
                 this.visibleDrawer = true;
             },
-            updateContract(index, params) {
+            updateRelation(index, params) {
                 this.$set(this.model.relations, index, params);
             },
-            deleteContract(index) {
+            deleteRelation(index) {
 
-                this.$confirm(this.$t(`general.swal.delete_contract.text`), this.$t(`general.swal.delete_contract.title`), {
+                this.$confirm(this.$t(`general.swal.delete_relation.text`), this.$t(`general.swal.delete_relation.title`), {
                     type: 'warning'
                 }).then(async () => {
                     if(config.mode == "edit" ) {
@@ -171,7 +171,7 @@ export default (config = {}) => {
                 handler (state) {
                     // TODO - auto blur container if visible is true first
                     if (!state) {
-                        this.editingContract = null
+                        this.editingRelation = null
                     }
                 }
             }

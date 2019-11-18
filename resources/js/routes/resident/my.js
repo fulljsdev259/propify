@@ -14,7 +14,7 @@ export default {
             title: 'My personal data'
         }
     }, {
-        name: 'residentMyContracts',
+        name: 'residentMyRelations',
         path: 'relations',
         component: () => import ( /* webpackChunkName: "resident/my/relations" */ 'views/Resident/My/Relations'),
         meta: {

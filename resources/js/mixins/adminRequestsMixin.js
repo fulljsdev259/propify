@@ -44,7 +44,7 @@ export default (config = {}) => {
                     property_managers: [],
                     media: [],
                     sub_category_id: null,
-                    contract_id: ''
+                    relation_id: ''
                 },
                 validationRules: {
                     category: [{
@@ -155,7 +155,7 @@ export default (config = {}) => {
                     try {
                         const {data} = await this.getResidents({
                             get_all: true,
-                            has_contract: true,
+                            has_relation: true,
                             search
                         });
                         
@@ -513,7 +513,7 @@ export default (config = {}) => {
                 }
             },
             changeResident( resident_id ) {
-                this.model.contract_id = null
+                this.model.relation_id = null
                 this.resident = this.residents.find(resident => resident.id == resident_id)
                 // this.relations = this.resident.relations.filter( relation => relation.status == 1)
                 this.relations = this.resident.relations
@@ -543,7 +543,7 @@ export default (config = {}) => {
 
 
                 if(this.relations.length == 1) {
-                    this.model.contract_id = this.relations[0].id
+                    this.model.relation_id = this.relations[0].id
                 }
             }
         }
@@ -631,7 +631,7 @@ export default (config = {}) => {
                         message: this.$t('validation.general.required')
                     }];
 
-                    this.validationRules.contract_id = [{
+                    this.validationRules.relation_id = [{
                         required: true,
                         message: this.$t('validation.general.required')
                     }];
@@ -689,7 +689,7 @@ export default (config = {}) => {
                         this.$set(this.model, 'building', data.relation.building.name);
                         this.address = data.relation.address
                         //this.relations = resp.data.resident.relations.filter(item => item.status == 1)
-                        this.model.contract_id = data.relation.id
+                        this.model.relation_id = data.relation.id
                         await this.getConversations();
                         
                         if (data.resident) {

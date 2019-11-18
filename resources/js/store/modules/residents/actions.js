@@ -124,7 +124,7 @@ export default {
                 .then(({data: r}) => (r && commit('SET_COUNTRIES', r.data), resolve(r)))
                 .catch(({response: {data: err}}) => reject(err)));
     },
-    updateDefaultContract(_, payload) {
+    updateDefaultRelation(_, payload) {
         return new Promise((resolve, reject) => {
             axios.put(`residents/default-relation`, payload)
                 .then((resp) => {

@@ -120,7 +120,7 @@
                         <div class="type">{{column.translate(scope.row.type)}}</div>
                     </div>
 
-                    <div v-else-if="column.type === 'residentContract'">
+                    <div v-else-if="column.type === 'residentRelation'">
                         <relation-count :countsData="scope.row" ></relation-count>
                     </div>
 

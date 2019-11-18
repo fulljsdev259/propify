@@ -270,11 +270,11 @@
                                 <el-badge :value="relationCount" :max="99" class="admin-layout">{{ $t('general.relations') }}</el-badge>
                             </span>
                             
-                            <el-button style="float:right" type="primary" @click="toggleAddContractDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.relation.add')}}</el-button>    
+                            <el-button style="float:right" type="primary" @click="toggleAddRelationDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.relation.add')}}</el-button>    
                             <relation-list-table
                                     :items="model.relations"
-                                    @edit-relation="editContract"
-                                    @delete-relation="deleteContract">
+                                    @edit-relation="editRelation"
+                                    @delete-relation="deleteRelation">
                             </relation-list-table>
                         </el-tab-pane> -->
                     </el-tabs>
@@ -409,22 +409,22 @@
             </el-row>
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-            <template v-if="editingContract || isAddContract">
+            <template v-if="editingRelation || isAddRelation">
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} </ui-divider>
-                <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider> -->
+                <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} {{ editingRelation ? '[' + editingRelation.relation_format + ']' : '' }} </ui-divider> -->
                     
                 <div class="content" v-if="visibleDrawer"> 
-                    <relation-form v-if="editingContract" 
+                    <relation-form v-if="editingRelation" 
                                 mode="edit" 
                                 :quarter_id="model.id" 
                                 :show-resident="true"
-                                :data="editingContract" 
+                                :data="editingRelation" 
                                 :resident_type="1" 
-                                :resident_id="editingContract.id" 
+                                :resident_id="editingRelation.id" 
                                 :visible.sync="visibleDrawer" 
-                                :edit_index="editingContractIndex" 
-                                @update-relation="updateContract" 
-                                @delete-relation="deleteContract"
+                                :edit_index="editingRelationIndex" 
+                                @update-relation="updateRelation" 
+                                @delete-relation="deleteRelation"
                                 :used_units="used_units"/>
                     <relation-form v-else 
                                 mode="add" 
@@ -432,8 +432,8 @@
                                 :show-resident="true"
                                 :resident_type="1" 
                                 :visible.sync="visibleDrawer" 
-                                @add-relation="addContract" 
-                                @delete-relation="deleteContract"
+                                @add-relation="addRelation" 
+                                @delete-relation="deleteRelation"
                                 :used_units="used_units"/>
                 </div>
             </template>
@@ -618,7 +618,7 @@
                 //     label: 'models.resident.type.label',
                 //     i18n: this.translateResidentType
                 // }, {
-                    type: 'residentContract',
+                    type: 'residentRelation',
                     label: 'models.resident.relation.title'
                 }, {
                     prop: 'status',
@@ -647,13 +647,13 @@
                 activeTab1: 'details',
                 activeRightTab: 'assignees',
                 activeRequestTab: 'requests',
-                editingContract: null,
+                editingRelation: null,
                 editingWorkflow: null,
-                isAddContract: false,
+                isAddRelation: false,
                 isWorkflow: false,
                 isAddWorkflow: false,
                 isEditingWorkflow: [],
-                editingContractIndex: -1,
+                editingRelationIndex: -1,
                 editingWorkflowIndex: -1,
                 activeDrawerTab: "emergency",
                 workflows: []
@@ -764,25 +764,25 @@
             toggleDrawer() {
                 this.visibleDrawer = true;
             },
-            toggleAddContractDrawer() {
-                this.isAddContract = true
+            toggleAddRelationDrawer() {
+                this.isAddRelation = true
                 this.visibleDrawer = true;
             },
-            addContract (data) {
+            addRelation (data) {
                 this.model.relations.push(data);
                 this.relationCount ++;
             },
-            editContract(index) {
-                this.editingContract = this.model.relations[index];
-                this.editingContractIndex = index;
+            editRelation(index) {
+                this.editingRelation = this.model.relations[index];
+                this.editingRelationIndex = index;
                 this.visibleDrawer = true;
             },
-            updateContract(index, params) {
+            updateRelation(index, params) {
                 this.$set(this.model.relations, index, params);
             },
-            deleteContract(index) {
+            deleteRelation(index) {
 
-                this.$confirm(this.$t(`general.swal.delete_contract.text`), this.$t(`general.swal.delete_contract.title`), {
+                this.$confirm(this.$t(`general.swal.delete_relation.text`), this.$t(`general.swal.delete_relation.title`), {
                     type: 'warning'
                 }).then(async () => {
                     await this.$store.dispatch('relations/delete', {id: this.model.relations[index].id})
@@ -903,8 +903,8 @@
                 handler (state) {
                     // TODO - auto blur container if visible is true first
                     if (!state) {
-                        this.editingContract = null
-                        this.isAddContract = false
+                        this.editingRelation = null
+                        this.isAddRelation = false
                         this.isWorkflow = false
                         this.editingWorkflow = null
                     }

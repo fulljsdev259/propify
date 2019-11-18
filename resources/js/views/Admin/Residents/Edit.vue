@@ -280,8 +280,8 @@
                                         <relation-list-table
                                                     :items="model.relations"
                                                     :hide-avatar="true"
-                                                    @edit-relation="editContract"
-                                                    @delete-relation="deleteContract">
+                                                    @edit-relation="editRelation"
+                                                    @delete-relation="deleteRelation">
                                         </relation-list-table>
 
                                 </el-card>
@@ -301,27 +301,27 @@
             </div>
             <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} </ui-divider>
-                <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider> -->
+                <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} {{ editingRelation ? '[' + editingRelation.relation_format + ']' : '' }} </ui-divider> -->
                 
                 <div class="content" v-if="visibleDrawer">
-                    <relation-form v-if="editingContract" 
+                    <relation-form v-if="editingRelation" 
                                 :hide-building-and-units="false" 
                                 mode="edit" 
-                                :data="editingContract" 
+                                :data="editingRelation" 
                                 :resident_type="model.type" 
                                 :resident_id="model.id" 
                                 :visible.sync="visibleDrawer" 
-                                :edit_index="editingContractIndex" 
-                                @update-relation="updateContract"
-                                @delete-relation="deleteContract"
+                                :edit_index="editingRelationIndex" 
+                                @update-relation="updateRelation"
+                                @delete-relation="deleteRelation"
                                 :used_units="used_units"/>
                     <relation-form v-else 
                                 mode="add" 
                                 :resident_type="model.type" 
                                 :resident_id="model.id" 
                                 :visible.sync="visibleDrawer" 
-                                @add-relation="addContract" 
-                                @delete-relation="deleteContract"
+                                @add-relation="addRelation" 
+                                @delete-relation="deleteRelation"
                                 :used_units="used_units"/>
                 </div>
             </ui-drawer>

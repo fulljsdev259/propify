@@ -202,13 +202,13 @@
                                         {{this.model.relation.building_id + " -- " + this.model.relation.unit_id}}
                                     </el-form-item>
 
-                                    <el-form-item :label="$t('models.resident.relation.title')" :rules="validationRules.contract_id"
+                                    <el-form-item :label="$t('models.resident.relation.title')" :rules="validationRules.relation_id"
                                                 v-else
-                                                prop="contract_id">
-                                        <el-select v-model="model.contract_id" 
+                                                prop="relation_id">
+                                        <el-select v-model="model.relation_id" 
                                                     :placeholder="$t('resident.placeholder.relation')"
                                                     class="custom-select">
-                                            <el-option v-for="relation in dirtyContracts" 
+                                            <el-option v-for="relation in dirtyRelations" 
                                                         :key="relation.id" 
                                                         :label="relation.building_room_floor_unit" 
                                                         :value="relation.id" />
