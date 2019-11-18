@@ -69,7 +69,7 @@
                 i18nName: 'quarter',
                 header: [{
                     label: 'models.quarter.quarter_format',
-                    prop: 'quarter_format'
+                    prop: 'internal_quarter_id'
                 }, 
                 // {
                 //     label: 'models.quarter.count_of_buildings',
