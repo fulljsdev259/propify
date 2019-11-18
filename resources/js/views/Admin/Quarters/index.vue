@@ -2,7 +2,7 @@
     <div class="quarters">
         <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" class="padding-right-300">
             <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
+                <list-field-filter :fields="header" @field-changed="fields=$event"  @order-changed="header=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.quarter)">
                 <el-button 
@@ -69,7 +69,7 @@
                 i18nName: 'quarter',
                 header: [{
                     label: 'models.quarter.quarter_format',
-                    prop: 'quarter_format'
+                    prop: 'internal_quarter_id'
                 }, 
                 // {
                 //     label: 'models.quarter.count_of_buildings',

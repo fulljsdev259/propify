@@ -120,10 +120,10 @@
             v-loading="loading.state">
 
             <el-table-column
-                :key="column.prop"
+                :key="'header' + index"
                 :label="$t(column.label)"
                 :width="column.width"
-                v-for="column in computedHeader">
+                v-for="(column, index) in computedHeader">
                 
                 <template slot-scope="scope">
                     <div v-if="column.withAvatars" class="avatars-wrapper">
@@ -321,7 +321,7 @@
                         </span>
                     </template>
                     <span v-else>
-                        {{ scope.row[column.prop] }}
+                        {{ _.get(scope.row, column.prop) }}
                     </span>
                     
                 </template>
@@ -1083,7 +1083,7 @@
 
             & > div {
                 position: relative;
-                margin-right: -10px;
+                margin-right: 0px;
                 border: 1px solid #fff;
                 cursor: pointer;
 
@@ -1127,7 +1127,10 @@
     }
     .el-table {
         th.el-table-column--selection.is-leaf {
-            display: none;
+            .cell {
+                padding-left: 0px;
+                text-align: right;
+            }
         }
         tbody {
             tr {

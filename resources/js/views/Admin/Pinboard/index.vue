@@ -2,7 +2,7 @@
     <div class="pinboard">
         <heading :title="$t('models.pinboard.title')" icon="icon-megaphone-1" shadow="heavy" class="padding-right-300">
             <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.pinboard)">
                 <el-button 

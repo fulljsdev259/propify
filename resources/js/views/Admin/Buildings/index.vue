@@ -2,7 +2,7 @@
     <div class="buildings">
         <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy" class="padding-right-300">
             <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.building)">
                 <el-button 
@@ -133,7 +133,7 @@
                 delBuildingStatus: -1, // 0: unit, 1: request, 2: both
                 header: [{
                     label: 'models.building.building_format',
-                    prop: 'building_format',
+                    prop: 'internal_building_id',
                 }, {
                     label: 'models.building.building_no',
                     prop: 'address.house_num'
