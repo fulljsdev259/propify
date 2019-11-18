@@ -23,7 +23,6 @@ export default (config = {}) => {
                 dueDatePickerOptions: {
                     disabledDate(time) {
                         // return time.getTime() < Date.now();
-                        // console.log(time.getDate())
                         return (compareAsc(time.getTime(), subDays(Date.now(),1)) == -1)
                     },
                 },
@@ -745,8 +744,8 @@ export default (config = {}) => {
                                 })
 
                                 try {
+                                    params.media = [...params.media, ...this.media.map(item => item.file.src)]
                                     
-                                    params.media = this.media.map(item => item.file.src)
                                     const resp = await this.updateRequest(params);
 
                                     await this.uploadNewMedia(params.id, null);

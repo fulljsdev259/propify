@@ -24,6 +24,12 @@ class CreateRequest extends BaseRequest
      */
     public function rules()
     {
-        return Unit::$rules;
+        return [
+            'building_id' => 'required_without:quarter_id|integer|nullable',
+            'quarter_id' => 'required_without:building_id|integer|nullable',
+            'type' => 'required|integer',
+            'name' => 'required|string',
+            'floor' => 'required'
+        ];
     }
 }

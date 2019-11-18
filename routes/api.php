@@ -193,14 +193,17 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::delete('pinboard/{id}/media/{media_id}', 'MediaAPIController@pinboardDestroy')->name('pinboard.media.destroy');
     Route::post('pinboard/{id}/comments', 'CommentAPIController@storePinboardComment')->name('pinboard.store.comment');
     Route::get('/pinboard/{id}/locations', 'PinboardAPIController@getLocations');
+    Route::get('/pinboard/{id}/views', 'PinboardAPIController@indexViews');
+    Route::put('/pinboard/{id}/views', 'PinboardAPIController@incrementViews');
+
+    Route::post('/pinboard/{id}/providers/{provider_id}', 'PinboardAPIController@assignProvider');
+    Route::delete('/pinboard/{id}/providers/{provider_id}', 'PinboardAPIController@unassignProvider');
+
+    // @TODO delete
     Route::post('/pinboard/{id}/buildings/{building_id}', 'PinboardAPIController@assignBuilding');
     Route::delete('/pinboard/{id}/buildings/{building_id}', 'PinboardAPIController@unassignBuilding');
     Route::post('/pinboard/{id}/quarters/{quarter_id}', 'PinboardAPIController@assignQuarter');
     Route::delete('/pinboard/{id}/quarters/{quarter_id}', 'PinboardAPIController@unassignQuarter');
-    Route::post('/pinboard/{id}/providers/{provider_id}', 'PinboardAPIController@assignProvider');
-    Route::delete('/pinboard/{id}/providers/{provider_id}', 'PinboardAPIController@unassignProvider');
-    Route::put('/pinboard/{id}/views', 'PinboardAPIController@incrementViews');
-    Route::get('/pinboard/{id}/views', 'PinboardAPIController@indexViews');
 
     Route::resource('pinboard', 'PinboardAPIController');
 

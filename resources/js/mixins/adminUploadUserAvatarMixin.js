@@ -16,7 +16,6 @@ export default {
                 merge_in_audit: merge_in_audit
             });
 
-            console.log(this.$store.getters.loggedInUser.avatar)
             if( this.$store.getters.loggedInUser.id == userId ) {
                 EventBus.$emit('avatar-update');
             }

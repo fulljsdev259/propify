@@ -72,7 +72,7 @@ class AnnouncementEmailReceptionist extends Model
 {
     public $fillable = [
         'pinboard_id',
-        'resident_ids',
+        'residents_data',
         'failed_resident_ids'
     ];
 
@@ -83,7 +83,7 @@ class AnnouncementEmailReceptionist extends Model
      */
     protected $casts = [
         'pinboard_id' => 'integer',
-        'resident_ids' => 'array',
+        'residents_data' => 'array',
         'failed_resident_ids' => 'array'
     ];
 

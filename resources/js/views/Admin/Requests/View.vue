@@ -705,7 +705,6 @@
             async downloadPDF() {
                 this.loading.state = true;
                 try {
-                    console.log('this.model.id', this.model.id)
                     const resp = await this.downloadRequestPDF({id: this.model.id});
                     if (resp && resp.data) {
                         const url = window.URL.createObjectURL(new Blob([resp.data], {type: resp.headers['content-type']}));

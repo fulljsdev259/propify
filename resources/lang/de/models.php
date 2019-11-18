@@ -148,6 +148,11 @@ return [
             'tenant' => 'Mieter',
             'owner' => 'Eigentümer',
         ],
+        'tenant_type' => [
+            'label' => 'Mietertyp',
+            'main' => 'Hauptmieter',
+            'garant' => 'Nebenmieter',
+        ]
     ],
     'building' => [
         'title' => 'Objekte',
@@ -409,6 +414,7 @@ return [
         'quarter_format' => 'Projectnr.',
         'type' => 'Projektart',
         'project_ort' => 'Projektort',
+        'details' => 'Projektdetails',
         'errors' => [
             'not_found' => "Projekt nicht gefunden.",
             'deleted' => "Fehler beim Löschen des Projekts: ",
@@ -445,6 +451,9 @@ return [
                 'building' => 'Objekt auswählen',
                 'to_user' => 'Verantwortlichen auswählen',
                 'cc_user' => 'CC auswählen',
+            ],
+            'tooltips' => [
+                'save' => "Um den Arbeitsablauf zu speichern, speichern wir diese Schaltfläche, die Haupttaste 'Speichern' speichert keine Daten."
             ]
         ]
     ],
