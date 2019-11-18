@@ -4,14 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Common\WhereCriteria;
-use App\Criteria\Resident\FilterByContractRelatedCriteria;
+use App\Criteria\Resident\FilterByRelationRelatedCriteria;
 use App\Criteria\Common\FilterByLanguageCriteria;
 use App\Criteria\Resident\FilterByRequestCriteria;
 use App\Criteria\Resident\FilterByStatusCriteria;
 use App\Criteria\Resident\FilterByTypeCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Resident\AddReviewRequest;
-use App\Http\Requests\API\Resident\CheckHasRequestOrContractRequest;
+use App\Http\Requests\API\Resident\CheckHasRequestOrRelationRequest;
 use App\Http\Requests\API\Resident\CreateRequest;
 use App\Http\Requests\API\Resident\DeleteRequest;
 use App\Http\Requests\API\Resident\DownloadCredentialsRequest;
@@ -21,22 +21,20 @@ use App\Http\Requests\API\Resident\MyNeighboursRequest;
 use App\Http\Requests\API\Resident\MyPropertyManagersRequest;
 use App\Http\Requests\API\Resident\SendCredentialsRequest;
 use App\Http\Requests\API\Resident\ShowRequest;
-use App\Http\Requests\API\Resident\UpdateDefaultContractRequest;
+use App\Http\Requests\API\Resident\UpdateDefaultRelationRequest;
 use App\Http\Requests\API\Resident\UpdateLoggedInRequest;
 use App\Http\Requests\API\Resident\UpdateRequest;
 use App\Http\Requests\API\Resident\UpdateStatusRequest;
 use App\Jobs\Notify\NotifyResidentCredentials;
 use App\Models\AuditableModel;
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Models\Settings;
 use App\Models\Resident;
 use App\Models\User;
-use App\Notifications\ResidentCredentials;
-use App\Repositories\PinboardRepository;
 use App\Repositories\TemplateRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\UserRepository;
-use App\Transformers\ContractTransformer;
+use App\Transformers\RelationTransformer;
 use App\Transformers\MediaTransformer;
 use App\Transformers\PropertyManagerTransformer;
 use App\Transformers\ResidentTransformer;
@@ -115,7 +113,7 @@ class ResidentAPIController extends AppBaseController
         ]);
 
         $this->residentRepository->pushCriteria(new RequestCriteria($request, 'concat(first_name, " ", last_name)'));
-        $this->residentRepository->pushCriteria(new FilterByContractRelatedCriteria($request));
+        $this->residentRepository->pushCriteria(new FilterByRelationRelatedCriteria($request));
         $this->residentRepository->pushCriteria(new FilterByRequestCriteria($request));
         $this->residentRepository->pushCriteria(new FilterByStatusCriteria($request));
         $this->residentRepository->pushCriteria(new FilterByLanguageCriteria($request));
@@ -126,15 +124,15 @@ class ResidentAPIController extends AppBaseController
         if ($getAll) {
             $this->residentRepository->pushCriteria(new LimitOffsetCriteria($request));
             $residents = $this->residentRepository->with([
-                'contracts' => function ($q) {
+                'relations' => function ($q) {
                     $q->with('building.address', 'unit');
                 },
-                'default_contract' => function ($q) {
+                'default_relation' => function ($q) {
                     $q->with('building.address', 'unit');
                 },])
                 ->get();
             foreach ($residents as $resident) {
-                $resident->setRelation('contracts', collect((new ContractTransformer())->transformCollection($resident->contracts)));
+                $resident->setRelation('relations', collect((new RelationTransformer())->transformCollection($resident->relations)));
             }
 
             // @TODO use transformer
@@ -144,10 +142,10 @@ class ResidentAPIController extends AppBaseController
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $residents = $this->residentRepository->with([
             'user',
-            'default_contract' => function ($q) {
+            'default_relation' => function ($q) {
                 $q->with('building.address', 'unit');
             },
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit');
             }])->paginate($perPage);
         $response = (new ResidentTransformer())->transformPaginator($residents);
@@ -222,10 +220,10 @@ class ResidentAPIController extends AppBaseController
         $this->residentRepository->pushCriteria(new RequestCriteria($request));
         $residents = $this->residentRepository->with([
             'user',
-            'default_contract' => function ($q) {
+            'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }])
             ->get(['id', 'first_name', 'last_name', 'status', 'created_at']);
@@ -307,10 +305,10 @@ class ResidentAPIController extends AppBaseController
 
         $resident->load([
             'user',
-            'default_contract' => function ($q) {
+            'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
@@ -373,10 +371,10 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'settings',
             'user',
-            'default_contract' => function ($q) {
+            'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
@@ -428,10 +426,10 @@ class ResidentAPIController extends AppBaseController
         $user->resident->load([
             'user',
             'settings',
-            'default_contract' => function ($q) {
+            'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
@@ -531,10 +529,10 @@ class ResidentAPIController extends AppBaseController
 
         $resident->load([
             'settings',
-            'default_contract' => function ($q) {
+            'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
@@ -621,10 +619,10 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
-            'default_contract' => function ($q) {
+            'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
@@ -634,10 +632,10 @@ class ResidentAPIController extends AppBaseController
 
     /**
      * @SWG\Put(
-     *      path="/residents/default-contract",
-     *      summary="Update the Logged In Resident default-contract-id",
+     *      path="/residents/default-relation",
+     *      summary="Update the Logged In Resident default-relation-id",
      *      tags={"Resident"},
-     *      description="Update the Logged In Resident default-contract-id",
+     *      description="Update the Logged In Resident default-relation-id",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="body",
@@ -671,17 +669,17 @@ class ResidentAPIController extends AppBaseController
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function updateDefaultContract(UpdateDefaultContractRequest $request)
+    public function updateDefaultRelation(UpdateDefaultRelationRequest $request)
     {
         $resident = $request->user()->resident;
-        $resident->update($request->only('default_contract_id'));
+        $resident->update($request->only('default_relation_id'));
         $resident->load([
             'user',
             'settings',
-            'default_contract' => function ($q) {
+            'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             }
         ]);
@@ -760,10 +758,10 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
-            'default_contract' => function ($q) {
+            'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
-            'contracts' => function ($q) {
+            'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
         ]);
@@ -1158,9 +1156,9 @@ class ResidentAPIController extends AppBaseController
     public function myDocuments(MyDocumentsRequest $myDocumentsRequest)
     {
         $resident = Auth::user()->resident;
-        $contracts = $resident->contracts()
+        $relations = $resident->relations()
             ->select('unit_id', 'building_id')
-            ->where('status', Contract::StatusActive)
+            ->where('status', Relation::StatusActive)
             ->with([
                 'unit:id',
                 'building:id,quarter_id',
@@ -1170,9 +1168,9 @@ class ResidentAPIController extends AppBaseController
                 'building.media:id,name,collection_name,model_id,order_column,disk,file_name',
             ])->get();
 
-        $unitMedias = $contracts->pluck('unit.media')->collapse();
-        $buildingMedias = $contracts->pluck('building.media')->collapse();
-        $quarterMedias = $contracts->pluck('building.quarter.media')->collapse();
+        $unitMedias = $relations->pluck('unit.media')->collapse();
+        $buildingMedias = $relations->pluck('building.media')->collapse();
+        $quarterMedias = $relations->pluck('building.quarter.media')->collapse();
         $response['quarter'] = (new MediaTransformer)->transformCollection($quarterMedias);
         $response['building'] = (new MediaTransformer)->transformCollection($buildingMedias);
         $response['unit'] = (new MediaTransformer)->transformCollection($unitMedias);
@@ -1185,9 +1183,9 @@ class ResidentAPIController extends AppBaseController
      *
      * @SWG\Get(
      *      path="/residents/{id}/type",
-     *      summary="Check resident has contract or request",
+     *      summary="Check resident has relation or request",
      *      tags={"Resident"},
-     *      description="Check resident has contract or request",
+     *      description="Check resident has relation or request",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
@@ -1220,23 +1218,23 @@ class ResidentAPIController extends AppBaseController
      * )
      *
      * @param $id
-     * @param CheckHasRequestOrContractRequest $r
+     * @param CheckHasRequestOrRelationRequest $r
      * @return mixed
      */
-    public function checkResidentHasContractOrRequest($id, CheckHasRequestOrContractRequest $r)
+    public function checkResidentHasRelationOrRequest($id, CheckHasRequestOrRelationRequest $r)
     {
-        $resident = Resident::withCount('requests', 'contracts')->find($id);
+        $resident = Resident::withCount('requests', 'relations')->find($id);
 
         if (empty($resident)) {
             return $this->sendError(__('models.resident.errors.not_found'));
         }
 
-        if ($resident->requests_count && $resident->contracts_count) {
-            return $this->sendError(__('models.resident.errors.not_allowed_change_type_has_request_contract', $resident->only('contracts_count', 'requests_count')));
+        if ($resident->requests_count && $resident->relations_count) {
+            return $this->sendError(__('models.resident.errors.not_allowed_change_type_has_request_relation', $resident->only('relations_count', 'requests_count')));
         }
 
-        if ($resident->contracts_count) {
-            return $this->sendError(__('models.resident.errors.not_allowed_change_type_has_contract', $resident->only('contracts_count')));
+        if ($resident->relations_count) {
+            return $this->sendError(__('models.resident.errors.not_allowed_change_type_has_relation', $resident->only('relations_count')));
         }
 
         if ($resident->requests_count) {
@@ -1253,12 +1251,12 @@ class ResidentAPIController extends AppBaseController
     public function myNeighbours(MyNeighboursRequest $myNeighboursRequest)
     {
         $resident = Auth::user()->resident;
-        $contracts = $resident->contracts()
+        $relations = $resident->relations()
             ->select('building_id')
-            ->where('status', Contract::StatusActive)
+            ->where('status', Relation::StatusActive)
             ->with([
                 'building:id',
-                'building.contracts' => function ($q) use ($resident) {
+                'building.relations' => function ($q) use ($resident) {
                     $q->select('building_id', 'resident_id')
                         ->where('resident_id', '!=', $resident->id)
                         ->with([
@@ -1270,7 +1268,7 @@ class ResidentAPIController extends AppBaseController
                 },
             ])->get();
 
-        $residents = $contracts->pluck('building.contracts.*.resident')->collapse()->unique();
+        $residents = $relations->pluck('building.relations.*.resident')->collapse()->unique();
         $response = (new ResidentTransformer())->transformCollectionBy($residents, 'myNeighbours');
         return $this->sendResponse($response, 'my neighbours');
     }
@@ -1283,9 +1281,9 @@ class ResidentAPIController extends AppBaseController
     public function myPropertyManagers(MyPropertyManagersRequest $myPropertyManagersRequest)
     {
         $resident = Auth::user()->resident;
-        $contracts = $resident->contracts()
+        $relations = $resident->relations()
             ->select('building_id')
-            ->where('status', Contract::StatusActive)
+            ->where('status', Relation::StatusActive)
             ->with([
                 'building.property_managers' => function ($q) {
                     $q->select('property_managers.id', 'property_managers.user_id', 'property_managers.slogan', 'property_managers.first_name', 'property_managers.last_name')
@@ -1293,7 +1291,7 @@ class ResidentAPIController extends AppBaseController
                 },
             ])->get();
 
-        $propertyManagers = $contracts->pluck('building.property_managers')->collapse()->keyBy('id')->values();
+        $propertyManagers = $relations->pluck('building.property_managers')->collapse()->keyBy('id')->values();
         $response = (new PropertyManagerTransformer())->transformCollectionBy($propertyManagers, 'residentPropertyManagers');
         return $this->sendResponse($response, 'my property managers');
     }
