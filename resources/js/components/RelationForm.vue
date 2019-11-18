@@ -67,7 +67,7 @@
                 </el-form-item>
             </el-col>
         
-            <el-col :md="12" v-if="model.unit_id">
+            <!-- <el-col :md="12" v-if="model.unit_id">
                 <el-form-item :label="$t('models.resident.relation.type')"
                             prop="type"
                             class="label-block">
@@ -97,7 +97,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-            </el-col>
+            </el-col> -->
 
             <el-col :md="12" v-if="model.unit_id">
                 <el-form-item :label="$t('models.resident.relation.start_date')"
@@ -113,7 +113,7 @@
                             value-format="yyyy-MM-dd"/>
                 </el-form-item>
             </el-col>
-            <el-col :md="12" v-if="model.unit_id && model.duration == 2 && resident_type_check == 1">
+            <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.relation.end_date')">
                     <el-date-picker
                         :picker-options="{disabledDate: disabledRentEnd}"
@@ -126,7 +126,7 @@
                 </el-form-item>
             </el-col>
    
-            <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
+            <!-- <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.status.label')" prop="status" class="label-block">
                     <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
                                 v-model="model.status">
@@ -138,7 +138,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-            </el-col>
+            </el-col> -->
         </el-row>
         <template v-if="resident_type_check == 1">
         <!-- <ui-divider v-if="model.unit_id" content-position="left">
