@@ -44,13 +44,21 @@ class RelationRepository extends BaseRepository
     public function create(array $attributes)
     {
         /** @var Relation $model */
-        $model = parent::create($attributes);
+        $data = $attributes;
+//        $resident = Resident::find($attributes['resident_id']);
+//        if ($resident) {
+//            $resident = $this->saveMediaUploads($resident, $attributes);
+//        }
 
-        if (empty($model))  {
-            return $model;
+        // @TODO correct make many audits or single
+        foreach ($attributes['unit_id'] as $unitId) {
+            $data['unit_id'] = $unitId;
+            $model = parent::create($data);
+            if (empty($model))  {
+                return $model;
+            }
         }
 
-        $model = $this->saveMediaUploads($model, $attributes);
         /** @var $pinboardRepository PinboardRepository */
 //        $pinboardRepository = App::make(PinboardRepository::class);
 //        $pinboardRepository->newResidentRelationPinboard($model);

@@ -26,11 +26,11 @@ class CreateRequest extends BaseRequest
         return [
             'resident_id' => 'required|integer|exists:residents,id',
             'quarter_id' => 'required|integer|exists:buildings,id',
-            'unit_id' => 'required|integer|exists:units,id', // @TODO check in unit
+            'unit_id' => 'required|array', // @TODO check in quarter each unit
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'status' => 'digits_between:1,2|numeric',
-            'type' => 'digits_between:1,3|numeric',
+            'type' => 'required',
             'deposit_type' => 'digits_between:1,4|numeric',
             'deposit_status' => 'digits_between:1,2|numeric',
             'deposit_amount' => 'numeric',

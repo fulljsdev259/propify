@@ -30,7 +30,7 @@ class UpdateRequest extends BaseRequest
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'status' => 'digits_between:1,2|numeric',
-            'type' => 'digits_between:1,3|numeric',
+            'type' => 'required',
             'deposit_type' => 'digits_between:1,4|numeric',
             'deposit_status' => 'digits_between:1,2|numeric',
             'deposit_amount' => 'numeric',
