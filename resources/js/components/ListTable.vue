@@ -848,6 +848,7 @@
                 font-family: inherit;
             }
         }
+
     }
     .remote-select {
         width: 100%;
@@ -1073,9 +1074,6 @@
     .btn-wrap:not(:first-child) {
         margin-left: 5px;
     }
-    .btn-wrap {
-       
-    }
 
     .square-avatars {
         flex-wrap: wrap;
@@ -1128,6 +1126,9 @@
         text-overflow: unset;
     }
     .el-table {
+        th.el-table-column--selection.is-leaf {
+            display: none;
+        }
         tbody {
             tr {
                 td:last-child {

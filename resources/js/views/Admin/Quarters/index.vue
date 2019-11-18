@@ -80,7 +80,7 @@
                     prop: 'url'
                 },  {
                     label: 'models.quarter.project_ort',
-                    prop: 'name'
+                    prop: 'city'
                 }, {
                     label: 'models.quarter.type',
                     prop: 'types'
