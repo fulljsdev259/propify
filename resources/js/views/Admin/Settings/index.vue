@@ -746,10 +746,6 @@
                 });
             },
             saveSettings(form) {
-                // this.main_drawer = false;
-                // console.log("assas");
-                // return;
-                //console.log('=='); console.log(form);
                 this.$refs[form].validate((valid) => {
                     if (valid) {
                         this.model.primary_color_lighter = this.getLightenDarkenColor(this.model.primary_color, 90) + '59'
@@ -761,7 +757,6 @@
                             var v = this;
                             setTimeout(function () {
                                 v.main_drawer = false;
-                                document.getElementsByTagName('footer')[0].style.display = "block";
                             }, 3000);
 
                             // this.main_drawer = false;
@@ -823,7 +818,6 @@
                     this.Gocaution_drawer_val = false;
                     this.Cleanify_drawer_val = false;
                     this.appName = 'Iframe';
-                    document.getElementsByTagName('footer')[0].style.display = "none";
                 }
             },
             Gocaution_drawer(val){
@@ -834,7 +828,6 @@
                     this.Gocaution_drawer_val = true;
                     this.Cleanify_drawer_val = false;
                     this.appName = 'Gocaution';
-                    document.getElementsByTagName('footer')[0].style.display = "none";
                 }
             },
             Cleanify_drawer(val){
@@ -845,7 +838,6 @@
                     this.Gocaution_drawer_val = false;
                     this.Cleanify_drawer_val = true;
                     this.appName = 'Cleanify';
-                    document.getElementsByTagName('footer')[0].style.display = "none";
                 }
             }
         },
@@ -862,9 +854,6 @@
                 immediate: false,
                 handler (state) {
                     // TODO - auto blur container if visible is true first
-                    if (!state) {
-                        document.getElementsByTagName('footer')[0].style.display = "block";
-                    }
                 }
             },
             "$route.query": {

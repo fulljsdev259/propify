@@ -1,22 +1,22 @@
 <template>
-    <el-form :model="model" :rules="validationRules" label-position="top" ref="form" v-loading="loading">
-        <el-row :gutter="20">
+    <el-form :model="model" :rules="validationRules" label-position="top" ref="form" v-loading="loading" :class="mode == 'edit' ? 'edit-workflow-form' : ''">
+        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="24">
                 <el-form-item 
-                            :rules="validationRules.title"
+                            :rules="validationRules.required"
                             prop="title">
-                    <el-input type="text"
+                    <el-input type="text" :placeholder="$t('models.quarter.workflow.placeholders.title')"
                             v-model="model.title"
                     ></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="12">
                 <el-form-item 
-                            :rules="validationRules.category"
+                            :rules="validationRules.required"
                             prop="category_id">
-                    <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
+                    <el-select :placeholder="$t('models.quarter.workflow.placeholders.category')" style="display: block" 
                                 v-model="model.category_id">
                         <el-option
                                 :key="category.id"
@@ -29,54 +29,50 @@
             </el-col>
             <el-col :md="12">
                 <el-form-item 
-                    :rules="validationRules.building"
+                    :rules="validationRules.required"
                     prop="selectedWorkflowBuilding"
                     class="label-block"
                     >
                     <el-select
                         :loading="remoteLoading"
-                        :placeholder="$t('general.placeholders.search')"
+                        :placeholder="$t('models.quarter.workflow.placeholders.building')"
                         :remote-method="remoteSearchBuildings"
                         class="custom-remote-select"
                         filterable
                         multiple
+                        clearable
                         remote
                         reserve-keyword
                         style="width: 100%;"
                         v-model="model.selectedWorkflowBuilding"
                     >
-                        <div class="custom-prefix-wrapper" slot="prefix">
-                            <i class="el-icon-search custom-icon"></i>
-                        </div>
                         <el-option
                             :key="building.id"
-                            :label="`${building.name}`"
+                            :label="`${building.address.house_num}`"
                             :value="building.id"
                             v-for="building in model.workflowBuildingList"/>
                     </el-select>
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="12">
                 <el-form-item 
-                            :rules="validationRules.category"
+                            :rules="validationRules.required"
                             prop="selectedWorkflowToUser">
                     <el-select
                         :loading="remoteLoading"
-                        :placeholder="$t('general.placeholders.search')"
+                        :placeholder="$t('models.quarter.workflow.placeholders.to_user')"
                         :remote-method="remoteSearchToUsers"
                         class="custom-remote-select"
                         filterable
                         multiple
+                        clearable
                         remote
                         reserve-keyword
                         style="width: 100%;"
                         v-model="model.selectedWorkflowToUser"
                     >
-                        <div class="custom-prefix-wrapper" slot="prefix">
-                            <i class="el-icon-search custom-icon"></i>
-                        </div>
                         <el-option
                             :key="user.id"
                             :label="`${user.name}`"
@@ -87,25 +83,22 @@
             </el-col>
             <el-col :md="12">
                 <el-form-item 
-                    :rules="validationRules.building"
                     prop="selectedWorkflowCcUser"
                     class="label-block"
                     >
                     <el-select
                         :loading="remoteLoading"
-                        :placeholder="$t('general.placeholders.search')"
+                        :placeholder="$t('models.quarter.workflow.placeholders.cc_user')"
                         :remote-method="remoteSearchCcUsers"
                         class="custom-remote-select"
                         filterable
                         multiple
+                        clearable
                         remote
                         reserve-keyword
                         style="width: 100%;"
                         v-model="model.selectedWorkflowCcUser"
                     >
-                        <div class="custom-prefix-wrapper" slot="prefix">
-                            <i class="el-icon-search custom-icon"></i>
-                        </div>
                         <el-option
                             :key="user.id"
                             :label="`${user.name}`"
@@ -115,9 +108,15 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20" style="margin-top: 10px;">
+        <el-row :gutter="20" style="margin-top: 10px; margin-left: 0; margin-right: 0">
             <el-col :md="24" class="drawer-actions">
-                <el-button type="primary" @click="submit" icon="ti-save" round>&nbsp;{{ $t('general.actions.save') }}</el-button>
+                <el-button type="default" size="mini" @click="close" class="round-btn">&nbsp;{{ $t('general.actions.close') }}</el-button>
+                <el-tooltip
+                        :content="$t('models.quarter.workflow.tooltips.save')"
+                        class="item" effect="light" placement="top-end"
+                    >
+                    <el-button type="primary" size="mini" @click="submit" icon="ti-save" class="round-btn">&nbsp;{{ $t('general.actions.save') }}</el-button>
+                </el-tooltip>
             </el-col>
         </el-row>
         
@@ -168,17 +167,9 @@
                 },
                 categories: [],
                 validationRules: {
-                    title: [{
+                    required: [{
                         required: true,
-                        message: this.$t('models.quarter.required')
-                    }],
-                    category_id: [{
-                        required: true,
-                        message: this.$t('models.quarter.required')
-                    }],
-                    building: [{
-                        required: true,
-                        message: this.$t('models.quarter.required')
+                        message: this.$t('validation.general.required')
                     }],
                 },
                 remoteLoading: false,
@@ -194,32 +185,25 @@
                     const valid = await this.$refs.form.validate();
                     if (valid) {
                         let buildings = []
-                        console.log('selected buildings', this.model.workflowBuildingList)
-                        
+                        let to_users = []
+                        let cc_users = []
+
+                        let category = this.categories.find(item => item.id == this.model.category_id)
+
                         this.model.selectedWorkflowBuilding.map( building_id => {
                             let item = this.model.workflowBuildingList.find(item => item.id == building_id)
                             buildings.push(item)
                         })
                         
-                        let category = this.categories.find(item => item.id == this.model.category_id)
-
-                        let to_users = []
-
-                        let cc_users = []
-                        console.log('selected to users', this.model.workflowToUserList)
-
                         this.model.selectedWorkflowToUser.map( user_id => {
                             let item = this.model.workflowToUserList.find(item => item.id == user_id)
                             to_users.push(item)
                         })
 
-                        console.log('selected cc users', this.model.workflowCcUserList)
-
                         this.model.selectedWorkflowCcUser.map( user_id => {
                             let item = this.model.workflowCcUserList.find(item => item.id == user_id)
                             cc_users.push(item)
                         })
-
                         
                         let payload = {
                             title: this.model.title,
@@ -251,15 +235,18 @@
                         //     displaySuccess(resp);
 
                         // }
-
-
-                        
-                        this.$emit('update:visible', false);
-
                     }
                 }
                 catch(err) {
                     console.log(err)
+                }
+            },
+            close() {
+                if(this.mode == 'add') {
+                    this.$emit('cancel-add-workflow')
+                }
+                else {
+                    this.$emit('cancel-edit-workflow', this.editing_index)
                 }
             },
             async remoteSearchManagers(search, index) {
@@ -318,7 +305,7 @@
                     this.remoteLoading = true;
 
                     try {
-                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id})
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id, search})
 
                         this.model.workflowToUserList = resp;
                     } catch (err) {
@@ -339,7 +326,7 @@
                     this.remoteLoading = true;
 
                     try {
-                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id})
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id, search})
                         this.model.workflowCcUserList = resp;
                     } catch (err) {
                         displayError(err);
@@ -360,8 +347,6 @@
             
             this.categories = this.$constants.requests.categories_data.tree
 
-
-            console.log(this.data);
 
             if(this.mode == 'edit') {
                 this.model.title = this.data.title
@@ -453,43 +438,116 @@
         }
 
         /deep/ .drawer-actions {
-            
             display: flex;
             justify-content: flex-end;
-
+            padding-bottom: 10px;
+            margin-top: 30px;
         }
 
         /deep/ .el-tag {
             background-color: var(--primary-color);
             color: white;
             border-radius: 6px;
-            font-size: 15px;
+            font-size: 12px;
             
             margin: 0;
             padding: 0;
             padding-left: 10px;
             padding-right: 20px;
-            height: 40px;
-            line-height: 40px;
+            height: 30px;
+            line-height: 30px;
 
             i {
                 color: white;
                 background: transparent;
-                font-size: 20px;
+                font-size: 17px;
                 font-weight: 600;
             }
         }
 
         /deep/ .el-select__tags {
-            padding-left: 30px;
+            padding-left: 5px;
+
             input {
                 margin-left: 0;
             }
+
         }
+
+        /deep/ input {
+            border: none;
+            background: #f6f5f7;
+        }
+
+        .el-select.custom-remote-select {
+
+            /deep/ .el-input__suffix {
+                i.el-select__caret {
+                    height: 41px;
+                    display: block;
+                    &::after {
+                        color:#565556;
+                        content: "\E6DB";
+                        display: block !important;
+                        position: absolute;
+                        left: 5px;
+                    }
+                    &::before {
+                        color:#565556;
+                    }
+                }
+
+                .el-icon-circle-close::after {
+                    display: none !important;
+                }
+                .el-icon-circle-close::before {
+                    display: none !important;
+                }
+            }
+
+            /deep/ .el-select__input {
+                background: transparent;
+                padding-left: 10px;
+            }
+        }
+
+        /deep/ .el-row {
+            .el-col {
+                margin-bottom: 3px;
+            }
+            
+        }
+        
 
         /deep/ .el-tag.el-tag--info .el-tag__close:hover {
             background: transparent;
         }
 
+        
+
     }
+
+    
+    /deep/ .el-select .el-input .el-select__caret {
+        color: #565556;
+    }
+
+    .el-col {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    @media only screen and (min-width:992px){
+        .el-row {
+            .el-col-md-12:first-child {
+                padding-right: 5px !important;
+            }
+
+            .el-col-md-12:last-child {
+                padding-left: 5px !important;
+            }
+        }
+    }
+    
+    
 </style>

@@ -69,7 +69,6 @@
             flex-shrink: 0;
 
             .title {
-                padding-left: 20px;
                 color: var(--primary-color);
                 font-size: 20px;
                 font-weight: 900;

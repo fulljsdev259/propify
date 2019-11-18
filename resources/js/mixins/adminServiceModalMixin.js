@@ -29,7 +29,6 @@ export default (config = {}) => {
                 }
             },
             async sendServiceMail(serviceAttachModel) {
-                console.log('provider', serviceAttachModel)
                 if (serviceAttachModel.provider) {
                     this.mailSending = true;
 

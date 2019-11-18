@@ -205,7 +205,6 @@ class RequestRepository extends BaseRepository
             // @TODO maybe need
 //            $attr = self::fixNeededData($attr, $attributes, 'capture_phase');
 //            $attr = self::fixNeededData($attr, $attributes, 'component');
-//            $attr = self::fixNeededData($attr, $attributes, 'payer');
 
 
             return $attr;

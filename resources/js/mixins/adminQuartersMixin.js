@@ -18,7 +18,6 @@ export default (config = {}) => {
                     house_num: 'house_num',
                     media: [],
                     internal_quarter_id: '',
-                    type: '',
                     types: '',
                     url: '',
                     workflows: [],
@@ -102,13 +101,14 @@ export default (config = {}) => {
                             assignment_types: this.userAssignmentType
                         });
 
-                if (resp && resp.data) {             
-                    displaySuccess(resp.data)                           
+                if (resp && resp.data) {
+                    displaySuccess(resp)                           
                     this.resetToAssignList();
                     this.$refs.assigneesList.fetch();    
                     if(this.$refs.auditList){
                         this.$refs.auditList.fetch();
-                    }                
+                    }
+                    this.userAssignmentType = null
                 }
             },
             async remoteSearchAssignees(search) {
@@ -127,7 +127,6 @@ export default (config = {}) => {
 
                         //const quarterAssignee = await this.getQuarterAssignees({get_all: true, quarter_id: this.$route.params.id});
 
-                        // console.log('quarterAssignee', quarterAssignee)
                         // let exclude_ids = [];
                         // if (this.assignmentType === 'managers') {
                         //     quarterAssignee.data.map(item => {
@@ -164,8 +163,7 @@ export default (config = {}) => {
                         //             search,
                         //             roles: ['manager', 'administrator', 'provider']
                         //         });
-                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id})
-                        console.log(resp)
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id, search})
                         this.toAssignList = resp;                        
                     } catch (err) {
                         displayError(err);

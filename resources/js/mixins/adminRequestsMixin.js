@@ -23,7 +23,6 @@ export default (config = {}) => {
                 dueDatePickerOptions: {
                     disabledDate(time) {
                         // return time.getTime() < Date.now();
-                        // console.log(time.getDate())
                         return (compareAsc(time.getTime(), subDays(Date.now(),1)) == -1)
                     },
                 },
@@ -42,7 +41,6 @@ export default (config = {}) => {
                     component: '',
                     keyword: '',
                     keywords: [],
-                    payer: '',
                     property_managers: [],
                     media: [],
                     sub_category_id: null,
@@ -108,7 +106,6 @@ export default (config = {}) => {
                 locations: [],
                 rooms: [],
                 capture_phases: [],
-                payers: [],
                 showSubCategory: false,
                 showPayer: false,
                 showLocation: false,
@@ -396,7 +393,6 @@ export default (config = {}) => {
                 this.showComponent = sub_category.component == 1 ? true : false;
             },
             changeQualification() {
-                this.model.payer = '';
                 this.showPayer = this.model.qualification == 5 ? true : false;
             },
             selectedCategoryHasQualification(categoryId) {
@@ -420,7 +416,6 @@ export default (config = {}) => {
                 this.rooms = Object.entries(this.$constants.requests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
                 this.capture_phases = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
                 this.qualifications = Object.entries(this.$constants.requests.qualification).map(([value, label]) => ({value: +value, name: this.$t(`models.request.qualification.${label}`)}))
-                this.payers = Object.entries(this.$constants.requests.payer).map(([value, label]) => ({value: +value, name: this.$t(`models.request.payer.${label}`)}))
                 this.categories = this.$constants.requests.categories_data.tree
 
                 if(this.model.category_id)
@@ -749,8 +744,8 @@ export default (config = {}) => {
                                 })
 
                                 try {
+                                    params.media = [...params.media, ...this.media.map(item => item.file.src)]
                                     
-                                    params.media = this.media.map(item => item.file.src)
                                     const resp = await this.updateRequest(params);
 
                                     await this.uploadNewMedia(params.id, null);

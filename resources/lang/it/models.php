@@ -148,6 +148,11 @@ return [
             'tenant' => 'Affittuario',
             'owner' => 'Proprietario',
         ],
+        'tenant_type' => [
+            'label' => 'Tipo di inquilino',
+            'main' => 'Affittuario principale',
+            'garant' => 'Affittuario secondario',
+        ]
     ],
     'building' => [
         "title" => "Edifici",
@@ -166,6 +171,10 @@ return [
         "internal_building_id" => "Id edificio interno",        
         "address_search" => "Inserire l'indirizzo",
         "not_found" => "Edificio non trovato",
+        'building_format' => 'Project No.',
+        'building_no' => 'Building No.',
+        'active_residents_count' => 'Vivente',
+        'request_status' => 'Richiesta Stato',
         'media_category' => [
             "house_rules" => "Le regole della casa",
             "operating_instructions" => "Istruzioni per l'uso",
@@ -225,6 +234,7 @@ return [
         "deleted" => "Unità cancellata",
         "saved" => "Unità salvata",
         "floor" => "Piano",
+        'unit_id' => 'Unità ID',
         'floor_title' => [
             'under_ground_floor' => "UG",
             'ground_floor' => "EG",
@@ -399,6 +409,10 @@ return [
         'occupied_units_count' => 'Le unità occupate contano',
         'active_residents_count' => 'Nombre de résidents actifs',
         'assignment' => "Assegnazione di manager/amministratore",
+        'quarter_format' => 'Progetto n.',
+        'type' => 'Progetto tipo',
+        'project_ort' => 'Projekt Site',
+        'details' => 'Dettagli del progetto',
         'errors' => [
             'not_found' => "Quartiere non trovato",
             'deleted' => "Errore al quarto eliminato: ",
@@ -429,6 +443,16 @@ return [
             'by' => 'da',
             'to' => 'a',
             'cc' => 'cc',
+            'placeholders' => [
+                'title' => 'Titolo del flusso di lavoro',
+                'category' => 'Seleziona la categoria',
+                'building' => 'Seleziona edificio',
+                'to_user' => 'Seleziona utente',
+                'cc_user' => 'Selezionare cc',
+            ],
+            'tooltips' => [
+                'save' => "Per salvare il flusso di lavoro ci questo pulsante, il pulsante principale 'salva' non salverà i dati."
+            ]
         ]
     ],
     'request' => [        
@@ -593,11 +617,6 @@ return [
             'surrender' => 'Arrendersi',
             'inspection' => 'Accettazione'
         ],
-        'payer' => [
-            'landlord' => 'Padrone di casa',
-            'resident' => 'Residente',
-            'resident/landlord' => 'Residente/Padrone di casa'
-        ],
         'status' => [
             "label" => "Situazione",
             "received" => "Ricevuto",
@@ -617,7 +636,6 @@ return [
             'range' => 'Gamma',
             'component' => 'Componente',
             'capture_phase' => 'Fase di cattura',
-            'payer' => 'Costo Impatto',
             'payer_percent' => 'Condividi Fortimo',
             'payer_amount' => 'Importo',
             'keywords' => 'Parole chiave',

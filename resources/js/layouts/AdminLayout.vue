@@ -59,6 +59,7 @@
                 </v-router-transition>
             </el-main>
         </el-container>
+        <vue-snotify></vue-snotify>
     </el-container>
 </template>
 
@@ -540,6 +541,15 @@
 </style>
 
 <style lang="scss" scoped>
+    .admin-layout {
+        font-family: 'Radikal';
+        :global(.heading .content .title) {
+            font-family: 'Radikal Bold';
+        }
+        :global(.heading .el-button) {
+            font-family: 'Radikal';
+        }
+    }
 
     .el-container {
         background-color: #F2F4F9;

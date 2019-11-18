@@ -1,17 +1,27 @@
 <template>
     <div class="quarters">
-        <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy">
+        <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" class="padding-right-300">
             <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
+                <list-field-filter :fields="header" @field-changed="fields=$event"  @order-changed="header=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.quarter)">
-                <el-button @click="add" icon="ti-plus" round size="mini" type="primary">
+                <el-button 
+                    @click="add" 
+                    icon="ti-plus" 
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('models.quarter.add')}}
                 </el-button>
             </template>
             <template v-if="$can($permissions.delete.quarter)">
-                <el-button :disabled="!selectedItems.length" @click="batchDeleteWithIds" icon="ti-trash" round size="mini"
-                           type="danger">
+                <el-button 
+                    :disabled="!selectedItems.length" 
+                    @click="batchDeleteWithIds" 
+                    icon="ti-trash" 
+                    size="mini"
+                    class="transparent-button"
+                >
                     {{$t('general.actions.delete')}}
                 </el-button>
             </template>
@@ -21,7 +31,7 @@
             :filters="filters"
             :filtersHeader="filtersHeader"
             :header="headerFilter"
-            :items="items"
+            :items="computedItems"
             :loading="{state: loading}"
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
@@ -58,39 +68,43 @@
                 states: [],
                 i18nName: 'quarter',
                 header: [{
-                    label: 'general.name',
-                    width: 230,
-                    prop: 'name'
+                    label: 'models.quarter.quarter_format',
+                    prop: 'internal_quarter_id'
                 }, 
                 // {
                 //     label: 'models.quarter.count_of_buildings',
                 //     prop: 'count_of_buildings'
                 // }, 
                 {
+                    label: 'models.quarter.url',
+                    prop: 'url'
+                },  {
+                    label: 'models.quarter.project_ort',
+                    prop: 'city'
+                }, {
+                    label: 'models.quarter.type',
+                    prop: 'types'
+                }, {
                     label: 'models.quarter.buildings_count',
                     prop: 'buildings_count'
                 }, {
                     label: 'models.quarter.total_units_count',
                     prop: 'total_units_count'
-                }, {
-                    label: 'models.quarter.occupied_units_count',
-                    prop: 'occupied_units_count'
-                }, {
-                    label: 'models.quarter.active_residents_count',
-                    prop: 'active_residents_count'
-                }, {
-                    width: 150,
-                    actions: [{
-                        type: '',
-                        icon: 'ti-search',
-                        title: 'general.actions.edit',
-                        editUrl: 'adminQuartersEdit',
-                        onClick: this.edit,
-                        permissions: [
-                            this.$permissions.update.quarter
-                        ]
-                    }]
-                }],
+                }, 
+                // {
+                //     width: 150,
+                //     actions: [{
+                //         type: '',
+                //         icon: 'ti-search',
+                //         title: 'general.actions.edit',
+                //         editUrl: 'adminQuartersEdit',
+                //         onClick: this.edit,
+                //         permissions: [
+                //             this.$permissions.update.quarter
+                //         ]
+                //     }]
+                // }
+                ],
                 model: {
                     id: '',
                     name: '',
@@ -102,7 +116,7 @@
                         required: true,
                         message: this.$t('models.quarter.required')
                     }],
-                }
+                },
             };
         },
         computed: {
@@ -120,6 +134,12 @@
                         data: this.states,
                     }
                 ]
+            },
+            computedItems() {
+                this.items.forEach((item) => {
+                    item.types = this.$t(`models.quarter.types.${this.$constants.quarters.type[item.types]}`);
+                });
+                return this.items;
             }
         },
         methods: {
@@ -151,6 +171,7 @@
         },
         created() {
             this.getState();
+            
         },
         mounted() {
             this.$root.$on('changeLanguage', () => {

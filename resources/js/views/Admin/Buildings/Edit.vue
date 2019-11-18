@@ -16,14 +16,14 @@
                 </div>
             </template>
         </heading>
-        <div class="warning-bar" v-if="!loading.state && !model.has_email_receptionists">
+        <!-- <div class="warning-bar" v-if="!loading.state && !model.has_email_receptionists">
             <div class="message" type="info">
                 <i class="icon-info-circled"></i>{{$t('models.building.warning_bar.message')}}
             </div>
             <div class="title" @click="gotoEmailReceptionistDrawer">
                 {{$t('models.building.warning_bar.title')}}
             </div>
-        </div>
+        </div> -->
         <el-row :gutter="20" class="crud-view">
             
             <el-col :md="12">
@@ -202,7 +202,7 @@
                             </el-alert>
                             <upload-document @fileUploaded="uploadFiles" class="drag-custom" drag multiple
                                             accept-type=".pdf, .doc, .docx, .xls, .xlsx"
-                                            v-if="selectedFileCategory"/><!-- @TODO this is uploading file on the spot, is it okay? need to confirm -->
+                                            v-if="selectedFileCategory"/>
                             
                         </div>
                     </el-tab-pane>
@@ -393,7 +393,7 @@
                                 </el-select>
                             </el-col>
                             <el-col id="managerAssignBtn">
-                                <el-button :disabled="!toAssign" @click="assignUser" class="full-button"
+                                <el-button :disabled="!toAssign || !userAssignmentType || userAssignmentType.length == 0" @click="assignUser" class="full-button"
                                             icon="ti-save" type="primary">
                                     &nbsp;{{$t('general.assign')}}
                                 </el-button>
@@ -450,7 +450,8 @@
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
             <template v-if="editingContract || isAddContract">
-                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider>
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} </ui-divider>
+                <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider> -->
                     
                 <div class="content" v-if="visibleDrawer">
                     <contract-form v-if="editingContract" 
@@ -479,7 +480,7 @@
                 </div>
             </template>
             <template v-else>
-                <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="visibleDrawer">
+                <!-- <el-tabs type="card" v-model="activeDrawerTab" stretch v-if="visibleDrawer">
                     <el-tab-pane name="emergency" lazy>
                         <div slot="label">
                             <i class="icon-cog"></i>
@@ -507,7 +508,14 @@
                         </div>
 
                     </el-tab-pane>
-                </el-tabs>
+                </el-tabs> -->
+
+                <ui-divider content-position="left"><i class="icon-cog"></i> &nbsp;&nbsp;{{ $t('general.emergency.title') }} </ui-divider>
+                
+                <div class="content" v-if="visibleDrawer">
+                    <emergency-settings-form :visible.sync="visibleDrawer"/>
+                </div>
+
             </template>
         </ui-drawer>
         
@@ -604,9 +612,9 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
-                    prop: 'role',
+                    prop: 'assignment_types',
                     label: 'general.assignment_types.label',
-                    i18n: this.translateType
+                    i18n: this.translateAssignmentType
                 }],
                 assigneesActions: [{
                     width: 70,
@@ -721,6 +729,14 @@
             },
             translateResidentType(type) {
                 return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+            },
+            translateAssignmentType(types) {
+                let translatedTypes = []
+                types.map(type => {
+                    translatedTypes.push(this.$t(`models.quarter.assignment_types.${this.constants.quarters.assignment_type[type]}`))
+                })
+
+                return translatedTypes.join(', ')
             },
             fetchSettings() {
                 this.getSettings().then((resp) => {
@@ -942,17 +958,14 @@
             },
             toggleDrawer() {
                 this.visibleDrawer = true
-                document.getElementsByTagName('footer')[0].style.display = "none"
             },
             gotoEmailReceptionistDrawer() {
                 this.visibleDrawer = true
                 this.activeDrawerTab = "email_receptionist"
-                document.getElementsByTagName('footer')[0].style.display = "none"
             },
             toggleAddDrawer() {
                 this.visibleDrawer = true
                 this.isAddContract = true
-                document.getElementsByTagName('footer')[0].style.display = "none"
             },
              notifyProviderUnassignment(row) {
                 this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
@@ -996,7 +1009,6 @@
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
-                document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
                 this.$set(this.model.contracts, index, params);
@@ -1019,10 +1031,11 @@
 
             EventBus.$on('assignee-get-counted', manager_count => {                
                 this.managerCount = manager_count;
+                
             });
-            // EventBus.$on('assignee-get-counted', assignee_count => {                
-            //     this.assigneeCount = assignee_count;
-            // });
+            EventBus.$on('assignee-get-counted', assignee_count => {                
+                this.assigneeCount = assignee_count;
+            });
             EventBus.$on('unit-get-counted', unit_count => {
                 this.unitCount = unit_count;
             });
@@ -1073,7 +1086,6 @@
                     if (!state) {
                         this.editingContract = null
                         this.isAddContract = false
-                        document.getElementsByTagName('footer')[0].style.display = "block";
                     }
                 }
             }
@@ -1116,34 +1128,34 @@
                 //margin-bottom: 20px;
             }
 
-            .warning-bar {
-                background-color: var(--primary-color); 
-                color: white;
-                min-height: 20px;
-                padding: 10px;
-                margin-bottom: 10px;
-                display: flex;
+            // .warning-bar {
+            //     background-color: var(--primary-color); 
+            //     color: white;
+            //     min-height: 20px;
+            //     padding: 10px;
+            //     margin-bottom: 10px;
+            //     display: flex;
 
-                .message {
-                    flex-grow: 1;
-                    font-size: 13px;
-                    line-height: 20px;
+            //     .message {
+            //         flex-grow: 1;
+            //         font-size: 13px;
+            //         line-height: 20px;
 
-                    i {
-                        font-size: 15px;
-                        margin-right: 5px;
-                    }
-                }
+            //         i {
+            //             font-size: 15px;
+            //             margin-right: 5px;
+            //         }
+            //     }
 
-                .title {
-                    float: right;
-                    font-size: 15px;
-                    font-weight: bold;
-                    text-transform: uppercase;
-                    min-width: 140px;
-                    cursor: pointer;
-                }
-            }
+            //     .title {
+            //         float: right;
+            //         font-size: 15px;
+            //         font-weight: bold;
+            //         text-transform: uppercase;
+            //         min-width: 140px;
+            //         cursor: pointer;
+            //     }
+            // }
 
             .crud-view > .el-col {
                 margin-bottom: 1em;

@@ -142,13 +142,15 @@ class UnitAPIController extends AppBaseController
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
 
         $units = $this->unitRepository->with([
-            'building',
-            'media',
-            'contracts' => function ($q) {
-                $q->with('building.address', 'unit', 'resident.user');
-            },
-        ])->paginate($perPage);
-
+                'building',
+                'quarter',
+                'media',
+                'contracts' => function ($q) {
+                    $q->with('building.address', 'unit', 'resident.user');
+                },
+            ])
+            ->scope('allRequestStatusCount')
+            ->paginate($perPage);
         $response = (new UnitTransformer)->transformPaginator($units);
         return $this->sendResponse($response, 'Units retrieved successfully');
     }
@@ -218,6 +220,7 @@ class UnitAPIController extends AppBaseController
 
         $unit->load([
             'building',
+            'quarter',
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
@@ -277,6 +280,7 @@ class UnitAPIController extends AppBaseController
 
         $unit->load([
             'building',
+            'quarter',
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
@@ -367,6 +371,7 @@ class UnitAPIController extends AppBaseController
 
         $unit->load([
             'building',
+            'quarter',
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },

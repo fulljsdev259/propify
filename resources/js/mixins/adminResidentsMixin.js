@@ -92,12 +92,16 @@ export default (config = {}) => {
                         message: this.$t('validation.required',{attribute: this.$t('general.salutation')})
                     }],
                     type: [{
+                            required: true,
+                            message: this.$t('validation.general.required')
+                        }, {
+                            validator: this.checkavailabilityResidentType
+                        }
+                    ],
+                    tenant_type: [{
                         required: true,
-                        message: this.$t('validation.general.required')
-                    }, {
-                        validator: this.checkavailabilityResidentType
-                    }
-                    ]
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.tenant_type.label')})
+                    }],
                 },
                 loading: {
                     state: false,
@@ -127,7 +131,6 @@ export default (config = {}) => {
                 this.editingContract = this.model.contracts[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
-                document.getElementsByTagName('footer')[0].style.display = "none";
             },
             updateContract(index, params) {
                 this.$set(this.model.contracts, index, params);
@@ -147,9 +150,6 @@ export default (config = {}) => {
             },
             toggleDrawer() {
                 this.visibleDrawer = true;
-                document.getElementsByTagName('footer')[0].style.display = "none";
-                //this.$root.$refs.footer.css('display: none');
-                //this.$el.querySelector('.footer').css('display: none');
             },
             ...mapActions(['getCountries', 'uploadMediaFile']),
         },
@@ -172,7 +172,6 @@ export default (config = {}) => {
                     // TODO - auto blur container if visible is true first
                     if (!state) {
                         this.editingContract = null
-                        document.getElementsByTagName('footer')[0].style.display = "block";
                     }
                 }
             }
@@ -314,7 +313,7 @@ export default (config = {}) => {
 
                 mixin.created = async function () {
                     const {password, password_confirmation} = this.validationRules;
-
+                    
                     [...password, ...password_confirmation].forEach(rule => rule.required = false);
                     this.titles = Object.entries(this.$constants.residents.title).map(([value, label]) => ({value: label, name: this.$t(`general.salutation_option.${label}`)}))
                     try {
@@ -322,9 +321,9 @@ export default (config = {}) => {
 
                         const {building, unit, user, ...r} = await this.getResident({id: this.$route.params.id});
                         this.user = user;
-                        console.log(this.user)
+                        
                         this.model = Object.assign({}, this.model, r);
-                        console.log('model', this.model)
+                        
                         this.original_email = this.user.email;
                         this.original_type = this.model.type;
                         this.model.email = user.email;

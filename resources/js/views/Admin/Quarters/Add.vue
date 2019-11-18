@@ -12,9 +12,12 @@
                                 <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.type"
                                         class="label-block"
                                         prop="type">
-                                    <el-select :placeholder="$t('general.placeholders.select')"
-                                                style="display: block"
-                                                v-model="model.type">
+                                    <el-select
+                                            :placeholder="$t('general.placeholders.select')"
+                                            style="display: block"
+                                            v-model="model.types"
+                                            multiple
+                                            filterable>
                                         <el-option
                                                 :key="type.value"
                                                 :label="type.name"
@@ -80,6 +83,12 @@
                                 <el-form-item :label="$t('general.internal_quarter_id')" :rules="validationRules.internal_quarter_id"
                                                 prop="internal_quarter_id">
                                     <el-input type="text" v-model="model.internal_quarter_id"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :md="12">
+                                <el-form-item :label="$t('models.quarter.url')" :rules="validationRules.url"
+                                                prop="url">
+                                    <el-input type="text" v-model="model.url"></el-input>
                                 </el-form-item>
                             </el-col>
                         </el-row>

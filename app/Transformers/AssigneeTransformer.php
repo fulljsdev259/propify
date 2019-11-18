@@ -2,7 +2,9 @@
 
 namespace App\Transformers;
 
+use App\Models\PropertyManager;
 use App\Models\RequestAssignee;
+use App\Models\ServiceProvider;
 use App\Models\User;
 
 /**
@@ -33,12 +35,25 @@ class AssigneeTransformer extends BaseTransformer
             'id' => $model->id,
             'edit_id' => $model->assignee_id,
             'type' => $model->assignee_type,
-            'email' => $model->related ? $model->related->email : 'incorrect relation',
-            'name' => $model->related ? $model->related->name : 'incorrect relation',
+            'email' => $model->related ? $model->related->email :  $model->assignee_type . 'deleted',
+            'name' => $model->related ? $model->related->name : $model->assignee_type . 'deleted',
             'avatar' => $avatar,
             'role' => $model->related ? $model->related->role : 'incorrect relation'
         ];
 
         return $response;
+    }
+
+    protected function getRole($assigneeType)
+    {
+        if ($assigneeType == get_morph_type_of(PropertyManager::class)) {
+            return 'manager';
+        }
+
+        if ($assigneeType == get_morph_type_of(ServiceProvider::class)) {
+            return 'provider';
+        }
+
+        return 'administrator';
     }
 }

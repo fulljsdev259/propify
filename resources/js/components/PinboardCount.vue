@@ -77,7 +77,7 @@
 
             & > div {
                 position: relative;
-                margin-right: -10px;
+                margin-right: 0px;
                 border: 1px solid #fff;
                 cursor: pointer;
 

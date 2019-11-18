@@ -133,15 +133,33 @@
                                                         </el-form-item>
                                                     </el-col>
                                                     <el-col :md="6">
-                                                        <el-form-item :label="$t('models.resident.type.label')" :rules="validationRules.type"
+                                                        <el-form-item :label="$t('models.resident.type.label')" 
+                                                                    :rules="validationRules.type"
                                                                     prop="type">
-                                                            
-                                                            <el-select :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.type">
+                                                            <el-select :placeholder="$t('general.placeholders.select')" 
+                                                                        style="display: block" 
+                                                                        v-model="model.type">
                                                                 <el-option
                                                                     :key="k"
                                                                     :label="$t(`models.resident.type.${type}`)"
                                                                     :value="parseInt(k)"
                                                                     v-for="(type, k) in constants.residents.type">
+                                                                </el-option>
+                                                            </el-select>
+                                                        </el-form-item>
+                                                    </el-col>
+                                                    <el-col :md="6" v-if="model.type == 1">
+                                                        <el-form-item :label="$t('models.resident.tenant_type.label')" 
+                                                                    :rules="validationRules.tenant_type"
+                                                                    prop="tenant_type">
+                                                            <el-select :placeholder="$t('general.placeholders.select')" 
+                                                                        style="display: block" 
+                                                                        v-model="model.tenant_type">
+                                                                <el-option
+                                                                    :key="k"
+                                                                    :label="$t(`models.resident.tenant_type.${type}`)"
+                                                                    :value="parseInt(k)"
+                                                                    v-for="(type, k) in constants.residents.tenant_type">
                                                                 </el-option>
                                                             </el-select>
                                                         </el-form-item>
@@ -282,7 +300,8 @@
                 </el-row>
             </div>
             <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider>
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} </ui-divider>
+                <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider> -->
                 
                 <div class="content" v-if="visibleDrawer">
                     <contract-form v-if="editingContract" 

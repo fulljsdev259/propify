@@ -18,6 +18,7 @@ export default (config = {}) => {
                 buildingId: '',
                 buildingName: '',
                 model: {
+                    quarter_id: '',
                     resident_id: '',
                     name: '',
                     type: null,
@@ -64,9 +65,10 @@ export default (config = {}) => {
                     }, {
                         validator: this.validateFloor
                     }],
-                    building_id: [{
+                    building_id: [],
+                    quarter_id: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.unit.building')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.building.quarter')})
                     }]
                 },
                 loading: {
@@ -88,11 +90,11 @@ export default (config = {}) => {
                 toAssign: '',
                 addedAssigmentList: [],
                 media: [],
-                
+                quarters: [],
             }
         },
         methods: {
-            ...mapActions(['getResidents', 'getBuildings']),
+            ...mapActions(['getResidents', 'getBuildings', 'getQuarters']),
             requestEditView(row) {
                 return this.$router.push({
                     name: 'adminRequestsEdit',
@@ -101,6 +103,23 @@ export default (config = {}) => {
                     }
                 });
             },
+            async remoteSearchQuarters(search) {
+                if (search === '') {
+                    this.quarters = [];
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const {data} = await this.getQuarters({get_all: true, search});
+
+                        this.quarters = data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
             async remoteSearchBuildings(search) {
                 if (search === '') {
                     this.buildings = [];
@@ -108,9 +127,17 @@ export default (config = {}) => {
                     this.remoteLoading = true;
 
                     try {
-                        const {data} = await this.getBuildings({get_all: true, search});
+                        if(this.model.quarter_id) {
+                            const {data} = await this.getBuildings({get_all: true,quarter_id: this.model.quarter_id, search});
 
-                        this.buildings = data;
+                            this.buildings = data;
+                        }
+                        else {
+                            const {data} = await this.getBuildings({get_all: true, search});
+
+                            this.buildings = data;
+                        }
+                        
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -136,6 +163,15 @@ export default (config = {}) => {
                         displayError(err);
                     } finally {
                         this.remoteLoading = false;
+                    }
+                }
+            },
+            changeQuarter(val) {
+                if(this.model.building_id) {
+                    let building = this.buildings.find(item => item.id == this.model.building_id)
+                    if(building.quarter_id != this.model.quarter_id) {
+                        this.model.building_id = ''
+                        this.buildings = []
                     }
                 }
             },

@@ -270,6 +270,8 @@
                 });
             }
         },
+        mounted() {
+        },
         watch: {
             showServiceMailModal(newVal) {
                 const prop = this.selectedServiceRequest.uType === 1 ? 'provider' : 'manager';

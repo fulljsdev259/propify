@@ -53,6 +53,10 @@ class UpdateRequest extends BaseRequest
                     }
                 }
             ],
+            'tenant_type' => [
+                'nullable',
+                // @TODO validate properly
+            ],
             'default_contract_id' => 'nullable|exists:contracts,id',// @TODO check own or not
             'title' => 'string',
             'first_name' => 'string',

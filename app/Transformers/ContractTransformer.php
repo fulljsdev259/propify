@@ -37,6 +37,10 @@ class ContractTransformer extends BaseTransformer
             'monthly_maintenance' => $model->monthly_maintenance,
         ];
 
+        if (! is_null($model->requests_count)) {
+            $response['requests_count'] = $model->requests_count;
+        }
+
         if ($model->start_date) {
             $response['start_date'] = $model->start_date->format('Y-m-d');
         }
@@ -47,6 +51,10 @@ class ContractTransformer extends BaseTransformer
 
         if ($model->relationExists('resident')) {
             $response['resident'] = (new ResidentTransformer())->transform($model->resident);
+        }
+
+        if ($model->relationExists('requests')) {
+            $response['requests'] = (new ResidentTransformer())->transform($model->requests);
         }
 
         if ($model->relationExists('building')) {

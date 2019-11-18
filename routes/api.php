@@ -173,6 +173,14 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::delete('/quarters-assignees/{quarters_assignee_id}', 'QuarterAPIController@deleteQuarterAssignee');
     Route::delete('/quarters/{quarter_id}/media/{media_id}', 'MediaAPIController@quarterDestroy')->name('quarters.media.destroy');
 
+    // Workflows
+    Route::get('/workflows', 'WorkflowAPIController@index')->name('workflows');
+    Route::get('/workflows/{id}', 'WorkflowAPIController@show')->name('workflows.show');
+    Route::post('/workflows', 'WorkflowAPIController@store')->name('workflows.store');
+    Route::put('/workflows/{id}', 'WorkflowAPIController@update')->name('workflows.update');
+    Route::delete('/workflows/{id}', 'WorkflowAPIController@destroy')->name('workflows.destroy');
+
+
     // Pinboard
     Route::get('pinboard/rss.xml', 'PinboardAPIController@showNewsRSS');
     Route::get('pinboard/weather.json', 'PinboardAPIController@showWeatherJSON');
@@ -185,14 +193,17 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::delete('pinboard/{id}/media/{media_id}', 'MediaAPIController@pinboardDestroy')->name('pinboard.media.destroy');
     Route::post('pinboard/{id}/comments', 'CommentAPIController@storePinboardComment')->name('pinboard.store.comment');
     Route::get('/pinboard/{id}/locations', 'PinboardAPIController@getLocations');
+    Route::get('/pinboard/{id}/views', 'PinboardAPIController@indexViews');
+    Route::put('/pinboard/{id}/views', 'PinboardAPIController@incrementViews');
+
+    Route::post('/pinboard/{id}/providers/{provider_id}', 'PinboardAPIController@assignProvider');
+    Route::delete('/pinboard/{id}/providers/{provider_id}', 'PinboardAPIController@unassignProvider');
+
+    // @TODO delete
     Route::post('/pinboard/{id}/buildings/{building_id}', 'PinboardAPIController@assignBuilding');
     Route::delete('/pinboard/{id}/buildings/{building_id}', 'PinboardAPIController@unassignBuilding');
     Route::post('/pinboard/{id}/quarters/{quarter_id}', 'PinboardAPIController@assignQuarter');
     Route::delete('/pinboard/{id}/quarters/{quarter_id}', 'PinboardAPIController@unassignQuarter');
-    Route::post('/pinboard/{id}/providers/{provider_id}', 'PinboardAPIController@assignProvider');
-    Route::delete('/pinboard/{id}/providers/{provider_id}', 'PinboardAPIController@unassignProvider');
-    Route::put('/pinboard/{id}/views', 'PinboardAPIController@incrementViews');
-    Route::get('/pinboard/{id}/views', 'PinboardAPIController@indexViews');
 
     Route::resource('pinboard', 'PinboardAPIController');
 
