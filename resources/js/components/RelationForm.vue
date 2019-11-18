@@ -2,6 +2,26 @@
     <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
 
         <el-row :gutter="20">
+            <el-col :md="12">
+                <el-form-item prop="quarter_id" :label="$t('models.resident.building.name')" class="label-block">
+                    <el-select
+                            :loading="remoteLoading"
+                            :placeholder="$t('models.resident.search_building')"
+                            :remote-method="remoteRelationSearchQuarters"
+                            @change="searchRelationUnits(false)"
+                            filterable
+                            remote
+                            reserve-keyword
+                            style="width: 100%;"
+                            v-model="model.quarter_id">
+                        <el-option
+                                :key="quarter.id"
+                                :label="quarter.name"
+                                :value="quarter.id"
+                                v-for="quarter in quarters"/>
+                    </el-select>
+                </el-form-item>
+            </el-col>
             <el-col :md="12" v-if="!hideBuildingAndUnits && !hideBuilding">
                 <el-form-item prop="building_id" :label="$t('models.resident.building.name')" class="label-block">
                     <el-select
@@ -426,6 +446,7 @@
                     monthly_rent_gross: 0,
                     unit_id: '',
                     building_id: '',
+                    quarter_id: '',
                     media: [],
                     buildings: [],
                     units: [],
@@ -574,6 +595,29 @@
                         const {data} = await this.getResidents({get_all: true,search});
                         this.residents = data;
                         this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            async remoteRelationSearchQuarters(search) {
+                if (search === '') {
+                    this.buildings = [];
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        let resp = null
+                        if(this.quarter_id) {
+                            resp = await this.getBuildings({get_all: true, quarter_id: this.quarter_id, search});
+                        }
+                        else {
+                            resp = await this.getBuildings({get_all: true, search});
+                        }
+
+                        this.buildings = resp.data;
                     } catch (err) {
                         displayError(err);
                     } finally {
