@@ -143,6 +143,7 @@ class UnitAPIController extends AppBaseController
 
         $units = $this->unitRepository->with([
                 'building',
+                'quarter',
                 'media',
                 'contracts' => function ($q) {
                     $q->with('building.address', 'unit', 'resident.user');
@@ -219,6 +220,7 @@ class UnitAPIController extends AppBaseController
 
         $unit->load([
             'building',
+            'quarter',
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
@@ -278,6 +280,7 @@ class UnitAPIController extends AppBaseController
 
         $unit->load([
             'building',
+            'quarter',
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
@@ -368,6 +371,7 @@ class UnitAPIController extends AppBaseController
 
         $unit->load([
             'building',
+            'quarter',
             'contracts' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
             },
