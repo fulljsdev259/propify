@@ -120,10 +120,10 @@
             v-loading="loading.state">
 
             <el-table-column
-                :key="column.prop"
+                :key="column.prop + index"
                 :label="$t(column.label)"
                 :width="column.width"
-                v-for="column in computedHeader">
+                v-for="(column, index) in header">
                 
                 <template slot-scope="scope">
                     <div v-if="column.withAvatars" class="avatars-wrapper">
