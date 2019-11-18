@@ -243,18 +243,18 @@
                             v-if="model.id"
                         />
                     </el-tab-pane>
-                    <!-- <el-tab-pane name="contracts">
+                    <!-- <el-tab-pane name="relations">
                         <span slot="label">
-                            <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.contracts') }}</el-badge>
+                            <el-badge :value="contractCount" :max="99" class="admin-layout">{{ $t('general.relations') }}</el-badge>
                         </span>
                         
-                        <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.contract.add')}}</el-button>    
-                        <contract-list-table
-                                    :items="model.contracts"
+                        <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.relation.add')}}</el-button>    
+                        <relation-list-table
+                                    :items="model.relations"
                                     :hide-building="true"
-                                    @edit-contract="editContract"
-                                    @delete-contract="deleteContract">
-                        </contract-list-table>
+                                    @edit-relation="editContract"
+                                    @delete-relation="deleteContract">
+                        </relation-list-table>
                     </el-tab-pane> -->
                     <!-- <el-tab-pane name="managers">
                         <span slot="label">
@@ -450,11 +450,11 @@
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
             <template v-if="editingContract || isAddContract">
-                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} </ui-divider>
-                <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider> -->
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} </ui-divider>
+                <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider> -->
                     
                 <div class="content" v-if="visibleDrawer">
-                    <contract-form v-if="editingContract" 
+                    <relation-form v-if="editingContract" 
                                 mode="edit"
                                 :hide-building="true" 
                                 :show-resident="true"
@@ -464,18 +464,18 @@
                                 :resident_id="editingContract.id" 
                                 :visible.sync="visibleDrawer" 
                                 :edit_index="editingContractIndex" 
-                                @update-contract="updateContract" 
-                                @delete-contract="deleteContract"
+                                @update-relation="updateContract" 
+                                @delete-relation="deleteContract"
                                 :used_units="used_units"/>
-                    <contract-form v-else 
+                    <relation-form v-else 
                                 mode="add" 
                                 :hide-building="true" 
                                 :show-resident="true"
                                 :building_id="model.id" 
                                 :resident_type="1" 
                                 :visible.sync="visibleDrawer" 
-                                @add-contract="addContract" 
-                                @delete-contract="deleteContract"
+                                @add-relation="addContract" 
+                                @delete-relation="deleteContract"
                                 :used_units="used_units"/>
                 </div>
             </template>
@@ -540,8 +540,8 @@
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
     import EmailReceptionistForm from 'components/EmailReceptionistForm';
     import { EventBus } from '../../../event-bus.js';
-    import ContractForm from 'components/ContractForm';
-    import ContractListTable from 'components/ContractListTable';
+    import RelationForm from 'components/RelationForm';
+    import RelationListTable from 'components/RelationListTable';
     import BuildingFileListTable from 'components/BuildingFileListTable';
 
     export default {
@@ -561,8 +561,8 @@
             AssignmentByType,
             EmergencySettingsForm,
             EmailReceptionistForm,
-            ContractForm,
-            ContractListTable,
+            RelationForm,
+            RelationListTable,
             BuildingFileListTable
         },
         data() {
@@ -588,7 +588,7 @@
                 //     i18n: this.translateResidentType
                 // }, {
                     type: 'residentContract',
-                    label: 'models.resident.contract.title'
+                    label: 'models.resident.relation.title'
                 }, {
                     prop: 'status',
                     i18n: this.residentStatusLabel,
@@ -1002,24 +1002,24 @@
                 displaySuccess(resp.data)
             },
             addContract (data) {
-                this.model.contracts.push(data);
+                this.model.relations.push(data);
                 this.contractCount ++;
             },
             editContract(index) {
-                this.editingContract = this.model.contracts[index];
+                this.editingContract = this.model.relations[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
             },
             updateContract(index, params) {
-                this.$set(this.model.contracts, index, params);
+                this.$set(this.model.relations, index, params);
             },
             deleteContract(index) {
 
                 this.$confirm(this.$t(`general.swal.delete_contract.text`), this.$t(`general.swal.delete_contract.title`), {
                     type: 'warning'
                 }).then(async () => {
-                    await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
-                    this.model.contracts.splice(index, 1)
+                    await this.$store.dispatch('relations/delete', {id: this.model.relations[index].id})
+                    this.model.relations.splice(index, 1)
                     this.contractCount --;
                     this.visibleDrawer = false;
                 }).catch(() => {
@@ -1075,7 +1075,7 @@
             },
             used_units() {
                 
-                return this.model.contracts.map(item => item.unit_id)
+                return this.model.relations.map(item => item.unit_id)
             },
         },
         watch: {

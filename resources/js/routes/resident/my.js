@@ -15,10 +15,10 @@ export default {
         }
     }, {
         name: 'residentMyContracts',
-        path: 'contracts',
-        component: () => import ( /* webpackChunkName: "resident/my/contracts" */ 'views/Resident/My/Contracts'),
+        path: 'relations',
+        component: () => import ( /* webpackChunkName: "resident/my/relations" */ 'views/Resident/My/Relations'),
         meta: {
-            title: 'My recent contracts'
+            title: 'My recent relations'
         }
     }, {
         name: 'residentMyDocuments',

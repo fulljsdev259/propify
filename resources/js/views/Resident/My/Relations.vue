@@ -1,69 +1,69 @@
 <template>
-    <placeholder :size="256" :src="require('img/5cf66b5b3c55f.png')" v-if="!loading.visible && !contracts">
-        There is no contract available.
+    <placeholder :size="256" :src="require('img/5cf66b5b3c55f.png')" v-if="!loading.visible && !relations">
+        There is no relation available.
         <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</small>
     </placeholder>
-    <div class="contracts" v-else-if="contracts">
+    <div class="relations" v-else-if="relations">
         <ui-heading icon="ti-book" :title="$t('resident.my_contract')" :description="$t('resident.heading_info.my_contract')">
         </ui-heading>
         <ui-divider />
         <el-row :gutter="12">
-            <el-col :md="12" :key="contract.id" v-for="contract in contracts">
+            <el-col :md="12" :key="relation.id" v-for="relation in relations">
                 <el-card>
                     <el-divider class="column-divider" content-position="left">{{$t('resident.building')}}</el-divider>
                     <div class="name-line">
                         <b>{{$t('resident.name')}}: </b>
                         <div>
-                            <div>{{contract.address.street}} {{contract.address.house_num}}</div>
-                            <div>{{contract.address.zip}} {{contract.address.city}}</div>
+                            <div>{{relation.address.street}} {{relation.address.house_num}}</div>
+                            <div>{{relation.address.zip}} {{relation.address.city}}</div>
                         </div>
                     </div>
                     <el-divider class="column-divider" content-position="left">{{$t('resident.unit')}}</el-divider>
                     <div class="item">
                         <b>{{$t('resident.type')}}:</b>
-                        {{$t('models.unit.type.' + $constants.units.type[contract.unit.type])}}
+                        {{$t('models.unit.type.' + $constants.units.type[relation.unit.type])}}
                     </div>
                     <div class="item">
                         <b>{{$t('resident.unit_number')}}:</b>
-                        {{contract.unit.room_no}}
+                        {{relation.unit.room_no}}
                     </div>
                     <!-- <div class="item">
                         <b>{{$t('resident.floor')}}:</b>
-                        {{contract.unit.floor}}
+                        {{relation.unit.floor}}
                     </div>
-                    <div v-if="contract.unit.basement" class="item">
+                    <div v-if="relation.unit.basement" class="item">
                         <b>Basement:</b>
                         Yes
                     </div>
-                    <div v-if="contract.unit.attic" class="item">
+                    <div v-if="relation.unit.attic" class="item">
                         <b>Attic:</b>
                         Yes
                     </div>
                     <div class="item">
                         <b>{{$t('resident.monthly_rent_net')}}:</b>
-                        {{contract.monthly_rent_net}}
+                        {{relation.monthly_rent_net}}
                     </div>
                     <div class="item">
                         <b>{{$t('general.maintenance')}}:</b>
-                        {{contract.monthly_maintenance}}
+                        {{relation.monthly_maintenance}}
                     </div>
                     <div class="item">
                         <b>{{$t('general.gross_rent')}}:</b>
-                        {{contract.monthly_rent_gross}}
+                        {{relation.monthly_rent_gross}}
                     </div> -->
-                    <!-- <template v-if="contract.start_date">
+                    <!-- <template v-if="relation.start_date">
                         <el-divider content-position="left">{{$t('resident.rent_date')}}</el-divider>
                         <el-tag class="rent" type="warning" disable-transitions>
                             {{$t('resident.start_date')}}:
-                            <el-tag type="warning" effect="plain" disable-transitions>{{contract.start_date | formatDate}}</el-tag>
-                            <template v-if="contract.end_date">
-                                End date: <el-tag type="warning" effect="plain" disable-transitions>{{contract.end_date | formatDate}}</el-tag>
+                            <el-tag type="warning" effect="plain" disable-transitions>{{relation.start_date | formatDate}}</el-tag>
+                            <template v-if="relation.end_date">
+                                End date: <el-tag type="warning" effect="plain" disable-transitions>{{relation.end_date | formatDate}}</el-tag>
                             </template>
                         </el-tag>
                     </template> -->
-                    <template v-if="contract.media">
+                    <template v-if="relation.media">
                         <el-divider content-position="left">{{$t('resident.contract_file')}}</el-divider>
-                        <template  v-for="file in contract.media">
+                        <template  v-for="file in relation.media">
                             <embed :key="file.id" :src="file.url" style="height: 500px;"/>
                             <!-- <el-image :key="file.id" :src="file.url" v-if="isFileImage(file)" />
                             <embed :key="file.id" :src="file.url" v-else /> -->
@@ -97,8 +97,8 @@
         },
         data () {
             return {
-                contract: null,
-                contracts: null,
+                relation: null,
+                relations: null,
                 loading: {
                     visible: true
                 }
@@ -114,17 +114,17 @@
         async mounted () {
             // this.loading = this.$loading({
             //     target: this.$el.parentElement,
-            //     text: this.$t('resident.fetching_message.contract')
+            //     text: this.$t('resident.fetching_message.relation')
             // })
 
-            this.contracts = this.$store.getters.loggedInUser.resident.contracts
+            this.relations = this.$store.getters.loggedInUser.resident.relations
             // try {
             //     const {data: {unit, media, address, start_date, end_date, }} = await this.$store.dispatch('myTenancy')
 
-            //     this.contract = {unit, address, start_date, end_date}
+            //     this.relation = {unit, address, start_date, end_date}
 
             //     if (media.length) {
-            //         this.contract.file = media[media.length - 1]
+            //         this.relation.file = media[media.length - 1]
             //     }
             // } catch (error) {
             //     displayError(error)
@@ -154,7 +154,7 @@
             color: var(--primary-color-lighter);
         }
     }
-    .contracts {
+    .relations {
 
         .heading {
             margin-bottom: 24px;
@@ -246,7 +246,7 @@
     }
 
     @media only screen and (max-width: 676px) {
-        .contracts {
+        .relations {
             /deep/ .ui-heading__content__description {
                 display: none
             }
@@ -254,7 +254,7 @@
     }
 
     @media only screen and (max-width: 991px) {
-        .contracts {
+        .relations {
             .el-col:not(:last-child) {
                 margin-bottom: 10px;
             }

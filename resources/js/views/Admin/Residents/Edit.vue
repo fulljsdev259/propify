@@ -265,24 +265,24 @@
                                         <el-row :gutter="20">
                                             <h3 class="chart-card-header">
                                                 <i class="icon-handshake-o ti-user icon "/>
-                                                    &nbsp;{{ $t('models.resident.contract.title') }}
+                                                    &nbsp;{{ $t('models.resident.relation.title') }}
                                                 <el-button style="float:right" 
                                                         type="primary" 
                                                         @click="toggleDrawer" 
                                                         icon="icon-plus" 
                                                         size="mini" 
                                                         round>
-                                                        {{ $t('models.resident.contract.add') }}
+                                                        {{ $t('models.resident.relation.add') }}
                                                 </el-button>
                                             </h3>
                                             
                                         </el-row>
-                                        <contract-list-table
-                                                    :items="model.contracts"
+                                        <relation-list-table
+                                                    :items="model.relations"
                                                     :hide-avatar="true"
-                                                    @edit-contract="editContract"
-                                                    @delete-contract="deleteContract">
-                                        </contract-list-table>
+                                                    @edit-relation="editContract"
+                                                    @delete-relation="deleteContract">
+                                        </relation-list-table>
 
                                 </el-card>
                             </el-col>
@@ -300,11 +300,11 @@
                 </el-row>
             </div>
             <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} </ui-divider>
-                <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider> -->
+                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} </ui-divider>
+                <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} {{ editingContract ? '[' + editingContract.contract_format + ']' : '' }} </ui-divider> -->
                 
                 <div class="content" v-if="visibleDrawer">
-                    <contract-form v-if="editingContract" 
+                    <relation-form v-if="editingContract" 
                                 :hide-building-and-units="false" 
                                 mode="edit" 
                                 :data="editingContract" 
@@ -312,16 +312,16 @@
                                 :resident_id="model.id" 
                                 :visible.sync="visibleDrawer" 
                                 :edit_index="editingContractIndex" 
-                                @update-contract="updateContract"
-                                @delete-contract="deleteContract"
+                                @update-relation="updateContract"
+                                @delete-relation="deleteContract"
                                 :used_units="used_units"/>
-                    <contract-form v-else 
+                    <relation-form v-else 
                                 mode="add" 
                                 :resident_type="model.type" 
                                 :resident_id="model.id" 
                                 :visible.sync="visibleDrawer" 
-                                @add-contract="addContract" 
-                                @delete-contract="deleteContract"
+                                @add-relation="addContract" 
+                                @delete-relation="deleteContract"
                                 :used_units="used_units"/>
                 </div>
             </ui-drawer>
@@ -338,8 +338,8 @@
     import ColoredStatisticsCard from 'components/ColoredStatisticsCard.vue';
     import ProgressStatisticsCard from 'components/ProgressStatisticsCard.vue';
     import AdminResidentsMixin from 'mixins/adminResidentsMixin';
-    import ContractForm from 'components/ContractForm';
-    import ContractListTable from 'components/ContractListTable';
+    import RelationForm from 'components/RelationForm';
+    import RelationListTable from 'components/RelationListTable';
     import {mapActions, mapGetters} from 'vuex';
     import {displayError, displaySuccess} from "helpers/messages";
     import Cropper from 'components/Cropper';
@@ -362,8 +362,8 @@
             Cropper,
             EditActions,
             SelectLanguage,
-            ContractForm,
-            ContractListTable
+            RelationForm,
+            RelationListTable
         },
         methods: {
             pickFile(){

@@ -33,7 +33,7 @@ export default (config = {}) => {
                     selected_resident: '',
                     residents: [],
                     media: [],
-                    contracts: [],
+                    relations: [],
                 },
                 validationRules: {
                     resident_id: [{
@@ -360,11 +360,11 @@ export default (config = {}) => {
 
                         this.model = await this.getUnit({id: this.$route.params.id});
 
-                        this.contractCount = this.model.contracts.length
+                        this.contractCount = this.model.relations.length
 
 
                         this.addedAssigmentList = [];
-                        this.addedAssigmentList = this.model.contracts.map(contract => contract.resident);
+                        this.addedAssigmentList = this.model.relations.map(relation => relation.resident);
 
                         this.model.residents = this.model.residents.filter((item, index) => {
                             return this.model.residents.indexOf(item) === index

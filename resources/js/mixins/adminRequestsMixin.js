@@ -128,7 +128,7 @@ export default (config = {}) => {
                 },
                 request_id: null,
                 audit_id: null,
-                contracts: [],
+                relations: [],
             };
         },
         computed: {
@@ -428,30 +428,30 @@ export default (config = {}) => {
                 }
 
                 this.resident = this.residents.find(resident => resident.id == this.model.resident_id)
-                if(this.resident && this.resident.contracts) {
-                    this.contracts = this.resident.contracts
+                if(this.resident && this.resident.relations) {
+                    this.relations = this.resident.relations
 
-                    this.contracts = this.contracts.map(contract => { 
+                    this.relations = this.relations.map(relation => { 
                         let floor_label;
-                        if(contract.unit.attic == 'attic')
+                        if(relation.unit.attic == 'attic')
                         {
                             floor_label = this.$t('models.unit.floor_title.top_floor')
                         }
-                        else if(contract.unit.floor > 0)
+                        else if(relation.unit.floor > 0)
                         {
-                            floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                            floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
                         }
-                        else if(contract.unit.floor == 0)
+                        else if(relation.unit.floor == 0)
                         {
                             floor_label = this.$t('models.unit.floor_title.ground_floor')
                         }
-                        else if(contract.unit.floor < 0)
+                        else if(relation.unit.floor < 0)
                         {
-                            floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                            floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
                         }
-                        contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                        relation.building_room_floor_unit = relation.building.name + " -- " + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
                         
-                        return contract
+                        return relation
                     });
                 }
             },
@@ -515,35 +515,35 @@ export default (config = {}) => {
             changeResident( resident_id ) {
                 this.model.contract_id = null
                 this.resident = this.residents.find(resident => resident.id == resident_id)
-                // this.contracts = this.resident.contracts.filter( contract => contract.status == 1)
-                this.contracts = this.resident.contracts
+                // this.relations = this.resident.relations.filter( relation => relation.status == 1)
+                this.relations = this.resident.relations
 
-                this.contracts = this.contracts.map(contract => { 
+                this.relations = this.relations.map(relation => { 
                     let floor_label;
-                    if(contract.unit.attic == 'attic')
+                    if(relation.unit.attic == 'attic')
                     {
                         floor_label = this.$t('models.unit.floor_title.top_floor')
                     }
-                    else if(contract.unit.floor > 0)
+                    else if(relation.unit.floor > 0)
                     {
-                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                        floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
                     }
-                    else if(contract.unit.floor == 0)
+                    else if(relation.unit.floor == 0)
                     {
                         floor_label = this.$t('models.unit.floor_title.ground_floor')
                     }
-                    else if(contract.unit.floor < 0)
+                    else if(relation.unit.floor < 0)
                     {
-                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                        floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
                     }
-                    contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                    relation.building_room_floor_unit = relation.building.name + " -- " + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
                     
-                    return contract
+                    return relation
                 });
 
 
-                if(this.contracts.length == 1) {
-                    this.model.contract_id = this.contracts[0].id
+                if(this.relations.length == 1) {
+                    this.model.contract_id = this.relations[0].id
                 }
             }
         }
@@ -686,10 +686,10 @@ export default (config = {}) => {
                         if(data.sub_category)
                             this.$set(this.model, 'sub_category_id', data.sub_category.id);
                         this.$set(this.model, 'created_by', data.created_by);
-                        this.$set(this.model, 'building', data.contract.building.name);
-                        this.address = data.contract.address
-                        //this.contracts = resp.data.resident.contracts.filter(item => item.status == 1)
-                        this.model.contract_id = data.contract.id
+                        this.$set(this.model, 'building', data.relation.building.name);
+                        this.address = data.relation.address
+                        //this.relations = resp.data.resident.relations.filter(item => item.status == 1)
+                        this.model.contract_id = data.relation.id
                         await this.getConversations();
                         
                         if (data.resident) {

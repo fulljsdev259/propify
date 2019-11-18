@@ -69,7 +69,7 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane :label="$t('resident.default_address')" name="default_address" v-if="contracts.length > 1">
+            <el-tab-pane :label="$t('resident.default_address')" name="default_address" v-if="relations.length > 1">
                 <el-row>
                     <el-col :span="12" :sm="18" :xs="24">
                         <card>
@@ -83,16 +83,16 @@
                                 >
                                 </el-alert> -->
                                 <el-form-item :label="$t('resident.default_contract_id')" :rules="defaultAddressValidationRules.default_contract_id"
-                                              prop="default_contract_id" class="contract">
+                                              prop="default_contract_id" class="relation">
                                     <el-select v-model="defaultAddress.default_contract_id" 
-                                                :placeholder="$t('resident.placeholder.contract')"
+                                                :placeholder="$t('resident.placeholder.relation')"
                                                 class="custom-select"
                                                 filterable
                                                 value-key="loggedInUser.resident.default_contract_id">
-                                        <el-option v-for="contract in dirtyContracts" 
-                                                    :key="contract.id" 
-                                                    :label="contract.building_room_floor_unit" 
-                                                    :value="contract.id" />
+                                        <el-option v-for="relation in dirtyContracts" 
+                                                    :key="relation.id" 
+                                                    :label="relation.building_room_floor_unit" 
+                                                    :value="relation.id" />
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item>
@@ -249,32 +249,32 @@
                 loggedInUser: ({users}) => {
                     return users.loggedInUser;
                 },
-                contracts: ({users}) => {
-                    return users.loggedInUser.resident.contracts.filter(item => item.status == 1);
+                relations: ({users}) => {
+                    return users.loggedInUser.resident.relations.filter(item => item.status == 1);
                 }
             }),
             ...mapGetters(["getAllAvailableLanguages", "loggedInUser"]),
             dirtyContracts() {
-                return this.contracts.map(contract => { 
+                return this.relations.map(relation => { 
                     let floor_label;
-                    if(contract.unit.attic == 'attic')
+                    if(relation.unit.attic == 'attic')
                     {
                         floor_label = this.$t('models.unit.floor_title.top_floor')
                     }
-                    else if(contract.unit.floor > 0)
+                    else if(relation.unit.floor > 0)
                     {
-                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                        floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
                     }
-                    else if(contract.unit.floor == 0)
+                    else if(relation.unit.floor == 0)
                     {
                         floor_label = this.$t('models.unit.floor_title.ground_floor')
                     }
-                    else if(contract.unit.floor < 0)
+                    else if(relation.unit.floor < 0)
                     {
-                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                        floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
                     }
-                    contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
-                    return contract
+                    relation.building_room_floor_unit = relation.building.name + " -- " + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
+                    return relation
                 });
             },
             
@@ -394,7 +394,7 @@
         },
         mounted () {
             this.defaultAddress.default_contract_id = this.loggedInUser.resident.default_contract_id
-            if(!this.contracts.find(item => item.id == this.defaultAddress.default_contract_id)) {
+            if(!this.relations.find(item => item.id == this.defaultAddress.default_contract_id)) {
                 this.defaultAddress.default_contract_id = undefined
             }
         }
@@ -427,7 +427,7 @@
             }
         }
         @media screen and (min-width: 415px) {
-            .contract {
+            .relation {
                 display: flex;
                 :global(.el-form-item__label) {
                     width: auto !important;

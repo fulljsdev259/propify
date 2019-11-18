@@ -93,7 +93,7 @@
                     width: 150,
                     props: ['unit_names']
                 }*/, {
-                    label: 'models.resident.contract.title',
+                    label: 'models.resident.relation.title',
                     withCounts: true,
                     counts: [
                         {

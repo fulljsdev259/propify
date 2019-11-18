@@ -296,7 +296,7 @@ export default (config = {}) => {
                         this.model = {state_id, ...restAddress, ...restData};
 
                         this.fileCount = this.model.media.length
-                        this.contractCount = this.model.contracts.length
+                        this.contractCount = this.model.relations.length
                         this.workflowCount = this.model.workflows.length
 
                     },

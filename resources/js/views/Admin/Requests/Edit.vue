@@ -226,20 +226,20 @@
                                     </el-form-item>
                                 </el-col> -->
                                 <!-- <el-col :md="8" class="summary-item">
-                                    <el-form-item :label="$t('models.resident.contract.title')" v-if="this.model.contract">
-                                        {{this.model.contract.building_id + " -- " + this.model.contract.unit_id}}
+                                    <el-form-item :label="$t('models.resident.relation.title')" v-if="this.model.relation">
+                                        {{this.model.relation.building_id + " -- " + this.model.relation.unit_id}}
                                     </el-form-item>
 
-                                    <el-form-item :label="$t('models.resident.contract.title')" :rules="validationRules.contract_id"
+                                    <el-form-item :label="$t('models.resident.relation.title')" :rules="validationRules.contract_id"
                                                 v-else
                                                 prop="contract_id">
                                         <el-select v-model="model.contract_id" 
-                                                    :placeholder="$t('resident.placeholder.contract')"
+                                                    :placeholder="$t('resident.placeholder.relation')"
                                                     class="custom-select">
-                                            <el-option v-for="contract in dirtyContracts" 
-                                                        :key="contract.id" 
-                                                        :label="contract.building_room_floor_unit" 
-                                                        :value="contract.id" />
+                                            <el-option v-for="relation in dirtyContracts" 
+                                                        :key="relation.id" 
+                                                        :label="relation.building_room_floor_unit" 
+                                                        :value="relation.id" />
                                         </el-select>
                                     </el-form-item>
 

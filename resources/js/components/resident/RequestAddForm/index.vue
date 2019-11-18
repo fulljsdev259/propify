@@ -1,15 +1,15 @@
 <template>
     <el-form ref="form" class="request-add" :model="model" label-position="top" :rules="validationRules" v-loading="loading">
         
-        <el-form-item prop="contract_id" :label="$t('resident.contract')" v-if="contracts.length > 1">
+        <el-form-item prop="contract_id" :label="$t('resident.relation')" v-if="relations.length > 1">
             <el-select v-model="model.contract_id" 
-                        :placeholder="$t('resident.placeholder.contract')"
+                        :placeholder="$t('resident.placeholder.relation')"
                         class="custom-select"
                         filterable>
-                <el-option v-for="contract in contracts" 
-                            :key="contract.id" 
-                            :label="contract.building_room_floor_unit" 
-                            :value="contract.id" />
+                <el-option v-for="relation in relations" 
+                            :key="relation.id" 
+                            :label="relation.building_room_floor_unit" 
+                            :value="relation.id" />
             </el-select>
         </el-form-item>
 
@@ -158,7 +158,7 @@
                 validationRules: {
                     contract_id: {
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('resident.contract')})
+                        message: this.$t('validation.required',{attribute: this.$t('resident.relation')})
                     },
                     title: {
                         required: true,
@@ -196,7 +196,7 @@
                 address: {},
                 building_locations: [],
                 apartment_rooms: [],
-                contracts: [],
+                relations: [],
                 mediaUploadMaxSize: MEDIA_UPLOAD_MAX_SIZE,
                 showSubCategory: false,
                 showLocation: false,
@@ -243,27 +243,27 @@
                 this.building_locations = Object.entries(this.$constants.requests.location).map(([value, label]) => ({value: +value, name: this.$t(`models.request.location.${label}`)}))
                 this.apartment_rooms = Object.entries(this.$constants.requests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
                 
-                this.contracts = this.$store.getters.loggedInUser.resident.contracts.filter( contract => contract.status == 1)
+                this.relations = this.$store.getters.loggedInUser.resident.relations.filter( relation => relation.status == 1)
 
-                this.contracts.forEach(contract => {
+                this.relations.forEach(relation => {
                     let floor_label;
-                    if(contract.unit.attic == 'attic')
+                    if(relation.unit.attic == 'attic')
                     {
                         floor_label = this.$t('models.unit.floor_title.top_floor')
                     }
-                    else if(contract.unit.floor > 0)
+                    else if(relation.unit.floor > 0)
                     {
-                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                        floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
                     }
-                    else if(contract.unit.floor == 0)
+                    else if(relation.unit.floor == 0)
                     {
                         floor_label = this.$t('models.unit.floor_title.ground_floor')
                     }
-                    else if(contract.unit.floor < 0)
+                    else if(relation.unit.floor < 0)
                     {
-                        floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                        floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
                     }
-                    contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                    relation.building_room_floor_unit = relation.building.name + " -- " + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
                 })
             },
             submit () {
@@ -301,11 +301,11 @@
                             
                             this.$refs.form.resetFields()
 
-                            if(this.contracts.find(item => item.id == this.default_contract_id)) {
+                            if(this.relations.find(item => item.id == this.default_contract_id)) {
                                 this.model.contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
                             }
-                            else if(this.contracts.length == 1) {
-                                this.model.contract_id = this.contracts[0].id
+                            else if(this.relations.length == 1) {
+                                this.model.contract_id = this.relations[0].id
                             }
                             this.$emit('update:visible', false)
                             
@@ -320,36 +320,36 @@
         },
         async mounted () {
             //this.priorities = Object.entries(this.$constants.requests.priority).map(([value, label]) => ({value: +value, label}));
-            this.contracts = this.$store.getters.loggedInUser.resident.contracts.filter( contract => contract.status == 1)
+            this.relations = this.$store.getters.loggedInUser.resident.relations.filter( relation => relation.status == 1)
 
-            this.contracts.forEach(contract => {
+            this.relations.forEach(relation => {
                 let floor_label;
-                if(contract.unit.attic == 'attic')
+                if(relation.unit.attic == 'attic')
                 {
                     floor_label = this.$t('models.unit.floor_title.top_floor')
                 }
-                else if(contract.unit.floor > 0)
+                else if(relation.unit.floor > 0)
                 {
-                    floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                    floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
                 }
-                else if(contract.unit.floor == 0)
+                else if(relation.unit.floor == 0)
                 {
                     floor_label = this.$t('models.unit.floor_title.ground_floor')
                 }
-                else if(contract.unit.floor < 0)
+                else if(relation.unit.floor < 0)
                 {
-                    floor_label = contract.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                    floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
                 }
-                contract.building_room_floor_unit = contract.building.name + " -- " + contract.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  contract.unit.name
+                relation.building_room_floor_unit = relation.building.name + " -- " + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
             })
 
             this.default_contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
             
-            if(this.contracts.find(item => item.id == this.default_contract_id)) {
+            if(this.relations.find(item => item.id == this.default_contract_id)) {
                 this.model.contract_id = this.$store.getters.loggedInUser.resident.default_contract_id
             }
-            else if(this.contracts.length == 1) {
-                this.model.contract_id = this.contracts[0].id
+            else if(this.relations.length == 1) {
+                this.model.contract_id = this.relations[0].id
             }
             
             try {

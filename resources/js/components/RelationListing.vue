@@ -121,7 +121,7 @@
                     </div>
 
                     <div v-else-if="column.type === 'residentContract'">
-                        <contract-count :countsData="scope.row" ></contract-count>
+                        <relation-count :countsData="scope.row" ></relation-count>
                     </div>
 
                     <div v-else-if="column.type === 'buildingResidentAvatars'" class="avatars-wrapper">
@@ -293,12 +293,12 @@
 <script>
     import {Avatar} from 'vue-avatar'
     import uuid from 'uuid/v1'
-    import ContractCount from 'components/ContractCount'
+    import RelationCount from 'components/RelationCount'
 
     export default {
         components: {
             Avatar,
-            ContractCount
+            RelationCount
         },
         props: {
             filter: {
@@ -380,7 +380,7 @@
                         
                         if(this.fetchAction == "getBuildings") {
                             resp.data.data.forEach(item => {
-                                item.residents = item.contracts.map(contract => contract.resident)
+                                item.residents = item.relations.map(relation => relation.resident)
                                 item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
                             })
                         }
@@ -391,7 +391,7 @@
                     } else {
                         if(this.fetchAction == "getBuildings") {
                             resp.data.data.forEach(item => {
-                                item.residents = item.contracts.map(contract => contract.resident)
+                                item.residents = item.relations.map(relation => relation.resident)
                                 item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
                             })
                         }

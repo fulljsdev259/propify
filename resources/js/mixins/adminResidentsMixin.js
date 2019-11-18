@@ -45,7 +45,7 @@ export default (config = {}) => {
                     },
                     nation: '',
                     type: '',
-                    contracts: [],
+                    relations: [],
                     status: 1
                 },
                 original_type: null,
@@ -125,15 +125,15 @@ export default (config = {}) => {
                 if(config.mode == 'add') {
                     this.original_type = this.model.type
                 }
-                this.model.contracts.push(data);
+                this.model.relations.push(data);
             },
             editContract(index) {
-                this.editingContract = this.model.contracts[index];
+                this.editingContract = this.model.relations[index];
                 this.editingContractIndex = index;
                 this.visibleDrawer = true;
             },
             updateContract(index, params) {
-                this.$set(this.model.contracts, index, params);
+                this.$set(this.model.relations, index, params);
             },
             deleteContract(index) {
 
@@ -141,9 +141,9 @@ export default (config = {}) => {
                     type: 'warning'
                 }).then(async () => {
                     if(config.mode == "edit" ) {
-                        await this.$store.dispatch('contracts/delete', {id: this.model.contracts[index].id})
+                        await this.$store.dispatch('relations/delete', {id: this.model.relations[index].id})
                     }
-                    this.model.contracts.splice(index, 1)
+                    this.model.relations.splice(index, 1)
                     this.visibleDrawer = false;
                 }).catch(() => {
                 });
@@ -161,7 +161,7 @@ export default (config = {}) => {
                 return this.$refs.form;
             },
             used_units() {
-                return this.model.contracts.map(item => item.unit_id)
+                return this.model.relations.map(item => item.unit_id)
             },
             ...mapGetters(['countries'])
         },
@@ -196,8 +196,8 @@ export default (config = {}) => {
 
                                 this.loading.state = true;
                                 
-                                this.model.contracts.forEach(contract => {
-                                    contract.monthly_rent_gross = Number(contract.monthly_rent_net) + Number(contract.monthly_maintenance)
+                                this.model.relations.forEach(relation => {
+                                    relation.monthly_rent_gross = Number(relation.monthly_rent_net) + Number(relation.monthly_maintenance)
                                 })
 
                                 let {email, password, password_confirmation, ...resident} = this.model;
@@ -206,12 +206,12 @@ export default (config = {}) => {
 
                                     resident.status = 2
                                     const today = new Date().getTime();
-                                    resident.contracts.forEach(contract => {
-                                        const start_date = new Date(contract.start_date).getTime();
-                                        const end_date = new Date(contract.end_date).getTime();
-                                        if(contract.duration == 1 && start_date <= today )
+                                    resident.relations.forEach(relation => {
+                                        const start_date = new Date(relation.start_date).getTime();
+                                        const end_date = new Date(relation.end_date).getTime();
+                                        if(relation.duration == 1 && start_date <= today )
                                             resident.status = 1
-                                        if(contract.duration == 2 && start_date <= today && end_date > today)
+                                        if(relation.duration == 2 && start_date <= today && end_date > today)
                                             resident.status = 1
                                             
                                     })

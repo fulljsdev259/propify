@@ -39,7 +39,7 @@
                                 :label="item.name"
                                 :value="item.id">
                                 <span style="float: left">{{ item.name }}</span>
-                                <contract-count :countsData="item" style="float: right;"></contract-count>
+                                <relation-count :countsData="item" style="float: right;"></relation-count>
                             </el-option>
                         </el-option-group>
                         
@@ -68,7 +68,7 @@
             </el-col>
         
             <el-col :md="12" v-if="model.unit_id">
-                <el-form-item :label="$t('models.resident.contract.type')"
+                <el-form-item :label="$t('models.resident.relation.type')"
                             prop="type"
                             class="label-block">
                     <el-select :placeholder="$t('models.unit.type.label')"
@@ -84,7 +84,7 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
-                <el-form-item :label="$t('models.resident.contract.duration')"
+                <el-form-item :label="$t('models.resident.relation.duration')"
                             prop="duration"
                             class="label-block">
                     <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
@@ -100,11 +100,11 @@
             </el-col>
 
             <el-col :md="12" v-if="model.unit_id">
-                <el-form-item :label="$t('models.resident.contract.start_date')"
+                <el-form-item :label="$t('models.resident.relation.start_date')"
                         prop="start_date">
                     <el-date-picker
                             :picker-options="{disabledDate: disabledRentStart}"
-                            :placeholder="$t('models.resident.contract.start_date')"
+                            :placeholder="$t('models.resident.relation.start_date')"
                             format="dd.MM.yyyy"
                             style="width: 100%;"
                             type="date"
@@ -114,10 +114,10 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12" v-if="model.unit_id && model.duration == 2 && resident_type_check == 1">
-                <el-form-item :label="$t('models.resident.contract.end_date')">
+                <el-form-item :label="$t('models.resident.relation.end_date')">
                     <el-date-picker
                         :picker-options="{disabledDate: disabledRentEnd}"
-                        :placeholder="$t('models.resident.contract.end_date')"
+                        :placeholder="$t('models.resident.relation.end_date')"
                         format="dd.MM.yyyy"
                         style="width: 100%;"
                         type="date"
@@ -142,12 +142,12 @@
         </el-row>
         <template v-if="resident_type_check == 1">
         <!-- <ui-divider v-if="model.unit_id" content-position="left">
-            {{ $t('models.resident.contract.deposit_amount') }}
+            {{ $t('models.resident.relation.deposit_amount') }}
         </ui-divider>
 
         <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
-                <el-form-item :label="$t('models.resident.contract.deposit_amount')"
+                <el-form-item :label="$t('models.resident.relation.deposit_amount')"
                                 prop="deposit_amount">
                     <el-input type="text"
                             v-model="model.deposit_amount"
@@ -155,7 +155,7 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12">
-                <el-form-item :label="$t('models.resident.contract.type_of_deposit')"
+                <el-form-item :label="$t('models.resident.relation.type_of_deposit')"
                             prop="deposit_type">
                     <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
                                 v-model="model.deposit_type">
@@ -262,7 +262,7 @@
         </el-row> -->
         <!-- <el-row :gutter="20" v-if="model.unit_id">
             <el-col :md="12">
-                <el-form-item :label="$t('models.resident.contract.deposit_status.label')"
+                <el-form-item :label="$t('models.resident.relation.deposit_status.label')"
                                 class="label-block">
                     <el-radio-group v-model="model.deposit_status">
                         <el-radio-button 
@@ -277,7 +277,7 @@
             </el-col>
         </el-row> -->
         <ui-divider v-if="model.unit_id" content-position="left">
-            {{ $t('models.resident.contract.contract_pdf') }}
+            {{ $t('models.resident.relation.contract_pdf') }}
         </ui-divider>
         <el-row :gutter="20"  v-if="model.unit_id">
             <el-col :md="24">
@@ -287,10 +287,10 @@
                     :data="model.media"
                     style="width: 100%"
                     v-if="model.media.length"
-                    class="contract-file-table"
+                    class="relation-file-table"
                     >
                     <el-table-column
-                        :label="$t('models.resident.contract.filename')"
+                        :label="$t('models.resident.relation.filename')"
                         prop="name"
                     >
                         <template slot-scope="scope">
@@ -313,14 +313,14 @@
                 </el-table>
 
                 <el-alert
-                    :title="$t('models.resident.contract.pdf_only_desc')"
+                    :title="$t('models.resident.relation.pdf_only_desc')"
                     type="info"
                     show-icon
                     :closable="false"
                 >
                 </el-alert>
 
-                <upload-contract @fileUploaded="addPDFtoContract" class="upload-custom" acceptType=".pdf" drag multiple/>
+                <upload-relation @fileUploaded="addPDFtoContract" class="upload-custom" acceptType=".pdf" drag multiple/>
                 
                 </el-form-item>
             </el-col>
@@ -328,11 +328,11 @@
         </el-row>
         </template>
         <ui-divider style="margin-top: 16px;"></ui-divider>
-        <div class="contract-form-actions">
+        <div class="relation-form-actions">
             <div class="button-group">
                 <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" round>{{ edit_index == undefined ? $t('general.actions.add') : $t('general.actions.edit')}}</el-button>
                 <el-button type="primary" v-else @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
-                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-contract', edit_index)" icon="ti-trash" round>{{$t('general.actions.delete')}}</el-button>
+                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-relation', edit_index)" icon="ti-trash" round>{{$t('general.actions.delete')}}</el-button>
             </div>
         </div>
         
@@ -345,14 +345,14 @@
 <script>
     import {displayError} from "../helpers/messages";
     import UploadContract from 'components/UploadContract';
-    import ContractCount from 'components/ContractCount';
+    import RelationCount from 'components/RelationCount';
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
-        name: "ContractForm",
+        name: "RelationForm",
         components: {
             UploadContract,
-            ContractCount
+            RelationCount
         },
         props: {
             mode: {
@@ -445,23 +445,23 @@
                     }],
                     deposit_amount: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.deposit_amount')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.deposit_amount')})
                     }],
                     deposit_type: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.type_of_deposit')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.type_of_deposit')})
                     }],
                     start_date: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.start_date')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.start_date')})
                     }],
                     type: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.type')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.type')})
                     }],
                     duration: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.contract.duration')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.duration')})
                     }],
                     status: [{
                         required: true,
@@ -509,10 +509,10 @@
                             params.building = this.buildings.find(item => item.id == this.model.building_id)
 
                             if (this.mode == "add") {
-                                this.$emit('add-contract', params)
+                                this.$emit('add-relation', params)
                             }
                             else {
-                                this.$emit('update-contract', this.edit_index, params)
+                                this.$emit('update-relation', this.edit_index, params)
                             }
                             
                         }
@@ -526,12 +526,12 @@
                             params.building = this.buildings.find(item => item.id == this.model.building_id)
 
                             if (this.mode == "add") {
-                                const resp = await this.$store.dispatch('contracts/create', params);
-                                this.$emit('add-contract', resp.data)
+                                const resp = await this.$store.dispatch('relations/create', params);
+                                this.$emit('add-relation', resp.data)
                             }
                             else {
-                                const resp = await this.$store.dispatch('contracts/update', params);
-                                this.$emit('update-contract', this.edit_index, params)
+                                const resp = await this.$store.dispatch('relations/update', params);
+                                this.$emit('update-relation', this.edit_index, params)
                             }
                         }
 
@@ -696,10 +696,10 @@
             this.loading = true;
 
             let parent_obj = this
-            this.deposit_types = Object.entries(this.$constants.contracts.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.deposit_types.${label}`)}))
-            this.durations = Object.entries(this.$constants.contracts.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.durations.${label}`)}))
-            this.deposit_statuses = Object.entries(this.$constants.contracts.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.deposit_status.${label}`)}));
-            this.contract_statuses = Object.entries(this.$constants.contracts.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.contract.status.${label}`)}));
+            this.deposit_types = Object.entries(this.$constants.relations.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_types.${label}`)}))
+            this.durations = Object.entries(this.$constants.relations.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.durations.${label}`)}))
+            this.deposit_statuses = Object.entries(this.$constants.relations.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_status.${label}`)}));
+            this.contract_statuses = Object.entries(this.$constants.relations.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.status.${label}`)}));
 
             if(this.resident_type)
                 this.resident_type_check = this.resident_type
@@ -897,7 +897,7 @@
     }
     
 
-    /deep/ .contract-form-actions {
+    /deep/ .relation-form-actions {
         // position: absolute;
         width: 100%;
         display: flex;
@@ -917,7 +917,7 @@
         }
     }
 
-    /deep/ .contract-file-table {
+    /deep/ .relation-file-table {
         margin-bottom: 10px;
     }
 
