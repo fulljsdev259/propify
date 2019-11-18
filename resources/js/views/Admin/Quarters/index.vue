@@ -31,7 +31,7 @@
             :filters="filters"
             :filtersHeader="filtersHeader"
             :header="headerFilter"
-            :items="items"
+            :items="computedItems"
             :loading="{state: loading}"
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
@@ -134,6 +134,12 @@
                         data: this.states,
                     }
                 ]
+            },
+            computedItems() {
+                this.items.forEach((item) => {
+                    item.types = this.$t(`models.quarter.types.${this.$constants.quarters.type[item.types]}`);
+                });
+                return this.items;
             }
         },
         methods: {

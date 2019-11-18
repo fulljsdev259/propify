@@ -114,6 +114,8 @@
             :element-loading-spinner="loading.icon"
             :element-loading-text="$t(loading.text)"
             :empty-text="emptyText"
+            @row-click="handleRowClick"
+            @row-dblclick="handleRowDblClick"
             @selection-change="handleSelectionChange"
             v-loading="loading.state">
 
@@ -121,7 +123,7 @@
                 :key="column.prop"
                 :label="$t(column.label)"
                 :width="column.width"
-                v-for="column in header">
+                v-for="column in computedHeader">
                 
                 <template slot-scope="scope">
                     <div v-if="column.withAvatars" class="avatars-wrapper">
@@ -462,45 +464,8 @@
                     currSize: this.pagination.currSize
                 }
             },
-            headerWithoutActions() {
-                return this.header.reduce((acc, row) => (!row.actions
-                && !row.roles
-                && !row.select
-                && !row.withUsers
-                && !row.withAvatars
-                && !row.withAvatarsAndProps
-                && !row.withCounts
-                && !row.withMultipleProps
-                && !row.withCollapsables
-                && !row.withBadgeProps
-                && acc.push(row), acc), []);
-            },
-            headerWithRoles() {
-                return this.header.reduce((acc, row) => (row.roles && acc.push(row), acc), []);
-            },
-            headerWithMultipleProps() {
-                return this.header.reduce((acc, row) => (row.withMultipleProps && acc.push(row), acc), []);
-            },
-            headerWithCollapsables() {
-                return this.header.reduce((acc, row) => (row.withCollapsables && acc.push(row), acc), []);
-            },
-            headerWithCounts() {
-                return this.header.reduce((acc, row) => (row.withCounts && acc.push(row), acc), []);
-            },
-            headerWithAvatars() {
-                return this.header.reduce((acc, row) => (row.withAvatars && acc.push(row), acc), []);
-            },
-            headerAvatarWithMultipleProps() {
-                return this.header.reduce((acc, row) => (row.withAvatarsAndProps && acc.push(row), acc), []);
-            },
-            headerWithUsers() {
-                return this.header.reduce((acc, row) => (row.withUsers && acc.push(row), acc), []);
-            }, 
-            headerWithActions() {
-                return this.header.reduce((acc, row) => (row.actions && acc.push(row), acc), []);
-            },
-            headerWithSelect() {
-                return this.header.filter((filter) => {
+            computedHeader() {
+                this.header.forEach((filter) => {
                     if (filter.select) {
                         if (filter.select.getter) {
                             const storeConstants = this.$store.getters['application/constants'][filter.select.getter];
@@ -513,15 +478,10 @@
                                     };
                                 });
                             }
-
-
                         }
-                        return filter.select;
                     }
                 });
-            },
-            headerWithBadges() {
-                return this.header.reduce((acc, row) => (row.withBadgeProps && acc.push(row), acc), []);
+                return this.header;
             },
             filterColSize() {
                 return 4;
@@ -530,6 +490,17 @@
         methods: {
             rowClicked(row) {
                 this.$refs.tableData.toggleRowExpansion(row);
+            },
+            handleRowClick(row) {
+                this.$refs.tableData.toggleRowSelection(row);
+            },
+            handleRowDblClick(row) {
+                this.$router.push({
+                    name: `${this.$route.name}Edit`, 
+                    params: {
+                        id: row.id,
+                    }
+                });
             },
             selectChanged(e, row, column) {
                 row[column.prop] = e;
@@ -939,7 +910,6 @@
         :global(.el-table__body-wrapper) {
             box-shadow: 0 1px 3px transparentize(#000, .88),
             0 1px 2px transparentize(#000, .76);
-            border-radius: 4px;
         }
 
         :global(th),
@@ -1181,6 +1151,7 @@
     .filters-card {
         margin-bottom: 0 !important;
         border: none !important;
+        border-radius: 0;
         .el-card__body {
             padding: 0 22px;
             .el-form-item {
