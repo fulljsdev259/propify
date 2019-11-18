@@ -153,7 +153,6 @@
             },
             handleOrder(data) {
                 this.header = data;
-                this.$forceUpdate();
             },
             add() {
                 this.$router.push({

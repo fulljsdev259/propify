@@ -120,7 +120,7 @@
             v-loading="loading.state">
 
             <el-table-column
-                :key="column.prop + index"
+                :key="'header' + index"
                 :label="$t(column.label)"
                 :width="column.width"
                 v-for="(column, index) in header">
