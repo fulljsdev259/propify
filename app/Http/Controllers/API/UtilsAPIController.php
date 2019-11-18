@@ -232,8 +232,6 @@ class UtilsAPIController extends AppBaseController
     protected function getRelationConstants()
     {
         $result = [
-            //'type' => App\Models\Relation::Type,
-            'duration' => App\Models\Relation::Duration,
             'status' => App\Models\Relation::Status,
             'deposit_type' => App\Models\Relation::DepositType,
             'deposit_status' => App\Models\Relation::DepositStatus,

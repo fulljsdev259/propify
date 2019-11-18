@@ -62,7 +62,6 @@ class FixRelationStatus extends Command
         $auditData = [];
         // get all expired relation
         $relations = Relation::where('status', Relation::StatusActive)
-            ->where('duration', Relation::DurationLimited)
             ->where('end_date', '<', now()->format('Y-m-d'))
             ->get(['id', 'resident_id']);
 

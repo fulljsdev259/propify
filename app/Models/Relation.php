@@ -4,8 +4,6 @@ namespace App\Models;
 
 use App\Traits\UniqueIDFormat;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Schema;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use App\Traits\HasMediaTrait;
 
@@ -38,16 +36,6 @@ use App\Traits\HasMediaTrait;
  *          description="unit_id",
  *          type="integer",
  *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="type",
- *          description="type",
- *          type="integer"
- *      ),
- *     @SWG\Property(
- *          property="duration",
- *          description="duration",
- *          type="integer"
  *      ),
  *     @SWG\Property(
  *          property="status",
@@ -121,8 +109,6 @@ use App\Traits\HasMediaTrait;
  * @property int $resident_id
  * @property int|null $building_id
  * @property int|null $unit_id
- * @property int|null $type
- * @property int|null $duration
  * @property int|null $status
  * @property string|null $relation_format
  * @property int|null $deposit_type
@@ -151,7 +137,6 @@ use App\Traits\HasMediaTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereDepositAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereDepositStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereDepositType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereDuration($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereEndDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereMonthlyMaintenance($value)
@@ -160,7 +145,6 @@ use App\Traits\HasMediaTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereResidentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereUnitId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -169,13 +153,6 @@ class Relation extends AuditableModel implements HasMedia
 {
     use HasMediaTrait, UniqueIDFormat;
 
-    const DurationUnlimited = 1;
-    const DurationLimited = 2;
-    const Duration = [
-        self::DurationUnlimited => 'unlimited',
-        self::DurationLimited => 'limited',
-    ];
-    
     const StatusActive = 1;
     const StatusInActive = 2;
     const Status = [
@@ -220,8 +197,6 @@ class Relation extends AuditableModel implements HasMedia
         'start_date' => 'date',
         'end_date' => 'nullable|date|after_or_equal:start_date',
         'status' => 'digits_between:1,2|numeric',
-        'type' => 'digits_between:1,3|numeric',
-        'duration' => 'digits_between:1,2|numeric',
         'deposit_type' => 'digits_between:1,4|numeric',
         'deposit_status' => 'digits_between:1,2|numeric',
         'deposit_amount' => 'numeric',
@@ -236,8 +211,6 @@ class Relation extends AuditableModel implements HasMedia
         'resident_id',
         'building_id',
         'unit_id',
-        'type',
-        'duration',
         'status',
         'relation_format',
         'deposit_type',
@@ -264,8 +237,6 @@ class Relation extends AuditableModel implements HasMedia
         'resident_id' => 'integer',
         'building_id' => 'integer',
         'unit_id' => 'integer',
-        'type' => 'integer',
-        'duration' => 'integer',
         'status' => 'integer',
         'relation_format' => 'string',
         'deposit_type' => 'integer',
