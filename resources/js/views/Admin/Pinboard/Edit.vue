@@ -416,6 +416,7 @@
                     <el-card :header="$t('general.box_titles.buildings_and_quarters')" class="mt15">
                         <relation-list
                             :columns="assignmentsColumns"
+                            action=""
                             :filterValue="model.id"
                             fetchAction="getPinboardAssignments"
                             filter="pinboard_id"
@@ -447,6 +448,7 @@
                     <el-card :header="$t('models.pinboard.placeholders.search_provider')" v-if="model.type == 3 && model.sub_type == 3" class="mt15">
                         <relation-list
                             :columns="assignmentsProviderColumns"
+                            actions=""
                             :filterValue="model.id"
                             fetchAction="getServices"
                             filter="pinboard_id"

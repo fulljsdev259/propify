@@ -124,7 +124,7 @@ class FixFormats extends Command
         }
 
         if (in_array('requests', $tables)) {
-            Request::get(['id', 'resident_id', 'contract_id', 'created_at'])->each(function (Request $request) {
+            Request::get(['id', 'resident_id', 'relation_id', 'created_at'])->each(function (Request $request) {
                 $request->request_format  = $request->getUniqueIDFormat($request->id);
                 $request->save();
             });

@@ -51,10 +51,10 @@
 
                                         <p style="margin:0;margin-top:-30px;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                             <b>@lang('models.request.download_pdf.address'):</b>
-                                            {{ @$contract->building->address->street }}
-                                            {{ @$contract->building->address->house_num }},
-                                            {{ @$contract->building->address->zip }}
-                                            {{ @$contract->building->address->city }}
+                                            {{ @$relation->building->address->street }}
+                                            {{ @$relation->building->address->house_num }},
+                                            {{ @$relation->building->address->zip }}
+                                            {{ @$relation->building->address->city }}
         
                                         </p>
                                     </td>

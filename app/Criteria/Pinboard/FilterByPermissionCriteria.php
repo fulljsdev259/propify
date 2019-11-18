@@ -2,7 +2,7 @@
 
 namespace App\Criteria\Pinboard;
 
-use App\Models\Contract;
+use App\Models\Relation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -45,14 +45,14 @@ class FilterByPermissionCriteria implements CriteriaInterface
         }
 
 
-        $contracts = $resident->contracts()
-            ->where('status', Contract::StatusActive)
+        $relations = $resident->relations()
+            ->where('status', Relation::StatusActive)
             ->where('start_date', '<', now())
             ->select('id', 'building_id')->with('building:id,quarter_id')
             ->get();
 
-        $buildingIds = $contracts->pluck('building.id')->toArray();
-        $quarterIds = $contracts->pluck('building.quarter_id')->toArray();
+        $buildingIds = $relations->pluck('building.id')->toArray();
+        $quarterIds = $relations->pluck('building.quarter_id')->toArray();
         $model->where(function ($q) use ($quarterIds, $buildingIds) {
             $q->where(function ($q) {
                 $q->where('visibility', Pinboard::VisibilityAll)

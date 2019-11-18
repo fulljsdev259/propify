@@ -6,7 +6,7 @@ use App\Models\Resident;
 use App\Http\Requests\BaseRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateDefaultContractRequest extends BaseRequest
+class UpdateDefaultRelationRequest extends BaseRequest
 {
 
     public function authorize()
@@ -23,9 +23,9 @@ class UpdateDefaultContractRequest extends BaseRequest
     public function rules()
     {
         return [
-             'default_contract_id' => [
+             'default_relation_id' => [
                  'required',
-                 Rule::exists('contracts', 'id')->where(function ($query) {
+                 Rule::exists('relations', 'id')->where(function ($query) {
                      $query->where('resident_id', $this->user()->resident->id);
                  }),
              ]

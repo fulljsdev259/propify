@@ -3,25 +3,25 @@
 namespace App\Console\Commands;
 
 use App\Models\AuditableModel;
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Models\Resident;
 use Illuminate\Console\Command;
 
-class FixContractStatus extends Command
+class FixRelationStatus extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'fix-contract-status';
+    protected $signature = 'fix-relation-status';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'make contract inactive after expiration';
+    protected $description = 'make relation inactive after expiration';
 
     /**
      * Create a new command instance.
@@ -39,8 +39,8 @@ class FixContractStatus extends Command
     public function handle()
     {
         Resident::disableAuditing();
-        $auditData = $this->makeActiveContractToInActiveIfNeed();
-//        $auditData = $this->makeInactiveContractToActiveIfNeed($auditData);
+        $auditData = $this->makeActiveRelationToInActiveIfNeed();
+//        $auditData = $this->makeInactiveRelationToActiveIfNeed($auditData);
         Resident::enableAuditing();
 
         if (!empty($auditData)) {
@@ -57,59 +57,59 @@ class FixContractStatus extends Command
     /**
      *
      */
-    protected function makeActiveContractToInActiveIfNeed()
+    protected function makeActiveRelationToInActiveIfNeed()
     {
         $auditData = [];
-        // get all expired contract
-        $contracts = Contract::where('status', Contract::StatusActive)
-            ->where('duration', Contract::DurationLimited)
+        // get all expired relation
+        $relations = Relation::where('status', Relation::StatusActive)
+            ->where('duration', Relation::DurationLimited)
             ->where('end_date', '<', now()->format('Y-m-d'))
             ->get(['id', 'resident_id']);
 
-        $contractIds = $contracts->pluck('id')->all();
-        if (empty($contractIds)) {
+        $relationIds = $relations->pluck('id')->all();
+        if (empty($relationIds)) {
             return $auditData;
         }
 
-        $auditData['contracts']['status'][] = [
-            'ids' => $contractIds,
+        $auditData['relations']['status'][] = [
+            'ids' => $relationIds,
             'status' => [
-                'old' => Contract::StatusActive,
-                'new' => Contract::StatusInActive,
+                'old' => Relation::StatusActive,
+                'new' => Relation::StatusInActive,
             ]
         ];
 
-        // make inactive expired contracts
-        Contract::whereIn('id', $contractIds)->update(['status' => Contract::StatusInActive]);
+        // make inactive expired relations
+        Relation::whereIn('id', $relationIds)->update(['status' => Relation::StatusInActive]);
 
 
-        // change default_contract_id
-        $residentWithDefaultContract = Resident::whereIn('default_contract_id', $contractIds)->get(['id', 'default_contract_id']);
-        $activeContracts = Contract::whereIn('resident_id', $residentWithDefaultContract->pluck('id'))
-            ->where('status', Contract::StatusActive)->get(['id', 'resident_id']);
+        // change default_relation_id
+        $residentWithDefaultRelation = Resident::whereIn('default_relation_id', $relationIds)->get(['id', 'default_relation_id']);
+        $activeRelations = Relation::whereIn('resident_id', $residentWithDefaultRelation->pluck('id'))
+            ->where('status', Relation::StatusActive)->get(['id', 'resident_id']);
 
-        foreach ($residentWithDefaultContract as $resident) {
-            $contractId = $activeContracts->where('resident_id', $resident->id)->first()->id ?? null;
-            $auditData['residents']['default_contract'][$resident->id] = [
-                'old' => $resident->default_contract_id,
-                'new' => $contractId,
+        foreach ($residentWithDefaultRelation as $resident) {
+            $relationId = $activeRelations->where('resident_id', $resident->id)->first()->id ?? null;
+            $auditData['residents']['default_relation'][$resident->id] = [
+                'old' => $resident->default_relation_id,
+                'new' => $relationId,
             ];
             $resident->update([
-                'default_contract_id' => $contractId
+                'default_relation_id' => $relationId
             ]);
         }
 
 
-        $residentIds = $contracts->pluck('resident_id')->unique()->toArray();
+        $residentIds = $relations->pluck('resident_id')->unique()->toArray();
         if (empty($residentIds)) {
             return $auditData;
         }
 
-        // make inactive residents how all contracts expired
+        // make inactive residents how all relations expired
         $residents = Resident::whereIn('id', $residentIds)
             ->where('status', Resident::StatusActive)
-            ->whereDoesntHave('contracts', function ($q) {
-                $q->where('status', Contract::StatusActive);
+            ->whereDoesntHave('relations', function ($q) {
+                $q->where('status', Relation::StatusActive);
             })->get(['id', 'status']);
 
         $activeResidentIds = $residents->pluck('id')->all();
@@ -132,31 +132,31 @@ class FixContractStatus extends Command
 //    /**
 //     *
 //     */
-//    protected function makeInactiveContractToActiveIfNeed($auditData)
+//    protected function makeInactiveRelationToActiveIfNeed($auditData)
 //    {
-//        // get all not active contract started today
-//        $contracts = Contract::where('status', Contract::StatusInActive)
+//        // get all not active relation started today
+//        $relations = Relation::where('status', Relation::StatusInActive)
 //            ->where('start_date', '=', now()->format('Y-m-d'))
 //            ->get(['id', 'resident_id']);
 //
-//        $contractIds = $contracts->pluck('id')->all();
+//        $relationIds = $relations->pluck('id')->all();
 //
-//        if (empty($contractIds)) {
+//        if (empty($relationIds)) {
 //            return $auditData;
 //        }
 //
-//        // make  contracts active
-//        Contract::whereIn('id', $contractIds)->update(['status' => Contract::StatusActive]);
-//        $auditData['contracts'][] = [
-//            'ids' => $contractIds,
+//        // make  relations active
+//        Relation::whereIn('id', $relationIds)->update(['status' => Relation::StatusActive]);
+//        $auditData['relations'][] = [
+//            'ids' => $relationIds,
 //            'status' => [
-//                'old' => Contract::StatusInActive,
-//                'new' => Contract::StatusActive,
+//                'old' => Relation::StatusInActive,
+//                'new' => Relation::StatusActive,
 //            ]
 //        ];
 //
 //
-//        $residentIds = $contracts->pluck('resident_id')->unique()->toArray();
+//        $residentIds = $relations->pluck('resident_id')->unique()->toArray();
 //        if (empty($residentIds)) {
 //            return $auditData;
 //        }

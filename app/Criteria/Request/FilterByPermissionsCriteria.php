@@ -2,7 +2,7 @@
 
 namespace App\Criteria\Request;
 
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Models\Request;
 use App\Models\Resident;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,13 +45,13 @@ class FilterByPermissionsCriteria implements CriteriaInterface
 
         if ($user->resident) {
 
-            $contracts = $user->resident->contracts()
-                ->where('status', Contract::StatusActive)
+            $relations = $user->resident->relations()
+                ->where('status', Relation::StatusActive)
                 ->select('id', 'building_id')->with('building:id,quarter_id')
                 ->get();
 
-            $buildingIds = $contracts->pluck('building.id')->toArray();
-            $quarterIds = $contracts->pluck('building.quarter_id')->toArray();
+            $buildingIds = $relations->pluck('building.id')->toArray();
+            $quarterIds = $relations->pluck('building.quarter_id')->toArray();
 
             $model->where(function ($q) use ($user, $quarterIds, $buildingIds) {
                 $q->where(function ($q) use ($user) {
@@ -60,14 +60,14 @@ class FilterByPermissionsCriteria implements CriteriaInterface
                 })->when($buildingIds, function ($q) use ($buildingIds) {
                     $q->orWhere(function ($q) use ($buildingIds) {
                         $q->where('visibility', Request::VisibilityBuilding)
-                            ->whereHas('contract', function ($q) use ($buildingIds){
+                            ->whereHas('relation', function ($q) use ($buildingIds){
                                 $q->whereIn('building_id', $buildingIds);
                             });
                         });
                 })->when($quarterIds, function ($q) use ($quarterIds) {
                     $q->orWhere(function ($q) use ($quarterIds) {
                         $q->where('visibility', Request::VisibilityQuarter)
-                            ->whereHas('contract', function ($q) use ($quarterIds) {
+                            ->whereHas('relation', function ($q) use ($quarterIds) {
                                 $q->whereHas('building', function ($q) use ($quarterIds) {
                                     $q->whereIn('quarter_id', $quarterIds);
                                 });

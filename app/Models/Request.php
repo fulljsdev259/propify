@@ -42,8 +42,8 @@ use Storage;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="contract_id",
- *          description="contract_id",
+ *          property="relation_id",
+ *          description="relation_id",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -146,7 +146,7 @@ use Storage;
  * @property int|null $creator_user_id
  * @property int $category_id
  * @property int $resident_id
- * @property int|null $contract_id
+ * @property int|null $relation_id
  * @property float|null $amount
  * @property float|null $percentage
  * @property string $request_format
@@ -183,7 +183,7 @@ use Storage;
  * @property-read int|null $audits_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  * @property-read int|null $comments_count
- * @property-read \App\Models\Contract|null $contract
+ * @property-read \App\Models\Relation|null $relation
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Conversation[] $conversations
  * @property-read int|null $conversations_count
  * @property-read \App\Models\User|null $creator
@@ -210,7 +210,7 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereCapturePhase($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereComponent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereContractId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereRelationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereCreatorUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereDaysLeftDueDate($value)
@@ -487,7 +487,7 @@ class Request extends AuditableModel implements HasMedia
         'sub_category_id',
         'subject_id',
         'resident_id',
-        'contract_id',
+        'relation_id',
         'title',
         'description',
         'status',
@@ -531,7 +531,7 @@ class Request extends AuditableModel implements HasMedia
         'creator_user_id' => 'integer',
         'reminder_user_ids' => 'array',
         'resident_id' => 'integer',
-        'contract_id' => 'integer',
+        'relation_id' => 'integer',
         'title' => 'string',
         'description' => 'string',
         'status' => 'integer',
@@ -610,28 +610,28 @@ class Request extends AuditableModel implements HasMedia
 
     protected function getUniqueIDTemplate()
     {
-        $this->load(['contract' => function ($q) {
+        $this->load(['relation' => function ($q) {
             $q->with('unit', 'building.quarter:id,internal_quarter_id');
         }]);
-        $contract = $this->contract;
+        $relation = $this->relation;
 
-        if (empty($contract)) {
+        if (empty($relation)) {
             $this->load(['resident' => function ($q) {
                 $q->with([
-                    'contracts' => function ($q) {
+                    'relations' => function ($q) {
                         $q->with('unit', 'building.quarter:id,internal_quarter_id')->first();
                     }
                 ]);
             }]);
-            $contract = $this->resident->contracts->first() ?? null;
+            $relation = $this->resident->relations->first() ?? null;
         }
 
-        if ($contract) {
-            $internalId = $contract->building->internal_building_id
-                ?? $contract->building->quarter->internal_quarter_id
+        if ($relation) {
+            $internalId = $relation->building->internal_building_id
+                ?? $relation->building->quarter->internal_quarter_id
                 ?? '';
 
-            $unit = $contract->unit->name ?? '';
+            $unit = $relation->unit->name ?? '';
             $text = '';
 
             if ($internalId) {
@@ -818,7 +818,7 @@ class Request extends AuditableModel implements HasMedia
             'subCategory' => get_sub_category_details($this->sub_category_id),
             'request' => $this,
             'resident' => $this->resident,
-            'contract' => $this->contract,
+            'relation' => $this->relation,
             'logo' => $settings->logo ?? null,
             'media' => $media,
             'blank_pdf'=>$settings->blank_pdf,
@@ -844,8 +844,8 @@ class Request extends AuditableModel implements HasMedia
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function contract()
+    public function relation()
     {
-        return $this->belongsTo(Contract::class);
+        return $this->belongsTo(Relation::class);
     }
 }

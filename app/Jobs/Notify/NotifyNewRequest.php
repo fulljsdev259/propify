@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Notify;
 
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Models\Pinboard;
 use App\Models\PropertyManager;
 use App\Models\Request;
@@ -51,13 +51,13 @@ class NotifyNewRequest
     public function handle()
     {
         $request = $this->request;
-        $contract = $this->request->contract;
-        if (empty($contract->building)) {
+        $relation = $this->request->relation;
+        if (empty($relation->building)) {
             return collect();
         }
 
-        $propertyManagers = PropertyManager::whereHas('buildings', function ($q) use ($contract) {
-            $q->where('buildings.id', $contract->building->id);
+        $propertyManagers = PropertyManager::whereHas('buildings', function ($q) use ($relation) {
+            $q->where('buildings.id', $relation->building->id);
         })->select('id', 'user_id')->with('user')->get();
 
         $i = 0;
@@ -66,7 +66,7 @@ class NotifyNewRequest
             $propertyManager->user->redirect = "/admin/requests/" . $request->id;
 
             $propertyManager->user
-                ->notify((new NewResidentRequest($request, $propertyManager->user, $contract->resident->user))
+                ->notify((new NewResidentRequest($request, $propertyManager->user, $relation->resident->user))
                     ->delay(now()->addSeconds($delay)));
         }
 
@@ -110,7 +110,7 @@ class NotifyNewRequest
         return User::whereHas('resident', function ($q) use ($quarterIds, $buildingIds) {
             $q->whereNull('residents.deleted_at')
                 ->where('residents.status', Resident::StatusActive)
-                ->whereHas('contracts', function ($q) use ($quarterIds, $buildingIds) {
+                ->whereHas('relations', function ($q) use ($quarterIds, $buildingIds) {
                     $this->setNeededFiltersInQuery($q, $buildingIds, $quarterIds);
                 });
         })->get();
@@ -123,7 +123,7 @@ class NotifyNewRequest
      */
     public function setNeededFiltersInQuery($query, $buildingIds, $quarterIds)
     {
-        $query->where('status', Contract::StatusActive)
+        $query->where('status', Relation::StatusActive)
             ->when(
                 ! empty($quarterIds) && !empty($buildingIds),
                 function ($q)  use ($quarterIds, $buildingIds) {
