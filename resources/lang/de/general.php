@@ -261,7 +261,7 @@ return [
         'logout_confirm' => 'Sie werden ausgeloggt.',
     ],
     'roles' => [
-        'label' => 'Rolle',
+        'label' => 'Funktion',
         'administrator' => 'Administrator',
         'resident' => 'Bewohner',
         'manager' => 'Bewirtschafter',
