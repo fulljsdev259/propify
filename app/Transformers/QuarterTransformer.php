@@ -15,7 +15,6 @@ class QuarterTransformer extends BaseTransformer
     /**
      * @param Quarter $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(Quarter $model)
     {
@@ -46,7 +45,7 @@ class QuarterTransformer extends BaseTransformer
 
         if ($model->relationExists('buildings')) {
             $response['buildings'] = (new BuildingTransformer())->transformCollection($model->buildings);
-            $response['contracts'] = collect($response['buildings'])->pluck('contracts')->collapse();
+            $response['relations'] = collect($response['buildings'])->pluck('relations')->collapse();
         }
 
         if ($model->relationExists('media')) {
@@ -63,7 +62,6 @@ class QuarterTransformer extends BaseTransformer
     /**
      * @param Quarter $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transformWithStatistics(Quarter $model)
     {
@@ -71,7 +69,7 @@ class QuarterTransformer extends BaseTransformer
         $buildings = $model->buildings;
         $units = $buildings->pluck('units')->collapse();
         $occupiedUnits = $units->filter(function ($unit) {
-            return $unit->contracts->isNotEmpty();
+            return $unit->relations->isNotEmpty();
         });
 
         $requestsCount = $buildings->pluck('requests')->collapse()->unique()->countBy('status');
@@ -84,7 +82,7 @@ class QuarterTransformer extends BaseTransformer
         $response['requests_received_count'] = $requestsCount[Request::StatusReceived] ?? 0;
 
         $response['buildings_count'] = $buildings->count();
-        $response['active_residents_count'] = $units->pluck('contracts.*.resident_id')->collapse()->unique()->count();
+        $response['active_residents_count'] = $units->pluck('relations.*.resident_id')->collapse()->unique()->count();
         $response['total_units_count'] = $units->count();
         $response['occupied_units_count'] = $occupiedUnits->count();
         $response['free_units_count'] = $units->count() - $occupiedUnits->count();

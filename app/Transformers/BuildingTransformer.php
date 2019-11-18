@@ -18,7 +18,6 @@ class BuildingTransformer extends BaseTransformer
      *
      * @param Building $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(Building $model)
     {
@@ -90,9 +89,9 @@ class BuildingTransformer extends BaseTransformer
             $response['media'] = (new MediaTransformer)->transformCollection($model->media);
         }
 
-        if ($model->relationExists('contracts')) {
-            $response['contracts'] = (new ContractTransformer())->transformCollection($model->contracts);
-            $residents = collect($response['contracts'])->pluck('resident')->unique();
+        if ($model->relationExists('relations')) {
+            $response['relations'] = (new RelationTransformer())->transformCollection($model->relations);
+            $residents = collect($response['relations'])->pluck('resident')->unique();
 
 
             // @TODO delete

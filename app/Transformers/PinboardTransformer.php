@@ -15,7 +15,6 @@ class PinboardTransformer extends BaseTransformer
     /**
      * @param Pinboard $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(Pinboard $model)
     {
