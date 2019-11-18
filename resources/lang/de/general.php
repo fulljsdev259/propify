@@ -247,7 +247,7 @@ return [
             'title' => 'Inserat löschen',
             'text' => 'Soll das Inserat wirklich gelöscht werden?',
         ],
-        'delete_contract' => [
+        'delete_relation' => [
             'title' => 'Vertrag löschen',
             'text' => 'Möchten Sie den Vertrag wirklich löschen?',
         ],
@@ -368,7 +368,7 @@ return [
                         'notifications_sent' => 'Benachrichtigung gesendet',
                         'new_resident_pinboard_created' => 'Neue Nachbar Pinnwand',
                         'avatar_uploaded' => 'Profil-Bild hochgeladen',
-                        'contract_created' => 'Mietvertrag erstellt',                        
+                        'relation_created' => 'Mietvertrag erstellt',
                     ],
                 ],
                 'content' => [                    
@@ -391,7 +391,7 @@ return [
                         'notifications_sent' => 'Für diesen :auditable_type wurde eine Benachrichtigung gesendet.',
                         'new_resident_pinboard_created' => "Neuer Nachbar für Benutzer :userName hinzugefügt.",
                         'avatar_uploaded' => 'Profil-Bild hochgeladen für :auditable_type.',
-                        'contract_created' => 'Mietvertrag für Bewohner angelegt :userName.',
+                        'relation_created' => 'Mietvertrag für Bewohner angelegt :userName.',
                         'update_no_fieldvalue' => 'Das :fieldname wurde geändert.',
                         'liked' => ':userName hat diese Pinnwand gefallen',
                         'unliked' => ':userName unsympathisch für diese Pinnwand',
@@ -546,7 +546,7 @@ return [
         'property_managers' => 'Fortimo-Mitarbeiter',
         'templates' => 'Vorlagen'
     ],
-    'contracts' => 'Verträge',
+    'relations' => 'Verträge',
     'ordinal_endings' => [
         'st' => '.',
         'nd' => '.',

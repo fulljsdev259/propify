@@ -35,9 +35,9 @@ class AuditableModel extends Model implements Auditable
     const EventDeleted = 'deleted';
     const EventLiked = 'liked';
     const EventUnLiked = 'unliked';
-    const EventContractCreated = 'contract_created';
-    const EventContractUpdated = 'contract_updated';
-    const EventContractDeleted = 'contract_deleted';
+    const EventRelationCreated = 'relation_created';
+    const EventRelationUpdated = 'relation_updated';
+    const EventRelationDeleted = 'relation_deleted';
     const EventUserAssigned = 'user_assigned';
     const EventUserUnassigned = 'user_unassigned';
     const EventQuarterAssigned = 'quarter_assigned';
@@ -100,9 +100,9 @@ class AuditableModel extends Model implements Auditable
         self::EventDeleted,
         self::EventLiked,
         self::EventUnLiked,
-        self::EventContractCreated,
-        self::EventContractUpdated,
-        self::EventContractDeleted,
+        self::EventRelationCreated,
+        self::EventRelationUpdated,
+        self::EventRelationDeleted,
         self::EventUserAssigned,
         self::EventUserUnassigned,
         self::EventQuarterAssigned,
@@ -309,13 +309,13 @@ class AuditableModel extends Model implements Auditable
 
         $createdEvents = [
             AuditableModel::EventCreated,
-            AuditableModel::EventContractCreated,
+            AuditableModel::EventRelationCreated,
             AuditableModel::BuildingUnitsCreated,
         ];
 
         $updatedEvents = [
             AuditableModel::EventUpdated,
-            AuditableModel::EventContractUpdated,
+            AuditableModel::EventRelationUpdated,
         ];
 
         if (in_array($event, $createdEvents)) {
@@ -347,7 +347,7 @@ class AuditableModel extends Model implements Auditable
 
         $createdEvents = [
             self::EventCreated,
-            self::EventContractCreated,
+            self::EventRelationCreated,
             self::DownloadCredentials,
             self::SendCredentials,
             self::EventAvatarUploaded
@@ -355,7 +355,7 @@ class AuditableModel extends Model implements Auditable
 
         $updatedEvents = [
             AuditableModel::EventUpdated,
-            AuditableModel::EventContractUpdated,
+            AuditableModel::EventRelationUpdated,
         ];
 
         if (in_array($audit->event, $createdEvents)) {
@@ -384,7 +384,7 @@ class AuditableModel extends Model implements Auditable
 
         $createdEvents = [
             self::EventCreated,
-            self::EventContractCreated,
+            self::EventRelationCreated,
             self::DownloadCredentials,
             self::SendCredentials,
             self::EventAvatarUploaded
@@ -392,7 +392,7 @@ class AuditableModel extends Model implements Auditable
 
         $updatedEvents = [
             AuditableModel::EventUpdated,
-            AuditableModel::EventContractUpdated,
+            AuditableModel::EventRelationUpdated,
         ];
 
         if (in_array($audit->event, $updatedEvents)) {

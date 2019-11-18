@@ -2,7 +2,6 @@
 
 namespace App\Criteria\Common;
 
-use App\Models\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;

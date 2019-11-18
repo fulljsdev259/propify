@@ -57,7 +57,7 @@ class Helper
                 'title' => __('general.title'),
                 'description' => __('general.description'),                                                
                 'status' => __('models.request.status.label'),
-                'contract_id' => __('models.resident.contract.title'),
+                'relation_id' => __('models.resident.relation.title'),
                 'internal_priority' => __('models.request.internal_priority.label'),
                 'priority' => __('models.request.priority.label'),
                 'qualification' => __('models.request.qualification.label'),
@@ -90,8 +90,8 @@ class Helper
                 'house_num' => __('general.house_num'),  
                 'building_format' => __('models.building.title')." ".__('general.format'),            
             ],
-            'contract' => [
-                'contract_format' => __('models.contract.title')." ".__('general.format'),
+            'relation' => [
+                'relation_format' => __('models.relation.title')." ".__('general.format'),
             ],
             'listing' => [],
             'manager' => [

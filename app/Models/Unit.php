@@ -124,8 +124,8 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read int|null $audits_count
  * @property-read \App\Models\Building $building
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Contract[] $contracts
- * @property-read int|null $contracts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Relation[] $relations
+ * @property-read int|null $relations_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $media
  * @property-read int|null $media_count
  * @property-read \App\Models\Resident $resident
@@ -264,15 +264,15 @@ class Unit extends AuditableModel implements HasMedia
      */
     public function requests()
     {
-        return $this->hasManyThrough(Request::class, Contract::class);
+        return $this->hasManyThrough(Request::class, Relation::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function contracts()
+    public function relations()
     {
-        return $this->hasMany(Contract::class);
+        return $this->hasMany(Relation::class);
     }
 
     public function getSqMeterAttribute($attribute)

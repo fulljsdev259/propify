@@ -4,45 +4,45 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Pinboard\FilterByResidentCriteria;
-use App\Criteria\Contract\FilterByBuildingCriteria;
-use App\Criteria\Contract\FilterByUnitCriteria;
+use App\Criteria\Relation\FilterByBuildingCriteria;
+use App\Criteria\Relation\FilterByUnitCriteria;
 use App\Http\Controllers\AppBaseController;
-use App\Http\Requests\API\Contract\ShowRequest;
-use App\Http\Requests\API\Contract\DeleteRequest;
-use App\Http\Requests\API\Contract\UpdateRequest;
-use App\Http\Requests\API\Contract\CreateRequest;
-use App\Http\Requests\API\Contract\ListRequest;
-use App\Models\Contract;
-use App\Repositories\ContractRepository;
+use App\Http\Requests\API\Relation\ShowRequest;
+use App\Http\Requests\API\Relation\DeleteRequest;
+use App\Http\Requests\API\Relation\UpdateRequest;
+use App\Http\Requests\API\Relation\CreateRequest;
+use App\Http\Requests\API\Relation\ListRequest;
+use App\Models\Relation;
+use App\Repositories\RelationRepository;
 use App\Repositories\PinboardRepository;
-use App\Transformers\ContractTransformer;
+use App\Transformers\RelationTransformer;
 use Illuminate\Http\Response;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 
 /**
- * Class ContractController
+ * Class RelationController
  * @package App\Http\Controllers\API
  */
-class ContractAPIController extends AppBaseController
+class RelationAPIController extends AppBaseController
 {
-    /** @var  ContractRepository */
-    private $contractRepository;
+    /** @var  RelationRepository */
+    private $relationRepository;
 
     /**
-     * ContractAPIController constructor.
-     * @param ContractRepository $contractRepo
+     * RelationAPIController constructor.
+     * @param RelationRepository $relationRepo
      */
-    public function __construct(ContractRepository $contractRepo)
+    public function __construct(RelationRepository $relationRepo)
     {
-        $this->contractRepository = $contractRepo;
+        $this->relationRepository = $relationRepo;
     }
 
     /**
      * @SWG\Get(
-     *      path="/contracts",
-     *      summary="Get a listing of the Contracts.",
-     *      tags={"Contract"},
-     *      description="Get all Contracts",
+     *      path="/relations",
+     *      summary="Get a listing of the Relations.",
+     *      tags={"Relation"},
+     *      description="Get all Relations",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="building_id",
@@ -77,7 +77,7 @@ class ContractAPIController extends AppBaseController
      *              @SWG\Property(
      *                  property="data",
      *                  type="array",
-     *                  @SWG\Items(ref="#/definitions/Contract")
+     *                  @SWG\Items(ref="#/definitions/Relation")
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -94,41 +94,41 @@ class ContractAPIController extends AppBaseController
     public function index(ListRequest $request)
     {
         $request->merge([
-            'model' => (new Contract)->getTable(),
+            'model' => (new Relation)->getTable(),
         ]);
 
-        $this->contractRepository->pushCriteria(new RequestCriteria($request));
-        $this->contractRepository->pushCriteria(new LimitOffsetCriteria($request));
-        $this->contractRepository->pushCriteria(new FilterByBuildingCriteria($request));
-        $this->contractRepository->pushCriteria(new FilterByUnitCriteria($request));
-        $this->contractRepository->pushCriteria(new FilterByResidentCriteria($request));
+        $this->relationRepository->pushCriteria(new RequestCriteria($request));
+        $this->relationRepository->pushCriteria(new LimitOffsetCriteria($request));
+        $this->relationRepository->pushCriteria(new FilterByBuildingCriteria($request));
+        $this->relationRepository->pushCriteria(new FilterByUnitCriteria($request));
+        $this->relationRepository->pushCriteria(new FilterByResidentCriteria($request));
 
         $getAll = $request->get('get_all', false);
         if ($getAll) {
             $request->merge(['limit' => env('APP_PAGINATE', 10)]);
-            $this->contractRepository->pushCriteria(new LimitOffsetCriteria($request));
-            $contracts = $this->contractRepository->get();
-            $response = (new ContractTransformer())->transformCollection($contracts);
-            return $this->sendResponse($response, 'Contracts retrieved successfully');
+            $this->relationRepository->pushCriteria(new LimitOffsetCriteria($request));
+            $relations = $this->relationRepository->get();
+            $response = (new RelationTransformer())->transformCollection($relations);
+            return $this->sendResponse($response, 'Relations retrieved successfully');
         }
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        // @TODO CONTRACT is need? building, address, unit . I think not need because many
-        $contracts = $this->contractRepository->with(['resident.user', 'building.address', 'unit'])->paginate($perPage);
-        $response = (new ContractTransformer())->transformPaginator($contracts);
-        return $this->sendResponse($response, 'Contracts retrieved successfully');
+        // @TODO RELATION is need? building, address, unit . I think not need because many
+        $relations = $this->relationRepository->with(['resident.user', 'building.address', 'unit'])->paginate($perPage);
+        $response = (new RelationTransformer())->transformPaginator($relations);
+        return $this->sendResponse($response, 'Relations retrieved successfully');
     }
 
     /**
      * @SWG\Get(
-     *      path="/contracts/{id}",
-     *      summary="Display the specified Resident Contract",
-     *      tags={"Contract"},
-     *      description="Get Resident Contract",
+     *      path="/relations/{id}",
+     *      summary="Display the specified Resident Relation",
+     *      tags={"Relation"},
+     *      description="Get Resident Relation",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of Resident Contract",
+     *          description="id of Resident Relation",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -144,7 +144,7 @@ class ContractAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Contract"
+     *                  ref="#/definitions/Relation"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -161,30 +161,30 @@ class ContractAPIController extends AppBaseController
      */
     public function show($id, ShowRequest $request)
     {
-        /** @var Contract $contract */
-        $contract = $this->contractRepository->findWithoutFail($id);
-        if (empty($contract)) {
-            return $this->sendError(__('models.resident.contract.errors.not_found'));
+        /** @var Relation $relation */
+        $relation = $this->relationRepository->findWithoutFail($id);
+        if (empty($relation)) {
+            return $this->sendError(__('models.resident.relation.errors.not_found'));
         }
 
-        $contract->load(['resident.user', 'building.address', 'unit']);
-        $response = (new ContractTransformer())->transform($contract);
-        return $this->sendResponse($response, 'Resident Contract retrieved successfully');
+        $relation->load(['resident.user', 'building.address', 'unit']);
+        $response = (new RelationTransformer())->transform($relation);
+        return $this->sendResponse($response, 'Resident Relation retrieved successfully');
     }
 
     /**
      * @SWG\Post(
-     *      path="/contracts",
-     *      summary="Store a newly created Resident renat Contract in storage",
-     *      tags={"Contract"},
-     *      description="Store Resident Contract",
+     *      path="/relations",
+     *      summary="Store a newly created Resident renat Relation in storage",
+     *      tags={"Relation"},
+     *      description="Store Resident Relation",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="body",
      *          in="body",
      *          description="Resident that should be stored",
      *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Contract")
+     *          @SWG\Schema(ref="#/definitions/Relation")
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -197,7 +197,7 @@ class ContractAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Contract"
+     *                  ref="#/definitions/Relation"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -215,28 +215,28 @@ class ContractAPIController extends AppBaseController
     {
         $input = $request->all();
         try {
-            $contract = $this->contractRepository->create($input);
+            $relation = $this->relationRepository->create($input);
         } catch (\Exception $e) {
-            return $this->sendError(__('models.resident.contract.errors.create') . $e->getMessage());
+            return $this->sendError(__('models.resident.relation.errors.create') . $e->getMessage());
         }
 
 
-        $contract->load(['resident.user', 'building.address', 'unit']);
+        $relation->load(['resident.user', 'building.address', 'unit']);
 
-        $response = (new ContractTransformer())->transform($contract);
-        return $this->sendResponse($response, __('models.resident.contract.saved'));
+        $response = (new RelationTransformer())->transform($relation);
+        return $this->sendResponse($response, __('models.resident.relation.saved'));
     }
 
     /**
      * @SWG\Put(
-     *      path="/contracts/{id}",
-     *      summary="Update the specified Resident Contract in storage",
-     *      tags={"Contract"},
-     *      description="Update Resident Contract",
+     *      path="/relations/{id}",
+     *      summary="Update the specified Resident Relation in storage",
+     *      tags={"Relation"},
+     *      description="Update Resident Relation",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of Resident Contract",
+     *          description="id of Resident Relation",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -246,7 +246,7 @@ class ContractAPIController extends AppBaseController
      *          in="body",
      *          description="Resident that should be updated",
      *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Contract")
+     *          @SWG\Schema(ref="#/definitions/Relation")
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -259,7 +259,7 @@ class ContractAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Contract"
+     *                  ref="#/definitions/Relation"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -281,40 +281,40 @@ class ContractAPIController extends AppBaseController
     public function update($id, UpdateRequest $request, PinboardRepository $pinboardRepository)
     {
         $input =  $input = $request->all();
-        /** @var Contract $contract */
-        $contract = $this->contractRepository->findWithoutFail($id);
+        /** @var Relation $relation */
+        $relation = $this->relationRepository->findWithoutFail($id);
 
-        $shouldPinboard = isset($input['building_id']) && $input['building_id'] != $contract->building_id;
+        $shouldPinboard = isset($input['building_id']) && $input['building_id'] != $relation->building_id;
 
-        if (empty($contract)) {
-            return $this->sendError(__('models.resident.contract.errors.not_found'));
+        if (empty($relation)) {
+            return $this->sendError(__('models.resident.relation.errors.not_found'));
         }
 
         try {
-            $contract = $this->contractRepository->updateExisting($contract, $input);
+            $relation = $this->relationRepository->updateExisting($relation, $input);
         } catch (\Exception $e) {
             return $this->sendError(__('models.resident.errors.create') . $e->getMessage());
         }
 
         if ($shouldPinboard) {
-            $pinboardRepository->newResidentContractPinboard($contract);
+            $pinboardRepository->newResidentRelationPinboard($relation);
         }
 
-        $contract->load(['resident.user', 'building.address', 'unit']);
-        $response = (new ContractTransformer())->transform($contract);
+        $relation->load(['resident.user', 'building.address', 'unit']);
+        $response = (new RelationTransformer())->transform($relation);
         return $this->sendResponse($response, __('models.resident.saved'));
     }
 
     /**
      * @SWG\Delete(
-     *      path="/contracts/{id}",
-     *      summary="Remove the specified Resident Contract from storage",
-     *      tags={"Contract"},
-     *      description="Delete Contract",
+     *      path="/relations/{id}",
+     *      summary="Remove the specified Resident Relation from storage",
+     *      tags={"Relation"},
+     *      description="Delete Relation",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of Contract",
+     *          description="id of Relation",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -347,24 +347,24 @@ class ContractAPIController extends AppBaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $this->contractRepository->delete($id);
+            $this->relationRepository->delete($id);
         } catch (\Exception $e) {
             return $this->sendError('Delete error: ' . $e->getMessage());
         }
 
-        return $this->sendResponse($id, __('models.resident.contract.deleted'));
+        return $this->sendResponse($id, __('models.resident.relation.deleted'));
     }
 
     /**
      * @SWG\Post(
-     *      path="/contracts/deletewithids",
-     *      summary="Remove multiple Resident Contract from storage",
-     *      tags={"Contract"},
-     *      description="Delete multiple Contract",
+     *      path="/relations/deletewithids",
+     *      summary="Remove multiple Resident Relation from storage",
+     *      tags={"Relation"},
+     *      description="Delete multiple Relation",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="ids",
-     *          description="id of Contract",
+     *          description="id of Relation",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -396,11 +396,11 @@ class ContractAPIController extends AppBaseController
     public function destroyWithIds(DeleteRequest $request){
         $ids = $request->get('ids');
         try{
-            Contract::destroy($ids);
+            Relation::destroy($ids);
         }
         catch (\Exception $e) {
-            return $this->sendError(__('models.resident.contract.errors.deleted') . $e->getMessage());
+            return $this->sendError(__('models.resident.relation.errors.deleted') . $e->getMessage());
         }
-        return $this->sendResponse($ids, __('models.resident.contract.deleted'));
+        return $this->sendResponse($ids, __('models.resident.relation.deleted'));
     }
 }

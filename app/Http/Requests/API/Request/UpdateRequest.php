@@ -30,7 +30,7 @@ class UpdateRequest extends BaseRequest
         if ($user->resident) {
             return [
                 'resident_id' => 'exists:residents,id',
-                'contract_id' => 'exists:contracts,id',
+                'relation_id' => 'exists:relations,id',
                 'title' => 'string',
                 'description' => 'string',
                 'status' => 'integer',
@@ -43,7 +43,7 @@ class UpdateRequest extends BaseRequest
         $putRoles = [
 
             'resident_id' => 'exists:residents,id',
-            'contract_id' => 'exists:contracts,id',
+            'relation_id' => 'exists:relations,id',
             'title' => 'string',
             'description' => 'string',
 //        'priority' => 'integer',

@@ -23,7 +23,6 @@ class AddressTransformer extends TransformerAbstract
     /**
      * @param Address $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(Address $model)
     {

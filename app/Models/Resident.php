@@ -33,8 +33,8 @@ use Illuminate\Support\Facades\Storage;
  *          format="int32"
  *      ),
  *     @SWG\Property(
- *          property="default_contract_id",
- *          description="default_contract_id",
+ *          property="default_relation_id",
+ *          description="default_relation_id",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -112,7 +112,7 @@ use Illuminate\Support\Facades\Storage;
  * )
  * @property int $id
  * @property int|null $user_id
- * @property int|null $default_contract_id
+ * @property int|null $default_relation_id
  * @property int|null $address_id
  * @property int|null $country_id
  * @property int|null $rating
@@ -136,10 +136,10 @@ use Illuminate\Support\Facades\Storage;
  * @property-read \App\Models\Address|null $address
  * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read int|null $audits_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Contract[] $contracts
- * @property-read int|null $contracts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Relation[] $relations
+ * @property-read int|null $relations_count
  * @property-read \App\Models\Country|null $country
- * @property-read \App\Models\Contract|null $default_contract
+ * @property-read \App\Models\Relation|null $default_relation
  * @property-read mixed $name
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $media
  * @property-read int|null $media_count
@@ -158,7 +158,7 @@ use Illuminate\Support\Facades\Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereCompany($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereCountryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereDefaultContractId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereDefaultRelationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Resident whereId($value)
@@ -220,7 +220,7 @@ class Resident extends AuditableModel implements HasMedia
      * @var array
      */
     public static $rules = [
-        'default_contract_id' => 'exists:contracts,id',// @TODO check own or not
+        'default_relation_id' => 'exists:relations,id',// @TODO check own or not
         'title' => 'required|string',
         'first_name' => 'required|string',
         'last_name' => 'required|string',
@@ -238,7 +238,7 @@ class Resident extends AuditableModel implements HasMedia
      */
     public $fillable = [
         'user_id',
-        'default_contract_id',
+        'default_relation_id',
         'address_id',
         'title',
         'company',
@@ -371,9 +371,9 @@ class Resident extends AuditableModel implements HasMedia
     /**
      * @return HasMany
      */
-    public function contracts()
+    public function relations()
     {
-        return $this->hasMany(Contract::class);
+        return $this->hasMany(Relation::class);
     }
 
     /**
@@ -387,15 +387,15 @@ class Resident extends AuditableModel implements HasMedia
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function default_contract()
+    public function default_relation()
     {
-        return $this->belongsTo(Contract::class);
+        return $this->belongsTo(Relation::class);
     }
 
 
-    public function active_contracts()
+    public function active_relations()
     {
-        return $this->contracts()->where('contracts.status', Contract::StatusActive);
+        return $this->relations()->where('relations.status', Relation::StatusActive);
     }
 
     /**

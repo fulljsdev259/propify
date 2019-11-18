@@ -3,7 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Building;
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Models\Resident;
 
 /**
@@ -17,13 +17,12 @@ class ResidentTransformer extends BaseTransformer
     /**
      * @param Resident $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(Resident $model)
     {
         $response = [
             'id' => $model->id,
-            'default_contract_id' => $model->default_contract_id,
+            'default_relation_id' => $model->default_relation_id,
             'title' => $model->title,
             'company' => $model->company,
             'first_name' => $model->first_name,
@@ -47,8 +46,8 @@ class ResidentTransformer extends BaseTransformer
             $response['settings'] = $model->settings;
         }
 
-        if ($model->relationExists('default_contract')) {
-            $response['default_contract'] = (new ContractTransformer())->transform($model->default_contract);
+        if ($model->relationExists('default_relation')) {
+            $response['default_relation'] = (new RelationTransformer())->transform($model->default_relation);
         }
 
         if ($model->relationExists('user')) {
@@ -56,15 +55,15 @@ class ResidentTransformer extends BaseTransformer
         }
 
         $response['media'] = [];
-        if ($model->contracts || $model->relationExists('contracts')) { // @TODO delete reloading
-            $response['contracts'] = (new ContractTransformer())->transformCollection($model->contracts);
+        if ($model->relations || $model->relationExists('relations')) { // @TODO delete reloading
+            $response['relations'] = (new RelationTransformer())->transformCollection($model->relations);
 
-            $allCount = $model->contracts->count();
-            $activeCount = $model->contracts->where('status', Contract::StatusActive)->count();
+            $allCount = $model->relations->count();
+            $activeCount = $model->relations->where('status', Relation::StatusActive)->count();
 
-            $response['active_contracts_count'] = $activeCount;
-            $response['inactive_contracts_count'] = $allCount - $activeCount;
-            $response['total_contracts_count'] = $allCount;
+            $response['active_relations_count'] = $activeCount;
+            $response['inactive_relations_count'] = $allCount - $activeCount;
+            $response['total_relations_count'] = $allCount;
         }
 
         return $this->addAuditIdInResponseIfNeed($model, $response);

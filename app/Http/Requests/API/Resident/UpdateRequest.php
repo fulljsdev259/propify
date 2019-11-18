@@ -30,7 +30,7 @@ class UpdateRequest extends BaseRequest
                 'in:' . implode(',', array_keys(Resident::Type)),
                 function ($attribute, $value, $fails) {
                     $residentId = $this->route('id');
-                    $resident = Resident::withCount('requests', 'contracts')->find($residentId);
+                    $resident = Resident::withCount('requests', 'relations')->find($residentId);
 
                     if (empty($resident)) {
                         return $fails(__('models.resident.errors.not_found'));
@@ -40,12 +40,12 @@ class UpdateRequest extends BaseRequest
                         return true;
                     }
 
-                    if ($resident->requests_count && $resident->contracts_count) {
-                        return $fails(__('models.resident.errors.not_allowed_change_type_has_request_contract', $resident->only('contracts_count', 'requests_count')));
+                    if ($resident->requests_count && $resident->relations_count) {
+                        return $fails(__('models.resident.errors.not_allowed_change_type_has_request_relation', $resident->only('relations_count', 'requests_count')));
                     }
 
-                    if ($resident->contracts_count) {
-                        return $fails(__('models.resident.errors.not_allowed_change_type_has_contract', $resident->only('contracts_count')));
+                    if ($resident->relations_count) {
+                        return $fails(__('models.resident.errors.not_allowed_change_type_has_relation', $resident->only('relations_count')));
                     }
 
                     if ($resident->requests_count) {
@@ -57,7 +57,7 @@ class UpdateRequest extends BaseRequest
                 'nullable',
                 // @TODO validate properly
             ],
-            'default_contract_id' => 'nullable|exists:contracts,id',// @TODO check own or not
+            'default_relation_id' => 'nullable|exists:relations,id',// @TODO check own or not
             'title' => 'string',
             'first_name' => 'string',
             'last_name' => 'string',

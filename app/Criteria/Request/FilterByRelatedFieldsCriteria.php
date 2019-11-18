@@ -50,7 +50,7 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
 
         $unitId = $this->request->get('unit_id', null);
         if ($unitId) {
-            $model->whereHas('contract', function ($q) use ($unitId) {
+            $model->whereHas('relation', function ($q) use ($unitId) {
                 $q->where('unit_id', $unitId);
             });
         }
@@ -94,14 +94,14 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
 
         $buildingId = $this->request->get('building_id', null);
         if ($buildingId) {
-            $model->whereHas('contract', function ($query) use ($buildingId) {
+            $model->whereHas('relation', function ($query) use ($buildingId) {
                 $query->where('building_id', $buildingId);
             });
         }
 
         $quarterId = $this->request->get('quarter_id', null);
         if ($quarterId) {
-            $model->whereHas('contract', function ($query) use ($quarterId) {
+            $model->whereHas('relation', function ($query) use ($quarterId) {
                 $query->whereHas('building', function ($query) use ($quarterId) {
                     $query->where('quarter_id', $quarterId);
                 });

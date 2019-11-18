@@ -31,7 +31,7 @@ class BuildingSimpleTransformer extends BaseTransformer
             'basement' => $model->basement,
             'attic' => $model->attic,
             'internal_building_id' => $model->internal_building_id,
-            'created_at' => $model->created_at->format('Y-m-d'),
+            'created_at' => $model->created_at ? $model->created_at->format('Y-m-d') : '',
         ];
 
         if ($model->relationExists('quarter')) {

@@ -50,7 +50,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/residents/my-property-managers', 'ResidentAPIController@myPropertyManagers')->name('residents.my-property-managers');
     Route::get('/residents/me', 'ResidentAPIController@showLoggedIn')->name('residents.me');
     Route::get('/residents/{id}', 'ResidentAPIController@show')->name('residents.show');
-    Route::get('/residents/{id}/type', 'ResidentAPIController@checkResidentHasContractOrRequest')->name('residents.has.contract-or-requests');
+    Route::get('/residents/{id}/type', 'ResidentAPIController@checkResidentHasRelationOrRequest')->name('residents.has.relation-or-requests');
     Route::get('/residents/{id}/statistics', 'DashboardAPIController@residentStatistics')->name('residents.statistics.show');
     Route::get('/my/documents', 'ResidentAPIController@myDocuments')->name('my.documents');
 
@@ -59,7 +59,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::post('/residents/{id}/send-credentials', 'ResidentAPIController@sendCredentials');
     Route::post('/residents/{id}/download-credentials', 'ResidentAPIController@downloadCredentials');
 
-    Route::put('/residents/default-contract', 'ResidentAPIController@updateDefaultContract')->name('residents.me.update.default-contract');
+    Route::put('/residents/default-relation', 'ResidentAPIController@updateDefaultRelation')->name('residents.me.update.default-relation');
     Route::put('/residents/me', 'ResidentAPIController@updateLoggedIn')->name('residents.me.update');
     Route::put('/residents/{id}', 'ResidentAPIController@update')->name('residents.update');
     Route::put('/residents/{id}/status', 'ResidentAPIController@changeStatus')->name('residents.changeStatus');
@@ -68,15 +68,15 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::post('/residents/deletewithids', 'ResidentAPIController@destroyWithIds')->name('residents.destroyWithIds');
 
 
-    //Contract
-    Route::get('/contracts', 'ContractAPIController@index')->name('contracts');
-    Route::get('/contracts/{id}', 'ContractAPIController@show')->name('contracts.show');
-    Route::post('/contracts', 'ContractAPIController@store')->name('contracts.store');
-    Route::post('/contracts/{id}/media', 'MediaAPIController@contractUpload')->name('contracts.media.upload');
-    Route::put('/contracts/{id}', 'ContractAPIController@update')->name('contracts.update');
-    Route::delete('/contracts/{id}', 'ContractAPIController@destroy')->name('contracts.destroy');
-    Route::post('/contracts/deletewithids', 'ContractAPIController@destroyWithIds')->name('contracts.destroyWithIds');
-    Route::delete('/contracts/{id}/media/{media_id}', 'MediaAPIController@contractDestroy')->name('contracts.media.destroy');
+    //Relation
+    Route::get('/relations', 'RelationAPIController@index')->name('relations');
+    Route::get('/relations/{id}', 'RelationAPIController@show')->name('relations.show');
+    Route::post('/relations', 'RelationAPIController@store')->name('relations.store');
+    Route::post('/relations/{id}/media', 'MediaAPIController@relationUpload')->name('relations.media.upload');
+    Route::put('/relations/{id}', 'RelationAPIController@update')->name('relations.update');
+    Route::delete('/relations/{id}', 'RelationAPIController@destroy')->name('relations.destroy');
+    Route::post('/relations/deletewithids', 'RelationAPIController@destroyWithIds')->name('relations.destroyWithIds');
+    Route::delete('/relations/{id}/media/{media_id}', 'MediaAPIController@relationDestroy')->name('relations.media.destroy');
 
     // Location
     Route::get('/states', 'StateAPIController@index')->name('states');
