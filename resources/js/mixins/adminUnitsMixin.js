@@ -65,10 +65,7 @@ export default (config = {}) => {
                     }, {
                         validator: this.validateFloor
                     }],
-                    building_id: [{
-                        required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.unit.building')})
-                    }],
+                    building_id: [],
                     quarter_id: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.building.quarter')})

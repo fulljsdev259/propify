@@ -76,13 +76,14 @@
 
                         const animeOptions = {
                             targets: this.siblingElement,
-                            filter: ['blur(0px)', 'blur(16px)'],
+                            filter: ['blur(0px)', 'blur(1px)'],
                             translateZ: 0,
                             easing: 'easeInOutBack'
                         }
 
                         if (this.docked) {
-                            animeOptions.translateX = -this.size
+                            // animeOptions.translateX = -this.size
+                            animeOptions.translateX = 0
                         }
 
                         this.$anime(animeOptions)
@@ -91,7 +92,7 @@
 
                         const animeOptions = {
                             targets: this.siblingElement,
-                            filter: ['blur(16px)', 'blur(0px)'],
+                            filter: ['blur(1px)', 'blur(0px)'],
                             translateZ: 0,
                             easing: 'easeInOutBack'
                         }
