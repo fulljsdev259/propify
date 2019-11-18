@@ -214,12 +214,6 @@ class Resident extends AuditableModel implements HasMedia
         self::TenantTypeGarant => 'garant',
     ];
 
-    const TypeTenantType = [
-        self::TypeResident => [
-            self::TenantTypeMain,
-            self::TenantTypeGarant
-        ]
-    ];
     /**
      * Validation rules
      *

@@ -222,7 +222,6 @@ class UtilsAPIController extends AppBaseController
             'status' => Resident::Status,
             'type' => Resident::Type,
             'tenant_type' => Resident::TenantType,
-            'type_tenant_type' => Resident::TypeTenantType,
         ];
 
         return $result;
