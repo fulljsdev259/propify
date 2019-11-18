@@ -2,7 +2,7 @@
     <div class="quarters">
         <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" class="padding-right-300">
             <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="handleOrder($event)"></list-field-filter>
+                <list-field-filter :fields="header" @field-changed="fields=$event"  @order-changed="header=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.quarter)">
                 <el-button 
@@ -150,9 +150,6 @@
                 await this.openEdit(quarter);
                 this.$set(this.model, 'buildings', buildingsResp.data);
                 this.loading = false;
-            },
-            handleOrder(data) {
-                this.header = data;
             },
             add() {
                 this.$router.push({
