@@ -5,7 +5,7 @@ namespace App\Http\Requests\API\Resident;
 use App\Models\Resident;
 use App\Http\Requests\BaseRequest;
 
-class CheckHasRequestOrContractRequest extends BaseRequest
+class CheckHasRequestOrRelationRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

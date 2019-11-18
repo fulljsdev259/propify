@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests\API\Contract;
+namespace App\Http\Requests\API\Relation;
 
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Http\Requests\BaseRequest;
 
 class UpdateRequest extends BaseRequest
@@ -24,6 +24,6 @@ class UpdateRequest extends BaseRequest
      */
     public function rules()
     {
-        return Contract::$rules;
+        return Relation::$rules;
     }
 }

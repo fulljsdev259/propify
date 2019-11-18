@@ -23,6 +23,6 @@ class ViewRequest extends BaseRequest
         $resident = $this->user()->resident ?? null;
 
 
-        return $resident && $resident->contracts()->where('building_id', $building->id)->exists();
+        return $resident && $resident->relations()->where('building_id', $building->id)->exists();
     }
 }
