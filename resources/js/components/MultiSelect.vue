@@ -9,7 +9,7 @@
                     :closable="findSelectedOne.count !== 1"
                     @close="selectItem(findSelectedOne.index, true)"
                 >
-                    {{ `${filter.name}: ${getLanguageStr(findSelectedOne.label)}` }}
+                    {{ ` ${getLanguageStr(findSelectedOne.label)}` }}
                 </el-tag>
                 <el-tag 
                     v-else
@@ -78,6 +78,7 @@
 </template>
 <script>
     export default {
+        name: 'MultiSelect',
         data() {
             return {
                originItems: [],
@@ -131,6 +132,7 @@
         },
         methods: {
             isContained(str) {
+                str += ""
                 return str.toLowerCase().includes(this.search.toLowerCase());
             },
             handleDropdownClick() {
@@ -181,6 +183,7 @@
             filterSearch(name) {
                 let result = name;
                 if(this.search !== '') {
+                    name += ""
                     let pos = name.toLowerCase().indexOf(this.search.toLowerCase());
                     if(pos !== -1) {
                         result = `${name.slice(0, pos)}<b>${name.slice(pos, pos + this.search.length)}</b>${name.slice(pos + this.search.length)}`;
@@ -218,9 +221,7 @@
             initFilter() {
                 this.items = [];
                 this.originItems = [];
-                console.log('filter', this.filter)
                 this.options = this.filter.data;
-                console.log(this.options)
                 if(this.filter.key == 'language') {
                     let languagesObject = this.$constants.app.languages;
                     let languagesArray = Object.keys(languagesObject).map(function(key) {
@@ -255,12 +256,12 @@
                     this.options.forEach((option) => {
                         this.items.push({
                             id: option.id,
-                            name: option.name,
+                            name: option[this.filter.key],
                             selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
                         });
                         this.originItems.push({
                             id: option.id,
-                            name: option.name,
+                            name: option[this.filter.key],
                             selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
                         })
                     });
