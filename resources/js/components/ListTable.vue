@@ -212,7 +212,7 @@
                     </div>
                     <div v-else-if="column.withCounts">
                         <request-count :countsData="items[scope.$index]" ></request-count>
-                        <contract-count :countsData="items[scope.$index]" ></contract-count>
+                        <relation-count :countsData="items[scope.$index]" ></relation-count>
                     </div>
                     <div v-else-if="column.withUsers">
                         <div class="avatars-wrapper">
@@ -350,7 +350,7 @@
     import {Avatar} from 'vue-avatar'
     import uuid from 'uuid/v1'
     import RequestCount from 'components/RequestCount'
-    import ContractCount from 'components/ContractCount'
+    import RelationCount from 'components/RelationCount'
     import tableAvatar from 'components/Avatar';
     import RequestDetailCard from 'components/RequestDetailCard';
     import SelectLanguage from 'components/SelectLanguage';
@@ -362,7 +362,7 @@
         components: {
             Avatar,
             RequestCount,
-            ContractCount,
+            RelationCount,
             'table-avatar': tableAvatar,
             RequestDetailCard,
             SelectLanguage,

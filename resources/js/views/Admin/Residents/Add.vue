@@ -176,9 +176,9 @@
                         </card>
                         
                         
-                        <card class="mt15 contract-box">
+                        <card class="mt15 relation-box">
                             <template slot="header">
-                                {{ $t('models.resident.contract.title') }}
+                                {{ $t('models.resident.relation.title') }}
                                 <el-button style="float:right" 
                                         type="primary" 
                                         @click="toggleDrawer" 
@@ -186,17 +186,17 @@
                                         size="mini" 
                                         :disabled="model.type == ''" 
                                         round>
-                                        {{ $t('models.resident.contract.add') }}
+                                        {{ $t('models.resident.relation.add') }}
                                 </el-button>
                             </template>
                             
-                            <contract-list-table
-                                        :items="model.contracts"
-                                        :hide-contract-id="true"
+                            <relation-list-table
+                                        :items="model.relations"
+                                        :hide-relation-id="true"
                                         :hide-avatar="true"
-                                        @edit-contract="editContract"
-                                        @delete-contract="deleteContract">
-                            </contract-list-table>
+                                        @edit-relation="editRelation"
+                                        @delete-relation="deleteRelation">
+                            </relation-list-table>
                             
                         </card>
                     </el-col>
@@ -205,22 +205,22 @@
         </div>
         </div>
         <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-            <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.contract.title') }}</ui-divider>
+            <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }}</ui-divider>
             <div class="content" v-if="visibleDrawer">
-                <contract-form v-if="editingContract" 
+                <relation-form v-if="editingRelation" 
                                 mode="edit" 
-                                :data="editingContract" 
+                                :data="editingRelation" 
                                 :resident_type="model.type" 
                                 :visible.sync="visibleDrawer" 
-                                :edit_index="editingContractIndex" 
-                                @update-contract="updateContract"
-                                @delete-contract="deleteContract" 
+                                :edit_index="editingRelationIndex" 
+                                @update-relation="updateRelation"
+                                @delete-relation="deleteRelation" 
                                 :used_units="used_units"/>
-                <contract-form v-else mode="add" 
+                <relation-form v-else mode="add" 
                                 :resident_type="model.type" 
                                 :visible.sync="visibleDrawer" 
-                                @add-contract="addContract" 
-                                @delete-contract="deleteContract"
+                                @add-relation="addRelation" 
+                                @delete-relation="deleteRelation"
                                 :used_units="used_units"/>
             </div>
         </ui-drawer>
@@ -234,8 +234,8 @@
     import Cropper from 'components/Cropper';
     import AddActions from 'components/EditViewActions';
     import SelectLanguage from 'components/SelectLanguage';
-    import ContractForm from 'components/ContractForm';
-    import ContractListTable from 'components/ContractListTable';
+    import RelationForm from 'components/RelationForm';
+    import RelationListTable from 'components/RelationListTable';
     import RelationListing from 'components/RelationListing';
     import {mapActions, mapGetters} from 'vuex';
 
@@ -247,10 +247,10 @@
             Heading,
             Card,
             Cropper,
-            ContractForm,
+            RelationForm,
             AddActions,
             SelectLanguage,
-            ContractListTable,
+            RelationListTable,
             RelationListing
         },
         data() {
@@ -295,7 +295,7 @@
 
         
 
-        /deep/ .contract-box.el-card {
+        /deep/ .relation-box.el-card {
             .el-card__header {
                 display: block;
             }            

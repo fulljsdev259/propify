@@ -19,10 +19,10 @@ class PinboardTableSeeder extends Seeder
             $pinboards = factory(App\Models\Pinboard::class, $totalPosts)->create(['status' => Pinboard::StatusPublished]);
             foreach ($pinboards as $pinboard) {
                 $user = $pinboard->user;
-                if ($user->resident && ! empty($user->resident->default_contract->building)) {
-                    $pinboard->buildings()->sync($user->resident->default_contract->building->id);
-                    if ($user->resident->default_contract->building->quarter_id) {
-                        $pinboard->quarters()->sync($user->resident->default_contract->building->quarter_id);
+                if ($user->resident && ! empty($user->resident->default_relation->building)) {
+                    $pinboard->buildings()->sync($user->resident->default_relation->building->id);
+                    if ($user->resident->default_relation->building->quarter_id) {
+                        $pinboard->quarters()->sync($user->resident->default_relation->building->quarter_id);
                     }
                 }
                 //$pRepo->setStatus($pinboard->id, Post::StatusPublished, now());

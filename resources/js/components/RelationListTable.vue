@@ -3,7 +3,7 @@
         <el-table
             :data="showItems"
             style="width: 100%"
-            class="contract-table"
+            class="relation-table"
             >
             <div slot="empty">
                 <el-alert                                     
@@ -37,9 +37,9 @@
                 </template>
             </el-table-column>
             <!-- <el-table-column
-                :label="$t('models.resident.contract.contract_id')"
-                v-if="!hideContractId"
-                prop="contract_format"
+                :label="$t('models.resident.relation.relation_id')"
+                v-if="!hideRelationId"
+                prop="relation_format"
             >
             </el-table-column> -->
             <el-table-column
@@ -58,8 +58,8 @@
                 :label="$t('models.resident.status.label')"
             >
                 <template slot-scope="scope">
-                    <i class="icon-dot-circled" :class="[constants.contracts.status[scope.row.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
-                    {{ constants.contracts.status[scope.row.status] ? $t('models.resident.contract.status.' + constants.contracts.status[scope.row.status]) : ''}}
+                    <i class="icon-dot-circled" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
+                    {{ constants.relations.status[scope.row.status] ? $t('models.resident.relation.status.' + constants.relations.status[scope.row.status]) : ''}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -71,13 +71,13 @@
                         :content="$t('general.actions.edit')"
                         class="item" effect="light" 
                         placement="top-end">
-                            <el-button @click="$emit('edit-contract', scope.$index)" icon="ti-search" size="mini" round/>
+                            <el-button @click="$emit('edit-relation', scope.$index)" icon="ti-search" size="mini" round/>
                     </el-tooltip>
                     <!-- <el-tooltip
                         :content="$t('general.actions.delete')"
                         class="item" effect="light" 
                         placement="top-end">
-                            <el-button @click="$emit('delete-contract', scope.$index)" icon="ti-trash" size="mini" type="danger" round/>
+                            <el-button @click="$emit('delete-relation', scope.$index)" icon="ti-trash" size="mini" type="danger" round/>
                     </el-tooltip> -->
                 </template>
             </el-table-column>
@@ -97,7 +97,7 @@
     
 
     export default {
-        name: 'ContractListTable',
+        name: 'RelationListTable',
         mixins: [
             ResponsiveMixin
         ],
@@ -111,7 +111,7 @@
                     return [];
                 }
             },
-            hideContractId: {
+            hideRelationId: {
                 type: Boolean,
                 default: false
             },
@@ -164,7 +164,7 @@
 </script>
 
 <style lang="scss" scoped>
-    .contract-table {
+    .relation-table {
         .clickable {
             display: block;
             cursor: pointer;

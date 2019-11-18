@@ -14,11 +14,11 @@ export default {
             title: 'My personal data'
         }
     }, {
-        name: 'residentMyContracts',
-        path: 'contracts',
-        component: () => import ( /* webpackChunkName: "resident/my/contracts" */ 'views/Resident/My/Contracts'),
+        name: 'residentMyRelations',
+        path: 'relations',
+        component: () => import ( /* webpackChunkName: "resident/my/relations" */ 'views/Resident/My/Relations'),
         meta: {
-            title: 'My recent contracts'
+            title: 'My recent relations'
         }
     }, {
         name: 'residentMyDocuments',

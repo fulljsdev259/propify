@@ -2,21 +2,20 @@
 
 namespace App\Transformers;
 
-use App\Models\Contract;
+use App\Models\Relation;
 
 /**
- * Class ContractTransformer.
+ * Class RelationTransformer.
  *
  * @package namespace App\Transformers;
  */
-class ContractTransformer extends BaseTransformer
+class RelationTransformer extends BaseTransformer
 {
     /**
-     * @param Contract $model
+     * @param Relation $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function transform(Contract $model)
+    public function transform(Relation $model)
     {
         $response = [
             'id' => $model->id,
@@ -26,7 +25,7 @@ class ContractTransformer extends BaseTransformer
             'type' => $model->type,
             'duration' => $model->duration,
             'status' => $model->status,
-            'contract_format' => $model->contract_format,
+            'relation_format' => $model->relation_format,
             'deposit_type' => $model->deposit_type,
             'deposit_status' => $model->deposit_status,
             'deposit_amount' => $model->deposit_amount,

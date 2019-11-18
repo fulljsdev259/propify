@@ -9,10 +9,10 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FilterByBuildingCriteria
- * @package Prettus\Repository\Criteria
+ * Class FilterByRelationRelatedCriteria
+ * @package App\Criteria\Resident
  */
-class FilterByContractRelatedCriteria implements CriteriaInterface
+class FilterByRelationRelatedCriteria implements CriteriaInterface
 {
     /**
      * @var \Illuminate\Http\Request
@@ -40,13 +40,13 @@ class FilterByContractRelatedCriteria implements CriteriaInterface
         $buildingId = $this->request->get('building_id', null);
         $unitId = $this->request->get('unit_id', null);
         $stateId = $this->request->get('state_id', null);
-        $hasContract = $this->request->get('has_contract', null);
+        $hasRelation = $this->request->get('has_relation', null);
 
-        if (!( $buildingId || $quarterId || $unitId || $stateId || $hasContract) ) {
+        if (!( $buildingId || $quarterId || $unitId || $stateId || $hasRelation) ) {
             return $model;
         }
 
-        $model->whereHas('contracts', function ($q) use($buildingId, $quarterId, $unitId, $stateId) {
+        $model->whereHas('relations', function ($q) use($buildingId, $quarterId, $unitId, $stateId) {
             $q->when($buildingId, function ($q) use ($buildingId) {
                     $q->where('building_id', $buildingId);
                 })->when($unitId, function ($q) use ($unitId) {

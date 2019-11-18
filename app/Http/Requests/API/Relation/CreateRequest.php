@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Http\Requests\API\Media;
+namespace App\Http\Requests\API\Relation;
 
+use App\Models\Relation;
 use App\Http\Requests\BaseRequest;
-use App\Models\Contract;
 
-/**
- * Class ContractUploadRequest
- * @package App\Http\Requests\API\Media
- */
-class ContractUploadRequest extends BaseRequest
+class CreateRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,7 +14,7 @@ class ContractUploadRequest extends BaseRequest
      */
     public function authorize()
     {
-        return $this->can('edit-resident'); // @TODO correct permission
+        return $this->can('add-resident'); // @TODO use correct permission
     }
 
     /**
@@ -28,6 +24,6 @@ class ContractUploadRequest extends BaseRequest
      */
     public function rules()
     {
-        return $this->getMediaRules(Contract::class);
+        return Relation::$rules;
     }
 }

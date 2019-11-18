@@ -247,9 +247,9 @@ return [
             'title' => 'Delete Listing',
             'text' => 'Do you really want to delete the listing?',
         ],
-        'delete_contract' => [
-            'title' => 'Delete contract',
-            'text' => 'Do you really want to delete the contract?',
+        'delete_relation' => [
+            'title' => 'Delete relation',
+            'text' => 'Do you really want to delete the relation?',
         ],
         'add' => [
             'added' => 'Added successfully',
@@ -368,7 +368,7 @@ return [
                         'notifications_sent' => 'Notification sent',
                         'new_resident_pinboard_created' => 'New neighbour pinboard',
                         'avatar_uploaded' => 'Profile image uploaded',
-                        'contract_created' => 'Contract created',
+                        'relation_created' => 'Relation created',
                     ],
                 ],
                 'content' => [
@@ -391,7 +391,7 @@ return [
                         'notifications_sent' => 'Notification has been sent for this :auditable_type.',
                         'new_resident_pinboard_created' => 'New neighbour added for user :userName.',
                         'avatar_uploaded' => 'Profile image uploaded for :auditable_type.',
-                        'contract_created' => 'Contract created for resident :userName.',
+                        'relation_created' => 'Relation created for resident :userName.',
                         'update_no_fieldvalue' => 'The :fieldname changed.',
                         'liked' => ':userName liked this pinboard',
                         'unliked' => ':userName unliked this pinboard',
@@ -546,7 +546,7 @@ return [
         'property_managers' => 'Property managers',
         'templates' => 'Templates'
     ],
-    'contracts' => 'Contracts',
+    'relations' => 'Relations',
     'ordinal_endings' => [
         'st' => 'st',
         'nd' => 'nd',

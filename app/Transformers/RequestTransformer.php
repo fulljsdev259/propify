@@ -14,7 +14,6 @@ class RequestTransformer extends BaseTransformer
     /**
      * @param Request $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(Request $model)
     {
@@ -90,8 +89,8 @@ class RequestTransformer extends BaseTransformer
             $response['resident'] = (new ResidentTransformer)->transform($model->resident);
         }
 
-        if ($model->relationExists('contract')) {
-            $response['contract'] = (new ContractTransformer())->transform($model->contract);
+        if ($model->relationExists('relation')) {
+            $response['relation'] = (new RelationTransformer())->transform($model->relation);
         }
 
         if ($model->relationExists('comments')) {

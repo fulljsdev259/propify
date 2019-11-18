@@ -12,10 +12,10 @@ export default {
                 resident.building_address_zip = `${resident.building.address.zip} ${resident.building.address.city}`;
             }
 
-            resident.building_names = resident.contracts.map(item => item.building && item.address ? { 
+            resident.building_names = resident.relations.map(item => item.building && item.address ? { 
                             row : item.address.street + " " + item.address.house_num ,  
                             zip : item.address.zip + " " + item.address.city  } : { row : '', zip : ''} )
-            resident.unit_names = resident.contracts.map(item => item.unit ? item.unit.name : '')
+            resident.unit_names = resident.relations.map(item => item.unit ? item.unit.name : '')
 
             return resident;
         });
@@ -25,8 +25,8 @@ export default {
             resident.name = `${resident.first_name} ${resident.last_name}`;
             resident.status_label = `models.resident.status.${constants.residents.status[resident.status]}`;
             resident.address = ''
-            if(resident.contracts.length)
-                resident.address = resident.contracts[0].address['street'] + ' ' + resident.contracts[0].address['house_num']; // @TODO : this address should be checked once the api is done
+            if(resident.relations.length)
+                resident.address = resident.relations[0].address['street'] + ' ' + resident.relations[0].address['house_num']; // @TODO : this address should be checked once the api is done
             resident.status_class_suffix = constants.residents.status[resident.status];
 
             return resident;

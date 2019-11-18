@@ -111,12 +111,13 @@
         <el-row :gutter="20" style="margin-top: 10px; margin-left: 0; margin-right: 0">
             <el-col :md="24" class="drawer-actions">
                 <el-button type="default" size="mini" @click="close" class="round-btn">&nbsp;{{ $t('general.actions.close') }}</el-button>
-                <el-tooltip
+                <el-button type="danger" size="mini" icon="icon-trash-empty" @click="$emit('delete-workflow', this.editing_index)" class="round-btn">&nbsp;{{ $t('models.quarter.workflow.delete') }}</el-button>
+                <!-- <el-tooltip
                         :content="$t('models.quarter.workflow.tooltips.save')"
                         class="item" effect="light" placement="top-end"
-                    >
+                    > -->
                     <el-button type="primary" size="mini" @click="submit" icon="ti-save" class="round-btn">&nbsp;{{ $t('general.actions.save') }}</el-button>
-                </el-tooltip>
+                <!-- </el-tooltip> -->
             </el-col>
         </el-row>
         

@@ -13,7 +13,7 @@ export default {
                         unit.activeResidents = []
                         unit.activeResidentsCount = 0
                         unit.residents.forEach(resident => {
-                            if( resident.active_contracts_count > 0 ) {
+                            if( resident.active_relations_count > 0 ) {
                                 unit.activeResidents.push(resident)
                             }
                         })

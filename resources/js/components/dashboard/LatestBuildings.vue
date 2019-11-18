@@ -74,7 +74,7 @@
                 });
 
                 buildings.data.data.map(building => {
-                    building.residents = building.contracts.map(contract => contract.resident)
+                    building.residents = building.relations.map(relation => relation.resident)
                     building.residentscount = building.residents.length > 2 ? (building.residents.length - 2) : 0;
                     building.residents = building.residents.splice(0, 2);
                 })
