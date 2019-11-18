@@ -416,6 +416,7 @@
                     <el-card :header="$t('general.box_titles.buildings_and_quarters')" class="mt15">
                         <relation-list
                             :columns="assignmentsColumns"
+                            action=""
                             :filterValue="model.id"
                             fetchAction="getPinboardAssignments"
                             filter="pinboard_id"
