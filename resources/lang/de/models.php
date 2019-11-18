@@ -148,6 +148,11 @@ return [
             'tenant' => 'Mieter',
             'owner' => 'Eigentümer',
         ],
+        'tenant_type' => [
+            'label' => 'Mietertyp',
+            'main' => 'Hauptmieter',
+            'garant' => 'Nebenmieter',
+        ]
     ],
     'building' => [
         'title' => 'Objekte',

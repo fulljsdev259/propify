@@ -107,7 +107,6 @@
                     params.status = 1
                     
                     params.media = media.map(item => {
-                        //console.log(item.file)
                         return item.file.src;
                     });
 

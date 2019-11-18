@@ -148,6 +148,11 @@ return [
             'tenant' => 'Tenant',
             'owner' => 'Owner',
         ],
+        'tenant_type' => [
+            'label' => 'Tenant Type',
+            'main' => 'Main tenant',
+            'garant' => 'Secondary tenant',
+        ]
     ],
     'building' => [
         'title' => 'Buildings',

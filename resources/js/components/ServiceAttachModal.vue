@@ -271,7 +271,6 @@
             }
         },
         mounted() {
-            console.log(this.request_id)
         },
         watch: {
             showServiceMailModal(newVal) {

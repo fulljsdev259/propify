@@ -105,7 +105,6 @@ import Heading from 'components/Heading'
                     return obj
                 }, {})
 
-            console.log(this.groupedManagers);
             this.loading = false
         }
     }
