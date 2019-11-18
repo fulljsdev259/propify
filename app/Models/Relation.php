@@ -10,10 +10,10 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use App\Traits\HasMediaTrait;
 
 /**
- * App\Models\Contract
+ * App\Models\Relation
  *
  * @SWG\Definition (
- *      definition="Contract",
+ *      definition="Relation",
  *      required={"first_name", "birthdate"},
  *      @SWG\Property(
  *          property="id",
@@ -55,8 +55,8 @@ use App\Traits\HasMediaTrait;
  *          type="integer"
  *      ),
  *     @SWG\Property(
- *          property="contract_format",
- *          description="contract_format",
+ *          property="relation_format",
+ *          description="relation_format",
  *          type="integer"
  *      ),
  *     @SWG\Property(
@@ -124,7 +124,7 @@ use App\Traits\HasMediaTrait;
  * @property int|null $type
  * @property int|null $duration
  * @property int|null $status
- * @property string|null $contract_format
+ * @property string|null $relation_format
  * @property int|null $deposit_type
  * @property int|null $deposit_status
  * @property int|null $deposit_amount
@@ -142,30 +142,30 @@ use App\Traits\HasMediaTrait;
  * @property-read int|null $media_count
  * @property-read \App\Models\Resident $resident
  * @property-read \App\Models\Unit|null $unit
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereBuildingId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereContractFormat($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereDepositAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereDepositStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereDepositType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereDuration($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereEndDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereMonthlyMaintenance($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereMonthlyRentGross($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereMonthlyRentNet($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereResidentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereStartDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUnitId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Contract whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereBuildingId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereRelationFormat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereDepositAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereDepositStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereDepositType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereDuration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereEndDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereMonthlyMaintenance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereMonthlyRentGross($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereMonthlyRentNet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereResidentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereStartDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereUnitId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Contract extends AuditableModel implements HasMedia
+class Relation extends AuditableModel implements HasMedia
 {
     use HasMediaTrait, UniqueIDFormat;
 
@@ -227,7 +227,7 @@ class Contract extends AuditableModel implements HasMedia
         'deposit_amount' => 'numeric',
     ];
 
-    protected $table = 'contracts';
+    protected $table = 'relations';
 
     /**
      * @var array
@@ -239,7 +239,7 @@ class Contract extends AuditableModel implements HasMedia
         'type',
         'duration',
         'status',
-        'contract_format',
+        'relation_format',
         'deposit_type',
         'deposit_status',
         'deposit_amount',
@@ -267,7 +267,7 @@ class Contract extends AuditableModel implements HasMedia
         'type' => 'integer',
         'duration' => 'integer',
         'status' => 'integer',
-        'contract_formats' => 'string',
+        'relation_format' => 'string',
         'deposit_type' => 'integer',
         'deposit_status' => 'integer',
         'deposit_amount' => 'integer',
@@ -326,7 +326,7 @@ class Contract extends AuditableModel implements HasMedia
         } else {
             $data['auditable_id'] = self::where('id', $data['auditable_id'])->value('resident_id');
         }
-        $data['event'] = 'contract_' . $data['event'];
+        $data['event'] = 'relation_' . $data['event'];
         $data['auditable_type'] = get_morph_type_of(Resident::class);
         return parent::transformAudit($data); // TODO: Change the autogenerated stub
     }
