@@ -2,11 +2,11 @@
     <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
 
         <el-row :gutter="20">
-            <!-- <el-col :md="12" v-if="!hideBuildingAndUnits && !hideBuilding">
+            <!-- <el-col :md="12" "!hideBuildingAndUnits && !hideBuilding">
                 <el-form-item prop="building_id" :label="$t('models.resident.building.name')" class="label-block">
                     <el-select
                             :loading="remoteLoading"
-                            :placeholder="$t('models.resident.search_building')"
+                            :placeolder="$t('models.resident.search_building')"
                             :remote-method="remoteRelationSearchBuildings"
                             @change="searchRelationUnits(false)"
                             filterable
@@ -391,6 +391,22 @@
                 
                 </el-form-item>
             </el-col>
+            <el-col :md="12">
+                <el-form-item :label="$t('models.resident.relation.pdf_select_types.label')"
+                            prop="type"
+                            class="label-block">
+                    <el-select :placeholder="$t('models.resident.relation.pdf_select_types.label')"
+                                style="display: block;"
+                                v-model="model.choose_pdf">
+                        <el-option
+                                :key="value"
+                                :label="$t('models.resident.relation.pdf_select_types.' + value )"
+                                :value="value"
+                                v-for="value in pdf_select_types">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
         
         </el-row>
         </template>
@@ -481,6 +497,7 @@
                 deposit_types: [],
                 residents: [],
                 loading: false,
+                pdf_select_types: ["all", "existing"],
                 model: {
                     resident_id: '',
                     resident_ids: [],
@@ -503,6 +520,10 @@
                     units: [],
                 },
                 validationRules: {
+                    quarter_id: [{
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.quarter.name')})
+                    }],
                     building_id: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.resident.building.name')})
@@ -775,8 +796,8 @@
                 return this.$t(`models.unit.type.${this.$constants.units.type[type]}`);
             },
             changeResident(val) {
-                let resident = this.residents.find(resident => resident.id == val)
-                this.resident_type_check = resident.type
+                //let resident = this.residents.find(resident => resident.id == val)
+                //this.resident_type_check = resident.type
             },
             changeRelationUnit() {
 
@@ -889,6 +910,7 @@
                 await this.searchRelationUnits(true)
             }
 
+            console.log(this.model.unit_id)
             this.loading = false;
         },
         mounted() {

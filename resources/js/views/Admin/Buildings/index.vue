@@ -136,7 +136,7 @@
                 delBuildingStatus: -1, // 0: unit, 1: request, 2: both
                 header: [{
                     label: 'models.building.building_format',
-                    prop: 'internal_building_id',
+                    prop: 'internal_quarter_id',
                 }, {
                     label: 'models.building.building_no',
                     prop: 'address.house_num'
@@ -416,7 +416,7 @@
                 this.deleteBuildingVisible = false;
             },            
         },
-        async mounted() {
+        async created() {
             this.getRoles();
             this.getTypes();
             this.quarters = await this.fetchRemoteQuarters();

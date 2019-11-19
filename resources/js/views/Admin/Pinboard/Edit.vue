@@ -161,6 +161,22 @@
                                 </span>
                                 <chat class="edit-pinboard-chat" :id="model.id" size="480px" type="pinboard"/>
                             </el-tab-pane>
+                            <el-tab-pane name="receptionists">
+                                <span slot="label">
+                                    <el-badge :value="model.announcement_email_receptionists[0].residents.length" :max="99" class="admin-layout">{{ $t('models.pinboard.receptionists') }}</el-badge>
+                                </span>
+                                <relation-list
+                                        :columns="assignmentsReceptionistsColumns"
+                                        action=""
+                                        :filterValue="model.id"
+                                        :addedAssigmentList="model.announcement_email_receptionists[0].residents"
+                                        :fetchStatus="false"
+                                        :fetchAction="false"
+                                        :filter="false"
+                                        ref="assignmentsList"
+                                        v-if="model.announcement_email_receptionists"
+                                />
+                            </el-tab-pane>
                         </el-tabs>
                         
                         <template v-if="this.model.type != 3">
@@ -508,6 +524,17 @@
                     prop: 'type',
                     label: 'general.assignment_types.label',
                     i18n: this.translateType
+                }],
+                assignmentsReceptionistsColumns: [{
+                    type: 'multiProp',
+                    prop: 'first_name last_name',
+                    label: 'general.name'
+                }, {
+                    prop: 'building_or_quarter',
+                    label: 'resident.address',
+                }, {
+                    prop: 'pinboard_views_count',
+                    label: 'models.pinboard.views',
                 }],
                 assignmentsProviderColumns: [{
                     prop: 'name',

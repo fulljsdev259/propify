@@ -35,6 +35,7 @@ export default (config = {}) => {
                     published_at: '',
                     user_id: '',
                     announcement: '',
+                    announcement_email_receptionists: null,
                     notify_email: false,
                     category: '',
                     execution_period: 2,
