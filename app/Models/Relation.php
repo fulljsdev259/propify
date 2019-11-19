@@ -4,8 +4,6 @@ namespace App\Models;
 
 use App\Traits\UniqueIDFormat;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use App\Traits\HasMediaTrait;
 
 /**
  * App\Models\Relation
@@ -156,9 +154,9 @@ use App\Traits\HasMediaTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relation whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Relation extends AuditableModel implements HasMedia
+class Relation extends AuditableModel
 {
-    use HasMediaTrait, UniqueIDFormat;
+    use UniqueIDFormat;
 
     const StatusActive = 1;
     const StatusInActive = 2;
@@ -298,6 +296,11 @@ class Relation extends AuditableModel implements HasMedia
     public function requests()
     {
         return $this->hasMany(Request::class);
+    }
+
+    public function media()
+    {
+        return $this->belongsToMany(Media::class, 'media_relation');
     }
 
     /**
