@@ -124,7 +124,6 @@ $simpleResources = [
     'pinboard',
     'listings',
     'residents',
-    'contracts',
     'requests'
 ];
 

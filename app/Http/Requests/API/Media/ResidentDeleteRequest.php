@@ -5,10 +5,10 @@ namespace App\Http\Requests\API\Media;
 use App\Http\Requests\BaseRequest;
 
 /**
- * Class RelationDeleteRequest
+ * Class ResidentDeleteRequest
  * @package App\Http\Requests\API\Media
  */
-class RelationDeleteRequest extends BaseRequest
+class ResidentDeleteRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

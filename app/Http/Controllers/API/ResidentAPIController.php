@@ -306,7 +306,9 @@ class ResidentAPIController extends AppBaseController
 
         $resident->load([
             'user',
-            'media',
+            'media' => function ($q) {
+                $q->withCount('relations');
+            },
             'default_relation' => function ($q) {
                 $q->with('unit.building.address', 'media');
             },
@@ -384,7 +386,9 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'settings',
             'user',
-            'media',
+            'media' => function ($q) {
+                $q->withCount('relations');
+            },
             'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
@@ -451,7 +455,9 @@ class ResidentAPIController extends AppBaseController
         $user->resident->load([
             'user',
             'settings',
-            'media',
+            'media' => function ($q) {
+                $q->withCount('relations');
+            },
             'default_relation' => function ($q) {
                 $q->with('unit.building.address', 'media');
             },
@@ -566,7 +572,9 @@ class ResidentAPIController extends AppBaseController
 
         $resident->load([
             'settings',
-            'media',
+            'media' => function ($q) {
+                $q->withCount('relations');
+            },
             'default_relation' => function ($q) {
                 $q->with('unit.building.address', 'media');
             },
@@ -668,7 +676,9 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
-            'media',
+            'media' => function ($q) {
+                $q->withCount('relations');
+            },
             'default_relation' => function ($q) {
                 $q->with('unit.building.address', 'media');
             },
@@ -737,7 +747,9 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
-            'media',
+            'media' => function ($q) {
+                $q->withCount('relations');
+            },
             'default_relation' => function ($q) {
                 $q->with('unit.building.address', 'media');
             },
@@ -831,7 +843,9 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
-            'media',
+            'media' => function ($q) {
+                $q->withCount('relations');
+            },
             'default_relation' => function ($q) {
                 $q->with('unit.building.address', 'media');
             },
