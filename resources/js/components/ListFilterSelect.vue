@@ -37,7 +37,7 @@
             <el-dropdown-menu slot="dropdown" :class="{'is-hide': items.length <= 1}">
                 <template  v-if="items.length > 1">
                     <el-input
-                        v-if="items.length > 9"
+                        v-if="items.length > 9 || filter.searchBox !== undefined && filter.searchBox === true"
                         v-model="search"
                         :placeholder="`${$t('general.placeholders.search')}...`"
                     >

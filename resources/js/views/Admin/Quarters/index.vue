@@ -89,25 +89,53 @@
                     label: 'models.quarter.type',
                     prop: 'types'
                 }, {
+                    label: 'models.building.request_status',
+                    withCounts: true,
+                    counts: [
+                        {
+                            prop: 'requests_count',
+                            background: '#aaa',
+                            color: '#fff',
+                            label: this.$t('dashboard.requests.total_request')
+                        }, {
+                            prop: 'requests_received_count',
+                            background: '#bbb',
+                            color: '#fff',
+                            label: this.$t('models.request.status.received')
+                        }, {
+                            prop: 'requests_assigned_count',
+                            background: '#ebb563',
+                            color: '#fff',
+                            label: this.$t('models.request.status.assigned')
+                        }, {
+                            prop: 'requests_in_processing_count',
+                            background: '#ebb563',
+                            color: '#fff',
+                            label: this.$t('models.request.status.in_processing')
+                        }, {
+                            prop: 'requests_reactivated_count',
+                            background: '#ebb563',
+                            color: '#fff',
+                            label: this.$t('models.request.status.reactivated')
+                        }, {
+                            prop: 'requests_done_count',
+                            background: '#67C23A',
+                            color: '#fff',
+                            label: this.$t('models.request.status.done')
+                        }, {
+                            prop: 'requests_archived_count',
+                            background: '#67C23A',
+                            color: '#fff',
+                            label: this.$t('models.request.status.archived')
+                        }
+                    ]
+                },{
                     label: 'models.quarter.buildings_count',
                     prop: 'buildings_count'
                 }, {
                     label: 'models.quarter.total_units_count',
                     prop: 'total_units_count'
                 }, 
-                // {
-                //     width: 150,
-                //     actions: [{
-                //         type: '',
-                //         icon: 'ti-search',
-                //         title: 'general.actions.edit',
-                //         editUrl: 'adminQuartersEdit',
-                //         onClick: this.edit,
-                //         permissions: [
-                //             this.$permissions.update.quarter
-                //         ]
-                //     }]
-                // }
                 ],
                 model: {
                     id: '',
@@ -146,6 +174,7 @@
                         type: 'select',
                         key: 'type_id',
                         data: this.types,
+                        searchBox: true,
                     },{
                         name: this.$t('general.roles.manager'),
                         type: 'select',
