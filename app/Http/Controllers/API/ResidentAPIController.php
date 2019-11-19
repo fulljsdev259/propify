@@ -144,10 +144,10 @@ class ResidentAPIController extends AppBaseController
         $residents = $this->residentRepository->with([
             'user',
             'default_relation' => function ($q) {
-                $q->with('building.address', 'unit');
+                $q->with('unit.building.address');
             },
             'relations' => function ($q) {
-                $q->with('building.address', 'unit');
+                $q->with('unit.building.address');
             }])->paginate($perPage);
         $response = (new ResidentTransformer())->transformPaginator($residents);
         return $this->sendResponse($response, 'Residents retrieved successfully');
@@ -222,10 +222,10 @@ class ResidentAPIController extends AppBaseController
         $residents = $this->residentRepository->with([
             'user',
             'default_relation' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with('unit.building.address', 'media');
             },
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with('unit.building.address', 'media');
             }])
             ->get(['id', 'first_name', 'last_name', 'status', 'created_at']);
         $response = (new ResidentTransformer())->transformCollection($residents);
@@ -308,10 +308,14 @@ class ResidentAPIController extends AppBaseController
             'user',
             'media',
             'default_relation' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with('unit.building.address', 'media');
             },
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
             }
         ]);
 
@@ -378,7 +382,11 @@ class ResidentAPIController extends AppBaseController
                 $q->with('building.address', 'unit', 'media');
             },
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
             }
         ]);
         $response = (new ResidentTransformer)->transform($resident);
@@ -431,10 +439,14 @@ class ResidentAPIController extends AppBaseController
             'settings',
             'media',
             'default_relation' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with('unit.building.address', 'media');
             },
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
             }
         ]);
         $response = (new ResidentTransformer)->transform($user->resident);
@@ -487,7 +499,7 @@ class ResidentAPIController extends AppBaseController
      * @param $id
      * @param UpdateRequest $request
      * @return mixed
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \Exception
      */
     public function update($id, UpdateRequest $request)
     {
@@ -535,10 +547,14 @@ class ResidentAPIController extends AppBaseController
             'settings',
             'media',
             'default_relation' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with('unit.building.address', 'media');
             },
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
             }
         ]);
 
@@ -626,10 +642,14 @@ class ResidentAPIController extends AppBaseController
             'settings',
             'media',
             'default_relation' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with('unit.building.address', 'media');
             },
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
             }
         ]);
         $response = (new ResidentTransformer)->transform($resident);
@@ -684,10 +704,14 @@ class ResidentAPIController extends AppBaseController
             'settings',
             'media',
             'default_relation' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with('unit.building.address', 'media');
             },
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
             }
         ]);
         $response = (new ResidentTransformer)->transform($resident);
@@ -767,10 +791,14 @@ class ResidentAPIController extends AppBaseController
             'settings',
             'media',
             'default_relation' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with('unit.building.address', 'media');
             },
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'media');
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
             },
         ]);
         $response = (new ResidentTransformer)->transform($resident);

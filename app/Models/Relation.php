@@ -270,7 +270,7 @@ class Relation extends AuditableModel
      */
     public function garant_residents()
     {
-        return $this->belongsToMany(Resident::class, 'relation_garant_resident');
+        return $this->belongsToMany(Resident::class, 'relation_garant_resident', 'relation_id', 'resident_id');
     }
 
     /**
