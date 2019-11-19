@@ -5,17 +5,15 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Models\Relation::class, function (Faker $faker) {
     $unit = \App\Models\Unit::has('building')->with('building:id')->inRandomOrder()->first(['id', 'building_id']);
-    $duration = array_rand(\App\Models\Relation::Duration);
     $randSec = random_int(1, 31536000);
     $startDate = now()->subSeconds($randSec);
-    $endDate = (\App\Models\Relation::DurationLimited == $duration) ? now()->subSeconds(random_int(1, $randSec)) : null;
+    $endDate = $faker->boolean ? now()->subSeconds(random_int(1, $randSec)) : null;
 
     return [
         'resident_id' => \App\Models\Resident::inRandomOrder()->value('id'),
-        'building_id' => $unit->building->id,
+        'quarter_id' => $unit->quarter->id ?? \App\Models\Quarter::inRandomOrder()->value('id'),
         'unit_id' => $unit->id,
         'type' => array_rand(\App\Models\Unit::Type),
-        'duration'=> $duration,
         'status' => array_rand(\App\Models\Relation::Status),
         'deposit_type' => array_rand(\App\Models\Relation::DepositType),
         'deposit_status' => array_rand(\App\Models\Relation::DepositStatus),

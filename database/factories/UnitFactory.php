@@ -30,7 +30,6 @@ $factory->define(App\Models\Unit::class, function (Faker $faker) {
     ];
 
     return [
-        'building_id' => 1,
         'type' => $faker->numberBetween(1, 2),
         'name' => $faker->sentence(3),
         'description' => $faker->sentence(5),

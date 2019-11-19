@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\API\Relation;
 
-use App\Models\Relation;
 use App\Http\Requests\BaseRequest;
 
 class UpdateRequest extends BaseRequest
@@ -24,6 +23,17 @@ class UpdateRequest extends BaseRequest
      */
     public function rules()
     {
-        return Relation::$rules;
+        return [
+            'resident_id' => 'required|integer|exists:residents,id',
+            'quarter_id' => 'required|integer|exists:buildings,id',
+            'unit_id' => 'required|integer|exists:units,id',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'status' => 'digits_between:1,2|numeric',
+            'type' => 'required',
+            'deposit_type' => 'digits_between:1,4|numeric',
+            'deposit_status' => 'digits_between:1,2|numeric',
+            'deposit_amount' => 'numeric',
+        ];
     }
 }

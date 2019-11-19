@@ -45,10 +45,10 @@ class RelationAPIController extends AppBaseController
      *      description="Get all Relations",
      *      produces={"application/json"},
      *      @SWG\Parameter(
-     *          name="building_id",
+     *          name="quarter_id",
      *          in="query",
      *          type="integer",
-     *          description="fuilter by building",
+     *          description="fuilter by quarter",
      *          required=false,
      *      ),
      *     @SWG\Parameter(
@@ -114,7 +114,11 @@ class RelationAPIController extends AppBaseController
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         // @TODO RELATION is need? building, address, unit . I think not need because many
-        $relations = $this->relationRepository->with(['resident.user', 'building.address', 'unit'])->paginate($perPage);
+        $relations = $this->relationRepository->with([
+            'resident.user',
+            'quarter.address',
+            'unit.building.address'
+        ])->paginate($perPage);
         $response = (new RelationTransformer())->transformPaginator($relations);
         return $this->sendResponse($response, 'Relations retrieved successfully');
     }
@@ -167,7 +171,7 @@ class RelationAPIController extends AppBaseController
             return $this->sendError(__('models.resident.relation.errors.not_found'));
         }
 
-        $relation->load(['resident.user', 'building.address', 'unit']);
+        $relation->load(['resident.user', 'quarter.address', 'unit.building.address', 'unit']);
         $response = (new RelationTransformer())->transform($relation);
         return $this->sendResponse($response, 'Resident Relation retrieved successfully');
     }
@@ -221,7 +225,7 @@ class RelationAPIController extends AppBaseController
         }
 
 
-        $relation->load(['resident.user', 'building.address', 'unit']);
+        $relation->load(['resident.user', 'quarter.address', 'unit.building.address', 'unit']);
 
         $response = (new RelationTransformer())->transform($relation);
         return $this->sendResponse($response, __('models.resident.relation.saved'));
@@ -284,8 +288,8 @@ class RelationAPIController extends AppBaseController
         /** @var Relation $relation */
         $relation = $this->relationRepository->findWithoutFail($id);
 
-        $shouldPinboard = isset($input['building_id']) && $input['building_id'] != $relation->building_id;
-
+        // @TODO by unit ->building or other logic or not needed
+        //$shouldPinboard = isset($input['quarter_id']) && $input['quarter_id'] != $relation->quarter_id;
         if (empty($relation)) {
             return $this->sendError(__('models.resident.relation.errors.not_found'));
         }
@@ -296,11 +300,11 @@ class RelationAPIController extends AppBaseController
             return $this->sendError(__('models.resident.errors.create') . $e->getMessage());
         }
 
-        if ($shouldPinboard) {
-            $pinboardRepository->newResidentRelationPinboard($relation);
-        }
+//        if ($shouldPinboard) {
+//            $pinboardRepository->newResidentRelationPinboard($relation);
+//        }
 
-        $relation->load(['resident.user', 'building.address', 'unit']);
+        $relation->load(['resident.user', 'quarter.address', 'unit.building.address', 'unit']);
         $response = (new RelationTransformer())->transform($relation);
         return $this->sendResponse($response, __('models.resident.saved'));
     }
