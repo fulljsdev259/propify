@@ -105,6 +105,7 @@ return [
             'status' => [
                 'active' => 'Aktiv',
                 'inactive' => 'Inaktiv',
+                'canceled' => 'Abgesagt'
             ],
             'add' => 'Neue Beziehung hinzufügen',
             'add_sell_relation' => 'Verkaufsbeziehung hinzufügen',
@@ -464,7 +465,8 @@ return [
             ],
             'tooltips' => [
                 'save' => "Um den Arbeitsablauf zu speichern, speichern wir diese Schaltfläche, die Haupttaste 'Speichern' speichert keine Daten."
-            ]
+            ],
+            'saved' => 'Workflow gespeichert'
         ]
     ],
     'request' => [        
