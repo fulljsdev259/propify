@@ -266,6 +266,14 @@ class Relation extends AuditableModel
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function garant_residents()
+    {
+        return $this->belongsToMany(Resident::class, 'relation_garant_resident');
+    }
+
+    /**
      * @return BelongsTo
      **/
     public function quarter()

@@ -57,6 +57,7 @@ class RelationRepository extends BaseRepository
             if ($mediaIds->isNotEmpty()) {
                 $model->media()->attach($mediaIds);
             }
+            $this->saveGarantResidents($model, $data);
         }
 
         /** @var $pinboardRepository PinboardRepository */
@@ -147,6 +148,7 @@ class RelationRepository extends BaseRepository
         if ($model) {
             $mediaIds = $this->getMediaFileIds($model, $attributes);
             $model->media()->sync($mediaIds);
+            $this->saveGarantResidents($model, $attributes);
         }
 
         // @TODO if status changed active to inactive how must be organize resident status
@@ -198,5 +200,26 @@ class RelationRepository extends BaseRepository
         $existing = $existing->merge($attachedMedia->pluck('id'));
         $resident->media()->whereNotIn('id', $existing)->delete();
         // @TODO delete real file
+    }
+
+    /**
+     * @param $relation
+     * @param $data
+     * @return mixed
+     */
+    protected function saveGarantResidents(Relation $relation, $data)
+    {
+        $residentIds = $data['resident_ids'] ?? [];
+        if (empty($residentIds)) {
+            return $relation;
+        }
+
+        $relation->load('unit:id,type');
+        $unit = $relation->unit;
+        if (! in_array($unit->type, [Unit::TypeApartment, Unit::TypeBusiness])) {
+            return $relation;
+        }
+
+        $relation->garant_residents()->sync($residentIds);
     }
 }
