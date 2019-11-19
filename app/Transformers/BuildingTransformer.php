@@ -49,6 +49,10 @@ class BuildingTransformer extends BaseTransformer
             $response['has_email_receptionists'] = $model->has_email_receptionists;
         }
 
+        if ($model->hasAttribute('count_of_apartments_units')) {
+            $response['count_of_apartments_units'] = $model->count_of_apartments_units;
+        }
+
         $withCount = $model->getStatusRelationCounts();
         $response = array_merge($response, $withCount);
 
