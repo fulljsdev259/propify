@@ -4,22 +4,14 @@
             <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]">
                 <span v-if="findSelectedOne.count === 0">{{ filter.name }}</span>
                 <el-tag 
-                    v-else-if="this.filter.key !== 'language'"
+                    v-else
                     size="mini"
                     :closable="findSelectedOne.count !== 1"
                     @close="selectItem(findSelectedOne.index, true)"
                 >
                     {{ ` ${getLanguageStr(findSelectedOne.label)}` }}
                 </el-tag>
-                <el-tag 
-                    v-else
-                    size="mini"
-                    closable
-                    @close="selectItem(findSelectedOne.index, true)"
-                >
-                    {{ `${filter.name}:` }}
-                    <span :class="items[findSelectedOne.index].flag" ></span>
-                </el-tag>
+                
                 <el-tag
                     v-if="findSelectedOne.count > 1"
                     size="mini"    
@@ -60,8 +52,8 @@
                         @click="selectItem(index)"
                         v-for="(item, index) in items" 
                     >
-                        <span v-if="filter.key !== 'language'" v-html="filterSearch(getLanguageStr(item.name))"></span>
-                        <span v-else><span :class="item.flag"></span>&nbsp;&nbsp;{{ $t(`general.languages.`+item.symbol) }}</span>
+                        <span v-html="filterSearch(getLanguageStr(item.name))"></span>
+                        
                         <span class="el-icon-check"></span>
                     </div>
                     
@@ -222,37 +214,7 @@
                 this.items = [];
                 this.originItems = [];
                 this.options = this.filter.data;
-                if(this.filter.key == 'language') {
-                    let languagesObject = this.$constants.app.languages;
-                    let languagesArray = Object.keys(languagesObject).map(function(key) {
-                        return [String(key), languagesObject[key]];
-                    });
-                
-                    this.items = languagesArray.map((item, index) => { 
-                        let flag_class = 'flag-icon flag-icon-';
-                        let flag = flag_class + item[0];
-                        if( item[0] == 'en')
-                        {
-                            flag = flag_class + 'us'
-                        }
-                        return {
-                            id: index + 1,
-                            name: item[1],
-                            symbol: item[0],
-                            flag: flag,
-                            selected: this.selectedOptions? this.selectedOptions.includes(index+1): false,
-                        }
-                    });
-                    this.items.forEach((item) => {
-                        this.originItems.push({
-                            id: item.id,
-                            name: item.name,
-                            symbol: item.symbol,
-                            flag: item.flag,
-                            selected: item.selected,
-                        });
-                    });
-                } else if(this.options.length) {
+                if(this.options.length) {
                     this.options.forEach((option) => {
                         this.items.push({
                             id: option.id,

@@ -45,9 +45,16 @@
             <el-col :md="12">
                 <el-form-item prop="unit_id" :label="$t('models.resident.unit.name')"
                             class="label-block">
+                    <multi-select
+                        :filter="unitFilter"
+                        :selectedOptions="model.unit_ids"
+                        @select-changed="handleSelectChange($event, 'unit')"
+                    >
+                    </multi-select>
                     <el-select :placeholder="$t('models.resident.search_unit')" 
                             style="display: block"
                             v-model="model.unit_id"
+                            multiple
                             @change="changeRelationUnit">
                         <el-option-group
                             v-for="group in units"
@@ -406,12 +413,14 @@
     import UploadRelation from 'components/UploadRelation';
     import RelationCount from 'components/RelationCount';
     import {mapActions, mapGetters} from 'vuex';
+    import MultiSelect from 'components/MultiSelect';
 
     export default {
         name: "RelationForm",
         components: {
             UploadRelation,
-            RelationCount
+            RelationCount,
+            MultiSelect
         },
         props: {
             mode: {
@@ -547,6 +556,16 @@
                 isFuture: false
             }
         },
+        computed: {
+            unitFilter() {
+                return {
+                        name: this.$t('models.quarter.workflow.placeholders.cc_user'),
+                        type: 'select',
+                        key: 'name',
+                        data: this.units
+                }
+            }
+        },
         methods: {
             submit () {
                 
@@ -603,6 +622,11 @@
                         
                     }
                 })
+            },
+            handleSelectChange(val, filter) {
+                if(filter == 'unit') {
+                    this.model.unit_ids = val
+                }
             },
             disabledRentStart(date) {
                 const d = new Date(date).getTime();
