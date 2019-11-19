@@ -55,6 +55,10 @@ class ResidentTransformer extends BaseTransformer
         }
 
         $response['media'] = [];
+        if ($model->relationExists('media')) {
+            $response['media'] = (new MediaTransformer())->transformCollection($model->media);
+        }
+
         if ($model->relations || $model->relationExists('relations')) { // @TODO delete reloading
             $response['relations'] = (new RelationTransformer())->transformCollection($model->relations);
 
