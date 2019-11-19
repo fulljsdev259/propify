@@ -124,6 +124,12 @@
                         <relation-count :countsData="scope.row" ></relation-count>
                     </div>
 
+                    <div v-else-if="column.type === 'residentMediaName'">
+                        <div class="request-title normal">
+                            <a v-if="scope.row.url" :href="scope.row.url" target="_blank"><strong>{{scope.row.name}}</strong></a>                      
+                        </div>
+                    </div>
+
                     <div v-else-if="column.type === 'buildingResidentAvatars'" class="avatars-wrapper">
                         <span class="resident-item" :key="uuid()" v-for="(resident) in scope.row[column.prop].slice(0, column.propLimit)">
                               <el-tooltip
@@ -378,9 +384,16 @@
                         page
                     });
 
+
                     this.meta = _.omit(resp.data, 'data');
                     if(!resp.data) {
                         this.list = []
+                        if(this.fetchAction == "getResidentMedia") {
+                            if(page == 1)
+                                this.list = resp
+                            else
+                                this.list.push(...resp)
+                        }
                     }
                     else if (page === 1) {
                         
@@ -390,10 +403,12 @@
                                 item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
                             })
                         }
+                        
                         this.list = resp.data.data;
                         if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
                             this.unitsTypeLabelMap();
                         }
+                        
                     } else {
                         if(this.fetchAction == "getBuildings") {
                             resp.data.data.forEach(item => {

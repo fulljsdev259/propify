@@ -559,10 +559,7 @@
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.resident.unit.name')})
                     }],
-                    resident_id: [{
-                        required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.name')})
-                    }],
+                    resident_ids: [],
                     deposit_amount: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.deposit_amount')})
@@ -860,6 +857,7 @@
         },
         async created () {
 
+            console.log('data', this.data)
             this.loading = true;
 
             let parent_obj = this
@@ -874,7 +872,7 @@
             if(this.mode == "edit") {
                 this.model = Object.assign({}, this.data)
 
-                this.model.resident_ids = this.data.residents.map(item => item.id)
+                this.model.resident_ids = Object.assign({}, this.data.residents.map(item => item.id))
                 this.model.quarter_id = this.model.quarter.id
                 
                 
@@ -902,24 +900,26 @@
                 if( !this.hideBuildingAndUnits ) {
                     if( this.model.unit )
                     {
-                        let key = this.model.unit.floor
-                        let group_label = ""
-                        if(key > 0)
-                        {
-                            group_label = key + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
-                        }
-                        else if(key == 0)
-                        {
-                            group_label = this.$t('models.unit.floor_title.ground_floor')
-                        }
-                        else if(key < 0)
-                        {
-                            group_label = key + ". " + this.$t('models.unit.floor_title.under_ground_floor')
-                        }
-                        else if(key == 'attic')
-                        {
-                            group_label = this.$t('models.unit.floor_title.top_floor');
-                        }
+                        // let key = this.model.unit.floor
+                        // let group_label = ""
+                        // if(key > 0)
+                        // {
+                        //     group_label = key + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                        // }
+                        // else if(key == 0)
+                        // {
+                        //     group_label = this.$t('models.unit.floor_title.ground_floor')
+                        // }
+                        // else if(key < 0)
+                        // {
+                        //     group_label = key + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                        // }
+                        // else if(key == 'attic')
+                        // {
+                        //     group_label = this.$t('models.unit.floor_title.top_floor');
+                        // }
+                        let group_label = this.model.address.house_num
+
                         this.units.push({ label: group_label, options : [this.model.unit]})
                     }
 
@@ -938,7 +938,6 @@
             }
 
             if(this.hideBuildingAndUnits) {
-                console.log('call1')
                 this.model.unit_id = this.unit_id
                 this.model.building_id = this.building_id
                 
@@ -948,14 +947,12 @@
             }
 
             if(this.hideBuilding) {
-                console.log('call2')
                 this.model.building_id = this.building_id
                 await this.searchRelationUnits(true)
             }
 
             if(this.model.unit_id == null)
                 this.model.unit_id = []
-            console.log('unit_id', this.model.unit_id)
             console.log('model', this.model)
             this.loading = false;
         },

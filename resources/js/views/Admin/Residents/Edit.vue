@@ -301,6 +301,8 @@
                                     />
                                 </el-card>
                             </el-col>
+                        </el-row>
+                        <el-row :gutter="20">
                             <el-col :md="12">
                                 <el-card>
                                     <div slot="header" class="clearfix">
@@ -308,7 +310,7 @@
                                     </div>
                                     <audit v-if="model.id" :id="model.id" type="resident" ref="auditList" showFilter/>
                                 </el-card>
-                            </el-col>    
+                            </el-col>
                         </el-row>
 
                     </el-col>
@@ -389,6 +391,7 @@
     import EditActions from 'components/EditViewActions';
     import SelectLanguage from 'components/SelectLanguage';
     import RelationList from 'components/RelationListing';
+    import { EventBus } from '../../../event-bus.js';
 
     const mixin = AdminResidentsMixin({
         mode: 'edit'
@@ -412,18 +415,19 @@
         },
         data() {
             return {
+                mediaCount: 0,
                 mediaColumns: [{
-                    type: 'assigneesName',
+                    type: 'residentMediaName',
                     prop: 'name',
                     label: 'general.name'
                 }],
                 mediaActions: [{
                     width: 70,
-                    buttons: [{
+                    buttons: [/*{
                         icon: 'ti-search',
                         title: 'general.actions.edit',
                         tooltipMode: true
-                    }]
+                    }*/]
                 }]
             }
         },
@@ -534,6 +538,10 @@
         },
         mounted() {
             this.$root.$on('changeLanguage', () => this.getCountries());
+
+            EventBus.$on('resident-media-counted', media_count => {
+                this.mediaCount = media_count;
+            });
         },
         computed: {
             ...mapGetters('application', {
@@ -546,14 +554,6 @@
                 return this.constants.requests.status
             },
             
-        },
-        watch: {
-            'visibleDrawer': function(val) {
-                console.log(val)
-                if(!val) {
-                    this.editingIndex
-                }
-            }
         }
     }
 </script>

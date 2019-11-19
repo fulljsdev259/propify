@@ -22,17 +22,13 @@ export default {
                 .catch(({response: {data: err}}) => reject(err)));
     },
     getResidentMedia({commit}, {resident_id, ...payload}) {
-        console.log('payload', payload)
         return new Promise((resolve, reject) =>
             axios.get(buildFetchUrl(`residents/${resident_id}/media`, payload))
                 .then(({data: r}) => {
                     
-                    if (!payload.get_all) {
-                        
-                    }
                     EventBus.$emit('resident-media-counted', r.data.total);
 
-                    resolve(r)
+                    resolve(r.data)
                 })
                 .catch(({response: {data: err}}) => reject(err)));
     },
