@@ -128,10 +128,7 @@ export default (config = {}) => {
                 this.model.relations.push(data);
             },
             editRelation(index) {
-                console.log('edit index', index)
-
                 this.editingRelation = this.model.relations[index];
-                console.log('relations', this.model.relations)
                 this.editingRelationIndex = index;
                 this.visibleDrawer = true;
             },
