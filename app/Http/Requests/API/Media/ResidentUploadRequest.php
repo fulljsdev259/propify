@@ -3,13 +3,13 @@
 namespace App\Http\Requests\API\Media;
 
 use App\Http\Requests\BaseRequest;
-use App\Models\Relation;
+use App\Models\Resident;
 
 /**
- * Class RelationUploadRequest
+ * Class ResidentUploadRequest
  * @package App\Http\Requests\API\Media
  */
-class RelationUploadRequest extends BaseRequest
+class ResidentUploadRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,6 +28,6 @@ class RelationUploadRequest extends BaseRequest
      */
     public function rules()
     {
-        return $this->getMediaRules(Relation::class);
+        return $this->getMediaRules(Resident::class);
     }
 }

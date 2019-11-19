@@ -15,8 +15,8 @@ use App\Http\Requests\API\Media\ListingDeleteRequest;
 use App\Http\Requests\API\Media\ListingUploadRequest;
 use App\Http\Requests\API\Media\RequestDeleteRequest;
 use App\Http\Requests\API\Media\RequestUploadRequest;
-use App\Http\Requests\API\Media\RelationDeleteRequest;
-use App\Http\Requests\API\Media\RelationUploadRequest;
+use App\Http\Requests\API\Media\ResidentDeleteRequest;
+use App\Http\Requests\API\Media\ResidentUploadRequest;
 use App\Jobs\Notify\NotifyRequestMedia;
 use App\Models\Building;
 use App\Repositories\AddressRepository;
@@ -564,7 +564,7 @@ class MediaAPIController extends AppBaseController
 
     /**
      * @SWG\Post(
-     *      path="/relations/{id}/media",
+     *      path="/residents/{id}/media",
      *      summary="Store a newly created Relation Media in storage",
      *      tags={"Relation"},
      *      description="Store Media",
@@ -598,19 +598,19 @@ class MediaAPIController extends AppBaseController
      * )
      *
      * @param int $id
-     * @param RelationUploadRequest $request
+     * @param ResidentUploadRequest $request
      * @return mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function relationUpload(int $id, RelationUploadRequest $request)
+    public function residentUpload(int $id, ResidentUploadRequest $request)
     {
-        $relation = $this->relationRepository->findWithoutFail($id);
-        if (empty($relation)) {
-            return $this->sendError(__('models.resident.relation.errors.not_found'));
+        $resident = $this->residentRepository->findWithoutFail($id);
+        if (empty($resident)) {
+            return $this->sendError(__('models.resident.resident.errors.not_found'));
         }
 
         $data = $request->get('media', '');
-        if (!$media = $this->relationRepository->uploadFile('media', $data, $relation, $request->merge_in_audit)) {
+        if (!$media = $this->residentRepository->uploadFile('media', $data, $resident, $request->merge_in_audit)) {
             return $this->sendError(__('general.upload_error'));
         }
 
@@ -620,7 +620,7 @@ class MediaAPIController extends AppBaseController
 
     /**
      * @SWG\Delete(
-     *      path="/relations/{id}/media/{media_id}",
+     *      path="/residents/{id}/media/{media_id}",
      *      summary="Remove the specified Media from storage",
      *      tags={"Relation"},
      *      description="Delete Media",
@@ -655,19 +655,24 @@ class MediaAPIController extends AppBaseController
      *
      * @param int $id
      * @param int $media_id
-     * @param RelationDeleteRequest $r
-     * @return Response
+     * @param ResidentDeleteRequest $r
+     * @return mixed
+     * @throws \Exception
      */
-    public function relationDestroy(int $id, int $media_id, RelationDeleteRequest $r)
+    public function residentDestroy(int $id, int $media_id, ResidentDeleteRequest $r)
     {
-        $relation = $this->relationRepository->findWithoutFail($id);
-        if (empty($relation)) {
-            return $this->sendError(__('models.resident.relation.errors.not_found'));
+        $resident = $this->residentRepository->findWithoutFail($id);
+        if (empty($resident)) {
+            return $this->sendError(__('models.resident.resident.errors.not_found'));
         }
 
-        $media = $relation->media->find($media_id);
+        $media = $resident->media()->withCount('relations')->find($media_id);
         if (empty($media)) {
             return $this->sendError(__('general.media_not_found'));
+        }
+
+        if ($media->relations_count) {
+            return $this->sendError('This media has relations you can not delete it');
         }
 
         $media->delete();
