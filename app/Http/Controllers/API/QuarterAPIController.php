@@ -20,6 +20,7 @@ use App\Models\Quarter;
 use App\Models\QuarterAssignee;
 use App\Models\Relation;
 use App\Models\ServiceProvider;
+use App\Models\Unit;
 use App\Models\User;
 use App\Repositories\AddressRepository;
 use App\Repositories\QuarterRepository;
@@ -120,6 +121,10 @@ class QuarterAPIController extends AppBaseController
                 },
                 'media',
                 'address:id,city'
+            ])->withCount([
+                'units as count_of_apartments_units' => function ($q) {
+                    $q->where('type', Unit::TypeApartment);
+                }
             ])->paginate($perPage);
         $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWithStatistics');
         return $this->sendResponse($response, 'Quarters retrieved successfully');
