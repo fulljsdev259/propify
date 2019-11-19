@@ -1154,7 +1154,7 @@
         }
         tbody {
             tr {
-                td:last-child {
+                td:last-child:not(.is-left) {
                     .cell {
                         padding-left: 0px !important;
                         text-align: right;
