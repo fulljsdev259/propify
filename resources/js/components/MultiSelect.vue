@@ -45,8 +45,9 @@
                     </i>
                 </el-input>
                 <div class="dropdown-container" v-if="items.length">
+                    
                     <div
-                        :key="`${filter.name}${item.name}${item.id}selected`"
+                        :key="`${filter.name}${item.name}${item.id}selected` + index"
                         class="dropdown-item" 
                         :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
                         @click="selectItem(index)"
@@ -214,6 +215,7 @@
                 this.items = [];
                 this.originItems = [];
                 this.options = this.filter.data;
+                console.log(this.options)
                 if(this.options.length) {
                     this.options.forEach((option) => {
                         this.items.push({

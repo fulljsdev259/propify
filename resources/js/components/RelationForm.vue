@@ -559,8 +559,8 @@
         computed: {
             unitFilter() {
                 return {
-                        name: this.$t('models.quarter.workflow.placeholders.cc_user'),
-                        type: 'select',
+                        name: this.$t('models.resident.search_unit'),
+                        type: 'group-select',
                         key: 'name',
                         data: this.units
                 }
