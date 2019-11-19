@@ -303,6 +303,7 @@ return [
         'unpublish' => 'Unpublish',
         'buildings' => 'Objekte',
         'announcement' => 'Ankündigung an',
+        'receptionists' => 'Empfangspersonal',
         'notify_email' => 'Mieter benachrichtigen',
         'notify_email_description' => "Mit dieser Option können Sie die E-Mail-Benachrichtigung aktivieren.",
         'announcement_to' => 'Ankündigung',

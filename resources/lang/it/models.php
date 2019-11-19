@@ -301,6 +301,7 @@ return [
         "unpublish" => "Non pubblicare",
         "buildings" => "Edifici",
         "announcement" => "Annuncio a",
+        "receptionists" => "Receptionist",
         "notify_email" => "Notifica e-mail",
         'notify_email_description' => "Con questa opzione, sarà possibile abilitare la notifica via e-mail",
         "announcement_to" => "Annuncio",
