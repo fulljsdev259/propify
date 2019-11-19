@@ -43,6 +43,6 @@ class SentEmailPdf extends Mailable
 				'as' => $this->storage_path,
 				'mime' => 'application/pdf',
 			])
-			->subject(__("A new request was added"));
+			->subject(__("A new request pdf"));
     }
 }
