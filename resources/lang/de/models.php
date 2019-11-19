@@ -109,6 +109,11 @@ return [
             'add' => 'Neue Beziehung hinzufügen',
             'add_sell_relation' => 'Verkaufsbeziehung hinzufügen',
             'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',
+            'pdf_select_types' => [
+                'label' => 'PDF-Dateien auswählen',
+                'all' => 'Alle',
+                'existing' => 'Wählen Sie aus bestehenden'
+            ],
             'saved' => 'Beziehung gespeichert',
             'status_count' => [
                 'total' => 'Gesamtbeziehungen',
