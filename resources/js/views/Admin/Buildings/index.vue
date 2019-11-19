@@ -416,7 +416,7 @@
                 this.deleteBuildingVisible = false;
             },            
         },
-        async mounted() {
+        async created() {
             this.getRoles();
             this.getTypes();
             this.quarters = await this.fetchRemoteQuarters();
