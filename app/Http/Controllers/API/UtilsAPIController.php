@@ -118,8 +118,7 @@ class UtilsAPIController extends AppBaseController
             'buildings' => [], // @TODO is need return building related constants
             'units' => $this->getUnitConstants(),
             'residents' => $this->getResidentConstants(),
-            'rentContracts' => $this->getContractConstants(), // @TODO delete
-            'contracts' => $this->getContractConstants(),
+            'relations' => $this->getRelationConstants(),
             'serviceProviders' => $this->getServiceProviderConstants(),
             'requests' => $this->getRequestsConstants(),
             'quarters' => $this->getQuartersConstants(),
@@ -230,14 +229,12 @@ class UtilsAPIController extends AppBaseController
     /**
      * @return array
      */
-    protected function getContractConstants()
+    protected function getRelationConstants()
     {
         $result = [
-            //'type' => App\Models\Contract::Type,
-            'duration' => App\Models\Contract::Duration,
-            'status' => App\Models\Contract::Status,
-            'deposit_type' => App\Models\Contract::DepositType,
-            'deposit_status' => App\Models\Contract::DepositStatus,
+            'status' => App\Models\Relation::Status,
+            'deposit_type' => App\Models\Relation::DepositType,
+            'deposit_status' => App\Models\Relation::DepositStatus,
         ];
 
         return $result;

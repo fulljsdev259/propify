@@ -201,10 +201,10 @@ class AuditTransformer extends BaseTransformer
                 }                
             }            
         }
-        elseif($model->event == 'contract_created'){
+        elseif($model->event == 'relation_created'){
             $resident = Resident::find($model->auditable_id);
             if($resident){                                
-                $response['statement'] = __("general.components.common.audit.content.general.contract_created",['userName' => $resident->getNameAttribute()]);
+                $response['statement'] = __("general.components.common.audit.content.general.relation_created",['userName' => $resident->getNameAttribute()]);
             }            
         }
         return $response;

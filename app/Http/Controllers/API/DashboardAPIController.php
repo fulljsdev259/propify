@@ -12,7 +12,7 @@ use App\Http\Requests\API\Dashboard\SRequestStatisticRequest;
 use App\Http\Requests\API\Dashboard\ResidentStatisticRequest;
 use App\Models\Building;
 use App\Models\LoginDevice;
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Models\Request;
 use App\Models\State;
 use App\Models\Resident;
@@ -304,20 +304,20 @@ class DashboardAPIController extends AppBaseController
             return $this->sendError(__('models.building.errors.not_found'));
         }
 
-        $residents = $building->contracts()
-            ->where('status', Contract::StatusActive)
+        $residents = $building->relations()
+            ->where('status', Relation::StatusActive)
             ->distinct()
             ->get(['resident_id'])->count();
 
         $units = Unit::where('building_id', $id)->count();
-        $activeContractUnits = Unit::where('building_id', $id)
-            ->whereHas('contracts', function($q) {
-                $q->where('status', Contract::StatusActive);
+        $activeRelationUnits = Unit::where('building_id', $id)
+            ->whereHas('relations', function($q) {
+                $q->where('status', Relation::StatusActive);
             })
             ->count();
 
-        $occupiedUnitsCount = Unit::where('building_id', $id)->whereHas('contracts', function ($q) {
-            $q->where('status', Contract::StatusActive);
+        $occupiedUnitsCount = Unit::where('building_id', $id)->whereHas('relations', function ($q) {
+            $q->where('status', Relation::StatusActive);
         })->count();
 
         if ($units) {
@@ -331,7 +331,7 @@ class DashboardAPIController extends AppBaseController
         $response = [
             'total_residents' => $this->thousandsFormat($residents),
             'total_units' => $this->thousandsFormat($units),
-            'total_units_with_active_contracts' => $this->thousandsFormat($activeContractUnits),
+            'total_units_with_active_relations' => $this->thousandsFormat($activeRelationUnits),
             'occupied_units' => $this->thousandsFormat($occupiedUnits),
             'free_units' => $this->thousandsFormat($freeUnit),
         ];
@@ -354,8 +354,8 @@ class DashboardAPIController extends AppBaseController
     protected function allBuildingStatistics()
     {
         $unitCount = Unit::count();
-        $occupiedUnitsCount = Unit::whereHas('contracts', function ($q) {
-                $q->where('status', Contract::StatusActive);
+        $occupiedUnitsCount = Unit::whereHas('relations', function ($q) {
+                $q->where('status', Relation::StatusActive);
             })->count();
 
         if ($unitCount) {

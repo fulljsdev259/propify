@@ -41,11 +41,11 @@ class FilterByBuildingCriteria implements CriteriaInterface
         }
         $buildingIds = is_array($buildingId) ? $buildingId : [$buildingId];
 
-        // @TODO check residents can see only contract->buildings->pinboard or all
+        // @TODO check residents can see only relation->buildings->pinboard or all
         $user = \Auth::user();
         if ($user->resident) {
-            // @TODO fix contract related
-            $buildingIds = $user->resident->contracts()->pluck('building_id');
+            // @TODO fix relation related
+            $buildingIds = $user->resident->relations()->pluck('building_id');
         }
 
         $model->whereHas('buildings', function ($query) use ($buildingIds) {

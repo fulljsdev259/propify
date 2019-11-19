@@ -9,7 +9,7 @@ use App\Models\Building;
 use App\Models\Model;
 use App\Models\Quarter;
 use App\Models\Pinboard;
-use App\Models\Contract;
+use App\Models\Relation;
 use App\Traits\SaveMediaUploads;
 use Carbon\Carbon;
 
@@ -55,15 +55,16 @@ class PinboardRepository extends BaseRepository
         $u = \Auth::user();
 
         if ($u->resident()->exists()) {
-            $contracts = $u->resident->active_contracts()->get(['building_id']);
-            if ($contracts->isEmpty()) {
-                throw new \Exception("Your resident account does not have any active contract");
+            $relations = $u->resident->active_relations()->get(['building_id']);
+            if ($relations->isEmpty()) {
+                throw new \Exception("Your resident account does not have any active relation");
             }
 
-            $contracts->load('building:id,quarter_id');
-            $attributes['building_ids'] = $contracts->pluck('building_id')->unique()->toArray();
+            $relations->load('building:id,quarter_id');
+            $attributes['building_ids'] = $relations->pluck('building_id')->unique()->toArray();
+
             if (!empty($attributes['visibility']) && Pinboard::VisibilityQuarter == $attributes['visibility']) {
-                $quarterIds = $contracts->where('building.quarter_id', '!=', null)->pluck('building.quarter_id');
+                $quarterIds = $relations->where('building.quarter_id', '!=', null)->pluck('building.quarter_id');
                 $attributes['quarter_ids'] = $quarterIds->unique()->toArray();
             } else {
                 $attributes['quarter_ids'] = [];
@@ -112,27 +113,27 @@ class PinboardRepository extends BaseRepository
     }
 
     /**
-     * @param Contract $contract
+     * @param Relation $relation
      * @return Model|Pinboard|bool|mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function newResidentContractPinboard(Contract $contract)
+    public function newResidentRelationPinboard(Relation $relation)
     {
-        if (empty($contract->building_id)) {
+        if (empty($relation->building_id)) {
             return false;
         }
-
+        // @TODO
+        return;
         $pinboard =  $this->create([
             'visibility' => Pinboard::VisibilityAddress,
             'status' => Pinboard::StatusPublished,
             'type' => Pinboard::TypeNewNeighbour,
             'content' => "New neighbour",
-            'user_id' => $contract->resident->user->id,
-            'building_ids' => [$contract->building_id],
+            'user_id' => $relation->resident->user->id,
+            'building_ids' => [$relation->building_id],
             'notify_email' => true,
-            'published_at' => $contract->start_date ?? Carbon::now()
+            'published_at' => $relation->start_date ?? Carbon::now()
         ]);
 
         // @TODO save only single system audit with notification data or save 2 system audit

@@ -96,7 +96,8 @@ return [
         'type' => 'Modello',
         'language' => 'Lingua',   
         'phase' => 'Fase',
-        'qualification' => 'Qualificazioni',     
+        'qualification' => 'Qualificazioni', 
+        'saved_filters' => 'Filtri salvati',    
     ],    
     "no" => "No",
     "first_name" => "Nome",
@@ -247,7 +248,7 @@ return [
             'title' => "Cancellare l'annuncio",
             'text' => "Vuoi davvero cancellare l'annuncio?",
         ],
-        'delete_contract' => [
+        'delete_relation' => [
             'title' => 'Cancellare il contratto',
             'text' => "Vuoi davvero cancellare il contratto?",
         ],
@@ -368,7 +369,7 @@ return [
                         'notifications_sent' => 'Notifica inviata',
                         'new_resident_pinboard_created' => 'Nuova bacheca vicina',
                         'avatar_uploaded' => 'Immagine del profilo caricata',
-                        'contract_created' => 'Contratto creato',
+                        'relation_created' => 'Contratto creato',
                     ]                    
                 ],
                 'content' => [                    
@@ -391,7 +392,7 @@ return [
                         'notifications_sent' => 'È stata inviata una notifica per questo tipo :auditable_type',
                         'new_resident_pinboard_created' => "Aggiunto un nuovo vicino di casa per l'utente :userName",
                         'avatar_uploaded' => 'Immagine del profilo caricata per :auditable_type',
-                        'contract_created' => 'Contratto creato per i residenti :userName',
+                        'relation_created' => 'Contratto creato per i residenti :userName',
                         'update_no_fieldvalue' => 'La :fieldname è cambiata',
                         'liked' => ':userName piaceva questa bacheca',
                         'unliked' => ' :userName non mi è piaciuta questa bacheca',
@@ -546,7 +547,7 @@ return [
         'property_managers' => 'Gestori',
         'templates' => 'Modelli'    
     ],
-    'contracts' => 'Contratti',
+    'relations' => 'Contratti',
     'ordinal_endings' => [
         'st' => 'º',
         'nd' => 'º',

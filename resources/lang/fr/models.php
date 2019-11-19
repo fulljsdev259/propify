@@ -50,12 +50,16 @@ return [
         "pinboard" => "Panneau d'affichage",
         "listings" => "Produits",
         "company" => "Nom de l'entreprise",
+        'quarter' => [
+            'name' => 'Trimestre',
+        ],
         'building' => [
             'name' => 'Edificio',
         ],
         'unit' => [
             'name' => 'Unité',
         ],
+        'search_quarter' => 'Rechercher par trimestre',
         'search_building' => 'Rechercher un bâtiment',
         'search_unit' => 'Unité de recherche',
         'errors' => [
@@ -65,15 +69,15 @@ return [
             'update' => "Erreur de mise à jour résidente : ",
             'deleted' => "Résident Supprimer erreur : ",
             'not_allowed_change_status' => "Vous n'êtes pas autorisé à changer de statut.",
-            'not_allowed_change_type_has_request_contract' => 'Vous ne pouvez pas changer de type car ce résident a :contracts_count contrats et :requests_count requêtes',
-            'not_allowed_change_type_has_contract' => 'Vous ne pouvez pas changer de type car ce résident a :contracts_count contrats',
+            'not_allowed_change_type_has_request_relation' => 'Vous ne pouvez pas changer de type car ce résident a :relations_count relations et :requests_count requêtes',
+            'not_allowed_change_type_has_relation' => 'Vous ne pouvez pas changer de type car ce résident a :relations_count relations',
             'not_allowed_change_type_has_request' => 'Vous ne pouvez pas changer de type car ce résident a :requests_count requêtes',
         ],        
         "personal_details_card" => "Données personnelles",
         "account_info_card" => "Connexion de l'utilisateur",
         "contact_info_card" => "Coordonnées de contact",
-        "contract" => [
-            "title" => "Contrat",
+        "relation" => [
+            "title" => "Relation",
             "end_date" => "Date de fin",
             "start_date" => "Date de début",
             'type' => 'Type',            
@@ -82,7 +86,7 @@ return [
                 'unlimited' => 'Illimité',
                 'limited' => 'Limitée',
             ],
-            'contract_pdf' => 'Contrat PDF',
+            'relation_pdf' => 'Relation PDF',
             'filename' => 'Nom',
             'deposit_amount' => 'Montant du dépôt',
             'type_of_deposit' => 'Type de dépôt',
@@ -97,21 +101,21 @@ return [
                 'yes' => 'Oui',
                 'no' => 'Non',
             ],
-            'contract_id' => 'ID du contrat',
+            'relation_id' => 'ID du relation',
             'status' => [
                 'active' => 'Actif',
                 'inactive' => 'Inactif',
             ],
-            'add' => 'Ajouter un nouveau contrat',
-            'add_sell_contract' => 'Ajouter un contrat de vente',
+            'add' => 'Ajouter une nouvelle relation',
+            'add_sell_relation' => 'Ajouter une relation de vente',
             'pdf_only_desc' => 'Veuillez noter que seuls les fichiers PDF peuvent être téléchargés.',
-            'saved' => 'Contrat sauvegardé',
+            'saved' => 'Relation sauvegardée',
             'status_count' => [
-                'total' => 'Total des contrats',
-                'active' => 'Contrats en cours',
-                'inactive' => 'Contrats inactifs',
+                'total' => 'Total relations',
+                'active' => 'Des relations actives',
+                'inactive' => 'Relations inactives',
             ],
-            'type_validation_error' => "On dirait que vous avez déjà ajouté des contrats, supprimez-les d'abord et vous pourrez ensuite changer le type de résident."
+            'type_validation_error' => "On dirait que vous avez déjà ajouté des relations, supprimez-les d'abord et vous pourrez ensuite changer le type de résident."
         ],       
         'status' => [
             "label" => "Statut",
@@ -129,7 +133,7 @@ return [
             'content_1' => 'Nous avons le plaisir de vous informer qu\'un compte a été créé pour vous dans le total du résident et de vous envoyer le code d\'activation.',
             'offer' => 'Qu\'offre l\'application ?',
             'offers' => '
-                <li>Avec le dossier de résident numérique, vous avez accès à tous les documents pertinents, tels que le contrat de location, le règlement intérieur ou d\'autres documents relatifs à la propriété.</li>
+                <li>Avec le dossier de résident numérique, vous avez accès à tous les documents pertinents, tels que le relation de location, le règlement intérieur ou d\'autres documents relatifs à la propriété.</li>
                 <li>Le système de billetterie vous permet de traiter vos demandes facilement et sans complications - vous pouvez communiquer vos préoccupations à l\'administration à tout moment et de n\'importe quel endroit.</li>
                 <li>Vous pouvez vendre ou prêter des objets à votre quartier sur la place du marché et dans la zone de prêt.</li>
                 <li>Partagez les nouvelles avec vos voisins en publiant une contribution. Le tableau d\'affichage est également utilisé par l\'administration pour la communication, de sorte que tout le monde est toujours à jour.</li>
@@ -441,7 +445,8 @@ return [
             'label' => 'Workflow',
             'add' => 'Ajouter un flux de travail',
             'edit' => 'Modifier le flux de travail',
-            'delete' => 'Supprimer le workflow',
+            'delete' => 'Supprimer',
+            'close' => 'Fermer',
             'by' => 'à côté de',
             'to' => "jusqu'à",
             'cc' => 'cc',

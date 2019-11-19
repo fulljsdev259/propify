@@ -433,9 +433,9 @@ export default (config = {}) => {
                         this.serviceCount = this.model.service_providers.length
                         this.fileCount = this.model.media.length
                         
-                        this.contractCount = this.model.contracts.length
+                        this.relationCount = this.model.relations.length
 
-                        this.model.residents = this.model.contracts.map(contract => contract.resident);
+                        this.model.residents = this.model.relations.map(relation => relation.resident);
 
                         this.model.residents = this.model.residents.filter((item, index) => {
                             return this.model.residents.indexOf(item) === index

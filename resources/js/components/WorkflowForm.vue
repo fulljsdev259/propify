@@ -27,7 +27,7 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-            <el-col :md="12">
+            <!-- <el-col :md="12">
                 <el-form-item 
                     :rules="validationRules.required"
                     prop="selectedWorkflowBuilding"
@@ -53,9 +53,23 @@
                             v-for="building in model.workflowBuildingList"/>
                     </el-select>
                 </el-form-item>
+            </el-col> -->
+            <el-col :md="12">
+                <el-form-item 
+                    :rules="validationRules.required"
+                    prop="selectedWorkflowBuilding"
+                    class="label-block"
+                    >
+                    <multi-select
+                        :filter="buildingFilter"
+                        :selectedOptions="model.selectedWorkflowBuilding"
+                        @select-changed="handleSelectChange($event, 'building')"
+                    >
+                    </multi-select>
+                </el-form-item>
             </el-col>
         </el-row>
-        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
+        <!-- <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="12">
                 <el-form-item 
                             :rules="validationRules.required"
@@ -107,16 +121,44 @@
                     </el-select>
                 </el-form-item>
             </el-col>
+        </el-row> -->
+        <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
+            <el-col :md="12">
+                <el-form-item 
+                            :rules="validationRules.required"
+                            prop="selectedWorkflowToUser">
+                    <multi-select
+                        :filter="toUserFilter"
+                        :selectedOptions="model.selectedWorkflowToUser"
+                        @select-changed="handleSelectChange($event, 'to_user')"
+                    >
+                    </multi-select>
+                </el-form-item>
+            </el-col>
+            <el-col :md="12">
+                <el-form-item 
+                    prop="selectedWorkflowCcUser"
+                    class="label-block"
+                    >
+                    <multi-select
+                        :filter="ccUserFilter"
+                        :selectedOptions="model.selectedWorkflowCcUser"
+                        @select-changed="handleSelectChange($event, 'cc_user')"
+                    >
+                    </multi-select>
+                </el-form-item>
+            </el-col>
         </el-row>
         <el-row :gutter="20" style="margin-top: 10px; margin-left: 0; margin-right: 0">
             <el-col :md="24" class="drawer-actions">
-                <el-button type="default" size="mini" @click="close" class="round-btn">&nbsp;{{ $t('general.actions.close') }}</el-button>
-                <el-tooltip
+                <el-button type="default" size="mini" icon="icon-cancel" @click="close" class="round-btn">&nbsp;{{ $t('models.quarter.workflow.close') }}</el-button>
+                <el-button v-if="mode=='edit'" type="danger" size="mini" icon="icon-trash-empty" @click="deleteItem" class="round-btn">&nbsp;{{ $t('models.quarter.workflow.delete') }}</el-button>
+                <!-- <el-tooltip
                         :content="$t('models.quarter.workflow.tooltips.save')"
                         class="item" effect="light" placement="top-end"
-                    >
-                    <el-button type="primary" size="mini" @click="submit" icon="ti-save" class="round-btn">&nbsp;{{ $t('general.actions.save') }}</el-button>
-                </el-tooltip>
+                    > -->
+                    <el-button type="primary" size="mini" @click="submit" icon="icon-floppy" class="round-btn">&nbsp;{{ $t('general.actions.save') }}</el-button>
+                <!-- </el-tooltip> -->
             </el-col>
         </el-row>
         
@@ -127,9 +169,13 @@
 <script>
     import {displayError, displaySuccess} from "../helpers/messages";
     import {mapActions, mapGetters} from 'vuex';
+    import MultiSelect from 'components/MultiSelect';
 
     export default {
         name: "WorkflowForm",
+        components: {
+            MultiSelect,
+        },
         props: {
             data: {
                 type: Object
@@ -156,8 +202,6 @@
                 model: {
                     title: '',
                     category_id: null,
-                    assignList: '',
-                    assign: [],
                     selectedWorkflowBuilding: [],
                     workflowBuildingList: [],
                     workflowToUserList: [],
@@ -173,6 +217,8 @@
                     }],
                 },
                 remoteLoading: false,
+                buildings:[],
+                users: []
             }
         },
         methods: {
@@ -190,18 +236,33 @@
 
                         let category = this.categories.find(item => item.id == this.model.category_id)
 
+                        // this.model.selectedWorkflowBuilding.map( building_id => {
+                        //     let item = this.model.workflowBuildingList.find(item => item.id == building_id)
+                        //     buildings.push(item)
+                        // })
+                        
+                        // this.model.selectedWorkflowToUser.map( user_id => {
+                        //     let item = this.model.workflowToUserList.find(item => item.id == user_id)
+                        //     to_users.push(item)
+                        // })
+
+                        // this.model.selectedWorkflowCcUser.map( user_id => {
+                        //     let item = this.model.workflowCcUserList.find(item => item.id == user_id)
+                        //     cc_users.push(item)
+                        // })
+
                         this.model.selectedWorkflowBuilding.map( building_id => {
-                            let item = this.model.workflowBuildingList.find(item => item.id == building_id)
+                            let item = this.buildings.find(item => item.id == building_id)
                             buildings.push(item)
                         })
                         
                         this.model.selectedWorkflowToUser.map( user_id => {
-                            let item = this.model.workflowToUserList.find(item => item.id == user_id)
+                            let item = this.users.find(item => item.id == user_id)
                             to_users.push(item)
                         })
 
                         this.model.selectedWorkflowCcUser.map( user_id => {
-                            let item = this.model.workflowCcUserList.find(item => item.id == user_id)
+                            let item = this.users.find(item => item.id == user_id)
                             cc_users.push(item)
                         })
                         
@@ -228,13 +289,6 @@
                         else {
                             this.$emit('update-workflow', this.editing_index, payload);
                         }
-                        // const resp = await this.saveBuildingEmailReceptionists(payload)
-
-                        // if(resp.success)
-                        // {
-                        //     displaySuccess(resp);
-
-                        // }
                     }
                 }
                 catch(err) {
@@ -249,29 +303,32 @@
                     this.$emit('cancel-edit-workflow', this.editing_index)
                 }
             },
-            async remoteSearchManagers(search, index) {
-                if (search === '') {
-                    this.resetToAssignList(index);
-                } else {
-                    this.remoteLoading = true;
-
-                    try {
-                        const resp = await this.getPropertyManagers({
-                            get_all: true,
-                            search
-                        });
-
-                        this.model.assignList[index] = resp.data;
-                    } catch (err) {
-                        displayError(err);
-                    } finally {
-                        this.remoteLoading = false;
-                    }
+            deleteItem() {
+                if(this.mode == 'edit') {
+                    this.$emit('delete-workflow', this.editing_index)
                 }
             },
-            resetToAssignList(index) {
-                this.model.assignList[index] = [];
-                this.model.assign[index] = '';
+            handleSelectChange(val, filter) {
+                if(filter == 'building') {
+                    this.model.selectedWorkflowBuilding = val
+                }
+                else if(filter == 'to_user') {
+                    this.model.selectedWorkflowToUser = val
+                }
+                else if(filter == 'cc_user') {
+                    this.model.selectedWorkflowCcUser = val
+                }
+                
+            },
+            async fetchRemoteBuildings(search = '') {
+                const buildings = await this.getBuildings({get_all: true, quarter_id: this.quarter_id, search});
+
+                return buildings.data
+            },
+            async fetchRemoteUsers(search = '') {
+                const users = await this.getAllAdminsForQuarter({quarter_id: this.quarter_id, search})
+
+                return users
             },
             async remoteSearchBuildings(search) {
                 if (search === '') {
@@ -341,19 +398,56 @@
             },
             
         },
+        computed: {
+            buildingFilter() {
+                return {
+                        name: this.$t('models.quarter.workflow.placeholders.building'),
+                        type: 'select',
+                        key: 'name',
+                        data: this.buildings,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteBuildings
+                }
+            },
+            toUserFilter() {
+                return {
+                        name: this.$t('models.quarter.workflow.placeholders.to_user'),
+                        type: 'select',
+                        key: 'name',
+                        data: this.users,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteUsers
+                }
+            },
+            ccUserFilter() {
+                return {
+                        name: this.$t('models.quarter.workflow.placeholders.cc_user'),
+                        type: 'select',
+                        key: 'name',
+                        data: this.users,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteUsers
+                }
+            }
+        },
         async created () {
-        
             this.loading = true;
             
+            this.buildings = await this.fetchRemoteBuildings();
+            this.buildings.map(building => {
+                if(building.address)
+                    building.house_num = building.address.house_num
+            })
+            this.users = await this.fetchRemoteUsers();
             this.categories = this.$constants.requests.categories_data.tree
-
 
             if(this.mode == 'edit') {
                 this.model.title = this.data.title
                 this.model.category_id = this.data.category_id
-                this.model.selectedWorkflowBuilding = this.data.building_ids
-                this.model.selectedWorkflowToUser = this.data.to_user_ids
-                this.model.selectedWorkflowCcUser = this.data.cc_user_ids
+                console.log(this.data)
+                this.$set(this.model, 'selectedWorkflowBuilding', this.data.building_ids)
+                this.$set(this.model, 'selectedWorkflowToUser', this.data.to_user_ids)
+                this.$set(this.model, 'selectedWorkflowCcUser', this.data.cc_user_ids)
                 this.model.workflowBuildingList = this.data.buildings
                 this.model.workflowToUserList = this.data.to_users
                 this.model.workflowCcUserList = this.data.cc_users
@@ -549,5 +643,8 @@
         }
     }
     
+    .ti-save {
+        margin-right: 5px;
+    }
     
 </style>

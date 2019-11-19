@@ -97,6 +97,7 @@ return [
         'language' => 'Langue',
         'phase' => 'Phase',
         'qualification' => 'Qualification',
+        'saved_filters' => 'Filtres enregistrés',
     ],
     'no' => 'Non',
     "first_name" => "Prénom",
@@ -247,7 +248,7 @@ return [
             'title' => 'supprimer la liste',
             'text' => "Voulez-vous vraiment supprimer l'annonce ?",
         ],
-        'delete_contract' => [
+        'delete_relation' => [
             'title' => 'Vertrag löschen',
             'text' => 'Vuoi davvero cancellare il contratto?',
         ],
@@ -368,7 +369,7 @@ return [
                         'notifications_sent' => 'Notification envoyée',
                         'new_resident_pinboard_created' => "Panneau d'affichage du nouveau voisin",
                         'avatar_uploaded' => 'Image de profil téléchargée',
-                        'contract_created' => 'Contrat créé',
+                        'relation_created' => 'Contrat créé',
                     ]                  
                 ],
                 'content' => [                    
@@ -391,7 +392,7 @@ return [
                         'notifications_sent' => 'Une notification a été envoyée pour ce :auditable_type',
                         'new_resident_pinboard_created' => "Ajout d'un nouveau voisin pour user :userName",
                         'avatar_uploaded' => 'Image de profil téléchargée pour :auditable_type',
-                        'contract_created' => 'Contrat créé pour le résident :userName',
+                        'relation_created' => 'Contrat créé pour le résident :userName',
                         'update_no_fieldvalue' => 'Le :fieldname a changé',
                         'liked' => ":userName aimait ce tableau d'affichage",
                         'unliked' => ":userName n'aimait pas ce tableau d'affichage",
@@ -546,7 +547,7 @@ return [
         'property_managers' => 'Gestionnaires immobiliers',
         'templates' => 'Modèles'
     ],
-    'contracts' => 'Contrats',
+    'relations' => 'Contrats',
     'ordinal_endings' => [
         'st' => 'em',
         'nd' => 'ème',

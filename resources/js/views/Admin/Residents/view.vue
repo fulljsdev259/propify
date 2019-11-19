@@ -151,72 +151,72 @@
                    <el-card class="chart-card left-card-data-section">
                         <h3 class="right-card">
                             <i class="ti-user"/>
-                            {{$t('models.resident.contract.title')}}
+                            {{$t('models.resident.relation.title')}}
                         </h3>
                         <el-row :gutter="20"
-                                :key="contract.id"
-                                v-for="(contract, $index) in model.contracts">
+                                :key="relation.id"
+                                v-for="(relation, $index) in model.relations">
                             <el-divider v-if="$index > 0" style="margin: 0;"></el-divider>
-                            <el-col :sm="12" :xs="12" v-if="contract.start_date">{{$t('models.resident.contract.start_date')}}:</el-col>
-                            <el-col :sm="12" :xs="12" class="text-secondary" v-if="contract.start_date">
-                                {{new Date(contract.start_date) | formatDate }}
+                            <el-col :sm="12" :xs="12" v-if="relation.start_date">{{$t('models.resident.relation.start_date')}}:</el-col>
+                            <el-col :sm="12" :xs="12" class="text-secondary" v-if="relation.start_date">
+                                {{new Date(relation.start_date) | formatDate }}
                             </el-col>
 
-                            <el-col :sm="12" :xs="12" v-if="contract.end_date">{{$t('models.resident.contract.end_date')}}:</el-col>
-                            <el-col :sm="12" :xs="12" class="text-secondary" v-if="contract.end_date">
-                                {{  new Date(contract.end_date) | formatDate }}
+                            <el-col :sm="12" :xs="12" v-if="relation.end_date">{{$t('models.resident.relation.end_date')}}:</el-col>
+                            <el-col :sm="12" :xs="12" class="text-secondary" v-if="relation.end_date">
+                                {{  new Date(relation.end_date) | formatDate }}
                             </el-col>
 
                             <el-col :sm="12" :xs="12">{{$t('general.street')}}:</el-col>
                             <el-col :sm="12" :xs="12" class="text-secondary">
                                 {{
-                                    (contract.address ? contract.address.street : "")
+                                    (relation.address ? relation.address.street : "")
                                 }}
                             </el-col>
 
                             <el-col :sm="12" :xs="12">{{$t('models.building.house_num')}}:</el-col>
                             <el-col :sm="12" :xs="12" class="text-secondary">
                                 {{
-                                    (contract.address ? contract.address.house_num : "")
+                                    (relation.address ? relation.address.house_num : "")
                                 }}
                             </el-col>
 
                             <el-col :sm="12" :xs="12">{{$t('general.zip')}}:</el-col>
                             <el-col :sm="12" :xs="12" class="text-secondary">
                                 {{
-                                    contract.address ? contract.address.zip : ""
+                                    relation.address ? relation.address.zip : ""
                                 }}
                             </el-col>
 
                             <el-col :sm="12" :xs="12">{{$t('general.city')}}:</el-col>
                             <el-col :sm="12" :xs="12" class="text-secondary">
                                 {{
-                                    contract.address ? contract.address.city : ""
+                                    relation.address ? relation.address.city : ""
                                 }}
                             </el-col>
 
                             <el-col :sm="12" :xs="12">{{$t('models.unit.type.label')}}:</el-col>
                             <el-col :sm="12" :xs="12" class="text-secondary">
                                 {{
-                                !!$constants.units.type[contract.type] ?
-                                $t('models.unit.type.' + $constants.units.type[contract.type])
+                                !!$constants.units.type[relation.type] ?
+                                $t('models.unit.type.' + $constants.units.type[relation.type])
                                 : '&nbsp;'
                                 }}
                             </el-col>
 
                             <el-col :sm="12" :xs="12">{{$t('models.unit.room_no')}}:</el-col>
                             <el-col :sm="12" :xs="12" class="text-secondary">
-                                {{contract.unit.room_no}}&nbsp;
+                                {{relation.unit.room_no}}&nbsp;
                             </el-col>
 
-                            <el-col v-if="contract.media.length > 0" class="media">
-                                <a :href="contract.media[contract.media.length-1].url" target="_blank"><strong>{{contract.media[contract.media.length-1].name}}</strong></a>
+                            <el-col v-if="relation.media.length > 0" class="media">
+                                <a :href="relation.media[relation.media.length-1].url" target="_blank"><strong>{{relation.media[relation.media.length-1].name}}</strong></a>
                             </el-col>
 
-                            <el-col v-if="contract.media.length > 0">
-                                <template v-if="contract.media[contract.media.length-1] && contract.media[contract.media.length-1].name">
-                                    <el-image :src="contract.media[contract.media.length-1].url" style="width: 100%" v-if="isFileImage(contract.media[contract.media.length-1])"/>
-                                    <embed :src="contract.media[contract.media.length-1].url" style="width: 100%" v-else/>
+                            <el-col v-if="relation.media.length > 0">
+                                <template v-if="relation.media[relation.media.length-1] && relation.media[relation.media.length-1].name">
+                                    <el-image :src="relation.media[relation.media.length-1].url" style="width: 100%" v-if="isFileImage(relation.media[relation.media.length-1])"/>
+                                    <embed :src="relation.media[relation.media.length-1].url" style="width: 100%" v-else/>
                                 </template>
                             </el-col>
                         </el-row>

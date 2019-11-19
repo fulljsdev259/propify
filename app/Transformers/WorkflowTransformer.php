@@ -14,9 +14,8 @@ use App\Models\Workflow;
 class WorkflowTransformer extends BaseTransformer
 {
     /**
-     * @param Quarter $model
+     * @param Workflow $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(Workflow $model)
     {

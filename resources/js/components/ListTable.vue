@@ -212,7 +212,7 @@
                     </div>
                     <div v-else-if="column.withCounts">
                         <request-count :countsData="items[scope.$index]" ></request-count>
-                        <contract-count :countsData="items[scope.$index]" ></contract-count>
+                        <relation-count :countsData="items[scope.$index]" ></relation-count>
                     </div>
                     <div v-else-if="column.withUsers">
                         <div class="avatars-wrapper">
@@ -321,7 +321,7 @@
                         </span>
                     </template>
                     <span v-else>
-                        {{ scope.row[column.prop] }}
+                        {{ _.get(scope.row, column.prop) }}
                     </span>
                     
                 </template>
@@ -350,7 +350,7 @@
     import {Avatar} from 'vue-avatar'
     import uuid from 'uuid/v1'
     import RequestCount from 'components/RequestCount'
-    import ContractCount from 'components/ContractCount'
+    import RelationCount from 'components/RelationCount'
     import tableAvatar from 'components/Avatar';
     import RequestDetailCard from 'components/RequestDetailCard';
     import SelectLanguage from 'components/SelectLanguage';
@@ -362,7 +362,7 @@
         components: {
             Avatar,
             RequestCount,
-            ContractCount,
+            RelationCount,
             'table-avatar': tableAvatar,
             RequestDetailCard,
             SelectLanguage,
@@ -931,7 +931,7 @@
             }
 
             :global(td) {
-                padding: 4px;
+                padding: 20px 4px;
             }
         }
 
@@ -1109,6 +1109,26 @@
 </style>
 
 <style lang="scss">
+    .list-table {
+        .el-checkbox__input {
+            .el-checkbox__inner {
+                height: 20px;
+                width: 20px;
+                border-radius: 6px;
+
+                &::after {
+                    height: 10px;
+                    top: 2px;
+                    left: 8px;
+                }
+            }
+
+            &.is-indeterminate .el-checkbox__inner::before {
+                top: 8px;
+                height: 3px;
+            }
+        }
+    }
     .label-block .el-form-item__label {
         display: block;
         float: none;
@@ -1127,7 +1147,10 @@
     }
     .el-table {
         th.el-table-column--selection.is-leaf {
-            display: none;
+            .cell {
+                padding-left: 0px;
+                text-align: right;
+            }
         }
         tbody {
             tr {

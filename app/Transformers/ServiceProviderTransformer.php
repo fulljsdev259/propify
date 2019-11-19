@@ -19,7 +19,6 @@ class ServiceProviderTransformer extends BaseTransformer
      *
      * @param ServiceProvider $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(ServiceProvider $model)
     {

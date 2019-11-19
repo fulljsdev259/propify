@@ -15,8 +15,8 @@ use App\Http\Requests\API\Media\ListingDeleteRequest;
 use App\Http\Requests\API\Media\ListingUploadRequest;
 use App\Http\Requests\API\Media\RequestDeleteRequest;
 use App\Http\Requests\API\Media\RequestUploadRequest;
-use App\Http\Requests\API\Media\ContractDeleteRequest;
-use App\Http\Requests\API\Media\ContractUploadRequest;
+use App\Http\Requests\API\Media\RelationDeleteRequest;
+use App\Http\Requests\API\Media\RelationUploadRequest;
 use App\Jobs\Notify\NotifyRequestMedia;
 use App\Models\Building;
 use App\Repositories\AddressRepository;
@@ -25,7 +25,7 @@ use App\Repositories\PinboardRepository;
 use App\Repositories\ListingRepository;
 use App\Repositories\QuarterRepository;
 use App\Repositories\RequestRepository;
-use App\Repositories\ContractRepository;
+use App\Repositories\RelationRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\UnitRepository;
 use App\Transformers\MediaTransformer;
@@ -59,9 +59,9 @@ class MediaAPIController extends AppBaseController
     private $residentRepository;
 
     /**
-     * @var ContractRepository
+     * @var RelationRepository
      */
-    private $contractRepository;
+    private $relationRepository;
 
     /** @var  RequestRepository */
     private $requestRepository;
@@ -75,7 +75,7 @@ class MediaAPIController extends AppBaseController
      * @param PinboardRepository $pinboardRepo
      * @param ListingRepository $listingRepo
      * @param ResidentRepository $residentRepo
-     * @param ContractRepository $contractRepository
+     * @param RelationRepository $relationRepository
      * @param RequestRepository $requestRepo
      */
     public function __construct(
@@ -86,7 +86,7 @@ class MediaAPIController extends AppBaseController
         PinboardRepository $pinboardRepo,
         ListingRepository $listingRepo,
         ResidentRepository $residentRepo,
-        ContractRepository $contractRepository,
+        RelationRepository $relationRepository,
         RequestRepository $requestRepo
     )
     {
@@ -98,7 +98,7 @@ class MediaAPIController extends AppBaseController
         $this->listingRepository = $listingRepo;
         $this->residentRepository = $residentRepo;
         $this->requestRepository = $requestRepo;
-        $this->contractRepository = $contractRepository;
+        $this->relationRepository = $relationRepository;
     }
 
     /**
@@ -564,9 +564,9 @@ class MediaAPIController extends AppBaseController
 
     /**
      * @SWG\Post(
-     *      path="/contracts/{id}/media",
-     *      summary="Store a newly created Contract Media in storage",
-     *      tags={"Contract"},
+     *      path="/relations/{id}/media",
+     *      summary="Store a newly created Relation Media in storage",
+     *      tags={"Relation"},
      *      description="Store Media",
      *      produces={"application/json"},
      *      @SWG\Parameter(
@@ -587,7 +587,7 @@ class MediaAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Contract"
+     *                  ref="#/definitions/Relation"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -598,19 +598,19 @@ class MediaAPIController extends AppBaseController
      * )
      *
      * @param int $id
-     * @param ContractUploadRequest $request
+     * @param RelationUploadRequest $request
      * @return mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function contractUpload(int $id, ContractUploadRequest $request)
+    public function relationUpload(int $id, RelationUploadRequest $request)
     {
-        $contract = $this->contractRepository->findWithoutFail($id);
-        if (empty($contract)) {
-            return $this->sendError(__('models.resident.contract.errors.not_found'));
+        $relation = $this->relationRepository->findWithoutFail($id);
+        if (empty($relation)) {
+            return $this->sendError(__('models.resident.relation.errors.not_found'));
         }
 
         $data = $request->get('media', '');
-        if (!$media = $this->contractRepository->uploadFile('media', $data, $contract, $request->merge_in_audit)) {
+        if (!$media = $this->relationRepository->uploadFile('media', $data, $relation, $request->merge_in_audit)) {
             return $this->sendError(__('general.upload_error'));
         }
 
@@ -620,9 +620,9 @@ class MediaAPIController extends AppBaseController
 
     /**
      * @SWG\Delete(
-     *      path="/contracts/{id}/media/{media_id}",
+     *      path="/relations/{id}/media/{media_id}",
      *      summary="Remove the specified Media from storage",
-     *      tags={"Contract"},
+     *      tags={"Relation"},
      *      description="Delete Media",
      *      produces={"application/json"},
      *      @SWG\Parameter(
@@ -655,17 +655,17 @@ class MediaAPIController extends AppBaseController
      *
      * @param int $id
      * @param int $media_id
-     * @param ContractDeleteRequest $r
+     * @param RelationDeleteRequest $r
      * @return Response
      */
-    public function contractDestroy(int $id, int $media_id, ContractDeleteRequest $r)
+    public function relationDestroy(int $id, int $media_id, RelationDeleteRequest $r)
     {
-        $contract = $this->contractRepository->findWithoutFail($id);
-        if (empty($contract)) {
-            return $this->sendError(__('models.resident.contract.errors.not_found'));
+        $relation = $this->relationRepository->findWithoutFail($id);
+        if (empty($relation)) {
+            return $this->sendError(__('models.resident.relation.errors.not_found'));
         }
 
-        $media = $contract->media->find($media_id);
+        $media = $relation->media->find($media_id);
         if (empty($media)) {
             return $this->sendError(__('general.media_not_found'));
         }

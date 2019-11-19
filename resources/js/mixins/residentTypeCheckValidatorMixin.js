@@ -18,9 +18,9 @@ export default (config = {}) => {
                     }
                 }
                 else {
-                    if(validateObject.type != '' && validateObject.contracts.length > 0) {
+                    if(validateObject.type != '' && validateObject.relations.length > 0) {
                         if(this.original_type != validateObject.type)
-                            callback(new Error(this.$t('models.resident.contract.type_validation_error')));
+                            callback(new Error(this.$t('models.resident.relation.type_validation_error')));
                     }
                         
                 }

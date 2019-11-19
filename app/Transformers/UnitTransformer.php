@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\Building;
 use App\Models\Unit;
 
 /**
@@ -19,10 +20,7 @@ class UnitTransformer extends BaseTransformer
      * Transform the Unit entity.
      *
      * @param Unit $model
-     *
-     * @param Unit $model
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function transform(Unit $model)
     {
@@ -51,14 +49,14 @@ class UnitTransformer extends BaseTransformer
 
 
         $attributes = $model->attributesToArray();
-        if (key_exists('total_contracts_count', $attributes)) {
-            $response['total_contracts_count'] = $attributes['total_contracts_count'];
+        if (key_exists('total_relations_count', $attributes)) {
+            $response['total_relations_count'] = $attributes['total_relations_count'];
         }
 
-        if (key_exists('active_contracts_count', $attributes)) {
-            $response['active_contracts_count'] = $attributes['active_contracts_count'];
-            if (key_exists('total_contracts_count', $attributes)) {
-                $response['inactive_contracts_count'] = $attributes['total_contracts_count'] - $attributes['active_contracts_count'];
+        if (key_exists('active_relations_count', $attributes)) {
+            $response['active_relations_count'] = $attributes['active_relations_count'];
+            if (key_exists('total_relations_count', $attributes)) {
+                $response['inactive_relations_count'] = $attributes['total_relations_count'] - $attributes['active_relations_count'];
             }
         }
 
@@ -72,6 +70,10 @@ class UnitTransformer extends BaseTransformer
 
         if ($model->relationExists('quarter')) {
             $response['quarter'] = (new QuarterTransformer())->transform($model->quarter);
+            $response[ 'internal_quarter_id'] = $model->quarter->internal_quarter_id ?? '';
+        } else  {
+            $model->load('quarter:id,internal_quarter_id');
+            $response[ 'internal_quarter_id'] = $model->quarter->internal_quarter_id ?? '';
         }
 
         if ($model->relationExists('media')) {
@@ -82,13 +84,13 @@ class UnitTransformer extends BaseTransformer
             $response['address'] = (new AddressTransformer)->transform($model->address);
         }
 
-        if ($model->relationExists('contracts')) {
-            $response['contracts'] = (new ContractTransformer())->transformCollection($model->contracts);
+        if ($model->relationExists('relations')) {
+            $response['relations'] = (new RelationTransformer())->transformCollection($model->relations);
 
             $residents = [];
-            foreach ($response['contracts'] as $contractData) {
-                if (!empty($contractData['resident'])) {
-                    $residents[] = $contractData['resident'];
+            foreach ($response['relations'] as $relationData) {
+                if (!empty($relationData['resident'])) {
+                    $residents[] = $relationData['resident'];
                 }
             }
 

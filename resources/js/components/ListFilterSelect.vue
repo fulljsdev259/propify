@@ -9,7 +9,7 @@
                     :closable="findSelectedOne.count !== 1"
                     @close="selectItem(findSelectedOne.index, true)"
                 >
-                    {{ `${filter.name}: ${getLanguageStr(findSelectedOne.label)}` }}
+                    <span v-if="items.length > 1">{{ `${filter.name}: ` }}</span>{{ `${getLanguageStr(findSelectedOne.label)}` }}
                 </el-tag>
                 <el-tag 
                     v-else
@@ -34,44 +34,46 @@
                 class="close-button" 
                 @click.prevent.stop="handleReset(true)">
             </el-button>
-            <el-dropdown-menu slot="dropdown">
-                <el-input
-                    v-if="searchBar"
-                    v-model="search"
-                    :placeholder="`${$t('general.placeholders.search')}...`"
-                >
-                    <i 
-                        v-if="search === ''"
-                        slot="prefix" 
-                        class="el-input__icon el-icon-search">
-                    </i>
-                    <i 
-                        v-else
-                        slot="prefix" 
-                        class="el-input__icon el-icon-close" 
-                        @click="clearSearch()">
-                    </i>
-                </el-input>
-                <div class="dropdown-container" v-if="items.length">
-                    <div
-                        :key="`${filter.name}${item.name}${item.id}selected`"
-                        class="dropdown-item" 
-                        :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
-                        @click="selectItem(index)"
-                        v-for="(item, index) in items" 
+            <el-dropdown-menu slot="dropdown" :class="{'is-hide': items.length <= 1}">
+                <template  v-if="items.length > 1">
+                    <el-input
+                        v-if="items.length > 9"
+                        v-model="search"
+                        :placeholder="`${$t('general.placeholders.search')}...`"
                     >
-                        <span v-if="filter.key !== 'language'" v-html="filterSearch(getLanguageStr(item.name))"></span>
-                        <span v-else><span :class="item.flag"></span>&nbsp;&nbsp;{{ $t(`general.languages.`+item.symbol) }}</span>
-                        <span class="el-icon-check"></span>
+                        <i 
+                            v-if="search === ''"
+                            slot="prefix" 
+                            class="el-input__icon el-icon-search">
+                        </i>
+                        <i 
+                            v-else
+                            slot="prefix" 
+                            class="el-input__icon el-icon-close" 
+                            @click="clearSearch()">
+                        </i>
+                    </el-input>
+                    <div class="dropdown-container" v-if="items.length">
+                        <div
+                            :key="`${filter.name}${item.name}${item.id}selected`"
+                            class="dropdown-item" 
+                            :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
+                            @click="selectItem(index)"
+                            v-for="(item, index) in items" 
+                        >
+                            <span v-if="filter.key !== 'language'" v-html="filterSearch(getLanguageStr(item.name))"></span>
+                            <span v-else><span :class="item.flag"></span>&nbsp;&nbsp;{{ $t(`general.languages.`+item.symbol) }}</span>
+                            <span class="el-icon-check"></span>
+                        </div>
+                        
                     </div>
-                    
-                </div>
-                <el-divider></el-divider>
-                <div class="actions">
-                    <el-button type="text" @click="handleReset()"><el-dropdown-item >{{ $t('general.reset') }}</el-dropdown-item ></el-button>
-                    <el-button v-if="!isChanged()" type="text" :disabled="true">{{ $t('general.placeholders.select') }}</el-button>
-                    <el-button v-else type="primary"><el-dropdown-item >{{ $t('general.placeholders.select') }}</el-dropdown-item></el-button>
-                </div>
+                    <el-divider></el-divider>
+                    <div class="actions">
+                        <el-button type="text" @click="handleReset()"><el-dropdown-item >{{ $t('general.reset') }}</el-dropdown-item ></el-button>
+                        <el-button v-if="!isChanged()" type="text" :disabled="true">{{ $t('general.placeholders.select') }}</el-button>
+                        <el-button v-else type="primary"><el-dropdown-item >{{ $t('general.placeholders.select') }}</el-dropdown-item></el-button>
+                    </div>
+                </template>
             </el-dropdown-menu>
         </el-dropdown>
     </div>
@@ -135,6 +137,10 @@
             },
             handleDropdownClick() {
                 this.clearSearch();
+                if(this.items.length == 1 && this.findSelectedOne.count == 0) {
+                    this.selectItem(0);
+                    this.handleSelect();
+                } 
             },
             handleVisibleChange(visible) {
                 let selected = [], unselected = [];
@@ -263,11 +269,9 @@
                         })
                     });
                 }
-                
             }
         },
         created() {
-            
 
         },
         updated() {
@@ -351,8 +355,11 @@
         padding: 0px;
         width: 288px;
         border-radius: 12px;
+        &.is-hide {
+            visibility: hidden;
+        }
         .el-input {
-            margin: 16px;
+            margin: 16px 16px 0;
             width: calc(100% - 32px);
             :global(.el-input__inner) {
                 border-color: transparent;
@@ -366,7 +373,7 @@
             }
         }
         .dropdown-container {
-            padding: 0 16px;
+            padding: 16px 16px 0;
             max-height: 310px;
             overflow-y: auto;
             
@@ -409,8 +416,12 @@
                     border: 1px solid var(--color-black);
                     display: flex;
                     justify-content:space-between;
+                    align-items: center;
                     span {
                         font-weight: 700;
+                        &:first-child {
+                            margin-right: 15px;
+                        }
                     }
                     span:not(:first-child) {
                         display: block;
