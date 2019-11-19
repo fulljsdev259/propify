@@ -556,4 +556,5 @@ return [
     ],
     'empty' => "(leeres Feld)",
     'notification_residents_sent' => 'Die Benachrichtigung wurde am {date} um {time} Uhr an {number} Bewohner gesendet.',
+    'edit_close_message' => 'Möchten Sie die Änderungen vor dem Schliessen speichern?',
 ];

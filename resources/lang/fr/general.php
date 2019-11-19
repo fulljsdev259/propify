@@ -556,4 +556,5 @@ return [
     ],
     'empty' => "(champ vide)",
     'notification_residents_sent' => 'la notification a été envoyée à {number} résidents à {time} le {date}.',
+    'edit_close_message' => 'Souhaitez-vous sauvegarder les modifications avant la fermeture ?',
 ];
