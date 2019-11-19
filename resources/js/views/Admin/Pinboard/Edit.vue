@@ -523,7 +523,8 @@
                 }, {
                     prop: 'type',
                     label: 'general.assignment_types.label',
-                    i18n: this.translateType
+                    i18n: this.translateType,
+                    align: 'left',
                 }],
                 assignmentsReceptionistsColumns: [{
                     type: 'multiProp',
@@ -535,11 +536,13 @@
                 }, {
                     prop: 'pinboard_views_count',
                     label: 'models.pinboard.views',
+                    align: 'left',
                 }],
                 assignmentsProviderColumns: [{
                     prop: 'name',
                     label: 'general.name',
-                    type: 'serviceName'
+                    type: 'serviceName',
+                    align: 'left',
                 }],
                 activeTab1: "details",
             }

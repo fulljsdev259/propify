@@ -15,6 +15,7 @@ use App\Http\Requests\API\Resident\CheckHasRequestOrRelationRequest;
 use App\Http\Requests\API\Resident\CreateRequest;
 use App\Http\Requests\API\Resident\DeleteRequest;
 use App\Http\Requests\API\Resident\DownloadCredentialsRequest;
+use App\Http\Requests\API\Resident\GetMediaRequest;
 use App\Http\Requests\API\Resident\ListRequest;
 use App\Http\Requests\API\Resident\MyDocumentsRequest;
 use App\Http\Requests\API\Resident\MyNeighboursRequest;
@@ -305,6 +306,7 @@ class ResidentAPIController extends AppBaseController
 
         $resident->load([
             'user',
+            'media',
             'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
@@ -371,6 +373,7 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'settings',
             'user',
+            'media',
             'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
@@ -426,6 +429,7 @@ class ResidentAPIController extends AppBaseController
         $user->resident->load([
             'user',
             'settings',
+            'media',
             'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
@@ -529,6 +533,7 @@ class ResidentAPIController extends AppBaseController
 
         $resident->load([
             'settings',
+            'media',
             'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
@@ -619,6 +624,7 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
+            'media',
             'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
@@ -676,6 +682,7 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
+            'media',
             'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
@@ -758,6 +765,7 @@ class ResidentAPIController extends AppBaseController
         $resident->load([
             'user',
             'settings',
+            'media',
             'default_relation' => function ($q) {
                 $q->with('building.address', 'unit', 'media');
             },
@@ -1155,6 +1163,7 @@ class ResidentAPIController extends AppBaseController
      */
     public function myDocuments(MyDocumentsRequest $myDocumentsRequest)
     {
+        // @TODO correct
         $resident = Auth::user()->resident;
         $relations = $resident->relations()
             ->select('unit_id', 'building_id')
@@ -1294,6 +1303,23 @@ class ResidentAPIController extends AppBaseController
         $propertyManagers = $relations->pluck('building.property_managers')->collapse()->keyBy('id')->values();
         $response = (new PropertyManagerTransformer())->transformCollectionBy($propertyManagers, 'residentPropertyManagers');
         return $this->sendResponse($response, 'my property managers');
+    }
+
+    /**
+     * @param $id
+     * @param GetMediaRequest $request
+     * @return mixed
+     */
+    public function getAllMedia($id, GetMediaRequest $request)
+    {
+        $resident = $this->residentRepository->findForCredentials($id);
+        if (empty($resident)) {
+            return $this->sendError(__('models.resident.errors.not_found'));
+        }
+
+        $media = $resident->media()->get();
+        $response = (new MediaTransformer())->transformCollection($media);
+        return $this->sendResponse($response, 'Residents all media get succesfully');
     }
 
 }
