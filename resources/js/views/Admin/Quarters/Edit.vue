@@ -656,7 +656,8 @@
                 editingRelationIndex: -1,
                 editingWorkflowIndex: -1,
                 activeDrawerTab: "emergency",
-                workflows: []
+                workflows: [],
+                editMode: false,
             }
         },
         methods: {

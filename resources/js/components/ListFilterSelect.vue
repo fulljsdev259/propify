@@ -321,7 +321,7 @@
                     }
                 }
                 &.select-count {
-                    padding: 0 3px !important;
+                    padding: 0 4px !important;
                     text-align: center;
                     border-radius: 4px;
                     border: 1px solid var(--color-white);
