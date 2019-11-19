@@ -657,9 +657,10 @@
 
             }
         }
+        
+    }
 
-        .el-dialog__footer {
-            padding: 0;
-        }
+    .el-dialog__footer {
+        padding: 0;
     }
 </style>

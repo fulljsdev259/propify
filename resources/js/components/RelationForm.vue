@@ -163,6 +163,29 @@
                 </el-form-item>
             </el-col>
    
+
+            <el-col :md="12" v-if="model.unit_id">
+                <el-form-item :label="$t('general.resident')" prop="resident_ids">
+                    <el-select
+                        :loading="remoteLoading"
+                        :placeholder="$t('models.request.placeholders.resident')"
+                        :remote-method="remoteSearchResidents"
+                        @change="changeResident"
+                        filterable 
+                        remote
+                        multiple
+                        reserve-keyword
+                        style="width: 100%;"
+                        v-model="model.resident_ids">
+                        <el-option
+                            :key="resident.id"
+                            :label="resident.name"
+                            :value="resident.id"
+                            v-for="resident in residents"/>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+
             <!-- <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.status.label')" prop="status" class="label-block">
                     <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
@@ -451,6 +474,7 @@
                 loading: false,
                 model: {
                     resident_id: '',
+                    resident_ids: [],
                     type: '',
                     duration: '',
                     start_date: '',
