@@ -22,6 +22,7 @@ use App\Models\Building;
 use App\Models\BuildingAssignee;
 use App\Models\PropertyManager;
 use App\Models\ServiceProvider;
+use App\Models\Unit;
 use App\Models\User;
 use App\Repositories\AddressRepository;
 use App\Repositories\BuildingRepository;
@@ -153,6 +154,10 @@ class BuildingAPIController extends AppBaseController
                 'units',
                 'propertyManagers',
                 'users'
+            ])->withCount([
+                'units as count_of_apartments_units' => function ($q) {
+                    $q->where('type', Unit::TypeApartment);
+                }
             ])
             ->scope('allRequestStatusCount')
             ->paginate($perPage);

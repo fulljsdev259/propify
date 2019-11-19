@@ -105,6 +105,7 @@ return [
             'status' => [
                 'active' => 'Active',
                 'inactive' => 'Inactive',
+                'canceled' => 'Canceled'
             ],
             'add' => 'Add new relation',
             'add_sell_relation' => 'Add Sell Relation',
@@ -463,7 +464,8 @@ return [
             ],
             'tooltips' => [
                 'save' => "To save work flow us this button, main 'save' button will not save data"
-            ]
+            ],
+            'saved' => 'Workflow saved successfully'
         ]
     ],
     'request' => [        

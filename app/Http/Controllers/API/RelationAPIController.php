@@ -171,7 +171,13 @@ class RelationAPIController extends AppBaseController
             return $this->sendError(__('models.resident.relation.errors.not_found'));
         }
 
-        $relation->load(['resident.user', 'quarter.address', 'unit.building.address', 'unit']);
+        $relation->load([
+            'resident.user',
+            'quarter.address',
+            'unit.building.address',
+            'unit',
+            'garant_residents:residents.id,residents.first_name,residents.last_name'
+        ]);
         $response = (new RelationTransformer())->transform($relation);
         return $this->sendResponse($response, 'Resident Relation retrieved successfully');
     }
@@ -225,7 +231,13 @@ class RelationAPIController extends AppBaseController
         }
 
 
-        $relation->load(['resident.user', 'quarter.address', 'unit.building.address', 'unit']);
+        $relation->load([
+            'resident.user',
+            'quarter.address',
+            'unit.building.address',
+            'unit',
+            'garant_residents:residents.id,residents.first_name,residents.last_name'
+        ]);
 
         $response = (new RelationTransformer())->transform($relation);
         return $this->sendResponse($response, __('models.resident.relation.saved'));
@@ -304,7 +316,13 @@ class RelationAPIController extends AppBaseController
 //            $pinboardRepository->newResidentRelationPinboard($relation);
 //        }
 
-        $relation->load(['resident.user', 'quarter.address', 'unit.building.address', 'unit']);
+        $relation->load([
+            'resident.user',
+            'quarter.address',
+            'unit.building.address',
+            'unit',
+            'garant_residents:residents.id,residents.first_name,residents.last_name'
+        ]);
         $response = (new RelationTransformer())->transform($relation);
         return $this->sendResponse($response, __('models.resident.saved'));
     }
