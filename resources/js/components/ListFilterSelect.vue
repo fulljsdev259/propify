@@ -218,9 +218,7 @@
             initFilter() {
                 this.items = [];
                 this.originItems = [];
-                console.log('filter', this.filter)
                 this.options = this.filter.data;
-                console.log(this.options)
                 if(this.filter.key == 'language') {
                     let languagesObject = this.$constants.app.languages;
                     let languagesArray = Object.keys(languagesObject).map(function(key) {
