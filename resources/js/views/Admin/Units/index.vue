@@ -83,7 +83,7 @@
                 roles:[],
                 header: [{
                     label: 'models.quarter.quarter_format',
-                    prop: 'unit_format'
+                    prop: 'internal_quarter_id'
                 }, {
                     label: 'models.unit.unit_id',
                     prop: 'name'
@@ -97,19 +97,48 @@
                     label: 'models.unit.room_no',
                     prop: 'room_no'
                 },
-                //  {
-                //     width: 150,
-                //     actions: [{
-                //         type: '',
-                //         icon: 'ti-search',
-                //         title: 'general.actions.edit',
-                //         onClick: this.edit,
-                //         editUrl: 'adminUnitsEdit',
-                //         permissions: [
-                //             this.$permissions.update.unit
-                //         ]
-                //     }]
-                // }
+                {
+                    label: 'models.building.request_status',
+                    withCounts: true,
+                    counts: [
+                        {
+                            prop: 'requests_count',
+                            background: '#aaa',
+                            color: '#fff',
+                            label: this.$t('dashboard.requests.total_request')
+                        }, {
+                            prop: 'requests_received_count',
+                            background: '#bbb',
+                            color: '#fff',
+                            label: this.$t('models.request.status.received')
+                        }, {
+                            prop: 'requests_assigned_count',
+                            background: '#ebb563',
+                            color: '#fff',
+                            label: this.$t('models.request.status.assigned')
+                        }, {
+                            prop: 'requests_in_processing_count',
+                            background: '#ebb563',
+                            color: '#fff',
+                            label: this.$t('models.request.status.in_processing')
+                        }, {
+                            prop: 'requests_reactivated_count',
+                            background: '#ebb563',
+                            color: '#fff',
+                            label: this.$t('models.request.status.reactivated')
+                        }, {
+                            prop: 'requests_done_count',
+                            background: '#67C23A',
+                            color: '#fff',
+                            label: this.$t('models.request.status.done')
+                        }, {
+                            prop: 'requests_archived_count',
+                            background: '#67C23A',
+                            color: '#fff',
+                            label: this.$t('models.request.status.archived')
+                        }
+                    ]
+                },
                 ],
                 building: {},
                 isLoadingFilters: false,
