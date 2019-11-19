@@ -49,13 +49,17 @@ return [
         'created_date' => 'Erstelldatum',
         'pinboard' => 'Beiträge',
         'listings' => 'Marktplatz',
-        'company' => 'Firmenname',        
+        'company' => 'Firmenname',
+        'quarter' => [
+            'name' => 'Projekte',
+        ],
         'building' => [
             'name' => 'Objekt',
         ],
         'unit' => [
             'name' => 'Einheit',
         ],
+        'search_quarter' => 'Projekte suchen',
         'search_building' => 'Objekt suchen',
         'search_unit' => 'Einheit suchen',        
         'errors' => [

@@ -50,12 +50,16 @@ return [
         'pinboard' => 'Pinboard',
         'listings' => 'Listings',
         'company' => 'Company name',
+        'quarter' => [
+            'name' => 'Quarter',
+        ],
         'building' => [
             'name' => 'Building',
         ],
         'unit' => [
             'name' => 'Unit',
         ],
+        'search_quarter' => 'Search quarter',
         'search_building' => 'Search building',
         'search_unit' => 'Search unit',        
         'errors' => [

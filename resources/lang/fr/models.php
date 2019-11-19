@@ -50,12 +50,16 @@ return [
         "pinboard" => "Panneau d'affichage",
         "listings" => "Produits",
         "company" => "Nom de l'entreprise",
+        'quarter' => [
+            'name' => 'Trimestre',
+        ],
         'building' => [
             'name' => 'Edificio',
         ],
         'unit' => [
             'name' => 'Unité',
         ],
+        'search_quarter' => 'Rechercher par trimestre',
         'search_building' => 'Rechercher un bâtiment',
         'search_unit' => 'Unité de recherche',
         'errors' => [

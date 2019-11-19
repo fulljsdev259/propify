@@ -50,12 +50,16 @@ return [
         "pinboard" => "Bacheca",
         "listings" => "Prodotti",
         "company" => "Nome dell'azienda",
+        'quarter' => [
+            'name' => 'Quartiere',
+        ],
         'building' => [
             'name' => 'Bâtiment',
         ],
         'unit' => [
             'name' => 'Unità',
         ],
+        'search_quarter' => 'Ricerca quartiere',
         'search_building' => 'Ricerca edificio',
         'search_unit' => 'Unità di ricerca',
         'errors' => [
