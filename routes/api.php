@@ -127,13 +127,16 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/units', 'UnitAPIController@index')->name('units');
     Route::get('/units/{id}', 'UnitAPIController@show')->name('units.show');
     Route::post('/units', 'UnitAPIController@store')->name('units.store');
-    Route::post('/units/{id}/media', 'MediaAPIController@unitUpload')->name('units.media.upload');
     Route::put('/units/{id}', 'UnitAPIController@update')->name('units.update');
     Route::delete('/units/{id}', 'UnitAPIController@destroy')->name('units.destroy');
     Route::post('/units/deletewithids', 'UnitAPIController@destroyWithIds')->name('units.destroyWithIds');
+
+    Route::post('/units/{id}/media', 'MediaAPIController@unitUpload')->name('units.media.upload');
+    Route::delete('/units/{unit_id}/media/{media_id}', 'MediaAPIController@unitDestroy')->name('units.media.destroy');
+
+    // @TODO delete
     Route::post('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@assignResident');
     Route::delete('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@unassignResident');
-    Route::delete('/units/{unit_id}/media/{media_id}', 'MediaAPIController@unitDestroy')->name('units.media.destroy');
 
     // Settings
     Route::get('/settings', 'SettingsAPIController@show')->name('settings.show');

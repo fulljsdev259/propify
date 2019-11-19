@@ -209,15 +209,6 @@ class UnitAPIController extends AppBaseController
             return $this->sendError(__('models.unit.errors.create') . $e->getMessage());
         }
 
-        if (isset($input['resident_id'])) {
-            try {
-                $relation = $this->relationRepository->newRelationForUnit($unit, $input['resident_id']);
-                $pinboardRepository->newResidentRelationPinboard($relation);
-            } catch (\Exception $e) {
-                return $this->sendError(__('models.unit.errors.resident_assign') . $e->getMessage());
-            }
-        }
-
         $unit->load([
             'building',
             'quarter',
@@ -355,18 +346,6 @@ class UnitAPIController extends AppBaseController
             $unit = $this->unitRepository->update($input, $id);
         } catch (\Exception $e) {
             return $this->sendError(__('models.unit.errors.update') . $e->getMessage());
-        }
-
-//        $currentResident = $unit->resident ? $unit->resident->id : 0;
-        $currentResident = 0; // @TODO correct relation related
-        if (isset($input['resident_id']) && $input['resident_id'] != $currentResident) {
-            try {
-                Relation::where('unit_id', $unit->id)->where('resident_id', $input['resident_id'])->delete(); // @TODO delete single or many
-                $relation = $this->relationRepository->newRelationForUnit($unit, $input['resident_id']);
-                $pinboardRepository->newResidentRelationPinboard($relation);
-            } catch (\Exception $e) {
-                return $this->sendError(__('models.unit.errors.create') . $e->getMessage());
-            }
         }
 
         $unit->load([
@@ -522,7 +501,7 @@ class UnitAPIController extends AppBaseController
      */
     public function assignResident($unitId, $residentId, AssignRequest $r)
     {
-        // @TODO need this one or not
+        // @TODO delete
         $unit = $this->unitRepository->find($unitId, ['id']);
         if (empty($unit)) {
             return $this->sendError(__('models.unit.errors.not_found'));
@@ -533,6 +512,7 @@ class UnitAPIController extends AppBaseController
             return $this->sendError(__('models.unit.errors.not_found'));
         }
 
+        // @TODO this code must be throw error because not sent quarter id
         $relation = $this->relationRepository->newRelationForUnit($unit, $resident);
 
         // @TODO need newResidentPinboard

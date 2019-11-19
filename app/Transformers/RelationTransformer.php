@@ -20,10 +20,8 @@ class RelationTransformer extends BaseTransformer
         $response = [
             'id' => $model->id,
             'resident_id' => $model->resident_id,
-            'building_id' => $model->building_id,
             'unit_id' => $model->unit_id,
             'type' => $model->type,
-            'duration' => $model->duration,
             'status' => $model->status,
             'relation_format' => $model->relation_format,
             'deposit_type' => $model->deposit_type,
@@ -56,17 +54,26 @@ class RelationTransformer extends BaseTransformer
             $response['requests'] = (new ResidentTransformer())->transform($model->requests);
         }
 
-        if ($model->relationExists('building')) {
-            $response['building'] = (new BuildingTransformer)->transform($model->building);
+        if ($model->relationExists('quarter')) {
+            $response['quarter'] = (new QuarterTransformer())->transform($model->quarter);
 
-            if ($model->building->relationExists('address')) {
-                $response['address'] = (new AddressTransformer)->transform($model->building->address);
-                unset($response['building']['address']);
+            if ($model->quarter->relationExists('address')) {
+                $response['address'] = (new AddressTransformer)->transform($model->quarter->address);
+                unset($response['quarter']['address']);
             }
         }
 
         if ($model->relationExists('unit')) {
             $response['unit'] = (new UnitTransformer)->transform($model->unit);
+            if ($model->unit->relationExists('building')) {
+                $response['building'] = (new BuildingTransformer)->transform($model->unit->building);
+
+                if ($model->unit->building->relationExists('address')) {
+                    $response['address'] = (new AddressTransformer)->transform($model->unit->building->address);
+                    unset($response['building']['address']);
+                }
+
+            }
         }
 
         if ($model->relationExists('media')) {
