@@ -316,6 +316,13 @@ class ResidentAPIController extends AppBaseController
                     'media',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
+            },
+            'garant_relations' => function ($q) {
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
             }
         ]);
 
@@ -387,6 +394,13 @@ class ResidentAPIController extends AppBaseController
                     'media',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
+            },
+            'garant_relations' => function ($q) {
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
             }
         ]);
         $response = (new ResidentTransformer)->transform($resident);
@@ -442,6 +456,13 @@ class ResidentAPIController extends AppBaseController
                 $q->with('unit.building.address', 'media');
             },
             'relations' => function ($q) {
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
+            },
+            'garant_relations' => function ($q) {
                 $q->with(
                     'unit.building.address',
                     'media',
@@ -555,6 +576,13 @@ class ResidentAPIController extends AppBaseController
                     'media',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
+            },
+            'garant_relations' => function ($q) {
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
             }
         ]);
 
@@ -650,6 +678,13 @@ class ResidentAPIController extends AppBaseController
                     'media',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
+            },
+            'garant_relations' => function ($q) {
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
             }
         ]);
         $response = (new ResidentTransformer)->transform($resident);
@@ -707,6 +742,13 @@ class ResidentAPIController extends AppBaseController
                 $q->with('unit.building.address', 'media');
             },
             'relations' => function ($q) {
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
+            },
+            'garant_relations' => function ($q) {
                 $q->with(
                     'unit.building.address',
                     'media',
@@ -800,6 +842,13 @@ class ResidentAPIController extends AppBaseController
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             },
+            'garant_relations' => function ($q) {
+                $q->with(
+                    'unit.building.address',
+                    'media',
+                    'garant_residents:residents.id,residents.first_name,residents.last_name'
+                );
+            }
         ]);
         $response = (new ResidentTransformer)->transform($resident);
         return $this->sendResponse($response, __('models.resident.status_changed'));

@@ -70,6 +70,10 @@ class ResidentTransformer extends BaseTransformer
             $response['total_relations_count'] = $allCount;
         }
 
+        if ( $model->relationExists('garant_relations')) { // @TODO delete reloading
+            $response['garant_relations'] = (new RelationTransformer())->transformCollection($model->relations);
+        }
+
         return $this->addAuditIdInResponseIfNeed($model, $response);
     }
 
