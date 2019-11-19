@@ -81,7 +81,7 @@ class RelationTransformer extends BaseTransformer
         }
 
         if ($model->relationExists('garant_residents')) {
-            $response['residents'] = $model->garant_residents->transform(function ($item) {
+            $response['residents'] = $model->garant_residents->map(function ($item) {
                 return $item->only('id', 'first_name', 'last_name');
             });
         }
