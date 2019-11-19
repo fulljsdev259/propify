@@ -68,16 +68,16 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::delete('/residents/{id}', 'ResidentAPIController@destroy')->name('residents.destroy');
     Route::post('/residents/deletewithids', 'ResidentAPIController@destroyWithIds')->name('residents.destroyWithIds');
 
+    Route::post('/residents/{id}/media', 'MediaAPIController@residentUpload')->name('relations.media.upload');
+    Route::delete('/residents/{id}/media/{media_id}', 'MediaAPIController@residentDestroy')->name('relations.media.destroy');
 
     //Relation
     Route::get('/relations', 'RelationAPIController@index')->name('relations');
     Route::get('/relations/{id}', 'RelationAPIController@show')->name('relations.show');
     Route::post('/relations', 'RelationAPIController@store')->name('relations.store');
-    Route::post('/relations/{id}/media', 'MediaAPIController@relationUpload')->name('relations.media.upload');
     Route::put('/relations/{id}', 'RelationAPIController@update')->name('relations.update');
     Route::delete('/relations/{id}', 'RelationAPIController@destroy')->name('relations.destroy');
     Route::post('/relations/deletewithids', 'RelationAPIController@destroyWithIds')->name('relations.destroyWithIds');
-    Route::delete('/relations/{id}/media/{media_id}', 'MediaAPIController@relationDestroy')->name('relations.media.destroy');
 
     // Location
     Route::get('/states', 'StateAPIController@index')->name('states');

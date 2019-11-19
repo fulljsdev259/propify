@@ -202,3 +202,14 @@ function get_category_attribute($attribute, $attributeValues, $key)
     }
     return (int) in_array($attribute, $attributeValues[$key]);
 }
+
+function str_fill_to($string, $length, $symbol = '0') {
+    $len = strlen($string);
+    if ($len < $length) {
+        for ($i = 0; $i < ($length - $len); $i++) {
+            $string = $symbol . $string;
+        }
+    }
+
+    return $string;
+}

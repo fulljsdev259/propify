@@ -185,21 +185,7 @@ class RelationRepository extends BaseRepository
             }
         }
 
-        $this->deleteNotAttachedMedia($resident, $attachedMedia);
         return $attachedMedia->pluck('id');
-    }
-
-    /**
-     * @param $resident
-     * @param $attachedMedia
-     */
-    protected function deleteNotAttachedMedia($resident, $attachedMedia)
-    {
-        $possibleDeletedMediaIds = $resident->media()->pluck('id');
-        $existing = DB::table('media_relation')->whereIn('media_id', $possibleDeletedMediaIds)->pluck('media_id');
-        $existing = $existing->merge($attachedMedia->pluck('id'));
-        $resident->media()->whereNotIn('id', $existing)->delete();
-        // @TODO delete real file
     }
 
     /**
