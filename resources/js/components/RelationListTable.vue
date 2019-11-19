@@ -61,7 +61,6 @@
                 prop="quarter.name"
             >
                  <template slot-scope="scope">
-                     {{scope.row.quarter}}
                     {{ scope.row.quarter ? scope.row.quarter.id + ' ' + scope.row.quarter.name : ''}}
                 </template>
             </el-table-column>
@@ -94,8 +93,6 @@
                         :content="$t('general.actions.edit')"
                         class="item" effect="light" 
                         placement="top-end">
-                            {{scope.$index}}
-                            {{scope.row.$index}}
                             <el-button @click="$emit('edit-relation', scope.$index)" icon="ti-search" size="mini" round/>
                     </el-tooltip>
                     <!-- <el-tooltip

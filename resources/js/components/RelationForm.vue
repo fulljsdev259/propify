@@ -946,7 +946,7 @@
             }
 
             this.model.unit_id = []
-            console.log(this.model.unit_id)
+            console.log('unit_id', this.model.unit_id)
             this.loading = false;
         },
         mounted() {
