@@ -50,12 +50,16 @@ return [
         'pinboard' => 'Pinboard',
         'listings' => 'Listings',
         'company' => 'Company name',
+        'quarter' => [
+            'name' => 'Quarter',
+        ],
         'building' => [
             'name' => 'Building',
         ],
         'unit' => [
             'name' => 'Unit',
         ],
+        'search_quarter' => 'Search quarter',
         'search_building' => 'Search building',
         'search_unit' => 'Search unit',        
         'errors' => [
@@ -439,7 +443,8 @@ return [
             'label' => 'Workflow',
             'add' => 'Add Workflow',
             'edit' => 'Edit Workflow',
-            'delete' => 'Delete Workflow',
+            'delete' => 'Delete',
+            'close' => 'Close',
             'by' => 'by',
             'to' => 'to',
             'cc' => 'cc',

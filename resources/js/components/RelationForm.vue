@@ -2,7 +2,27 @@
     <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
 
         <el-row :gutter="20">
-            <el-col :md="12" v-if="!hideBuildingAndUnits && !hideBuilding">
+            <el-col :md="12">
+                <el-form-item prop="quarter_id" :label="$t('models.resident.quarter.name')" class="label-block">
+                    <el-select
+                            :loading="remoteLoading"
+                            :placeholder="$t('models.resident.search_quarter')"
+                            :remote-method="remoteRelationSearchQuarters"
+                            @change="searchRelationUnits(false)"
+                            filterable
+                            remote
+                            reserve-keyword
+                            style="width: 100%;"
+                            v-model="model.quarter_id">
+                        <el-option
+                                :key="quarter.id"
+                                :label="quarter.name"
+                                :value="quarter.id"
+                                v-for="quarter in quarters"/>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+            <!-- <el-col :md="12" v-if="!hideBuildingAndUnits && !hideBuilding">
                 <el-form-item prop="building_id" :label="$t('models.resident.building.name')" class="label-block">
                     <el-select
                             :loading="remoteLoading"
@@ -21,13 +41,20 @@
                                 v-for="building in buildings"/>
                     </el-select>
                 </el-form-item>
-            </el-col>
-            <el-col :md="12" v-if="!hideBuildingAndUnits && model.building_id">
+            </el-col> -->
+            <el-col :md="12">
                 <el-form-item prop="unit_id" :label="$t('models.resident.unit.name')"
                             class="label-block">
+                    <multi-select
+                        :filter="unitFilter"
+                        :selectedOptions="model.unit_ids"
+                        @select-changed="handleSelectChange($event, 'unit')"
+                    >
+                    </multi-select>
                     <el-select :placeholder="$t('models.resident.search_unit')" 
                             style="display: block"
                             v-model="model.unit_id"
+                            multiple
                             @change="changeRelationUnit">
                         <el-option-group
                             v-for="group in units"
@@ -39,14 +66,31 @@
                                 :label="item.name"
                                 :value="item.id">
                                 <span style="float: left">{{ item.name }}</span>
-                                <relation-count :countsData="item" style="float: right;"></relation-count>
+                                <span style="float: right">{{ translateUnitType(item.type) }}</span>
+                                <!-- <relation-count :countsData="item" style="float: right;"></relation-count> -->
                             </el-option>
                         </el-option-group>
                         
                     </el-select>
                 </el-form-item>
             </el-col>
-            <el-col :md="12" v-if="showResident && model.unit_id">
+            <el-col :md="12">
+                <el-form-item :label="$t('models.resident.relation.type')"
+                            prop="type"
+                            class="label-block">
+                    <el-select :placeholder="$t('models.resident.type.label')"
+                                style="display: block;"
+                                v-model="model.type">
+                        <el-option
+                                :key="key"
+                                :label="$t('models.resident.type.' + value )"
+                                :value="+key"
+                                v-for="(value, key) in $constants.residents.type">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+            <!-- <el-col :md="12" v-if="showResident && model.unit_id">
                 <el-form-item :label="$t('general.resident')" prop="resident_id">
                     <el-select
                         :loading="remoteLoading"
@@ -65,9 +109,9 @@
                             v-for="resident in residents"/>
                     </el-select>
                 </el-form-item>
-            </el-col>
+            </el-col> -->
         
-            <el-col :md="12" v-if="model.unit_id">
+            <!-- <el-col :md="12" v-if="model.unit_id">
                 <el-form-item :label="$t('models.resident.relation.type')"
                             prop="type"
                             class="label-block">
@@ -97,9 +141,9 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-            </el-col>
+            </el-col> -->
 
-            <el-col :md="12" v-if="model.unit_id">
+            <el-col :md="12">
                 <el-form-item :label="$t('models.resident.relation.start_date')"
                         prop="start_date">
                     <el-date-picker
@@ -113,7 +157,7 @@
                             value-format="yyyy-MM-dd"/>
                 </el-form-item>
             </el-col>
-            <el-col :md="12" v-if="model.unit_id && model.duration == 2 && resident_type_check == 1">
+            <el-col :md="12">
                 <el-form-item :label="$t('models.resident.relation.end_date')">
                     <el-date-picker
                         :picker-options="{disabledDate: disabledRentEnd}"
@@ -126,7 +170,29 @@
                 </el-form-item>
             </el-col>
    
-            <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
+            <el-col :md="12" v-if="model.unit_id">
+                <el-form-item :label="$t('general.resident')" prop="resident_ids">
+                    <el-select
+                        :loading="remoteLoading"
+                        :placeholder="$t('models.request.placeholders.resident')"
+                        :remote-method="remoteSearchResidents"
+                        @change="changeResident"
+                        filterable 
+                        remote
+                        multiple
+                        reserve-keyword
+                        style="width: 100%;"
+                        v-model="model.resident_ids">
+                        <el-option
+                            :key="resident.id"
+                            :label="resident.name"
+                            :value="resident.id"
+                            v-for="resident in residents"/>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+
+            <!-- <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.status.label')" prop="status" class="label-block">
                     <el-select :placeholder="$t('general.placeholders.select')" style="display: block" 
                                 v-model="model.status">
@@ -138,7 +204,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-            </el-col>
+            </el-col> -->
         </el-row>
         <template v-if="resident_type_check == 1">
         <!-- <ui-divider v-if="model.unit_id" content-position="left">
@@ -347,12 +413,14 @@
     import UploadRelation from 'components/UploadRelation';
     import RelationCount from 'components/RelationCount';
     import {mapActions, mapGetters} from 'vuex';
+    import MultiSelect from 'components/MultiSelect';
 
     export default {
         name: "RelationForm",
         components: {
             UploadRelation,
-            RelationCount
+            RelationCount,
+            MultiSelect
         },
         props: {
             mode: {
@@ -402,6 +470,7 @@
         data () {
             return {
                 remoteLoading: false,
+                quarters: [],
                 buildings: [],
                 units: [],
                 options: [],
@@ -413,6 +482,7 @@
                 loading: false,
                 model: {
                     resident_id: '',
+                    resident_ids: [],
                     type: '',
                     duration: '',
                     start_date: '',
@@ -426,6 +496,7 @@
                     monthly_rent_gross: 0,
                     unit_id: '',
                     building_id: '',
+                    quarter_id: '',
                     media: [],
                     buildings: [],
                     units: [],
@@ -485,6 +556,16 @@
                 isFuture: false
             }
         },
+        computed: {
+            unitFilter() {
+                return {
+                        name: this.$t('models.quarter.workflow.placeholders.cc_user'),
+                        type: 'select',
+                        key: 'name',
+                        data: this.units
+                }
+            }
+        },
         methods: {
             submit () {
                 
@@ -542,6 +623,11 @@
                     }
                 })
             },
+            handleSelectChange(val, filter) {
+                if(filter == 'unit') {
+                    this.model.unit_ids = val
+                }
+            },
             disabledRentStart(date) {
                 const d = new Date(date).getTime();
                 if(!this.model.end_date)
@@ -581,6 +667,23 @@
                     }
                 }
             },
+            async remoteRelationSearchQuarters(search) {
+                if (search === '') {
+                    this.quarters = [];
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        let resp = await this.getQuarters({get_all: true, search});
+
+                        this.quarters = resp.data;
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
             async remoteRelationSearchBuildings(search) {
                 if (search === '') {
                     this.buildings = [];
@@ -611,10 +714,17 @@
                     
                     let filtered_used_units = this.used_units.filter( unit => unit != this.original_unit_id && unit != "")
 
+                    // const resp1 = await this.getUnits({
+                    //     show_relation_counts: true,
+                    //     group_by_floor: true,
+                    //     building_id: this.model.building_id,
+                    //     exclude_ids: filtered_used_units
+                    // });
+
                     const resp1 = await this.getUnits({
                         show_relation_counts: true,
                         group_by_floor: true,
-                        building_id: this.model.building_id,
+                        quarter_id: this.model.quarter_id,
                         exclude_ids: filtered_used_units
                     });
 
@@ -659,6 +769,9 @@
                     this.remoteLoading = false;
                 }
             },
+            translateUnitType(type) {
+                return this.$t(`models.unit.type.${this.$constants.units.type[type]}`);
+            },
             changeResident(val) {
                 let resident = this.residents.find(resident => resident.id == val)
                 this.resident_type_check = resident.type
@@ -689,7 +802,7 @@
             deletePDFfromRelation(index) {
                 this.model.media.splice(index, 1)
             },
-            ...mapActions(['getBuildings', 'getUnits', 'getResidents']),
+            ...mapActions(['getQuarters', 'getBuildings', 'getUnits', 'getResidents']),
         },
         async created () {
 
@@ -723,8 +836,9 @@
                 
                 this.original_unit_id = this.data.unit_id
 
+
                 if( !this.hideBuildingAndUnits ) {
-                
+                    console.log(this.model.unit)
                     if( this.model.unit )
                     {
                         let key = this.model.unit.floor
@@ -778,7 +892,7 @@
         }
     }
 </script>
-
+c
 <style lang="scss" scoped>
 
     .el-form {

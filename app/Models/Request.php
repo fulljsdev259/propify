@@ -611,7 +611,7 @@ class Request extends AuditableModel implements HasMedia
     protected function getUniqueIDTemplate()
     {
         $this->load(['relation' => function ($q) {
-            $q->with('unit', 'building.quarter:id,internal_quarter_id');
+            $q->with('unit.building.quarter:id,internal_quarter_id', 'quarter:id,internal_quarter_id');
         }]);
         $relation = $this->relation;
 
@@ -619,7 +619,7 @@ class Request extends AuditableModel implements HasMedia
             $this->load(['resident' => function ($q) {
                 $q->with([
                     'relations' => function ($q) {
-                        $q->with('unit', 'building.quarter:id,internal_quarter_id')->first();
+                        $q->with('unit.building.quarter:id,internal_quarter_id', 'quarter:id,internal_quarter_id')->first();
                     }
                 ]);
             }]);
@@ -627,8 +627,9 @@ class Request extends AuditableModel implements HasMedia
         }
 
         if ($relation) {
-            $internalId = $relation->building->internal_building_id
-                ?? $relation->building->quarter->internal_quarter_id
+            $internalId = $relation->unit->building->internal_building_id
+                ?? $relation->unit->building->quarter->internal_quarter_id
+                ?? $relation->quarter->internal_quarter_id
                 ?? '';
 
             $unit = $relation->unit->name ?? '';

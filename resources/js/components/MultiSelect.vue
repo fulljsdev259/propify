@@ -4,22 +4,14 @@
             <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]">
                 <span v-if="findSelectedOne.count === 0">{{ filter.name }}</span>
                 <el-tag 
-                    v-else-if="this.filter.key !== 'language'"
+                    v-else
                     size="mini"
                     :closable="findSelectedOne.count !== 1"
                     @close="selectItem(findSelectedOne.index, true)"
                 >
-                    <span v-if="items.length > 1">{{ `${filter.name}: ` }}</span>{{ `${getLanguageStr(findSelectedOne.label)}` }}
+                    {{ ` ${getLanguageStr(findSelectedOne.label)}` }}
                 </el-tag>
-                <el-tag 
-                    v-else
-                    size="mini"
-                    closable
-                    @close="selectItem(findSelectedOne.index, true)"
-                >
-                    {{ `${filter.name}:` }}
-                    <span :class="items[findSelectedOne.index].flag" ></span>
-                </el-tag>
+                
                 <el-tag
                     v-if="findSelectedOne.count > 1"
                     size="mini"    
@@ -34,52 +26,51 @@
                 class="close-button" 
                 @click.prevent.stop="handleReset(true)">
             </el-button>
-            <el-dropdown-menu slot="dropdown" :class="{'is-hide': items.length <= 1}">
-                <template  v-if="items.length > 1">
-                    <el-input
-                        v-if="items.length > 9"
-                        v-model="search"
-                        :placeholder="`${$t('general.placeholders.search')}...`"
+            <el-dropdown-menu slot="dropdown">
+                <el-input
+                    v-if="searchBar"
+                    v-model="search"
+                    :placeholder="`${$t('general.placeholders.search')}...`"
+                >
+                    <i 
+                        v-if="search === ''"
+                        slot="prefix" 
+                        class="el-input__icon el-icon-search">
+                    </i>
+                    <i 
+                        v-else
+                        slot="prefix" 
+                        class="el-input__icon el-icon-close" 
+                        @click="clearSearch()">
+                    </i>
+                </el-input>
+                <div class="dropdown-container" v-if="items.length">
+                    <div
+                        :key="`${filter.name}${item.name}${item.id}selected`"
+                        class="dropdown-item" 
+                        :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
+                        @click="selectItem(index)"
+                        v-for="(item, index) in items" 
                     >
-                        <i 
-                            v-if="search === ''"
-                            slot="prefix" 
-                            class="el-input__icon el-icon-search">
-                        </i>
-                        <i 
-                            v-else
-                            slot="prefix" 
-                            class="el-input__icon el-icon-close" 
-                            @click="clearSearch()">
-                        </i>
-                    </el-input>
-                    <div class="dropdown-container" v-if="items.length">
-                        <div
-                            :key="`${filter.name}${item.name}${item.id}selected`"
-                            class="dropdown-item" 
-                            :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
-                            @click="selectItem(index)"
-                            v-for="(item, index) in items" 
-                        >
-                            <span v-if="filter.key !== 'language'" v-html="filterSearch(getLanguageStr(item.name))"></span>
-                            <span v-else><span :class="item.flag"></span>&nbsp;&nbsp;{{ $t(`general.languages.`+item.symbol) }}</span>
-                            <span class="el-icon-check"></span>
-                        </div>
+                        <span v-html="filterSearch(getLanguageStr(item.name))"></span>
                         
+                        <span class="el-icon-check"></span>
                     </div>
-                    <el-divider></el-divider>
-                    <div class="actions">
-                        <el-button type="text" @click="handleReset()"><el-dropdown-item >{{ $t('general.reset') }}</el-dropdown-item ></el-button>
-                        <el-button v-if="!isChanged()" type="text" :disabled="true">{{ $t('general.placeholders.select') }}</el-button>
-                        <el-button v-else type="primary"><el-dropdown-item >{{ $t('general.placeholders.select') }}</el-dropdown-item></el-button>
-                    </div>
-                </template>
+                    
+                </div>
+                <el-divider></el-divider>
+                <div class="actions">
+                    <el-button type="text" @click="handleReset()"><el-dropdown-item >{{ $t('general.reset') }}</el-dropdown-item ></el-button>
+                    <el-button v-if="!isChanged()" type="text" :disabled="true">{{ $t('general.placeholders.select') }}</el-button>
+                    <el-button v-else type="primary"><el-dropdown-item >{{ $t('general.placeholders.select') }}</el-dropdown-item></el-button>
+                </div>
             </el-dropdown-menu>
         </el-dropdown>
     </div>
 </template>
 <script>
     export default {
+        name: 'MultiSelect',
         data() {
             return {
                originItems: [],
@@ -133,14 +124,11 @@
         },
         methods: {
             isContained(str) {
+                str += ""
                 return str.toLowerCase().includes(this.search.toLowerCase());
             },
             handleDropdownClick() {
                 this.clearSearch();
-                if(this.items.length == 1 && this.findSelectedOne.count == 0) {
-                    this.selectItem(0);
-                    this.handleSelect();
-                } 
             },
             handleVisibleChange(visible) {
                 let selected = [], unselected = [];
@@ -187,6 +175,7 @@
             filterSearch(name) {
                 let result = name;
                 if(this.search !== '') {
+                    name += ""
                     let pos = name.toLowerCase().indexOf(this.search.toLowerCase());
                     if(pos !== -1) {
                         result = `${name.slice(0, pos)}<b>${name.slice(pos, pos + this.search.length)}</b>${name.slice(pos + this.search.length)}`;
@@ -224,49 +213,17 @@
             initFilter() {
                 this.items = [];
                 this.originItems = [];
-                console.log('filter', this.filter)
                 this.options = this.filter.data;
-                console.log(this.options)
-                if(this.filter.key == 'language') {
-                    let languagesObject = this.$constants.app.languages;
-                    let languagesArray = Object.keys(languagesObject).map(function(key) {
-                        return [String(key), languagesObject[key]];
-                    });
-                
-                    this.items = languagesArray.map((item, index) => { 
-                        let flag_class = 'flag-icon flag-icon-';
-                        let flag = flag_class + item[0];
-                        if( item[0] == 'en')
-                        {
-                            flag = flag_class + 'us'
-                        }
-                        return {
-                            id: index + 1,
-                            name: item[1],
-                            symbol: item[0],
-                            flag: flag,
-                            selected: this.selectedOptions? this.selectedOptions.includes(index+1): false,
-                        }
-                    });
-                    this.items.forEach((item) => {
-                        this.originItems.push({
-                            id: item.id,
-                            name: item.name,
-                            symbol: item.symbol,
-                            flag: item.flag,
-                            selected: item.selected,
-                        });
-                    });
-                } else if(this.options.length) {
+                if(this.options.length) {
                     this.options.forEach((option) => {
                         this.items.push({
                             id: option.id,
-                            name: option.name,
+                            name: option[this.filter.key],
                             selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
                         });
                         this.originItems.push({
                             id: option.id,
-                            name: option.name,
+                            name: option[this.filter.key],
                             selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
                         })
                     });
@@ -357,11 +314,8 @@
         padding: 0px;
         width: 288px;
         border-radius: 12px;
-        &.is-hide {
-            visibility: hidden;
-        }
         .el-input {
-            margin: 16px 16px 0;
+            margin: 16px;
             width: calc(100% - 32px);
             :global(.el-input__inner) {
                 border-color: transparent;
@@ -375,7 +329,7 @@
             }
         }
         .dropdown-container {
-            padding: 16px 16px 0;
+            padding: 0 16px;
             max-height: 310px;
             overflow-y: auto;
             
@@ -418,12 +372,8 @@
                     border: 1px solid var(--color-black);
                     display: flex;
                     justify-content:space-between;
-                    align-items: center;
                     span {
                         font-weight: 700;
-                        &:first-child {
-                            margin-right: 15px;
-                        }
                     }
                     span:not(:first-child) {
                         display: block;
