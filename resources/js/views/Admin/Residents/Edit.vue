@@ -660,7 +660,19 @@
         
     }
 
-    /deep/ .el-dialog__footer {
-        padding: 0;
+    /deep/ .el-dialog {
+        width: 50% !important;
+
+        .el-dialog__footer {
+            padding: 0;
+        }
     }
+
+    @media only screen and (max-width:992px){
+        /deep/ .el-dialog {
+            width: 70% !important;
+        }
+    }
+
+    
 </style>
