@@ -39,15 +39,18 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $building_id = $this->request->get('building_id', null);
-        if ($building_id) {
-            return $model->where('building_id', (int)$building_id);
+        $buildingId = $this->request->get('building_id', null);
+        if ($buildingId) {
+            return $model->where('building_id', (int)$buildingId);
         }
 
-        $quarter_id = $this->request->get('quarter_id', null);
-        if ($quarter_id) {
-            return $model->whereHas('building', function ($query) use ($quarter_id) {
-                $query->where('quarter_id', (int)$quarter_id);
+        $quarterId = $this->request->get('quarter_id', null);
+        if ($quarterId) {
+            return $model->where(function ($q) use ($quarterId) {
+                $q->where('quarter_id', $quarterId)
+                    ->orWhereHas('building', function ($query) use ($quarterId) {
+                        $query->where('quarter_id', $quarterId);
+                    });
             });
         }
 
@@ -67,10 +70,10 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
             });
         }
 
-        $manager_id = $this->request->get('manager_id', null);
-        if ($manager_id) {
-            return $model->whereHas('building.propertyManagers', function ($q) use ($manager_id) {
-                $q->where('building_assignees.assignee_id', $manager_id);
+        $managerId = $this->request->get('manager_id', null);
+        if ($managerId) {
+            return $model->whereHas('building.propertyManagers', function ($q) use ($managerId) {
+                $q->where('building_assignees.assignee_id', $managerId);
             });
         }
 

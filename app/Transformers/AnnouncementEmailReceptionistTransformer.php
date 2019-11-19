@@ -80,7 +80,7 @@ class AnnouncementEmailReceptionistTransformer extends BaseTransformer
                 }
 
                 $resident->building_or_quarter = ! empty($item->address)
-                    ? $item->address->street . $item->address->house_num
+                    ? $item->address->street . ' ' . $item->address->house_num
                     : '';
                 $residentsResponse[] = $resident->emptyAppends()->toArray();
             }
