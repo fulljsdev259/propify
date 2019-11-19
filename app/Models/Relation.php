@@ -276,6 +276,15 @@ class Relation extends AuditableModel implements HasMedia
     }
 
     /**
+     * @TODO delete
+     * @return BelongsTo
+     **/
+    public function  building()
+    {
+        return $this->belongsTo(Building::class, 'building_id', 'id');
+    }
+
+    /**
      * @return BelongsTo
      **/
     public function unit()
