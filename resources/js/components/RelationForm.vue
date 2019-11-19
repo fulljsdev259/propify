@@ -152,7 +152,6 @@
                         :loading="remoteLoading"
                         :placeholder="$t('models.request.placeholders.resident')"
                         :remote-method="remoteSearchResidents"
-                        @change="changeResident"
                         filterable 
                         remote
                         multiple
@@ -879,11 +878,11 @@
                 this.model.quarter_id = this.model.quarter.id
                 
                 
-                if(this.model.resident)
-                {
-                    this.residents.push(this.model.resident)
-                    this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
-                }
+                // if(this.model.resident)
+                // {
+                //     this.residents.push(this.model.resident)
+                //     this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
+                // }
 
                 this.residents = this.model.residents
                 this.model.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);

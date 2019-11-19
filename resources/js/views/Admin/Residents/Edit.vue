@@ -289,6 +289,21 @@
                             <el-col :md="12">
                                 <el-card>
                                     <div slot="header" class="clearfix">
+                                        <span>{{ $t('models.resident.relation.relation_pdf') }}</span>
+                                    </div>
+                                    <relation-list
+                                        :actions="mediaActions"
+                                        :columns="mediaColumns"
+                                        :filterValue="model.id"
+                                        fetchAction="getResidentMedia"
+                                        filter="resident_id"
+                                        v-if="model.id"
+                                    />
+                                </el-card>
+                            </el-col>
+                            <el-col :md="12">
+                                <el-card>
+                                    <div slot="header" class="clearfix">
                                         <span>{{$t('general.audits')}}</span>
                                     </div>
                                     <audit v-if="model.id" :id="model.id" type="resident" ref="auditList" showFilter/>
@@ -327,7 +342,8 @@
             <el-dialog :close-on-click-modal="false" :title="$t('models.resident.relation.title')"
                     :visible.sync="visibleDrawer"
                     v-loading="loading.state" width="30%">
-                <relation-form v-if="editingRelation" 
+                <div class="content" v-if="visibleDrawer">
+                    <relation-form v-if="editingRelation" 
                                 :hide-building-and-units="false" 
                                 mode="edit" 
                                 :data="editingRelation" 
@@ -346,6 +362,7 @@
                                 @add-relation="addRelation" 
                                 @delete-relation="deleteRelation"
                                 :used_units="used_units"/>
+                </div>
                 <span class="dialog-footer" slot="footer">
                     <!-- <el-button @click="closeModal" size="mini">{{$t('models.building.cancel')}}</el-button>
                     <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_managers')}}</el-button> -->
@@ -371,6 +388,7 @@
     import Cropper from 'components/Cropper';
     import EditActions from 'components/EditViewActions';
     import SelectLanguage from 'components/SelectLanguage';
+    import RelationList from 'components/RelationListing';
 
     const mixin = AdminResidentsMixin({
         mode: 'edit'
@@ -389,7 +407,25 @@
             EditActions,
             SelectLanguage,
             RelationForm,
-            RelationListTable
+            RelationListTable,
+            RelationList
+        },
+        data() {
+            return {
+                mediaColumns: [{
+                    type: 'assigneesName',
+                    prop: 'name',
+                    label: 'general.name'
+                }],
+                mediaActions: [{
+                    width: 70,
+                    buttons: [{
+                        icon: 'ti-search',
+                        title: 'general.actions.edit',
+                        tooltipMode: true
+                    }]
+                }]
+            }
         },
         methods: {
             pickFile(){
@@ -510,6 +546,14 @@
                 return this.constants.requests.status
             },
             
+        },
+        watch: {
+            'visibleDrawer': function(val) {
+                console.log(val)
+                if(!val) {
+                    this.editingIndex
+                }
+            }
         }
     }
 </script>
