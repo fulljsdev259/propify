@@ -78,6 +78,9 @@
                 types:{},
                 quarters:{},
                 buildings:{},
+                cities: [],
+                quarterTypes: [],
+                roles:[],
                 header: [{
                     label: 'models.quarter.quarter_format',
                     prop: 'unit_format'
@@ -114,6 +117,14 @@
         },
         methods: {
             ...mapActions(['getBuildings', 'getPropertyManagers', 'getQuarters']),
+
+            async getRoles() {
+                this.roles = [];
+                this.roles.push({
+                    id: 1,
+                    name: this.$constants.propertyManager.type[1],
+                })
+            },
             async fetchRemoteQuarters(search = '') {
                 const quarters = await this.getQuarters({get_all: true, search});
 
@@ -168,54 +179,34 @@
                         type: 'text',
                         icon: 'el-icon-search',
                         key: 'search'
-                    },
-                    {
-                        name: this.$t('general.filters.states'),
-                        type: 'select',
-                        key: 'state_id',
-                        data: this.states,
-                    },
-                    {
+                    }, {
                         name: this.$t('general.filters.quarters'),
                         type: 'select',
                         key: 'quarter_id',
                         data: this.quarters,
-                        remoteLoading: false,
-                        fetch: this.fetchRemoteQuarters
-                    },
-                    {
-                        name: this.$t('general.filters.buildings'),
+                    },{
+                        name: this.$t('models.quarter.project_ort'),
                         type: 'select',
-                        key: 'building_id',
-                        data: this.buildings,
-                        remoteLoading: false,
-                        fetch: this.fetchRemoteBuildings
-                    },
-                    {
-                        name: this.$t('general.filters.property_managers'),
+                        key: 'city_id',
+                        data: this.cities,
+                    },{
+                        name: this.$t('models.quarter.type'),
                         type: 'select',
-                        key: 'manager_id',
-                        data: this.propertyManagers,
-                        remoteLoading: false,
-                        fetch: this.fetchRemotePropertyManagers
-                    },
-                    {
-                        name: this.$t('general.filters.requests'),
+                        key: 'type_id',
+                        data: this.types,
+                    },{
+                        name: this.$t('general.roles.manager'),
                         type: 'select',
-                        key: 'request',
-                        data: [{
-                            id: 1,
-                            name: this.$t('general.filters.open_requests')
-                        }]
-                    },
-                    {
-                        name: this.$t('general.filters.type'),
+                        key: 'role',
+                        data: this.roles
+                    },{
+                        name: this.$t('general.filters.saved_filters'),
                         type: 'select',
-                        key: 'type',
-                        data: this.types
+                        key: 'saved_filter',
+                        data: []
                     }
-                ];
-            }
+                ]
+            },
         },
         async mounted() {
             this.$root.$on('changeLanguage', () => this.types = Object.entries(this.$constants.units.type).map(([value, label]) => ({id: value, value: +value, name: this.$t(`models.unit.type.${label}`)})));
@@ -228,6 +219,7 @@
             this.states = states.data.data;
 
             this.types = Object.entries(this.$constants.units.type).map(([value, label]) => ({id: value, value: +value, name: this.$t(`models.unit.type.${label}`)}))
+            this.getRoles();
             this.isLoadingFilters = false;
 
             this.quarters = await this.fetchRemoteQuarters();

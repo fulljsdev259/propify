@@ -931,7 +931,7 @@
             }
 
             :global(td) {
-                padding: 4px;
+                padding: 20px 4px;
             }
         }
 
@@ -1109,6 +1109,26 @@
 </style>
 
 <style lang="scss">
+    .list-table {
+        .el-checkbox__input {
+            .el-checkbox__inner {
+                height: 20px;
+                width: 20px;
+                border-radius: 6px;
+
+                &::after {
+                    height: 10px;
+                    top: 2px;
+                    left: 8px;
+                }
+            }
+
+            &.is-indeterminate .el-checkbox__inner::before {
+                top: 8px;
+                height: 3px;
+            }
+        }
+    }
     .label-block .el-form-item__label {
         display: block;
         float: none;
