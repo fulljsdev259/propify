@@ -129,6 +129,9 @@
                 toAssign: [],
                 isLoadingFilters: false,
                 quarters: {},
+                cities: [],
+                quarterTypes: [],
+                roles:[],
                 remoteLoading: false,
                 delBuildingStatus: -1, // 0: unit, 1: request, 2: both
                 header: [{
@@ -226,41 +229,55 @@
                         type: 'text',
                         icon: 'el-icon-search',
                         key: 'search'
-                    },
-                    {
-                        name: this.$t('general.filters.states'),
-                        type: 'select',
-                        key: 'state_id',
-                        data: this.states
-                    },
-                    {
+                    }, {
                         name: this.$t('general.filters.quarters'),
                         type: 'select',
                         key: 'quarter_id',
                         data: this.quarters,
-                        remoteLoading: false,
-                        fetch: this.fetchRemoteQuarters
-                    },
-                    {
-                        name: this.$t('general.filters.property_managers'),
+                    },{
+                        name: this.$t('models.quarter.project_ort'),
                         type: 'select',
-                        key: 'manager_id',
-                        data: this.propertyManagers,
-                        remoteLoading: false,
-                        fetch: this.fetchRemotePropertyManagers
-                    },
-                    {
-                        name: this.$t('general.filters.request_status'),
+                        key: 'city_id',
+                        data: this.cities,
+                    },{
+                        name: this.$t('models.quarter.type'),
                         type: 'select',
-                        key: 'request_status',
-                        data: this.prepareRequestFilters("status")
+                        key: 'type_id',
+                        data: this.types,
+                    },{
+                        name: this.$t('general.roles.manager'),
+                        type: 'select',
+                        key: 'role',
+                        data: this.roles
+                    },{
+                        name: this.$t('general.filters.saved_filters'),
+                        type: 'select',
+                        key: 'saved_filter',
+                        data: []
                     }
-                ];
+                ]
             },
             
         },
         methods: {
             ...mapActions(['getPropertyManagers', 'assignManagerToBuilding', 'deleteBuildingWithIds', 'checkUnitRequestWidthIds', 'getQuarters', 'getPropertyManagers']),
+            
+            async getRoles() {
+                this.roles = [];
+                this.roles.push({
+                    id: 1,
+                    name: this.$constants.propertyManager.type[1],
+                })
+            },
+            async getTypes() {
+                this.types = [];
+                for(let item in this.$constants.quarters.type) {
+                    this.types.push({
+                        id: item,
+                        name: this.$t(`models.quarter.types.${this.$constants.quarters.type[item]}`),
+                    })
+                }
+            },
             async fetchRemoteQuarters(search = '') {
                 const quarters = await this.getQuarters({get_all: true, search});
 
@@ -400,6 +417,8 @@
             },            
         },
         async mounted() {
+            this.getRoles();
+            this.getTypes();
             this.quarters = await this.fetchRemoteQuarters();
             this.propertyManagers = await this.fetchRemotePropertyManagers();
         }

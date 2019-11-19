@@ -66,6 +66,10 @@
         data() {
             return {
                 states: [],
+                quarter:[],
+                cities: [],
+                quarterTypes: [],
+                roles:[],
                 i18nName: 'quarter',
                 header: [{
                     label: 'models.quarter.quarter_format',
@@ -128,17 +132,38 @@
                         icon: 'el-icon-search',
                         key: 'search'
                     }, {
-                        name: this.$t('general.filters.states'),
+                        name: this.$t('general.filters.quarters'),
                         type: 'select',
-                        key: 'state_id',
-                        data: this.states,
+                        key: 'quarter_id',
+                        data: this.quarter,
+                    },{
+                        name: this.$t('models.quarter.project_ort'),
+                        type: 'select',
+                        key: 'city_id',
+                        data: this.cities,
+                    },{
+                        name: this.$t('models.quarter.type'),
+                        type: 'select',
+                        key: 'type_id',
+                        data: this.types,
+                    },{
+                        name: this.$t('general.roles.manager'),
+                        type: 'select',
+                        key: 'role',
+                        data: this.roles
+                    },{
+                        name: this.$t('general.filters.saved_filters'),
+                        type: 'select',
+                        key: 'saved_filter',
+                        data: []
                     }
                 ]
             },
             computedItems() {
-                this.items.forEach((item) => {
-                    item.types = this.$t(`models.quarter.types.${this.$constants.quarters.type[item.types]}`);
-                });
+                if(this.items != undefined)
+                    this.items.forEach((item) => {
+                        item.types = this.$t(`models.quarter.types.${this.$constants.quarters.type[item.types]}`);
+                    });
                 return this.items;
             }
         },
@@ -168,10 +193,37 @@
                 const states = await this.axios.get('states?filters=true')
                 this.states = states.data.data;
             },
+            async getRoles() {
+                this.roles = [];
+                this.roles.push({
+                    id: 1,
+                    name: this.$constants.propertyManager.type[1],
+                })
+            },
+            async getTypes() {
+                this.types = [];
+                for(let item in this.$constants.quarters.type) {
+                    this.types.push({
+                        id: item,
+                        name: this.$t(`models.quarter.types.${this.$constants.quarters.type[item]}`),
+                    })
+                }
+            },
+            async fetchRemoteQuarters(search = '') {
+                const quarters = await this.getQuarters({get_all: true, search});
+
+                return quarters.data
+            },
+            async fetchRemoteBuildings(search = '') {
+                const buildings = await this.getBuildings({get_all: true, search});
+
+                return buildings.data
+            },
         },
-        created() {
-            this.getState();
-            
+        async created() {
+            this.getRoles();
+            this.getTypes();
+            this.quarter = await this.fetchRemoteQuarters();
         },
         mounted() {
             this.$root.$on('changeLanguage', () => {
