@@ -163,7 +163,6 @@
                 </el-form-item>
             </el-col>
    
-
             <el-col :md="12" v-if="model.unit_id">
                 <el-form-item :label="$t('general.resident')" prop="resident_ids">
                     <el-select

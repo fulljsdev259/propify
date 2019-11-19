@@ -660,7 +660,7 @@
         
     }
 
-    .el-dialog__footer {
+    /deep/ .el-dialog__footer {
         padding: 0;
     }
 </style>
