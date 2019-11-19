@@ -97,6 +97,7 @@ return [
         'language' => 'Sprache',
         'phase' => 'Phase',
         'qualification' => 'Qualifizierung',
+        'saved_filters' => 'Mehr Filters',
     ],
     'no' => 'Nein',
     'first_name' => 'Vorname',
