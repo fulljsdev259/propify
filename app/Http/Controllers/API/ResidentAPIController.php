@@ -316,6 +316,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             },
@@ -323,6 +324,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             }
@@ -396,6 +398,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             },
@@ -403,6 +406,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             }
@@ -465,6 +469,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             },
@@ -472,6 +477,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             }
@@ -582,6 +588,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             },
@@ -589,6 +596,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             }
@@ -686,6 +694,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             },
@@ -693,6 +702,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             }
@@ -757,6 +767,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             },
@@ -764,6 +775,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             }
@@ -853,6 +865,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             },
@@ -860,6 +873,7 @@ class ResidentAPIController extends AppBaseController
                 $q->with(
                     'unit.building.address',
                     'media',
+                    'quarter',
                     'garant_residents:residents.id,residents.first_name,residents.last_name'
                 );
             }
