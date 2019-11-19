@@ -2,26 +2,6 @@
     <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
 
         <el-row :gutter="20">
-            <el-col :md="12">
-                <el-form-item prop="quarter_id" :label="$t('models.resident.quarter.name')" class="label-block">
-                    <el-select
-                            :loading="remoteLoading"
-                            :placeholder="$t('models.resident.search_quarter')"
-                            :remote-method="remoteRelationSearchQuarters"
-                            @change="searchRelationUnits(false)"
-                            filterable
-                            remote
-                            reserve-keyword
-                            style="width: 100%;"
-                            v-model="model.quarter_id">
-                        <el-option
-                                :key="quarter.id"
-                                :label="quarter.name"
-                                :value="quarter.id"
-                                v-for="quarter in quarters"/>
-                    </el-select>
-                </el-form-item>
-            </el-col>
             <!-- <el-col :md="12" v-if="!hideBuildingAndUnits && !hideBuilding">
                 <el-form-item prop="building_id" :label="$t('models.resident.building.name')" class="label-block">
                     <el-select
@@ -43,14 +23,34 @@
                 </el-form-item>
             </el-col> -->
             <el-col :md="12">
+                <el-form-item prop="quarter_id" :label="$t('models.resident.quarter.name')" class="label-block">
+                    <el-select
+                            :loading="remoteLoading"
+                            :placeholder="$t('models.resident.search_quarter')"
+                            :remote-method="remoteRelationSearchQuarters"
+                            @change="searchRelationUnits(false)"
+                            filterable
+                            remote
+                            reserve-keyword
+                            style="width: 100%;"
+                            v-model="model.quarter_id">
+                        <el-option
+                                :key="quarter.id"
+                                :label="quarter.name"
+                                :value="quarter.id"
+                                v-for="quarter in quarters"/>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+            <el-col :md="12">
                 <el-form-item prop="unit_id" :label="$t('models.resident.unit.name')"
                             class="label-block">
-                    <multi-select
+                    <!-- <multi-select
                         :filter="unitFilter"
                         :selectedOptions="model.unit_ids"
                         @select-changed="handleSelectChange($event, 'unit')"
                     >
-                    </multi-select>
+                    </multi-select> -->
                     <el-select :placeholder="$t('models.resident.search_unit')" 
                             style="display: block"
                             v-model="model.unit_id"
@@ -87,6 +87,54 @@
                                 :value="+key"
                                 v-for="(value, key) in $constants.residents.type">
                         </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+            <el-col :md="12">
+                <el-form-item :label="$t('models.resident.relation.start_date')"
+                        prop="start_date">
+                    <el-date-picker
+                            :picker-options="{disabledDate: disabledRentStart}"
+                            :placeholder="$t('models.resident.relation.start_date')"
+                            format="dd.MM.yyyy"
+                            style="width: 100%;"
+                            type="date"
+                            v-model="model.start_date"
+                            @change="changeStartDate"
+                            value-format="yyyy-MM-dd"/>
+                </el-form-item>
+            </el-col>
+            <el-col :md="12">
+                <el-form-item :label="$t('models.resident.relation.end_date')">
+                    <el-date-picker
+                        :picker-options="{disabledDate: disabledRentEnd}"
+                        :placeholder="$t('models.resident.relation.end_date')"
+                        format="dd.MM.yyyy"
+                        style="width: 100%;"
+                        type="date"
+                        v-model="model.end_date"
+                        value-format="yyyy-MM-dd"/>
+                </el-form-item>
+            </el-col>
+   
+            <el-col :md="12" v-if="model.unit_id">
+                <el-form-item :label="$t('general.resident')" prop="resident_ids">
+                    <el-select
+                        :loading="remoteLoading"
+                        :placeholder="$t('models.request.placeholders.resident')"
+                        :remote-method="remoteSearchResidents"
+                        @change="changeResident"
+                        filterable 
+                        remote
+                        multiple
+                        reserve-keyword
+                        style="width: 100%;"
+                        v-model="model.resident_ids">
+                        <el-option
+                            :key="resident.id"
+                            :label="resident.name"
+                            :value="resident.id"
+                            v-for="resident in residents"/>
                     </el-select>
                 </el-form-item>
             </el-col>
@@ -143,54 +191,7 @@
                 </el-form-item>
             </el-col> -->
 
-            <el-col :md="12">
-                <el-form-item :label="$t('models.resident.relation.start_date')"
-                        prop="start_date">
-                    <el-date-picker
-                            :picker-options="{disabledDate: disabledRentStart}"
-                            :placeholder="$t('models.resident.relation.start_date')"
-                            format="dd.MM.yyyy"
-                            style="width: 100%;"
-                            type="date"
-                            v-model="model.start_date"
-                            @change="changeStartDate"
-                            value-format="yyyy-MM-dd"/>
-                </el-form-item>
-            </el-col>
-            <el-col :md="12">
-                <el-form-item :label="$t('models.resident.relation.end_date')">
-                    <el-date-picker
-                        :picker-options="{disabledDate: disabledRentEnd}"
-                        :placeholder="$t('models.resident.relation.end_date')"
-                        format="dd.MM.yyyy"
-                        style="width: 100%;"
-                        type="date"
-                        v-model="model.end_date"
-                        value-format="yyyy-MM-dd"/>
-                </el-form-item>
-            </el-col>
-   
-            <el-col :md="12" v-if="model.unit_id">
-                <el-form-item :label="$t('general.resident')" prop="resident_ids">
-                    <el-select
-                        :loading="remoteLoading"
-                        :placeholder="$t('models.request.placeholders.resident')"
-                        :remote-method="remoteSearchResidents"
-                        @change="changeResident"
-                        filterable 
-                        remote
-                        multiple
-                        reserve-keyword
-                        style="width: 100%;"
-                        v-model="model.resident_ids">
-                        <el-option
-                            :key="resident.id"
-                            :label="resident.name"
-                            :value="resident.id"
-                            v-for="resident in residents"/>
-                    </el-select>
-                </el-form-item>
-            </el-col>
+            
 
             <!-- <el-col :md="12" v-if="model.unit_id && resident_type_check == 1">
                 <el-form-item :label="$t('models.resident.status.label')" prop="status" class="label-block">
@@ -606,6 +607,7 @@
                             })
                             params.building = this.buildings.find(item => item.id == this.model.building_id)
 
+                            params.status = 1
                             if (this.mode == "add") {
                                 const resp = await this.$store.dispatch('relations/create', params);
                                 this.$emit('add-relation', resp.data)
@@ -810,7 +812,7 @@
 
             let parent_obj = this
             this.deposit_types = Object.entries(this.$constants.relations.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_types.${label}`)}))
-            this.durations = Object.entries(this.$constants.relations.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.durations.${label}`)}))
+            //this.durations = Object.entries(this.$constants.relations.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.durations.${label}`)}))
             this.deposit_statuses = Object.entries(this.$constants.relations.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_status.${label}`)}));
             this.relation_statuses = Object.entries(this.$constants.relations.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.status.${label}`)}));
 
@@ -819,6 +821,8 @@
 
             if(this.mode == "edit") {
                 this.model = Object.assign({}, this.data)
+
+                console.log('model', this.model)
                 
                 if(this.model.resident)
                 {
