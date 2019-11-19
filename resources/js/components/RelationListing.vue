@@ -237,6 +237,7 @@
             <el-table-column
                 :key="column.prop"
                 :label="$t(column.label)"
+                :align="column.align"
                 v-for="column in columns"
                 v-if="column.i18n"
             >
