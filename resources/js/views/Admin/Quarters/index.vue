@@ -164,6 +164,7 @@
                         type: 'select',
                         key: 'quarter_id',
                         data: this.quarter,
+                        searchBox: true,
                     },{
                         name: this.$t('models.quarter.project_ort'),
                         type: 'select',
@@ -191,7 +192,13 @@
             computedItems() {
                 if(this.items != undefined)
                     this.items.forEach((item) => {
-                        item.types = this.$t(`models.quarter.types.${this.$constants.quarters.type[item.types]}`);
+                        let result = '';
+                        for(let i = 0; i < item.types.length; i ++) {
+                            result = `${result} ${this.$t(`models.quarter.types.${this.$constants.quarters.type[item.types[i]]}`)}`;
+                            if(i < item.types.length - 1) 
+                                result = `${result},`;
+                        }
+                        item.types = result;
                     });
                 return this.items;
             }
