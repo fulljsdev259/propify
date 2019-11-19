@@ -432,8 +432,7 @@ return [
         'types' => [
             'label' => 'Typ',
             'rent' => 'Miete',
-            'sell' => 'Verkauf',
-            'property' => 'Eigentum',
+            'sell' => 'Eigentum',
             'building_land' => 'Bauland',
             'trade' => 'Gewerbe',
             'multi-storey_car_park' => 'Parkhaus'
