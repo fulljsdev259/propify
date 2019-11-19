@@ -49,13 +49,17 @@ return [
         'created_date' => 'Erstelldatum',
         'pinboard' => 'Beiträge',
         'listings' => 'Marktplatz',
-        'company' => 'Firmenname',        
+        'company' => 'Firmenname',
+        'quarter' => [
+            'name' => 'Projekte',
+        ],
         'building' => [
             'name' => 'Objekt',
         ],
         'unit' => [
             'name' => 'Einheit',
         ],
+        'search_quarter' => 'Projekte suchen',
         'search_building' => 'Objekt suchen',
         'search_unit' => 'Einheit suchen',        
         'errors' => [
@@ -73,7 +77,7 @@ return [
         'account_info_card' => 'Benutzer-Login',
         'contact_info_card' => 'Kontaktdaten',
         'relation' => [
-            'title' => 'Mietvertrag',
+            'title' => 'Beziehung',
             'end_date' => 'Enddatum',
             'start_date' => 'Startdatum',
             'type' => 'Typ',            
@@ -82,7 +86,7 @@ return [
                 'unlimited' => 'Unbefristet',
                 'limited' => 'Befristet',
             ],
-            'relation_pdf' => 'Vertrag PDF',
+            'relation_pdf' => 'Beziehungs-PDF',
             'filename' => 'Name',
             'deposit_amount' => 'Kautionsbetrag',
             'type_of_deposit' => 'Art der Sicherheitsleistung',
@@ -97,19 +101,19 @@ return [
                 'yes' => 'Ja',
                 'no' => 'Nein',
             ],
-            'relation_id' => 'Vertrags-ID',
+            'relation_id' => 'Beziehungs-ID',
             'status' => [
                 'active' => 'Aktiv',
                 'inactive' => 'Inaktiv',
             ],
-            'add' => 'Vertrag erstellen',
-            'add_sell_relation' => 'Verkaufsvertrag hinzufügen',
+            'add' => 'Neue Beziehung hinzufügen',
+            'add_sell_relation' => 'Verkaufsbeziehung hinzufügen',
             'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',
-            'saved' => 'Vertrag gespeichert',
+            'saved' => 'Beziehung gespeichert',
             'status_count' => [
-                'total' => 'Gesamtzahl der Verträge',
-                'active' => 'Aktive Verträge',
-                'inactive' => 'Inaktive Verträge',
+                'total' => 'Gesamtbeziehungen',
+                'active' => 'Aktive Beziehungen',
+                'inactive' => 'Inaktive Beziehungen',
             ],
             'type_validation_error' => "Sieht so aus, als hätten Sie bereits Verträge hinzugefügt, zuerst löschen und dann können Sie den Bewohnertyp ändern."
         ],
@@ -129,7 +133,7 @@ return [
             'content_1' => 'Wir freuen uns, Ihnen mitteilen zu können, dass für Sie ein Konto in der Summe der Bewohner eingerichtet wurde. und senden Ihnen den Aktivierungscode zu.',
             'offer' => 'Was bietet die Applikation',
             'offers' => '
-                <li>Mit dem digitalen Bewohnerdossier haben Sie Zugriff auf alle relevanten Dokumente wie Mietvertrag, Hausordnung oder andere Dokumente rund um die Immobilie.</li>
+                <li>Mit dem digitalen Bewohnerdossier haben Sie Zugriff auf alle relevanten Dokumente wie Beziehung, Hausordnung oder andere Dokumente rund um die Immobilie.</li>
                 <li>Über das Ticketing-System wickeln Sie Ihre Anfragen einfach und unkompliziert ab – Anliegen zeit- und ortsungebunden an die Verwaltung mitteilen</li>
                 <li>Auf dem Markt- und Leihplatz können Sie Gegenstände an Ihre Nachbarschaft verkaufen oder verleihen.</li>
                 <li>Teilen Sie Neuigkeiten mit Ihren Nachbarn indem Sie einen Beitrag publizieren. Die Pinnwand wird ebenfalls durch die Verwaltung für die Kommunikation genutzt, so sind alle stets auf dem Laufenden.</li>
@@ -441,7 +445,8 @@ return [
             'label' => 'Workflow',
             'add' => 'Workflow hinzufügen',
             'edit' => 'Workflow bearbeiten',
-            'delete' => 'Workflow löschen',
+            'delete' => 'Löschen',
+            'close' => 'Abbrechen',
             'by' => 'von',
             'to' => 'an',
             'cc' => 'cc',

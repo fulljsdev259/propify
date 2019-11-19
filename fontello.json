@@ -515,6 +515,12 @@
       "css": "mail",
       "code": 59439,
       "src": "fontawesome"
+    },
+    {
+      "uid": "f4445feb55521283572ee88bc304f928",
+      "css": "floppy",
+      "code": 59450,
+      "src": "fontawesome"
     }
   ]
 }

@@ -42,11 +42,27 @@
                 prop="relation_format"
             >
             </el-table-column> -->
-            <el-table-column
+            <!-- <el-table-column
                 :label="$t('models.resident.building.name')"
                 v-if="!hideBuilding"
                 prop="building.name"
             >
+            </el-table-column> -->
+            <el-table-column
+                :label="$t('models.resident.type.label')"
+                prop="type"
+            >
+                <template slot-scope="scope">
+                    {{translateUnitType(scope.row.type)}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                :label="$t('models.resident.quarter.name')"
+                prop="quarter.name"
+            >
+                 <template slot-scope="scope">
+                    {{ scope.row.quarter ? scope.row.quarter.id + ' ' + scope.row.quarter.name : ''}}
+                </template>
             </el-table-column>
             <el-table-column
                 :label="$t('models.resident.unit.name')"
@@ -55,11 +71,17 @@
             >
             </el-table-column>
             <el-table-column
+                :label="$t('models.resident.unit.name')"
+                v-if="!hideUnit"
+                prop="unit.id"
+            >
+            </el-table-column>
+            <el-table-column
                 :label="$t('models.resident.status.label')"
             >
                 <template slot-scope="scope">
                     <i class="icon-dot-circled" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
-                    {{ constants.relations.status[scope.row.status] ? $t('models.resident.relation.status.' + constants.relations.status[scope.row.status]) : ''}}
+                    <!-- {{ constants.relations.status[scope.row.status] ? $t('models.resident.relation.status.' + constants.relations.status[scope.row.status]) : ''}} -->
                 </template>
             </el-table-column>
             <el-table-column
@@ -148,7 +170,10 @@
                this.showLength += 5
                if(this.showLength > this.totalLength)
                 this.showLength = this.totalLength
-           }
+           },
+           translateUnitType(type) {
+                return this.$t(`models.unit.type.${this.constants.units.type[type]}`);
+            }
         },
         mounted() {
             this.totalLength = this.items.length

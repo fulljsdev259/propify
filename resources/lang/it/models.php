@@ -50,12 +50,16 @@ return [
         "pinboard" => "Bacheca",
         "listings" => "Prodotti",
         "company" => "Nome dell'azienda",
+        'quarter' => [
+            'name' => 'Quartiere',
+        ],
         'building' => [
             'name' => 'Bâtiment',
         ],
         'unit' => [
             'name' => 'Unità',
         ],
+        'search_quarter' => 'Ricerca quartiere',
         'search_building' => 'Ricerca edificio',
         'search_unit' => 'Unità di ricerca',
         'errors' => [
@@ -73,7 +77,7 @@ return [
         "account_info_card" => "Accesso utente",
         "contact_info_card" => "Dati di contatto",
         "relation" => [
-            'title' => "Contratto",
+            'title' => "La relazione",
             "end_date" => "Data di fine",
             "start_date" => "Data d'inizio",
             'type' => 'Tipo',            
@@ -82,7 +86,7 @@ return [
                 'unlimited' => 'Illimitato',
                 'limited' => 'Limitato',
             ],
-            'relation_pdf' => "Contratto PDF",
+            'relation_pdf' => "Relazione PDF",
             'filename' => 'Nome',
             'deposit_amount' => 'Importo del deposito',
             'type_of_deposit' => 'Tipo di deposito',
@@ -97,21 +101,21 @@ return [
                 'yes' => 'Sì',
                 'no' => 'No',
             ],
-            'relation_id' => 'ID contratto',
+            'relation_id' => 'ID della relazione',
             'status' => [
                 'active' => 'Attivo',
                 'inactive' => 'Inattivo',
             ],
-            'add' => 'Aggiungere un nuovo contratto',
-            'add_sell_relation' => 'Aggiungi contratto di vendita',
+            'add' => 'Aggiungi nuova relazione',
+            'add_sell_relation' => 'Aggiungi relazione di vendita',
             'pdf_only_desc' => 'Si prega di notare che solo i file PDF possono essere caricati',
-            'saved' => 'Contratto salvato',
+            'saved' => 'Relazione salvata',
             'status_count' => [
-                'total' => 'Totale contratti',
-                'active' => 'Contratti attivi',
-                'inactive' => 'Contratti inattivi',
+                'total' => 'Totale relazioni',
+                'active' => 'Relazioni attive',
+                'inactive' => 'Relazioni inattive',
             ],
-            'type_validation_error' => "Sembra che tu abbia già aggiunto uno o più contratti, prima li cancelli e poi potrai cambiare il tipo di residente."
+            'type_validation_error' => "Sembra che tu abbia già aggiunto delle relazioni, prima le cancelli e poi potrai cambiare il tipo di residente."
         ],        
         'status' => [
             "label" => "Situazione",
@@ -439,7 +443,8 @@ return [
             'label' => 'Flusso di lavoro',
             'add' => 'Aggiungi flusso di lavoro',
             'edit' => 'Modifica flusso di lavoro',
-            'delete' => 'Elimina flusso di lavoro',
+            'delete' => 'Cancellare',
+            'close' => 'Chiudere',
             'by' => 'da',
             'to' => 'a',
             'cc' => 'cc',
