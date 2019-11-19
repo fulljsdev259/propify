@@ -21,6 +21,7 @@ class RelationTransformer extends BaseTransformer
             'id' => $model->id,
             'resident_id' => $model->resident_id,
             'unit_id' => $model->unit_id,
+            'quarter_id' => $model->quarter_id,
             'type' => $model->type,
             'status' => $model->status,
             'relation_format' => $model->relation_format,
@@ -78,6 +79,12 @@ class RelationTransformer extends BaseTransformer
 
         if ($model->relationExists('media')) {
             $response['media'] = (new MediaTransformer)->transformCollection($model->media);
+        }
+
+        if ($model->relationExists('garant_residents')) {
+            $response['residents'] = $model->garant_residents->map(function ($item) {
+                return $item->only('id', 'first_name', 'last_name');
+            });
         }
 
         return $response;

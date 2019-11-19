@@ -43,7 +43,9 @@
                 </el-form-item>
             </el-col>
             <el-col :md="12">
-                <el-form-item prop="unit_id" :label="$t('models.resident.unit.name')"
+                <el-form-item v-if="mode == 'add'"
+                            :label="$t('models.resident.unit.name')"
+                            prop="unit_id" 
                             class="label-block">
                     <!-- <multi-select
                         :filter="unitFilter"
@@ -71,6 +73,30 @@
                             </el-option>
                         </el-option-group>
                         
+                    </el-select>
+                </el-form-item>
+                <el-form-item v-if="mode == 'edit'"
+                            :label="$t('models.resident.unit.name')"
+                            prop="unit_id" 
+                            class="label-block">
+
+                    <el-select :placeholder="$t('models.resident.search_unit')" 
+                            style="display: block"
+                            v-model="model.unit_id"
+                            @change="changeRelationUnit">
+                        <el-option-group
+                            v-for="group in units"
+                            :key="group.label"
+                            :label="group.label">
+                            <el-option
+                                v-for="item in group.options"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                                <span style="float: left">{{ item.name }}</span>
+                                <span style="float: right">{{ translateUnitType(item.type) }}</span>
+                            </el-option>
+                        </el-option-group>
                     </el-select>
                 </el-form-item>
             </el-col>
@@ -391,7 +417,22 @@
                 
                 </el-form-item>
             </el-col>
-        
+            <!-- <el-col :md="12">
+                <el-form-item :label="$t('models.resident.relation.pdf_select_types.label')"
+                            prop="type"
+                            class="label-block">
+                    <el-select :placeholder="$t('models.resident.relation.pdf_select_types.label')"
+                                style="display: block;"
+                                v-model="model.choose_pdf">
+                        <el-option
+                                :key="value"
+                                :label="$t('models.resident.relation.pdf_select_types.' + value )"
+                                :value="value"
+                                v-for="value in pdf_select_types">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col> -->
         </el-row>
         </template>
         <ui-divider style="margin-top: 16px;"></ui-divider>
@@ -481,6 +522,7 @@
                 deposit_types: [],
                 residents: [],
                 loading: false,
+                pdf_select_types: ["all", "existing"],
                 model: {
                     resident_id: '',
                     resident_ids: [],
@@ -495,7 +537,7 @@
                     status: '',
                     deposit_status: 1,
                     monthly_rent_gross: 0,
-                    unit_id: '',
+                    unit_id: null,
                     building_id: '',
                     quarter_id: '',
                     media: [],
@@ -503,6 +545,10 @@
                     units: [],
                 },
                 validationRules: {
+                    quarter_id: [{
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.quarter.name')})
+                    }],
                     building_id: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.resident.building.name')})
@@ -588,7 +634,9 @@
                                 if(found)
                                     params.unit = found
                             })
-                            params.building = this.buildings.find(item => item.id == this.model.building_id)
+                            //params.building = this.buildings.find(item => item.id == this.model.building_id)
+
+                            params.quarter = this.quarters.find(item => item.id == this.model.quarter_id)
 
                             if (this.mode == "add") {
                                 this.$emit('add-relation', params)
@@ -605,7 +653,8 @@
                                 if(found)
                                     params.unit = found
                             })
-                            params.building = this.buildings.find(item => item.id == this.model.building_id)
+                            //params.building = this.buildings.find(item => item.id == this.model.building_id)
+                            params.quarter = this.quarters.find(item => item.id == this.model.quarter_id)
 
                             params.status = 1
                             if (this.mode == "add") {
@@ -659,7 +708,7 @@
                     this.remoteLoading = true;
 
                     try {
-                        const {data} = await this.getResidents({get_all: true,search});
+                        const {data} = await this.getResidents({get_all: true, tenant_type: 2, search});
                         this.residents = data;
                         this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
                     } catch (err) {
@@ -775,8 +824,8 @@
                 return this.$t(`models.unit.type.${this.$constants.units.type[type]}`);
             },
             changeResident(val) {
-                let resident = this.residents.find(resident => resident.id == val)
-                this.resident_type_check = resident.type
+                //let resident = this.residents.find(resident => resident.id == val)
+                //this.resident_type_check = resident.type
             },
             changeRelationUnit() {
 
@@ -866,9 +915,14 @@
                         this.units.push({ label: group_label, options : [this.model.unit]})
                     }
 
-                    if(this.model.building) {
-                        this.buildings.push(this.model.building)
-                        await this.remoteRelationSearchBuildings(this.model.building.name)
+                    // if(this.model.building) {
+                    //     this.buildings.push(this.model.building)
+                    //     await this.remoteRelationSearchBuildings(this.model.building.name)
+                    //     await this.searchRelationUnits(true)
+                    // }
+                    if(this.model.quarter) {
+                        this.quarters.push(this.model.quarter)
+                        await this.remoteRelationSearchBuildings(this.model.quarter.name)
                         await this.searchRelationUnits(true)
                     }
                 }
@@ -876,19 +930,23 @@
             }
 
             if(this.hideBuildingAndUnits) {
+                console.log('call1')
                 this.model.unit_id = this.unit_id
                 this.model.building_id = this.building_id
-
+                
                 // this.model.unit = this.data.unit
                 // this.model.building = this.data.building
                 // this.buildings.push(this.model.building)
             }
 
             if(this.hideBuilding) {
+                console.log('call2')
                 this.model.building_id = this.building_id
                 await this.searchRelationUnits(true)
             }
 
+            this.model.unit_id = []
+            console.log('unit_id', this.model.unit_id)
             this.loading = false;
         },
         mounted() {

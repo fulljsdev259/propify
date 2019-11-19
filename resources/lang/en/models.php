@@ -105,10 +105,16 @@ return [
             'status' => [
                 'active' => 'Active',
                 'inactive' => 'Inactive',
+                'canceled' => 'Canceled'
             ],
             'add' => 'Add new relation',
             'add_sell_relation' => 'Add Sell Relation',
             'pdf_only_desc' => 'Please note that only PDF files can be uploaded',
+            'pdf_select_types' => [
+                'label' => 'Choose PDF files',
+                'all' => 'All',
+                'existing' => 'Choose from existing'
+            ],
             'saved' => 'Relation saved',
             'status_count' => [
                 'total' => 'Total relations',
@@ -296,6 +302,7 @@ return [
         'unpublish' => 'Unpublish',
         'buildings' => 'Buildings',
         'announcement' => 'Announcement',
+        'receptionists' => 'Receptionists',
         'notify_email' => 'Notify email',
         'notify_email_description' => 'With this option, you will be able to enable email notifiation',
         'announcement_to' => 'Announcement to',
@@ -457,7 +464,8 @@ return [
             ],
             'tooltips' => [
                 'save' => "To save work flow us this button, main 'save' button will not save data"
-            ]
+            ],
+            'saved' => 'Workflow saved successfully'
         ]
     ],
     'request' => [        

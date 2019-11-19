@@ -55,6 +55,10 @@ class ResidentTransformer extends BaseTransformer
         }
 
         $response['media'] = [];
+        if ($model->relationExists('media')) {
+            $response['media'] = (new MediaTransformer())->transformCollection($model->media);
+        }
+
         if ($model->relations || $model->relationExists('relations')) { // @TODO delete reloading
             $response['relations'] = (new RelationTransformer())->transformCollection($model->relations);
 
@@ -64,6 +68,10 @@ class ResidentTransformer extends BaseTransformer
             $response['active_relations_count'] = $activeCount;
             $response['inactive_relations_count'] = $allCount - $activeCount;
             $response['total_relations_count'] = $allCount;
+        }
+
+        if ( $model->relationExists('garant_relations')) { // @TODO delete reloading
+            $response['garant_relations'] = (new RelationTransformer())->transformCollection($model->relations);
         }
 
         return $this->addAuditIdInResponseIfNeed($model, $response);

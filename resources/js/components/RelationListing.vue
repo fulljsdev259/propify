@@ -224,6 +224,11 @@
                             {{scope.row.name}}
                         </router-link>                        
                     </div>
+                    <div v-else-if="column.type === 'multiProp'">
+                        <span v-for="item in column.prop.split(' ')">
+                            {{scope.row[item]}}
+                        </span>
+                    </div>
                     <div v-else>
                         {{scope.row[column.prop]}}
                     </div>
@@ -232,6 +237,7 @@
             <el-table-column
                 :key="column.prop"
                 :label="$t(column.label)"
+                :align="column.align"
                 v-for="column in columns"
                 v-if="column.i18n"
             >

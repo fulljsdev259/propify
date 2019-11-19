@@ -37,7 +37,12 @@ class FilterByTypeCriteria implements CriteriaInterface
     {
         $type = $this->request->get('type', null);
         if ($type) {
-            return $model->where('residents.type', (int)$type);
+            $model =  $model->where('residents.type', (int)$type);
+        }
+
+        $tenantType = $this->request->get('tenant_type', null);
+        if ($tenantType) {
+            $model =  $model->where('residents.tenant_type', (int)$tenantType);
         }
 
         return $model;

@@ -35,7 +35,7 @@ return [
         'credentials_sent' => 'Zugangsdaten wurden erfolgreich gesendet.',
         'credentials_send_fail' => 'Anmeldedaten-Datei nicht gefunden. Versuchen Sie, das Passwort des Bewohners zu aktualisieren, um es neu zu generieren',
         'credentials_download_failed' => 'Anmeldedaten-Datei nicht gefunden. Versuchen Sie, das Passwort des Bewohners zu aktualisieren, um es neu zu generieren',
-        'add' => 'Bewohner hinzufügen',
+        'add' => 'Hinzufügen',
         'saved' => 'Bewohner wurde gespeichert',
         'deleted' => 'Bewohner wurde gelöscht',
         'status_changed' => 'Status wurde geändert',
@@ -105,10 +105,16 @@ return [
             'status' => [
                 'active' => 'Aktiv',
                 'inactive' => 'Inaktiv',
+                'canceled' => 'Abgesagt'
             ],
-            'add' => 'Neue Beziehung hinzufügen',
+            'add' => 'Beziehung hinzufügen',
             'add_sell_relation' => 'Verkaufsbeziehung hinzufügen',
             'pdf_only_desc' => 'Bitte beachten Sie, dass nur PDF-Dateien hochgeladen werden können.',
+            'pdf_select_types' => [
+                'label' => 'PDF-Dateien auswählen',
+                'all' => 'Alle',
+                'existing' => 'Wählen Sie aus bestehenden'
+            ],
             'saved' => 'Beziehung gespeichert',
             'status_count' => [
                 'total' => 'Gesamtbeziehungen',
@@ -161,7 +167,7 @@ return [
     'building' => [
         'title' => 'Objekte',
         'edit_title' => 'Objekt bearbeiten',
-        'add' => 'Objekt hinzufügen',
+        'add' => 'Hinzufügen',
         'cancel' => 'Schliessen',
         'deleted' => 'Objekt wurde gelöscht.',
         'units' => 'Einheiten',
@@ -230,7 +236,7 @@ return [
     'unit' => [
         'title' => 'Einheiten',
         'not_found' => 'Einheit nicht gefunden.',
-        'add' => 'Einheit hinzufügen',
+        'add' => 'Hinzufügen',
         'edit' => 'Einheit bearbeiten',
         'name' => 'Einheit-ID',
         'auto_create_question' => 'Möchten Sie eine Einheit automatisch erstellen?',
@@ -286,7 +292,7 @@ return [
         'title_label' => 'Betreff',
         'content' => 'Inhalt',
         'preview' => 'Vorschau',
-        'add' => 'Beitrag hinzufügen',        
+        'add' => 'Hinzufügen',        
         'saved' => 'Beitrag wurde gespeichert',
         'view_incresead' => "Aufrufe erfolgreich gesteigert",        
         'deleted' => 'Beitrag wurde gelöscht',
@@ -298,6 +304,7 @@ return [
         'unpublish' => 'Unpublish',
         'buildings' => 'Objekte',
         'announcement' => 'Ankündigung an',
+        'receptionists' => 'Empfangspersonal',
         'notify_email' => 'Mieter benachrichtigen',
         'notify_email_description' => "Mit dieser Option können Sie die E-Mail-Benachrichtigung aktivieren.",
         'announcement_to' => 'Ankündigung',
@@ -368,7 +375,7 @@ return [
         'title' => 'Dienstleister und Hauswartung',
         'view' => 'Öffnen',
         'view_title' => 'Service anzeigen',
-        'add_title' => 'Firma hinzufügen',
+        'add_title' => 'Hinzufügen',
         'edit_title' => 'Firma bearbeiten',
         'saved' => 'Dienstleister gespeichert',
         'deleted' => 'Dienstleister gelöscht',
@@ -403,7 +410,7 @@ return [
     ],
     'quarter' => [
         'title' => 'Projekte',
-        'add' => 'Projekt hinzufügen',
+        'add' => 'Hinzufügen',
         "edit" => "Projekt bearbeiten",
         'saved' => 'Projekt wurde gespeichert!',
         'deleted' => 'Projekt wurde gelöscht',        
@@ -426,8 +433,7 @@ return [
         'types' => [
             'label' => 'Typ',
             'rent' => 'Miete',
-            'sell' => 'Verkauf',
-            'property' => 'Eigentum',
+            'sell' => 'Eigentum',
             'building_land' => 'Bauland',
             'trade' => 'Gewerbe',
             'multi-storey_car_park' => 'Parkhaus'
@@ -459,7 +465,8 @@ return [
             ],
             'tooltips' => [
                 'save' => "Um den Arbeitsablauf zu speichern, speichern wir diese Schaltfläche, die Haupttaste 'Speichern' speichert keine Daten."
-            ]
+            ],
+            'saved' => 'Workflow gespeichert'
         ]
     ],
     'request' => [        
@@ -726,7 +733,7 @@ return [
     ],
     'property_manager' => [
         'title' => 'Fortimo-Mitarbeiter',
-        'add' => 'Mitarbeiter hinzufügen',
+        'add' => 'Hinzufügen',
         'saved' => 'Mitarbeiter wurde gespeichert',
         'deleted' => 'Mitarbeiter wurde gelöscht',
         'edit_title' => 'Mitarbeiter bearbeiten',
@@ -757,7 +764,7 @@ return [
     ],
     // 'house_owner' => [
     //     'title' => 'Eigentümer',
-    //     'add' => 'Eigentümer hinzufügen',
+    //     'add' => 'Hinzufügen',
     //     'saved' => 'Eigentümer wurde gespeichert',
     //     'deleted' => 'Eigentümer wurde gelöscht',
     //     'edit_title' => 'Eigentümer bearbeiten',
@@ -772,7 +779,7 @@ return [
     //     'building_card' => 'Objekt zuweisen',
     //     'details_card' => 'Details & Konto',
     //     'no_buildings' => 'Keine Objekte zugewiesen',
-    //     'add_buildings' => 'Objekt hinzufügen',
+    //     'add_buildings' => 'Hinzufügen',
     //     'buildings_search' => 'Objekt suchen',
     //     'quarters' => 'Projekte',
     //     'delete_with_reassign_modal' => [

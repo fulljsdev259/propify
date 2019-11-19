@@ -25,7 +25,7 @@ class MediaTransformer extends BaseTransformer
         if (Str::startsWith($url, '//')) {
             $url = Str::replaceFirst('//', '/', $url);
         }
-        return [
+        $response =  [
             'id' => $model->id,
             'name' => $model->file_name,
             'url' => $url,
@@ -33,5 +33,9 @@ class MediaTransformer extends BaseTransformer
             'model_id' => $model->model_id,
             'order_column' => $model->order_column,
         ];
+        if (key_exists('relations_count', $model->getAttributes())) {
+            $response['relations_count'] = $model->relations_count;
+        }
+        return $response;
     }
 }

@@ -376,6 +376,15 @@ class Resident extends AuditableModel implements HasMedia
         return $this->hasMany(Relation::class);
     }
 
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function garant_relations()
+    {
+        return $this->belongsToMany(Relation::class, 'relation_garant_resident', 'resident_id', 'relation_id');
+    }
+
     /**
      * @return HasMany
      */

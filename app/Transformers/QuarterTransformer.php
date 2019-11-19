@@ -34,6 +34,9 @@ class QuarterTransformer extends BaseTransformer
             // @TODO kill
             $response['has_email_receptionists'] = $model->has_email_receptionists;
         }
+        if ($model->hasAttribute('count_of_apartments_units')) {
+            $response['count_of_apartments_units'] = $model->count_of_apartments_units;
+        }
 
         if ($model->relationExists('address')) {
             if (array_keys($model->address->getAttributes()) == ['id', 'city']) {
