@@ -296,6 +296,7 @@ return [
         'unpublish' => 'Unpublish',
         'buildings' => 'Buildings',
         'announcement' => 'Announcement',
+        'receptionists' => 'Receptionists',
         'notify_email' => 'Notify email',
         'notify_email_description' => 'With this option, you will be able to enable email notifiation',
         'announcement_to' => 'Announcement to',

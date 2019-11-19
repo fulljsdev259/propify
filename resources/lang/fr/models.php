@@ -296,6 +296,7 @@ return [
         "unpublish" => "Non publié",
         "buildings" => "Bâtiments",
         "announcement" => "Annonce à l'intention de",
+        "receptionists" => "Réceptionnistes",
         "notify_email" => "Prévenez par courriel",
         'notify_email_description' => "Avec cette option, vous serez en mesure d'activer la notification par e-mail",
         "announcement_to" => "Annonce",
