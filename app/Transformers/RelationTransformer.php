@@ -21,6 +21,7 @@ class RelationTransformer extends BaseTransformer
             'id' => $model->id,
             'resident_id' => $model->resident_id,
             'unit_id' => $model->unit_id,
+            'quarter_id' => $model->quarter_id,
             'type' => $model->type,
             'status' => $model->status,
             'relation_format' => $model->relation_format,
