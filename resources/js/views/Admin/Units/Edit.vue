@@ -1,11 +1,11 @@
 <template>
     <div class="units-edit" v-loading.fullscreen.lock="loading.state">
         <div class="main-content">
-            <heading :title="$t('models.unit.edit')" icon="icon-unit" style="margin-bottom: 20px;" shadow="heavy">
+            <heading :title="$t('models.unit.edit')" icon="icon-unit" style="margin-bottom: 20px;" shadow="heavy" bgClass="bg-transparent">
                 <template slot="description" v-if="model.unit_format">
                     <div class="subtitle">{{model.unit_format}}</div>
                 </template>
-                <edit-actions :saveAction="submit" :deleteAction="deleteUnit" route="adminUnits"/>
+                <edit-actions :saveAction="submit" :deleteAction="deleteUnit" route="adminUnits" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
             </heading>
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
@@ -25,6 +25,7 @@
                                                     remote
                                                     reserve-keyword
                                                     style="width: 100%;"
+                                                    :disabled="!editMode"
                                                     @change="changeQuarter"
                                                     v-model="model.quarter_id">
                                                 <el-option
@@ -47,6 +48,7 @@
                                                 remote
                                                 reserve-keyword
                                                 style="width: 100%;"
+                                                :disabled="!editMode"
                                                 v-model="model.building_id">
                                                 <el-option
                                                     :key="building.id"
@@ -68,6 +70,7 @@
                                                 :placeholder="$t('models.unit.type.label')" 
                                                 class="w100p"
                                                 style="width: 100%;"
+                                                :disabled="!editMode"
                                                 v-model="model.type"
                                             >
                                                 <el-option
@@ -81,12 +84,12 @@
                                     </el-col>
                                     <el-col :md="6">
                                         <el-form-item :label="$t('models.unit.name')" :rules="validationRules.name" prop="name">
-                                            <el-input autocomplete="off" type="text" v-model="model.name"></el-input>
+                                            <el-input autocomplete="off" type="text" v-model="model.name" :disabled="!editMode"></el-input>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="6">
                                         <el-form-item :label="$t('models.unit.floor')" :rules="validationRules.floor" prop="floor">
-                                            <el-input autocomplete="off" type="number" v-model="model.floor" min="-3"></el-input>
+                                            <el-input autocomplete="off" type="number" v-model="model.floor" min="-3" :disabled="!editMode"></el-input>
                                         </el-form-item>
                                     </el-col>
 
@@ -99,6 +102,7 @@
                                                 step="0.01" 
                                                 type="number"
                                                 v-model="model.monthly_rent_net" 
+                                                :disabled="!editMode"
                                             >
                                                 <template slot="prepend">CHF</template>
                                             </el-input>
@@ -142,7 +146,8 @@
                                                                         prop="monthly_rent_net">
                                                                         <el-input 
                                                                             type="number"
-                                                                            v-model="model.monthly_rent_net" 
+                                                                            v-model="model.monthly_rent_net"  
+                                                                            :disabled="!editMode"
                                                                         >
                                                                             <template slot="prepend">CHF</template>
                                                                         </el-input>
@@ -161,7 +166,8 @@
                                                                         prop="monthly_maintenance">
                                                                         <el-input 
                                                                             type="number"
-                                                                            v-model="model.monthly_maintenance" 
+                                                                            v-model="model.monthly_maintenance"  
+                                                                            :disabled="!editMode"
                                                                         >
                                                                             <template slot="prepend">CHF</template>
                                                                         </el-input>
@@ -196,7 +202,7 @@
                                         >
                                             <el-select :placeholder="$t('general.placeholders.select')" class="w100p"
                                                     style="width: 100%;"
-                                                    v-model="model.room_no">
+                                                    v-model="model.room_no" :disabled="!editMode">
                                                 <el-option :key="room.value"
                                                         :label="room.label"
                                                         :value="room.value"
@@ -211,15 +217,15 @@
                                             :label="$t('models.unit.sq_meter')" 
                                             prop="sq_meter">
 
-                                            <el-input autocomplete="off" type="number" min="0" v-model="model.sq_meter">
+                                            <el-input autocomplete="off" type="number" min="0" v-model="model.sq_meter" :disabled="!editMode">
                                                 <template slot="prepend">m2</template>
                                             </el-input>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="8" v-if="hasAttic(model.building_id) && (model.type == 1 || model.type == 2)">
-                                        <el-form-item :rules="validationRules.attic">
+                                        <el-form-item :rules="validationRules.attic" >
                                             <label class="attic-label">{{ $t('models.unit.attic') }}</label>
-                                            <el-switch v-model="model.attic"/>
+                                            <el-switch v-model="model.attic" :disabled="!editMode"/>
                                         </el-form-item>
                                     </el-col>
 
@@ -370,6 +376,12 @@
             </template>
             
         </ui-drawer>
+        <edit-close-dialog 
+            :centerDialogVisible="visibleDialog"
+            @clickYes="submit(), editMode=!editMode, visibleDialog=false"
+            @clickNo="model=_.clone(old_model, true), editMode=!editMode, visibleDialog=false"
+            @clickCancel="visibleDialog=false"
+        ></edit-close-dialog>
     </div>
 </template>
 
@@ -389,6 +401,7 @@
     import BuildingFileListTable from 'components/BuildingFileListTable';
     import {displayError, displaySuccess} from "helpers/messages";
     import { EventBus } from '../../../event-bus.js';
+    import EditCloseDialog from 'components/EditCloseDialog';
     
 
     export default {
@@ -407,7 +420,8 @@
             draggable,
             RelationForm,
             RelationListTable,
-            BuildingFileListTable
+            BuildingFileListTable,
+            EditCloseDialog
         },
         data() {
             return {
@@ -488,6 +502,9 @@
                 editingRelation: null,
                 isAddRelation: false,
                 editingRelationIndex: -1,
+                editMode: false,
+                old_model: null,
+                visibleDialog: false,
             }
         },
         methods: {
@@ -496,6 +513,18 @@
                 "uploadUnitFile", 
                 "deleteUnitFile",
             ]),
+            handleChangeEditMode() {
+                if(!this.editMode) {
+                    this.editMode = !this.editMode;
+                    this.old_model = _.clone(this.model, true);
+                } else {
+                    if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
+                        this.visibleDialog = true;
+                    } else {
+                        this.editMode = !this.editMode;
+                    }
+                }
+            },
             translateType(type) {
                 return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
             },
@@ -646,7 +675,7 @@
                         this.isAddRelation = false
                     }
                 }
-            }
+            },
         }
         
        

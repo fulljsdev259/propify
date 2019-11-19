@@ -1,5 +1,5 @@
 <template>
-    <div :class="['heading', `${shadow}-shadow`]">
+    <div :class="['heading', `${shadow}-shadow`, bgClass]">
         <!-- <i :class="['icon', icon]" v-if="icon"></i> -->
         <div class="content">
             <div class="title">{{title}}</div>
@@ -23,7 +23,11 @@
                 default: 'light',
                 validator: type => ['light', 'heavy'].includes(type)
             },
-            description: String
+            description: String,
+            bgClass: {
+                type: String,
+                default: ''
+            }
         }
     }
 </script>
@@ -47,6 +51,10 @@
                         0 0.9375rem 1.40625rem rgba(4,9,20,.03),
                         0 0.25rem 0.53125rem rgba(4,9,20,.05),
                         0 0.125rem 0.1875rem rgba(4,9,20,.03);
+        }
+
+        &.bg-transparent {
+            background-color: transparent;
         }
 
         .icon {

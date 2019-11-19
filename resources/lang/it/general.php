@@ -556,4 +556,5 @@ return [
     ],
     'empty' => "(campo vuoto)",
     'notification_residents_sent' => 'la notifica è stata inviata a {number} residenti alle {time} il {date}.',
+    'edit_close_message' => 'Volete salvare le modifiche prima della chiusura?',
 ];
