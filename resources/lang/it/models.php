@@ -109,6 +109,11 @@ return [
             'add' => 'Aggiungi nuova relazione',
             'add_sell_relation' => 'Aggiungi relazione di vendita',
             'pdf_only_desc' => 'Si prega di notare che solo i file PDF possono essere caricati',
+            'pdf_select_types' => [
+                'label' => 'Scegliere i file PDF',
+                'all' => 'Tutti',
+                'existing' => 'Scegliere tra quelli esistenti'
+            ],
             'saved' => 'Relazione salvata',
             'status_count' => [
                 'total' => 'Totale relazioni',
@@ -296,6 +301,7 @@ return [
         "unpublish" => "Non pubblicare",
         "buildings" => "Edifici",
         "announcement" => "Annuncio a",
+        "receptionists" => "Receptionist",
         "notify_email" => "Notifica e-mail",
         'notify_email_description' => "Con questa opzione, sarà possibile abilitare la notifica via e-mail",
         "announcement_to" => "Annuncio",
