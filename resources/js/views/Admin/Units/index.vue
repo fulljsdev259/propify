@@ -2,6 +2,9 @@
     <div class="units">
         <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy" class="padding-right-300">
             <template>
+                <list-check-box />
+            </template>
+            <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.unit)">
@@ -51,6 +54,7 @@
     import getFilterQuarters from 'mixins/methods/getFilterQuarters';
     import getFilterStates from "mixins/methods/getFilterStates";
     import getFilterPropertyManager from "mixins/methods/getFilterPropertyManager";
+    import ListCheckBox from 'components/ListCheckBox';
 
 
     const mixin = ListTableMixin({
@@ -66,7 +70,8 @@
 
     export default {
         components: {
-            Heading
+            Heading,
+            ListCheckBox,
         },
         mixins: [mixin, getFilterQuarters, getFilterStates, getFilterPropertyManager],
         data() {

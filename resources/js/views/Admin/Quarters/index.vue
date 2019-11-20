@@ -2,6 +2,9 @@
     <div class="quarters">
         <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" class="padding-right-300">
             <template>
+                <list-check-box />
+            </template>
+            <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"  @order-changed="header=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.quarter)">
@@ -45,6 +48,7 @@
     import Heading from 'components/Heading';
     import ListTableMixin from 'mixins/ListTableMixin';
     import {mapActions} from 'vuex';
+    import ListCheckBox from 'components/ListCheckBox';
 
 
     const mixin = ListTableMixin({
@@ -60,7 +64,8 @@
 
     export default {
         components: {
-            Heading
+            Heading,
+            ListCheckBox,
         },
         mixins: [mixin],
         data() {
