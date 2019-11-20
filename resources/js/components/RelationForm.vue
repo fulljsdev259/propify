@@ -236,7 +236,7 @@
                 </el-form-item>
             </el-col> -->
         </el-row>
-        <template v-if="resident_type_check == 1">
+        <template><!--v-if="resident_type_check == 1"-->
         <!-- <ui-divider v-if="model.unit_id" content-position="left">
             {{ $t('models.resident.relation.deposit_amount') }}
         </ui-divider>

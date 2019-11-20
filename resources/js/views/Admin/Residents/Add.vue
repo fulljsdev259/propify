@@ -397,4 +397,11 @@
         margin-bottom: 15px;
     }
 
+    /deep/ .el-dialog {
+        width: 50% !important;
+
+        .el-dialog__footer {
+            padding: 0;
+        }
+    }
 </style>

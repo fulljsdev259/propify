@@ -84,7 +84,12 @@
                 :label="$t('models.resident.status.label')"
             >
                 <template slot-scope="scope">
-                    <i class="icon-circle" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]"></i>
+                     <el-tooltip
+                        :content="$t('models.resident.relation.status.' + constants.relations.status[scope.row.status])"
+                        class="item" effect="light" 
+                        placement="top-end">
+                        <i class="icon-circle" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]"></i>
+                     </el-tooltip>
                     <!-- {{ constants.relations.status[scope.row.status] ? $t('models.resident.relation.status.' + constants.relations.status[scope.row.status]) : ''}} -->
                 </template>
             </el-table-column>
