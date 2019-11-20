@@ -21,44 +21,41 @@ class BuildingTransformer extends BaseTransformer
      */
     public function transform(Building $model)
     {
-        $response = [
-            'id' => $model->id,
-            'name' => $model->name,
-            'building_format' => $model->building_format,
-            'label' => $model->label,
-            'contact_enable' => $model->contact_enable,
-            'description' => $model->description,
-            'floor_nr' => $model->floor_nr,
-            'under_floor' => $model->under_floor,
-            'basement' => $model->basement,
-            'attic' => $model->attic,
-            'created_at' => $model->created_at ? $model->created_at->format('Y-m-d') : '',
-            'quarter_id' => $model->quarter_id,
-            'address_id' => $model->address_id,
-            'internal_building_id' => $model->internal_building_id,
+        $response = $this->getIfHasInAttributes($model, [
+            'id',
+            'name',
+            'building_format',
+            'label',
+            'contact_enable',
+            'description',
+            'floor_nr',
+            'under_floor',
+            'basement',
+            'attic',
+            'quarter_id',
+            'address_id',
+            'internal_building_id',
+            'units_count',
+            'global_email_receptionist',
+            'has_email_receptionists', // @TODO delete
+            'count_of_apartments_units'
+        ]);
 
-            'units_count' => $model->units_count,
-            'residents_count' => 0,
-            'active_residents_count' => 0,
-            'in_active_residents_count' => 0,
-            'property_managers_count' => 0,
-            'global_email_receptionist' => $model->global_email_receptionist
-        ];
-
-        if ($model->hasAttribute('has_email_receptionists')) {
-            $response['has_email_receptionists'] = $model->has_email_receptionists;
-        }
-
-        if ($model->hasAttribute('count_of_apartments_units')) {
-            $response['count_of_apartments_units'] = $model->count_of_apartments_units;
-        }
+        $response['created_at'] = $model->created_at ? $model->created_at->format('Y-m-d') : '';
+        $response['residents_count'] = 0;
+        $response['active_residents_count'] = 0;
+        $response['in_active_residents_count'] = 0;
+        $response['property_managers_count'] = 0;
 
         $withCount = $model->getStatusRelationCounts();
         $response = array_merge($response, $withCount);
 
-        if ($model->relationExists('address')) {
-            $response['address'] = (new AddressTransformer)->transform($model->address);
-        }
+        $response = $this->includeRelationIfExists($model, $response, [
+            'address' => AddressTransformer::class,
+            'service_providers' => ServiceProviderTransformer::class,
+            'media' => MediaTransformer::class,
+            'units' => UnitTransformer::class,
+        ]);
 
         if ($model->relationExists('quarter')) {
             $response['quarter'] = (new QuarterTransformer)->transform($model->quarter);
@@ -68,10 +65,7 @@ class BuildingTransformer extends BaseTransformer
             $response[ 'internal_quarter_id'] = $model->quarter->internal_quarter_id ?? '';
         }
 
-        if ($model->relationExists('service_providers')) {
-            $response['service_providers'] = (new ServiceProviderTransformer)->transformCollection($model->service_providers);
-        }
-
+        // @TODO $assignedUsers login
         $assignedUsers = $model->newCollection();
         if ($model->relationExists('propertyManagers')) {
             $assignedUsers = $assignedUsers->merge($model->propertyManagers->pluck('user'));
@@ -93,10 +87,7 @@ class BuildingTransformer extends BaseTransformer
             $response['assignedUsers'] = [];
         }
 
-        if ($model->relationExists('media')) {
-            $response['media'] = (new MediaTransformer)->transformCollection($model->media);
-        }
-
+        // @TODO fix now building is not directly assigned relations
         if ($model->relationExists('relations')) {
             $response['relations'] = (new RelationTransformer())->transformCollection($model->relations);
             $residents = collect($response['relations'])->pluck('resident')->unique();

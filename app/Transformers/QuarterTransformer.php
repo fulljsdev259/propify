@@ -49,7 +49,7 @@ class QuarterTransformer extends BaseTransformer
             }
         }
 
-        $response = $this->includeIfHasRelation($model, $response, [
+        $response = $this->includeRelationIfExists($model, $response, [
             'buildings' => BuildingTransformer::class,
             'relations' => RelationTransformer::class,
             'media' => MediaTransformer::class,

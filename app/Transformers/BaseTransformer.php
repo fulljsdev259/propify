@@ -5,8 +5,8 @@ namespace App\Transformers;
 use App\Models\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use League\Fractal\Manager;
-use League\Fractal\Resource\Collection as FCollection;
+//use League\Fractal\Manager;
+//use League\Fractal\Resource\Collection as FCollection;
 use League\Fractal\TransformerAbstract;
 
 /**
@@ -24,9 +24,14 @@ class BaseTransformer extends TransformerAbstract
      */
     public function transformCollection(Collection $collection)
     {
-        $manager = new Manager();
-        $media = new FCollection($collection, $this);
-        return $manager->createData($media)->toArray()['data'];
+        return $collection->transform(function ($value) {
+            return $this->transform($value);
+        })->toArray();
+        // @TODO delete This is not needed because we are not using This package logic
+        // I can ask this package not needed here
+//        $manager = new Manager();
+//        $media = new FCollection($collection, $this);
+//        return $manager->createData($media)->toArray()['data'];
     }
 
     /**
@@ -100,7 +105,7 @@ class BaseTransformer extends TransformerAbstract
         return $response;
     }
 
-    protected function includeIfHasRelation(Model $model, $response, $relations)
+    protected function includeRelationIfExists(Model $model, $response, $relations)
     {
         foreach ($relations as $relation => $transformer) {
             if (! $model->relationExists($relation)) {

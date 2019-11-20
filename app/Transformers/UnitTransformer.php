@@ -13,10 +13,6 @@ use App\Models\Unit;
  */
 class UnitTransformer extends BaseTransformer
 {
-    protected $defaultIncludes = [
-        'address'
-    ];
-
     /**
      * Transform the Unit entity.
      *
@@ -80,6 +76,7 @@ class UnitTransformer extends BaseTransformer
             $response['media'] = (new MediaTransformer())->transformCollection($model->media);
         }
 
+        // @TODO correct is it needed and the it must be by building if exist other case by quarter
         if ($model->relationExists('address')) {
             $response['address'] = (new AddressTransformer)->transform($model->address);
         }
@@ -118,17 +115,5 @@ class UnitTransformer extends BaseTransformer
         }
 
         return $input;
-    }
-
-    /**
-     * Include Address
-     *
-     * @return \League\Fractal\Resource\Item
-     */
-    public function includeAddress(Building $building)
-    {
-        $address = $building->address;
-
-        return $this->item($address, new AddressTransformer);
     }
 }
