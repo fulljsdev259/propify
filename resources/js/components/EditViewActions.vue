@@ -1,11 +1,14 @@
 <template>
     <div class="action-group">
-        <el-button @click="SaveAndEdit" size="mini" type="primary" class="transparent-button"> {{this.$t('general.actions.save')}}</el-button>
-        <el-button @click="saveAndClose" size="mini" type="primary" class="transparent-button"> {{this.$t('general.actions.save_and_close')}}
-        </el-button>
-        <el-button v-if="deleteAction || undefined"  @click="deleteAndClose" size="mini" type="danger" icon="ti-trash"  class="transparent-button"> {{this.$t('general.actions.delete')}}</el-button>
-        <el-button @click="goToListing" size="mini" type="warning" class="transparent-button"> {{this.$t('general.actions.close')}}
-        </el-button>
+        <el-button v-if="editMode || deleteAction === undefined" @click="SaveAndEdit" size="mini" type="primary" class="transparent-button"> {{this.$t('general.actions.save')}}</el-button>
+        <!-- <el-button @click="saveAndClose" size="mini" type="primary" class="transparent-button"> {{ this.$t('general.actions.save_and_close') }}
+        </el-button> -->
+        <el-button v-if="(deleteAction || undefined) && editMode"  @click="deleteAndClose" size="mini" type="danger" icon="ti-trash"  class="transparent-button"> {{this.$t('general.actions.delete')}}</el-button>
+        <!-- <el-button @click="goToListing" size="mini" type="warning" class="transparent-button"> {{this.$t('general.actions.close')}}
+        </el-button> -->
+        <el-button v-if="editMode" @click="$emit('edit-mode')" size="mini" icon="el-icon-close" type="info" circle class="transparent-button"></el-button>
+        <el-button v-if="!editMode && deleteAction !== undefined" @click="$emit('edit-mode') " size="mini" icon="el-icon-edit" type="primary" class="transparent-button"> {{this.$t('general.actions.edit')}}</el-button>
+        <el-button v-if="!editMode" @click="goToListing" size="mini" icon="el-icon-close" type="info" circle class="transparent-button"></el-button>
     </div>
 </template>
 
@@ -38,6 +41,12 @@
             },
             role: {
                 type: String
+            },
+            editMode: {
+                type: Boolean,
+                default() {
+                    return false;
+                }
             }
         },
         methods: {

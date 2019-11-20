@@ -133,6 +133,14 @@ class Media extends SpatieMedia implements Auditable
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function relations()
+    {
+        return $this->belongsToMany(Relation::class);
+    }
+
+    /**
      * @return array
      */
     public function getMedia_uploadedEventAttributes()

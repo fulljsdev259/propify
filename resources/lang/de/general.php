@@ -98,6 +98,7 @@ return [
         'phase' => 'Phase',
         'qualification' => 'Qualifizierung',
         'saved_filters' => 'Mehr Filters',
+        'fields' => 'Felder',
     ],
     'no' => 'Nein',
     'first_name' => 'Vorname',
@@ -556,4 +557,5 @@ return [
     ],
     'empty' => "(leeres Feld)",
     'notification_residents_sent' => 'Die Benachrichtigung wurde am {date} um {time} Uhr an {number} Bewohner gesendet.',
+    'edit_close_message' => 'Möchten Sie die Änderungen vor dem Schliessen speichern?',
 ];

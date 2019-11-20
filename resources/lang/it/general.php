@@ -97,7 +97,8 @@ return [
         'language' => 'Lingua',   
         'phase' => 'Fase',
         'qualification' => 'Qualificazioni', 
-        'saved_filters' => 'Filtri salvati',    
+        'saved_filters' => 'Filtri salvati',   
+        'fields' => 'I campi', 
     ],    
     "no" => "No",
     "first_name" => "Nome",
@@ -556,4 +557,5 @@ return [
     ],
     'empty' => "(campo vuoto)",
     'notification_residents_sent' => 'la notifica è stata inviata a {number} residenti alle {time} il {date}.',
+    'edit_close_message' => 'Volete salvare le modifiche prima della chiusura?',
 ];

@@ -105,6 +105,7 @@ return [
             'status' => [
                 'active' => 'Actif',
                 'inactive' => 'Inactif',
+                'canceled' => 'Annulé'
             ],
             'add' => 'Ajouter une nouvelle relation',
             'add_sell_relation' => 'Ajouter une relation de vente',
@@ -115,6 +116,7 @@ return [
                 'existing' => 'Choisir parmi les'
             ],
             'saved' => 'Relation sauvegardée',
+            'deleted' => 'Relation supprimée',
             'status_count' => [
                 'total' => 'Total relations',
                 'active' => 'Des relations actives',
@@ -465,7 +467,8 @@ return [
             ],
             'tooltips' => [
                 'save' => "Pour sauvegarder le déroulement du travail, ce bouton, le bouton principal'sauvegarder' ne sauvegardera pas les données."
-            ]
+            ],
+            'saved' => 'Workflow sauvegardé avec succès'
         ]
     ],
     'request' => [        

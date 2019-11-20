@@ -2,7 +2,7 @@
     <div class="list-field-filter">
         <el-dropdown placement="bottom" size="medium" trigger="click">
             <el-button type="primary" size="mini" class="transparent-button">
-                Field
+                {{ $t('general.filters.fields') }}
             </el-button>
             <el-dropdown-menu slot="dropdown">
                 <draggable v-model="data" v-bind="dragOptions" @end="onEnd" handle=".el-icon-rank">

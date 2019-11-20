@@ -17,7 +17,7 @@ class UnitsTableSeeder extends Seeder
         if (App::environment('local')) {
             $count = 0;
 
-            $buildings = Building::inRandomOrder()->get(['id', 'created_at']);
+            $buildings = Building::inRandomOrder()->get(['id', 'created_at', 'quarter_id']);
             foreach ($buildings as $building) {
 
                 for ($i = 1; $i <= random_int(1, 4); $i++) {
@@ -29,21 +29,18 @@ class UnitsTableSeeder extends Seeder
                     $attr = [
                         'name' => sprintf('B%s - Unit %s', $building->id, $i),
                     ];
-                    if (rand(1, 2) - 1) {
-                        if ($building->quarter_id) {
-                            if (rand(1, 2) - 1) {
-                                $attr['quarter_id'] = $building->quarter_id;
-                            } else {
-                                $attr['building_id'] = $building->id;
-                            }
+                    if ($building->quarter_id) {
+                        if (rand(1, 2) - 1) {
+                            $attr['quarter_id'] = $building->quarter_id;
                         } else {
                             $attr['building_id'] = $building->id;
                         }
+                    } else {
+                        $attr['building_id'] = $building->id;
                     }
 
                     $date = $this->getRandomTime($building->created_at);
                     $attr = array_merge($attr, $this->getDateColumns($date));
-
                     factory(App\Models\Unit::class)->create($attr);
                 }
             }

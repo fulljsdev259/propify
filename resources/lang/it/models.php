@@ -105,6 +105,7 @@ return [
             'status' => [
                 'active' => 'Attivo',
                 'inactive' => 'Inattivo',
+                'canceled' => 'Annullato'
             ],
             'add' => 'Aggiungi nuova relazione',
             'add_sell_relation' => 'Aggiungi relazione di vendita',
@@ -115,6 +116,7 @@ return [
                 'existing' => 'Scegliere tra quelli esistenti'
             ],
             'saved' => 'Relazione salvata',
+            'deleted' => 'Relazione cancellata',
             'status_count' => [
                 'total' => 'Totale relazioni',
                 'active' => 'Relazioni attive',
@@ -463,7 +465,8 @@ return [
             ],
             'tooltips' => [
                 'save' => "Per salvare il flusso di lavoro ci questo pulsante, il pulsante principale 'salva' non salverà i dati."
-            ]
+            ],
+            'saved' => 'Flusso di lavoro salvato con successo'
         ]
     ],
     'request' => [        

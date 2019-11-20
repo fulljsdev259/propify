@@ -106,6 +106,21 @@ class UnitAPIController extends AppBaseController
             ]);
         }
 
+        if ($request->group_by_building) {
+            $units = $this->unitRepository->with('building.address')->get();
+            $units = $units->sortBy(function($item) {
+                $houseNumber = $item->building->address->house_num ?? '';
+                $sort = !empty($houseNumber)
+                    ? '0-' . str_fill_to($houseNumber, 50):
+                    '1-';
+                $sort .= sprintf('%-%s', str_fill_to($item->type, 10), $item->unit_format);
+                return $sort;
+            })->groupBy(function ($item) {
+                return $item->building->address->house_num ?? 'Quarter'; // @TODO is need use translations
+            })->toArray();
+            return $this->sendResponse($units, 'Units retrieved successfully');
+        }
+
         if ($request->group_by_floor) {
             $units = $this->unitRepository->get();
             if ($request->show_relation_counts) {

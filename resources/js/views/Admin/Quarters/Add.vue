@@ -1,6 +1,6 @@
 <template>
     <div class="quarters-edit" v-loading.fullscreen.lock="loading.state">
-        <heading :title="$t('models.quarter.add')" icon="icon-share" shadow="heavy">
+        <heading :title="$t('models.quarter.add')" icon="icon-share" shadow="heavy" bgClass="bg-transparent">
             <add-actions :saveAction="submit" route="adminQuarters" editRoute="adminQuartersEdit"/>
         </heading>
         <el-row :gutter="20" class="crud-view">
@@ -124,7 +124,7 @@
 
     .quarters-edit {
         .crud-view {
-            margin-top: 1%;
+            margin-top: 40px;
 
             /deep/ .label-block .el-form-item__label {
                 display: block;

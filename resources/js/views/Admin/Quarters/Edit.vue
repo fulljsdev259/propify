@@ -1,12 +1,12 @@
 <template>
     <div class="quarters-edit" v-loading.fullscreen.lock="loading.state">
         <div class="main-content">
-            <heading :title="$t('models.quarter.edit')" icon="icon-chat-empty" shadow="heavy">
+            <heading :title="$t('models.quarter.edit')" icon="icon-chat-empty" style="margin-bottom: 20px;" shadow="heavy" bgClass="bg-transparent">
                 <template slot="description" v-if="model.quarter_format">
                     <!-- <div class="subtitle">{{`${model.quarter_format} > ${model.name}`}}</div> -->
-                    <div class="subtitle">{{model.quarter_format}}</div>
+                    <div class="subtitle">{{model.url}}</div>
                 </template>
-                <edit-actions :saveAction="submit" :deleteAction="deleteQuarter" route="adminQuarters"/>
+                <edit-actions :saveAction="submit" :deleteAction="deleteQuarter" route="adminQuarters" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
             </heading>
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
@@ -23,6 +23,7 @@
                                                     style="display: block"
                                                     v-model="model.types"
                                                     multiple
+                                                    :disabled="!editMode"
                                                     filterable>
                                                 <el-option
                                                         :key="type.value"
@@ -37,7 +38,7 @@
                                     <el-col :md="12">
                                         <el-form-item :label="$t('general.name')" :rules="validationRules.name"
                                                     prop="name">
-                                            <el-input type="text" v-model="model.name"/>
+                                            <el-input type="text" v-model="model.name"  :disabled="!editMode"/>
                                         </el-form-item>
                                     </el-col>
                                     <!-- <el-col :md="12">
@@ -59,13 +60,13 @@
                                             <el-col :md="8">
                                                 <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
                                                             prop="zip">
-                                                    <el-input type="text" v-model="model.zip"/>
+                                                    <el-input type="text" v-model="model.zip" :disabled="!editMode"/>
                                                 </el-form-item>
                                             </el-col>
                                             <el-col :md="16">
                                                 <el-form-item :label="$t('general.city')" :rules="validationRules.city"
                                                             prop="city">
-                                                    <el-input type="text" v-model="model.city"/>
+                                                    <el-input type="text" v-model="model.city"  :disabled="!editMode"/>
                                                 </el-form-item>
                                             </el-col>
                                         </el-row>
@@ -83,6 +84,7 @@
                                                 :placeholder="$t('general.state')" 
                                                 style="display: block"
                                                 v-model="model.state_id"
+                                                :disabled="!editMode"
                                             >
                                                 <el-option :key="state.id" :label="state.name" :value="state.id"
                                                         v-for="state in states"></el-option>
@@ -92,17 +94,41 @@
                                     <el-col :md="12">
                                         <el-form-item :label="$t('general.internal_quarter_id')" :rules="validationRules.internal_quarter_id"
                                                         prop="internal_quarter_id">
-                                            <el-input type="text" v-model="model.internal_quarter_id"></el-input>
+                                            <el-input type="text" v-model="model.internal_quarter_id" :disabled="!editMode"></el-input>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="12">
                                         <el-form-item :label="$t('models.quarter.url')" :rules="validationRules.url"
                                                         prop="url">
-                                            <el-input type="text" v-model="model.url"></el-input>
+                                            <el-input type="text" v-model="model.url" :disabled="!editMode"></el-input>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
                             </el-form>
+                        </el-tab-pane>
+                        <el-tab-pane name="buildings">
+                            <span slot="label">
+                                <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge>
+                            </span>
+                            <relation-list
+                                :actions="quarterActions"
+                                :columns="quarterColumns"
+                                :filterValue="model.id"
+                                fetchAction="getBuildings"
+                                filter="quarter_id"
+                                v-if="model.id"
+                            />
+                        </el-tab-pane>
+
+                    </el-tabs>
+
+                    <el-tabs type="border-card" v-model="activeTab2">
+                        <el-tab-pane name="audit" style="height: 400px;overflow:auto;">
+                            <span slot="label">
+                                {{ $t('general.audits') }}
+                                <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
+                            </span>
+                            <audit v-if="model.id" :id="model.id" type="quarter" ref="auditList" showFilter/>
                         </el-tab-pane>
                         <el-tab-pane name="files">
                             <span slot="label">
@@ -146,8 +172,6 @@
                         </el-tab-pane>
 
                     </el-tabs>
-
-
                     <!-- <card :loading="loading" :header="$t('general.requests')" class="mt15">
                         <div slot="header" style="width: 100%;">
                             {{$t('general.requests')}}
@@ -239,70 +263,7 @@
                                 v-if="model.id"
                             />
                         </el-tab-pane>
-                        <el-tab-pane name="buildings">
-                            <span slot="label">
-                                <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge>
-                            </span>
-                            <relation-list
-                                :actions="quarterActions"
-                                :columns="quarterColumns"
-                                :filterValue="model.id"
-                                fetchAction="getBuildings"
-                                filter="quarter_id"
-                                v-if="model.id"
-                            />
-                        </el-tab-pane>
-                        <el-tab-pane name="residents">                        
-                            <span slot="label">
-                                <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.residents') }}</el-badge>
-                            </span>
-                            <relation-list
-                                :actions="residentActions" 
-                                :columns="residentColumns"
-                                :filterValue="model.id"
-                                fetchAction="getResidents"
-                                filter="quarter_id"
-                                v-if="model.id"
-                            />
-                        </el-tab-pane>
-                        <!-- <el-tab-pane name="relations">
-                            <span slot="label">
-                                <el-badge :value="relationCount" :max="99" class="admin-layout">{{ $t('general.relations') }}</el-badge>
-                            </span>
-                            
-                            <el-button style="float:right" type="primary" @click="toggleAddRelationDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.relation.add')}}</el-button>    
-                            <relation-list-table
-                                    :items="model.relations"
-                                    @edit-relation="editRelation"
-                                    @delete-relation="deleteRelation">
-                            </relation-list-table>
-                        </el-tab-pane> -->
-                    </el-tabs>
-                    
-                    <el-tabs type="border-card" v-model="activeRequestTab">
-                        <el-tab-pane name="requests">
-                            <span slot="label">
-                                <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
-                            </span>
-                            <span class="icon-cog" @click="toggleDrawer">
-                            </span>
-                            <relation-list
-                                :actions="requestActions"
-                                :columns="requestColumns"
-                                :filterValue="model.id"
-                                fetchAction="getRequests"
-                                filter="building_id"
-                                v-if="model.id"
-                            />
-                        </el-tab-pane>
-                        <el-tab-pane name="audit" style="height: 400px;overflow:auto;">
-                            <span slot="label">
-                                {{ $t('general.audits') }}
-                                <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
-                            </span>
-                            <audit v-if="model.id" :id="model.id" type="quarter" ref="auditList" showFilter/>
-                        </el-tab-pane>
-                        <el-tab-pane name="workflow">
+                       <el-tab-pane name="workflow">
                             <span slot="label">
                                 <el-badge :value="workflowCount" :max="99" class="admin-layout">{{ $t('models.quarter.workflow.label') }} </el-badge>
                             </span>
@@ -400,6 +361,51 @@
                                 </el-collapse-item>
                             </el-collapse>
                         </el-tab-pane>
+                        <!-- <el-tab-pane name="residents">                        
+                            <span slot="label">
+                                <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.residents') }}</el-badge>
+                            </span>
+                            <relation-list
+                                :actions="residentActions" 
+                                :columns="residentColumns"
+                                :filterValue="model.id"
+                                fetchAction="getResidents"
+                                filter="quarter_id"
+                                v-if="model.id"
+                            />
+                        </el-tab-pane> -->
+                        <!-- <el-tab-pane name="relations">
+                            <span slot="label">
+                                <el-badge :value="relationCount" :max="99" class="admin-layout">{{ $t('general.relations') }}</el-badge>
+                            </span>
+                            
+                            <el-button style="float:right" type="primary" @click="toggleAddRelationDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.relation.add')}}</el-button>    
+                            <relation-list-table
+                                    :items="model.relations"
+                                    @edit-relation="editRelation"
+                                    @delete-relation="deleteRelation">
+                            </relation-list-table>
+                        </el-tab-pane> -->
+                    </el-tabs>
+                    
+                    <el-tabs type="border-card" v-model="activeRequestTab">
+                        <el-tab-pane name="requests">
+                            <span slot="label">
+                                <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
+                            </span>
+                            <span class="icon-cog" @click="toggleDrawer">
+                            </span>
+                            <relation-list
+                                :actions="requestActions"
+                                :columns="requestColumns"
+                                :filterValue="model.id"
+                                fetchAction="getRequests"
+                                filter="building_id"
+                                v-if="model.id"
+                            />
+                        </el-tab-pane>
+ 
+                       
                         <!-- <el-tab-pane name="settings" :disabled="true">
                             <span slot="label" class="icon-cog" @click="toggleDrawer">
                             </span>
@@ -488,6 +494,12 @@
                 </div>
             </template>
         </ui-drawer>
+         <edit-close-dialog 
+            :centerDialogVisible="visibleDialog"
+            @clickYes="submit(), editMode=!editMode, visibleDialog=false"
+            @clickNo="model=_.clone(old_model, true), editMode=!editMode, visibleDialog=false"
+            @clickCancel="visibleDialog=false"
+        ></edit-close-dialog>
     </div>
 </template>
 
@@ -509,6 +521,7 @@
     import RelationForm from 'components/RelationForm';
     import RelationListTable from 'components/RelationListTable';
     import BuildingFileListTable from 'components/BuildingFileListTable';
+    import EditCloseDialog from 'components/EditCloseDialog';
 
     export default {
         name: 'AdminRequestsEdit',
@@ -529,7 +542,8 @@
             draggable,
             RelationForm,
             RelationListTable,
-            BuildingFileListTable
+            BuildingFileListTable,
+            EditCloseDialog
         },
         data() {
             return {
@@ -645,6 +659,7 @@
                 residentCount: 0,
                 workflowCount: 0,
                 activeTab1: 'details',
+                activeTab2: 'audit',
                 activeRightTab: 'assignees',
                 activeRequestTab: 'requests',
                 editingRelation: null,
@@ -656,7 +671,10 @@
                 editingRelationIndex: -1,
                 editingWorkflowIndex: -1,
                 activeDrawerTab: "emergency",
-                workflows: []
+                workflows: [],
+                editMode: false,
+                old_model: null,
+                visibleDialog: false,
             }
         },
         methods: {
@@ -670,6 +688,18 @@
                 'updateQuarterWorkflow',
                 'deleteQuarterWorkflow'
             ]),
+            handleChangeEditMode() {
+                if(!this.editMode) {
+                    this.editMode = !this.editMode;
+                    this.old_model = _.clone(this.model, true);
+                } else {
+                    if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
+                        this.visibleDialog = true;
+                    } else {
+                        this.editMode = !this.editMode;
+                    }
+                }
+            },
             translateType(type) {
                 return this.$t(`general.assignment_types.${type}`);
             },

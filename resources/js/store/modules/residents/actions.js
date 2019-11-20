@@ -21,6 +21,17 @@ export default {
                 })
                 .catch(({response: {data: err}}) => reject(err)));
     },
+    getResidentMedia({commit}, {resident_id, ...payload}) {
+        return new Promise((resolve, reject) =>
+            axios.get(buildFetchUrl(`residents/${resident_id}/media`, payload))
+                .then(({data: r}) => {
+                    
+                    EventBus.$emit('resident-media-counted', r.data.total);
+
+                    resolve(r.data)
+                })
+                .catch(({response: {data: err}}) => reject(err)));
+    },
     getLatestResidents({commit}, payload) {
         return new Promise((resolve, reject) =>
             axios.get(buildFetchUrl('residents/latest', payload))

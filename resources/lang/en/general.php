@@ -98,6 +98,7 @@ return [
         'phase' => 'Phase',
         'qualification' => 'Qualification',
         'saved_filters' => 'Saved Filters',
+        'fields' => 'Fields',
     ],    
     'no' => 'No',
     'first_name' => 'First name',
@@ -556,4 +557,5 @@ return [
     ],
     'empty' => "(empty field)",
     'notification_residents_sent' => 'Notification was sent to {number} residents at {time} on {date}.',
+    'edit_close_message' => 'Would you like to save the changes before closing?',
 ];
