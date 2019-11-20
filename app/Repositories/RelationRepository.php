@@ -58,6 +58,7 @@ class RelationRepository extends BaseRepository
                 $model->media()->attach($mediaIds);
             }
             $this->saveGarantResidents($model, $data);
+            $this->checkNeedChangeResidentType($model);
         }
 
         /** @var $pinboardRepository PinboardRepository */
@@ -149,6 +150,7 @@ class RelationRepository extends BaseRepository
             $mediaIds = $this->getMediaFileIds($attributes);
             $model->media()->sync($mediaIds);
             $this->saveGarantResidents($model, $attributes);
+            $this->checkNeedChangeResidentType($model);
         }
 
         // @TODO if status changed active to inactive how must be organize resident status
@@ -207,5 +209,32 @@ class RelationRepository extends BaseRepository
         }
 
         $relation->garant_residents()->sync($residentIds);
+    }
+
+    /**
+     * @param $relation
+     * @return mixed
+     */
+    protected function checkNeedChangeResidentType($relation)
+    {
+        if ($relation->status == Relation::StatusActive) {
+            return $relation;
+        }
+
+        $hasActiveContract = Relation::where('resident_id', $relation->resident_id)
+            ->where('status', Relation::StatusActive)->exists();
+
+        if ($hasActiveContract) {
+            return $relation;
+        }
+
+        $resident = $relation->resident;
+        if ($resident) {
+            // @TODO save as system audit
+            $resident->type = Resident::TypeFormerResident;
+            $resident->save();
+        }
+
+        return $relation;
     }
 }
