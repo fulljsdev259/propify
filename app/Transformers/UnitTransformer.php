@@ -2,7 +2,6 @@
 
 namespace App\Transformers;
 
-use App\Models\Building;
 use App\Models\Quarter;
 use App\Models\Unit;
 
@@ -21,41 +20,31 @@ class UnitTransformer extends BaseTransformer
      */
     public function transform(Unit $model)
     {
-        $response = [
-            'id' => $model->id,
-            'unit_format' => $model->unit_format,
-            'type' => $model->type,
-            'name' => $model->name,
-            'description' => $model->description,
-            'building_id' => $model->building_id,
-            'quarter_id' => $model->quarter_id,
-            'floor' => $model->floor,
-            'monthly_rent_net' => $model->monthly_rent_net,
-            'monthly_rent_gross' => $model->monthly_rent_gross,
-            'monthly_maintenance' => $model->monthly_maintenance,
-            'room_no' => $model->room_no,
-            'basement' => $model->basement,
-            'attic' => $model->attic,
-            'sq_meter' => $model->sq_meter,
-            'residents' => [],
-            'media' => [],
-        ];
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'unit_format',
+            'type',
+            'name',
+            'description',
+            'building_id',
+            'quarter_id',
+            'floor',
+            'monthly_rent_net',
+            'monthly_rent_gross',
+            'monthly_maintenance',
+            'room_no',
+            'basement',
+            'attic',
+            'sq_meter',
+        ]);
 
-        $withCount = $model->getStatusRelationCounts();
-        $response = array_merge($response, $withCount);
+        $response['residents'] = [];
+        $response['media'] = [];
 
+        $relationsStatusCount = $model->getRelationStatusCounts();
+        $requestsStatusCount = $model->getStatusRelationCounts();
+        $response = array_merge($response, $relationsStatusCount, $requestsStatusCount);
 
-        $attributes = $model->attributesToArray();
-        if (key_exists('total_relations_count', $attributes)) {
-            $response['total_relations_count'] = $attributes['total_relations_count'];
-        }
-
-        if (key_exists('active_relations_count', $attributes)) {
-            $response['active_relations_count'] = $attributes['active_relations_count'];
-            if (key_exists('total_relations_count', $attributes)) {
-                $response['inactive_relations_count'] = $attributes['total_relations_count'] - $attributes['active_relations_count'];
-            }
-        }
 
         if ($model->relationExists('building')) {
             $response['building'] = (new BuildingSimpleTransformer)->transform($model->building);

@@ -18,7 +18,7 @@ class QuarterTransformer extends BaseTransformer
      */
     public function transform(Quarter $model)
     {
-        $response = $this->getIfHasInAttributes($model, [
+        $response = $this->getAttributesIfExists($model, [
             'id',
             'name',
             'quarter_format',

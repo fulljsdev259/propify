@@ -92,7 +92,7 @@ class BaseTransformer extends TransformerAbstract
      * @param array $requiredAttributes
      * @return array
      */
-    protected function getIfHasInAttributes(Model $model, $attributes, $requiredAttributes = [])
+    protected function getAttributesIfExists(Model $model, $attributes, $requiredAttributes = [])
     {
         $response =  array_intersect_key($model->getAttributes(), array_flip($attributes));
         foreach ($requiredAttributes as $key => $attribute) {
@@ -105,6 +105,12 @@ class BaseTransformer extends TransformerAbstract
         return $response;
     }
 
+    /**
+     * @param Model $model
+     * @param $response
+     * @param $relations
+     * @return mixed
+     */
     protected function includeRelationIfExists(Model $model, $response, $relations)
     {
         foreach ($relations as $relation => $transformer) {

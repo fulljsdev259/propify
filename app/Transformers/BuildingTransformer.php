@@ -4,7 +4,6 @@ namespace App\Transformers;
 
 use App\Models\Building;
 use App\Models\Resident;
-use function GuzzleHttp\Promise\queue;
 
 /**
  * Class BuildingTransformer.
@@ -21,7 +20,7 @@ class BuildingTransformer extends BaseTransformer
      */
     public function transform(Building $model)
     {
-        $response = $this->getIfHasInAttributes($model, [
+        $response = $this->getAttributesIfExists($model, [
             'id',
             'name',
             'building_format',
