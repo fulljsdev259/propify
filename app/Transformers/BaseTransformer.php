@@ -16,6 +16,8 @@ use League\Fractal\TransformerAbstract;
  */
 class BaseTransformer extends TransformerAbstract
 {
+    const IsSingleRelation = 1;
+    const IsManyRelation = 2;
     /**
      * @param Collection $collection
      * @return mixed
@@ -93,6 +95,20 @@ class BaseTransformer extends TransformerAbstract
                 $key = $attribute;
             }
             $response[$key] = $model->{$attribute};
+        }
+
+        return $response;
+    }
+
+    protected function includeIfHasRelation(Model $model, $response, $relations)
+    {
+        foreach ($relations as $relation => $transformer) {
+            if (! $model->relationExists($relation)) {
+                continue;
+            }
+            $transformMethod = is_a($model->{$relation}, Collection::class) ? 'transformCollection' : 'transform';
+
+            $response[$relation] =  (new $transformer())->{$transformMethod}($model->{$relation});
         }
 
         return $response;

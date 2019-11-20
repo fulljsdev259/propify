@@ -34,6 +34,7 @@ class QuarterTransformer extends BaseTransformer
             'canceled_relations_count',
             'has_email_receptionists' // @TODO kill
         ]);
+
         if (array_keys_exists(['active_relations_count', 'inactive_relations_count', 'canceled_relations_count'], $response)) {
             $response['relations_count'] =  $response['active_relations_count']
                 +  $response['inactive_relations_count']
@@ -48,22 +49,12 @@ class QuarterTransformer extends BaseTransformer
             }
         }
 
-        if ($model->relationExists('buildings')) {
-            $response['buildings'] = (new BuildingTransformer())->transformCollection($model->buildings);
-        }
-
-        if ($model->relationExists('relations')) {
-            $response['relations'] =  (new RelationTransformer())->transformCollection($model->relations);
-        }
-
-
-        if ($model->relationExists('media')) {
-            $response['media'] = (new MediaTransformer())->transformCollection($model->media);
-        }
-
-        if ($model->relationExists('workflows')) {
-            $response['workflows'] = (new WorkflowTransformer())->transformCollection($model->workflows);
-        }
+        $response = $this->includeIfHasRelation($model, $response, [
+            'buildings' => BuildingTransformer::class,
+            'relations' => RelationTransformer::class,
+            'media' => MediaTransformer::class,
+            'workflows' => WorkflowTransformer::class,
+        ]);
 
         return $response;
     }
