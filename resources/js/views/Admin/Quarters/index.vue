@@ -134,7 +134,7 @@
                     prop: 'buildings_count'
                 }, {
                     label: 'models.quarter.total_units_count',
-                    prop: 'total_units_count'
+                    prop: 'count_of_apartments_units'
                 }, 
                 ],
                 model: {

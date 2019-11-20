@@ -4,6 +4,8 @@
             :data="showItems"
             style="width: 100%"
             class="relation-table"
+            :show-header="false"
+            @row-dblclick="handleRowDblClick"
             >
             <div slot="empty">
                 <el-alert                                     
@@ -53,7 +55,7 @@
                 prop="type"
             >
                 <template slot-scope="scope">
-                    {{translateUnitType(scope.row.type)}}
+                    {{translateRelationType(scope.row.type)}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -61,7 +63,15 @@
                 prop="quarter.name"
             >
                  <template slot-scope="scope">
-                    {{ scope.row.quarter ? scope.row.quarter.id + ' ' + scope.row.quarter.name : ''}}
+                    {{ scope.row.quarter ? scope.row.quarter.internal_quarter_id + ' ' + scope.row.quarter.name : ''}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                :label="$t('models.resident.type.label')"
+                prop="type"
+            >
+                <template slot-scope="scope">
+                    {{translateUnitType(scope.row.unit.type)}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -71,20 +81,14 @@
             >
             </el-table-column>
             <el-table-column
-                :label="$t('models.resident.unit.name')"
-                v-if="!hideUnit"
-                prop="unit.id"
-            >
-            </el-table-column>
-            <el-table-column
                 :label="$t('models.resident.status.label')"
             >
                 <template slot-scope="scope">
-                    <i class="icon-dot-circled" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-success' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-danger' : 'icon-canceled')]"></i>
+                    <i class="icon-circle" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]"></i>
                     <!-- {{ constants.relations.status[scope.row.status] ? $t('models.resident.relation.status.' + constants.relations.status[scope.row.status]) : ''}} -->
                 </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                 align="right"
                 :width="70"
             >
@@ -95,14 +99,14 @@
                         placement="top-end">
                             <el-button @click="$emit('edit-relation', scope.$index)" icon="ti-search" size="mini" round/>
                     </el-tooltip>
-                    <!-- <el-tooltip
+                    <el-tooltip
                         :content="$t('general.actions.delete')"
                         class="item" effect="light" 
                         placement="top-end">
                             <el-button @click="$emit('delete-relation', scope.$index)" icon="ti-trash" size="mini" type="danger" round/>
-                    </el-tooltip> -->
+                    </el-tooltip>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
         <div v-if="showLength < totalLength">
             <el-button @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>
@@ -166,14 +170,25 @@
             }
         },
         methods: {
-           loadMore() {
+            loadMore() {
                this.showLength += 5
                if(this.showLength > this.totalLength)
                 this.showLength = this.totalLength
-           },
-           translateUnitType(type) {
+            },
+            translateUnitType(type) {
                 return this.$t(`models.unit.type.${this.constants.units.type[type]}`);
-            }
+            },
+            translateRelationType(type) {
+                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+            },
+            handleRowDblClick(row, col, e) {
+                let i = 0
+                for(i = 0; i < this.items.length;i ++) {
+                    if(this.items[i].id == row.id)
+                        break;
+                }
+                this.$emit('edit-relation', i)
+            },
         },
         mounted() {
             this.totalLength = this.items.length
@@ -190,19 +205,23 @@
 
 <style lang="scss" scoped>
     .relation-table {
+        cursor: pointer;
         .clickable {
             display: block;
             cursor: pointer;
             width: 100%;
         }
-        .icon-success {
-            color: #5fad64;
+        .icon-active {
+            color: #6b0036;
+            text-shadow: 0px 0px 2px;
         }
-        .icon-danger {
-            color: #dd6161;
+        .icon-inactive {
+            color: #878810;
+            text-shadow: 0px 0px 2px;
         }
         .icon-canceled {
-            color: #606266;
+            color: #c8a331;
+            text-shadow: 0px 0px 2px;
         }
     }
 </style>

@@ -56,7 +56,10 @@
                     <el-select :placeholder="$t('models.resident.search_unit')" 
                             style="display: block"
                             v-model="model.unit_id"
+                            filterable 
+                            clearable
                             multiple
+                            reserve-keyword
                             @change="changeRelationUnit">
                         <el-option-group
                             v-for="group in units"
@@ -143,13 +146,12 @@
                 </el-form-item>
             </el-col>
    
-            <el-col :md="12" v-if="model.unit_id">
+            <el-col :md="12" v-if="showResidents">
                 <el-form-item :label="$t('general.resident')" prop="resident_ids">
                     <el-select
                         :loading="remoteLoading"
                         :placeholder="$t('models.request.placeholders.resident')"
                         :remote-method="remoteSearchResidents"
-                        @change="changeResident"
                         filterable 
                         remote
                         multiple
@@ -557,10 +559,7 @@
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.resident.unit.name')})
                     }],
-                    resident_id: [{
-                        required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.name')})
-                    }],
+                    resident_ids: [],
                     deposit_amount: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.deposit_amount')})
@@ -611,6 +610,30 @@
                         key: 'name',
                         data: this.units
                 }
+            },
+            showResidents() {
+                let flag = false
+                if(this.mode == 'add') {
+                    if(this.model.unit_id) {
+                        this.model.unit_id.forEach(every_unit_id => {
+                            this.units.forEach(group => {
+                                let found = group.options.find(item => item.id == every_unit_id && item.type >= 1 && item.type <= 2)
+                                if(found)
+                                    flag = true
+                            })
+                        })
+                    }
+                }
+                else {
+                    if(this.model.unit_id) {
+                        this.units.forEach(group => {
+                            let found = group.options.find(item => item.id == this.model.unit_id && item.type >= 1 && item.type <= 2)
+                            if(found)
+                                flag = true
+                        })
+                    }
+                }
+                return flag;
             }
         },
         methods: {
@@ -629,17 +652,41 @@
                         if (params.resident_id == undefined || params.resident_id == 0) 
                         {
 
-                            this.units.forEach(group => {
-                                let found = group.options.find(item => item.id == this.model.unit_id)
-                                if(found)
-                                    params.unit = found
-                            })
+                            if(this.mode == 'add') {
+                                params.unit_id.forEach(every_unit_id => {
+                                    this.units.forEach(group => {
+                                    let found = group.options.find(item => item.id == every_unit_id)
+                                    if(found)
+                                            params.units.push(found)
+                                    })
+                                })
+                            }
+                            else {
+                                this.units.forEach(group => {
+                                    let found = group.options.find(item => item.id == this.model.unit_id)
+                                    if(found)
+                                        params.unit = found
+                                })
+                            }
+                            
                             //params.building = this.buildings.find(item => item.id == this.model.building_id)
 
                             params.quarter = this.quarters.find(item => item.id == this.model.quarter_id)
-
+                            
                             if (this.mode == "add") {
-                                this.$emit('add-relation', params)
+                                if(params.unit_id.length > 1)
+                                {
+                                    params.unit_id.forEach(every_unit_id => {
+                                        let every_obj = Object.assign({}, params)
+                                        every_obj.unit_id = every_unit_id
+                                        every_obj.unit = params.units.find(item => item.id == every_unit_id)
+                                        this.$emit('add-relation', every_obj)
+                                    })
+                                }
+                                else {
+                                    this.$emit('add-relation', params)
+                                }
+                                
                             }
                             else {
                                 this.$emit('update-relation', this.edit_index, params)
@@ -663,7 +710,7 @@
                             }
                             else {
                                 const resp = await this.$store.dispatch('relations/update', params);
-                                this.$emit('update-relation', this.edit_index, params)
+                                this.$emit('update-relation', this.edit_index, resp.data)
                             }
                         }
 
@@ -708,7 +755,7 @@
                     this.remoteLoading = true;
 
                     try {
-                        const {data} = await this.getResidents({get_all: true, tenant_type: 2, search});
+                        const {data} = await this.getResidents({get_all: true, search});
                         this.residents = data;
                         this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
                     } catch (err) {
@@ -759,11 +806,12 @@
                 }
             },
             async searchRelationUnits(shouldKeepValue) {
-                if(!shouldKeepValue)
-                    this.model.unit_id = '';
+                if(!shouldKeepValue) {
+                    this.model.unit_id = this.mode == 'add' ? [] : '';
+                }
                 try {
                     
-                    let filtered_used_units = this.used_units.filter( unit => unit != this.original_unit_id && unit != "")
+                    //let filtered_used_units = this.used_units.filter( unit => unit != this.original_unit_id && unit != "")
 
                     // const resp1 = await this.getUnits({
                     //     show_relation_counts: true,
@@ -773,10 +821,8 @@
                     // });
 
                     const resp1 = await this.getUnits({
-                        show_relation_counts: true,
-                        group_by_floor: true,
-                        quarter_id: this.model.quarter_id,
-                        exclude_ids: filtered_used_units
+                        group_by_building: true,
+                        quarter_id: this.model.quarter_id
                     });
 
                     
@@ -785,23 +831,25 @@
                     for( var key in resp1.data) {
                         if( !resp1.data.hasOwnProperty(key)) continue;
 
-                        let group_label = "";
-                        if(key > 0)
-                        {
-                            group_label = key + ". " + this.upper_ground_floor_label
-                        }
-                        else if(key == 0)
-                        {
-                            group_label = this.ground_floor_label
-                        }
-                        else if(key < 0)
-                        {
-                            group_label = key + ". " + this.under_ground_floor_label
-                        }
-                        else if(key == 'attic')
-                        {
-                            group_label = this.top_floor_label
-                        }
+                        // let group_label = "";
+                        // if(key > 0)
+                        // {
+                        //     group_label = key + ". " + this.upper_ground_floor_label
+                        // }
+                        // else if(key == 0)
+                        // {
+                        //     group_label = this.ground_floor_label
+                        // }
+                        // else if(key < 0)
+                        // {
+                        //     group_label = key + ". " + this.under_ground_floor_label
+                        // }
+                        // else if(key == 'attic')
+                        // {
+                        //     group_label = this.top_floor_label
+                        // }
+
+                        let group_label = key
                         
                         var obj = resp1.data[key];
 
@@ -822,10 +870,6 @@
             },
             translateUnitType(type) {
                 return this.$t(`models.unit.type.${this.$constants.units.type[type]}`);
-            },
-            changeResident(val) {
-                //let resident = this.residents.find(resident => resident.id == val)
-                //this.resident_type_check = resident.type
             },
             changeRelationUnit() {
 
@@ -857,6 +901,7 @@
         },
         async created () {
 
+            console.log('data', this.data)
             this.loading = true;
 
             let parent_obj = this
@@ -871,13 +916,20 @@
             if(this.mode == "edit") {
                 this.model = Object.assign({}, this.data)
 
-                console.log('model', this.model)
+                this.model.resident_ids = Object.assign({}, this.data.residents.map(item => item.id))
+                if(this.model.quarter)
+                    this.model.quarter_id = this.model.quarter.id
                 
-                if(this.model.resident)
-                {
-                    this.residents.push(this.model.resident)
-                    this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
-                }
+                
+                // if(this.model.resident)
+                // {
+                //     this.residents.push(this.model.resident)
+                //     this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
+                // }
+
+                this.residents = this.model.residents
+                this.model.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
+                console.log('residents', this.model.residents)
                 if(!this.model.media)
                     this.model.media = []
 
@@ -891,27 +943,28 @@
 
 
                 if( !this.hideBuildingAndUnits ) {
-                    console.log(this.model.unit)
                     if( this.model.unit )
                     {
-                        let key = this.model.unit.floor
-                        let group_label = ""
-                        if(key > 0)
-                        {
-                            group_label = key + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
-                        }
-                        else if(key == 0)
-                        {
-                            group_label = this.$t('models.unit.floor_title.ground_floor')
-                        }
-                        else if(key < 0)
-                        {
-                            group_label = key + ". " + this.$t('models.unit.floor_title.under_ground_floor')
-                        }
-                        else if(key == 'attic')
-                        {
-                            group_label = this.$t('models.unit.floor_title.top_floor');
-                        }
+                        // let key = this.model.unit.floor
+                        // let group_label = ""
+                        // if(key > 0)
+                        // {
+                        //     group_label = key + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+                        // }
+                        // else if(key == 0)
+                        // {
+                        //     group_label = this.$t('models.unit.floor_title.ground_floor')
+                        // }
+                        // else if(key < 0)
+                        // {
+                        //     group_label = key + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+                        // }
+                        // else if(key == 'attic')
+                        // {
+                        //     group_label = this.$t('models.unit.floor_title.top_floor');
+                        // }
+                        let group_label = this.model.address.house_num
+
                         this.units.push({ label: group_label, options : [this.model.unit]})
                     }
 
@@ -930,7 +983,6 @@
             }
 
             if(this.hideBuildingAndUnits) {
-                console.log('call1')
                 this.model.unit_id = this.unit_id
                 this.model.building_id = this.building_id
                 
@@ -940,13 +992,13 @@
             }
 
             if(this.hideBuilding) {
-                console.log('call2')
                 this.model.building_id = this.building_id
                 await this.searchRelationUnits(true)
             }
 
-            this.model.unit_id = []
-            console.log('unit_id', this.model.unit_id)
+            if(this.model.unit_id == null)
+                this.model.unit_id = []
+            console.log('model', this.model)
             this.loading = false;
         },
         mounted() {

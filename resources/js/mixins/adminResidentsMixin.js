@@ -121,17 +121,19 @@ export default (config = {}) => {
                 const ext = file.name.split('.').pop()
                 return ['.pdf'].includes(ext);
             },
-            addRelation (data) {
+            async addRelation (data) {
                 if(config.mode == 'add') {
                     this.original_type = this.model.type
+                    this.model.relations.push(data);
                 }
-                this.model.relations.push(data);
+                else {
+                    const resp = await this.$store.dispatch('relations/get', {resident_id : this.model.id});
+                    this.model.relations = resp
+                }
+                
             },
             editRelation(index) {
-                console.log('edit index', index)
-
                 this.editingRelation = this.model.relations[index];
-                console.log('relations', this.model.relations)
                 this.editingRelationIndex = index;
                 this.visibleDrawer = true;
             },
