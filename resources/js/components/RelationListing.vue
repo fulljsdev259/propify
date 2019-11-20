@@ -2,6 +2,7 @@
     <div class="listing">
         <el-table
             :data="list"
+            :show-header="showHeader"
             style="width: 100%"
             >
             <div slot="empty">
@@ -293,6 +294,18 @@
                         >
                         </el-button>
                     </el-tooltip>
+                     <el-dropdown size="small" trigger="click" placement="bottom-end" @command="changeCommand">
+                        <el-tooltip ref="visibility-button-tooltip" :content="$t('general.actions.label')">
+                            <el-button type="text" class="el-dropdown-link">
+                                <i class="icon-ellipsis-vert"></i>
+                            </el-button>
+                        </el-tooltip>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item v-for="(item, index) in action.dropdowns" :key="item.key" :command="item.key + ' ' + scope.$index" :divided="!! index">
+                                {{$t(`${item.title}`)}}
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </template>
             </el-table-column>
         </el-table>
@@ -343,7 +356,11 @@
             },
             addedAssigmentList: {
                 type: Array
-            }
+            },
+            showHeader: {
+                type: Boolean,
+                default: true
+            },
         },
         data() {
             return {
@@ -440,6 +457,11 @@
                 if (this.fetchStatus && this.meta.current_page < this.meta.last_page) {
                     this.fetch(this.meta.current_page + 1);
                 }
+            },
+            changeCommand(val) {
+                console.log(val)
+                var res = val.split(" ");
+                this.$emit(res[0], res[1])
             }
         }
     }
