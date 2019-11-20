@@ -867,7 +867,8 @@
         }
     }
     .el-row {
-        margin: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
     }
     .el-tabs {
         margin: 0px 10px 40px !important;
