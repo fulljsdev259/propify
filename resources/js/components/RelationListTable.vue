@@ -55,7 +55,7 @@
                 prop="type"
             >
                 <template slot-scope="scope">
-                    {{translateUnitType(scope.row.type)}}
+                    {{translateRelationType(scope.row.type)}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -67,22 +67,24 @@
                 </template>
             </el-table-column>
             <el-table-column
+                :label="$t('models.resident.type.label')"
+                prop="type"
+            >
+                <template slot-scope="scope">
+                    {{translateUnitType(scope.row.unit.type)}}
+                </template>
+            </el-table-column>
+            <el-table-column
                 :label="$t('models.resident.unit.name')"
                 v-if="!hideUnit"
                 prop="unit.name"
             >
             </el-table-column>
             <el-table-column
-                :label="$t('models.resident.unit.name')"
-                v-if="!hideUnit"
-                prop="unit.id"
-            >
-            </el-table-column>
-            <el-table-column
                 :label="$t('models.resident.status.label')"
             >
                 <template slot-scope="scope">
-                    <i class="icon-dot-circled" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-success' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-danger' : 'icon-canceled')]"></i>
+                    <i class="icon-circle" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]"></i>
                     <!-- {{ constants.relations.status[scope.row.status] ? $t('models.resident.relation.status.' + constants.relations.status[scope.row.status]) : ''}} -->
                 </template>
             </el-table-column>
@@ -176,6 +178,9 @@
             translateUnitType(type) {
                 return this.$t(`models.unit.type.${this.constants.units.type[type]}`);
             },
+            translateRelationType(type) {
+                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+            },
             handleRowDblClick(row, col, e) {
                 let i = 0
                 for(i = 0; i < this.items.length;i ++) {
@@ -206,14 +211,17 @@
             cursor: pointer;
             width: 100%;
         }
-        .icon-success {
-            color: #5fad64;
+        .icon-active {
+            color: #6b0036;
+            text-shadow: 0px 0px 2px;
         }
-        .icon-danger {
-            color: #dd6161;
+        .icon-inactive {
+            color: #878810;
+            text-shadow: 0px 0px 2px;
         }
         .icon-canceled {
-            color: #606266;
+            color: #c8a331;
+            text-shadow: 0px 0px 2px;
         }
     }
 </style>
