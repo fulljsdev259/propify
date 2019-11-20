@@ -8,39 +8,9 @@ export default {
         reset ({commit}) {
             commit('reset')
         },
-        async get ({state, commit}, {id, ...params} = {}) {
-            const {data} = await this._vm.axios.get(id ? `pinboard/${id}` : 'pinboard', {params})
-            if (state.data.length) {
-                if (id) {
-                    const newData = state
-                    newData.data.unshift(data.data)
-                    commit('set', newData)
-                }
-                else {
-                    const {data: items, ...rest} = data.data
-                    commit('set', {
-                        data: [
-                            ...state.data,
-                            ...items
-                        ],
-                        ...rest
-                    })
-                }
-            } else {
-                commit('set', data.data)
-            }
-        },
-        async getById ({state, commit}, {id, ...params} = {}) {
-            const {data} = await this._vm.axios.get(`pinboard/${id}`, {params})
-            if (state.data.length) {
-                const newData = state
-                newData.data.unshift(data.data)
-                commit('set', newData)
-            } else {
-                const newData = state
-                newData.data.push(data.data)
-                commit('set', newData)
-            }
+        async get ({state, commit}, params) {
+            const {data} = await this._vm.axios.get('relations', {params})
+            resolve(data.data)
         },
         async create ({state, commit}, params) {
             const {data} = await this._vm.axios.post('relations', params, {showMessage: true})

@@ -628,17 +628,41 @@
                         if (params.resident_id == undefined || params.resident_id == 0) 
                         {
 
-                            this.units.forEach(group => {
-                                let found = group.options.find(item => item.id == this.model.unit_id)
-                                if(found)
-                                    params.unit = found
-                            })
+                            if(this.mode == 'add') {
+                                params.unit_id.forEach(every_unit_id => {
+                                    this.units.forEach(group => {
+                                    let found = group.options.find(item => item.id == every_unit_id)
+                                    if(found)
+                                            params.units.push(found)
+                                    })
+                                })
+                            }
+                            else {
+                                this.units.forEach(group => {
+                                    let found = group.options.find(item => item.id == this.model.unit_id)
+                                    if(found)
+                                        params.unit = found
+                                })
+                            }
+                            
                             //params.building = this.buildings.find(item => item.id == this.model.building_id)
 
                             params.quarter = this.quarters.find(item => item.id == this.model.quarter_id)
-
+                            
                             if (this.mode == "add") {
-                                this.$emit('add-relation', params)
+                                if(params.unit_id.length > 1)
+                                {
+                                    params.unit_id.forEach(every_unit_id => {
+                                        let every_obj = Object.assign({}, params)
+                                        every_obj.unit_id = every_unit_id
+                                        every_obj.unit = params.units.find(item => item.id == every_unit_id)
+                                        this.$emit('add-relation', every_obj)
+                                    })
+                                }
+                                else {
+                                    this.$emit('add-relation', params)
+                                }
+                                
                             }
                             else {
                                 this.$emit('update-relation', this.edit_index, params)
@@ -822,10 +846,6 @@
             },
             translateUnitType(type) {
                 return this.$t(`models.unit.type.${this.$constants.units.type[type]}`);
-            },
-            changeResident(val) {
-                //let resident = this.residents.find(resident => resident.id == val)
-                //this.resident_type_check = resident.type
             },
             changeRelationUnit() {
 
