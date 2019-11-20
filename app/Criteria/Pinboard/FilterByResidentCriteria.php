@@ -34,7 +34,7 @@ class FilterByResidentCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $resident_id = $this->request->get('resident_id', null);
+        $residentId = $this->request->get('resident_id', null);
 
         $createdByResident = $this->request->get('createdby_resident', false);
         if ($createdByResident) {
@@ -43,11 +43,11 @@ class FilterByResidentCriteria implements CriteriaInterface
             });
         }
 
-        if (!$resident_id) {
+        if (!$residentId) {
             return $model;
         }
-        // @TODO discuss
-        $model = $model->where('id', $resident_id);
+
+        $model = $model->where('resident_id', $residentId);
         return $model;
     }
 }
