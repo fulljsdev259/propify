@@ -51,7 +51,7 @@ return [
         'listings' => 'Marktplatz',
         'company' => 'Firmenname',
         'quarter' => [
-            'name' => 'Projekte',
+            'name' => 'Projekt',
         ],
         'building' => [
             'name' => 'Objekt',
@@ -78,6 +78,8 @@ return [
         'contact_info_card' => 'Kontaktdaten',
         'relation' => [
             'title' => 'Beziehung',
+            'new' => 'Neue Beziehung',
+            'edit' => 'Beziehung bearbeiten',
             'end_date' => 'Enddatum',
             'start_date' => 'Startdatum',
             'type' => 'Typ',            

@@ -22,6 +22,22 @@
                     </el-select>
                 </el-form-item>
             </el-col> -->
+            <el-col :md="24">
+                <el-form-item :label="$t('models.resident.relation.type')"
+                            prop="type"
+                            class="label-block">
+                    <el-select :placeholder="$t('models.resident.type.label')"
+                                style="display: block;"
+                                v-model="model.type">
+                        <el-option
+                                :key="key"
+                                :label="$t('models.resident.type.' + value )"
+                                :value="+key"
+                                v-for="(value, key) in $constants.residents.type">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
             <el-col :md="12">
                 <el-form-item prop="quarter_id" :label="$t('models.resident.quarter.name')" class="label-block">
                     <el-select
@@ -103,22 +119,7 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-            <el-col :md="12">
-                <el-form-item :label="$t('models.resident.relation.type')"
-                            prop="type"
-                            class="label-block">
-                    <el-select :placeholder="$t('models.resident.type.label')"
-                                style="display: block;"
-                                v-model="model.type">
-                        <el-option
-                                :key="key"
-                                :label="$t('models.resident.type.' + value )"
-                                :value="+key"
-                                v-for="(value, key) in $constants.residents.type">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-            </el-col>
+            
             <el-col :md="12">
                 <el-form-item :label="$t('models.resident.relation.start_date')"
                         prop="start_date">

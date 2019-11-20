@@ -294,7 +294,7 @@
                         >
                         </el-button>
                     </el-tooltip>
-                     <el-dropdown size="small" trigger="click" placement="bottom-end" @command="changeCommand">
+                     <el-dropdown size="small" trigger="click" placement="bottom-end" @command="changeCommand" v-if="action.dropdowns">
                         <el-tooltip ref="visibility-button-tooltip" :content="$t('general.actions.label')">
                             <el-button type="text" class="el-dropdown-link">
                                 <i class="icon-ellipsis-vert"></i>

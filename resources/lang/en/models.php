@@ -78,6 +78,8 @@ return [
         'contact_info_card' => 'Contact details',        
         'relation' => [
             'title' => 'Relation',
+            'new' => 'New Relation',
+            'edit' => 'Edit Relation',
             'end_date' => 'End date',
             'start_date' => 'Start date',
             'type' => 'Type',            
