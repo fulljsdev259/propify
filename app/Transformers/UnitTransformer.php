@@ -38,6 +38,7 @@ class UnitTransformer extends BaseTransformer
             'sq_meter',
         ]);
 
+        // @TODO maybe delete
         $response['residents'] = [];
         $response['media'] = [];
 

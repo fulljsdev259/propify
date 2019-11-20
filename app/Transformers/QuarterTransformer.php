@@ -29,17 +29,11 @@ class QuarterTransformer extends BaseTransformer
             'types',
             'assignment_type',
             'count_of_apartments_units',
-            'active_relations_count',
-            'inactive_relations_count',
-            'canceled_relations_count',
             'has_email_receptionists' // @TODO kill
         ]);
 
-        if (array_keys_exists(['active_relations_count', 'inactive_relations_count', 'canceled_relations_count'], $response)) {
-            $response['relations_count'] =  $response['active_relations_count']
-                +  $response['inactive_relations_count']
-                +  $response['canceled_relations_count'] ;
-        }
+        $relationsStatusCount = $model->getRelationStatusCounts();
+        $response = array_merge($response, $relationsStatusCount);
 
         if ($model->relationExists('address')) {
             if (array_keys($model->address->getAttributes()) == ['id', 'city']) {
@@ -65,14 +59,15 @@ class QuarterTransformer extends BaseTransformer
      */
     public function transformWithStatistics(Quarter $model)
     {
-        $response = $this->transform($model);
         $buildings = $model->buildings;
+        $response = $this->transform($model);
         $units = $buildings->pluck('units')->collapse();
         $occupiedUnits = $units->filter(function ($unit) {
             return $unit->relations->isNotEmpty();
         });
 
         $requestsCount = $buildings->pluck('requests')->collapse()->unique()->countBy('status');
+        // @TODO improve for not depend new status
         $response['requests_archived_count'] = $requestsCount[Request::StatusArchived] ?? 0;
         $response['requests_assigned_count'] = $requestsCount[Request::StatusAssigned] ?? 0;
         $response['requests_count'] = $requestsCount->sum();

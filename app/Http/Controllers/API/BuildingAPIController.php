@@ -151,7 +151,7 @@ class BuildingAPIController extends AppBaseController
                 'propertyManagers',
                 'users',
                 'units' => function ($q) {
-                    $q->select('id', 'building_id');
+                    $q->select('id', 'building_id')->relationsStatusCount();
                 }
             ])->withCount([
                 'units',

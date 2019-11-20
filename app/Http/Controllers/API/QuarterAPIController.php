@@ -125,16 +125,9 @@ class QuarterAPIController extends AppBaseController
                 'units as count_of_apartments_units' => function ($q) {
                     $q->where('type', Unit::TypeApartment);
                 },
-                'relations as active_relations_count' => function ($q) {
-                    $q->where('status', Relation::StatusActive);
-                },
-                'relations as inactive_relations_count' => function ($q) {
-                    $q->where('status', Relation::StatusInActive);
-                },
-                'relations as canceled_relations_count' => function ($q) {
-                    $q->where('status', Relation::StatusCanceled);
-                },
-            ])->paginate($perPage);
+            ])
+            ->scope('relationsStatusCount')
+            ->paginate($perPage);
         $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWithStatistics');
         return $this->sendResponse($response, 'Quarters retrieved successfully');
     }

@@ -40,6 +40,7 @@ class BuildingTransformer extends BaseTransformer
             'count_of_apartments_units'
         ]);
 
+        // @TODO maybe delete
         $response['created_at'] = $model->created_at ? $model->created_at->format('Y-m-d') : '';
         $response['residents_count'] = 0;
         $response['active_residents_count'] = 0;
@@ -55,6 +56,19 @@ class BuildingTransformer extends BaseTransformer
             'media' => MediaTransformer::class,
             'units' => UnitTransformer::class,
         ]);
+
+        $relationsStatusAttributes = [
+            'active_relations_count',
+            'inactive_relations_count',
+            'canceled_relations_count',
+            'relations_count'
+        ];
+        if (!empty($response['units'][0]) && array_keys_exists($relationsStatusAttributes, $response['units'][0])) {
+            $units = collect($response['units']);
+            foreach ($relationsStatusAttributes as $statusAttribute) {
+                $response[$statusAttribute] = $units->sum($relationsStatusAttributes);
+            }
+        }
 
         if ($model->relationExists('quarter')) {
             $response['quarter'] = (new QuarterTransformer)->transform($model->quarter);

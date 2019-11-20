@@ -24,7 +24,7 @@ class BaseTransformer extends TransformerAbstract
      */
     public function transformCollection(Collection $collection)
     {
-        return $collection->transform(function ($value) {
+        return $collection->map(function ($value) {
             return $this->transform($value);
         })->toArray();
         // @TODO delete This is not needed because we are not using This package logic
@@ -41,7 +41,7 @@ class BaseTransformer extends TransformerAbstract
      */
     public function transformCollectionBy(Collection $collection, $method = 'transform')
     {
-        return $collection->transform(function ($value) use ($method) {
+        return $collection->map(function ($value) use ($method) {
             return $this->{$method}($value);
         })->toArray();
     }
@@ -53,7 +53,7 @@ class BaseTransformer extends TransformerAbstract
      */
     public function transformPaginator(LengthAwarePaginator $paginator, $method = 'transform')
     {
-        $data = $paginator->getCollection()->transform(function ($value) use ($method) {
+        $data = $paginator->getCollection()->map(function ($value) use ($method) {
             return $this->{$method}($value);
         });
 
