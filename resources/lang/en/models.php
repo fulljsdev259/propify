@@ -158,6 +158,7 @@ return [
             'label' => 'Type',
             'tenant' => 'Tenant',
             'owner' => 'Owner',
+            'former_resident' => 'Former Resident'
         ],
         'tenant_type' => [
             'label' => 'Tenant Type',
