@@ -2,14 +2,14 @@
     <div class="custom-select">
        <el-dropdown trigger="click" placement="bottom" @visible-change="handleVisibleChange">
             <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]">
-                <span v-if="findSelectedOne.count === 0">{{ filter.name }}</span>
+                <span v-if="findSelectedOne.count === 0">{{ name }}</span>
                 <el-tag 
-                    v-else-if="this.filter.key !== 'language'"
+                    v-else-if="type !== 'language'"
                     size="mini"
                     :closable="findSelectedOne.count !== 1"
                     @close="selectItem(findSelectedOne.index, true)"
                 >
-                    <span v-if="items.length > 1">{{ `${filter.name}: ` }}</span>{{ `${getLanguageStr(findSelectedOne.label)}` }}
+                    <span v-if="items.length && name> 1">{{ `${name}: ` }}</span>{{ `${getLanguageStr(findSelectedOne.label)}` }}
                 </el-tag>
                 <el-tag 
                     v-else
@@ -17,7 +17,7 @@
                     closable
                     @close="selectItem(findSelectedOne.index, true)"
                 >
-                    {{ `${filter.name}:` }}
+                    {{ `${name}:` }}
                     <span :class="items[findSelectedOne.index].flag" ></span>
                 </el-tag>
                 <el-tag
@@ -37,7 +37,7 @@
             <el-dropdown-menu slot="dropdown" :class="{'is-hide': items.length <= 1}">
                 <template  v-if="items.length > 1">
                     <el-input
-                        v-if="items.length > 9 || filter.searchBox !== undefined && filter.searchBox === true"
+                        v-if="items.length > 9 || searchBox !== undefined && searchBox === true"
                         v-model="search"
                         :placeholder="`${$t('general.placeholders.search')}...`"
                     >
@@ -55,13 +55,13 @@
                     </el-input>
                     <div class="dropdown-container" v-if="items.length">
                         <div
-                            :key="`${filter.name}${item.name}${item.id}selected`"
+                            :key="`${name}${item.name}${item.id}selected`"
                             class="dropdown-item" 
                             :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
                             @click="selectItem(index)"
                             v-for="(item, index) in items" 
                         >
-                            <span v-if="filter.key !== 'language'" v-html="filterSearch(getLanguageStr(item.name))"></span>
+                            <span v-if="type !== 'language'" v-html="filterSearch(getLanguageStr(item.name))"></span>
                             <span v-else><span :class="item.flag"></span>&nbsp;&nbsp;{{ $t(`general.languages.`+item.symbol) }}</span>
                             <span class="el-icon-check"></span>
                         </div>
@@ -91,15 +91,23 @@
             }
         },
         props: {
-          filter: {
-              type: Object,
-              default: () => {}
+          type: {
+              type: String,
+              default: () => ''
+          },
+          name: {
+              type: String,
+              default: () => ''
+          },
+          data: {
+              type: Array,
+              default: () => []
           },
           selectedOptions: {
               type: Array,
               default: () => []
           },
-          searchBar: {
+          searchBox: {
               type: Boolean,
               default: () => true
           }
@@ -214,9 +222,9 @@
             },
             getLanguageStr(str) {
                 let result = str;
-                if(this.filter.key == 'category_id') {
+                if(this.type == 'category_id') {
                     result = this.$t(`models.request.category_list.${str}`);
-                } else if(this.filter.key == 'role') {
+                } else if(this.type == 'role') {
                     result = this.$t(`general.roles.${str}`)
                 }
                 return result;
@@ -224,8 +232,8 @@
             initFilter() {
                 this.items = [];
                 this.originItems = [];
-                this.options = this.filter.data;
-                if(this.filter.key == 'language') {
+                this.options = this.data;
+                if(this.type == 'language') {
                     let languagesObject = this.$constants.app.languages;
                     let languagesArray = Object.keys(languagesObject).map(function(key) {
                         return [String(key), languagesObject[key]];
@@ -257,25 +265,25 @@
                     });
                 } else if(this.options.length) {
                     this.options.forEach((option) => {
+                        let id = option.id !== undefined? option.id:option.value;
                         this.items.push({
-                            id: option.id,
+                            id: id,
                             name: option.name,
-                            selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
+                            selected: this.selectedOptions? this.selectedOptions.includes(id): false,
                         });
                         this.originItems.push({
-                            id: option.id,
+                            id: id,
                             name: option.name,
-                            selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
+                            selected: this.selectedOptions? this.selectedOptions.includes(id): false,
                         })
                     });
                 }
             }
         },
         created() {
-
         },
         updated() {
-            if(JSON.stringify(this.options) !== JSON.stringify(this.filter.data))
+            if(JSON.stringify(this.options) !== JSON.stringify(this.data))
                 this.initFilter();
         }
     }
@@ -284,6 +292,7 @@
     .el-dropdown {
         width: 100%;
         position: relative;
+        height: 40px;
         .el-button {
             padding: 0 10px;
             width: 100%;

@@ -14,11 +14,29 @@
                         <el-tab-pane :label="$t('models.quarter.details')" name="details">
                             <el-form :model="model" ref="form">
                                 <el-row :gutter="20">
+                                     <el-col :md="12">
+                                        <el-form-item :label="$t('general.internal_quarter_id')" :rules="validationRules.internal_quarter_id"
+                                                        prop="internal_quarter_id">
+                                            <el-input type="text" v-model="model.internal_quarter_id" :disabled="!editMode"></el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :md="12">
+                                        <el-form-item :label="$t('general.name')" :rules="validationRules.name"
+                                                    prop="name">
+                                            <el-input type="text" v-model="model.name"  :disabled="!editMode"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :md="12">
+                                        <el-form-item :label="$t('models.quarter.url')" :rules="validationRules.url"
+                                                        prop="url">
+                                            <el-input type="text" v-model="model.url" :disabled="!editMode"></el-input>
+                                        </el-form-item>
+                                    </el-col>
                                     <el-col :md="12">
                                         <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.type"
                                                 class="label-block"
                                                 prop="types">
-                                            <el-select
+                                            <!-- <el-select
                                                     :placeholder="$t('general.placeholders.select')"
                                                     style="display: block"
                                                     v-model="model.types"
@@ -31,16 +49,16 @@
                                                         :value="type.value"
                                                         v-for="type in types">
                                                 </el-option>
-                                            </el-select>
+                                            </el-select> -->
+                                            <list-filter-select
+                                                :name="$t('general.placeholders.select')"
+                                                :data="types"
+                                                @select-changed="model.types=$event"
+                                            ></list-filter-select>
                                         </el-form-item>
                                     </el-col>
                                 
-                                    <el-col :md="12">
-                                        <el-form-item :label="$t('general.name')" :rules="validationRules.name"
-                                                    prop="name">
-                                            <el-input type="text" v-model="model.name"  :disabled="!editMode"/>
-                                        </el-form-item>
-                                    </el-col>
+                                    
                                     <!-- <el-col :md="12">
                                         <el-form-item class="label-block" :label="$t('models.quarter.count_of_buildings')"
                                                     prop="title">
@@ -55,23 +73,19 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col> -->
-                                    <el-col :md="12">
-                                        <el-row :gutter="10">
-                                            <el-col :md="8">
-                                                <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
-                                                            prop="zip">
-                                                    <el-input type="text" v-model="model.zip" :disabled="!editMode"/>
-                                                </el-form-item>
-                                            </el-col>
-                                            <el-col :md="16">
-                                                <el-form-item :label="$t('general.city')" :rules="validationRules.city"
-                                                            prop="city">
-                                                    <el-input type="text" v-model="model.city"  :disabled="!editMode"/>
-                                                </el-form-item>
-                                            </el-col>
-                                        </el-row>
+                                    <el-col :md="6">
+                                        <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
+                                                    prop="zip">
+                                            <el-input type="text" v-model="model.zip" :disabled="!editMode"/>
+                                        </el-form-item>
                                     </el-col>
                                     <el-col :md="12">
+                                        <el-form-item :label="$t('general.city')" :rules="validationRules.city"
+                                                    prop="city">
+                                            <el-input type="text" v-model="model.city"  :disabled="!editMode"/>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :md="6">
                                         <el-form-item 
                                             :label="$t('general.state')"
                                             :rules="validationRules.state_id"
@@ -91,18 +105,6 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col> 
-                                    <el-col :md="12">
-                                        <el-form-item :label="$t('general.internal_quarter_id')" :rules="validationRules.internal_quarter_id"
-                                                        prop="internal_quarter_id">
-                                            <el-input type="text" v-model="model.internal_quarter_id" :disabled="!editMode"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="12">
-                                        <el-form-item :label="$t('models.quarter.url')" :rules="validationRules.url"
-                                                        prop="url">
-                                            <el-input type="text" v-model="model.url" :disabled="!editMode"></el-input>
-                                        </el-form-item>
-                                    </el-col>
                                 </el-row>
                             </el-form>
                         </el-tab-pane>
@@ -522,6 +524,7 @@
     import RelationListTable from 'components/RelationListTable';
     import BuildingFileListTable from 'components/BuildingFileListTable';
     import EditCloseDialog from 'components/EditCloseDialog';
+    import ListFilterSelect from 'components/ListFilterSelect';
 
     export default {
         name: 'AdminRequestsEdit',
@@ -543,7 +546,8 @@
             RelationForm,
             RelationListTable,
             BuildingFileListTable,
-            EditCloseDialog
+            EditCloseDialog,
+            ListFilterSelect,
         },
         data() {
             return {
@@ -673,7 +677,6 @@
                 activeDrawerTab: "emergency",
                 workflows: [],
                 editMode: false,
-                old_model: null,
                 visibleDialog: false,
             }
         },

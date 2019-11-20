@@ -130,11 +130,11 @@
                 processAssignment: false,
                 managersForm: {},
                 toAssignList: '',
-                states:{},
+                states: [],
                 propertyManagers:{},
                 toAssign: [],
                 isLoadingFilters: false,
-                quarters: {},
+                quarters: [],
                 cities: [],
                 quarterTypes: [],
                 roles:[],
@@ -214,13 +214,6 @@
                 // }
                 ]
             };
-        },
-        async created(){
-            this.isLoadingFilters = true;
-            const states = await this.axios.get('states?filters=true')
-            this.states = states.data.data;
-
-            this.isLoadingFilters = false;
         },
         computed: {
             ...mapState("application", {
@@ -423,8 +416,10 @@
             },            
         },
         async created() {
+            this.isLoadingFilters = true;
             this.getRoles();
             this.getTypes();
+            this.isLoadingFilters = false;
             this.quarters = await this.fetchRemoteQuarters();
             this.propertyManagers = await this.fetchRemotePropertyManagers();
         }

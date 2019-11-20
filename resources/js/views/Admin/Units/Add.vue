@@ -1,6 +1,6 @@
 <template>
     <div class="units-add" v-loading.fullscreen.lock="loading.state">
-        <heading :title="$t('models.unit.add')" icon="icon-unit" style="margin-bottom: 20px;" shadow="heavy">
+        <heading :title="$t('models.unit.add')" icon="icon-unit" style="margin-bottom: 20px;" shadow="heavy" bgClass="bg-transparent">
             <add-actions :saveAction="submit" route="adminUnits" editRoute="adminUnitsEdit"/>
         </heading>
         <el-row :gutter="20" class="crud-view">

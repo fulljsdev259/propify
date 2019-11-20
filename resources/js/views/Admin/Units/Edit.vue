@@ -5,7 +5,12 @@
                 <template slot="description" v-if="model.unit_format">
                     <div class="subtitle">{{model.unit_format}}</div>
                 </template>
-                <edit-actions :saveAction="submit" :deleteAction="deleteUnit" route="adminUnits" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
+                <edit-actions 
+                    :saveAction="submit" 
+                    :deleteAction="deleteUnit" 
+                    route="adminUnits" 
+                    :editMode="editMode"
+                    @edit-mode="handleChangeEditMode"/>
             </heading>
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
@@ -503,7 +508,6 @@
                 isAddRelation: false,
                 editingRelationIndex: -1,
                 editMode: false,
-                old_model: null,
                 visibleDialog: false,
             }
         },
@@ -518,6 +522,7 @@
                     this.editMode = !this.editMode;
                     this.old_model = _.clone(this.model, true);
                 } else {
+                    console.log(this.old_model, this.model);
                     if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
                         this.visibleDialog = true;
                     } else {
