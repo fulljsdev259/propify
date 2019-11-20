@@ -182,7 +182,7 @@ return [
         'internal_building_id' => "Projektnummer",        
         'address_search' => 'Bitte Adresse eingeben.',
         'not_found' => 'Objekt nicht gefunden.',
-        'building_format' => 'Projectnr.',
+        'building_format' => 'Projektnr.',
         'building_no' => 'Objektnr.',
         'active_residents_count' => 'Wohnungen',
         'request_status' => 'Anliegen-Status',
