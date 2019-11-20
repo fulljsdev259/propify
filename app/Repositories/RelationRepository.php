@@ -212,28 +212,31 @@ class RelationRepository extends BaseRepository
     }
 
     /**
-     * @param $relation
-     * @return mixed
+     * @param Relation $relation
+     * @return Relation
      */
-    protected function checkNeedChangeResidentType($relation)
+    protected function checkNeedChangeResidentType(Relation $relation)
     {
-        if ($relation->status == Relation::StatusActive) {
-            return $relation;
-        }
-
-        $hasActiveContract = Relation::where('resident_id', $relation->resident_id)
-            ->where('status', Relation::StatusActive)->exists();
-
-        if ($hasActiveContract) {
-            return $relation;
-        }
-
         $resident = $relation->resident;
-        if ($resident) {
-            // @TODO save as system audit
-            $resident->type = Resident::TypeFormerResident;
-            $resident->save();
+        if (in_array($relation->status, [Relation::StatusActive, Relation::StatusCanceled])) {
+            if (Resident::StatusActive != $resident->status) {
+                $resident->status = Resident::StatusActive;
+                $resident->save();
+            }
+
+            return $relation;
         }
+
+        $isAllRelationInactive = Relation::where('resident_id', $relation->resident_id)
+            ->whereIn('status', [Relation::StatusActive, Relation::StatusCanceled])->exists();
+        if ($isAllRelationInactive) {
+            return $relation;
+        }
+
+        // @TODO save as system audit
+        $resident->type = Resident::TypeFormerResident;
+        $resident->status = Resident::StatusInActive;
+        $resident->save();
 
         return $relation;
     }
