@@ -146,7 +146,7 @@
                 </el-form-item>
             </el-col>
    
-            <el-col :md="12" v-if="model.unit_id">
+            <el-col :md="12" v-if="showResidents">
                 <el-form-item :label="$t('general.resident')" prop="resident_ids">
                     <el-select
                         :loading="remoteLoading"
@@ -610,6 +610,32 @@
                         key: 'name',
                         data: this.units
                 }
+            },
+            showResidents() {
+                if(this.mode == 'add') {
+                    if(this.model.unit_id) {
+                        this.model.unit_id.forEach(every_unit_id => {
+                            this.units.forEach(group => {
+                                let found = group.options.find(item => item.id == every_unit_id && item.type >= 1 && item.type <= 2)
+                                if(found)
+                                    return true
+                            })
+                        })
+                    }
+                }
+                else {
+                    if(this.model.unit_id) {
+                        this.units.forEach(group => {
+                            let found = group.options.find(item => item.id == this.model.unit_id && item.type >= 1 && item.type <= 2)
+                            if(found) {
+                                return true;
+                            }
+                                
+                        })
+                    }
+                }
+                console.log('false')
+                return false;
             }
         },
         methods: {
@@ -893,7 +919,8 @@
                 this.model = Object.assign({}, this.data)
 
                 this.model.resident_ids = Object.assign({}, this.data.residents.map(item => item.id))
-                this.model.quarter_id = this.model.quarter.id
+                if(this.model.quarter)
+                    this.model.quarter_id = this.model.quarter.id
                 
                 
                 // if(this.model.resident)

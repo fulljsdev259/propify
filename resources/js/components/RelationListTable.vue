@@ -55,7 +55,7 @@
                 prop="type"
             >
                 <template slot-scope="scope">
-                    {{translateUnitType(scope.row.type)}}
+                    {{translateRelationType(scope.row.type)}}
                 </template>
             </el-table-column>
             <el-table-column
@@ -67,15 +67,17 @@
                 </template>
             </el-table-column>
             <el-table-column
-                :label="$t('models.resident.unit.name')"
-                v-if="!hideUnit"
-                prop="unit.name"
+                :label="$t('models.resident.type.label')"
+                prop="type"
             >
+                <template slot-scope="scope">
+                    {{translateUnitType(scope.row.unit.type)}}
+                </template>
             </el-table-column>
             <el-table-column
                 :label="$t('models.resident.unit.name')"
                 v-if="!hideUnit"
-                prop="unit.id"
+                prop="unit.name"
             >
             </el-table-column>
             <el-table-column
@@ -175,6 +177,9 @@
             },
             translateUnitType(type) {
                 return this.$t(`models.unit.type.${this.constants.units.type[type]}`);
+            },
+            translateRelationType(type) {
+                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
             },
             handleRowDblClick(row, col, e) {
                 let i = 0
