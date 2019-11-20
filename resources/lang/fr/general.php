@@ -98,6 +98,7 @@ return [
         'phase' => 'Phase',
         'qualification' => 'Qualification',
         'saved_filters' => 'Filtres enregistrés',
+        'fields' => 'Domaines',
     ],
     'no' => 'Non',
     "first_name" => "Prénom",
