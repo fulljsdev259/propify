@@ -194,6 +194,7 @@ return [
         'managers' => 'Verantwortlich',
         'buildings' => 'Objekte',
         'buildings_and_quarters' => 'Objekte/bearbeiten',
+        'relations' => 'Beziehungen'
     ],
     'email' => 'E-Mail',
     'email_validation' => [

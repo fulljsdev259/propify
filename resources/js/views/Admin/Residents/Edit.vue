@@ -265,7 +265,7 @@
                                         <el-row :gutter="20">
                                             <h3 class="chart-card-header">
                                                 <i class="icon-handshake-o ti-user icon "/>
-                                                    &nbsp;{{ $t('models.resident.relation.title') }}
+                                                    &nbsp;{{ $t('general.box_titles.relations') }}
                                                 <el-button style="float:right" 
                                                         type="primary" 
                                                         @click="toggleDrawer" 
@@ -343,7 +343,7 @@
                                 :used_units="used_units"/>
                 </div>
             </ui-drawer> -->
-            <el-dialog :close-on-click-modal="true" :title="$t('models.resident.relation.title')"
+            <el-dialog :close-on-click-modal="true" :title="editingRelation ? $t('models.resident.relation.new') : $t('models.resident.relation.edit')"
                     :visible.sync="visibleDrawer"
                     v-loading="loading.state" width="30%">
                 <div class="content" v-if="visibleDrawer">
