@@ -612,13 +612,14 @@
                 }
             },
             showResidents() {
+                let flag = false
                 if(this.mode == 'add') {
                     if(this.model.unit_id) {
                         this.model.unit_id.forEach(every_unit_id => {
                             this.units.forEach(group => {
                                 let found = group.options.find(item => item.id == every_unit_id && item.type >= 1 && item.type <= 2)
                                 if(found)
-                                    return true
+                                    flag = true
                             })
                         })
                     }
@@ -627,14 +628,12 @@
                     if(this.model.unit_id) {
                         this.units.forEach(group => {
                             let found = group.options.find(item => item.id == this.model.unit_id && item.type >= 1 && item.type <= 2)
-                            if(found) {
-                                return true;
-                            }
-                                
+                            if(found)
+                                flag = true
                         })
                     }
                 }
-                return false;
+                return flag;
             }
         },
         methods: {
