@@ -158,6 +158,7 @@ return [
             'label' => 'Type',
             'tenant' => 'Locataire',
             'owner' => 'Propriétaire',
+            'former_resident' => 'Ancien résident'
         ],
         'tenant_type' => [
             'label' => 'Type de locataire',

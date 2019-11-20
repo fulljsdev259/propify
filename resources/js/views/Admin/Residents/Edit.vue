@@ -289,15 +289,17 @@
                             <el-col :md="12">
                                 <el-card>
                                     <div slot="header" class="clearfix">
-                                        <span>{{ $t('models.resident.relation.relation_pdf') }}</span>
+                                        <span>{{ $t('general.box_titles.files') }}</span>
                                     </div>
                                     <relation-list
                                         :actions="mediaActions"
                                         :columns="mediaColumns"
+                                        :show-header="false"
                                         :filterValue="model.id"
                                         fetchAction="getResidentMedia"
                                         filter="resident_id"
                                         v-if="model.id"
+                                        @delete-media="deleteMedia"
                                     />
                                 </el-card>
                             </el-col>
@@ -420,14 +422,17 @@
                     type: 'residentMediaName',
                     prop: 'name',
                     label: 'general.name'
+                }, {
+                    width: '100px',
+                    prop: 'created_by',
+                    label: 'general.date'
                 }],
                 mediaActions: [{
                     width: 70,
-                    buttons: [/*{
-                        icon: 'ti-search',
-                        title: 'general.actions.edit',
-                        tooltipMode: true
-                    }*/]
+                    dropdowns: [{
+                        key: 'delete-media',
+                        title: 'general.actions.delete'
+                    }],
                 }]
             }
         },
@@ -451,17 +456,29 @@
                 this.avatar = d
             },
             ...mapActions(['deleteMediaFile', 'downloadResidentCredentials', 'sendResidentCredentials']),
-            deleteMedia() {
+            deleteMedia(index) {
+                console.log(index)
+                
                 this.deleteMediaFile({
                     id: this.model.id,
-                    media_id: this.lastMedia.id
+                    media_id: this.model.media[index].id
                 }).then(r => {
                     displaySuccess(r);
 
-                    this.model.media.splice(-1, 1);
+                    this.model.media.splice(index, 1);
                 }).catch(err => {
                     displayError(err);
                 });
+                // this.deleteMediaFile({
+                //     id: this.model.id,
+                //     media_id: this.lastMedia.id
+                // }).then(r => {
+                //     displaySuccess(r);
+
+                //     this.model.media.splice(-1, 1);
+                // }).catch(err => {
+                //     displayError(err);
+                // });
             },
             requestEditView(request) {
                 this.$router.push({

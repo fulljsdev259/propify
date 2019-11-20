@@ -209,17 +209,17 @@ export default (config = {}) => {
 
                                 try {
 
-                                    resident.status = 2
-                                    const today = new Date().getTime();
-                                    resident.relations.forEach(relation => {
-                                        const start_date = new Date(relation.start_date).getTime();
-                                        const end_date = new Date(relation.end_date).getTime();
-                                        if(relation.duration == 1 && start_date <= today )
-                                            resident.status = 1
-                                        if(relation.duration == 2 && start_date <= today && end_date > today)
-                                            resident.status = 1
+                                    // resident.status = 2
+                                    // const today = new Date().getTime();
+                                    // resident.relations.forEach(relation => {
+                                    //     const start_date = new Date(relation.start_date).getTime();
+                                    //     const end_date = new Date(relation.end_date).getTime();
+                                    //     if(relation.duration == 1 && start_date <= today )
+                                    //         resident.status = 1
+                                    //     if(relation.duration == 2 && start_date <= today && end_date > today)
+                                    //         resident.status = 1
                                             
-                                    })
+                                    // })
                                     const resp = await this.createResident({
                                         user: {
                                             email,

@@ -159,6 +159,7 @@ return [
             'label' => 'Beziehung',
             'tenant' => 'Mieter',
             'owner' => 'Eigentümer',
+            'former_resident' => 'Ehemaliger Einwohner'
         ],
         'tenant_type' => [
             'label' => 'Mietertyp',
