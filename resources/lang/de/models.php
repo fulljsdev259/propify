@@ -86,7 +86,7 @@ return [
                 'unlimited' => 'Unbefristet',
                 'limited' => 'Befristet',
             ],
-            'relation_pdf' => 'Beziehungs-PDF',
+            'relation_pdf' => 'Dokumente',
             'filename' => 'Name',
             'deposit_amount' => 'Kautionsbetrag',
             'type_of_deposit' => 'Art der Sicherheitsleistung',
@@ -105,7 +105,7 @@ return [
             'status' => [
                 'active' => 'Aktiv',
                 'inactive' => 'Inaktiv',
-                'canceled' => 'Abgesagt'
+                'canceled' => 'Gekündigt'
             ],
             'add' => 'Beziehung hinzufügen',
             'add_sell_relation' => 'Verkaufsbeziehung hinzufügen',
@@ -118,9 +118,10 @@ return [
             'saved' => 'Beziehung gespeichert',
             'deleted' => 'Beziehung gelöscht',
             'status_count' => [
-                'total' => 'Gesamtbeziehungen',
+                'total' => 'Beziehungen ingesamt',
                 'active' => 'Aktive Beziehungen',
                 'inactive' => 'Inaktive Beziehungen',
+                'canceled' => 'Gekündigte Beziehungen',
             ],
             'type_validation_error' => "Sieht so aus, als hätten Sie bereits Verträge hinzugefügt, zuerst löschen und dann können Sie den Bewohnertyp ändern."
         ],
@@ -155,7 +156,7 @@ return [
             'your_administration' => 'Ihre Verwaltung'
         ],
         'type' => [
-            'label' => 'Geschäftsbeziehung',
+            'label' => 'Beziehung',
             'tenant' => 'Mieter',
             'owner' => 'Eigentümer',
         ],
@@ -182,7 +183,7 @@ return [
         'internal_building_id' => "Projektnummer",        
         'address_search' => 'Bitte Adresse eingeben.',
         'not_found' => 'Objekt nicht gefunden.',
-        'building_format' => 'Projectnr.',
+        'building_format' => 'Projektnr.',
         'building_no' => 'Objektnr.',
         'active_residents_count' => 'Wohnungen',
         'request_status' => 'Anliegen-Status',
@@ -422,8 +423,8 @@ return [
         'total_units_count' => 'Wohnungen',
         'occupied_units_count' => 'Belegte Einheiten',
         'active_residents_count' => 'Aktive Bewohner',
-        'assignment' => 'Zuständigkeit',
-        'quarter_format' => 'Projectnr.',
+        'assignment' => 'Zuständig',
+        'quarter_format' => 'Projektnr.',
         'type' => 'Projektart',
         'project_ort' => 'Projektort',
         'details' => 'Projektdetails',

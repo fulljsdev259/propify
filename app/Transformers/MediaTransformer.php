@@ -32,6 +32,7 @@ class MediaTransformer extends BaseTransformer
             'collection_name' => $model->collection_name,
             'model_id' => $model->model_id,
             'order_column' => $model->order_column,
+            'created_by' => $model->created_at ? $model->created_at->format('d.m.Y') : ''
         ];
         if (key_exists('relations_count', $model->getAttributes())) {
             $response['relations_count'] = $model->relations_count;
