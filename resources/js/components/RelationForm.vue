@@ -58,8 +58,9 @@
                     </el-select> -->
                     <multi-select
                         :filter="quarterFilter"
-                        :selectedOptions="model.selectedWorkflowBuilding"
-                        @select-changed="handleSelectChange($event, 'building')"
+                        :selectedOptions="[model.quarter_id]"
+                        :maxSelect="1"
+                        @select-changed="handleSelectChange($event, 'quarter')"
                     >
                     </multi-select>
                 </el-form-item>
@@ -605,7 +606,6 @@
                 under_ground_floor_label: this.$t('models.unit.floor_title.under_ground_floor'),
                 top_floor_label: this.$t('models.unit.floor_title.top_floor'),
                 original_unit_id : 0,
-                resident_type_check: 1,
                 isFuture: false
             }
         },
@@ -676,6 +676,7 @@
                                     if(found)
                                             params.units.push(found)
                                     })
+
                                 })
                             }
                             else {
@@ -684,8 +685,21 @@
                                     if(found)
                                         params.unit = found
                                 })
+                                
                             }
                             
+                            let end_date = null
+                            if(params.end_date)
+                                end_date = new Date(params.end_date).getTime();
+                            const today = new Date().getTime();
+
+                            if(!end_date || end_date == today)
+                                params.status = 1
+                            else if(end_date && end_date > today)
+                                params.status = 2
+                            else if(end_date && end_date < today)
+                                params.status = 3
+
                             //params.building = this.buildings.find(item => item.id == this.model.building_id)
 
                             params.quarter = this.quarters.find(item => item.id == this.model.quarter_id)
@@ -741,6 +755,14 @@
             handleSelectChange(val, filter) {
                 if(filter == 'unit') {
                     this.model.unit_ids = val
+                } else if(filter == 'quarter') {
+                    console.log('val', val)
+                    if(val.length == 1) {
+                        this.model.quarter_id = val[0]
+                        this.searchRelationUnits(false)
+                    }
+                    else
+                        this.model.quarter_id = null
                 }
             },
             disabledRentStart(date) {
@@ -934,8 +956,6 @@
             this.deposit_statuses = Object.entries(this.$constants.relations.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_status.${label}`)}));
             this.relation_statuses = Object.entries(this.$constants.relations.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.status.${label}`)}));
 
-            if(this.resident_type)
-                this.resident_type_check = this.resident_type
 
             if(this.mode == "edit") {
                 this.model = Object.assign({}, this.data)
@@ -991,37 +1011,18 @@
 
                         this.units.push({ label: group_label, options : [this.model.unit]})
                     }
-
-                    // if(this.model.building) {
-                    //     this.buildings.push(this.model.building)
-                    //     await this.remoteRelationSearchBuildings(this.model.building.name)
-                    //     await this.searchRelationUnits(true)
-                    // }
                     if(this.model.quarter) {
-                        this.quarters.push(this.model.quarter)
-                        await this.remoteRelationSearchBuildings(this.model.quarter.name)
+                        //this.quarters.push(this.model.quarter)
+                        //await this.remoteRelationSearchQuarters(this.model.quarter.name)
                         await this.searchRelationUnits(true)
                     }
                 }
 
             }
 
-            if(this.hideBuildingAndUnits) {
-                this.model.unit_id = this.unit_id
-                this.model.building_id = this.building_id
-                
-                // this.model.unit = this.data.unit
-                // this.model.building = this.data.building
-                // this.buildings.push(this.model.building)
-            }
-
-            if(this.hideBuilding) {
-                this.model.building_id = this.building_id
-                await this.searchRelationUnits(true)
-            }
-
             if(this.model.unit_id == null)
                 this.model.unit_id = []
+
             console.log('model', this.model)
             this.loading = false;
         },
