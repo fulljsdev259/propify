@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use League\Fractal\Manager;
@@ -75,6 +76,25 @@ class BaseTransformer extends TransformerAbstract
                 $response['audit_id'] = $audit->id;
             }
         }
+        return $response;
+    }
+
+    /**
+     * @param Model $model
+     * @param $attributes
+     * @param array $requiredAttributes
+     * @return array
+     */
+    protected function getIfHasInAttributes(Model $model, $attributes, $requiredAttributes = [])
+    {
+        $response =  array_intersect_key($model->getAttributes(), array_flip($attributes));
+        foreach ($requiredAttributes as $key => $attribute) {
+            if (is_numeric($key)) {
+                $key = $attribute;
+            }
+            $response[$key] = $model->{$attribute};
+        }
+
         return $response;
     }
 }

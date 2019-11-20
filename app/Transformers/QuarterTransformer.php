@@ -18,24 +18,26 @@ class QuarterTransformer extends BaseTransformer
      */
     public function transform(Quarter $model)
     {
-        $response = [
-            'id' => $model->id,
-            'name' => $model->name,
-            'quarter_format' => $model->quarter_format,
-            'internal_quarter_id' => $model->internal_quarter_id,
-            'description' => $model->description,
-            'count_of_buildings' => $model->count_of_buildings,
-            'url' => $model->url,
-            'types' => $model->types,
-            'assignment_type' => $model->assignment_type,
-        ];
-
-        if ($model->hasAttribute('has_email_receptionists')) {
-            // @TODO kill
-            $response['has_email_receptionists'] = $model->has_email_receptionists;
-        }
-        if ($model->hasAttribute('count_of_apartments_units')) {
-            $response['count_of_apartments_units'] = $model->count_of_apartments_units;
+        $response = $this->getIfHasInAttributes($model, [
+            'id',
+            'name',
+            'quarter_format',
+            'internal_quarter_id',
+            'description',
+            'count_of_buildings',
+            'url',
+            'types',
+            'assignment_type',
+            'count_of_apartments_units',
+            'active_relations_count',
+            'inactive_relations_count',
+            'canceled_relations_count',
+            'has_email_receptionists' // @TODO kill
+        ]);
+        if (array_keys_exists(['active_relations_count', 'inactive_relations_count', 'canceled_relations_count'], $response)) {
+            $response['relations_count'] =  $response['active_relations_count']
+                +  $response['inactive_relations_count']
+                +  $response['canceled_relations_count'] ;
         }
 
         if ($model->relationExists('address')) {
@@ -48,8 +50,12 @@ class QuarterTransformer extends BaseTransformer
 
         if ($model->relationExists('buildings')) {
             $response['buildings'] = (new BuildingTransformer())->transformCollection($model->buildings);
-            $response['relations'] = collect($response['buildings'])->pluck('relations')->collapse();
         }
+
+        if ($model->relationExists('relations')) {
+            $response['relations'] =  (new RelationTransformer())->transformCollection($model->relations);
+        }
+
 
         if ($model->relationExists('media')) {
             $response['media'] = (new MediaTransformer())->transformCollection($model->media);

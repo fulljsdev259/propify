@@ -82,6 +82,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Building[] $buildings
  * @property-read int|null $buildings_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $media
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Relation[] relations
  * @property-read int|null $media_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PropertyManager[] $propertyManagers
  * @property-read int|null $property_managers_count
@@ -224,6 +225,14 @@ class Quarter extends AuditableModel implements HasMedia
     public function units()
     {
         return $this->hasMany(Unit::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function relations()
+    {
+        return $this->hasMany(Relation::class);
     }
 
     /**
