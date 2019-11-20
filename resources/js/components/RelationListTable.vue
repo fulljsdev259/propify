@@ -84,7 +84,7 @@
                 :label="$t('models.resident.status.label')"
             >
                 <template slot-scope="scope">
-                    <i class="icon-dot-circled" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]"></i>
+                    <i class="icon-circle" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]"></i>
                     <!-- {{ constants.relations.status[scope.row.status] ? $t('models.resident.relation.status.' + constants.relations.status[scope.row.status]) : ''}} -->
                 </template>
             </el-table-column>
@@ -213,12 +213,15 @@
         }
         .icon-active {
             color: #6b0036;
+            text-shadow: 0px 0px 2px;
         }
         .icon-inactive {
             color: #878810;
+            text-shadow: 0px 0px 2px;
         }
         .icon-canceled {
             color: #c8a331;
+            text-shadow: 0px 0px 2px;
         }
     }
 </style>
