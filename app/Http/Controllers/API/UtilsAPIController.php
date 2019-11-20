@@ -233,6 +233,7 @@ class UtilsAPIController extends AppBaseController
     {
         $result = [
             'status' => App\Models\Relation::Status,
+            'status_code' => App\Models\Relation::StatusCode,
             'deposit_type' => App\Models\Relation::DepositType,
             'deposit_status' => App\Models\Relation::DepositStatus,
         ];
