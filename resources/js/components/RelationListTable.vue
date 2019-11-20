@@ -4,7 +4,7 @@
             :data="showItems"
             style="width: 100%"
             class="relation-table"
-            :show-header="true"
+            :show-header="false"
             @row-dblclick="handleRowDblClick"
             >
             <div slot="empty">
