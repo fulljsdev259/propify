@@ -116,6 +116,7 @@ return [
                 'existing' => 'Scegliere tra quelli esistenti'
             ],
             'saved' => 'Relazione salvata',
+            'deleted' => 'Relazione cancellata',
             'status_count' => [
                 'total' => 'Totale relazioni',
                 'active' => 'Relazioni attive',
