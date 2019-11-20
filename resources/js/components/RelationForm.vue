@@ -662,7 +662,7 @@
                             }
                             else {
                                 const resp = await this.$store.dispatch('relations/update', params);
-                                this.$emit('update-relation', this.edit_index, params)
+                                this.$emit('update-relation', this.edit_index, resp.data)
                             }
                         }
 
