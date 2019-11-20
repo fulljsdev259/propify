@@ -166,6 +166,11 @@ class Relation extends AuditableModel
         self::StatusInActive => 'inactive',
         self::StatusCanceled => 'canceled',
     ];
+    const StatusColorCode = [
+        self::StatusActive => '#878810',
+        self::StatusInActive => '#c8a331',
+        self::StatusCanceled => '#6b0036',
+    ];
 
     const DepositTypeBankDepositt = 1;
     const DepositTypeBankGuarantee = 2;
