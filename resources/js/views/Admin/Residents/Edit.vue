@@ -343,7 +343,7 @@
                                 :used_units="used_units"/>
                 </div>
             </ui-drawer> -->
-            <el-dialog :close-on-click-modal="true" :title="editingRelation ? $t('models.resident.relation.new') : $t('models.resident.relation.edit')"
+            <el-dialog :close-on-click-modal="true" :title="editingRelation ? $t('models.resident.relation.edit') : $t('models.resident.relation.new')"
                     :visible.sync="visibleDrawer"
                     v-loading="loading.state" width="30%">
                 <div class="content" v-if="visibleDrawer">
@@ -723,6 +723,10 @@
 
     /deep/ .el-dialog {
         width: 50% !important;
+
+        .el-dialog__body {
+            padding-top: 0;
+        }
 
         .el-dialog__footer {
             padding: 0;

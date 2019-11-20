@@ -40,7 +40,7 @@
             </el-col>
             <el-col :md="12">
                 <el-form-item prop="quarter_id" :label="$t('models.resident.quarter.name')" class="label-block">
-                    <el-select
+                    <!-- <el-select
                             :loading="remoteLoading"
                             :placeholder="$t('models.resident.search_quarter')"
                             :remote-method="remoteRelationSearchQuarters"
@@ -55,7 +55,13 @@
                                 :label="quarter.name"
                                 :value="quarter.id"
                                 v-for="quarter in quarters"/>
-                    </el-select>
+                    </el-select> -->
+                    <multi-select
+                        :filter="quarterFilter"
+                        :selectedOptions="model.selectedWorkflowBuilding"
+                        @select-changed="handleSelectChange($event, 'building')"
+                    >
+                    </multi-select>
                 </el-form-item>
             </el-col>
             <el-col :md="12">
@@ -147,7 +153,7 @@
                 </el-form-item>
             </el-col>
    
-            <el-col :md="12" v-if="showResidents">
+            <el-col :md="24" v-if="showResidents">
                 <el-form-item :label="$t('general.resident')" prop="resident_ids">
                     <el-select
                         :loading="remoteLoading"
@@ -612,6 +618,16 @@
                         data: this.units
                 }
             },
+            quarterFilter() {
+                return {
+                        name: this.$t('models.resident.search_quarter'),
+                        type: 'select',
+                        key: 'name',
+                        data: this.quarters,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteQuarters
+                }
+            },
             showResidents() {
                 let flag = false
                 if(this.mode == 'add') {
@@ -898,12 +914,19 @@
             deletePDFfromRelation(index) {
                 this.model.media.splice(index, 1)
             },
+            async fetchRemoteQuarters(search = '') {
+                const quarters = await this.getQuarters({get_all: true, search})
+
+                return quarters.data
+            },
             ...mapActions(['getQuarters', 'getBuildings', 'getUnits', 'getResidents']),
         },
         async created () {
 
             console.log('data', this.data)
             this.loading = true;
+
+            this.quarters = await this.fetchRemoteQuarters();
 
             let parent_obj = this
             this.deposit_types = Object.entries(this.$constants.relations.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_types.${label}`)}))

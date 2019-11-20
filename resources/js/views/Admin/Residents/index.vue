@@ -113,7 +113,7 @@
                             label: this.$t('models.resident.status.not_active')
                         }
                     ]
-                }, {
+                }/*, {
                     label: 'models.resident.status.label',
                     prop: 'status',
                     i18nPath: 'models.resident.status',
@@ -125,7 +125,7 @@
                         getter: "residents",
                         onChange: this.listingSelectChangedNotify
                     }
-                }/*, {
+                }*//*, {
                     width: 120,
                     actions: [{
                         icon: 'ti-pencil',
