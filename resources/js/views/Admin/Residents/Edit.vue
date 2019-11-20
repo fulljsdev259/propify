@@ -341,7 +341,7 @@
                                 :used_units="used_units"/>
                 </div>
             </ui-drawer> -->
-            <el-dialog :close-on-click-modal="false" :title="$t('models.resident.relation.title')"
+            <el-dialog :close-on-click-modal="true" :title="$t('models.resident.relation.title')"
                     :visible.sync="visibleDrawer"
                     v-loading="loading.state" width="30%">
                 <div class="content" v-if="visibleDrawer">
