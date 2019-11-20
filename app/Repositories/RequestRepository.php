@@ -364,7 +364,7 @@ class RequestRepository extends BaseRepository
     {
         foreach ($requests as $request) {
             foreach ($items as $item) {
-                $request->{$relation}()->sync([$item->id => ['created_at' => now()]], false);
+                $request->{$relation}()->sync([$item->id => ['created_at' => now(),'sent_email'=>$items->sent_email]], false);
             }
         }
     }

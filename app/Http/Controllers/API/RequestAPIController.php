@@ -25,6 +25,7 @@ use App\Http\Requests\API\Request\UpdateRequest;
 use App\Http\Requests\API\Request\ViewRequest;
 use App\Http\Requests\API\Resident\DownloadPdfRequest;
 use App\Jobs\Notify\NotifyRequestProvider;
+use App\Mails\SentEmailPdf;
 use App\Models\PropertyManager;
 use App\Models\ServiceProvider;
 use App\Models\Request;
@@ -45,6 +46,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Mail;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 
 /**
@@ -460,22 +462,57 @@ class RequestAPIController extends AppBaseController
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function massEdit(MassEditRequest $massEditRequest)
+    public function massEdit(MassEditRequest $massEditRequest,DownloadPdfRequest $r)
     {
         //get in MassEditRequest validation class
         $requests = $massEditRequest->requests;
 
         $managers = $massEditRequest->managers;
+        
+        $sent_email = $massEditRequest->send_email_service_provider;
+        
         if ($managers) {
+        	$managers->sent_email=$sent_email;
             $this->requestRepository->massAssign($requests, 'managers', $managers);
+            $users=$managers;
         }
 
         //get in MassEditRequest validation class
         $providers = $massEditRequest->providers;
         if ($providers) {
+        	$providers->sent_email=$sent_email;
             $this->requestRepository->massAssign($requests, 'providers', $providers);
             $this->requestRepository->massUpdateAttribute($requests, ['status' => Request::StatusAssigned]);
+            $users=$providers;
         }
+        
+        
+        
+        if ($sent_email) {
+	
+        	foreach ($users as $u) {
+        		
+        		$user=User::find($u->id);
+        		$data=[];
+				foreach ($requests as $request) {
+					$r = $this->requestRepository->findWithoutFail($request->id);
+					
+					$data['datas'][]=$this->getPdfAllData($r);
+					
+				}
+				$this->requestRepository->findWithoutFail($requests[0]->id)->setDownloadAllPdf($this->settingsRepository->first(),$data);
+		
+				$pdfName = $this->getAllPdfFileName($this->requestRepository->findWithoutFail($requests[0]->id));
+				
+				if (!\Storage::disk('request_downloads')->exists($pdfName)) {
+					return $this->sendError('Request file not found!');
+				}
+				$mail = (new SentEmailPdf($user,$request,$pdfName))->onQueue('high');
+				Mail::to($user->email)->queue($mail);
+				
+			}
+   
+		}
 
         $status = $massEditRequest->get('status');
         if ($status) {
@@ -505,6 +542,20 @@ class RequestAPIController extends AppBaseController
 
         return $this->sendResponse($response, __('models.request.saved'));
     }
+    
+    public function getPdfAllData (Request $request)
+	{
+		$settings = $this->settingsRepository->first();
+		$data=$request->setDownloadAllPdfData($settings);
+		
+		return $data ;
+	}
+	
+	public function getAllPdfFileName (Request $request)
+	{
+		$pdfName=$request->pdfFileName();
+		return $pdfName;
+	}
 
     /**
      * @SWG\Post(
