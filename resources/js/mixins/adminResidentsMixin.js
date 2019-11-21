@@ -167,6 +167,17 @@ export default (config = {}) => {
             showMediaDialog() {
                 this.visibleMediaDialog = true;
             },
+            closeMediaDialog() {
+                this.visibleMediaDialog = false;
+            },
+            uploadMedia() {
+                this.model.media.map(item => {
+                    if(!item.url) {
+                        console.log(item)
+                        this.uploadMediaFile(item)
+                    }
+                })
+            },
             ...mapActions(['getCountries', 'uploadMediaFile']),
         },
         async mounted() {

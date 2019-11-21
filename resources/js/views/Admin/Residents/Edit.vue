@@ -429,7 +429,7 @@
                     <ui-divider style="margin-top: 16px;"></ui-divider>
                     <div class="relation-form-actions">
                         <div class="button-group">
-                            <el-button type="default" @click="close" icon="icon-cancel" round>{{$t('general.actions.close')}}</el-button>
+                            <el-button type="default" @click="closeMediaDialog" icon="icon-cancel" round>{{$t('general.actions.close')}}</el-button>
                             <el-button type="primary" @click="uploadMedia" icon="icon-floppy" round>{{$t('general.actions.save')}}</el-button>
                             
                         </div>
@@ -533,21 +533,21 @@
             cropped(d) {
                 this.avatar = d
             },
-            ...mapActions(['deleteMediaFile', 'downloadResidentCredentials', 'sendResidentCredentials']),
+            ...mapActions(['deleteMediaFile', 'downloadResidentCredentials', 'sendResidentCredentials', 'uploadMediaFile']),
             async deleteMedia(index) {
                 console.log(index)
-                
-                let res = await this.deleteMediaFile({
-                    id: this.model.id,
-                    media_id: this.model.media[index].id
-                })
-                
-                if(res.data && res.success) {
-                    displaySuccess(res);
-                    this.model.media.splice(index, 1);
-                }
-                else {
-                     displayError(res);
+                try {
+                    let res = await this.deleteMediaFile({
+                        id: this.model.id,
+                        media_id: this.model.media[index].id
+                    })
+                    console.log(res)
+                    if(res.success) {
+                        displaySuccess(res);
+                        this.model.media.splice(index, 1);
+                    }
+                } catch( err ) {
+                    displayError(err);
                 }
                 // this.deleteMediaFile({
                 //     id: this.model.id,

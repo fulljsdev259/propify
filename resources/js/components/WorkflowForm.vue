@@ -403,7 +403,7 @@
                 return {
                         name: this.$t('models.quarter.workflow.placeholders.building'),
                         type: 'select',
-                        key: 'name',
+                        key: 'house_num',
                         data: this.buildings,
                         remoteLoading: false,
                         fetch: this.fetchRemoteBuildings
