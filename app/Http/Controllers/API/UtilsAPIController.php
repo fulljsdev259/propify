@@ -259,7 +259,7 @@ class UtilsAPIController extends AppBaseController
     protected function getServiceProviderConstants()
     {
         $result = [
-            'category' => ServiceProvider::ServiceProviderCategory,
+            'category' => ServiceProvider::Category,
             'type' => ServiceProvider::Type,
         ];
 

@@ -26,7 +26,9 @@ class CreateRequest extends BaseRequest
     {
         // @TODO address , user validation correctly
         return [
-            'name' => 'required|string|max:255',
+            'company_name' => 'required|string|max:255',
+            'first_name' => 'string|max:255',
+            'lsat_name' => 'string|max:255',
             'email' => 'required|string|email|max:255',
             'phone' => 'required|string|max:255',
             'user' => 'required',
@@ -37,7 +39,7 @@ class CreateRequest extends BaseRequest
             ],
             'category' => [
                 'required',
-                $this->getInRuleByClassConstants(ServiceProvider::ServiceProviderCategory),
+                $this->getInRuleByClassConstants(ServiceProvider::Category),
             ],
         ];
     }
