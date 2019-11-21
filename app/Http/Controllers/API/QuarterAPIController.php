@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Criteria\Quarter\FilterByCityCriteria;
 use App\Criteria\Quarter\FilterByStateCriteria;
 use App\Criteria\Quarter\FilterByUserRoleCriteria;
 use App\Http\Controllers\AppBaseController;
@@ -95,6 +96,7 @@ class QuarterAPIController extends AppBaseController
         $this->quarterRepository->pushCriteria(new RequestCriteria($request));
         $this->quarterRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->quarterRepository->pushCriteria(new FilterByStateCriteria($request));
+        $this->quarterRepository->pushCriteria(new FilterByCityCriteria($request));
         $this->quarterRepository->pushCriteria(new FilterByUserRoleCriteria($request));
 
         $getAll = $request->get('get_all', false);
