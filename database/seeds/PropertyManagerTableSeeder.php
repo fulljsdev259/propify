@@ -55,10 +55,16 @@ class PropertyManagerTableSeeder extends Seeder
             $manager = factory(PropertyManager::class)->create($managerData);
 
             $building = $buildings->random();
-            $manager->buildings()->attach([$building->id => ['created_at' => now()]]);
+            $manager->buildings()->attach([$building->id => [
+                'created_at' => now(),
+                'user_id' => $user->id
+            ]]);
 
             $quarter = $quarters->random();
-            $manager->quarters()->attach([$quarter->id => ['created_at' => now()]]);
+            $manager->quarters()->attach([$quarter->id => [
+                'created_at' => now(),
+                'user_id' => $user->id
+            ]]);
         }
     }
 
