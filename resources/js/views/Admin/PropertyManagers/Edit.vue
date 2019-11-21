@@ -178,7 +178,7 @@
                             </el-tab-pane>
                         </el-tabs>
 
-                        <card class="mt15" :header="$t('general.box_titles.buildings_and_quarters')">
+                        <!--<card class="mt15" :header="$t('general.box_titles.buildings_and_quarters')">
                             <assignment-by-type
                                     :resetToAssignList="resetToAssignList"
                                     :assignmentType.sync="assignmentType"
@@ -198,7 +198,7 @@
                                     ref="assignmentsList"
                                     v-if="model.id"
                             />
-                        </card>
+                        </card>-->
                     </el-col>
                     <el-col :md="12">
                         <raw-grid-statistics-card :cols="8" :data="statistics.raw"/>
