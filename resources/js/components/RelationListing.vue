@@ -178,6 +178,11 @@
                         </el-tooltip>
                     </div>
 
+                    <div v-else-if="column.type === 'assignProviderManagerFunctions'">
+                        {{scope.row.type == "provider" ? $t(`models.service.category.${$constants.serviceProviders.category[scope.row.function]}`)  : ''}}
+                        {{scope.row.type == "manager" ? $t(`general.assignment_types.${scope.row.function}`) : ''}}
+                    </div>
+
                     <div v-else-if="column.type === 'unitResidentAvatar'">
                         <div class="avatars-wrapper">
                             <span :key="uuid()" v-for="(resident) in scope.row.activeResidents">
@@ -259,7 +264,7 @@
                     </template>
                 </template>
             </el-table-column>
-            <!-- <el-table-column
+            <el-table-column
                 :key="index"
                 :width="action.width"
                 align="right"
@@ -308,8 +313,8 @@
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
-            </el-table-column> -->
-            <el-table-column
+            </el-table-column>
+            <!-- <el-table-column
                 :key="index"
                 :width="action.width"
                 align="right"
@@ -329,7 +334,7 @@
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
         <div v-if="meta.current_page < meta.last_page">
             <el-button @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>

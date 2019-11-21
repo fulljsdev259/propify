@@ -140,11 +140,11 @@ export default (config = {}) => {
                 if(this.model.relations[index].garant == 1) {
                     console.log('garant')
                     return this.$router.push({
-                        name: 'adminResidentsEdit',
+                        name: 'adminResidentView',
                         params: {
                             id: this.model.relations[index].resident_id
                         }
-                    });
+                    }).catch(err => {})
                 }
                 else {
                     this.editingRelation = this.model.relations[index];
