@@ -62,7 +62,6 @@ class BuildingTransformer extends BaseTransformer
             $response['units'] = (new UnitTransformer())->transformCollectionBy($model->units, 'transformForIndex');
             $statusCounts = $this->getUnitsStatus($response);
             $response = array_merge($response, $statusCounts);
-            //            'units' => UnitTransformer::class,
         }
 
         if ($model->relationExists('quarter')) {
@@ -129,4 +128,20 @@ class BuildingTransformer extends BaseTransformer
         return $input;
     }
 
+
+    /**
+     * @param $data
+     * @return array
+     */
+    protected function getUnitsStatus($data)
+    {
+        $unitsCountByStatus = collect($data['units'])->countBy('status_color');
+        $statusCodes = Relation::StatusColorCode;
+        $response = [];
+        foreach ($statusCodes as $status => $color) {
+            $response[Relation::Status[$status] . '_units_count'] = $unitsCountByStatus[$color] ?? 0;
+        }
+        $response['total_units_count'] = array_sum($response);
+        return $response;
+    }
 }
