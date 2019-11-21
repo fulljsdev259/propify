@@ -1,26 +1,25 @@
 <template>
-    <div class="custom-select">
+    <div class="custom-select" ref="multiSelect">
        <el-dropdown trigger="click" placement="bottom" @visible-change="handleVisibleChange">
             <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]">
-                <span v-if="findSelectedOne.count === 0">{{ filter.name }}</span>
+                <span v-if="findSelectedOne.count === 0">{{ name }}</span>
                 <template v-else>
                     <el-tag 
                         :key="item.id"
-                        v-if="item.selected === true"
                         size="mini"
                         closable
-                        @close="selectItem(findSelectedOne.index, true)"
-                        v-for="(item, index) in items"
+                        @close="selectItem(item.index, true)"
+                        v-for="(item, index) in findSelectedOne.items"
                     >
                         {{ ` ${getLanguageStr(item.name)}` }}
                     </el-tag>
                     
                     <el-tag
-                        v-if="findSelectedOne.count > 1"
+                        v-if="findSelectedOne.count > findSelectedOne.items.length"
                         size="mini"    
                         class="select-count"
                     >
-                        +{{ findSelectedOne.count - 1 }}
+                        +{{ findSelectedOne.count - findSelectedOne.items.length }}
                     </el-tag>
                 </template>
             </el-button>
@@ -45,7 +44,7 @@
                 <div class="dropdown-container" v-if="items.length">
                     
                     <div
-                        :key="`${filter.name}${item.name}${item.id}selected` + index"
+                        :key="`${name}${item.name}${item.id}selected` + index"
                         class="dropdown-item" 
                         :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
                         @click="selectItem(index)"
@@ -65,6 +64,7 @@
                 </div>
             </el-dropdown-menu>
         </el-dropdown>
+        <span :id="type + name" style="visibility: hidden" ></span>
     </div>
 </template>
 <script>
@@ -81,9 +81,17 @@
             }
         },
         props: {
-          filter: {
-              type: Object,
-              default: () => {}
+          type: {
+              type: String,
+              default: () => ''
+          },
+          name: {
+              type: String,
+              default: () => ''
+          },
+          data: {
+              type: Array,
+              default: () => [],
           },
           selectedOptions: {
               type: Array,
@@ -102,21 +110,25 @@
                 return this.options.filter((option) => this.search ==='' || this.search !== '' && option.name.includes(this.search));
             },
             findSelectedOne() {
-                let first_item = null;
+                let result = [];
                 let count = 0;
-                let idx = -1;
+                let totalWidth = 0;
                 this.items.forEach((item, index) => {
                     if(item.selected) {
+                        let label = this.getLanguageStr(item.name);
+                        let width = this.getTextWidth(label);
                         count ++;
-                        if(count == 1) {
-                            first_item = item;
-                            idx = index;
+                        if(width + totalWidth < this.$refs.multiSelect.clientWidth) {
+                            result.push({
+                                index: index,
+                                name:label
+                            });
+                            totalWidth += width;
                         }
                     }
                 });
                 return { 
-                    label:first_item?first_item.name:null,
-                    index: idx, 
+                    items: result.length >0?result:null,
                     count: count
                 };
             },
@@ -202,28 +214,45 @@
             },
             getLanguageStr(str) {
                 let result = str;
-                if(this.filter.key == 'category_id') {
+                if(this.type == 'category_id') {
                     result = this.$t(`models.request.category_list.${str}`);
-                } else if(this.filter.key == 'role') {
+                } else if(this.type == 'role') {
                     result = this.$t(`general.roles.${str}`)
                 }
                 return result;
             },
+            getTextWidth(text) { 
+  
+                var spanText = document.getElementById(this.type + this.name);
+                spanText.style.position = 'absolute'; 
+                spanText.style.left = '0';
+                spanText.style.whiteSpace = 'no-wrap'; 
+                spanText.innerHTML = text; 
+    
+                var width = Math.ceil(spanText.clientWidth) + 17; 
+                return width;
+            },
+            fitWidth() {
+                this.column.select.data.map((item) => {
+                    if(this.vModel == item.id) {
+                        this.maxWidth = this.getTextWidth(item.name);
+                    }
+                });
+            },
             initFilter() {
                 this.items = [];
                 this.originItems = [];
-                this.options = this.filter.data;
-                console.log(this.options)
+                this.options = this.data;
                 if(this.options.length) {
                     this.options.forEach((option) => {
                         this.items.push({
                             id: option.id,
-                            name: option[this.filter.key],
+                            name: option[this.type],
                             selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
                         });
                         this.originItems.push({
                             id: option.id,
-                            name: option[this.filter.key],
+                            name: option[this.name],
                             selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
                         })
                     });
@@ -234,7 +263,7 @@
 
         },
         updated() {
-            if(JSON.stringify(this.options) !== JSON.stringify(this.filter.data))
+            if(JSON.stringify(this.options) !== JSON.stringify(this.data))
                 this.initFilter();
         }
     }
