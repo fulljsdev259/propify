@@ -381,9 +381,9 @@
                 </el-form-item>
             </el-col>
         </el-row> -->
-        <ui-divider v-if="model.unit_id" content-position="left">
+        <!-- <ui-divider v-if="model.unit_id" content-position="left">
             {{ $t('models.resident.relation.relation_pdf') }}
-        </ui-divider>
+        </ui-divider> -->
         <el-row :gutter="20"  v-if="model.unit_id">
             <el-col :md="24">
                 <el-form-item>
@@ -417,13 +417,13 @@
                     </el-table-column>
                 </el-table>
 
-                <el-alert
+                <!-- <el-alert
                     :title="$t('models.resident.relation.pdf_only_desc')"
                     type="info"
                     show-icon
                     :closable="false"
                 >
-                </el-alert>
+                </el-alert> -->
 
                 <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".pdf" drag multiple/>
                 

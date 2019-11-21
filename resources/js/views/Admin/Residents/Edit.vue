@@ -389,9 +389,9 @@
                     v-loading="loading.state" width="30%">
                 <div class="content" v-if="visibleMediaDialog">
                     <el-table
-                        :data="new_media"
+                        :data="model.media"
                         style="width: 100%"
-                        v-if="new_media.length"
+                        v-if="model.media.length"
                         class="relation-file-table"
                         >
                         <el-table-column
@@ -803,6 +803,10 @@
     /deep/ .el-dialog {
         width: 50% !important;
 
+        .el-dialog__header {
+            padding-left: 30px;
+        }
+        
         .el-dialog__body {
             padding-top: 0;
         }
