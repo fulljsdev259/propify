@@ -206,7 +206,7 @@ return [
         'select_media_category' => 'Kategorie der Mediendatei wählen',
         'quarter' => 'Projekt',
         'managers' => 'Mitarbeiter',
-        'house_num' => 'Hausnummer',
+        'house_num' => 'Nr.',
         'assign_managers' => 'Mitarbeiter zuweisen',
         'unassign_manager' => 'Entfernen',
         'managers_assigned' => 'Mitarbeiter zugewiesen',
