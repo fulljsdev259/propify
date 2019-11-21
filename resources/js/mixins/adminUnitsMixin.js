@@ -91,6 +91,7 @@ export default (config = {}) => {
                 addedAssigmentList: [],
                 media: [],
                 quarters: [],
+                old_model: null,
             }
         },
         methods: {
@@ -334,6 +335,7 @@ export default (config = {}) => {
                                 try {
 
                                     this.model.monthly_rent_gross = ( Number(this.model.monthly_rent_net) + Number(this.model.monthly_maintenance) ).toFixed(2)
+                                    this.old_model = this.model;
                                     const resp = await this.updateUnit(this.model)
                                     displaySuccess(resp);
                                     if(this.$refs.auditList){

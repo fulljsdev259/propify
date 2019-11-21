@@ -8,11 +8,29 @@
                 <card :header="$t('general.box_titles.details')">                    
                     <el-form :model="model" ref="form">
                         <el-row :gutter="20">
+                             <el-col :md="12">
+                                <el-form-item :label="$t('general.internal_quarter_id')" :rules="validationRules.internal_quarter_id"
+                                                prop="internal_quarter_id">
+                                    <el-input type="text" v-model="model.internal_quarter_id"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :md="12">
+                                <el-form-item :label="$t('resident.name')" :rules="validationRules.name"
+                                              prop="name">
+                                    <el-input type="text" v-model="model.name"/>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :md="12">
+                                <el-form-item :label="$t('models.quarter.url')" :rules="validationRules.url"
+                                                prop="url">
+                                    <el-input type="text" v-model="model.url"></el-input>
+                                </el-form-item>
+                            </el-col>
                             <el-col :md="12">
                                 <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.type"
                                         class="label-block"
                                         prop="type">
-                                    <el-select
+                                    <!-- <el-select
                                             :placeholder="$t('general.placeholders.select')"
                                             style="display: block"
                                             v-model="model.types"
@@ -24,13 +42,12 @@
                                                 :value="type.value"
                                                 v-for="type in types">
                                         </el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :md="12">
-                                <el-form-item :label="$t('resident.name')" :rules="validationRules.name"
-                                              prop="name">
-                                    <el-input type="text" v-model="model.name"/>
+                                    </el-select> -->
+                                    <list-filter-select
+                                        :name="$t('general.placeholders.select')"
+                                        :data="types"
+                                        @select-changed="model.types=$event"
+                                    ></list-filter-select>
                                 </el-form-item>
                             </el-col>
                             <!-- <el-col :md="12">
@@ -79,18 +96,7 @@
                                     </el-select>
                                 </el-form-item>
                             </el-col>
-                             <el-col :md="12">
-                                <el-form-item :label="$t('general.internal_quarter_id')" :rules="validationRules.internal_quarter_id"
-                                                prop="internal_quarter_id">
-                                    <el-input type="text" v-model="model.internal_quarter_id"></el-input>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :md="12">
-                                <el-form-item :label="$t('models.quarter.url')" :rules="validationRules.url"
-                                                prop="url">
-                                    <el-input type="text" v-model="model.url"></el-input>
-                                </el-form-item>
-                            </el-col>
+                            
                         </el-row>
                     </el-form>
                 </card>
@@ -105,6 +111,7 @@
     import QuartersMixin from 'mixins/adminQuartersMixin';
     import {displayError} from "helpers/messages";
     import AddActions from 'components/EditViewActions';
+    import ListFilterSelect from 'components/ListFilterSelect';
 
 
     export default {
@@ -115,7 +122,8 @@
         components: {
             Heading,
             Card,
-            AddActions
+            AddActions,
+            ListFilterSelect,
         },
     };
 </script>
