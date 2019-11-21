@@ -474,7 +474,6 @@ class RequestAPIController extends AppBaseController
         if ($managers) {
         	$managers->sent_email=$sent_email;
             $this->requestRepository->massAssign($requests, 'managers', $managers);
-            $users=$managers;
         }
 
         //get in MassEditRequest validation class
@@ -483,16 +482,14 @@ class RequestAPIController extends AppBaseController
         	$providers->sent_email=$sent_email;
             $this->requestRepository->massAssign($requests, 'providers', $providers);
             $this->requestRepository->massUpdateAttribute($requests, ['status' => Request::StatusAssigned]);
-            $users=$providers;
         }
         
         
         
-        if ($sent_email) {
+        if ($sent_email && $providers) {
 	
-        	foreach ($users as $u) {
-        		
-        		$user=User::find($u->id);
+			$users=ServiceProvider::find($providers)->load('user');
+        	foreach ($users as $user) {
         		$data=[];
 				foreach ($requests as $request) {
 					$r = $this->requestRepository->findWithoutFail($request->id);
@@ -507,8 +504,9 @@ class RequestAPIController extends AppBaseController
 				if (!\Storage::disk('request_downloads')->exists($pdfName)) {
 					return $this->sendError('Request file not found!');
 				}
-				$mail = (new SentEmailPdf($user,$request,$pdfName))->onQueue('high');
-				Mail::to($user->email)->queue($mail);
+				
+				$mail = (new SentEmailPdf($pdfName))->onQueue('high');
+				Mail::to($user->user->email)->queue($mail);
 				
 			}
    
@@ -1760,6 +1758,7 @@ class RequestAPIController extends AppBaseController
         if (!\Storage::disk('request_downloads')->exists($pdfName)) {
             return $this->sendError('Request file not found!');
         }
+        
         return \Storage::disk('request_downloads')->download($pdfName, $pdfName);
     }
 
