@@ -99,7 +99,7 @@ export default {
             axios.delete(`residents/${id}/media/${payload.media_id}`)
                 .then((resp) => {
                     resolve(resp.data);
-                }).catch((error) => reject(error));
+                }).catch(({response: {data: err}}) => reject(err));
         });
     },
     changeResidentStatus(_, {id, status}) {

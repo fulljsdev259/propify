@@ -181,7 +181,7 @@
                                 {{ $t('general.box_titles.relations') }}
                                 <el-button style="float:right" 
                                         type="primary" 
-                                        @click="toggleDrawer" 
+                                        @click="showRelationDialog" 
                                         icon="icon-plus" 
                                         size="mini" 
                                         :disabled="model.type == ''" 
@@ -199,6 +199,30 @@
                             </relation-list-table>
                             
                         </card>
+
+                        <!-- <card class="mt15 relation-box">
+                            <template slot="header">
+                                {{ $t('general.box_titles.files') }}
+                                <el-button style="float:right" 
+                                            type="primary" 
+                                            @click="showMediaDialog" 
+                                            icon="icon-plus" 
+                                            size="mini" 
+                                            round>
+                                            {{ $t('models.resident.relation.add_files') }}
+                                    </el-button>
+                            </template>
+                            <relation-list
+                                :actions="mediaActions"
+                                :columns="mediaColumns"
+                                :show-header="false"
+                                :filterValue="model.id"
+                                fetchAction="getResidentMedia"
+                                filter="resident_id"
+                                v-if="model.id"
+                                @delete-media="deleteMedia"
+                            />
+                        </card> -->
                     </el-col>
                 </el-row>
             </el-form>
@@ -224,22 +248,22 @@
                                 :used_units="used_units"/>
             </div>
         </ui-drawer> -->
-        <el-dialog :close-on-click-modal="true" :title="editingRelation ? $t('models.resident.relation.new') : $t('models.resident.relation.edit')"
-                    :visible.sync="visibleDrawer"
+        <el-dialog :close-on-click-modal="true" :title="editingRelation ? $t('models.resident.relation.edit') : $t('models.resident.relation.new')"
+                    :visible.sync="visibleRelationDialog"
                     v-loading="loading.state" width="30%">
-            <div class="content" v-if="visibleDrawer">
+            <div class="content" v-if="visibleRelationDialog">
                 <relation-form v-if="editingRelation" 
                                 mode="edit" 
                                 :data="editingRelation" 
                                 :resident_type="model.type" 
-                                :visible.sync="visibleDrawer" 
+                                :visible.sync="visibleRelationDialog" 
                                 :edit_index="editingRelationIndex" 
                                 @update-relation="updateRelation"
                                 @delete-relation="deleteRelation" 
                                 :used_units="used_units"/>
                 <relation-form v-else mode="add" 
                                 :resident_type="model.type" 
-                                :visible.sync="visibleDrawer" 
+                                :visible.sync="visibleRelationDialog" 
                                 @add-relation="addRelation" 
                                 @delete-relation="deleteRelation"
                                 :used_units="used_units"/>
@@ -397,4 +421,15 @@
         margin-bottom: 15px;
     }
 
+    /deep/ .el-dialog {
+        width: 50% !important;
+
+        .el-dialog__body {
+            padding-top: 0;
+        }
+        
+        .el-dialog__footer {
+            padding: 0;
+        }
+    }
 </style>

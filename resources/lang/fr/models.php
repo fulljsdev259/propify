@@ -124,7 +124,11 @@ return [
                 'active' => 'Des relations actives',
                 'inactive' => 'Relations inactives',
             ],
-            'type_validation_error' => "On dirait que vous avez déjà ajouté des relations, supprimez-les d'abord et vous pourrez ensuite changer le type de résident."
+            'type_validation_error' => "On dirait que vous avez déjà ajouté des relations, supprimez-les d'abord et vous pourrez ensuite changer le type de résident.",
+            'placeholder' => [
+                'type' => 'Choisir le type de relation'
+            ],
+            'add_files' => 'Dokumente hinzufügen',
         ],       
         'status' => [
             "label" => "Statut",
