@@ -46,6 +46,17 @@ class FilterByRelatedCriteria implements CriteriaInterface
             $model->has('building');
         }
 
+        $units = $this->request->get('units', null);
+        if ($units) {
+            $model->where(function ($q) {
+                $q->whereHas('building', function ($q) {
+                    $q->has('units');
+                })->orWhereHas('quarter', function ($q) {
+                    $q->has('units');
+                });
+            });
+        }
+
 
         return $model;
     }
