@@ -162,11 +162,11 @@
                     </div>
 
                     <div v-else-if="column.type === 'assignProviderManagerAvatars'">
-                        <el-tooltip
+                        <!-- <el-tooltip
                                 :content="`${scope.row.name}`"
                                 class="item"
                                 effect="light" placement="top"
-                        >
+                        > -->
                             <avatar :size="30"
                                     :src="'/' + scope.row.avatar"
                                     v-if="scope.row.avatar"></avatar>
@@ -175,7 +175,12 @@
                                     color="#fff"
                                     :username="scope.row.name"
                                     v-if="!scope.row.avatar"></avatar>
-                        </el-tooltip>
+                        <!-- </el-tooltip> -->
+                    </div>
+
+                    <div v-else-if="column.type === 'assignProviderManagerFunctions'">
+                        {{scope.row.type == "provider" ? $t(`models.service.category.${$constants.serviceProviders.category[scope.row.function]}`)  : ''}}
+                        {{scope.row.type == "manager" ? $t(`general.assignment_types.${scope.row.function}`) : ''}}
                     </div>
 
                     <div v-else-if="column.type === 'unitResidentAvatar'">
@@ -259,7 +264,7 @@
                     </template>
                 </template>
             </el-table-column>
-            <!-- <el-table-column
+            <el-table-column
                 :key="index"
                 :width="action.width"
                 align="right"
@@ -308,8 +313,8 @@
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
-            </el-table-column> -->
-            <el-table-column
+            </el-table-column>
+            <!-- <el-table-column
                 :key="index"
                 :width="action.width"
                 align="right"
@@ -329,7 +334,7 @@
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
         <div v-if="meta.current_page < meta.last_page">
             <el-button @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>
@@ -395,7 +400,6 @@
         async created() {
             if (!this.fetchStatus) {
                 this.list = this.addedAssigmentList;
-                console.log(this.list)
             } else {
                 await this.fetch();
             }
@@ -467,10 +471,6 @@
                 } finally {
                     this.loading = false;
                 }
-
-                console.log('fetchAction', this.fetchAction)
-
-                console.log('list', this.list)
             },
             unitsTypeLabelMap() {
                 this.list.map((unit) => {
@@ -486,12 +486,10 @@
                 }
             },
             changeCommand(val) {
-                console.log(val)
                 var res = val.split(" ");
                 this.$emit(res[0], res[1])
             },
             handleRowClick(item) {
-                console.log(item);
             }
         }
     }
