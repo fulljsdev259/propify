@@ -326,6 +326,7 @@ class UtilsAPIController extends AppBaseController
         $result = [
             'title' => PropertyManager::Title,
             'type' => PropertyManager::Type,
+			'status' => PropertyManager::Status,
         ];
 
         return $result;
