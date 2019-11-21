@@ -137,10 +137,21 @@ export default (config = {}) => {
                 
             },
             editRelation(index) {
-                this.editingRelation = this.model.relations[index];
-                this.editingRelationIndex = index;
-                this.visibleDrawer = true;
-                this.visibleRelationDialog = true;
+                if(this.model.relations[index].garant == 1) {
+                    console.log('garant')
+                    return this.$router.push({
+                        name: 'adminResidentsEdit',
+                        params: {
+                            id: this.model.relations[index].resident_id
+                        }
+                    });
+                }
+                else {
+                    this.editingRelation = this.model.relations[index];
+                    this.editingRelationIndex = index;
+                    this.visibleDrawer = true;
+                    this.visibleRelationDialog = true;
+                }
             },
             updateRelation(index, params) {
                 this.$set(this.model.relations, index, params);
