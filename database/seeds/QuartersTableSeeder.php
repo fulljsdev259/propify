@@ -18,6 +18,7 @@ class QuartersTableSeeder extends Seeder
         for ($i = 1; $i <= 10; $i++) {
             $quarter = factory(App\Models\Quarter::class)->create([
                 'name' => 'Quarter ' . $i,
+                'types' => [array_rand(\App\Models\Quarter::Type)]
             ]);
         }
     }
