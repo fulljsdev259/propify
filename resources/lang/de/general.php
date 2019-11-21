@@ -111,8 +111,8 @@ return [
     'city' => 'Ort',
     'state' => 'Kanton',
     'street' => 'Strasse',
-    'house_num' => 'Hausnummer',
-    'internal_quarter_id' => 'Interne Projekt-ID',
+    'house_num' => 'Nr.',
+    'internal_quarter_id' => 'Projektnummer',
     'zip' => 'PLZ',
     'content' => 'Inhalt',
     'none' => 'Nichts gewählt',
@@ -194,6 +194,7 @@ return [
         'managers' => 'Verantwortlich',
         'buildings' => 'Objekte',
         'buildings_and_quarters' => 'Objekte/bearbeiten',
+        'relations' => 'Beziehungen'
     ],
     'email' => 'E-Mail',
     'email_validation' => [

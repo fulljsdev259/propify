@@ -10,7 +10,7 @@ export default {
         },
         async get ({state, commit}, params) {
             const {data} = await this._vm.axios.get('relations', {params})
-            resolve(data.data)
+            return data.data
         },
         async create ({state, commit}, params) {
             const {data} = await this._vm.axios.post('relations', params, {showMessage: true})

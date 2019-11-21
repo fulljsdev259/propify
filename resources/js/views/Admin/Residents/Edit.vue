@@ -265,10 +265,10 @@
                                         <el-row :gutter="20">
                                             <h3 class="chart-card-header">
                                                 <i class="icon-handshake-o ti-user icon "/>
-                                                    &nbsp;{{ $t('models.resident.relation.title') }}
+                                                    &nbsp;{{ $t('general.box_titles.relations') }}
                                                 <el-button style="float:right" 
                                                         type="primary" 
-                                                        @click="toggleDrawer" 
+                                                        @click="showRelationDialog" 
                                                         icon="icon-plus" 
                                                         size="mini" 
                                                         round>
@@ -287,17 +287,30 @@
                                 </el-card>
                             </el-col>
                             <el-col :md="12">
-                                <el-card>
-                                    <div slot="header" class="clearfix">
-                                        <span>{{ $t('models.resident.relation.relation_pdf') }}</span>
-                                    </div>
+                                <el-card class="chart-card">
+                                    <el-row :gutter="20">
+                                        <h3 class="chart-card-header">
+                                                &nbsp;{{ $t('general.box_titles.files') }}
+                                            <el-button style="float:right" 
+                                                    type="primary" 
+                                                    @click="showMediaDialog" 
+                                                    icon="icon-plus" 
+                                                    size="mini" 
+                                                    round>
+                                                    {{ $t('models.resident.relation.add_files') }}
+                                            </el-button>
+                                        </h3>
+                                        
+                                    </el-row>
                                     <relation-list
                                         :actions="mediaActions"
                                         :columns="mediaColumns"
+                                        :show-header="false"
                                         :filterValue="model.id"
                                         fetchAction="getResidentMedia"
                                         filter="resident_id"
                                         v-if="model.id"
+                                        @delete-media="deleteMedia"
                                     />
                                 </el-card>
                             </el-col>
@@ -341,17 +354,17 @@
                                 :used_units="used_units"/>
                 </div>
             </ui-drawer> -->
-            <el-dialog :close-on-click-modal="true" :title="$t('models.resident.relation.title')"
-                    :visible.sync="visibleDrawer"
+            <el-dialog :close-on-click-modal="true" :title="editingRelation ? $t('models.resident.relation.edit') : $t('models.resident.relation.new')"
+                    :visible.sync="visibleRelationDialog"
                     v-loading="loading.state" width="30%">
-                <div class="content" v-if="visibleDrawer">
+                <div class="content" v-if="visibleRelationDialog">
                     <relation-form v-if="editingRelation" 
                                 :hide-building-and-units="false" 
                                 mode="edit" 
                                 :data="editingRelation" 
                                 :resident_type="model.type" 
                                 :resident_id="model.id" 
-                                :visible.sync="visibleDrawer" 
+                                :visible.sync="visibleRelationDialog" 
                                 :edit_index="editingRelationIndex" 
                                 @update-relation="updateRelation"
                                 @delete-relation="deleteRelation"
@@ -360,10 +373,67 @@
                                 mode="add" 
                                 :resident_type="model.type" 
                                 :resident_id="model.id" 
-                                :visible.sync="visibleDrawer" 
+                                :visible.sync="visibleRelationDialog" 
                                 @add-relation="addRelation" 
                                 @delete-relation="deleteRelation"
                                 :used_units="used_units"/>
+                </div>
+                <span class="dialog-footer" slot="footer">
+                    <!-- <el-button @click="closeModal" size="mini">{{$t('models.building.cancel')}}</el-button>
+                    <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_managers')}}</el-button> -->
+                </span>
+            </el-dialog>
+
+            <el-dialog :close-on-click-modal="true" :title="$t('general.box_titles.files')"
+                    :visible.sync="visibleMediaDialog"
+                    v-loading="loading.state" width="30%">
+                <div class="content" v-if="visibleMediaDialog">
+                    <el-table
+                        :data="model.media"
+                        style="width: 100%"
+                        v-if="model.media.length"
+                        class="relation-file-table"
+                        >
+                        <el-table-column
+                            :label="$t('models.resident.relation.filename')"
+                            prop="name"
+                        >
+                            <template slot-scope="scope">
+                                <a v-if="scope.row.url" :href="scope.row.url" target="_blank"><strong>{{scope.row.name}}</strong></a>
+                                <span v-else><strong>{{scope.row.name}}</strong></span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            align="right"
+                        >
+                            <template slot-scope="scope">
+                                <el-tooltip
+                                    :content="$t('general.actions.delete')"
+                                    class="item" effect="light" 
+                                    placement="top-end">
+                                        <el-button @click="deletePDFfromRelation(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
+                                </el-tooltip>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+
+                    <el-alert
+                        :title="$t('models.resident.relation.pdf_only_desc')"
+                        type="info"
+                        show-icon
+                        :closable="false"
+                    >
+                    </el-alert>
+
+                    <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".pdf" drag multiple/>
+                    <ui-divider style="margin-top: 16px;"></ui-divider>
+                    <div class="relation-form-actions">
+                        <div class="button-group">
+                            <el-button type="default" @click="closeMediaDialog" icon="icon-cancel" round>{{$t('general.actions.close')}}</el-button>
+                            <el-button type="primary" @click="uploadMedia" icon="icon-floppy" round>{{$t('general.actions.save')}}</el-button>
+                            
+                        </div>
+                    </div>
                 </div>
                 <span class="dialog-footer" slot="footer">
                     <!-- <el-button @click="closeModal" size="mini">{{$t('models.building.cancel')}}</el-button>
@@ -391,6 +461,7 @@
     import EditActions from 'components/EditViewActions';
     import SelectLanguage from 'components/SelectLanguage';
     import RelationList from 'components/RelationListing';
+    import UploadRelation from 'components/UploadRelation';
     import { EventBus } from '../../../event-bus.js';
 
     const mixin = AdminResidentsMixin({
@@ -411,7 +482,8 @@
             SelectLanguage,
             RelationForm,
             RelationListTable,
-            RelationList
+            RelationList,
+            UploadRelation
         },
         data() {
             return {
@@ -420,18 +492,29 @@
                     type: 'residentMediaName',
                     prop: 'name',
                     label: 'general.name'
+                }, {
+                    width: '100px',
+                    prop: 'created_by',
+                    label: 'general.date'
                 }],
                 mediaActions: [{
                     width: 70,
-                    buttons: [/*{
-                        icon: 'ti-search',
-                        title: 'general.actions.edit',
-                        tooltipMode: true
-                    }*/]
+                    dropdowns: [{
+                        key: 'delete-media',
+                        title: 'general.actions.delete'
+                    }],
                 }]
             }
         },
         methods: {
+            addPDFtoRelation(file) {
+                //let toUploadRelationFile = {...file, url: URL.createObjectURL(file.raw)}
+                let toUploadRelationFile = {media : file.src, name: file.raw.name}
+                this.model.media.push(toUploadRelationFile)
+            },
+            deletePDFfromRelation(index) {
+                this.model.media.splice(index, 1)
+            },
             pickFile(){
                 this.$refs.userImage.click()
             },
@@ -450,18 +533,32 @@
             cropped(d) {
                 this.avatar = d
             },
-            ...mapActions(['deleteMediaFile', 'downloadResidentCredentials', 'sendResidentCredentials']),
-            deleteMedia() {
-                this.deleteMediaFile({
-                    id: this.model.id,
-                    media_id: this.lastMedia.id
-                }).then(r => {
-                    displaySuccess(r);
-
-                    this.model.media.splice(-1, 1);
-                }).catch(err => {
+            ...mapActions(['deleteMediaFile', 'downloadResidentCredentials', 'sendResidentCredentials', 'uploadMediaFile']),
+            async deleteMedia(index) {
+                console.log(index)
+                try {
+                    let res = await this.deleteMediaFile({
+                        id: this.model.id,
+                        media_id: this.model.media[index].id
+                    })
+                    console.log(res)
+                    if(res.success) {
+                        displaySuccess(res);
+                        this.model.media.splice(index, 1);
+                    }
+                } catch( err ) {
                     displayError(err);
-                });
+                }
+                // this.deleteMediaFile({
+                //     id: this.model.id,
+                //     media_id: this.lastMedia.id
+                // }).then(r => {
+                //     displaySuccess(r);
+
+                //     this.model.media.splice(-1, 1);
+                // }).catch(err => {
+                //     displayError(err);
+                // });
             },
             requestEditView(request) {
                 this.$router.push({
@@ -706,6 +803,10 @@
 
     /deep/ .el-dialog {
         width: 50% !important;
+
+        .el-dialog__body {
+            padding-top: 0;
+        }
 
         .el-dialog__footer {
             padding: 0;

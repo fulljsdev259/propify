@@ -78,6 +78,8 @@ return [
         'contact_info_card' => 'Contact details',        
         'relation' => [
             'title' => 'Relation',
+            'new' => 'New Relation',
+            'edit' => 'Edit Relation',
             'end_date' => 'End date',
             'start_date' => 'Start date',
             'type' => 'Type',            
@@ -122,7 +124,11 @@ return [
                 'active' => 'Active relations',
                 'inactive' => 'Inactive relations',
             ],
-            'type_validation_error' => "Looks like you've already added relation(s), first delete them and then you will be able to change resident type."
+            'type_validation_error' => "Looks like you've already added relation(s), first delete them and then you will be able to change resident type.",
+            'placeholder' => [
+                'type' => 'Choose type of relation'
+            ],
+            'add_files' => 'Dokumente hinzufügen',
         ],      
         'status' => [
             'label' => 'Status',
@@ -158,6 +164,7 @@ return [
             'label' => 'Type',
             'tenant' => 'Tenant',
             'owner' => 'Owner',
+            'former_resident' => 'Former Resident'
         ],
         'tenant_type' => [
             'label' => 'Tenant Type',

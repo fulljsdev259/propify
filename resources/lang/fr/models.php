@@ -78,6 +78,8 @@ return [
         "contact_info_card" => "Coordonnées de contact",
         "relation" => [
             "title" => "Relation",
+            'new' => 'Nouvelle relation',
+            'edit' => 'Modifier la relation',
             "end_date" => "Date de fin",
             "start_date" => "Date de début",
             'type' => 'Type',            
@@ -122,7 +124,11 @@ return [
                 'active' => 'Des relations actives',
                 'inactive' => 'Relations inactives',
             ],
-            'type_validation_error' => "On dirait que vous avez déjà ajouté des relations, supprimez-les d'abord et vous pourrez ensuite changer le type de résident."
+            'type_validation_error' => "On dirait que vous avez déjà ajouté des relations, supprimez-les d'abord et vous pourrez ensuite changer le type de résident.",
+            'placeholder' => [
+                'type' => 'Choisir le type de relation'
+            ],
+            'add_files' => 'Dokumente hinzufügen',
         ],       
         'status' => [
             "label" => "Statut",
@@ -158,6 +164,7 @@ return [
             'label' => 'Type',
             'tenant' => 'Locataire',
             'owner' => 'Propriétaire',
+            'former_resident' => 'Ancien résident'
         ],
         'tenant_type' => [
             'label' => 'Type de locataire',

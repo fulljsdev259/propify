@@ -194,6 +194,7 @@ return [
         'managers' => 'Dirigenti',
         'buildings' => 'Edifici',
         'buildings_and_quarters' => 'Edifici/contrade',
+        'relations' => 'Relations'
     ],
     'email' => 'eMail',
     'email_validation' => [

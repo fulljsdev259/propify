@@ -50,6 +50,8 @@ export default (config = {}) => {
                 },
                 original_type: null,
                 visibleDrawer: false,
+                visibleRelationDialog: false,
+                visibleMediaDialog: false,
                 editingRelation: null,
                 editingRelationIndex: -1,
                 validationRules: {
@@ -128,7 +130,8 @@ export default (config = {}) => {
                 }
                 else {
                     const resp = await this.$store.dispatch('relations/get', {resident_id : this.model.id});
-                    this.model.relations = resp
+                    console.log('get relations', resp.data)
+                    this.model.relations = resp.data
                 }
                 
             },
@@ -136,6 +139,7 @@ export default (config = {}) => {
                 this.editingRelation = this.model.relations[index];
                 this.editingRelationIndex = index;
                 this.visibleDrawer = true;
+                this.visibleRelationDialog = true;
             },
             updateRelation(index, params) {
                 this.$set(this.model.relations, index, params);
@@ -150,11 +154,29 @@ export default (config = {}) => {
                     }
                     this.model.relations.splice(index, 1)
                     this.visibleDrawer = false;
+                    this.visibleRelationDialog = false;
                 }).catch(() => {
                 });
             },
             toggleDrawer() {
                 this.visibleDrawer = true;
+            },
+            showRelationDialog() {
+                this.visibleRelationDialog = true;
+            },
+            showMediaDialog() {
+                this.visibleMediaDialog = true;
+            },
+            closeMediaDialog() {
+                this.visibleMediaDialog = false;
+            },
+            uploadMedia() {
+                this.model.media.map(item => {
+                    if(!item.url) {
+                        console.log(item)
+                        this.uploadMediaFile(item)
+                    }
+                })
             },
             ...mapActions(['getCountries', 'uploadMediaFile']),
         },
@@ -172,6 +194,15 @@ export default (config = {}) => {
         },
         watch: {
             'visibleDrawer': {
+                immediate: false,
+                handler (state) {
+                    // TODO - auto blur container if visible is true first
+                    if (!state) {
+                        this.editingRelation = null
+                    }
+                }
+            },
+            'visibleRelationDialog': {
                 immediate: false,
                 handler (state) {
                     // TODO - auto blur container if visible is true first
@@ -209,17 +240,17 @@ export default (config = {}) => {
 
                                 try {
 
-                                    resident.status = 2
-                                    const today = new Date().getTime();
-                                    resident.relations.forEach(relation => {
-                                        const start_date = new Date(relation.start_date).getTime();
-                                        const end_date = new Date(relation.end_date).getTime();
-                                        if(relation.duration == 1 && start_date <= today )
-                                            resident.status = 1
-                                        if(relation.duration == 2 && start_date <= today && end_date > today)
-                                            resident.status = 1
+                                    // resident.status = 2
+                                    // const today = new Date().getTime();
+                                    // resident.relations.forEach(relation => {
+                                    //     const start_date = new Date(relation.start_date).getTime();
+                                    //     const end_date = new Date(relation.end_date).getTime();
+                                    //     if(relation.duration == 1 && start_date <= today )
+                                    //         resident.status = 1
+                                    //     if(relation.duration == 2 && start_date <= today && end_date > today)
+                                    //         resident.status = 1
                                             
-                                    })
+                                    // })
                                     const resp = await this.createResident({
                                         user: {
                                             email,

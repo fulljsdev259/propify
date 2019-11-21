@@ -1,30 +1,27 @@
 <template>
-    <div class="custom-select">
+    <div class="custom-select" ref="multiSelect">
        <el-dropdown trigger="click" placement="bottom" @visible-change="handleVisibleChange">
             <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]">
-                <span v-if="findSelectedOne.count === 0">{{ filter.name }}</span>
-                <el-tag 
-                    v-else
-                    size="mini"
-                    :closable="findSelectedOne.count !== 1"
-                    @close="selectItem(findSelectedOne.index, true)"
-                >
-                    {{ ` ${getLanguageStr(findSelectedOne.label)}` }}
-                </el-tag>
-                
-                <el-tag
-                    v-if="findSelectedOne.count > 1"
-                    size="mini"    
-                    class="select-count"
-                >
-                    +{{ findSelectedOne.count - 1 }}
-                </el-tag>
-            </el-button>
-            <el-button 
-                v-if="findSelectedOne.count != 0" 
-                icon="el-icon-close"
-                class="close-button" 
-                @click.prevent.stop="handleReset(true)">
+                <span v-if="findSelectedOne.count === 0">{{ name }}</span>
+                <template v-else>
+                    <el-tag 
+                        :key="item.id"
+                        size="mini"
+                        closable
+                        @close="selectItem(item.index, true)"
+                        v-for="(item, index) in findSelectedOne.items"
+                    >
+                        {{ ` ${getLanguageStr(item.name)}` }}
+                    </el-tag>
+                    
+                    <el-tag
+                        v-if="findSelectedOne.count > findSelectedOne.items.length"
+                        size="mini"    
+                        class="select-count"
+                    >
+                        +{{ findSelectedOne.count - findSelectedOne.items.length }}
+                    </el-tag>
+                </template>
             </el-button>
             <el-dropdown-menu slot="dropdown">
                 <el-input
@@ -47,7 +44,7 @@
                 <div class="dropdown-container" v-if="items.length">
                     
                     <div
-                        :key="`${filter.name}${item.name}${item.id}selected` + index"
+                        :key="`${name}${item.name}${item.id}selected` + index"
                         class="dropdown-item" 
                         :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
                         @click="selectItem(index)"
@@ -67,6 +64,7 @@
                 </div>
             </el-dropdown-menu>
         </el-dropdown>
+        <span :id="type + name" style="visibility: hidden" ></span>
     </div>
 </template>
 <script>
@@ -83,9 +81,17 @@
             }
         },
         props: {
-          filter: {
-              type: Object,
-              default: () => {}
+          type: {
+              type: String,
+              default: () => ''
+          },
+          name: {
+              type: String,
+              default: () => ''
+          },
+          data: {
+              type: Array,
+              default: () => [],
           },
           selectedOptions: {
               type: Array,
@@ -94,6 +100,9 @@
           searchBar: {
               type: Boolean,
               default: () => true
+          },
+          maxSelect: {
+              type: Number
           }
         },
         components: {
@@ -104,21 +113,25 @@
                 return this.options.filter((option) => this.search ==='' || this.search !== '' && option.name.includes(this.search));
             },
             findSelectedOne() {
-                let first_item = null;
+                let result = [];
                 let count = 0;
-                let idx = -1;
+                let totalWidth = 0;
                 this.items.forEach((item, index) => {
                     if(item.selected) {
+                        let label = this.getLanguageStr(item.name);
+                        let width = this.getTextWidth(label);
                         count ++;
-                        if(count == 1) {
-                            first_item = item;
-                            idx = index;
+                        if(width + totalWidth < this.$refs.multiSelect.clientWidth) {
+                            result.push({
+                                index: index,
+                                name:label
+                            });
+                            totalWidth += width;
                         }
                     }
                 });
                 return { 
-                    label:first_item?first_item.name:null,
-                    index: idx, 
+                    items: result.length >0?result:null,
                     count: count
                 };
             },
@@ -142,6 +155,7 @@
                             unselected.push(item);
                         }
                     });
+
                     unselected.sort((a ,b ) => {
                         return a.id - b.id;
                     });
@@ -166,7 +180,12 @@
                 return result;
             },
             selectItem(index, notifyChange = false) {
-                this.items[index].selected = !this.items[index].selected;
+                if(this.maxSelect) {
+                    this.items.map(item => item.selected = false)
+                    this.items[index].selected = true
+                }
+                else
+                    this.items[index].selected = !this.items[index].selected;
                 if(notifyChange)
                     this.handleSelect();
             },
@@ -204,28 +223,45 @@
             },
             getLanguageStr(str) {
                 let result = str;
-                if(this.filter.key == 'category_id') {
+                if(this.type == 'category_id') {
                     result = this.$t(`models.request.category_list.${str}`);
-                } else if(this.filter.key == 'role') {
+                } else if(this.type == 'role') {
                     result = this.$t(`general.roles.${str}`)
                 }
                 return result;
             },
+            getTextWidth(text) { 
+  
+                var spanText = document.getElementById(this.type + this.name);
+                spanText.style.position = 'absolute'; 
+                spanText.style.left = '0';
+                spanText.style.whiteSpace = 'no-wrap'; 
+                spanText.innerHTML = text; 
+    
+                var width = Math.ceil(spanText.clientWidth) + 17; 
+                return width;
+            },
+            fitWidth() {
+                this.column.select.data.map((item) => {
+                    if(this.vModel == item.id) {
+                        this.maxWidth = this.getTextWidth(item.name);
+                    }
+                });
+            },
             initFilter() {
                 this.items = [];
                 this.originItems = [];
-                this.options = this.filter.data;
-                console.log(this.options)
+                this.options = this.data;
                 if(this.options.length) {
                     this.options.forEach((option) => {
                         this.items.push({
                             id: option.id,
-                            name: option[this.filter.key],
+                            name: option[this.type],
                             selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
                         });
                         this.originItems.push({
                             id: option.id,
-                            name: option[this.filter.key],
+                            name: option[this.name],
                             selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
                         })
                     });
@@ -236,7 +272,7 @@
 
         },
         updated() {
-            if(JSON.stringify(this.options) !== JSON.stringify(this.filter.data))
+            if(JSON.stringify(this.options) !== JSON.stringify(this.data))
                 this.initFilter();
         }
     }
@@ -246,7 +282,7 @@
         width: 100%;
         position: relative;
         .el-button {
-            padding: 0 10px;
+            padding: 0 2.5px;
             width: 100%;
             text-align: left;
             color: var(--color-text-primary);
@@ -265,10 +301,15 @@
             }
 
             span.el-tag {
-                padding: 0 !important;
-                background-color: transparent;
-                border-color: transparent;
+                padding: 0 5px !important;
+                &:not(:last-of-type) {
+                    margin-right: 2.5px;
+                }
+                background-color: var(-color-primary);
+                border-color: var(-color-primary);
                 color: var(--color-white);
+                line-height: 35px;
+                height: 35px;
                 :global(i.el-tag__close) {
                     right: 0;
                     line-height: 1.4;
@@ -282,33 +323,18 @@
                     }
                 }
                 &.select-count {
-                    padding: 0 3px !important;
+                    position: absolute;
+                    right: 0;
+                    padding: 0 7px !important;
                     text-align: center;
                     border-radius: 4px;
                     border: 1px solid var(--color-white);
                 }
             }
             &.selected-button {
-                background-color: var(--color-primary);
-                padding-right: 45px;
+                background-color: var(--color-primary-lighter);
             }
 
-        }
-        .close-button {
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: auto;
-            margin: 0;
-            padding: 0 7px;
-            font-size: 20px;
-            border-radius: 0 4px 4px 0;
-            border-left: 1px solid var(--color-white);
-            background-color: transparent;
-            color: white;
-            &:hover {
-                background-color: transparent;
-            }
         }
     }
     .el-dropdown-menu {

@@ -194,6 +194,7 @@ return [
         'managers' => 'Managers',
         'buildings' => 'Buildings',
         'buildings_and_quarters' => 'Buildings/quarters',
+        'relations' => 'Relations'
     ],
     'email' => 'Email',
     'email_validation' => [

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasCategoryMediaTrait;
+use App\Traits\RelationRelation;
 use App\Traits\RequestRelation;
 use App\Traits\UniqueIDFormat;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -160,7 +161,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  */
 class Unit extends AuditableModel implements HasMedia
 {
-    use SoftDeletes, UniqueIDFormat, HasCategoryMediaTrait, RequestRelation;
+    use SoftDeletes, UniqueIDFormat, HasCategoryMediaTrait, RequestRelation, RelationRelation;
 
     public $table = 'units';
 
@@ -265,14 +266,6 @@ class Unit extends AuditableModel implements HasMedia
     public function requests()
     {
         return $this->hasManyThrough(Request::class, Relation::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function relations()
-    {
-        return $this->hasMany(Relation::class);
     }
 
     public function getSqMeterAttribute($attribute)
