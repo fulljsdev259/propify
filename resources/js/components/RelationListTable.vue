@@ -53,6 +53,7 @@
             <el-table-column
                 :label="$t('models.resident.type.label')"
                 prop="type"
+                :width="120"
             >
                 <template slot-scope="scope">
                     {{translateRelationType(scope.row.type)}}
@@ -61,6 +62,7 @@
             <el-table-column
                 :label="$t('models.resident.quarter.name')"
                 prop="quarter.name"
+                :min-width="130"
             >
                  <template slot-scope="scope">
                     {{ scope.row.quarter ? scope.row.quarter.internal_quarter_id + ' ' + scope.row.quarter.name : ''}}
@@ -78,10 +80,12 @@
                 :label="$t('models.resident.unit.name')"
                 v-if="!hideUnit"
                 prop="unit.name"
+                :min-width="120"
             >
             </el-table-column>
             <el-table-column
                 :label="$t('models.resident.status.label')"
+                :width="30"
             >
                 <template slot-scope="scope">
                      <el-tooltip

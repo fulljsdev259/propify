@@ -26,7 +26,7 @@
                 <el-form-item :label="$t('models.resident.relation.type')"
                             prop="type"
                             class="label-block">
-                    <el-select :placeholder="$t('models.resident.type.label')"
+                    <el-select :placeholder="$t('models.resident.relation.placeholder.type')"
                                 style="display: block;"
                                 v-model="model.type">
                         <el-option

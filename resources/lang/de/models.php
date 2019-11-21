@@ -82,7 +82,7 @@ return [
             'edit' => 'Beziehung bearbeiten',
             'end_date' => 'Enddatum',
             'start_date' => 'Startdatum',
-            'type' => 'Typ',            
+            'type' => 'Beziehung',            
             'duration' => 'Vertragslaufzeit',
             'durations' => [
                 'unlimited' => 'Unbefristet',
@@ -125,7 +125,11 @@ return [
                 'inactive' => 'Inaktive Beziehungen',
                 'canceled' => 'Gekündigte Beziehungen',
             ],
-            'type_validation_error' => "Sieht so aus, als hätten Sie bereits Verträge hinzugefügt, zuerst löschen und dann können Sie den Bewohnertyp ändern."
+            'type_validation_error' => "Sieht so aus, als hätten Sie bereits Verträge hinzugefügt, zuerst löschen und dann können Sie den Bewohnertyp ändern.",
+            'placeholder' => [
+                'type' => 'Art der Beziehung wählen'
+            ],
+            'add_files' => 'Dokumente hinzufügen',
         ],
         'status' => [
             'label' => 'Status',
@@ -161,7 +165,7 @@ return [
             'label' => 'Beziehung',
             'tenant' => 'Mieter',
             'owner' => 'Eigentümer',
-            'former_resident' => 'Ehemaliger Einwohner'
+            'former_resident' => 'Ehemaliger Einwohner',
         ],
         'tenant_type' => [
             'label' => 'Mietertyp',
