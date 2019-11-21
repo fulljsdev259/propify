@@ -92,7 +92,8 @@
                         :content="$t('models.resident.relation.status.' + constants.relations.status[scope.row.status])"
                         class="item" effect="light" 
                         placement="top-end">
-                        <i class="icon-circle" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]"></i>
+                        <span class="status-icon" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]">&nbsp;</span>
+                        <!-- <i class="icon-circle" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]"></i> -->
                      </el-tooltip>
                     <!-- {{ constants.relations.status[scope.row.status] ? $t('models.resident.relation.status.' + constants.relations.status[scope.row.status]) : ''}} -->
                 </template>
@@ -220,17 +221,31 @@
             cursor: pointer;
             width: 100%;
         }
+
+        .status-icon {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            display: block;
+        }
+
         .icon-active {
             color: #6b0036;
-            text-shadow: 0px 0px 2px;
+            background: #6b0036;
+            border: 3px solid #f5c3dc;
+            border-radius: 50%;
         }
         .icon-inactive {
             color: #878810;
-            text-shadow: 0px 0px 2px;
+            background: #878810;
+            border: 3px solid #f4f5bc;
+            border-radius: 50%;
         }
         .icon-canceled {
             color: #c8a331;
-            text-shadow: 0px 0px 2px;
+            background: #c8a331;
+            border: 3px solid #f8edcd;
+            border-radius: 50%;
         }
     }
 </style>
