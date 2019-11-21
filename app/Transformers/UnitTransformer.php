@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Quarter;
+use App\Models\Relation;
 use App\Models\Unit;
 
 /**
@@ -94,6 +95,20 @@ class UnitTransformer extends BaseTransformer
 
         return $response;
     }
+
+    /**
+     * @param Unit $model
+     * @return array
+     */
+    public function transformForIndex(Unit $model)
+    {
+        $response = $this->transform($model);
+        $relations = collect($response['relations'] ?? []);
+        $latestRelation = $relations->sortByDesc('start_date')->first();
+        $response['status'] = $latestRelation['status'] ?? Relation::StatusInActive;
+        return $response;
+    }
+
 
     /**
      * Transform Request to Address entity.

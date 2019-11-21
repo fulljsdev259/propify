@@ -309,6 +309,27 @@
                     </el-dropdown>
                 </template>
             </el-table-column> -->
+            <el-table-column
+                :key="index"
+                :width="action.width"
+                align="right"
+                v-for="(action, index) in actions"
+            >
+                <template slot-scope="scope">
+                     <el-dropdown size="small" trigger="click" placement="bottom-end" @command="changeCommand" v-if="action.dropdowns">
+                        <el-tooltip ref="visibility-button-tooltip" :content="$t('general.actions.label')">
+                            <el-button type="text" class="el-dropdown-link">
+                                <i class="icon-ellipsis-vert"></i>
+                            </el-button>
+                        </el-tooltip>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item v-for="(item, index) in action.dropdowns" :key="item.key" :command="item.key + ' ' + scope.$index" :divided="!! index">
+                                {{$t(`${item.title}`)}}
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </template>
+            </el-table-column>
         </el-table>
         <div v-if="meta.current_page < meta.last_page">
             <el-button @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>
@@ -374,6 +395,7 @@
         async created() {
             if (!this.fetchStatus) {
                 this.list = this.addedAssigmentList;
+                console.log(this.list)
             } else {
                 await this.fetch();
             }
@@ -446,6 +468,10 @@
                 } finally {
                     this.loading = false;
                 }
+
+                console.log('fetchAction', this.fetchAction)
+
+                console.log('list', this.list)
             },
             unitsTypeLabelMap() {
                 this.list.map((unit) => {

@@ -33,6 +33,7 @@
                                 :key="key"
                                 :label="$t('models.resident.type.' + value )"
                                 :value="+key"
+                                v-if="key != 3"
                                 v-for="(value, key) in $constants.residents.type">
                         </el-option>
                     </el-select>
@@ -61,7 +62,6 @@
                         :name="quarterFilter.name"
                         :data="quarterFilter.data"
                         :selectedOptions="[model.quarter_id]"
-                        :maxSelect="1"
                         @select-changed="handleSelectChange($event, 'quarter')"
                     >
                     </multi-select>
@@ -381,9 +381,9 @@
                 </el-form-item>
             </el-col>
         </el-row> -->
-        <ui-divider v-if="model.unit_id" content-position="left">
+        <!-- <ui-divider v-if="model.unit_id" content-position="left">
             {{ $t('models.resident.relation.relation_pdf') }}
-        </ui-divider>
+        </ui-divider> -->
         <el-row :gutter="20"  v-if="model.unit_id">
             <el-col :md="24">
                 <el-form-item>
@@ -417,13 +417,13 @@
                     </el-table-column>
                 </el-table>
 
-                <el-alert
+                <!-- <el-alert
                     :title="$t('models.resident.relation.pdf_only_desc')"
                     type="info"
                     show-icon
                     :closable="false"
                 >
-                </el-alert>
+                </el-alert> -->
 
                 <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".pdf" drag multiple/>
                 
@@ -951,6 +951,7 @@
             this.loading = true;
 
             this.quarters = await this.fetchRemoteQuarters();
+            console.log('quarters', this.quarters)
 
             let parent_obj = this
             this.deposit_types = Object.entries(this.$constants.relations.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_types.${label}`)}))
@@ -1176,5 +1177,32 @@ c
         margin-bottom: 10px;
     }
 
-    
+    /deep/ .el-tag {
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 6px;
+        font-size: 12px;
+        
+        margin: 0;
+        padding: 0;
+        padding-left: 10px;
+        padding-right: 20px;
+        height: 30px;
+        line-height: 30px;
+
+        i {
+            color: white;
+            background: transparent;
+            font-size: 17px;
+            font-weight: 600;
+        }
+    }
+
+    .el-dropdown .el-button span.el-tag i.el-tag__close {
+        right: 0;
+        line-height: 1.4;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--color-white);
+    }
 </style>

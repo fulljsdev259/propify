@@ -74,7 +74,7 @@ class ResidentTransformer extends BaseTransformer
 
 
             $response['relations'] = $response['relations'] ?? [];
-            $garantRelationData = (new RelationTransformer())->transformCollection($model->relations);
+            $garantRelationData = (new RelationTransformer())->transformCollection($model->garant_relations);
             foreach ($garantRelationData as $single) {
                 $single['garant'] = 1;
                 $response['relations'][] = $single;

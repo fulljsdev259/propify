@@ -26,7 +26,10 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         $rules = [
-            'name' => 'required|string|max:255',
+            'name' => 'string|max:255', // @TODO delete
+//            'company_name' => 'required|string|max:255', // @TODO uncomment
+//            'first_name' => 'required|string|max:255', // @TODO uncomment
+//            'last_name' => 'required|string|max:255', // @TODO uncomment
             'email' => 'required|string|email|max:255',
             'phone' => 'required|string|max:255',
             'type' => [
@@ -35,7 +38,7 @@ class UpdateRequest extends BaseRequest
             ],
             'category' => [
                 'required',
-                $this->getInRuleByClassConstants(ServiceProvider::ServiceProviderCategory),
+                $this->getInRuleByClassConstants(ServiceProvider::Category),
             ],
         ];
         return $rules;

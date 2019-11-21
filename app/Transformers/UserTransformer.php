@@ -21,14 +21,14 @@ class UserTransformer extends BaseTransformer
      */
     public function transform(User $model)
     {
-        $response =  [
-            'id' => $model->id,
-            'name' => $model->name,
-            'email' => $model->email,
-            'phone' => $model->phone,
-            'avatar' => $model->avatar,
-            'avatar_variations' => $model->avatar_variations
-        ];
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'name',
+            'email',
+            'phone',
+            'avatar',
+            'avatar_variations'
+        ]);
 
         if ($model->relationExists('settings')) {
             $response['settings'] = $model->settings->toArray();

@@ -397,8 +397,9 @@ return [
             "key_service" => "Servizio chiave",
             "caretaker" => "Custode",
             "real_estate_service" => "Servizio immobiliare",
-            'business_person' => 'Unternehmer', // @TODO translate (problem with deepl)
             'tu-gu' => 'TU/GU',
+            'architect' => 'Architetto',
+            'external_real_estate_company' => 'Amministrazione',
         ],
         "contact_details" => "Dati di contatto",
         "user_credentials" => "Credenziali utente",

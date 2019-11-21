@@ -106,7 +106,7 @@ class AppBaseController extends Controller
         $providerIds = $assignees->where('assignee_type', $providerType)->pluck('assignee_id');
         $raw = DB::raw('(select avatar from users where users.id = service_providers.user_id) as avatar, 
                 (select `roles`.name from roles inner join role_user on roles.id = role_user.role_id where role_user.user_id = service_providers.user_id) as role');
-        $providers = ServiceProvider::select('id', 'email', 'category', 'name', 'user_id', $raw)
+        $providers = ServiceProvider::select('id', 'email', 'category', DB::raw('Concat(first_name, " ", last_name) as name'), 'user_id', $raw)
             ->whereIn('id', $providerIds)
             ->get();
 

@@ -137,7 +137,7 @@ class AuditRepository extends BaseRepository
                 return __('models.pinboard.status.' . Pinboard::Status[$fieldvalue]);
             }            
             elseif(($auditable_type == 'provider') && ($fieldname == 'category')){
-                return __('models.service.category.' . ServiceProvider::ServiceProviderCategory[$fieldvalue]);
+                return __('models.service.category.' . ServiceProvider::Category[$fieldvalue]);
             }
             elseif(($auditable_type == 'request') && ($fieldname == 'category_id')){
                 return __('models.request.category_list.' . Request::Category[$fieldvalue]);

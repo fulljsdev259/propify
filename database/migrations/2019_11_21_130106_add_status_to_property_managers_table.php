@@ -26,7 +26,7 @@ class AddStatusToPropertyManagersTable extends Migration
     public function down()
     {
         Schema::table('property_managers', function (Blueprint $table) {
-			$table->drop('status');
+			$table->dropColumn('status');
         });
     }
 }

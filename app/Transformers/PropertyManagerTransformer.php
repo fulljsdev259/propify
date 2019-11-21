@@ -26,6 +26,7 @@ class PropertyManagerTransformer extends BaseTransformer
             'property_manager_format' => $model->property_manager_format,
             'description' => $model->description,
             'title' => $model->title,
+			'status' => $model->status,
             'first_name' => $model->first_name,
             'last_name' => $model->last_name,
             'profession' => $model->profession,
