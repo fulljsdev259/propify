@@ -26,6 +26,8 @@
                                             <el-input type="text" v-model="model.name"  :disabled="!editMode"/>
                                         </el-form-item>
                                     </el-col>
+                                </el-row>
+                                <el-row :gutter="20">
                                     <el-col :md="12">
                                         <el-form-item :label="$t('models.quarter.url')" :rules="validationRules.url"
                                                         prop="url">
@@ -50,15 +52,16 @@
                                                         v-for="type in types">
                                                 </el-option>
                                             </el-select> -->
-                                            <list-filter-select
+                                            <multi-select
                                                 :name="$t('general.placeholders.select')"
                                                 :data="types"
                                                 :disabled="!editMode"
+                                                tagColor="#9E9FA0"
                                                 @select-changed="model.types=$event"
-                                            ></list-filter-select>
+                                            ></multi-select>
                                         </el-form-item>
                                     </el-col>
-                                
+                                </el-row>
                                     
                                     <!-- <el-col :md="12">
                                         <el-form-item class="label-block" :label="$t('models.quarter.count_of_buildings')"
@@ -74,6 +77,7 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col> -->
+                                <el-row :gutter="20">
                                     <el-col :md="6">
                                         <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
                                                     prop="zip">
@@ -207,7 +211,7 @@
                                 :remoteLoading="remoteLoading"
                                 :remoteSearch="remoteSearchAssignees"
                             /> -->
-                            <el-row :gutter="10" id="managerAssignBox">
+                            <el-row id="managerAssignBox">
                                 <el-col id="managerSelect">
                                     <el-select
                                         clearable
@@ -250,8 +254,8 @@
                                     </el-select>
                                 </el-col> -->
                                 <el-col id="managerAssignBtn">
-                                    <el-button :disabled="!toAssign || userAssignmentType == null || userAssignmentType.length == 0" @click="assignUser" class="full-button"
-                                                icon="ti-save" type="primary">
+                                    <el-button :disabled="!toAssign" @click="assignUser" class="full-button assign-button"
+                                                icon="ti-save">
                                         &nbsp;{{$t('general.assign')}}
                                     </el-button>
                                 </el-col>
@@ -526,6 +530,7 @@
     import BuildingFileListTable from 'components/BuildingFileListTable';
     import EditCloseDialog from 'components/EditCloseDialog';
     import ListFilterSelect from 'components/ListFilterSelect';
+    import MultiSelect from 'components/MultiSelect';
 
     export default {
         name: 'AdminRequestsEdit',
@@ -549,6 +554,7 @@
             BuildingFileListTable,
             EditCloseDialog,
             ListFilterSelect,
+            MultiSelect,
         },
         data() {
             return {
@@ -1027,9 +1033,11 @@
     
     #managerAssignBox {
         display: flex;
+        margin-bottom: 20px;
 
         #managerSelect {
             width: 100%;
+            margin-right: 20px;
         }
 
         #managerAssignBtn {
@@ -1141,7 +1149,7 @@
     .workflow-button-bar {
         display: flex;
         justify-content: flex-end;
-        padding: 0 10px 10px;
+        margin-bottom: 10px;
 
         &.edit {
             padding-top: 40px;
@@ -1181,10 +1189,6 @@
         }
     }
 
-    .add-work-flow {
-        padding: 0px 10px;
-    }
-
     .round-btn {
         border-radius: 3px;
     }
@@ -1192,5 +1196,10 @@
     .add-workflow-btn {
         border-radius: 5px;
         padding: 3px;
+    }
+
+    .assign-button {
+        background-color: #3D3F41;
+        color: var(--color-white);
     }
 </style>

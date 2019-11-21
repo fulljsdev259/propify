@@ -28,26 +28,18 @@
                     {{$t('models.building.assign_managers')}}
                 </el-button>
             </template> -->
-            <template v-if="$can($permissions.delete.building)">
-                <el-button 
-                    :disabled="!selectedItems.length" 
-                    @click="batchDeleteBuilding" 
-                    icon="ti-trash" 
-                    size="mini"
-                    class="transparent-button"
-                >
-                    {{$t('general.actions.delete')}}
-                </el-button>
-            </template>
             <template>
-                <el-dropdown placement="bottom" trigger="click">
+                <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
                     <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>Action 1</el-dropdown-item>
-                        <el-dropdown-item>Action 2</el-dropdown-item>
-                        <el-dropdown-item>Action 3</el-dropdown-item>
-                        <el-dropdown-item>Action 4</el-dropdown-item>
-                        <el-dropdown-item>Action 5</el-dropdown-item>
+                        <el-dropdown-item
+                            v-if="$can($permissions.delete.building)"
+                            :disabled="!selectedItems.length" 
+                            icon="ti-trash" 
+                            command="delete"
+                        >
+                          {{$t('general.actions.delete')}}
+                        </el-dropdown-item>
                     </el-dropdown-menu>
                     </el-dropdown>
             </template>
@@ -159,6 +151,9 @@
                     label: 'models.building.building_no',
                     prop: 'address.house_num'
                 }, {
+                    label: 'models.building.type',
+                    prop: ''
+                }, {
                     label: 'models.building.units',
                     prop: 'units_count'
                 }, {
@@ -169,6 +164,7 @@
                 }, {
                     label: 'models.building.request_status',
                     withCounts: true,
+                    width: 230,
                     counts: [
                         {
                             prop: 'requests_count',
@@ -210,6 +206,21 @@
                 },  {
                     label: 'models.building.active_residents_count',
                     prop: 'count_of_apartments_units'
+                },{
+                    label: 'general.filters.status',
+                    withStatus: true,
+                    data: [ {
+                            prop: 'requests_received_count',
+                            background: '#67C23A',
+                            color: '#fff',
+                            label: this.$t('models.request.status.received')
+                        }, {
+                            prop: 'requests_assigned_count',
+                            background: '#ebb563',
+                            color: '#fff',
+                            label: this.$t('models.request.status.assigned')
+                        }
+                    ]
                 },
                 // {
                 //     width: 150,
@@ -253,7 +264,12 @@
                     },{
                         name: this.$t('models.quarter.type'),
                         type: 'select',
-                        key: 'type_id',
+                        key: 'quarter_type',
+                        data: this.types,
+                    },{
+                        name: this.$t('models.building.type'),
+                        type: 'select',
+                        key: 'building_type',
                         data: this.types,
                     },{
                         name: this.$t('general.roles.manager'),
@@ -272,7 +288,10 @@
         },
         methods: {
             ...mapActions(['getPropertyManagers', 'assignManagerToBuilding', 'deleteBuildingWithIds', 'checkUnitRequestWidthIds', 'getQuarters']),
-            
+            handleMenuClick(command) {
+                if(command == 'delete')
+                    this.batchDeleteWithIds();
+            },
             async getRoles() {
                 this.roles = [];
                 this.roles.push({

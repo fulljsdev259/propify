@@ -17,26 +17,18 @@
                     {{$t('models.unit.add')}}
                 </el-button>
             </template>
-            <template v-if="$can($permissions.delete.unit)">
-                <el-button 
-                    :disabled="!selectedItems.length" 
-                    @click="batchDeleteWithIds" 
-                    icon="ti-trash" 
-                    size="mini"
-                    class="transparent-button"
-                >
-                    {{$t('general.actions.delete')}}
-                </el-button>
-            </template> 
             <template>
-                <el-dropdown placement="bottom" trigger="click">
+                <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
                     <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>Action 1</el-dropdown-item>
-                        <el-dropdown-item>Action 2</el-dropdown-item>
-                        <el-dropdown-item>Action 3</el-dropdown-item>
-                        <el-dropdown-item>Action 4</el-dropdown-item>
-                        <el-dropdown-item>Action 5</el-dropdown-item>
+                        <el-dropdown-item
+                            v-if="$can($permissions.delete.unit)"
+                            :disabled="!selectedItems.length" 
+                            icon="ti-trash" 
+                            command="delete"
+                        >
+                          {{$t('general.actions.delete')}}
+                        </el-dropdown-item>
                     </el-dropdown-menu>
                     </el-dropdown>
             </template>
@@ -105,18 +97,31 @@
                     label: 'models.unit.unit_id',
                     prop: 'name'
                 }, {
+                    label: 'general.filters.status',
+                    withStatus: true,
+                    data: [ {
+                            prop: '',
+                            background: '#67C23A',
+                            color: '#fff',
+                            label: this.$t('models.request.status.received')
+                        }
+                    ]
+                }, {
                     label: 'models.unit.type.label',
                     prop: 'formatted_type_label'
                 }, {
-                    label: 'models.unit.floor',
+                    label: 'models.building.type',
+                    prop: ''
+                }, {
+                    label: 'models.unit.location',
                     prop: 'floor'
                 },{
                     label: 'models.unit.room_no',
                     prop: 'room_no'
-                },
-                {
+                }, {
                     label: 'models.building.request_status',
                     withCounts: true,
+                    width: 230,
                     counts: [
                         {
                             prop: 'requests_count',
@@ -155,7 +160,10 @@
                             label: this.$t('models.request.status.archived')
                         }
                     ]
-                },
+                }, {
+                    label: 'models.unit.appendix',
+                    withIcon: true,
+                }
                 ],
                 building: {},
                 isLoadingFilters: false,
@@ -163,7 +171,10 @@
         },
         methods: {
             ...mapActions(['getBuildings', 'getPropertyManagers', 'getQuarters']),
-
+            handleMenuClick(command) {
+                if(command == 'delete')
+                    this.batchDeleteWithIds();
+            },
             async getRoles() {
                 this.roles = [];
                 this.roles.push({
@@ -172,11 +183,18 @@
                 })
             },
             async getTypes() {
+                this.quarterTypes = [];
                 this.types = [];
                 for(let item in this.$constants.quarters.type) {
-                    this.types.push({
+                    this.quarterTypes.push({
                         id: item,
                         name: this.$t(`models.quarter.types.${this.$constants.quarters.type[item]}`),
+                    })
+                }
+                for(let item in this.$constants.units.type) {
+                    this.types.push({
+                        id: item,
+                        name: this.$t(`models.unit.type.${this.$constants.units.type[item]}`),
                     })
                 }
             },
@@ -247,7 +265,17 @@
                     },{
                         name: this.$t('models.quarter.type'),
                         type: 'select',
-                        key: 'type_id',
+                        key: 'quarter_type',
+                        data: this.quarterTypes,
+                    },{
+                        name: this.$t('models.building.type'),
+                        type: 'select',
+                        key: 'building_type',
+                        data: this.quarterTypes,
+                    },{
+                        name: this.$t('models.unit.type.label'),
+                        type: 'select',
+                        key: 'unit_type',
                         data: this.types,
                     },{
                         name: this.$t('general.roles.manager'),

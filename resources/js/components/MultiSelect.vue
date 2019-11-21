@@ -1,12 +1,13 @@
 <template>
     <div class="custom-select" ref="multiSelect">
        <el-dropdown trigger="click" placement="bottom" @visible-change="handleVisibleChange">
-            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]">
+            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]" :disabled="disabled">
                 <span v-if="findSelectedOne.count === 0">{{ name }}</span>
                 <template v-else>
                     <el-tag 
                         :key="item.id"
                         size="mini"
+                        :style="{'background-color': tagColor}"
                         closable
                         @close="selectItem(item.index, true)"
                         v-for="(item, index) in findSelectedOne.items"
@@ -18,6 +19,7 @@
                         v-if="findSelectedOne.count > findSelectedOne.items.length"
                         size="mini"    
                         class="select-count"
+                        :style="{'background-color': tagColor}"
                     >
                         +{{ findSelectedOne.count - findSelectedOne.items.length }}
                     </el-tag>
@@ -103,6 +105,14 @@
           },
           maxSelect: {
               type: Number
+          },
+          disabled: {
+              type: Boolean,
+              default: () => false,
+          },
+          tagColor: {
+              type: String,
+              default: () => ''
           }
         },
         components: {
@@ -254,22 +264,23 @@
                 this.options = this.data;
                 if(this.options.length) {
                     this.options.forEach((option) => {
+                        let id = option.id !== undefined? option.id:option.value;
                         this.items.push({
-                            id: option.id,
-                            name: option[this.type],
-                            selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
+                            id: id,
+                            name: option.name,
+                            selected: this.selectedOptions? this.selectedOptions.includes(id): false,
                         });
                         this.originItems.push({
-                            id: option.id,
-                            name: option[this.name],
-                            selected: this.selectedOptions? this.selectedOptions.includes(option.id): false,
+                            id: id,
+                            name: option.name,
+                            selected: this.selectedOptions? this.selectedOptions.includes(id): false,
                         })
                     });
                 }
             }
         },
         created() {
-
+            console.log(this.data);
         },
         updated() {
             if(JSON.stringify(this.options) !== JSON.stringify(this.data))
@@ -282,7 +293,7 @@
         width: 100%;
         position: relative;
         .el-button {
-            padding: 0 2.5px;
+            padding: 0 15px;
             width: 100%;
             text-align: left;
             color: var(--color-text-primary);
@@ -333,6 +344,7 @@
             }
             &.selected-button {
                 background-color: var(--color-primary-lighter);
+                padding: 0 2.5px;
             }
 
         }

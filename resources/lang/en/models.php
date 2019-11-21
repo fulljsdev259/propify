@@ -193,6 +193,7 @@ return [
         'building_no' => 'Building No.',
         'active_residents_count' => 'Living',
         'request_status' => 'Request Status',
+        'type' => 'Building Type',
         'media_category' => [
             'house_rules' => 'House rules',
             'operating_instructions' => 'Operating instructions',
@@ -252,6 +253,8 @@ return [
         'deleted' => 'Unit deleted',
         'saved' => 'Unit saved',
         'floor' => 'Floor',
+        'location' => 'Location',
+        'appendix' => 'Appendix',
         'unit_id' => 'Unit ID',
         'floor_title' => [
             'under_ground_floor' => "UG",

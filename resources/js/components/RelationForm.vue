@@ -57,7 +57,9 @@
                                 v-for="quarter in quarters"/>
                     </el-select> -->
                     <multi-select
-                        :filter="quarterFilter"
+                        :type="quarterFilter.key"
+                        :name="quarterFilter.name"
+                        :data="quarterFilter.data"
                         :selectedOptions="[model.quarter_id]"
                         :maxSelect="1"
                         @select-changed="handleSelectChange($event, 'quarter')"
