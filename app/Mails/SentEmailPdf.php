@@ -20,14 +20,10 @@ class SentEmailPdf extends Mailable
      * @return void
      */
     
-    protected $user;
-    protected $request;
     protected $storage_path;
     
-    public function __construct(User $user,Request $request,$storage_path=null)
+    public function __construct($storage_path=null)
     {
-        $this->user=$user;
-        $this->request=$request;
         $this->storage_path=$storage_path;
     }
 
