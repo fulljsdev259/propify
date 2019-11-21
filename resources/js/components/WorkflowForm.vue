@@ -61,7 +61,9 @@
                     class="label-block"
                     >
                     <multi-select
-                        :filter="buildingFilter"
+                        :type="buildingFilter.key"
+                        :name="buildingFilter.name"
+                        :data="buildingFilter.data"
                         :selectedOptions="model.selectedWorkflowBuilding"
                         @select-changed="handleSelectChange($event, 'building')"
                     >
@@ -128,7 +130,9 @@
                             :rules="validationRules.required"
                             prop="selectedWorkflowToUser">
                     <multi-select
-                        :filter="toUserFilter"
+                        :type="toUserFilter.key"
+                        :name="toUserFilter.name"
+                        :data="toUserFilter.data"
                         :selectedOptions="model.selectedWorkflowToUser"
                         @select-changed="handleSelectChange($event, 'to_user')"
                     >
@@ -141,6 +145,9 @@
                     class="label-block"
                     >
                     <multi-select
+                        :type="ccUserFilter.key"
+                        :name="ccUserFilter.name"
+                        :data="ccUserFilter.data"
                         :filter="ccUserFilter"
                         :selectedOptions="model.selectedWorkflowCcUser"
                         @select-changed="handleSelectChange($event, 'cc_user')"
