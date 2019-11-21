@@ -4,6 +4,7 @@ namespace App\Transformers;
 
 use App\Models\Quarter;
 use App\Models\Relation;
+use App\Models\Request;
 
 /**
  * Class QuarterTransformer.
@@ -66,15 +67,15 @@ class QuarterTransformer extends BaseTransformer
         $units = $buildings->pluck('units')->collapse()->merge($model->units)->unique();
         $statusCounts = $this->getUnitsStatus($units);
         $response = array_merge($response, $statusCounts);
-//        $requestsCount = $buildings->pluck('requests')->collapse()->unique()->countBy('status');
-//        // @TODO improve for not depend new status
-//        $response['requests_archived_count'] = $requestsCount[Request::StatusArchived] ?? 0;
-//        $response['requests_assigned_count'] = $requestsCount[Request::StatusAssigned] ?? 0;
-//        $response['requests_count'] = $requestsCount->sum();
-//        $response['requests_done_count'] = $requestsCount[Request::StatusDone] ?? 0;
-//        $response['requests_in_processing_count'] = $requestsCount[Request::StatusInProcessing] ?? 0;
-//        $response['requests_reactivated_count'] = $requestsCount[Request::StatusReactivated] ?? 0;
-//        $response['requests_received_count'] = $requestsCount[Request::StatusReceived] ?? 0;
+        $requestsCount = $buildings->pluck('requests')->collapse()->unique()->countBy('status');
+        // @TODO improve for not depend new status
+        $response['requests_archived_count'] = $requestsCount[Request::StatusArchived] ?? 0;
+        $response['requests_assigned_count'] = $requestsCount[Request::StatusAssigned] ?? 0;
+        $response['requests_count'] = $requestsCount->sum();
+        $response['requests_done_count'] = $requestsCount[Request::StatusDone] ?? 0;
+        $response['requests_in_processing_count'] = $requestsCount[Request::StatusInProcessing] ?? 0;
+        $response['requests_reactivated_count'] = $requestsCount[Request::StatusReactivated] ?? 0;
+        $response['requests_received_count'] = $requestsCount[Request::StatusReceived] ?? 0;
 
         $response['buildings_count'] = $buildings->count();
         $response['active_residents_count'] = $model->relations->where('status', Relation::StatusActive)

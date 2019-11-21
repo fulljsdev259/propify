@@ -161,7 +161,7 @@ class BuildingAPIController extends AppBaseController
                     $q->where('type', Unit::TypeApartment);
                 }
             ])
-            //->scope('allRequestStatusCount')
+            ->scope('allRequestStatusCount')
             ->paginate($perPage);
 
         $response = (new BuildingTransformer)->transformPaginator($buildings);
