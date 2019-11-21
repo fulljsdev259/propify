@@ -4,9 +4,6 @@
             <template>
                 <list-check-box />
             </template>
-            <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event"  @order-changed="header=$event"></list-field-filter>
-            </template>
             <template v-if="$can($permissions.create.quarter)">
                 <el-button 
                     @click="add" 
@@ -16,6 +13,9 @@
                 >
                     {{$t('models.quarter.add')}}
                 </el-button>
+            </template>
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event"  @order-changed="header=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.delete.quarter)">
                 <el-button 
@@ -96,6 +96,7 @@
     import ListTableMixin from 'mixins/ListTableMixin';
     import {mapActions} from 'vuex';
     import ListCheckBox from 'components/ListCheckBox';
+    import {displaySuccess, displayError} from "helpers/messages";
 
 
     const mixin = ListTableMixin({
@@ -149,13 +150,7 @@
                 }, {
                     label: 'models.building.request_status',
                     withCounts: true,
-                    counts: [
-                        {
-                            prop: 'requests_count',
-                            background: '#aaa',
-                            color: '#fff',
-                            label: this.$t('dashboard.requests.total_request')
-                        }, {
+                    counts: [{
                             prop: 'requests_received_count',
                             background: '#bbb',
                             color: '#fff',
@@ -193,7 +188,22 @@
                 }, {
                     label: 'models.quarter.total_units_count',
                     prop: 'count_of_apartments_units'
-                }, 
+                }, {
+                    label: 'general.filters.status',
+                    withCounts: true,
+                    counts: [ {
+                            prop: 'requests_received_count',
+                            background: '#bbb',
+                            color: '#fff',
+                            label: this.$t('models.request.status.received')
+                        }, {
+                            prop: 'requests_assigned_count',
+                            background: '#ebb563',
+                            color: '#fff',
+                            label: this.$t('models.request.status.assigned')
+                        }
+                    ]
+                }
                 ],
                 model: {
                     id: '',
@@ -262,7 +272,7 @@
             }
         },
         methods: {
-            ...mapActions(['getBuildings', 'getPropertyManagers']),
+            ...mapActions(['getBuildings', 'assignManagerToBuilding', 'getPropertyManagers']),
             batchAssignManagers() {
                 this.assignManagersVisible = true;
             },
@@ -278,6 +288,7 @@
                         managersIds: this.toAssign
                     })
                 });
+                console.log(this.toAssign);
 
                 Promise.all(promises).then((resp) => {
                     this.processAssignment = false;
@@ -316,7 +327,7 @@
             },
             handleMenuClick(command) {
                 if(command == 'assign')
-                    batchAssignManagers();
+                    this.batchAssignManagers();
             },
             async openEditWithRelation(quarter) {
                 this.loading = true;

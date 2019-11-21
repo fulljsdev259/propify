@@ -361,6 +361,8 @@ export default (config = {}) => {
                         this.loading.state = true;
 
                         this.model = await this.getUnit({id: this.$route.params.id});
+                        
+                        this.quarters.push({id: this.model.quarter.id, name: this.model.quarter.name})
 
                         this.relationCount = this.model.relations.length
 

@@ -813,8 +813,9 @@
                 font-family: 'Radikal Thin';
                 &:hover, &.is-active {
                     color: var(--color-text-primary);
-                    font-family: 'Radikal Bold';
-                    font-size: 18px;
+                    font-weight: 900px;
+                    font-family: 'Radikal';
+                    font-size: 17.2px;
                     &::after {
                         content: '';
                         position: absolute;

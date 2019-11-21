@@ -548,6 +548,7 @@
         }
         :global(.heading .el-button) {
             font-family: 'Radikal';
+            margin-right: 10px;
         }
     }
 
@@ -876,6 +877,14 @@
             }
         }
     }
+    :global(.edit-details-form .el-row .el-col) {
+        &:first-child {
+            padding-left: 0px !important;
+        }
+        &:last-child {
+            padding-right: 0px !important;
+        }
+    }
     .el-select .el-input.is-disabled .el-input__inner,
     .el-input.is-disabled .el-input__icon,
     .el-input.is-disabled .el-input__inner,
@@ -897,9 +906,9 @@
         border: none;
         border-radius: 6px 6px 0 0;
     }
-    // .el-tabs--border-card>.el-tabs__content {
-    //     padding: 25px;
-    // }
+    .el-tabs--border-card>.el-tabs__content {
+        padding: 20px;
+    }
     .heading .el-button.is-circle {
         padding: 5px;
         i.el-icon-close {

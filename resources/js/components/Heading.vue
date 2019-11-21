@@ -94,9 +94,9 @@
 
         .action-group {
             display: flex;
-            :global(.el-button) {
-                margin-left: 5px !important;
-            }
+        }
+        .el-dropdown {
+            margin-left: 15px;
         }
     }
 </style>
