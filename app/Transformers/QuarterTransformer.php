@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Quarter;
+use App\Models\Relation;
 use App\Models\Request;
 
 /**
@@ -61,31 +62,48 @@ class QuarterTransformer extends BaseTransformer
     {
         $buildings = $model->buildings;
         $response = $this->transform($model);
-        $units = $buildings->pluck('units')->collapse();
-        $occupiedUnits = $units->filter(function ($unit) {
-            return $unit->relations->isNotEmpty();
-        });
 
-        $requestsCount = $buildings->pluck('requests')->collapse()->unique()->countBy('status');
-        // @TODO improve for not depend new status
-        $response['requests_archived_count'] = $requestsCount[Request::StatusArchived] ?? 0;
-        $response['requests_assigned_count'] = $requestsCount[Request::StatusAssigned] ?? 0;
-        $response['requests_count'] = $requestsCount->sum();
-        $response['requests_done_count'] = $requestsCount[Request::StatusDone] ?? 0;
-        $response['requests_in_processing_count'] = $requestsCount[Request::StatusInProcessing] ?? 0;
-        $response['requests_reactivated_count'] = $requestsCount[Request::StatusReactivated] ?? 0;
-        $response['requests_received_count'] = $requestsCount[Request::StatusReceived] ?? 0;
+        $units = $buildings->pluck('units')->collapse()->merge($model->units)->unique();
+        $statusCounts = $this->getUnitsStatus($units);
+        $response = array_merge($response, $statusCounts);
+//        $requestsCount = $buildings->pluck('requests')->collapse()->unique()->countBy('status');
+//        // @TODO improve for not depend new status
+//        $response['requests_archived_count'] = $requestsCount[Request::StatusArchived] ?? 0;
+//        $response['requests_assigned_count'] = $requestsCount[Request::StatusAssigned] ?? 0;
+//        $response['requests_count'] = $requestsCount->sum();
+//        $response['requests_done_count'] = $requestsCount[Request::StatusDone] ?? 0;
+//        $response['requests_in_processing_count'] = $requestsCount[Request::StatusInProcessing] ?? 0;
+//        $response['requests_reactivated_count'] = $requestsCount[Request::StatusReactivated] ?? 0;
+//        $response['requests_received_count'] = $requestsCount[Request::StatusReceived] ?? 0;
 
         $response['buildings_count'] = $buildings->count();
-        $response['active_residents_count'] = $units->pluck('relations.*.resident_id')->collapse()->unique()->count();
-        $response['total_units_count'] = $units->count();
-        $response['occupied_units_count'] = $occupiedUnits->count();
-        $response['free_units_count'] = $units->count() - $occupiedUnits->count();
+        $response['active_residents_count'] = $model->relations->where('status', Relation::StatusActive)
+            ->pluck('resident_id')
+            ->unique()
+            ->count(); // @TODO check
 
         if ($model->relationExists('media')) {
             $response['media'] = (new MediaTransformer())->transformCollection($model->media);
         }
 
+        return $response;
+    }
+
+
+    /**
+     * @param $data
+     * @return array
+     */
+    protected function getUnitsStatus($units)
+    {
+        $data = (new UnitTransformer())->transformCollectionBy($units, 'transformForIndex');
+        $unitsCountByStatus = collect($data)->countBy('status_color');
+        $statusCodes = Relation::StatusColorCode;
+        $response = [];
+        foreach ($statusCodes as $status => $color) {
+            $response[Relation::Status[$status] . '_units_count'] = $unitsCountByStatus[$color] ?? 0;
+        }
+        $response['total_units_count'] = array_sum($response);
         return $response;
     }
 }

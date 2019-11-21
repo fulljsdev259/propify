@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Model;
+use App\Models\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 //use League\Fractal\Manager;
