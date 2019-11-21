@@ -138,12 +138,12 @@ class WorkflowAPIController extends AppBaseController
         try {
             $workflow = $this->workflowRepository->create($input);
         } catch (\Exception $e) {
-            return $this->sendError(__('models.workflow.errors.create') . $e->getMessage());
+            return $this->sendError(__('models.quarter.workflow.errors.create') . $e->getMessage());
         }
 
         $workflow->load(['quarter']);
         $response = (new WorkflowTransformer)->transform($workflow);
-        return $this->sendResponse($response, __('models.workflow.saved'));
+        return $this->sendResponse($response, __('models.quarter.workflow.saved'));
     }
 
     /**
@@ -191,7 +191,7 @@ class WorkflowAPIController extends AppBaseController
         /** @var Workflow $workflow */
         $workflow = $this->workflowRepository->findWithoutFail($id);
         if (empty($workflow)) {
-            return $this->sendError(__('models.workflow.errors.not_found'));
+            return $this->sendError(__('models.quarter.workflow.errors.not_found'));
         }
 
         $workflow->load(['quarter']);
@@ -252,18 +252,18 @@ class WorkflowAPIController extends AppBaseController
         /** @var Workflow $workflow */
         $workflow = $this->workflowRepository->findWithoutFail($id);
         if (empty($workflow)) {
-            return $this->sendError(__('models.workflow.errors.not_found'));
+            return $this->sendError(__('models.quarter.workflow.errors.not_found'));
         }
 
         try {
             $workflow = $this->workflowRepository->update($input, $id);
         } catch (\Exception $e) {
-            return $this->sendError(__('models.workflow.errors.update') . $e->getMessage());
+            return $this->sendError(__('models.quarter.workflow.errors.update') . $e->getMessage());
         }
 
         $workflow->load(['quarter']);
         $response = (new WorkflowTransformer)->transform($workflow);
-        return $this->sendResponse($response, __('models.workflow.saved'));
+        return $this->sendResponse($response, __('models.quarter.workflow.saved'));
     }
 
     /**
@@ -312,11 +312,11 @@ class WorkflowAPIController extends AppBaseController
         $workflow = $this->workflowRepository->findWithoutFail($id);
 
         if (empty($workflow)) {
-            return $this->sendError(__('models.workflow.errors.not_found'));
+            return $this->sendError(__('models.quarter.workflow.errors.not_found'));
         }
 
         $workflow->delete();
 
-        return $this->sendResponse($id, __('models.workflow.deleted'));
+        return $this->sendResponse($id, __('models.quarter.workflow.deleted'));
     }
 }
