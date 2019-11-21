@@ -68,7 +68,6 @@ class QuarterAssignee extends AuditableModel
         'assignee_id',
         'user_id',
         'assignee_type',
-        'assignment_types',
         'created_at',
     ];
 
@@ -77,7 +76,6 @@ class QuarterAssignee extends AuditableModel
         'assignee_id' => 'int',
         'user_id' => 'int',
         'assignee_type' => 'string',
-        'assignment_types' => 'array',
         'created_at' => 'date',
     ];
 
