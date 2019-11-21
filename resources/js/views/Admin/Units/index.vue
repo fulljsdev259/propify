@@ -2,6 +2,9 @@
     <div class="units">
         <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy" class="padding-right-300">
             <template>
+                <list-check-box />
+            </template>
+            <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.unit)">
@@ -24,6 +27,18 @@
                 >
                     {{$t('general.actions.delete')}}
                 </el-button>
+            </template> 
+            <template>
+                <el-dropdown placement="bottom" trigger="click">
+                    <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>Action 1</el-dropdown-item>
+                        <el-dropdown-item>Action 2</el-dropdown-item>
+                        <el-dropdown-item>Action 3</el-dropdown-item>
+                        <el-dropdown-item>Action 4</el-dropdown-item>
+                        <el-dropdown-item>Action 5</el-dropdown-item>
+                    </el-dropdown-menu>
+                    </el-dropdown>
             </template>
         </heading>
         <list-table
@@ -51,6 +66,7 @@
     import getFilterQuarters from 'mixins/methods/getFilterQuarters';
     import getFilterStates from "mixins/methods/getFilterStates";
     import getFilterPropertyManager from "mixins/methods/getFilterPropertyManager";
+    import ListCheckBox from 'components/ListCheckBox';
 
 
     const mixin = ListTableMixin({
@@ -66,7 +82,8 @@
 
     export default {
         components: {
-            Heading
+            Heading,
+            ListCheckBox,
         },
         mixins: [mixin, getFilterQuarters, getFilterStates, getFilterPropertyManager],
         data() {
@@ -75,9 +92,9 @@
                 fetchParams: {},
                 states:{},
                 propertyManagers:{},
-                types:{},
-                quarters:{},
-                buildings:{},
+                types:[],
+                quarters:[],
+                buildings:[],
                 cities: [],
                 quarterTypes: [],
                 roles:[],
@@ -153,6 +170,15 @@
                     id: 1,
                     name: this.$constants.propertyManager.type[1],
                 })
+            },
+            async getTypes() {
+                this.types = [];
+                for(let item in this.$constants.quarters.type) {
+                    this.types.push({
+                        id: item,
+                        name: this.$t(`models.quarter.types.${this.$constants.quarters.type[item]}`),
+                    })
+                }
             },
             async fetchRemoteQuarters(search = '') {
                 const quarters = await this.getQuarters({get_all: true, search});
@@ -237,17 +263,11 @@
                 ]
             },
         },
-        async mounted() {
-            this.$root.$on('changeLanguage', () => this.types = Object.entries(this.$constants.units.type).map(([value, label]) => ({id: value, value: +value, name: this.$t(`models.unit.type.${label}`)})));
-        },
         async created() {
             this.isLoadingFilters = true;
             this.isReady = true;
-            
-            const states = await this.axios.get('states?filters=true')
-            this.states = states.data.data;
 
-            this.types = Object.entries(this.$constants.units.type).map(([value, label]) => ({id: value, value: +value, name: this.$t(`models.unit.type.${label}`)}))
+            this.getTypes();
             this.getRoles();
             this.isLoadingFilters = false;
 

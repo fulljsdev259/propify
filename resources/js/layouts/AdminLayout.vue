@@ -821,6 +821,7 @@
         text-decoration: none;
     }
     .el-dropdown-menu {
+        border-radius: 12px;
         &.el-popper {
             :global(&[x-placement^=bottom] .popper__arrow) {
                 top: -12px;
@@ -842,25 +843,43 @@
             }
         }
     }
+
     .el-input {
-        .el-input-group__prepend {
-            border-color: transparent;
-        }
         .el-input__inner {
             background-color: var(--background-color-base);
             border-color: transparent;
-            color: var(--color-text-regular);
+            color: var(--text-color);
 
             &:disabled {
-               background-color: var(--background-color-base);
-                border-color: transparent;
-                color: var(--color-text-regular); 
+               background-color: var(--background-color-base) !important;
+                border-color: transparent !important;
+                color: var(--text-color) !important; 
             }
         }    
+        &.is-disabled .el-input-group__prepend {
+            background-color: var(--background-color-base) !important;
+            border-color: transparent !important;
+            color: var(--text-color) !important;
+        }
     } 
+    :global(.edit-details-form .el-row .el-col .el-form-item) {
+        .el-input .el-input__inner, .el-input .el-input-group__prepend {
+            background-color: var(--border-color-lighter);
+            border-color: transparent;
+            color: var(--color-text-regular);
+        }    
+        .el-button {
+            background-color: var(--border-color-lighter);
+
+            &.is-disabled {  
+               background-color: var(--background-color-base) !important;
+            }
+        }
+    }
     .el-select .el-input.is-disabled .el-input__inner,
     .el-input.is-disabled .el-input__icon,
-    .el-input.is-disabled .el-input__inner {
+    .el-input.is-disabled .el-input__inner,
+    .el-button.is-disabled {
         cursor: default;
         &:hover {
             border-color: transparent;
@@ -878,10 +897,13 @@
         border: none;
         border-radius: 6px 6px 0 0;
     }
+    // .el-tabs--border-card>.el-tabs__content {
+    //     padding: 25px;
+    // }
     .heading .el-button.is-circle {
-        padding: 6px;
+        padding: 5px;
         i.el-icon-close {
-            font-size: 18px;
+            font-size: 17px;
         }
     }
 </style>

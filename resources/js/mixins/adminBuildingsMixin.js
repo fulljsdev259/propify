@@ -115,6 +115,7 @@ export default (config = {}) => {
                 allServices: [],
                 quarters: [],
                 unitAutoCreate: false,
+                old_model: null,
             };
         },
         methods: {
@@ -381,6 +382,7 @@ export default (config = {}) => {
                                         ...restParams,
                                         service_providers: restParams.service_providers_ids
                                     });
+                                    this.old_model = this.model;
 
                                     this.model.service_providers = data.data.service_providers;
                                     this.serviceCount = this.model.service_providers.length

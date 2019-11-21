@@ -60,6 +60,7 @@ export default (config = {}) => {
                 assignmentTypes: ['managers'],
                 assignmentType: 'managers',
                 userAssignmentType: null,
+                old_model: null,
             }
         },
         computed: {
@@ -324,6 +325,7 @@ export default (config = {}) => {
                                         },
                                         ...restParams
                                     });    
+                                    this.old_model = this.model;
                                     if(this.$refs.auditList){
                                         this.$refs.auditList.fetch();
                                     }                                    

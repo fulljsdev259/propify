@@ -3,6 +3,7 @@
         :title="$t('general.swal.confirm_change.warning')"
         :visible="centerDialogVisible"
         width="30%"
+        :show-close="false"
         center>
         <span>{{ $t('general.edit_close_message') }}</span>
         <span slot="footer" class="dialog-footer">

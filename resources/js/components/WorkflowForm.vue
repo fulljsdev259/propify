@@ -444,7 +444,6 @@
             if(this.mode == 'edit') {
                 this.model.title = this.data.title
                 this.model.category_id = this.data.category_id
-                console.log(this.data)
                 this.$set(this.model, 'selectedWorkflowBuilding', this.data.building_ids)
                 this.$set(this.model, 'selectedWorkflowToUser', this.data.to_user_ids)
                 this.$set(this.model, 'selectedWorkflowCcUser', this.data.cc_user_ids)

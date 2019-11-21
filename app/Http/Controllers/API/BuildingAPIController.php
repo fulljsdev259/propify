@@ -149,12 +149,14 @@ class BuildingAPIController extends AppBaseController
                     $q->with('building.address', 'unit', 'resident.user');
                 },
                 'propertyManagers',
-                'users'
+                'users',
+                'units' => function ($q) {
+                    $q->select('id', 'building_id')->relationsStatusCount();
+                }
             ])->withCount([
                 'units',
                 'propertyManagers',
-                'users'
-            ])->withCount([
+                'users',
                 'units as count_of_apartments_units' => function ($q) {
                     $q->where('type', Unit::TypeApartment);
                 }

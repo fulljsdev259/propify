@@ -15,7 +15,6 @@ use App\Http\Requests\API\Unit\ListRequest;
 use App\Http\Requests\API\Unit\UpdateRequest;
 use App\Http\Requests\API\Unit\ViewRequest;
 use App\Models\Building;
-use App\Models\Relation;
 use App\Models\Unit;
 use App\Repositories\RelationRepository;
 use App\Repositories\PinboardRepository;
@@ -98,12 +97,7 @@ class UnitAPIController extends AppBaseController
         $this->unitRepository->pushCriteria(new LimitOffsetCriteria($request));
 
         if ($request->show_relation_counts) {
-            $this->unitRepository->withCount([
-                'relations as total_relations_count',
-                'relations as active_relations_count' => function ($q) {
-                    $q->where('status', Relation::StatusActive);
-                }
-            ]);
+            $this->unitRepository->scope('relationsStatusCount');
         }
 
         if ($request->group_by_building) {
@@ -125,7 +119,7 @@ class UnitAPIController extends AppBaseController
             $units = $this->unitRepository->get();
             if ($request->show_relation_counts) {
                 $units->each(function ($unit) {
-                    $unit->inactive_relations_count = $unit->total_relations_count - $unit->active_relations_count;
+                    $unit->relations_count = $unit->total_relations_count;
                 });
             }
             $units = $units->sortBy('name')->groupBy('floor')->sortKeys()->toArray();
@@ -147,7 +141,7 @@ class UnitAPIController extends AppBaseController
             $units = $this->unitRepository->get();
             if ($request->show_relation_counts) {
                 $units->each(function ($unit) {
-                    $unit->inactive_relations_count = $unit->total_relations_count - $unit->active_relations_count;
+                    $unit->relations_count = $unit->total_relations_count;
                 });
             }
 

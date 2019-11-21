@@ -44,12 +44,15 @@
                                 v-if="filter.type === filterTypes.select && filter.data ">
                         
                                 <list-filter-select
-                                    :filter="filter"
+                                    :type="filter.key"
+                                    :name="filter.name"
+                                    :searchBox="filter.searchBox"
+                                    :data="filter.data"
                                     :selectedOptions="filterModel[filter.key]"
                                     @select-changed="handleSelectChange($event, filter)"
                                 >
-
                                 </list-filter-select>
+
                             </el-form-item>
                             <el-form-item
                                 v-if="filter.type === filterTypes.text || filter.type === filterTypes.number">
@@ -330,7 +333,7 @@
             <el-table-column
                 type="selection"
                 v-if="withCheckSelection"
-                width="40">
+                width="60">
             </el-table-column>
         </el-table>
         <el-pagination
@@ -798,7 +801,7 @@
         .sub-menu {
             position: absolute;
             top: 20px;
-            left: 20px;
+            left: 40px;
             z-index: 999;
             font-size: 18px;
             a {
@@ -810,7 +813,7 @@
                 font-family: 'Radikal Thin';
                 &:hover, &.is-active {
                     color: var(--color-text-primary);
-                    font-weight: 700;
+                    font-family: 'Radikal Bold';
                     font-size: 18px;
                     &::after {
                         content: '';
@@ -827,7 +830,7 @@
         }
         .list-table-search {
             position: fixed;
-            right: 40px;
+            right: 60px;
             top: 30px;
             z-index: 99;
             width: 250px;
@@ -928,10 +931,17 @@
 
             :global(th) {
                 padding: 12px 4px;
+                color: var(--color-text-primary);
+                &:first-of-type {
+                    padding-left: 36px;
+                }
             }
 
             :global(td) {
                 padding: 20px 4px;
+                &:first-of-type {
+                    padding-left: 36px;
+                }
             }
         }
 
@@ -994,6 +1004,10 @@
 
         :global(.el-pagination__sizes) {
             flex: 1;
+        }
+
+        :global(.el-select .el-input) {
+            width: 120px;
         }
 
         :global(.btn-prev),
@@ -1149,7 +1163,7 @@
         th.el-table-column--selection.is-leaf {
             .cell {
                 padding-left: 0px;
-                text-align: right;
+                text-align: left;
             }
         }
         tbody {
@@ -1157,7 +1171,7 @@
                 td:last-child:not(.is-left) {
                     .cell {
                         padding-left: 0px !important;
-                        text-align: right;
+                        text-align: left;
                     }
                 }
             }
@@ -1176,6 +1190,7 @@
         margin-bottom: 0 !important;
         border: none !important;
         border-radius: 0;
+        padding-right: 15px;
         .el-card__body {
             padding: 0 22px;
             .el-form-item {
