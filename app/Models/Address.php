@@ -151,4 +151,14 @@ class Address extends Model
     {
         return $this->belongsTo(State::class, 'state_id', 'id');
     }
+
+    public function quarter()
+    {
+        return $this->hasOne(Quarter::class, 'address_id', 'id');
+    }
+
+    public function building()
+    {
+        return $this->hasOne(Building::class, 'address_id', 'id');
+    }
 }
