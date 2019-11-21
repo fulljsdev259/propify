@@ -53,7 +53,7 @@ class AssigneeTransformer extends BaseTransformer
         }
 
         if ($model->assignee_type == get_morph_type_of(ServiceProvider::class)) {
-            $category = ServiceProvider::ServiceProviderCategory[$related->category] ?? '';
+            $category = ServiceProvider::Category[$related->category] ?? '';
             if (empty($category)) {
                 return 'Unknown'; // This one must be not happen
             }
