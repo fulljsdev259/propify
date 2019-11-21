@@ -3,7 +3,9 @@
 namespace App\Transformers;
 
 use App\Models\Building;
+use App\Models\Relation;
 use App\Models\Resident;
+use App\Models\Unit;
 
 /**
  * Class BuildingTransformer.
@@ -54,20 +56,13 @@ class BuildingTransformer extends BaseTransformer
             'address' => AddressTransformer::class,
             'service_providers' => ServiceProviderTransformer::class,
             'media' => MediaTransformer::class,
-            'units' => UnitTransformer::class,
         ]);
 
-        $relationsStatusAttributes = [
-            'active_relations_count',
-            'inactive_relations_count',
-            'canceled_relations_count',
-            'relations_count'
-        ];
-        if (!empty($response['units'][0]) && array_keys_exists($relationsStatusAttributes, $response['units'][0])) {
-            $units = collect($response['units']);
-            foreach ($relationsStatusAttributes as $statusAttribute) {
-                $response[$statusAttribute] = $units->sum($relationsStatusAttributes);
-            }
+        if ($model->relationExists('units')) {
+            $response['units'] = (new UnitTransformer())->transformCollectionBy($model->units, 'transformForIndex');
+            $statusCounts = $this->getUnitsStatus($response);
+            $response = array_merge($response, $statusCounts);
+            //            'units' => UnitTransformer::class,
         }
 
         if ($model->relationExists('quarter')) {

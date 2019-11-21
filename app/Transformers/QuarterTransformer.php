@@ -62,9 +62,6 @@ class QuarterTransformer extends BaseTransformer
         $buildings = $model->buildings;
         $response = $this->transform($model);
         $units = $buildings->pluck('units')->collapse();
-        $occupiedUnits = $units->filter(function ($unit) {
-            return $unit->relations->isNotEmpty();
-        });
 
         $requestsCount = $buildings->pluck('requests')->collapse()->unique()->countBy('status');
         // @TODO improve for not depend new status
@@ -78,9 +75,6 @@ class QuarterTransformer extends BaseTransformer
 
         $response['buildings_count'] = $buildings->count();
         $response['active_residents_count'] = $units->pluck('relations.*.resident_id')->collapse()->unique()->count();
-        $response['total_units_count'] = $units->count();
-        $response['occupied_units_count'] = $occupiedUnits->count();
-        $response['free_units_count'] = $units->count() - $occupiedUnits->count();
 
         if ($model->relationExists('media')) {
             $response['media'] = (new MediaTransformer())->transformCollection($model->media);

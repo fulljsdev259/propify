@@ -151,7 +151,7 @@ class BuildingAPIController extends AppBaseController
                 'propertyManagers',
                 'users',
                 'units' => function ($q) {
-                    $q->select('id', 'building_id')->relationsStatusCount();
+                    $q->select('id', 'building_id')->with('relations:start_date,status,unit_id');
                 }
             ])->withCount([
                 'units',
@@ -161,7 +161,7 @@ class BuildingAPIController extends AppBaseController
                     $q->where('type', Unit::TypeApartment);
                 }
             ])
-            ->scope('allRequestStatusCount')
+            //->scope('allRequestStatusCount')
             ->paginate($perPage);
 
         $response = (new BuildingTransformer)->transformPaginator($buildings);

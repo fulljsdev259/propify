@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Model;
+use App\Models\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 //use League\Fractal\Manager;
@@ -122,6 +123,22 @@ class BaseTransformer extends TransformerAbstract
             $response[$relation] =  (new $transformer())->{$transformMethod}($model->{$relation});
         }
 
+        return $response;
+    }
+
+    /**
+     * @param $data
+     * @return array
+     */
+    protected function getUnitsStatus($data)
+    {
+        $unitsCountByStatus = collect($data['units'])->countBy('status_color');
+        $statusCodes = Relation::StatusColorCode;
+        $response = [];
+        foreach ($statusCodes as $status => $color) {
+            $response[Relation::Status[$status] . '_units_count'] = $unitsCountByStatus[$color] ?? 0;
+        }
+        $response['total_units_count'] = array_sum($response);
         return $response;
     }
 }
