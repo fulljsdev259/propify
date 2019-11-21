@@ -235,7 +235,7 @@
                                                 v-for="assignee in toAssignList">
                                             <span style="float: left">{{ assignee.name }}</span>
                                             <span style="float: right; color: #8492a6; font-size: 13px">
-                                                {{assignee.roles[0].name == "provider" ? $t(`models.service.category.${$constants.serviceProviders.category[assignee.function]}`)  : ''}}
+                                                {{assignee.roles[0].name == "provider" ? $t(`models.service.category.${assignee.function}`)  : ''}}
                                                 {{assignee.roles[0].name == "manager" ? $t(`general.assignment_types.${assignee.function}`) : ''}} 
                                             </span>
                                         </el-option>

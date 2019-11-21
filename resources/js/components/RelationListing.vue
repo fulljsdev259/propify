@@ -162,11 +162,11 @@
                     </div>
 
                     <div v-else-if="column.type === 'assignProviderManagerAvatars'">
-                        <el-tooltip
+                        <!-- <el-tooltip
                                 :content="`${scope.row.name}`"
                                 class="item"
                                 effect="light" placement="top"
-                        >
+                        > -->
                             <avatar :size="30"
                                     :src="'/' + scope.row.avatar"
                                     v-if="scope.row.avatar"></avatar>
@@ -175,7 +175,7 @@
                                     color="#fff"
                                     :username="scope.row.name"
                                     v-if="!scope.row.avatar"></avatar>
-                        </el-tooltip>
+                        <!-- </el-tooltip> -->
                     </div>
 
                     <div v-else-if="column.type === 'assignProviderManagerFunctions'">
