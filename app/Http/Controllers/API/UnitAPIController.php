@@ -143,7 +143,7 @@ class UnitAPIController extends AppBaseController
                     $q->with('building.address', 'unit', 'resident.user');
                 },
             ])
-           // ->scope('allRequestStatusCount')
+            ->scope('allRequestStatusCount')
             ->paginate($perPage);
         $response = (new UnitTransformer)->transformPaginator($units, 'transformForIndex');
         return $this->sendResponse($response, 'Units retrieved successfully');
