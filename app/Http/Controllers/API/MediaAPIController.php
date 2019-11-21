@@ -141,7 +141,7 @@ class MediaAPIController extends AppBaseController
      * @return mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function buildingUpload(int $id, BuildingUploadRequest $request)
+    public function buildingUpload($id, BuildingUploadRequest $request)
     {
         /** @var Building $building */
         $building = $this->buildingRepository->findWithoutFail($id);
@@ -199,7 +199,7 @@ class MediaAPIController extends AppBaseController
      * @return mixed
      * @throws \Exception
      */
-    public function buildingDestroy(int $building_id, int $media_id, BuildingDeleteRequest $r)
+    public function buildingDestroy($building_id, int $media_id, BuildingDeleteRequest $r)
     {
         /** @var Building $building */
         $building = $this->buildingRepository->with('media')->findWithoutFail($building_id);
@@ -257,7 +257,7 @@ class MediaAPIController extends AppBaseController
      * @return mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function unitUpload(int $id, UnitUploadRequest $request)
+    public function unitUpload($id, UnitUploadRequest $request)
     {
         /** @var Unit $unit */
         $unit = $this->unitRepository->findWithoutFail($id);
@@ -314,7 +314,7 @@ class MediaAPIController extends AppBaseController
      * @param UnitDeleteRequest $r
      * @return Response
      */
-    public function unitDestroy(int $unit_id, int $media_id, UnitDeleteRequest $r)
+    public function unitDestroy($unit_id, int $media_id, UnitDeleteRequest $r)
     {
         /** @var Unit $unit */
         $unit = $this->unitRepository->with('media')->findWithoutFail($unit_id);
@@ -372,7 +372,7 @@ class MediaAPIController extends AppBaseController
      * @return mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function quarterUpload(int $id, QuarterUploadRequest $request)
+    public function quarterUpload($id, QuarterUploadRequest $request)
     {
         /** @var Quarter $quarter */
         $quarter = $this->quarterRepository->findWithoutFail($id);
@@ -429,7 +429,7 @@ class MediaAPIController extends AppBaseController
      * @param QuarterDeleteRequest $r
      * @return Response
      */
-    public function quarterDestroy(int $quarter_id, int $media_id, QuarterDeleteRequest $r)
+    public function quarterDestroy($quarter_id, int $media_id, QuarterDeleteRequest $r)
     {
         /** @var Quarter $quarter */
         $quarter = $this->quarterRepository->with('media')->findWithoutFail($quarter_id);
@@ -488,7 +488,7 @@ class MediaAPIController extends AppBaseController
      * @return mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function pinboardUpload(int $id, PinboardUploadRequest $request)
+    public function pinboardUpload($id, PinboardUploadRequest $request)
     {
         $pinboard = $this->pinboardRepository->findWithoutFail($id);
         if (empty($pinboard)) {
@@ -545,7 +545,7 @@ class MediaAPIController extends AppBaseController
      * @return mixed
      * @throws \Exception
      */
-    public function pinboardDestroy(int $id, int $media_id, PinboardDeleteRequest $r)
+    public function pinboardDestroy($id, int $media_id, PinboardDeleteRequest $r)
     {
         $pinboard = $this->pinboardRepository->findWithoutFail($id);
         if (empty($pinboard)) {
@@ -602,7 +602,7 @@ class MediaAPIController extends AppBaseController
      * @return mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function residentUpload(int $id, ResidentUploadRequest $request)
+    public function residentUpload($id, ResidentUploadRequest $request)
     {
         $resident = $this->residentRepository->findWithoutFail($id);
         if (empty($resident)) {
@@ -659,7 +659,7 @@ class MediaAPIController extends AppBaseController
      * @return mixed
      * @throws \Exception
      */
-    public function residentDestroy(int $id, int $media_id, ResidentDeleteRequest $r)
+    public function residentDestroy($id, int $media_id, ResidentDeleteRequest $r)
     {
         $resident = $this->residentRepository->findWithoutFail($id);
         if (empty($resident)) {
@@ -720,7 +720,7 @@ class MediaAPIController extends AppBaseController
      * @return mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function requestUpload(int $id, RequestUploadRequest $requestUploadRequest)
+    public function requestUpload($id, RequestUploadRequest $requestUploadRequest)
     {
         $request = $this->requestRepository->findWithoutFail($id);
         if (empty($request)) {
@@ -777,7 +777,7 @@ class MediaAPIController extends AppBaseController
      * @return mixed
      * @throws \Exception
      */
-    public function requestDestroy(int $id, int $mediaId, RequestDeleteRequest $r)
+    public function requestDestroy($id, int $mediaId, RequestDeleteRequest $r)
     {
         $request = $this->requestRepository->findWithoutFail($id);
         if (empty($request)) {
@@ -834,7 +834,7 @@ class MediaAPIController extends AppBaseController
      * @return mixed
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function listingUpload(int $id, ListingUploadRequest $request)
+    public function listingUpload($id, ListingUploadRequest $request)
     {
         $listing = $this->listingRepository->findWithoutFail($id);
         if (empty($listing)) {
@@ -891,7 +891,7 @@ class MediaAPIController extends AppBaseController
      * @return mixed
      * @throws \Exception
      */
-    public function listingDestroy(int $id, int $media_id, ListingDeleteRequest $r)
+    public function listingDestroy($id, int $media_id, ListingDeleteRequest $r)
     {
         $listing = $this->listingRepository->findWithoutFail($id);
         if (empty($listing)) {
