@@ -857,7 +857,7 @@ class Request extends AuditableModel implements HasMedia
 	
 	public function setDownloadAllPdf ($settings = null, $data)
 	{
-		$data['logo'] = 'fortimo-ag-1.png';
+		$data['logo'] = 'pdf-fortimo-logo.png';
 		$data['blank_pdf']=false;
 		$data['pdf_font_family']=$settings->pdf_font_family;
 		$pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('pdfs.request.requestDownloadPdf', $data);
