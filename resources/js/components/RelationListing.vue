@@ -400,7 +400,6 @@
         async created() {
             if (!this.fetchStatus) {
                 this.list = this.addedAssigmentList;
-                console.log(this.list)
             } else {
                 await this.fetch();
             }
@@ -472,10 +471,6 @@
                 } finally {
                     this.loading = false;
                 }
-
-                console.log('fetchAction', this.fetchAction)
-
-                console.log('list', this.list)
             },
             unitsTypeLabelMap() {
                 this.list.map((unit) => {
@@ -491,12 +486,10 @@
                 }
             },
             changeCommand(val) {
-                console.log(val)
                 var res = val.split(" ");
                 this.$emit(res[0], res[1])
             },
             handleRowClick(item) {
-                console.log(item);
             }
         }
     }
