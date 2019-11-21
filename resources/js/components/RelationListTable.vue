@@ -92,7 +92,7 @@
                         :content="$t('models.resident.relation.status.' + constants.relations.status[scope.row.status])"
                         class="item" effect="light" 
                         placement="top-end">
-                        <span class="status-icon" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]">&nbsp;</span>
+                        <span class="status-icon" :style="'background:' + constants.relations.status_colorcode[scope.row.status] ">&nbsp;</span>
                         <!-- <i class="icon-circle" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]"></i> -->
                      </el-tooltip>
                     <!-- {{ constants.relations.status[scope.row.status] ? $t('models.resident.relation.status.' + constants.relations.status[scope.row.status]) : ''}} -->
@@ -203,6 +203,9 @@
         mounted() {
             this.totalLength = this.items.length
             this.showLength = this.totalLength < 5 ? this.totalLength : 5
+        },
+        created() {
+            document.documentElement.style.setProperty('--active-color', this.constants.relations.status_colorcode[1])
         },
         watch: {
             items () {

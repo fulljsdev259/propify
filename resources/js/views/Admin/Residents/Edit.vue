@@ -388,7 +388,7 @@
                     :visible.sync="visibleMediaDialog"
                     v-loading="loading.state" width="30%">
                 <div class="content" v-if="visibleMediaDialog">
-                    <el-table
+                    <!-- <el-table
                         :data="model.media"
                         style="width: 100%"
                         v-if="model.media.length"
@@ -415,7 +415,7 @@
                                 </el-tooltip>
                             </template>
                         </el-table-column>
-                    </el-table>
+                    </el-table> -->
 
                     <el-alert
                         :title="$t('models.resident.relation.pdf_only_desc')"
