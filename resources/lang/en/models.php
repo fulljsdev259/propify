@@ -191,6 +191,7 @@ return [
         'not_found' => 'Building not found',
         'building_format' => 'Project No.',
         'building_no' => 'Building No.',
+        'building_number'=>'Building Number',
         'active_residents_count' => 'Living',
         'request_status' => 'Request Status',
         'type' => 'Building Type',
