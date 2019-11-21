@@ -132,6 +132,7 @@ class Quarter extends AuditableModel implements HasMedia
     const AssignmentTypeCaretaker = 3;
     const AssignmentTypeAdministration = 4;
 
+    // @TODO delete
     const AssignmentType = [
         self::AssignmentTypeFortimoEmployees => 'fortimo_employees',
         self::AssignmentTypeManagement => 'management',
