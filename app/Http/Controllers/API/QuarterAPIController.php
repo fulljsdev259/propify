@@ -4,8 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Quarter\FilterByStateCriteria;
 use App\Http\Controllers\AppBaseController;
-use App\Http\Requests\API\Quarter\BatchAssignManagers;
-use App\Http\Requests\API\Quarter\BatchAssignUsers;
+use App\Http\Requests\API\Quarter\AssignUserRequest;
 use App\Http\Requests\API\Quarter\CreateRequest;
 use App\Http\Requests\API\Quarter\EmailReceptionistRequest;
 use App\Http\Requests\API\Quarter\UnAssignRequest;
@@ -521,79 +520,6 @@ class QuarterAPIController extends AppBaseController
 
     /**
      * @SWG\Post(
-     *      path="/quarters/{id}/managers",
-     *      summary="Assign the provided propertyManagers to the Quarter",
-     *      tags={"Quarter"},
-     *      description=" <a href='http://dev.propify.ch/api/docs#/Quarter/pinboard_quarters__id__managers'>http://dev.propify.ch/api/docs#/Quarter/pinboard_quarters__id__managers</a>",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="managerIds",
-     *          description="ids of managers",
-     *          type="array",
-     *          required=true,
-     *          in="query",
-     *          @SWG\Items(
-     *              type="integer"
-     *          )
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Quarter"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     *
-     *
-     * @param int $id
-     * @param BatchAssignManagers $request
-     * @return mixed
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function assignManagers(int $id, BatchAssignManagers $request)
-    {
-        /** @var Quarter $quarter */
-        $quarter = $this->quarterRepository->findWithoutFail($id);
-        if (empty($quarter)) {
-            return $this->sendError(__('models.quarter.errors.not_found'));
-        }
-
-        $managerIds = $request->get('managersIds') ?? $request->get('managerIds');
-        try {
-            $currentManagers = $quarter->propertyManagers()
-                ->whereIn('property_managers.id', $managerIds)
-                ->pluck('property_managers.id')
-                ->toArray();
-
-            $newManagers = array_diff($managerIds, $currentManagers);
-            $attachData  = [];
-            foreach ($newManagers as $manager) {
-                $attachData[$manager] = ['created_at' => now()];
-            }
-            $quarter->propertyManagers()->syncWithoutDetaching($attachData);
-        } catch (\Exception $e) {
-            return $this->sendError( __('models.quarter.errors.manager_assigned') . $e->getMessage());
-        }
-
-        $response = (new QuarterTransformer)->transform($quarter);
-        return $this->sendResponse($response, __('models.quarter.managers_assigned'));
-    }
-
-    /**
-     * @SWG\Post(
      *      path="/quarters/{id}/users",
      *      summary="Assign the provided users to the Quarter",
      *      tags={"Quarter"},
@@ -631,11 +557,11 @@ class QuarterAPIController extends AppBaseController
      * )
      *
      * @param int $id
-     * @param BatchAssignUsers $request
+     * @param AssignUserRequest $request
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function assignUsers(int $id, BatchAssignUsers $request)
+    public function assignUsers(int $id, AssignUserRequest $request)
     {
         /** @var Quarter $quarter */
         $quarter = $this->quarterRepository->findWithoutFail($id);
@@ -670,7 +596,7 @@ class QuarterAPIController extends AppBaseController
             }
         }
 
-        QuarterAssignee::updateOrCreate([
+        $quarterAssignee = QuarterAssignee::updateOrCreate([
             'quarter_id' => $id,
             'user_id' => $userId,
             'assignee_id' => $assigneeId,
