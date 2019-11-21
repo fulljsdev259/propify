@@ -73,7 +73,7 @@
                 header: [{
                     label: 'general.id',
                     prop: 'id',
-                    width: 64
+                    width: 100
                 }, {
                     label: 'general.name',
                     withAvatars: true,

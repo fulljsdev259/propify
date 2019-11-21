@@ -6,7 +6,7 @@
                     <!-- <div class="subtitle">{{`${model.quarter_format} > ${model.name}`}}</div> -->
                     <div class="subtitle">{{model.url}}</div>
                 </template>
-                <edit-actions :saveAction="submit" :deleteAction="deleteQuarter" route="adminQuarters" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
+                <edit-actions :saveAction="submit" :deleteAction="deleteQuarter" route="adminQuarters" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
             </heading>
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
@@ -56,6 +56,7 @@
                                                 :name="$t('general.placeholders.select')"
                                                 :data="types"
                                                 :disabled="!editMode"
+                                                :selectedOptions="model.types"
                                                 tagColor="#9E9FA0"
                                                 @select-changed="model.types=$event"
                                             ></multi-select>
@@ -360,7 +361,7 @@
                                                 @click="showEditWorkflow($index)"
                                                 icon="icon-pencil" 
                                                 size="mini" 
-                                                class="round-btn">
+                                                class="round-btn btn-edit">
                                                 {{ $t('models.quarter.workflow.edit') }}
                                             </el-button>
                                         </el-col>
@@ -503,8 +504,8 @@
         </ui-drawer>
          <edit-close-dialog 
             :centerDialogVisible="visibleDialog"
-            @clickYes="submit(), editMode=!editMode, visibleDialog=false"
-            @clickNo="model=_.clone(old_model, true), editMode=!editMode, visibleDialog=false"
+            @clickYes="submit(), visibleDialog=false, $refs.editActions.goToListing()"
+            @clickNo="visibleDialog=false, $refs.editActions.goToListing()"
             @clickCancel="visibleDialog=false"
         ></edit-close-dialog>
     </div>
@@ -1153,6 +1154,14 @@
 
         &.edit {
             padding-top: 40px;
+            .el-button.btn-edit {
+                background-color: #848484;
+                border: none;
+                &:hover {
+                    box-shadow: 0 0 5px #848484;
+                    color: var(--color-white);
+                }
+            }
         }
     }
 
@@ -1169,7 +1178,6 @@
     .el-collapse {
         border-top: 0;
         border-bottom: 0;
-        padding: 0px 25px;
 
         /deep/ .el-collapse-item__header {
             padding-left: 10px;

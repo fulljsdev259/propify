@@ -64,6 +64,7 @@
                         :type="buildingFilter.key"
                         :name="buildingFilter.name"
                         :data="buildingFilter.data"
+                        :bgColor="'#DABFCD'"
                         :selectedOptions="model.selectedWorkflowBuilding"
                         @select-changed="handleSelectChange($event, 'building')"
                     >
@@ -133,6 +134,7 @@
                         :type="toUserFilter.key"
                         :name="toUserFilter.name"
                         :data="toUserFilter.data"
+                        :bgColor="'#DABFCD'"
                         :selectedOptions="model.selectedWorkflowToUser"
                         @select-changed="handleSelectChange($event, 'to_user')"
                     >
@@ -148,7 +150,7 @@
                         :type="ccUserFilter.key"
                         :name="ccUserFilter.name"
                         :data="ccUserFilter.data"
-                        :filter="ccUserFilter"
+                        :bgColor="'#DABFCD'"
                         :selectedOptions="model.selectedWorkflowCcUser"
                         @select-changed="handleSelectChange($event, 'cc_user')"
                     >
@@ -158,13 +160,13 @@
         </el-row>
         <el-row :gutter="20" style="margin-top: 10px; margin-left: 0; margin-right: 0">
             <el-col :md="24" class="drawer-actions">
-                <el-button type="default" size="mini" icon="icon-cancel" @click="close" class="round-btn">&nbsp;{{ $t('models.quarter.workflow.close') }}</el-button>
-                <el-button v-if="mode=='edit'" type="danger" size="mini" icon="icon-trash-empty" @click="deleteItem" class="round-btn">&nbsp;{{ $t('models.quarter.workflow.delete') }}</el-button>
+                <el-button type="default" size="mini" icon="icon-cancel" @click="close" class="round-btn btn-close">&nbsp;{{ $t('models.quarter.workflow.close') }}</el-button>
+                <el-button v-if="mode=='edit'" type="danger" size="mini" icon="icon-trash-empty" @click="deleteItem" class="round-btn btn-delete">&nbsp;{{ $t('models.quarter.workflow.delete') }}</el-button>
                 <!-- <el-tooltip
                         :content="$t('models.quarter.workflow.tooltips.save')"
                         class="item" effect="light" placement="top-end"
                     > -->
-                    <el-button type="primary" size="mini" @click="submit" icon="icon-floppy" class="round-btn">&nbsp;{{ $t('general.actions.save') }}</el-button>
+                <el-button type="primary" size="mini" @click="submit" icon="icon-floppy" class="round-btn btn-save">&nbsp;{{ $t('general.actions.save') }}</el-button>
                 <!-- </el-tooltip> -->
             </el-col>
         </el-row>
@@ -651,6 +653,25 @@
     
     .ti-save {
         margin-right: 5px;
+    }
+    .btn-save {
+        background-color: #878810;
+        border: none;
+        &:hover {
+            color: var(--color-white);
+            box-shadow: 0 0 5px #878810;
+        }
+    }
+    .btn-delete {
+        background-color: #848484;
+        border: none;
+        &:hover {
+            color: var(--color-white);
+            box-shadow: 0 0 5px #848484 ;
+        }
+    }
+    .btn-close {
+        border: none;
     }
     
 </style>

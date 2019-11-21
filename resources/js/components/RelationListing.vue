@@ -4,7 +4,7 @@
             :data="list"
             :show-header="showHeader"
             style="width: 100%"
-            @row-click="handleRowClick"
+            @double-click="handleRowDbClick"
             >
             <div slot="empty">
                 <el-alert                                     
@@ -439,6 +439,7 @@
                             this.unitsTypeLabelMap();
                         }
                     }
+                    console.log(list)
                 } catch (e) {
                     this.list = []
                     console.log(e);
@@ -464,8 +465,43 @@
                 var res = val.split(" ");
                 this.$emit(res[0], res[1])
             },
-            handleRowClick(item) {
-                console.log(item);
+            handleRowDbClick(item) {
+                let name = '';
+                let id = item.id;
+                this.columns.forEach((column) => {
+                    if(column.type === 'requestTitleWithDesc')
+                        name = 'adminRequestsEdit';
+                    else if(column.type === 'requestResidentAvatar')
+                        name = 'adminResidentsEdit';
+                    else if(column.type === 'residentAvatarWithType')
+                        name = 'adminResidentsEdit';
+                    else if(column.type === 'residentNameAndType')
+                        name = 'adminResidentsView';
+                    else if(column.type === 'assigneesName') {
+                        if(item.type === 'manager')
+                            name = 'adminPropertyManagersEdit';
+                        else if(item.type === 'provider')
+                            name = 'adminServicesEdit';
+                        else if(item.type === 'user')
+                            name = 'adminUsersEdit';
+                        else if(item.type === 'quarter')
+                            name = 'adminQuartersEdit';
+                        else if(item.type === 'building')
+                            name = 'adminBuildingsEdit';
+                    }
+                    else if(column.type === 'buildingName')
+                        name = 'adminBuildingsEdit';
+                    else if(column.type === 'residentName')
+                        name = 'adminResidentsView';
+                    else if(column.type === 'serviceName')
+                        name = 'adminServicesEdit';
+                });
+                if(name !== '') {
+                    this.$router.push({
+                        name: name,
+                        params: {id: id}
+                    })
+                }
             }
         }
     }

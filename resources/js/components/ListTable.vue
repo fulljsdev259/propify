@@ -975,7 +975,7 @@
                 padding: 12px 4px;
                 color: var(--color-text-primary);
                 &:first-of-type {
-                    padding-left: 36px;
+                    padding-left: 32px;
                 }
             }
 
