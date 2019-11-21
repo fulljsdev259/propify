@@ -94,7 +94,7 @@ class BaseTransformer extends TransformerAbstract
      */
     protected function getAttributesIfExists(Model $model, $attributes, $requiredAttributes = [])
     {
-        $response =  array_intersect_key($model->getAttributes(), array_flip($attributes));
+        $response =  array_intersect_key($model->attributesToArray(), array_flip($attributes));
         foreach ($requiredAttributes as $key => $attribute) {
             if (is_numeric($key)) {
                 $key = $attribute;
