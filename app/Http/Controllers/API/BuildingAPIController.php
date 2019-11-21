@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Criteria\Building\FilterByRelatedFieldsCriteria;
 use App\Criteria\Common\HasRequestCriteria;
 use App\Criteria\Common\RequestCriteria;
+use App\Criteria\Quarter\FilterByCityCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Building\AssignRequest;
 use App\Http\Requests\API\Building\BatchAssignManagers;
@@ -129,6 +130,7 @@ class BuildingAPIController extends AppBaseController
         $this->buildingRepository->pushCriteria(new RequestCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
         $this->buildingRepository->pushCriteria(new LimitOffsetCriteria($request));
+        $this->buildingRepository->pushCriteria(new FilterByCityCriteria($request));
 
         $hasRequest = $request->get('has_req', false);
         if ($hasRequest) {
