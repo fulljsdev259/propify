@@ -18,25 +18,22 @@ class QuarterTransformer extends BaseTransformer
      */
     public function transform(Quarter $model)
     {
-        $response = [
-            'id' => $model->id,
-            'name' => $model->name,
-            'quarter_format' => $model->quarter_format,
-            'internal_quarter_id' => $model->internal_quarter_id,
-            'description' => $model->description,
-            'count_of_buildings' => $model->count_of_buildings,
-            'url' => $model->url,
-            'types' => $model->types,
-            'assignment_type' => $model->assignment_type,
-        ];
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'name',
+            'quarter_format',
+            'internal_quarter_id',
+            'description',
+            'count_of_buildings',
+            'url',
+            'types',
+            'assignment_type',
+            'count_of_apartments_units',
+            'has_email_receptionists' // @TODO kill
+        ]);
 
-        if ($model->hasAttribute('has_email_receptionists')) {
-            // @TODO kill
-            $response['has_email_receptionists'] = $model->has_email_receptionists;
-        }
-        if ($model->hasAttribute('count_of_apartments_units')) {
-            $response['count_of_apartments_units'] = $model->count_of_apartments_units;
-        }
+        $relationsStatusCount = $model->getRelationStatusCounts();
+        $response = array_merge($response, $relationsStatusCount);
 
         if ($model->relationExists('address')) {
             if (array_keys($model->address->getAttributes()) == ['id', 'city']) {
@@ -46,18 +43,12 @@ class QuarterTransformer extends BaseTransformer
             }
         }
 
-        if ($model->relationExists('buildings')) {
-            $response['buildings'] = (new BuildingTransformer())->transformCollection($model->buildings);
-            $response['relations'] = collect($response['buildings'])->pluck('relations')->collapse();
-        }
-
-        if ($model->relationExists('media')) {
-            $response['media'] = (new MediaTransformer())->transformCollection($model->media);
-        }
-
-        if ($model->relationExists('workflows')) {
-            $response['workflows'] = (new WorkflowTransformer())->transformCollection($model->workflows);
-        }
+        $response = $this->includeRelationIfExists($model, $response, [
+            'buildings' => BuildingTransformer::class,
+            'relations' => RelationTransformer::class,
+            'media' => MediaTransformer::class,
+            'workflows' => WorkflowTransformer::class,
+        ]);
 
         return $response;
     }
@@ -68,14 +59,15 @@ class QuarterTransformer extends BaseTransformer
      */
     public function transformWithStatistics(Quarter $model)
     {
-        $response = $this->transform($model);
         $buildings = $model->buildings;
+        $response = $this->transform($model);
         $units = $buildings->pluck('units')->collapse();
         $occupiedUnits = $units->filter(function ($unit) {
             return $unit->relations->isNotEmpty();
         });
 
         $requestsCount = $buildings->pluck('requests')->collapse()->unique()->countBy('status');
+        // @TODO improve for not depend new status
         $response['requests_archived_count'] = $requestsCount[Request::StatusArchived] ?? 0;
         $response['requests_assigned_count'] = $requestsCount[Request::StatusAssigned] ?? 0;
         $response['requests_count'] = $requestsCount->sum();

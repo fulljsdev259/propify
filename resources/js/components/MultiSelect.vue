@@ -100,6 +100,9 @@
           searchBar: {
               type: Boolean,
               default: () => true
+          },
+          maxSelect: {
+              type: Number
           }
         },
         components: {
@@ -152,6 +155,7 @@
                             unselected.push(item);
                         }
                     });
+
                     unselected.sort((a ,b ) => {
                         return a.id - b.id;
                     });
@@ -176,7 +180,12 @@
                 return result;
             },
             selectItem(index, notifyChange = false) {
-                this.items[index].selected = !this.items[index].selected;
+                if(this.maxSelect) {
+                    this.items.map(item => item.selected = false)
+                    this.items[index].selected = true
+                }
+                else
+                    this.items[index].selected = !this.items[index].selected;
                 if(notifyChange)
                     this.handleSelect();
             },

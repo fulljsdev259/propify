@@ -213,3 +213,8 @@ function str_fill_to($string, $length, $symbol = '0') {
 
     return $string;
 }
+
+// https://stackoverflow.com/questions/13169588/how-to-check-if-multiple-array-keys-exists
+function array_keys_exists(array $keys, array $arr) {
+    return !array_diff_key(array_flip($keys), $arr);
+}

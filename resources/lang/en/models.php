@@ -124,7 +124,11 @@ return [
                 'active' => 'Active relations',
                 'inactive' => 'Inactive relations',
             ],
-            'type_validation_error' => "Looks like you've already added relation(s), first delete them and then you will be able to change resident type."
+            'type_validation_error' => "Looks like you've already added relation(s), first delete them and then you will be able to change resident type.",
+            'placeholder' => [
+                'type' => 'Choose type of relation'
+            ],
+            'add_files' => 'Dokumente hinzufügen',
         ],      
         'status' => [
             'label' => 'Status',

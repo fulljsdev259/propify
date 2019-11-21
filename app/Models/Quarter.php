@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasCategoryMediaTrait;
+use App\Traits\RelationRelation;
 use App\Traits\UniqueIDFormat;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -82,6 +83,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Building[] $buildings
  * @property-read int|null $buildings_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $media
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Relation[] relations
  * @property-read int|null $media_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PropertyManager[] $propertyManagers
  * @property-read int|null $property_managers_count
@@ -109,7 +111,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  */
 class Quarter extends AuditableModel implements HasMedia
 {
-    use SoftDeletes, UniqueIDFormat, HasCategoryMediaTrait;
+    use SoftDeletes, UniqueIDFormat, HasCategoryMediaTrait, RelationRelation;
 
     const TypeRent = 1;
     const TypeSell = 2;
