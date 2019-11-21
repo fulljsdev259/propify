@@ -26,9 +26,10 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         $rules = [
-            'company_name' => 'required|string|max:255',
-            'first_name' => 'required|string|max:255',
-            'lsat_name' => 'required|string|max:255',
+            'name' => 'string|max:255', // @TODO delete
+//            'company_name' => 'required|string|max:255', // @TODO uncomment
+//            'first_name' => 'required|string|max:255', // @TODO uncomment
+//            'last_name' => 'required|string|max:255', // @TODO uncomment
             'email' => 'required|string|email|max:255',
             'phone' => 'required|string|max:255',
             'type' => [
