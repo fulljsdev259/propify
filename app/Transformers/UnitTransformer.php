@@ -105,8 +105,7 @@ class UnitTransformer extends BaseTransformer
         $response = $this->transform($model);
         $relations = collect($response['relations'] ?? []);
         $latestRelation = $relations->sortByDesc('start_date')->first();
-        $status = $latestRelation['status'] ?? Relation::StatusInActive;
-        $response['status_color'] = Relation::StatusColorCode[$status] ?? Relation::StatusColorCode[Relation::StatusInActive];
+        $response['status'] = $latestRelation['status'] ?? Relation::StatusInActive;
         return $response;
     }
 
