@@ -54,7 +54,7 @@ class BuildingTransformer extends BaseTransformer
 
         $response = $this->includeRelationIfExists($model, $response, [
             'address' => AddressTransformer::class,
-            'service_providers' => ServiceProviderTransformer::class,
+//            'service_providers' => ServiceProviderTransformer::class,
             'media' => MediaTransformer::class,
         ]);
 
@@ -64,8 +64,10 @@ class BuildingTransformer extends BaseTransformer
             $response = array_merge($response, $statusCounts);
         }
 
+        $response['users'] = [];
         if ($model->relationExists('quarter')) {
             $response['quarter'] = (new QuarterTransformer)->transform($model->quarter);
+            $response['users'] = $response['quarter']['users'] ?? [];
             $response[ 'internal_quarter_id'] = $model->quarter->internal_quarter_id;
         } else  {
             $model->load('quarter:id,internal_quarter_id');
@@ -73,26 +75,26 @@ class BuildingTransformer extends BaseTransformer
         }
 
         // @TODO $assignedUsers login
-        $assignedUsers = $model->newCollection();
-        if ($model->relationExists('propertyManagers')) {
-            $assignedUsers = $assignedUsers->merge($model->propertyManagers->pluck('user'));
-            $response['managers'] = (new PropertyManagerSimpleTransformer)->transformCollection($model->propertyManagers);
-            
-            if ($model->property_managers_count > 2) {
-                $response['property_managers_count'] = $model->property_managers_count - 2;
-            }
-        }
+//        $assignedUsers = $model->newCollection();
+//        if ($model->relationExists('propertyManagers')) {
+//            $assignedUsers = $assignedUsers->merge($model->propertyManagers->pluck('user'));
+//            $response['managers'] = (new PropertyManagerSimpleTransformer)->transformCollection($model->propertyManagers);
+//
+//            if ($model->property_managers_count > 2) {
+//                $response['property_managers_count'] = $model->property_managers_count - 2;
+//            }
+//        }
 
-        if ($model->relationExists('users')) {
-            $assignedUsers = $assignedUsers->merge($model->users);
-            $response['users'] = (new UserTransformer())->transformCollection($model->users);
-        }
+//        if ($model->relationExists('users')) {
+//            $assignedUsers = $assignedUsers->merge($model->users);
+//            $response['users'] = (new UserTransformer())->transformCollection($model->users);
+//        }
 
-        if ($assignedUsers->count()) {
-            $response['assignedUsers'] = (new UserTransformer)->transformCollection($assignedUsers);
-        } else {
-            $response['assignedUsers'] = [];
-        }
+//        if ($assignedUsers->count()) {
+//            $response['assignedUsers'] = (new UserTransformer)->transformCollection($assignedUsers);
+//        } else {
+//            $response['assignedUsers'] = [];
+//        }
 
         // @TODO fix now building is not directly assigned relations
         if ($model->relationExists('relations')) {
