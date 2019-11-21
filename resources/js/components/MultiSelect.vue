@@ -3,28 +3,26 @@
        <el-dropdown trigger="click" placement="bottom" @visible-change="handleVisibleChange">
             <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]">
                 <span v-if="findSelectedOne.count === 0">{{ filter.name }}</span>
-                <el-tag 
-                    v-else
-                    size="mini"
-                    :closable="findSelectedOne.count !== 1"
-                    @close="selectItem(findSelectedOne.index, true)"
-                >
-                    {{ ` ${getLanguageStr(findSelectedOne.label)}` }}
-                </el-tag>
-                
-                <el-tag
-                    v-if="findSelectedOne.count > 1"
-                    size="mini"    
-                    class="select-count"
-                >
-                    +{{ findSelectedOne.count - 1 }}
-                </el-tag>
-            </el-button>
-            <el-button 
-                v-if="findSelectedOne.count != 0" 
-                icon="el-icon-close"
-                class="close-button" 
-                @click.prevent.stop="handleReset(true)">
+                <template v-else>
+                    <el-tag 
+                        :key="item.id"
+                        v-if="item.selected === true"
+                        size="mini"
+                        closable
+                        @close="selectItem(findSelectedOne.index, true)"
+                        v-for="(item, index) in items"
+                    >
+                        {{ ` ${getLanguageStr(item.name)}` }}
+                    </el-tag>
+                    
+                    <el-tag
+                        v-if="findSelectedOne.count > 1"
+                        size="mini"    
+                        class="select-count"
+                    >
+                        +{{ findSelectedOne.count - 1 }}
+                    </el-tag>
+                </template>
             </el-button>
             <el-dropdown-menu slot="dropdown">
                 <el-input
@@ -246,7 +244,7 @@
         width: 100%;
         position: relative;
         .el-button {
-            padding: 0 10px;
+            padding: 0 2.5px;
             width: 100%;
             text-align: left;
             color: var(--color-text-primary);
@@ -265,10 +263,15 @@
             }
 
             span.el-tag {
-                padding: 0 !important;
-                background-color: transparent;
-                border-color: transparent;
+                padding: 0 5px !important;
+                &:not(:last-of-type) {
+                    margin-right: 2.5px;
+                }
+                background-color: var(-color-primary);
+                border-color: var(-color-primary);
                 color: var(--color-white);
+                line-height: 35px;
+                height: 35px;
                 :global(i.el-tag__close) {
                     right: 0;
                     line-height: 1.4;
@@ -282,33 +285,18 @@
                     }
                 }
                 &.select-count {
-                    padding: 0 3px !important;
+                    position: absolute;
+                    right: 0;
+                    padding: 0 7px !important;
                     text-align: center;
                     border-radius: 4px;
                     border: 1px solid var(--color-white);
                 }
             }
             &.selected-button {
-                background-color: var(--color-primary);
-                padding-right: 45px;
+                background-color: var(--color-primary-lighter);
             }
 
-        }
-        .close-button {
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: auto;
-            margin: 0;
-            padding: 0 7px;
-            font-size: 20px;
-            border-radius: 0 4px 4px 0;
-            border-left: 1px solid var(--color-white);
-            background-color: transparent;
-            color: white;
-            &:hover {
-                background-color: transparent;
-            }
         }
     }
     .el-dropdown-menu {

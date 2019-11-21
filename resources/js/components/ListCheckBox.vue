@@ -38,6 +38,8 @@
             border-color: transparent;
             background-color: transparent;
             color: var(--color-text-secondary);
+            border-radius: 8px;
+            padding: 7.5px 8.5px;
 
             &.checked {
                 border-color: var(--primary-color);

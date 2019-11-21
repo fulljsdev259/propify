@@ -30,7 +30,7 @@
             <el-col :md="12">
                 <el-tabs type="border-card" v-model="activeTab">
                     <el-tab-pane :label="$t('general.box_titles.details')" name="details">
-                        <el-form :model="model" label-position="top" label-width="192px" ref="form">
+                        <el-form :model="model" label-position="top" label-width="192px" ref="form" class="edit-details-form">
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.building.internal_building_id')"
@@ -383,7 +383,7 @@
                                             v-for="assignee in toAssignList"/>
                                 </el-select>
                             </el-col>
-                            <el-col>
+                            <!-- <el-col>
                                 <el-select
                                         :placeholder="$t('general.placeholders.select')"
                                         style="display: block"
@@ -397,7 +397,7 @@
                                             v-for="type in assignment_types">
                                     </el-option>
                                 </el-select>
-                            </el-col>
+                            </el-col> -->
                             <el-col id="managerAssignBtn">
                                 <el-button :disabled="!toAssign || !userAssignmentType || userAssignmentType.length == 0" @click="assignUser" class="full-button"
                                             icon="ti-save" type="primary">

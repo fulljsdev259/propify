@@ -1,8 +1,8 @@
 <template>
     <div class="audit">
         <el-col class="filter-col" v-if="showFilter">
-            <el-divider :content-position="filterPosition">
-                    <el-popover
+            <!-- <el-divider :content-position="filterPosition">
+                <el-popover
                     popper-class="popover-filter"
                     placement="bottom"
                     width="200"
@@ -10,8 +10,10 @@
                         <el-button type="success" icon="icon-filter" size="mini" slot="reference" plain round>{{$t('resident.filters')}}</el-button>
                         <filters ref="filters" :data="filters.data" :schema="filters.schema" @changed="filtersChanged" @update:data="filterReset" />
                         <el-button size="mini" icon="icon-eraser" @click="filterReset" type="success">{{$t('resident.reset_filters')}}</el-button>
-                  </el-popover>
-            </el-divider>
+                </el-popover>
+            </el-divider> -->
+            
+            <i class="el-icon-sort" style="float: right"></i>
         </el-col>
         <placeholder :src="require('img/5ce8f4e279cb2.png')" v-if="isEmpty">
             {{$t('resident.no_data.activity')}}
@@ -19,7 +21,9 @@
         </placeholder>
             <el-timeline v-else>
                 <template v-for="audit in list">
-                    <el-timeline-item  :key="audit.id" :timestamp="`${audit.user.name} • ${formatDatetime(audit.updated_at)}`">
+                    <el-timeline-item  :key="audit.id" :timestamp="`${formatDatetime(audit.updated_at)}`">
+                        <avatar :src="audit.user.avatar" :name="audit.user.name" :size="32"/>
+                        <span>{{ audit.user.name }}</span>
                         <span>
                             {{audit.statement}}                            
                             <el-badge v-if="type == 'all'" :value="audit.auditable_format" class="item" type="primary"></el-badge>
@@ -43,6 +47,8 @@
     import FormatDateTimeMixin from 'mixins/formatDateTimeMixin'
     import { EventBus } from '../../../event-bus.js';
     import auditFilter from './filters.json';
+    import Avatar from 'components/Avatar';
+
     export default {
         mixins: [FormatDateTimeMixin],
 
@@ -62,7 +68,8 @@
             }
         },
         components: {
-            Placeholder
+            Placeholder,
+            Avatar,
         },
         data () {
             const filterSchema = [];
@@ -310,6 +317,30 @@
                 font-size:11px;
                 color:#9e9e9e;
             }
+            .el-timeline-item {
+                :global(.el-timeline-item__tail) {
+                    left: 50px;
+                    top: 13px;
+                }
+                :global(.el-timeline-item__node) {
+                    top: 13px;
+                    left: 45px;
+                }
+                :global(.el-timeline-item__wrapper) {
+                    position: relative;
+                    padding-left: 70px;
+                    .el-timeline-item__content {
+                        span:first-of-type {
+                            font-weight: 900;
+                        }
+                        .avatar {
+                            position: absolute;
+                            left: 0px;
+                            top: 5px;
+                        }
+                    }
+                 }
+            } 
         }
 
 }

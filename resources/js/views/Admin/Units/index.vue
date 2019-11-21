@@ -27,6 +27,18 @@
                 >
                     {{$t('general.actions.delete')}}
                 </el-button>
+            </template> 
+            <template>
+                <el-dropdown placement="bottom" trigger="click">
+                    <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>Action 1</el-dropdown-item>
+                        <el-dropdown-item>Action 2</el-dropdown-item>
+                        <el-dropdown-item>Action 3</el-dropdown-item>
+                        <el-dropdown-item>Action 4</el-dropdown-item>
+                        <el-dropdown-item>Action 5</el-dropdown-item>
+                    </el-dropdown-menu>
+                    </el-dropdown>
             </template>
         </heading>
         <list-table

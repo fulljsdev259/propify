@@ -1006,6 +1006,10 @@
             flex: 1;
         }
 
+        :global(.el-select .el-input) {
+            width: 120px;
+        }
+
         :global(.btn-prev),
         :global(.btn-next) {
             background: none;

@@ -17,7 +17,7 @@
                     {{$t('models.building.add')}}
                 </el-button>
             </template>
-            <template v-if="$can($permissions.assign.manager)">
+            <!-- <template v-if="$can($permissions.assign.manager)">
                 <el-button 
                     :disabled="!selectedItems.length" 
                     @click="batchAssignManagers" 
@@ -27,7 +27,7 @@
                 >
                     {{$t('models.building.assign_managers')}}
                 </el-button>
-            </template>
+            </template> -->
             <template v-if="$can($permissions.delete.building)">
                 <el-button 
                     :disabled="!selectedItems.length" 
@@ -38,6 +38,18 @@
                 >
                     {{$t('general.actions.delete')}}
                 </el-button>
+            </template>
+            <template>
+                <el-dropdown placement="bottom" trigger="click">
+                    <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>Action 1</el-dropdown-item>
+                        <el-dropdown-item>Action 2</el-dropdown-item>
+                        <el-dropdown-item>Action 3</el-dropdown-item>
+                        <el-dropdown-item>Action 4</el-dropdown-item>
+                        <el-dropdown-item>Action 5</el-dropdown-item>
+                    </el-dropdown-menu>
+                    </el-dropdown>
             </template>
         </heading>
         <list-table
@@ -259,7 +271,7 @@
             
         },
         methods: {
-            ...mapActions(['getPropertyManagers', 'assignManagerToBuilding', 'deleteBuildingWithIds', 'checkUnitRequestWidthIds', 'getQuarters', 'getPropertyManagers']),
+            ...mapActions(['getPropertyManagers', 'assignManagerToBuilding', 'deleteBuildingWithIds', 'checkUnitRequestWidthIds', 'getQuarters']),
             
             async getRoles() {
                 this.roles = [];

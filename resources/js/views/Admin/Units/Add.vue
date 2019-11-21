@@ -6,7 +6,7 @@
         <el-row :gutter="20" class="crud-view">
             <el-col :md="12">
                 <card :header="$t('general.box_titles.details')">
-                    <el-form :model="model" label-position="top" label-width="192px" ref="form">
+                    <el-form :model="model" label-position="top" label-width="192px" ref="form" class="edit-details-form">
                         <el-row :gutter="20">
                             <el-col :md="12">
                                 <el-form-item :label="$t('models.building.quarter')" 

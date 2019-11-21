@@ -12,7 +12,7 @@
                 <el-col :md="12">
                     <el-tabs type="border-card" v-model="activeTab1">
                         <el-tab-pane :label="$t('models.quarter.details')" name="details">
-                            <el-form :model="model" ref="form">
+                            <el-form :model="model" ref="form"  class="edit-details-form">
                                 <el-row :gutter="20">
                                      <el-col :md="12">
                                         <el-form-item :label="$t('general.internal_quarter_id')" :rules="validationRules.internal_quarter_id"
@@ -53,6 +53,7 @@
                                             <list-filter-select
                                                 :name="$t('general.placeholders.select')"
                                                 :data="types"
+                                                :disabled="!editMode"
                                                 @select-changed="model.types=$event"
                                             ></list-filter-select>
                                         </el-form-item>
@@ -233,7 +234,7 @@
                                         </el-option>
                                     </el-select>
                                 </el-col>
-                                <el-col>
+                                <!-- <el-col>
                                     <el-select
                                             :placeholder="$t('general.placeholders.select')"
                                             style="display: block"
@@ -247,7 +248,7 @@
                                                 v-for="type in assignment_types">
                                         </el-option>
                                     </el-select>
-                                </el-col>
+                                </el-col> -->
                                 <el-col id="managerAssignBtn">
                                     <el-button :disabled="!toAssign || userAssignmentType == null || userAssignmentType.length == 0" @click="assignUser" class="full-button"
                                                 icon="ti-save" type="primary">
@@ -1140,7 +1141,7 @@
     .workflow-button-bar {
         display: flex;
         justify-content: flex-end;
-        padding-bottom: 10px;
+        padding: 0 10px 10px;
 
         &.edit {
             padding-top: 40px;
@@ -1181,7 +1182,7 @@
     }
 
     .add-work-flow {
-        padding: 0px 25px;
+        padding: 0px 10px;
     }
 
     .round-btn {

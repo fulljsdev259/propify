@@ -1,7 +1,7 @@
 <template>
     <div class="custom-select">
        <el-dropdown trigger="click" placement="bottom" @visible-change="handleVisibleChange">
-            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]">
+            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]" :disabled="disabled">
                 <span v-if="findSelectedOne.count === 0">{{ name }}</span>
                 <el-tag 
                     v-else-if="type !== 'language'"
@@ -110,6 +110,10 @@
           searchBox: {
               type: Boolean,
               default: () => true
+          },
+          disabled: {
+              type: Boolean,
+              default: () => false,
           }
         },
         components: {

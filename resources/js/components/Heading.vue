@@ -91,5 +91,12 @@
                 font-size: 14px;
             }
         }
+
+        .action-group {
+            display: flex;
+            :global(.el-button) {
+                margin-left: 5px !important;
+            }
+        }
     }
 </style>
