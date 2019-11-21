@@ -104,9 +104,7 @@ class UserAPIController extends AppBaseController
                     $serviceProvider = $serviceProviders->where('user_id', $user->id)->first();
                     if ($serviceProvider) {
                         $category = ServiceProvider::Category[$serviceProvider->category] ?? '';
-                        $singleData['function'] =  empty($category)
-                            ? 'Unknown'  // This must be not happen
-                            : __('models.service.category.' . $category);
+                        $singleData['function'] = $category;
                     } else {
                         $singleData['function'] =  $user->roles->first()->name ?? 'unknown role'; //unknown role must be not happen
                     }

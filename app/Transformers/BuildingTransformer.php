@@ -135,11 +135,11 @@ class BuildingTransformer extends BaseTransformer
      */
     protected function getUnitsStatus($data)
     {
-        $unitsCountByStatus = collect($data['units'])->countBy('status_color');
+        $unitsCountByStatus = collect($data['units'])->countBy('status');
         $statusCodes = Relation::StatusColorCode;
         $response = [];
         foreach ($statusCodes as $status => $color) {
-            $response[Relation::Status[$status] . '_units_count'] = $unitsCountByStatus[$color] ?? 0;
+            $response[Relation::Status[$status] . '_units_count'] = $unitsCountByStatus[$status] ?? 0;
         }
         $response['total_units_count'] = array_sum($response);
         return $response;
