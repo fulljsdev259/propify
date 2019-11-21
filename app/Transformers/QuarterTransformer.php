@@ -4,7 +4,6 @@ namespace App\Transformers;
 
 use App\Models\Quarter;
 use App\Models\Relation;
-use App\Models\Request;
 
 /**
  * Class QuarterTransformer.
@@ -49,6 +48,7 @@ class QuarterTransformer extends BaseTransformer
             'relations' => RelationTransformer::class,
             'media' => MediaTransformer::class,
             'workflows' => WorkflowTransformer::class,
+            'users' => UserTransformer::class
         ]);
 
         return $response;

@@ -206,11 +206,11 @@ class Quarter extends AuditableModel implements HasMedia
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {
-        return $this->morphedByMany(User::class, 'assignee', 'quarter_assignees', 'quarter_id');
+        return $this->belongsToMany(User::class, 'quarter_assignees');
     }
 
     /**
