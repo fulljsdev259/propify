@@ -71,7 +71,14 @@ class ResidentTransformer extends BaseTransformer
         }
 
         if ( $model->relationExists('garant_relations')) { // @TODO delete reloading
-            $response['garant_relations'] = (new RelationTransformer())->transformCollection($model->relations);
+
+
+            $response['relations'] = $response['relations'] ?? [];
+            $garantRelationData = (new RelationTransformer())->transformCollection($model->relations);
+            foreach ($garantRelationData as $single) {
+                $single['garant'] = 1;
+                $response['relations'][] = $single;
+            }
         }
 
         return $this->addAuditIdInResponseIfNeed($model, $response);

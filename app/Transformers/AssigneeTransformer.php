@@ -35,24 +35,35 @@ class AssigneeTransformer extends BaseTransformer
             'id' => $model->id,
             'edit_id' => $model->assignee_id,
             'type' => $model->assignee_type,
-            'email' => $model->related ? $model->related->email :  $model->assignee_type . 'deleted',
-            'name' => $model->related ? $model->related->name : $model->assignee_type . 'deleted',
+            'email' => $model->related ? $model->related->email :  $model->assignee_type . ' deleted',
+            'name' => $model->related ? $model->related->name : $model->assignee_type . ' deleted',
             'avatar' => $avatar,
-            'role' => $model->related ? $model->related->role : 'incorrect relation'
+            'role' => $model->related ? $model->related->role : $model->assignee_type . ' deleted',
+            'function' => $this->getRoleFormatted($model)
         ];
 
         return $response;
     }
 
-    protected function getRole($assigneeType)
+    protected function getRoleFormatted($model)
     {
-        if ($assigneeType == get_morph_type_of(PropertyManager::class)) {
+        $related = $model->related;
+        if (empty($related)) {
+            return $model->assignee_type . ' deleted';
+        }
+
+        if ($model->assignee_type == get_morph_type_of(ServiceProvider::class)) {
+            $category = ServiceProvider::ServiceProviderCategory[$related->category] ?? '';
+            if (empty($category)) {
+                return 'Unknown'; // This one must be not happen
+            }
+            return __('models.service.category.' . $category);
+        }
+
+        if ($model->assignee_type == get_morph_type_of(PropertyManager::class)) {
             return 'manager';
         }
 
-        if ($assigneeType == get_morph_type_of(ServiceProvider::class)) {
-            return 'provider';
-        }
 
         return 'administrator';
     }
