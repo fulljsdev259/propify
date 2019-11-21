@@ -117,7 +117,8 @@ class RelationAPIController extends AppBaseController
         $relations = $this->relationRepository->with([
             'resident.user',
             'quarter.address',
-            'unit.building.address'
+            'unit.building.address',
+            'media',
         ])->paginate($perPage);
         $response = (new RelationTransformer())->transformPaginator($relations);
         return $this->sendResponse($response, 'Relations retrieved successfully');
@@ -176,6 +177,7 @@ class RelationAPIController extends AppBaseController
             'quarter.address',
             'unit.building.address',
             'unit',
+            'media',
             'garant_residents:residents.id,residents.first_name,residents.last_name'
         ]);
         $response = (new RelationTransformer())->transform($relation);
@@ -236,6 +238,7 @@ class RelationAPIController extends AppBaseController
             'quarter.address',
             'unit.building.address',
             'unit',
+            'media',
             'garant_residents:residents.id,residents.first_name,residents.last_name'
         ]);
 
@@ -321,6 +324,7 @@ class RelationAPIController extends AppBaseController
             'quarter.address',
             'unit.building.address',
             'unit',
+            'media',
             'garant_residents:residents.id,residents.first_name,residents.last_name'
         ]);
         $response = (new RelationTransformer())->transform($relation);

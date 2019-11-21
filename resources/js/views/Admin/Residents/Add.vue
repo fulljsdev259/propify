@@ -178,7 +178,7 @@
                         
                         <card class="mt15 relation-box">
                             <template slot="header">
-                                {{ $t('models.resident.relation.title') }}
+                                {{ $t('general.box_titles.relations') }}
                                 <el-button style="float:right" 
                                         type="primary" 
                                         @click="toggleDrawer" 
@@ -204,7 +204,7 @@
             </el-form>
         </div>
         </div>
-        <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
+        <!-- <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
             <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }}</ui-divider>
             <div class="content" v-if="visibleDrawer">
                 <relation-form v-if="editingRelation" 
@@ -223,7 +223,32 @@
                                 @delete-relation="deleteRelation"
                                 :used_units="used_units"/>
             </div>
-        </ui-drawer>
+        </ui-drawer> -->
+        <el-dialog :close-on-click-modal="true" :title="editingRelation ? $t('models.resident.relation.new') : $t('models.resident.relation.edit')"
+                    :visible.sync="visibleDrawer"
+                    v-loading="loading.state" width="30%">
+            <div class="content" v-if="visibleDrawer">
+                <relation-form v-if="editingRelation" 
+                                mode="edit" 
+                                :data="editingRelation" 
+                                :resident_type="model.type" 
+                                :visible.sync="visibleDrawer" 
+                                :edit_index="editingRelationIndex" 
+                                @update-relation="updateRelation"
+                                @delete-relation="deleteRelation" 
+                                :used_units="used_units"/>
+                <relation-form v-else mode="add" 
+                                :resident_type="model.type" 
+                                :visible.sync="visibleDrawer" 
+                                @add-relation="addRelation" 
+                                @delete-relation="deleteRelation"
+                                :used_units="used_units"/>
+            </div>
+            <span class="dialog-footer" slot="footer">
+                <!-- <el-button @click="closeModal" size="mini">{{$t('models.building.cancel')}}</el-button>
+                <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_managers')}}</el-button> -->
+            </span>
+        </el-dialog>
     </div>
 </template>
 

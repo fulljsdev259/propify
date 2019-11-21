@@ -78,6 +78,8 @@ return [
         "contact_info_card" => "Coordonnées de contact",
         "relation" => [
             "title" => "Relation",
+            'new' => 'Nouvelle relation',
+            'edit' => 'Modifier la relation',
             "end_date" => "Date de fin",
             "start_date" => "Date de début",
             'type' => 'Type',            
@@ -158,6 +160,7 @@ return [
             'label' => 'Type',
             'tenant' => 'Locataire',
             'owner' => 'Propriétaire',
+            'former_resident' => 'Ancien résident'
         ],
         'tenant_type' => [
             'label' => 'Type de locataire',
