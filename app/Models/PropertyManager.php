@@ -162,12 +162,21 @@ class PropertyManager extends AuditableModel
         self::TypeManager => 'manager',
         self::TypeAdministrator => 'administrator',
     ];
+    
+    const StatusActive = 1;
+    const StatusInactive = 2;
+	
+	const Status = [
+		self::StatusActive => 'active',
+		self::StatusInactive => 'inactive',
+	];
 
     public $fillable = [
         'description',
         'user_id',
         'type',
         'title',
+		'status',
         'first_name',
         'last_name',
         'profession',
@@ -207,6 +216,7 @@ class PropertyManager extends AuditableModel
         'user_id' => 'integer',
         'type' => 'integer',
         'title' => 'string',
+		'status' => 'integer',
         'first_name' => 'string',
         'last_name' => 'string',
         'profession' => 'string',
