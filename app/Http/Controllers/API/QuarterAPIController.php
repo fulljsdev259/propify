@@ -110,7 +110,7 @@ class QuarterAPIController extends AppBaseController
                     $q->select('id', 'quarter_id')
                         ->with([
                             'units' => function ($q) {
-                                $q ->select('id', 'building_id')
+                                $q ->select('id', 'building_id', 'type')
                                     ->with([
                                         'relations' => function ($q) {
                                              $q->select('unit_id', 'resident_id', 'status');
@@ -123,7 +123,7 @@ class QuarterAPIController extends AppBaseController
                 'media',
                 'address:id,city',
                 'units' => function ($q) {
-                    $q->select('id', 'quarter_id')->with('relations:start_date,status,unit_id');
+                    $q->select('id', 'quarter_id', 'type')->with('relations:start_date,status,unit_id');
                 },
                 'relations' => function ($q) {
                     $q->select('status', 'resident_id', 'quarter_id');
@@ -131,10 +131,6 @@ class QuarterAPIController extends AppBaseController
                 'users' => function ($q) {
                     $q->select('users.id', 'users.avatar', 'users.name')->with('roles:roles.id,name');
                 }
-            ])->withCount([
-                'units as count_of_apartments_units' => function ($q) {
-                    $q->where('type', Unit::TypeApartment);
-                },
             ])
             ->paginate($perPage);
         $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWithStatistics');
