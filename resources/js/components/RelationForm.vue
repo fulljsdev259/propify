@@ -61,6 +61,7 @@
                         :type="quarterFilter.key"
                         :name="quarterFilter.name"
                         :data="quarterFilter.data"
+                        :maxSelect="1"
                         :selectedOptions="[model.quarter_id]"
                         @select-changed="handleSelectChange($event, 'quarter')"
                     >
@@ -1200,6 +1201,9 @@ c
         }
     }
 
+    /deep/ .el-tag.el-tag--info .el-tag__close {
+        color: white
+    }
     /deep/ .el-dropdown .el-button span.el-tag i.el-tag__close {
         right: 0;
         line-height: 1.4;
@@ -1208,8 +1212,11 @@ c
         color: var(--color-white);
     }
 
-    /deep/ .el-dropdown .el-button.selected-button {
-        background-color: white;
-        padding: 0 2.5px;
+    /deep/ .el-dropdown {
+        .el-button.selected-button {
+            background-color: white;
+            padding: 0 2.5px;
+            height: 100%;
+        }
     }
 </style>
