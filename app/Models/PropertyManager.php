@@ -82,6 +82,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $property_manager_format
  * @property string|null $description
  * @property string $title
+ * @property string $status
  * @property string $first_name
  * @property string $last_name
  * @property string|null $profession

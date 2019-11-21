@@ -219,7 +219,7 @@
                 this.selectClicked = true;
                 this.items.forEach((item) => {
                     if(item.selected) {
-                        result.push(item.id);
+                        result.push(this.type == 'role'?item.name:item.id);
                     } 
                 });
                 this.$emit('select-changed', result);

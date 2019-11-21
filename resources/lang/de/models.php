@@ -194,6 +194,7 @@ return [
         'building_no' => 'Objektnr.',
         'active_residents_count' => 'Wohnungen',
         'request_status' => 'Anliegen-Status',
+        'type' => 'Objekteart',
         'media_category' => [
             'house_rules' => 'Hausordnung',
             'operating_instructions' => 'Benutzungsanleitungen',
@@ -254,6 +255,8 @@ return [
         'saved' => 'Einheit gespeichert',
         'floor' => 'Etage',
         'unit_id' => 'Einheit-ID',
+        'location' => 'Lage',
+        'appendix' => 'Anhang',
         'floor_title' => [
             'under_ground_floor' => "UG",
             'ground_floor' => "EG",

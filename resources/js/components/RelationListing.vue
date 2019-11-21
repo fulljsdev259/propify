@@ -4,6 +4,7 @@
             :data="list"
             :show-header="showHeader"
             style="width: 100%"
+            @row-click="handleRowClick"
             >
             <div slot="empty">
                 <el-alert                                     
@@ -488,6 +489,9 @@
                 console.log(val)
                 var res = val.split(" ");
                 this.$emit(res[0], res[1])
+            },
+            handleRowClick(item) {
+                console.log(item);
             }
         }
     }

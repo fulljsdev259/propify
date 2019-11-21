@@ -548,11 +548,12 @@
         }
         :global(.heading .el-button) {
             font-family: 'Radikal';
+            margin-right: 10px;
         }
     }
 
     .el-container {
-        background-color: #F2F4F9;
+        background-color: #f6f5f7;
         height: 100%;
 
         .el-main {
@@ -846,18 +847,18 @@
 
     .el-input {
         .el-input__inner {
-            background-color: var(--background-color-base);
+            background-color: #f6f5f7;
             border-color: transparent;
             color: var(--text-color);
 
             &:disabled {
-               background-color: var(--background-color-base) !important;
+               background-color: #f6f5f7 !important;
                 border-color: transparent !important;
                 color: var(--text-color) !important; 
             }
         }    
         &.is-disabled .el-input-group__prepend {
-            background-color: var(--background-color-base) !important;
+            background-color: #f6f5f7 !important;
             border-color: transparent !important;
             color: var(--text-color) !important;
         }
@@ -872,8 +873,16 @@
             background-color: var(--border-color-lighter);
 
             &.is-disabled {  
-               background-color: var(--background-color-base) !important;
+               background-color: #f6f5f7 !important;
             }
+        }
+    }
+    :global(.edit-details-form .el-row .el-col) {
+        &:first-child {
+            padding-left: 0px !important;
+        }
+        &:last-child {
+            padding-right: 0px !important;
         }
     }
     .el-select .el-input.is-disabled .el-input__inner,
@@ -893,13 +902,17 @@
         margin: 0px 10px 40px !important;
         box-shadow: none !important;
     }
+    .el-tabs .el-tabs__header {
+        background: #f6f5f7;
+        border-color: transparent !important;
+    }
     .el-tabs .el-tabs__header .el-tabs__item {
         border: none;
         border-radius: 6px 6px 0 0;
     }
-    // .el-tabs--border-card>.el-tabs__content {
-    //     padding: 25px;
-    // }
+    .el-tabs--border-card>.el-tabs__content {
+        padding: 20px;
+    }
     .heading .el-button.is-circle {
         padding: 5px;
         i.el-icon-close {
