@@ -143,6 +143,13 @@ class ServiceProvider extends AuditableModel
 
     public $table = 'service_providers';
 
+    const TitleMr = 'mr';
+    const TitleMrs = 'mrs';
+    const Title = [
+        self::TitleMr,
+        self::TitleMrs,
+    ];
+
     const CategoryElectrician = 1;
     const CategoryHeatingCompany = 2;
     const CategoryLift = 3;

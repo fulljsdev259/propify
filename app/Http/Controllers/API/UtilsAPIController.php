@@ -261,6 +261,7 @@ class UtilsAPIController extends AppBaseController
         $result = [
             'category' => ServiceProvider::Category,
             'type' => ServiceProvider::Type,
+            'title' => ServiceProvider::Title,
         ];
 
         return $result;
