@@ -75,9 +75,9 @@ export default {
                 }).catch(({response: {data: err}}) => reject(err))
         });
     },
-    getAllAdminsForQuarter(_, {quarter_id, search}) {
+    getAllAdminsForQuarter(_, {quarter_id, function_val, search}) {
         return new Promise((resolve, reject) =>
-            axios.get(buildFetchUrl(`alladmins`, {exclude_assignees_quarter_id: quarter_id, search: search}))
+            axios.get(buildFetchUrl(`alladmins`, {exclude_assignees_quarter_id: quarter_id, function: function_val, search: search}))
                 .then(({data: r}) => resolve(r.data))
                 .catch(({response: {data: err}}) => reject(err)));
     },

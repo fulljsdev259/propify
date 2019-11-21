@@ -19,6 +19,7 @@ export default (config = {}) => {
                 remoteLoading: false,
                 buildings: [],
                 units: [],
+                new_media: [],
                 user: {
                     avatar_variations: ''
                 },
@@ -174,6 +175,7 @@ export default (config = {}) => {
                 this.model.media.map(item => {
                     if(!item.url) {
                         console.log(item)
+                        item.id = this.model.id
                         this.uploadMediaFile(item)
                     }
                 })
