@@ -217,6 +217,42 @@
                         <request-count :countsData="items[scope.$index]" ></request-count>
                         <relation-count :countsData="items[scope.$index]" ></relation-count>
                     </div>
+                    <div v-else-if="column.withStatus">
+                        <div class="avatars-wrapper">
+                            <span :key="index" v-for="(count, index) in column.data">
+                                <el-tooltip
+                                    v-if="count.prop.length > 5"
+                                    :content="`${count.label}: ${scope.row[count.prop]}`"
+                                    class="item"
+                                    effect="light" placement="top"
+                                >
+                                    <avatar 
+                                        :background-color="count.background"
+                                        :color="count.color"
+                                        :initials="` ${scope.row[count.prop]}`"
+                                        :size="30"
+                                        :style="{'z-index': (800 - index)}"
+                                        :username="`${scope.row[count.prop]}`"
+                                    />
+                                </el-tooltip>
+                                <avatar 
+                                    v-else-if="count.prop==''"
+                                    :background-color="count.background"
+                                    :color="count.color"
+                                    :initials="''"
+                                    :size="15"
+                                    :style="{'z-index': (800 - index)}"
+                                    :username="''"
+                                />
+                                <table-avatar v-else :src="null" :name="scope.row[count.prop]" :size="30" />
+                            </span>
+                        </div>
+                    </div>
+                    <div v-else-if="column.withIcon">
+                        <span class="icon-container">
+                             <i class="el-icon-document"></i>
+                        </span>
+                    </div>
                     <div v-else-if="column.withUsers">
                         <div class="avatars-wrapper">
                             <span :key="uuid()" v-for="(user) in scope.row[column.prop]">
@@ -798,6 +834,9 @@
                 float: right;
             }
         }
+        .icon-container {
+            font-size: 24px;
+        }
         .sub-menu {
             position: absolute;
             top: 20px;
@@ -840,6 +879,8 @@
                     border-color: transparent;
                     color: var(--color-text-regular);
                     background-color: var(--background-color-base);
+                    height: 30px !important;
+                    line-height: 30px !important;
                 }
                 :global(.el-input__icon) {
                     font-size: 16px;

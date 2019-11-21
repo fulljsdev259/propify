@@ -193,6 +193,7 @@ return [
         'building_no' => 'Building No.',
         'active_residents_count' => 'Vives',
         'request_status' => 'Demande Statut',
+        'type' => 'Type de bâtiment',
         'media_category' => [
             "house_rules" => "Règlement intérieur",
             "operating_instructions" => "Notice d'utilisation",
@@ -252,6 +253,8 @@ return [
         "deleted" => "Unité supprimée",
         "saved" => "Unité sauvegardée",
         "floor" => "L'étage",
+        'location' => 'localisation',
+        'appendix' => 'Annexe',
         'unit_id' => "l'unité ID",
         'floor_title' => [
             'under_ground_floor' => "UG",

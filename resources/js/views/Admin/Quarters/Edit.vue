@@ -211,7 +211,7 @@
                                 :remoteLoading="remoteLoading"
                                 :remoteSearch="remoteSearchAssignees"
                             /> -->
-                            <el-row :gutter="10" id="managerAssignBox">
+                            <el-row id="managerAssignBox">
                                 <el-col id="managerSelect">
                                     <el-select
                                         clearable
@@ -254,8 +254,8 @@
                                     </el-select>
                                 </el-col> -->
                                 <el-col id="managerAssignBtn">
-                                    <el-button :disabled="!toAssign || userAssignmentType == null || userAssignmentType.length == 0" @click="assignUser" class="full-button"
-                                                icon="ti-save" type="primary">
+                                    <el-button :disabled="!toAssign" @click="assignUser" class="full-button assign-button"
+                                                icon="ti-save">
                                         &nbsp;{{$t('general.assign')}}
                                     </el-button>
                                 </el-col>
@@ -1033,9 +1033,11 @@
     
     #managerAssignBox {
         display: flex;
+        margin-bottom: 20px;
 
         #managerSelect {
             width: 100%;
+            margin-right: 20px;
         }
 
         #managerAssignBtn {
@@ -1147,7 +1149,7 @@
     .workflow-button-bar {
         display: flex;
         justify-content: flex-end;
-        padding: 0 10px 10px;
+        margin-bottom: 10px;
 
         &.edit {
             padding-top: 40px;
@@ -1187,10 +1189,6 @@
         }
     }
 
-    .add-work-flow {
-        padding: 0px 10px;
-    }
-
     .round-btn {
         border-radius: 3px;
     }
@@ -1198,5 +1196,10 @@
     .add-workflow-btn {
         border-radius: 5px;
         padding: 3px;
+    }
+
+    .assign-button {
+        background-color: #3D3F41;
+        color: var(--color-white);
     }
 </style>

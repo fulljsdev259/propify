@@ -17,17 +17,7 @@
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"  @order-changed="header=$event"></list-field-filter>
             </template>
-            <template v-if="$can($permissions.delete.quarter)">
-                <el-button 
-                    :disabled="!selectedItems.length" 
-                    @click="batchDeleteWithIds" 
-                    icon="ti-trash" 
-                    size="mini"
-                    class="transparent-button"
-                >
-                    {{$t('general.actions.delete')}}
-                </el-button>
-            </template>
+           
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
                     <i class="el-icon-more" style="transform: rotate(90deg)"></i>
@@ -39,6 +29,14 @@
                             :disabled="!selectedItems.length"
                         >
                             {{$t('models.building.assign_managers')}}
+                        </el-dropdown-item>
+                        <el-dropdown-item
+                            v-if="$can($permissions.delete.quarter)"
+                            :disabled="!selectedItems.length" 
+                            icon="ti-trash" 
+                            command="delete"
+                        >
+                          {{$t('general.actions.delete')}}
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -150,6 +148,7 @@
                 }, {
                     label: 'models.building.request_status',
                     withCounts: true,
+                    width: 230,
                     counts: [{
                             prop: 'requests_received_count',
                             background: '#bbb',
@@ -190,8 +189,8 @@
                     prop: 'count_of_apartments_units'
                 }, {
                     label: 'general.filters.status',
-                    withCounts: true,
-                    counts: [ {
+                    withStatus: true,
+                    data: [ {
                             prop: 'requests_received_count',
                             background: '#bbb',
                             color: '#fff',
@@ -201,6 +200,16 @@
                             background: '#ebb563',
                             color: '#fff',
                             label: this.$t('models.request.status.assigned')
+                        }
+                    ]
+                }, {
+                    label: 'models.request.assigned_to',
+                    withStatus: true,
+                    data: [ {
+                            prop: 'name',
+                            background: '#67C23A',
+                            color: '#fff',
+                            label: this.$t('models.request.status.received')
                         }
                     ]
                 }
@@ -241,7 +250,7 @@
                     },{
                         name: this.$t('models.quarter.type'),
                         type: 'select',
-                        key: 'type_id',
+                        key: 'quarter_type',
                         data: this.types,
                         searchBox: true,
                     },{
@@ -288,7 +297,6 @@
                         managersIds: this.toAssign
                     })
                 });
-                console.log(this.toAssign);
 
                 Promise.all(promises).then((resp) => {
                     this.processAssignment = false;
@@ -328,6 +336,8 @@
             handleMenuClick(command) {
                 if(command == 'assign')
                     this.batchAssignManagers();
+                else if(command == 'delete')
+                    this.batchDeleteWithIds();
             },
             async openEditWithRelation(quarter) {
                 this.loading = true;
