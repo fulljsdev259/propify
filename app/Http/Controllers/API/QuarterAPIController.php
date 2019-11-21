@@ -124,8 +124,10 @@ class QuarterAPIController extends AppBaseController
             ])->withCount([
                 'units as count_of_apartments_units' => function ($q) {
                     $q->where('type', Unit::TypeApartment);
-                }
-            ])->paginate($perPage);
+                },
+            ])
+            ->scope('relationsStatusCount')
+            ->paginate($perPage);
         $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWithStatistics');
         return $this->sendResponse($response, 'Quarters retrieved successfully');
     }
@@ -261,13 +263,10 @@ class QuarterAPIController extends AppBaseController
         $quarter->load([
             'media',
             'workflows',
-            'buildings' => function ($q) {
-                $q->with([
-                    'relations' => function ($q) {
-                        $q->with('building.address', 'unit', 'resident.user');
-                    },
-                ]);
-            }
+            'buildings',
+            'relations' => function ($q) {
+                $q->with('unit.building.address', 'unit', 'resident.user');
+            },
         ]);
         $quarter->setHasRelation('email_receptionists');
 
