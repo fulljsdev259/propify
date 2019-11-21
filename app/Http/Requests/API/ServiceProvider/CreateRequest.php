@@ -27,8 +27,8 @@ class CreateRequest extends BaseRequest
         // @TODO address , user validation correctly
         return [
             'company_name' => 'required|string|max:255',
-            'first_name' => 'string|max:255',
-            'lsat_name' => 'string|max:255',
+            'first_name' => 'required|string|max:255',
+            'lsat_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'phone' => 'required|string|max:255',
             'user' => 'required',
