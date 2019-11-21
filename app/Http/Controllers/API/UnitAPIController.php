@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Common\WhereCriteria;
+use App\Criteria\Unit\FilterByCityCriteria;
 use App\Criteria\Unit\FilterByRelatedFieldsCriteria;
 use App\Criteria\Unit\FilterByTypeCriteria;
 use App\Http\Controllers\AppBaseController;
@@ -95,6 +96,7 @@ class UnitAPIController extends AppBaseController
         $this->unitRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
         $this->unitRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->unitRepository->pushCriteria(new LimitOffsetCriteria($request));
+        $this->unitRepository->pushCriteria(new FilterByCityCriteria($request));
 
 
         if ($request->group_by_building) {

@@ -5,6 +5,7 @@ namespace App\Transformers;
 use App\Models\Quarter;
 use App\Models\Relation;
 use App\Models\Request;
+use App\Models\Unit;
 
 /**
  * Class QuarterTransformer.
@@ -29,7 +30,6 @@ class QuarterTransformer extends BaseTransformer
             'url',
             'types',
             'assignment_type',
-            'count_of_apartments_units',
             'has_email_receptionists' // @TODO kill
         ]);
 
@@ -65,6 +65,8 @@ class QuarterTransformer extends BaseTransformer
         $response = $this->transform($model);
 
         $units = $buildings->pluck('units')->collapse()->merge($model->units)->unique();
+        $response['count_of_apartments_units'] = $units->where('type', Unit::TypeApartment)->count();
+
         $statusCounts = $this->getUnitsStatus($units);
         $response = array_merge($response, $statusCounts);
         $requestsCount = $buildings->pluck('requests')->collapse()->unique()->countBy('status');
