@@ -39,7 +39,7 @@ class AssigneeTransformer extends BaseTransformer
             'name' => $model->related ? $model->related->name : $model->assignee_type . ' deleted',
             'avatar' => $avatar,
             'role' => $model->related ? $model->related->role : $model->assignee_type . ' deleted',
-            'role_formatted' => $this->getRoleFormatted($model)
+            'function' => $this->getRoleFormatted($model)
         ];
 
         return $response;
@@ -53,7 +53,11 @@ class AssigneeTransformer extends BaseTransformer
         }
 
         if ($model->assignee_type == get_morph_type_of(ServiceProvider::class)) {
-            return $related->category;
+            $category = ServiceProvider::ServiceProviderCategory[$related->category] ?? '';
+            if (empty($category)) {
+                return 'Unknown'; // This one must be not happen
+            }
+            return __('models.service.category.' . $category);
         }
 
         if ($model->assignee_type == get_morph_type_of(PropertyManager::class)) {
