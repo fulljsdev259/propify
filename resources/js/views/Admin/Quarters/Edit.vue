@@ -230,7 +230,7 @@
                                                 :value="assignee.id"
                                                 v-for="assignee in toAssignList">
                                             <span style="float: left">{{ assignee.name }}</span>
-                                            <span style="float: right; color: #8492a6; font-size: 13px">{{ translateType(assignee.roles[0].name) }}</span>
+                                            <span style="float: right; color: #8492a6; font-size: 13px">{{ assignee.function }}</span>
                                         </el-option>
                                     </el-select>
                                 </el-col>
@@ -593,10 +593,13 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
+                    prop: 'function',
+                    label: 'general.name'
+                }/*, {
                     prop: 'assignment_types',
                     label: 'general.assignment_types.label',
                     i18n: this.translateAssignmentType
-                }],
+                }*/],
                 quarterColumns: [{
                     type: 'buildingName',
                     prop: 'name',

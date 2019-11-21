@@ -164,7 +164,7 @@ export default (config = {}) => {
                         //             search,
                         //             roles: ['manager', 'administrator', 'provider']
                         //         });
-                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id, search})
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id, function:true, search})
                         this.toAssignList = resp;                        
                     } catch (err) {
                         displayError(err);

@@ -388,10 +388,10 @@
                     :visible.sync="visibleMediaDialog"
                     v-loading="loading.state" width="30%">
                 <div class="content" v-if="visibleMediaDialog">
-                    <!-- <el-table
-                        :data="model.media"
+                    <el-table
+                        :data="new_media"
                         style="width: 100%"
-                        v-if="model.media.length"
+                        v-if="new_media.length"
                         class="relation-file-table"
                         >
                         <el-table-column
@@ -399,8 +399,7 @@
                             prop="name"
                         >
                             <template slot-scope="scope">
-                                <a v-if="scope.row.url" :href="scope.row.url" target="_blank"><strong>{{scope.row.name}}</strong></a>
-                                <span v-else><strong>{{scope.row.name}}</strong></span>
+                                <span ><strong>{{scope.row.name}}</strong></span>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -415,7 +414,7 @@
                                 </el-tooltip>
                             </template>
                         </el-table-column>
-                    </el-table> -->
+                    </el-table>
 
                     <el-alert
                         :title="$t('models.resident.relation.pdf_only_desc')"
