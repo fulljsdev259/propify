@@ -42,8 +42,23 @@ use Illuminate\Notifications\Notifiable;
  *          type="string"
  *      ),
  *      @SWG\Property(
- *          property="name",
- *          description="name",
+ *          property="title",
+ *          description="title",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="fisrt_name",
+ *          description="fisrt_name",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="last_name",
+ *          description="last_name",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="company_name",
+ *          description="company_name",
  *          type="string"
  *      ),
  *      @SWG\Property(
@@ -161,7 +176,10 @@ class ServiceProvider extends AuditableModel
         'user_id',
         'address_id',
         'category',
-        'name',
+        'title',
+        'first_name',
+        'last_name',
+        'company_name',
         'email',
         'phone',
         'type',
@@ -177,7 +195,10 @@ class ServiceProvider extends AuditableModel
         'address_id' => 'integer',
         'category' => 'string',
         'type' => 'integer',
-        'name' => 'string',
+        'title' => 'string',
+        'first_name' => 'string',
+        'last_name' => 'string',
+        'company_name' => 'string',
         'email' => 'string',
         'phone' => 'string',
         'service_provider_format' => 'string',
