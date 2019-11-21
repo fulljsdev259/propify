@@ -78,6 +78,8 @@ return [
         "contact_info_card" => "Dati di contatto",
         "relation" => [
             'title' => "La relazione",
+            'new' => 'Nuova relazione',
+            'edit' => 'Modifica relazione',
             "end_date" => "Data di fine",
             "start_date" => "Data d'inizio",
             'type' => 'Tipo',            
@@ -122,7 +124,11 @@ return [
                 'active' => 'Relazioni attive',
                 'inactive' => 'Relazioni inattive',
             ],
-            'type_validation_error' => "Sembra che tu abbia già aggiunto delle relazioni, prima le cancelli e poi potrai cambiare il tipo di residente."
+            'type_validation_error' => "Sembra che tu abbia già aggiunto delle relazioni, prima le cancelli e poi potrai cambiare il tipo di residente.",
+            'placeholder' => [
+                'type' => 'Scegliere il tipo di relazione'
+            ],
+            'add_files' => 'Dokumente hinzufügen',
         ],        
         'status' => [
             "label" => "Situazione",

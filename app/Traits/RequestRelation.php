@@ -7,21 +7,34 @@ use Illuminate\Support\Str;
 
 trait RequestRelation
 {
+    /**
+     * @return mixed
+     */
     public function requests()
     {
         return $this->morphToMany(Request::class, 'assignee', 'request_assignees', 'assignee_id', 'request_id');
     }
 
+    /**
+     * @return mixed
+     */
     public function pendingRequests()
     {
         return $this->requests()->whereIn('requests.status', Request::PendingStatuses);
     }
 
+    /**
+     * @return mixed
+     */
     public function solvedRequests()
     {
         return $this->requests()->whereIn('requests.status', Request::SolvedStatuses);
     }
 
+    /**
+     * @param $q
+     * @return mixed
+     */
     public function scopeAllRequestStatusCount($q)
     {
         $withCount = [];
@@ -32,14 +45,25 @@ trait RequestRelation
         return $q->withCount($withCount);
     }
 
+    /**
+     * @return array
+     */
     public function getStatusRelationCounts()
     {
         $statusCounts = [];
         $attributes = $this->getAttributes();
 
+        $isExistOne = false;
         foreach (Request::Status as $value) {
             $attribute = 'requests_' . $value . '_count';
+            if (key_exists($attribute, $attributes)) {
+                $isExistOne = true;
+            }
             $statusCounts[$attribute] = $attributes[$attribute] ?? 0;
+        }
+
+        if (! $isExistOne) {
+            return [];
         }
 
         if (key_exists('requests_count', $attributes)) {
@@ -60,6 +84,11 @@ trait RequestRelation
         return $statusCounts;
     }
 
+    /**
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     */
     public function __call($name, $arguments)
     {
         if (Str::startsWith($name, 'requests')) {

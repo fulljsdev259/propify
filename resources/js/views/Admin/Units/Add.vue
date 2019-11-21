@@ -1,12 +1,12 @@
 <template>
     <div class="units-add" v-loading.fullscreen.lock="loading.state">
-        <heading :title="$t('models.unit.add')" icon="icon-unit" style="margin-bottom: 20px;" shadow="heavy">
+        <heading :title="$t('models.unit.add')" icon="icon-unit" style="margin-bottom: 20px;" shadow="heavy" bgClass="bg-transparent">
             <add-actions :saveAction="submit" route="adminUnits" editRoute="adminUnitsEdit"/>
         </heading>
         <el-row :gutter="20" class="crud-view">
             <el-col :md="12">
                 <card :header="$t('general.box_titles.details')">
-                    <el-form :model="model" label-position="top" label-width="192px" ref="form">
+                    <el-form :model="model" label-position="top" label-width="192px" ref="form" class="edit-details-form">
                         <el-row :gutter="20">
                             <el-col :md="12">
                                 <el-form-item :label="$t('models.building.quarter')" 

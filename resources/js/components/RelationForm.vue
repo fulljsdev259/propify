@@ -22,9 +22,25 @@
                     </el-select>
                 </el-form-item>
             </el-col> -->
+            <el-col :md="24">
+                <el-form-item :label="$t('models.resident.relation.type')"
+                            prop="type"
+                            class="label-block">
+                    <el-select :placeholder="$t('models.resident.relation.placeholder.type')"
+                                style="display: block;"
+                                v-model="model.type">
+                        <el-option
+                                :key="key"
+                                :label="$t('models.resident.type.' + value )"
+                                :value="+key"
+                                v-for="(value, key) in $constants.residents.type">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
             <el-col :md="12">
                 <el-form-item prop="quarter_id" :label="$t('models.resident.quarter.name')" class="label-block">
-                    <el-select
+                    <!-- <el-select
                             :loading="remoteLoading"
                             :placeholder="$t('models.resident.search_quarter')"
                             :remote-method="remoteRelationSearchQuarters"
@@ -39,7 +55,14 @@
                                 :label="quarter.name"
                                 :value="quarter.id"
                                 v-for="quarter in quarters"/>
-                    </el-select>
+                    </el-select> -->
+                    <multi-select
+                        :filter="quarterFilter"
+                        :selectedOptions="[model.quarter_id]"
+                        :maxSelect="1"
+                        @select-changed="handleSelectChange($event, 'quarter')"
+                    >
+                    </multi-select>
                 </el-form-item>
             </el-col>
             <el-col :md="12">
@@ -103,22 +126,7 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-            <el-col :md="12">
-                <el-form-item :label="$t('models.resident.relation.type')"
-                            prop="type"
-                            class="label-block">
-                    <el-select :placeholder="$t('models.resident.type.label')"
-                                style="display: block;"
-                                v-model="model.type">
-                        <el-option
-                                :key="key"
-                                :label="$t('models.resident.type.' + value )"
-                                :value="+key"
-                                v-for="(value, key) in $constants.residents.type">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-            </el-col>
+            
             <el-col :md="12">
                 <el-form-item :label="$t('models.resident.relation.start_date')"
                         prop="start_date">
@@ -146,7 +154,7 @@
                 </el-form-item>
             </el-col>
    
-            <el-col :md="12" v-if="showResidents">
+            <el-col :md="24" v-if="showResidents">
                 <el-form-item :label="$t('general.resident')" prop="resident_ids">
                     <el-select
                         :loading="remoteLoading"
@@ -235,7 +243,7 @@
                 </el-form-item>
             </el-col> -->
         </el-row>
-        <template v-if="resident_type_check == 1">
+        <template><!--v-if="resident_type_check == 1"-->
         <!-- <ui-divider v-if="model.unit_id" content-position="left">
             {{ $t('models.resident.relation.deposit_amount') }}
         </ui-divider>
@@ -598,7 +606,6 @@
                 under_ground_floor_label: this.$t('models.unit.floor_title.under_ground_floor'),
                 top_floor_label: this.$t('models.unit.floor_title.top_floor'),
                 original_unit_id : 0,
-                resident_type_check: 1,
                 isFuture: false
             }
         },
@@ -609,6 +616,16 @@
                         type: 'group-select',
                         key: 'name',
                         data: this.units
+                }
+            },
+            quarterFilter() {
+                return {
+                        name: this.$t('models.resident.search_quarter'),
+                        type: 'select',
+                        key: 'name',
+                        data: this.quarters,
+                        remoteLoading: false,
+                        fetch: this.fetchRemoteQuarters
                 }
             },
             showResidents() {
@@ -659,6 +676,7 @@
                                     if(found)
                                             params.units.push(found)
                                     })
+
                                 })
                             }
                             else {
@@ -667,8 +685,21 @@
                                     if(found)
                                         params.unit = found
                                 })
+                                
                             }
                             
+                            let end_date = null
+                            if(params.end_date)
+                                end_date = new Date(params.end_date).getTime();
+                            const today = new Date().getTime();
+
+                            if(!end_date || end_date == today)
+                                params.status = 1
+                            else if(end_date && end_date > today)
+                                params.status = 2
+                            else if(end_date && end_date < today)
+                                params.status = 3
+
                             //params.building = this.buildings.find(item => item.id == this.model.building_id)
 
                             params.quarter = this.quarters.find(item => item.id == this.model.quarter_id)
@@ -724,6 +755,14 @@
             handleSelectChange(val, filter) {
                 if(filter == 'unit') {
                     this.model.unit_ids = val
+                } else if(filter == 'quarter') {
+                    console.log('val', val)
+                    if(val.length == 1) {
+                        this.model.quarter_id = val[0]
+                        this.searchRelationUnits(false)
+                    }
+                    else
+                        this.model.quarter_id = null
                 }
             },
             disabledRentStart(date) {
@@ -897,6 +936,11 @@
             deletePDFfromRelation(index) {
                 this.model.media.splice(index, 1)
             },
+            async fetchRemoteQuarters(search = '') {
+                const quarters = await this.getQuarters({get_all: true, search})
+
+                return quarters.data
+            },
             ...mapActions(['getQuarters', 'getBuildings', 'getUnits', 'getResidents']),
         },
         async created () {
@@ -904,14 +948,14 @@
             console.log('data', this.data)
             this.loading = true;
 
+            this.quarters = await this.fetchRemoteQuarters();
+
             let parent_obj = this
             this.deposit_types = Object.entries(this.$constants.relations.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_types.${label}`)}))
             //this.durations = Object.entries(this.$constants.relations.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.durations.${label}`)}))
             this.deposit_statuses = Object.entries(this.$constants.relations.deposit_status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_status.${label}`)}));
             this.relation_statuses = Object.entries(this.$constants.relations.status).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.status.${label}`)}));
 
-            if(this.resident_type)
-                this.resident_type_check = this.resident_type
 
             if(this.mode == "edit") {
                 this.model = Object.assign({}, this.data)
@@ -967,37 +1011,18 @@
 
                         this.units.push({ label: group_label, options : [this.model.unit]})
                     }
-
-                    // if(this.model.building) {
-                    //     this.buildings.push(this.model.building)
-                    //     await this.remoteRelationSearchBuildings(this.model.building.name)
-                    //     await this.searchRelationUnits(true)
-                    // }
                     if(this.model.quarter) {
-                        this.quarters.push(this.model.quarter)
-                        await this.remoteRelationSearchBuildings(this.model.quarter.name)
+                        //this.quarters.push(this.model.quarter)
+                        //await this.remoteRelationSearchQuarters(this.model.quarter.name)
                         await this.searchRelationUnits(true)
                     }
                 }
 
             }
 
-            if(this.hideBuildingAndUnits) {
-                this.model.unit_id = this.unit_id
-                this.model.building_id = this.building_id
-                
-                // this.model.unit = this.data.unit
-                // this.model.building = this.data.building
-                // this.buildings.push(this.model.building)
-            }
-
-            if(this.hideBuilding) {
-                this.model.building_id = this.building_id
-                await this.searchRelationUnits(true)
-            }
-
             if(this.model.unit_id == null)
                 this.model.unit_id = []
+
             console.log('model', this.model)
             this.loading = false;
         },

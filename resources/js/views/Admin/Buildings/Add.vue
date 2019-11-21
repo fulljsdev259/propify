@@ -1,6 +1,6 @@
 <template>
     <div class="buildings-add" v-loading.fullscreen.lock="loading.state">
-        <heading :title="$t('models.building.add')" icon="icon-commerical-building" shadow="heavy">
+        <heading :title="$t('models.building.add')" icon="icon-commerical-building" shadow="heavy" bgClass="bg-transparent">
             <add-actions :saveAction="submit" route="adminBuildings" editRoute="adminBuildingsEdit"/>
         </heading>
         <div class="crud-view">
@@ -9,50 +9,11 @@
                     <el-col :md="12">
                         <card :header="$t('models.property_manager.details_card')">
                             <el-row :gutter="20">
-                                <el-col :md="10">
-                                    <el-form-item :label="$t('general.street')" :rules="validationRules.street" prop="street">
-                                        <el-input type="text" v-model="model.street" v-on:change="setBuildingName"></el-input>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :md="4">
-                                    <el-form-item :label="$t('general.house_num')" :rules="validationRules.house_num"
-                                                  prop="house_num">
-                                        <el-input type="text" v-model="model.house_num" v-on:change="setBuildingName"></el-input>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :md="10">
-                                    <el-form-item :label="$t('general.name')" :rules="validationRules.name" prop="name"
-                                                  ref="name">
-                                        <el-input type="text" v-model="model.name"></el-input>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-                            <el-row :gutter="20">
-                                <el-col :md="4">
-                                    <el-form-item :label="$t('general.zip')" :rules="validationRules.zip" prop="zip">
-                                        <el-input type="text" v-model="model.zip"></el-input>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :md="8">
-                                    <el-form-item :label="$t('general.city')" :rules="validationRules.city" prop="city">
-                                        <el-input type="text" v-model="model.city"></el-input>
-                                    </el-form-item>
-                                </el-col>
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('general.state')"
-                                                  class="label-block"
-                                                  :rules="validationRules.state_id"
-                                                  prop="state_id">
-                                        <el-select  
-                                            clearable
-                                            filterable
-                                            :placeholder="$t('general.state')" 
-                                            style="display: block"
-                                            v-model="model.state_id"
-                                        >
-                                            <el-option :key="state.id" :label="state.name" :value="state.id"
-                                                       v-for="state in states"></el-option>
-                                        </el-select>
+                                    <el-form-item :label="$t('models.building.internal_building_id')"
+                                                  :rules="validationRules.internal_building_id"
+                                                  prop="internal_building_id" style="max-width: 512px;">
+                                        <el-input type="text" v-model="model.internal_building_id"></el-input>
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
@@ -74,13 +35,56 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12">
-                                    <el-form-item :label="$t('models.building.internal_building_id')"
-                                                  :rules="validationRules.internal_building_id"
-                                                  prop="internal_building_id" style="max-width: 512px;">
-                                        <el-input type="text" v-model="model.internal_building_id"></el-input>
+                            </el-row>
+                            <el-row :gutter="20">
+                                <el-col :md="10">
+                                    <el-form-item :label="$t('general.street')" :rules="validationRules.street" prop="street">
+                                        <el-input type="text" v-model="model.street" v-on:change="setBuildingName"></el-input>
                                     </el-form-item>
                                 </el-col>
+                                <el-col :md="4">
+                                    <el-form-item :label="$t('general.house_num')" :rules="validationRules.house_num"
+                                                  prop="house_num">
+                                        <el-input type="text" v-model="model.house_num" v-on:change="setBuildingName"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="10">
+                                    <el-form-item :label="$t('general.name')" :rules="validationRules.name" prop="name"
+                                                  ref="name">
+                                        <el-input type="text" v-model="model.name"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <el-row :gutter="20">
+                                <el-col :md="6">
+                                    <el-form-item :label="$t('general.zip')" :rules="validationRules.zip" prop="zip">
+                                        <el-input type="text" v-model="model.zip"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="12">
+                                    <el-form-item :label="$t('general.city')" :rules="validationRules.city" prop="city">
+                                        <el-input type="text" v-model="model.city"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="6">
+                                    <el-form-item :label="$t('general.state')"
+                                                  class="label-block"
+                                                  :rules="validationRules.state_id"
+                                                  prop="state_id">
+                                        <el-select  
+                                            clearable
+                                            filterable
+                                            :placeholder="$t('general.state')" 
+                                            style="display: block"
+                                            v-model="model.state_id"
+                                        >
+                                            <el-option :key="state.id" :label="state.name" :value="state.id"
+                                                       v-for="state in states"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                                
+                                
                             </el-row>
                         </card>
                     </el-col>

@@ -258,7 +258,7 @@
                     </template>
                 </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                 :key="index"
                 :width="action.width"
                 align="right"
@@ -275,7 +275,7 @@
                         round
                         v-for="button in action.buttons"
                         v-if="!button.tooltipMode">
-                        <!-- &nbsp;{{$t(button.title)}}-->
+                        &nbsp;{{$t(button.title)}}
                     </el-button>
                     <el-tooltip
                         :content="$t(button.title)"
@@ -294,7 +294,7 @@
                         >
                         </el-button>
                     </el-tooltip>
-                     <el-dropdown size="small" trigger="click" placement="bottom-end" @command="changeCommand">
+                     <el-dropdown size="small" trigger="click" placement="bottom-end" @command="changeCommand" v-if="action.dropdowns">
                         <el-tooltip ref="visibility-button-tooltip" :content="$t('general.actions.label')">
                             <el-button type="text" class="el-dropdown-link">
                                 <i class="icon-ellipsis-vert"></i>
@@ -307,7 +307,7 @@
                         </el-dropdown-menu>
                     </el-dropdown>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
         <div v-if="meta.current_page < meta.last_page">
             <el-button @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>
@@ -480,6 +480,9 @@
                 max-height: 270px;
                 overflow-y: auto;
             }
+        }
+        :global(.el-table__header-wrapper) {
+            display: none;
         }
     }
     .el-button--default {

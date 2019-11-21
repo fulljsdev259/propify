@@ -2,6 +2,9 @@
     <div class="buildings">
         <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy" class="padding-right-300">
             <template>
+                <list-check-box />
+            </template>
+            <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.building)">
@@ -14,7 +17,7 @@
                     {{$t('models.building.add')}}
                 </el-button>
             </template>
-            <template v-if="$can($permissions.assign.manager)">
+            <!-- <template v-if="$can($permissions.assign.manager)">
                 <el-button 
                     :disabled="!selectedItems.length" 
                     @click="batchAssignManagers" 
@@ -24,7 +27,7 @@
                 >
                     {{$t('models.building.assign_managers')}}
                 </el-button>
-            </template>
+            </template> -->
             <template v-if="$can($permissions.delete.building)">
                 <el-button 
                     :disabled="!selectedItems.length" 
@@ -35,6 +38,18 @@
                 >
                     {{$t('general.actions.delete')}}
                 </el-button>
+            </template>
+            <template>
+                <el-dropdown placement="bottom" trigger="click">
+                    <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>Action 1</el-dropdown-item>
+                        <el-dropdown-item>Action 2</el-dropdown-item>
+                        <el-dropdown-item>Action 3</el-dropdown-item>
+                        <el-dropdown-item>Action 4</el-dropdown-item>
+                        <el-dropdown-item>Action 5</el-dropdown-item>
+                    </el-dropdown-menu>
+                    </el-dropdown>
             </template>
         </heading>
         <list-table
@@ -100,6 +115,8 @@
     import getFilterPropertyManager from 'mixins/methods/getFilterPropertyManager';
     import {displaySuccess, displayError} from "helpers/messages";
     import DeleteBuildingModal from 'components/DeleteBuildingModal';
+    import ListCheckBox from 'components/ListCheckBox';
+
     const mixin = ListTableMixin({
         actions: {
             get: 'getBuildings',
@@ -115,7 +132,8 @@
         mixins: [mixin, getFilterStates, getFilterQuarters, getFilterPropertyManager],
         components: {
             Heading,
-            DeleteBuildingModal
+            DeleteBuildingModal,
+            ListCheckBox,
         },
         data() {
             return {
@@ -124,11 +142,11 @@
                 processAssignment: false,
                 managersForm: {},
                 toAssignList: '',
-                states:{},
+                states: [],
                 propertyManagers:{},
                 toAssign: [],
                 isLoadingFilters: false,
-                quarters: {},
+                quarters: [],
                 cities: [],
                 quarterTypes: [],
                 roles:[],
@@ -209,13 +227,6 @@
                 ]
             };
         },
-        async created(){
-            this.isLoadingFilters = true;
-            const states = await this.axios.get('states?filters=true')
-            this.states = states.data.data;
-
-            this.isLoadingFilters = false;
-        },
         computed: {
             ...mapState("application", {
                 requestConstants(state) {
@@ -260,7 +271,7 @@
             
         },
         methods: {
-            ...mapActions(['getPropertyManagers', 'assignManagerToBuilding', 'deleteBuildingWithIds', 'checkUnitRequestWidthIds', 'getQuarters', 'getPropertyManagers']),
+            ...mapActions(['getPropertyManagers', 'assignManagerToBuilding', 'deleteBuildingWithIds', 'checkUnitRequestWidthIds', 'getQuarters']),
             
             async getRoles() {
                 this.roles = [];
@@ -417,8 +428,10 @@
             },            
         },
         async created() {
+            this.isLoadingFilters = true;
             this.getRoles();
             this.getTypes();
+            this.isLoadingFilters = false;
             this.quarters = await this.fetchRemoteQuarters();
             this.propertyManagers = await this.fetchRemotePropertyManagers();
         }
