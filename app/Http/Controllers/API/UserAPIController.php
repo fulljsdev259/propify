@@ -313,7 +313,7 @@ class UserAPIController extends AppBaseController
                     },
                 ]);
             },
-            'propertyManager:id,user_id',
+            'propertyManager:id,user_id,status',
             'serviceProvider:id,user_id'
         ]);
         if ($user->property_manager) {
