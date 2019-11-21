@@ -200,7 +200,7 @@
                             
                         </card>
 
-                        <card class="mt15 relation-box">
+                        <!-- <card class="mt15 relation-box">
                             <template slot="header">
                                 {{ $t('general.box_titles.files') }}
                                 <el-button style="float:right" 
@@ -222,7 +222,7 @@
                                 v-if="model.id"
                                 @delete-media="deleteMedia"
                             />
-                        </card>
+                        </card> -->
                     </el-col>
                 </el-row>
             </el-form>
