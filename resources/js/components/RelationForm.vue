@@ -549,7 +549,7 @@
                     status: '',
                     deposit_status: 1,
                     monthly_rent_gross: 0,
-                    unit_id: null,
+                    unit_id: (this.mode == 'add' ? [] : ''),
                     building_id: '',
                     quarter_id: '',
                     media: [],
@@ -632,26 +632,26 @@
             },
             showResidents() {
                 let flag = false
-                if(this.mode == 'add') {
-                    if(this.model.unit_id) {
-                        this.model.unit_id.forEach(every_unit_id => {
-                            this.units.forEach(group => {
-                                let found = group.options.find(item => item.id == every_unit_id && item.type >= 1 && item.type <= 2)
-                                if(found)
-                                    flag = true
-                            })
-                        })
-                    }
-                }
-                else {
-                    if(this.model.unit_id) {
-                        this.units.forEach(group => {
-                            let found = group.options.find(item => item.id == this.model.unit_id && item.type >= 1 && item.type <= 2)
-                            if(found)
-                                flag = true
-                        })
-                    }
-                }
+                // if(this.mode == 'add') {
+                //     if(this.model.unit_id) {
+                //         this.model.unit_id.forEach(every_unit_id => {
+                //             this.units.forEach(group => {
+                //                 let found = group.options.find(item => item.id == every_unit_id && item.type >= 1 && item.type <= 2)
+                //                 if(found)
+                //                     flag = true
+                //             })
+                //         })
+                //     }
+                // }
+                // else {
+                //     if(this.model.unit_id) {
+                //         this.units.forEach(group => {
+                //             let found = group.options.find(item => item.id == this.model.unit_id && item.type >= 1 && item.type <= 2)
+                //             if(found)
+                //                 flag = true
+                //         })
+                //     }
+                // }
                 return flag;
             }
         },
@@ -954,6 +954,8 @@
             this.quarters = await this.fetchRemoteQuarters();
             console.log('quarters', this.quarters)
 
+            //this.$refs.form.clearValidate('unit_id')
+
             let parent_obj = this
             this.deposit_types = Object.entries(this.$constants.relations.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_types.${label}`)}))
             //this.durations = Object.entries(this.$constants.relations.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.durations.${label}`)}))
@@ -1020,7 +1022,7 @@
                         //this.quarters.push(this.model.quarter)
                         //await this.remoteRelationSearchQuarters(this.model.quarter.name)
                         console.log('search units')
-                        await this.searchRelationUnits(true)
+                        //await this.searchRelationUnits(true)
                     }
                 }
 

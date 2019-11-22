@@ -140,7 +140,7 @@ export default (config = {}) => {
                 if(this.model.relations[index].garant == 1) {
                     console.log('garant')
                     return this.$router.push({
-                        name: 'adminResidentView',
+                        name: 'adminResidentsEdit',
                         params: {
                             id: this.model.relations[index].resident_id
                         }
@@ -183,13 +183,21 @@ export default (config = {}) => {
                 this.visibleMediaDialog = false;
             },
             uploadMedia() {
-                this.model.media.map(item => {
+                this.model.media.map(async item => {
                     if(!item.url) {
                         console.log(item)
                         item.id = this.model.id
-                        this.uploadMediaFile(item)
+                        let resp = await this.uploadMediaFile(item)
+
+                        if(resp && resp.success) {
+                            displaySuccess(resp)
+                            this.$refs.mediaList.fetch();
+                        }
+
+                        
                     }
                 })
+                this.visibleMediaDialog = false;
             },
             ...mapActions(['getCountries', 'uploadMediaFile']),
         },

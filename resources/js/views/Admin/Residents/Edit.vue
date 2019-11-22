@@ -310,6 +310,7 @@
                                         fetchAction="getResidentMedia"
                                         filter="resident_id"
                                         v-if="model.id"
+                                        ref="mediaList"
                                         @delete-media="deleteMedia"
                                     />
                                 </el-card>
@@ -416,15 +417,15 @@
                         </el-table-column>
                     </el-table>
 
-                    <el-alert
+                    <!-- <el-alert
                         :title="$t('models.resident.relation.pdf_only_desc')"
                         type="info"
                         show-icon
                         :closable="false"
                     >
-                    </el-alert>
+                    </el-alert> -->
 
-                    <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".pdf" drag multiple/>
+                    <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF" drag multiple/>
                     <ui-divider style="margin-top: 16px;"></ui-divider>
                     <div class="relation-form-actions">
                         <div class="button-group">
@@ -544,6 +545,7 @@
                     if(res.success) {
                         displaySuccess(res);
                         this.model.media.splice(index, 1);
+                        this.$refs.mediaList.fetch();
                     }
                 } catch( err ) {
                     displayError(err);
@@ -806,7 +808,7 @@
         .el-dialog__header {
             padding-left: 30px;
         }
-        
+
         .el-dialog__body {
             padding-top: 0;
         }
