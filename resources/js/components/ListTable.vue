@@ -832,8 +832,10 @@
             }
         },
         updated() {
-            this.$set(this.filterModel, 'search', this.searchText);
-            this.filterChanged(this.filters[0]);
+            // if(this.filterModal ==undefined || this.filterModal['search'] == undefined || this.searchText !== this.filterModel['search']) {
+            //     this.$set(this.filterModel, 'search', this.searchText);
+            //     this.filterChanged(this.filters[0]);
+            // }
         }
     }
 </script>
