@@ -219,6 +219,17 @@
                         <request-count :countsData="items[scope.$index]" ></request-count>
                         <relation-count :countsData="items[scope.$index]" ></relation-count>
                     </div>
+                    <div v-else-if="column.withMultiplePropsString">
+                        <span v-for="prop in column.props">{{scope.row[prop]}} </span>
+                    </div>
+                    <div v-else-if="column.withServiceCategory">
+                        {{$t(`models.service.category.${$constants.serviceProviders.category[scope.row[column.prop]]}`)}}
+                    </div>
+                    <div v-else-if="column.withInternalQuarterIds">
+                        <div class="internal-quarter-wrapper">
+                            <span class="internal-quarter" v-for="item in scope.row[column.prop]">{{item}}</span>
+                        </div>
+                    </div>
                     <div v-else-if="column.withStatusSign">
                         <el-tooltip
                             :content="`${$t(`models.unit.status.${$constants.relations.status[scope.row[column.prop]]}`)}`"
@@ -1162,6 +1173,14 @@
 
     .icon-danger {
         color: #dd6161;
+    }
+
+    .internal-quarter {
+        margin: 4px 8px 4px 0;
+        display: inline-flex;
+        padding: 4px;
+        border-radius: 2px;
+        background: var(--background-color-base);
     }
 
 </style>

@@ -160,6 +160,7 @@ export default (config = {}) => {
                 isFormSubmission: false,
                 user: {},
                 titles: null,
+                old_model: null,
             };
         },
         computed: {
@@ -381,6 +382,7 @@ export default (config = {}) => {
                                     if (resp.data.user && resp.data.user.id) {
                                         await this.uploadAvatarIfNeeded(resp.data.user.id);
                                     }
+                                    this.old_model = _.clone(this.model, true);
                                     if(this.$refs.auditList){
                                         this.$refs.auditList.fetch();
                                     }
