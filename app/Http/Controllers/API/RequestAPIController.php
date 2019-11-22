@@ -481,7 +481,6 @@ class RequestAPIController extends AppBaseController
         if ($providers) {
         	$providers->sent_email=$sent_email;
             $this->requestRepository->massAssign($requests, 'providers', $providers);
-            $this->requestRepository->massUpdateAttribute($requests, ['status' => Request::StatusAssigned]);
         }
         
         

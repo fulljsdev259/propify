@@ -101,8 +101,6 @@ class RequestDue extends Notification implements ShouldQueue
         $undoneStatuses = [
             Request::StatusReceived,
             Request::StatusInProcessing,
-            Request::StatusAssigned,
-            Request::StatusReactivated,
         ];
         foreach ($undoneStatuses as $status) {
             if ($request->status == $status) {

@@ -210,8 +210,6 @@ class ResidentRepository extends BaseRepository
         $requestsInProgress = $model->requests()
             ->whereIn('status', [
                 Request::StatusInProcessing,
-                Request::StatusAssigned,
-                Request::StatusReactivated,
             ])->get();
 
         if (count($requestsInProgress)) {
