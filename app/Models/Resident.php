@@ -297,14 +297,18 @@ class Resident extends AuditableModel implements HasMedia
         'email' => 'user.email',
     ];
 
-
     /**
      * @var array
      */
     protected $permittedExtensions = [
         'pdf',
+        'doc',
+        'docx',
+        'xls',
+        'xlsx',
         'png',
         'jpg',
+        'jpeg'
     ];
 
     public static function boot()
