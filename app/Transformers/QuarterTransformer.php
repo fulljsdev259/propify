@@ -71,13 +71,13 @@ class QuarterTransformer extends BaseTransformer
         $response = array_merge($response, $statusCounts);
         $requestsCount = $buildings->pluck('requests')->collapse()->unique()->countBy('status');
         // @TODO improve for not depend new status
-        $response['requests_archived_count'] = $requestsCount[Request::StatusArchived] ?? 0;
-        $response['requests_assigned_count'] = $requestsCount[Request::StatusAssigned] ?? 0;
-        $response['requests_count'] = $requestsCount->sum();
-        $response['requests_done_count'] = $requestsCount[Request::StatusDone] ?? 0;
+        $response['requests_new_count'] = $requestsCount[Request::StatusNew] ?? 0;
         $response['requests_in_processing_count'] = $requestsCount[Request::StatusInProcessing] ?? 0;
-        $response['requests_reactivated_count'] = $requestsCount[Request::StatusReactivated] ?? 0;
-        $response['requests_received_count'] = $requestsCount[Request::StatusNew] ?? 0;
+        $response['requests_pending_count'] = $requestsCount[Request::StatusPending] ?? 0;
+        $response['requests_done_count'] = $requestsCount[Request::StatusDone] ?? 0;
+        $response['requests_warranty_claim_count'] = $requestsCount[Request::StatusWarrantyClaim] ?? 0;
+        $response['requests_archived_count'] = $requestsCount[Request::StatusArchived] ?? 0;
+        $response['requests_count'] = $requestsCount->sum();
 
         $response['buildings_count'] = $buildings->count();
         $response['active_residents_count'] = $model->relations->where('status', Relation::StatusActive)
