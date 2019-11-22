@@ -344,6 +344,7 @@ class UtilsAPIController extends AppBaseController
             'title' => PropertyManager::Title,
             'type' => PropertyManager::Type,
 			'status' => PropertyManager::Status,
+            'status_colorcode' => PropertyManager::StatusColorCode,
         ];
 
         return $result;
