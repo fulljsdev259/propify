@@ -301,7 +301,7 @@ return [
             'deleted' => "Fehler beim Löschen der Einheit: ",
         ],
         'status' => [
-	        'active' => 'Vermietet',
+	        'active' => 'Belegt',
 	        'inactive' => 'Frei',
 	        'canceled' => 'Gekündigt'
         ],

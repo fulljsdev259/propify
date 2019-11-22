@@ -165,7 +165,7 @@
                     withStatus: true,
                     prop: 'status'
                 }, {
-                    label: 'models.request.assigned_to',
+                    label: 'models.request.assigned_property_managers',
                     withUsers: true,
                     prop: 'users',
                     defaultHide: true

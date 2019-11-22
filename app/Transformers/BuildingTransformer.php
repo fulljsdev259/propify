@@ -26,7 +26,7 @@ class BuildingTransformer extends BaseTransformer
             'id',
             'name',
             'building_format',
-            'type',
+            'types',
             'label',
             'contact_enable',
             'description',

@@ -64,6 +64,7 @@ class ServiceProviderTransformer extends BaseTransformer
 
         if ($model->relationExists('quarters')) {
             $response['quarters'] = (new QuarterTransformer)->transformCollection($model->quarters);
+            $response['internal_quarter_ids'] = collect($response['quarters'])->pluck('internal_quarter_id')->unique()->all();
         }
         if ($model->relationExists('buildings')) {
             $response['buildings'] = (new BuildingTransformer)->transformCollection($model->buildings);
