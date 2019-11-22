@@ -24,6 +24,14 @@ class UpdateRequest extends BaseRequest
      */
     public function rules()
     {
-        return Building::$rules;
+        return [
+            'name' => 'required',
+            'floor_nr' => 'required',
+            'under_floor' => 'numeric|between:0,3',
+            'type' => [
+                'nullable',
+                $this->getInRuleByClassConstants(Building::Type)
+            ]
+        ];
     }
 }

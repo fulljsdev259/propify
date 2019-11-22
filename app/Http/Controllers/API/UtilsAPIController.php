@@ -115,7 +115,7 @@ class UtilsAPIController extends AppBaseController
         }
         $response = [
             'app' => $app,
-            'buildings' => [], // @TODO is need return building related constants
+            'buildings' => $this->getBuildingsConstants(),
             'units' => $this->getUnitConstants(),
             'residents' => $this->getResidentConstants(),
             'relations' => $this->getRelationConstants(),
@@ -236,6 +236,19 @@ class UtilsAPIController extends AppBaseController
             'status_colorcode' => App\Models\Relation::StatusColorCode,
             'deposit_type' => App\Models\Relation::DepositType,
             'deposit_status' => App\Models\Relation::DepositStatus,
+        ];
+
+        return $result;
+    }
+
+
+    /**
+     * @return array
+     */
+    protected function getBuildingsConstants()
+    {
+        $result = [
+            'type' => App\Models\Building::Type,
         ];
 
         return $result;
