@@ -374,7 +374,7 @@ export default (config = {}) => {
                     if(this.model.sub_category_id != null) {
                         let sub_category = this.sub_categories.find(category => { return category.id == this.model.sub_category_id});
                         //this.showQualification = sub_category.qualification == 1 ? true : false;
-                        this.showAction = sub_categories.action == 1 ? true : false;
+                        this.showAction = sub_category.action == 1 ? true : false;
                         this.showCapturePhase =  sub_category.capture_phase == 1 ? true : false;
                         this.showComponent =  sub_category.component == 1 ? true : false;
                     }
