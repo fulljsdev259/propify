@@ -1,5 +1,6 @@
 <template>
     <el-select
+        :disabled="disabled"
         clearable
         id="languageform" 
         :class="activeLanguage == '' || activeLanguage == undefined ? '' : ' selected'"
@@ -41,6 +42,12 @@ export default {
             }
         },
         isTable: {
+            type: Boolean,
+            default: () => {
+                return false;
+            }
+        },
+        disabled: {
             type: Boolean,
             default: () => {
                 return false;
