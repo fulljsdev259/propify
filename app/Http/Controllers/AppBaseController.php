@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PropertyManager;
 use App\Models\ServiceProvider;
+use App\Models\Settings;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -81,6 +82,7 @@ class AppBaseController extends Controller
      */
     public function getAssignedManagersBy($assignees)
     {
+        $companyName = Settings::value('name');
         $managerType = get_morph_type_of(PropertyManager::class);
         $managerIds = $assignees->where('assignee_type', $managerType)->pluck('assignee_id');
         $raw = DB::raw('(select email from users where users.id = property_managers.user_id) as email,
@@ -90,6 +92,9 @@ class AppBaseController extends Controller
         $managers = PropertyManager::select('id', 'user_id', $raw)
             ->whereIn('id', $managerIds)
             ->get();
+        $managers->map(function ($manager) use ($companyName) {
+            $manager->company_name = $companyName;
+        });
 
         return [$managerType => $managers];
     }
@@ -106,7 +111,7 @@ class AppBaseController extends Controller
         $providerIds = $assignees->where('assignee_type', $providerType)->pluck('assignee_id');
         $raw = DB::raw('(select avatar from users where users.id = service_providers.user_id) as avatar, 
                 (select `roles`.name from roles inner join role_user on roles.id = role_user.role_id where role_user.user_id = service_providers.user_id) as role');
-        $providers = ServiceProvider::select('id', 'email', 'category', DB::raw('Concat(first_name, " ", last_name) as name'), 'user_id', $raw)
+        $providers = ServiceProvider::select('id', 'email', 'company_name', 'category', DB::raw('Concat(first_name, " ", last_name) as name'), 'user_id', $raw)
             ->whereIn('id', $providerIds)
             ->get();
 
