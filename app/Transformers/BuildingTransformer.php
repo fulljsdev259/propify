@@ -3,9 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Building;
-use App\Models\Relation;
 use App\Models\Resident;
-use App\Models\Unit;
 
 /**
  * Class BuildingTransformer.
@@ -26,6 +24,7 @@ class BuildingTransformer extends BaseTransformer
             'id',
             'name',
             'building_format',
+            'type',
             'label',
             'contact_enable',
             'description',
@@ -70,17 +69,9 @@ class BuildingTransformer extends BaseTransformer
                 'requests_count',
             ];
             $unitsData = collect( $response['units'] );
-            $firstUnit = $unitsData->first();
-            if ($firstUnit) {
-                foreach ($requestStatusCounts as $requestStatusCount) {
-                    if (! key_exists($requestStatusCount, $firstUnit)) {
-                        continue;
-                    }
-                    $response[$requestStatusCount] = $unitsData->sum($requestStatusCount);
-                }
+            foreach ($requestStatusCounts as $requestStatusCount) {
+                $response[$requestStatusCount] = $unitsData->sum($requestStatusCount);
             }
-
-
         }
 
         $response['users'] = [];
