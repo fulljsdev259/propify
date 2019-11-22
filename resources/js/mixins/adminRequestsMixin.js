@@ -39,6 +39,7 @@ export default (config = {}) => {
                     capture_phase: '',
                     //qualification: null,
                     action: null,
+                    cost_impact: null,
                     component: '',
                     keyword: '',
                     keywords: [],
@@ -114,6 +115,7 @@ export default (config = {}) => {
                 showRoom: false,
                 //showQualification: false,
                 showAction: false,
+                showCostImpact: false,
                 showComponent: false,
                 createTag: false,
                 editTag: false,
@@ -365,6 +367,7 @@ export default (config = {}) => {
                 this.showCapturePhase =  p_category.capture_phase == 1 ? true : false;
                 //this.showQualification = p_category.qualification == 1 ? true : false;
                 this.showAction = p_category.action == 1 ? true : false;
+                this.showCostImpact = p_category.cost_impact == 1 ? true : false;
                 this.showComponent = p_category.component == 1 ? true : false;
                 
 
@@ -375,6 +378,7 @@ export default (config = {}) => {
                         let sub_category = this.sub_categories.find(category => { return category.id == this.model.sub_category_id});
                         //this.showQualification = sub_category.qualification == 1 ? true : false;
                         this.showAction = sub_category.action == 1 ? true : false;
+                        this.showCostImpact = sub_category.cost_impact == 1 ? true : false;
                         this.showCapturePhase =  sub_category.capture_phase == 1 ? true : false;
                         this.showComponent =  sub_category.component == 1 ? true : false;
                     }
@@ -393,6 +397,8 @@ export default (config = {}) => {
                 this.showRoom = sub_category.room == 1 ? true : false;
                 this.showLocation = sub_category.location == 1 ? true : false;
                 //this.showQualification = sub_category.qualification == 1 ? true : false;
+                this.showAction = sub_category.action == 1 ? true : false;
+                this.showCostImpact = sub_category.cost_impact == 1 ? true : false;
                 this.showCapturePhase = sub_category.capture_phase == 1 ? true : false;
                 this.showComponent = sub_category.component == 1 ? true : false;
             },
@@ -420,6 +426,7 @@ export default (config = {}) => {
                 this.rooms = Object.entries(this.$constants.requests.room).map(([value, label]) => ({value: +value, name: this.$t(`models.request.room.${label}`)}))
                 this.capture_phases = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
                 this.actions = Object.entries(this.$constants.requests.action).map(([value, label]) => ({value: +value, name: this.$t(`models.request.action.${label}`)}))
+                this.cost_impacts = Object.entries(this.$constants.requests.cost_impact).map(([value, label]) => ({value: +value, name: this.$t(`models.request.cost_impact.${label}`)}))
                 //this.qualifications = Object.entries(this.$constants.requests.qualification).map(([value, label]) => ({value: +value, name: this.$t(`models.request.qualification.${label}`)}))
                 this.categories = this.$constants.requests.categories_data.tree
 
@@ -678,6 +685,7 @@ export default (config = {}) => {
                         this.showLocation = resp.data.sub_category && resp.data.sub_category.location == 1 ? true : false;
                         this.showRoom = resp.data.sub_category && resp.data.sub_category.room == 1 ? true : false;
                         this.showAction =  resp.data.category.action == 1 || (resp.data.sub_category && resp.data.sub_category.action == 1) ? true : false;
+                        this.showCostImpact =  resp.data.category.cost_impact == 1 || (resp.data.sub_category && resp.data.sub_category.cost_impact == 1) ? true : false;
 
                         //this.showQualification =  resp.data.category.qualification == 1 || (resp.data.sub_category && resp.data.sub_category.qualification == 1) ? true : false;
                         //this.showPayer = resp.data.qualification == 5 ? true : false;

@@ -132,7 +132,23 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="6" v-if="this.showPayer == true">
+                        <el-col :md="6" v-if="this.showCostImpact == true">
+                                    <el-form-item :label="$t('models.request.cost_impact.label')"
+                                            prop="cost_impact">
+                                <el-select :disabled="$can($permissions.update.serviceRequest)"
+                                            :placeholder="$t('models.request.placeholders.cost_impact')"
+                                            class="custom-select"
+                                            v-model="model.cost_impact">
+                                    <el-option
+                                            :key="cost_impact.value"
+                                            :label="cost_impact.name"
+                                            :value="cost_impact.value"
+                                            v-for="cost_impact in cost_impacts">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <!-- <el-col :md="6" v-if="this.showPayer == true">
                             <el-form-item 
                                 :label="$t('models.request.category_options.payer_percent')"
                                 :rules="validationRules.payer_percent"
@@ -157,7 +173,7 @@
                                     <template slot="prepend">CHF</template>
                                 </el-input>
                             </el-form-item>
-                        </el-col>
+                        </el-col> -->
                         <!-- <el-col :md="12">
                             <el-form-item :label="$t('models.request.priority.label')" :rules="validationRules.priority"
                                       prop="priority">

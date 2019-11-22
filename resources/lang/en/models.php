@@ -621,6 +621,7 @@ return [
             'wait' => 'Wait'
         ],
         'cost_impact' => [
+            'label' => 'Cost Impact',
             'house_owner' => 'House Owner',
             'resident' => 'Resident',
             'shared_costs' => 'Shared Costs'
@@ -686,7 +687,8 @@ return [
         ],
         'placeholders' => [
             'category' => 'Select category',
-            'label' => 'Select action',      
+            'action' => 'Select action',  
+            'cost_impact' => 'Select Cost Impact',
             'qualification' => 'Select qualification',
             'status' => 'Select status',
             'due_date' => 'Pick due date',
