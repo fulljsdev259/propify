@@ -21,8 +21,10 @@ $factory->define(App\Models\ServiceProvider::class, function (Faker $faker, arra
         'user_id' => $user_id,
         'address_id' => $address_id,      
         'category' => $category,
-        'name' => $faker->name,
-        'email' => $faker->email,       
+        'company_name' => $faker->name,
+        'first_name' => $faker->firstName,
+        'last_name' => $faker->lastName,
+        'email' => $faker->email,
         'phone' => $faker->phoneNumber,
     ];
 });
