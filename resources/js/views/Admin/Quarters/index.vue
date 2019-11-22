@@ -195,7 +195,7 @@
                     label: 'general.filters.status',
                     withStatus: true,
                 }, {
-                    label: 'models.request.assigned_to',
+                    label: 'models.request.assigned_property_managers',
                     withUsers: true,
                     prop: 'users',
                 }

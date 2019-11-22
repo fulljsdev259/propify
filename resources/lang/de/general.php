@@ -191,7 +191,7 @@ return [
     'box_titles' => [
         'details' => 'Details',
         'files' => 'Dokumente',
-        'managers' => 'Verantwortlich',
+        'managers' => 'Bewirtschafter',
         'buildings' => 'Objekte',
         'buildings_and_quarters' => 'Objekte/bearbeiten',
         'relations' => 'Beziehungen'
