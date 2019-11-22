@@ -163,7 +163,7 @@
                 }, {
                     label: 'general.box_titles.managers',
                     withUsers: true,
-                    prop: 'managers',
+                    prop: 'users',
                     count: 'managerscount'
                 }, {
                     label: 'models.building.request_status',
@@ -213,18 +213,6 @@
                 },{
                     label: 'general.filters.status',
                     withStatus: true,
-                    data: [ {
-                            prop: 'requests_received_count',
-                            background: '#67C23A',
-                            color: '#fff',
-                            label: this.$t('models.request.status.received')
-                        }, {
-                            prop: 'requests_assigned_count',
-                            background: '#ebb563',
-                            color: '#fff',
-                            label: this.$t('models.request.status.assigned')
-                        }
-                    ]
                 },
                 // {
                 //     width: 150,
@@ -294,7 +282,7 @@
             ...mapActions(['getPropertyManagers', 'assignManagerToBuilding', 'deleteBuildingWithIds', 'checkUnitRequestWidthIds', 'getQuarters']),
             handleMenuClick(command) {
                 if(command == 'delete')
-                    this.batchDeleteWithIds();
+                    this.batchDeleteBuilding();
             },
             async getRoles() {
                 this.roles = [];
