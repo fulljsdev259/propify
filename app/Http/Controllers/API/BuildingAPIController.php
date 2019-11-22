@@ -6,7 +6,8 @@ use App\Criteria\Building\FilterByRelatedFieldsCriteria;
 use App\Criteria\Building\FilterByUserRoleCriteria;
 use App\Criteria\Common\HasRequestCriteria;
 use App\Criteria\Common\RequestCriteria;
-use App\Criteria\Quarter\FilterByCityCriteria;
+use App\Criteria\Building\FilterByCityCriteria;
+use App\Criteria\Building\FilterByTypeCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Building\AssignRequest;
 use App\Http\Requests\API\Building\BatchAssignManagers;
@@ -132,6 +133,7 @@ class BuildingAPIController extends AppBaseController
         $this->buildingRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
         $this->buildingRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByCityCriteria($request));
+        $this->buildingRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByUserRoleCriteria($request));
 
         $hasRequest = $request->get('has_req', false);

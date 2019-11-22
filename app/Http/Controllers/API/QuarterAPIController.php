@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Quarter\FilterByCityCriteria;
 use App\Criteria\Quarter\FilterByStateCriteria;
+use App\Criteria\Quarter\FilterByTypeCriteria;
 use App\Criteria\Quarter\FilterByUserRoleCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Quarter\AssignUserRequest;
@@ -19,9 +20,7 @@ use App\Models\AuditableModel;
 use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
-use App\Models\Relation;
 use App\Models\ServiceProvider;
-use App\Models\Unit;
 use App\Models\User;
 use App\Repositories\AddressRepository;
 use App\Repositories\QuarterRepository;
@@ -98,6 +97,7 @@ class QuarterAPIController extends AppBaseController
         $this->quarterRepository->pushCriteria(new FilterByStateCriteria($request));
         $this->quarterRepository->pushCriteria(new FilterByCityCriteria($request));
         $this->quarterRepository->pushCriteria(new FilterByUserRoleCriteria($request));
+        $this->quarterRepository->pushCriteria(new FilterByTypeCriteria($request));
 
         $getAll = $request->get('get_all', false);
         if ($getAll) {
