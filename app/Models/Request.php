@@ -253,11 +253,11 @@ class Request extends AuditableModel implements HasMedia
     public $table = 'requests';
 
     const StatusNew = 1;
-    const StatusInProcessing = 2;
-    const StatusPending = 3;
+    const StatusPending = 2;
+    const StatusInProcessing = 3;
     const StatusDone = 4;
-    const StatusWarrantyClaim = 5;
-    const StatusArchived = 6;
+    const StatusArchived = 5;
+    const StatusWarrantyClaim = 6;
 //    const StatusAssigned = 3;
 //    const StatusReactivated = 5;
 
@@ -925,5 +925,19 @@ class Request extends AuditableModel implements HasMedia
     public function relation()
     {
         return $this->belongsTo(Relation::class);
+    }
+
+    /**
+     * @return array
+     */
+    public function getRequestStatusColumnsAttribute()
+    {
+        $statusCounts = [];
+        foreach (Request::Status as $value) {
+            $statusCounts[] = 'requests_' . $value . '_count';
+        }
+
+        $statusCounts[] = 'requests_count';
+        return $statusCounts;
     }
 }

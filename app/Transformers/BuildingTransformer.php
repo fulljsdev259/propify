@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Building;
+use App\Models\Request;
 use App\Models\Resident;
 
 /**
@@ -59,15 +60,7 @@ class BuildingTransformer extends BaseTransformer
 
         if ($model->relationExists('units')) {
             $response['units'] = (new UnitTransformer())->transformCollectionBy($model->units, 'transformForIndex');
-            $requestStatusCounts = [
-                'requests_new_count',
-                'requests_in_processing_count',
-                'requests_pending_count',
-                'requests_done_count',
-                'requests_warranty_claim_count',
-                'requests_archived_count',
-                'requests_count',
-            ];
+            $requestStatusCounts = (new Request())->request_status_columns;
             $unitsData = collect( $response['units'] );
             foreach ($requestStatusCounts as $requestStatusCount) {
                 $response[$requestStatusCount] = $unitsData->sum($requestStatusCount);
