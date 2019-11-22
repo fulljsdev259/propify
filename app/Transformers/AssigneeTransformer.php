@@ -37,6 +37,7 @@ class AssigneeTransformer extends BaseTransformer
             'type' => $model->assignee_type,
             'email' => $model->related ? $model->related->email :  $model->assignee_type . ' deleted',
             'name' => $model->related ? $model->related->name : $model->assignee_type . ' deleted',
+            'company_name' => $model->related ? $model->related->company_name : $model->assignee_type . ' deleted',
             'avatar' => $avatar,
             'role' => $model->related ? $model->related->role : $model->assignee_type . ' deleted',
             'function' => $this->getRoleFormatted($model)
