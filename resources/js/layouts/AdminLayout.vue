@@ -919,4 +919,20 @@
             font-size: 17px;
         }
     }
+    .list-table-search {
+        width: 250px;
+        &.el-input {
+            :global(.el-input__inner) {
+                border-color: transparent;
+                color: var(--color-text-regular);
+                background-color: var(--background-color-base);
+                height: 30px !important;
+                line-height: 30px !important;
+            }
+            :global(.el-input__icon) {
+                font-size: 16px;
+                line-height: 30px;
+            }
+        }
+    }
 </style>

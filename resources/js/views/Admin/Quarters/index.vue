@@ -1,6 +1,6 @@
 <template>
     <div class="quarters">
-        <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" class="padding-right-300">
+        <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
                 <list-check-box />
             </template>
@@ -20,7 +20,9 @@
            
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    <el-button size="mini" class="transparent-button">
+                        <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    </el-button>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item 
                             v-if="$can($permissions.assign.manager)" 
@@ -51,6 +53,7 @@
             :loading="{state: loading}"
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
+            :searchText="search"
             @selectionChanged="selectionChanged"
         >
         </list-table>
@@ -123,6 +126,7 @@
                 toAssign: [],
                 remoteLoading: false,
                 states: [],
+                search: '',
                 quarter:[],
                 cities: [],
                 quarterTypes: [],
@@ -190,28 +194,10 @@
                 }, {
                     label: 'general.filters.status',
                     withStatus: true,
-                    data: [ {
-                            prop: 'requests_received_count',
-                            background: '#bbb',
-                            color: '#fff',
-                            label: this.$t('models.request.status.received')
-                        }, {
-                            prop: 'requests_assigned_count',
-                            background: '#ebb563',
-                            color: '#fff',
-                            label: this.$t('models.request.status.assigned')
-                        }
-                    ]
                 }, {
                     label: 'models.request.assigned_to',
-                    withStatus: true,
-                    data: [ {
-                            prop: 'name',
-                            background: '#67C23A',
-                            color: '#fff',
-                            label: this.$t('models.request.status.received')
-                        }
-                    ]
+                    withUsers: true,
+                    prop: 'users',
                 }
                 ],
                 model: {
