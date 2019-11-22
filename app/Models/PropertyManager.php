@@ -172,6 +172,12 @@ class PropertyManager extends AuditableModel
 		self::StatusInactive => 'inactive',
 	];
 
+	const StatusColorCode = [
+		self::StatusActive => '#878810',
+		self::StatusInactive => '#c8a331',
+	];
+
+
     public $fillable = [
         'description',
         'user_id',
