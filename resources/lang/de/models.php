@@ -196,6 +196,7 @@ return [
         'active_residents_count' => 'Wohnungen',
         'request_status' => 'Anliegen-Status',
         'type' => 'Objektart',
+        'city' => 'Objekort',
         'media_category' => [
             'house_rules' => 'Hausordnung',
             'operating_instructions' => 'Benutzungsanleitungen',

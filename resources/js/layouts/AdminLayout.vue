@@ -550,6 +550,9 @@
             font-family: 'Radikal';
             margin-right: 10px;
         }
+        :global(.heading .menu-button) {
+            margin-right: 20px;
+        }
     }
 
     .el-container {

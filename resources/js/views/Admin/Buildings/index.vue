@@ -4,9 +4,6 @@
             <template>
                 <list-check-box />
             </template>
-            <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
-            </template>
             <template v-if="$can($permissions.create.building)">
                 <el-button 
                     @click="add" 
@@ -16,6 +13,9 @@
                 >
                     {{$t('models.building.add')}}
                 </el-button>
+            </template>
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
             </template>
             <!-- <template v-if="$can($permissions.assign.manager)">
                 <el-button 
@@ -30,7 +30,7 @@
             </template> -->
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <el-button size="mini" class="transparent-button menu-button">
+                    <el-button size="mini" class="transparent-button menu-button menu-button">
                         <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
@@ -156,7 +156,7 @@
                     prop: 'address.house_num'
                 }, {
                     label: 'models.building.type',
-                    prop: ''
+                    prop: 'building'
                 }, {
                     label: 'models.building.units',
                     prop: 'units_count'
@@ -169,44 +169,7 @@
                     label: 'models.building.request_status',
                     withCounts: true,
                     width: 230,
-                    counts: [
-                        {
-                            prop: 'requests_count',
-                            background: '#aaa',
-                            color: '#fff',
-                            label: this.$t('dashboard.requests.total_request')
-                        }, {
-                            prop: 'requests_received_count',
-                            background: '#bbb',
-                            color: '#fff',
-                            label: this.$t('models.request.status.received')
-                        }, {
-                            prop: 'requests_assigned_count',
-                            background: '#ebb563',
-                            color: '#fff',
-                            label: this.$t('models.request.status.assigned')
-                        }, {
-                            prop: 'requests_in_processing_count',
-                            background: '#ebb563',
-                            color: '#fff',
-                            label: this.$t('models.request.status.in_processing')
-                        }, {
-                            prop: 'requests_reactivated_count',
-                            background: '#ebb563',
-                            color: '#fff',
-                            label: this.$t('models.request.status.reactivated')
-                        }, {
-                            prop: 'requests_done_count',
-                            background: '#67C23A',
-                            color: '#fff',
-                            label: this.$t('models.request.status.done')
-                        }, {
-                            prop: 'requests_archived_count',
-                            background: '#67C23A',
-                            color: '#fff',
-                            label: this.$t('models.request.status.archived')
-                        }
-                    ]
+                    prop: 'request_count'
                 },  {
                     label: 'models.building.active_residents_count',
                     prop: 'count_of_apartments_units',
@@ -214,6 +177,7 @@
                 },{
                     label: 'general.filters.status',
                     withStatus: true,
+                    prop: 'status'
                 },
                 // {
                 //     width: 150,
@@ -250,15 +214,10 @@
                         key: 'quarter_id',
                         data: this.quarters,
                     },{
-                        name: this.$t('models.quarter.project_ort'),
+                        name: this.$t('models.building.city'),
                         type: 'select',
-                        key: 'city_id',
+                        key: 'city',
                         data: this.cities,
-                    },{
-                        name: this.$t('models.quarter.type'),
-                        type: 'select',
-                        key: 'quarter_type',
-                        data: this.types,
                     },{
                         name: this.$t('models.building.type'),
                         type: 'select',
@@ -267,7 +226,7 @@
                     },{
                         name: this.$t('general.roles.manager'),
                         type: 'select',
-                        key: 'role',
+                        key: 'manager_id',
                         data: this.roles
                     },{
                         name: this.$t('general.filters.saved_filters'),
@@ -285,11 +244,24 @@
                 if(command == 'delete')
                     this.batchDeleteBuilding();
             },
+            async getCities() {
+                const cities = await this.axios.get('cities?get_all=true&buildings=true');
+                this.cities = [];
+                cities.data.data.forEach((city) => {
+                    this.cities.push({
+                        id: city,
+                        name: city
+                    })
+                });
+            },
             async getRoles() {
+                const roles = await this.axios.get('users?get_all=true&role=manager');
                 this.roles = [];
-                this.roles.push({
-                    id: 1,
-                    name: this.$constants.propertyManager.type[1],
+                roles.data.data.forEach((role) => {
+                    this.roles.push({
+                        id: role.id,
+                        name: role.name,
+                    })
                 })
             },
             async getTypes() {
@@ -443,6 +415,7 @@
             this.isLoadingFilters = true;
             this.getRoles();
             this.getTypes();
+            this.getCities();
             this.isLoadingFilters = false;
             this.quarters = await this.fetchRemoteQuarters();
             this.propertyManagers = await this.fetchRemotePropertyManagers();
