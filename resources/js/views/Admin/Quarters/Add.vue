@@ -6,7 +6,7 @@
         <el-row :gutter="20" class="crud-view">
             <el-col :md="12">
                 <card :header="$t('general.box_titles.details')">                    
-                    <el-form :model="model" ref="form">
+                    <el-form :model="model" ref="form" class="add-form">
                         <el-row :gutter="20">
                              <el-col :md="12">
                                 <el-form-item :label="$t('general.internal_quarter_id')" :rules="validationRules.internal_quarter_id"
@@ -20,6 +20,8 @@
                                     <el-input type="text" v-model="model.name"/>
                                 </el-form-item>
                             </el-col>
+                        </el-row>
+                        <el-row :gutter="20">
                             <el-col :md="12">
                                 <el-form-item :label="$t('models.quarter.url')" :rules="validationRules.url"
                                                 prop="url">
@@ -43,13 +45,16 @@
                                                 v-for="type in types">
                                         </el-option>
                                     </el-select> -->
-                                    <list-filter-select
+                                    <multi-select
                                         :name="$t('general.placeholders.select')"
                                         :data="types"
+                                        tagColor="#9E9FA0"
+                                        bgColor="#f6f5f7"
                                         @select-changed="model.types=$event"
-                                    ></list-filter-select>
+                                    ></multi-select>
                                 </el-form-item>
                             </el-col>
+                        </el-row>
                             <!-- <el-col :md="12">
                                 <el-form-item class="label-block" :label="$t('models.quarter.count_of_buildings')"
                                               prop="title">
@@ -64,23 +69,20 @@
                                     </el-select>
                                 </el-form-item>
                             </el-col> -->
-                            <el-col :md="12">
-                                <el-row :gutter="20">
-                                    <el-col :md="8">
-                                        <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
-                                                      prop="zip">
-                                            <el-input type="text" v-model="model.zip"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="16">
-                                        <el-form-item :label="$t('general.city')" :rules="validationRules.city"
-                                                      prop="city">
-                                            <el-input type="text" v-model="model.city"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
+                        <el-row :gutter="20">
+                            <el-col :md="6">
+                                <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
+                                                prop="zip">
+                                    <el-input type="text" v-model="model.zip"></el-input>
+                                </el-form-item>
                             </el-col>
                             <el-col :md="12">
+                                <el-form-item :label="$t('general.city')" :rules="validationRules.city"
+                                                prop="city">
+                                    <el-input type="text" v-model="model.city"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :md="6">
                                 <el-form-item :label="$t('general.state')"
                                               :rules="validationRules.state_id"
                                               prop="state_id"
@@ -96,7 +98,6 @@
                                     </el-select>
                                 </el-form-item>
                             </el-col>
-                            
                         </el-row>
                     </el-form>
                 </card>
@@ -112,6 +113,7 @@
     import {displayError} from "helpers/messages";
     import AddActions from 'components/EditViewActions';
     import ListFilterSelect from 'components/ListFilterSelect';
+    import MultiSelect from 'components/MultiSelect';
 
 
     export default {
@@ -124,6 +126,7 @@
             Card,
             AddActions,
             ListFilterSelect,
+            MultiSelect
         },
     };
 </script>
@@ -132,7 +135,7 @@
 
     .quarters-edit {
         .crud-view {
-            margin-top: 40px;
+            margin: 0 10px !important;
 
             /deep/ .label-block .el-form-item__label {
                 display: block;
@@ -140,6 +143,13 @@
                 text-align: left;
             }
         }
+    }
+    .el-card .el-card__body {
+        padding: 20px !important;
+    }
+    .el-card .el-card__header {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
     }
 </style>
 

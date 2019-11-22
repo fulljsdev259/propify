@@ -64,6 +64,8 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
+                            </el-row>
+                            <el-row :gutter="20">
                                 <el-col :md="10">
                                     <el-form-item :label="$t('general.street')" :rules="validationRules.street"
                                                   prop="street"

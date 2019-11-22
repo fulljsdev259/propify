@@ -20,44 +20,45 @@
 </template>
 <script>
     import {Avatar} from 'vue-avatar';
+    import {mapGetters} from 'vuex'
 
     export default {
         name: 'RequestCount',
         data() {
             return {
-                counts: [
-                {
-                    prop: 'requests_received_count',
-                    background: '#bbb',
-                    color: '#fff',
-                    label: 'models.request.status.received'
-                }, {
-                    prop: 'requests_assigned_count',
-                    background: '#ebb563',
-                    color: '#fff',
-                    label: 'models.request.status.assigned'
-                }, {
-                    prop: 'requests_in_processing_count',
-                    background: '#ebb563',
-                    color: '#fff',
-                    label: 'models.request.status.in_processing'
-                }, {
-                    prop: 'requests_reactivated_count',
-                    background: '#ebb563',
-                    color: '#fff',
-                    label: 'models.request.status.reactivated'
-                }, {
-                    prop: 'requests_done_count',
-                    background: '#67C23A',
-                    color: '#fff',
-                    label: 'models.request.status.done'
-                }, {
-                    prop: 'requests_archived_count',
-                    background: '#67C23A',
-                    color: '#fff',
-                    label: 'models.request.status.archived'
-                }
-                ]
+                // counts: [
+                // {
+                //     prop: 'requests_received_count',
+                //     background: '#bbb',
+                //     color: '#fff',
+                //     label: 'models.request.status.received'
+                // }, {
+                //     prop: 'requests_assigned_count',
+                //     background: '#ebb563',
+                //     color: '#fff',
+                //     label: 'models.request.status.assigned'
+                // }, {
+                //     prop: 'requests_in_processing_count',
+                //     background: '#ebb563',
+                //     color: '#fff',
+                //     label: 'models.request.status.in_processing'
+                // }, {
+                //     prop: 'requests_reactivated_count',
+                //     background: '#ebb563',
+                //     color: '#fff',
+                //     label: 'models.request.status.reactivated'
+                // }, {
+                //     prop: 'requests_done_count',
+                //     background: '#67C23A',
+                //     color: '#fff',
+                //     label: 'models.request.status.done'
+                // }, {
+                //     prop: 'requests_archived_count',
+                //     background: '#67C23A',
+                //     color: '#fff',
+                //     label: 'models.request.status.archived'
+                // }
+                // ]
             }
         },
         props: {
@@ -68,10 +69,23 @@
                 }
             },
         },
+        computed: {
+            ...mapGetters('application', {
+                constants: 'constants'
+            }),
+            counts() {
+                if(this.constants.requests)
+                    return Object.entries(this.constants.requests.status).map(([value, label]) => ({
+                        prop: 'requests_' + label + '_count',
+                        background: this.constants.requests.status_colorcode[value],
+                        color: '#fff',
+                        label: `models.request.status.${label}`
+                    }))
+                return []
+            }
+        },
         components: {
             Avatar
-        },
-        mounted() {
         }
         
     }

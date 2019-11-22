@@ -78,8 +78,8 @@
                                     </span>
                                 </h3>
                                 <p class="user-info text-secondary" v-if="model.title === 'company'">{{model.company}}</p>
-                                <i class="icon-dot-circled" :class="[constants.residents.status[model.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
-                                {{ constants.residents.status[model.status] ? $t('models.resident.status.' + constants.residents.status[model.status]) : ''}}
+                                <!-- <i class="icon-dot-circled" :class="[constants.residents.status[model.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
+                                {{ constants.residents.status[model.status] ? $t('models.resident.status.' + constants.residents.status[model.status]) : ''}} -->
                             </el-col>
                             <el-col :md="13" class="info">
                                 <el-row :gutter="20">
