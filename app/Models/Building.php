@@ -214,7 +214,7 @@ class Building extends AuditableModel implements HasMedia
         'internal_building_id',
         'under_floor',
         'global_email_receptionist',
-        'type'
+        'types'
     ];
 
     /**
@@ -230,7 +230,7 @@ class Building extends AuditableModel implements HasMedia
         'under_floor' => 'integer',
         'quarter_id' => 'integer',
         'floor_nr' => 'integer',
-        'type' => 'integer',
+        'types' => 'array',
         'contact_enable' => 'integer',
         'basement' => 'boolean',
         'attic' => 'boolean',
