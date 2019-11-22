@@ -33,7 +33,7 @@
                         <el-form :model="model" label-position="top" label-width="192px" ref="form" class="edit-details-form">
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.building.internal_building_id')"
+                                    <el-form-item :label="$t('models.building.building_number')"
                                                   :rules="validationRules.internal_building_id"
                                                   prop="internal_building_id" style="max-width: 512px;">
                                         <el-input type="text" v-model="model.internal_building_id" :disabled="!editMode"></el-input>

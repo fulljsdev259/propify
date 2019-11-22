@@ -192,6 +192,7 @@ return [
         'not_found' => 'Objekt nicht gefunden.',
         'building_format' => 'Projektnr.',
         'building_no' => 'Objektnr.',
+	    'building_number'=>'Objektnummer',
         'active_residents_count' => 'Wohnungen',
         'request_status' => 'Anliegen-Status',
         'type' => 'Objekteart',

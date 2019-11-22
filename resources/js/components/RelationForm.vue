@@ -33,8 +33,8 @@
                                 :key="key"
                                 :label="$t('models.resident.type.' + value )"
                                 :value="+key"
-                                v-if="key != 3"
-                                v-for="(value, key) in $constants.residents.type">
+                                v-for="(value, key) in $constants.residents.type"
+                                v-if="key != 3">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -61,6 +61,7 @@
                         :type="quarterFilter.key"
                         :name="quarterFilter.name"
                         :data="quarterFilter.data"
+                        :maxSelect="1"
                         :selectedOptions="[model.quarter_id]"
                         @select-changed="handleSelectChange($event, 'quarter')"
                     >
@@ -107,7 +108,6 @@
                             :label="$t('models.resident.unit.name')"
                             prop="unit_id" 
                             class="label-block">
-
                     <el-select :placeholder="$t('models.resident.search_unit')" 
                             style="display: block"
                             v-model="model.unit_id"
@@ -902,6 +902,7 @@
 
                     }
 
+                    console.log('get units', this.units)
                     
                 } catch (err) {
                     displayError(err);
@@ -1014,9 +1015,11 @@
 
                         this.units.push({ label: group_label, options : [this.model.unit]})
                     }
+                    console.log('this.units', this.units)
                     if(this.model.quarter) {
                         //this.quarters.push(this.model.quarter)
                         //await this.remoteRelationSearchQuarters(this.model.quarter.name)
+                        console.log('search units')
                         await this.searchRelationUnits(true)
                     }
                 }
@@ -1198,11 +1201,22 @@ c
         }
     }
 
-    .el-dropdown .el-button span.el-tag i.el-tag__close {
+    /deep/ .el-tag.el-tag--info .el-tag__close {
+        color: white
+    }
+    /deep/ .el-dropdown .el-button span.el-tag i.el-tag__close {
         right: 0;
         line-height: 1.4;
         font-size: 14px;
         font-weight: 700;
         color: var(--color-white);
+    }
+
+    /deep/ .el-dropdown {
+        .el-button.selected-button {
+            background-color: white;
+            padding: 0 2.5px;
+            height: 100%;
+        }
     }
 </style>

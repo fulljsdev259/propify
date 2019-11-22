@@ -153,11 +153,11 @@
                     </div>
 
                     <div v-else-if="column.type === 'assignProviderManagerAvatars'">
-                        <el-tooltip
+                        <!-- <el-tooltip
                                 :content="`${scope.row.name}`"
                                 class="item"
                                 effect="light" placement="top"
-                        >
+                        > -->
                             <avatar :size="30"
                                     :src="'/' + scope.row.avatar"
                                     v-if="scope.row.avatar"></avatar>
@@ -166,7 +166,12 @@
                                     color="#fff"
                                     :username="scope.row.name"
                                     v-if="!scope.row.avatar"></avatar>
-                        </el-tooltip>
+                        <!-- </el-tooltip> -->
+                    </div>
+
+                    <div v-else-if="column.type === 'assignProviderManagerFunctions'">
+                        {{scope.row.type == "provider" ? $t(`models.service.category.${$constants.serviceProviders.category[scope.row.function]}`)  : ''}}
+                        {{scope.row.type == "manager" ? $t(`general.assignment_types.${scope.row.function}`) : ''}}
                     </div>
 
                     <div v-else-if="column.type === 'unitResidentAvatar'">
@@ -230,7 +235,7 @@
                     </template>
                 </template>
             </el-table-column>
-            <!-- <el-table-column
+            <el-table-column
                 :key="index"
                 :width="action.width"
                 align="right"
@@ -266,6 +271,27 @@
                         >
                         </el-button>
                     </el-tooltip>
+                     <el-dropdown size="small" trigger="click" placement="bottom-end" @command="changeCommand" v-if="action.dropdowns">
+                        <el-tooltip ref="visibility-button-tooltip" :content="$t('general.actions.label')">
+                            <el-button type="text" class="el-dropdown-link">
+                                <i class="icon-ellipsis-vert"></i>
+                            </el-button>
+                        </el-tooltip>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item v-for="(item, index) in action.dropdowns" :key="item.key" :command="item.key + ' ' + scope.$index" :divided="!! index">
+                                {{$t(`${item.title}`)}}
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </template>
+            </el-table-column>
+            <!-- <el-table-column
+                :key="index"
+                :width="action.width"
+                align="right"
+                v-for="(action, index) in actions"
+            >
+                <template slot-scope="scope">
                      <el-dropdown size="small" trigger="click" placement="bottom-end" @command="changeCommand" v-if="action.dropdowns">
                         <el-tooltip ref="visibility-button-tooltip" :content="$t('general.actions.label')">
                             <el-button type="text" class="el-dropdown-link">
