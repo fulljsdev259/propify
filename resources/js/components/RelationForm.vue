@@ -74,8 +74,11 @@
                             prop="unit_id" 
                             class="label-block">
                     <!-- <multi-select
+                        :type="unitFilter.key"
+                        :name="unitFilter.name"
+                        :data="unitFilter.data"
                         :filter="unitFilter"
-                        :selectedOptions="model.unit_ids"
+                        :selectedOptions="model.unit_id"
                         @select-changed="handleSelectChange($event, 'unit')"
                     >
                     </multi-select> -->
@@ -98,7 +101,7 @@
                                 :value="item.id">
                                 <span style="float: left">{{ item.name }}</span>
                                 <span style="float: right">{{ translateUnitType(item.type) }}</span>
-                                <!-- <relation-count :countsData="item" style="float: right;"></relation-count> -->
+                                
                             </el-option>
                         </el-option-group>
                         
@@ -108,6 +111,15 @@
                             :label="$t('models.resident.unit.name')"
                             prop="unit_id" 
                             class="label-block">
+                    <!-- <multi-select
+                        :type="unitFilter.key"
+                        :name="unitFilter.name"
+                        :data="unitFilter.data"
+                        :filter="unitFilter"
+                        :selectedOptions="[model.unit_id]"
+                        @select-changed="handleSelectChange($event, 'unit')"
+                    >
+                    </multi-select> -->
                     <el-select :placeholder="$t('models.resident.search_unit')" 
                             style="display: block"
                             v-model="model.unit_id"
@@ -384,7 +396,7 @@
         <!-- <ui-divider v-if="model.unit_id" content-position="left">
             {{ $t('models.resident.relation.relation_pdf') }}
         </ui-divider> -->
-        <el-row :gutter="20"  v-if="model.unit_id">
+        <el-row :gutter="20"  v-if="model.unit_id" class="media-box">
             <el-col :md="24">
                 <el-form-item>
 
@@ -621,7 +633,9 @@
                         name: this.$t('models.resident.search_unit'),
                         type: 'group-select',
                         key: 'name',
-                        data: this.units
+                        data: this.units,
+                        remoteLoading: false,
+                        fetch: this.searchRelationUnits
                 }
             },
             quarterFilter() {
@@ -636,6 +650,22 @@
             },
             showResidents() {
                 let flag = false
+                // if(this.mode == 'add') {
+                //     if(this.model.unit_id) {
+                //         this.model.unit_id.forEach(every_unit_id => {
+                //             let found = this.units.find(item => item.id == every_unit_id && item.type >= 1 && item.type <= 2)
+                //             if(found)
+                //                 flag = true
+                //         })
+                //     }
+                // }
+                // else {
+                //     if(this.model.unit_id) {
+                //         let found = this.units.find(item => item.id == this.model.unit_id && item.type >= 1 && item.type <= 2)
+                //         if(found)
+                //             flag = true
+                //     }
+                // }
                 if(this.mode == 'add') {
                     if(this.model.unit_id) {
                         this.model.unit_id.forEach(every_unit_id => {
@@ -759,15 +789,20 @@
                 })
             },
             handleSelectChange(val, filter) {
+                console.log(val, filter)
                 if(filter == 'unit') {
-                    this.model.unit_ids = val
+                    this.model.unit_id = val
                 } else if(filter == 'quarter') {
                     if(val.length == 1) {
                         this.model.quarter_id = val[0]
                         this.searchRelationUnits(false)
                     }
-                    else
+                    else {
                         this.model.quarter_id = null
+                        this.model.unit_id = this.mode == 'add' ? [] : ''
+                        this.units = []
+                    }
+                        
                 }
             },
             disabledRentStart(date) {
@@ -854,49 +889,20 @@
                     this.model.unit_id = this.mode == 'add' ? [] : '';
                 }
                 try {
-                    
-                    //let filtered_used_units = this.used_units.filter( unit => unit != this.original_unit_id && unit != "")
-
-                    // const resp1 = await this.getUnits({
-                    //     show_relation_counts: true,
-                    //     group_by_floor: true,
-                    //     building_id: this.model.building_id,
-                    //     exclude_ids: filtered_used_units
-                    // });
 
                     const resp1 = await this.getUnits({
                         group_by_building: true,
                         quarter_id: this.model.quarter_id
                     });
-
                     
                     let parent_obj = this
                     this.units = [];
                     for( var key in resp1.data) {
                         if( !resp1.data.hasOwnProperty(key)) continue;
 
-                        // let group_label = "";
-                        // if(key > 0)
-                        // {
-                        //     group_label = key + ". " + this.upper_ground_floor_label
-                        // }
-                        // else if(key == 0)
-                        // {
-                        //     group_label = this.ground_floor_label
-                        // }
-                        // else if(key < 0)
-                        // {
-                        //     group_label = key + ". " + this.under_ground_floor_label
-                        // }
-                        // else if(key == 'attic')
-                        // {
-                        //     group_label = this.top_floor_label
-                        // }
-
                         let group_label = key
                         
                         var obj = resp1.data[key];
-
 
                         this.units.push( {
                             label : group_label,
@@ -912,6 +918,25 @@
                     this.remoteLoading = false;
                 }
             },
+            // async searchRelationUnits(shouldKeepValue) {
+            //     if(!shouldKeepValue) {
+            //         this.model.unit_id = this.mode == 'add' ? [] : '';
+            //     }
+            //     try {
+
+            //         const resp = await this.getUnits({
+            //             quarter_id: this.model.quarter_id
+            //         });
+                    
+            //         let parent_obj = this
+            //         this.units = resp.data.data
+
+            //     } catch (err) {
+            //         displayError(err);
+            //     } finally {
+            //         this.remoteLoading = false;
+            //     }
+            // },
             translateUnitType(type) {
                 return this.$t(`models.unit.type.${this.$constants.units.type[type]}`);
             },
@@ -966,7 +991,13 @@
             if(this.mode == "edit") {
                 this.model = Object.assign({}, this.data)
 
-                this.model.resident_ids = Object.assign({}, this.data.residents.map(item => item.id))
+                if(this.data.residents) {
+                    this.model.resident_ids = Object.assign({}, this.data.residents.map(item => item.id))
+                    this.model.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
+                    this.residents = this.model.residents
+                    
+                }
+                    
                 if(this.model.quarter)
                     this.model.quarter_id = this.model.quarter.id
                 
@@ -977,8 +1008,7 @@
                 //     this.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
                 // }
 
-                this.residents = this.model.residents
-                this.model.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
+                
                 if(!this.model.media)
                     this.model.media = []
 
@@ -1019,7 +1049,7 @@
                     if(this.model.quarter) {
                         //this.quarters.push(this.model.quarter)
                         //await this.remoteRelationSearchQuarters(this.model.quarter.name)
-                        //await this.searchRelationUnits(true)
+                        await this.searchRelationUnits(true)
                     }
                 }
 
@@ -1244,5 +1274,9 @@ c
             color: var(--color-white);
             box-shadow: 0 0 5px #848484 ;
         }
+    }
+
+    .media-box {
+        margin-top: 30px;
     }
 </style>

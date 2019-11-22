@@ -218,13 +218,19 @@
                         <relation-count :countsData="items[scope.$index]" ></relation-count>
                     </div>
                     <div v-else-if="column.withStatusSign">
-                        <avatar 
-                            :background-color="$constants.relations.status_colorcode[scope.row[column.prop]]"
-                            :initials="''"
-                            :size="30"
-                            :style="{'z-index': (800 - index)}"
-                            :username="''"
-                        />
+                        <el-tooltip
+                            :content="`${$t(`models.resident.relation.status.${$constants.relations.status[scope.row[column.prop]]}`)}`"
+                            class="item"
+                            effect="light" placement="top"
+                        >
+                            <avatar 
+                                :background-color="$constants.relations.status_colorcode[scope.row[column.prop]]"
+                                :initials="''"
+                                :size="30"
+                                :style="{'z-index': (800 - index)}"
+                                :username="''"
+                            />
+                        </el-tooltip>
                     </div>
                     <div v-else-if="column.withStatus">
                         <div class="avatars-wrapper">

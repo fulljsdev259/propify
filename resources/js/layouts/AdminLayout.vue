@@ -877,7 +877,12 @@
             }
         }
     }
-    :global(.edit-details-form .el-row .el-col) {
+    :global(.add-form .el-row .el-col .el-form-item) {
+        .el-input .el-input__inner, .el-input .el-input-group__prepend {
+            border-color: transparent;
+        }    
+    }
+    :global(.edit-details-form .el-row .el-col), :global(.add-form .el-row .el-col) {
         &:first-child {
             padding-left: 0px !important;
         }

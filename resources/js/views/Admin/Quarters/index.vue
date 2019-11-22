@@ -154,33 +154,33 @@
                     withCounts: true,
                     width: 230,
                     counts: [{
-                            prop: 'requests_received_count',
-                            background: '#bbb',
+                            prop: 'requests_new_count',
+                            background: this.$constants.relations.status_colorcode[1],
                             color: '#fff',
-                            label: this.$t('models.request.status.received')
-                        }, {
-                            prop: 'requests_assigned_count',
-                            background: '#ebb563',
-                            color: '#fff',
-                            label: this.$t('models.request.status.assigned')
+                            label: this.$t('models.request.status.new')
                         }, {
                             prop: 'requests_in_processing_count',
-                            background: '#ebb563',
+                            background: this.$constants.relations.status_colorcode[2],
                             color: '#fff',
                             label: this.$t('models.request.status.in_processing')
                         }, {
-                            prop: 'requests_reactivated_count',
-                            background: '#ebb563',
+                            prop: 'requests_pending_count',
+                            background: this.$constants.relations.status_colorcode[3],
                             color: '#fff',
-                            label: this.$t('models.request.status.reactivated')
+                            label: this.$t('models.request.status.pending')
                         }, {
                             prop: 'requests_done_count',
-                            background: '#67C23A',
+                            background: this.$constants.relations.status_colorcode[4],
                             color: '#fff',
                             label: this.$t('models.request.status.done')
                         }, {
+                            prop: 'requests_warranty_claim_count',
+                            background: this.$constants.relations.status_colorcode[5],
+                            color: '#fff',
+                            label: this.$t('models.request.status.warranty_claim')
+                        }, {
                             prop: 'requests_archived_count',
-                            background: '#67C23A',
+                            background: this.$constants.relations.status_colorcode[6],
                             color: '#fff',
                             label: this.$t('models.request.status.archived')
                         }

@@ -197,6 +197,8 @@
                 if(this.maxSelect) {
                     this.items.map(item => item.selected = false)
                     this.items[index].selected = true
+                    if(notifyChange)
+                        this.items[index].selected = false
                 }
                 else
                     this.items[index].selected = !this.items[index].selected;
