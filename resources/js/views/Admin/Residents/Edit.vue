@@ -218,7 +218,7 @@
                                                     <el-input autocomplete="off" type="email" v-model="model.email"></el-input>
                                                 </el-form-item>
                                             </el-col>
-                                            <el-col :md="12">
+                                            <!-- <el-col :md="12">
                                                 <el-form-item :label="$t('models.resident.status.label')"
                                                             :rules="validationRules.status"
                                                             prop="status">
@@ -231,7 +231,7 @@
                                                         </el-option>
                                                     </el-select>
                                                 </el-form-item>
-                                            </el-col>
+                                            </el-col> -->
                                         </el-row>
                                         <el-row class="last-form-row" :gutter="20">
                                             <el-col :md="12">
@@ -310,6 +310,7 @@
                                         fetchAction="getResidentMedia"
                                         filter="resident_id"
                                         v-if="model.id"
+                                        ref="mediaList"
                                         @delete-media="deleteMedia"
                                     />
                                 </el-card>
@@ -416,20 +417,20 @@
                         </el-table-column>
                     </el-table>
 
-                    <el-alert
+                    <!-- <el-alert
                         :title="$t('models.resident.relation.pdf_only_desc')"
                         type="info"
                         show-icon
                         :closable="false"
                     >
-                    </el-alert>
+                    </el-alert> -->
 
-                    <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".pdf" drag multiple/>
+                    <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF" drag multiple/>
                     <ui-divider style="margin-top: 16px;"></ui-divider>
                     <div class="relation-form-actions">
                         <div class="button-group">
-                            <el-button type="default" @click="closeMediaDialog" icon="icon-cancel" round>{{$t('general.actions.close')}}</el-button>
-                            <el-button type="primary" @click="uploadMedia" icon="icon-floppy" round>{{$t('general.actions.save')}}</el-button>
+                            <el-button type="default" @click="closeMediaDialog" icon="icon-cancel" class="btn-close" >{{$t('general.actions.close')}}</el-button>
+                            <el-button type="primary" @click="uploadMedia" icon="icon-floppy" class="btn-save">{{$t('general.actions.save')}}</el-button>
                             
                         </div>
                     </div>
@@ -544,6 +545,7 @@
                     if(res.success) {
                         displaySuccess(res);
                         this.model.media.splice(index, 1);
+                        this.$refs.mediaList.fetch();
                     }
                 } catch( err ) {
                     displayError(err);
@@ -806,12 +808,19 @@
         .el-dialog__header {
             padding-left: 30px;
         }
-        
+
         .el-dialog__body {
             padding-top: 0;
+            padding-bottom: 20px;
         }
 
         .el-dialog__footer {
+            padding: 0;
+        }
+    }
+
+    /deep/ .el-table {
+        .el-button {
             padding: 0;
         }
     }
@@ -822,5 +831,26 @@
         }
     }
 
-    
+    .btn-save {
+        background-color: #878810;
+        border: none;
+        &:hover {
+            color: var(--color-white);
+            box-shadow: 0 0 5px #878810;
+        }
+    }
+    .btn-close {
+        border: none;
+    }
+
+    /deep/ .relation-form-actions {
+        margin-top: 30px;
+
+        .button-group {
+            display: flex;
+            justify-content: flex-end;
+
+        }
+        
+    }
 </style>

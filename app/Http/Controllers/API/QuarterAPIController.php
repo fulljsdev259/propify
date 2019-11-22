@@ -134,6 +134,7 @@ class QuarterAPIController extends AppBaseController
                     $q->select('users.id', 'users.avatar', 'users.name')->with('roles:roles.id,name');
                 }
             ])
+            ->scope('allRequestStatusCount')
             ->paginate($perPage);
         $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWithStatistics');
         return $this->sendResponse($response, 'Quarters retrieved successfully');

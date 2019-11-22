@@ -195,7 +195,7 @@ return [
 	    'building_number'=>'Objektnummer',
         'active_residents_count' => 'Wohnungen',
         'request_status' => 'Anliegen-Status',
-        'type' => 'Objekteart',
+        'type' => 'Objektart',
         'media_category' => [
             'house_rules' => 'Hausordnung',
             'operating_instructions' => 'Benutzungsanleitungen',
@@ -385,7 +385,7 @@ return [
         ],
     ],
     'service' => [
-        'title' => 'Dienstleister und Hauswartung',
+        'title' => 'Dienstleister',
         'view' => 'Öffnen',
         'view_title' => 'Service anzeigen',
         'add_title' => 'Hinzufügen',
@@ -608,6 +608,16 @@ return [
             '2_year_warranty' => '2-Jahresgarantie',
             'cost_consequences' => 'Kostenfolge',
         ],
+        'action' => [
+            'fix' =>'Fix',
+            'leave' => 'Urlaub',
+            'wait' => 'Warten'
+        ],
+        'cost_impact' => [
+            'house_owner' => 'Eigentümer',
+            'resident' => 'Bewohner',
+            'shared_costs' => 'Geteilte Kosten'
+        ],
         'location' => [
             'house_entrance' => 'Hauseingang',
             'staircase' => 'Treppenhaus',
@@ -647,14 +657,13 @@ return [
         ],
         'status' => [
             'label' => 'Status',
-            'received' => 'Erhalten',
-            'assigned' => 'Avisiert',
+            'new' => 'Neu',
             'in_processing' => 'In Bearbeitung',
-            'reactivated' => 'Reaktiviert',
             'done' => 'Erledigt',
+            'warranty_claim' => 'Garantiefall',
             'archived' => 'Archiviert',
             'solved' => "Erledigt",
-            'pending' => "Pendent"
+            'pending' => "Offen",
         ],
         'category_options' => [
             'disturbance' => 'Störung',

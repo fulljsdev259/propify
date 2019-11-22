@@ -153,7 +153,7 @@ class BuildingAPIController extends AppBaseController
 //                'propertyManagers',
 //                'users',
                 'quarter' => function ($q) {
-                    $q->select('id')->with([
+                    $q->select('id', 'internal_quarter_id')->with([
                         'users' => function ($q) {
                             $q->whereHas('property_manager')->with('roles');
                         }

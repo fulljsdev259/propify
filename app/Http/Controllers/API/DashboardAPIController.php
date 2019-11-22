@@ -455,7 +455,7 @@ class DashboardAPIController extends AppBaseController
             'archived_requests_count' => $this->thousandsFormat($resident->requests_archived_count),
 
             'requests' => $this->thousandsFormat($resident->requests),
-            'opened_requests' => $this->thousandsFormat($resident->requestsReceived),
+            'opened_requests' => $this->thousandsFormat($resident->requestsNew),
             'pending_requests' => $this->thousandsFormat($resident->requestsInProcessing),
             'done_requests' => $this->thousandsFormat($resident->requestsDone),
             'archived_requests' => $this->thousandsFormat($resident->requestsArchived),
@@ -730,11 +730,11 @@ class DashboardAPIController extends AppBaseController
                 'averageRequestTime' => CarbonInterval::minutes(ceil($averageRequestTime->solved))->cascade()->forHumans(),
 
                 'requestsCount' => $this->thousandsFormat($serviceReq->count()),
-                'requestsReceivedCount' => $this->thousandsFormat($serviceReq->requestsReceived()->count()),
+                'requestsNewCount' => $this->thousandsFormat($serviceReq->requestsNew()->count()),
                 'requestsInProcessingCount' => $this->thousandsFormat($serviceReq->requestsInProcessing()->count()),
-                'requestsAssignedCount' => $this->thousandsFormat($serviceReq->requestsAssigned()->count()),
+                'requestsPendingCount' => $this->thousandsFormat($serviceReq->requestsPending()->count()),
                 'requestsDoneCount' => $this->thousandsFormat($serviceReq->requestsDone()->count()),
-                'requestsReactivatedCount' => $this->thousandsFormat($serviceReq->requestsReactivated()->count()),
+                'requestsWarrantyClaimCount' => $this->thousandsFormat($serviceReq->requestsWarrantyClaim()->count()),
                 'requestsArchivedCount' => $this->thousandsFormat($serviceReq->requestsArchived()->count()),
             ];
 

@@ -33,8 +33,8 @@ class QuarterTransformer extends BaseTransformer
             'has_email_receptionists' // @TODO kill
         ]);
 
-        $relationsStatusCount = $model->getRelationStatusCounts();
-        $response = array_merge($response, $relationsStatusCount);
+        $withCount = $model->getStatusRelationCounts();
+        $response = array_merge($response, $withCount);
 
         if ($model->relationExists('address')) {
             if (array_keys($model->address->getAttributes()) == ['id', 'city']) {
@@ -69,15 +69,6 @@ class QuarterTransformer extends BaseTransformer
 
         $statusCounts = $this->getUnitsStatus($units);
         $response = array_merge($response, $statusCounts);
-        $requestsCount = $buildings->pluck('requests')->collapse()->unique()->countBy('status');
-        // @TODO improve for not depend new status
-        $response['requests_archived_count'] = $requestsCount[Request::StatusArchived] ?? 0;
-        $response['requests_assigned_count'] = $requestsCount[Request::StatusAssigned] ?? 0;
-        $response['requests_count'] = $requestsCount->sum();
-        $response['requests_done_count'] = $requestsCount[Request::StatusDone] ?? 0;
-        $response['requests_in_processing_count'] = $requestsCount[Request::StatusInProcessing] ?? 0;
-        $response['requests_reactivated_count'] = $requestsCount[Request::StatusReactivated] ?? 0;
-        $response['requests_received_count'] = $requestsCount[Request::StatusReceived] ?? 0;
 
         $response['buildings_count'] = $buildings->count();
         $response['active_residents_count'] = $model->relations->where('status', Relation::StatusActive)
