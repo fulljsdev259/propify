@@ -172,6 +172,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     Route::get('/quarters/{id}/assignees', 'QuarterAPIController@getAssignees');
     Route::post('/quarters/{id}/users', 'QuarterAPIController@assignUsers')->name('quarters.assign.users');
+    Route::post('/quarters/{id}/users/mass-assign', 'QuarterAPIController@massAssignUsers')->name('quarters.mass.assign.users');
     Route::delete('/quarters-assignees/{quarters_assignee_id}', 'QuarterAPIController@deleteQuarterAssignee');
 
     // @TODO remove
