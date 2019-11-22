@@ -199,6 +199,9 @@
                     <div v-else-if="column.type === 'assigneesName'" class="normal">
                         {{scope.row.name}}
                     </div>
+                    <div v-else-if="column.type === 'companyName'" class="normal">
+                        {{scope.row.company_name}}
+                    </div>
                     <div v-else-if="column.type === 'buildingName'" class="normal">                    
                         {{scope.row.name}}                
                     </div>
