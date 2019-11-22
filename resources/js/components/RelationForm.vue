@@ -1196,8 +1196,8 @@ c
         padding: 0;
         padding-left: 10px;
         padding-right: 20px;
-        height: 30px;
-        line-height: 30px;
+        height: 35px;
+        line-height: 35px;
 
         i {
             color: white;
@@ -1222,7 +1222,7 @@ c
 
     /deep/ .el-dropdown {
         .el-button.selected-button {
-            background-color: white;
+            background-color: #f6f5f7 !important;
             padding: 0 2.5px;
             height: 100%;
         }

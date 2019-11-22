@@ -818,6 +818,12 @@
         }
     }
 
+    /deep/ .el-table {
+        .el-button {
+            padding: 0;
+        }
+    }
+
     @media only screen and (max-width:992px){
         /deep/ .el-dialog {
             width: 70% !important;
