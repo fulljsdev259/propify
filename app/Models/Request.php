@@ -252,63 +252,76 @@ class Request extends AuditableModel implements HasMedia
 
     public $table = 'requests';
 
-    const StatusReceived = 1;
+    const StatusNew = 1;
     const StatusInProcessing = 2;
-    const StatusAssigned = 3;
+    const StatusPending = 3;
     const StatusDone = 4;
-    const StatusReactivated = 5;
+    const StatusWarrantyClaim = 5;
     const StatusArchived = 6;
+//    const StatusAssigned = 3;
+//    const StatusReactivated = 5;
 
     const VisibilityResident = 1;
     const VisibilityBuilding = 2;
     const VisibilityQuarter = 3;
 
     const PendingStatuses = [
-        self::StatusReceived,
+        self::StatusNew,
         self::StatusInProcessing,
-        self::StatusAssigned,
-        self::StatusReactivated,
+//        self::StatusAssigned,
+//        self::StatusReactivated,
     ];
 
     const SolvedStatuses = [
         self::StatusDone,
         self::StatusArchived,
     ];
-
+//@TODO CORRECT status related
     const Status = [
-        self::StatusReceived => 'received',
+        self::StatusNew => 'new',
         self::StatusInProcessing => 'in_processing',
-        self::StatusAssigned => 'assigned',
+        self::StatusPending => 'pending',
+//        self::StatusAssigned => 'assigned',
         self::StatusDone => 'done',
-        self::StatusReactivated => 'reactivated',
+        self::StatusWarrantyClaim => 'warranty_claim',
+//        self::StatusReactivated => 'reactivated',
         self::StatusArchived => 'archived',
     ];
 
+    const StatusColorCode = [
+        self::StatusNew => '#c0772c',
+        self::StatusPending => '#c8a331',
+        self::StatusInProcessing => '#317085',
+        self::StatusDone => '#878810',
+        self::StatusArchived => '#9e9fa0',
+        self::StatusWarrantyClaim => '#897e82',
+    ];
+
     const StatusByResident = [
-        self::StatusReceived => [self::StatusDone],
-        self::StatusAssigned => [self::StatusDone, self::StatusArchived],
+        self::StatusNew => [self::StatusDone],
+//        self::StatusAssigned => [self::StatusDone, self::StatusArchived],
         self::StatusInProcessing => [self::StatusDone, self::StatusArchived],
-        self::StatusDone => [self::StatusReactivated],
-        self::StatusReactivated => [self::StatusDone],
+//        self::StatusDone => [self::StatusReactivated],
+//        self::StatusReactivated => [self::StatusDone],
         self::StatusArchived => [],
     ];
 
     const StatusByService = [
-        self::StatusReceived => [],
+        self::StatusNew => [],
         self::StatusInProcessing => [self::StatusDone],
-        self::StatusAssigned => [self::StatusDone],
-        self::StatusDone => [self::StatusReactivated],
-        self::StatusReactivated => [self::StatusDone],
+//        self::StatusAssigned => [self::StatusDone],
+//        self::StatusDone => [self::StatusReactivated],
+//        self::StatusReactivated => [self::StatusDone],
         self::StatusArchived => [],
     ];
 
     const StatusByAgent = [
-        self::StatusReceived => [self::StatusAssigned],
-        self::StatusAssigned => [self::StatusInProcessing, self::StatusDone, self::StatusArchived],
+//        self::StatusNew => [self::StatusAssigned],
+//        self::StatusAssigned => [self::StatusInProcessing, self::StatusDone, self::StatusArchived],
         self::StatusInProcessing => [self::StatusDone, self::StatusArchived],
-        self::StatusDone => [self::StatusReactivated, self::StatusArchived],
-        self::StatusReactivated => [self::StatusDone, self::StatusArchived],
-        self::StatusArchived => [self::StatusReactivated],
+//        self::StatusDone => [self::StatusReactivated, self::StatusArchived],
+//        self::StatusReactivated => [self::StatusDone, self::StatusArchived],
+//        self::StatusArchived => [self::StatusReactivated],
     ];
 
     const Visibility = [
@@ -759,7 +772,7 @@ class Request extends AuditableModel implements HasMedia
 
     public function requestsReceived()
     {
-        return $this->where('status', Request::StatusReceived);
+        return $this->where('status', Request::StatusNew);
     }
 
     public function requestsInProcessing()

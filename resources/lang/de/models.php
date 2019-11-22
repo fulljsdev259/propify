@@ -647,14 +647,13 @@ return [
         ],
         'status' => [
             'label' => 'Status',
-            'received' => 'Erhalten',
-            'assigned' => 'Avisiert',
+            'new' => 'Neu',
             'in_processing' => 'In Bearbeitung',
-            'reactivated' => 'Reaktiviert',
             'done' => 'Erledigt',
+            'warranty_claim' => 'Garantiefall',
             'archived' => 'Archiviert',
             'solved' => "Erledigt",
-            'pending' => "Pendent"
+            'pending' => "Offen",
         ],
         'category_options' => [
             'disturbance' => 'Störung',

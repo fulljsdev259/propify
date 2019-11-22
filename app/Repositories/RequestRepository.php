@@ -181,7 +181,7 @@ class RequestRepository extends BaseRepository
             $attr['sub_category_id'] = $attributes['sub_category_id'];
             $attr['visibility'] = $attributes['visibility'];
             $attr['resident_id'] = $user->resident->id;
-            $attr['status'] = Request::StatusReceived;
+            $attr['status'] = Request::StatusNew;
             $attr['qualification'] = array_flip(Request::Qualification)['none'];
 
             // $attr['priority'] = $attributes['priority'];
@@ -202,7 +202,7 @@ class RequestRepository extends BaseRepository
 
         // already checked resident exists
         $attributes['assignee_ids'] = [Auth::user()->id]; // @TODO where used
-        $attributes['status'] = Request::StatusReceived;
+        $attributes['status'] = Request::StatusNew;
         $attributes['due_date'] = Carbon::parse($attributes['due_date'])->format('Y-m-d');
 
         return $attributes;

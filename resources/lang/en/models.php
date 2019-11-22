@@ -645,11 +645,10 @@ return [
         ],
         'status' => [
             'label' => 'Status',
-            'received' => 'Received',
-            'assigned' => 'Assigned',
+            'new' => 'Neu',
             'in_processing' => 'In processing',
-            'reactivated' => 'Reactivated',
             'done' => 'Done',
+            'warranty_claim' => 'Garantiefall',
             'archived' => 'Archived',
             'solved' => 'Solved',
             'pending' => 'Pending'
