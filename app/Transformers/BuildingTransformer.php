@@ -3,6 +3,8 @@
 namespace App\Transformers;
 
 use App\Models\Building;
+use App\Models\Relation;
+use App\Models\Request;
 use App\Models\Resident;
 
 /**
@@ -24,7 +26,7 @@ class BuildingTransformer extends BaseTransformer
             'id',
             'name',
             'building_format',
-            'type',
+            'types',
             'label',
             'contact_enable',
             'description',
@@ -59,15 +61,9 @@ class BuildingTransformer extends BaseTransformer
 
         if ($model->relationExists('units')) {
             $response['units'] = (new UnitTransformer())->transformCollectionBy($model->units, 'transformForIndex');
-            $requestStatusCounts = [
-                'requests_new_count',
-                'requests_in_processing_count',
-                'requests_pending_count',
-                'requests_done_count',
-                'requests_warranty_claim_count',
-                'requests_archived_count',
-                'requests_count',
-            ];
+            $statusCounts = $this->getUnitsStatus($response);
+            $response = array_merge($response, $statusCounts);
+            $requestStatusCounts = (new Request())->request_status_columns;
             $unitsData = collect( $response['units'] );
             foreach ($requestStatusCounts as $requestStatusCount) {
                 $response[$requestStatusCount] = $unitsData->sum($requestStatusCount);
@@ -140,4 +136,19 @@ class BuildingTransformer extends BaseTransformer
         return $input;
     }
 
+    /**
+     * @param $data
+     * @return array
+     */
+    protected function getUnitsStatus($data)
+    {
+        $unitsCountByStatus = collect($data['units'])->countBy('status');
+        $statusCodes = Relation::StatusColorCode;
+        $response = [];
+        foreach ($statusCodes as $status => $color) {
+            $response[Relation::Status[$status] . '_units_count'] = $unitsCountByStatus[$status] ?? 0;
+        }
+        $response['total_units_count'] = array_sum($response);
+        return $response;
+    }
 }

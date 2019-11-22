@@ -949,14 +949,14 @@
                         unit = found
                 })
 
-                if(unit)
-                {
-                    this.model.monthly_rent_net = unit.monthly_rent_net
-                    this.model.monthly_maintenance = unit.monthly_maintenance
-                    this.model.monthly_rent_gross = unit.monthly_rent_gross
-                    this.model.type = unit.type
-                    this.model.duration = 1
-                }
+                // if(unit)
+                // {
+                //     this.model.monthly_rent_net = unit.monthly_rent_net
+                //     this.model.monthly_maintenance = unit.monthly_maintenance
+                //     this.model.monthly_rent_gross = unit.monthly_rent_gross
+                //     this.model.type = unit.type
+                //     this.model.duration = 1
+                // }
             },
             addPDFtoRelation(file) {
                 //let toUploadRelationFile = {...file, url: URL.createObjectURL(file.raw)}

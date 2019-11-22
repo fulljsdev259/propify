@@ -48,8 +48,10 @@ class ServiceProviderTransformer extends BaseTransformer
             if (key_exists($attribute, $attributes)) {
                 $response[$attribute] = $attributes[$attribute];
             }
-
         }
+        
+        $withCount = $model->getStatusRelationCounts();
+        $response = array_merge($response, $withCount);
 
         if ($model->relationExists('user')) {
             $response['user'] = (new UserTransformer)->transform($model->user);
@@ -64,6 +66,7 @@ class ServiceProviderTransformer extends BaseTransformer
 
         if ($model->relationExists('quarters')) {
             $response['quarters'] = (new QuarterTransformer)->transformCollection($model->quarters);
+            $response['internal_quarter_ids'] = collect($response['quarters'])->pluck('internal_quarter_id')->unique()->all();
         }
         if ($model->relationExists('buildings')) {
             $response['buildings'] = (new BuildingTransformer)->transformCollection($model->buildings);

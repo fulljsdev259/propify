@@ -195,6 +195,7 @@ return [
         'active_residents_count' => 'Living',
         'request_status' => 'Request Status',
         'type' => 'Building Type',
+        'city' => 'City',
         'media_category' => [
             'house_rules' => 'House rules',
             'operating_instructions' => 'Operating instructions',
@@ -295,6 +296,11 @@ return [
             'resident_not_assign' => "Resident not assigned to this unit",
             'resident_not_found' => "Resident not found",
             'deleted' => "Unit deleted error: ",
+        ],
+        'status' => [
+	        'active' => 'Occupied',
+	        'inactive' => 'Free',
+	        'canceled' => 'Cancelled'
         ],
     ],   
     'pinboard' => [

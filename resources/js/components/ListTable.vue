@@ -221,7 +221,7 @@
                     </div>
                     <div v-else-if="column.withStatusSign">
                         <el-tooltip
-                            :content="`${$t(`models.resident.relation.status.${$constants.relations.status[scope.row[column.prop]]}`)}`"
+                            :content="`${$t(`models.unit.status.${$constants.relations.status[scope.row[column.prop]]}`)}`"
                             class="item"
                             effect="light" placement="top"
                         >
@@ -238,7 +238,7 @@
                         <div class="avatars-wrapper">
                             <span :key="index" v-for="(status, index) in $constants.relations.status">
                                 <el-tooltip
-                                    :content="`${$t(`models.resident.relation.status.${status}`)}: ${scope.row[`${status}_units_count`]}`"
+                                    :content="`${$t(`models.unit.status.${status}`)}: ${scope.row[`${status}_units_count`]}`"
                                     class="item"
                                     effect="light" placement="top"
                                 >
@@ -832,8 +832,10 @@
             }
         },
         updated() {
-            this.$set(this.filterModel, 'search', this.searchText);
-            this.filterChanged(this.filters[0]);
+            // if(this.filterModal ==undefined || this.filterModal['search'] == undefined || this.searchText !== this.filterModel['search']) {
+            //     this.$set(this.filterModel, 'search', this.searchText);
+            //     this.filterChanged(this.filters[0]);
+            // }
         }
     }
 </script>

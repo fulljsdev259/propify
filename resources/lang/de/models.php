@@ -196,6 +196,7 @@ return [
         'active_residents_count' => 'Wohnungen',
         'request_status' => 'Anliegen-Status',
         'type' => 'Objektart',
+        'city' => 'Objekort',
         'media_category' => [
             'house_rules' => 'Hausordnung',
             'operating_instructions' => 'Benutzungsanleitungen',
@@ -298,6 +299,11 @@ return [
             'resident_not_assign' => "Bewohner konnte der Einheit nicht zugewiesen werden.",
             'resident_not_found' => "Bewohner nicht gefunden",
             'deleted' => "Fehler beim Löschen der Einheit: ",
+        ],
+        'status' => [
+	        'active' => 'Belegt',
+	        'inactive' => 'Frei',
+	        'canceled' => 'Gekündigt'
         ],
     ],   
     'pinboard' => [

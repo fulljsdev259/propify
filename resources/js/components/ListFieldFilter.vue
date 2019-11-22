@@ -9,7 +9,7 @@
                     <transition-group type="transition" name="flip-list">
                         <div 
                             class="field-item"
-                            :key="field + index"
+                            :key="field.label + index"
                             v-for="(field, index) in data"    
                         >
                             <span>
@@ -81,10 +81,14 @@
         },
         mounted() {
             this.selected = [];
-            this.fields.forEach((item) => {
-                this.selected.push(true);
-            });
             this.data = this.fields;
+            this.fields.forEach((item, index) => {
+                if(item.defaultHide !== undefined && item.defaultHide === true) {
+                    this.selected.push(false);
+                    this.handleChange(false, index);
+                 }  else
+                    this.selected.push(true);
+            });
         },
     }
 </script>
