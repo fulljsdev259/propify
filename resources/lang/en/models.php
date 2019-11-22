@@ -615,11 +615,13 @@ return [
             'cost_consequences' => 'Cost consequences',
         ],
         'action' => [
+            'label' => 'Action',
             'fix' =>'Fix',
             'leave' => 'Leave',
             'wait' => 'Wait'
         ],
         'cost_impact' => [
+            'label' => 'Cost Impact',
             'house_owner' => 'House Owner',
             'resident' => 'Resident',
             'shared_costs' => 'Shared Costs'
@@ -684,7 +686,9 @@ return [
             'keywords' => 'Keywords',
         ],
         'placeholders' => [
-            'category' => 'Select category',            
+            'category' => 'Select category',
+            'action' => 'Select action',  
+            'cost_impact' => 'Select Cost Impact',
             'qualification' => 'Select qualification',
             'status' => 'Select status',
             'due_date' => 'Pick due date',

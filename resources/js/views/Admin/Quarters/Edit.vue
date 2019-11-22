@@ -1,7 +1,7 @@
 <template>
     <div class="quarters-edit" v-loading.fullscreen.lock="loading.state">
         <div class="main-content">
-            <heading :title="$t('models.quarter.edit')" icon="icon-chat-empty" style="margin-bottom: 20px;" shadow="heavy" bgClass="bg-transparent">
+            <heading :title="$t('models.quarter.edit')" icon="icon-chat-empty" shadow="heavy" bgClass="bg-transparent">
                 <template slot="description" v-if="model.quarter_format">
                     <!-- <div class="subtitle">{{`${model.quarter_format} > ${model.name}`}}</div> -->
                     <div class="subtitle">{{model.url}}</div>
@@ -625,7 +625,7 @@
                     count: 'residents_count',
                     label: 'general.residents'
                 }],
-                quarterActions: [{
+                quarterActions: [/*{
                     width: 70,
                     buttons: [{
                         icon: 'ti-search',
@@ -633,7 +633,7 @@
                         onClick: this.buildingEditView,
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 residentColumns: [{
                     type: 'requestResidentAvatar',
                     width: 70                    
@@ -999,9 +999,6 @@
             overflow-x: hidden;
             overflow-y: scroll;
             height: 100%;
-        }
-        .crud-view {
-            margin-top: 1%;
         }
 
 

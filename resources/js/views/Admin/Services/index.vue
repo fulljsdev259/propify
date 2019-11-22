@@ -1,29 +1,48 @@
 <template>
     <div class="services">
-        <heading :title="$t('models.service.title')" icon="icon-tools" shadow="heavy" class="padding-right-300">
-            <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
-            </template>
+        <heading :title="$t('models.service.title')"
+                 icon="icon-tools"
+                 shadow="heavy"
+                 :searchBar="true"
+                 @search-change="search=$event">
             <template v-if="$can($permissions.create.provider)">
-                <el-button 
-                    @click="add" 
-                    icon="ti-plus" 
-                    size="mini"
-                    class="transparent-button"
+                <el-button
+                        @click="add"
+                        icon="ti-plus"
+                        size="mini"
+                        class="transparent-button"
                 >
                     {{$t('models.service.add_title')}}
                 </el-button>
             </template>
-            <template v-if="$can($permissions.delete.provider)">
-                <el-button 
-                    :disabled="!selectedItems.length" 
-                    @click="batchDeleteWithIds" 
-                    icon="ti-trash" 
-                    size="mini"
-                    class="transparent-button"
-                >
-                    {{$t('general.actions.delete')}}
-                </el-button>
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
+            </template>
+
+            <template>
+                <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
+                    <el-button size="mini" class="transparent-button">
+                        <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
+<!--                        <el-dropdown-item-->
+<!--                                v-if="$can($permissions.assign.manager)"-->
+<!--                                icon="ti-user"-->
+<!--                                command="assign"-->
+<!--                                :disabled="!selectedItems.length"-->
+<!--                        >-->
+<!--                            {{$t('models.building.assign_managers')}}-->
+<!--                        </el-dropdown-item>-->
+                        <el-dropdown-item
+                                v-if="$can($permissions.delete.provider)"
+                                :disabled="!selectedItems.length"
+                                icon="ti-trash"
+                                command="delete"
+                        >
+                            {{$t('general.actions.delete')}}
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
             </template>
         </heading>
         <list-table
@@ -33,9 +52,9 @@
             :header="headerFilter"
             :items="items"
             :loading="{state: loading}"
-            :isLoadingFilters="{state: isLoadingFilters}"
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
+            :searchText="search"
             @selectionChanged="selectionChanged"
         >
         </list-table>
@@ -71,34 +90,72 @@
         data() {
             return {
                 header: [{
+                    label: 'general.filters.status',
+                    withStatusSign: true,
+                    prop: 'status',
+                }, {
+                    label: 'models.service.company_name',
+                    prop: 'company_name'
+                }, {
                     label: 'general.name',
-                    withAvatarsAndProps: true,
-                    props: ['name', 'addr', 'cty']
+                    withMultiplePropsString: true,
+                    props: ['first_name', 'last_name']
                 }, {
-                    label: 'models.service.contact_details',
-                    withMultipleProps: true,
-                    props: ['email', 'phone']
+                    label: 'general.email',
+                    prop: 'email'
                 }, {
-                    label: 'general.requests',
+                    label: 'general.phone',
+                    prop: 'phone'
+                }, {
+                    label: 'models.service.category.label',
+                    withServiceCategory: true,
+                    prop: 'category'
+                }, {
+                    label: 'resident.building',
+                    withInternalQuarterIds: true,
+                    prop: 'internal_quarter_ids'
+                }, {
+                    label: 'models.building.request_status',
                     withCounts: true,
-                }, {
-                    width: 150,
-                    actions: [{
-                        
-                        icon: 'ti-search',
-                        title: 'general.actions.edit',
-                        onClick: this.edit,
-                        editUrl: 'adminServicesEdit',
-                        permissions: [
-                            this.$permissions.update.provider
-                        ]
-                    }]
+                    width: 230,
+                    counts: [{
+                        prop: 'requests_new_count',
+                        background: this.$constants.relations.status_colorcode[1],
+                        color: '#fff',
+                        label: this.$t('models.request.status.new')
+                    }, {
+                        prop: 'requests_in_processing_count',
+                        background: this.$constants.relations.status_colorcode[2],
+                        color: '#fff',
+                        label: this.$t('models.request.status.in_processing')
+                    }, {
+                        prop: 'requests_pending_count',
+                        background: this.$constants.relations.status_colorcode[3],
+                        color: '#fff',
+                        label: this.$t('models.request.status.pending')
+                    }, {
+                        prop: 'requests_done_count',
+                        background: this.$constants.relations.status_colorcode[4],
+                        color: '#fff',
+                        label: this.$t('models.request.status.done')
+                    }, {
+                        prop: 'requests_warranty_claim_count',
+                        background: this.$constants.relations.status_colorcode[5],
+                        color: '#fff',
+                        label: this.$t('models.request.status.warranty_claim')
+                    }, {
+                        prop: 'requests_archived_count',
+                        background: this.$constants.relations.status_colorcode[6],
+                        color: '#fff',
+                        label: this.$t('models.request.status.archived')
+                    }
+                    ]
                 }],
                 states: [],
                 quarters: [],
                 buildings: [],
                 categories: [],
-                isLoadingFilters: false,
+                search: '',
             }
         },
         computed: {
@@ -144,6 +201,12 @@
         },
         methods: {
             ...mapActions(['getBuildings']),
+            handleMenuClick(command) {
+                if(command == 'assign')
+                    this.batchAssignManagers();
+                else if(command == 'delete')
+                    this.batchDeleteWithIds();
+            },
             add() {
                 this.$router.push({
                     name: 'adminServicesAdd'
@@ -176,7 +239,6 @@
             },
         },
         async created(){
-            this.isLoadingFilters = true;
             const quarters = await this.axios.get('quarters')
             this.quarters = quarters.data.data.data;
 
@@ -184,7 +246,6 @@
             this.states = states.data.data;
 
             this.categories = await this.getFilterCategories()
-            this.isLoadingFilters = false;
 
             this.buildings = await this.fetchRemoteBuildings();
         },

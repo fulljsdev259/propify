@@ -49,7 +49,7 @@ class ServiceProviderTransformer extends BaseTransformer
                 $response[$attribute] = $attributes[$attribute];
             }
         }
-        
+
         $withCount = $model->getStatusRelationCounts();
         $response = array_merge($response, $withCount);
 

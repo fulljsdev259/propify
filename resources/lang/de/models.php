@@ -617,11 +617,13 @@ return [
             'cost_consequences' => 'Kostenfolge',
         ],
         'action' => [
+            'label' => 'Aktion',
             'fix' =>'Fix',
             'leave' => 'Urlaub',
             'wait' => 'Warten'
         ],
         'cost_impact' => [
+            'label' => 'Kostenfolge',
             'house_owner' => 'Eigentümer',
             'resident' => 'Bewohner',
             'shared_costs' => 'Geteilte Kosten'
@@ -687,6 +689,8 @@ return [
         ],
         'placeholders' => [
             'category' => 'Kategorie wählen',
+            'action' => 'Aktion wählen',
+            'cost_impact' => 'Kostenfolge wählen',
             'qualification' => 'Qualifikation wählen',
             'status' => 'Status wählen',
             'due_date' => 'Zu erledigen bis',
