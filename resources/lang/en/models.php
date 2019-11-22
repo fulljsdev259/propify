@@ -296,6 +296,11 @@ return [
             'resident_not_found' => "Resident not found",
             'deleted' => "Unit deleted error: ",
         ],
+        'status' => [
+	        'active' => 'Occupied',
+	        'inactive' => 'Free',
+	        'canceled' => 'Cancelled'
+        ],
     ],   
     'pinboard' => [
         'title' => 'Pinboard',

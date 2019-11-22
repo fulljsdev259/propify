@@ -299,6 +299,11 @@ return [
             'resident_not_found' => "Bewohner nicht gefunden",
             'deleted' => "Fehler beim Löschen der Einheit: ",
         ],
+        'status' => [
+	        'active' => 'Vermietet',
+	        'inactive' => 'Frei',
+	        'canceled' => 'Gekündigt'
+        ],
     ],   
     'pinboard' => [
         'title' => 'Pinnwand',
