@@ -195,7 +195,7 @@ return [
 	    'building_number'=>'Objektnummer',
         'active_residents_count' => 'Wohnungen',
         'request_status' => 'Anliegen-Status',
-        'type' => 'Objekteart',
+        'type' => 'Objektart',
         'media_category' => [
             'house_rules' => 'Hausordnung',
             'operating_instructions' => 'Benutzungsanleitungen',
@@ -385,7 +385,7 @@ return [
         ],
     ],
     'service' => [
-        'title' => 'Dienstleister und Hauswartung',
+        'title' => 'Dienstleister',
         'view' => 'Öffnen',
         'view_title' => 'Service anzeigen',
         'add_title' => 'Hinzufügen',
