@@ -544,6 +544,7 @@ return [
         'assigned_to' => 'Assigned to',
         'assign_providers' => 'Assign providers',
         'assign_managers' => 'Assign managers',
+        'assign_persons'=> 'Assign responsible persons',
         'assigned_service_providers' => 'Assigned service providers',
         'assigned_property_managers' => 'Assigned property managers',
         'notify' => 'Notify',

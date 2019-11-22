@@ -211,6 +211,7 @@ return [
         'managers' => 'Mitarbeiter',
         'house_num' => 'Nr.',
         'assign_managers' => 'Mitarbeiter zuweisen',
+	    'assign_persons'=> 'Verantwortliche zuweisen',
         'unassign_manager' => 'Entfernen',
         'managers_assigned' => 'Mitarbeiter zugewiesen',
         'occupied_units' => 'Vermietete Einheiten',
