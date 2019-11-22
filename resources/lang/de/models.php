@@ -407,6 +407,7 @@ return [
         ],
         'contact_details' => 'Kontaktdaten',
         'user_credentials' => 'Logindaten',
+        "company_name" => "Firmenname",
         'company_details' => 'Firmendaten',
         'assign_type' => 'Typ',        
         'placeholders' => [
