@@ -632,26 +632,26 @@
             },
             showResidents() {
                 let flag = false
-                // if(this.mode == 'add') {
-                //     if(this.model.unit_id) {
-                //         this.model.unit_id.forEach(every_unit_id => {
-                //             this.units.forEach(group => {
-                //                 let found = group.options.find(item => item.id == every_unit_id && item.type >= 1 && item.type <= 2)
-                //                 if(found)
-                //                     flag = true
-                //             })
-                //         })
-                //     }
-                // }
-                // else {
-                //     if(this.model.unit_id) {
-                //         this.units.forEach(group => {
-                //             let found = group.options.find(item => item.id == this.model.unit_id && item.type >= 1 && item.type <= 2)
-                //             if(found)
-                //                 flag = true
-                //         })
-                //     }
-                // }
+                if(this.mode == 'add') {
+                    if(this.model.unit_id) {
+                        this.model.unit_id.forEach(every_unit_id => {
+                            this.units.forEach(group => {
+                                let found = group.options.find(item => item.id == every_unit_id && item.type >= 1 && item.type <= 2)
+                                if(found)
+                                    flag = true
+                            })
+                        })
+                    }
+                }
+                else {
+                    if(this.model.unit_id) {
+                        this.units.forEach(group => {
+                            let found = group.options.find(item => item.id == this.model.unit_id && item.type >= 1 && item.type <= 2)
+                            if(found)
+                                flag = true
+                        })
+                    }
+                }
                 return flag;
             }
         },

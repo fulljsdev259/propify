@@ -133,8 +133,7 @@ export default (config = {}) => {
                     const resp = await this.$store.dispatch('relations/get', {resident_id : this.model.id});
                     console.log('get relations', resp.data)
                     this.model.relations = resp.data
-                    if(resp.data.media && resp.data.media.length)
-                        this.$refs.mediaList.fetch();
+                    this.$refs.mediaList.fetch();
                 }
                 
             },
