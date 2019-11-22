@@ -126,10 +126,10 @@ class ResidentAPIController extends AppBaseController
             $this->residentRepository->pushCriteria(new LimitOffsetCriteria($request));
             $residents = $this->residentRepository->with([
                 'relations' => function ($q) {
-                    $q->with('building.address', 'unit');
+                    $q->with('unit.building.address');
                 },
                 'default_relation' => function ($q) {
-                    $q->with('building.address', 'unit');
+                    $q->with('unit.building.address');
                 },])
                 ->get();
             foreach ($residents as $resident) {

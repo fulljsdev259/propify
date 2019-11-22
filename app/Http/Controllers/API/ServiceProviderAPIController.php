@@ -254,10 +254,6 @@ class ServiceProviderAPIController extends AppBaseController
             $input['user']['settings'] = Arr::pull($input, 'settings');
         }
 
-        if (!empty($input['language']) && empty($input['user']['settings']['language'])) {
-            $input['user']['settings']['language'] = $input['language']; // @TODO remove
-        }
-
         try {
             User::disableAuditing();
             $user = $this->userRepository->create($input['user']);
@@ -412,9 +408,6 @@ class ServiceProviderAPIController extends AppBaseController
         }
 
         $input['user']['settings'] = Arr::pull($input, 'settings', []);
-        if (!empty($input['language']) && empty($input['user']['settings']['language'])) {
-            $input['user']['settings']['language'] = $input['language']; // @TODO remove
-        }
         try {
             User::disableAuditing();
             $user = $this->userRepository->update($input['user'], $serviceProvider->user_id);
