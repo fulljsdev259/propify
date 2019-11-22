@@ -116,7 +116,7 @@
                 }, {
                     label: 'models.building.request_status',
                     withCounts: true,
-                    width: 230,
+                    width: 300,
                     counts: [
                         {
                             prop: 'requests_count',
@@ -158,6 +158,7 @@
                 }, {
                     label: 'models.unit.appendix',
                     withIcon: true,
+                    align: 'center'
                 }
                 ],
                 building: {},

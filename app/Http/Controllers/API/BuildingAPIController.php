@@ -160,7 +160,8 @@ class BuildingAPIController extends AppBaseController
                     ]);
                 },
                 'units' => function ($q) {
-                    $q->select('id', 'building_id')->with('relations:start_date,status,unit_id');
+                    $q->select('id', 'building_id')->with('relations:start_date,status,unit_id')
+                        ->allRequestStatusCount();
                 }
             ])->withCount([
                 'units',
@@ -170,7 +171,6 @@ class BuildingAPIController extends AppBaseController
                     $q->where('type', Unit::TypeApartment);
                 }
             ])
-            ->scope('allRequestStatusCount')
             ->paginate($perPage);
         $response = (new BuildingTransformer)->transformPaginator($buildings);
         return $this->sendResponse($response, 'Buildings retrieved successfully');

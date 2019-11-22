@@ -209,7 +209,8 @@
                     ]
                 },  {
                     label: 'models.building.active_residents_count',
-                    prop: 'count_of_apartments_units'
+                    prop: 'count_of_apartments_units',
+                    align: 'center'
                 },{
                     label: 'general.filters.status',
                     withStatus: true,
