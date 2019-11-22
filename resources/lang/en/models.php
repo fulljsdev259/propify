@@ -297,6 +297,11 @@ return [
             'resident_not_found' => "Resident not found",
             'deleted' => "Unit deleted error: ",
         ],
+        'status' => [
+	        'active' => 'Occupied',
+	        'inactive' => 'Free',
+	        'canceled' => 'Cancelled'
+        ],
     ],   
     'pinboard' => [
         'title' => 'Pinboard',
@@ -405,6 +410,7 @@ return [
         ],
         'contact_details' => 'Contact details',
         'user_credentials' => 'User credentials',
+        "company_name" => "Company name",
         'company_details' => 'Company details',
         'assign_type' => 'Type',        
         'placeholders' => [

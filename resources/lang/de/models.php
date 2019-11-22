@@ -300,6 +300,11 @@ return [
             'resident_not_found' => "Bewohner nicht gefunden",
             'deleted' => "Fehler beim Löschen der Einheit: ",
         ],
+        'status' => [
+	        'active' => 'Vermietet',
+	        'inactive' => 'Frei',
+	        'canceled' => 'Gekündigt'
+        ],
     ],   
     'pinboard' => [
         'title' => 'Pinnwand',
@@ -408,6 +413,7 @@ return [
         ],
         'contact_details' => 'Kontaktdaten',
         'user_credentials' => 'Logindaten',
+        "company_name" => "Firmenname",
         'company_details' => 'Firmendaten',
         'assign_type' => 'Typ',        
         'placeholders' => [
