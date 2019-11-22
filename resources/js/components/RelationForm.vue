@@ -758,7 +758,6 @@
                 if(filter == 'unit') {
                     this.model.unit_ids = val
                 } else if(filter == 'quarter') {
-                    console.log('val', val)
                     if(val.length == 1) {
                         this.model.quarter_id = val[0]
                         this.searchRelationUnits(false)
