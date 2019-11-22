@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Building;
+use App\Models\Relation;
 use App\Models\Request;
 use App\Models\Resident;
 
@@ -60,6 +61,8 @@ class BuildingTransformer extends BaseTransformer
 
         if ($model->relationExists('units')) {
             $response['units'] = (new UnitTransformer())->transformCollectionBy($model->units, 'transformForIndex');
+            $statusCounts = $this->getUnitsStatus($response);
+            $response = array_merge($response, $statusCounts);
             $requestStatusCounts = (new Request())->request_status_columns;
             $unitsData = collect( $response['units'] );
             foreach ($requestStatusCounts as $requestStatusCount) {
@@ -133,4 +136,19 @@ class BuildingTransformer extends BaseTransformer
         return $input;
     }
 
+    /**
+     * @param $data
+     * @return array
+     */
+    protected function getUnitsStatus($data)
+    {
+        $unitsCountByStatus = collect($data['units'])->countBy('status');
+        $statusCodes = Relation::StatusColorCode;
+        $response = [];
+        foreach ($statusCodes as $status => $color) {
+            $response[Relation::Status[$status] . '_units_count'] = $unitsCountByStatus[$status] ?? 0;
+        }
+        $response['total_units_count'] = array_sum($response);
+        return $response;
+    }
 }

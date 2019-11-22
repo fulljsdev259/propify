@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Criteria\Building\FilterByRelatedFieldsCriteria;
+use App\Criteria\Building\FilterByUserRoleCriteria;
 use App\Criteria\Common\HasRequestCriteria;
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Quarter\FilterByCityCriteria;
@@ -131,6 +132,7 @@ class BuildingAPIController extends AppBaseController
         $this->buildingRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
         $this->buildingRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByCityCriteria($request));
+        $this->buildingRepository->pushCriteria(new FilterByUserRoleCriteria($request));
 
         $hasRequest = $request->get('has_req', false);
         if ($hasRequest) {
