@@ -625,7 +625,7 @@
                     count: 'residents_count',
                     label: 'general.residents'
                 }],
-                quarterActions: [{
+                quarterActions: [/*{
                     width: 70,
                     buttons: [{
                         icon: 'ti-search',
@@ -633,7 +633,7 @@
                         onClick: this.buildingEditView,
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 residentColumns: [{
                     type: 'requestResidentAvatar',
                     width: 70                    

@@ -615,6 +615,7 @@ return [
             'cost_consequences' => 'Cost consequences',
         ],
         'action' => [
+            'label' => 'Action',
             'fix' =>'Fix',
             'leave' => 'Leave',
             'wait' => 'Wait'
@@ -684,7 +685,8 @@ return [
             'keywords' => 'Keywords',
         ],
         'placeholders' => [
-            'category' => 'Select category',            
+            'category' => 'Select category',
+            'label' => 'Select action',      
             'qualification' => 'Select qualification',
             'status' => 'Select status',
             'due_date' => 'Pick due date',

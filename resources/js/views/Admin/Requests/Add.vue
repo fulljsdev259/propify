@@ -97,7 +97,7 @@
                                 <el-input v-model="model.component"></el-input>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="12"
+                        <!-- <el-col :md="12"
                                 v-if="this.showQualification == true">
                             <el-form-item :label="$t('models.request.qualification.label')"
                                         :rules="validationRules.qualification"
@@ -114,8 +114,25 @@
                                     </el-option>
                                 </el-select>
                             </el-form-item>
+                        </el-col> -->
+                        <el-col :md="12"
+                                v-if="this.showAction == true">
+                            <el-form-item :label="$t('models.request.action.label')"
+                                            prop="action">
+                                <el-select :disabled="$can($permissions.update.serviceRequest)"
+                                            :placeholder="$t('models.request.placeholders.action')"
+                                            class="custom-select"
+                                            v-model="model.action">
+                                    <el-option
+                                            :key="action.value"
+                                            :label="action.name"
+                                            :value="action.value"
+                                            v-for="action in actions">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
                         </el-col>
-                        <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true">
+                        <el-col :md="6" v-if="this.showPayer == true">
                             <el-form-item 
                                 :label="$t('models.request.category_options.payer_percent')"
                                 :rules="validationRules.payer_percent"
@@ -128,7 +145,7 @@
                                 </el-input>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true">
+                        <el-col :md="6" v-if="this.showPayer == true">
                             <el-form-item 
                                 :label="$t('models.request.category_options.payer_amount')"
                                 :rules="validationRules.payer_amount"

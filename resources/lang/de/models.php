@@ -617,6 +617,7 @@ return [
             'cost_consequences' => 'Kostenfolge',
         ],
         'action' => [
+            'label' => 'Aktion',
             'fix' =>'Fix',
             'leave' => 'Urlaub',
             'wait' => 'Warten'
@@ -687,6 +688,7 @@ return [
         ],
         'placeholders' => [
             'category' => 'Kategorie wählen',
+            'action' => 'Aktion wählen',
             'qualification' => 'Qualifikation wählen',
             'status' => 'Status wählen',
             'due_date' => 'Zu erledigen bis',
