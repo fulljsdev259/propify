@@ -25,6 +25,7 @@ export default {
         });
     },
     latestBuildings({buildings: {data = []}}) {
+        
         return data.map(building => {
             building.basement = building.basement ? 'Yes' : 'No';
 
@@ -37,14 +38,14 @@ export default {
             building.residentscount = building.residents.length > 2 ? (building.residents.length - 2) : 0;
             building.residents = building.residents.splice(0, 2);
             
-            const managers = [...building.managers];
-            building.managerscount = 0;
-            if(managers.length) {
-                building.managers = building.managers.splice(0, 2);
-                if(managers.length > 2) {
-                    building.managerscount = managers.length - 2;
-                }
-            }
+            // const managers = [...building.managers];
+            // building.managerscount = 0;
+            // if(managers.length) {
+            //     building.managers = building.managers.splice(0, 2);
+            //     if(managers.length > 2) {
+            //         building.managerscount = managers.length - 2;
+            //     }
+            // }
 
             return building;
         });
