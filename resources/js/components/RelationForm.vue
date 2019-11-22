@@ -905,7 +905,6 @@
 
                     }
 
-                    console.log('get units', this.units)
                     
                 } catch (err) {
                     displayError(err);
@@ -951,11 +950,9 @@
         },
         async created () {
 
-            console.log('data', this.data)
             this.loading = true;
 
             this.quarters = await this.fetchRemoteQuarters();
-            console.log('quarters', this.quarters)
 
             //this.$refs.form.clearValidate('unit_id')
 
@@ -982,7 +979,6 @@
 
                 this.residents = this.model.residents
                 this.model.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
-                console.log('residents', this.model.residents)
                 if(!this.model.media)
                     this.model.media = []
 
@@ -1020,11 +1016,9 @@
 
                         this.units.push({ label: group_label, options : [this.model.unit]})
                     }
-                    console.log('this.units', this.units)
                     if(this.model.quarter) {
                         //this.quarters.push(this.model.quarter)
                         //await this.remoteRelationSearchQuarters(this.model.quarter.name)
-                        console.log('search units')
                         //await this.searchRelationUnits(true)
                     }
                 }
@@ -1034,7 +1028,6 @@
             if(this.model.unit_id == null)
                 this.model.unit_id = []
 
-            console.log('model', this.model)
             this.loading = false;
         },
         mounted() {
@@ -1187,8 +1180,6 @@ c
                 }
             }
         }
-        
-
         
     }
 
