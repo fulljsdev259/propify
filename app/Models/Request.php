@@ -252,76 +252,63 @@ class Request extends AuditableModel implements HasMedia
 
     public $table = 'requests';
 
-    const StatusNew = 1;
+    const StatusReceived = 1;
     const StatusInProcessing = 2;
-    const StatusPending = 3;
+    const StatusAssigned = 3;
     const StatusDone = 4;
-    const StatusWarrantyClaim = 5;
+    const StatusReactivated = 5;
     const StatusArchived = 6;
-//    const StatusAssigned = 3;
-//    const StatusReactivated = 5;
 
     const VisibilityResident = 1;
     const VisibilityBuilding = 2;
     const VisibilityQuarter = 3;
 
     const PendingStatuses = [
-        self::StatusNew,
+        self::StatusReceived,
         self::StatusInProcessing,
-//        self::StatusAssigned,
-//        self::StatusReactivated,
+        self::StatusAssigned,
+        self::StatusReactivated,
     ];
 
     const SolvedStatuses = [
         self::StatusDone,
         self::StatusArchived,
     ];
-//@TODO CORRECT status related
+
     const Status = [
-        self::StatusNew => 'new',
+        self::StatusReceived => 'received',
         self::StatusInProcessing => 'in_processing',
-        self::StatusPending => 'pending',
-//        self::StatusAssigned => 'assigned',
+        self::StatusAssigned => 'assigned',
         self::StatusDone => 'done',
-        self::StatusWarrantyClaim => 'warranty_claim',
-//        self::StatusReactivated => 'reactivated',
+        self::StatusReactivated => 'reactivated',
         self::StatusArchived => 'archived',
     ];
 
-    const StatusColorCode = [
-        self::StatusNew => '#c0772c',
-        self::StatusPending => '#c8a331',
-        self::StatusInProcessing => '#317085',
-        self::StatusDone => '#878810',
-        self::StatusArchived => '#9e9fa0',
-        self::StatusWarrantyClaim => '#897e82',
-    ];
-
     const StatusByResident = [
-        self::StatusNew => [self::StatusDone],
-//        self::StatusAssigned => [self::StatusDone, self::StatusArchived],
+        self::StatusReceived => [self::StatusDone],
+        self::StatusAssigned => [self::StatusDone, self::StatusArchived],
         self::StatusInProcessing => [self::StatusDone, self::StatusArchived],
-//        self::StatusDone => [self::StatusReactivated],
-//        self::StatusReactivated => [self::StatusDone],
+        self::StatusDone => [self::StatusReactivated],
+        self::StatusReactivated => [self::StatusDone],
         self::StatusArchived => [],
     ];
 
     const StatusByService = [
-        self::StatusNew => [],
+        self::StatusReceived => [],
         self::StatusInProcessing => [self::StatusDone],
-//        self::StatusAssigned => [self::StatusDone],
-//        self::StatusDone => [self::StatusReactivated],
-//        self::StatusReactivated => [self::StatusDone],
+        self::StatusAssigned => [self::StatusDone],
+        self::StatusDone => [self::StatusReactivated],
+        self::StatusReactivated => [self::StatusDone],
         self::StatusArchived => [],
     ];
 
     const StatusByAgent = [
-//        self::StatusNew => [self::StatusAssigned],
-//        self::StatusAssigned => [self::StatusInProcessing, self::StatusDone, self::StatusArchived],
+        self::StatusReceived => [self::StatusAssigned],
+        self::StatusAssigned => [self::StatusInProcessing, self::StatusDone, self::StatusArchived],
         self::StatusInProcessing => [self::StatusDone, self::StatusArchived],
-        self::StatusDone => [/*self::StatusReactivated,*/ self::StatusArchived],
-//        self::StatusReactivated => [self::StatusDone, self::StatusArchived],
-//        self::StatusArchived => [self::StatusReactivated],
+        self::StatusDone => [self::StatusReactivated, self::StatusArchived],
+        self::StatusReactivated => [self::StatusDone, self::StatusArchived],
+        self::StatusArchived => [self::StatusReactivated],
     ];
 
     const Visibility = [
@@ -342,16 +329,6 @@ class Request extends AuditableModel implements HasMedia
         3 => 'sia',
         4 => '2_year_warranty',
         5 => 'cost_consequences',
-    ];
-
-    const ActionFix = 1;
-    const ActionLeave = 2;
-    const ActionWait = 3;
-
-    const Action = [
-        self::ActionFix => 'fix',
-        self::ActionLeave => 'leave',
-        self::ActionWait => 'wait',
     ];
 
     const LocationHouseEntrance = 1;
@@ -453,7 +430,6 @@ class Request extends AuditableModel implements HasMedia
     const QualificationAttr = 'qualification';
     const CapturePhaseAttr = 'capture_phase';
     const ComponentAttr = 'component';
-    const ActionAttr = 'action';
 
     const SubCategories = 'sub_categories';
     const Attributes = 'attributes';
@@ -470,13 +446,11 @@ class Request extends AuditableModel implements HasMedia
     const SubCategoryAttributes = [
         self::SubCategorySurrounding => [
             self::QualificationAttr,
-            self::ActionAttr,
 	        self::CapturePhaseAttr,
 	        self::ComponentAttr,
         ],
         self::SubCategoryRealEstate => [
             self::QualificationAttr,
-            self::ActionAttr,
 	        self::CapturePhaseAttr,
 	        self::LocationAttr,
             self::ComponentAttr,
@@ -484,7 +458,6 @@ class Request extends AuditableModel implements HasMedia
         ],
         self::SubCategoryFlat => [
 	        self::QualificationAttr,
-            self::ActionAttr,
 	        self::CapturePhaseAttr,
             self::RoomAttr,
             self::ComponentAttr,
@@ -523,7 +496,6 @@ class Request extends AuditableModel implements HasMedia
         'due_date',
         'solved_date',
         'qualification',
-        'action',
         'visibility',
         'request_format',
         'room',
@@ -537,7 +509,7 @@ class Request extends AuditableModel implements HasMedia
         'is_public',
         'notify_email',
         'percentage',
-        'amount',
+        'amount'
     ];
 
     public $fillable = self::Fillable;
@@ -568,7 +540,6 @@ class Request extends AuditableModel implements HasMedia
         'due_date' => 'date',
         'solved_date' => 'datetime',
         'qualification' => 'integer',
-        'action' => 'integer',
         'visibility' => 'integer',
         'sent_reminder_user_ids' => 'array',
         'request_format' => 'string',
@@ -788,7 +759,7 @@ class Request extends AuditableModel implements HasMedia
 
     public function requestsReceived()
     {
-        return $this->where('status', Request::StatusNew);
+        return $this->where('status', Request::StatusReceived);
     }
 
     public function requestsInProcessing()

@@ -99,7 +99,7 @@ class RequestDue extends Notification implements ShouldQueue
         }
 
         $undoneStatuses = [
-            Request::StatusNew,
+            Request::StatusReceived,
             Request::StatusInProcessing,
             Request::StatusAssigned,
             Request::StatusReactivated,

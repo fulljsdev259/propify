@@ -608,11 +608,6 @@ return [
             '2_year_warranty' => '2-Jahresgarantie',
             'cost_consequences' => 'Kostenfolge',
         ],
-        'action' => [
-            'fix' =>'Fix',
-            'leave' => 'Urlaub',
-            'wait' => 'Warten'
-        ],
         'location' => [
             'house_entrance' => 'Hauseingang',
             'staircase' => 'Treppenhaus',
@@ -652,13 +647,14 @@ return [
         ],
         'status' => [
             'label' => 'Status',
-            'new' => 'Neu',
+            'received' => 'Erhalten',
+            'assigned' => 'Avisiert',
             'in_processing' => 'In Bearbeitung',
+            'reactivated' => 'Reaktiviert',
             'done' => 'Erledigt',
-            'warranty_claim' => 'Garantiefall',
             'archived' => 'Archiviert',
             'solved' => "Erledigt",
-            'pending' => "Offen",
+            'pending' => "Pendent"
         ],
         'category_options' => [
             'disturbance' => 'Störung',

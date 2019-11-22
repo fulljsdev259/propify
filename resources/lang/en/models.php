@@ -606,11 +606,6 @@ return [
             '2_year_warranty' => '2 Year Warranty',
             'cost_consequences' => 'Cost consequences',
         ],
-        'action' => [
-            'fix' =>'Fix',
-            'leave' => 'Leave',
-            'wait' => 'Wait'
-        ],
         'location' => [
             'house_entrance' => 'House Entrance',
             'staircase' => 'Staircase',
@@ -650,10 +645,11 @@ return [
         ],
         'status' => [
             'label' => 'Status',
-            'new' => 'Neu',
+            'received' => 'Received',
+            'assigned' => 'Assigned',
             'in_processing' => 'In processing',
+            'reactivated' => 'Reactivated',
             'done' => 'Done',
-            'warranty_claim' => 'Garantiefall',
             'archived' => 'Archived',
             'solved' => 'Solved',
             'pending' => 'Pending'
