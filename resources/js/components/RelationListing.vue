@@ -4,7 +4,7 @@
             :data="list"
             :show-header="showHeader"
             style="width: 100%"
-            @double-click="handleRowDbClick"
+            @row-dblclick="handleRowDblClick"
             >
             <div slot="empty">
                 <el-alert                                     
@@ -28,9 +28,7 @@
                 <template slot-scope="scope">
                     <div v-if="column.type === 'requestTitleWithDesc'">
                         <div class="request-title normal">
-                            <router-link :to="{name: 'adminRequestsEdit', params: {id: scope.row.id}}">
-                                {{scope.row.title}}
-                            </router-link>                               
+                            {{scope.row.title}}                         
                         </div>
                         <div class="category">
                             <span>
@@ -47,23 +45,21 @@
                     </div>
 
                     <div v-else-if="column.type === 'requestResidentAvatar'">
-                        <router-link v-if="column.prop" :to="{name: 'adminResidentsEdit', params: {id: scope.row[column.prop].id}}"
-                                     class="resident-link">
-                            <el-tooltip
-                                    :content="`${scope.row[column.prop].first_name} ${scope.row[column.prop].last_name}`"
-                                    class="item"
-                                    effect="light" placement="top"
-                            >
-                                <avatar :size="30"
-                                        :src="'/' + scope.row[column.prop].user.avatar"
-                                        v-if="scope.row[column.prop].user.avatar"></avatar>
-                                <avatar :size="28"
-                                        backgroundColor="rgb(205, 220, 57)"
-                                        color="#fff"
-                                        :username="scope.row[column.prop].user.first_name ? `${scope.row[column.prop].user.first_name} ${scope.row[column.prop].user.last_name}`: `${scope.row[column.prop].user.name}`"
-                                        v-if="!scope.row[column.prop].user.avatar"></avatar>
-                            </el-tooltip>
-                        </router-link>
+                        <el-tooltip
+                                v-if="column.prop"
+                                :content="`${scope.row[column.prop].first_name} ${scope.row[column.prop].last_name}`"
+                                class="item"
+                                effect="light" placement="top"
+                        >
+                            <avatar :size="30"
+                                    :src="'/' + scope.row[column.prop].user.avatar"
+                                    v-if="scope.row[column.prop].user.avatar"></avatar>
+                            <avatar :size="28"
+                                    backgroundColor="rgb(205, 220, 57)"
+                                    color="#fff"
+                                    :username="scope.row[column.prop].user.first_name ? `${scope.row[column.prop].user.first_name} ${scope.row[column.prop].user.last_name}`: `${scope.row[column.prop].user.name}`"
+                                    v-if="!scope.row[column.prop].user.avatar"></avatar>
+                        </el-tooltip>
                         <el-tooltip v-else
                                 :content="`${scope.row.first_name} ${scope.row.last_name}`"
                                 class="item"
@@ -81,23 +77,20 @@
                     </div>
 
                     <div v-else-if="column.type === 'residentAvatarWithType'">
-                        <router-link v-if="column.prop" :to="{name: 'adminResidentsEdit', params: {id: scope.row[column.prop].id}}"
-                                     class="resident-link">
-                            <el-tooltip
-                                    :content="`${scope.row[column.prop].first_name} ${scope.row[column.prop].last_name}`"
-                                    class="item"
-                                    effect="light" placement="top"
-                            >
-                                <avatar :size="30"
-                                        :src="'/' + scope.row[column.prop].user.avatar"
-                                        v-if="scope.row[column.prop].user.avatar"></avatar>
-                                <avatar :size="28"
-                                        backgroundColor="rgb(205, 220, 57)"
-                                        color="#fff"
-                                        :username="scope.row[column.prop].user.first_name ? `${scope.row[column.prop].user.first_name} ${scope.row[column.prop].user.last_name}`: `${scope.row[column.prop].user.name}`"
-                                        v-if="!scope.row[column.prop].user.avatar"></avatar>
-                            </el-tooltip>
-                        </router-link>
+                        <el-tooltip v-if="column.prop"
+                                :content="`${scope.row[column.prop].first_name} ${scope.row[column.prop].last_name}`"
+                                class="item"
+                                effect="light" placement="top"
+                        >
+                            <avatar :size="30"
+                                    :src="'/' + scope.row[column.prop].user.avatar"
+                                    v-if="scope.row[column.prop].user.avatar"></avatar>
+                            <avatar :size="28"
+                                    backgroundColor="rgb(205, 220, 57)"
+                                    color="#fff"
+                                    :username="scope.row[column.prop].user.first_name ? `${scope.row[column.prop].user.first_name} ${scope.row[column.prop].user.last_name}`: `${scope.row[column.prop].user.name}`"
+                                    v-if="!scope.row[column.prop].user.avatar"></avatar>
+                        </el-tooltip>
                         <el-tooltip v-else
                                 :content="`${scope.row.first_name} ${scope.row.last_name}`"
                                 class="item"
@@ -116,9 +109,7 @@
                     </div>
 
                     <div v-else-if="column.type === 'residentNameAndType'" class="normal">
-                        <router-link :to="{name: 'adminResidentsView', params: {id: scope.row.id}}">
-                            {{scope.row.name}}
-                        </router-link>
+                        {{scope.row.name}}
                         <div class="type">{{column.translate(scope.row.type)}}</div>
                     </div>
 
@@ -201,36 +192,16 @@
                     </div>
 
                     <div v-else-if="column.type === 'assigneesName'" class="normal">
-                        <router-link v-if="scope.row.type === 'manager'" :to="{name: 'adminPropertyManagersEdit', params: {id: scope.row.edit_id}}">
-                            {{scope.row.name}}
-                        </router-link>
-                        <router-link v-if="scope.row.type === 'provider'" :to="{name: 'adminServicesEdit', params: {id: scope.row.edit_id}}">
-                            {{scope.row.name}}
-                        </router-link>
-                        <router-link v-if="scope.row.type === 'user'" :to="{name: 'adminUsersEdit', params: {id: scope.row.edit_id}}">
-                            {{scope.row.name}}
-                        </router-link>
-                        <router-link v-if="scope.row.type === 'quarter'" :to="{name: 'adminQuartersEdit', params: {id: scope.row.id}}">
-                            {{scope.row.name}}
-                        </router-link>
-                        <router-link v-if="scope.row.type === 'building'" :to="{name: 'adminBuildingsEdit', params: {id: scope.row.id}}">
-                            {{scope.row.name}}
-                        </router-link>
+                        {{scope.row.name}}
                     </div>
-                    <div v-else-if="column.type === 'buildingName'" class="normal">                        
-                        <router-link :to="{name: 'adminBuildingsEdit', params: {id: scope.row.id}}">
-                            {{scope.row.name}}
-                        </router-link>                        
+                    <div v-else-if="column.type === 'buildingName'" class="normal">                    
+                        {{scope.row.name}}                
                     </div>
                     <div v-else-if="column.type === 'residentName'" class="normal"> 
-                        <router-link :to="{name: 'adminResidentsView', params: {id: scope.row.id}}">
-                            {{scope.row.name}}
-                        </router-link>
+                        {{scope.row.name}}
                     </div>
-                    <div v-else-if="column.type === 'serviceName'" class="normal">                        
-                        <router-link :to="{name: 'adminServicesEdit', params: {id: scope.row.id}}">
-                            {{scope.row.name}}
-                        </router-link>                        
+                    <div v-else-if="column.type === 'serviceName'" class="normal">                     
+                        {{scope.row.name}}                  
                     </div>
                     <div v-else-if="column.type === 'multiProp'">
                         <span v-for="item in column.prop.split(' ')">
@@ -309,27 +280,6 @@
                     </el-dropdown>
                 </template>
             </el-table-column> -->
-            <el-table-column
-                :key="index"
-                :width="action.width"
-                align="right"
-                v-for="(action, index) in actions"
-            >
-                <template slot-scope="scope">
-                     <el-dropdown size="small" trigger="click" placement="bottom-end" @command="changeCommand" v-if="action.dropdowns">
-                        <el-tooltip ref="visibility-button-tooltip" :content="$t('general.actions.label')">
-                            <el-button type="text" class="el-dropdown-link">
-                                <i class="icon-ellipsis-vert"></i>
-                            </el-button>
-                        </el-tooltip>
-                        <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item v-for="(item, index) in action.dropdowns" :key="item.key" :command="item.key + ' ' + scope.$index" :divided="!! index">
-                                {{$t(`${item.title}`)}}
-                            </el-dropdown-item>
-                        </el-dropdown-menu>
-                    </el-dropdown>
-                </template>
-            </el-table-column>
         </el-table>
         <div v-if="meta.current_page < meta.last_page">
             <el-button @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>
@@ -395,7 +345,6 @@
         async created() {
             if (!this.fetchStatus) {
                 this.list = this.addedAssigmentList;
-                console.log(this.list)
             } else {
                 await this.fetch();
             }
@@ -461,17 +410,12 @@
                             this.unitsTypeLabelMap();
                         }
                     }
-                    console.log(list)
                 } catch (e) {
                     this.list = []
                     console.log(e);
                 } finally {
                     this.loading = false;
                 }
-
-                console.log('fetchAction', this.fetchAction)
-
-                console.log('list', this.list)
             },
             unitsTypeLabelMap() {
                 this.list.map((unit) => {
@@ -487,11 +431,10 @@
                 }
             },
             changeCommand(val) {
-                console.log(val)
                 var res = val.split(" ");
                 this.$emit(res[0], res[1])
             },
-            handleRowDbClick(item) {
+            handleRowDblClick(item) {
                 let name = '';
                 let id = item.id;
                 this.columns.forEach((column) => {
@@ -514,6 +457,8 @@
                             name = 'adminQuartersEdit';
                         else if(item.type === 'building')
                             name = 'adminBuildingsEdit';
+
+                        id = item.edit_id;
                     }
                     else if(column.type === 'buildingName')
                         name = 'adminBuildingsEdit';
@@ -596,7 +541,6 @@
     .request {
         .listing {
             .normal {
-                color: var(--primary-color);
                 a {
                     text-decoration: none;
                     color:var(--primary-color);
@@ -605,17 +549,12 @@
                         color:var(--primary-color-lighter);
                     }
                 }
-                &:hover {
-                    text-decoration: none;
-                    color:var(--primary-color-lighter);
-                }
 
                 
             }
         }
     }
     .normal {
-        color: var(--primary-color);
         a {
             text-decoration: none;
             color:var(--primary-color);
@@ -623,10 +562,6 @@
             &:hover {
                 color:var(--primary-color-lighter);
             }
-        }
-        &:hover {
-            text-decoration: none;
-            color:var(--primary-color-lighter);
         }
 
         .type {

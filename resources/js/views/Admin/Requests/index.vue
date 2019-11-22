@@ -1,6 +1,6 @@
 <template>  
     <div class="services" v-loading.fullscreen.lock="isDownloading">
-        <heading :title="$t('models.request.title')" icon="icon-chat-empty" shadow="heavy" class="padding-right-300">
+        <heading :title="$t('models.request.title')" icon="icon-chat-empty" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template v-if="$can($permissions.create.request)">
                 <el-button 
                     @click="add" 
@@ -53,6 +53,7 @@
             :isLoadingFilters="{state: isLoadingFilters}"
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
+            :searchText="search"
             :withCheckSelection="false"
             @selectionChanged="selectionChanged"
             @pdf-download="downloadPDF($event)"
@@ -200,12 +201,13 @@
                     onChange: this.listingSelectChangedNotify,
                     downloadPDF: this.downloadPDF
                 }],
-                categories:{},
-                quarters:{},
-                buildings:{},
-                propertyManagers:{},
-                residents: {},
-                services: {},
+                search: '',
+                categories:[],
+                quarters:[],
+                buildings:[],
+                propertyManagers:[],
+                residents: [],
+                services: [],
                 isLoadingFilters: false,
                 isDownloading: false,
                 batchEditVisible: false,

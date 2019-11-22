@@ -148,10 +148,10 @@
                         ]
                     }]
                 }],
-                buildings:{},
-                units:{},
-                states:{},
-                quarters:{},
+                buildings:[],
+                units:[],
+                states:[],
+                quarters:[],
                 isLoadingFilters: false,
             };
         },

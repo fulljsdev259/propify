@@ -291,6 +291,9 @@
         watch: {
             selectedOptions() {
                 this.initFilter();
+            },
+            data() {
+                this.initFilter();
             }
         }
     }

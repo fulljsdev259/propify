@@ -1,6 +1,6 @@
 <template>
     <div class="buildings">
-        <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy" class="padding-right-300">
+        <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
                 <list-check-box />
             </template>
@@ -30,7 +30,9 @@
             </template> -->
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    <el-button size="mini" class="transparent-button menu-button">
+                        <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    </el-button>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item
                             v-if="$can($permissions.delete.building)"
@@ -51,6 +53,7 @@
             :header="headerFilter"
             :items="items"
             :loading="{state: loading}"
+            :searchText="search"
             :isLoadingFilters="{state: isLoadingFilters}"
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
@@ -142,6 +145,7 @@
                 cities: [],
                 quarterTypes: [],
                 roles:[],
+                search: '',
                 remoteLoading: false,
                 delBuildingStatus: -1, // 0: unit, 1: request, 2: both
                 header: [{

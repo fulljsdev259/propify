@@ -330,6 +330,7 @@
                 }
                 :global(.el-timeline-item__node) {
                     top: 13px;
+                    left: 15px;
                 }
                 :global(.el-timeline-item__wrapper) {
                     position: relative;
@@ -342,6 +343,7 @@
                             position: absolute;
                             left: 0px;
                             top: 5px;
+                            border: 1px solid  var(--border-color-base);
                         }
                     }
                  }

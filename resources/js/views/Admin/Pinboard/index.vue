@@ -133,11 +133,11 @@
                     ]
                 }],
                 pinboardDetailsVisible: false,
-                quarters:{},
-                buildings:{},
-                residents:{},
-                status: {},
-                type: {},
+                quarters:[],
+                buildings:[],
+                residents:[],
+                status: [],
+                type: [],
                 isLoadingFilters: false,
             };
         },

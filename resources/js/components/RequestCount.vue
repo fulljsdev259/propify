@@ -96,8 +96,7 @@
 
             & > div {
                 position: relative;
-                margin-right: 0px;
-                border: 1px solid #fff;
+                margin-right: 2px;
                 cursor: pointer;
 
                 &:hover {
