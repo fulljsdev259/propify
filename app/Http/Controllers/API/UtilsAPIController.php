@@ -130,7 +130,8 @@ class UtilsAPIController extends AppBaseController
             'colors' => $colors,
             'logo' => $logo,
             'login' => $login,
-            'file_categories' => \ConstantsHelpers::MediaFileCategories
+            'file_categories' => \ConstantsHelpers::MediaFileCategories,
+            'status_colorcode' => PropertyManager::StatusColorCode,
         ];
 
         if (\Auth::guest()) {
@@ -344,7 +345,6 @@ class UtilsAPIController extends AppBaseController
             'title' => PropertyManager::Title,
             'type' => PropertyManager::Type,
 			'status' => PropertyManager::Status,
-            'status_colorcode' => PropertyManager::StatusColorCode,
         ];
 
         return $result;
