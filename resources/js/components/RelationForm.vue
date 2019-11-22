@@ -1050,6 +1050,9 @@ c
         
     /deep/ .ui-divider {
         margin: 32px 16px 16px 0;
+        margin-left: 10px;
+        margin-right: 10px;
+        width: inherit;
         
         i {
             padding-right: 0;
@@ -1160,7 +1163,9 @@ c
 
     /deep/ .relation-form-actions {
         // position: absolute;
-        width: 100%;
+        //width: 100%;
+        margin-left: 10px;
+        margin-right: 10px;
         display: flex;
         flex-direction: column;
         flex-grow: 1;
@@ -1204,8 +1209,10 @@ c
     }
 
     /deep/ .el-tag.el-tag--info .el-tag__close {
-        color: white
+        color: white;
+        background: transparent;
     }
+
     /deep/ .el-dropdown .el-button span.el-tag i.el-tag__close {
         right: 0;
         line-height: 1.4;
