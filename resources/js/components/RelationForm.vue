@@ -33,7 +33,8 @@
                                 :key="key"
                                 :label="$t('models.resident.type.' + value )"
                                 :value="+key"
-                                v-for="(value, key) in $constants.residents.type">
+                                v-for="(value, key) in $constants.residents.type"
+                                v-if="key != 3">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -60,8 +61,8 @@
                         :type="quarterFilter.key"
                         :name="quarterFilter.name"
                         :data="quarterFilter.data"
-                        :selectedOptions="[model.quarter_id]"
                         :maxSelect="1"
+                        :selectedOptions="[model.quarter_id]"
                         @select-changed="handleSelectChange($event, 'quarter')"
                     >
                     </multi-select>
@@ -107,7 +108,6 @@
                             :label="$t('models.resident.unit.name')"
                             prop="unit_id" 
                             class="label-block">
-
                     <el-select :placeholder="$t('models.resident.search_unit')" 
                             style="display: block"
                             v-model="model.unit_id"
@@ -381,9 +381,9 @@
                 </el-form-item>
             </el-col>
         </el-row> -->
-        <ui-divider v-if="model.unit_id" content-position="left">
+        <!-- <ui-divider v-if="model.unit_id" content-position="left">
             {{ $t('models.resident.relation.relation_pdf') }}
-        </ui-divider>
+        </ui-divider> -->
         <el-row :gutter="20"  v-if="model.unit_id">
             <el-col :md="24">
                 <el-form-item>
@@ -417,13 +417,13 @@
                     </el-table-column>
                 </el-table>
 
-                <el-alert
+                <!-- <el-alert
                     :title="$t('models.resident.relation.pdf_only_desc')"
                     type="info"
                     show-icon
                     :closable="false"
                 >
-                </el-alert>
+                </el-alert> -->
 
                 <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".pdf" drag multiple/>
                 
@@ -902,6 +902,7 @@
 
                     }
 
+                    console.log('get units', this.units)
                     
                 } catch (err) {
                     displayError(err);
@@ -951,6 +952,7 @@
             this.loading = true;
 
             this.quarters = await this.fetchRemoteQuarters();
+            console.log('quarters', this.quarters)
 
             let parent_obj = this
             this.deposit_types = Object.entries(this.$constants.relations.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_types.${label}`)}))
@@ -1013,9 +1015,11 @@
 
                         this.units.push({ label: group_label, options : [this.model.unit]})
                     }
+                    console.log('this.units', this.units)
                     if(this.model.quarter) {
                         //this.quarters.push(this.model.quarter)
                         //await this.remoteRelationSearchQuarters(this.model.quarter.name)
+                        console.log('search units')
                         await this.searchRelationUnits(true)
                     }
                 }
@@ -1176,5 +1180,43 @@ c
         margin-bottom: 10px;
     }
 
-    
+    /deep/ .el-tag {
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 6px;
+        font-size: 12px;
+        
+        margin: 0;
+        padding: 0;
+        padding-left: 10px;
+        padding-right: 20px;
+        height: 30px;
+        line-height: 30px;
+
+        i {
+            color: white;
+            background: transparent;
+            font-size: 17px;
+            font-weight: 600;
+        }
+    }
+
+    /deep/ .el-tag.el-tag--info .el-tag__close {
+        color: white
+    }
+    /deep/ .el-dropdown .el-button span.el-tag i.el-tag__close {
+        right: 0;
+        line-height: 1.4;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--color-white);
+    }
+
+    /deep/ .el-dropdown {
+        .el-button.selected-button {
+            background-color: white;
+            padding: 0 2.5px;
+            height: 100%;
+        }
+    }
 </style>

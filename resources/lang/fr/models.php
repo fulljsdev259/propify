@@ -191,6 +191,7 @@ return [
         "not_found" => "Bâtiment non trouvé",
         'building_format' => 'Project No.',
         'building_no' => 'Building No.',
+        'building_number'=>'Building Number',
         'active_residents_count' => 'Vives',
         'request_status' => 'Demande Statut',
         'type' => 'Type de bâtiment',

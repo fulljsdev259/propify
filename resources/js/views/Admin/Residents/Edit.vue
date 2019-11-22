@@ -399,8 +399,7 @@
                             prop="name"
                         >
                             <template slot-scope="scope">
-                                <a v-if="scope.row.url" :href="scope.row.url" target="_blank"><strong>{{scope.row.name}}</strong></a>
-                                <span v-else><strong>{{scope.row.name}}</strong></span>
+                                <span ><strong>{{scope.row.name}}</strong></span>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -804,6 +803,10 @@
     /deep/ .el-dialog {
         width: 50% !important;
 
+        .el-dialog__header {
+            padding-left: 30px;
+        }
+        
         .el-dialog__body {
             padding-top: 0;
         }
