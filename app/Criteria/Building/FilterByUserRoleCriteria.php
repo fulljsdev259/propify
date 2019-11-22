@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Criteria\Quarter;
+namespace App\Criteria\Building;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -45,14 +45,16 @@ class FilterByUserRoleCriteria implements CriteriaInterface
             if (! is_array($userIds)) {
                 $userIds = [$userIds];
             }
-            return $model->whereHas('users', function ($q) use ($roles, $userIds) {
-                $q->when($roles, function ($q) use ($roles) {
-                    $q->whereHas('roles', function ($q) use ($roles) {
-                        $q->whereIn('name', $roles);
-                    });
-                })
-                ->when($userIds, function ($q) use ($userIds) {
-                    $q->whereIn('users.id', $userIds);
+            return $model->whereHas('quarter', function ($q) use ($roles, $userIds) {
+                $q->whereHas('users', function ($q) use ($roles, $userIds) {
+                    $q->when($roles, function ($q) use ($roles) {
+                        $q->whereHas('roles', function ($q) use ($roles) {
+                            $q->whereIn('name', $roles);
+                        });
+                    })
+                        ->when($userIds, function ($q) use ($userIds) {
+                            $q->whereIn('users.id', $userIds);
+                        });
                 });
             });
         }
