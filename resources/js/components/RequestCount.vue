@@ -72,6 +72,12 @@
             Avatar
         },
         mounted() {
+            this.counts = Object.entries(this.$constants.request.status).map(([value, label]) => ({
+                prop: 'requests_' + label,
+                background: this.$constants.relations.status_colorcode[value],
+                color: '#fff',
+                label: this.$t(`models.request.status.${label}`)
+            }))
         }
         
     }
