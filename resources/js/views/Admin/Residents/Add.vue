@@ -424,10 +424,15 @@
     /deep/ .el-dialog {
         width: 50% !important;
 
+        .el-dialog__header {
+            padding-left: 30px;
+        }
+
         .el-dialog__body {
             padding-top: 0;
+            padding-bottom: 20px;
         }
-        
+
         .el-dialog__footer {
             padding: 0;
         }

@@ -447,12 +447,16 @@
             </el-col> -->
         </el-row>
         </template>
-        <ui-divider style="margin-top: 16px;"></ui-divider>
+        <!-- <ui-divider style="margin-top: 16px;"></ui-divider> -->
         <div class="relation-form-actions">
             <div class="button-group">
-                <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" round>{{ edit_index == undefined ? $t('general.actions.add') : $t('general.actions.edit')}}</el-button>
-                <el-button type="primary" v-else @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
-                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-relation', edit_index)" icon="ti-trash" round>{{$t('general.actions.delete')}}</el-button>
+                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-relation', edit_index)" icon="ti-trash" class="btn-delete" >
+                    {{$t('general.actions.delete')}}
+                </el-button>
+                <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" class="btn-save" >
+                    {{ edit_index == undefined ? $t('general.actions.add') : $t('general.actions.edit')}}
+                </el-button>
+                <el-button type="primary" v-else @click="submit" icon="ti-save" class="btn-save" >{{$t('general.actions.save')}}</el-button>
             </div>
         </div>
         
@@ -901,7 +905,6 @@
 
                     }
 
-                    console.log('get units', this.units)
                     
                 } catch (err) {
                     displayError(err);
@@ -947,11 +950,9 @@
         },
         async created () {
 
-            console.log('data', this.data)
             this.loading = true;
 
             this.quarters = await this.fetchRemoteQuarters();
-            console.log('quarters', this.quarters)
 
             //this.$refs.form.clearValidate('unit_id')
 
@@ -978,7 +979,6 @@
 
                 this.residents = this.model.residents
                 this.model.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
-                console.log('residents', this.model.residents)
                 if(!this.model.media)
                     this.model.media = []
 
@@ -1016,11 +1016,9 @@
 
                         this.units.push({ label: group_label, options : [this.model.unit]})
                     }
-                    console.log('this.units', this.units)
                     if(this.model.quarter) {
                         //this.quarters.push(this.model.quarter)
                         //await this.remoteRelationSearchQuarters(this.model.quarter.name)
-                        console.log('search units')
                         //await this.searchRelationUnits(true)
                     }
                 }
@@ -1030,7 +1028,6 @@
             if(this.model.unit_id == null)
                 this.model.unit_id = []
 
-            console.log('model', this.model)
             this.loading = false;
         },
         mounted() {
@@ -1163,23 +1160,27 @@ c
     /deep/ .relation-form-actions {
         // position: absolute;
         //width: 100%;
+        margin-top: 30px;
         margin-left: 10px;
         margin-right: 10px;
         display: flex;
         flex-direction: column;
-        flex-grow: 1;
+        //flex-grow: 1;
         justify-content: flex-end;
 
-        button {
-            width: 100%;
-            i {
-                padding-right: 5px;
-            }
-        }
 
         .button-group {
             display: flex;
+            justify-content: flex-end;
+
+            button {
+                //width: 100%;
+                i {
+                    padding-right: 5px;
+                }
+            }
         }
+        
     }
 
     /deep/ .relation-file-table {
@@ -1225,6 +1226,23 @@ c
             background-color: #f6f5f7 !important;
             padding: 0 2.5px;
             height: 100%;
+        }
+    }
+
+    .btn-save {
+        background-color: #878810;
+        border: none;
+        &:hover {
+            color: var(--color-white);
+            box-shadow: 0 0 5px #878810;
+        }
+    }
+    .btn-delete {
+        background-color: #848484;
+        border: none;
+        &:hover {
+            color: var(--color-white);
+            box-shadow: 0 0 5px #848484 ;
         }
     }
 </style>
