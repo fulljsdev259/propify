@@ -681,7 +681,7 @@ return [
             'range' => 'Range',
             'component' => 'Component',
             'capture_phase' => 'Capture Phase',
-            'payer_percent' => 'Share Fortimo',
+            'payer_percent' => 'Pay by resident in %',
             'payer_amount' => 'Amount',
             'keywords' => 'Keywords',
         ],
