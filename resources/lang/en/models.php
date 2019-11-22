@@ -404,6 +404,7 @@ return [
         ],
         'contact_details' => 'Contact details',
         'user_credentials' => 'User credentials',
+        "company_name" => "Company name",
         'company_details' => 'Company details',
         'assign_type' => 'Type',        
         'placeholders' => [
