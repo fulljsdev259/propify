@@ -94,10 +94,10 @@
                         ]
                     }]
                 }],
-                states: {},
-                quarters: {},
-                buildings: {},
-                categories: {},
+                states: [],
+                quarters: [],
+                buildings: [],
+                categories: [],
                 isLoadingFilters: false,
             }
         },

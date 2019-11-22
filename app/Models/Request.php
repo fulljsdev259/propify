@@ -465,7 +465,6 @@ class Request extends AuditableModel implements HasMedia
     const ComponentAttr = 'component';
     const ActionAttr = 'action';
     const CostImpactAttr = 'cost_impact';
-
     const SubCategories = 'sub_categories';
     const Attributes = 'attributes';
 
@@ -800,7 +799,7 @@ class Request extends AuditableModel implements HasMedia
         return $conv;
     }
 
-    public function requestsReceived()
+    public function requestsNew()
     {
         return $this->where('status', Request::StatusNew);
     }

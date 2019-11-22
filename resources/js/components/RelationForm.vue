@@ -549,7 +549,7 @@
                     status: '',
                     deposit_status: 1,
                     monthly_rent_gross: 0,
-                    unit_id: null,
+                    unit_id: (this.mode == 'add' ? [] : ''),
                     building_id: '',
                     quarter_id: '',
                     media: [],
@@ -758,7 +758,6 @@
                 if(filter == 'unit') {
                     this.model.unit_ids = val
                 } else if(filter == 'quarter') {
-                    console.log('val', val)
                     if(val.length == 1) {
                         this.model.quarter_id = val[0]
                         this.searchRelationUnits(false)
@@ -954,6 +953,8 @@
             this.quarters = await this.fetchRemoteQuarters();
             console.log('quarters', this.quarters)
 
+            //this.$refs.form.clearValidate('unit_id')
+
             let parent_obj = this
             this.deposit_types = Object.entries(this.$constants.relations.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_types.${label}`)}))
             //this.durations = Object.entries(this.$constants.relations.duration).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.durations.${label}`)}))
@@ -1020,7 +1021,7 @@
                         //this.quarters.push(this.model.quarter)
                         //await this.remoteRelationSearchQuarters(this.model.quarter.name)
                         console.log('search units')
-                        await this.searchRelationUnits(true)
+                        //await this.searchRelationUnits(true)
                     }
                 }
 
@@ -1048,6 +1049,9 @@ c
         
     /deep/ .ui-divider {
         margin: 32px 16px 16px 0;
+        margin-left: 10px;
+        margin-right: 10px;
+        width: inherit;
         
         i {
             padding-right: 0;
@@ -1158,7 +1162,9 @@ c
 
     /deep/ .relation-form-actions {
         // position: absolute;
-        width: 100%;
+        //width: 100%;
+        margin-left: 10px;
+        margin-right: 10px;
         display: flex;
         flex-direction: column;
         flex-grow: 1;
@@ -1190,8 +1196,8 @@ c
         padding: 0;
         padding-left: 10px;
         padding-right: 20px;
-        height: 30px;
-        line-height: 30px;
+        height: 35px;
+        line-height: 35px;
 
         i {
             color: white;
@@ -1202,8 +1208,10 @@ c
     }
 
     /deep/ .el-tag.el-tag--info .el-tag__close {
-        color: white
+        color: white;
+        background: transparent;
     }
+
     /deep/ .el-dropdown .el-button span.el-tag i.el-tag__close {
         right: 0;
         line-height: 1.4;
@@ -1214,7 +1222,7 @@ c
 
     /deep/ .el-dropdown {
         .el-button.selected-button {
-            background-color: white;
+            background-color: #f6f5f7 !important;
             padding: 0 2.5px;
             height: 100%;
         }

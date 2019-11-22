@@ -92,7 +92,7 @@
                         :content="$t('models.resident.relation.status.' + constants.relations.status[scope.row.status])"
                         class="item" effect="light" 
                         placement="top-end">
-                        <span class="status-icon" :style="'background:' + constants.relations.status_colorcode[scope.row.status] ">&nbsp;</span>
+                        <span class="status-icon" :style="{ background: constants.relations.status_colorcode[scope.row.status], border: '2px solid ' + LightenDarkenColor(constants.relations.status_colorcode[scope.row.status], 200) }" >&nbsp;</span>
                         <!-- <i class="icon-circle" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]"></i> -->
                      </el-tooltip>
                     <!-- {{ constants.relations.status[scope.row.status] ? $t('models.resident.relation.status.' + constants.relations.status[scope.row.status]) : ''}} -->
@@ -199,6 +199,35 @@
                 }
                 this.$emit('edit-relation', i)
             },
+            LightenDarkenColor(col, amt) {
+  
+                var usePound = false;
+            
+                if (col[0] == "#") {
+                    col = col.slice(1);
+                    usePound = true;
+                }
+            
+                var num = parseInt(col,16);
+            
+                var r = (num >> 16) + amt;
+            
+                if (r > 255) r = 255;
+                else if  (r < 0) r = 0;
+            
+                var b = ((num >> 8) & 0x00FF) + amt;
+            
+                if (b > 255) b = 255;
+                else if  (b < 0) b = 0;
+            
+                var g = (num & 0x0000FF) + amt;
+            
+                if (g > 255) g = 255;
+                else if (g < 0) g = 0;
+            
+                return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+            
+            }
         },
         mounted() {
             this.totalLength = this.items.length
@@ -226,8 +255,8 @@
         }
 
         .status-icon {
-            width: 15px;
-            height: 15px;
+            width: 13px;
+            height: 13px;
             border-radius: 50%;
             display: block;
         }

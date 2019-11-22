@@ -18,7 +18,7 @@ export default (config = {}) => {
                     house_num: 'house_num',
                     media: [],
                     internal_quarter_id: '',
-                    types: '',
+                    types: [],
                     url: '',
                     workflows: [],
                 },
@@ -325,7 +325,7 @@ export default (config = {}) => {
                                         },
                                         ...restParams
                                     });    
-                                    this.old_model = this.model;
+                                    this.old_model = _.clone(this.model, true);
                                     if(this.$refs.auditList){
                                         this.$refs.auditList.fetch();
                                     }                                    

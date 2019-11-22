@@ -54,7 +54,7 @@
                                 </list-filter-select>
 
                             </el-form-item>
-                            <el-form-item
+                            <!-- <el-form-item
                                 v-if="filter.type === filterTypes.text || filter.type === filterTypes.number">
                                  <el-input
                                     v-if="filter.key == 'search'"
@@ -75,7 +75,7 @@
                                     @change="filterChanged(filter)"
                                     v-model="filterModel[filter.key]">
                                 </el-input>
-                            </el-form-item>
+                            </el-form-item> -->
                             <el-form-item v-else-if="filter.type === filterTypes.date">
                                 <el-date-picker
                                     :format="filter.format"
@@ -217,34 +217,32 @@
                         <request-count :countsData="items[scope.$index]" ></request-count>
                         <relation-count :countsData="items[scope.$index]" ></relation-count>
                     </div>
+                    <div v-else-if="column.withStatusSign">
+                        <avatar 
+                            :background-color="$constants.relations.status_colorcode[scope.row[column.prop]]"
+                            :initials="''"
+                            :size="30"
+                            :style="{'z-index': (800 - index)}"
+                            :username="''"
+                        />
+                    </div>
                     <div v-else-if="column.withStatus">
                         <div class="avatars-wrapper">
-                            <span :key="index" v-for="(count, index) in column.data">
+                            <span :key="index" v-for="(status, index) in $constants.relations.status">
                                 <el-tooltip
-                                    v-if="count.prop.length > 5"
-                                    :content="`${count.label}: ${scope.row[count.prop]}`"
+                                    :content="`${$t(`models.resident.relation.status.${status}`)}: ${scope.row[`${status}_units_count`]}`"
                                     class="item"
                                     effect="light" placement="top"
                                 >
                                     <avatar 
-                                        :background-color="count.background"
-                                        :color="count.color"
-                                        :initials="` ${scope.row[count.prop]}`"
+                                        :background-color="$constants.relations.status_colorcode[index]"
+                                        color="#fff"
+                                        :initials="`${scope.row[`${status}_units_count`]}`"
                                         :size="30"
                                         :style="{'z-index': (800 - index)}"
-                                        :username="`${scope.row[count.prop]}`"
+                                        :username="`${scope.row[`${status}_units_count`]}`"
                                     />
                                 </el-tooltip>
-                                <avatar 
-                                    v-else-if="count.prop==''"
-                                    :background-color="count.background"
-                                    :color="count.color"
-                                    :initials="''"
-                                    :size="15"
-                                    :style="{'z-index': (800 - index)}"
-                                    :username="''"
-                                />
-                                <table-avatar v-else :src="null" :name="scope.row[count.prop]" :size="30" />
                             </span>
                         </div>
                     </div>
@@ -255,7 +253,7 @@
                     </div>
                     <div v-else-if="column.withUsers">
                         <div class="avatars-wrapper">
-                            <span :key="uuid()" v-for="(user) in scope.row[column.prop]">
+                            <span :key="uuid()" v-if="index<2" v-for="(user, index) in scope.row[column.prop]">
                                 <el-tooltip
                                     :content="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
                                     class="item"
@@ -279,9 +277,9 @@
                                 </el-tooltip>
 
                             </span>
-                            <avatar class="avatar-count" :size="28" :username="`+ ${scope.row[column.count]}`"
+                            <avatar class="avatar-count" :size="28" :username="`+ ${scope.row[column.prop].length-2}`"
                                     color="#fff"
-                                    v-if="scope.row[column.count]"></avatar>
+                                    v-if="scope.row[column.prop].length>2"></avatar>
                         </div>
                     </div>
                     <template v-else-if="column.withBadges">
@@ -373,6 +371,7 @@
             </el-table-column>
         </el-table>
         <el-pagination
+            :class="{'sticky-bottom': items.length < page.currSize}"
             :current-page.sync="page.currPage"
             :page-size.sync="page.currSize"
             :page-sizes="pagination.pageSizes"
@@ -472,6 +471,10 @@
                 type: Boolean,
                 default: true
             },
+            searchText: {
+                type: String,
+                default: () => ''
+            }
         },
         beforeMount() {
         },
@@ -820,6 +823,10 @@
                 this.$forceUpdate();
             }
         },
+        updated() {
+            this.$set(this.filterModel, 'search', this.searchText);
+            this.filterChanged(this.filters[0]);
+        }
     }
 </script>
 
@@ -836,6 +843,11 @@
         }
         .icon-container {
             font-size: 24px;
+        }
+        .sticky-bottom {
+            position: fixed;
+            bottom: 0;
+            width: 92%;
         }
         .sub-menu {
             position: absolute;
@@ -865,26 +877,6 @@
                         background-color: var(--color-primary);
                         border-radius: 12px 12px 0 0;
                     }
-                }
-            }
-        }
-        .list-table-search {
-            position: fixed;
-            right: 60px;
-            top: 30px;
-            z-index: 99;
-            width: 250px;
-            &.el-input {
-                :global(.el-input__inner) {
-                    border-color: transparent;
-                    color: var(--color-text-regular);
-                    background-color: var(--background-color-base);
-                    height: 30px !important;
-                    line-height: 30px !important;
-                }
-                :global(.el-input__icon) {
-                    font-size: 16px;
-                    line-height: 36px;
                 }
             }
         }
@@ -975,7 +967,7 @@
                 padding: 12px 4px;
                 color: var(--color-text-primary);
                 &:first-of-type {
-                    padding-left: 36px;
+                    padding-left: 32px;
                 }
             }
 
@@ -1203,6 +1195,7 @@
     }
     .el-table {
         th.el-table-column--selection.is-leaf {
+            padding-left: 0px;
             .cell {
                 padding-left: 0px;
                 text-align: left;
@@ -1211,6 +1204,7 @@
         tbody {
             tr {
                 td:last-child:not(.is-left) {
+                    padding-left: 0px;
                     .cell {
                         padding-left: 0px !important;
                         text-align: left;
@@ -1234,7 +1228,7 @@
         border-radius: 0;
         padding-right: 15px;
         .el-card__body {
-            padding: 0 22px;
+            padding: 0 20px;
             .el-form-item {
                 margin-bottom: 0;
             }

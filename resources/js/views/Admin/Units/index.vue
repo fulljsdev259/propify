@@ -1,6 +1,6 @@
 <template>
     <div class="units">
-        <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy" class="padding-right-300">
+        <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
                 <list-check-box />
             </template>
@@ -19,7 +19,9 @@
             </template>
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    <el-button size="mini" class="transparent-button menu-button">
+                        <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    </el-button>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item
                             v-if="$can($permissions.delete.unit)"
@@ -44,6 +46,7 @@
             :isLoadingFilters="{state: isLoadingFilters}"
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
+            :searchText="search"
             @selectionChanged="selectionChanged"
             v-if="isReady"
         >
@@ -82,14 +85,15 @@
             return {
                 isReady: false,
                 fetchParams: {},
-                states:{},
-                propertyManagers:{},
+                states:[],
+                propertyManagers:[],
                 types:[],
                 quarters:[],
                 buildings:[],
                 cities: [],
                 quarterTypes: [],
                 roles:[],
+                search: '',
                 header: [{
                     label: 'models.quarter.quarter_format',
                     prop: 'internal_quarter_id'
@@ -98,20 +102,11 @@
                     prop: 'name'
                 }, {
                     label: 'general.filters.status',
-                    withStatus: true,
-                    data: [ {
-                            prop: '',
-                            background: '#67C23A',
-                            color: '#fff',
-                            label: this.$t('models.request.status.received')
-                        }
-                    ]
+                    withStatusSign: true,
+                    prop: 'status',
                 }, {
                     label: 'models.unit.type.label',
                     prop: 'formatted_type_label'
-                }, {
-                    label: 'models.building.type',
-                    prop: ''
                 }, {
                     label: 'models.unit.location',
                     prop: 'floor'
