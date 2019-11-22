@@ -303,6 +303,7 @@ class UtilsAPIController extends AppBaseController
             //'internal_priority' => Request::Priority,
             'qualification' => Request::Qualification,
             'action' => Request::Action,
+            'cost_impact' => Request::CostImpact,
             'statusByResident' => Request::StatusByResident,
             'statusByService' => Request::StatusByService,
             'statusByAgent' => Request::StatusByAgent,
