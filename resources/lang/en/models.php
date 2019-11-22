@@ -195,6 +195,7 @@ return [
         'active_residents_count' => 'Living',
         'request_status' => 'Request Status',
         'type' => 'Building Type',
+        'city' => 'City',
         'media_category' => [
             'house_rules' => 'House rules',
             'operating_instructions' => 'Operating instructions',

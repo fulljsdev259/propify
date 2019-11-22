@@ -153,38 +153,7 @@
                     label: 'models.building.request_status',
                     withCounts: true,
                     width: 230,
-                    counts: [{
-                            prop: 'requests_new_count',
-                            background: this.$constants.relations.status_colorcode[1],
-                            color: '#fff',
-                            label: this.$t('models.request.status.new')
-                        }, {
-                            prop: 'requests_in_processing_count',
-                            background: this.$constants.relations.status_colorcode[2],
-                            color: '#fff',
-                            label: this.$t('models.request.status.in_processing')
-                        }, {
-                            prop: 'requests_pending_count',
-                            background: this.$constants.relations.status_colorcode[3],
-                            color: '#fff',
-                            label: this.$t('models.request.status.pending')
-                        }, {
-                            prop: 'requests_done_count',
-                            background: this.$constants.relations.status_colorcode[4],
-                            color: '#fff',
-                            label: this.$t('models.request.status.done')
-                        }, {
-                            prop: 'requests_warranty_claim_count',
-                            background: this.$constants.relations.status_colorcode[5],
-                            color: '#fff',
-                            label: this.$t('models.request.status.warranty_claim')
-                        }, {
-                            prop: 'requests_archived_count',
-                            background: this.$constants.relations.status_colorcode[6],
-                            color: '#fff',
-                            label: this.$t('models.request.status.archived')
-                        }
-                    ]
+                    prop: 'request_count'
                 },{
                     label: 'models.quarter.buildings_count',
                     prop: 'buildings_count'
@@ -194,10 +163,12 @@
                 }, {
                     label: 'general.filters.status',
                     withStatus: true,
+                    prop: 'status'
                 }, {
                     label: 'models.request.assigned_to',
                     withUsers: true,
                     prop: 'users',
+                    defaultHide: true
                 }
                 ],
                 model: {
@@ -231,7 +202,7 @@
                     },{
                         name: this.$t('models.quarter.project_ort'),
                         type: 'select',
-                        key: 'city_id',
+                        key: 'city',
                         data: this.cities,
                     },{
                         name: this.$t('models.quarter.type'),
@@ -349,11 +320,24 @@
                 const states = await this.axios.get('states?filters=true')
                 this.states = states.data.data;
             },
+            async getCities() {
+                const cities = await this.axios.get('cities?get_all=true&quarters=true');
+                this.cities = [];
+                cities.data.data.forEach((city) => {
+                    this.cities.push({
+                        id: city,
+                        name: city
+                    })
+                });
+            },
             async getRoles() {
+                const roles = await this.axios.get('users?get_all=true&role=manager');
                 this.roles = [];
-                this.roles.push({
-                    id: 1,
-                    name: this.$constants.propertyManager.type[1],
+                roles.data.data.forEach((role) => {
+                    this.roles.push({
+                        id: role.id,
+                        name: role.name,
+                    })
                 })
             },
             async getTypes() {
@@ -379,6 +363,7 @@
         async created() {
             this.getRoles();
             this.getTypes();
+            this.getCities();
             this.quarter = await this.fetchRemoteQuarters();
         },
         mounted() {
