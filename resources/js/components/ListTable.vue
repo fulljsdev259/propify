@@ -126,6 +126,8 @@
                 :key="'header' + index"
                 :label="$t(column.label)"
                 :width="column.width"
+                :min-width="column.minWidth"
+                :align="column.align"
                 v-for="(column, index) in computedHeader">
                 
                 <template slot-scope="scope">
