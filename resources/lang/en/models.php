@@ -606,6 +606,11 @@ return [
             '2_year_warranty' => '2 Year Warranty',
             'cost_consequences' => 'Cost consequences',
         ],
+        'action' => [
+            'fix' =>'Fix',
+            'leave' => 'Leave',
+            'wait' => 'Wait'
+        ],
         'location' => [
             'house_entrance' => 'House Entrance',
             'staircase' => 'Staircase',

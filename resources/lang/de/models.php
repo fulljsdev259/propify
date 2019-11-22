@@ -608,6 +608,11 @@ return [
             '2_year_warranty' => '2-Jahresgarantie',
             'cost_consequences' => 'Kostenfolge',
         ],
+        'action' => [
+            'fix' =>'Fix',
+            'leave' => 'Urlaub',
+            'wait' => 'Warten'
+        ],
         'location' => [
             'house_entrance' => 'Hauseingang',
             'staircase' => 'Treppenhaus',

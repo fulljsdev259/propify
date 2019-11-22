@@ -319,7 +319,7 @@ class Request extends AuditableModel implements HasMedia
 //        self::StatusNew => [self::StatusAssigned],
 //        self::StatusAssigned => [self::StatusInProcessing, self::StatusDone, self::StatusArchived],
         self::StatusInProcessing => [self::StatusDone, self::StatusArchived],
-//        self::StatusDone => [self::StatusReactivated, self::StatusArchived],
+        self::StatusDone => [/*self::StatusReactivated,*/ self::StatusArchived],
 //        self::StatusReactivated => [self::StatusDone, self::StatusArchived],
 //        self::StatusArchived => [self::StatusReactivated],
     ];
@@ -342,6 +342,16 @@ class Request extends AuditableModel implements HasMedia
         3 => 'sia',
         4 => '2_year_warranty',
         5 => 'cost_consequences',
+    ];
+
+    const ActionFix = 1;
+    const ActionLeave = 2;
+    const ActionWait = 3;
+
+    const Action = [
+        self::ActionFix => 'fix',
+        self::ActionLeave => 'leave',
+        self::ActionWait => 'wait',
     ];
 
     const LocationHouseEntrance = 1;
@@ -443,6 +453,7 @@ class Request extends AuditableModel implements HasMedia
     const QualificationAttr = 'qualification';
     const CapturePhaseAttr = 'capture_phase';
     const ComponentAttr = 'component';
+    const ActionAttr = 'action';
 
     const SubCategories = 'sub_categories';
     const Attributes = 'attributes';
@@ -459,11 +470,13 @@ class Request extends AuditableModel implements HasMedia
     const SubCategoryAttributes = [
         self::SubCategorySurrounding => [
             self::QualificationAttr,
+            self::ActionAttr,
 	        self::CapturePhaseAttr,
 	        self::ComponentAttr,
         ],
         self::SubCategoryRealEstate => [
             self::QualificationAttr,
+            self::ActionAttr,
 	        self::CapturePhaseAttr,
 	        self::LocationAttr,
             self::ComponentAttr,
@@ -471,6 +484,7 @@ class Request extends AuditableModel implements HasMedia
         ],
         self::SubCategoryFlat => [
 	        self::QualificationAttr,
+            self::ActionAttr,
 	        self::CapturePhaseAttr,
             self::RoomAttr,
             self::ComponentAttr,
@@ -509,6 +523,7 @@ class Request extends AuditableModel implements HasMedia
         'due_date',
         'solved_date',
         'qualification',
+        'action',
         'visibility',
         'request_format',
         'room',
@@ -522,7 +537,7 @@ class Request extends AuditableModel implements HasMedia
         'is_public',
         'notify_email',
         'percentage',
-        'amount'
+        'amount',
     ];
 
     public $fillable = self::Fillable;
@@ -553,6 +568,7 @@ class Request extends AuditableModel implements HasMedia
         'due_date' => 'date',
         'solved_date' => 'datetime',
         'qualification' => 'integer',
+        'action' => 'integer',
         'visibility' => 'integer',
         'sent_reminder_user_ids' => 'array',
         'request_format' => 'string',

@@ -28,6 +28,7 @@ class RequestTransformer extends BaseTransformer
             //'priority' => $model->priority,
             //'internal_priority' => $model->internal_priority,
             'qualification' => $model->qualification,
+            'action' => $model->action,
             'is_public' => $model->is_public,
             'notify_email' => $model->notify_email,
             'room' => $model->room,
