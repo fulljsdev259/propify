@@ -55,7 +55,7 @@
                     </el-input>
                     <div class="dropdown-container" v-if="items.length">
                         <div
-                            :key="`${name}${item.name}${item.id}selected`"
+                            :key="`${name}${item.name}${item.id}${index}selected`"
                             class="dropdown-item" 
                             :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
                             @click="selectItem(index)"
@@ -219,7 +219,7 @@
                 this.selectClicked = true;
                 this.items.forEach((item) => {
                     if(item.selected) {
-                        result.push(this.type == 'role'?item.name:item.id);
+                        result.push(item.id);
                     } 
                 });
                 this.$emit('select-changed', result);
@@ -228,9 +228,7 @@
                 let result = str;
                 if(this.type == 'category_id') {
                     result = this.$t(`models.request.category_list.${str}`);
-                } else if(this.type == 'role') {
-                    result = this.$t(`general.roles.${str}`)
-                }
+                } 
                 return result;
             },
             initFilter() {
