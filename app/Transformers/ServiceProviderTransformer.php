@@ -48,8 +48,10 @@ class ServiceProviderTransformer extends BaseTransformer
             if (key_exists($attribute, $attributes)) {
                 $response[$attribute] = $attributes[$attribute];
             }
-
         }
+        
+        $withCount = $model->getStatusRelationCounts();
+        $response = array_merge($response, $withCount);
 
         if ($model->relationExists('user')) {
             $response['user'] = (new UserTransformer)->transform($model->user);

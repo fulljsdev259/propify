@@ -131,7 +131,8 @@ class ServiceProviderAPIController extends AppBaseController
             'quarters:quarters.id,internal_quarter_id'
         ]);
 
-        $this->serviceProviderRepository->withCount('requests')->scope('allRequestStatusCount');
+        $this->serviceProviderRepository->withCount('requests')
+            ->scope('allRequestStatusCount');
         $serviceProviders = $this->serviceProviderRepository->paginate($perPage);
 
         if ($request->show_category_name) {
