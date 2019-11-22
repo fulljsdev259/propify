@@ -3,7 +3,9 @@
 namespace App\Transformers;
 
 use App\Models\Building;
+use App\Models\Relation;
 use App\Models\Resident;
+use App\Models\Unit;
 
 /**
  * Class BuildingTransformer.
@@ -52,26 +54,20 @@ class BuildingTransformer extends BaseTransformer
 
         $response = $this->includeRelationIfExists($model, $response, [
             'address' => AddressTransformer::class,
-            'service_providers' => ServiceProviderTransformer::class,
+//            'service_providers' => ServiceProviderTransformer::class,
             'media' => MediaTransformer::class,
-            'units' => UnitTransformer::class,
         ]);
 
-        $relationsStatusAttributes = [
-            'active_relations_count',
-            'inactive_relations_count',
-            'canceled_relations_count',
-            'relations_count'
-        ];
-        if (!empty($response['units'][0]) && array_keys_exists($relationsStatusAttributes, $response['units'][0])) {
-            $units = collect($response['units']);
-            foreach ($relationsStatusAttributes as $statusAttribute) {
-                $response[$statusAttribute] = $units->sum($relationsStatusAttributes);
-            }
+        if ($model->relationExists('units')) {
+            $response['units'] = (new UnitTransformer())->transformCollectionBy($model->units, 'transformForIndex');
+            $statusCounts = $this->getUnitsStatus($response);
+            $response = array_merge($response, $statusCounts);
         }
 
+        $response['users'] = [];
         if ($model->relationExists('quarter')) {
             $response['quarter'] = (new QuarterTransformer)->transform($model->quarter);
+            $response['users'] = $response['quarter']['users'] ?? [];
             $response[ 'internal_quarter_id'] = $model->quarter->internal_quarter_id;
         } else  {
             $model->load('quarter:id,internal_quarter_id');
@@ -79,26 +75,26 @@ class BuildingTransformer extends BaseTransformer
         }
 
         // @TODO $assignedUsers login
-        $assignedUsers = $model->newCollection();
-        if ($model->relationExists('propertyManagers')) {
-            $assignedUsers = $assignedUsers->merge($model->propertyManagers->pluck('user'));
-            $response['managers'] = (new PropertyManagerSimpleTransformer)->transformCollection($model->propertyManagers);
-            
-            if ($model->property_managers_count > 2) {
-                $response['property_managers_count'] = $model->property_managers_count - 2;
-            }
-        }
+//        $assignedUsers = $model->newCollection();
+//        if ($model->relationExists('propertyManagers')) {
+//            $assignedUsers = $assignedUsers->merge($model->propertyManagers->pluck('user'));
+//            $response['managers'] = (new PropertyManagerSimpleTransformer)->transformCollection($model->propertyManagers);
+//
+//            if ($model->property_managers_count > 2) {
+//                $response['property_managers_count'] = $model->property_managers_count - 2;
+//            }
+//        }
 
-        if ($model->relationExists('users')) {
-            $assignedUsers = $assignedUsers->merge($model->users);
-            $response['users'] = (new UserTransformer())->transformCollection($model->users);
-        }
+//        if ($model->relationExists('users')) {
+//            $assignedUsers = $assignedUsers->merge($model->users);
+//            $response['users'] = (new UserTransformer())->transformCollection($model->users);
+//        }
 
-        if ($assignedUsers->count()) {
-            $response['assignedUsers'] = (new UserTransformer)->transformCollection($assignedUsers);
-        } else {
-            $response['assignedUsers'] = [];
-        }
+//        if ($assignedUsers->count()) {
+//            $response['assignedUsers'] = (new UserTransformer)->transformCollection($assignedUsers);
+//        } else {
+//            $response['assignedUsers'] = [];
+//        }
 
         // @TODO fix now building is not directly assigned relations
         if ($model->relationExists('relations')) {
@@ -134,4 +130,20 @@ class BuildingTransformer extends BaseTransformer
         return $input;
     }
 
+
+    /**
+     * @param $data
+     * @return array
+     */
+    protected function getUnitsStatus($data)
+    {
+        $unitsCountByStatus = collect($data['units'])->countBy('status');
+        $statusCodes = Relation::StatusColorCode;
+        $response = [];
+        foreach ($statusCodes as $status => $color) {
+            $response[Relation::Status[$status] . '_units_count'] = $unitsCountByStatus[$status] ?? 0;
+        }
+        $response['total_units_count'] = array_sum($response);
+        return $response;
+    }
 }

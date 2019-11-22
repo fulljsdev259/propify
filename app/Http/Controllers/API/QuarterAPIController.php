@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Criteria\Quarter\FilterByCityCriteria;
 use App\Criteria\Quarter\FilterByStateCriteria;
+use App\Criteria\Quarter\FilterByUserRoleCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Quarter\AssignUserRequest;
 use App\Http\Requests\API\Quarter\CreateRequest;
@@ -94,6 +96,8 @@ class QuarterAPIController extends AppBaseController
         $this->quarterRepository->pushCriteria(new RequestCriteria($request));
         $this->quarterRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->quarterRepository->pushCriteria(new FilterByStateCriteria($request));
+        $this->quarterRepository->pushCriteria(new FilterByCityCriteria($request));
+        $this->quarterRepository->pushCriteria(new FilterByUserRoleCriteria($request));
 
         $getAll = $request->get('get_all', false);
         if ($getAll) {
@@ -108,10 +112,10 @@ class QuarterAPIController extends AppBaseController
                     $q->select('id', 'quarter_id')
                         ->with([
                             'units' => function ($q) {
-                                $q ->select('id', 'building_id')
+                                $q ->select('id', 'building_id', 'type')
                                     ->with([
                                         'relations' => function ($q) {
-                                             $q->where('status', Relation::StatusActive)->select('unit_id', 'resident_id');
+                                             $q->select('unit_id', 'resident_id', 'status');
                                         }
                                     ]);
                                 },
@@ -119,13 +123,17 @@ class QuarterAPIController extends AppBaseController
                             ]);
                 },
                 'media',
-                'address:id,city'
-            ])->withCount([
-                'units as count_of_apartments_units' => function ($q) {
-                    $q->where('type', Unit::TypeApartment);
+                'address:id,city',
+                'units' => function ($q) {
+                    $q->select('id', 'quarter_id', 'type')->with('relations:start_date,status,unit_id');
                 },
+                'relations' => function ($q) {
+                    $q->select('status', 'resident_id', 'quarter_id');
+                },
+                'users' => function ($q) {
+                    $q->select('users.id', 'users.avatar', 'users.name')->with('roles:roles.id,name');
+                }
             ])
-            ->scope('relationsStatusCount')
             ->paginate($perPage);
         $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWithStatistics');
         return $this->sendResponse($response, 'Quarters retrieved successfully');

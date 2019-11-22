@@ -19,6 +19,7 @@ export default (config = {}) => {
                 remoteLoading: false,
                 buildings: [],
                 units: [],
+                new_media: [],
                 user: {
                     avatar_variations: ''
                 },
@@ -136,10 +137,21 @@ export default (config = {}) => {
                 
             },
             editRelation(index) {
-                this.editingRelation = this.model.relations[index];
-                this.editingRelationIndex = index;
-                this.visibleDrawer = true;
-                this.visibleRelationDialog = true;
+                if(this.model.relations[index].garant == 1) {
+                    console.log('garant')
+                    return this.$router.push({
+                        name: 'adminResidentView',
+                        params: {
+                            id: this.model.relations[index].resident_id
+                        }
+                    }).catch(err => {})
+                }
+                else {
+                    this.editingRelation = this.model.relations[index];
+                    this.editingRelationIndex = index;
+                    this.visibleDrawer = true;
+                    this.visibleRelationDialog = true;
+                }
             },
             updateRelation(index, params) {
                 this.$set(this.model.relations, index, params);
@@ -174,6 +186,7 @@ export default (config = {}) => {
                 this.model.media.map(item => {
                     if(!item.url) {
                         console.log(item)
+                        item.id = this.model.id
                         this.uploadMediaFile(item)
                     }
                 })

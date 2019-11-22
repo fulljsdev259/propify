@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Criteria\Building\FilterByRelatedFieldsCriteria;
 use App\Criteria\Common\HasRequestCriteria;
 use App\Criteria\Common\RequestCriteria;
+use App\Criteria\Quarter\FilterByCityCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Building\AssignRequest;
 use App\Http\Requests\API\Building\BatchAssignManagers;
@@ -129,6 +130,7 @@ class BuildingAPIController extends AppBaseController
         $this->buildingRepository->pushCriteria(new RequestCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
         $this->buildingRepository->pushCriteria(new LimitOffsetCriteria($request));
+        $this->buildingRepository->pushCriteria(new FilterByCityCriteria($request));
 
         $hasRequest = $request->get('has_req', false);
         if ($hasRequest) {
@@ -144,26 +146,32 @@ class BuildingAPIController extends AppBaseController
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $buildings = $this->buildingRepository->with([
                 'address.state',
-                'service_providers',
+//                'service_providers',
                 'relations' => function ($q) {
                     $q->with('building.address', 'unit', 'resident.user');
                 },
-                'propertyManagers',
-                'users',
+//                'propertyManagers',
+//                'users',
+                'quarter' => function ($q) {
+                    $q->select('id')->with([
+                        'users' => function ($q) {
+                            $q->whereHas('property_manager')->with('roles');
+                        }
+                    ]);
+                },
                 'units' => function ($q) {
-                    $q->select('id', 'building_id')->relationsStatusCount();
+                    $q->select('id', 'building_id')->with('relations:start_date,status,unit_id');
                 }
             ])->withCount([
                 'units',
-                'propertyManagers',
-                'users',
+//                'propertyManagers',
+//                'users',
                 'units as count_of_apartments_units' => function ($q) {
                     $q->where('type', Unit::TypeApartment);
                 }
             ])
             ->scope('allRequestStatusCount')
             ->paginate($perPage);
-
         $response = (new BuildingTransformer)->transformPaginator($buildings);
         return $this->sendResponse($response, 'Buildings retrieved successfully');
     }
@@ -603,12 +611,12 @@ class BuildingAPIController extends AppBaseController
      */
     public function destroyWithIds(DeleteRequest $request)
     {
-        /** @var Building $building */        
+        /** @var Building $building */
         $buildings = $this->buildingRepository->findWithoutFail($request->get('ids'));
         if (empty($buildings)) {
             return $this->sendError(__('models.building.errors.not_found'));
-        }        
-        
+        }
+
         try {
             foreach($buildings as $building) {
                 $this->buildingRepository->delete($building->id);
@@ -617,11 +625,11 @@ class BuildingAPIController extends AppBaseController
 
             if($request->get('is_requests')) {
                 $this->requestRepository->deleteRequesetWithUnitIds($units->pluck('id'));
-            }            
+            }
 
-            if($request->get('is_units')) {                
-                $this->unitRepository->deleteUnitWithBuilding($buildings->pluck('id'));                
-            }            
+            if($request->get('is_units')) {
+                $this->unitRepository->deleteUnitWithBuilding($buildings->pluck('id'));
+            }
 
             return $this->sendResponse('', __('models.building.deleted'));
 

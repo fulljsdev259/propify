@@ -24,7 +24,7 @@ class ServiceProvidersTableSeeder extends Seeder
         $serviceRole = Role::where('name', 'provider')->first();
         $settings = $this->getSettings();
 
-        $serviceCategories = \App\Models\ServiceProvider::ServiceProviderCategory;
+        $serviceCategories = \App\Models\ServiceProvider::Category;
 
         $providerCount = 200;
         $categoryCount = floor($providerCount / count($serviceCategories));

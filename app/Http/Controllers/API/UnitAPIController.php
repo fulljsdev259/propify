@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Common\WhereCriteria;
+use App\Criteria\Unit\FilterByCityCriteria;
 use App\Criteria\Unit\FilterByRelatedFieldsCriteria;
 use App\Criteria\Unit\FilterByTypeCriteria;
 use App\Http\Controllers\AppBaseController;
@@ -95,10 +96,8 @@ class UnitAPIController extends AppBaseController
         $this->unitRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
         $this->unitRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->unitRepository->pushCriteria(new LimitOffsetCriteria($request));
+        $this->unitRepository->pushCriteria(new FilterByCityCriteria($request));
 
-        if ($request->show_relation_counts) {
-            $this->unitRepository->scope('relationsStatusCount');
-        }
 
         if ($request->group_by_building) {
             $units = $this->unitRepository->with('building.address')->get();
@@ -117,11 +116,6 @@ class UnitAPIController extends AppBaseController
 
         if ($request->group_by_floor) {
             $units = $this->unitRepository->get();
-            if ($request->show_relation_counts) {
-                $units->each(function ($unit) {
-                    $unit->relations_count = $unit->total_relations_count;
-                });
-            }
             $units = $units->sortBy('name')->groupBy('floor')->sortKeys()->toArray();
             if ($request->building_id) {
                 $buildingHasAttic = Building::whereKey($request->building_id)->value('attic');
@@ -137,14 +131,7 @@ class UnitAPIController extends AppBaseController
 
         $getAll = $request->get('get_all', false);
         if ($getAll) {
-
             $units = $this->unitRepository->get();
-            if ($request->show_relation_counts) {
-                $units->each(function ($unit) {
-                    $unit->relations_count = $unit->total_relations_count;
-                });
-            }
-
             return $this->sendResponse($units->toArray(), 'Units retrieved successfully');
         }
 
@@ -160,7 +147,7 @@ class UnitAPIController extends AppBaseController
             ])
             ->scope('allRequestStatusCount')
             ->paginate($perPage);
-        $response = (new UnitTransformer)->transformPaginator($units);
+        $response = (new UnitTransformer)->transformPaginator($units, 'transformForIndex');
         return $this->sendResponse($response, 'Units retrieved successfully');
     }
 

@@ -384,8 +384,8 @@ export default (config = {}) => {
                                     });
                                     this.old_model = this.model;
 
-                                    this.model.service_providers = data.data.service_providers;
-                                    this.serviceCount = this.model.service_providers.length
+                                    //this.model.service_providers = data.data.service_providers;
+                                    //this.serviceCount = this.model.service_providers.length
                                     this.model.service_providers_ids = [];
                                     if(this.$refs.auditList){
                                         this.$refs.auditList.fetch();
@@ -415,7 +415,6 @@ export default (config = {}) => {
 
                         // const {data} = await this.getServicesGroupedByCategory();
                         // this.allServices = data;
-
                         const {
                             address: {
                                 state: {
@@ -426,13 +425,15 @@ export default (config = {}) => {
                            
                             ...restData
                         } = await this.getBuilding({id: this.$route.params.id});
+
                         this.statistics.raw[0].value = restData.active_residents_count + restData.in_active_residents_count;
                         this.statistics.raw[1].value = restData.active_residents_count;
                         this.statistics.raw[2].value = restData.in_active_residents_count;
 
                         this.model = {state_id, ...restAddress, ...restData, service_providers_ids: []};
                         
-                        this.serviceCount = this.model.service_providers.length
+
+                        //this.serviceCount = this.model.service_providers.length
                         this.fileCount = this.model.media.length
                         
                         this.relationCount = this.model.relations.length
@@ -462,6 +463,7 @@ export default (config = {}) => {
                         this.statistics.percentage.occupied_units = occupied_units;
                         this.statistics.percentage.free_units = free_units;
                     } catch (err) {
+                        
                         this.$router.replace({
                             name: 'adminBuildings'
                         });
