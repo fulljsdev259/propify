@@ -218,7 +218,7 @@
                                                     <el-input autocomplete="off" type="email" v-model="model.email"></el-input>
                                                 </el-form-item>
                                             </el-col>
-                                            <el-col :md="12">
+                                            <!-- <el-col :md="12">
                                                 <el-form-item :label="$t('models.resident.status.label')"
                                                             :rules="validationRules.status"
                                                             prop="status">
@@ -231,7 +231,7 @@
                                                         </el-option>
                                                     </el-select>
                                                 </el-form-item>
-                                            </el-col>
+                                            </el-col> -->
                                         </el-row>
                                         <el-row class="last-form-row" :gutter="20">
                                             <el-col :md="12">
