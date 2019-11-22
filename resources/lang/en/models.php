@@ -611,6 +611,11 @@ return [
             'leave' => 'Leave',
             'wait' => 'Wait'
         ],
+        'cost_impact' => [
+            'house_owner' => 'House Owner',
+            'resident' => 'Resident',
+            'shared_costs' => 'Shared Costs'
+        ],
         'location' => [
             'house_entrance' => 'House Entrance',
             'staircase' => 'Staircase',
@@ -650,10 +655,10 @@ return [
         ],
         'status' => [
             'label' => 'Status',
-            'new' => 'Neu',
+            'new' => 'New',
             'in_processing' => 'In processing',
             'done' => 'Done',
-            'warranty_claim' => 'Garantiefall',
+            'warranty_claim' => 'Warranty Claim',
             'archived' => 'Archived',
             'solved' => 'Solved',
             'pending' => 'Pending'

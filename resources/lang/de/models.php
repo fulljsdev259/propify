@@ -613,6 +613,11 @@ return [
             'leave' => 'Urlaub',
             'wait' => 'Warten'
         ],
+        'cost_impact' => [
+            'house_owner' => 'Eigentümer',
+            'resident' => 'Bewohner',
+            'shared_costs' => 'Geteilte Kosten'
+        ],
         'location' => [
             'house_entrance' => 'Hauseingang',
             'staircase' => 'Treppenhaus',
