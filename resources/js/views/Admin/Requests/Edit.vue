@@ -141,7 +141,7 @@
                                 </el-col> -->
                                 <el-col :md="12"
                                         v-if="this.showAction == true">
-                                    <el-form-item :label="$t('models.request.qualification.label')"
+                                    <el-form-item :label="$t('models.request.action.label')"
                                                   prop="action">
                                         <el-select :disabled="$can($permissions.update.serviceRequest)"
                                                    :placeholder="$t('models.request.placeholders.action')"
