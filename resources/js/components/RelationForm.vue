@@ -450,9 +450,13 @@
         <ui-divider style="margin-top: 16px;"></ui-divider>
         <div class="relation-form-actions">
             <div class="button-group">
-                <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" round>{{ edit_index == undefined ? $t('general.actions.add') : $t('general.actions.edit')}}</el-button>
-                <el-button type="primary" v-else @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
-                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-relation', edit_index)" icon="ti-trash" round>{{$t('general.actions.delete')}}</el-button>
+                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-relation', edit_index)" icon="ti-trash" class="btn-delete" round>
+                    {{$t('general.actions.delete')}}
+                </el-button>
+                <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" class="btn-save" round>
+                    {{ edit_index == undefined ? $t('general.actions.add') : $t('general.actions.edit')}}
+                </el-button>
+                <el-button type="primary" v-else @click="submit" icon="ti-save" class="btn-save" round>{{$t('general.actions.save')}}</el-button>
             </div>
         </div>
         
@@ -1225,6 +1229,23 @@ c
             background-color: #f6f5f7 !important;
             padding: 0 2.5px;
             height: 100%;
+        }
+    }
+
+    .btn-save {
+        background-color: #878810;
+        border: none;
+        &:hover {
+            color: var(--color-white);
+            box-shadow: 0 0 5px #878810;
+        }
+    }
+    .btn-delete {
+        background-color: #848484;
+        border: none;
+        &:hover {
+            color: var(--color-white);
+            box-shadow: 0 0 5px #848484 ;
         }
     }
 </style>
