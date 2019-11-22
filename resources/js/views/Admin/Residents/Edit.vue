@@ -811,6 +811,7 @@
 
         .el-dialog__body {
             padding-top: 0;
+            padding-bottom: 20px;
         }
 
         .el-dialog__footer {

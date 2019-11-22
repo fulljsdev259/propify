@@ -447,16 +447,16 @@
             </el-col> -->
         </el-row>
         </template>
-        <ui-divider style="margin-top: 16px;"></ui-divider>
+        <!-- <ui-divider style="margin-top: 16px;"></ui-divider> -->
         <div class="relation-form-actions">
             <div class="button-group">
-                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-relation', edit_index)" icon="ti-trash" class="btn-delete" round>
+                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-relation', edit_index)" icon="ti-trash" class="btn-delete" >
                     {{$t('general.actions.delete')}}
                 </el-button>
-                <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" class="btn-save" round>
+                <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" class="btn-save" >
                     {{ edit_index == undefined ? $t('general.actions.add') : $t('general.actions.edit')}}
                 </el-button>
-                <el-button type="primary" v-else @click="submit" icon="ti-save" class="btn-save" round>{{$t('general.actions.save')}}</el-button>
+                <el-button type="primary" v-else @click="submit" icon="ti-save" class="btn-save" >{{$t('general.actions.save')}}</el-button>
             </div>
         </div>
         
@@ -1167,23 +1167,29 @@ c
     /deep/ .relation-form-actions {
         // position: absolute;
         //width: 100%;
+        margin-top: 30px;
         margin-left: 10px;
         margin-right: 10px;
         display: flex;
         flex-direction: column;
-        flex-grow: 1;
+        //flex-grow: 1;
         justify-content: flex-end;
 
-        button {
-            width: 100%;
-            i {
-                padding-right: 5px;
-            }
-        }
 
         .button-group {
             display: flex;
+            justify-content: flex-end;
+
+            button {
+                //width: 100%;
+                i {
+                    padding-right: 5px;
+                }
+            }
         }
+        
+
+        
     }
 
     /deep/ .relation-file-table {
