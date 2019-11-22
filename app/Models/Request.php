@@ -354,6 +354,16 @@ class Request extends AuditableModel implements HasMedia
         self::ActionWait => 'wait',
     ];
 
+    const CostImpactHouseOwner = 1;
+    const CostImpactResident = 2;
+    const CostImpactSharedCosts = 3;
+
+    const CostImpact = [
+        self::CostImpactHouseOwner => 'house_owner',
+        self::CostImpactResident => 'resident',
+        self::CostImpactSharedCosts => 'shared_costs'
+    ];
+
     const LocationHouseEntrance = 1;
     const LocationStaircase = 2;
     const LocationElevator = 3;
@@ -454,6 +464,7 @@ class Request extends AuditableModel implements HasMedia
     const CapturePhaseAttr = 'capture_phase';
     const ComponentAttr = 'component';
     const ActionAttr = 'action';
+    const CostImpactAttr = 'cost_impact';
 
     const SubCategories = 'sub_categories';
     const Attributes = 'attributes';
@@ -470,12 +481,14 @@ class Request extends AuditableModel implements HasMedia
     const SubCategoryAttributes = [
         self::SubCategorySurrounding => [
             self::QualificationAttr,
+            self::CostImpactAttr,
             self::ActionAttr,
 	        self::CapturePhaseAttr,
 	        self::ComponentAttr,
         ],
         self::SubCategoryRealEstate => [
             self::QualificationAttr,
+            self::CostImpactAttr,
             self::ActionAttr,
 	        self::CapturePhaseAttr,
 	        self::LocationAttr,
@@ -484,6 +497,7 @@ class Request extends AuditableModel implements HasMedia
         ],
         self::SubCategoryFlat => [
 	        self::QualificationAttr,
+	        self::CostImpactAttr,
             self::ActionAttr,
 	        self::CapturePhaseAttr,
             self::RoomAttr,
@@ -537,7 +551,7 @@ class Request extends AuditableModel implements HasMedia
         'is_public',
         'notify_email',
         'percentage',
-        'amount',
+        'cost_impact',
     ];
 
     public $fillable = self::Fillable;
@@ -583,7 +597,7 @@ class Request extends AuditableModel implements HasMedia
         'is_public' => 'boolean',
         'notify_email' => 'boolean',
         'percentage' => 'float',
-        'amount' => 'float',
+        'cost_impact' => 'integer',
     ];
 
 
@@ -796,9 +810,9 @@ class Request extends AuditableModel implements HasMedia
         return $this->where('status', Request::StatusInProcessing);
     }
 
-    public function requestsAssigned()
+    public function requestsPending()
     {
-        return $this->where('status', Request::StatusAssigned);
+        return $this->where('status', Request::StatusPending);
     }
 
     public function requestsDone()
@@ -806,9 +820,9 @@ class Request extends AuditableModel implements HasMedia
         return $this->where('status', Request::StatusDone);
     }
 
-    public function requestsReactivated()
+    public function requestsWarrantyClaim()
     {
-        return $this->where('status', Request::StatusReactivated);
+        return $this->where('status', Request::StatusWarrantyClaim);
     }
 
     public function requestsArchived()

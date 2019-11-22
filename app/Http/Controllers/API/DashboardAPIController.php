@@ -732,9 +732,9 @@ class DashboardAPIController extends AppBaseController
                 'requestsCount' => $this->thousandsFormat($serviceReq->count()),
                 'requestsReceivedCount' => $this->thousandsFormat($serviceReq->requestsReceived()->count()),
                 'requestsInProcessingCount' => $this->thousandsFormat($serviceReq->requestsInProcessing()->count()),
-                'requestsAssignedCount' => $this->thousandsFormat($serviceReq->requestsAssigned()->count()),
+                'requestsPendingCount' => $this->thousandsFormat($serviceReq->requestsPending()->count()),
                 'requestsDoneCount' => $this->thousandsFormat($serviceReq->requestsDone()->count()),
-                'requestsReactivatedCount' => $this->thousandsFormat($serviceReq->requestsReactivated()->count()),
+                'requestsWarrantyClaimCount' => $this->thousandsFormat($serviceReq->requestsWarrantyClaim()->count()),
                 'requestsArchivedCount' => $this->thousandsFormat($serviceReq->requestsArchived()->count()),
             ];
 
