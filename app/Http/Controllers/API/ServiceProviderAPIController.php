@@ -127,7 +127,8 @@ class ServiceProviderAPIController extends AppBaseController
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $this->serviceProviderRepository->with([
-            'user', 'address:id,country_id,state_id,city,street,zip'
+            'user', 'address:id,country_id,state_id,city,street,zip',
+            'quarters:quarters.id,internal_quarter_id'
         ]);
 
         $this->serviceProviderRepository->withCount('requests')->scope('allRequestStatusCount');
@@ -138,8 +139,9 @@ class ServiceProviderAPIController extends AppBaseController
                 $provider->setAppends(['category_name_en', 'category_name_de', 'category_name_fr', 'category_name_it']);
             }
         }
+        $response = (new ServiceProviderTransformer)->transformPaginator($serviceProviders);
 
-        return $this->sendResponse($serviceProviders->toArray(), 'Service Providers retrieved successfully');
+        return $this->sendResponse($response, 'Service Providers retrieved successfully');
     }
 
     /**

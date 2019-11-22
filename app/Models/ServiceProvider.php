@@ -256,11 +256,11 @@ class ServiceProvider extends AuditableModel
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     **/
+     * @return mixed
+     */
     public function quarters()
     {
-        return $this->belongsToMany(Quarter::class, 'quarter_service_provider', 'service_provider_id', 'quarter_id');
+        return $this->morphToMany(Quarter::class, 'assignee', 'quarter_assignees', 'assignee_id', 'quarter_id');
     }
 
     /**

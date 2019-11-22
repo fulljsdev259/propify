@@ -55,6 +55,11 @@ class PropertyManagerTransformer extends BaseTransformer
             $response['quarters'] = (new QuarterTransformer)->transformCollection($model->quarters);
         }
 
+        if ($model->relationExists('quarters')) {
+            $response['quarters'] = (new QuarterTransformer)->transformCollection($model->quarters);
+            $response['internal_quarter_ids'] = collect($response['quarters'])->pluck('internal_quarter_id')->unique()->all();
+        }
+
         return $this->addAuditIdInResponseIfNeed($model, $response);
     }
 
