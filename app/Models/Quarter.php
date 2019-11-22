@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasCategoryMediaTrait;
 use App\Traits\RelationRelation;
+use App\Traits\RequestRelation;
 use App\Traits\UniqueIDFormat;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -111,7 +112,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  */
 class Quarter extends AuditableModel implements HasMedia
 {
-    use SoftDeletes, UniqueIDFormat, HasCategoryMediaTrait, RelationRelation;
+    use SoftDeletes, UniqueIDFormat, HasCategoryMediaTrait, RelationRelation, RequestRelation;
 
     const TypeRent = 1;
     const TypeSell = 2;
@@ -259,6 +260,14 @@ class Quarter extends AuditableModel implements HasMedia
     public function workflows()
     {
         return $this->hasMany(Workflow::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function requests()
+    {
+        return $this->hasManyThrough(Request::class, Relation::class);
     }
 
 }

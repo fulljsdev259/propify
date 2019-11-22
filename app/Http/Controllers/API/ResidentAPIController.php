@@ -148,7 +148,8 @@ class ResidentAPIController extends AppBaseController
             },
             'relations' => function ($q) {
                 $q->with('unit.building.address');
-            }])->paginate($perPage);
+            }])->scope('allRequestStatusCount')
+            ->paginate($perPage);
         $response = (new ResidentTransformer())->transformPaginator($residents);
         return $this->sendResponse($response, 'Residents retrieved successfully');
     }

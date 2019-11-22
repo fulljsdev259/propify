@@ -42,6 +42,9 @@ class ResidentTransformer extends BaseTransformer
             'created_by' => $model->created_by,
         ];
 
+        $withCount = $model->getStatusRelationCounts();
+        $response = array_merge($response, $withCount);
+
         if ($model->relationExists('settings')) {
             $response['settings'] = $model->settings;
         }
