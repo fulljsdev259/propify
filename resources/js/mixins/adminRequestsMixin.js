@@ -116,6 +116,7 @@ export default (config = {}) => {
                 //showQualification: false,
                 showAction: false,
                 showCostImpact: false,
+                showPercent: false,
                 showComponent: false,
                 createTag: false,
                 editTag: false,
@@ -383,7 +384,7 @@ export default (config = {}) => {
                         this.showComponent =  sub_category.component == 1 ? true : false;
                     }
                 }
-
+                this.showPercent = this.showCostImpact && this.model.cost_impact == 3 ? true : false;
             },
             changeSubCategory() {
                 const sub_category = this.sub_categories.find(category => {
@@ -399,8 +400,12 @@ export default (config = {}) => {
                 //this.showQualification = sub_category.qualification == 1 ? true : false;
                 this.showAction = sub_category.action == 1 ? true : false;
                 this.showCostImpact = sub_category.cost_impact == 1 ? true : false;
+                this.showPercent = this.showCostImpact && this.model.cost_impact == 3 ? true : false;
                 this.showCapturePhase = sub_category.capture_phase == 1 ? true : false;
                 this.showComponent = sub_category.component == 1 ? true : false;
+            },
+            changeCostImpact() {
+                this.showPercent = this.showCostImpact && this.model.cost_impact == 3 ? true : false;
             },
             // changeQualification() {
             //     this.showPayer = this.model.qualification == 5 ? true : false;
@@ -686,7 +691,7 @@ export default (config = {}) => {
                         this.showRoom = resp.data.sub_category && resp.data.sub_category.room == 1 ? true : false;
                         this.showAction =  resp.data.category.action == 1 || (resp.data.sub_category && resp.data.sub_category.action == 1) ? true : false;
                         this.showCostImpact =  resp.data.category.cost_impact == 1 || (resp.data.sub_category && resp.data.sub_category.cost_impact == 1) ? true : false;
-
+                        this.showPercent = this.showCostImpact && resp.data.category.cost_impact == 3 ? true : false;
                         //this.showQualification =  resp.data.category.qualification == 1 || (resp.data.sub_category && resp.data.sub_category.qualification == 1) ? true : false;
                         //this.showPayer = resp.data.qualification == 5 ? true : false;
                         this.showCapturePhase =  resp.data.category.capture_phase == 1 || (resp.data.sub_category && resp.data.sub_category.capture_phase == 1) ? true : false;

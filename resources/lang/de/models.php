@@ -683,7 +683,7 @@ return [
             'range' => 'Bereich',
             'component' => 'Bauteil',
             'capture_phase' => 'Erfassungsphase',
-            'payer_percent' => 'Anteil Fortimo',
+            'payer_percent' => 'Bewohneranteil in %',
             'payer_amount' => 'Betrag',
             'keywords' => 'Tags',
         ],
