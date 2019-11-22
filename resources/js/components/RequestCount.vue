@@ -5,7 +5,6 @@
                 :content="`${$t(count.label)}: ${countsData[count.prop]}`"
                 class="item"
                 effect="light" placement="top"
-                v-if="countsData[count.prop]"
             >
                 <avatar 
                     :background-color="count.background"
@@ -28,11 +27,6 @@
             return {
                 counts: [
                 {
-                    prop: 'requests_count',
-                    background: '#aaa',
-                    color: '#fff',
-                    label: 'dashboard.requests.total_request'
-                }, {
                     prop: 'requests_received_count',
                     background: '#bbb',
                     color: '#fff',
@@ -102,8 +96,7 @@
 
             & > div {
                 position: relative;
-                margin-right: 0px;
-                border: 1px solid #fff;
+                margin-right: 2px;
                 cursor: pointer;
 
                 &:hover {

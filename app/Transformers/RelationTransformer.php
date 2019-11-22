@@ -34,6 +34,7 @@ class RelationTransformer extends BaseTransformer
             'monthly_rent_gross' => $model->monthly_rent_gross,
             'monthly_maintenance' => $model->monthly_maintenance,
         ];
+        $response['garant'] = 0;
 
         if (! is_null($model->requests_count)) {
             $response['requests_count'] = $model->requests_count;

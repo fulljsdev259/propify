@@ -21,6 +21,7 @@ use App\Models\Audit;
 use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\Relation;
+use App\Models\ServiceProvider;
 use App\Models\Settings;
 use App\Models\User;
 use App\Repositories\UserRepository;
@@ -95,7 +96,24 @@ class UserAPIController extends AppBaseController
                 $this->userRepository->with('roles');
             }
             $users = $this->userRepository->get();
-            return $this->sendResponse($users->toArray(), 'Users retrieved successfully');
+            if ($request->function) {
+                $serviceProviders = ServiceProvider::whereIn('user_id', $users->pluck('id'))->get(['id', 'category', 'user_id']);
+                $response = [];
+                foreach ($users as $user) {
+                    $singleData = $user->toArray();
+                    $serviceProvider = $serviceProviders->where('user_id', $user->id)->first();
+                    if ($serviceProvider) {
+                        $category = ServiceProvider::Category[$serviceProvider->category] ?? '';
+                        $singleData['function'] = $category;
+                    } else {
+                        $singleData['function'] =  $user->roles->first()->name ?? 'unknown role'; //unknown role must be not happen
+                    }
+                    $response[] = $singleData;
+                }
+            } else {
+                $response = $users->toArray();
+            }
+            return $this->sendResponse($response, 'Users retrieved successfully');
         }
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));

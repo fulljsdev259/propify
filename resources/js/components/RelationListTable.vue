@@ -92,7 +92,8 @@
                         :content="$t('models.resident.relation.status.' + constants.relations.status[scope.row.status])"
                         class="item" effect="light" 
                         placement="top-end">
-                        <i class="icon-circle" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]"></i>
+                        <span class="status-icon" :style="{ background: constants.relations.status_colorcode[scope.row.status], border: '2px solid ' + LightenDarkenColor(constants.relations.status_colorcode[scope.row.status], 200) }" >&nbsp;</span>
+                        <!-- <i class="icon-circle" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]"></i> -->
                      </el-tooltip>
                     <!-- {{ constants.relations.status[scope.row.status] ? $t('models.resident.relation.status.' + constants.relations.status[scope.row.status]) : ''}} -->
                 </template>
@@ -198,10 +199,42 @@
                 }
                 this.$emit('edit-relation', i)
             },
+            LightenDarkenColor(col, amt) {
+  
+                var usePound = false;
+            
+                if (col[0] == "#") {
+                    col = col.slice(1);
+                    usePound = true;
+                }
+            
+                var num = parseInt(col,16);
+            
+                var r = (num >> 16) + amt;
+            
+                if (r > 255) r = 255;
+                else if  (r < 0) r = 0;
+            
+                var b = ((num >> 8) & 0x00FF) + amt;
+            
+                if (b > 255) b = 255;
+                else if  (b < 0) b = 0;
+            
+                var g = (num & 0x0000FF) + amt;
+            
+                if (g > 255) g = 255;
+                else if (g < 0) g = 0;
+            
+                return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+            
+            }
         },
         mounted() {
             this.totalLength = this.items.length
             this.showLength = this.totalLength < 5 ? this.totalLength : 5
+        },
+        created() {
+            document.documentElement.style.setProperty('--active-color', this.constants.relations.status_colorcode[1])
         },
         watch: {
             items () {
@@ -220,17 +253,31 @@
             cursor: pointer;
             width: 100%;
         }
+
+        .status-icon {
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            display: block;
+        }
+
         .icon-active {
             color: #6b0036;
-            text-shadow: 0px 0px 2px;
+            background: #6b0036;
+            border: 3px solid #f5c3dc;
+            border-radius: 50%;
         }
         .icon-inactive {
             color: #878810;
-            text-shadow: 0px 0px 2px;
+            background: #878810;
+            border: 3px solid #f4f5bc;
+            border-radius: 50%;
         }
         .icon-canceled {
             color: #c8a331;
-            text-shadow: 0px 0px 2px;
+            background: #c8a331;
+            border: 3px solid #f8edcd;
+            border-radius: 50%;
         }
     }
 </style>

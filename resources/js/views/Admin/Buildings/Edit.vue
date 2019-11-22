@@ -33,7 +33,7 @@
                         <el-form :model="model" label-position="top" label-width="192px" ref="form" class="edit-details-form">
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.building.internal_building_id')"
+                                    <el-form-item :label="$t('models.building.building_number')"
                                                   :rules="validationRules.internal_building_id"
                                                   prop="internal_building_id" style="max-width: 512px;">
                                         <el-input type="text" v-model="model.internal_building_id" :disabled="!editMode"></el-input>
@@ -355,7 +355,7 @@
                         /> -->
                     <!-- </el-tab-pane> -->
                     
-                    <el-tab-pane name="assignees">                        
+                    <!--<el-tab-pane name="assignees">
                         <span slot="label">
                             <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
                         </span>
@@ -383,7 +383,7 @@
                                             v-for="assignee in toAssignList"/>
                                 </el-select>
                             </el-col>
-                            <!-- <el-col>
+                             <el-col>
                                 <el-select
                                         :placeholder="$t('general.placeholders.select')"
                                         style="display: block"
@@ -397,7 +397,7 @@
                                             v-for="type in assignment_types">
                                     </el-option>
                                 </el-select>
-                            </el-col> -->
+                            </el-col>
                             <el-col id="managerAssignBtn">
                                 <el-button :disabled="!toAssign || !userAssignmentType || userAssignmentType.length == 0" @click="assignUser" class="full-button"
                                             icon="ti-save" type="primary">
@@ -414,7 +414,7 @@
                             ref="assigneesList"
                             v-if="model.id"
                         />
-                    </el-tab-pane>
+                    </el-tab-pane>-->
                 </el-tabs>
                 
                 <el-tabs type="border-card" v-model="activeRequestTab">

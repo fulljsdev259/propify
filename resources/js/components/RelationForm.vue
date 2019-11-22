@@ -33,7 +33,8 @@
                                 :key="key"
                                 :label="$t('models.resident.type.' + value )"
                                 :value="+key"
-                                v-for="(value, key) in $constants.residents.type">
+                                v-for="(value, key) in $constants.residents.type"
+                                v-if="key != 3">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -57,9 +58,11 @@
                                 v-for="quarter in quarters"/>
                     </el-select> -->
                     <multi-select
-                        :filter="quarterFilter"
-                        :selectedOptions="[model.quarter_id]"
+                        :type="quarterFilter.key"
+                        :name="quarterFilter.name"
+                        :data="quarterFilter.data"
                         :maxSelect="1"
+                        :selectedOptions="[model.quarter_id]"
                         @select-changed="handleSelectChange($event, 'quarter')"
                     >
                     </multi-select>
@@ -105,7 +108,6 @@
                             :label="$t('models.resident.unit.name')"
                             prop="unit_id" 
                             class="label-block">
-
                     <el-select :placeholder="$t('models.resident.search_unit')" 
                             style="display: block"
                             v-model="model.unit_id"
@@ -379,9 +381,9 @@
                 </el-form-item>
             </el-col>
         </el-row> -->
-        <ui-divider v-if="model.unit_id" content-position="left">
+        <!-- <ui-divider v-if="model.unit_id" content-position="left">
             {{ $t('models.resident.relation.relation_pdf') }}
-        </ui-divider>
+        </ui-divider> -->
         <el-row :gutter="20"  v-if="model.unit_id">
             <el-col :md="24">
                 <el-form-item>
@@ -415,13 +417,13 @@
                     </el-table-column>
                 </el-table>
 
-                <el-alert
+                <!-- <el-alert
                     :title="$t('models.resident.relation.pdf_only_desc')"
                     type="info"
                     show-icon
                     :closable="false"
                 >
-                </el-alert>
+                </el-alert> -->
 
                 <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".pdf" drag multiple/>
                 
@@ -445,12 +447,16 @@
             </el-col> -->
         </el-row>
         </template>
-        <ui-divider style="margin-top: 16px;"></ui-divider>
+        <!-- <ui-divider style="margin-top: 16px;"></ui-divider> -->
         <div class="relation-form-actions">
             <div class="button-group">
-                <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" round>{{ edit_index == undefined ? $t('general.actions.add') : $t('general.actions.edit')}}</el-button>
-                <el-button type="primary" v-else @click="submit" icon="ti-save" round>{{$t('general.actions.save')}}</el-button>
-                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-relation', edit_index)" icon="ti-trash" round>{{$t('general.actions.delete')}}</el-button>
+                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-relation', edit_index)" icon="ti-trash" class="btn-delete" >
+                    {{$t('general.actions.delete')}}
+                </el-button>
+                <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" class="btn-save" >
+                    {{ edit_index == undefined ? $t('general.actions.add') : $t('general.actions.edit')}}
+                </el-button>
+                <el-button type="primary" v-else @click="submit" icon="ti-save" class="btn-save" >{{$t('general.actions.save')}}</el-button>
             </div>
         </div>
         
@@ -547,7 +553,7 @@
                     status: '',
                     deposit_status: 1,
                     monthly_rent_gross: 0,
-                    unit_id: null,
+                    unit_id: (this.mode == 'add' ? [] : ''),
                     building_id: '',
                     quarter_id: '',
                     media: [],
@@ -756,7 +762,6 @@
                 if(filter == 'unit') {
                     this.model.unit_ids = val
                 } else if(filter == 'quarter') {
-                    console.log('val', val)
                     if(val.length == 1) {
                         this.model.quarter_id = val[0]
                         this.searchRelationUnits(false)
@@ -945,10 +950,11 @@
         },
         async created () {
 
-            console.log('data', this.data)
             this.loading = true;
 
             this.quarters = await this.fetchRemoteQuarters();
+
+            //this.$refs.form.clearValidate('unit_id')
 
             let parent_obj = this
             this.deposit_types = Object.entries(this.$constants.relations.deposit_type).map(([value, label]) => ({value: +value, name: this.$t(`models.resident.relation.deposit_types.${label}`)}))
@@ -973,7 +979,6 @@
 
                 this.residents = this.model.residents
                 this.model.residents.forEach(t => t.name = `${t.first_name} ${t.last_name}`);
-                console.log('residents', this.model.residents)
                 if(!this.model.media)
                     this.model.media = []
 
@@ -1014,7 +1019,7 @@
                     if(this.model.quarter) {
                         //this.quarters.push(this.model.quarter)
                         //await this.remoteRelationSearchQuarters(this.model.quarter.name)
-                        await this.searchRelationUnits(true)
+                        //await this.searchRelationUnits(true)
                     }
                 }
 
@@ -1023,7 +1028,6 @@
             if(this.model.unit_id == null)
                 this.model.unit_id = []
 
-            console.log('model', this.model)
             this.loading = false;
         },
         mounted() {
@@ -1042,6 +1046,9 @@ c
         
     /deep/ .ui-divider {
         margin: 32px 16px 16px 0;
+        margin-left: 10px;
+        margin-right: 10px;
+        width: inherit;
         
         i {
             padding-right: 0;
@@ -1152,27 +1159,90 @@ c
 
     /deep/ .relation-form-actions {
         // position: absolute;
-        width: 100%;
+        //width: 100%;
+        margin-top: 30px;
+        margin-left: 10px;
+        margin-right: 10px;
         display: flex;
         flex-direction: column;
-        flex-grow: 1;
+        //flex-grow: 1;
         justify-content: flex-end;
 
-        button {
-            width: 100%;
-            i {
-                padding-right: 5px;
-            }
-        }
 
         .button-group {
             display: flex;
+            justify-content: flex-end;
+
+            button {
+                //width: 100%;
+                i {
+                    padding-right: 5px;
+                }
+            }
         }
+        
     }
 
     /deep/ .relation-file-table {
         margin-bottom: 10px;
     }
 
-    
+    /deep/ .el-tag {
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 6px;
+        font-size: 12px;
+        
+        margin: 0;
+        padding: 0;
+        padding-left: 10px;
+        padding-right: 20px;
+        height: 35px;
+        line-height: 35px;
+
+        i {
+            color: white;
+            background: transparent;
+            font-size: 17px;
+            font-weight: 600;
+        }
+    }
+
+    /deep/ .el-tag.el-tag--info .el-tag__close {
+        color: white;
+        background: transparent;
+    }
+
+    /deep/ .el-dropdown .el-button span.el-tag i.el-tag__close {
+        right: 0;
+        line-height: 1.4;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--color-white);
+    }
+
+    /deep/ .el-dropdown {
+        .el-button.selected-button {
+            background-color: #f6f5f7 !important;
+            padding: 0 2.5px;
+            height: 100%;
+        }
+    }
+
+    .btn-save {
+        background-color: #878810;
+        border: none;
+        &:hover {
+            color: var(--color-white);
+            box-shadow: 0 0 5px #878810;
+        }
+    }
+    .btn-delete {
+        background-color: #848484;
+        border: none;
+        &:hover {
+            color: var(--color-white);
+            box-shadow: 0 0 5px #848484 ;
+        }
+    }
 </style>

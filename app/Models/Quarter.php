@@ -132,6 +132,7 @@ class Quarter extends AuditableModel implements HasMedia
     const AssignmentTypeCaretaker = 3;
     const AssignmentTypeAdministration = 4;
 
+    // @TODO delete
     const AssignmentType = [
         self::AssignmentTypeFortimoEmployees => 'fortimo_employees',
         self::AssignmentTypeManagement => 'management',
@@ -205,11 +206,11 @@ class Quarter extends AuditableModel implements HasMedia
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {
-        return $this->morphedByMany(User::class, 'assignee', 'quarter_assignees', 'quarter_id');
+        return $this->belongsToMany(User::class, 'quarter_assignees');
     }
 
     /**

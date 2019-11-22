@@ -42,8 +42,23 @@ use Illuminate\Notifications\Notifiable;
  *          type="string"
  *      ),
  *      @SWG\Property(
- *          property="name",
- *          description="name",
+ *          property="title",
+ *          description="title",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="fisrt_name",
+ *          description="fisrt_name",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="last_name",
+ *          description="last_name",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="company_name",
+ *          description="company_name",
  *          type="string"
  *      ),
  *      @SWG\Property(
@@ -128,26 +143,35 @@ class ServiceProvider extends AuditableModel
 
     public $table = 'service_providers';
 
-    const ServiceProviderCategoryElectrician = 1;
-    const ServiceProviderCategoryHeatingCompany = 2;
-    const ServiceProviderCategoryLift = 3;
-    const ServiceProviderCategorySanitary = 4;
-    const ServiceProviderCategoryKeyService = 5;
-    const ServiceProviderCategoryCaretaker = 6;
-    const ServiceProviderCategoryRealEstateService = 7;
-    const ServiceProviderCategoryBusinessPerson = 8;
-    const ServiceProviderCategoryTuGu = 9;
+    const TitleMr = 'mr';
+    const TitleMrs = 'mrs';
+    const Title = [
+        self::TitleMr,
+        self::TitleMrs,
+    ];
 
-    const ServiceProviderCategory = [
-        self::ServiceProviderCategoryElectrician => 'electrician',
-        self::ServiceProviderCategoryHeatingCompany => 'heating_company',
-        self::ServiceProviderCategoryLift => 'lift',
-        self::ServiceProviderCategorySanitary => 'sanitary',
-        self::ServiceProviderCategoryKeyService => 'key_service',
-        self::ServiceProviderCategoryCaretaker => 'caretaker',
-        self::ServiceProviderCategoryRealEstateService => 'real_estate_service',
-        self::ServiceProviderCategoryBusinessPerson => 'business_person',
-        self::ServiceProviderCategoryTuGu => 'tu-gu',
+    const CategoryElectrician = 1;
+    const CategoryHeatingCompany = 2;
+    const CategoryLift = 3;
+    const CategorySanitary = 4;
+    const CategoryKeyService = 5;
+    const CategoryCaretaker = 6;
+    const CategoryRealEstateService = 7;
+    const CategoryTuGu = 8;
+    const CategoryArchitect = 9;
+    const ServiceProviderExternalRealEstateCompany = 10;
+
+    const Category = [
+        self::CategoryElectrician => 'electrician',
+        self::CategoryHeatingCompany => 'heating_company',
+        self::CategoryLift => 'lift',
+        self::CategorySanitary => 'sanitary',
+        self::CategoryKeyService => 'key_service',
+        self::CategoryCaretaker => 'caretaker',
+        self::CategoryRealEstateService => 'real_estate_service',
+        self::CategoryTuGu => 'tu-gu',
+        self::CategoryArchitect => 'architect',
+        self::ServiceProviderExternalRealEstateCompany => 'external_real_estate_company'
     ];
 
     const TypeTuGu = 1;
@@ -161,7 +185,10 @@ class ServiceProvider extends AuditableModel
         'user_id',
         'address_id',
         'category',
-        'name',
+        'title',
+        'first_name',
+        'last_name',
+        'company_name',
         'email',
         'phone',
         'type',
@@ -177,7 +204,10 @@ class ServiceProvider extends AuditableModel
         'address_id' => 'integer',
         'category' => 'string',
         'type' => 'integer',
-        'name' => 'string',
+        'title' => 'string',
+        'first_name' => 'string',
+        'last_name' => 'string',
+        'company_name' => 'string',
         'email' => 'string',
         'phone' => 'string',
         'service_provider_format' => 'string',
@@ -244,7 +274,7 @@ class ServiceProvider extends AuditableModel
     // @TODO remove
     public function setCategoryAttribute($value)
     {
-        $this->attributes['category'] = array_flip(ServiceProvider::ServiceProviderCategory)[$value] ?? $value;
+        $this->attributes['category'] = array_flip(ServiceProvider::Category)[$value] ?? $value;
     }
 
     /**
@@ -281,8 +311,8 @@ class ServiceProvider extends AuditableModel
 
     protected function categoryTranslation($lang)
     {
-        if (!empty(ServiceProvider::ServiceProviderCategory[$this->attributes['category']])) {
-            return __('models.service.category.' . ServiceProvider::ServiceProviderCategory[$this->attributes['category']], [], $lang);
+        if (!empty(ServiceProvider::Category[$this->attributes['category']])) {
+            return __('models.service.category.' . ServiceProvider::Category[$this->attributes['category']], [], $lang);
         }
         
         return '';

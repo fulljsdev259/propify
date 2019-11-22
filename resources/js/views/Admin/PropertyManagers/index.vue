@@ -155,8 +155,8 @@
                 toAssignList: '',
                 toAssign: '',
                 remoteLoading: false,
-                quarters: {},
-                buildings:{},
+                quarters: [],
+                buildings:[],
                 isLoadingFilters: false,
             }
         },

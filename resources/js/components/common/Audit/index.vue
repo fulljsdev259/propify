@@ -1,7 +1,8 @@
 <template>
     <div class="audit">
         <el-col class="filter-col" v-if="showFilter">
-            <!-- <el-divider :content-position="filterPosition">
+            <el-divider :content-position="filterPosition">
+                <i class="el-icon-sort" style="float: right"></i>
                 <el-popover
                     popper-class="popover-filter"
                     placement="bottom"
@@ -11,9 +12,7 @@
                         <filters ref="filters" :data="filters.data" :schema="filters.schema" @changed="filtersChanged" @update:data="filterReset" />
                         <el-button size="mini" icon="icon-eraser" @click="filterReset" type="success">{{$t('resident.reset_filters')}}</el-button>
                 </el-popover>
-            </el-divider> -->
-            
-            <i class="el-icon-sort" style="float: right"></i>
+            </el-divider>
         </el-col>
         <placeholder :src="require('img/5ce8f4e279cb2.png')" v-if="isEmpty">
             {{$t('resident.no_data.activity')}}
@@ -294,6 +293,13 @@
                 color: darken(#fff, 28%);
             }
         }
+        .el-divider__text {
+            display: flex;
+            align-items: center;
+            i {
+                margin-right: 10px;
+            }
+        }
         .el-divider__text.is-left{
             left: 0;
             padding:0;
@@ -319,16 +325,16 @@
             }
             .el-timeline-item {
                 :global(.el-timeline-item__tail) {
-                    left: 50px;
                     top: 13px;
+                    left: 15px;
                 }
                 :global(.el-timeline-item__node) {
                     top: 13px;
-                    left: 45px;
+                    left: 15px;
                 }
                 :global(.el-timeline-item__wrapper) {
                     position: relative;
-                    padding-left: 70px;
+                    padding-left: 45px;
                     .el-timeline-item__content {
                         span:first-of-type {
                             font-weight: 900;
@@ -337,6 +343,7 @@
                             position: absolute;
                             left: 0px;
                             top: 5px;
+                            border: 1px solid  var(--border-color-base);
                         }
                     }
                  }

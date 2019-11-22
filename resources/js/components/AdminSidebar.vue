@@ -267,6 +267,9 @@
             :global(.el-tooltip) {
                 padding: 8px 36px !important;
             }
+            :global(.el-tooltip.focusing) {
+                outline: none;
+            }
         }
         .el-submenu {
             .el-submenu__title {

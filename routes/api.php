@@ -83,6 +83,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/states', 'StateAPIController@index')->name('states');
     Route::get('/countries', 'CountryAPIController@index')->name('countries');
 
+    Route::get('/cities', 'AddressAPIController@getCities')->name('cities');
     Route::get('/addresses', 'AddressAPIController@index')->name('addresses');
     Route::get('/addresses/{id}', 'AddressAPIController@show')->name('addresses.show');
 
@@ -98,7 +99,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/buildings/map', 'BuildingAPIController@map')->name('buildings.map');
     Route::get('/buildings/{id}', 'BuildingAPIController@show')->name('buildings.show');
     Route::get('/buildings/{id}/statistics', 'DashboardAPIController@buildingStatistics')->name('buildings.statistics.show');
-    Route::get('/buildings/{id}/assignees', 'BuildingAPIController@getAssignees');
 
     Route::post('/buildings', 'BuildingAPIController@store')->name('buildings.store');
     Route::post('/buildings/{id}/media', 'MediaAPIController@buildingUpload')->name('buildings.media.upload');
@@ -114,6 +114,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::delete('/buildings/{id}', 'BuildingAPIController@destroy')->name('buildings.destroy');
     Route::delete('/buildings/{building_id}/media/{media_id}', 'MediaAPIController@buildingDestroy')->name('buildings.media.destroy');
 
+    Route::get('/buildings/{id}/assignees', 'BuildingAPIController@getAssignees');
     Route::post('/buildings/{id}/users', 'BuildingAPIController@assignUsers')->name('buildings.assign.users');
     Route::delete('/buildings-assignees/{buildings_assignee_id}', 'BuildingAPIController@deleteBuildingAssignee');
 
@@ -171,10 +172,9 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     Route::get('/quarters/{id}/assignees', 'QuarterAPIController@getAssignees');
     Route::post('/quarters/{id}/users', 'QuarterAPIController@assignUsers')->name('quarters.assign.users');
+    Route::delete('/quarters-assignees/{quarters_assignee_id}', 'QuarterAPIController@deleteQuarterAssignee');
 
     // @TODO remove
-    Route::post('/quarters/{id}/managers', 'QuarterAPIController@assignManagers')->name('quarters.assign.managers'); // @TODO delete
-    Route::delete('/quarters-assignees/{quarters_assignee_id}', 'QuarterAPIController@deleteQuarterAssignee');
     Route::delete('/quarters/{quarter_id}/media/{media_id}', 'MediaAPIController@quarterDestroy')->name('quarters.media.destroy');
 
     // Workflows

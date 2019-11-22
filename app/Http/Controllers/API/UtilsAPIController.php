@@ -259,8 +259,9 @@ class UtilsAPIController extends AppBaseController
     protected function getServiceProviderConstants()
     {
         $result = [
-            'category' => ServiceProvider::ServiceProviderCategory,
+            'category' => ServiceProvider::Category,
             'type' => ServiceProvider::Type,
+            'title' => ServiceProvider::Title,
         ];
 
         return $result;
@@ -273,7 +274,7 @@ class UtilsAPIController extends AppBaseController
     {
         $result = [
             'type' => App\Models\Quarter::Type,
-            'assignment_type' => App\Models\Quarter::AssignmentType,
+            'assignment_type' => App\Models\Quarter::AssignmentType, // @TODO delete
         ];
 
         return $result;
@@ -326,6 +327,7 @@ class UtilsAPIController extends AppBaseController
         $result = [
             'title' => PropertyManager::Title,
             'type' => PropertyManager::Type,
+			'status' => PropertyManager::Status,
         ];
 
         return $result;

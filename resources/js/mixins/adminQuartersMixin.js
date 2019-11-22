@@ -18,7 +18,7 @@ export default (config = {}) => {
                     house_num: 'house_num',
                     media: [],
                     internal_quarter_id: '',
-                    types: '',
+                    types: [],
                     url: '',
                     workflows: [],
                 },
@@ -164,7 +164,7 @@ export default (config = {}) => {
                         //             search,
                         //             roles: ['manager', 'administrator', 'provider']
                         //         });
-                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id, search})
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id, function_val: true, search})
                         this.toAssignList = resp;                        
                     } catch (err) {
                         displayError(err);
@@ -325,7 +325,7 @@ export default (config = {}) => {
                                         },
                                         ...restParams
                                     });    
-                                    this.old_model = this.model;
+                                    this.old_model = _.clone(this.model, true);
                                     if(this.$refs.auditList){
                                         this.$refs.auditList.fetch();
                                     }                                    

@@ -1,11 +1,8 @@
 <template>
     <div class="quarters">
-        <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" class="padding-right-300">
+        <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
                 <list-check-box />
-            </template>
-            <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event"  @order-changed="header=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.quarter)">
                 <el-button 
@@ -17,20 +14,15 @@
                     {{$t('models.quarter.add')}}
                 </el-button>
             </template>
-            <template v-if="$can($permissions.delete.quarter)">
-                <el-button 
-                    :disabled="!selectedItems.length" 
-                    @click="batchDeleteWithIds" 
-                    icon="ti-trash" 
-                    size="mini"
-                    class="transparent-button"
-                >
-                    {{$t('general.actions.delete')}}
-                </el-button>
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event"  @order-changed="header=$event"></list-field-filter>
             </template>
+           
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    <el-button size="mini" class="transparent-button">
+                        <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    </el-button>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item 
                             v-if="$can($permissions.assign.manager)" 
@@ -39,6 +31,14 @@
                             :disabled="!selectedItems.length"
                         >
                             {{$t('models.building.assign_managers')}}
+                        </el-dropdown-item>
+                        <el-dropdown-item
+                            v-if="$can($permissions.delete.quarter)"
+                            :disabled="!selectedItems.length" 
+                            icon="ti-trash" 
+                            command="delete"
+                        >
+                          {{$t('general.actions.delete')}}
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -53,6 +53,7 @@
             :loading="{state: loading}"
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
+            :searchText="search"
             @selectionChanged="selectionChanged"
         >
         </list-table>
@@ -96,6 +97,7 @@
     import ListTableMixin from 'mixins/ListTableMixin';
     import {mapActions} from 'vuex';
     import ListCheckBox from 'components/ListCheckBox';
+    import {displaySuccess, displayError} from "helpers/messages";
 
 
     const mixin = ListTableMixin({
@@ -124,6 +126,7 @@
                 toAssign: [],
                 remoteLoading: false,
                 states: [],
+                search: '',
                 quarter:[],
                 cities: [],
                 quarterTypes: [],
@@ -149,13 +152,8 @@
                 }, {
                     label: 'models.building.request_status',
                     withCounts: true,
-                    counts: [
-                        {
-                            prop: 'requests_count',
-                            background: '#aaa',
-                            color: '#fff',
-                            label: this.$t('dashboard.requests.total_request')
-                        }, {
+                    width: 230,
+                    counts: [{
                             prop: 'requests_received_count',
                             background: '#bbb',
                             color: '#fff',
@@ -193,7 +191,14 @@
                 }, {
                     label: 'models.quarter.total_units_count',
                     prop: 'count_of_apartments_units'
-                }, 
+                }, {
+                    label: 'general.filters.status',
+                    withStatus: true,
+                }, {
+                    label: 'models.request.assigned_to',
+                    withUsers: true,
+                    prop: 'users',
+                }
                 ],
                 model: {
                     id: '',
@@ -231,7 +236,7 @@
                     },{
                         name: this.$t('models.quarter.type'),
                         type: 'select',
-                        key: 'type_id',
+                        key: 'quarter_type',
                         data: this.types,
                         searchBox: true,
                     },{
@@ -262,7 +267,7 @@
             }
         },
         methods: {
-            ...mapActions(['getBuildings', 'getPropertyManagers']),
+            ...mapActions(['getBuildings', 'assignManagerToBuilding', 'getPropertyManagers']),
             batchAssignManagers() {
                 this.assignManagersVisible = true;
             },
@@ -316,7 +321,9 @@
             },
             handleMenuClick(command) {
                 if(command == 'assign')
-                    batchAssignManagers();
+                    this.batchAssignManagers();
+                else if(command == 'delete')
+                    this.batchDeleteWithIds();
             },
             async openEditWithRelation(quarter) {
                 this.loading = true;

@@ -19,6 +19,7 @@ export default (config = {}) => {
                 remoteLoading: false,
                 buildings: [],
                 units: [],
+                new_media: [],
                 user: {
                     avatar_variations: ''
                 },
@@ -132,14 +133,28 @@ export default (config = {}) => {
                     const resp = await this.$store.dispatch('relations/get', {resident_id : this.model.id});
                     console.log('get relations', resp.data)
                     this.model.relations = resp.data
+                    this.$refs.mediaList.fetch();
                 }
                 
             },
             editRelation(index) {
-                this.editingRelation = this.model.relations[index];
-                this.editingRelationIndex = index;
-                this.visibleDrawer = true;
-                this.visibleRelationDialog = true;
+                if(this.model.relations[index].garant == 1) {
+                    console.log('garant')
+                    return this.$router.push({
+                        name: 'adminResidentsEdit',
+                        params: {
+                            id: this.model.relations[index].resident_id
+                        }
+                    }).then(() => {
+                        window.location.reload()
+                    }).catch(err => {})
+                }
+                else {
+                    this.editingRelation = this.model.relations[index];
+                    this.editingRelationIndex = index;
+                    this.visibleDrawer = true;
+                    this.visibleRelationDialog = true;
+                }
             },
             updateRelation(index, params) {
                 this.$set(this.model.relations, index, params);
@@ -171,12 +186,21 @@ export default (config = {}) => {
                 this.visibleMediaDialog = false;
             },
             uploadMedia() {
-                this.model.media.map(item => {
+                this.model.media.map(async item => {
                     if(!item.url) {
                         console.log(item)
-                        this.uploadMediaFile(item)
+                        item.id = this.model.id
+                        let resp = await this.uploadMediaFile(item)
+
+                        if(resp && resp.success) {
+                            displaySuccess(resp)
+                            this.$refs.mediaList.fetch();
+                        }
+
+                        
                     }
                 })
+                this.visibleMediaDialog = false;
             },
             ...mapActions(['getCountries', 'uploadMediaFile']),
         },

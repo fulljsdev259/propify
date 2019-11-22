@@ -6,7 +6,7 @@
                     <!-- <div class="subtitle">{{`${model.quarter_format} > ${model.name}`}}</div> -->
                     <div class="subtitle">{{model.url}}</div>
                 </template>
-                <edit-actions :saveAction="submit" :deleteAction="deleteQuarter" route="adminQuarters" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
+                <edit-actions :saveAction="submit" :deleteAction="deleteQuarter" route="adminQuarters" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
             </heading>
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
@@ -26,6 +26,8 @@
                                             <el-input type="text" v-model="model.name"  :disabled="!editMode"/>
                                         </el-form-item>
                                     </el-col>
+                                </el-row>
+                                <el-row :gutter="20">
                                     <el-col :md="12">
                                         <el-form-item :label="$t('models.quarter.url')" :rules="validationRules.url"
                                                         prop="url">
@@ -50,15 +52,17 @@
                                                         v-for="type in types">
                                                 </el-option>
                                             </el-select> -->
-                                            <list-filter-select
+                                            <multi-select
                                                 :name="$t('general.placeholders.select')"
                                                 :data="types"
                                                 :disabled="!editMode"
+                                                :selectedOptions="model.types"
+                                                tagColor="#9E9FA0"
                                                 @select-changed="model.types=$event"
-                                            ></list-filter-select>
+                                            ></multi-select>
                                         </el-form-item>
                                     </el-col>
-                                
+                                </el-row>
                                     
                                     <!-- <el-col :md="12">
                                         <el-form-item class="label-block" :label="$t('models.quarter.count_of_buildings')"
@@ -74,6 +78,7 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col> -->
+                                <el-row :gutter="20">
                                     <el-col :md="6">
                                         <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
                                                     prop="zip">
@@ -207,7 +212,7 @@
                                 :remoteLoading="remoteLoading"
                                 :remoteSearch="remoteSearchAssignees"
                             /> -->
-                            <el-row :gutter="10" id="managerAssignBox">
+                            <el-row id="managerAssignBox">
                                 <el-col id="managerSelect">
                                     <el-select
                                         clearable
@@ -230,7 +235,10 @@
                                                 :value="assignee.id"
                                                 v-for="assignee in toAssignList">
                                             <span style="float: left">{{ assignee.name }}</span>
-                                            <span style="float: right; color: #8492a6; font-size: 13px">{{ translateType(assignee.roles[0].name) }}</span>
+                                            <span style="float: right; color: #8492a6; font-size: 13px">
+                                                {{assignee.roles[0].name == "provider" ? $t(`models.service.category.${assignee.function}`)  : ''}}
+                                                {{assignee.roles[0].name == "manager" || assignee.roles[0].name == "administrator" ? $t(`general.assignment_types.${assignee.function}`) : ''}} 
+                                            </span>
                                         </el-option>
                                     </el-select>
                                 </el-col>
@@ -250,8 +258,8 @@
                                     </el-select>
                                 </el-col> -->
                                 <el-col id="managerAssignBtn">
-                                    <el-button :disabled="!toAssign || userAssignmentType == null || userAssignmentType.length == 0" @click="assignUser" class="full-button"
-                                                icon="ti-save" type="primary">
+                                    <el-button :disabled="!toAssign" @click="assignUser" class="full-button assign-button"
+                                                icon="ti-save">
                                         &nbsp;{{$t('general.assign')}}
                                     </el-button>
                                 </el-col>
@@ -356,7 +364,7 @@
                                                 @click="showEditWorkflow($index)"
                                                 icon="icon-pencil" 
                                                 size="mini" 
-                                                class="round-btn">
+                                                class="round-btn btn-edit">
                                                 {{ $t('models.quarter.workflow.edit') }}
                                             </el-button>
                                         </el-col>
@@ -499,8 +507,8 @@
         </ui-drawer>
          <edit-close-dialog 
             :centerDialogVisible="visibleDialog"
-            @clickYes="submit(), editMode=!editMode, visibleDialog=false"
-            @clickNo="model=_.clone(old_model, true), editMode=!editMode, visibleDialog=false"
+            @clickYes="submit(), visibleDialog=false, $refs.editActions.goToListing()"
+            @clickNo="visibleDialog=false, $refs.editActions.goToListing()"
             @clickCancel="visibleDialog=false"
         ></edit-close-dialog>
     </div>
@@ -526,6 +534,7 @@
     import BuildingFileListTable from 'components/BuildingFileListTable';
     import EditCloseDialog from 'components/EditCloseDialog';
     import ListFilterSelect from 'components/ListFilterSelect';
+    import MultiSelect from 'components/MultiSelect';
 
     export default {
         name: 'AdminRequestsEdit',
@@ -549,6 +558,7 @@
             BuildingFileListTable,
             EditCloseDialog,
             ListFilterSelect,
+            MultiSelect,
         },
         data() {
             return {
@@ -593,10 +603,13 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
+                    type: 'assignProviderManagerFunctions',
+                    label: 'general.name',
+                }/*, {
                     prop: 'assignment_types',
                     label: 'general.assignment_types.label',
                     i18n: this.translateAssignmentType
-                }],
+                }*/],
                 quarterColumns: [{
                     type: 'buildingName',
                     prop: 'name',
@@ -717,6 +730,9 @@
                 })
 
                 return translatedTypes.join(', ')
+            },
+            translateFunction(item) {
+                console.log(item)
             },
             residentStatusBadge(status) {
                 const classObject = {
@@ -1027,9 +1043,11 @@
     
     #managerAssignBox {
         display: flex;
+        margin-bottom: 20px;
 
         #managerSelect {
             width: 100%;
+            margin-right: 20px;
         }
 
         #managerAssignBtn {
@@ -1141,10 +1159,18 @@
     .workflow-button-bar {
         display: flex;
         justify-content: flex-end;
-        padding: 0 10px 10px;
+        margin-bottom: 10px;
 
         &.edit {
             padding-top: 40px;
+            .el-button.btn-edit {
+                background-color: #848484;
+                border: none;
+                &:hover {
+                    box-shadow: 0 0 5px #848484;
+                    color: var(--color-white);
+                }
+            }
         }
     }
 
@@ -1161,7 +1187,6 @@
     .el-collapse {
         border-top: 0;
         border-bottom: 0;
-        padding: 0px 25px;
 
         /deep/ .el-collapse-item__header {
             padding-left: 10px;
@@ -1181,10 +1206,6 @@
         }
     }
 
-    .add-work-flow {
-        padding: 0px 10px;
-    }
-
     .round-btn {
         border-radius: 3px;
     }
@@ -1192,5 +1213,10 @@
     .add-workflow-btn {
         border-radius: 5px;
         padding: 3px;
+    }
+
+    .assign-button {
+        background-color: #3D3F41;
+        color: var(--color-white);
     }
 </style>

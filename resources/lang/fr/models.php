@@ -191,8 +191,10 @@ return [
         "not_found" => "Bâtiment non trouvé",
         'building_format' => 'Project No.',
         'building_no' => 'Building No.',
+        'building_number'=>'Building Number',
         'active_residents_count' => 'Vives',
         'request_status' => 'Demande Statut',
+        'type' => 'Type de bâtiment',
         'media_category' => [
             "house_rules" => "Règlement intérieur",
             "operating_instructions" => "Notice d'utilisation",
@@ -252,6 +254,8 @@ return [
         "deleted" => "Unité supprimée",
         "saved" => "Unité sauvegardée",
         "floor" => "L'étage",
+        'location' => 'localisation',
+        'appendix' => 'Annexe',
         'unit_id' => "l'unité ID",
         'floor_title' => [
             'under_ground_floor' => "UG",
@@ -394,8 +398,9 @@ return [
             "key_service" => "Service clé",
             "caretaker" => "Concierge",
             "real_estate_service" => "Service immobilier",
-            'business_person' => 'Unternehmer', // @TODO translate (problem with deepl)
             'tu-gu' => 'TU/GU',
+            'architect' => 'Architecte',
+            'external_real_estate_company' => 'Verwaltung',
         ],
         "contact_details" => "Coordonnées de contact",
         "user_credentials" => "Informations d'identification de l'utilisateur",
