@@ -133,6 +133,8 @@ export default (config = {}) => {
                     const resp = await this.$store.dispatch('relations/get', {resident_id : this.model.id});
                     console.log('get relations', resp.data)
                     this.model.relations = resp.data
+                    if(resp.data.media && resp.data.media.length)
+                        this.$refs.mediaList.fetch();
                 }
                 
             },
@@ -144,6 +146,8 @@ export default (config = {}) => {
                         params: {
                             id: this.model.relations[index].resident_id
                         }
+                    }).then(() => {
+                        window.location.reload()
                     }).catch(err => {})
                 }
                 else {
