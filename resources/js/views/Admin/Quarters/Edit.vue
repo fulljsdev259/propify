@@ -222,6 +222,7 @@
                                         class="custom-remote-select"
                                         filterable
                                         remote
+                                        multiple
                                         reserve-keyword
                                         style="width: 100%;"
                                         v-model="toAssign"
@@ -258,7 +259,7 @@
                                     </el-select>
                                 </el-col> -->
                                 <el-col id="managerAssignBtn">
-                                    <el-button :disabled="!toAssign" @click="assignUser" class="full-button assign-button"
+                                    <el-button :disabled="!toAssign.length" @click="assignUsers" class="full-button assign-button"
                                                 icon="ti-save">
                                         &nbsp;{{$t('general.assign')}}
                                     </el-button>
@@ -603,8 +604,12 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
+                    type: 'companyName',
+                    prop: 'company_name',
+                    label: 'general.name'
+                }, {
                     type: 'assignProviderManagerFunctions',
-                    label: 'general.name',
+                    label: 'general.type',
                 }/*, {
                     prop: 'assignment_types',
                     label: 'general.assignment_types.label',

@@ -168,13 +168,13 @@
                                     />
                                 </el-form-item>
                             </el-col>
-                            <el-col :md="12">
+                            <!-- <el-col :md="12">
                                 <el-form-item :label="$t('general.confirm_password')"
                                               :rules="validationRules.password_confirmation"
                                               prop="password_confirmation">
                                     <el-input :disabled="!editMode" type="password" v-model="model.password_confirmation"/>
                                 </el-form-item>
-                            </el-col>
+                            </el-col> -->
                         </el-row>
                     </card>
                 </el-form>
