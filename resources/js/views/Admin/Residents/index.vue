@@ -71,6 +71,22 @@
         data() {
             return {
                 header: [{
+                    label: 'general.filters.status',
+                    withStatusSign: true,
+                    prop: 'status',
+                    width: 100
+                }, {
+                    label: 'general.first_name',
+                    prop: 'first_name',
+                    width: 150
+                }, {
+                    label: 'general.last_name',
+                    prop: 'last_name',
+                    width: 150
+                }, {
+                    label: 'general.email',
+                    prop: 'user.email',
+                }, {
                     label: 'general.id',
                     prop: 'id',
                     width: 100

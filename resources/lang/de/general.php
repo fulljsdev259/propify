@@ -103,7 +103,7 @@ return [
     ],
     'no' => 'Nein',
     'first_name' => 'Vorname',
-    'last_name' => 'Name',    
+    'last_name' => 'Nachname',    
     'name' => "Name",
     'phone' => 'Telefon',
     'id' => "ID",
