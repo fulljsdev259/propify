@@ -795,6 +795,11 @@ return [
             'building_assign_deleted_property_manager' => "Sie können einem gelöschten Mitarbeiter keine Objekte zuordnen.",
             'deleted' => "Mitarbeiter Fehler beim Löschen: ",
         ],
+        'status' => [
+            'label' => 'Status',
+	        'active' => 'Aktiv',
+            'inactive' => 'Inaktiv',
+        ],
     ],
     // 'house_owner' => [
     //     'title' => 'Eigentümer',

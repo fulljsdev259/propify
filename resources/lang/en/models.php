@@ -792,6 +792,11 @@ return [
             'building_assign_deleted_property_manager' => "You cannot assign buildings to an deleted Property Manager",
             'deleted' => "Property Manager deleted error: ",
         ],
+        'status' => [
+            'label' => 'Status',
+	        'active' => 'Active',
+	        'inactive' => 'Inactive',
+        ],
     ],
     // 'house_owner' => [
     //     'title' => 'House Owners',
