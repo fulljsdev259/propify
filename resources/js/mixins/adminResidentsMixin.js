@@ -42,7 +42,7 @@ export default (config = {}) => {
                     title: '',
                     company: '',
                     settings: {
-                        language: '',
+                        language: 'en', //@TODO : remove language
                     },
                     nation: '',
                     //type: '',

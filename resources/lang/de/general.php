@@ -15,6 +15,7 @@ return [
     ],
     'choose_language' => 'Sprache auswählen',
     'language' => "Sprache",
+    'status' => 'Status',
     'languages' => [
         'fr' => 'Français',
         'it' => 'Italiano',

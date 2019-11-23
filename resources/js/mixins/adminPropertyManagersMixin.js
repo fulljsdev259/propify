@@ -25,8 +25,9 @@ export default (config = {}) => {
                         avatar_variations: '',
                     },
                     settings: {
-                        language: ''
+                        language: 'en' //@TODO : remove language
                     },
+                    status: '',
                     email: '',
                     password: '',
                     password_confirmation: '',
@@ -75,6 +76,10 @@ export default (config = {}) => {
                     last_name: [{
                         required: true,
                         message: this.$t('validation.required', {attribute: this.$t('general.last_name')})
+                    }],
+                    status: [{
+                        required: true,
+                        message: this.$t('validation.required', {attribute: this.$t('general.status')})
                     }],
                     language: [{
                         required: true,

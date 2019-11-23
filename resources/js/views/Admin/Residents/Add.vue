@@ -55,14 +55,14 @@
                                                 value-format="yyyy-MM-dd"/>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12">
+                                <!-- <el-col :md="12">
                                     <el-form-item :label="$t('general.language')"
                                                   :rules="validationRules.language"
                                                   prop="settings.language"
                                                   class="label-block">
                                         <select-language :active-language.sync="model.settings.language"/>
                                     </el-form-item>
-                                </el-col>
+                                </el-col> -->
                                 <el-col :md="12">
                                     <el-form-item class="label-block"
                                                   :label="$t('models.resident.nation')"

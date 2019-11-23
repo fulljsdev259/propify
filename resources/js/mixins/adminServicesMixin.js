@@ -41,7 +41,7 @@ export default (config = {}) => {
                     phone: '',
                     category: null,
                     settings: {
-                        language: ''
+                        language: 'en' //@TODO : remove language
                     },
                     password: '',
                     password_confirmation: '',

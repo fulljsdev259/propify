@@ -111,12 +111,12 @@
                                                                     value-format="yyyy-MM-dd"/>
                                                         </el-form-item>
                                                     </el-col>
-                                                    <el-col :md="6">
+                                                    <!-- <el-col :md="6">
                                                         <el-form-item :label="$t('general.language')" :rules="validationRules.language" 
                                                                 prop="settings.language">
                                                             <select-language :activeLanguage.sync="model.settings.language" />
                                                         </el-form-item>
-                                                    </el-col>
+                                                    </el-col> -->
                                                     <el-col :md="6">
                                                         <el-form-item :label="$t('models.resident.nation')"
                                                                     prop="nation">

@@ -795,7 +795,7 @@ return [
         'status' => [
             'label' => 'Status',
 	        'active' => 'Active',
-	        'inactive' => 'Inactive',
+            'inactive' => 'Inactive',
         ],
     ],
     // 'house_owner' => [
