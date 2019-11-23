@@ -189,7 +189,7 @@
                 return this.$t(`models.unit.type.${this.constants.units.type[type]}`);
             },
             translateRelationType(type) {
-                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+                return this.$t(`models.resident.type.${this.constants.relations.type[type]}`);
             },
             handleRowDblClick(row, col, e) {
                 let i = 0

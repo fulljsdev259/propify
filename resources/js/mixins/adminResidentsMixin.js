@@ -46,6 +46,7 @@ export default (config = {}) => {
                     },
                     nation: '',
                     //type: '',
+                    types: [],
                     relations: [],
                     status: 1
                 },

@@ -531,7 +531,7 @@
                 }
             },
             translateType(type) {
-                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+                return this.$t(`models.resident.type.${this.constants.relations.type[type]}`);
             },
             toggleDrawer() {
                 this.visibleDrawer = true;

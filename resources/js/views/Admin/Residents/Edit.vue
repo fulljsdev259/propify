@@ -143,7 +143,7 @@
                                                                     :key="k"
                                                                     :label="$t(`models.resident.type.${type}`)"
                                                                     :value="parseInt(k)"
-                                                                    v-for="(type, k) in constants.residents.type">
+                                                                    v-for="(type, k) in constants.relations.type">
                                                                 </el-option>
                                                             </el-select>
                                                         </el-form-item>

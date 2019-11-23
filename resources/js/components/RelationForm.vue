@@ -33,7 +33,7 @@
                                 :key="key"
                                 :label="$t('models.resident.type.' + value )"
                                 :value="+key"
-                                v-for="(value, key) in $constants.residents.type"
+                                v-for="(value, key) in $constants.relations.type"
                                 v-if="key != 3">
                         </el-option>
                     </el-select>

@@ -138,7 +138,7 @@
                                 <el-row :gutter="20">
                                     <el-col :sm="8" :xs="12">{{$t('models.resident.type.label')}}:</el-col>
                                     <el-col :sm="16" :xs="12" class="text-secondary">
-                                        <span v-if="model.types">
+                                        <span v-if="model.types.length">
                                             {{ showResidentTypes() }}
                                         </span>
                                     </el-col>

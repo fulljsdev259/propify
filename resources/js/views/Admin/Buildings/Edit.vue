@@ -759,7 +759,7 @@
                 return this.$t(`general.assignment_types.${type}`);
             },
             translateResidentType(type) {
-                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+                return this.$t(`models.resident.type.${this.constants.relations.type[type]}`);
             },
             translateAssignmentType(types) {
                 let translatedTypes = []
