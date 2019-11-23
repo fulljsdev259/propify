@@ -57,7 +57,7 @@
                                         </el-form-item>
                                     </el-col>
                                    <el-col :md="8">
-                                        <el-form-item class="label-block" :label="$t('general.roles.label')" :rules="validationRules.type"
+                                        <el-form-item class="label-block" :label="$t('general.function')" :rules="validationRules.type"
                                                         prop="type">
                                             <el-select style="display: block" v-model="model.type" :placeholder="$t('general.placeholders.select')">
                                                 <el-option

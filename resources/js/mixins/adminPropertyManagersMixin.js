@@ -82,7 +82,7 @@ export default (config = {}) => {
                     }],
                     type: [{
                         required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('general.roles.label')})
+                        message: this.$t('validation.required', {attribute: this.$t('general.function')})
                     }],
                     email: [{
                         required: true,

@@ -126,7 +126,7 @@
                     label: 'general.email',
                     prop: 'user.email'
                 },{
-                    label: 'general.roles.label',
+                    label: 'general.function',
                     prop: 'type',
                     roles: true
                 }, {
@@ -186,7 +186,7 @@
                         fetch: this.fetchRemoteBuildings
                     },
                     {
-                        name: this.$t('general.roles.label'),
+                        name: this.$t('general.function'),
                         type: 'select',
                         key: 'role',
                         data: this.roles
