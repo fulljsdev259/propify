@@ -20,12 +20,12 @@
                             {{$t(`models.request.priority.${$constants.requests.priority[data.priority]}`)}}
                         </div>
                     </div> -->
-                    <div class="item" v-if="this.data.sub_category && this.data.qualification > 1" >
+                    <!-- <div class="item" v-if="this.data.sub_category && this.data.qualification > 1" >
                         {{$t('resident.qualification')}}:
                         <div class="label">
                             {{$t(`models.request.qualification.${$constants.requests.qualification[data.qualification]}`)}}
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <!-- <div class="statuses" v-if="this.data.sub_category && this.data.qualification == 5 && this.data.payer">
                     <div class="item">
