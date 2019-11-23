@@ -87,6 +87,12 @@
                     label: 'general.email',
                     prop: 'user.email',
                 }, {
+                    label: 'general.mobile',
+                    prop: 'mobile_phone',
+                }, {
+                    label: 'models.resident.business_relation',
+                    prop: 'type',
+                }/*, {
                     label: 'general.id',
                     prop: 'id',
                     width: 100
@@ -98,7 +104,7 @@
                     label: 'models.resident.contact_info_card',
                     withMultipleProps: true,
                     props: ['user_email', 'private_phone']
-                }/*, {
+                }*//*, {
                     label: 'models.resident.building.name',
                     withCollapsables: true,
                     width: 200,
@@ -154,7 +160,7 @@
                     }]
                 }*/, {
                     width: 130,
-                    actions: [{
+                    actions: [/*{
                         type: '',
                         icon: 'ti-pencil',
                         title: 'models.resident.view',
@@ -162,7 +168,7 @@
                         permissions: [
                             this.$permissions.view.resident
                         ]
-                    }]
+                    }*/]
                 }],
                 buildings:[],
                 units:[],

@@ -170,7 +170,8 @@ return [
             'label' => 'Mietertyp',
             'main' => 'Hauptmieter',
             'garant' => 'Nebenmieter',
-        ]
+        ],
+        'business_relation' => 'Geschäftsbeziehung'
     ],
     'building' => [
         'title' => 'Objekte',

@@ -169,7 +169,8 @@ return [
             'label' => 'Tenant Type',
             'main' => 'Main tenant',
             'garant' => 'Secondary tenant',
-        ]
+        ],
+        'business_relation' => 'Business Relation'
     ],
     'building' => [
         'title' => 'Buildings',
