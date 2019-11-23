@@ -132,7 +132,7 @@
                                                             </el-select>
                                                         </el-form-item>
                                                     </el-col>
-                                                    <el-col :md="6">
+                                                    <!-- <el-col :md="6">
                                                         <el-form-item :label="$t('models.resident.type.label')" 
                                                                     :rules="validationRules.type"
                                                                     prop="type">
@@ -163,7 +163,7 @@
                                                                 </el-option>
                                                             </el-select>
                                                         </el-form-item>
-                                                    </el-col>
+                                                    </el-col> -->
                                             </el-col>
                                         </el-row>
                                 </el-card>

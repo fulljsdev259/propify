@@ -80,7 +80,7 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12">
+                                <!-- <el-col :md="12">
                                     <el-form-item class="label-block"
                                                   :label="$t('models.resident.type.label')"
                                                   :rules="validationRules.type"
@@ -113,7 +113,7 @@
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
-                                </el-col>
+                                </el-col> -->
                             </el-row>
                         </card>
                         <card class="mt15" :header="$t('models.resident.contact_info_card')">
