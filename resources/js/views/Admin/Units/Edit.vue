@@ -466,7 +466,7 @@
                 //     type: 'residentName'
                 // }, {
                 //     prop: 'type',
-                //     label: 'models.resident.type.label',
+                //     label: 'models.resident.relation.type.label',
                 //     i18n: this.translateType
                 // }, {
                     type: 'residentRelation',
@@ -531,7 +531,7 @@
                 }
             },
             translateType(type) {
-                return this.$t(`models.resident.type.${this.constants.relations.type[type]}`);
+                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
             },
             toggleDrawer() {
                 this.visibleDrawer = true;

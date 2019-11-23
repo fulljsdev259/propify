@@ -51,7 +51,7 @@
             >
             </el-table-column> -->
             <el-table-column
-                :label="$t('models.resident.type.label')"
+                :label="$t('models.resident.relation.type.label')"
                 prop="type"
                 :width="120"
             >
@@ -69,7 +69,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                :label="$t('models.resident.type.label')"
+                :label="$t('models.resident.relation.type.label')"
                 prop="type"
             >
                 <template slot-scope="scope">
@@ -189,7 +189,7 @@
                 return this.$t(`models.unit.type.${this.constants.units.type[type]}`);
             },
             translateRelationType(type) {
-                return this.$t(`models.resident.type.${this.constants.relations.type[type]}`);
+                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
             },
             handleRowDblClick(row, col, e) {
                 let i = 0

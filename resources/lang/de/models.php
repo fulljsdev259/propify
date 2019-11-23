@@ -82,7 +82,12 @@ return [
             'edit' => 'Beziehung bearbeiten',
             'end_date' => 'Enddatum',
             'start_date' => 'Startdatum',
-            'type' => 'Beziehung',            
+            'type' => [
+                'label' => 'Beziehung',
+                'tenant' => 'Mieter',
+                'owner' => 'Eigentümer',
+                'former_resident' => 'Ehemaliger Einwohner',
+            ],
             'duration' => 'Vertragslaufzeit',
             'durations' => [
                 'unlimited' => 'Unbefristet',
@@ -160,12 +165,6 @@ return [
             'content_4' => 'Sollten Sie Hilfe bei der Anmeldung benötigen, so stehen wir Ihnen gerne zur Verfügung.',
             'your_sincerely' => 'Mit freundlichen Grüssen',
             'your_administration' => 'Ihre Verwaltung'
-        ],
-        'type' => [
-            'label' => 'Beziehung',
-            'tenant' => 'Mieter',
-            'owner' => 'Eigentümer',
-            'former_resident' => 'Ehemaliger Einwohner',
         ],
         'tenant_type' => [
             'label' => 'Mietertyp',

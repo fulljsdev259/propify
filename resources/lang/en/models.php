@@ -82,7 +82,12 @@ return [
             'edit' => 'Edit Relation',
             'end_date' => 'End date',
             'start_date' => 'Start date',
-            'type' => 'Type',            
+            'type' => [
+                'label' => 'Type',
+                'tenant' => 'Tenant',
+                'owner' => 'Owner',
+                'former_resident' => 'Former Resident'
+            ],
             'duration' => 'Duration',
             'durations' => [
                 'unlimited' => 'Unlimited',
@@ -159,12 +164,6 @@ return [
             'content_4' => 'If you should need assistance with the registration, then we are gladly at your disposal.',
             'your_sincerely' => 'Yours sincerely',
             'your_administration' => 'your administration'
-        ],
-        'type' => [
-            'label' => 'Type',
-            'tenant' => 'Tenant',
-            'owner' => 'Owner',
-            'former_resident' => 'Former Resident'
         ],
         'tenant_type' => [
             'label' => 'Tenant Type',

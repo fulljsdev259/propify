@@ -82,7 +82,7 @@
                                 </el-col>
                                 <!-- <el-col :md="12">
                                     <el-form-item class="label-block"
-                                                  :label="$t('models.resident.type.label')"
+                                                  :label="$t('models.resident.relation.type.label')"
                                                   :rules="validationRules.type"
                                                   prop="type">
                                         <el-select :placeholder="$t('general.placeholders.select')" 
@@ -90,7 +90,7 @@
                                                     v-model="model.type">
                                             <el-option
                                                 :key="k"
-                                                :label="$t(`models.resident.type.${type}`)"
+                                                :label="$t(`models.resident.relation.type.${type}`)"
                                                 :value="parseInt(k)"
                                                 v-for="(type, k) in constants.relations.type">
                                             </el-option>
