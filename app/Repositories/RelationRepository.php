@@ -234,7 +234,6 @@ class RelationRepository extends BaseRepository
         }
 
         // @TODO save as system audit
-        $resident->type = Resident::TypeFormerResident;
         $resident->status = Resident::StatusInActive;
         $resident->save();
 

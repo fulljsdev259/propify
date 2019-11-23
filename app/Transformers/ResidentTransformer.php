@@ -34,8 +34,6 @@ class ResidentTransformer extends BaseTransformer
             'status',
             'resident_format',
             'nation',
-            'type',
-            'tenant_type',
             'review',
             'rating',
             'created_by' => $model->created_by,
