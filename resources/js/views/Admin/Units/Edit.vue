@@ -459,7 +459,7 @@
                 }, {
                     type: 'residentNameAndType',
                     label: 'general.name',
-                    translate: this.translateType
+                    translate: this.translateResidentType
                 }, {
                 //     prop: 'name',
                 //     label: 'general.name',
@@ -467,7 +467,7 @@
                 // }, {
                 //     prop: 'type',
                 //     label: 'models.resident.relation.type.label',
-                //     i18n: this.translateType
+                //     i18n: this.translateResidentType
                 // }, {
                     type: 'residentRelation',
                     label: 'models.resident.relation.title'
@@ -530,7 +530,7 @@
                     }
                 }
             },
-            translateType(type) {
+            translateResidentType(type) {
                 return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
             },
             toggleDrawer() {
