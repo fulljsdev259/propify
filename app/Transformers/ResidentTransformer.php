@@ -70,6 +70,12 @@ class ResidentTransformer extends BaseTransformer
             $response['active_relations_count'] = $activeCount;
             $response['inactive_relations_count'] = $allCount - $activeCount;
             $response['total_relations_count'] = $allCount;
+
+            if ([Relation::StatusInActive] == collect($response['relations'])->pluck('status')->all()) {
+                $response['types'] = [Relation::TypeFormerResident];
+            } else {
+                $response['types'] = collect($response['relations'])->pluck('type')->unique()->all();
+            }
         }
 
         if ( $model->relationExists('garant_relations')) { // @TODO delete reloading
