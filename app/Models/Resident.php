@@ -45,18 +45,6 @@ use Illuminate\Support\Facades\Storage;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="type",
- *          description="type",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="tenant_type",
- *          description="tenant_type",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
  *          property="title",
  *          description="title",
  *          type="string"
@@ -116,7 +104,6 @@ use Illuminate\Support\Facades\Storage;
  * @property int|null $address_id
  * @property int|null $country_id
  * @property int|null $rating
- * @property int $type
  * @property string $resident_format
  * @property string|null $nation
  * @property string|null $review
@@ -209,13 +196,6 @@ class Resident extends AuditableModel implements HasMedia
         self::TypeFormerResident => 'former_resident',
     ];
 
-    const TenantTypeMain = 1;
-    const TenantTypeGarant = 2;
-    const TenantType = [
-        self::TenantTypeMain => 'main',
-        self::TenantTypeGarant => 'garant',
-    ];
-
     /**
      * Validation rules
      *
@@ -256,8 +236,6 @@ class Resident extends AuditableModel implements HasMedia
         'rating',
         'nation',
         'country_id',
-        'type',
-        'tenant_type',
     ];
 
     protected $appends = ['created_by'];
@@ -285,8 +263,6 @@ class Resident extends AuditableModel implements HasMedia
         'resident_format' => 'string',
         'review' => 'string',
         'rating' => 'integer',
-        'type' => 'integer',
-        'tenant_type' => 'integer',
         'nation' => 'string',
     ];
 
