@@ -320,7 +320,7 @@
                                                 class="a"
                                                 :value="relation.id" >
                                             <!-- <span class="status-icon" :style="{ background: constants.relations.status_colorcode[relation.status], border: '2px solid ' + getLightenDarkenColor(constants.relations.status_colorcode[relation.status], 200) + '59' }" >&nbsp;</span> -->
-                                            <span class="status-icon" :style="{ background: constants.relations.status_colorcode[relation.status], border: '2px solid #ffffffd7'}" >&nbsp;</span>
+                                            <span class="status-icon" :style="{ background: constants.relations.status_colorcode[relation.status], border: '2px solid #ffffffe7'}" >&nbsp;</span>
                                             <!-- <span><i class="icon-dot-circled" :class="[constants.relations.status[relation.status] === 'active' ? 'icon-success' : 'icon-danger']"></i></span> -->
                                             <span>{{ relation.building_room_floor_unit }}</span>
                                     </el-option>
