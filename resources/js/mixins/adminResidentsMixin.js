@@ -74,7 +74,7 @@ export default (config = {}) => {
                     }, {
                         type: 'email',
                         message: this.$t("general.email_validation.email")
-                    },{
+                    }, {
                         validator: this.checkavailabilityEmail
                     }],
                     password: [{
@@ -83,9 +83,9 @@ export default (config = {}) => {
                         min: 6,
                         message: this.$t("general.password_validation.min")
                     }],
-                    password_confirmation: [{
-                        validator: this.validateConfirmPassword,
-                    }],
+                    // password_confirmation: [{
+                    //     validator: this.validateConfirmPassword,
+                    // }],
                     birth_date: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.resident.birth_date')})
@@ -260,7 +260,9 @@ export default (config = {}) => {
                                     relation.monthly_rent_gross = Number(relation.monthly_rent_net) + Number(relation.monthly_maintenance)
                                 })
 
-                                let {email, password, password_confirmation, ...resident} = this.model;
+                                //let {email, password, password_confirmation, ...resident} = this.model;
+                                let {email, password, ...resident} = this.model;
+
 
                                 try {
 
@@ -279,7 +281,8 @@ export default (config = {}) => {
                                         user: {
                                             email,
                                             password,
-                                            password_confirmation: password_confirmation
+                                            password_confirmation: password
+                                            //password_confirmation: password_confirmation
                                         },
                                         ...resident
                                     });
@@ -329,12 +332,14 @@ export default (config = {}) => {
                                     return false;
                                 }
                                 this.loading.state = true;
-                                let {password_confirmation, ...params} = this.model;
+//                                let {password_confirmation, ...params} = this.model;
+                                let {...params} = this.model;
 
                                 if (params.password === '') {
                                     params = _.omit(params, ['password'])
                                 }
 
+                                params.password_confirmation = params.password
                                 try {
                                     const resp = await this.updateResident(params);
 
@@ -372,9 +377,11 @@ export default (config = {}) => {
                 };
 
                 mixin.created = async function () {
-                    const {password, password_confirmation} = this.validationRules;
+                    // const {password, password_confirmation} = this.validationRules;
                     
-                    [...password, ...password_confirmation].forEach(rule => rule.required = false);
+                    // [...password, ...password_confirmation].forEach(rule => rule.required = false);
+
+                    
                     this.titles = Object.entries(this.$constants.residents.title).map(([value, label]) => ({value: label, name: this.$t(`general.salutation_option.${label}`)}))
                     try {
                         this.loading.state = true;

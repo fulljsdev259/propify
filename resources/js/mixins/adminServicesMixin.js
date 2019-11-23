@@ -102,12 +102,12 @@ export default (config = {}) => {
                         min: 6,
                         message: this.$t('validation.min.string', {attribute: this.$t('general.password'), min: 6})
                     }],
-                    password_confirmation: [{
-                        validator: this.validateConfirmPassword
-                    }, {
-                        required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('general.confirm_password')})
-                    }],
+                    // password_confirmation: [{
+                    //     validator: this.validateConfirmPassword
+                    // }, {
+                    //     required: true,
+                    //     message: this.$t('validation.required', {attribute: this.$t('general.confirm_password')})
+                    // }],
                     category: [{
                         required: true,
                         message: this.$t('validation.general.required')
@@ -305,7 +305,8 @@ export default (config = {}) => {
                                 try {
 
                                     this.model.user.password = this.model.password
-                                    this.model.user.password_confirmation = this.model.password_confirmation
+                                    //this.model.user.password_confirmation = this.model.password_confirmation
+                                    this.model.user.password_confirmation = this.model.password
                                     this.model.user.avatar = this.model.avatar
                                     this.model.user.email = this.model.email
                                     this.model.name = this.model.last_name + ' ' + this.model.first_name
@@ -363,7 +364,8 @@ export default (config = {}) => {
                                 let {...params} = this.model;
 
                                 params.user.password = params.password
-                                params.user.password_confirmation = params.password_confirmation
+                                //params.user.password_confirmation = params.password_confirmation
+                                params.user.password_confirmation = params.password
                                 params.user.avatar = params.avatar
                                 params.user.email = params.email
 
@@ -458,9 +460,12 @@ export default (config = {}) => {
                     this.titles = Object.entries(this.$constants.serviceProviders.title).map(([value, label]) => ({value: label, name: this.$t(`general.salutation_option.${label}`)}))
 
                     this.getStates();
-                    const {password, password_confirmation} = this.validationRules;
+                    // const {password, password_confirmation} = this.validationRules;
 
-                    [...password, ...password_confirmation].forEach(rule => rule.required = false);
+                    // [...password, ...password_confirmation].forEach(rule => rule.required = false);
+                    const {password} = this.validationRules;
+
+                    [...password].forEach(rule => rule.required = false);
                     
 
                     await this.fetchCurrentProvider();
@@ -481,9 +486,12 @@ export default (config = {}) => {
                 };
 
                 mixin.created = async function () {
-                    const {password, password_confirmation} = this.validationRules;
+                    // const {password, password_confirmation} = this.validationRules;
 
-                    [...password, ...password_confirmation].forEach(rule => rule.required = false);
+                    // [...password, ...password_confirmation].forEach(rule => rule.required = false);
+                    const {password} = this.validationRules;
+
+                    [...password].forEach(rule => rule.required = false);
 
                     try {
                         this.loading.state = true;
