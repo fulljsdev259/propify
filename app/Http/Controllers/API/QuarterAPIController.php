@@ -10,6 +10,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Quarter\AssignUserRequest;
 use App\Http\Requests\API\Quarter\CreateRequest;
 use App\Http\Requests\API\Quarter\EmailReceptionistRequest;
+use App\Http\Requests\API\Quarter\MassAssignUsersRequest;
 use App\Http\Requests\API\Quarter\UnAssignRequest;
 use App\Http\Requests\API\Quarter\UpdateRequest;
 use App\Http\Requests\API\Quarter\ListRequest;
@@ -577,14 +578,46 @@ class QuarterAPIController extends AppBaseController
         if (empty($quarter)) {
             return $this->sendError(__('models.quarter.errors.not_found'));
         }
+        $this->assignSingleUserToQuarter($id, $request->user_id, $request->role);
+        $response = (new QuarterTransformer)->transform($quarter);
+        return $this->sendResponse($response, __('general.attached.manager'));
+    }
 
-        $userId = $request->get('user_id');
+    /**
+     * @param int $id
+     * @param MassAssignUsersRequest $request
+     * @return mixed
+     */
+    public function massAssignUsers(int $id, MassAssignUsersRequest $request)
+    {
+        /** @var Quarter $quarter */
+        $quarter = $this->quarterRepository->findWithoutFail($id);
+        if (empty($quarter)) {
+            return $this->sendError(__('models.quarter.errors.not_found'));
+        }
+
+        $data  = $request->toArray();
+        foreach ($data as $single) {
+            $this->assignSingleUserToQuarter($id, $single['user_id'], $single['role']);
+        }
+
+        $response = (new QuarterTransformer)->transform($quarter);
+        return $this->sendResponse($response, __('general.attached.manager'));
+    }
+
+    /**
+     * @param $quarterId
+     * @param $userId
+     * @param $role
+     * @return QuarterAssignee|\Illuminate\Database\Eloquent\Model|mixed
+     */
+    protected function assignSingleUserToQuarter($quarterId, $userId, $role)
+    {
         $user = User::find($userId);
         if (empty($user)) {
             return $this->sendError(__('models.user.errors.not_found'));
         }
 
-        $role = $request->role;
         if (in_array($role, ['manager', 'administrator'])) {
             $propertyManagerId = PropertyManager::where('user_id', $user->id)->value('id');
             if (empty($propertyManagerId)) {
@@ -605,18 +638,14 @@ class QuarterAPIController extends AppBaseController
             }
         }
 
-        $quarterAssignee = QuarterAssignee::updateOrCreate([
-            'quarter_id' => $id,
+        return QuarterAssignee::updateOrCreate([
+            'quarter_id' => $quarterId,
             'user_id' => $userId,
             'assignee_id' => $assigneeId,
             'assignee_type' => $assigneeType,
         ], [
-            'assignment_types' => $request->assignment_types,
             'created_at' => now()
         ]);
-
-        $response = (new QuarterTransformer)->transform($quarter);
-        return $this->sendResponse($response, __('general.attached.manager'));
     }
 
     /**

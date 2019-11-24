@@ -30,7 +30,7 @@
                             command="assign"
                             :disabled="!selectedItems.length"
                         >
-                            {{$t('models.building.assign_managers')}}
+                            {{$t('models.building.assign_persons')}}
                         </el-dropdown-item>
                         <el-dropdown-item
                             v-if="$can($permissions.delete.quarter)"
@@ -57,7 +57,7 @@
             @selectionChanged="selectionChanged"
         >
         </list-table>
-        <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
+        <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_persons')"
                    :visible.sync="assignManagersVisible"
                    v-loading="processAssignment" width="30%">
             <el-form :model="managersForm">
@@ -85,7 +85,7 @@
             </el-form>
             <span class="dialog-footer" slot="footer">
                 <el-button @click="closeModal" size="mini">{{$t('models.building.cancel')}}</el-button>
-                <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_managers')}}</el-button>
+                <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_persons')}}</el-button>
             </span>
         </el-dialog>
 

@@ -168,7 +168,7 @@
                 </el-form-item>
             </el-col>
    
-            <el-col :md="24" v-if="showResidents">
+            <!-- <el-col :md="24" v-if="showResidents">
                 <el-form-item :label="$t('general.resident')" prop="resident_ids">
                     <el-select
                         :loading="remoteLoading"
@@ -187,7 +187,7 @@
                             v-for="resident in residents"/>
                     </el-select>
                 </el-form-item>
-            </el-col>
+            </el-col> -->
             <!-- <el-col :md="12" v-if="showResident && model.unit_id">
                 <el-form-item :label="$t('general.resident')" prop="resident_id">
                     <el-select

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Pinboard;
 use App\Models\Listing;
@@ -15,6 +14,12 @@ use App\Repositories\BuildingRepository;
 use App\Repositories\ResidentRepository;
 use App\Repositories\UnitRepository;
 use Illuminate\Http\Response;
+use App\Models\Relation;
+use App\Models\Quarter;
+use App\Models\Settings;
+use App\Models\AuditableModel;
+use App\Models\Building;
+use App\Models\Unit;
 
 /**
  * Class UtilsAPIController
@@ -130,7 +135,8 @@ class UtilsAPIController extends AppBaseController
             'colors' => $colors,
             'logo' => $logo,
             'login' => $login,
-            'file_categories' => \ConstantsHelpers::MediaFileCategories
+            'file_categories' => \ConstantsHelpers::MediaFileCategories,
+            'status_colorcode' => PropertyManager::StatusColorCode,
         ];
 
         if (\Auth::guest()) {
@@ -140,12 +146,12 @@ class UtilsAPIController extends AppBaseController
     }
 
     /**
-     * @return App\Models\Settings|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     * @return Settings|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
      */
     protected function getSettings()
     {
         if (\Auth::guest()) {
-            return App\Models\Settings::with([
+            return Settings::with([
                 'address' => function($q) {
                     $q->select('id', 'city', 'street', 'zip', 'state_id')->with('state:id,name');
                 }])
@@ -166,7 +172,7 @@ class UtilsAPIController extends AppBaseController
                 ]);
         }
 
-        return App\Models\Settings::first([
+        return Settings::first([
             'login_variation',
             'login_variation_2_slider',
             'primary_color',
@@ -202,12 +208,13 @@ class UtilsAPIController extends AppBaseController
 
         return $details;
     }
+
     /**
      * @return array|false
      */
     protected function getAuditConstants()
     {
-        $events = App\Models\AuditableModel::Events;
+        $events = AuditableModel::Events;
         return array_combine($events, $events);
     }
 
@@ -219,8 +226,7 @@ class UtilsAPIController extends AppBaseController
         $result = [
             'title' => Resident::Title,
             'status' => Resident::Status,
-            'type' => Resident::Type,
-            'tenant_type' => Resident::TenantType,
+            'type' => Relation::Type, // @TODO delete
         ];
 
         return $result;
@@ -232,10 +238,11 @@ class UtilsAPIController extends AppBaseController
     protected function getRelationConstants()
     {
         $result = [
-            'status' => App\Models\Relation::Status,
-            'status_colorcode' => App\Models\Relation::StatusColorCode,
-            'deposit_type' => App\Models\Relation::DepositType,
-            'deposit_status' => App\Models\Relation::DepositStatus,
+            'type' => Relation::Type,
+            'status' => Relation::Status,
+            'status_colorcode' => Relation::StatusColorCode,
+            'deposit_type' => Relation::DepositType,
+            'deposit_status' => Relation::DepositStatus,
         ];
 
         return $result;
@@ -248,7 +255,7 @@ class UtilsAPIController extends AppBaseController
     protected function getBuildingsConstants()
     {
         $result = [
-            'type' => App\Models\Building::Type,
+            'type' => Building::Type,
         ];
 
         return $result;
@@ -260,7 +267,7 @@ class UtilsAPIController extends AppBaseController
     protected function getUnitConstants()
     {
         $result = [
-            'type' => App\Models\Unit::Type,
+            'type' => Unit::Type,
         ];
 
         return $result;
@@ -286,8 +293,8 @@ class UtilsAPIController extends AppBaseController
     protected function getQuartersConstants()
     {
         $result = [
-            'type' => App\Models\Quarter::Type,
-            'assignment_type' => App\Models\Quarter::AssignmentType, // @TODO delete
+            'type' => Quarter::Type,
+            'assignment_type' => Quarter::AssignmentType, // @TODO delete
         ];
 
         return $result;

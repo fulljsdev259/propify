@@ -211,6 +211,7 @@ return [
         'managers' => 'Mitarbeiter',
         'house_num' => 'Nr.',
         'assign_managers' => 'Mitarbeiter zuweisen',
+	    'assign_persons'=> 'Verantwortliche zuweisen',
         'unassign_manager' => 'Entfernen',
         'managers_assigned' => 'Mitarbeiter zugewiesen',
         'occupied_units' => 'Vermietete Einheiten',
@@ -616,11 +617,13 @@ return [
             'cost_consequences' => 'Kostenfolge',
         ],
         'action' => [
-            'fix' =>'Fix',
-            'leave' => 'Urlaub',
-            'wait' => 'Warten'
+            'label' => 'Aktion',
+            'fix' =>'Beheben',
+            'leave' => 'Belassen',
+            'wait' => 'Abwarten'
         ],
         'cost_impact' => [
+            'label' => 'Kostenfolge',
             'house_owner' => 'Eigentümer',
             'resident' => 'Bewohner',
             'shared_costs' => 'Geteilte Kosten'
@@ -680,12 +683,14 @@ return [
             'range' => 'Bereich',
             'component' => 'Bauteil',
             'capture_phase' => 'Erfassungsphase',
-            'payer_percent' => 'Anteil Fortimo',
+            'payer_percent' => 'Bewohneranteil in %',
             'payer_amount' => 'Betrag',
             'keywords' => 'Tags',
         ],
         'placeholders' => [
             'category' => 'Kategorie wählen',
+            'action' => 'Aktion wählen',
+            'cost_impact' => 'Kostenfolge wählen',
             'qualification' => 'Qualifikation wählen',
             'status' => 'Status wählen',
             'due_date' => 'Zu erledigen bis',

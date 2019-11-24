@@ -13,7 +13,7 @@ $factory->define(App\Models\Relation::class, function (Faker $faker) {
         'resident_id' => \App\Models\Resident::inRandomOrder()->value('id'),
         'quarter_id' => $unit->quarter->id ?? \App\Models\Quarter::inRandomOrder()->value('id'),
         'unit_id' => $unit->id,
-        'type' => array_rand(\App\Models\Unit::Type),
+        'type' => array_rand(\App\Models\Relation::Type),
         'status' => array_rand(\App\Models\Relation::Status),
         'deposit_type' => array_rand(\App\Models\Relation::DepositType),
         'deposit_status' => array_rand(\App\Models\Relation::DepositStatus),

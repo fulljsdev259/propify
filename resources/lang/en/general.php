@@ -279,6 +279,7 @@ return [
     'errors' => [
         'files_extension_images' => 'Only jpg and png files accepted',
     ],
+    'function'=> 'Function',
     'date_time_format' => '{date} at {time}',
     'day_at_time_period' => '{date} at {time1} - {time2}',
     'two_days_at_time' => '{date1} at {time1} - {date2} at {time2}',

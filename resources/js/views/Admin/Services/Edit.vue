@@ -1,19 +1,19 @@
 <template>
     <div class="services-edit mb20" v-loading.fullscreen.lock="loading.state">
-        <heading :title="$t('models.service.edit_title')" icon="icon-tools" shadow="heavy">
+        <heading :title="$t('models.service.edit_title')" icon="icon-tools" shadow="heavy" bgClass="bg-transparent">
             <template slot="description" v-if="model.service_provider_format">
                 <div class="subtitle">{{model.service_provider_format}}</div>
             </template>
-            <edit-actions :saveAction="submit" :deleteAction="deleteService" route="adminServices"/>
+            <edit-actions :saveAction="submit" :deleteAction="deleteService" route="adminServices" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
         </heading>
         <el-row :gutter="20" class="crud-view">
             <el-col :md="12">
-                <el-form :model="model" label-position="top" label-width="192px" ref="form">
+                <el-form :model="model" label-position="top" label-width="192px" ref="form" class="edit-details-form">
                     <card :header="$t('models.service.company_details')">
                         <el-row class="last-form-row" :gutter="20">
                             <el-col :md="12">
-                                <el-form-item :label="$t('models.service.category.label')" prop="category">
-                                    <el-select :placeholder="$t('models.service.placeholders.category')"
+                                <el-form-item :label="$t('general.function')" prop="category">
+                                    <el-select :disabled="!editMode" :placeholder="$t('general.function')"
                                                style="width: 100%"
                                                v-model="model.category">
                                         <el-option
@@ -27,15 +27,17 @@
                             </el-col>
                             <el-col :md="12">
                                 <el-form-item :label="$t('models.service.company_name')" :rules="validationRules.company_name" prop="company_name">
-                                    <el-input type="text" v-model="model.company_name"/>
+                                    <el-input :disabled="!editMode" type="text" v-model="model.company_name"/>
                                 </el-form-item>
                             </el-col>
+                        </el-row>
+                        <el-row class="last-form-row" :gutter="20">
                             <el-col :md="8">
                                 <el-form-item :rules="validationRules.title"
                                               :label="$t('general.salutation')"
                                               prop="title"
                                               class="label-block">
-                                    <el-select :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.title">
+                                    <el-select :disabled="!editMode" :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.title">
                                         <el-option
                                                 :key="title.value"
                                                 :label="title.name"
@@ -47,12 +49,12 @@
                             </el-col>
                             <el-col :md="8">
                                 <el-form-item :label="$t('general.last_name')" :rules="validationRules.last_name" prop="last_name">
-                                    <el-input type="text" v-model="model.last_name"/>
+                                    <el-input :disabled="!editMode" type="text" v-model="model.last_name"/>
                                 </el-form-item>
                             </el-col>
                             <el-col :md="8">
                                 <el-form-item :label="$t('general.first_name')" :rules="validationRules.first_name" prop="first_name">
-                                    <el-input type="text" v-model="model.first_name"/>
+                                    <el-input :disabled="!editMode" type="text" v-model="model.first_name"/>
                                 </el-form-item>
                             </el-col>
                         </el-row>
@@ -62,7 +64,7 @@
                             <el-col :md="12">
                                 <el-form-item :label="$t('general.street')" :rules="validationRules.street"
                                               prop="address.street">
-                                    <el-input type="text" v-model="model.address.street"></el-input>
+                                    <el-input :disabled="!editMode" type="text" v-model="model.address.street"></el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :md="12">
@@ -70,13 +72,13 @@
                                     <el-col :md="8">
                                         <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
                                                       prop="address.zip">
-                                            <el-input type="text" v-model="model.address.zip"></el-input>
+                                            <el-input :disabled="!editMode" type="text" v-model="model.address.zip"></el-input>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="16">
                                         <el-form-item :label="$t('general.city')" :rules="validationRules.city"
                                                       prop="address.city">
-                                            <el-input type="text" v-model="model.address.city"></el-input>
+                                            <el-input :disabled="!editMode" type="text" v-model="model.address.city"></el-input>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -88,7 +90,7 @@
                                 <el-form-item :label="$t('general.state')"
                                               :rules="validationRules.state_id"
                                               prop="address.state_id">
-                                    <el-select 
+                                    <el-select :disabled="!editMode"
                                         filterable
                                          clearable
                                         :placeholder="$t('general.state')" 
@@ -102,7 +104,7 @@
                             </el-col>
                             <el-col :md="12">
                                 <el-form-item :label="$t('general.phone')" prop="phone">
-                                    <el-input type="text" v-model="model.phone"/>
+                                    <el-input :disabled="!editMode" type="text" v-model="model.phone"/>
                                 </el-form-item>
                             </el-col>
                         </el-row>
@@ -110,7 +112,7 @@
                         <el-row class="last-form-row" :gutter="20">
                             <el-col :md="24">
                                 <el-form-item :label="$t('general.language')" :rules="validationRules.language" prop="settings.language">
-                                    <select-language :activeLanguage.sync="model.settings.language"/>
+                                    <select-language :disabled="!editMode" :activeLanguage.sync="model.settings.language"/>
                                 </el-form-item>
                             </el-col>
                         </el-row>
@@ -143,7 +145,7 @@
                             <el-col :md="12">
                                 <el-form-item :label="$t('general.email')" :rules="validationRules.email"
                                               prop="email">
-                                    <el-input type="email"
+                                    <el-input :disabled="!editMode" type="email"
                                               v-model="model.email"
                                               class="dis-autofill"
                                               readonly
@@ -158,7 +160,7 @@
                                 <el-form-item :label="$t('general.password')" :rules="validationRules.password"
                                               autocomplete="off"
                                               prop="password">
-                                    <el-input type="password"
+                                    <el-input :disabled="!editMode" type="password"
                                               v-model="model.password"
                                               class="dis-autofill"
                                               readonly
@@ -166,19 +168,19 @@
                                     />
                                 </el-form-item>
                             </el-col>
-                            <el-col :md="12">
+                            <!-- <el-col :md="12">
                                 <el-form-item :label="$t('general.confirm_password')"
                                               :rules="validationRules.password_confirmation"
                                               prop="password_confirmation">
-                                    <el-input type="password" v-model="model.password_confirmation"/>
+                                    <el-input :disabled="!editMode" type="password" v-model="model.password_confirmation"/>
                                 </el-form-item>
-                            </el-col>
+                            </el-col> -->
                         </el-row>
                     </card>
                 </el-form>
             </el-col>
             <el-col :md="12">
-                <raw-grid-statistics-card :cols="8" :data="statistics.raw"/>
+<!--                <raw-grid-statistics-card :cols="8" :data="statistics.raw"/>-->
                 <!--<card class="mt15" :header="$t('general.box_titles.buildings_and_quarters')">
             
                     <assignment-by-type
@@ -202,7 +204,7 @@
                     />
 
                 </card>-->
-                <card class="mt15" :header="$t('general.requests')">
+                <card :header="$t('general.requests')">
 
                     <relation-list
                         :actions="requestActions"
@@ -295,11 +297,26 @@
                         onClick: this.notifyUnassignment,
                         tooltipMode: true,
                     }]
-                }]
+                }],
+                editMode: false,
+                visibleDialog: false,
             }
         },
         methods: {
             ...mapActions(['unassignServiceBuilding', 'unassignServiceQuarter', 'deleteService']),
+            handleChangeEditMode() {
+                if(!this.editMode) {
+                    this.editMode = !this.editMode;
+                    this.old_model = _.clone(this.model, true);
+                } else {
+                    if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
+                        this.visibleDialog = true;
+                    } else {
+                        this.editMode = !this.editMode;
+                    }
+                }
+            },
+
             requestEditView(row) {
                 this.$router.push({
                     name: 'adminRequestsEdit',
@@ -384,10 +401,6 @@
     }
 
     .services-edit {
-        .heading {
-            margin-bottom: 20px;
-        }
-
         .crud-view {
             > .el-col {
                 margin-bottom: 1em;

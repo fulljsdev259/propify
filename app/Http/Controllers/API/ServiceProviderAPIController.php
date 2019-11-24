@@ -131,7 +131,8 @@ class ServiceProviderAPIController extends AppBaseController
             'quarters:quarters.id,internal_quarter_id'
         ]);
 
-        $this->serviceProviderRepository->withCount('requests')->scope('allRequestStatusCount');
+        $this->serviceProviderRepository->withCount('requests')
+            ->scope('allRequestStatusCount');
         $serviceProviders = $this->serviceProviderRepository->paginate($perPage);
 
         if ($request->show_category_name) {
@@ -231,14 +232,12 @@ class ServiceProviderAPIController extends AppBaseController
     {
         $input = $request->all();
 
-        $input['category_name'] = $input['category_name'] ?? $input['name']; // @TODO delete
         if (!isset($input['user']['email'])) {
             $input['user']['email'] = $input['email'];
         }
 
         if (!isset($input['user']['name'])) {
-            $input['user']['name'] = $input['category_name']; // @TODO delete
-//            $input['user']['name'] = $input['first_name'] . ' ' . $input['last_name']; // @TODO uncomment
+            $input['user']['name'] = $input['first_name'] . ' ' . $input['last_name'];
         }
 
         if (!isset($input['user']['phone'])) {
@@ -253,10 +252,6 @@ class ServiceProviderAPIController extends AppBaseController
 
         if (isset($input['settings'])) {
             $input['user']['settings'] = Arr::pull($input, 'settings');
-        }
-
-        if (!empty($input['language']) && empty($input['user']['settings']['language'])) {
-            $input['user']['settings']['language'] = $input['language']; // @TODO remove
         }
 
         try {
@@ -402,11 +397,9 @@ class ServiceProviderAPIController extends AppBaseController
         if (empty($serviceProvider)) {
             return $this->sendError(__('models.service.errors.not_found'));
         }
-        $input['category_name'] = $input['category_name'] ?? $input['name']; // @TODO delete
         if (isset($input['user'])) {
             $input['user']['email'] = $input['email'];
-            $input['user']['name'] = $input['category_name']; // @TODO delete
-//            $input['user']['name'] = $input['first_name'] . ' ' . $input['last_name']; // @TODO uncomment
+            $input['user']['name'] = $input['first_name'] . ' ' . $input['last_name'];
 
             $validator = Validator::make($input['user'], User::$rulesUpdate);
             if ($validator->fails()) {
@@ -415,9 +408,6 @@ class ServiceProviderAPIController extends AppBaseController
         }
 
         $input['user']['settings'] = Arr::pull($input, 'settings', []);
-        if (!empty($input['language']) && empty($input['user']['settings']['language'])) {
-            $input['user']['settings']['language'] = $input['language']; // @TODO remove
-        }
         try {
             User::disableAuditing();
             $user = $this->userRepository->update($input['user'], $serviceProvider->user_id);

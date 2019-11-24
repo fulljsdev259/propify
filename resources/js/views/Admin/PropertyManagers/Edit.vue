@@ -57,7 +57,7 @@
                                         </el-form-item>
                                     </el-col>
                                    <el-col :md="8">
-                                        <el-form-item class="label-block" :label="$t('general.roles.label')" :rules="validationRules.type"
+                                        <el-form-item class="label-block" :label="$t('general.function')" :rules="validationRules.type"
                                                         prop="type">
                                             <el-select style="display: block" v-model="model.type" :placeholder="$t('general.placeholders.select')">
                                                 <el-option
@@ -90,7 +90,7 @@
                             </el-tab-pane>
                             <el-tab-pane :label="$t('models.property_manager.profile_card')" name="profile">
                                 <el-row :gutter="20">
-                                    <el-col :md="12">
+                                    <el-col :md="24">
                                         <el-form-item :label="$t('general.password')"
                                                       :rules="validationRules.password"
                                                       prop="password">
@@ -104,7 +104,7 @@
                                             />
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :md="12">
+                                    <!-- <el-col :md="12">
                                         <el-form-item :label="$t('general.confirm_password')"
                                                       :rules="validationRules.password_confirmation"
                                                       prop="password_confirmation">
@@ -116,7 +116,7 @@
                                                 onfocus="this.removeAttribute('readonly');"
                                             />
                                         </el-form-item>
-                                    </el-col>
+                                    </el-col> -->
                                 </el-row>
                                 <el-form-item :label="$t('models.user.profile_image')">                                    
                                     <cropper

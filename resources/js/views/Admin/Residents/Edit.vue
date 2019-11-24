@@ -218,6 +218,18 @@
                                                     <el-input autocomplete="off" type="email" v-model="model.email"></el-input>
                                                 </el-form-item>
                                             </el-col>
+                                            <el-col :md="12">
+                                                <el-form-item :label="$t('general.password')" :rules="validationRules.password"
+                                                            prop="password">
+                                                    <el-input autocomplete="off"
+                                                            type="password"
+                                                            v-model="model.password"
+                                                            class="dis-autofill"
+                                                            readonly
+                                                            onfocus="this.removeAttribute('readonly');"
+                                                    ></el-input>
+                                                </el-form-item>
+                                            </el-col>
                                             <!-- <el-col :md="12">
                                                 <el-form-item :label="$t('models.resident.status.label')"
                                                             :rules="validationRules.status"
@@ -234,26 +246,14 @@
                                             </el-col> -->
                                         </el-row>
                                         <el-row class="last-form-row" :gutter="20">
-                                            <el-col :md="12">
-                                                <el-form-item :label="$t('general.password')" :rules="validationRules.password"
-                                                            prop="password">
-                                                    <el-input autocomplete="off"
-                                                            type="password"
-                                                            v-model="model.password"
-                                                            class="dis-autofill"
-                                                            readonly
-                                                            onfocus="this.removeAttribute('readonly');"
-                                                    ></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                            <el-col :md="12">
+                                            <!-- <el-col :md="12">
                                                 <el-form-item :label="$t('general.confirm_password')"
                                                             :rules="validationRules.password_confirmation"
                                                             prop="password_confirmation">
                                                     <el-input autocomplete="off" type="password"
                                                             v-model="model.password_confirmation"></el-input>
                                                 </el-form-item>
-                                            </el-col>
+                                            </el-col> -->
                                         </el-row>
                                     </el-card>
                                 </el-col>
