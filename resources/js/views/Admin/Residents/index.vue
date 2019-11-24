@@ -91,7 +91,8 @@
                     prop: 'mobile_phone',
                 }, {
                     label: 'models.resident.business_relation',
-                    prop: 'type',
+                    withResidentTypes: true,
+                    prop: 'types',
                 }/*, {
                     label: 'general.id',
                     prop: 'id',
@@ -114,7 +115,7 @@
                     withCollapsables: true,
                     width: 150,
                     props: ['unit_names']
-                }*/, {
+                }*//*, {
                     label: 'models.resident.relation.title',
                     withCounts: true,
                     counts: [
@@ -135,7 +136,12 @@
                             label: this.$t('models.resident.status.not_active')
                         }
                     ]
-                }/*, {
+                }*/, {
+                    label: 'models.building.request_status',
+                    withCounts: true,
+                    width: 230,
+                    prop: 'request_count'
+                },/*, {
                     label: 'models.resident.status.label',
                     prop: 'status',
                     i18nPath: 'models.resident.status',
@@ -158,9 +164,9 @@
                             this.$permissions.update.resident
                         ]
                     }]
-                }*/, {
+                }*//*, {
                     width: 130,
-                    actions: [/*{
+                    actions: [{
                         type: '',
                         icon: 'ti-pencil',
                         title: 'models.resident.view',
@@ -168,8 +174,8 @@
                         permissions: [
                             this.$permissions.view.resident
                         ]
-                    }*/]
-                }],
+                    }]
+                }*/],
                 buildings:[],
                 units:[],
                 states:[],
@@ -258,6 +264,14 @@
                     };
                 });
             },
+            prepareRelationFilters(property) {
+                return Object.keys(this.relationConstants[property]).map((id) => {
+                    return {
+                        id: parseInt(id),
+                        name: this.$t(`models.resident.relation.${property}.${this.relationConstants[property][id]}`)
+                    };
+                });
+            },
             prepareRequestFilters(property) {
                 return Object.keys(this.requestConstants[property]).map((id) => {
                     return {
@@ -274,7 +288,10 @@
                 },
                 requestConstants(state) {
                     return state.constants.requests;
-                }
+                },
+                relationConstants(state) {
+                    return state.constants.relations;
+                },
             }),
             filters() {
                 return [
@@ -320,17 +337,17 @@
                         key: 'status',
                         data: this.prepareFilters('status'),
                     },
-                    {
+                    /*{
                         name: this.$t('general.filters.language'),
                         type: 'select',
                         key: 'language',
                         data: []
-                    },
+                    },*/
                     {
                         name: this.$t('general.filters.type'),
                         type: 'select',
                         key: 'type',
-                        data: this.prepareFilters('type'),
+                        data: this.prepareRelationFilters('type'),
                     }
                 ]
             }

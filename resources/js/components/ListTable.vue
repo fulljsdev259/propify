@@ -217,6 +217,8 @@
                     </div>
                     <div v-else-if="column.withCounts">
                         <request-count :countsData="items[scope.$index]" ></request-count>
+                    </div>
+                    <div v-else-if="column.withRelationCounts">
                         <relation-count :countsData="items[scope.$index]" ></relation-count>
                     </div>
                     <div v-else-if="column.withMultiplePropsString">
@@ -264,6 +266,9 @@
                                 </el-tooltip>
                             </span>
                         </div>
+                    </div>
+                    <div v-else-if="column.withResidentTypes">
+                        {{ showResidentTypes(scope.row[column.prop]) }}
                     </div>
                     <div v-else-if="column.withIcon">
                         <span class="icon-container">
@@ -641,6 +646,14 @@
             },
             onCurrentPageChange(newPage) {
                 this.updatePage(newPage);
+            },
+            showResidentTypes(types) {
+                console.log(types.constructor)
+                if(types.constructor === Array){
+                    let translatedTypes = types.map(type => this.$t(`models.resident.relation.type.${this.$constants.relations.type[type]}`))
+                    return translatedTypes.join(', ')
+                }
+                
             },
             filterChanged(filter, init = false) {
                 if (filter.type === this.filterTypes.select || filter.type == this.filterTypes.language) {
