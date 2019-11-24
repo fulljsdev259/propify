@@ -266,7 +266,7 @@ return [
         'logout_confirm' => 'Sie werden ausgeloggt.',
     ],
     'roles' => [
-        'label' => 'Funktion',
+        'label' => 'Rolle',
         'administrator' => 'Administrator',
         'resident' => 'Bewohner',
         'manager' => 'Bewirtschafter',
@@ -281,6 +281,7 @@ return [
     'errors' => [
         'files_extension_images' => 'Nur Dateien in der Formaten .jpg und .png erlaubt.',
     ],
+	'function'=> 'Funktion',
     'date_time_format' => '{date} um {time} Uhr',
     'day_at_time_period' => '{date} von {time1} - {time2} Uhr',
     'two_days_at_time' => 'Vom {date1}, {time1} bis {date2}, {time2}',

@@ -10,8 +10,8 @@
                         <card :header="$t('models.service.company_details')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item class="label-block" :label="$t('models.service.category.label')" :rules="validationRules.category" prop="category">
-                                        <el-select :placeholder="$t('models.service.placeholders.category')" style="display: block;"
+                                    <el-form-item class="label-block" :label="$t('general.function')" :rules="validationRules.category" prop="category">
+                                        <el-select :placeholder="$t('general.function')" style="display: block;"
                                                    v-model="model.category">
                                             <el-option
                                                     :key="key"

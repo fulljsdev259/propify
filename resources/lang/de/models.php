@@ -618,9 +618,9 @@ return [
         ],
         'action' => [
             'label' => 'Aktion',
-            'fix' =>'Fix',
-            'leave' => 'Urlaub',
-            'wait' => 'Warten'
+            'fix' =>'Beheben',
+            'leave' => 'Belassen',
+            'wait' => 'Abwarten'
         ],
         'cost_impact' => [
             'label' => 'Kostenfolge',

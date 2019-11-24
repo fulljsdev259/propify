@@ -107,7 +107,7 @@
                     label: 'general.phone',
                     prop: 'phone'
                 }, {
-                    label: 'models.service.category.label',
+                    label: 'general.function',
                     withServiceCategory: true,
                     prop: 'category'
                 }, {
@@ -179,7 +179,7 @@
                         remoteLoading: false,
                         fetch: this.fetchRemoteBuildings
                     }, {
-                        name: this.$t('general.filters.categories'),
+                        name: this.$t('general.function'),
                         type: 'select',
                         key: 'category',
                         data: this.categories,
