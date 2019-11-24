@@ -144,14 +144,14 @@
                     withStatusSign: true,
                     prop: 'status',
                     width: 100
-                }, {
+                }, /*{
                     label: 'general.name',
                     prop: 'user.name'
-                }, /*{
+                }, */{
                     label: 'general.name',
                     withAvatars: true,
                     props: ['user']
-                },*/ {
+                }, {
                     label: 'general.email',
                     prop: 'user.email'
                 }, {
