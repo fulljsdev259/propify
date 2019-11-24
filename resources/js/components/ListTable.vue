@@ -648,12 +648,10 @@
                 this.updatePage(newPage);
             },
             showResidentTypes(types) {
-                console.log(types.constructor)
                 if(types.constructor === Array){
                     let translatedTypes = types.map(type => this.$t(`models.resident.relation.type.${this.$constants.relations.type[type]}`))
                     return translatedTypes.join(', ')
                 }
-                
             },
             filterChanged(filter, init = false) {
                 if (filter.type === this.filterTypes.select || filter.type == this.filterTypes.language) {

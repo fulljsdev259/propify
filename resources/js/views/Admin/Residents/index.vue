@@ -1,9 +1,11 @@
 <template>
     <div class="residents">
-        <heading :title="$t('general.resident')" icon="icon-group" shadow="heavy" class="padding-right-300">
-            <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
-            </template>
+        <heading :title="$t('general.resident')" 
+                    icon="icon-group" 
+                    shadow="heavy" 
+                    :searchBar="true"
+                    @search-change="search=$event"
+                    class="padding-right-300">
             <template v-if="$can($permissions.create.resident)">
                 <el-button 
                     @click="add" 
@@ -14,7 +16,10 @@
                     {{$t('models.resident.add')}}
                 </el-button>
             </template>
-            <template v-if="$can($permissions.delete.resident)">
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
+            </template>
+            <!-- <template v-if="$can($permissions.delete.resident)">
                 <el-button 
                     :disabled="!selectedItems.length" 
                     @click="batchDeleteWithIds" 
@@ -24,6 +29,23 @@
                 >
                     {{$t('general.actions.delete')}}
                 </el-button>
+            </template> -->
+            <template>
+                <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
+                    <el-button size="mini" class="transparent-button">
+                        <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item
+                                v-if="$can($permissions.delete.resident)"
+                                :disabled="!selectedItems.length"
+                                icon="ti-trash"
+                                command="delete"
+                        >
+                            {{$t('general.actions.delete')}}
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
             </template>
         </heading>
         <list-table
@@ -36,6 +58,7 @@
                 :isLoadingFilters="{state: isLoadingFilters}"
                 :pagination="{total, currPage, currSize}"
                 :withSearch="false"
+                :searchText="search"
                 @selectionChanged="selectionChanged"
         >
         </list-table>
@@ -137,7 +160,7 @@
                         }
                     ]
                 }*/, {
-                    label: 'models.building.request_status',
+                    label: 'general.request_status',
                     withCounts: true,
                     width: 230,
                     prop: 'request_count'
@@ -181,6 +204,7 @@
                 states:[],
                 quarters:[],
                 isLoadingFilters: false,
+                search: '',
             };
         },
         async created(){
@@ -198,6 +222,10 @@
         },
         methods: {
             ...mapActions(['getBuildings', 'getQuarters', 'getUnits', 'changeResidentStatus']),
+            handleMenuClick(command) {
+                if(command == 'delete')
+                    this.batchDeleteWithIds();
+            },
             add() {
                 this.$router.push({
                     name: 'adminResidentsAdd'
