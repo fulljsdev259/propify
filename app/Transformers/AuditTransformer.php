@@ -301,6 +301,7 @@ class AuditTransformer extends BaseTransformer
 
     protected function getAssigneesName($class, $ids)
     {
+        // @TODO here used many queries need optimize
         $items = $class::whereIn('id', $ids)->get(['first_name', 'last_name']);
         return $items->pluck('name')->implode(', ');
     }
