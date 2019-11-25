@@ -639,7 +639,7 @@
                     label: 'general.name'
                 }, {
                     prop: 'role',
-                    label: 'models.request.user_type.label',
+                    label: 'general.roles.label',
                     i18n: this.translateType
                 }],
                 assigneesActions: [{
@@ -726,7 +726,7 @@
         methods: {
             ...mapActions(['unassignAssignee', 'deleteRequest', 'downloadRequestPDF']),
             translateType(type) {
-                return this.$t(`models.request.user_type.${type}`);
+                return this.$t(`general.roles.${type}`);
             },
             isDisabled(status) {
                 return _.indexOf(this.constants.requests.statusByAgent[this.model.status], parseInt(status)) < 0

@@ -709,6 +709,7 @@ export default (config = {}) => {
                             this.$set(this.model, 'sub_category_id', data.sub_category.id);
                         this.$set(this.model, 'created_by', data.created_by);
                         this.$set(this.model, 'building', data.relation.building.name);
+                        console.log('data', data)
                         this.address = data.relation.address
                         //this.relations = resp.data.resident.relations.filter(item => item.status == 1)
                         this.model.relation_id = data.relation.id
