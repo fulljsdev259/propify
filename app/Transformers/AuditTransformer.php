@@ -153,11 +153,13 @@ class AuditTransformer extends BaseTransformer
         elseif($model->event == 'manager_unassigned'){            
             $response['statement'] = __("general.components.common.audit.content.general.manager_unassigned",['propertyManagerFirstName' => $model->old_values['property_manager_first_name'],'propertyManagerLastName' => $model->old_values['property_manager_last_name']]);
         }
-        elseif($model->event == 'provider_assigned'){            
-            $response['statement'] = __("general.components.common.audit.content.general.provider_assigned",['providerName' => $model->new_values['service_provider_name']]);
+        elseif($model->event == 'provider_assigned'){
+            $providerName = $model->new_values['service_provider_company_name'] ?? $model->new_values['service_provider_name'];
+            $response['statement'] = __("general.components.common.audit.content.general.provider_assigned",['providerName' => $providerName]);
         }
-        elseif($model->event == 'provider_unassigned'){            
-            $response['statement'] = __("general.components.common.audit.content.general.provider_unassigned",['providerName' => $model->old_values['service_provider_name']]);
+        elseif($model->event == 'provider_unassigned'){
+            $providerName = $model->new_values['service_provider_company_name'] ?? $model->new_values['service_provider_name'];
+            $response['statement'] = __("general.components.common.audit.content.general.provider_unassigned",['providerName' => $providerName]);
         }
         elseif($model->event == 'media_uploaded'){            
             $response['statement'] = __("general.components.common.audit.content.general.media_uploaded");
@@ -169,7 +171,8 @@ class AuditTransformer extends BaseTransformer
             $response['statement'] = __("general.components.common.audit.content.general.avatar_uploaded",['auditable_type' => $model->auditable_type]);
         }
         elseif($model->event == 'provider_notified'){
-            $response['statement'] = __("general.components.common.audit.content.general.provider_notified",['providerName' => $model->new_values['service_provider']['name']]);
+            $providerName = $model->new_values['service_provider']['company_name'] ?? $model->new_values['service_provider']['name'];
+            $response['statement'] = __("general.components.common.audit.content.general.provider_notified",['providerName' => $providerName]);
         }  
         elseif($model->event == 'quarter_assigned'){
             $response['statement'] = __("general.components.common.audit.content.general.quarter_assigned",['quarterName' => $model->new_values['quarter_name']]);
