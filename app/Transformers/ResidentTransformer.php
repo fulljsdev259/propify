@@ -77,17 +77,17 @@ class ResidentTransformer extends BaseTransformer
                 $response['types'] = collect($response['relations'])->pluck('type')->unique()->values()->all();
             }
         }
-
-        if ( $model->relationExists('garant_relations')) { // @TODO delete reloading
-
-
-            $response['relations'] = $response['relations'] ?? [];
-            $garantRelationData = (new RelationTransformer())->transformCollection($model->garant_relations);
-            foreach ($garantRelationData as $single) {
-                $single['garant'] = 1;
-                $response['relations'][] = $single;
-            }
-        }
+//
+//        if ( $model->relationExists('garant_relations')) { // @TODO delete reloading
+//
+//
+//            $response['relations'] = $response['relations'] ?? [];
+//            $garantRelationData = (new RelationTransformer())->transformCollection($model->garant_relations);
+//            foreach ($garantRelationData as $single) {
+//                $single['garant'] = 1;
+//                $response['relations'][] = $single;
+//            }
+//        }
 
         return $this->addAuditIdInResponseIfNeed($model, $response);
     }
