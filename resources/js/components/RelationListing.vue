@@ -171,7 +171,7 @@
 
                     <div v-else-if="column.type === 'assignProviderManagerFunctions'">
                         {{scope.row.type == "provider" ? $t(`models.service.category.${$constants.serviceProviders.category[scope.row.function]}`)  : ''}}
-                        {{scope.row.type == "manager" ? $t(`general.assignment_types.${scope.row.role}`) : ''}}
+                        {{scope.row.type == "manager" ? $t(`general.roles.${scope.row.role}`) : ''}}
                     </div>
 
                     <div v-else-if="column.type === 'unitResidentAvatar'">

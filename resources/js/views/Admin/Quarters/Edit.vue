@@ -241,7 +241,7 @@
                                             <span style="float: left">{{ assignee.name }}</span>
                                             <span style="float: right; color: #8492a6; font-size: 13px">
                                                 {{assignee.roles[0].name == "provider" ? $t(`models.service.category.${assignee.function}`)  : ''}}
-                                                {{assignee.roles[0].name == "manager" || assignee.roles[0].name == "administrator" ? $t(`general.assignment_types.${assignee.function}`) : ''}} 
+                                                {{assignee.roles[0].name != "provider" ? $t(`general.roles.${assignee.function}`) : ''}} 
                                             </span>
                                         </el-option>
                                     </el-select>
@@ -614,7 +614,6 @@
                     label: 'general.name'
                 }, {
                     type: 'assignProviderManagerFunctions',
-                    label: 'general.type',
                 }/*, {
                     prop: 'assignment_types',
                     label: 'general.assignment_types.label',
@@ -728,7 +727,7 @@
                 }
             },
             translateType(type) {
-                return this.$t(`general.assignment_types.${type}`);
+                return this.$t(`general.roles.${type}`);
             },
             translateResidentType(type) {
                 return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);

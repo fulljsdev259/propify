@@ -21,9 +21,9 @@ class AddNewRoles extends Migration
 
         // old roles count is 4 only that case add this new roles
         $allPermissions = Permission::get();
-        $initialLettingPermissions = $allPermissions->whereIn('name', config('permissions.initial_letting'));
-        $marketingPermissions = $allPermissions->whereIn('name', config('permissions.marketing'));
-        $siteSupervisionPermissions = $allPermissions->whereIn('name', config('permissions.site_supervision'));
+        $initialLettingPermissions = $allPermissions->whereIn('name', config('permissions.manager'));
+        $marketingPermissions = $allPermissions->whereIn('name', config('permissions.manager'));
+        $siteSupervisionPermissions = $allPermissions->whereIn('name', config('permissions.manager'));
 
         $ILCUser = new Role();
         $ILCUser->name = 'initial_letting';
