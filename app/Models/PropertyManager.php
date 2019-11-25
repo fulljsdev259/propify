@@ -262,4 +262,15 @@ class PropertyManager extends AuditableModel
     {
         return $this->morphToMany(Quarter::class, 'assignee', 'quarter_assignees', 'assignee_id', 'quarter_id');
     }
+
+    /**
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        if (! empty( $this->attributes['name'])) {
+            return $this->attributes['name'];
+        }
+        return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
+    }
 }

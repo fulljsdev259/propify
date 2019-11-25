@@ -4,9 +4,11 @@ namespace App\Transformers;
 
 use App\Helpers\Helper;
 use App\Models\Pinboard;
+use App\Models\PropertyManager;
 use App\Models\Resident;
 use App\Models\Listing;
 use App\Models\Request;
+use App\Models\ServiceProvider;
 use App\Models\User;
 use App\Repositories\AuditRepository;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -147,19 +149,25 @@ class AuditTransformer extends BaseTransformer
         elseif($model->event == 'deleted'){
             $response['statement'] = __("general.components.common.audit.content.general.deleted",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
         }
-        elseif($model->event == 'manager_assigned'){            
-            $response['statement'] = __("general.components.common.audit.content.general.manager_assigned",['propertyManagerFirstName' => $model->new_values['property_manager_first_name'],'propertyManagerLastName' => $model->new_values['property_manager_last_name']]);
+        elseif($model->event == 'manager_assigned'){
+            $ids = $model->new_values['ids'] ?? [];
+            $assigneeNames = $this->getAssigneesName(PropertyManager::class, $ids);
+            $response['statement'] = __("general.components.common.audit.content.general.manager_assigned",['assignee' => $assigneeNames]);
         }
-        elseif($model->event == 'manager_unassigned'){            
-            $response['statement'] = __("general.components.common.audit.content.general.manager_unassigned",['propertyManagerFirstName' => $model->old_values['property_manager_first_name'],'propertyManagerLastName' => $model->old_values['property_manager_last_name']]);
+        elseif($model->event == 'manager_unassigned'){
+            $ids = $model->old_values['ids'] ?? [];
+            $assigneeNames = $this->getAssigneesName(PropertyManager::class, $ids);
+            $response['statement'] = __("general.components.common.audit.content.general.manager_unassigned", ['assignee' => $assigneeNames]);
         }
         elseif($model->event == 'provider_assigned'){
-            $providerName = $model->new_values['service_provider_company_name'] ?? $model->new_values['service_provider_name'];
-            $response['statement'] = __("general.components.common.audit.content.general.provider_assigned",['providerName' => $providerName]);
+            $ids = $model->old_values['ids'] ?? [];
+            $assigneeNames = $this->getAssigneesName(ServiceProvider::class, $ids);
+            $response['statement'] = __("general.components.common.audit.content.general.provider_assigned",['assignee' => $assigneeNames]);
         }
         elseif($model->event == 'provider_unassigned'){
-            $providerName = $model->new_values['service_provider_company_name'] ?? $model->new_values['service_provider_name'];
-            $response['statement'] = __("general.components.common.audit.content.general.provider_unassigned",['providerName' => $providerName]);
+            $ids = $model->old_values['ids'] ?? [];
+            $assigneeNames = $this->getAssigneesName(ServiceProvider::class, $ids);
+            $response['statement'] = __("general.components.common.audit.content.general.provider_unassigned",['assignee' => $assigneeNames]);
         }
         elseif($model->event == 'media_uploaded'){            
             $response['statement'] = __("general.components.common.audit.content.general.media_uploaded");
@@ -289,5 +297,11 @@ class AuditTransformer extends BaseTransformer
     private function getMorphedModel($alias)
     {
         return Relation::getMorphedModel($alias) ?? $alias;
+    }
+
+    protected function getAssigneesName($class, $ids)
+    {
+        $items = $class::whereIn('id', $ids)->get(['first_name', 'last_name']);
+        return $items->pluck('name')->implode(', ');
     }
 }
