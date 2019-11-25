@@ -229,7 +229,8 @@
                     </div>
                     <div v-else-if="column.withInternalQuarterIds">
                         <div class="internal-quarter-wrapper">
-                            <span class="internal-quarter" v-for="item in scope.row[column.prop]">{{item}}</span>
+                            <span class="internal-quarter" v-for="item in scope.row[column.prop].slice(0, 2)">{{item}}</span>
+                            <span v-if="scope.row[column.prop].length > 2" class="internal-quarter internal-quarter_count">+{{scope.row[column.prop].length - 2}}</span>
                         </div>
                     </div>
                     <div v-else-if="column.withStatusSign">
@@ -1187,12 +1188,20 @@
         color: #dd6161;
     }
 
+    .internal-quarter-wrapper {
+        display: flex;
+    }
     .internal-quarter {
         margin: 4px 8px 4px 0;
         display: inline-flex;
         padding: 4px;
         border-radius: 2px;
         background: var(--background-color-base);
+        white-space: nowrap;
+        &_count {
+            background: #bfbfbf;
+            font-weight: 500;
+        }
     }
 
 </style>
