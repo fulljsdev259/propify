@@ -34,12 +34,6 @@ export default (config = {}) => {
                     name: '',
                     phone: '',
                 },
-                roles: [{
-                        id:1, name:'manager'
-                    }, {
-                        id:2, name:'administrator'
-                    }
-                ],
                 addedAssigmentList: [],
                 statistics: {
                     raw: [{
