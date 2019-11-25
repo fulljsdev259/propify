@@ -752,7 +752,6 @@
                         this.updateSettings(this.model).then((resp) => {
 
                             this.fetchSettings();
-                            console.log('save settings')
                             this.$root.$emit('update_circle_logo', this.model.circle_logo);
                             displaySuccess(resp);
                             //this.main_drawer = false;
