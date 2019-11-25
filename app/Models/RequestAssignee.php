@@ -63,11 +63,9 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RequestAssignee whereRequestId($value)
  * @mixin \Eloquent
  */
-class RequestAssignee extends AuditableModel
+class RequestAssignee extends Assignee
 {
     protected $table = 'request_assignees';
-
-    public $timestamps = false;
 
     public $fillable = [
         'request_id',
@@ -75,10 +73,6 @@ class RequestAssignee extends AuditableModel
         'assignee_type',
         'sent_email',
         'created_at',
-    ];
-
-    public $auditEvents = [
-        AuditableModel::EventDeleted
     ];
 
     /**
@@ -96,21 +90,5 @@ class RequestAssignee extends AuditableModel
         $data['old_values'] = $olddata;
         $data['event'] = $event;
         return $data;
-    }
-
-    // @TODO make more good way
-    protected function getAuditData()
-    {
-        $model = Relation::$morphMap[$this->assignee_type] ?? $this->assignee_type;
-        if (! class_exists($model)) {
-            return [];
-        }
-        $eventConvig = [
-            User::class => AuditableModel::EventUserUnassigned,
-            ServiceProvider::class => AuditableModel::EventProviderUnassigned,
-            PropertyManager::class => AuditableModel::EventManagerUnassigned,
-        ];
-
-        return [$eventConvig[$model], ['ids' => [$this->assignee_id]]];
     }
 }
