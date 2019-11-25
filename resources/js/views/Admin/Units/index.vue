@@ -235,20 +235,22 @@
                         type: 'select',
                         key: 'building_id',
                         data: this.buildings,
-                    },{
-                        name: this.$t('models.building.type'),
-                        type: 'select',
-                        key: 'building_type',
-                        data: this.quarterTypes,
-                    },{
+                    },
+                    // {
+                    //     name: this.$t('models.building.type'),
+                    //     type: 'select',
+                    //     key: 'btypes',
+                    //     data: this.quarterTypes,
+                    // },
+                    {
                         name: this.$t('models.unit.type.label'),
                         type: 'select',
-                        key: 'unit_type',
+                        key: 'types',
                         data: this.types,
                     },{
                         name: this.$t('general.roles.manager'),
                         type: 'select',
-                        key: 'manager_id',
+                        key: 'user_ids',
                         data: this.roles
                     },{
                         name: this.$t('general.filters.saved_filters'),

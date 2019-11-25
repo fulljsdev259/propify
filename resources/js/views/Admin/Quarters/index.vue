@@ -207,13 +207,13 @@
                     },{
                         name: this.$t('models.quarter.type'),
                         type: 'select',
-                        key: 'quarter_type',
+                        key: 'types',
                         data: this.types,
                         searchBox: true,
                     },{
                         name: this.$t('general.roles.manager'),
                         type: 'select',
-                        key: 'role',
+                        key: 'user_ids',
                         data: this.roles
                     },{
                         name: this.$t('general.filters.saved_filters'),

@@ -116,6 +116,7 @@
                         </el-tab-pane>
                         <el-tab-pane name="buildings">
                             <span slot="label">
+                                {{ $t('general.box_titles.buildings') }}
                                 <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge>
                             </span>
                             <relation-list
@@ -140,7 +141,8 @@
                         </el-tab-pane>
                         <el-tab-pane name="files">
                             <span slot="label">
-                                <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge>
+                                {{ $t('general.box_titles.files') }}
+                                <!-- <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge> -->
                             </span>
                             <draggable @sort="sortFiles" v-model="model.media">
                                 <transition-group name="list-complete">
@@ -200,7 +202,8 @@
                     <el-tabs type="border-card" v-model="activeRightTab">
                         <el-tab-pane name="assignees">                        
                             <span slot="label">
-                                <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
+                                {{ $t('general.box_titles.managers') }}
+                                <!-- <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge> -->
                             </span>
                             <!-- <assignment-by-type
                                 :resetToAssignList="resetToAssignList"
@@ -277,7 +280,8 @@
                         </el-tab-pane>
                        <el-tab-pane name="workflow">
                             <span slot="label">
-                                <el-badge :value="workflowCount" :max="99" class="admin-layout">{{ $t('models.quarter.workflow.label') }} </el-badge>
+                                {{ $t('models.quarter.workflow.label') }}
+                                <!-- <el-badge :value="workflowCount" :max="99" class="admin-layout">{{ $t('models.quarter.workflow.label') }} </el-badge> -->
                             </span>
                             <div class="workflow-button-bar">
                                 <el-button 
@@ -403,7 +407,8 @@
                     <el-tabs type="border-card" v-model="activeRequestTab">
                         <el-tab-pane name="requests">
                             <span slot="label">
-                                <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
+                                {{ $t('general.requests') }}
+                                <!-- <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge> -->
                             </span>
                             <span class="icon-cog" @click="toggleDrawer">
                             </span>
@@ -1220,5 +1225,8 @@
     .assign-button {
         background-color: #3D3F41;
         color: var(--color-white);
+        &:hover {
+            background-color: var(--background-color-base);
+        }
     }
 </style>

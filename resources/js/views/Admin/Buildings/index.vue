@@ -221,12 +221,12 @@
                     },{
                         name: this.$t('models.building.type'),
                         type: 'select',
-                        key: 'building_type',
+                        key: 'types',
                         data: this.types,
                     },{
                         name: this.$t('general.roles.manager'),
                         type: 'select',
-                        key: 'manager_id',
+                        key: 'user_ids',
                         data: this.roles
                     },{
                         name: this.$t('general.filters.saved_filters'),
