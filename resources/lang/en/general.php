@@ -105,6 +105,7 @@ return [
     'last_name' => 'Last name',
     'name' => "Name",
     'phone' => 'Phone',
+    'mobile_phone' => 'Mobile phone',
     'mobile' => 'Mobile',
     'id' => "ID",
     'address' => "Address",
