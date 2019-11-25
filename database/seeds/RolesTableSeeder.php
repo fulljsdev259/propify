@@ -17,9 +17,9 @@ class RolesTableSeeder extends Seeder
         $residentPermissions = $allPermissions->whereIn('name', config('permissions.resident'));
         $managerPermissions = $allPermissions->whereIn('name', config('permissions.manager'));
         $providerPermissions = $allPermissions->whereIn('name', config('permissions.provider'));
-        $initialLettingPermissions = $allPermissions->whereIn('name', config('permissions.initial_letting'));
-        $marketingPermissions = $allPermissions->whereIn('name', config('permissions.marketing'));
-        $siteSupervisionPermissions = $allPermissions->whereIn('name', config('permissions.site_supervision'));
+        $initialLettingPermissions = $allPermissions->whereIn('name', config('permissions.manager'));
+        $marketingPermissions = $allPermissions->whereIn('name', config('permissions.manager'));
+        $siteSupervisionPermissions = $allPermissions->whereIn('name', config('permissions.manager'));
 
 
         $RLCAdmin = new Role();
