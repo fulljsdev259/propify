@@ -1020,7 +1020,6 @@
                 
                 this.original_unit_id = this.data.unit_id
 
-                console.log(this.model)
 
                 if( !this.hideBuildingAndUnits ) {
                     if( this.model.unit )
