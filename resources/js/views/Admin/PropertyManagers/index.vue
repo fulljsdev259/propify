@@ -141,7 +141,7 @@
             return {
                 header: [{
                     label: 'general.filters.status',
-                    withStatusSign: true,
+                    withPMStatusSign: true,
                     prop: 'status',
                     width: 130
                 }, /*{
@@ -156,7 +156,7 @@
                     prop: 'user.email'
                 }, {
                     label: 'general.mobile',
-                    prop: 'user.phone'
+                    prop: 'mobile_phone'
                 }, {
                     label: 'general.roles.label',
                     prop: 'type',

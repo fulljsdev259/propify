@@ -94,7 +94,7 @@
             return {
                 header: [{
                     label: 'general.filters.status',
-                    withStatusSign: true,
+                    withResidentStatusSign: true,
                     prop: 'status',
                     width: 130
                 }, {

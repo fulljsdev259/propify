@@ -229,6 +229,7 @@
                 return foundConversation.id;
             },
             selectedTitle () {
+                console.log(this.address)
                 if(this.requestData.resident && this.address) {
                     return this.requestData.resident.first_name + " " 
                         + this.requestData.resident.last_name 
