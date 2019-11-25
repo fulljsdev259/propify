@@ -4,8 +4,7 @@
                     icon="icon-group" 
                     shadow="heavy" 
                     :searchBar="true"
-                    @search-change="search=$event"
-                    class="padding-right-300">
+                    @search-change="search=$event">
             <template v-if="$can($permissions.create.resident)">
                 <el-button 
                     @click="add" 
