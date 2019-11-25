@@ -445,7 +445,6 @@ return [
         'active_residents_count' => 'Aktive Bewohner',
         'assignment' => 'Zuständig',
         'quarter_format' => 'Projektnr.',
-        'type' => 'Projektart',
         'project_ort' => 'Projektort',
         'details' => 'Projektdetails',
         'errors' => [
@@ -453,7 +452,7 @@ return [
             'deleted' => "Fehler beim Löschen des Projekts: ",
         ],
         'types' => [
-            'label' => 'Typ',
+            'label' => 'Projektart',
             'rent' => 'Miete',
             'sell' => 'Eigentum',
             'building_land' => 'Bauland',

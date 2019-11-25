@@ -441,7 +441,6 @@ return [
         'active_residents_count' => 'Count of active residents',
         'assignment' => 'Assignment of managers/administrator',
         'quarter_format' => 'Project No',
-        'type' => 'Project Type',
         'project_ort' => 'Project Location',
         'details' => 'Project details',
         'errors' => [
@@ -449,7 +448,7 @@ return [
             'deleted' => "Quarter deleted error: ",
         ],
         'types' => [
-            'label' => 'Type',
+            'label' => 'Project Type',
             'rent' => 'Rent',
             'sell' => 'Sell',
             'property' => 'Property',
