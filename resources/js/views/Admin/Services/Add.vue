@@ -10,8 +10,8 @@
                         <card :header="$t('models.service.company_details')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item class="label-block" :label="$t('models.service.category.label')" :rules="validationRules.category" prop="category">
-                                        <el-select :placeholder="$t('models.service.placeholders.category')" style="display: block;"
+                                    <el-form-item class="label-block" :label="$t('general.function')" :rules="validationRules.category" prop="category">
+                                        <el-select :placeholder="$t('general.function')" style="display: block;"
                                                    v-model="model.category">
                                             <el-option
                                                     :key="key"
@@ -99,12 +99,12 @@
                                         />
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12">
+                                <!-- <el-col :md="12">
                                     <el-form-item :label="$t('general.confirm_password')" :rules="validationRules.password_confirmation"
                                                   prop="password_confirmation">
                                         <el-input type="password" v-model="model.password_confirmation"/>
                                     </el-form-item>
-                                </el-col>
+                                </el-col> -->
                             </el-row>
                         </card>
                     </el-col>
@@ -151,13 +151,13 @@
                                     </el-form-item>
                                 </el-col>
                             </el-row>
-                            <el-row :gutter="20">
+                            <!-- <el-row :gutter="20">
                                 <el-col :md="24">
                                     <el-form-item class="label-block" :rules="validationRules.language" :label="$t('general.language')" prop="settings.language">
                                         <select-language :activeLanguage.sync="model.settings.language"/>
                                     </el-form-item>
                                 </el-col>
-                            </el-row>
+                            </el-row> -->
                         </card>
                     </el-col>
                 </el-row>

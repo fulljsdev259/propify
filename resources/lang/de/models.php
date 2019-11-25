@@ -82,7 +82,12 @@ return [
             'edit' => 'Beziehung bearbeiten',
             'end_date' => 'Enddatum',
             'start_date' => 'Startdatum',
-            'type' => 'Beziehung',            
+            'type' => [
+                'label' => 'Beziehung',
+                'tenant' => 'Mieter',
+                'owner' => 'Eigentümer',
+                'former_resident' => 'Ehemaliger Einwohner',
+            ],
             'duration' => 'Vertragslaufzeit',
             'durations' => [
                 'unlimited' => 'Unbefristet',
@@ -161,17 +166,12 @@ return [
             'your_sincerely' => 'Mit freundlichen Grüssen',
             'your_administration' => 'Ihre Verwaltung'
         ],
-        'type' => [
-            'label' => 'Beziehung',
-            'tenant' => 'Mieter',
-            'owner' => 'Eigentümer',
-            'former_resident' => 'Ehemaliger Einwohner',
-        ],
         'tenant_type' => [
             'label' => 'Mietertyp',
             'main' => 'Hauptmieter',
             'garant' => 'Nebenmieter',
-        ]
+        ],
+        'business_relation' => 'Geschäftsbeziehung'
     ],
     'building' => [
         'title' => 'Objekte',
@@ -211,6 +211,7 @@ return [
         'managers' => 'Mitarbeiter',
         'house_num' => 'Nr.',
         'assign_managers' => 'Mitarbeiter zuweisen',
+	    'assign_persons'=> 'Verantwortliche zuweisen',
         'unassign_manager' => 'Entfernen',
         'managers_assigned' => 'Mitarbeiter zugewiesen',
         'occupied_units' => 'Vermietete Einheiten',
@@ -444,7 +445,6 @@ return [
         'active_residents_count' => 'Aktive Bewohner',
         'assignment' => 'Zuständig',
         'quarter_format' => 'Projektnr.',
-        'type' => 'Projektart',
         'project_ort' => 'Projektort',
         'details' => 'Projektdetails',
         'errors' => [
@@ -452,7 +452,7 @@ return [
             'deleted' => "Fehler beim Löschen des Projekts: ",
         ],
         'types' => [
-            'label' => 'Typ',
+            'label' => 'Projektart',
             'rent' => 'Miete',
             'sell' => 'Eigentum',
             'building_land' => 'Bauland',
@@ -616,11 +616,13 @@ return [
             'cost_consequences' => 'Kostenfolge',
         ],
         'action' => [
-            'fix' =>'Fix',
-            'leave' => 'Urlaub',
-            'wait' => 'Warten'
+            'label' => 'Aktion',
+            'fix' =>'Beheben',
+            'leave' => 'Belassen',
+            'wait' => 'Abwarten'
         ],
         'cost_impact' => [
+            'label' => 'Kostenfolge',
             'house_owner' => 'Eigentümer',
             'resident' => 'Bewohner',
             'shared_costs' => 'Geteilte Kosten'
@@ -680,12 +682,14 @@ return [
             'range' => 'Bereich',
             'component' => 'Bauteil',
             'capture_phase' => 'Erfassungsphase',
-            'payer_percent' => 'Anteil Fortimo',
+            'payer_percent' => 'Bewohneranteil in %',
             'payer_amount' => 'Betrag',
             'keywords' => 'Tags',
         ],
         'placeholders' => [
             'category' => 'Kategorie wählen',
+            'action' => 'Aktion wählen',
+            'cost_impact' => 'Kostenfolge wählen',
             'qualification' => 'Qualifikation wählen',
             'status' => 'Status wählen',
             'due_date' => 'Zu erledigen bis',
@@ -790,6 +794,11 @@ return [
             'building_already_assign' => "Der Mitarbeiter ist bereits diesem Objekt zugewiesen.",
             'building_assign_deleted_property_manager' => "Sie können einem gelöschten Mitarbeiter keine Objekte zuordnen.",
             'deleted' => "Mitarbeiter Fehler beim Löschen: ",
+        ],
+        'status' => [
+            'label' => 'Status',
+	        'active' => 'Aktiv',
+            'inactive' => 'Inaktiv',
         ],
     ],
     // 'house_owner' => [

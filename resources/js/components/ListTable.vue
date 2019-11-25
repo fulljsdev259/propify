@@ -217,6 +217,8 @@
                     </div>
                     <div v-else-if="column.withCounts">
                         <request-count :countsData="items[scope.$index]" ></request-count>
+                    </div>
+                    <div v-else-if="column.withRelationCounts">
                         <relation-count :countsData="items[scope.$index]" ></relation-count>
                     </div>
                     <div v-else-if="column.withMultiplePropsString">
@@ -237,7 +239,7 @@
                             effect="light" placement="top"
                         >
                             <avatar 
-                                :background-color="$constants.relations.status_colorcode[scope.row[column.prop]]"
+                                :background-color="$constants.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
                                 :size="30"
                                 :style="{'z-index': (800 - index)}"
@@ -264,6 +266,9 @@
                                 </el-tooltip>
                             </span>
                         </div>
+                    </div>
+                    <div v-else-if="column.withResidentTypes">
+                        {{ showResidentTypes(scope.row[column.prop]) }}
                     </div>
                     <div v-else-if="column.withIcon">
                         <span class="icon-container">
@@ -642,6 +647,12 @@
             onCurrentPageChange(newPage) {
                 this.updatePage(newPage);
             },
+            showResidentTypes(types) {
+                if(types.constructor === Array){
+                    let translatedTypes = types.map(type => this.$t(`models.resident.relation.type.${this.$constants.relations.type[type]}`))
+                    return translatedTypes.join(', ')
+                }
+            },
             filterChanged(filter, init = false) {
                 if (filter.type === this.filterTypes.select || filter.type == this.filterTypes.language) {
                     if (!filter.parentKey && filter.fetch && init) {
@@ -841,12 +852,13 @@
                 }
                 this.$forceUpdate();
             }
+            this.search = this.searchText;
         },
         updated() {
-            // if(this.filterModal ==undefined || this.filterModal['search'] == undefined || this.searchText !== this.filterModel['search']) {
-            //     this.$set(this.filterModel, 'search', this.searchText);
-            //     this.filterChanged(this.filters[0]);
-            // }
+            if(this.search !== this.searchText) {
+                this.$set(this.filterModel, 'search', this.searchText);
+                this.filterChanged(this.filters[0]);
+            }
         }
     }
 </script>

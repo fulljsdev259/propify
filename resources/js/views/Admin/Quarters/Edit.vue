@@ -116,6 +116,7 @@
                         </el-tab-pane>
                         <el-tab-pane name="buildings">
                             <span slot="label">
+                                {{ $t('general.box_titles.buildings') }}
                                 <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge>
                             </span>
                             <relation-list
@@ -140,7 +141,8 @@
                         </el-tab-pane>
                         <el-tab-pane name="files">
                             <span slot="label">
-                                <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge>
+                                {{ $t('general.box_titles.files') }}
+                                <!-- <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge> -->
                             </span>
                             <draggable @sort="sortFiles" v-model="model.media">
                                 <transition-group name="list-complete">
@@ -200,7 +202,8 @@
                     <el-tabs type="border-card" v-model="activeRightTab">
                         <el-tab-pane name="assignees">                        
                             <span slot="label">
-                                <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
+                                {{ $t('general.box_titles.managers') }}
+                                <!-- <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge> -->
                             </span>
                             <!-- <assignment-by-type
                                 :resetToAssignList="resetToAssignList"
@@ -222,6 +225,7 @@
                                         class="custom-remote-select"
                                         filterable
                                         remote
+                                        multiple
                                         reserve-keyword
                                         style="width: 100%;"
                                         v-model="toAssign"
@@ -258,7 +262,7 @@
                                     </el-select>
                                 </el-col> -->
                                 <el-col id="managerAssignBtn">
-                                    <el-button :disabled="!toAssign" @click="assignUser" class="full-button assign-button"
+                                    <el-button :disabled="!toAssign.length" @click="assignUsers" class="full-button assign-button"
                                                 icon="ti-save">
                                         &nbsp;{{$t('general.assign')}}
                                     </el-button>
@@ -276,7 +280,8 @@
                         </el-tab-pane>
                        <el-tab-pane name="workflow">
                             <span slot="label">
-                                <el-badge :value="workflowCount" :max="99" class="admin-layout">{{ $t('models.quarter.workflow.label') }} </el-badge>
+                                {{ $t('models.quarter.workflow.label') }}
+                                <!-- <el-badge :value="workflowCount" :max="99" class="admin-layout">{{ $t('models.quarter.workflow.label') }} </el-badge> -->
                             </span>
                             <div class="workflow-button-bar">
                                 <el-button 
@@ -402,7 +407,8 @@
                     <el-tabs type="border-card" v-model="activeRequestTab">
                         <el-tab-pane name="requests">
                             <span slot="label">
-                                <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
+                                {{ $t('general.requests') }}
+                                <!-- <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge> -->
                             </span>
                             <span class="icon-cog" @click="toggleDrawer">
                             </span>
@@ -603,8 +609,12 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
+                    type: 'companyName',
+                    prop: 'company_name',
+                    label: 'general.name'
+                }, {
                     type: 'assignProviderManagerFunctions',
-                    label: 'general.name',
+                    label: 'general.type',
                 }/*, {
                     prop: 'assignment_types',
                     label: 'general.assignment_types.label',
@@ -625,7 +635,7 @@
                     count: 'residents_count',
                     label: 'general.residents'
                 }],
-                quarterActions: [{
+                quarterActions: [/*{
                     width: 70,
                     buttons: [{
                         icon: 'ti-search',
@@ -633,7 +643,7 @@
                         onClick: this.buildingEditView,
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 residentColumns: [{
                     type: 'requestResidentAvatar',
                     width: 70                    
@@ -647,7 +657,7 @@
                 //     type: 'residentName'
                 // }, {
                 //     prop: 'type',
-                //     label: 'models.resident.type.label',
+                //     label: 'models.resident.relation.type.label',
                 //     i18n: this.translateResidentType
                 // }, {
                     type: 'residentRelation',
@@ -721,7 +731,7 @@
                 return this.$t(`general.assignment_types.${type}`);
             },
             translateResidentType(type) {
-                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
             },
             translateAssignmentType(types) {
                 let translatedTypes = []
@@ -1215,5 +1225,8 @@
     .assign-button {
         background-color: #3D3F41;
         color: var(--color-white);
+        &:hover {
+            background-color: var(--background-color-base);
+        }
     }
 </style>

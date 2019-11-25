@@ -4,7 +4,7 @@
             <template slot="description" v-if="model.property_manager_format">
                 <div class="subtitle">{{model.property_manager_format}}</div>
             </template>
-            <edit-actions :saveAction="submit" :deleteAction="deletePropertyManager" route="adminPropertyManagers"/>
+            <edit-actions :saveAction="submit" :deleteAction="deletePropertyManager" route="adminPropertyManagers" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
         </heading>
         <div class="crud-view">
             <el-form :model="model" label-position="top" label-width="192px" ref="form">
@@ -27,9 +27,23 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="8">
-                                        <el-form-item :label="$t('general.language')" :rules="validationRules.language" 
+                                        <!-- <el-form-item :label="$t('general.language')" :rules="validationRules.language" 
                                                 prop="settings.language">
                                             <select-language :activeLanguage.sync="model.settings.language"/>
+                                        </el-form-item> -->
+                                        <el-form-item class="label-block" :label="$t('models.property_manager.status.label')"
+                                                        :rules="validationRules.status"
+                                                        prop="status">
+                                            <el-select :placeholder="$t('general.placeholders.select')"
+                                                    style="display: block"
+                                                    v-model="model.status">
+                                                <el-option
+                                                        :key="k"
+                                                        :label="$t(`models.property_manager.status.${status}`)"
+                                                        :value="parseInt(k)"
+                                                        v-for="(status, k) in $constants.propertyManager.status">
+                                                </el-option>
+                                            </el-select>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="8">
@@ -57,7 +71,7 @@
                                         </el-form-item>
                                     </el-col>
                                    <el-col :md="8">
-                                        <el-form-item class="label-block" :label="$t('general.roles.label')" :rules="validationRules.type"
+                                        <el-form-item class="label-block" :label="$t('general.function')" :rules="validationRules.type"
                                                         prop="type">
                                             <el-select style="display: block" v-model="model.type" :placeholder="$t('general.placeholders.select')">
                                                 <el-option
@@ -90,7 +104,7 @@
                             </el-tab-pane>
                             <el-tab-pane :label="$t('models.property_manager.profile_card')" name="profile">
                                 <el-row :gutter="20">
-                                    <el-col :md="12">
+                                    <el-col :md="24">
                                         <el-form-item :label="$t('general.password')"
                                                       :rules="validationRules.password"
                                                       prop="password">
@@ -104,7 +118,7 @@
                                             />
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :md="12">
+                                    <!-- <el-col :md="12">
                                         <el-form-item :label="$t('general.confirm_password')"
                                                       :rules="validationRules.password_confirmation"
                                                       prop="password_confirmation">
@@ -116,7 +130,7 @@
                                                 onfocus="this.removeAttribute('readonly');"
                                             />
                                         </el-form-item>
-                                    </el-col>
+                                    </el-col> -->
                                 </el-row>
                                 <el-form-item :label="$t('models.user.profile_image')">                                    
                                     <cropper
@@ -297,10 +311,23 @@
                         icon: 'el-icon-close',                
                     }]
                 }],
+                editMode: false,
             }
         },
         methods: {
             ...mapActions(['deletePropertyManager']),
+            handleChangeEditMode() {
+                if(!this.editMode) {
+                    this.editMode = !this.editMode;
+                    this.old_model = _.clone(this.model, true);
+                } else {
+                    if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
+                        this.visibleDialog = true;
+                    } else {
+                        this.editMode = !this.editMode;
+                    }
+                }
+            },
             requestEditView(row) {
                 this.$router.push({
                     name: 'adminRequestsEdit',

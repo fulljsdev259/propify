@@ -170,8 +170,8 @@
                     </div>
 
                     <div v-else-if="column.type === 'assignProviderManagerFunctions'">
-                        {{scope.row.type == "provider" ? $t(`models.service.category.${$constants.serviceProviders.category[scope.row.role]}`)  : ''}}
-                        {{scope.row.type == "manager" ? $t(`general.assignment_types.${scope.row.function}`) : ''}}
+                        {{scope.row.type == "provider" ? $t(`models.service.category.${$constants.serviceProviders.category[scope.row.function]}`)  : ''}}
+                        {{scope.row.type == "manager" ? $t(`general.assignment_types.${scope.row.role}`) : ''}}
                     </div>
 
                     <div v-else-if="column.type === 'unitResidentAvatar'">
@@ -198,6 +198,9 @@
 
                     <div v-else-if="column.type === 'assigneesName'" class="normal">
                         {{scope.row.name}}
+                    </div>
+                    <div v-else-if="column.type === 'companyName'" class="normal">
+                        {{scope.row.company_name}}
                     </div>
                     <div v-else-if="column.type === 'buildingName'" class="normal">                    
                         {{scope.row.name}}                

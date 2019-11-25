@@ -20,27 +20,26 @@ class ResidentTransformer extends BaseTransformer
      */
     public function transform(Resident $model)
     {
-        $response = [
-            'id' => $model->id,
-            'default_relation_id' => $model->default_relation_id,
-            'title' => $model->title,
-            'company' => $model->company,
-            'first_name' => $model->first_name,
-            'last_name' => $model->last_name,
-            'birth_date' => $model->birth_date ? $model->birth_date->format('Y-m-d') : null,
-            'birth_date_formatted' => $model->birth_date ? $model->birth_date->format('d.m.Y') : null,
-            'mobile_phone' => $model->mobile_phone,
-            'private_phone' => $model->private_phone,
-            'work_phone' => $model->work_phone,
-            'status' => $model->status,
-            'resident_format' => $model->resident_format,
-            'nation' => $model->nation,
-            'type' => $model->type,
-            'tenant_type' => $model->tenant_type,
-            'review' => $model->review,
-            'rating' => $model->rating,
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'default_relation_id',
+            'title',
+            'company',
+            'first_name',
+            'last_name',
+            'birth_date',
+            'mobile_phone',
+            'private_phone',
+            'work_phone',
+            'status',
+            'resident_format',
+            'nation',
+            'review',
+            'rating',
             'created_by' => $model->created_by,
-        ];
+        ]);
+        $response['birth_date_formatted'] = $model->birth_date ? $model->birth_date->format('d.m.Y') : null;
+        $response['created_by'] = $model->created_by;
 
         $withCount = $model->getStatusRelationCounts();
         $response = array_merge($response, $withCount);
@@ -71,18 +70,24 @@ class ResidentTransformer extends BaseTransformer
             $response['active_relations_count'] = $activeCount;
             $response['inactive_relations_count'] = $allCount - $activeCount;
             $response['total_relations_count'] = $allCount;
-        }
 
-        if ( $model->relationExists('garant_relations')) { // @TODO delete reloading
-
-
-            $response['relations'] = $response['relations'] ?? [];
-            $garantRelationData = (new RelationTransformer())->transformCollection($model->garant_relations);
-            foreach ($garantRelationData as $single) {
-                $single['garant'] = 1;
-                $response['relations'][] = $single;
+            if ([Relation::StatusInActive] == collect($response['relations'])->pluck('status')->all()) {
+                $response['types'] = [Relation::TypeFormerResident];
+            } else {
+                $response['types'] = collect($response['relations'])->pluck('type')->unique()->values()->all();
             }
         }
+//
+//        if ( $model->relationExists('garant_relations')) { // @TODO delete reloading
+//
+//
+//            $response['relations'] = $response['relations'] ?? [];
+//            $garantRelationData = (new RelationTransformer())->transformCollection($model->garant_relations);
+//            foreach ($garantRelationData as $single) {
+//                $single['garant'] = 1;
+//                $response['relations'][] = $single;
+//            }
+//        }
 
         return $this->addAuditIdInResponseIfNeed($model, $response);
     }

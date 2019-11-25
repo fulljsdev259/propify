@@ -155,7 +155,7 @@ class PropertyManagerAPIController extends AppBaseController
     public function store(CreateRequest $request)
     {
         $input = $request->all();
-        $input['user']['role'] = (PropertyManager::TypeAdministrator == $request->type) ? 'administrator' : 'manager';
+        $input['user']['role'] = get_type_correspond_role($input['type']);
 
         $input['user']['name'] = sprintf('%s %s', $input['first_name'], $input['last_name']);
         $validator = Validator::make($input['user'], User::$rules);

@@ -99,7 +99,7 @@ class Helper
                 'phone' => __('general.phone'),
                 'email' => __('general.email'),
                 'password' => __('general.password'),
-                'role' => __('general.roles.label'),
+                'role' => __('general.function'),
                 'title' => __('general.salutation'),
                 'first_name' => __('general.first_name'),
                 'last_name' => __('general.last_name'),

@@ -1,9 +1,10 @@
 <template>
     <div class="residents">
-        <heading :title="$t('general.resident')" icon="icon-group" shadow="heavy" class="padding-right-300">
-            <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
-            </template>
+        <heading :title="$t('general.resident')" 
+                    icon="icon-group" 
+                    shadow="heavy" 
+                    :searchBar="true"
+                    @search-change="search=$event">
             <template v-if="$can($permissions.create.resident)">
                 <el-button 
                     @click="add" 
@@ -14,7 +15,10 @@
                     {{$t('models.resident.add')}}
                 </el-button>
             </template>
-            <template v-if="$can($permissions.delete.resident)">
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
+            </template>
+            <!-- <template v-if="$can($permissions.delete.resident)">
                 <el-button 
                     :disabled="!selectedItems.length" 
                     @click="batchDeleteWithIds" 
@@ -24,6 +28,23 @@
                 >
                     {{$t('general.actions.delete')}}
                 </el-button>
+            </template> -->
+            <template>
+                <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
+                    <el-button size="mini" class="transparent-button">
+                        <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item
+                                v-if="$can($permissions.delete.resident)"
+                                :disabled="!selectedItems.length"
+                                icon="ti-trash"
+                                command="delete"
+                        >
+                            {{$t('general.actions.delete')}}
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
             </template>
         </heading>
         <list-table
@@ -36,6 +57,7 @@
                 :isLoadingFilters="{state: isLoadingFilters}"
                 :pagination="{total, currPage, currSize}"
                 :withSearch="false"
+                :searchText="search"
                 @selectionChanged="selectionChanged"
         >
         </list-table>
@@ -71,6 +93,29 @@
         data() {
             return {
                 header: [{
+                    label: 'general.filters.status',
+                    withStatusSign: true,
+                    prop: 'status',
+                    width: 130
+                }, {
+                    label: 'general.first_name',
+                    prop: 'first_name',
+                    width: 200
+                }, {
+                    label: 'general.last_name',
+                    prop: 'last_name',
+                    width: 200
+                }, {
+                    label: 'general.email',
+                    prop: 'user.email',
+                }, {
+                    label: 'general.mobile',
+                    prop: 'mobile_phone',
+                }, {
+                    label: 'models.resident.business_relation',
+                    withResidentTypes: true,
+                    prop: 'types',
+                }/*, {
                     label: 'general.id',
                     prop: 'id',
                     width: 100
@@ -82,7 +127,7 @@
                     label: 'models.resident.contact_info_card',
                     withMultipleProps: true,
                     props: ['user_email', 'private_phone']
-                }/*, {
+                }*//*, {
                     label: 'models.resident.building.name',
                     withCollapsables: true,
                     width: 200,
@@ -92,7 +137,7 @@
                     withCollapsables: true,
                     width: 150,
                     props: ['unit_names']
-                }*/, {
+                }*//*, {
                     label: 'models.resident.relation.title',
                     withCounts: true,
                     counts: [
@@ -113,7 +158,12 @@
                             label: this.$t('models.resident.status.not_active')
                         }
                     ]
-                }/*, {
+                }*/, {
+                    label: 'general.request_status',
+                    withCounts: true,
+                    width: 230,
+                    prop: 'request_count'
+                },/*, {
                     label: 'models.resident.status.label',
                     prop: 'status',
                     i18nPath: 'models.resident.status',
@@ -136,7 +186,7 @@
                             this.$permissions.update.resident
                         ]
                     }]
-                }*/, {
+                }*//*, {
                     width: 130,
                     actions: [{
                         type: '',
@@ -147,12 +197,13 @@
                             this.$permissions.view.resident
                         ]
                     }]
-                }],
+                }*/],
                 buildings:[],
                 units:[],
                 states:[],
                 quarters:[],
                 isLoadingFilters: false,
+                search: '',
             };
         },
         async created(){
@@ -170,6 +221,10 @@
         },
         methods: {
             ...mapActions(['getBuildings', 'getQuarters', 'getUnits', 'changeResidentStatus']),
+            handleMenuClick(command) {
+                if(command == 'delete')
+                    this.batchDeleteWithIds();
+            },
             add() {
                 this.$router.push({
                     name: 'adminResidentsAdd'
@@ -236,6 +291,14 @@
                     };
                 });
             },
+            prepareRelationFilters(property) {
+                return Object.keys(this.relationConstants[property]).map((id) => {
+                    return {
+                        id: parseInt(id),
+                        name: this.$t(`models.resident.relation.${property}.${this.relationConstants[property][id]}`)
+                    };
+                });
+            },
             prepareRequestFilters(property) {
                 return Object.keys(this.requestConstants[property]).map((id) => {
                     return {
@@ -252,7 +315,10 @@
                 },
                 requestConstants(state) {
                     return state.constants.requests;
-                }
+                },
+                relationConstants(state) {
+                    return state.constants.relations;
+                },
             }),
             filters() {
                 return [
@@ -298,17 +364,17 @@
                         key: 'status',
                         data: this.prepareFilters('status'),
                     },
-                    {
+                    /*{
                         name: this.$t('general.filters.language'),
                         type: 'select',
                         key: 'language',
                         data: []
-                    },
+                    },*/
                     {
                         name: this.$t('general.filters.type'),
                         type: 'select',
                         key: 'type',
-                        data: this.prepareFilters('type'),
+                        data: this.prepareRelationFilters('type'),
                     }
                 ]
             }

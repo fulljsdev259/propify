@@ -50,7 +50,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/residents/my-property-managers', 'ResidentAPIController@myPropertyManagers')->name('residents.my-property-managers');
     Route::get('/residents/me', 'ResidentAPIController@showLoggedIn')->name('residents.me');
     Route::get('/residents/{id}', 'ResidentAPIController@show')->name('residents.show');
-    Route::get('/residents/{id}/type', 'ResidentAPIController@checkResidentHasRelationOrRequest')->name('residents.has.relation-or-requests');
     Route::get('/residents/{id}/media', 'ResidentAPIController@getAllMedia')->name('residents.get.all.media');
     Route::get('/residents/{id}/statistics', 'DashboardAPIController@residentStatistics')->name('residents.statistics.show');
     Route::get('/my/documents', 'ResidentAPIController@myDocuments')->name('my.documents');
@@ -172,6 +171,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     Route::get('/quarters/{id}/assignees', 'QuarterAPIController@getAssignees');
     Route::post('/quarters/{id}/users', 'QuarterAPIController@assignUsers')->name('quarters.assign.users');
+    Route::post('/quarters/{id}/users/mass-assign', 'QuarterAPIController@massAssignUsers')->name('quarters.mass.assign.users');
     Route::delete('/quarters-assignees/{quarters_assignee_id}', 'QuarterAPIController@deleteQuarterAssignee');
 
     // @TODO remove

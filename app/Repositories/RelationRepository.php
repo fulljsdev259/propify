@@ -197,6 +197,8 @@ class RelationRepository extends BaseRepository
      */
     protected function saveGarantResidents(Relation $relation, $data)
     {
+        return $relation; // @TMP disable garant_residents
+
         $residentIds = $data['resident_ids'] ?? [];
         if (empty($residentIds)) {
             return $relation;
@@ -234,7 +236,6 @@ class RelationRepository extends BaseRepository
         }
 
         // @TODO save as system audit
-        $resident->type = Resident::TypeFormerResident;
         $resident->status = Resident::StatusInActive;
         $resident->save();
 

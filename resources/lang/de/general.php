@@ -15,6 +15,7 @@ return [
     ],
     'choose_language' => 'Sprache auswählen',
     'language' => "Sprache",
+    'status' => 'Status',
     'languages' => [
         'fr' => 'Français',
         'it' => 'Italiano',
@@ -102,9 +103,10 @@ return [
     ],
     'no' => 'Nein',
     'first_name' => 'Vorname',
-    'last_name' => 'Name',    
+    'last_name' => 'Nachname',    
     'name' => "Name",
     'phone' => 'Telefon',
+    'mobile' => 'Mobile',
     'id' => "ID",
     'field' => 'Feld',
     'address' => "Adresse",
@@ -264,13 +266,16 @@ return [
         'logout_confirm' => 'Sie werden ausgeloggt.',
     ],
     'roles' => [
-        'label' => 'Funktion',
+        'label' => 'Rolle',
         'administrator' => 'Administrator',
         'resident' => 'Bewohner',
         'manager' => 'Bewirtschafter',
         'registered' => 'Registriert',
         'provider' => 'Externe Diensteister',
         'super_admin' => 'Super Administrator',
+        'initial_letting' => 'Erstvermietung',
+        'marketing' => 'Vermarktung',
+        'site_supervision' => 'Bauleitung',
     ],
     'placeholders' => [
         'search' => 'Suchen',
@@ -279,6 +284,7 @@ return [
     'errors' => [
         'files_extension_images' => 'Nur Dateien in der Formaten .jpg und .png erlaubt.',
     ],
+	'function'=> 'Funktion',
     'date_time_format' => '{date} um {time} Uhr',
     'day_at_time_period' => '{date} von {time1} - {time2} Uhr',
     'two_days_at_time' => 'Vom {date1}, {time1} bis {date2}, {time2}',
@@ -559,4 +565,6 @@ return [
     'empty' => "(leeres Feld)",
     'notification_residents_sent' => 'Eine Benachrichtigung vie E-Mail wurde am {date} um {time} Uhr an {number} Bewohner gesendet.',
     'edit_close_message' => 'Möchten Sie die Änderungen vor dem Schliessen speichern?',
+    'request_status' => 'Anliegen-Status',
+    'login_success'=>'Willkommen zurück'
 ];

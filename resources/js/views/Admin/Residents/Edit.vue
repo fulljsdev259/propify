@@ -111,12 +111,12 @@
                                                                     value-format="yyyy-MM-dd"/>
                                                         </el-form-item>
                                                     </el-col>
-                                                    <el-col :md="6">
+                                                    <!-- <el-col :md="6">
                                                         <el-form-item :label="$t('general.language')" :rules="validationRules.language" 
                                                                 prop="settings.language">
                                                             <select-language :activeLanguage.sync="model.settings.language" />
                                                         </el-form-item>
-                                                    </el-col>
+                                                    </el-col> -->
                                                     <el-col :md="6">
                                                         <el-form-item :label="$t('models.resident.nation')"
                                                                     prop="nation">
@@ -132,8 +132,8 @@
                                                             </el-select>
                                                         </el-form-item>
                                                     </el-col>
-                                                    <el-col :md="6">
-                                                        <el-form-item :label="$t('models.resident.type.label')" 
+                                                    <!-- <el-col :md="6">
+                                                        <el-form-item :label="$t('models.resident.relation.type.label')" 
                                                                     :rules="validationRules.type"
                                                                     prop="type">
                                                             <el-select :placeholder="$t('general.placeholders.select')" 
@@ -141,9 +141,9 @@
                                                                         v-model="model.type">
                                                                 <el-option
                                                                     :key="k"
-                                                                    :label="$t(`models.resident.type.${type}`)"
+                                                                    :label="$t(`models.resident.relation.type.${type}`)"
                                                                     :value="parseInt(k)"
-                                                                    v-for="(type, k) in constants.residents.type">
+                                                                    v-for="(type, k) in constants.relations.type">
                                                                 </el-option>
                                                             </el-select>
                                                         </el-form-item>
@@ -163,7 +163,7 @@
                                                                 </el-option>
                                                             </el-select>
                                                         </el-form-item>
-                                                    </el-col>
+                                                    </el-col> -->
                                             </el-col>
                                         </el-row>
                                 </el-card>
@@ -218,6 +218,18 @@
                                                     <el-input autocomplete="off" type="email" v-model="model.email"></el-input>
                                                 </el-form-item>
                                             </el-col>
+                                            <el-col :md="12">
+                                                <el-form-item :label="$t('general.password')" :rules="validationRules.password"
+                                                            prop="password">
+                                                    <el-input autocomplete="off"
+                                                            type="password"
+                                                            v-model="model.password"
+                                                            class="dis-autofill"
+                                                            readonly
+                                                            onfocus="this.removeAttribute('readonly');"
+                                                    ></el-input>
+                                                </el-form-item>
+                                            </el-col>
                                             <!-- <el-col :md="12">
                                                 <el-form-item :label="$t('models.resident.status.label')"
                                                             :rules="validationRules.status"
@@ -234,26 +246,14 @@
                                             </el-col> -->
                                         </el-row>
                                         <el-row class="last-form-row" :gutter="20">
-                                            <el-col :md="12">
-                                                <el-form-item :label="$t('general.password')" :rules="validationRules.password"
-                                                            prop="password">
-                                                    <el-input autocomplete="off"
-                                                            type="password"
-                                                            v-model="model.password"
-                                                            class="dis-autofill"
-                                                            readonly
-                                                            onfocus="this.removeAttribute('readonly');"
-                                                    ></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                            <el-col :md="12">
+                                            <!-- <el-col :md="12">
                                                 <el-form-item :label="$t('general.confirm_password')"
                                                             :rules="validationRules.password_confirmation"
                                                             prop="password_confirmation">
                                                     <el-input autocomplete="off" type="password"
                                                             v-model="model.password_confirmation"></el-input>
                                                 </el-form-item>
-                                            </el-col>
+                                            </el-col> -->
                                         </el-row>
                                     </el-card>
                                 </el-col>

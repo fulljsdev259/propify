@@ -12,8 +12,8 @@
                     <card :header="$t('models.service.company_details')">
                         <el-row class="last-form-row" :gutter="20">
                             <el-col :md="12">
-                                <el-form-item :label="$t('models.service.category.label')" prop="category">
-                                    <el-select :disabled="!editMode" :placeholder="$t('models.service.placeholders.category')"
+                                <el-form-item :label="$t('general.function')" prop="category">
+                                    <el-select :disabled="!editMode" :placeholder="$t('general.function')"
                                                style="width: 100%"
                                                v-model="model.category">
                                         <el-option
@@ -109,13 +109,13 @@
                             </el-col>
                         </el-row>
 
-                        <el-row class="last-form-row" :gutter="20">
+                        <!-- <el-row class="last-form-row" :gutter="20">
                             <el-col :md="24">
                                 <el-form-item :label="$t('general.language')" :rules="validationRules.language" prop="settings.language">
                                     <select-language :disabled="!editMode" :activeLanguage.sync="model.settings.language"/>
                                 </el-form-item>
                             </el-col>
-                        </el-row>
+                        </el-row> -->
                     </card>
                     <card class="mt15" :header="$t('models.service.user_credentials')">
                         <el-row :gutter="20">
@@ -168,13 +168,13 @@
                                     />
                                 </el-form-item>
                             </el-col>
-                            <el-col :md="12">
+                            <!-- <el-col :md="12">
                                 <el-form-item :label="$t('general.confirm_password')"
                                               :rules="validationRules.password_confirmation"
                                               prop="password_confirmation">
                                     <el-input :disabled="!editMode" type="password" v-model="model.password_confirmation"/>
                                 </el-form-item>
-                            </el-col>
+                            </el-col> -->
                         </el-row>
                     </card>
                 </el-form>

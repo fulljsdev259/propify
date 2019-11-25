@@ -30,14 +30,6 @@ class CreateRequest extends BaseRequest
             'last_name' => 'required|string',
             'birth_date' => 'date',
             'status' => 'digits_between:1,2|numeric',
-            'type' => [
-                'nullable',
-                'in:' . implode(',', array_keys(Resident::Type))
-            ],
-            'tenant_type' => [
-                'nullable',
-                // @TODO validate properly
-            ],
         ];
     }
 }

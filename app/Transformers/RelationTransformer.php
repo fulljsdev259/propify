@@ -82,11 +82,11 @@ class RelationTransformer extends BaseTransformer
             $response['media'] = (new MediaTransformer)->transformCollection($model->media);
         }
 
-        if ($model->relationExists('garant_residents')) {
-            $response['residents'] = $model->garant_residents->map(function ($item) {
-                return $item->only('id', 'first_name', 'last_name');
-            });
-        }
+//        if ($model->relationExists('garant_residents')) {
+//            $response['residents'] = $model->garant_residents->map(function ($item) {
+//                return $item->only('id', 'first_name', 'last_name');
+//            });
+//        }
 
         return $response;
     }

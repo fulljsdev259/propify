@@ -30,7 +30,7 @@
                             command="assign"
                             :disabled="!selectedItems.length"
                         >
-                            {{$t('models.building.assign_managers')}}
+                            {{$t('models.building.assign_persons')}}
                         </el-dropdown-item>
                         <el-dropdown-item
                             v-if="$can($permissions.delete.quarter)"
@@ -57,7 +57,7 @@
             @selectionChanged="selectionChanged"
         >
         </list-table>
-        <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
+        <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_persons')"
                    :visible.sync="assignManagersVisible"
                    v-loading="processAssignment" width="30%">
             <el-form :model="managersForm">
@@ -85,7 +85,7 @@
             </el-form>
             <span class="dialog-footer" slot="footer">
                 <el-button @click="closeModal" size="mini">{{$t('models.building.cancel')}}</el-button>
-                <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_managers')}}</el-button>
+                <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_persons')}}</el-button>
             </span>
         </el-dialog>
 
@@ -147,7 +147,7 @@
                     label: 'models.quarter.project_ort',
                     prop: 'city'
                 }, {
-                    label: 'models.quarter.type',
+                    label: 'models.quarter.types.label',
                     prop: 'types'
                 }, {
                     label: 'models.building.request_status',
@@ -205,15 +205,15 @@
                         key: 'city',
                         data: this.cities,
                     },{
-                        name: this.$t('models.quarter.type'),
+                        name: this.$t('models.quarter.types.label'),
                         type: 'select',
-                        key: 'quarter_type',
+                        key: 'types',
                         data: this.types,
                         searchBox: true,
                     },{
                         name: this.$t('general.roles.manager'),
                         type: 'select',
-                        key: 'role',
+                        key: 'user_ids',
                         data: this.roles
                     },{
                         name: this.$t('general.filters.saved_filters'),

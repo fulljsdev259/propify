@@ -52,6 +52,12 @@
             handleSearchChange(text) {
                 this.$emit('search-change', text);
             }
+        },
+        watch: {
+            search(val) {
+                if(val === '')
+                    this.handleSearchChange(null);
+            }
         }
     }
 </script>
