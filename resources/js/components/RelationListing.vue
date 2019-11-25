@@ -268,7 +268,17 @@
                             :style="button.style"
                             :type="button.type"
                             @click="button.onClick(scope.row)"
-                            v-if="(button.view == 'building') || (scope.row.type != 'user' && scope.row.type != 'manager') || button.type == 'danger'"
+                            v-if="button.view == 'request' && scope.row.type == 'provider' && scope.row.sent_email == false"
+                            size="mini"
+                            round
+                        >
+                        </el-button>
+                        <el-button
+                            :icon="button.icon"
+                            :style="button.style"
+                            :type="button.type"
+                            @click="button.onClick(scope.row)"
+                            v-else-if="button.view != 'request' && ((button.view == 'building') || (scope.row.type != 'user' && scope.row.type != 'manager') || button.type == 'danger')"
                             size="mini"
                             round
                         >
