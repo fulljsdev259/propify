@@ -643,7 +643,7 @@
                     i18n: this.translateType
                 }],
                 assigneesActions: [{
-                    width: 180,
+                    width: 120,
                     buttons: [{
                         title: 'models.request.notify',
                         tooltipMode: true,
