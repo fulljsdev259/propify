@@ -339,7 +339,7 @@ export default (config = {}) => {
                         this.workflowCount = this.model.workflows.length
 
                     },
-                    submit() {
+                    submit(goToListing = false) {
                         return new Promise((resolve, reject) => {
                             this.form.validate(async valid => {
                                 if (!valid) {
@@ -374,6 +374,10 @@ export default (config = {}) => {
                                     resolve(false);
                                 } finally {
                                     this.loading.state = false;
+
+                                    if(goToListing) {
+                                        this.$refs.editActions.goToListing()
+                                    }
                                 }
                             });
                         });
