@@ -376,7 +376,7 @@ class UserAPIController extends AppBaseController
             $user->setAttribute('resident', $resident);
         }
 
-        return $this->sendResponse($user->toArray(), 'User retrieved successfully');
+        return $this->sendResponse($user->toArray(), __('general.login_success'));
     }
 
     /**
