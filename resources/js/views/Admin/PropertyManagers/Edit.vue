@@ -4,7 +4,7 @@
             <template slot="description" v-if="model.property_manager_format">
                 <div class="subtitle">{{model.property_manager_format}}</div>
             </template>
-            <edit-actions :saveAction="submit" :deleteAction="deletePropertyManager" route="adminPropertyManagers"/>
+            <edit-actions :saveAction="submit" :deleteAction="deletePropertyManager" route="adminPropertyManagers" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
         </heading>
         <div class="crud-view">
             <el-form :model="model" label-position="top" label-width="192px" ref="form">
@@ -311,10 +311,23 @@
                         icon: 'el-icon-close',                
                     }]
                 }],
+                editMode: false,
             }
         },
         methods: {
             ...mapActions(['deletePropertyManager']),
+            handleChangeEditMode() {
+                if(!this.editMode) {
+                    this.editMode = !this.editMode;
+                    this.old_model = _.clone(this.model, true);
+                } else {
+                    if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
+                        this.visibleDialog = true;
+                    } else {
+                        this.editMode = !this.editMode;
+                    }
+                }
+            },
             requestEditView(row) {
                 this.$router.push({
                     name: 'adminRequestsEdit',
