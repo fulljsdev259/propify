@@ -75,10 +75,10 @@
                                                         prop="type">
                                             <el-select style="display: block" v-model="model.type" :placeholder="$t('general.placeholders.select')">
                                                 <el-option
-                                                        :key="item.name"
-                                                        :label="$t(`general.roles.${item.name}`)"
-                                                        :value="item.id"
-                                                        v-for="item in roles">
+                                                        :key="k"
+                                                        :label="$t(`general.roles.${status}`)"
+                                                        :value="parseInt(k)"
+                                                        v-for="(status, k) in $constants.propertyManager.type">
                                                 </el-option>
                                             </el-select>
                                         </el-form-item>
