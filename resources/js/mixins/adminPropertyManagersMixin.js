@@ -33,6 +33,7 @@ export default (config = {}) => {
                     password_confirmation: '',
                     name: '',
                     phone: '',
+                    mobile_phone: ''
                 },
                 addedAssigmentList: [],
                 statistics: {
