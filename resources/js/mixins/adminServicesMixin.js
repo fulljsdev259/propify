@@ -349,7 +349,7 @@ export default (config = {}) => {
                 }), UploadUserAvatarMixin];
 
                 mixin.methods = {
-                    submit() {
+                    submit(goToListing = false) {
                         return new Promise((resolve, reject) => {
                             this.isFormSubmission = true;
                             this.form.validate(async valid => {
@@ -394,6 +394,9 @@ export default (config = {}) => {
                                     resolve(false);
                                 } finally {
                                     this.loading.state = false;
+                                    if(goToListing) {
+                                        this.$refs.editActions.goToListing()
+                                    }
                                 }
                             });
                         });

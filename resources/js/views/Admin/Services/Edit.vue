@@ -231,7 +231,7 @@
 
         <edit-close-dialog
                 :centerDialogVisible="visibleDialog"
-                @clickYes="submit(), visibleDialog=false, $refs.editActions.goToListing()"
+                @clickYes="visibleDialog=false, submit(true)"
                 @clickNo="visibleDialog=false, $refs.editActions.goToListing()"
                 @clickCancel="visibleDialog=false"
         ></edit-close-dialog>
