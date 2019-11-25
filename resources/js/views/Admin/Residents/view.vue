@@ -78,8 +78,8 @@
                                     </span>
                                 </h3>
                                 <p class="user-info text-secondary" v-if="model.title === 'company'">{{model.company}}</p>
-                                <i class="icon-dot-circled" :class="[constants.residents.status[model.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
-                                {{ constants.residents.status[model.status] ? $t('models.resident.status.' + constants.residents.status[model.status]) : ''}}
+                                <!-- <i class="icon-dot-circled" :class="[constants.residents.status[model.status] === 'active' ? 'icon-success' : 'icon-danger']"></i>
+                                {{ constants.residents.status[model.status] ? $t('models.resident.status.' + constants.residents.status[model.status]) : ''}} -->
                             </el-col>
                             <el-col :md="13" class="info">
                                 <el-row :gutter="20">
@@ -136,10 +136,10 @@
                                 </el-row>
 
                                 <el-row :gutter="20">
-                                    <el-col :sm="8" :xs="12">{{$t('models.resident.type.label')}}:</el-col>
+                                    <el-col :sm="8" :xs="12">{{$t('models.resident.relation.type.label')}}:</el-col>
                                     <el-col :sm="16" :xs="12" class="text-secondary">
-                                        <span v-if="model.type">
-                                            {{ $t(`models.resident.type.${this.constants.residents.type[model.type]}`) }}
+                                        <span v-if="model.types.length">
+                                            {{ showResidentTypes() }}
                                         </span>
                                     </el-col>
                                 </el-row>
@@ -423,6 +423,10 @@
         },
         methods: {
             ...mapActions(['downloadResidentCredentials', 'sendResidentCredentials']),
+            showResidentTypes() {
+                let translatedTypes = this.model.types.map(type => this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`))
+                return translatedTypes.join(', ')
+            },
             edit() {
                 this.$router.push({
                     name: "adminResidentsEdit",

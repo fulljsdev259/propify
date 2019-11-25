@@ -1,11 +1,8 @@
 <template>
     <div class="units">
-        <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy" class="padding-right-300">
+        <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
                 <list-check-box />
-            </template>
-            <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
             </template>
             <template v-if="$can($permissions.create.unit)">
                 <el-button 
@@ -18,8 +15,13 @@
                 </el-button>
             </template>
             <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
+            </template>
+            <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    <el-button size="mini" class="transparent-button menu-button">
+                        <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    </el-button>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item
                             v-if="$can($permissions.delete.unit)"
@@ -44,6 +46,7 @@
             :isLoadingFilters="{state: isLoadingFilters}"
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
+            :searchText="search"
             @selectionChanged="selectionChanged"
             v-if="isReady"
         >
@@ -82,14 +85,15 @@
             return {
                 isReady: false,
                 fetchParams: {},
-                states:{},
-                propertyManagers:{},
+                states:[],
+                propertyManagers:[],
                 types:[],
                 quarters:[],
                 buildings:[],
                 cities: [],
                 quarterTypes: [],
                 roles:[],
+                search: '',
                 header: [{
                     label: 'models.quarter.quarter_format',
                     prop: 'internal_quarter_id'
@@ -98,20 +102,11 @@
                     prop: 'name'
                 }, {
                     label: 'general.filters.status',
-                    withStatus: true,
-                    data: [ {
-                            prop: '',
-                            background: '#67C23A',
-                            color: '#fff',
-                            label: this.$t('models.request.status.received')
-                        }
-                    ]
+                    withStatusSign: true,
+                    prop: 'status',
                 }, {
                     label: 'models.unit.type.label',
                     prop: 'formatted_type_label'
-                }, {
-                    label: 'models.building.type',
-                    prop: ''
                 }, {
                     label: 'models.unit.location',
                     prop: 'floor'
@@ -121,48 +116,13 @@
                 }, {
                     label: 'models.building.request_status',
                     withCounts: true,
-                    width: 230,
-                    counts: [
-                        {
-                            prop: 'requests_count',
-                            background: '#aaa',
-                            color: '#fff',
-                            label: this.$t('dashboard.requests.total_request')
-                        }, {
-                            prop: 'requests_received_count',
-                            background: '#bbb',
-                            color: '#fff',
-                            label: this.$t('models.request.status.received')
-                        }, {
-                            prop: 'requests_assigned_count',
-                            background: '#ebb563',
-                            color: '#fff',
-                            label: this.$t('models.request.status.assigned')
-                        }, {
-                            prop: 'requests_in_processing_count',
-                            background: '#ebb563',
-                            color: '#fff',
-                            label: this.$t('models.request.status.in_processing')
-                        }, {
-                            prop: 'requests_reactivated_count',
-                            background: '#ebb563',
-                            color: '#fff',
-                            label: this.$t('models.request.status.reactivated')
-                        }, {
-                            prop: 'requests_done_count',
-                            background: '#67C23A',
-                            color: '#fff',
-                            label: this.$t('models.request.status.done')
-                        }, {
-                            prop: 'requests_archived_count',
-                            background: '#67C23A',
-                            color: '#fff',
-                            label: this.$t('models.request.status.archived')
-                        }
-                    ]
+                    width: 300,
+                    prop: 'request_count'
                 }, {
                     label: 'models.unit.appendix',
                     withIcon: true,
+                    align: 'center',
+                    prop: 'appendix'
                 }
                 ],
                 building: {},
@@ -175,11 +135,24 @@
                 if(command == 'delete')
                     this.batchDeleteWithIds();
             },
+            async getCities() {
+                const cities = await this.axios.get('cities?get_all=true&units=true');
+                this.cities = [];
+                cities.data.data.forEach((city) => {
+                    this.cities.push({
+                        id: city,
+                        name: city
+                    })
+                });
+            },
             async getRoles() {
+                const roles = await this.axios.get('users?get_all=true&role=manager');
                 this.roles = [];
-                this.roles.push({
-                    id: 1,
-                    name: this.$constants.propertyManager.type[1],
+                roles.data.data.forEach((role) => {
+                    this.roles.push({
+                        id: role.id,
+                        name: role.name,
+                    })
                 })
             },
             async getTypes() {
@@ -258,29 +231,26 @@
                         key: 'quarter_id',
                         data: this.quarters,
                     },{
-                        name: this.$t('models.quarter.project_ort'),
+                        name: this.$t('general.filters.buildings'),
                         type: 'select',
-                        key: 'city_id',
-                        data: this.cities,
-                    },{
-                        name: this.$t('models.quarter.type'),
-                        type: 'select',
-                        key: 'quarter_type',
-                        data: this.quarterTypes,
-                    },{
-                        name: this.$t('models.building.type'),
-                        type: 'select',
-                        key: 'building_type',
-                        data: this.quarterTypes,
-                    },{
+                        key: 'building_id',
+                        data: this.buildings,
+                    },
+                    // {
+                    //     name: this.$t('models.building.type'),
+                    //     type: 'select',
+                    //     key: 'btypes',
+                    //     data: this.quarterTypes,
+                    // },
+                    {
                         name: this.$t('models.unit.type.label'),
                         type: 'select',
-                        key: 'unit_type',
+                        key: 'types',
                         data: this.types,
                     },{
                         name: this.$t('general.roles.manager'),
                         type: 'select',
-                        key: 'role',
+                        key: 'user_ids',
                         data: this.roles
                     },{
                         name: this.$t('general.filters.saved_filters'),

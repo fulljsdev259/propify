@@ -51,7 +51,7 @@
             >
             </el-table-column> -->
             <el-table-column
-                :label="$t('models.resident.type.label')"
+                :label="$t('models.resident.relation.type.label')"
                 prop="type"
                 :width="120"
             >
@@ -69,7 +69,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                :label="$t('models.resident.type.label')"
+                :label="$t('models.resident.relation.type.label')"
                 prop="type"
             >
                 <template slot-scope="scope">
@@ -92,7 +92,8 @@
                         :content="$t('models.resident.relation.status.' + constants.relations.status[scope.row.status])"
                         class="item" effect="light" 
                         placement="top-end">
-                        <span class="status-icon" :style="'background:' + constants.relations.status_colorcode[scope.row.status] ">&nbsp;</span>
+                        <!-- <span class="status-icon" :style="{ background: constants.relations.status_colorcode[scope.row.status], border: '2px solid ' + getLightenDarkenColor(constants.relations.status_colorcode[scope.row.status], 200)}" >&nbsp;</span> -->
+                        <span class="status-icon" :style="{ background: constants.relations.status_colorcode[scope.row.status], border: '2px solid #ffffffe7'}" >&nbsp;</span>
                         <!-- <i class="icon-circle" :class="[constants.relations.status[scope.row.status] === 'active' ? 'icon-active' : (constants.relations.status[scope.row.status] === 'inactive' ? 'icon-inactive' : 'icon-canceled')]"></i> -->
                      </el-tooltip>
                     <!-- {{ constants.relations.status[scope.row.status] ? $t('models.resident.relation.status.' + constants.relations.status[scope.row.status]) : ''}} -->
@@ -130,12 +131,13 @@
     import {mapActions, mapGetters} from 'vuex';
     import {Avatar} from 'vue-avatar'
     import {ResponsiveMixin} from 'vue-responsive-components'
-    
+    import globalFunction from "helpers/globalFunction";
 
     export default {
         name: 'RelationListTable',
         mixins: [
-            ResponsiveMixin
+            ResponsiveMixin,
+            globalFunction
         ],
         components: {
             Avatar,
@@ -189,7 +191,7 @@
                 return this.$t(`models.unit.type.${this.constants.units.type[type]}`);
             },
             translateRelationType(type) {
-                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
             },
             handleRowDblClick(row, col, e) {
                 let i = 0
@@ -198,7 +200,7 @@
                         break;
                 }
                 this.$emit('edit-relation', i)
-            },
+            }
         },
         mounted() {
             this.totalLength = this.items.length
@@ -226,8 +228,8 @@
         }
 
         .status-icon {
-            width: 15px;
-            height: 15px;
+            width: 13px;
+            height: 13px;
             border-radius: 50%;
             display: block;
         }

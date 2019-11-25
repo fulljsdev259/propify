@@ -1,12 +1,12 @@
 <template>
     <div class="quarters-edit" v-loading.fullscreen.lock="loading.state">
         <div class="main-content">
-            <heading :title="$t('models.quarter.edit')" icon="icon-chat-empty" style="margin-bottom: 20px;" shadow="heavy" bgClass="bg-transparent">
+            <heading :title="$t('models.quarter.edit')" icon="icon-chat-empty" shadow="heavy" bgClass="bg-transparent">
                 <template slot="description" v-if="model.quarter_format">
                     <!-- <div class="subtitle">{{`${model.quarter_format} > ${model.name}`}}</div> -->
                     <div class="subtitle">{{model.url}}</div>
                 </template>
-                <edit-actions :saveAction="submit" :deleteAction="deleteQuarter" route="adminQuarters" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
+                <edit-actions :saveAction="submit" :deleteAction="deleteQuarter" route="adminQuarters" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
             </heading>
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
@@ -56,6 +56,7 @@
                                                 :name="$t('general.placeholders.select')"
                                                 :data="types"
                                                 :disabled="!editMode"
+                                                :selectedOptions="model.types"
                                                 tagColor="#9E9FA0"
                                                 @select-changed="model.types=$event"
                                             ></multi-select>
@@ -115,6 +116,7 @@
                         </el-tab-pane>
                         <el-tab-pane name="buildings">
                             <span slot="label">
+                                {{ $t('general.box_titles.buildings') }}
                                 <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge>
                             </span>
                             <relation-list
@@ -139,7 +141,8 @@
                         </el-tab-pane>
                         <el-tab-pane name="files">
                             <span slot="label">
-                                <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge>
+                                {{ $t('general.box_titles.files') }}
+                                <!-- <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge> -->
                             </span>
                             <draggable @sort="sortFiles" v-model="model.media">
                                 <transition-group name="list-complete">
@@ -199,7 +202,8 @@
                     <el-tabs type="border-card" v-model="activeRightTab">
                         <el-tab-pane name="assignees">                        
                             <span slot="label">
-                                <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
+                                {{ $t('general.box_titles.managers') }}
+                                <!-- <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge> -->
                             </span>
                             <!-- <assignment-by-type
                                 :resetToAssignList="resetToAssignList"
@@ -221,6 +225,7 @@
                                         class="custom-remote-select"
                                         filterable
                                         remote
+                                        multiple
                                         reserve-keyword
                                         style="width: 100%;"
                                         v-model="toAssign"
@@ -236,7 +241,7 @@
                                             <span style="float: left">{{ assignee.name }}</span>
                                             <span style="float: right; color: #8492a6; font-size: 13px">
                                                 {{assignee.roles[0].name == "provider" ? $t(`models.service.category.${assignee.function}`)  : ''}}
-                                                {{assignee.roles[0].name == "manager" ? $t(`general.assignment_types.${assignee.function}`) : ''}} 
+                                                {{assignee.roles[0].name == "manager" || assignee.roles[0].name == "administrator" ? $t(`general.assignment_types.${assignee.function}`) : ''}} 
                                             </span>
                                         </el-option>
                                     </el-select>
@@ -257,7 +262,7 @@
                                     </el-select>
                                 </el-col> -->
                                 <el-col id="managerAssignBtn">
-                                    <el-button :disabled="!toAssign" @click="assignUser" class="full-button assign-button"
+                                    <el-button :disabled="!toAssign.length" @click="assignUsers" class="full-button assign-button"
                                                 icon="ti-save">
                                         &nbsp;{{$t('general.assign')}}
                                     </el-button>
@@ -275,7 +280,8 @@
                         </el-tab-pane>
                        <el-tab-pane name="workflow">
                             <span slot="label">
-                                <el-badge :value="workflowCount" :max="99" class="admin-layout">{{ $t('models.quarter.workflow.label') }} </el-badge>
+                                {{ $t('models.quarter.workflow.label') }}
+                                <!-- <el-badge :value="workflowCount" :max="99" class="admin-layout">{{ $t('models.quarter.workflow.label') }} </el-badge> -->
                             </span>
                             <div class="workflow-button-bar">
                                 <el-button 
@@ -363,7 +369,7 @@
                                                 @click="showEditWorkflow($index)"
                                                 icon="icon-pencil" 
                                                 size="mini" 
-                                                class="round-btn">
+                                                class="round-btn btn-edit">
                                                 {{ $t('models.quarter.workflow.edit') }}
                                             </el-button>
                                         </el-col>
@@ -401,7 +407,8 @@
                     <el-tabs type="border-card" v-model="activeRequestTab">
                         <el-tab-pane name="requests">
                             <span slot="label">
-                                <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge>
+                                {{ $t('general.requests') }}
+                                <!-- <el-badge :value="requestCount" :max="99" class="admin-layout">{{ $t('general.requests') }}</el-badge> -->
                             </span>
                             <span class="icon-cog" @click="toggleDrawer">
                             </span>
@@ -506,8 +513,8 @@
         </ui-drawer>
          <edit-close-dialog 
             :centerDialogVisible="visibleDialog"
-            @clickYes="submit(), editMode=!editMode, visibleDialog=false"
-            @clickNo="model=_.clone(old_model, true), editMode=!editMode, visibleDialog=false"
+            @clickYes="submit(), visibleDialog=false, $refs.editActions.goToListing()"
+            @clickNo="visibleDialog=false, $refs.editActions.goToListing()"
             @clickCancel="visibleDialog=false"
         ></edit-close-dialog>
     </div>
@@ -602,8 +609,12 @@
                     prop: 'name',
                     label: 'general.name'
                 }, {
+                    type: 'companyName',
+                    prop: 'company_name',
+                    label: 'general.name'
+                }, {
                     type: 'assignProviderManagerFunctions',
-                    label: 'general.name',
+                    label: 'general.type',
                 }/*, {
                     prop: 'assignment_types',
                     label: 'general.assignment_types.label',
@@ -624,7 +635,7 @@
                     count: 'residents_count',
                     label: 'general.residents'
                 }],
-                quarterActions: [{
+                quarterActions: [/*{
                     width: 70,
                     buttons: [{
                         icon: 'ti-search',
@@ -632,7 +643,7 @@
                         onClick: this.buildingEditView,
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 residentColumns: [{
                     type: 'requestResidentAvatar',
                     width: 70                    
@@ -646,7 +657,7 @@
                 //     type: 'residentName'
                 // }, {
                 //     prop: 'type',
-                //     label: 'models.resident.type.label',
+                //     label: 'models.resident.relation.type.label',
                 //     i18n: this.translateResidentType
                 // }, {
                     type: 'residentRelation',
@@ -720,7 +731,7 @@
                 return this.$t(`general.assignment_types.${type}`);
             },
             translateResidentType(type) {
-                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
             },
             translateAssignmentType(types) {
                 let translatedTypes = []
@@ -999,9 +1010,6 @@
             overflow-y: scroll;
             height: 100%;
         }
-        .crud-view {
-            margin-top: 1%;
-        }
 
 
         /deep/ .el-tabs--border-card {
@@ -1162,6 +1170,14 @@
 
         &.edit {
             padding-top: 40px;
+            .el-button.btn-edit {
+                background-color: #848484;
+                border: none;
+                &:hover {
+                    box-shadow: 0 0 5px #848484;
+                    color: var(--color-white);
+                }
+            }
         }
     }
 
@@ -1178,7 +1194,6 @@
     .el-collapse {
         border-top: 0;
         border-bottom: 0;
-        padding: 0px 25px;
 
         /deep/ .el-collapse-item__header {
             padding-left: 10px;
@@ -1210,5 +1225,8 @@
     .assign-button {
         background-color: #3D3F41;
         color: var(--color-white);
+        &:hover {
+            background-color: var(--background-color-base);
+        }
     }
 </style>

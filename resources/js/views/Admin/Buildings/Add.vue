@@ -4,7 +4,7 @@
             <add-actions :saveAction="submit" route="adminBuildings" editRoute="adminBuildingsEdit"/>
         </heading>
         <div class="crud-view">
-            <el-form :model="model" ref="form">
+            <el-form :model="model" ref="form" class="add-form">
                 <el-row :gutter="20">
                     <el-col :md="12">
                         <card :header="$t('models.property_manager.details_card')">
@@ -90,7 +90,7 @@
                     </el-col>
                 </el-row>
 
-                <el-row :gutter="20" class="mt15">
+                <el-row :gutter="20" class="mt40">
                     <el-col :md="12">
                         <card :header="$t('models.unit.floor')">
                     <!--<el-form-item prop="description" :label="$t('general.description')" :rules="validationRules.description" style="max-width: 512px;">-->
@@ -232,9 +232,15 @@
 </style>
 
 <style lang="scss" scoped>
-    .buildings-add {
-        .heading {
-            margin-bottom: 20px;
-        }
+    .crud-view {
+        margin: 0 20px !important;
+    }
+    
+    .el-card .el-card__body {
+        padding: 20px !important;
+    }
+    .el-card .el-card__header {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
     }
 </style>

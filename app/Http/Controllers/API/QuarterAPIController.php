@@ -4,11 +4,13 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Quarter\FilterByCityCriteria;
 use App\Criteria\Quarter\FilterByStateCriteria;
+use App\Criteria\Quarter\FilterByTypeCriteria;
 use App\Criteria\Quarter\FilterByUserRoleCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Quarter\AssignUserRequest;
 use App\Http\Requests\API\Quarter\CreateRequest;
 use App\Http\Requests\API\Quarter\EmailReceptionistRequest;
+use App\Http\Requests\API\Quarter\MassAssignUsersRequest;
 use App\Http\Requests\API\Quarter\UnAssignRequest;
 use App\Http\Requests\API\Quarter\UpdateRequest;
 use App\Http\Requests\API\Quarter\ListRequest;
@@ -19,9 +21,7 @@ use App\Models\AuditableModel;
 use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
-use App\Models\Relation;
 use App\Models\ServiceProvider;
-use App\Models\Unit;
 use App\Models\User;
 use App\Repositories\AddressRepository;
 use App\Repositories\QuarterRepository;
@@ -98,6 +98,7 @@ class QuarterAPIController extends AppBaseController
         $this->quarterRepository->pushCriteria(new FilterByStateCriteria($request));
         $this->quarterRepository->pushCriteria(new FilterByCityCriteria($request));
         $this->quarterRepository->pushCriteria(new FilterByUserRoleCriteria($request));
+        $this->quarterRepository->pushCriteria(new FilterByTypeCriteria($request));
 
         $getAll = $request->get('get_all', false);
         if ($getAll) {
@@ -134,6 +135,7 @@ class QuarterAPIController extends AppBaseController
                     $q->select('users.id', 'users.avatar', 'users.name')->with('roles:roles.id,name');
                 }
             ])
+            ->scope('allRequestStatusCount')
             ->paginate($perPage);
         $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWithStatistics');
         return $this->sendResponse($response, 'Quarters retrieved successfully');
@@ -576,14 +578,46 @@ class QuarterAPIController extends AppBaseController
         if (empty($quarter)) {
             return $this->sendError(__('models.quarter.errors.not_found'));
         }
+        $this->assignSingleUserToQuarter($id, $request->user_id, $request->role);
+        $response = (new QuarterTransformer)->transform($quarter);
+        return $this->sendResponse($response, __('general.attached.manager'));
+    }
 
-        $userId = $request->get('user_id');
+    /**
+     * @param int $id
+     * @param MassAssignUsersRequest $request
+     * @return mixed
+     */
+    public function massAssignUsers(int $id, MassAssignUsersRequest $request)
+    {
+        /** @var Quarter $quarter */
+        $quarter = $this->quarterRepository->findWithoutFail($id);
+        if (empty($quarter)) {
+            return $this->sendError(__('models.quarter.errors.not_found'));
+        }
+
+        $data  = $request->toArray();
+        foreach ($data as $single) {
+            $this->assignSingleUserToQuarter($id, $single['user_id'], $single['role']);
+        }
+
+        $response = (new QuarterTransformer)->transform($quarter);
+        return $this->sendResponse($response, __('general.attached.manager'));
+    }
+
+    /**
+     * @param $quarterId
+     * @param $userId
+     * @param $role
+     * @return QuarterAssignee|\Illuminate\Database\Eloquent\Model|mixed
+     */
+    protected function assignSingleUserToQuarter($quarterId, $userId, $role)
+    {
         $user = User::find($userId);
         if (empty($user)) {
             return $this->sendError(__('models.user.errors.not_found'));
         }
 
-        $role = $request->role;
         if (in_array($role, ['manager', 'administrator'])) {
             $propertyManagerId = PropertyManager::where('user_id', $user->id)->value('id');
             if (empty($propertyManagerId)) {
@@ -604,18 +638,14 @@ class QuarterAPIController extends AppBaseController
             }
         }
 
-        $quarterAssignee = QuarterAssignee::updateOrCreate([
-            'quarter_id' => $id,
+        return QuarterAssignee::updateOrCreate([
+            'quarter_id' => $quarterId,
             'user_id' => $userId,
             'assignee_id' => $assigneeId,
             'assignee_type' => $assigneeType,
         ], [
-            'assignment_types' => $request->assignment_types,
             'created_at' => now()
         ]);
-
-        $response = (new QuarterTransformer)->transform($quarter);
-        return $this->sendResponse($response, __('general.attached.manager'));
     }
 
     /**

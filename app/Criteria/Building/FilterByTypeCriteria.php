@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Criteria\Resident;
+namespace App\Criteria\Building;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -10,12 +10,12 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
  * Class FilterByTypeCriteria
- * @package App\Criteria\Resident
+ * @package App\Criteria\Quarter
  */
 class FilterByTypeCriteria implements CriteriaInterface
 {
     /**
-     * @var \Illuminate\Http\Request
+     * @var Request
      */
     protected $request;
 
@@ -35,14 +35,12 @@ class FilterByTypeCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $type = $this->request->get('type', null);
-        if ($type) {
-            $model =  $model->where('residents.type', (int)$type);
-        }
-
-        $tenantType = $this->request->get('tenant_type', null);
-        if ($tenantType) {
-            $model =  $model->where('residents.tenant_type', (int)$tenantType);
+        $types = $this->request->get('types', null);
+        if ($types) {
+            if (! is_array($types)) {
+                $types = [$types];
+            }
+            return $model->whereIn('types', $types);
         }
 
         return $model;

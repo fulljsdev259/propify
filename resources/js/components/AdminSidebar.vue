@@ -134,11 +134,11 @@
             },
             logo() {
                 
-                if(localStorage.getItem('logo') != this.$constants.logo.logo ) {
-                    localStorage.setItem('logo', this.$constants.logo.logo);
+                if(localStorage.getItem('circle_logo') != this.$constants.logo.circle_logo ) {
+                    localStorage.setItem('circle_logo', this.$constants.logo.circle_logo);
                 }
 
-                return localStorage.getItem('logo') ? `/${localStorage.getItem('logo')}` : '';
+                return localStorage.getItem('circle_logo') ? `/${localStorage.getItem('circle_logo')}` : '';
             },
         },
         watch: {
@@ -266,6 +266,9 @@
             }
             :global(.el-tooltip) {
                 padding: 8px 36px !important;
+            }
+            :global(.el-tooltip.focusing) {
+                outline: none;
             }
         }
         .el-submenu {

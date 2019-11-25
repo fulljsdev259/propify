@@ -180,6 +180,20 @@ class Building extends AuditableModel implements HasMedia
         self::ContactEnablesHide => 'hide',
     ];
 
+    const TypeRent = 1;
+    const TypeSell = 2;
+    const TypeBuildingLand = 3;
+    const TypeTrade = 4;
+    const TypeMultiStoreyCarPark = 5;
+
+    const Type = [
+        self::TypeRent => 'rent',
+        self::TypeSell => 'sell',
+        self::TypeBuildingLand => 'building_land',
+        self::TypeTrade => 'trade',
+        self::TypeMultiStoreyCarPark => 'multi-storey_car_park',
+    ];
+
     public $table = 'buildings';
 
     protected $dates = ['deleted_at'];
@@ -200,6 +214,7 @@ class Building extends AuditableModel implements HasMedia
         'internal_building_id',
         'under_floor',
         'global_email_receptionist',
+        'types'
     ];
 
     /**
@@ -215,6 +230,7 @@ class Building extends AuditableModel implements HasMedia
         'under_floor' => 'integer',
         'quarter_id' => 'integer',
         'floor_nr' => 'integer',
+        'types' => 'array',
         'contact_enable' => 'integer',
         'basement' => 'boolean',
         'attic' => 'boolean',
@@ -229,17 +245,6 @@ class Building extends AuditableModel implements HasMedia
         'docx',
         'xls',
         'xlsx'
-    ];
-
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'name' => 'required',
-        'floor_nr' => 'required',
-        'under_floor' => 'numeric|between:0,3'
     ];
 
     protected $auditEvents = [

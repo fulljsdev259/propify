@@ -8,7 +8,6 @@ use App\Criteria\Resident\FilterByRelationRelatedCriteria;
 use App\Criteria\Common\FilterByLanguageCriteria;
 use App\Criteria\Resident\FilterByRequestCriteria;
 use App\Criteria\Resident\FilterByStatusCriteria;
-use App\Criteria\Resident\FilterByTypeCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Resident\AddReviewRequest;
 use App\Http\Requests\API\Resident\CheckHasRequestOrRelationRequest;
@@ -118,7 +117,6 @@ class ResidentAPIController extends AppBaseController
         $this->residentRepository->pushCriteria(new FilterByRequestCriteria($request));
         $this->residentRepository->pushCriteria(new FilterByStatusCriteria($request));
         $this->residentRepository->pushCriteria(new FilterByLanguageCriteria($request));
-        $this->residentRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->residentRepository->pushCriteria(new LimitOffsetCriteria($request));
 
         $getAll = $request->get('get_all', false);
@@ -126,10 +124,10 @@ class ResidentAPIController extends AppBaseController
             $this->residentRepository->pushCriteria(new LimitOffsetCriteria($request));
             $residents = $this->residentRepository->with([
                 'relations' => function ($q) {
-                    $q->with('building.address', 'unit');
+                    $q->with('unit.building.address');
                 },
                 'default_relation' => function ($q) {
-                    $q->with('building.address', 'unit');
+                    $q->with('unit.building.address');
                 },])
                 ->get();
             foreach ($residents as $resident) {
@@ -148,7 +146,8 @@ class ResidentAPIController extends AppBaseController
             },
             'relations' => function ($q) {
                 $q->with('unit.building.address');
-            }])->paginate($perPage);
+            }])->scope('allRequestStatusCount')
+            ->paginate($perPage);
         $response = (new ResidentTransformer())->transformPaginator($residents);
         return $this->sendResponse($response, 'Residents retrieved successfully');
     }
@@ -1331,6 +1330,7 @@ class ResidentAPIController extends AppBaseController
      *      )
      * )
      *
+     * @TODO delete this method
      * @param $id
      * @param CheckHasRequestOrRelationRequest $r
      * @return mixed

@@ -1,14 +1,14 @@
 <template>
     <div class="custom-select" ref="multiSelect">
        <el-dropdown trigger="click" placement="bottom" @visible-change="handleVisibleChange">
-            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]" :disabled="disabled">
+            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]" :style="{'background-color':findSelectedOne.count?bgColor:'#f6f5f7'}" :disabled="disabled">
                 <span v-if="findSelectedOne.count === 0">{{ name }}</span>
                 <template v-else>
                     <el-tag 
                         :key="item.id"
                         size="mini"
                         :style="{'background-color': tagColor}"
-                        closable
+                        :closable="!disabled"
                         @close="selectItem(item.index, true)"
                         v-for="(item, index) in findSelectedOne.items"
                     >
@@ -113,6 +113,10 @@
           tagColor: {
               type: String,
               default: () => ''
+          },
+          bgColor: {
+              type: String,
+              default: () => ''
           }
         },
         components: {
@@ -193,6 +197,8 @@
                 if(this.maxSelect) {
                     this.items.map(item => item.selected = false)
                     this.items[index].selected = true
+                    if(notifyChange)
+                        this.items[index].selected = false
                 }
                 else
                     this.items[index].selected = !this.items[index].selected;
@@ -280,11 +286,17 @@
             }
         },
         created() {
-            console.log(this.data);
+            this.initFilter();
         },
         updated() {
-            if(JSON.stringify(this.options) !== JSON.stringify(this.data))
+        },
+        watch: {
+            selectedOptions() {
                 this.initFilter();
+            },
+            data() {
+                this.initFilter();
+            }
         }
     }
 </script>
@@ -316,11 +328,11 @@
                 &:not(:last-of-type) {
                     margin-right: 2.5px;
                 }
-                background-color: var(-color-primary);
-                border-color: var(-color-primary);
+                background-color: var(--color-primary);
+                border-color: transparent;
                 color: var(--color-white);
-                line-height: 35px;
-                height: 35px;
+                line-height: 34px;
+                height: 34px;
                 :global(i.el-tag__close) {
                     right: 0;
                     line-height: 1.4;

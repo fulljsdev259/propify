@@ -52,7 +52,7 @@ class ServiceProvidersTableSeeder extends Seeder
                     'category' => $category,
                     'user_id' => $user->id,
                     'address_id' => $address->id,
-                    'name' => $user->name,
+                    'company_name' => $user->name,
                     'email' => $user->email,
                     'phone' => $user->phone,
                 ];

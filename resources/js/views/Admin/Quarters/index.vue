@@ -1,6 +1,6 @@
 <template>
     <div class="quarters">
-        <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" class="padding-right-300">
+        <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
                 <list-check-box />
             </template>
@@ -20,7 +20,9 @@
            
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    <el-button size="mini" class="transparent-button">
+                        <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    </el-button>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item 
                             v-if="$can($permissions.assign.manager)" 
@@ -28,7 +30,7 @@
                             command="assign"
                             :disabled="!selectedItems.length"
                         >
-                            {{$t('models.building.assign_managers')}}
+                            {{$t('models.building.assign_persons')}}
                         </el-dropdown-item>
                         <el-dropdown-item
                             v-if="$can($permissions.delete.quarter)"
@@ -51,10 +53,11 @@
             :loading="{state: loading}"
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
+            :searchText="search"
             @selectionChanged="selectionChanged"
         >
         </list-table>
-        <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
+        <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_persons')"
                    :visible.sync="assignManagersVisible"
                    v-loading="processAssignment" width="30%">
             <el-form :model="managersForm">
@@ -82,7 +85,7 @@
             </el-form>
             <span class="dialog-footer" slot="footer">
                 <el-button @click="closeModal" size="mini">{{$t('models.building.cancel')}}</el-button>
-                <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_managers')}}</el-button>
+                <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_persons')}}</el-button>
             </span>
         </el-dialog>
 
@@ -123,6 +126,7 @@
                 toAssign: [],
                 remoteLoading: false,
                 states: [],
+                search: '',
                 quarter:[],
                 cities: [],
                 quarterTypes: [],
@@ -143,44 +147,13 @@
                     label: 'models.quarter.project_ort',
                     prop: 'city'
                 }, {
-                    label: 'models.quarter.type',
+                    label: 'models.quarter.types.label',
                     prop: 'types'
                 }, {
                     label: 'models.building.request_status',
                     withCounts: true,
                     width: 230,
-                    counts: [{
-                            prop: 'requests_received_count',
-                            background: '#bbb',
-                            color: '#fff',
-                            label: this.$t('models.request.status.received')
-                        }, {
-                            prop: 'requests_assigned_count',
-                            background: '#ebb563',
-                            color: '#fff',
-                            label: this.$t('models.request.status.assigned')
-                        }, {
-                            prop: 'requests_in_processing_count',
-                            background: '#ebb563',
-                            color: '#fff',
-                            label: this.$t('models.request.status.in_processing')
-                        }, {
-                            prop: 'requests_reactivated_count',
-                            background: '#ebb563',
-                            color: '#fff',
-                            label: this.$t('models.request.status.reactivated')
-                        }, {
-                            prop: 'requests_done_count',
-                            background: '#67C23A',
-                            color: '#fff',
-                            label: this.$t('models.request.status.done')
-                        }, {
-                            prop: 'requests_archived_count',
-                            background: '#67C23A',
-                            color: '#fff',
-                            label: this.$t('models.request.status.archived')
-                        }
-                    ]
+                    prop: 'request_count'
                 },{
                     label: 'models.quarter.buildings_count',
                     prop: 'buildings_count'
@@ -190,28 +163,12 @@
                 }, {
                     label: 'general.filters.status',
                     withStatus: true,
-                    data: [ {
-                            prop: 'requests_received_count',
-                            background: '#bbb',
-                            color: '#fff',
-                            label: this.$t('models.request.status.received')
-                        }, {
-                            prop: 'requests_assigned_count',
-                            background: '#ebb563',
-                            color: '#fff',
-                            label: this.$t('models.request.status.assigned')
-                        }
-                    ]
+                    prop: 'status'
                 }, {
-                    label: 'models.request.assigned_to',
-                    withStatus: true,
-                    data: [ {
-                            prop: 'name',
-                            background: '#67C23A',
-                            color: '#fff',
-                            label: this.$t('models.request.status.received')
-                        }
-                    ]
+                    label: 'models.request.assigned_property_managers',
+                    withUsers: true,
+                    prop: 'users',
+                    defaultHide: true
                 }
                 ],
                 model: {
@@ -245,18 +202,18 @@
                     },{
                         name: this.$t('models.quarter.project_ort'),
                         type: 'select',
-                        key: 'city_id',
+                        key: 'city',
                         data: this.cities,
                     },{
-                        name: this.$t('models.quarter.type'),
+                        name: this.$t('models.quarter.types.label'),
                         type: 'select',
-                        key: 'quarter_type',
+                        key: 'types',
                         data: this.types,
                         searchBox: true,
                     },{
                         name: this.$t('general.roles.manager'),
                         type: 'select',
-                        key: 'role',
+                        key: 'user_ids',
                         data: this.roles
                     },{
                         name: this.$t('general.filters.saved_filters'),
@@ -363,11 +320,24 @@
                 const states = await this.axios.get('states?filters=true')
                 this.states = states.data.data;
             },
+            async getCities() {
+                const cities = await this.axios.get('cities?get_all=true&quarters=true');
+                this.cities = [];
+                cities.data.data.forEach((city) => {
+                    this.cities.push({
+                        id: city,
+                        name: city
+                    })
+                });
+            },
             async getRoles() {
+                const roles = await this.axios.get('users?get_all=true&role=manager');
                 this.roles = [];
-                this.roles.push({
-                    id: 1,
-                    name: this.$constants.propertyManager.type[1],
+                roles.data.data.forEach((role) => {
+                    this.roles.push({
+                        id: role.id,
+                        name: role.name,
+                    })
                 })
             },
             async getTypes() {
@@ -393,6 +363,7 @@
         async created() {
             this.getRoles();
             this.getTypes();
+            this.getCities();
             this.quarter = await this.fetchRemoteQuarters();
         },
         mounted() {

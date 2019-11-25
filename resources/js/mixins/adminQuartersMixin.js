@@ -18,7 +18,7 @@ export default (config = {}) => {
                     house_num: 'house_num',
                     media: [],
                     internal_quarter_id: '',
-                    types: '',
+                    types: [],
                     url: '',
                     workflows: [],
                 },
@@ -55,7 +55,7 @@ export default (config = {}) => {
                 },
                 buildingsCount: 20,
                 remoteLoading: false,
-                toAssign: '',
+                toAssign: [],
                 toAssignList: [],
                 assignmentTypes: ['managers'],
                 assignmentType: 'managers',
@@ -70,10 +70,20 @@ export default (config = {}) => {
             ...mapGetters(['states'])
         },
         methods: {
-            ...mapActions(['getStates', 'assignUserToQuarter','getQuarter','getUsers','getAllAdminsForQuarter','getPropertyManagers','unassignQuarterAssignee']),
+            ...mapActions([
+                'getStates', 
+                'assignUserToQuarter', 
+                'assignUsersToQuarter', 
+                'getQuarter', 
+                'getUsers', 
+                'getAllAdminsForQuarter', 
+                'getPropertyManagers', 
+                'unassignQuarterAssignee'
+            ]),
             resetToAssignList() {
                 this.toAssignList = [];
-                this.toAssign = '';
+                //this.toAssign = '';
+                this.toAssign = [];
             },
             async assignUser() {
                 if (!this.toAssign || !this.model.id) {
@@ -110,6 +120,34 @@ export default (config = {}) => {
                         this.$refs.auditList.fetch();
                     }
                     this.userAssignmentType = null
+                }
+            },
+            async assignUsers() {
+                if (!this.toAssign || !this.model.id) {
+                    return false;
+                }
+                let resp;
+
+                let user_params = []
+
+                this.toAssign.forEach(id => {
+                    let assign_user = this.toAssignList.find(item => item.id == id )
+                    user_params.push({user_id: id, role: assign_user.roles[0].name})
+                })
+                
+
+                resp = await this.assignUsersToQuarter({
+                            id: this.model.id,
+                            user_params: user_params
+                        });
+
+                if (resp && resp.data) {
+                    displaySuccess(resp)                           
+                    this.resetToAssignList();
+                    this.$refs.assigneesList.fetch();    
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
                 }
             },
             async remoteSearchAssignees(search) {
@@ -164,8 +202,8 @@ export default (config = {}) => {
                         //             search,
                         //             roles: ['manager', 'administrator', 'provider']
                         //         });
-                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id, function:true, search})
-                        this.toAssignList = resp;                        
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id, function_val: true, search})
+                        this.toAssignList = resp;
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -325,7 +363,7 @@ export default (config = {}) => {
                                         },
                                         ...restParams
                                     });    
-                                    this.old_model = this.model;
+                                    this.old_model = _.clone(this.model, true);
                                     if(this.$refs.auditList){
                                         this.$refs.auditList.fetch();
                                     }                                    

@@ -42,10 +42,11 @@ export default (config = {}) => {
                     title: '',
                     company: '',
                     settings: {
-                        language: '',
+                        language: 'en', //@TODO : remove language
                     },
                     nation: '',
-                    type: '',
+                    //type: '',
+                    types: [],
                     relations: [],
                     status: 1
                 },
@@ -74,7 +75,7 @@ export default (config = {}) => {
                     }, {
                         type: 'email',
                         message: this.$t("general.email_validation.email")
-                    },{
+                    }, {
                         validator: this.checkavailabilityEmail
                     }],
                     password: [{
@@ -83,9 +84,9 @@ export default (config = {}) => {
                         min: 6,
                         message: this.$t("general.password_validation.min")
                     }],
-                    password_confirmation: [{
-                        validator: this.validateConfirmPassword,
-                    }],
+                    // password_confirmation: [{
+                    //     validator: this.validateConfirmPassword,
+                    // }],
                     birth_date: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.resident.birth_date')})
@@ -94,17 +95,17 @@ export default (config = {}) => {
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('general.salutation')})
                     }],
-                    type: [{
-                            required: true,
-                            message: this.$t('validation.general.required')
-                        }, {
-                            validator: this.checkavailabilityResidentType
-                        }
-                    ],
-                    tenant_type: [{
-                        required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.tenant_type.label')})
-                    }],
+                    // type: [{
+                    //         required: true,
+                    //         message: this.$t('validation.general.required')
+                    //     }, {
+                    //         validator: this.checkavailabilityResidentType
+                    //     }
+                    // ],
+                    // tenant_type: [{
+                    //     required: true,
+                    //     message: this.$t('validation.required',{attribute: this.$t('models.resident.tenant_type.label')})
+                    // }],
                 },
                 loading: {
                     state: false,
@@ -126,13 +127,14 @@ export default (config = {}) => {
             },
             async addRelation (data) {
                 if(config.mode == 'add') {
-                    this.original_type = this.model.type
+                    //this.original_type = this.model.type
                     this.model.relations.push(data);
                 }
                 else {
                     const resp = await this.$store.dispatch('relations/get', {resident_id : this.model.id});
                     console.log('get relations', resp.data)
                     this.model.relations = resp.data
+                    this.$refs.mediaList.fetch();
                 }
                 
             },
@@ -140,10 +142,12 @@ export default (config = {}) => {
                 if(this.model.relations[index].garant == 1) {
                     console.log('garant')
                     return this.$router.push({
-                        name: 'adminResidentView',
+                        name: 'adminResidentsEdit',
                         params: {
                             id: this.model.relations[index].resident_id
                         }
+                    }).then(() => {
+                        window.location.reload()
                     }).catch(err => {})
                 }
                 else {
@@ -183,13 +187,21 @@ export default (config = {}) => {
                 this.visibleMediaDialog = false;
             },
             uploadMedia() {
-                this.model.media.map(item => {
+                this.model.media.map(async item => {
                     if(!item.url) {
                         console.log(item)
                         item.id = this.model.id
-                        this.uploadMediaFile(item)
+                        let resp = await this.uploadMediaFile(item)
+
+                        if(resp && resp.success) {
+                            displaySuccess(resp)
+                            this.$refs.mediaList.fetch();
+                        }
+
+                        
                     }
                 })
+                this.visibleMediaDialog = false;
             },
             ...mapActions(['getCountries', 'uploadMediaFile']),
         },
@@ -249,7 +261,9 @@ export default (config = {}) => {
                                     relation.monthly_rent_gross = Number(relation.monthly_rent_net) + Number(relation.monthly_maintenance)
                                 })
 
-                                let {email, password, password_confirmation, ...resident} = this.model;
+                                //let {email, password, password_confirmation, ...resident} = this.model;
+                                let {email, password, ...resident} = this.model;
+
 
                                 try {
 
@@ -268,7 +282,8 @@ export default (config = {}) => {
                                         user: {
                                             email,
                                             password,
-                                            password_confirmation: password_confirmation
+                                            password_confirmation: password
+                                            //password_confirmation: password_confirmation
                                         },
                                         ...resident
                                     });
@@ -318,12 +333,14 @@ export default (config = {}) => {
                                     return false;
                                 }
                                 this.loading.state = true;
-                                let {password_confirmation, ...params} = this.model;
+//                                let {password_confirmation, ...params} = this.model;
+                                let {...params} = this.model;
 
                                 if (params.password === '') {
                                     params = _.omit(params, ['password'])
                                 }
 
+                                params.password_confirmation = params.password
                                 try {
                                     const resp = await this.updateResident(params);
 
@@ -361,9 +378,11 @@ export default (config = {}) => {
                 };
 
                 mixin.created = async function () {
-                    const {password, password_confirmation} = this.validationRules;
+                    // const {password, password_confirmation} = this.validationRules;
                     
-                    [...password, ...password_confirmation].forEach(rule => rule.required = false);
+                    // [...password, ...password_confirmation].forEach(rule => rule.required = false);
+
+                    
                     this.titles = Object.entries(this.$constants.residents.title).map(([value, label]) => ({value: label, name: this.$t(`general.salutation_option.${label}`)}))
                     try {
                         this.loading.state = true;
@@ -374,7 +393,7 @@ export default (config = {}) => {
                         this.model = Object.assign({}, this.model, r);
                         
                         this.original_email = this.user.email;
-                        this.original_type = this.model.type;
+                        //this.original_type = this.model.type;
                         this.model.email = user.email;
                         this.model.avatar = user.avatar;
                         if(this.model.nation)

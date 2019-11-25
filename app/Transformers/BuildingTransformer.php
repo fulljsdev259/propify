@@ -4,8 +4,8 @@ namespace App\Transformers;
 
 use App\Models\Building;
 use App\Models\Relation;
+use App\Models\Request;
 use App\Models\Resident;
-use App\Models\Unit;
 
 /**
  * Class BuildingTransformer.
@@ -26,6 +26,7 @@ class BuildingTransformer extends BaseTransformer
             'id',
             'name',
             'building_format',
+            'types',
             'label',
             'contact_enable',
             'description',
@@ -62,6 +63,11 @@ class BuildingTransformer extends BaseTransformer
             $response['units'] = (new UnitTransformer())->transformCollectionBy($model->units, 'transformForIndex');
             $statusCounts = $this->getUnitsStatus($response);
             $response = array_merge($response, $statusCounts);
+            $requestStatusCounts = (new Request())->request_status_columns;
+            $unitsData = collect( $response['units'] );
+            foreach ($requestStatusCounts as $requestStatusCount) {
+                $response[$requestStatusCount] = $unitsData->sum($requestStatusCount);
+            }
         }
 
         $response['users'] = [];
@@ -129,7 +135,6 @@ class BuildingTransformer extends BaseTransformer
 
         return $input;
     }
-
 
     /**
      * @param $data

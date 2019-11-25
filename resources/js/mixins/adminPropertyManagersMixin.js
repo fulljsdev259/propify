@@ -25,8 +25,9 @@ export default (config = {}) => {
                         avatar_variations: '',
                     },
                     settings: {
-                        language: ''
+                        language: 'en' //@TODO : remove language
                     },
+                    status: '',
                     email: '',
                     password: '',
                     password_confirmation: '',
@@ -76,13 +77,17 @@ export default (config = {}) => {
                         required: true,
                         message: this.$t('validation.required', {attribute: this.$t('general.last_name')})
                     }],
+                    status: [{
+                        required: true,
+                        message: this.$t('validation.required', {attribute: this.$t('general.status')})
+                    }],
                     language: [{
                         required: true,
                         message: this.$t('validation.required', {attribute: this.$t('general.language')})
                     }],
                     type: [{
                         required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('general.roles.label')})
+                        message: this.$t('validation.required', {attribute: this.$t('general.function')})
                     }],
                     email: [{
                         required: true,
@@ -102,12 +107,12 @@ export default (config = {}) => {
                         min: 6,
                         message: this.$t('validation.min.string', {attribute: this.$t('general.password'), min: 6})
                     }],
-                    password_confirmation: [{
-                        validator: this.validateConfirmPassword
-                    }, {
-                        required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('general.confirm_password')})
-                    }],
+                    // password_confirmation: [{
+                    //     validator: this.validateConfirmPassword
+                    // }, {
+                    //     required: true,
+                    //     message: this.$t('validation.required', {attribute: this.$t('general.confirm_password')})
+                    // }],
                     linkedin_url: [{
                         type: 'url',
                         message: this.$t('validation.url', {attribute: this.$t('models.property_manager.linkedin_url')})
@@ -338,7 +343,8 @@ export default (config = {}) => {
                                 try {
 
                                     this.model.user.password = this.model.password
-                                    this.model.user.password_confirmation = this.model.password_confirmation
+                                    //this.model.user.password_confirmation = this.model.password_confirmation
+                                    this.model.user.password_confirmation = this.model.password
                                     this.model.user.email = this.model.email
                                     this.model.user.name = this.model.name
                                     this.model.user.phone = this.model.phone
@@ -396,7 +402,8 @@ export default (config = {}) => {
                                 this.loading.state = true;
 
                                 this.model.user.password = this.model.password
-                                this.model.user.password_confirmation = this.model.password_confirmation
+                                //this.model.user.password_confirmation = this.model.password_confirmation
+                                this.model.user.password_confirmation = this.model.password
                                 this.model.user.email = this.model.email
                                 this.model.user.name = this.model.name
                                 this.model.user.phone = this.model.phone
@@ -461,9 +468,12 @@ export default (config = {}) => {
                 };
 
                 mixin.created = async function () {
-                    const {password, password_confirmation} = this.validationRules;
+                    // const {password, password_confirmation} = this.validationRules;
 
-                    [...password, ...password_confirmation].forEach(rule => rule.required = false);
+                    // [...password, ...password_confirmation].forEach(rule => rule.required = false);
+                    const {password} = this.validationRules;
+
+                    [...password].forEach(rule => rule.required = false);
 
                     this.loading.state = true;
 

@@ -107,7 +107,9 @@ class PropertyManagerAPIController extends AppBaseController
         }
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        $propertyManagers = $this->propertyManagerRepository->paginate($perPage);
+        $propertyManagers = $this->propertyManagerRepository
+            ->with( 'quarters:quarters.id,internal_quarter_id')
+            ->paginate($perPage);
         $response = (new PropertyManagerTransformer)->transformPaginator($propertyManagers);
         return $this->sendResponse($response, 'Property Managers retrieved successfully');
     }

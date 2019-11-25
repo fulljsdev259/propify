@@ -1,9 +1,9 @@
 <template>
     <div class="property-managers">
-        <heading :title="$t('models.property_manager.title')" icon="icon-users" shadow="heavy" class="padding-right-300">
-            <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
-            </template>
+        <heading :title="$t('models.property_manager.title')" 
+                icon="icon-users" 
+                shadow="heavy" 
+                :searchBar="true">
             <template v-if="$can($permissions.create.propertyManager)">            
                 <el-button 
                     @click="add" 
@@ -14,7 +14,11 @@
                     {{$t('models.property_manager.add')}}
                 </el-button>
             </template>
-            <template v-if="$can($permissions.delete.propertyManager)">
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
+            </template>
+            
+            <!-- <template v-if="$can($permissions.delete.propertyManager)">
                 <el-button 
                     :disabled="!selectedItems.length" 
                     @click="openDeleteWithReassignment" 
@@ -24,6 +28,23 @@
                 >
                     {{$t('general.actions.delete')}}
                 </el-button>
+            </template> -->
+            <template>
+                <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
+                    <el-button size="mini" class="transparent-button">
+                        <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item
+                                v-if="$can($permissions.delete.propertyManager)"
+                                :disabled="!selectedItems.length"
+                                icon="ti-trash"
+                                command="delete"
+                        >
+                            {{$t('general.actions.delete')}}
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
             </template>
         </heading>
         <list-table
@@ -118,26 +139,37 @@
         },
         data() {
             return {
-                header: [ {
+                header: [{
+                    label: 'general.filters.status',
+                    withStatusSign: true,
+                    prop: 'status',
+                    width: 100
+                }, /*{
+                    label: 'general.name',
+                    prop: 'user.name'
+                }, */{
                     label: 'general.name',
                     withAvatars: true,
                     props: ['user']
                 }, {
                     label: 'general.email',
                     prop: 'user.email'
-                },{
+                }, {
+                    label: 'general.mobile',
+                    prop: 'user.phone'
+                }, {
                     label: 'general.roles.label',
                     prop: 'type',
                     roles: true
                 }, {
-                    label: 'general.phone',
-                    prop: 'user.phone'
-                },  {
-                    label: 'general.requests',
+                    label: 'resident.building',
+                    withInternalQuarterIds: true,
+                    prop: 'internal_quarter_ids'
+                }, {
+                    label: 'general.request_status',
                     withCounts: true,
-                    
                 }, 
-                {
+                /*{
                     width: 150,
                     actions: [{
                         type: '',
@@ -149,14 +181,14 @@
                             this.$permissions.update.propertyManager
                         ]
                     }]
-                }],
+                }*/],
                 assignManagersVisible: false,
                 processAssignment: false,
                 toAssignList: '',
                 toAssign: '',
                 remoteLoading: false,
-                quarters: {},
-                buildings:{},
+                quarters: [],
+                buildings:[],
                 isLoadingFilters: false,
             }
         },
@@ -186,7 +218,7 @@
                         fetch: this.fetchRemoteBuildings
                     },
                     {
-                        name: this.$t('general.roles.label'),
+                        name: this.$t('general.function'),
                         type: 'select',
                         key: 'role',
                         data: this.roles
@@ -202,6 +234,10 @@
         },
         methods: {
             ...mapActions(["remoteSearchManagers", "batchDeletePropertyManagers", "getBuildings", "getIDsAssignmentsCount"]),
+            handleMenuClick(command) {
+                if(command == 'delete')
+                    this.openDeleteWithReassignment();
+            },
             async getFilterBuildings() {
                 const buildings = await this.getBuildings({
                     get_all: true

@@ -24,6 +24,20 @@ class UpdateRequest extends BaseRequest
      */
     public function rules()
     {
-        return Building::$rules;
+        return [
+            'name' => 'required',
+            'floor_nr' => 'required',
+            'under_floor' => 'numeric|between:0,3',
+            'types' => [
+                'array',
+                'bail',
+                function ($attribute, $value, $fails) {
+                    $diff = array_diff($value, array_keys(Building::Type));
+                    if ($diff) {
+                        $fails(sprintf('This [%s] types is wrong', implode(', ', $diff)));
+                    }
+                }
+            ],
+        ];
     }
 }

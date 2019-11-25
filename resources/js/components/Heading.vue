@@ -6,11 +6,26 @@
             <slot name="description" />
         </div>
         <slot />
+        
+        <el-input
+            v-if="searchBar"
+            :placeholder="$t('general.placeholders.search')"
+            suffix-icon="el-icon-search"
+            type="text"
+            class="list-table-search"
+            @change="handleSearchChange"
+            v-model="search">
+        </el-input>
     </div>
 </template>
 
 <script>
     export default {
+        data() {
+            return {
+                search: '',
+            }
+        },
         props: {
             icon: String,
             title: {
@@ -27,6 +42,21 @@
             bgClass: {
                 type: String,
                 default: ''
+            },
+            searchBar: {
+                type: Boolean,
+                default: () => false,
+            }
+        },
+        methods: {
+            handleSearchChange(text) {
+                this.$emit('search-change', text);
+            }
+        },
+        watch: {
+            search(val) {
+                if(val === '')
+                    this.handleSearchChange(null);
             }
         }
     }
@@ -96,7 +126,17 @@
             display: flex;
         }
         .el-dropdown {
-            margin-left: 15px;
+            margin-left: 5px;
+            :global(.el-button) {
+                padding: 7.5px 0;
+                &:hover {
+                    background-color: var(--background-color-base);
+                    border-color: transparent;
+                }
+            }
+            :global(.el-button span) {
+                padding: 0;
+            }
         }
     }
 </style>

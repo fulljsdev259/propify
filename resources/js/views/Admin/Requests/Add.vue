@@ -88,7 +88,6 @@
                                             :value="phase.value"
                                             v-for="phase in capture_phases">
                                         </el-option>
-                                    </el-select>
                                 </el-select>
                             </el-form-item>
                         </el-col>
@@ -97,7 +96,7 @@
                                 <el-input v-model="model.component"></el-input>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="12"
+                        <!-- <el-col :md="12"
                                 v-if="this.showQualification == true">
                             <el-form-item :label="$t('models.request.qualification.label')"
                                         :rules="validationRules.qualification"
@@ -114,8 +113,42 @@
                                     </el-option>
                                 </el-select>
                             </el-form-item>
+                        </el-col> -->
+                        <el-col :md="12"
+                                v-if="this.showAction == true">
+                            <el-form-item :label="$t('models.request.action.label')"
+                                            prop="action">
+                                <el-select :disabled="$can($permissions.update.serviceRequest)"
+                                            :placeholder="$t('models.request.placeholders.action')"
+                                            class="custom-select"
+                                            v-model="model.action">
+                                    <el-option
+                                            :key="action.value"
+                                            :label="action.name"
+                                            :value="action.value"
+                                            v-for="action in actions">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
                         </el-col>
-                        <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true">
+                        <el-col :md="12" v-if="this.showCostImpact == true">
+                                    <el-form-item :label="$t('models.request.cost_impact.label')"
+                                            prop="cost_impact">
+                                <el-select :disabled="$can($permissions.update.serviceRequest)"
+                                            :placeholder="$t('models.request.placeholders.cost_impact')"
+                                            class="custom-select"
+                                            v-model="model.cost_impact"
+                                            @change="changeCostImpact">
+                                    <el-option
+                                            :key="cost_impact.value"
+                                            :label="cost_impact.name"
+                                            :value="cost_impact.value"
+                                            v-for="cost_impact in cost_impacts">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :md="12" v-if="this.showPercent == true">
                             <el-form-item 
                                 :label="$t('models.request.category_options.payer_percent')"
                                 :rules="validationRules.payer_percent"
@@ -128,7 +161,20 @@
                                 </el-input>
                             </el-form-item>
                         </el-col>
-                        <el-col :md="6" v-if="this.showQualification == true && this.showPayer == true">
+                        <!-- <el-col :md="6" v-if="this.showPayer == true">
+                            <el-form-item 
+                                :label="$t('models.request.category_options.payer_percent')"
+                                :rules="validationRules.payer_percent"
+                                prop="payer_percent">
+                                <el-input 
+                                    type="number"
+                                    v-model="model.payer_percent" 
+                                >
+                                    <template slot="prepend">%</template>
+                                </el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :md="6" v-if="this.showPayer == true">
                             <el-form-item 
                                 :label="$t('models.request.category_options.payer_amount')"
                                 :rules="validationRules.payer_amount"
@@ -140,7 +186,7 @@
                                     <template slot="prepend">CHF</template>
                                 </el-input>
                             </el-form-item>
-                        </el-col>
+                        </el-col> -->
                         <!-- <el-col :md="12">
                             <el-form-item :label="$t('models.request.priority.label')" :rules="validationRules.priority"
                                       prop="priority">
@@ -267,12 +313,15 @@
                                               prop="relation_id">
                                 <el-select v-model="model.relation_id" 
                                             :placeholder="$t('resident.placeholder.relation')"
-                                            class="custom-select">
+                                            class="custom-select resident-select">
                                     <el-option v-for="relation in relations" 
                                                 :key="relation.id" 
                                                 :label="relation.building_room_floor_unit" 
+                                                class="a"
                                                 :value="relation.id" >
-                                            <span><i class="icon-dot-circled" :class="[constants.relations.status[relation.status] === 'active' ? 'icon-success' : 'icon-danger']"></i></span>
+                                            <!-- <span class="status-icon" :style="{ background: constants.relations.status_colorcode[relation.status], border: '2px solid ' + getLightenDarkenColor(constants.relations.status_colorcode[relation.status], 200) + '59' }" >&nbsp;</span> -->
+                                            <span class="status-icon" :style="{ background: constants.relations.status_colorcode[relation.status], border: '2px solid #ffffffe7'}" >&nbsp;</span>
+                                            <!-- <span><i class="icon-dot-circled" :class="[constants.relations.status[relation.status] === 'active' ? 'icon-success' : 'icon-danger']"></i></span> -->
                                             <span>{{ relation.building_room_floor_unit }}</span>
                                     </el-option>
                                 </el-select>
@@ -353,13 +402,14 @@
     import {displayError} from "helpers/messages";
     import AddActions from 'components/EditViewActions';
     import EditorConfig from 'mixins/adminEditorConfig';
+    import globalFunction from "helpers/globalFunction";
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
         name: 'AdminRequestsEdit',
         mixins: [RequestsMixin({
             mode: 'add'
-        }), EditorConfig],
+        }), EditorConfig, globalFunction],
         components: {
             Heading,
             Card,
@@ -461,8 +511,21 @@
             }
 
         }
+        
     }
 
+    .status-icon {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        display: block;
+        margin-right: 5px;
+    }
+
+    li.el-select-dropdown__item {
+        display: flex;
+        align-items: center;
+    }
 </style>
 <style>
     .el-button > i {

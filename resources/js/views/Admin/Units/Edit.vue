@@ -459,15 +459,15 @@
                 }, {
                     type: 'residentNameAndType',
                     label: 'general.name',
-                    translate: this.translateType
+                    translate: this.translateResidentType
                 }, {
                 //     prop: 'name',
                 //     label: 'general.name',
                 //     type: 'residentName'
                 // }, {
                 //     prop: 'type',
-                //     label: 'models.resident.type.label',
-                //     i18n: this.translateType
+                //     label: 'models.resident.relation.type.label',
+                //     i18n: this.translateResidentType
                 // }, {
                     type: 'residentRelation',
                     label: 'models.resident.relation.title'
@@ -530,8 +530,8 @@
                     }
                 }
             },
-            translateType(type) {
-                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+            translateResidentType(type) {
+                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
             },
             toggleDrawer() {
                 this.visibleDrawer = true;

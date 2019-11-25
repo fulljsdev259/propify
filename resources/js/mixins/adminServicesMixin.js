@@ -33,11 +33,15 @@ export default (config = {}) => {
                         email: ''
                     },
                     service_provider_format: '',
+                    company_name: '',
                     name: '',
+                    last_name: '',
+                    first_name: '',
+                    title: '',
                     phone: '',
                     category: null,
                     settings: {
-                        language: ''
+                        language: 'en' //@TODO : remove language
                     },
                     password: '',
                     password_confirmation: '',
@@ -72,9 +76,9 @@ export default (config = {}) => {
                     }
                 },
                 validationRules: {
-                    name: [{
+                    company_name: [{
                         required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('general.name')})
+                        message: this.$t('validation.required', {attribute: this.$t('models.service.company_name')})
                     }],
                     phone: [{
                         required: true,
@@ -98,12 +102,12 @@ export default (config = {}) => {
                         min: 6,
                         message: this.$t('validation.min.string', {attribute: this.$t('general.password'), min: 6})
                     }],
-                    password_confirmation: [{
-                        validator: this.validateConfirmPassword
-                    }, {
-                        required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('general.confirm_password')})
-                    }],
+                    // password_confirmation: [{
+                    //     validator: this.validateConfirmPassword
+                    // }, {
+                    //     required: true,
+                    //     message: this.$t('validation.required', {attribute: this.$t('general.confirm_password')})
+                    // }],
                     category: [{
                         required: true,
                         message: this.$t('validation.general.required')
@@ -132,6 +136,18 @@ export default (config = {}) => {
                         required: true,
                         message: this.$t('validation.general.required')
                     }],
+                    title: [{
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('general.salutation')})
+                    }],
+                    first_name: [{
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('general.first_name')})
+                    }],
+                    last_name: [{
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('general.last_name')})
+                    }],
                 },
                 loading: {
                     state: false,
@@ -143,6 +159,8 @@ export default (config = {}) => {
                 toAssignList: [],
                 isFormSubmission: false,
                 user: {},
+                titles: null,
+                old_model: null,
             };
         },
         computed: {
@@ -264,6 +282,8 @@ export default (config = {}) => {
             },
         },
         created() {
+            this.titles = Object.entries(this.$constants.serviceProviders.title).map(([value, label]) => ({value: label, name: this.$t(`general.salutation_option.${label}`)}))
+
             this.getStates();
         }
     };
@@ -285,9 +305,11 @@ export default (config = {}) => {
                                 try {
 
                                     this.model.user.password = this.model.password
-                                    this.model.user.password_confirmation = this.model.password_confirmation
+                                    //this.model.user.password_confirmation = this.model.password_confirmation
+                                    this.model.user.password_confirmation = this.model.password
                                     this.model.user.avatar = this.model.avatar
                                     this.model.user.email = this.model.email
+                                    this.model.name = this.model.last_name + ' ' + this.model.first_name
                                     const resp = await this.createService(this.model);
 
 
@@ -342,7 +364,8 @@ export default (config = {}) => {
                                 let {...params} = this.model;
 
                                 params.user.password = params.password
-                                params.user.password_confirmation = params.password_confirmation
+                                //params.user.password_confirmation = params.password_confirmation
+                                params.user.password_confirmation = params.password
                                 params.user.avatar = params.avatar
                                 params.user.email = params.email
 
@@ -361,6 +384,7 @@ export default (config = {}) => {
                                     if (resp.data.user && resp.data.user.id) {
                                         await this.uploadAvatarIfNeeded(resp.data.user.id);
                                     }
+                                    this.old_model = _.clone(this.model, true);
                                     if(this.$refs.auditList){
                                         this.$refs.auditList.fetch();
                                     }
@@ -386,7 +410,11 @@ export default (config = {}) => {
                         // TODO - do not like this, there is an alternative
                         this.$set(this.model, 'id', data.id);
 
-                        this.model.name = data.name;
+                        // this.model.name = data.name;
+                        this.model.company_name = data.company_name;
+                        this.model.first_name = data.first_name;
+                        this.model.last_name = data.last_name;
+                        this.model.title = data.title;
                         this.model.email = data.email;
                         this.model.phone = data.phone;
                         this.model.category = +data.category;
@@ -429,10 +457,15 @@ export default (config = {}) => {
                 };
 
                 mixin.created = async function () {
-                    this.getStates();
-                    const {password, password_confirmation} = this.validationRules;
+                    this.titles = Object.entries(this.$constants.serviceProviders.title).map(([value, label]) => ({value: label, name: this.$t(`general.salutation_option.${label}`)}))
 
-                    [...password, ...password_confirmation].forEach(rule => rule.required = false);
+                    this.getStates();
+                    // const {password, password_confirmation} = this.validationRules;
+
+                    // [...password, ...password_confirmation].forEach(rule => rule.required = false);
+                    const {password} = this.validationRules;
+
+                    [...password].forEach(rule => rule.required = false);
                     
 
                     await this.fetchCurrentProvider();
@@ -453,9 +486,12 @@ export default (config = {}) => {
                 };
 
                 mixin.created = async function () {
-                    const {password, password_confirmation} = this.validationRules;
+                    // const {password, password_confirmation} = this.validationRules;
 
-                    [...password, ...password_confirmation].forEach(rule => rule.required = false);
+                    // [...password, ...password_confirmation].forEach(rule => rule.required = false);
+                    const {password} = this.validationRules;
+
+                    [...password].forEach(rule => rule.required = false);
 
                     try {
                         this.loading.state = true;

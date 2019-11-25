@@ -82,7 +82,12 @@ return [
             'edit' => 'Edit Relation',
             'end_date' => 'End date',
             'start_date' => 'Start date',
-            'type' => 'Type',            
+            'type' => [
+                'label' => 'Type',
+                'tenant' => 'Tenant',
+                'owner' => 'Owner',
+                'former_resident' => 'Former Resident'
+            ],
             'duration' => 'Duration',
             'durations' => [
                 'unlimited' => 'Unlimited',
@@ -160,17 +165,12 @@ return [
             'your_sincerely' => 'Yours sincerely',
             'your_administration' => 'your administration'
         ],
-        'type' => [
-            'label' => 'Type',
-            'tenant' => 'Tenant',
-            'owner' => 'Owner',
-            'former_resident' => 'Former Resident'
-        ],
         'tenant_type' => [
             'label' => 'Tenant Type',
             'main' => 'Main tenant',
             'garant' => 'Secondary tenant',
-        ]
+        ],
+        'business_relation' => 'Business Relation'
     ],
     'building' => [
         'title' => 'Buildings',
@@ -195,6 +195,7 @@ return [
         'active_residents_count' => 'Living',
         'request_status' => 'Request Status',
         'type' => 'Building Type',
+        'city' => 'City',
         'media_category' => [
             'house_rules' => 'House rules',
             'operating_instructions' => 'Operating instructions',
@@ -295,6 +296,11 @@ return [
             'resident_not_assign' => "Resident not assigned to this unit",
             'resident_not_found' => "Resident not found",
             'deleted' => "Unit deleted error: ",
+        ],
+        'status' => [
+	        'active' => 'Occupied',
+	        'inactive' => 'Free',
+	        'canceled' => 'Cancelled'
         ],
     ],   
     'pinboard' => [
@@ -404,6 +410,7 @@ return [
         ],
         'contact_details' => 'Contact details',
         'user_credentials' => 'User credentials',
+        "company_name" => "Company name",
         'company_details' => 'Company details',
         'assign_type' => 'Type',        
         'placeholders' => [
@@ -434,7 +441,6 @@ return [
         'active_residents_count' => 'Count of active residents',
         'assignment' => 'Assignment of managers/administrator',
         'quarter_format' => 'Project No',
-        'type' => 'Project Type',
         'project_ort' => 'Project Location',
         'details' => 'Project details',
         'errors' => [
@@ -442,7 +448,7 @@ return [
             'deleted' => "Quarter deleted error: ",
         ],
         'types' => [
-            'label' => 'Type',
+            'label' => 'Project Type',
             'rent' => 'Rent',
             'sell' => 'Sell',
             'property' => 'Property',
@@ -537,6 +543,7 @@ return [
         'assigned_to' => 'Assigned to',
         'assign_providers' => 'Assign providers',
         'assign_managers' => 'Assign managers',
+        'assign_persons'=> 'Assign responsible persons',
         'assigned_service_providers' => 'Assigned service providers',
         'assigned_property_managers' => 'Assigned property managers',
         'notify' => 'Notify',
@@ -606,6 +613,18 @@ return [
             '2_year_warranty' => '2 Year Warranty',
             'cost_consequences' => 'Cost consequences',
         ],
+        'action' => [
+            'label' => 'Action',
+            'fix' =>'Fix',
+            'leave' => 'Leave',
+            'wait' => 'Wait'
+        ],
+        'cost_impact' => [
+            'label' => 'Cost Impact',
+            'house_owner' => 'House Owner',
+            'resident' => 'Resident',
+            'shared_costs' => 'Shared Costs'
+        ],
         'location' => [
             'house_entrance' => 'House Entrance',
             'staircase' => 'Staircase',
@@ -645,11 +664,10 @@ return [
         ],
         'status' => [
             'label' => 'Status',
-            'received' => 'Received',
-            'assigned' => 'Assigned',
+            'new' => 'New',
             'in_processing' => 'In processing',
-            'reactivated' => 'Reactivated',
             'done' => 'Done',
+            'warranty_claim' => 'Warranty Claim',
             'archived' => 'Archived',
             'solved' => 'Solved',
             'pending' => 'Pending'
@@ -662,12 +680,14 @@ return [
             'range' => 'Range',
             'component' => 'Component',
             'capture_phase' => 'Capture Phase',
-            'payer_percent' => 'Share Fortimo',
+            'payer_percent' => 'Pay by resident in %',
             'payer_amount' => 'Amount',
             'keywords' => 'Keywords',
         ],
         'placeholders' => [
-            'category' => 'Select category',            
+            'category' => 'Select category',
+            'action' => 'Select action',  
+            'cost_impact' => 'Select Cost Impact',
             'qualification' => 'Select qualification',
             'status' => 'Select status',
             'due_date' => 'Pick due date',
@@ -771,6 +791,11 @@ return [
             'building_already_assign' => "Building already assigned through quarter",
             'building_assign_deleted_property_manager' => "You cannot assign buildings to an deleted Property Manager",
             'deleted' => "Property Manager deleted error: ",
+        ],
+        'status' => [
+            'label' => 'Status',
+	        'active' => 'Active',
+            'inactive' => 'Inactive',
         ],
     ],
     // 'house_owner' => [
