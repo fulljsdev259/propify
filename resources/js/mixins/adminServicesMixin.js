@@ -38,6 +38,7 @@ export default (config = {}) => {
                     first_name: '',
                     title: '',
                     phone: '',
+                    mobile_phone: '',
                     category: null,
                     settings: {
                         language: 'en' //@TODO : remove language
@@ -414,6 +415,7 @@ export default (config = {}) => {
                         this.model.title = data.title;
                         this.model.email = data.email;
                         this.model.phone = data.phone;
+                        this.model.mobile_phone = data.mobile_phone;
                         this.model.category = +data.category;
                         
                         this.model.user.avatar = data.user.avatar;
