@@ -102,11 +102,6 @@ class RequestAssignee extends AuditableModel
     protected function getAuditData()
     {
         $model = Relation::$morphMap[$this->assignee_type] ?? $this->assignee_type;
-        $config = [
-            User::class => ['name'],
-            ServiceProvider::class => ['name'],
-            PropertyManager::class => ['first_name', 'last_name'],
-        ];
         if (! class_exists($model)) {
             return [];
         }
@@ -116,25 +111,6 @@ class RequestAssignee extends AuditableModel
             PropertyManager::class => AuditableModel::EventManagerUnassigned,
         ];
 
-        $instance = new $model();
-        $columns = array_merge([$instance->getKeyName()], $config[$model] ?? []);
-        try {
-            $instance = $instance->where($instance->getKeyName(), $this->assignee_id)->withTrashed()->first($columns);
-        } catch (\Exception $e) {
-            $instance = $instance->where($instance->getKeyName(), $this->assignee_id)->first($columns);
-        }
-        if (empty($instance)) {
-            return [$eventConvig[$model] ?? 'deleted', []];
-        }
-
-        $attributes = $instance->getAttributes();
-        $prefix = Str::singular($instance->getTable()) . '_';
-
-        $oldData = [];
-        foreach ($attributes as $attribute => $value) {
-            $oldData[$prefix . $attribute] = $value;
-        }
-
-        return [$eventConvig[$model] ?? 'deleted', $oldData];
+        return [$eventConvig[$model], ['ids' => [$this->assignee_id]]];
     }
 }

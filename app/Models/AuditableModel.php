@@ -82,18 +82,6 @@ class AuditableModel extends Model implements Auditable
         ],
     ];
 
-    protected $syncAuditable = [
-        'managers' => ['first_name', 'last_name'],
-        'property_managers' => ['first_name', 'last_name'],
-        'propertyManagers' => ['first_name', 'last_name'],
-        'providers' => ['company_name'],
-        'service_providers' => ['company_name'],
-        'users' => ['name'],
-        'buildings' => ['name'],
-        'quarters' => ['name'],
-    ];
-
-
     const Events = [
         self::EventCreated,
         self::EventUpdated,

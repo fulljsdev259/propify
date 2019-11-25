@@ -252,7 +252,7 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     Route::get('/requests/{id}/tags', 'RequestAPIController@getTags');
     Route::get('/requests/{id}/assignees', 'RequestAPIController@getAssignees');
-    Route::post('/requests/{id}/users/{user_id}', 'RequestAPIController@assignUser');
+    Route::post('/requests/{id}/users/{user_id}', 'RequestAPIController@assignUser'); // @TODO delete
     Route::post('/requests/{id}/providers/{provider_id}', 'RequestAPIController@assignProvider');
     Route::post('/requests/{id}/managers/{manager_id}', 'RequestAPIController@assignManager');
     Route::post('/requests/{id}/tags', 'RequestAPIController@assignManyTags')->name('request.assign.many-tags');
