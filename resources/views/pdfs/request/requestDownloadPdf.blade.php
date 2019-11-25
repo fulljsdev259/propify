@@ -36,14 +36,16 @@
                             </p>
                         </td>
                         @if(!$blank_pdf)
-                            <td style="text-align:right;vertical-align:top;font-family: {{$pdf_font_family ?? 'Arial'}};" class="table_header">
-                                <img class="logo" src="{{public_path($logo)}}"/>
+                            <td style="text-align:right; vertical-align:top;font-family: {{$pdf_font_family ?? 'Arial'}};" class="table_header">
+                                <div style="width: 180px;  float: right;">
+                                        <img class="logo" src="{{public_path($logo)}}" style="width: 100%; float: right;"/>
+                                </div>
                             </td>
                         @endif
                     </tr>
                     <tr>
                         <td class="no_border" colspan="2">
-                            <p style="margin:0;margin-top:-30px;font-family: {{$pdf_font_family ?? 'Arial'}};">
+                            <p style="margin:0;font-family: {{$pdf_font_family ?? 'Arial'}};">
                                 <b>@lang('models.request.download_pdf.address'):</b>
                                 {{ @$data['relation']->building->address->street }}
                                 {{ @$data['relation']->building->address->house_num }}
@@ -58,7 +60,7 @@
         </tr>
         <tr>
             <td class="no_border" width="100%">
-                <h2 style="margin-bottom:10px;margin-top:15px;font-size: 25px;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.download_pdf.details')</h2>
+                <h2 style="margin-bottom:10px;margin-top:40px;font-size: 25px;font-family: {{$pdf_font_family ?? 'Arial'}};">@lang('models.request.download_pdf.details')</h2>
             </td>
         </tr>
         <tr>
