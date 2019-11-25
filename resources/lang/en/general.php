@@ -272,6 +272,9 @@ return [
         'registered' => 'Registered',
         'provider' => 'Service',
         'super_admin' => 'Super Admin',
+        'initial_letting' => 'Initial Letting',
+        'marketing' => 'marketing',
+        'site_supervision' => 'Site Supervision',
     ],
     'placeholders' => [
         'search' => 'Search',

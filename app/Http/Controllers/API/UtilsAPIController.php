@@ -226,7 +226,6 @@ class UtilsAPIController extends AppBaseController
         $result = [
             'title' => Resident::Title,
             'status' => Resident::Status,
-            'type' => Relation::Type, // @TODO delete
         ];
 
         return $result;

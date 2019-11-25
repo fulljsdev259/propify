@@ -69,7 +69,8 @@
         data() {
             return {
                 currActive: '',
-                menuSelected: true
+                menuSelected: true,
+                extra: ''
             }
         },
         methods: {
@@ -133,13 +134,19 @@
                 return !!this.$slots.default;
             },
             logo() {
-                
                 if(localStorage.getItem('circle_logo') != this.$constants.logo.circle_logo ) {
                     localStorage.setItem('circle_logo', this.$constants.logo.circle_logo);
                 }
 
-                return localStorage.getItem('circle_logo') ? `/${localStorage.getItem('circle_logo')}` : '';
+                return localStorage.getItem('circle_logo') ? `/${localStorage.getItem('circle_logo')}` + this.extra : '';
             },
+        },
+        mounted() {
+            this.$root.$on('update_circle_logo', (circle_logo) => {
+                this.extra += '?'
+                localStorage.setItem('circle_logo', circle_logo);
+            });
+
         },
         watch: {
             links() {

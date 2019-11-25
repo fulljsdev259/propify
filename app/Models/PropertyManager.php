@@ -158,12 +158,18 @@ class PropertyManager extends AuditableModel
 
     const TypeManager = 1;
     const TypeAdministrator = 2;
+    const TypeInitialLetting = 3;
+    const TypeMarketing = 4;
+    const TypeSiteSupervision = 5;
 
     const Type = [
         self::TypeManager => 'manager',
         self::TypeAdministrator => 'administrator',
+        self::TypeInitialLetting => 'initial_letting',
+        self::TypeMarketing => 'marketing',
+        self::TypeSiteSupervision => 'site_supervision',
     ];
-    
+
     const StatusActive = 1;
     const StatusInactive = 2;
 	

@@ -143,7 +143,7 @@
                     label: 'general.filters.status',
                     withStatusSign: true,
                     prop: 'status',
-                    width: 100
+                    width: 130
                 }, /*{
                     label: 'general.name',
                     prop: 'user.name'
