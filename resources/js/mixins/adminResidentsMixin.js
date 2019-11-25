@@ -42,10 +42,11 @@ export default (config = {}) => {
                     title: '',
                     company: '',
                     settings: {
-                        language: '',
+                        language: 'en', //@TODO : remove language
                     },
                     nation: '',
-                    type: '',
+                    //type: '',
+                    types: [],
                     relations: [],
                     status: 1
                 },
@@ -94,17 +95,17 @@ export default (config = {}) => {
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('general.salutation')})
                     }],
-                    type: [{
-                            required: true,
-                            message: this.$t('validation.general.required')
-                        }, {
-                            validator: this.checkavailabilityResidentType
-                        }
-                    ],
-                    tenant_type: [{
-                        required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.tenant_type.label')})
-                    }],
+                    // type: [{
+                    //         required: true,
+                    //         message: this.$t('validation.general.required')
+                    //     }, {
+                    //         validator: this.checkavailabilityResidentType
+                    //     }
+                    // ],
+                    // tenant_type: [{
+                    //     required: true,
+                    //     message: this.$t('validation.required',{attribute: this.$t('models.resident.tenant_type.label')})
+                    // }],
                 },
                 loading: {
                     state: false,
@@ -126,7 +127,7 @@ export default (config = {}) => {
             },
             async addRelation (data) {
                 if(config.mode == 'add') {
-                    this.original_type = this.model.type
+                    //this.original_type = this.model.type
                     this.model.relations.push(data);
                 }
                 else {
@@ -392,7 +393,7 @@ export default (config = {}) => {
                         this.model = Object.assign({}, this.model, r);
                         
                         this.original_email = this.user.email;
-                        this.original_type = this.model.type;
+                        //this.original_type = this.model.type;
                         this.model.email = user.email;
                         this.model.avatar = user.avatar;
                         if(this.model.nation)

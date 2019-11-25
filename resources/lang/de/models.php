@@ -82,7 +82,12 @@ return [
             'edit' => 'Beziehung bearbeiten',
             'end_date' => 'Enddatum',
             'start_date' => 'Startdatum',
-            'type' => 'Beziehung',            
+            'type' => [
+                'label' => 'Beziehung',
+                'tenant' => 'Mieter',
+                'owner' => 'Eigentümer',
+                'former_resident' => 'Ehemaliger Einwohner',
+            ],
             'duration' => 'Vertragslaufzeit',
             'durations' => [
                 'unlimited' => 'Unbefristet',
@@ -161,17 +166,12 @@ return [
             'your_sincerely' => 'Mit freundlichen Grüssen',
             'your_administration' => 'Ihre Verwaltung'
         ],
-        'type' => [
-            'label' => 'Beziehung',
-            'tenant' => 'Mieter',
-            'owner' => 'Eigentümer',
-            'former_resident' => 'Ehemaliger Einwohner',
-        ],
         'tenant_type' => [
             'label' => 'Mietertyp',
             'main' => 'Hauptmieter',
             'garant' => 'Nebenmieter',
-        ]
+        ],
+        'business_relation' => 'Geschäftsbeziehung'
     ],
     'building' => [
         'title' => 'Objekte',
@@ -795,6 +795,11 @@ return [
             'building_already_assign' => "Der Mitarbeiter ist bereits diesem Objekt zugewiesen.",
             'building_assign_deleted_property_manager' => "Sie können einem gelöschten Mitarbeiter keine Objekte zuordnen.",
             'deleted' => "Mitarbeiter Fehler beim Löschen: ",
+        ],
+        'status' => [
+            'label' => 'Status',
+	        'active' => 'Aktiv',
+            'inactive' => 'Inaktiv',
         ],
     ],
     // 'house_owner' => [

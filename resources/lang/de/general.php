@@ -15,6 +15,7 @@ return [
     ],
     'choose_language' => 'Sprache auswählen',
     'language' => "Sprache",
+    'status' => 'Status',
     'languages' => [
         'fr' => 'Français',
         'it' => 'Italiano',
@@ -102,9 +103,10 @@ return [
     ],
     'no' => 'Nein',
     'first_name' => 'Vorname',
-    'last_name' => 'Name',    
+    'last_name' => 'Nachname',    
     'name' => "Name",
     'phone' => 'Telefon',
+    'mobile' => 'Mobile',
     'id' => "ID",
     'field' => 'Feld',
     'address' => "Adresse",
@@ -560,4 +562,5 @@ return [
     'empty' => "(leeres Feld)",
     'notification_residents_sent' => 'Eine Benachrichtigung vie E-Mail wurde am {date} um {time} Uhr an {number} Bewohner gesendet.',
     'edit_close_message' => 'Möchten Sie die Änderungen vor dem Schliessen speichern?',
+    'request_status' => 'Anliegen-Status'
 ];

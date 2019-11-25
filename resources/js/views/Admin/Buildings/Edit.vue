@@ -601,7 +601,7 @@
                 //     type: 'residentName'
                 // }, {
                 //     prop: 'type',
-                //     label: 'models.resident.type.label',
+                //     label: 'models.resident.relation.type.label',
                 //     i18n: this.translateResidentType
                 // }, {
                     type: 'residentRelation',
@@ -759,7 +759,7 @@
                 return this.$t(`general.assignment_types.${type}`);
             },
             translateResidentType(type) {
-                return this.$t(`models.resident.type.${this.constants.residents.type[type]}`);
+                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
             },
             translateAssignmentType(types) {
                 let translatedTypes = []

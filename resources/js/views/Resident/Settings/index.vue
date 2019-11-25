@@ -256,6 +256,7 @@
             ...mapGetters(["getAllAvailableLanguages", "loggedInUser"]),
             dirtyRelations() {
                 return this.relations.map(relation => { 
+                    let house_num = relation.building && relation.address ? relation.address.house_num + " -- " : ''
                     let floor_label;
                     if(relation.unit.attic == 'attic')
                     {
@@ -273,7 +274,8 @@
                     {
                         floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
                     }
-                    relation.building_room_floor_unit = relation.building.name + " -- " + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
+                    relation.building_room_floor_unit = relation.unit.internal_quarter_id + " -- " + house_num + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
+                    
                     return relation
                 });
             },

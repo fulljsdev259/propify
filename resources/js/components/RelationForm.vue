@@ -23,7 +23,7 @@
                 </el-form-item>
             </el-col> -->
             <el-col :md="24">
-                <el-form-item :label="$t('models.resident.relation.type')"
+                <el-form-item :label="$t('models.resident.relation.type.label')"
                             prop="type"
                             class="label-block">
                     <el-select :placeholder="$t('models.resident.relation.placeholder.type')"
@@ -31,9 +31,9 @@
                                 v-model="model.type">
                         <el-option
                                 :key="key"
-                                :label="$t('models.resident.type.' + value )"
+                                :label="$t('models.resident.relation.type.' + value )"
                                 :value="+key"
-                                v-for="(value, key) in $constants.residents.type"
+                                v-for="(value, key) in $constants.relations.type"
                                 v-if="key != 3">
                         </el-option>
                     </el-select>
@@ -210,7 +210,7 @@
             </el-col> -->
         
             <!-- <el-col :md="12" v-if="model.unit_id">
-                <el-form-item :label="$t('models.resident.relation.type')"
+                <el-form-item :label="$t('models.resident.relation.type.label')"
                             prop="type"
                             class="label-block">
                     <el-select :placeholder="$t('models.unit.type.label')"
@@ -600,7 +600,7 @@
                     }],
                     type: [{
                         required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.type')})
+                        message: this.$t('validation.required',{attribute: this.$t('models.resident.relation.type.label')})
                     }],
                     duration: [{
                         required: true,

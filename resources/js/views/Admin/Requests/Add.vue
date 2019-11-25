@@ -88,7 +88,6 @@
                                             :value="phase.value"
                                             v-for="phase in capture_phases">
                                         </el-option>
-                                    </el-select>
                                 </el-select>
                             </el-form-item>
                         </el-col>
@@ -314,12 +313,15 @@
                                               prop="relation_id">
                                 <el-select v-model="model.relation_id" 
                                             :placeholder="$t('resident.placeholder.relation')"
-                                            class="custom-select">
+                                            class="custom-select resident-select">
                                     <el-option v-for="relation in relations" 
                                                 :key="relation.id" 
                                                 :label="relation.building_room_floor_unit" 
+                                                class="a"
                                                 :value="relation.id" >
-                                            <span><i class="icon-dot-circled" :class="[constants.relations.status[relation.status] === 'active' ? 'icon-success' : 'icon-danger']"></i></span>
+                                            <!-- <span class="status-icon" :style="{ background: constants.relations.status_colorcode[relation.status], border: '2px solid ' + getLightenDarkenColor(constants.relations.status_colorcode[relation.status], 200) + '59' }" >&nbsp;</span> -->
+                                            <span class="status-icon" :style="{ background: constants.relations.status_colorcode[relation.status], border: '2px solid #ffffffe7'}" >&nbsp;</span>
+                                            <!-- <span><i class="icon-dot-circled" :class="[constants.relations.status[relation.status] === 'active' ? 'icon-success' : 'icon-danger']"></i></span> -->
                                             <span>{{ relation.building_room_floor_unit }}</span>
                                     </el-option>
                                 </el-select>
@@ -400,13 +402,14 @@
     import {displayError} from "helpers/messages";
     import AddActions from 'components/EditViewActions';
     import EditorConfig from 'mixins/adminEditorConfig';
+    import globalFunction from "helpers/globalFunction";
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
         name: 'AdminRequestsEdit',
         mixins: [RequestsMixin({
             mode: 'add'
-        }), EditorConfig],
+        }), EditorConfig, globalFunction],
         components: {
             Heading,
             Card,
@@ -508,8 +511,21 @@
             }
 
         }
+        
     }
 
+    .status-icon {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        display: block;
+        margin-right: 5px;
+    }
+
+    li.el-select-dropdown__item {
+        display: flex;
+        align-items: center;
+    }
 </style>
 <style>
     .el-button > i {

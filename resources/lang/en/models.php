@@ -82,7 +82,12 @@ return [
             'edit' => 'Edit Relation',
             'end_date' => 'End date',
             'start_date' => 'Start date',
-            'type' => 'Type',            
+            'type' => [
+                'label' => 'Type',
+                'tenant' => 'Tenant',
+                'owner' => 'Owner',
+                'former_resident' => 'Former Resident'
+            ],
             'duration' => 'Duration',
             'durations' => [
                 'unlimited' => 'Unlimited',
@@ -160,17 +165,12 @@ return [
             'your_sincerely' => 'Yours sincerely',
             'your_administration' => 'your administration'
         ],
-        'type' => [
-            'label' => 'Type',
-            'tenant' => 'Tenant',
-            'owner' => 'Owner',
-            'former_resident' => 'Former Resident'
-        ],
         'tenant_type' => [
             'label' => 'Tenant Type',
             'main' => 'Main tenant',
             'garant' => 'Secondary tenant',
-        ]
+        ],
+        'business_relation' => 'Business Relation'
     ],
     'building' => [
         'title' => 'Buildings',
@@ -792,6 +792,11 @@ return [
             'building_already_assign' => "Building already assigned through quarter",
             'building_assign_deleted_property_manager' => "You cannot assign buildings to an deleted Property Manager",
             'deleted' => "Property Manager deleted error: ",
+        ],
+        'status' => [
+            'label' => 'Status',
+	        'active' => 'Active',
+            'inactive' => 'Inactive',
         ],
     ],
     // 'house_owner' => [

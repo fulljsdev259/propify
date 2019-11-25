@@ -105,6 +105,7 @@ return [
     'last_name' => 'Last name',
     'name' => "Name",
     'phone' => 'Phone',
+    'mobile' => 'Mobile',
     'id' => "ID",
     'address' => "Address",
     'field' => 'Field',
@@ -560,4 +561,5 @@ return [
     'empty' => "(empty field)",
     'notification_residents_sent' => 'Notification was sent to {number} residents at {time} on {date}.',
     'edit_close_message' => 'Would you like to save the changes before closing?',
+    'request_status' => 'Request Status'
 ];

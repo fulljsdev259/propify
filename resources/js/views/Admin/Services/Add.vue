@@ -151,13 +151,13 @@
                                     </el-form-item>
                                 </el-col>
                             </el-row>
-                            <el-row :gutter="20">
+                            <!-- <el-row :gutter="20">
                                 <el-col :md="24">
                                     <el-form-item class="label-block" :rules="validationRules.language" :label="$t('general.language')" prop="settings.language">
                                         <select-language :activeLanguage.sync="model.settings.language"/>
                                     </el-form-item>
                                 </el-col>
-                            </el-row>
+                            </el-row> -->
                         </card>
                     </el-col>
                 </el-row>

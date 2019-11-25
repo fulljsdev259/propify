@@ -24,10 +24,23 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="8">
-                                    <el-form-item class="label-block" :label="$t('general.language')" :rules="validationRules.language"
+                                    <el-form-item class="label-block" :label="$t('models.property_manager.status.label')"
+                                                        :rules="validationRules.status"
+                                                        prop="status">
+                                        <el-select :placeholder="$t('general.placeholders.select')" style="display: block"
+                                                v-model="model.status">
+                                            <el-option
+                                                    :key="k"
+                                                    :label="$t(`models.property_manager.status.${status}`)"
+                                                    :value="parseInt(k)"
+                                                    v-for="(status, k) in $constants.propertyManager.status">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <!-- <el-form-item class="label-block" :label="$t('general.language')" :rules="validationRules.language"
                                                   prop="settings.language">
                                         <select-language :activeLanguage.sync="model.settings.language"/>
-                                    </el-form-item>
+                                    </el-form-item> -->
                                 </el-col>
                                 <el-col :md="8">
                                     <el-form-item :label="$t('models.property_manager.profession')"
