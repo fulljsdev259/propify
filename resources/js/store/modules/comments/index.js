@@ -5,7 +5,8 @@ export default {
         pinboard: {},
         request: {},
         listing: {},
-        internalNotices: {}
+        internalNotices: {},
+        conversation: {}
     },
     actions: {
         async get ({commit, getters}, {parent_id, ...params}) {
@@ -234,6 +235,7 @@ export default {
             }
         },
         clear (state, {commentable}) {
+            console.log(commentable)
             Object.assign(state[commentable], {})
         },
         reset: state => Object.assign(state, {
