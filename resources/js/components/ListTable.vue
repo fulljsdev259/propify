@@ -248,6 +248,36 @@
                             />
                         </el-tooltip>
                     </div>
+                    <div v-else-if="column.withPMStatusSign">
+                        <el-tooltip
+                            :content="`${$t(`models.property_manager.status.${$constants.propertyManager.status[scope.row[column.prop]]}`)}`"
+                            class="item"
+                            effect="light" placement="top"
+                        >
+                            <avatar 
+                                :background-color="$constants.status_colorcode[scope.row[column.prop]]"
+                                :initials="''"
+                                :size="30"
+                                :style="{'z-index': (800 - index)}"
+                                :username="''"
+                            />
+                        </el-tooltip>
+                    </div>
+                    <div v-else-if="column.withResidentStatusSign">
+                        <el-tooltip
+                            :content="`${$t(`models.resident.relation.status.${$constants.relations.status[scope.row[column.prop]]}`)}`"
+                            class="item"
+                            effect="light" placement="top"
+                        >
+                            <avatar 
+                                :background-color="$constants.status_colorcode[scope.row[column.prop]]"
+                                :initials="''"
+                                :size="30"
+                                :style="{'z-index': (800 - index)}"
+                                :username="''"
+                            />
+                        </el-tooltip>
+                    </div>
                     <div v-else-if="column.withStatus">
                         <div class="avatars-wrapper">
                             <span :key="index" v-for="(status, index) in $constants.relations.status">
