@@ -81,6 +81,10 @@ class RequestAssignee extends AuditableModel
         AuditableModel::EventDeleted
     ];
 
+    protected $casts = [
+        'sent_email' => 'boolean'
+    ];
+
     /**
      * {@inheritdoc}
      */
