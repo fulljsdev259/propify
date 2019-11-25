@@ -17,6 +17,9 @@ class RolesTableSeeder extends Seeder
         $residentPermissions = $allPermissions->whereIn('name', config('permissions.resident'));
         $managerPermissions = $allPermissions->whereIn('name', config('permissions.manager'));
         $providerPermissions = $allPermissions->whereIn('name', config('permissions.provider'));
+        $initialLettingPermissions = $allPermissions->whereIn('name', config('permissions.initial_letting'));
+        $marketingPermissions = $allPermissions->whereIn('name', config('permissions.marketing'));
+        $siteSupervisionPermissions = $allPermissions->whereIn('name', config('permissions.site_supervision'));
 
 
         $RLCAdmin = new Role();
@@ -46,5 +49,26 @@ class RolesTableSeeder extends Seeder
         $RLCUser->description = '';
         $RLCUser->save();
         $RLCUser->attachPermissions($residentPermissions);
+        
+        $ILCUser = new Role();
+        $ILCUser->name = 'initial_letting';
+        $ILCUser->display_name = 'Initial letting';
+        $ILCUser->description = '';
+        $ILCUser->save();
+        $ILCUser->attachPermissions($initialLettingPermissions);
+
+        $MLCUser = new Role();
+        $MLCUser->name = 'marketing';
+        $MLCUser->display_name = 'Marketing';
+        $MLCUser->description = '';
+        $MLCUser->save();
+        $MLCUser->attachPermissions($marketingPermissions);
+        
+        $SLCUser = new Role();
+        $SLCUser->name = 'site_supervision';
+        $SLCUser->display_name = 'Site supervision';
+        $SLCUser->description = '';
+        $SLCUser->save();
+        $SLCUser->attachPermissions($siteSupervisionPermissions);
     }
 }
