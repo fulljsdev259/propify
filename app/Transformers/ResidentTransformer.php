@@ -74,7 +74,7 @@ class ResidentTransformer extends BaseTransformer
             if ([Relation::StatusInActive] == collect($response['relations'])->pluck('status')->all()) {
                 $response['types'] = [Relation::TypeFormerResident];
             } else {
-                $response['types'] = collect($response['relations'])->pluck('type')->unique()->all();
+                $response['types'] = collect($response['relations'])->pluck('type')->unique()->values()->all();
             }
         }
 
