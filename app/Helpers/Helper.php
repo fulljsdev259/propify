@@ -60,7 +60,6 @@ class Helper
                 'relation_id' => __('models.resident.relation.title'),
                 'internal_priority' => __('models.request.internal_priority.label'),
                 'priority' => __('models.request.priority.label'),
-                'qualification' => __('models.request.qualification.label'),
                 'visibility' => __('models.request.visibility.label'),
                 'percentage' => __('models.request.category_options.payer_percent'),
                 'amount' => __('models.request.category_options.payer_amount'),

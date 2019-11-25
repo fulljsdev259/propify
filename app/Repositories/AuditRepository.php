@@ -151,9 +151,6 @@ class AuditRepository extends BaseRepository
             elseif(($auditable_type == 'request') && ($fieldname == 'capture_phase')){
                 return __('models.request.capture_phase.' . Request::CapturePhase[$fieldvalue]);
             }
-            elseif(($auditable_type == 'request') && ($fieldname == 'qualification')){
-                return __('models.request.qualification.' . Request::Qualification[$fieldvalue]);
-            }
             elseif(($auditable_type == 'templates') && ($fieldname == 'category_id')){
                 $model = TemplateCategory::find($fieldvalue);
                 if($model){

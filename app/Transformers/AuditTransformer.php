@@ -102,7 +102,7 @@ class AuditTransformer extends BaseTransformer
                     $old_value = ($old_value) ? __('general.languages.'.$old_value) : "";
                     $new_value = ($new_value) ? __('general.languages.'.$new_value) : "";
                 }
-                elseif(in_array($field, ['location','type','status','visibility','building_id','resident_id', 'quarter_id','unit_id','address_id','internal_priority','priority','is_public','category','nation','state_id','category_id','sub_category_id','sub_type','capture_phase','qualification','execution_period','reminder_user_ids'])){
+                elseif(in_array($field, ['location','type','status','visibility','building_id','resident_id', 'quarter_id','unit_id','address_id','internal_priority','priority','is_public','category','nation','state_id','category_id','sub_category_id','sub_type','capture_phase','execution_period','reminder_user_ids'])){
                     $old_value = ($old_value) ? (AuditRepository::getDataFromField($field, $old_value, $model->auditable_type)) : "";
                     $new_value = ($new_value) ? (AuditRepository::getDataFromField($field, $new_value, $model->auditable_type)) : "";
                 }                

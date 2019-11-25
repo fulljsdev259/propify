@@ -87,12 +87,6 @@ use Storage;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="qualification",
- *          description="qualification",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
  *          property="due_date",
  *          description="due_date",
  *          type="string",
@@ -112,11 +106,6 @@ use Storage;
  *     @SWG\Property(
  *          property="percentage",
  *          description="percentage",
- *          type="float"
- *      ),
- *     @SWG\Property(
- *          property="amount",
- *          description="amount",
  *          type="float"
  *      ),
  *     @SWG\Property(
@@ -147,7 +136,6 @@ use Storage;
  * @property int $category_id
  * @property int $resident_id
  * @property int|null $relation_id
- * @property float|null $amount
  * @property float|null $percentage
  * @property string $request_format
  * @property string $title
@@ -155,7 +143,6 @@ use Storage;
  * @property int $status
  * @property int $priority
  * @property int $internal_priority
- * @property int $qualification
  * @property int|null $location
  * @property int|null $payer
  * @property string|null $component
@@ -224,7 +211,6 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereNotifyEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request wherePayer($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request wherePriority($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereQualification($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereReactivationDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereReminderUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Request whereRequestFormat($value)
@@ -334,14 +320,6 @@ class Request extends AuditableModel implements HasMedia
         1 => 'low',
         2 => 'normal',
         3 => 'urgent',
-    ];
-
-    const Qualification = [
-        1 => 'none',
-        2 => 'optical',
-        3 => 'sia',
-        4 => '2_year_warranty',
-        5 => 'cost_consequences',
     ];
 
     const ActionFix = 1;
@@ -460,7 +438,6 @@ class Request extends AuditableModel implements HasMedia
 
     const RoomAttr = 'room';
     const LocationAttr = 'location';
-    const QualificationAttr = 'qualification';
     const CapturePhaseAttr = 'capture_phase';
     const ComponentAttr = 'component';
     const ActionAttr = 'action';
@@ -479,14 +456,12 @@ class Request extends AuditableModel implements HasMedia
 
     const SubCategoryAttributes = [
         self::SubCategorySurrounding => [
-            self::QualificationAttr,
             self::CostImpactAttr,
             self::ActionAttr,
 	        self::CapturePhaseAttr,
 	        self::ComponentAttr,
         ],
         self::SubCategoryRealEstate => [
-            self::QualificationAttr,
             self::CostImpactAttr,
             self::ActionAttr,
 	        self::CapturePhaseAttr,
@@ -495,7 +470,6 @@ class Request extends AuditableModel implements HasMedia
 
         ],
         self::SubCategoryFlat => [
-	        self::QualificationAttr,
 	        self::CostImpactAttr,
             self::ActionAttr,
 	        self::CapturePhaseAttr,
@@ -535,7 +509,6 @@ class Request extends AuditableModel implements HasMedia
 //        'internal_priority',
         'due_date',
         'solved_date',
-        'qualification',
         'action',
         'visibility',
         'request_format',
@@ -580,7 +553,6 @@ class Request extends AuditableModel implements HasMedia
 //        'internal_priority' => 'integer',
         'due_date' => 'date',
         'solved_date' => 'datetime',
-        'qualification' => 'integer',
         'action' => 'integer',
         'visibility' => 'integer',
         'sent_reminder_user_ids' => 'array',

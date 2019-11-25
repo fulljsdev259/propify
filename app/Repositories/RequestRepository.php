@@ -61,21 +61,6 @@ class RequestRepository extends BaseRepository
     public function create(array $attributes)
     {
         $attributes = self::getPostAttributes($attributes);
-        if (isset($attributes['category_id'])) {
-            $categoryAttributes = Request::CategoryAttributes[$attributes['category_id']] ?? [];
-            if (isset($attributes['sub_category_id'])) {
-                $subCategoryAttributes = Request::SubCategoryAttributes[$attributes['sub_category_id']] ?? [];
-            } else {
-                $subCategoryAttributes = [];
-            }
-            if (
-                (empty($categoryAttributes) || ! in_array(Request::QualificationAttr, $categoryAttributes))
-                && (empty($subCategoryAttributes) || ! in_array(Request::QualificationAttr, $subCategoryAttributes))
-            ) {
-                unset($attributes['qualification']);
-            }
-        }
-
         $attributes = $this->fixRelationRelated($attributes);
         $attributes['creator_user_id'] = Auth::id();
 
@@ -182,7 +167,6 @@ class RequestRepository extends BaseRepository
             $attr['visibility'] = $attributes['visibility'];
             $attr['resident_id'] = $user->resident->id;
             $attr['status'] = Request::StatusNew;
-            $attr['qualification'] = array_flip(Request::Qualification)['none'];
 
             // $attr['priority'] = $attributes['priority'];
             //  $attr['internal_priority'] = $attributes['internal_priority'] ?? $attributes['priority'];
