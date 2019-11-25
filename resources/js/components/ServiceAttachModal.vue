@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        :close-on-click-modal="false"
+        :close-on-click-modal="true"
         :title="selectedTitle"
         :visible="showServiceMailModal"
         @close="close"
