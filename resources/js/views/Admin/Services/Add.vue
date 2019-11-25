@@ -131,7 +131,7 @@
                                 </el-col>
                             </el-row>
                             <el-row :gutter="20">
-                                <el-col :md="12">
+                                <el-col :md="8">
                                     <el-form-item class="label-block" :label="$t('general.state')" :rules="validationRules.state_id" prop="address.state_id">
                                         <el-select
                                             filterable
@@ -145,9 +145,14 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12">
+                                <el-col :md="8">
                                     <el-form-item :label="$t('general.phone')" prop="phone">
                                         <el-input type="text" v-model="model.phone"/>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="8">
+                                    <el-form-item :label="$t('general.mobile_phone')" prop="mobile_phone">
+                                        <el-input type="text" v-model="model.mobile_phone"/>
                                     </el-form-item>
                                 </el-col>
                             </el-row>
