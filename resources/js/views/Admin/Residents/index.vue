@@ -4,8 +4,7 @@
                     icon="icon-group" 
                     shadow="heavy" 
                     :searchBar="true"
-                    @search-change="search=$event"
-                    class="padding-right-300">
+                    @search-change="search=$event">
             <template v-if="$can($permissions.create.resident)">
                 <el-button 
                     @click="add" 
@@ -97,15 +96,15 @@
                     label: 'general.filters.status',
                     withStatusSign: true,
                     prop: 'status',
-                    width: 100
+                    width: 130
                 }, {
                     label: 'general.first_name',
                     prop: 'first_name',
-                    width: 150
+                    width: 200
                 }, {
                     label: 'general.last_name',
                     prop: 'last_name',
-                    width: 150
+                    width: 200
                 }, {
                     label: 'general.email',
                     prop: 'user.email',

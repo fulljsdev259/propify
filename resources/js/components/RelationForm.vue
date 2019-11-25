@@ -1020,6 +1020,7 @@
                 
                 this.original_unit_id = this.data.unit_id
 
+                console.log(this.model)
 
                 if( !this.hideBuildingAndUnits ) {
                     if( this.model.unit )
@@ -1042,8 +1043,8 @@
                         // {
                         //     group_label = this.$t('models.unit.floor_title.top_floor');
                         // }
-                        let group_label = this.model.address.house_num
-
+                        //let group_label = this.model.address.house_num
+                        let group_label = "Quarter"
                         this.units.push({ label: group_label, options : [this.model.unit]})
                     }
                     if(this.model.quarter) {

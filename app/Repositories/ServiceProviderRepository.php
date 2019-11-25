@@ -26,7 +26,9 @@ class ServiceProviderRepository extends BaseRepository
      */
     protected $fieldSearchable = [
         'category' => 'like',
-        'name' => 'like',
+        'company_name' => 'like',
+        'first_name' => 'like',
+        'last_name' => 'like',
         'email' => 'like',
         'phone' => 'like',
         'service_provider_format' => 'like',
