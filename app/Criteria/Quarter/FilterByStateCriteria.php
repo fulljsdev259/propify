@@ -36,7 +36,7 @@ class FilterByStateCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
 
-        $stateId = $this->request->get('state_id', null);
+        $stateId = $this->request->state_id;
         if ($stateId) {
             return $model->whereHas('address', function ($q) use ($stateId) {
                 $q->where('state_id', $stateId);
