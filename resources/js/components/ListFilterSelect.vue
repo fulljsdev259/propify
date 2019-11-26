@@ -83,6 +83,7 @@
         data() {
             return {
                originItems: [],
+               originSelectedOptions: [],
                selectClicked: false,
                search: '',
                selecting: false,
@@ -273,20 +274,19 @@
                             name: option.name,
                             selected: this.selectedOptions? this.selectedOptions.includes(id): false,
                         });
-                        this.originItems.push({
-                            id: id,
-                            name: option.name,
-                            selected: this.selectedOptions? this.selectedOptions.includes(id): false,
-                        })
+                        this.originItems = _.clone(this.items, true);
                     });
                 }
+                this.originSelectedOptions = this.selectedOptions;
             }
         },
         created() {
+            this.initFilter();
         },
         updated() {
-            if(JSON.stringify(this.options) !== JSON.stringify(this.data))
+            if((JSON.stringify(this.options) !== JSON.stringify(this.data)) )
                 this.initFilter();
+            
         }
     }
 </script>
