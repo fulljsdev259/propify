@@ -58,6 +58,7 @@ class AuditableModel extends Model implements Auditable
     const NotificationsSent = 'notifications_sent';
     const DownloadCredentials = 'download_credentials';
     const SendCredentials = 'send_credentials';
+    const MassAssignments = 'mass_assignments';
 
     const SyncAuditConfig = [
         'attach' => [
@@ -81,18 +82,6 @@ class AuditableModel extends Model implements Auditable
             'quarters' => AuditableModel::EventQuarterUnassigned,
         ],
     ];
-
-    protected $syncAuditable = [
-        'managers' => ['first_name', 'last_name'],
-        'property_managers' => ['first_name', 'last_name'],
-        'propertyManagers' => ['first_name', 'last_name'],
-        'providers' => ['company_name'],
-        'service_providers' => ['company_name'],
-        'users' => ['name'],
-        'buildings' => ['name'],
-        'quarters' => ['name'],
-    ];
-
 
     const Events = [
         self::EventCreated,
@@ -202,7 +191,6 @@ class AuditableModel extends Model implements Auditable
         return $audit;
     }
 
-
     /**
      * @param $value
      * @return Audit
@@ -269,6 +257,23 @@ class AuditableModel extends Model implements Auditable
         return $audit;
     }
 
+    /**
+     * @param Collection $items
+     * @return Audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function newMassAssignmentAudit(Collection $items)
+    {
+        $audit = $this->makeNewAudit(self::MassAssignments);
+        $audit->new_values = $items->filter(function ($item) {
+                return $item->wasRecentlyCreated;
+            })->groupBy('assignee_type')->transform(function ($_items) {
+                return $_items->pluck('assignee_id')->all();
+            })->all();;
+
+        $audit->save();
+        return $audit;
+    }
 
 
 

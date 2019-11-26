@@ -16,6 +16,7 @@ use App\Models\Conversation;
 use App\Models\Resident;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Workflow;
 use App\Notifications\NewResidentInNeighbour;
 use App\Notifications\NewResidentPinboard;
 use App\Notifications\NewResidentRequest;
@@ -70,6 +71,7 @@ class AppServiceProvider extends ServiceProvider
             'provider' => \App\Models\ServiceProvider::class,
             'relation' => \App\Models\Relation::class,
             'conversation' => Conversation::class,
+            'workflow' => Workflow::class,
 
             'pinboard_published' => PinboardPublished::class,
             'new_resident_pinboard' => NewResidentPinboard::class,

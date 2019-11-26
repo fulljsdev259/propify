@@ -320,7 +320,6 @@ class UtilsAPIController extends AppBaseController
             'status_colorcode' => Request::StatusColorCode,
            // 'priority' => Request::Priority,
             //'internal_priority' => Request::Priority,
-            'qualification' => Request::Qualification,
             'action' => Request::Action,
             'cost_impact' => Request::CostImpact,
             'statusByResident' => Request::StatusByResident,

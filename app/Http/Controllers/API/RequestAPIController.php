@@ -381,7 +381,7 @@ class RequestAPIController extends AppBaseController
         if (!$this->requestRepository->checkStatusPermission($input, $oldStatus)) {
             return $this->sendError(__('models.request.errors.not_allowed_change_status'));
         }
-
+        $input['category_id'] = $input['category_id'] ?? $updateRequest->category; // @TODO delete
         $updatedRequest = $this->requestRepository->updateExisting($request, $input);
 
         $updatedRequest->load([
