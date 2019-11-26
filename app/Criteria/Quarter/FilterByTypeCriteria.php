@@ -40,7 +40,11 @@ class FilterByTypeCriteria implements CriteriaInterface
             if (! is_array($types)) {
                 $types = [$types];
             }
-            return $model->whereIn('types', $types);
+
+            foreach ($types as $type) {
+                // This is correct until Quarter::Type is smaller then 10
+                $model->where('types', 'like', '%' . $type . '%');
+            }
         }
 
         return $model;
