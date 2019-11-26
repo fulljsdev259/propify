@@ -105,8 +105,8 @@
                     label: 'general.email',
                     prop: 'email'
                 }, {
-                    label: 'general.phone',
-                    prop: 'phone'
+                    label: 'general.mobile_phone',
+                    prop: 'mobile_phone'
                 }, {
                     label: 'general.function',
                     withServiceCategory: true,
