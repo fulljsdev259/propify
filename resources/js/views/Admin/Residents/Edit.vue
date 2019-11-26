@@ -307,7 +307,7 @@
                             prop="name"
                         >
                             <template slot-scope="scope">
-                                <span ><strong>{{scope.row.name}}</strong></span>
+                                <span class="normal"><strong>{{scope.row.name}}</strong></span>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -327,8 +327,8 @@
                 <!-- <ui-divider style="margin-top: 16px;"></ui-divider> -->
                 <div class="relation-form-actions">
                     <div class="button-group">
-                        <el-button type="default" @click="closeMediaDialog" icon="icon-cancel" class="btn-close" >{{$t('general.actions.close')}}</el-button>
-                        <el-button type="primary" @click="uploadMedia" icon="icon-floppy" class="btn-save">{{$t('general.actions.save')}}</el-button>
+                        <el-button type="default" @click="closeMediaDialog" icon="icon-cancel" class="new-design-btn-close" >{{$t('general.actions.close')}}</el-button>
+                        <el-button type="primary" @click="uploadMedia" icon="icon-floppy" class="new-design-btn-save">{{$t('general.actions.save')}}</el-button>
                         
                     </div>
                 </div>
@@ -1013,6 +1013,15 @@
             &:hover {
                 background: none;
                 border: none;
+            }
+        }
+
+        .normal {
+            text-decoration: none;
+            color: var(--primary-color);
+
+            &:hover {
+                color: var(--primary-color-lighter);
             }
         }
     }

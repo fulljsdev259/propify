@@ -410,7 +410,7 @@
                 >
                 </el-alert> -->
 
-                <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".pdf" drag multiple/>
+                <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF" drag multiple/>
                 
                 <el-table
                     :data="model.media"
@@ -423,8 +423,8 @@
                         prop="name"
                     >
                         <template slot-scope="scope">
-                            <a v-if="scope.row.url" :href="scope.row.url" target="_blank"><strong>{{scope.row.name}}</strong></a>
-                            <span v-else><strong>{{scope.row.name}}</strong></span>
+                            <a v-if="scope.row.url" :href="scope.row.url" class="normal" target="_blank"><strong>{{scope.row.name}}</strong></a>
+                            <span v-else ><strong>{{scope.row.name}}</strong></span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -468,10 +468,10 @@
                 <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-relation', edit_index)" icon="ti-trash" class="btn-delete" >
                     {{$t('general.actions.delete')}}
                 </el-button>
-                <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" class="btn-save" >
+                <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" class="new-design-btn-save" >
                     {{ edit_index == undefined ? $t('general.actions.add') : $t('general.actions.edit')}}
                 </el-button>
-                <el-button type="primary" v-else @click="submit" icon="ti-save" class="btn-save" >{{$t('general.actions.save')}}</el-button>
+                <el-button type="primary" v-else @click="submit" icon="ti-save" class="new-design-btn-save" >{{$t('general.actions.save')}}</el-button>
             </div>
         </div>
         
