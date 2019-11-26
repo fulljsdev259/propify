@@ -100,6 +100,7 @@ return [
         'qualification' => 'Qualifizierung',
         'saved_filters' => 'Mehr Filters',
         'fields' => 'Felder',
+        'my_filters' => 'Meine Filter',
     ],
     'no' => 'Nein',
     'first_name' => 'Vorname',

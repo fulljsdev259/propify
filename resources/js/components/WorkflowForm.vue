@@ -672,6 +672,7 @@
     }
     .btn-close {
         border: none;
+        background-color: var(--background-color-base);
     }
     
 </style>
