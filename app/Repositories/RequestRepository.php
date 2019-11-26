@@ -61,21 +61,6 @@ class RequestRepository extends BaseRepository
     public function create(array $attributes)
     {
         $attributes = self::getPostAttributes($attributes);
-        if (isset($attributes['category_id'])) {
-            $categoryAttributes = Request::CategoryAttributes[$attributes['category_id']] ?? [];
-            if (isset($attributes['sub_category_id'])) {
-                $subCategoryAttributes = Request::SubCategoryAttributes[$attributes['sub_category_id']] ?? [];
-            } else {
-                $subCategoryAttributes = [];
-            }
-            if (
-                (empty($categoryAttributes) || ! in_array(Request::QualificationAttr, $categoryAttributes))
-                && (empty($subCategoryAttributes) || ! in_array(Request::QualificationAttr, $subCategoryAttributes))
-            ) {
-                unset($attributes['qualification']);
-            }
-        }
-
         $attributes = $this->fixRelationRelated($attributes);
         $attributes['creator_user_id'] = Auth::id();
 
@@ -181,8 +166,7 @@ class RequestRepository extends BaseRepository
             $attr['sub_category_id'] = $attributes['sub_category_id'];
             $attr['visibility'] = $attributes['visibility'];
             $attr['resident_id'] = $user->resident->id;
-            $attr['status'] = Request::StatusReceived;
-            $attr['qualification'] = array_flip(Request::Qualification)['none'];
+            $attr['status'] = Request::StatusNew;
 
             // $attr['priority'] = $attributes['priority'];
             //  $attr['internal_priority'] = $attributes['internal_priority'] ?? $attributes['priority'];
@@ -202,7 +186,7 @@ class RequestRepository extends BaseRepository
 
         // already checked resident exists
         $attributes['assignee_ids'] = [Auth::user()->id]; // @TODO where used
-        $attributes['status'] = Request::StatusReceived;
+        $attributes['status'] = Request::StatusNew;
         $attributes['due_date'] = Carbon::parse($attributes['due_date'])->format('Y-m-d');
 
         return $attributes;
@@ -236,8 +220,8 @@ class RequestRepository extends BaseRepository
             $attr = [];
             $attr['title'] = $attributes['title'];
             $attr['description'] = $attributes['description'];
-            $attr['category'] = $attributes['category'];
-            $attr['sub_category'] = $attributes['sub_category'];
+            $attr['category_id'] = $attributes['category_id'];
+            $attr['sub_category_id'] = $attributes['sub_category_id'];
             $attr['status'] = $attributes['status'];
 
             return $attr;

@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API;
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Common\WhereCriteria;
 use App\Criteria\Unit\FilterByCityCriteria;
+use App\Criteria\Unit\FilterByQuarterCriteria;
 use App\Criteria\Unit\FilterByRelatedFieldsCriteria;
 use App\Criteria\Unit\FilterByTypeCriteria;
+use App\Criteria\Unit\FilterByUserRoleCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Unit\AssignRequest;
 use App\Http\Requests\API\Unit\CreateRequest;
@@ -93,10 +95,12 @@ class UnitAPIController extends AppBaseController
     public function index(ListRequest $request)
     {
         $this->unitRepository->pushCriteria(new RequestCriteria($request));
-        $this->unitRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
-        $this->unitRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->unitRepository->pushCriteria(new LimitOffsetCriteria($request));
+        $this->unitRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
+        $this->unitRepository->pushCriteria(new FilterByQuarterCriteria($request));
+        $this->unitRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->unitRepository->pushCriteria(new FilterByCityCriteria($request));
+        $this->unitRepository->pushCriteria(new FilterByUserRoleCriteria($request));
 
 
         if ($request->group_by_building) {

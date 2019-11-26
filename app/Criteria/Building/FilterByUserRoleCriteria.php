@@ -5,6 +5,7 @@ namespace App\Criteria\Building;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
@@ -39,12 +40,8 @@ class FilterByUserRoleCriteria implements CriteriaInterface
         $roles = $this->request->get('roles', []);
         $userIds = $this->request->get('user_ids', []);
         if ($roles || $userIds) {
-            if (! is_array($roles)) {
-                $roles = [$roles];
-            }
-            if (! is_array($userIds)) {
-                $userIds = [$userIds];
-            }
+            $roles = Arr::wrap($roles);
+            $userIds = Arr::wrap($userIds);
             return $model->whereHas('quarter', function ($q) use ($roles, $userIds) {
                 $q->whereHas('users', function ($q) use ($roles, $userIds) {
                     $q->when($roles, function ($q) use ($roles) {

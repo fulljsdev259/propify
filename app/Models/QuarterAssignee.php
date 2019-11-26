@@ -57,11 +57,9 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\QuarterAssignee whereQuarterId($value)
  * @mixin \Eloquent
  */
-class QuarterAssignee extends AuditableModel
+class QuarterAssignee extends Assignee
 {
     protected $table = 'quarter_assignees';
-
-    public $timestamps = false;
 
     public $fillable = [
         'quarter_id',
@@ -79,10 +77,6 @@ class QuarterAssignee extends AuditableModel
         'created_at' => 'date',
     ];
 
-    public $auditEvents = [
-        AuditableModel::EventDeleted
-    ];
-
     /**
      * {@inheritdoc}
      */
@@ -98,46 +92,5 @@ class QuarterAssignee extends AuditableModel
         $data['old_values'] = $olddata;
         $data['event'] = $event;
         return $data;
-    }
-
-    // @TODO make more good way
-    protected function getAuditData()
-    {
-        $model = Relation::$morphMap[$this->assignee_type] ?? $this->assignee_type;
-        $config = [
-            User::class => ['name'],
-            ServiceProvider::class => ['name'],
-            PropertyManager::class => ['first_name', 'last_name'],
-        ];
-        if (! class_exists($model)) {
-            return [];
-        }
-        $eventConvig = [
-            User::class => AuditableModel::EventUserUnassigned,
-            ServiceProvider::class => AuditableModel::EventProviderUnassigned,
-            PropertyManager::class => AuditableModel::EventManagerUnassigned,
-        ];
-
-        $instance = new $model();
-        $columns = array_merge([$instance->getKeyName()], $config[$model] ?? []);
-        try {
-            $instance = $instance->where($instance->getKeyName(), $this->assignee_id)->withTrashed()->first($columns);
-        } catch (\Exception $e) {
-            $instance = $instance->where($instance->getKeyName(), $this->assignee_id)->first($columns);
-        }
-
-        if (empty($instance)) {
-            return [$eventConvig[$model] ?? 'deleted', []];
-        }
-
-        $attributes = $instance->getAttributes();
-        $prefix = Str::singular($instance->getTable()) . '_';
-
-        $oldData = [];
-        foreach ($attributes as $attribute => $value) {
-            $oldData[$prefix . $attribute] = $value;
-        }
-
-        return [$eventConvig[$model] ?? 'deleted', $oldData];
     }
 }

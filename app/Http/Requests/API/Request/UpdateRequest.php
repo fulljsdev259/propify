@@ -48,7 +48,6 @@ class UpdateRequest extends BaseRequest
             'description' => 'string',
 //        'priority' => 'integer',
 //        'internal_priority' => 'integer',
-            'qualification' => 'nullable|integer',
             'status' => 'integer',
             'due_date' => 'date',
             'category_id' => 'integer',

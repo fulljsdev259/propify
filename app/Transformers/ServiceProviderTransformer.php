@@ -30,6 +30,7 @@ class ServiceProviderTransformer extends BaseTransformer
             'first_name' => $model->first_name,
             'last_name' => $model->last_name,
             'company_name' => $model->company_name,
+            'mobile_phone' => $model->mobile_phone,
             'name' => $model->company_name, // @TODO delete
             'email' => $model->email,
             'phone' => $model->phone,

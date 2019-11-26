@@ -9,7 +9,7 @@
                     @click="add" 
                     icon="ti-plus" 
                     size="mini"
-                    class="transparent-button"
+                    class="transparent-button mr-0"
                 >
                     {{$t('models.unit.add')}}
                 </el-button>
@@ -228,7 +228,7 @@
                     }, {
                         name: this.$t('general.filters.quarters'),
                         type: 'select',
-                        key: 'quarter_id',
+                        key: 'quarter_ids',
                         data: this.quarters,
                     },{
                         name: this.$t('general.filters.buildings'),
