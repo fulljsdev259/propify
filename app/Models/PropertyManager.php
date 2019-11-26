@@ -83,6 +83,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $description
  * @property string $title
  * @property string $status
+ * @property string $mobile_phone
  * @property string $first_name
  * @property string $last_name
  * @property string|null $profession
@@ -158,12 +159,18 @@ class PropertyManager extends AuditableModel
 
     const TypeManager = 1;
     const TypeAdministrator = 2;
+    const TypeInitialLetting = 3;
+    const TypeMarketing = 4;
+    const TypeSiteSupervision = 5;
 
     const Type = [
         self::TypeManager => 'manager',
         self::TypeAdministrator => 'administrator',
+        self::TypeInitialLetting => 'initial_letting',
+        self::TypeMarketing => 'marketing',
+        self::TypeSiteSupervision => 'site_supervision',
     ];
-    
+
     const StatusActive = 1;
     const StatusInactive = 2;
 	
@@ -183,7 +190,8 @@ class PropertyManager extends AuditableModel
         'user_id',
         'type',
         'title',
-		'status',
+        'status',
+        'mobile_phone',
         'first_name',
         'last_name',
         'profession',
@@ -223,7 +231,8 @@ class PropertyManager extends AuditableModel
         'user_id' => 'integer',
         'type' => 'integer',
         'title' => 'string',
-		'status' => 'integer',
+        'status' => 'integer',
+        'mobile_phone' => 'string',
         'first_name' => 'string',
         'last_name' => 'string',
         'profession' => 'string',

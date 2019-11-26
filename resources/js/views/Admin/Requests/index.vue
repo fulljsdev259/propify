@@ -88,7 +88,7 @@
                         </div>
                         <el-option
                             :key="service.id"
-                            :label="`${service.name}`"
+                            :label="`${service.first_name} ${service.last_name}`"
                             :value="service.id"
                             v-for="service in toAssignList"/>
                     </el-select>

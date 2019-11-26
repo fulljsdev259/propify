@@ -147,7 +147,7 @@
                     label: 'models.quarter.project_ort',
                     prop: 'city'
                 }, {
-                    label: 'models.quarter.type',
+                    label: 'models.quarter.types.label',
                     prop: 'types'
                 }, {
                     label: 'models.building.request_status',
@@ -205,7 +205,7 @@
                         key: 'city',
                         data: this.cities,
                     },{
-                        name: this.$t('models.quarter.type'),
+                        name: this.$t('models.quarter.types.label'),
                         type: 'select',
                         key: 'types',
                         data: this.types,

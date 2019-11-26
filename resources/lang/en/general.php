@@ -105,6 +105,7 @@ return [
     'last_name' => 'Last name',
     'name' => "Name",
     'phone' => 'Phone',
+    'mobile_phone' => 'Mobile phone',
     'mobile' => 'Mobile',
     'id' => "ID",
     'address' => "Address",
@@ -272,6 +273,9 @@ return [
         'registered' => 'Registered',
         'provider' => 'Service',
         'super_admin' => 'Super Admin',
+        'initial_letting' => 'Initial Letting',
+        'marketing' => 'marketing',
+        'site_supervision' => 'Site Supervision',
     ],
     'placeholders' => [
         'search' => 'Search',

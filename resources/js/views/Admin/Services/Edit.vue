@@ -4,7 +4,7 @@
             <template slot="description" v-if="model.service_provider_format">
                 <div class="subtitle">{{model.service_provider_format}}</div>
             </template>
-            <edit-actions :saveAction="submit" :deleteAction="deleteService" route="adminServices" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
+            <edit-actions :saveAction="submit" :deleteAction="deleteService" route="adminServices" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
         </heading>
         <el-row :gutter="20" class="crud-view">
             <el-col :md="12">
@@ -86,7 +86,7 @@
                         </el-row>
 
                         <el-row :gutter="20">
-                            <el-col :md="12">
+                            <el-col :md="8">
                                 <el-form-item :label="$t('general.state')"
                                               :rules="validationRules.state_id"
                                               prop="address.state_id">
@@ -102,9 +102,14 @@
                                     </el-select>
                                 </el-form-item>
                             </el-col>
-                            <el-col :md="12">
+                            <el-col :md="8">
                                 <el-form-item :label="$t('general.phone')" prop="phone">
                                     <el-input :disabled="!editMode" type="text" v-model="model.phone"/>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :md="8">
+                                <el-form-item :label="$t('general.mobile_phone')" prop="mobile_phone">
+                                    <el-input :disabled="!editMode" type="text" v-model="model.mobile_phone"/>
                                 </el-form-item>
                             </el-col>
                         </el-row>
@@ -224,6 +229,12 @@
             </el-col>
         </el-row>
 
+        <edit-close-dialog
+                :centerDialogVisible="visibleDialog"
+                @clickYes="visibleDialog=false, submit(true)"
+                @clickNo="visibleDialog=false, $refs.editActions.goToListing()"
+                @clickCancel="visibleDialog=false"
+        ></edit-close-dialog>
     </div>
 </template>
 
@@ -239,6 +250,7 @@
     import SelectLanguage from 'components/SelectLanguage';
     import AssignmentByType from 'components/AssignmentByType';
     import RawGridStatisticsCard from 'components/RawGridStatisticsCard';
+    import EditCloseDialog from 'components/EditCloseDialog';
 
     export default {
         name: 'AdminServicesEdit',
@@ -253,7 +265,8 @@
             RelationList,
             SelectLanguage,
             AssignmentByType,
-            RawGridStatisticsCard
+            RawGridStatisticsCard,
+            EditCloseDialog,
         },
         data() {
             return {

@@ -229,12 +229,43 @@
                     </div>
                     <div v-else-if="column.withInternalQuarterIds">
                         <div class="internal-quarter-wrapper">
-                            <span class="internal-quarter" v-for="item in scope.row[column.prop]">{{item}}</span>
+                            <span class="internal-quarter" v-for="item in scope.row[column.prop].slice(0, 3)">{{item}}</span>
+                            <span v-if="scope.row[column.prop].length > 2" class="internal-quarter internal-quarter_count">+{{scope.row[column.prop].length - 3}}</span>
                         </div>
                     </div>
                     <div v-else-if="column.withStatusSign">
                         <el-tooltip
                             :content="`${$t(`models.unit.status.${$constants.relations.status[scope.row[column.prop]]}`)}`"
+                            class="item"
+                            effect="light" placement="top"
+                        >
+                            <avatar 
+                                :background-color="$constants.status_colorcode[scope.row[column.prop]]"
+                                :initials="''"
+                                :size="30"
+                                :style="{'z-index': (800 - index)}"
+                                :username="''"
+                            />
+                        </el-tooltip>
+                    </div>
+                    <div v-else-if="column.withPMStatusSign">
+                        <el-tooltip
+                            :content="`${$t(`models.property_manager.status.${$constants.propertyManager.status[scope.row[column.prop]]}`)}`"
+                            class="item"
+                            effect="light" placement="top"
+                        >
+                            <avatar 
+                                :background-color="$constants.status_colorcode[scope.row[column.prop]]"
+                                :initials="''"
+                                :size="30"
+                                :style="{'z-index': (800 - index)}"
+                                :username="''"
+                            />
+                        </el-tooltip>
+                    </div>
+                    <div v-else-if="column.withResidentStatusSign">
+                        <el-tooltip
+                            :content="`${$t(`models.resident.relation.status.${$constants.relations.status[scope.row[column.prop]]}`)}`"
                             class="item"
                             effect="light" placement="top"
                         >
@@ -1190,12 +1221,22 @@
         color: #dd6161;
     }
 
+    .internal-quarter-wrapper {
+        display: flex;
+    }
     .internal-quarter {
-        margin: 4px 8px 4px 0;
+        margin: 1px 2px 1px 0;
         display: inline-flex;
-        padding: 4px;
-        border-radius: 2px;
-        background: var(--background-color-base);
+        padding: 0 4px;
+        border-radius: 4px;
+        background: #f0f0f0;
+        white-space: nowrap;
+        &_count {
+            margin-right: 0;
+            color: #3f4245;
+            background: #cecfce;
+            font-weight: 600;
+        }
     }
 
 </style>

@@ -34,11 +34,11 @@ export default (config = {}) => {
                     },
                     service_provider_format: '',
                     company_name: '',
-                    name: '',
                     last_name: '',
                     first_name: '',
                     title: '',
                     phone: '',
+                    mobile_phone: '',
                     category: null,
                     settings: {
                         language: 'en' //@TODO : remove language
@@ -309,7 +309,6 @@ export default (config = {}) => {
                                     this.model.user.password_confirmation = this.model.password
                                     this.model.user.avatar = this.model.avatar
                                     this.model.user.email = this.model.email
-                                    this.model.name = this.model.last_name + ' ' + this.model.first_name
                                     const resp = await this.createService(this.model);
 
 
@@ -350,7 +349,7 @@ export default (config = {}) => {
                 }), UploadUserAvatarMixin];
 
                 mixin.methods = {
-                    submit() {
+                    submit(goToListing = false) {
                         return new Promise((resolve, reject) => {
                             this.isFormSubmission = true;
                             this.form.validate(async valid => {
@@ -395,6 +394,9 @@ export default (config = {}) => {
                                     resolve(false);
                                 } finally {
                                     this.loading.state = false;
+                                    if(goToListing) {
+                                        this.$refs.editActions.goToListing()
+                                    }
                                 }
                             });
                         });
@@ -410,13 +412,13 @@ export default (config = {}) => {
                         // TODO - do not like this, there is an alternative
                         this.$set(this.model, 'id', data.id);
 
-                        // this.model.name = data.name;
                         this.model.company_name = data.company_name;
                         this.model.first_name = data.first_name;
                         this.model.last_name = data.last_name;
                         this.model.title = data.title;
                         this.model.email = data.email;
                         this.model.phone = data.phone;
+                        this.model.mobile_phone = data.mobile_phone;
                         this.model.category = +data.category;
                         
                         this.model.user.avatar = data.user.avatar;
@@ -469,6 +471,8 @@ export default (config = {}) => {
                     
 
                     await this.fetchCurrentProvider();
+
+                    this.$refs['form'].clearValidate();
                     
                     this.original_email = this.model.email;
                 };

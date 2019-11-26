@@ -106,6 +106,7 @@ return [
     'last_name' => 'Nachname',    
     'name' => "Name",
     'phone' => 'Telefon',
+    'mobile_phone' => 'Mobiltelefon',
     'mobile' => 'Mobile',
     'id' => "ID",
     'field' => 'Feld',
@@ -273,6 +274,9 @@ return [
         'registered' => 'Registriert',
         'provider' => 'Externe Diensteister',
         'super_admin' => 'Super Administrator',
+        'initial_letting' => 'Erstvermietung',
+        'marketing' => 'Vermarktung',
+        'site_supervision' => 'Bauleitung',
     ],
     'placeholders' => [
         'search' => 'Suchen',
