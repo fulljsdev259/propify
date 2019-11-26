@@ -160,13 +160,13 @@
                 this.types = [];
                 for(let item in this.$constants.quarters.type) {
                     this.quarterTypes.push({
-                        id: item,
+                        id: parseInt(item),
                         name: this.$t(`models.quarter.types.${this.$constants.quarters.type[item]}`),
                     })
                 }
                 for(let item in this.$constants.units.type) {
                     this.types.push({
-                        id: item,
+                        id: parseInt(item),
                         name: this.$t(`models.unit.type.${this.$constants.units.type[item]}`),
                     })
                 }

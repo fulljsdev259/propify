@@ -281,7 +281,7 @@
                 this.types = [];
                 for(let item in this.$constants.buildings.type) {
                     this.types.push({
-                        id: item,
+                        id: parseInt(item),
                         name: this.$t(`models.quarter.types.${this.$constants.quarters.type[item]}`),
                     })
                 }
