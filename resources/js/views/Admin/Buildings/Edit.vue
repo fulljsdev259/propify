@@ -5,7 +5,7 @@
             <template slot="description" v-if="model.building_format">
                 <div class="subtitle">{{`${model.building_format} > ${model.name}`}}</div>
             </template>
-            <edit-actions :saveAction="submit" :deleteAction="batchDeleteBuilding" route="adminBuildings" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
+            <edit-actions :saveAction="submit" :deleteAction="batchDeleteBuilding" route="adminBuildings" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
             <!-- <template>
                 <div class="action-group">
                     <el-button @click="submit" size="mini" type="primary" round> {{this.$t('general.actions.save')}}</el-button>

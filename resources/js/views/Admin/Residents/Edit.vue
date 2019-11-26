@@ -5,7 +5,7 @@
                 <template slot="description" v-if="model.resident_format">
                     <div class="subtitle">{{model.resident_format}}</div>
                 </template>
-                <edit-actions :saveAction="submit" :deleteAction="deleteResident" route="adminResidents" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
+                <edit-actions :saveAction="submit" :deleteAction="deleteResident" route="adminResidents" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
             </heading>
             <el-row :gutter="20" class="crud-view">
                 <el-col :span="12">
@@ -707,6 +707,10 @@
                     font-size: 15px;
                     &:first-child {
                         color: var(--color-text-secondary);
+                        text-align: left;
+                    }
+                    &:nth-child(2) {
+                        text-align: right;
                     }
                 }
             }
@@ -933,21 +937,23 @@
             border: none;
         }
     }
+    .w-50 {
 
-    /deep/ .el-dialog.w-50 {
+        /deep/ .el-dialog {
             width: 50% !important;  
 
-        .el-dialog__header {
-            padding-left: 30px;
-        }
+            .el-dialog__header {
+                padding-left: 30px;
+            }
 
-        .el-dialog__body {
-            padding-top: 0;
-            padding-bottom: 20px;
-        }
+            .el-dialog__body {
+                padding-top: 0;
+                padding-bottom: 20px;
+            }
 
-        .el-dialog__footer {
-            padding: 0;
+            .el-dialog__footer {
+                padding: 0;
+            }
         }
     }
 
