@@ -444,6 +444,7 @@
             
             this.buildings = await this.fetchRemoteBuildings();
             this.buildings.map(building => {
+                building.name = building.address.house_num;
                 if(building.address)
                     building.house_num = building.address.house_num
             })
