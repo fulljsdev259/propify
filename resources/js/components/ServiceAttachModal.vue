@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        :close-on-click-modal="false"
+        :close-on-click-modal="true"
         :title="selectedTitle"
         :visible="showServiceMailModal"
         @close="close"
@@ -156,7 +156,9 @@
             },
             address: {
                 type: Object,
-                default: {}
+                default() {
+                    return {}
+                }
             }
         },
         data() {
@@ -233,12 +235,17 @@
                 if(this.requestData.resident && this.address) {
                     return this.requestData.resident.first_name + " " 
                         + this.requestData.resident.last_name 
-                        + ", " + this.address.street 
-                        + " " + this.address.house_num
-                        + " " + this.address.city
                         +"\n"
                         + " [ " + this.requestData.request_format
                         +" | " + this.requestData.category +" ]";
+                    // return this.requestData.resident.first_name + " " 
+                    //     + this.requestData.resident.last_name 
+                    //     + ", " + this.address.street 
+                    //     + " " + this.address.house_num
+                    //     + " " + this.address.city
+                    //     +"\n"
+                    //     + " [ " + this.requestData.request_format
+                    //     +" | " + this.requestData.category +" ]";
                 }else {
                     return "";
                 }

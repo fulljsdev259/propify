@@ -587,6 +587,7 @@ class QuarterAPIController extends AppBaseController
      * @param int $id
      * @param MassAssignUsersRequest $request
      * @return mixed
+     * @throws \Exception
      */
     public function massAssignUsers(int $id, MassAssignUsersRequest $request)
     {
@@ -597,9 +598,13 @@ class QuarterAPIController extends AppBaseController
         }
 
         $data  = $request->toArray();
+        $assigneeData = collect();
         foreach ($data as $single) {
-            $this->assignSingleUserToQuarter($id, $single['user_id'], $single['role']);
+            $newAssignee = $this->assignSingleUserToQuarter($id, $single['user_id'], $single['role']);
+            $assigneeData->push($newAssignee);
         }
+
+        $quarter->newMassAssignmentAudit($assigneeData);
 
         $response = (new QuarterTransformer)->transform($quarter);
         return $this->sendResponse($response, __('general.attached.manager'));

@@ -52,7 +52,7 @@ namespace App\Models;
  *      ),
  * )
  */
-class Workflow extends Model
+class Workflow extends AuditableModel
 {
     public $fillable = [
         'quarter_id',

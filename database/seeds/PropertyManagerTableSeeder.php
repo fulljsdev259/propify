@@ -28,7 +28,7 @@ class PropertyManagerTableSeeder extends Seeder
         $settings = $this->getSettings();
 
         $totalManagers = 200;
-        $buildings = Building::inRandomOrder()->limit($totalManagers)->get();
+//        $buildings = Building::inRandomOrder()->limit($totalManagers)->get();        // @TODO DELETE
         $quarters = \App\Models\Quarter::inRandomOrder()->limit($totalManagers)->get();
 
         for ($i = 0; $i < $totalManagers; $i++) {
@@ -54,11 +54,12 @@ class PropertyManagerTableSeeder extends Seeder
             $managerData = array_merge($managerData, $this->getDateColumns($date));
             $manager = factory(PropertyManager::class)->create($managerData);
 
-            $building = $buildings->random();
-            $manager->buildings()->attach([$building->id => [
-                'created_at' => now(),
-                'user_id' => $user->id
-            ]]);
+            // @TODO DELETE
+//            $building = $buildings->random();
+//            $manager->buildings()->attach([$building->id => [
+//                'created_at' => now(),
+//                'user_id' => $user->id
+//            ]]);
 
             $quarter = $quarters->random();
             $manager->quarters()->attach([$quarter->id => [
