@@ -13,7 +13,7 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  * Class FilterByUserRoleCriteria
  * @package App\Criteria\Quarter
  */
-class FilterByCityCriteria implements CriteriaInterface
+class FilterByUserRoleCriteria implements CriteriaInterface
 {
     /**
      * @var Request
@@ -37,18 +37,21 @@ class FilterByCityCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
 
-        $cities = $this->request->cities ?? $this->request->city; // @TODO delete city
-        if ($cities) {
-            $cities = Arr::wrap($cities);
-            return $model->where(function ($q) use ($cities) {
-                $q->whereHas('building', function ($q)  use ($cities) {
-                    $q->whereHas('address', function ($q) use ($cities) {
-                        $q->whereIn('city', $cities);
-                    });
-                })->orWhereHas('quarter', function ($q)  use ($cities) {
-                    $q->whereHas('address', function ($q) use ($cities) {
-                        $q->whereIn('city', $cities);
-                    });
+        $roles = $this->request->get('roles', []);
+        $userIds = $this->request->get('user_ids', []);
+        if ($roles || $userIds) {
+            $roles = Arr::wrap($roles);
+            $userIds = Arr::wrap($userIds);
+            return $model->whereHas('quarter', function ($q) use ($roles, $userIds) {
+                $q->whereHas('users', function ($q) use ($roles, $userIds) {
+                    $q->when($roles, function ($q) use ($roles) {
+                        $q->whereHas('roles', function ($q) use ($roles) {
+                            $q->whereIn('name', $roles);
+                        });
+                    })
+                        ->when($userIds, function ($q) use ($userIds) {
+                            $q->whereIn('users.id', $userIds);
+                        });
                 });
             });
         }

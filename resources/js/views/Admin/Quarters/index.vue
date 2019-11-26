@@ -9,7 +9,7 @@
                     @click="add" 
                     icon="ti-plus" 
                     size="mini"
-                    class="transparent-button"
+                    class="transparent-button mr-0"
                 >
                     {{$t('models.quarter.add')}}
                 </el-button>
@@ -196,13 +196,13 @@
                     }, {
                         name: this.$t('general.filters.quarters'),
                         type: 'select',
-                        key: 'quarter_id',
+                        key: 'quarter_ids',
                         data: this.quarter,
                         searchBox: true,
                     },{
                         name: this.$t('models.quarter.project_ort'),
                         type: 'select',
-                        key: 'city',
+                        key: 'cities',
                         data: this.cities,
                     },{
                         name: this.$t('models.quarter.types.label'),

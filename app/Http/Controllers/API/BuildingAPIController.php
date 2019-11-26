@@ -130,8 +130,8 @@ class BuildingAPIController extends AppBaseController
     {
         $request->merge(['model' => 'buildings']);
         $this->buildingRepository->pushCriteria(new RequestCriteria($request));
-        $this->buildingRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
         $this->buildingRepository->pushCriteria(new LimitOffsetCriteria($request));
+        $this->buildingRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByCityCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByUserRoleCriteria($request));

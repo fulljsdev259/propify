@@ -25,6 +25,7 @@ export default (config = {}) => {
                 toAssignProvider: '',
                 toAssignProviderList: [],
                 serviceCount: 0,
+                types:[],
                 statistics: {
                     raw: [{
                         icon: 'ti-user',
@@ -60,6 +61,7 @@ export default (config = {}) => {
                     street: '',
                     house_num: '',
                     zip: '',
+                    types: [],
                     service_providers: []
                 },
                 validationRules: {
@@ -90,6 +92,10 @@ export default (config = {}) => {
                     state_id: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('general.state')})
+                    }],
+                    types: [{
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('models.building.type')})
                     }],
                     city: [{
                         required: true,
@@ -296,6 +302,15 @@ export default (config = {}) => {
                         reject(false);
                     }
                 })
+            },
+            async getTypes() {
+                this.types = [];
+                for(let item in this.$constants.buildings.type) {
+                    this.types.push({
+                        id: item,
+                        name: this.$t(`models.quarter.types.${this.$constants.quarters.type[item]}`),
+                    })
+                }
             },
         },
         computed: {

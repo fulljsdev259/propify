@@ -57,11 +57,25 @@
                             </el-row>
                             <el-row :gutter="20">
                                 <el-col :md="6">
+                                    <el-form-item :label="$t('models.building.type')"
+                                                  class="label-block"
+                                                  :rules="validationRules.types"
+                                                  prop="types">
+                                        <multi-select
+                                            :name="$t('models.building.type')"
+                                            :data="types"
+                                            tagColor="#9E9FA0"
+                                            bgColor="#f6f5f7"
+                                            @select-changed="model.types=$event"
+                                        ></multi-select>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="6">
                                     <el-form-item :label="$t('general.zip')" :rules="validationRules.zip" prop="zip">
                                         <el-input type="text" v-model="model.zip"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12">
+                                <el-col :md="6">
                                     <el-form-item :label="$t('general.city')" :rules="validationRules.city" prop="city">
                                         <el-input type="text" v-model="model.city"></el-input>
                                     </el-form-item>
@@ -169,6 +183,8 @@
     import Card from 'components/Card';
     import BuildingsMixin from 'mixins/adminBuildingsMixin';
     import AddActions from 'components/EditViewActions';
+    import ListFilterSelect from 'components/ListFilterSelect';
+    import MultiSelect from 'components/MultiSelect';
 
     export default {
         mixins: [BuildingsMixin({
@@ -177,7 +193,13 @@
         components: {
             Heading,
             Card,
-            AddActions
+            AddActions,
+            MultiSelect,
+        },
+        data() {
+            return {
+                types: [],
+            }
         },
         methods: {
             setBuildingName() {
@@ -214,6 +236,9 @@
 
                 return arr;
             }
+        },
+        async created() {
+            this.getTypes();
         }
     }
 </script>

@@ -10,7 +10,8 @@
                     :deleteAction="deleteUnit" 
                     route="adminUnits" 
                     :editMode="editMode"
-                    @edit-mode="handleChangeEditMode"/>
+                    @edit-mode="handleChangeEditMode"
+                    ref="editActions"/>
             </heading>
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">

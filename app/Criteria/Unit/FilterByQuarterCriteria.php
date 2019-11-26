@@ -5,6 +5,7 @@ namespace App\Criteria\Unit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
@@ -35,10 +36,15 @@ class FilterByQuarterCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $quarter_id = $this->request->get('quarter_id', null);
-        if ($quarter_id) {
-            return $model->whereHas('building', function ($query) use ($quarter_id) {
-                $query->where('quarter_id', (int)$quarter_id);
+
+        $quarterIds = $this->request->quarter_ids ?? $this->request->quarter_id; // @TODO delete quarter_id
+        if ($quarterIds) {
+            $quarterIds = Arr::wrap($quarterIds);
+            return $model->where(function ($query) use ($quarterIds) {
+                $query->whereIn('quarter_id', $quarterIds)
+                    ->orWhereHas('building', function ($query) use ($quarterIds) {
+                        $query->whereIn('quarter_id', $quarterIds);
+                    });
             });
         }
 

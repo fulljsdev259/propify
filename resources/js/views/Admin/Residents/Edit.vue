@@ -18,7 +18,7 @@
                                             :style="{'color':$constants.status_colorcode[status.index],}"
                                             effect="plain"
                                         >
-                                            {{ $t(`models.unit.status.${status.text}`) }}
+                                            {{ $t(`models.resident.status.${status.text}`) }}
                                         </el-tag>
                                     </div>
                                     <div class="image-container">
@@ -190,12 +190,14 @@
                                     @edit-relation="editRelation"
                                     @delete-relation="deleteRelation">
                             </relation-list-table>
-                            <el-button style="float:right" 
-                                    type="primary" 
-                                    @click="showRelationDialog" 
-                                    icon="icon-plus" 
-                                    size="mini" >
-                                    {{ $t('models.resident.relation.add') }}
+                            <el-button
+                                v-if="editMode" 
+                                style="float:right" 
+                                type="primary" 
+                                @click="showRelationDialog" 
+                                icon="icon-plus" 
+                                size="mini" >
+                                {{ $t('models.resident.relation.add') }}
                             </el-button>
                         </el-tab-pane>
                         <el-tab-pane name="files">
@@ -214,12 +216,14 @@
                                 ref="mediaList"
                                 @delete-media="deleteMedia"
                             />
-                            <el-button style="float:right" 
-                                    type="primary" 
-                                    @click="showMediaDialog" 
-                                    icon="icon-plus" 
-                                    size="mini" >
-                                    {{ $t('models.resident.relation.add_files') }}
+                            <el-button 
+                                v-if="editMode"
+                                style="float:right" 
+                                type="primary" 
+                                @click="showMediaDialog" 
+                                icon="icon-plus" 
+                                size="mini" >
+                                {{ $t('models.resident.relation.add_files') }}
                             </el-button>
                         </el-tab-pane>
 
@@ -570,7 +574,7 @@
                 return this.constants.requests.status
             },
             status() {
-                let result = 'inactive';
+                let result = 'not_active';
                 let role = '';
                 this.model.relations.forEach((item) => {
                     if(item.status == 1) {
