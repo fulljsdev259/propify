@@ -279,8 +279,10 @@
             </span>
         </el-dialog>
 
-        <el-dialog :close-on-click-modal="true" :title="$t('general.box_titles.files')"
+        <el-dialog :close-on-click-modal="true" 
+                :title="$t('general.box_titles.files')"
                 :visible.sync="visibleMediaDialog"
+                :destroy-on-close="true"
                 v-loading="loading.state" width="30%" class="w-50">
             <div class="content" v-if="visibleMediaDialog">
                 
