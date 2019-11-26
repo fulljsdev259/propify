@@ -592,8 +592,11 @@
                 this.$refs.tableData.toggleRowSelection(row);
             },
             handleRowDblClick(row) {
+                let currRouteName = this.$route.name;
+                let name = '';
+                name = `${currRouteName}Edit`;
                 this.$router.push({
-                    name: `${this.$route.name}Edit`, 
+                    name: name,
                     params: {
                         id: row.id,
                     }

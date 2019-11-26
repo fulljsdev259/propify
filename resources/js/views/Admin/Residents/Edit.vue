@@ -1,448 +1,343 @@
 <template>
-        <div class="residents-edit mb20 residents-edit-new" v-loading.fullscreen.lock="loading.state">
-            <div class="main-content">
-                <heading :title="$t('models.resident.edit_title')" icon="icon-group">
-                    <template slot="description" v-if="model.resident_format">
-                        <div class="subtitle">{{model.resident_format}}</div>
-                    </template>
-                    <edit-actions :saveAction="submit" route="adminResidents"/>
-                </heading>
-                <el-row :gutter="20" class="crud-view">
-                    <el-col>
-                        <el-form :model="model" label-position="top" label-width="192px" ref="form">
-                            <el-row  :gutter="20">
-                                <el-col>
-                                <el-card class="chart-card">
-                                        <el-row :gutter="20">
-                                            <h3 class="chart-card-header">
-                                                <i class="ti-user"/>
-                                            {{ $t('models.resident.personal_details_card') }}
-                                            </h3>
-                                        </el-row>
-                                        <el-row :gutter="20">
-                                            <el-col :md="8" :lg="6" class="resident_avatar">
-                                                <cropper
-                                                        v-if="model.title"
-                                                        :boundary="{
-                                                            width: 250,
-                                                            height: 360
-                                                        }"
-                                                        :viewport="{
-                                                            width: 250,
-                                                            height: 250
-                                                        }"
-                                                        :resize="false"
-                                                        :defaultAvatarSrc="
-                                                            !avatar.length && user.avatar
-                                                                ? '/'+user.avatar_variations[3]
-                                                                : model.avatar==null && model.title == 'mr'
-                                                                    ? '/images/man.png'
-                                                                    : model.avatar==null && model.title == 'mrs'
-                                                                        ? '/images/woman.png'
-                                                                        : model.avatar==null && model.title == 'company'
-                                                                            ? '/images/company.png'
-                                                                            : ''
-                                                        "
-                                                        :showCamera="model.avatar==null"
-                                                        @cropped="cropped"/>
-<!--                                                <img-->
-<!--                                                    src="~img/man.png"-->
-<!--                                                    class="user-image"-->
-<!--                                                    v-if="model.avatar==null && model.title == 'mr'"/>-->
-<!--                                                <img-->
-<!--                                                    src="~img/woman.png"-->
-<!--                                                    class="user-image"-->
-<!--                                                    v-else-if="model.avatar==null && model.title == 'mrs'"/>-->
-<!--                                                <img-->
-<!--                                                    src="~img/company.png"-->
-<!--                                                    class="user-image"-->
-<!--                                                    v-else-if="model.avatar==null && model.title == 'company'"/>-->
-<!--                                                <img :src="`/${user.avatar}?${Date.now()}`"-->
-<!--                                                    class="user-image"-->
-<!--                                                    v-if="avatar.length == 0 && user.avatar">-->
+    <div class="residents-edit mb20 residents-edit-new" v-loading.fullscreen.lock="loading.state">
+        <div class="main-content">
+            <heading :title="$t('models.resident.edit_title')" icon="icon-group" class="bg-transparent">
+                <template slot="description" v-if="model.resident_format">
+                    <div class="subtitle">{{model.resident_format}}</div>
+                </template>
+                <edit-actions :saveAction="submit" :deleteAction="deleteResident" route="adminResidents" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
+            </heading>
+            <el-row :gutter="20" class="crud-view">
+                <el-col :span="12">
+                    <el-form :model="model" label-position="top" label-width="192px" ref="form">
+                        <el-card class="left-pane">
+                            <el-row :gutter="20">
+                                <el-col :span="12" class="resident_avatar">
+                                    <div class="status">
+                                        <el-tag 
+                                            :style="{'color':$constants.status_colorcode[status.index],}"
+                                            effect="plain"
+                                        >
+                                            {{ $t(`models.unit.status.${status.text}`) }}
+                                        </el-tag>
+                                    </div>
+                                    <div class="image-container">
+                                        <cropper
+                                            v-if="model.title"
+                                            :boundary="{
+                                                width: 150,
+                                                height: 160
+                                            }"
+                                            :viewport="{
+                                                width: 150,
+                                                height: 150
+                                            }"
+                                            :resize="false"
+                                            :defaultAvatarSrc="
+                                                !avatar.length && user.avatar
+                                                    ? '/'+user.avatar_variations[3]
+                                                    : model.avatar==null && model.title == 'mr'
+                                                        ? '/images/man.png'
+                                                        : model.avatar==null && model.title == 'mrs'
+                                                            ? '/images/woman.png'
+                                                            : model.avatar==null && model.title == 'company'
+                                                                ? '/images/company.png'
+                                                                : ''
+                                            "
+                                            :showCamera="model.avatar==null"
+                                            @cropped="cropped"/>
+                                    </div>
+                                    <div 
+                                        v-if="!editName" 
+                                        class="first_name"
+                                        @dblclick="editName=editMode"
+                                    >
+                                        {{ model.first_name }}
+                                    </div>
+                                    <el-form-item 
+                                        v-if="editMode && editName"
+                                        :rules="validationRules.first_name"
+                                        prop="first_name"
+                                        class="edit-name-input"
+                                    >
+                                        <el-input autocomplete="off" type="text" v-model="model.first_name" ></el-input>
+                                    </el-form-item>
+                                    <div 
+                                        v-if="!editName" 
+                                        class="last_name"
+                                        @dblclick="editName=editMode"
+                                    >
+                                        {{ model.last_name }}
+                                    </div>
+                                    <el-form-item 
+                                        v-if="editMode && editName"
+                                        :rules="validationRules.last_name"
+                                        prop="last_name"
+                                        class="edit-name-input"
+                                    >
+                                        <el-input autocomplete="off" type="text" v-model="model.last_name" ></el-input>
+                                    </el-form-item>
 
-                                            </el-col>
-                                            <el-col :md="16" :lg="18">
-                                                    <el-col :md="6">
-                                                        <el-form-item :label="$t('general.salutation')" :rules="validationRules.title"
-                                                                    prop="title">
-                                                            <el-select :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.title">
-                                                                <el-option
-                                                                        :key="title.value"
-                                                                        :label="title.name"
-                                                                        :value="title.value"
-                                                                        v-for="title in titles">
-                                                                </el-option>
-                                                            </el-select>
-                                                        </el-form-item>
-                                                    </el-col>
-                                                    <el-col :md="6">
-                                                        <el-form-item :label="$t('models.resident.company')" :rules="validationRules.company"
-                                                                    prop="company"
-                                                                    v-if="model.title === 'company'">
-                                                            <el-input autocomplete="off" type="text" v-model="model.company"></el-input>
-                                                        </el-form-item>
-                                                    </el-col>
-                                                    <el-col :md="6">
-                                                        <el-form-item :label="$t('general.first_name')"
-                                                                    :rules="validationRules.first_name"
-                                                                    prop="first_name">
-                                                            <el-input autocomplete="off" type="text" v-model="model.first_name"></el-input>
-                                                        </el-form-item>
-                                                    </el-col>
-                                                    <el-col :md="6">
-                                                        <el-form-item :label="$t('general.last_name')"
-                                                                    :rules="validationRules.last_name"
-                                                                    prop="last_name">
-                                                            <el-input autocomplete="off" type="text" v-model="model.last_name"></el-input>
-                                                        </el-form-item>
-                                                    </el-col>
-                                                    <el-col :md="6">
-                                                        <el-form-item :label="$t('models.resident.birth_date')"
-                                                                    :rules="validationRules.birth_date"
-                                                                    prop="birth_date">
-                                                            <el-date-picker
-                                                                    :placeholder="$t('models.resident.birth_date')"
-                                                                    format="dd.MM.yyyy"
-                                                                    style="width: 100%;"
-                                                                    type="date"
-                                                                    v-model="model.birth_date"
-                                                                    :picker-options="birthDatePickerOptions"
-                                                                    value-format="yyyy-MM-dd"/>
-                                                        </el-form-item>
-                                                    </el-col>
-                                                    <!-- <el-col :md="6">
-                                                        <el-form-item :label="$t('general.language')" :rules="validationRules.language" 
-                                                                prop="settings.language">
-                                                            <select-language :activeLanguage.sync="model.settings.language" />
-                                                        </el-form-item>
-                                                    </el-col> -->
-                                                    <el-col :md="6">
-                                                        <el-form-item :label="$t('models.resident.nation')"
-                                                                    prop="nation">
-                                                            <el-select 
-                                                                filterable
-                                                                clearable
-                                                                v-model="model.nation"
-                                                            >
-                                                                <el-option :key="country.id"
-                                                                        :label="country.name"
-                                                                        :value="country.id"
-                                                                        v-for="country in countries"></el-option>
-                                                            </el-select>
-                                                        </el-form-item>
-                                                    </el-col>
-                                                    <!-- <el-col :md="6">
-                                                        <el-form-item :label="$t('models.resident.relation.type.label')" 
-                                                                    :rules="validationRules.type"
-                                                                    prop="type">
-                                                            <el-select :placeholder="$t('general.placeholders.select')" 
-                                                                        style="display: block" 
-                                                                        v-model="model.type">
-                                                                <el-option
-                                                                    :key="k"
-                                                                    :label="$t(`models.resident.relation.type.${type}`)"
-                                                                    :value="parseInt(k)"
-                                                                    v-for="(type, k) in constants.relations.type">
-                                                                </el-option>
-                                                            </el-select>
-                                                        </el-form-item>
-                                                    </el-col>
-                                                    <el-col :md="6" v-if="model.type == 1">
-                                                        <el-form-item :label="$t('models.resident.tenant_type.label')" 
-                                                                    :rules="validationRules.tenant_type"
-                                                                    prop="tenant_type">
-                                                            <el-select :placeholder="$t('general.placeholders.select')" 
-                                                                        style="display: block" 
-                                                                        v-model="model.tenant_type">
-                                                                <el-option
-                                                                    :key="k"
-                                                                    :label="$t(`models.resident.tenant_type.${type}`)"
-                                                                    :value="parseInt(k)"
-                                                                    v-for="(type, k) in constants.residents.tenant_type">
-                                                                </el-option>
-                                                            </el-select>
-                                                        </el-form-item>
-                                                    </el-col> -->
-                                            </el-col>
-                                        </el-row>
-                                </el-card>
+                                    <span v-if="status.text === 'active'" class="type">{{ status.type }}</span>
+                                
                                 </el-col>
-                                <el-col :md="12">
-                                <el-card class="chart-card">
-                                        <el-row :gutter="20">
-                                            <h3 class="chart-card-header">
-                                                <i class="ti-user"/>
-                                                {{ $t('models.resident.contact_info_card') }}
-                                            </h3>
-                                            <el-col :md='12'>
-                                                <el-form-item :label="$t('models.resident.mobile_phone')" prop="mobile_phone">
-                                                    <el-input autocomplete="off" type="text"
-                                                            v-model="model.mobile_phone"></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                            <el-col :md='12'>
-                                                <el-form-item :label="$t('models.resident.private_phone')" prop="private_phone">
-                                                    <el-input autocomplete="off" type="text"
-                                                            v-model="model.private_phone"></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                        </el-row>
-                                        <el-row class="last-form-row" :gutter="20">
-                                            <el-col :md='12'>
-                                                <el-form-item :label="$t('models.resident.work_phone')" prop="work_phone">
-                                                    <el-input autocomplete="off"
-                                                            type="text"
-                                                            v-model="model.work_phone"
-                                                            class="dis-autofill"
-                                                            readonly
-                                                            onfocus="this.removeAttribute('readonly');"
-                                                    ></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                            <el-col :md='12'>
-
-                                            </el-col>
-                                        </el-row>
-                                </el-card>
-                                </el-col>
-                                <el-col :md='12'>
-                                    <el-card class="chart-card">
-                                        <el-row :gutter="20">
-                                            <h3 class="chart-card-header">
-                                                <i class="ti-user"/>
-                                                {{ $t('models.resident.account_info_card') }}
-                                            </h3>
-                                            <el-col :md="12">
-                                                <el-form-item :label="$t('general.email')" :rules="validationRules.email" prop="email">
-                                                    <el-input autocomplete="off" type="email" v-model="model.email"></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                            <el-col :md="12">
-                                                <el-form-item :label="$t('general.password')" :rules="validationRules.password"
-                                                            prop="password">
-                                                    <el-input autocomplete="off"
-                                                            type="password"
-                                                            v-model="model.password"
-                                                            class="dis-autofill"
-                                                            readonly
-                                                            onfocus="this.removeAttribute('readonly');"
-                                                    ></el-input>
-                                                </el-form-item>
-                                            </el-col>
-                                            <!-- <el-col :md="12">
-                                                <el-form-item :label="$t('models.resident.status.label')"
-                                                            :rules="validationRules.status"
-                                                            prop="status">
-                                                    <el-select style="display: block" v-model="model.status">
-                                                        <el-option
-                                                                :key="k"
-                                                                :label="$t(`models.resident.status.${status}`)"
-                                                                :value="parseInt(k)"
-                                                                v-for="(status, k) in constants.residents.status">
-                                                        </el-option>
-                                                    </el-select>
-                                                </el-form-item>
-                                            </el-col> -->
-                                        </el-row>
-                                        <el-row class="last-form-row" :gutter="20">
-                                            <!-- <el-col :md="12">
-                                                <el-form-item :label="$t('general.confirm_password')"
-                                                            :rules="validationRules.password_confirmation"
-                                                            prop="password_confirmation">
-                                                    <el-input autocomplete="off" type="password"
-                                                            v-model="model.password_confirmation"></el-input>
-                                                </el-form-item>
-                                            </el-col> -->
-                                        </el-row>
-                                    </el-card>
+                                <el-col :span="12">
+                                    <div v-if="!editMode" class="user-info-item">
+                                        <span>{{ $t('models.resident.mobile_phone') }}</span>
+                                        <span>+{{ model.mobile_phone }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('models.resident.mobile_phone')" prop="mobile_phone">
+                                        <el-input prefix-icon="el-icon-plus" autocomplete="off" type="text"
+                                                v-model="model.mobile_phone"></el-input>
+                                    </el-form-item>
+                                    <div v-if="!editMode" class="user-info-item">
+                                        <span>{{ $t('models.resident.private_phone') }}</span>
+                                        <span>+{{ model.private_phone }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('models.resident.private_phone')" prop="private_phone">
+                                        <el-input prefix-icon="el-icon-plus" autocomplete="off" type="text"
+                                                v-model="model.private_phone"></el-input>
+                                    </el-form-item>
+                                    <div v-if="!editMode" class="user-info-item">
+                                        <span>{{ $t('general.email') }}</span>
+                                        <span>{{ model.email }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('general.email')" :rules="validationRules.email" prop="email">
+                                        <el-input autocomplete="off" type="email" v-model="model.email"></el-input>
+                                    </el-form-item>
+                                    <div v-if="!editMode" class="user-info-item">
+                                        <span>{{ $t('models.resident.birth_date') }}</span>
+                                        <span>{{ birthDate }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('models.resident.birth_date')"
+                                                :rules="validationRules.birth_date"
+                                                prop="birth_date">
+                                        <el-date-picker
+                                                :placeholder="$t('models.resident.birth_date')"
+                                                format="dd.MM.yyyy"
+                                                style="width: 100%;"
+                                                type="date"
+                                                v-model="model.birth_date"
+                                                :picker-options="birthDatePickerOptions"
+                                                value-format="yyyy-MM-dd"/>
+                                    </el-form-item>
+                                    <div v-if="!editMode" class="user-info-item">
+                                        <span>{{ $t('models.resident.nation') }}</span>
+                                        <span>{{ state }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('models.resident.nation')"
+                                                prop="nation">
+                                        <el-select 
+                                            filterable
+                                            clearable
+                                            v-model="model.nation"
+                                        >
+                                            <el-option :key="country.id"
+                                                    :label="country.name"
+                                                    :value="country.id"
+                                                    v-for="country in countries"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item v-if="editMode" :label="$t('general.password')" :rules="validationRules.password"
+                                                prop="password">
+                                        <el-input autocomplete="off"
+                                                type="password"
+                                                v-model="model.password"
+                                                class="dis-autofill"
+                                                readonly
+                                                onfocus="this.removeAttribute('readonly');"
+                                        ></el-input>
+                                    </el-form-item>
+                                    <div class="actions" v-if="!editMode">
+                                        <el-button
+                                            class="action-download"
+                                            icon="el-icon-download"
+                                            @click="downloadCredentials"
+                                            circle
+                                        >
+                                        </el-button>
+                                        <el-button
+                                            class="action-email"
+                                            icon="el-icon-message"
+                                            @click="sendCredentials"
+                                            circle
+                                        >
+                                        </el-button>
+                                        <el-button
+                                            class="action-chat"
+                                            icon="el-icon-chat-round"
+                                            @click="sendCredentials"
+                                            circle
+                                        >
+                                        </el-button>
+                                    </div>
                                 </el-col>
                             </el-row>
-                        </el-form>
-                        <el-row :gutter="20">
-                            <el-col :md="12">
-                                <el-card class="chart-card">
-                                        <el-row :gutter="20">
-                                            <h3 class="chart-card-header">
-                                                <i class="icon-handshake-o ti-user icon "/>
-                                                    &nbsp;{{ $t('general.box_titles.relations') }}
-                                                <el-button style="float:right" 
-                                                        type="primary" 
-                                                        @click="showRelationDialog" 
-                                                        icon="icon-plus" 
-                                                        size="mini" 
-                                                        round>
-                                                        {{ $t('models.resident.relation.add') }}
-                                                </el-button>
-                                            </h3>
-                                            
-                                        </el-row>
-                                        <relation-list-table
-                                                    :items="model.relations"
-                                                    :hide-avatar="true"
-                                                    @edit-relation="editRelation"
-                                                    @delete-relation="deleteRelation">
-                                        </relation-list-table>
+                        </el-card>
+                    </el-form>
 
-                                </el-card>
-                            </el-col>
-                            <el-col :md="12">
-                                <el-card class="chart-card">
-                                    <el-row :gutter="20">
-                                        <h3 class="chart-card-header">
-                                                &nbsp;{{ $t('general.box_titles.files') }}
-                                            <el-button style="float:right" 
-                                                    type="primary" 
-                                                    @click="showMediaDialog" 
-                                                    icon="icon-plus" 
-                                                    size="mini" 
-                                                    round>
-                                                    {{ $t('models.resident.relation.add_files') }}
-                                            </el-button>
-                                        </h3>
-                                        
-                                    </el-row>
-                                    <relation-list
-                                        :actions="mediaActions"
-                                        :columns="mediaColumns"
-                                        :show-header="false"
-                                        :filterValue="model.id"
-                                        fetchAction="getResidentMedia"
-                                        filter="resident_id"
-                                        v-if="model.id"
-                                        ref="mediaList"
-                                        @delete-media="deleteMedia"
-                                    />
-                                </el-card>
-                            </el-col>
-                        </el-row>
-                        <el-row :gutter="20">
-                            <el-col :md="12">
-                                <el-card>
-                                    <div slot="header" class="clearfix">
-                                        <span>{{$t('general.audits')}}</span>
-                                    </div>
-                                    <audit v-if="model.id" :id="model.id" type="resident" ref="auditList" showFilter/>
-                                </el-card>
-                            </el-col>
-                        </el-row>
+                </el-col>
+                <el-col :span="12">
+                    <el-tabs type="border-card" v-model="activeTab1">
+                        <el-tab-pane name="relation">
+                            <span slot="label">
+                                Beziehungen
+                                <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
+                            </span>
+                            <relation-list-table
+                                    :items="model.relations"
+                                    :hide-avatar="true"
+                                    @edit-relation="editRelation"
+                                    @delete-relation="deleteRelation">
+                            </relation-list-table>
+                            <el-button style="float:right" 
+                                    type="primary" 
+                                    @click="showRelationDialog" 
+                                    icon="icon-plus" 
+                                    size="mini" >
+                                    {{ $t('models.resident.relation.add') }}
+                            </el-button>
+                        </el-tab-pane>
+                        <el-tab-pane name="files">
+                            <span slot="label">
+                                {{ $t('general.box_titles.files') }}
+                                <!-- <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge> -->
+                            </span>
+                            <relation-list
+                                :actions="mediaActions"
+                                :columns="mediaColumns"
+                                :show-header="false"
+                                :filterValue="model.id"
+                                fetchAction="getResidentMedia"
+                                filter="resident_id"
+                                v-if="model.id"
+                                ref="mediaList"
+                                @delete-media="deleteMedia"
+                            />
+                            <el-button style="float:right" 
+                                    type="primary" 
+                                    @click="showMediaDialog" 
+                                    icon="icon-plus" 
+                                    size="mini" >
+                                    {{ $t('models.resident.relation.add_files') }}
+                            </el-button>
+                        </el-tab-pane>
 
-                    </el-col>
-                </el-row>
+                    </el-tabs>
+                    <el-tabs type="border-card" v-model="activeTab2">
+                        <el-tab-pane name="tab_3_1">
+                            <span slot="label">
+                                Anliegen
+                            </span>
+                        </el-tab-pane>
+                        <el-tab-pane name="tab_3_2">
+                            <span slot="label">
+                                Pinnwand-Beitrage
+                            </span>
+                        </el-tab-pane>
+                        <el-tab-pane name="audit">
+                            <span slot="label">
+                                {{$t('general.audits')}}
+                            </span>
+                            <audit v-if="model.id" :id="model.id" type="resident" ref="auditList" showFilter/>
+                        </el-tab-pane>
+                    </el-tabs>
+                </el-col>
+            </el-row>
+        </div>
+        <el-dialog :close-on-click-modal="true" :title="editingRelation ? $t('models.resident.relation.edit') : $t('models.resident.relation.new')"
+                :visible.sync="visibleRelationDialog"
+                v-loading="loading.state" width="30%" class="w-50">
+            <div class="content" v-if="visibleRelationDialog">
+                <relation-form v-if="editingRelation" 
+                            :hide-building-and-units="false" 
+                            mode="edit" 
+                            :data="editingRelation" 
+                            :resident_type="model.type" 
+                            :resident_id="model.id" 
+                            :visible.sync="visibleRelationDialog" 
+                            :edit_index="editingRelationIndex" 
+                            @update-relation="updateRelation"
+                            @delete-relation="deleteRelation"
+                            :used_units="used_units"/>
+                <relation-form v-else 
+                            mode="add" 
+                            :resident_type="model.type" 
+                            :resident_id="model.id" 
+                            :visible.sync="visibleRelationDialog" 
+                            @add-relation="addRelation" 
+                            @delete-relation="deleteRelation"
+                            :used_units="used_units"/>
             </div>
-            <!-- <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
-                <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} </ui-divider>
-                
-                <div class="content" v-if="visibleDrawer">
-                    <relation-form v-if="editingRelation" 
-                                :hide-building-and-units="false" 
-                                mode="edit" 
-                                :data="editingRelation" 
-                                :resident_type="model.type" 
-                                :resident_id="model.id" 
-                                :visible.sync="visibleDrawer" 
-                                :edit_index="editingRelationIndex" 
-                                @update-relation="updateRelation"
-                                @delete-relation="deleteRelation"
-                                :used_units="used_units"/>
-                    <relation-form v-else 
-                                mode="add" 
-                                :resident_type="model.type" 
-                                :resident_id="model.id" 
-                                :visible.sync="visibleDrawer" 
-                                @add-relation="addRelation" 
-                                @delete-relation="deleteRelation"
-                                :used_units="used_units"/>
-                </div>
-            </ui-drawer> -->
-            <el-dialog :close-on-click-modal="true" :title="editingRelation ? $t('models.resident.relation.edit') : $t('models.resident.relation.new')"
-                    :visible.sync="visibleRelationDialog"
-                    v-loading="loading.state" width="30%">
-                <div class="content" v-if="visibleRelationDialog">
-                    <relation-form v-if="editingRelation" 
-                                :hide-building-and-units="false" 
-                                mode="edit" 
-                                :data="editingRelation" 
-                                :resident_type="model.type" 
-                                :resident_id="model.id" 
-                                :visible.sync="visibleRelationDialog" 
-                                :edit_index="editingRelationIndex" 
-                                @update-relation="updateRelation"
-                                @delete-relation="deleteRelation"
-                                :used_units="used_units"/>
-                    <relation-form v-else 
-                                mode="add" 
-                                :resident_type="model.type" 
-                                :resident_id="model.id" 
-                                :visible.sync="visibleRelationDialog" 
-                                @add-relation="addRelation" 
-                                @delete-relation="deleteRelation"
-                                :used_units="used_units"/>
-                </div>
-                <span class="dialog-footer" slot="footer">
-                    <!-- <el-button @click="closeModal" size="mini">{{$t('models.building.cancel')}}</el-button>
-                    <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_managers')}}</el-button> -->
-                </span>
-            </el-dialog>
+            <span class="dialog-footer" slot="footer">
+                <!-- <el-button @click="closeModal" size="mini">{{$t('models.building.cancel')}}</el-button>
+                <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_managers')}}</el-button> -->
+            </span>
+        </el-dialog>
 
-            <el-dialog :close-on-click-modal="true" :title="$t('general.box_titles.files')"
-                    :visible.sync="visibleMediaDialog"
-                    v-loading="loading.state" width="30%">
-                <div class="content" v-if="visibleMediaDialog">
-                    <el-table
-                        :data="model.media"
-                        style="width: 100%"
-                        v-if="model.media.length"
-                        class="relation-file-table"
-                        >
-                        <el-table-column
-                            :label="$t('models.resident.relation.filename')"
-                            prop="name"
-                        >
-                            <template slot-scope="scope">
-                                <span ><strong>{{scope.row.name}}</strong></span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            align="right"
-                        >
-                            <template slot-scope="scope">
-                                <el-tooltip
-                                    :content="$t('general.actions.delete')"
-                                    class="item" effect="light" 
-                                    placement="top-end">
-                                        <el-button @click="deletePDFfromRelation(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
-                                </el-tooltip>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-
-                    <!-- <el-alert
-                        :title="$t('models.resident.relation.pdf_only_desc')"
-                        type="info"
-                        show-icon
-                        :closable="false"
+        <el-dialog :close-on-click-modal="true" :title="$t('general.box_titles.files')"
+                :visible.sync="visibleMediaDialog"
+                v-loading="loading.state" width="30%" class="w-50">
+            <div class="content" v-if="visibleMediaDialog">
+                <el-table
+                    :data="model.media"
+                    style="width: 100%"
+                    v-if="model.media.length"
+                    class="relation-file-table"
                     >
-                    </el-alert> -->
+                    <el-table-column
+                        :label="$t('models.resident.relation.filename')"
+                        prop="name"
+                    >
+                        <template slot-scope="scope">
+                            <span ><strong>{{scope.row.name}}</strong></span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        align="right"
+                    >
+                        <template slot-scope="scope">
+                            <el-tooltip
+                                :content="$t('general.actions.delete')"
+                                class="item" effect="light" 
+                                placement="top-end">
+                                    <el-button @click="deletePDFfromRelation(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
+                </el-table>
 
-                    <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF" drag multiple/>
-                    <ui-divider style="margin-top: 16px;"></ui-divider>
-                    <div class="relation-form-actions">
-                        <div class="button-group">
-                            <el-button type="default" @click="closeMediaDialog" icon="icon-cancel" class="btn-close" >{{$t('general.actions.close')}}</el-button>
-                            <el-button type="primary" @click="uploadMedia" icon="icon-floppy" class="btn-save">{{$t('general.actions.save')}}</el-button>
-                            
-                        </div>
+                <!-- <el-alert
+                    :title="$t('models.resident.relation.pdf_only_desc')"
+                    type="info"
+                    show-icon
+                    :closable="false"
+                >
+                </el-alert> -->
+
+                <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF" drag multiple/>
+                <ui-divider style="margin-top: 16px;"></ui-divider>
+                <div class="relation-form-actions">
+                    <div class="button-group">
+                        <el-button type="default" @click="closeMediaDialog" icon="icon-cancel" class="btn-close" >{{$t('general.actions.close')}}</el-button>
+                        <el-button type="primary" @click="uploadMedia" icon="icon-floppy" class="btn-save">{{$t('general.actions.save')}}</el-button>
+                        
                     </div>
                 </div>
-                <span class="dialog-footer" slot="footer">
-                    <!-- <el-button @click="closeModal" size="mini">{{$t('models.building.cancel')}}</el-button>
-                    <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_managers')}}</el-button> -->
-                </span>
-            </el-dialog>
-        </div>
+            </div>
+            <span class="dialog-footer" slot="footer">
+                <!-- <el-button @click="closeModal" size="mini">{{$t('models.building.cancel')}}</el-button>
+                <el-button @click="assignManagers" size="mini" type="primary">{{$t('models.building.assign_managers')}}</el-button> -->
+            </span>
+        </el-dialog>
         
-    
+         <edit-close-dialog 
+            :centerDialogVisible="visibleDialog"
+            @clickYes="submit(), visibleDialog=false, $refs.editActions.goToListing()"
+            @clickNo="visibleDialog=false, $refs.editActions.goToListing()"
+            @clickCancel="visibleDialog=false"
+        ></edit-close-dialog>
+    </div>
 </template>
 
 <script>
@@ -463,6 +358,10 @@
     import RelationList from 'components/RelationListing';
     import UploadRelation from 'components/UploadRelation';
     import { EventBus } from '../../../event-bus.js';
+    import EditCloseDialog from 'components/EditCloseDialog';
+    import {
+        format, parse
+    } from 'date-fns';
 
     const mixin = AdminResidentsMixin({
         mode: 'edit'
@@ -483,11 +382,17 @@
             RelationForm,
             RelationListTable,
             RelationList,
-            UploadRelation
+            UploadRelation,
+            EditCloseDialog
         },
         data() {
             return {
                 mediaCount: 0,
+                editMode: false,
+                editName: false,
+                activeTab1: 'relation',
+                activeTab2: 'audit',
+                visibleDialog: false,
                 mediaColumns: [{
                     type: 'residentMediaName',
                     prop: 'name',
@@ -506,7 +411,22 @@
                 }]
             }
         },
-        methods: {
+        methods: { 
+            ...mapActions([
+                'deleteResident',
+            ]),
+            handleChangeEditMode() {
+                if(!this.editMode) {
+                    this.editMode = !this.editMode;
+                    this.old_model = _.clone(this.model, true);
+                } else {
+                    if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
+                        this.visibleDialog = true;
+                    } else {
+                        this.editMode = !this.editMode;
+                    }
+                }
+            },
             addPDFtoRelation(file) {
                 //let toUploadRelationFile = {...file, url: URL.createObjectURL(file.raw)}
                 let toUploadRelationFile = {media : file.src, name: file.raw.name}
@@ -535,13 +455,11 @@
             },
             ...mapActions(['deleteMediaFile', 'downloadResidentCredentials', 'sendResidentCredentials', 'uploadMediaFile']),
             async deleteMedia(index) {
-                console.log(index)
                 try {
                     let res = await this.deleteMediaFile({
                         id: this.model.id,
                         media_id: this.model.media[index].id
                     })
-                    console.log(res)
                     if(res.success) {
                         displaySuccess(res);
                         this.model.media.splice(index, 1);
@@ -651,6 +569,33 @@
             requestStatusConstants() {
                 return this.constants.requests.status
             },
+            status() {
+                let result = 'inactive';
+                let role = '';
+                this.model.relations.forEach((item) => {
+                    if(item.status == 1) {
+                        result = 'active';
+                        role = this.$t(`models.resident.relation.type.${this.constants.relations.type[item.type]}`);
+                    }
+                });
+                return {
+                    text: result,
+                    index: result === 'active'?1:2,
+                    type: role,
+                }
+            },
+            birthDate() {
+                return format(new Date(this.model.birth_date), 'DD.MM.YYYY')
+            },
+            state() {
+                let result = 'None'
+                this.countries.forEach((country) => {
+                    if(country.id == this.model.nation) {
+                        result = country.name;
+                    }
+                });
+                return result;
+            }
             
         }
     }
@@ -699,8 +644,111 @@
                 font-size: 24px;
                 font-weight: 500;
             }
+        }
+    
+        .el-card {
+            margin: 0 10px;
+            box-shadow: none !important;
+            border: 1px solid var(--border-color-base);
+            border-radius: 6px;
+            .el-card__body {
+                padding: 0 !important;
+            }
+        }
+
+        .el-input__inner {
+            font-weight: bold;
+        }
+        .el-input__prefix {
+            left: 11px;
+            font-weight: 900;
+            font-size: 9px;
+            color: var(--color-black);
 
         }
+
+        .left-pane{
+            background-color: #f6f5f7;
+            .el-col:first-child {
+                padding: 40px 10px 20px 40px !important;
+                .first_name, .last_name {
+                    margin-top: 20px;
+                    padding-left: 10px;
+                    text-transform: capitalize;
+                    font-size: 32px;
+                    font-weight: 900;
+                    color: var(--color-text-primary);
+                    line-height: 1;
+                }
+                .edit-name-input {
+                    margin: 0px;
+                    .el-input__inner {
+                        font-size: 24px;
+                    }
+                    &:nth-type-of(1) {
+                      margin-bottom: 40px;  
+                    }
+                }
+                .last_name {
+                    margin-top: 10px;
+                    margin-bottom: 20px;
+                }
+            }
+            .el-col:last-child {
+                padding: 30px 20px 20px !important;
+                background-color: var(--color-white);
+            }
+            .user-info-item {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 25px;
+                padding: 0 20px;
+                span {
+                    font-size: 15px;
+                    &:first-child {
+                        color: var(--color-text-secondary);
+                    }
+                }
+            }
+            .status {
+                margin-bottom: 40px;
+                margin-left: 15px;
+                .el-tag {
+                    font-weight: 900;
+                    border: transparent;
+                }
+            }
+            .type {
+                margin-left: 15px;
+                margin-top: 10px;
+                font-size: 16px;
+                color: var(--color-text-secondary);
+            }
+            .actions {
+                text-align: center;
+                margin-top: 100px;
+                margin-bottom: 40px;
+                .el-button {
+                    font-size: 20px;
+                    &:not(:last-of-type) {
+                        margin-right: 20px;
+                    }
+                }
+                .action-download {
+                    color: #8E8F26;
+                    background-color: rgba(#8e8f26, 0.2);
+                }
+                .action-email {
+                    color: #317085;
+                    background-color: rgba(#317085, 0.2);
+                }
+                .action-chat {
+                    color: #640032;
+                    background-color: rgba(#640032, 0.2);
+                }
+            }
+        } 
+
     }
 </style>
 
@@ -722,7 +770,6 @@
 
         .chart-card{
             margin-bottom: 1em !important;
-            padding: 20px;
             background-color: #fff;
             border: 1px solid #ededed;
             border-radius: 4px;
@@ -757,8 +804,52 @@
             margin-right: 0px !important;
         }
         .resident_avatar {
-            img {
-                border-radius: 50%;
+            .image-container {
+                position: relative;
+                display: inline-block;
+                
+                .edit-icon {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    z-index: 999;
+                }
+                /deep/ .avatar-box {
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 50%;
+
+                    .el-avatar {
+                        width: 120px !important;
+                        height: 120px !important;
+                        line-height: 120px !important;
+                        border-radius: 50%;
+                        img {
+                            border-radius: 50%;
+                        }
+                    }
+                    .avatar-box__btn {
+                        right: 0;
+                        top: 0;
+                        left: unset;
+                        width: 20px;
+                        height: 20px;
+                        border-radius: 50%;
+                        border: 4px solid var(--color-white);
+                        background-color: var(--color-text-primary);
+
+                        .el-icon-camera-solid {
+                            position: absolute;
+                            right: 2px;
+                            top: 2px;
+                            transform: rotate(90deg);
+                            font-size: 16px;
+                            &:before {
+                                content: "\270E" !important;
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -800,10 +891,51 @@
             }
         }
         
+        .el-tab-pane {
+            height: 300px;
+            & > div {
+                &::-webkit-scrollbar{
+                    width: 8px;
+                }
+                &::-webkit-scrollbar-thumb{
+                    background-color: var(--color-text-placeholder);
+                    border: 1px solid transparent;
+                    border-radius: 11px;
+                    background-clip: content-box;
+                }
+                &::-webkit-scrollbar * {
+                    background: transparent;
+                }
+            }
+        }
+        #pane-relation, #pane-files {
+            & > div {
+                height: 150px;
+                overflow: auto;
+            }
+            & > .el-button {
+                margin-top: 100px;
+                padding: 12px 15px;
+                margin-right: 5px;
+                margin-bottom: 5px;
+                background-color: #878810;
+                border: transparent;
+                &:hover {
+                    color: var(--color-white);
+                    box-shadow: 0px 0px 5px#878810;
+                }
+            }
+        }
+
+        
+
+        :global(.el-table td) {
+            border: none;
+        }
     }
 
-    /deep/ .el-dialog {
-        width: 50% !important;
+    /deep/ .el-dialog.w-50 {
+            width: 50% !important;  
 
         .el-dialog__header {
             padding-left: 30px;
