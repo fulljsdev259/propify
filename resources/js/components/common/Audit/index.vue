@@ -326,7 +326,7 @@
             .el-timeline-item {
                 :global(.el-timeline-item__tail) {
                     top: 13px;
-                    left: 15px;
+                    left: 16.5px;
                 }
                 :global(.el-timeline-item__node) {
                     top: 13px;

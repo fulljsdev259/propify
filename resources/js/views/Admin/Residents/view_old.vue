@@ -4,7 +4,6 @@
             <template slot="description" v-if="model.resident_format">
                 <div class="subtitle">{{model.resident_format}}</div>
             </template>
-            
             <el-form label-position="top" label-width="192px" ref="form">
                 <el-form-item>
                     <el-button
@@ -26,19 +25,18 @@
                     <el-button
                             @click="edit"
                             icon="ti-pencil"
+                            round
                             size="mini"
                             type="primary"
-                            class='transparent-button'
                     ><span>&nbsp;</span>{{$t('general.actions.update')}}
                     </el-button>
                     <el-button
                             @click="goToListing"
                             size="mini"
                             type="warning"
-                            class=""
+                            round
                     > {{this.$t('general.actions.close')}}
                     </el-button>
-                    
                 </el-form-item>
             </el-form>
         </heading>
