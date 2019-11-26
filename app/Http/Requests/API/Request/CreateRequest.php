@@ -52,7 +52,6 @@ class CreateRequest extends BaseRequest
             'description' => 'required|string',
 //        'priority' => 'required|integer',
 //        'internal_priority' => 'integer',
-            'qualification' => 'nullable|integer',
             'due_date' => 'required|date',
             'category_id' => 'required|integer',
             'sub_category_id' => 'nullable|integer',
@@ -60,15 +59,6 @@ class CreateRequest extends BaseRequest
         ];
 
 
-        $categories = [];
-        foreach (Request::CategoryAttributes as $key => $attributes) {
-            if (in_array(Request::QualificationAttr, $attributes)) {
-                $categories[] = $key;
-            }
-        }
-        if ($categories) {
-            $rules['qualification'] = 'required_if:category,'  .implode(',', $categories) .  '|integer';// todo improve permit only specific integers
-        }
         $rules['reminder_user_ids'] = [
             'nullable',
             Rule::requiredIf(function () {

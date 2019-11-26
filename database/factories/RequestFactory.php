@@ -8,7 +8,6 @@ $factory->define(App\Models\Request::class, function (Faker $faker) {
     $resident = (new App\Models\Resident)->inRandomOrder()->with('relations')->first();
     $status = $faker->randomElement(array_keys(Request::Status));
     $priority = $faker->randomElement(array_keys(Request::Priority));
-    $qualification = $faker->randomElement(array_keys(Request::Qualification));
     $solvedDate = ($status == Request::StatusDone) ? now() : null;
     $randCategory = array_rand(Request::Category);
     
@@ -22,7 +21,6 @@ $factory->define(App\Models\Request::class, function (Faker $faker) {
         'description' => $faker->text,
         'status' => $status,
         'priority' => $priority,
-        'qualification' => $qualification,
         'due_date' => $faker->dateTimeBetween('-30 days', '40 days'),
         'solved_date' => $solvedDate,
         'visibility' => $faker->numberBetween(1, 3),

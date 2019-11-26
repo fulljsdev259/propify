@@ -43,14 +43,8 @@ trait Auditable
             return;
         }
 
-        $model = $parent->{$relation}()->getRelated();
-        $relationAuditColumns = $parent->syncAuditable[$relation] ?? [];
-        $columns = array_merge([$model->getKeyName()], $relationAuditColumns);
-        $models = $model->whereIn($model->getKeyName(), $ids)->get($columns);
-        foreach ($models as $model) {
-            $parent->sync_model = $model;
-            Auditor::execute($parent->setAuditEvent($auditType));
-        }
+        $parent->sync_ids = $ids;
+        Auditor::execute($parent->setAuditEvent($auditType));
     }
 
     /**
@@ -59,15 +53,8 @@ trait Auditable
      */
     protected function getRelationAudits($model)
     {
-        $syncModel = $model->sync_model;
-        unset($model->sync_model);
-        $attributes = $syncModel->getAttributes();
-        $prefix = Str::singular($syncModel->getTable()) . '_';
-        $data = [];
-
-        foreach ($attributes as $attribute => $value) {
-            $data[$prefix . $attribute] = $value;
-        }
+        $data['ids'] = $model->sync_ids;
+        unset($model->sync_ids);
         return $data;
     }
 
