@@ -36,11 +36,13 @@ class FilterByCityCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
 
-        $city = $this->request->get('city', null);
-        if ($city) {
-
-            return $model->whereHas('address', function ($q) use ($city) {
-                $q->where('city', $city);
+        $cities = $this->request->cities ?? $this->request->city;
+        if ($cities) {
+            if (! is_array($cities)) {
+                $cities = [$cities];
+            }
+            return $model->whereHas('address', function ($q) use ($cities) {
+                $q->whereIn('city', $cities);
             });
         }
 

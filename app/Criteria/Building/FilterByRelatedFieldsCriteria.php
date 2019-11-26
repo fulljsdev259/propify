@@ -44,9 +44,12 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
             });
         }
 
-        $quarterId = $this->request->get('quarter_id', null);
-        if ($quarterId) {
-            $model->where('quarter_id', $quarterId);
+        $quarterIds = $this->request->quarter_ids && $this->request->quarter_id; // @TODO delete quarter_id
+        if ($quarterIds) {
+            if (! is_array($quarterIds)) {
+                $quarterIds = [$quarterIds];
+            }
+            $model->whereIn('quarter_id', $quarterIds);
         }
 
         $excludeQuarterIds = $this->request->exclude_quarter_ids ?? [];
