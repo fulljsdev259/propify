@@ -45,14 +45,21 @@ class FilterByCityCriteria implements CriteriaInterface
                     $q->whereHas('address', function ($q) use ($cities) {
                         $q->whereIn('city', $cities);
                     });
-                })->orWhereHas('quarter', function ($q)  use ($cities) {
-                    $q->whereHas('address', function ($q) use ($cities) {
-                        $q->whereIn('city', $cities);
-                    });
+                    $this->filterByQuarter($q, $cities);
                 });
+                $this->filterByQuarter($q, $cities);
             });
         }
 
         return $model;
+    }
+
+    protected function filterByQuarter($query, $cities)
+    {
+        $query->orWhereHas('quarter', function ($q)  use ($cities) {
+            $q->whereHas('address', function ($q) use ($cities) {
+                $q->whereIn('city', $cities);
+            });
+        });
     }
 }
