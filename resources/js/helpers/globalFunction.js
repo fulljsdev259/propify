@@ -71,6 +71,27 @@ let globalFunction = {
          
             return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
           
+        },
+        getTranslatedFloorOfUnit(unit) {
+            let floor_label = '';
+            if(unit.attic == 'attic')
+            {
+                floor_label = this.$t('models.unit.floor_title.top_floor')
+            }
+            else if(unit.floor > 0)
+            {
+                floor_label = unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+            }
+            else if(unit.floor == 0)
+            {
+                floor_label = this.$t('models.unit.floor_title.ground_floor')
+            }
+            else if(unit.floor < 0)
+            {
+                floor_label = unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+            }
+
+            return floor_label;
         }
     } 
  }

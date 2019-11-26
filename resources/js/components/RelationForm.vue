@@ -487,6 +487,7 @@
     import RelationCount from 'components/RelationCount';
     import {mapActions, mapGetters} from 'vuex';
     import MultiSelect from 'components/MultiSelect';
+    import globalFunction from "helpers/globalFunction";
 
     export default {
         name: "RelationForm",
@@ -495,6 +496,7 @@
             RelationCount,
             MultiSelect
         },
+        mixins: [globalFunction],
         props: {
             mode: {
                 type: String
@@ -622,10 +624,6 @@
                         message: this.$t('validation.required',{attribute: this.$t('general.maintenance')})
                     }],
                 },
-                upper_ground_floor_label: this.$t('models.unit.floor_title.upper_ground_floor'),
-                ground_floor_label: this.$t('models.unit.floor_title.ground_floor'),
-                under_ground_floor_label: this.$t('models.unit.floor_title.under_ground_floor'),
-                top_floor_label: this.$t('models.unit.floor_title.top_floor'),
                 original_unit_id : 0,
                 isFuture: false
             }
@@ -1028,25 +1026,6 @@
                 if( !this.hideBuildingAndUnits ) {
                     if( this.model.unit )
                     {
-                        // let key = this.model.unit.floor
-                        // let group_label = ""
-                        // if(key > 0)
-                        // {
-                        //     group_label = key + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
-                        // }
-                        // else if(key == 0)
-                        // {
-                        //     group_label = this.$t('models.unit.floor_title.ground_floor')
-                        // }
-                        // else if(key < 0)
-                        // {
-                        //     group_label = key + ". " + this.$t('models.unit.floor_title.under_ground_floor')
-                        // }
-                        // else if(key == 'attic')
-                        // {
-                        //     group_label = this.$t('models.unit.floor_title.top_floor');
-                        // }
-                        //let group_label = this.model.address.house_num
                         let group_label = "Quarter"
                         this.units.push({ label: group_label, options : [this.model.unit]})
                     }
