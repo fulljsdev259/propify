@@ -385,6 +385,7 @@ return [
                         'created' => ':userName has created this :auditable_type.',
                         'updated' => 'The :fieldname changed from :old to :new.',
                         'deleted' => ':userName has deleted this :auditable_type.',
+                        'mass_assigned' => 'have assigned :users in assignment box',
                         'provider_assigned' => ':assignee has been assigned as provider.',
                         'provider_unassigned' => 'Provider :assignee has been unassigned.',
                         'manager_assigned' => ':assignee has been assigned as manager.',

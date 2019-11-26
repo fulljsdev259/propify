@@ -386,6 +386,7 @@ return [
                         'created' => 'hat diese/n :auditable_type erstellt.',
                         'updated' => 'das Feld :fieldname von :old zu :new geändert.',
                         'deleted' => ':userName hat diese :auditable_type Gelöscht.',
+                        'mass_assigned' => 'haben :users im Zuordnungsfenster zugeordnet',
                         'provider_assigned' => 'hat den Dienstleister :assignee zugewiesen.',
                         'provider_unassigned' => 'hat den Dienstleister :assignee entfernt.',
                         'manager_assigned' => 'hat den :assignee zugewiesen.',
