@@ -230,7 +230,7 @@
                     <div v-else-if="column.withInternalQuarterIds">
                         <div class="internal-quarter-wrapper">
                             <span class="internal-quarter" v-for="item in scope.row[column.prop].slice(0, 3)">{{item}}</span>
-                            <span v-if="scope.row[column.prop].length > 2" class="internal-quarter internal-quarter_count">+{{scope.row[column.prop].length - 3}}</span>
+                            <span v-if="scope.row[column.prop].length > 3" class="internal-quarter internal-quarter_count">+{{scope.row[column.prop].length - 3}}</span>
                         </div>
                     </div>
                     <div v-else-if="column.withStatusSign">
