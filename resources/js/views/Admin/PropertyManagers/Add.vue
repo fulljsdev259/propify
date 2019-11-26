@@ -70,10 +70,10 @@
                                                     prop="type">
                                         <el-select style="display: block" v-model="model.type" :placeholder="$t('general.placeholders.select')">
                                             <el-option
-                                                    :key="item.name"
-                                                    :label="$t(`general.roles.${item.name}`)"
-                                                    :value="item.id"
-                                                    v-for="item in roles">
+                                                    :key="k"
+                                                    :label="$t(`general.roles.${status}`)"
+                                                    :value="parseInt(k)"
+                                                    v-for="(status, k) in $constants.propertyManager.type">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
@@ -81,12 +81,17 @@
                             </el-row>
 
                             <el-row :gutter="20">
-                                <el-col :md="12">
+                                <el-col :md="8">
                                     <el-form-item :label="$t('general.phone')" prop="phone">
                                         <el-input type="text" v-model="model.phone"/>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12">
+                                <el-col :md="8">
+                                    <el-form-item :label="$t('general.mobile')" prop="mobile_phone">
+                                        <el-input type="text" v-model="model.mobile_phone"/>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="8">
                                     <el-form-item :rules="validationRules.email" label="Email" prop="email">
                                         <el-input type="email" v-model="model.email"/>
                                     </el-form-item>

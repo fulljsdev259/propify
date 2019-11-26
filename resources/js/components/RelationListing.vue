@@ -171,7 +171,7 @@
 
                     <div v-else-if="column.type === 'assignProviderManagerFunctions'">
                         {{scope.row.type == "provider" ? $t(`models.service.category.${$constants.serviceProviders.category[scope.row.function]}`)  : ''}}
-                        {{scope.row.type == "manager" ? $t(`general.assignment_types.${scope.row.role}`) : ''}}
+                        {{scope.row.type == "manager" ? $t(`general.roles.${scope.row.role}`) : ''}}
                     </div>
 
                     <div v-else-if="column.type === 'unitResidentAvatar'">
@@ -268,7 +268,17 @@
                             :style="button.style"
                             :type="button.type"
                             @click="button.onClick(scope.row)"
-                            v-if="(button.view == 'building') || (scope.row.type != 'user' && scope.row.type != 'manager') || button.type == 'danger'"
+                            v-if="button.view == 'request' && scope.row.type == 'provider' && scope.row.sent_email == false"
+                            size="mini"
+                            round
+                        >
+                        </el-button>
+                        <el-button
+                            :icon="button.icon"
+                            :style="button.style"
+                            :type="button.type"
+                            @click="button.onClick(scope.row)"
+                            v-else-if="button.view != 'request' && ((button.view == 'building') || (scope.row.type != 'user' && scope.row.type != 'manager') || button.type == 'danger')"
                             size="mini"
                             round
                         >

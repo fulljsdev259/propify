@@ -75,6 +75,10 @@ class RequestAssignee extends Assignee
         'created_at',
     ];
 
+    protected $casts = [
+        'sent_email' => 'boolean'
+    ];
+
     /**
      * {@inheritdoc}
      */

@@ -50,6 +50,7 @@ export default (config = {}) => {
                     relations: [],
                     status: 1
                 },
+                old_model: {},
                 original_type: null,
                 visibleDrawer: false,
                 visibleRelationDialog: false,
@@ -132,7 +133,6 @@ export default (config = {}) => {
                 }
                 else {
                     const resp = await this.$store.dispatch('relations/get', {resident_id : this.model.id});
-                    console.log('get relations', resp.data)
                     this.model.relations = resp.data
                     this.$refs.mediaList.fetch();
                 }
@@ -140,7 +140,6 @@ export default (config = {}) => {
             },
             editRelation(index) {
                 if(this.model.relations[index].garant == 1) {
-                    console.log('garant')
                     return this.$router.push({
                         name: 'adminResidentsEdit',
                         params: {
@@ -189,7 +188,6 @@ export default (config = {}) => {
             uploadMedia() {
                 this.model.media.map(async item => {
                     if(!item.url) {
-                        console.log(item)
                         item.id = this.model.id
                         let resp = await this.uploadMediaFile(item)
 
@@ -341,6 +339,7 @@ export default (config = {}) => {
                                 }
 
                                 params.password_confirmation = params.password
+                                this.old_model = this.model;
                                 try {
                                     const resp = await this.updateResident(params);
 

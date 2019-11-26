@@ -33,13 +33,8 @@ export default (config = {}) => {
                     password_confirmation: '',
                     name: '',
                     phone: '',
+                    mobile_phone: ''
                 },
-                roles: [{
-                        id:1, name:'manager'
-                    }, {
-                        id:2, name:'administrator'
-                    }
-                ],
                 addedAssigmentList: [],
                 statistics: {
                     raw: [{

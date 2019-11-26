@@ -266,7 +266,7 @@
             },
             async getTypes() {
                 this.types = [];
-                for(let item in this.$constants.quarters.type) {
+                for(let item in this.$constants.building.type) {
                     this.types.push({
                         id: item,
                         name: this.$t(`models.quarter.types.${this.$constants.quarters.type[item]}`),

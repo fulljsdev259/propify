@@ -92,6 +92,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $name
  * @property string $email
  * @property string $phone
+ * @property string $mobile_phone
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -192,6 +193,7 @@ class ServiceProvider extends AuditableModel
         'email',
         'phone',
         'type',
+        'mobile_phone',
     ];
     protected $dates = ['deleted_at'];
     /**
@@ -211,6 +213,7 @@ class ServiceProvider extends AuditableModel
         'email' => 'string',
         'phone' => 'string',
         'service_provider_format' => 'string',
+        'mobile_phone'=> 'string'
     ];
 
     /**

@@ -91,6 +91,7 @@
             return {
                 header: [{
                     label: 'general.filters.status',
+                    width: 100,
                     withStatusSign: true,
                     prop: 'status',
                 }, {
