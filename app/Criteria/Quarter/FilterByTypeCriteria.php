@@ -39,10 +39,14 @@ class FilterByTypeCriteria implements CriteriaInterface
         $types = $this->request->get('types', null);
         if ($types) {
             $types = Arr::wrap($types);
-            foreach ($types as $type) {
-                // This is correct until Quarter::Type is smaller then 10
-                $model->where('types', 'like', '%' . $type . '%');
-            }
+            $model->where(function ($q) use ($types) {
+                $firstType = array_shift($types);
+                $q->where('types', 'like', '%' . $firstType . '%');
+                foreach ($types as $type) {
+                    // This is correct until Quarter::Type is smaller then 10
+                    $q->orWhere('types', 'like', '%' . $type . '%');
+                }
+            });
         }
 
         return $model;

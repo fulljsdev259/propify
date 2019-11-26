@@ -5,6 +5,7 @@ namespace App\Criteria\Building;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
@@ -36,11 +37,9 @@ class FilterByCityCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
 
-        $cities = $this->request->cities ?? $this->request->city;
+        $cities = $this->request->cities ?? $this->request->city; // @TODO delete city
         if ($cities) {
-            if (! is_array($cities)) {
-                $cities = [$cities];
-            }
+            $cities = Arr::wrap($cities);
             return $model->whereHas('address', function ($q) use ($cities) {
                 $q->whereIn('city', $cities);
             });
