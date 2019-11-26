@@ -37,16 +37,6 @@ export default [{
         meta: {
             title: 'Edit resident'
         }
-    }, {
-        name: 'adminResidentsView',
-        path: ':id/view',
-        component: () => import ( /* webpackChunkName: "admin/residents/view" */ 'views/Admin/Residents/view'),
-        beforeEnter: VueRouterMultiguard([hasPermissionGuard(AdminPermissions.view.resident)]),
-        props: {
-            title: 'View resident'
-        },
-        meta: {
-            title: 'View resident'
-        }
-    }]
+    }
+    ]
 }]

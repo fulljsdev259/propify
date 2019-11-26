@@ -247,7 +247,7 @@
         </div>
         <el-dialog :close-on-click-modal="true" :title="editingRelation ? $t('models.resident.relation.edit') : $t('models.resident.relation.new')"
                 :visible.sync="visibleRelationDialog"
-                v-loading="loading.state" width="30%">
+                v-loading="loading.state" width="30%" class="w-50">
             <div class="content" v-if="visibleRelationDialog">
                 <relation-form v-if="editingRelation" 
                             :hide-building-and-units="false" 
@@ -277,7 +277,7 @@
 
         <el-dialog :close-on-click-modal="true" :title="$t('general.box_titles.files')"
                 :visible.sync="visibleMediaDialog"
-                v-loading="loading.state" width="30%">
+                v-loading="loading.state" width="30%" class="w-50">
             <div class="content" v-if="visibleMediaDialog">
                 <el-table
                     :data="model.media"
@@ -934,8 +934,8 @@
         }
     }
 
-    /deep/ .el-dialog {
-        width: 50% !important;
+    /deep/ .el-dialog.w-50 {
+            width: 50% !important;  
 
         .el-dialog__header {
             padding-left: 30px;
