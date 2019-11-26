@@ -400,11 +400,23 @@
             <el-col :md="24">
                 <el-form-item>
 
+                
+
+                <!-- <el-alert
+                    :title="$t('models.resident.relation.pdf_only_desc')"
+                    type="info"
+                    show-icon
+                    :closable="false"
+                >
+                </el-alert> -->
+
+                <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".pdf" drag multiple/>
+                
                 <el-table
                     :data="model.media"
-                    style="width: 100%"
                     v-if="model.media.length"
                     class="relation-file-table"
+                    :show-header="false"
                     >
                     <el-table-column
                         :label="$t('models.resident.relation.filename')"
@@ -417,28 +429,19 @@
                     </el-table-column>
                     <el-table-column
                         align="right"
+                        width="30"
                     >
                         <template slot-scope="scope">
                             <el-tooltip
                                 :content="$t('general.actions.delete')"
                                 class="item" effect="light" 
                                 placement="top-end">
-                                    <el-button @click="deletePDFfromRelation(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
+                                    <el-button @click="deletePDFfromRelation(scope.$index)" icon="ti-trash" size="mini" />
                             </el-tooltip>
                         </template>
                     </el-table-column>
                 </el-table>
 
-                <!-- <el-alert
-                    :title="$t('models.resident.relation.pdf_only_desc')"
-                    type="info"
-                    show-icon
-                    :closable="false"
-                >
-                </el-alert> -->
-
-                <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".pdf" drag multiple/>
-                
                 </el-form-item>
             </el-col>
             <!-- <el-col :md="12">
@@ -1216,6 +1219,31 @@ c
 
     /deep/ .relation-file-table {
         margin-bottom: 10px;
+        padding-left: 10px;
+
+        &::before {
+            height: 0;
+        }
+
+        table {
+            width: 100%;
+            td, th {
+                padding: 2px 0;
+            }
+        }
+
+        
+
+
+        .el-button.el-button--default {
+            border: none;
+            &:hover {
+                background: none;
+                border: none;
+            }
+        }
+
+        
     }
 
     /deep/ .el-tag {
@@ -1279,5 +1307,11 @@ c
 
     .media-box {
         margin-top: 30px;
+
+        .el-form-item {
+            /deep/ .el-form-item__content {
+                display: flex;
+            }
+        }
     }
 </style>

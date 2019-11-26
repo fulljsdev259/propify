@@ -283,33 +283,7 @@
                 :visible.sync="visibleMediaDialog"
                 v-loading="loading.state" width="30%" class="w-50">
             <div class="content" v-if="visibleMediaDialog">
-                <el-table
-                    :data="model.media"
-                    style="width: 100%"
-                    v-if="model.media.length"
-                    class="relation-file-table"
-                    >
-                    <el-table-column
-                        :label="$t('models.resident.relation.filename')"
-                        prop="name"
-                    >
-                        <template slot-scope="scope">
-                            <span ><strong>{{scope.row.name}}</strong></span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        align="right"
-                    >
-                        <template slot-scope="scope">
-                            <el-tooltip
-                                :content="$t('general.actions.delete')"
-                                class="item" effect="light" 
-                                placement="top-end">
-                                    <el-button @click="deletePDFfromRelation(scope.$index)" icon="ti-trash" size="mini" type="danger"/>
-                            </el-tooltip>
-                        </template>
-                    </el-table-column>
-                </el-table>
+                
 
                 <!-- <el-alert
                     :title="$t('models.resident.relation.pdf_only_desc')"
@@ -318,9 +292,39 @@
                     :closable="false"
                 >
                 </el-alert> -->
+                <div class="media-box">
+                    <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF" drag multiple/>
 
-                <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF" drag multiple/>
-                <ui-divider style="margin-top: 16px;"></ui-divider>
+                    <el-table
+                        :data="new_media"
+                        style="width: 100%"
+                        v-if="new_media.length"
+                        :show-header="false"
+                        class="relation-file-table"
+                        >
+                        <el-table-column
+                            :label="$t('models.resident.relation.filename')"
+                            prop="name"
+                        >
+                            <template slot-scope="scope">
+                                <span ><strong>{{scope.row.name}}</strong></span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            align="right"
+                        >
+                            <template slot-scope="scope">
+                                <el-tooltip
+                                    :content="$t('general.actions.delete')"
+                                    class="item" effect="light" 
+                                    placement="top-end">
+                                        <el-button @click="deletePDFfromRelation(scope.$index)" icon="ti-trash" size="mini" />
+                                </el-tooltip>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+                <!-- <ui-divider style="margin-top: 16px;"></ui-divider> -->
                 <div class="relation-form-actions">
                     <div class="button-group">
                         <el-button type="default" @click="closeMediaDialog" icon="icon-cancel" class="btn-close" >{{$t('general.actions.close')}}</el-button>
@@ -434,10 +438,10 @@
             addPDFtoRelation(file) {
                 //let toUploadRelationFile = {...file, url: URL.createObjectURL(file.raw)}
                 let toUploadRelationFile = {media : file.src, name: file.raw.name}
-                this.model.media.push(toUploadRelationFile)
+                this.new_media.push(toUploadRelationFile)
             },
             deletePDFfromRelation(index) {
-                this.model.media.splice(index, 1)
+                this.new_media.splice(index, 1)
             },
             pickFile(){
                 this.$refs.userImage.click()
@@ -983,6 +987,34 @@
     }
     .btn-close {
         border: none;
+    }
+
+    .media-box {
+        display: flex;
+    }
+
+    /deep/ .relation-file-table {
+        margin-bottom: 10px;
+        padding-left: 10px;
+
+        &::before {
+            height: 0;
+        }
+
+        table {
+            width: 100%;
+            td, th {
+                padding: 2px 0;
+            }
+        }
+
+        .el-button.el-button--default {
+            border: none;
+            &:hover {
+                background: none;
+                border: none;
+            }
+        }
     }
 
     /deep/ .relation-form-actions {

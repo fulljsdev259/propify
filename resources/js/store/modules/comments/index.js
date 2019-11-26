@@ -235,14 +235,14 @@ export default {
             }
         },
         clear (state, {commentable}) {
-            console.log(commentable)
             Object.assign(state[commentable], {})
         },
         reset: state => Object.assign(state, {
             pinboard: {},
             request: {},
             listing: {},
-            internalNotices: {}
+            internalNotices: {},
+            conversation: {}
         })
     }
 }
