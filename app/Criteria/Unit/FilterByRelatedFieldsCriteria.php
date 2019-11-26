@@ -5,6 +5,7 @@ namespace App\Criteria\Unit;
 use App\Models\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
@@ -39,19 +40,10 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $buildingId = $this->request->get('building_id', null);
-        if ($buildingId) {
-            return $model->where('building_id', (int)$buildingId);
-        }
-
-        $quarterId = $this->request->get('quarter_id', null);
-        if ($quarterId) {
-            return $model->where(function ($q) use ($quarterId) {
-                $q->where('quarter_id', $quarterId)
-                    ->orWhereHas('building', function ($query) use ($quarterId) {
-                        $query->where('quarter_id', $quarterId);
-                    });
-            });
+        $buildingIds = $this->request->building_ids ?? $this->request->building_id;
+        if ($buildingIds) {
+            $buildingIds = Arr::wrap($buildingIds);
+            return $model->whereIn('building_id', $buildingIds);
         }
 
         $state_id = $this->request->get('state_id', null);
@@ -61,6 +53,7 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
             });
         }
 
+        // @TODO correct
         $request = $this->request->get('request', null);
         if ($request == 1) {
             return $model->whereHas('relations', function ($q) {
@@ -70,6 +63,7 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
             });
         }
 
+        // @TODO correct need or not I think no need because now used user_id and it based on quarter
         $managerId = $this->request->get('manager_id', null);
         if ($managerId) {
             return $model->whereHas('building.propertyManagers', function ($q) use ($managerId) {

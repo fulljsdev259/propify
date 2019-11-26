@@ -52,13 +52,22 @@ class RequestCriteria extends ReqCriteria
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $ids = $this->request->get('exclude_ids', null);
+        $excludeIds = $this->request->get('exclude_ids', null);
+        if ($excludeIds) {
+            if (!is_array($excludeIds)) {
+                $excludeIds = explode(',', $excludeIds);
+            }
+            $model = $model->whereNotIn($model->qualifyColumn('id'), $excludeIds);
+        }
+
+        $ids = $this->request->get('ids', null);
         if ($ids) {
             if (!is_array($ids)) {
                 $ids = explode(',', $ids);
             }
-            $model = $model->whereNotIn($model->qualifyColumn('id'), $ids);
+            $model = $model->whereIn($model->qualifyColumn('id'), $ids);
         }
+
 
         $fieldsSearchable = $repository->getFieldsSearchable();
         $search = $this->request->get(config('repository.criteria.params.search', 'search'), null);
