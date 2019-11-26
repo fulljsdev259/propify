@@ -402,6 +402,7 @@ return [
                         'new_resident_pinboard_created' => 'New neighbour added for user :userName.',
                         'avatar_uploaded' => 'Profile image uploaded for :auditable_type.',
                         'relation_created' => 'Relation created for resident :userName.',
+                        'workflow_created' => 'Workflow created for this quarter',
                         'update_no_fieldvalue' => 'The :fieldname changed.',
                         'liked' => ':userName liked this pinboard',
                         'unliked' => ':userName unliked this pinboard',

@@ -84,9 +84,11 @@ class Workflow extends AuditableModel
     public function transformAudit(array $data): array
     {
         if (self::EventDeleted == $data['event']) {
-            $data['auditable_id'] = $data['old_values']['resident_id'];
+            $data['auditable_id'] = $data['old_values']['quarter_id'];
+            $data['auditable_format'] = Quarter::where('id', $data['old_values']['quarter_id'])->value('quarter_format');
         } else {
             $data['auditable_id'] = self::where('id', $data['auditable_id'])->value('quarter_id');
+            $data['auditable_format'] = Quarter::where('id', $data['auditable_id'])->value('quarter_format');
         }
         $data['event'] = 'workflow_' . $data['event'];
         $data['auditable_type'] = get_morph_type_of(Quarter::class);

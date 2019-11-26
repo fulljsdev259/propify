@@ -213,6 +213,8 @@ class AuditTransformer extends BaseTransformer
                     $response['statement'] = $this->translate_audit("new_resident_pinboard_created",['userName' => $user->name]);
                 }                
             }            
+        } elseif(AuditableModel::EventWorkflowCreated == $model->event){
+            $response['statement'] = $this->translate_audit("workflow_created");
         }
         elseif($model->event == 'relation_created'){
             $resident = Resident::find($model->auditable_id);

@@ -403,6 +403,7 @@ return [
                         'new_resident_pinboard_created' => "hat den Benutzer :userName hinzugefügt.",
                         'avatar_uploaded' => 'hat das Profil-Bild hochgeladen für :auditable_type.',
                         'relation_created' => 'Mietvertrag für Bewohner angelegt :userName.',
+                        'workflow_created' => 'Workflow für dieses Quartal erstellt',
                         'update_no_fieldvalue' => 'das :fieldname geändert.',
                         'liked' => ':userName hat diesen Beitrag gefallen',
                         'unliked' => ':userName hat seine Gefällt mir zurückgenommen',
