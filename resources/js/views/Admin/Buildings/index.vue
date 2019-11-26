@@ -9,7 +9,7 @@
                     @click="add" 
                     icon="ti-plus" 
                     size="mini" 
-                    class="transparent-button"
+                    class="transparent-button mr-0"
                 >
                     {{$t('models.building.add')}}
                 </el-button>
@@ -51,7 +51,7 @@
             :filters="filters"
             :filtersHeader="filtersHeader"
             :header="headerFilter"
-            :items="items"
+            :items="computedItems"
             :loading="{state: loading}"
             :searchText="search"
             :isLoadingFilters="{state: isLoadingFilters}"
@@ -156,7 +156,7 @@
                     prop: 'address.house_num'
                 }, {
                     label: 'models.building.type',
-                    prop: 'building'
+                    prop: 'types'
                 }, {
                     label: 'models.building.units',
                     prop: 'units_count'
@@ -211,12 +211,12 @@
                     }, {
                         name: this.$t('general.filters.quarters'),
                         type: 'select',
-                        key: 'quarter_id',
+                        key: 'quarter_ids',
                         data: this.quarters,
                     },{
                         name: this.$t('models.building.city'),
                         type: 'select',
-                        key: 'city',
+                        key: 'cities',
                         data: this.cities,
                     },{
                         name: this.$t('models.building.type'),
@@ -236,6 +236,19 @@
                     }
                 ]
             },
+             computedItems() {
+                if(this.items != undefined)
+                    this.items.forEach((item) => {
+                        let result = '';
+                        for(let i = 0;  (item.types !== null) && (i <item.types.length); i ++) {
+                            result = `${result} ${this.$t(`models.quarter.types.${this.$constants.buildings.type[item.types[i]]}`)}`;
+                            if(i < item.types.length - 1) 
+                                result = `${result},`;
+                        }
+                        item.types = result;
+                    });
+                return this.items;
+            }
             
         },
         methods: {
@@ -266,7 +279,7 @@
             },
             async getTypes() {
                 this.types = [];
-                for(let item in this.$constants.building.type) {
+                for(let item in this.$constants.buildings.type) {
                     this.types.push({
                         id: item,
                         name: this.$t(`models.quarter.types.${this.$constants.quarters.type[item]}`),

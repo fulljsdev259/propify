@@ -90,13 +90,29 @@
                             </el-row>
                             <el-row :gutter="20">
                                 <el-col :md="6">
+                                    <el-form-item :label="$t('models.building.type')"
+                                                  class="label-block"
+                                                  :rules="validationRules.types"
+                                                  prop="types">
+                                       <multi-select
+                                            :name="$t('models.building.type')"
+                                            :data="types"
+                                            :disabled="!editMode"
+                                            :selectedOptions="model.types"
+                                            tagColor="#9E9FA0"
+                                            bgColor="#f6f5f7"
+                                            @select-changed="model.types=$event"
+                                        ></multi-select>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="6">
                                     <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
                                                   prop="zip"
                                                   style="max-width: 512px;">
                                         <el-input type="text" v-model="model.zip" :disabled="!editMode"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12">
+                                <el-col :md="6">
                                     <el-form-item :label="$t('general.city')" :rules="validationRules.city"
                                                   prop="city"
                                                   style="max-width: 512px;">
@@ -558,6 +574,7 @@
     import BuildingFileListTable from 'components/BuildingFileListTable';
     import EditCloseDialog from 'components/EditCloseDialog';
     import EditActions from 'components/EditViewActions';
+    import MultiSelect from 'components/MultiSelect';
 
     export default {
         mixins: [globalFunction, BuildingsMixin({
@@ -581,6 +598,7 @@
             BuildingFileListTable,
             EditCloseDialog,
             EditActions,
+            MultiSelect,
         },
         data() {
             return {
@@ -1080,6 +1098,8 @@
                 this.auditCount = audit_count;
             });
             // this.fileCount = this.model.media.length;
+
+            this.getTypes();
         },
         computed: {
             ...mapGetters('application', {
