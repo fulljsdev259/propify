@@ -5,6 +5,7 @@ namespace App\Criteria\Unit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
@@ -35,10 +36,11 @@ class FilterByTypeCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {      
-        $type = $this->request->get('type', null);
+        $types = $this->request->types ?? $this->request->type;// @TODO DELETE TYPE
         
-        if ($type) {
-            return $model->where('type', (int)$type);
+        if ($types) {
+            $types = Arr::wrap($types);
+            return $model->whereIn('type', $types);
         }
         
         return $model;     
