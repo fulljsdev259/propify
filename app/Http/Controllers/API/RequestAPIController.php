@@ -149,10 +149,10 @@ class RequestAPIController extends AppBaseController
                 'media',
                 'resident.user',
                 'resident.relations' => function ($q) {
-                    $q->with('building.address', 'unit');
+                    $q->with('quarter.address', 'unit');
                 },
                 'relation' => function ($q) {
-                    $q->with('building.address', 'unit');
+                    $q->with('quarter.address', 'unit');
                 },
                 'comments.user',
                 'providers.address:id,country_id,state_id,city,street,zip',
@@ -235,10 +235,10 @@ class RequestAPIController extends AppBaseController
             'media',
             'resident.user',
             'resident.relations' => function ($q) {
-                $q->with('building.address', 'unit');
+                $q->with('quarter.address', 'unit');
             },
             'relation'  => function ($q) {
-                $q->with('building.address', 'unit');
+                $q->with('quarter.address', 'unit');
             },
             'comments.user',
             'providers.address:id,country_id,state_id,city,street,zip',
@@ -309,10 +309,10 @@ class RequestAPIController extends AppBaseController
             'providers.address:id,country_id,state_id,city,street,zip',
             'providers',
             'resident.relations' => function ($q) {
-                $q->with('building.address', 'unit');
+                $q->with('quarter.address', 'unit');
             },
             'relation' => function ($q) {
-                $q->with('building.address', 'unit');
+                $q->with('quarter.address', 'unit');
             },
             'creator'
         ]);
@@ -388,12 +388,12 @@ class RequestAPIController extends AppBaseController
             'media',
             'resident.user',
             'relation' => function ($q) {
-                $q->with('building.address', 'unit');
+                $q->with('quarter.address', 'unit');
             },
             'managers.user',
             'users',
             'resident.relations' => function ($q) {
-                $q->with('building.address', 'unit');
+                $q->with('quarter.address', 'unit');
             },
             'comments.user',
             'providers.address:id,country_id,state_id,city,street,zip',
@@ -522,12 +522,12 @@ class RequestAPIController extends AppBaseController
                 'media',
                 'resident.user',
                 'relation' => function ($q) {
-                    $q->with('building.address', 'unit');
+                    $q->with('quarter.address', 'unit');
                 },
                 'managers.user',
                 'users',
                 'resident.relations' => function ($q) {
-                    $q->with('building.address', 'unit');
+                    $q->with('quarter.address', 'unit');
                 },
                 'comments.user',
                 'providers.address:id,country_id,state_id,city,street,zip',

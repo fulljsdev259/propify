@@ -5,6 +5,7 @@ namespace App\Criteria\Quarter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
@@ -37,14 +38,15 @@ class FilterByTypeCriteria implements CriteriaInterface
     {
         $types = $this->request->get('types', null);
         if ($types) {
-            if (! is_array($types)) {
-                $types = [$types];
-            }
-
-            foreach ($types as $type) {
-                // This is correct until Quarter::Type is smaller then 10
-                $model->where('types', 'like', '%' . $type . '%');
-            }
+            $types = Arr::wrap($types);
+            $model->where(function ($q) use ($types) {
+                $firstType = array_shift($types);
+                $q->where('types', 'like', '%' . $firstType . '%');
+                foreach ($types as $type) {
+                    // This is correct until Quarter::Type is smaller then 10
+                    $q->orWhere('types', 'like', '%' . $type . '%');
+                }
+            });
         }
 
         return $model;
