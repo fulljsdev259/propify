@@ -407,7 +407,7 @@
                     label: 'general.date'
                 }],
                 mediaActions: [{
-                    width: 70,
+                    width: 40,
                     dropdowns: [{
                         key: 'delete-media',
                         title: 'general.actions.delete'
@@ -577,11 +577,12 @@
                 let result = 'not_active';
                 let role = '';
                 this.model.relations.forEach((item) => {
-                    if(item.status == 1) {
+                    let type = this.$t(`models.resident.relation.type.${this.constants.relations.type[item.type]}`);
+                    if(item.status == 1 && !role.includes(type)) {
                         result = 'active';
                         if(role != '')
                             role = `${role}, `;
-                        role = `${role}${this.$t(`models.resident.relation.type.${this.constants.relations.type[item.type]}`)}`;
+                        role = `${role}${type}`;
                     }
                 });
                 return {
@@ -924,11 +925,11 @@
         }
         #pane-relation, #pane-files {
             & > div {
-                height: 150px;
+                height: 250px;
                 overflow: auto;
             }
             & > .el-button {
-                margin-top: 100px;
+                margin-top: 10px;
                 padding: 12px 15px;
                 margin-right: 5px;
                 margin-bottom: 5px;
