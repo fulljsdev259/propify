@@ -78,7 +78,7 @@
                                         <el-input autocomplete="off" type="text" v-model="model.last_name" ></el-input>
                                     </el-form-item>
 
-                                    <span v-if="status.text === 'active'" class="type">{{ status.type }}</span>
+                                    <span class="type">{{ status.type }}</span>
                                 
                                 </el-col>
                                 <el-col :span="12">
@@ -435,6 +435,7 @@
                         this.visibleDialog = true;
                     } else {
                         this.editMode = !this.editMode;
+                        this.editName = false;
                     }
                 }
             },
@@ -582,7 +583,7 @@
             },
             status() {
                 let result = 'not_active';
-                let role = '';
+                let role = null, inactive_role = '';
                 this.model.relations.forEach((item) => {
                     let type = this.$t(`models.resident.relation.type.${this.constants.relations.type[item.type]}`);
                     if(item.status == 1 && !role.includes(type)) {
@@ -591,7 +592,14 @@
                             role = `${role}, `;
                         role = `${role}${type}`;
                     }
+                    if(!inactive_role.includes(type)) {
+                        if(inactive_role != '')
+                            inactive_role = `${inactive_role}, `;
+                        inactive_role = `${inactive_role}${type}`;
+                    }
                 });
+                if(role === null)
+                    role = inactive_role;
                 return {
                     text: result,
                     index: result === 'active'?1:2,
