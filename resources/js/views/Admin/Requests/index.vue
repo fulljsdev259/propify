@@ -174,7 +174,7 @@
                             @click="massEditAction(option.key)" 
                             size="mini" 
                             type="primary"
-                            :key="option"
+                            :key="option.key"
                             >
                         {{$t('models.request.mass_edit.' + option.key + '.modal.footer_button')}}
                     </el-button>
