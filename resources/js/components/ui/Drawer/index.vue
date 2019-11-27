@@ -33,7 +33,11 @@
                 type: Number,
                 default: 999999999,
                 validator: value => value > 0
-            }
+            },
+            isResident: {
+                type: Boolean,
+                default: false
+            },
         },
         data () {
             return {
@@ -76,14 +80,16 @@
 
                         const animeOptions = {
                             targets: this.siblingElement,
-                            filter: ['blur(0px)', 'blur(1px)'],
+                            filter: this.isResident ? ['blur(0px)', 'blur(4px)'] : ['blur(0px)', 'blur(1px)'],
                             translateZ: 0,
                             easing: 'easeInOutBack'
                         }
 
                         if (this.docked) {
-                            // animeOptions.translateX = -this.size
-                            animeOptions.translateX = 0
+                            if(this.isResident)
+                                animeOptions.translateX = -this.size
+                            else
+                                animeOptions.translateX = 0
                         }
 
                         this.$anime(animeOptions)
@@ -92,7 +98,7 @@
 
                         const animeOptions = {
                             targets: this.siblingElement,
-                            filter: ['blur(1px)', 'blur(0px)'],
+                            filter: this.isResident ? ['blur(4px)', 'blur(0px)'] : ['blur(1px)', 'blur(0px)'],
                             translateZ: 0,
                             easing: 'easeInOutBack'
                         }

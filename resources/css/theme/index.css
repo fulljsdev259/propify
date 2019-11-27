@@ -12496,3 +12496,36 @@ input.el-input__inner[type=number]{
 .el-drawer-fade-leave-active{
     animation:el-drawer-fade-in 225ms cubic-bezier(0,0,.2,1) 0s reverse
 }
+
+.new-design-btn-save {
+    background-color: #878810 !important;
+    color:white !important;
+    border: none;
+}
+
+.new-design-btn-save:hover, .new-design-btn-save:focus {
+    color: var(--color-white) ;
+    box-shadow: 0 0 5px #878810;
+}
+
+.new-design-btn-delete, .new-design-btn-edit {
+    background-color: #848484 !important;
+    color:white !important;
+    border: none;
+}
+
+.new-design-btn-delete:hover, .new-design-btn-delete:focus, .new-design-btn-edit:hover, .new-design-btn-edit:focus {
+    color: var(--color-white);
+    box-shadow: 0 0 5px #848484 ;
+}
+
+.new-design-btn-close {
+    background-color: lightgrey !important;
+    color:white !important;
+    border: none;
+}
+
+.new-design-btn-close:hover, .new-design-btn-close:focus {
+    color: var(--color-white);
+    box-shadow: 0 0 5px lightgrey ;
+}

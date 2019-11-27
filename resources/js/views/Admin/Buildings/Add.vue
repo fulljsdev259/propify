@@ -37,23 +37,23 @@
                                 </el-col>
                             </el-row>
                             <el-row :gutter="20">
-                                <el-col :md="10">
+                                <el-col :md="12">
                                     <el-form-item :label="$t('general.street')" :rules="validationRules.street" prop="street">
                                         <el-input type="text" v-model="model.street" v-on:change="setBuildingName"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="4">
+                                <el-col :md="12">
                                     <el-form-item :label="$t('general.house_num')" :rules="validationRules.house_num"
                                                   prop="house_num">
                                         <el-input type="text" v-model="model.house_num" v-on:change="setBuildingName"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="10">
+                                <!-- <el-col :md="10">
                                     <el-form-item :label="$t('general.name')" :rules="validationRules.name" prop="name"
                                                   ref="name">
                                         <el-input type="text" v-model="model.name"></el-input>
                                     </el-form-item>
-                                </el-col>
+                                </el-col> -->
                             </el-row>
                             <el-row :gutter="20">
                                 <el-col :md="6">
