@@ -85,7 +85,7 @@
             <span slot="title">
                 <template v-for="option in massEditOptions">
                     <span :key="option.key" v-if="activeMassEditOption == option.key">
-                        {{$t('models.request.mass_edit.' + option + '.modal.heading_title')}}
+                        {{$t('models.request.mass_edit.' + option.key + '.modal.heading_title')}}
                     </span>
                 </template>
             </span>
@@ -169,13 +169,13 @@
                 <template
                         v-for="option in massEditOptions">
                     <el-button 
-                            v-if="activeMassEditOption == option" 
-                            @click="massEditAction(option)" 
+                            v-if="activeMassEditOption == option.key" 
+                            @click="massEditAction(option.key)" 
                             size="mini" 
                             type="primary"
                             :key="option"
                             >
-                        {{$t('models.request.mass_edit.' + option + '.modal.footer_button')}}
+                        {{$t('models.request.mass_edit.' + option.key + '.modal.footer_button')}}
                     </el-button>
                 </template>
             </span>
@@ -525,20 +525,14 @@
                 this.toAssignList = [];
                 this.massStatus = ''
             },
-            handleCommand( option ) {
-                this.massStatus = ''
-                this.resetToAssignList();
-                this.activeMassEditOption = option
-                this.batchEditVisible = true
-            },
-            async massEditAction( option ) {
-                if(option == 'service_provider') {
+            async massEditAction( command ) {
+                if(command == 'service_provider') {
                     this.massAssignProviders()
                 }
-                else if(option == 'property_manager') {
+                else if(command == 'property_manager') {
                     this.massAssignManagers()
                 }
-                else if(option == 'change_status') {
+                else if(command == 'change_status') {
                     this.massChangeStatus()
                 }
             },
