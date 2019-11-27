@@ -96,7 +96,6 @@ return [
         'type' => 'Type',
         'language' => 'Language',
         'phase' => 'Phase',
-        'qualification' => 'Qualification',
         'saved_filters' => 'Saved Filters',
         'fields' => 'Fields',
         'my_filters' => 'My Filter',

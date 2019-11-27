@@ -97,7 +97,6 @@ return [
         'type' => 'Typ',
         'language' => 'Sprache',
         'phase' => 'Phase',
-        'qualification' => 'Qualifizierung',
         'saved_filters' => 'Mehr Filters',
         'fields' => 'Felder',
         'my_filters' => 'Meine Filter',
