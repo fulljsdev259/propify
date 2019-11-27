@@ -211,7 +211,7 @@
                     }, {
                         name: this.$t('general.filters.quarters'),
                         type: 'select',
-                        key: 'quarter_ids',
+                        key: 'ids',
                         data: this.quarters,
                     },{
                         name: this.$t('models.building.city'),
@@ -232,6 +232,11 @@
                         name: this.$t('general.filters.saved_filters'),
                         type: 'select',
                         key: 'saved_filter',
+                        data: []
+                    },{
+                        name: this.$t('general.filters.my_filters'),
+                        type: 'select',
+                        key: 'my_filter',
                         data: []
                     }
                 ]
@@ -281,7 +286,7 @@
                 this.types = [];
                 for(let item in this.$constants.buildings.type) {
                     this.types.push({
-                        id: item,
+                        id: parseInt(item),
                         name: this.$t(`models.quarter.types.${this.$constants.quarters.type[item]}`),
                     })
                 }

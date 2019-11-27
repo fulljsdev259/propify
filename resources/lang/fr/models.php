@@ -600,14 +600,6 @@ return [
             "building" => "Bâtiment",
             "environment" => "Environnement",
         ],
-        'qualification' => [
-            "label" => "Qualification",
-            "none" => "Aucune",
-            "optical" => "Optique",
-            "sia" => "Sia",
-            "2_year_warranty" => "Garantie de 2 ans",
-            "cost_consequences" => "Conséquences financières",
-        ],
         'location' => [
             'house_entrance' => 'Entrée de maison',
             'staircase' => 'Escalier',
@@ -670,7 +662,6 @@ return [
         ],
         'placeholders' => [
             "category" => "Sélectionnez une catégorie",
-            "qualification" => "Sélectionnez Compétence",
             "status" => "Sélectionnez le statut",
             "due_date" => "Choisir la date d'échéance",
             "resident" => "Rechercher un résident",           

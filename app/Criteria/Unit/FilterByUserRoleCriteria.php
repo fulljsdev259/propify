@@ -42,20 +42,31 @@ class FilterByUserRoleCriteria implements CriteriaInterface
         if ($roles || $userIds) {
             $roles = Arr::wrap($roles);
             $userIds = Arr::wrap($userIds);
-            return $model->whereHas('quarter', function ($q) use ($roles, $userIds) {
-                $q->whereHas('users', function ($q) use ($roles, $userIds) {
-                    $q->when($roles, function ($q) use ($roles) {
-                        $q->whereHas('roles', function ($q) use ($roles) {
-                            $q->whereIn('name', $roles);
-                        });
-                    })
-                        ->when($userIds, function ($q) use ($userIds) {
-                            $q->whereIn('users.id', $userIds);
-                        });
+            return $model->where(function ($q) use ($roles, $userIds) {
+                $this->filterByQuarter($q, $roles, $userIds);
+                $q->orWhereHas('building', function ($q) use ($roles, $userIds) {
+                    $this->filterByQuarter($q, $roles, $userIds);
                 });
             });
         }
 
         return $model;
     }
+
+    protected function filterByQuarter($query, $roles, $userIds)
+    {
+        $query->whereHas('quarter', function ($q) use ($roles, $userIds) {
+            $q->whereHas('users', function ($q) use ($roles, $userIds) {
+                $q->when($roles, function ($q) use ($roles) {
+                    $q->whereHas('roles', function ($q) use ($roles) {
+                        $q->whereIn('name', $roles);
+                    });
+                })
+                    ->when($userIds, function ($q) use ($userIds) {
+                        $q->whereIn('users.id', $userIds);
+                    });
+            });
+        });
+    }
+
 }

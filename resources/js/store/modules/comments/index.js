@@ -5,7 +5,8 @@ export default {
         pinboard: {},
         request: {},
         listing: {},
-        internalNotices: {}
+        internalNotices: {},
+        conversation: {}
     },
     actions: {
         async get ({commit, getters}, {parent_id, ...params}) {
@@ -240,7 +241,8 @@ export default {
             pinboard: {},
             request: {},
             listing: {},
-            internalNotices: {}
+            internalNotices: {},
+            conversation: {}
         })
     }
 }

@@ -37,7 +37,7 @@ class FilterByCityCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
 
-        $cities = $this->request->cities ?? $this->request->city; // @TODO delete city
+        $cities = $this->request->cities;
         if ($cities) {
             $cities = Arr::wrap($cities);
             return $model->where(function ($q) use ($cities) {
@@ -45,14 +45,21 @@ class FilterByCityCriteria implements CriteriaInterface
                     $q->whereHas('address', function ($q) use ($cities) {
                         $q->whereIn('city', $cities);
                     });
-                })->orWhereHas('quarter', function ($q)  use ($cities) {
-                    $q->whereHas('address', function ($q) use ($cities) {
-                        $q->whereIn('city', $cities);
-                    });
+                    $this->filterByQuarter($q, $cities);
                 });
+                $this->filterByQuarter($q, $cities);
             });
         }
 
         return $model;
+    }
+
+    protected function filterByQuarter($query, $cities)
+    {
+        $query->orWhereHas('quarter', function ($q)  use ($cities) {
+            $q->whereHas('address', function ($q) use ($cities) {
+                $q->whereIn('city', $cities);
+            });
+        });
     }
 }

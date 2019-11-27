@@ -38,10 +38,10 @@
                 v-loading="isLoadingFilters.state"
             >
                 <el-row :gutter="10">
-                    <el-col :key="key" :span="filterColSize" v-for="(filter, key) in filters">
+                    <el-col :key="`${key}key${filter.data && filter.data.length}`" :span="filterColSize" v-for="(filter, key) in filters">
                         <template v-if="!filter.parentKey || filterModel[filter.parentKey]">
                             <el-form-item
-                                v-if="filter.type === filterTypes.select && filter.data ">
+                                v-if="filter.type === filterTypes.select && filter.data">
                         
                                 <list-filter-select
                                     :type="filter.key"
@@ -278,6 +278,9 @@
                             />
                         </el-tooltip>
                     </div>
+                    <div v-else-if="column.withTranslatedFloor">
+                        {{getTranslatedFloorOfUnit(scope.row)}}
+                    </div>
                     <div v-else-if="column.withStatus">
                         <div class="avatars-wrapper">
                             <span :key="index" v-for="(status, index) in $constants.relations.status">
@@ -449,6 +452,8 @@
     import SelectLanguage from 'components/SelectLanguage';
     import ListTableSelect from 'components/ListTableSelect';
     import ListFilterSelect from 'components/ListFilterSelect';
+    import globalFunction from "helpers/globalFunction";
+
 
     export default {
         name: 'ListTable',
@@ -462,6 +467,7 @@
             ListTableSelect,
             ListFilterSelect,
         },
+        mixins: [globalFunction],
         props: {
             header: {
                 type: Array,
@@ -847,7 +853,7 @@
                     
                 if(!Array.isArray(value))
                     value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
-                else
+                else if(filter.key !== 'cities')
                     for(let i = 0; i < value.length; i ++)
                         value[i] = parseInt(value[i]);
 

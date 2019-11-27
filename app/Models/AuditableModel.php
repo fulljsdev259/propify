@@ -38,6 +38,9 @@ class AuditableModel extends Model implements Auditable
     const EventRelationCreated = 'relation_created';
     const EventRelationUpdated = 'relation_updated';
     const EventRelationDeleted = 'relation_deleted';
+    const EventWorkflowCreated = 'workflow_created';
+    const EventWorkflowUpdated = 'workflow_updated';
+    const EventWorkflowDeleted = 'workflow_deleted';
     const EventUserAssigned = 'user_assigned';
     const EventUserUnassigned = 'user_unassigned';
     const EventQuarterAssigned = 'quarter_assigned';
@@ -92,6 +95,9 @@ class AuditableModel extends Model implements Auditable
         self::EventRelationCreated,
         self::EventRelationUpdated,
         self::EventRelationDeleted,
+        self::EventWorkflowCreated,
+        self::EventWorkflowUpdated,
+        self::EventWorkflowDeleted,
         self::EventUserAssigned,
         self::EventUserUnassigned,
         self::EventQuarterAssigned,
@@ -315,12 +321,14 @@ class AuditableModel extends Model implements Auditable
         $createdEvents = [
             AuditableModel::EventCreated,
             AuditableModel::EventRelationCreated,
+            AuditableModel::EventWorkflowCreated,
             AuditableModel::BuildingUnitsCreated,
         ];
 
         $updatedEvents = [
             AuditableModel::EventUpdated,
             AuditableModel::EventRelationUpdated,
+            AuditableModel::EventWorkflowUpdated,
         ];
 
         if (in_array($event, $createdEvents)) {
@@ -353,6 +361,7 @@ class AuditableModel extends Model implements Auditable
         $createdEvents = [
             self::EventCreated,
             self::EventRelationCreated,
+            self::EventWorkflowCreated,
             self::DownloadCredentials,
             self::SendCredentials,
             self::EventAvatarUploaded
@@ -361,6 +370,7 @@ class AuditableModel extends Model implements Auditable
         $updatedEvents = [
             AuditableModel::EventUpdated,
             AuditableModel::EventRelationUpdated,
+            AuditableModel::EventWorkflowUpdated,
         ];
 
         if (in_array($audit->event, $createdEvents)) {
@@ -390,6 +400,7 @@ class AuditableModel extends Model implements Auditable
         $createdEvents = [
             self::EventCreated,
             self::EventRelationCreated,
+            self::EventWorkflowCreated,
             self::DownloadCredentials,
             self::SendCredentials,
             self::EventAvatarUploaded
@@ -398,6 +409,7 @@ class AuditableModel extends Model implements Auditable
         $updatedEvents = [
             AuditableModel::EventUpdated,
             AuditableModel::EventRelationUpdated,
+            AuditableModel::EventWorkflowUpdated,
         ];
 
         if (in_array($audit->event, $updatedEvents)) {

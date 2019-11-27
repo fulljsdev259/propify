@@ -118,25 +118,7 @@
                                         <el-input v-model="model.component"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12"
-                                        v-if="model.category_id && selectedCategoryHasQualification(model.category_id)">
-                                    <el-form-item :label="$t('models.request.qualification.label')"
-                                                  :rules="validationRules.qualification"
-                                                  prop="qualification">
-                                        <el-select :disabled="$can($permissions.update.serviceRequest)"
-                                                   :placeholder="$t('models.request.placeholders.qualification')"
-                                                   class="custom-select"
-                                                   v-model="model.qualification"
-                                                   @change="changeQualification">
-                                            <el-option
-                                                :key="k"
-                                                :label="$t(`models.request.qualification.${qualification}`)"
-                                                :value="parseInt(k)"
-                                                v-for="(qualification, k) in constants.requests.qualification">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </el-col>
+                                
                                 
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.request.category_options.keywords')">

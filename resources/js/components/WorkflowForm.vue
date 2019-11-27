@@ -160,13 +160,13 @@
         </el-row>
         <el-row :gutter="20" style="margin-top: 10px; margin-left: 0; margin-right: 0">
             <el-col :md="24" class="drawer-actions">
-                <el-button type="default" size="mini" icon="icon-cancel" @click="close" class="round-btn btn-close">&nbsp;{{ $t('models.quarter.workflow.close') }}</el-button>
-                <el-button v-if="mode=='edit'" type="danger" size="mini" icon="icon-trash-empty" @click="deleteItem" class="round-btn btn-delete">&nbsp;{{ $t('models.quarter.workflow.delete') }}</el-button>
+                <el-button type="default" size="mini" icon="icon-cancel" @click="close" class="round-btn new-design-btn-close">&nbsp;{{ $t('models.quarter.workflow.close') }}</el-button>
+                <el-button v-if="mode=='edit'" type="danger" size="mini" icon="icon-trash-empty" @click="deleteItem" class="round-btn new-design-btn-delete">&nbsp;{{ $t('models.quarter.workflow.delete') }}</el-button>
                 <!-- <el-tooltip
                         :content="$t('models.quarter.workflow.tooltips.save')"
                         class="item" effect="light" placement="top-end"
                     > -->
-                <el-button type="primary" size="mini" @click="submit" icon="icon-floppy" class="round-btn btn-save">&nbsp;{{ $t('general.actions.save') }}</el-button>
+                <el-button type="primary" size="mini" @click="submit" icon="icon-floppy" class="round-btn new-design-btn-save">&nbsp;{{ $t('general.actions.save') }}</el-button>
                 <!-- </el-tooltip> -->
             </el-col>
         </el-row>
@@ -444,6 +444,7 @@
             
             this.buildings = await this.fetchRemoteBuildings();
             this.buildings.map(building => {
+                building.name = building.address.house_num;
                 if(building.address)
                     building.house_num = building.address.house_num
             })
@@ -672,6 +673,7 @@
     }
     .btn-close {
         border: none;
+        background-color: var(--background-color-base);
     }
     
 </style>

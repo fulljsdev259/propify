@@ -37,7 +37,6 @@ export default (config = {}) => {
                     location: '',
                     room: '',
                     capture_phase: '',
-                    //qualification: null,
                     action: null,
                     cost_impact: null,
                     component: '',
@@ -57,10 +56,6 @@ export default (config = {}) => {
                         required: true,
                         message: this.$t('validation.general.required')
                     }],
-                    // qualification: [{
-                    //     required: true,
-                    //     message: this.$t('validation.general.required')
-                    // }],
                     // priority: [{
                     //     required: true,
                     //     message: this.$t('validation.general.required')
@@ -113,7 +108,6 @@ export default (config = {}) => {
                 showLocation: false,
                 showCapturePhase: false,
                 showRoom: false,
-                //showQualification: false,
                 showAction: false,
                 showCostImpact: false,
                 showPercent: false,
@@ -366,7 +360,6 @@ export default (config = {}) => {
                 this.model.category = p_category
                 
                 this.showCapturePhase =  p_category.capture_phase == 1 ? true : false;
-                //this.showQualification = p_category.qualification == 1 ? true : false;
                 this.showAction = p_category.action == 1 ? true : false;
                 this.showCostImpact = p_category.cost_impact == 1 ? true : false;
                 this.showComponent = p_category.component == 1 ? true : false;
@@ -377,7 +370,6 @@ export default (config = {}) => {
 
                     if(this.model.sub_category_id != null) {
                         let sub_category = this.sub_categories.find(category => { return category.id == this.model.sub_category_id});
-                        //this.showQualification = sub_category.qualification == 1 ? true : false;
                         this.showAction = sub_category.action == 1 ? true : false;
                         this.showCostImpact = sub_category.cost_impact == 1 ? true : false;
                         this.showCapturePhase =  sub_category.capture_phase == 1 ? true : false;
@@ -397,7 +389,6 @@ export default (config = {}) => {
                 this.model.location = null;
                 this.showRoom = sub_category.room == 1 ? true : false;
                 this.showLocation = sub_category.location == 1 ? true : false;
-                //this.showQualification = sub_category.qualification == 1 ? true : false;
                 this.showAction = sub_category.action == 1 ? true : false;
                 this.showCostImpact = sub_category.cost_impact == 1 ? true : false;
                 this.showPercent = this.showCostImpact && this.model.cost_impact == 3 ? true : false;
@@ -407,24 +398,6 @@ export default (config = {}) => {
             changeCostImpact() {
                 this.showPercent = this.showCostImpact && this.model.cost_impact == 3 ? true : false;
             },
-            // changeQualification() {
-            //     this.showPayer = this.model.qualification == 5 ? true : false;
-            // },
-            // selectedCategoryHasQualification(categoryId) {
-            //     if (!categoryId) {
-            //         return false;
-            //     }
-
-            //     const categoryArr = this.categories.filter((category) => {
-            //         return category.id === categoryId && category.qualification;
-            //     });
-
-            //     if (categoryArr.length) {
-            //         return true;
-            //     }
-
-            //     return false;
-            // },
             getLanguageI18n() {
 
                 this.locations = Object.entries(this.$constants.requests.location).map(([value, label]) => ({value: +value, name: this.$t(`models.request.location.${label}`)}))
@@ -432,7 +405,6 @@ export default (config = {}) => {
                 this.capture_phases = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
                 this.actions = Object.entries(this.$constants.requests.action).map(([value, label]) => ({value: +value, name: this.$t(`models.request.action.${label}`)}))
                 this.cost_impacts = Object.entries(this.$constants.requests.cost_impact).map(([value, label]) => ({value: +value, name: this.$t(`models.request.cost_impact.${label}`)}))
-                //this.qualifications = Object.entries(this.$constants.requests.qualification).map(([value, label]) => ({value: +value, name: this.$t(`models.request.qualification.${label}`)}))
                 this.categories = this.$constants.requests.categories_data.tree
 
                 if(this.model.category_id)
@@ -449,25 +421,7 @@ export default (config = {}) => {
                     this.relations = this.resident.relations
 
                     this.relations = this.relations.map(relation => { 
-                        let floor_label;
-                        if(relation.unit.attic == 'attic')
-                        {
-                            floor_label = this.$t('models.unit.floor_title.top_floor')
-                        }
-                        else if(relation.unit.floor > 0)
-                        {
-                            floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
-                        }
-                        else if(relation.unit.floor == 0)
-                        {
-                            floor_label = this.$t('models.unit.floor_title.ground_floor')
-                        }
-                        else if(relation.unit.floor < 0)
-                        {
-                            floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
-                        }
-                        relation.building_room_floor_unit = relation.building.name + " -- " + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
-                        
+                        relation.building_room_floor_unit = this.getSelectOptionOfRelation(relation)
                         return relation
                     });
                 }
@@ -536,26 +490,7 @@ export default (config = {}) => {
                 this.relations = this.resident.relations
 
                 this.relations = this.relations.map(relation => { 
-                    let house_num = relation.building && relation.address ? relation.address.house_num + " -- " : ''
-                    let floor_label;
-                    if(relation.unit.attic == 'attic')
-                    {
-                        floor_label = this.$t('models.unit.floor_title.top_floor')
-                    }
-                    else if(relation.unit.floor > 0)
-                    {
-                        floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
-                    }
-                    else if(relation.unit.floor == 0)
-                    {
-                        floor_label = this.$t('models.unit.floor_title.ground_floor')
-                    }
-                    else if(relation.unit.floor < 0)
-                    {
-                        floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
-                    }
-                    relation.building_room_floor_unit = relation.unit.internal_quarter_id + " -- " + house_num + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
-                    
+                    relation.building_room_floor_unit = this.getSelectOptionOfRelation(relation)
                     return relation
                 });
 
@@ -693,12 +628,8 @@ export default (config = {}) => {
                         this.showAction =  resp.data.category.action == 1 || (resp.data.sub_category && resp.data.sub_category.action == 1) ? true : false;
                         this.showCostImpact =  resp.data.category.cost_impact == 1 || (resp.data.sub_category && resp.data.sub_category.cost_impact == 1) ? true : false;
                         this.showPercent = this.showCostImpact && resp.data.category.cost_impact == 3 ? true : false;
-                        //this.showQualification =  resp.data.category.qualification == 1 || (resp.data.sub_category && resp.data.sub_category.qualification == 1) ? true : false;
-                        //this.showPayer = resp.data.qualification == 5 ? true : false;
                         this.showCapturePhase =  resp.data.category.capture_phase == 1 || (resp.data.sub_category && resp.data.sub_category.capture_phase == 1) ? true : false;
-                        
                         this.showComponent =  resp.data.category.component == 1 || (resp.data.sub_category && resp.data.sub_category.component == 1) ? true : false;
-                        //this.showPayer = resp.data.qualification == 5 ? true : false;
                         
                         const data = resp.data;
 

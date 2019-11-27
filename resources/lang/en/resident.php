@@ -204,7 +204,6 @@ return [
     "media" => "Media",
     "status" => "Status",
     "priority" => "Priority",
-    "qualification" => "Qualification",
     "assignees" => "Assignees",
     "cost_impact" => "Cost Impact",
     "comments" => "Comments",

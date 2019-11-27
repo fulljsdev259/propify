@@ -605,14 +605,6 @@ return [
             'building' => 'Building',
             'environment' => 'Environment',
         ],
-        'qualification' => [
-            'label' => 'Qualification',
-            'none' => 'None',
-            'optical' => 'Optical',
-            'sia' => 'Sia',
-            '2_year_warranty' => '2 Year Warranty',
-            'cost_consequences' => 'Cost consequences',
-        ],
         'action' => [
             'label' => 'Action',
             'fix' =>'Fix',
@@ -688,7 +680,6 @@ return [
             'category' => 'Select category',
             'action' => 'Select action',  
             'cost_impact' => 'Select Cost Impact',
-            'qualification' => 'Select qualification',
             'status' => 'Select status',
             'due_date' => 'Pick due date',
             'resident' => 'Search for a resident',            

@@ -121,11 +121,13 @@
     import ServicesTypes from 'mixins/methods/servicesTypes'
     import {displaySuccess, displayError} from 'helpers/messages'
     import PQueue from 'p-queue'
+    import globalFunction from "helpers/globalFunction";
 
     export default {
         name: 'p-request-add-form',
         mixins: [
             ServicesTypes,
+            globalFunction
         ],
         props: {
             visible: {
@@ -246,26 +248,7 @@
                 this.relations = this.$store.getters.loggedInUser.resident.relations.filter( relation => relation.status == 1)
 
                 this.relations.forEach(relation => {
-                    let house_num = relation.building && relation.address ? relation.address.house_num + " -- " : ''
-                    let floor_label;
-                    if(relation.unit.attic == 'attic')
-                    {
-                        floor_label = this.$t('models.unit.floor_title.top_floor')
-                    }
-                    else if(relation.unit.floor > 0)
-                    {
-                        floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
-                    }
-                    else if(relation.unit.floor == 0)
-                    {
-                        floor_label = this.$t('models.unit.floor_title.ground_floor')
-                    }
-                    else if(relation.unit.floor < 0)
-                    {
-                        floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
-                    }
-                    relation.building_room_floor_unit = relation.unit.internal_quarter_id + " -- " + house_num + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
-                    
+                    relation.building_room_floor_unit = this.getSelectOptionOfRelation(relation)
                     return relation
                 })
             },
@@ -326,27 +309,8 @@
             this.relations = this.$store.getters.loggedInUser.resident.relations.filter( relation => relation.status == 1)
 
             this.relations.forEach(relation => {
-                let house_num = relation.building && relation.address ? relation.address.house_num + " -- " : ''
-                    let floor_label;
-                    if(relation.unit.attic == 'attic')
-                    {
-                        floor_label = this.$t('models.unit.floor_title.top_floor')
-                    }
-                    else if(relation.unit.floor > 0)
-                    {
-                        floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
-                    }
-                    else if(relation.unit.floor == 0)
-                    {
-                        floor_label = this.$t('models.unit.floor_title.ground_floor')
-                    }
-                    else if(relation.unit.floor < 0)
-                    {
-                        floor_label = relation.unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
-                    }
-                    relation.building_room_floor_unit = relation.unit.internal_quarter_id + " -- " + house_num + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
-                    
-                    return relation
+                relation.building_room_floor_unit = this.getSelectOptionOfRelation(relation)
+                return relation
             })
 
             this.default_relation_id = this.$store.getters.loggedInUser.resident.default_relation_id

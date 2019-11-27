@@ -369,7 +369,7 @@
                                                 @click="showEditWorkflow($index)"
                                                 icon="icon-pencil" 
                                                 size="mini" 
-                                                class="round-btn btn-edit">
+                                                class="round-btn new-design-btn-edit">
                                                 {{ $t('models.quarter.workflow.edit') }}
                                             </el-button>
                                         </el-col>

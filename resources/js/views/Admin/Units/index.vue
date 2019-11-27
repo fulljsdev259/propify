@@ -63,7 +63,6 @@
     import getFilterPropertyManager from "mixins/methods/getFilterPropertyManager";
     import ListCheckBox from 'components/ListCheckBox';
 
-
     const mixin = ListTableMixin({
         actions: {
             get: 'getUnits',
@@ -109,7 +108,8 @@
                     prop: 'formatted_type_label'
                 }, {
                     label: 'models.unit.location',
-                    prop: 'floor'
+                    withTranslatedFloor: true,
+                    prop: 'floor',
                 },{
                     label: 'models.unit.room_no',
                     prop: 'room_no'
@@ -160,13 +160,13 @@
                 this.types = [];
                 for(let item in this.$constants.quarters.type) {
                     this.quarterTypes.push({
-                        id: item,
+                        id: parseInt(item),
                         name: this.$t(`models.quarter.types.${this.$constants.quarters.type[item]}`),
                     })
                 }
                 for(let item in this.$constants.units.type) {
                     this.types.push({
-                        id: item,
+                        id: parseInt(item),
                         name: this.$t(`models.unit.type.${this.$constants.units.type[item]}`),
                     })
                 }
@@ -228,7 +228,7 @@
                     }, {
                         name: this.$t('general.filters.quarters'),
                         type: 'select',
-                        key: 'quarter_ids',
+                        key: 'ids',
                         data: this.quarters,
                     },{
                         name: this.$t('general.filters.buildings'),
@@ -256,6 +256,11 @@
                         name: this.$t('general.filters.saved_filters'),
                         type: 'select',
                         key: 'saved_filter',
+                        data: []
+                    },{
+                        name: this.$t('general.filters.my_filters'),
+                        type: 'select',
+                        key: 'my_filter',
                         data: []
                     }
                 ]

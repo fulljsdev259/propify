@@ -37,7 +37,7 @@ class FilterByCityCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
 
-        $cities = $this->request->cities ?? $this->request->city; // @TODO delete city
+        $cities = $this->request->cities;
         if ($cities) {
             $cities = Arr::wrap($cities);
             return $model->whereHas('address', function ($q) use ($cities) {
