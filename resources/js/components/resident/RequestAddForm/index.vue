@@ -248,10 +248,7 @@
                 this.relations = this.$store.getters.loggedInUser.resident.relations.filter( relation => relation.status == 1)
 
                 this.relations.forEach(relation => {
-                    let house_num = relation.building && relation.address ? relation.address.house_num + " -- " : ''
-                    let floor_label = this.getTranslatedFloorOfUnit(relation.unit)
-                    relation.building_room_floor_unit = relation.unit.internal_quarter_id + " -- " + house_num + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
-                    
+                    relation.building_room_floor_unit = this.getSelectOptionOfRelation(relation)
                     return relation
                 })
             },
@@ -312,10 +309,7 @@
             this.relations = this.$store.getters.loggedInUser.resident.relations.filter( relation => relation.status == 1)
 
             this.relations.forEach(relation => {
-                let house_num = relation.building && relation.address ? relation.address.house_num + " -- " : ''
-                let floor_label = this.getTranslatedFloorOfUnit(relation.unit)
-                relation.building_room_floor_unit = relation.unit.internal_quarter_id + " -- " + house_num + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
-                
+                relation.building_room_floor_unit = this.getSelectOptionOfRelation(relation)
                 return relation
             })
 

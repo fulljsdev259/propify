@@ -63,7 +63,6 @@
     import getFilterPropertyManager from "mixins/methods/getFilterPropertyManager";
     import ListCheckBox from 'components/ListCheckBox';
 
-
     const mixin = ListTableMixin({
         actions: {
             get: 'getUnits',
@@ -109,7 +108,8 @@
                     prop: 'formatted_type_label'
                 }, {
                     label: 'models.unit.location',
-                    prop: 'floor'
+                    withTranslatedFloor: true,
+                    prop: 'floor',
                 },{
                     label: 'models.unit.room_no',
                     prop: 'room_no'
