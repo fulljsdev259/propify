@@ -12521,11 +12521,11 @@ input.el-input__inner[type=number]{
 
 .new-design-btn-close {
     background-color: lightgrey !important;
-    color:white !important;
+    color:var(--color-text-regular) !important;
     border: none;
 }
 
 .new-design-btn-close:hover, .new-design-btn-close:focus {
-    color: var(--color-white);
+    color:var(--color-text-regular) !important;
     box-shadow: 0 0 5px lightgrey ;
 }

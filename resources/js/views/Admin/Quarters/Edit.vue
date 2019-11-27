@@ -603,11 +603,12 @@
                 }],
                  assigneesColumns: [{
                     type: 'assignProviderManagerAvatars',
-                    width: 70,
+                    width: 40,
                 }, {
                     type: 'assigneesName',
                     prop: 'name',
-                    label: 'general.name'
+                    label: 'general.name',
+                    width: 150,
                 }, {
                     type: 'companyName',
                     prop: 'company_name',
