@@ -204,7 +204,6 @@ return [
     "media" => "Media",
     "status" => "Stato",
     "priority" => "Priorità",
-    "qualification" => "Qualificazioni",
     "assignees" => "Cessionari",
     "cost_impact" => "Costo Impatto",
     "comments" => "Commenti",

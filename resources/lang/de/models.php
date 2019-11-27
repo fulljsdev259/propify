@@ -607,14 +607,6 @@ return [
             'building' => 'Haus',
             'environment' => 'Ungebung',
         ],
-        'qualification' => [
-            'label' => 'Qualifikation',
-            'none' => 'Keine',
-            'optical' => 'Optisch',
-            'sia' => 'SIA',
-            '2_year_warranty' => '2-Jahresgarantie',
-            'cost_consequences' => 'Kostenfolge',
-        ],
         'action' => [
             'label' => 'Aktion',
             'fix' =>'Beheben',
@@ -690,7 +682,6 @@ return [
             'category' => 'Kategorie wählen',
             'action' => 'Aktion wählen',
             'cost_impact' => 'Kostenfolge wählen',
-            'qualification' => 'Qualifikation wählen',
             'status' => 'Status wählen',
             'due_date' => 'Zu erledigen bis',
             'resident' => 'Suche nach einem Bewohner',

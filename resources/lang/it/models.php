@@ -598,14 +598,6 @@ return [
             "building" => "Edificio",
             "environment" => "Ambiente"
         ],
-        'qualification' => [
-            "label" => "Qualificazione",
-            "none" => "Nessuna",
-            "optical" => "Ottico",
-            "sia" => "Sia",
-            "2_year_warranty" => "2 anni di garanzia",
-            "cost_consequences" => "Conseguenze dei costi",
-        ],
         'location' => [
             'house_entrance' => 'Ingresso Casa',
             'staircase' => 'Scala',
@@ -668,7 +660,6 @@ return [
         ],
         'placeholders' => [
             "category" => "Selezionare la categoria",
-            "qualification" => "Selezionare la qualifica",
             "status" => "Selezionare lo stato",
             "due_date" => "Scegli la data di scadenza",
             "resident" => "Ricerca di un residente",
