@@ -1063,7 +1063,7 @@
                 }
 
                 &:hover :global(td) {
-                    background-color: #f5f7fa;
+                    background-color: var(--background-color-base);
                 }
 
                 &:last-of-type :global(td) {

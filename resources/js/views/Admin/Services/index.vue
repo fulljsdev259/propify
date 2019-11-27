@@ -10,7 +10,8 @@
                         @click="add"
                         icon="ti-plus"
                         size="mini"
-                        class="transparent-button"
+                        type="primary"
+                        class="el-button--transparent"
                 >
                     {{$t('models.service.add_title')}}
                 </el-button>
@@ -21,7 +22,7 @@
 
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <el-button size="mini" class="transparent-button">
+                    <el-button size="mini" class="el-button--transparent">
                         <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">

@@ -1,14 +1,14 @@
 <template>
     <div class="action-group">
-        <el-button v-if="editMode || deleteAction === undefined" @click="SaveAndEdit" size="mini" type="primary" class="transparent-button"> {{this.$t('general.actions.save')}}</el-button>
-        <!-- <el-button @click="saveAndClose" size="mini" type="primary" class="transparent-button"> {{ this.$t('general.actions.save_and_close') }}
+        <el-button v-if="editMode || deleteAction === undefined" @click="SaveAndEdit" size="mini" type="primary" class="el-button--transparent"> {{this.$t('general.actions.save')}}</el-button>
+        <!-- <el-button @click="saveAndClose" size="mini" type="primary" class="el-button--transparent"> {{ this.$t('general.actions.save_and_close') }}
         </el-button> -->
-        <el-button v-if="(deleteAction || undefined) && editMode"  @click="deleteAndClose" size="mini" type="danger" icon="ti-trash"  class="transparent-button"> {{this.$t('general.actions.delete')}}</el-button>
-        <!-- <el-button @click="goToListing" size="mini" type="warning" class="transparent-button"> {{this.$t('general.actions.close')}}
+        <el-button v-if="(deleteAction || undefined) && editMode"  @click="deleteAndClose" size="mini" type="danger" icon="ti-trash"  class="el-button--transparent"> {{this.$t('general.actions.delete')}}</el-button>
+        <!-- <el-button @click="goToListing" size="mini" type="warning" class="el-button--transparent"> {{this.$t('general.actions.close')}}
         </el-button> -->
-        <el-button v-if="editMode" @click="$emit('edit-mode')" size="mini" icon="el-icon-close" type="info" circle class="transparent-button"></el-button>
-        <el-button v-if="!editMode && deleteAction !== undefined" @click="$emit('edit-mode') " size="mini" icon="el-icon-edit" type="primary" class="transparent-button"> {{this.$t('general.actions.update')}}</el-button>
-        <el-button v-if="!editMode" @click="goToListing" size="mini" icon="el-icon-close" type="info" circle class="transparent-button"></el-button>
+        <el-button v-if="editMode" @click="$emit('edit-mode')" size="mini" icon="el-icon-close" type="info" circle class="el-button--transparent"></el-button>
+        <el-button v-if="!editMode && deleteAction !== undefined" @click="$emit('edit-mode') " size="mini" icon="el-icon-edit" type="primary" class="el-button--transparent"> {{this.$t('general.actions.update')}}</el-button>
+        <el-button v-if="!editMode" @click="goToListing" size="mini" icon="el-icon-close" type="info" circle class="el-button--transparent"></el-button>
     </div>
 </template>
 

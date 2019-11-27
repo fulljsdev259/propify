@@ -365,11 +365,11 @@
                                             </el-button> -->
 
                                             <el-button 
-                                                type="primary" 
+                                                type="danger" 
                                                 @click="showEditWorkflow($index)"
                                                 icon="icon-pencil" 
                                                 size="mini" 
-                                                class="round-btn new-design-btn-edit">
+                                                class="round-btn">
                                                 {{ $t('models.quarter.workflow.edit') }}
                                             </el-button>
                                         </el-col>
@@ -1170,14 +1170,6 @@
 
         &.edit {
             padding-top: 40px;
-            .el-button.btn-edit {
-                background-color: #848484;
-                border: none;
-                &:hover {
-                    box-shadow: 0 0 5px #848484;
-                    color: var(--color-white);
-                }
-            }
         }
     }
 

@@ -331,7 +331,7 @@
                 <div class="relation-form-actions">
                     <div class="button-group">
                         <el-button type="default" @click="closeMediaDialog" icon="icon-cancel" class="new-design-btn-close" >{{$t('general.actions.close')}}</el-button>
-                        <el-button type="primary" @click="uploadMedia" icon="icon-floppy" class="new-design-btn-save">{{$t('general.actions.save')}}</el-button>
+                        <el-button type="primary" @click="uploadMedia" icon="icon-floppy">{{$t('general.actions.save')}}</el-button>
                         
                     </div>
                 </div>

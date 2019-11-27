@@ -9,7 +9,8 @@
                     @click="add" 
                     icon="ti-plus" 
                     size="mini" 
-                    class="transparent-button mr-0"
+                    type="primary"
+                    class="el-button--transparent mr-0"
                 >
                     {{$t('models.building.add')}}
                 </el-button>
@@ -23,14 +24,14 @@
                     @click="batchAssignManagers" 
                     icon="ti-user"
                     size="mini"
-                    class="transparent-button"
+                    class="el-button--transparent"
                 >
                     {{$t('models.building.assign_managers')}}
                 </el-button>
             </template> -->
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <el-button size="mini" class="transparent-button menu-button menu-button">
+                    <el-button size="mini" class="el-button--transparent">
                         <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">

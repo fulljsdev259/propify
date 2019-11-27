@@ -185,7 +185,7 @@
                                         icon="icon-plus" 
                                         size="mini" 
                                         :disabled="model.type == ''"
-                                        class="transparent-button">
+                                        class="el-button--transparent">
                                         {{ $t('models.resident.relation.add') }}
                                     </el-button>
                                 </template>
