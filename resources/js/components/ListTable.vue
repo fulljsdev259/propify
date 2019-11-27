@@ -601,12 +601,23 @@
                 let currRouteName = this.$route.name;
                 let name = '';
                 name = `${currRouteName}Edit`;
-                this.$router.push({
-                    name: name,
-                    params: {
-                        id: row.id,
-                    }
-                });
+                if(name == 'adminPinboardEdit') {
+                    this.$router.push({
+                        name: name,
+                        params: {
+                            id: row.id,
+                            type: row.type,
+                        }
+                    });
+                }
+                else {
+                    this.$router.push({
+                        name: name,
+                        params: {
+                            id: row.id,
+                        }
+                    });
+                }
             },
             selectChanged(e, row, column) {
                 row[column.prop] = e;
