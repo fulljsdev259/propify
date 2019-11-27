@@ -118,7 +118,7 @@
                                         <el-input v-model="model.component"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12"
+                                <!-- <el-col :md="12"
                                         v-if="model.category_id && selectedCategoryHasQualification(model.category_id)">
                                     <el-form-item :label="$t('models.request.qualification.label')"
                                                   :rules="validationRules.qualification"
@@ -136,7 +136,7 @@
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
-                                </el-col>
+                                </el-col> -->
                                 
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.request.category_options.keywords')">
