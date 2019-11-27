@@ -299,7 +299,7 @@ export default (config = {}) => {
                                         afterValid(resp);
                                     } else {
                                         // this.$router.push({
-                                        //     name: 'adminResidentsView',
+                                        //     name: 'adminResidentsEdit',
                                         //     params: {id: resp.data.id}
                                         // })
                                         resolve(resp)

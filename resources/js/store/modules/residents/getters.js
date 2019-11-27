@@ -25,7 +25,7 @@ export default {
             resident.name = `${resident.first_name} ${resident.last_name}`;
             resident.status_label = `models.resident.status.${constants.residents.status[resident.status]}`;
             resident.address = ''
-            if(resident.relations.length)
+            if(resident.relations.length && resident.relations[0].address)
                 resident.address = resident.relations[0].address['street'] + ' ' + resident.relations[0].address['house_num']; // @TODO : this address should be checked once the api is done
             resident.status_class_suffix = constants.residents.status[resident.status];
 

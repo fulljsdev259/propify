@@ -823,7 +823,7 @@
             },
             residentEditView(row) {
                 this.$router.push({
-                    name: 'adminResidentsView',
+                    name: 'adminResidentsEdit',
                     params: {
                         id: row.id
                     }

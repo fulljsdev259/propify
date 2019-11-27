@@ -484,7 +484,7 @@
                     else if(column.type === 'residentAvatarWithType')
                         name = 'adminResidentsEdit';
                     else if(column.type === 'residentNameAndType')
-                        name = 'adminResidentsView';
+                        name = 'adminResidentsEdit';
                     else if(column.type === 'assigneesName') {
                         if(item.type === 'manager')
                             name = 'adminPropertyManagersEdit';
@@ -502,7 +502,7 @@
                     else if(column.type === 'buildingName')
                         name = 'adminBuildingsEdit';
                     else if(column.type === 'residentName')
-                        name = 'adminResidentsView';
+                        name = 'adminResidentsEdit';
                     else if(column.type === 'serviceName')
                         name = 'adminServicesEdit';
                 });
