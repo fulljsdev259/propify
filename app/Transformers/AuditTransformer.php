@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Helpers\Helper;
+use App\Models\AuditableModel;
 use App\Models\Pinboard;
 use App\Models\PropertyManager;
 use App\Models\Resident;
@@ -51,6 +52,7 @@ class AuditTransformer extends BaseTransformer
             'updated_at' => $model->updated_at->toDateTimeString(),
             'statement' => ''
         ];
+
         if ($model->user) {
             $response['user'] = (new UserTransformer())->transform($model->user);
         } else {
@@ -132,11 +134,11 @@ class AuditTransformer extends BaseTransformer
                     }
                 }*/    
                 if(in_array($field, ['logo','circle_logo','resident_logo','favicon_icon','mail_password','password'])){
-                    $statement .= __("general.components.common.audit.content.general.update_no_fieldvalue",['fieldname' => $fieldname]);
+                    $statement .= $this->translate_audit("update_no_fieldvalue",['fieldname' => $fieldname]);
                 }
                 else{
                     $old_value = (empty($old_value)) ? __('general.empty') : $old_value;
-                    $statement .= __("general.components.common.audit.content.general.updated",['fieldname' => $fieldname, 'old' => $old_value, 'new' => $new_value]);
+                    $statement .= $this->translate_audit("updated",['fieldname' => $fieldname, 'old' => $old_value, 'new' => $new_value]);
                 }                
                 $statement .= " ";
             }
@@ -144,79 +146,95 @@ class AuditTransformer extends BaseTransformer
             $response['statement'] = $statement;
         }
         elseif($model->event == 'created'){                        
-            $response['statement'] = __("general.components.common.audit.content.general.created",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
+            $response['statement'] = $this->translate_audit("created",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
         }
         elseif($model->event == 'deleted'){
-            $response['statement'] = __("general.components.common.audit.content.general.deleted",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
+            $response['statement'] = $this->translate_audit("deleted",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
         }
         elseif($model->event == 'manager_assigned'){
             $ids = $model->new_values['ids'] ?? [];
             $assigneeNames = $this->getAssigneesName(PropertyManager::class, $ids);
-            $response['statement'] = __("general.components.common.audit.content.general.manager_assigned",['assignee' => $assigneeNames]);
+            $response['statement'] = $this->translate_audit("manager_assigned",['assignee' => $assigneeNames]);
         }
         elseif($model->event == 'manager_unassigned'){
             $ids = $model->old_values['ids'] ?? [];
             $assigneeNames = $this->getAssigneesName(PropertyManager::class, $ids);
-            $response['statement'] = __("general.components.common.audit.content.general.manager_unassigned", ['assignee' => $assigneeNames]);
+            $response['statement'] = $this->translate_audit("manager_unassigned", ['assignee' => $assigneeNames]);
         }
         elseif($model->event == 'provider_assigned'){
             $ids = $model->old_values['ids'] ?? [];
             $assigneeNames = $this->getAssigneesName(ServiceProvider::class, $ids);
-            $response['statement'] = __("general.components.common.audit.content.general.provider_assigned",['assignee' => $assigneeNames]);
+            $response['statement'] = $this->translate_audit("provider_assigned",['assignee' => $assigneeNames]);
         }
         elseif($model->event == 'provider_unassigned'){
             $ids = $model->old_values['ids'] ?? [];
             $assigneeNames = $this->getAssigneesName(ServiceProvider::class, $ids);
-            $response['statement'] = __("general.components.common.audit.content.general.provider_unassigned",['assignee' => $assigneeNames]);
+            $response['statement'] = $this->translate_audit("provider_unassigned",['assignee' => $assigneeNames]);
         }
         elseif($model->event == 'media_uploaded'){            
-            $response['statement'] = __("general.components.common.audit.content.general.media_uploaded");
+            $response['statement'] = $this->translate_audit("media_uploaded");
         }
         elseif($model->event == 'media_deleted'){            
-            $response['statement'] = __("general.components.common.audit.content.general.media_deleted");
+            $response['statement'] = $this->translate_audit("media_deleted");
         }
         elseif($model->event == 'avatar_uploaded'){            
-            $response['statement'] = __("general.components.common.audit.content.general.avatar_uploaded",['auditable_type' => $model->auditable_type]);
+            $response['statement'] = $this->translate_audit("avatar_uploaded",['auditable_type' => $model->auditable_type]);
         }
         elseif($model->event == 'provider_notified'){
             $providerName = $model->new_values['service_provider']['company_name'] ?? $model->new_values['service_provider']['name'];
-            $response['statement'] = __("general.components.common.audit.content.general.provider_notified",['providerName' => $providerName]);
+            $response['statement'] = $this->translate_audit("provider_notified",['providerName' => $providerName]);
         }  
         elseif($model->event == 'quarter_assigned'){
-            $response['statement'] = __("general.components.common.audit.content.general.quarter_assigned",['quarterName' => $model->new_values['quarter_name']]);
+            $response['statement'] = $this->translate_audit("quarter_assigned",['quarterName' => $model->new_values['quarter_name']]);
         }
         elseif($model->event == 'quarter_unassigned'){
-            $response['statement'] = __("general.components.common.audit.content.general.quarter_unassigned",['quarterName' => $model->old_values['quarter_name']]);
+            $response['statement'] = $this->translate_audit("quarter_unassigned",['quarterName' => $model->old_values['quarter_name']]);
         }
         elseif($model->event == 'building_assigned'){
-            $response['statement'] = __("general.components.common.audit.content.general.building_assigned",['buildingName' => $model->new_values['building_name']]);
+            $response['statement'] = $this->translate_audit("building_assigned",['buildingName' => $model->new_values['building_name']]);
         }
         elseif($model->event == 'building_unassigned'){
-            $response['statement'] = __("general.components.common.audit.content.general.building_unassigned",['buildingName' => $model->old_values['building_name']]);
+            $response['statement'] = $this->translate_audit("building_unassigned",['buildingName' => $model->old_values['building_name']]);
         }
         elseif($model->event == 'notifications_sent'){
-            $response['statement'] = __("general.components.common.audit.content.general.notifications_sent",['auditable_type' => $model->auditable_type]);
+            $response['statement'] = $this->translate_audit("notifications_sent",['auditable_type' => $model->auditable_type]);
         }
         elseif($model->event == 'liked'){
-            $response['statement'] = __("general.components.common.audit.content.general.liked", ['userName' => $response['user']['name']]);
+            $response['statement'] = $this->translate_audit("liked", ['userName' => $response['user']['name']]);
         }
         elseif($model->event == 'unliked'){
-            $response['statement'] = __("general.components.common.audit.content.general.unliked", ['userName' => $response['user']['name']]);
+            $response['statement'] = $this->translate_audit("unliked", ['userName' => $response['user']['name']]);
         }
         elseif($model->event == 'new_resident_pinboard_created'){
             $pinboard = Pinboard::find($model->auditable_id);
             if($pinboard){
                 $user = User::find($pinboard->user_id);
                 if($user){
-                    $response['statement'] = __("general.components.common.audit.content.general.new_resident_pinboard_created",['userName' => $user->name]);
+                    $response['statement'] = $this->translate_audit("new_resident_pinboard_created",['userName' => $user->name]);
                 }                
             }            
+        } elseif(AuditableModel::EventWorkflowCreated == $model->event){
+            $response['statement'] = $this->translate_audit("workflow_created");
         }
         elseif($model->event == 'relation_created'){
             $resident = Resident::find($model->auditable_id);
             if($resident){                                
-                $response['statement'] = __("general.components.common.audit.content.general.relation_created",['userName' => $resident->getNameAttribute()]);
-            }            
+                $response['statement'] = $this->translate_audit("relation_created", ['userName' => $resident->getNameAttribute()]);
+            }
+        } elseif(AuditableModel::MassAssignments == $model->event) {
+            $users = [];
+            foreach ($model->new_values as $type => $ids) {
+                if($type == get_morph_type_of(PropertyManager::class)) {
+                    $users[] = $this->getAssigneesName(PropertyManager::class, $ids);
+                } elseif ($type == get_morph_type_of(ServiceProvider::class)) {
+                    $users[] = $this->getAssigneesName(ServiceProvider::class, $ids);
+                } else {
+                    // @TODO if need(now not need)
+                }
+            }
+            $response['statement'] = $this->translate_audit("mass_assigned", ['users' => implode(', ', $users)]);
+        } else {
+//            dd($model->event);
         }
         return $response;
     }
@@ -304,5 +322,11 @@ class AuditTransformer extends BaseTransformer
         // @TODO here used many queries need optimize
         $items = $class::whereIn('id', $ids)->get(['first_name', 'last_name']);
         return $items->pluck('name')->implode(', ');
+    }
+
+    protected function translate_audit($key, $replace = [], $locale = null)
+    {
+        $key = 'general.components.common.audit.content.general.' . $key;
+        return __($key, $replace, $locale);
     }
 }
