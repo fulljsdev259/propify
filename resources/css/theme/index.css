@@ -12532,3 +12532,12 @@ input.el-input__inner[type=number]{
 .el-button--transparent span{
     padding-left: 5px;
 }
+
+.el-button--assign, .el-button--assign.is-disabled {
+    background-color: #3D3F41;
+    color: var(--color-white);
+}
+
+.el-button--assign:focus, .el-button--assign:hover {
+    background-color: var(--background-color-base);
+}

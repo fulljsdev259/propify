@@ -262,7 +262,7 @@
                                     </el-select>
                                 </el-col> -->
                                 <el-col id="managerAssignBtn">
-                                    <el-button :disabled="!toAssign.length" @click="assignUsers" class="full-button assign-button"
+                                    <el-button :disabled="!toAssign.length" @click="assignUsers" class="full-button el-button--assign"
                                                 icon="ti-save">
                                         &nbsp;{{$t('general.assign')}}
                                     </el-button>

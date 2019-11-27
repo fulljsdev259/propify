@@ -38,7 +38,7 @@
             </el-select>
         </el-col>
         <el-col id="assignBtn" :style="innerBtnWidth">
-            <el-button :disabled="!toAssign" @click="assign(toAssign)" type="primary">
+            <el-button :disabled="!toAssign" class="el-button--assign" @click="assign(toAssign)" >
                 <div id="innerBtn" ref="innerBtn">
                     <i class="ti-save"></i>
                     <span>&nbsp;{{$t('general.assign')}}</span>
