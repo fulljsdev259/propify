@@ -314,6 +314,7 @@
                         </el-table-column>
                         <el-table-column
                             align="right"
+                            width="30"
                         >
                             <template slot-scope="scope">
                                 <el-tooltip

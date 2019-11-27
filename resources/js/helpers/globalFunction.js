@@ -92,6 +92,11 @@ let globalFunction = {
             }
 
             return floor_label;
+        },
+        getSelectOptionOfRelation(relation) {
+            let house_num = relation.building && relation.address ? relation.address.house_num + " -- " : ''
+            let floor_label = this.getTranslatedFloorOfUnit(relation.unit)
+            relation.building_room_floor_unit = relation.unit.internal_quarter_id + " -- " + house_num + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
         }
     } 
  }
