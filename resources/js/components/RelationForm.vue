@@ -1207,7 +1207,7 @@ c
         table {
             width: 100%;
             td, th {
-                padding: 2px 0;
+                padding: 4px 0;
             }
         }
 
