@@ -160,7 +160,7 @@
         </el-row>
         <el-row :gutter="20" style="margin-top: 10px; margin-left: 0; margin-right: 0">
             <el-col :md="24" class="drawer-actions">
-                <el-button type="default" size="mini" icon="icon-cancel" @click="close" class="round-btn new-design-btn-close">&nbsp;{{ $t('models.quarter.workflow.close') }}</el-button>
+                <el-button type="default" size="mini" icon="icon-cancel" @click="close" class="round-btn">&nbsp;{{ $t('models.quarter.workflow.close') }}</el-button>
                 <el-button v-if="mode=='edit'" type="danger" size="mini" icon="icon-trash-empty" @click="deleteItem" class="round-btn">&nbsp;{{ $t('models.quarter.workflow.delete') }}</el-button>
                 <!-- <el-tooltip
                         :content="$t('models.quarter.workflow.tooltips.save')"
