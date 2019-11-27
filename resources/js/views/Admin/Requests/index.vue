@@ -236,7 +236,6 @@
             }),
             formattedItems() {
                 return this.items.map((request) => {
-                    //request.translated_qualification_label = request.qualification_label != "" ? this.$t(`models.request.qualification.${request.qualification_label}`) : "";
                     return request;
                 });
             },
@@ -306,12 +305,6 @@
                         key: 'phase_id',
                         data: this.prepareFilters("capture_phase"),
                     },
-                    // {
-                    //     name: this.$t('general.filters.qualification'),
-                    //     type: 'select',
-                    //     key: 'qualification_id',
-                    //     data: this.prepareFilters("qualification"),
-                    // },
                     {
                         name: this.$t('general.filters.created_from'),
                         type: 'date',
