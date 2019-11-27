@@ -2,7 +2,7 @@
     <div class="residents-add" v-loading.fullscreen.lock="loading.state">
         <div class="main-content">
             <heading :title="$t('models.resident.add')" icon="icon-group" shadow="heavy" bgClass="bg-transparent">
-                <add-actions :saveAction="submit" editRoute="adminResidentsView" route="adminResidents"/>
+                <add-actions :saveAction="submit" editRoute="adminResidentsEdit" route="adminResidents"/>
             </heading>
             <div class="crud-view">
                 <el-form :model="model" ref="form">

@@ -10,7 +10,8 @@
         class="file-uploader"
     >
         <div class="uploader-icon-div">
-            <i class="icon-plus"></i>
+            <i class="icon-upload-cloud"></i>
+            <span>Upload</span>
         </div>
     </el-upload>
 </template>
@@ -67,20 +68,22 @@
 <style lang="scss">
     .upload-custom {
 
-        display: grid;
-        grid-gap: 8px;
-        grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
-        grid-auto-rows: -webkit-min-content;
-        grid-auto-rows: min-content;
-        padding-top: 10px;
+        // display: grid;
+        // grid-gap: 8px;
+        // grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+        // grid-auto-rows: -webkit-min-content;
+        // grid-auto-rows: min-content;
+        // padding-top: 10px;
+        width: 30%;
         
         .el-upload {
             border: none;
+            width: 100%;
 
             .el-upload-dragger {
                 width: 100%;
                 height: 0;
-                padding-top: 100%;
+                padding-top: 50%;
                 background: transparent;
                 border-style: dashed;
                 border-width: 2px;
@@ -113,8 +116,16 @@
                     -webkit-box-pack: center;
                     -ms-flex-pack: center;
                     justify-content: center;
+                    
+                    i {
+                        font-size: 25px;
+                        line-height: 25px;
+                    }
 
-
+                    span {
+                        font-size: 15px;
+                        line-height: 15px;
+                    }
                 }
             }
         }

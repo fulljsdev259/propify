@@ -186,7 +186,7 @@ export default (config = {}) => {
                 this.visibleMediaDialog = false;
             },
             uploadMedia() {
-                this.model.media.map(async item => {
+                this.new_media.map(async item => {
                     if(!item.url) {
                         item.id = this.model.id
                         let resp = await this.uploadMediaFile(item)
@@ -299,7 +299,7 @@ export default (config = {}) => {
                                         afterValid(resp);
                                     } else {
                                         // this.$router.push({
-                                        //     name: 'adminResidentsView',
+                                        //     name: 'adminResidentsEdit',
                                         //     params: {id: resp.data.id}
                                         // })
                                         resolve(resp)

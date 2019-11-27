@@ -38,7 +38,7 @@
                 <listing-details :data="openedListing" v-if="openedListing" />
             </el-dialog>
         </div>
-        <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
+        <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked :is-resident="true">
             <ui-divider content-position="left" v-if="editingListing"><i class="ti-pencil"></i> {{$t('resident.edit_listing')}}</ui-divider>
             <ui-divider content-position="left" v-else>{{$t('resident.add_listing')}}</ui-divider>
             <div class="content">

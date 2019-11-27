@@ -96,24 +96,6 @@
                                 <el-input v-model="model.component"></el-input>
                             </el-form-item>
                         </el-col>
-                        <!-- <el-col :md="12"
-                                v-if="this.showQualification == true">
-                            <el-form-item :label="$t('models.request.qualification.label')"
-                                        :rules="validationRules.qualification"
-                                        prop="qualification">
-                                <el-select :placeholder="$t('models.request.placeholders.qualification')"
-                                        class="custom-select"
-                                        v-model="model.qualification"
-                                        @change="changeQualification">
-                                    <el-option
-                                            :key="qualification.value"
-                                            :label="qualification.name"
-                                            :value="qualification.value"
-                                            v-for="qualification in qualifications">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col> -->
                         <el-col :md="12"
                                 v-if="this.showAction == true">
                             <el-form-item :label="$t('models.request.action.label')"

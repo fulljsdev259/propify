@@ -71,6 +71,32 @@ let globalFunction = {
          
             return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
           
+        },
+        getTranslatedFloorOfUnit(unit) {
+            let floor_label = '';
+            if(unit.attic == 'attic')
+            {
+                floor_label = this.$t('models.unit.floor_title.top_floor')
+            }
+            else if(unit.floor > 0)
+            {
+                floor_label = unit.floor + ". " + this.$t('models.unit.floor_title.upper_ground_floor')
+            }
+            else if(unit.floor == 0)
+            {
+                floor_label = this.$t('models.unit.floor_title.ground_floor')
+            }
+            else if(unit.floor < 0)
+            {
+                floor_label = unit.floor + ". " + this.$t('models.unit.floor_title.under_ground_floor')
+            }
+
+            return floor_label;
+        },
+        getSelectOptionOfRelation(relation) {
+            let house_num = relation.building && relation.address ? relation.address.house_num + " -- " : ''
+            let floor_label = this.getTranslatedFloorOfUnit(relation.unit)
+            relation.building_room_floor_unit = relation.unit.internal_quarter_id + " -- " + house_num + relation.unit.room_no + " " + this.$t('models.unit.rooms') + " -- " + floor_label + " -- " +  relation.unit.name
         }
     } 
  }

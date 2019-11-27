@@ -11,7 +11,6 @@ export default {
             request.status_label = requests.status[request.status];
             
 
-            request.qualification_label = request.qualification > 0 && request.qualification <= 5 ? requests.qualification[request.qualification] : "";
             request.resident_name = request.resident ? `${request.resident.first_name} ${request.resident.last_name}` : '';
             request.category_name = request.category.name;
             

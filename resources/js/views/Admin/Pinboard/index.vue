@@ -1,6 +1,10 @@
 <template>
     <div class="pinboard">
-        <heading :title="$t('models.pinboard.title')" icon="icon-megaphone-1" shadow="heavy" class="padding-right-300">
+        <heading :title="$t('models.pinboard.title')"
+                 icon="icon-megaphone-1"
+                 shadow="heavy"
+                 :searchBar="true"
+                 @search-change="search=$event">
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
             </template>
@@ -36,6 +40,7 @@
             :isLoadingFilters="{state: isLoadingFilters}"
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
+            :searchText="search"
             @selectionChanged="selectionChanged"
         >
         </list-table>
@@ -108,29 +113,6 @@
                         getter: "pinboard",
                         onChange: this.listingSelectChangedNotify
                     }
-                }, {
-                    // width: 170,
-                    width: 150,
-                    actions: [
-                        // {
-                        //     type: 'primary',
-                        //     title: this.$t('general.actions.view'),
-                        //     onClick: this.show,
-                        //     permissions: [
-                        //         this.$permissions.view.pinboard
-                        //     ],
-                        //     hidden: this.checkPinboardType
-                        // }, 
-                        {
-                            type: '', 
-                            title: 'general.actions.edit',
-                            editUrl: 'adminPinboardEdit',
-                            permissions: [
-                                this.$permissions.update.pinboard
-                            ],
-                            hidden: this.checkPinboardType
-                        }
-                    ]
                 }],
                 pinboardDetailsVisible: false,
                 quarters:[],
@@ -139,6 +121,7 @@
                 status: [],
                 type: [],
                 isLoadingFilters: false,
+                search: '',
             };
         },
         computed: {

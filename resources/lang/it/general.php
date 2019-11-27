@@ -96,7 +96,6 @@ return [
         'type' => 'Modello',
         'language' => 'Lingua',   
         'phase' => 'Fase',
-        'qualification' => 'Qualificazioni', 
         'saved_filters' => 'Filtri salvati',   
         'fields' => 'I campi', 
     ],    

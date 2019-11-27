@@ -203,7 +203,6 @@ return [
     "media" => "Medien",
     "status" => "Status",
     "priority" => "Priorität",
-    "qualification" => "Qualifizierung",
     "assignees" => "Auzuführender Betrieb",
     "cost_impact" => "Zu Lasten von",
     "comments" => "Kommentare",

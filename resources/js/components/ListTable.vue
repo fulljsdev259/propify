@@ -278,6 +278,9 @@
                             />
                         </el-tooltip>
                     </div>
+                    <div v-else-if="column.withTranslatedFloor">
+                        {{getTranslatedFloorOfUnit(scope.row)}}
+                    </div>
                     <div v-else-if="column.withStatus">
                         <div class="avatars-wrapper">
                             <span :key="index" v-for="(status, index) in $constants.relations.status">
@@ -449,6 +452,8 @@
     import SelectLanguage from 'components/SelectLanguage';
     import ListTableSelect from 'components/ListTableSelect';
     import ListFilterSelect from 'components/ListFilterSelect';
+    import globalFunction from "helpers/globalFunction";
+
 
     export default {
         name: 'ListTable',
@@ -462,6 +467,7 @@
             ListTableSelect,
             ListFilterSelect,
         },
+        mixins: [globalFunction],
         props: {
             header: {
                 type: Array,
