@@ -181,7 +181,7 @@
                     <el-tabs type="border-card" v-model="activeTab1">
                         <el-tab-pane name="relation">
                             <span slot="label">
-                                Beziehungen
+                                {{ $t('general.relations') }}
                                 <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
                             </span>
                             <relation-list-table
@@ -231,12 +231,12 @@
                     <el-tabs type="border-card" v-model="activeTab2">
                         <el-tab-pane name="tab_3_1">
                             <span slot="label">
-                                Anliegen
+                                {{ $t('models.resident.request') }}
                             </span>
                         </el-tab-pane>
                         <el-tab-pane name="tab_3_2">
                             <span slot="label">
-                                Pinnwand-Beitrage
+                                {{ $t('models.resident.pinboard_contribution') }}
                             </span>
                         </el-tab-pane>
                         <el-tab-pane name="audit">
@@ -583,7 +583,7 @@
             },
             status() {
                 let result = 'not_active';
-                let role = null, inactive_role = '';
+                let role = '', inactive_role = '';
                 this.model.relations.forEach((item) => {
                     let type = this.$t(`models.resident.relation.type.${this.constants.relations.type[item.type]}`);
                     if(item.status == 1 && !role.includes(type)) {
@@ -598,7 +598,7 @@
                         inactive_role = `${inactive_role}${type}`;
                     }
                 });
-                if(role === null)
+                if(role === '')
                     role = inactive_role;
                 return {
                     text: result,
@@ -923,6 +923,9 @@
         
         .el-tab-pane {
             height: 300px;
+            :global(.el-table .el-table__body) {
+                max-height: 235px;
+            }
             & > div {
                 &::-webkit-scrollbar{
                     width: 8px;
@@ -940,14 +943,13 @@
         }
         #pane-relation, #pane-files {
             & > div {
-                height: 250px;
-                overflow: auto;
+                min-height: 235px;
             }
             & > .el-button {
-                margin-top: 10px;
+                position: absolute;
+                bottom: 20px;
+                right: 30px;
                 padding: 12px 15px;
-                margin-right: 5px;
-                margin-bottom: 5px;
                 background-color: #878810;
                 border: transparent;
                 &:hover {
@@ -955,6 +957,10 @@
                     box-shadow: 0px 0px 5px#878810;
                 }
             }
+        }
+        :global(#pane-relation .el-button) {
+            margin-top: 0px !important;
+            margin-bottom: 0px !important;
         }
 
         
