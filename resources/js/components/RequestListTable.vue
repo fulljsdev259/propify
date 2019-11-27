@@ -23,15 +23,18 @@
                     :element-loading-spinner="loading.icon"
                     :element-loading-text="$t(loading.text)"
                     v-loading="isLoadingFilters.state"
-            >
+            > 
                 <el-row :gutter="10">
                     <el-col :key="key" :span="filterColSize" v-for="(filter, key) in filters">
                         <template v-if="!filter.parentKey || filterModel[filter.parentKey]">
                             <el-form-item
                                 v-if="filter.type === filterTypes.select && filter.data ">
-                        
+                                
                                 <list-filter-select
-                                    :filter="filter"
+                                    :type="filter.key"
+                                    :name="filter.name"
+                                    :searchBox="filter.searchBox"
+                                    :data="filter.data"
                                     :selectedOptions="filterModel[filter.key]"
                                     @select-changed="handleSelectChange($event, filter)"
                                 >

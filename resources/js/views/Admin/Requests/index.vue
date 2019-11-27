@@ -243,7 +243,6 @@
                 return this.$route.name;
             },
             filters() {
-                
                 let filters = [
                     {
                         name: this.$t('general.placeholders.search'),
