@@ -844,9 +844,9 @@
         }
     }
     .list-table-search {
-        position: fixed;
-        right: 40px;
-        top: 30px;
+        // position: fixed;
+        // right: 40px;
+        // top: 30px;
         z-index: 99;
         width: 250px;
         &.el-input {

@@ -11,7 +11,7 @@
                     {{$t('models.request.add_title')}}
                 </el-button>
             </template>
-            <template v-if="$can($permissions.assign.manager)">
+            <!-- <template v-if="$can($permissions.assign.manager)">
                 <el-dropdown split-button 
                             :disabled="!selectedItems.length" 
                             size="mini"
@@ -21,6 +21,16 @@
                             @command="handleCommand">
                     {{$t('models.request.mass_edit.label')}}
                     <el-dropdown-menu slot="dropdown">
+                        
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </template> -->
+            <template>
+                <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
+                    <el-button size="mini" class="transparent-button">
+                        <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item 
                             :disabled="!selectedItems.length" 
                             :command="option"
@@ -28,10 +38,18 @@
                             v-for="option in massEditOptions">
                             {{$t('models.request.mass_edit.options.' + option)}}
                         </el-dropdown-item>
+                        <el-dropdown-item
+                                v-if="$can($permissions.delete.request)"
+                                :disabled="!selectedItems.length"
+                                icon="ti-trash"
+                                command="delete"
+                        >
+                            {{$t('general.actions.delete')}}
+                        </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </template>
-            <template v-if="$can($permissions.delete.request)">
+            <!-- <template v-if="$can($permissions.delete.request)">
                 <el-button 
                     :disabled="!selectedItems.length" 
                     @click="batchDeleteWithIds" 
@@ -41,7 +59,8 @@
                 >
                     {{$t('general.actions.delete')}}
                 </el-button>
-            </template>
+            </template> -->
+
         </heading>
         <request-list-table
             :fetchMore="fetchMore"
@@ -342,6 +361,16 @@
         },
         methods: {
             ...mapActions(['updateRequest', 'getQuarters', 'getServices', 'getBuildings', 'getResidents', 'downloadRequestPDF', 'getServices', 'getPropertyManagers', 'massEdit']),
+            handleMenuClick(command) {
+                if(command == 'delete')
+                    this.batchDeleteWithIds();
+                else  {
+                    this.massStatus = ''
+                    this.resetToAssignList();
+                    this.activeMassEditOption = option
+                    this.batchEditVisible = true
+                }
+            },
             async getFilterBuildings() {
                 const buildings = await this.getBuildings({
                     get_all: true
