@@ -12522,6 +12522,13 @@ input.el-input__inner[type=number]{
     color: var(--color-text-secondary)
 }
 
+/* .el-button--transparent:focus{
+    background-color: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    box-shadow: none
+} */
+
 .el-button--transparent span{
     padding-left: 5px;
 }

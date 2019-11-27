@@ -445,7 +445,7 @@
                     width: 120,
                     label: 'models.request.status.label'
                 }],
-                requestActions: [{
+                requestActions: [/*{
                     width: 70,
                     buttons: [{
                         icon: 'ti-search',
@@ -453,7 +453,7 @@
                         onClick: this.requestEditView,
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 assigneesColumns: [{
                     type: 'requestResidentAvatar',
                     width: 70                    

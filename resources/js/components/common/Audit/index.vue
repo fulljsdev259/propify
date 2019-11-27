@@ -8,7 +8,7 @@
                     placement="bottom"
                     width="200"
                     trigger="click">
-                        <el-button type="success" icon="icon-filter" size="mini" slot="reference" plain round>{{$t('resident.filters')}}</el-button>
+                        <el-button type="success" icon="icon-filter" size="mini" slot="reference" round>{{$t('resident.filters')}}</el-button>
                         <filters ref="filters" :data="filters.data" :schema="filters.schema" @changed="filtersChanged" @update:data="filterReset" />
                         <el-button size="mini" icon="icon-eraser" @click="filterReset" type="success">{{$t('resident.reset_filters')}}</el-button>
                 </el-popover>

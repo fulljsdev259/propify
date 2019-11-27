@@ -695,7 +695,7 @@
                     width: 120,
                     label: 'models.request.status.label'
                 }],
-                requestActions: [{
+                requestActions: [/*{
                     width: 70,
                     buttons: [{
                         icon: 'ti-search',
@@ -703,7 +703,7 @@
                         onClick: this.requestEditView,
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 assignmentsProviderColumns: [{
                 //     type: 'assignProviderManagerAvatars',
                 //     width: 70,

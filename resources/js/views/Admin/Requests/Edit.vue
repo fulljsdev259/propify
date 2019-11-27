@@ -797,9 +797,9 @@
     };
 </script>
 <style lang="scss" scoped>
-    .download-pdf {
-        margin-right: 5px;
-    }
+    // .download-pdf {
+    //     margin-right: 5px;
+    // }
 
     .services-edit {
         .heading {

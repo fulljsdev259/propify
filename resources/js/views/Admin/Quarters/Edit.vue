@@ -283,15 +283,7 @@
                                 {{ $t('models.quarter.workflow.label') }}
                                 <!-- <el-badge :value="workflowCount" :max="99" class="admin-layout">{{ $t('models.quarter.workflow.label') }} </el-badge> -->
                             </span>
-                            <div class="workflow-button-bar">
-                                <el-button 
-                                        type="primary" 
-                                        @click="showAddWorkflow" 
-                                        icon="icon-plus" 
-                                        size="mini" 
-                                        class="add-workflow-btn">
-                                </el-button>
-                            </div>
+                            
                             
                             <workflow-form v-if="isAddWorkflow"
                                 mode="add" 
@@ -376,6 +368,17 @@
                                     </el-row>
                                 </el-collapse-item>
                             </el-collapse>
+
+                            <div class="workflow-button-bar">
+                                <el-button 
+                                        type="primary" 
+                                        @click="showAddWorkflow" 
+                                        icon="icon-plus" 
+                                        size="mini" 
+                                        class="add-workflow-btn">
+                                    {{ $t('models.quarter.workflow.add') }}
+                                </el-button>
+                            </div>
                         </el-tab-pane>
                         <!-- <el-tab-pane name="residents">                        
                             <span slot="label">
@@ -582,7 +585,7 @@
                     width: 120,
                     label: 'models.request.status.label'
                 }],
-                requestActions: [{
+                requestActions: [/*{
                     width: 70,
                     buttons: [{
                         icon: 'ti-search',
@@ -590,7 +593,7 @@
                         onClick: this.requestEditView,
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 assigneesActions: [{
                     width: 70,
                     buttons: [ {
@@ -1166,11 +1169,11 @@
     .workflow-button-bar {
         display: flex;
         justify-content: flex-end;
-        margin-bottom: 10px;
+        margin-top: 40px;
 
-        &.edit {
-            padding-top: 40px;
-        }
+        // &.edit {
+        //     padding-top: 40px;
+        // }
     }
 
     .el-tag {
@@ -1210,8 +1213,9 @@
     }
 
     .add-workflow-btn {
-        border-radius: 5px;
-        padding: 3px;
+        // border-radius: 5px;
+        // padding: 3px;
+        padding: 12px 15px;
     }
 
     .assign-button {
