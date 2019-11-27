@@ -99,6 +99,7 @@ return [
         'qualification' => 'Qualification',
         'saved_filters' => 'Saved Filters',
         'fields' => 'Fields',
+        'my_filters' => 'My Filter',
     ],    
     'no' => 'No',
     'first_name' => 'First name',
