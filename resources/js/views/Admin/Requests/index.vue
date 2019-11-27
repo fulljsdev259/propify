@@ -33,10 +33,11 @@
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item 
                             :disabled="!selectedItems.length" 
-                            :command="option"
-                            :key="option"
+                            :command="option.key"
+                            :key="option.key"
+                            :icon="option.icon"
                             v-for="option in massEditOptions">
-                            {{$t('models.request.mass_edit.options.' + option)}}
+                            {{$t('models.request.mass_edit.options.' + option.key)}}
                         </el-dropdown-item>
                         <el-dropdown-item
                                 v-if="$can($permissions.delete.request)"
@@ -83,7 +84,7 @@
                    v-loading="processAssignment" width="30%">
             <span slot="title">
                 <template v-for="option in massEditOptions">
-                    <span :key="option" v-if="activeMassEditOption == option">
+                    <span :key="option.key" v-if="activeMassEditOption == option.key">
                         {{$t('models.request.mass_edit.' + option + '.modal.heading_title')}}
                     </span>
                 </template>
@@ -241,9 +242,18 @@
                 activeMassEditOption: 'service_provider',
                 massStatus: '',
                 massEditOptions : [
-                    'service_provider',
-                    'property_manager',
-                    'change_status'
+                    {
+                        key : 'service_provider',
+                        icon : 'icon-tools'
+                    },
+                    {
+                        key : 'property_manager',
+                        icon : 'icon-users'
+                    },
+                    {
+                        key : 'change_status',
+                        icon : 'icon-publish'
+                    }
                 ]
             }
         },
@@ -367,7 +377,7 @@
                 else  {
                     this.massStatus = ''
                     this.resetToAssignList();
-                    this.activeMassEditOption = option
+                    this.activeMassEditOption = command
                     this.batchEditVisible = true
                 }
             },
