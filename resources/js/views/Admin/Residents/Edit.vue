@@ -585,7 +585,9 @@
                 this.model.relations.forEach((item) => {
                     if(item.status == 1) {
                         result = 'active';
-                        role = this.$t(`models.resident.relation.type.${this.constants.relations.type[item.type]}`);
+                        if(role != '')
+                            role = `${role}, `;
+                        role = `${role}${this.$t(`models.resident.relation.type.${this.constants.relations.type[item.type]}`)}`;
                     }
                 });
                 return {
@@ -728,8 +730,12 @@
                 margin-bottom: 40px;
                 margin-left: 15px;
                 .el-tag {
-                    font-weight: 900;
+                    font-weight: 700;
                     border: transparent;
+                    padding: 0 15px;
+                    font-size: 13px;
+                    height: 30px;
+                    line-height: 30px;
                 }
             }
             .type {
