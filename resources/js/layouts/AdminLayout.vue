@@ -558,6 +558,7 @@
                 &:hover {
                     background-color: var(--background-color-base);
                     color: var(--color-text-primary);
+                    box-shadow: none;
                 }
             }
         }
