@@ -606,7 +606,7 @@
                         name: name,
                         params: {
                             id: row.id,
-                            type: row.type,
+                            type: this.$constants.pinboard.type[row.type],
                         }
                     });
                 }
