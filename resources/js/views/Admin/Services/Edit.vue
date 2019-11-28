@@ -283,7 +283,7 @@
                     width: 120,
                     label: 'models.request.status.label'
                 }],
-                requestActions: [{
+                requestActions: [/*{
                     width: 70,
                     buttons: [{
                         icon: 'ti-search',
@@ -291,7 +291,7 @@
                         onClick: this.requestEditView,
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 assignmentsColumns: [{
                     prop: 'name',
                     label: 'general.name',

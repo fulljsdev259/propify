@@ -79,14 +79,14 @@ export default (config = {}) => {
                     prop: 'category.name',
                     label: 'models.request.category'
                 }],
-                requestActions: [{
+                requestActions: [/*{
                     width: 80,
                     buttons: [{
                         title: 'general.actions.edit',
                         type: 'primary',
                         onClick: this.requestEditView
                     }]
-                }],
+                }*/],
                 toAssign: '',
                 addedAssigmentList: [],
                 media: [],

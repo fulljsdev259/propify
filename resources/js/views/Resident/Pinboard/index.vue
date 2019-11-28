@@ -37,7 +37,7 @@
             </div>
             
         </div>
-        <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked :is-resident="true">
+        <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="2" direction="right" docked :is-resident="true">
             <!-- <a class="a-close-button" @click="visibleDrawer=!visibleDrawer">
                 <span class="el-icon-close"></span>
             </a> -->

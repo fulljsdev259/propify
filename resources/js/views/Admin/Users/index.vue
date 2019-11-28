@@ -1,5 +1,5 @@
 <template>
-    <div class="services">
+    <div class="services list-view">
         <heading icon="icon-user" :title="$t('general.admin_menu.admins')" shadow="heavy" class="padding-right-300">  
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>
@@ -9,7 +9,7 @@
                     @click="add" 
                     icon="ti-plus" 
                     size="mini" 
-                    class="transparent-button"
+                    class="el-button--transparent"
                 >
                     {{$t('general.actions.add')}} {{ $t('general.roles.administrator') }}
                 </el-button>
@@ -20,7 +20,7 @@
                     @click="batchDeleteWithIds" 
                     icon="ti-trash" 
                     size="mini"
-                    class="transparent-button"
+                    class="el-button--transparent"
                 >
                     {{$t('general.actions.delete')}}
                 </el-button>

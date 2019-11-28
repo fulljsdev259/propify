@@ -88,7 +88,7 @@
             />
         </div>
         
-        <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="1" direction="right" docked @update:visibleDrawer="resetDataFromDrawer" :class="{'full-width': !openedRequest}" :is-resident="true">
+        <ui-drawer :size="448" :visible.sync="visibleDrawer" :z-index="2" direction="right" docked @update:visibleDrawer="resetDataFromDrawer" :class="{'full-width': !openedRequest}" :is-resident="true">
             <!-- <a class="a-close-button" :class="{'display-block': !openedRequest}" @click="visibleDrawer=!visibleDrawer">
                 <span class="el-icon-close"></span>
             </a> -->

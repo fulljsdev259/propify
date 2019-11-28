@@ -58,7 +58,7 @@
                             type: 'default',
                             icon: 'el-icon-user',
                             title: 'models.resident.view',
-                            editUrl: 'adminResidentsView',
+                            editUrl: 'adminResidentsEdit',
                             permissions: [
                                 this.$permissions.update.resident
                             ]

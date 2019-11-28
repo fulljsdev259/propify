@@ -148,7 +148,7 @@
                                         <label slot="label">
                                             {{$t('general.resident')}}
                                         </label>
-                                        <router-link :to="{name: 'adminResidentsView', params: {id: model.resident.id}}"
+                                        <router-link :to="{name: 'adminResidentsEdit', params: {id: model.resident.id}}"
                                                      class="resident-link">
                                             <avatar :size="30"
                                                     :src="'/' + model.resident.user.avatar"
@@ -708,9 +708,9 @@
     };
 </script>
 <style lang="scss" scoped>
-    .download-pdf {
-        margin-right: 5px;
-    }
+    // .download-pdf {
+    //     margin-right: 5px;
+    // }
 
     .services-edit {
         .heading {

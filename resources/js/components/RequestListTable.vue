@@ -23,22 +23,25 @@
                     :element-loading-spinner="loading.icon"
                     :element-loading-text="$t(loading.text)"
                     v-loading="isLoadingFilters.state"
-            >
+            > 
                 <el-row :gutter="10">
                     <el-col :key="key" :span="filterColSize" v-for="(filter, key) in filters">
                         <template v-if="!filter.parentKey || filterModel[filter.parentKey]">
                             <el-form-item
                                 v-if="filter.type === filterTypes.select && filter.data ">
-                        
+                                
                                 <list-filter-select
-                                    :filter="filter"
+                                    :type="filter.key"
+                                    :name="filter.name"
+                                    :searchBox="filter.searchBox"
+                                    :data="filter.data"
                                     :selectedOptions="filterModel[filter.key]"
                                     @select-changed="handleSelectChange($event, filter)"
                                 >
 
                                 </list-filter-select>
                             </el-form-item>
-                            <el-form-item
+                            <!-- <el-form-item
                                 v-else-if="filter.type === filterTypes.text || filter.type === filterTypes.number">
                                 <el-input
                                     v-if="filter.key == 'search'"
@@ -59,7 +62,7 @@
                                     @change="filterChanged(filter)"
                                     v-model="filterModel[filter.key]">
                                 </el-input>
-                            </el-form-item>
+                            </el-form-item> -->
                             <el-form-item v-else-if="filter.type === filterTypes.date">
                                 <!-- <el-date-picker
                                     :format="filter.format"
@@ -841,9 +844,9 @@
         }
     }
     .list-table-search {
-        position: fixed;
-        right: 40px;
-        top: 30px;
+        // position: fixed;
+        // right: 40px;
+        // top: 30px;
         z-index: 99;
         width: 250px;
         &.el-input {

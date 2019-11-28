@@ -227,6 +227,25 @@
             width: 100%;
         }
 
+        :global(.el-table__body-wrapper) {
+            :global(table) {
+                display: block;
+                max-height: 235px;
+                overflow-y: auto;
+                &::-webkit-scrollbar{
+                    width: 8px;
+                }
+                &::-webkit-scrollbar-thumb{
+                    background-color: var(--color-text-placeholder);
+                    border: 1px solid transparent;
+                    border-radius: 11px;
+                    background-clip: content-box;
+                }
+                &::-webkit-scrollbar * {
+                    background: transparent;
+                }
+            }
+        }
         .status-icon {
             width: 13px;
             height: 13px;

@@ -250,6 +250,7 @@
                         :key="button.title"
                         :style="button.style"
                         :type="button.type"
+                        :class="button.class"
                         @click="button.onClick(scope.row)"
                         size="mini"
                         round
@@ -267,6 +268,7 @@
                             :icon="button.icon"
                             :style="button.style"
                             :type="button.type"
+                            :class="button.class"
                             @click="button.onClick(scope.row)"
                             v-if="button.view == 'request' && scope.row.type == 'provider' && scope.row.sent_email == false"
                             size="mini"
@@ -484,7 +486,7 @@
                     else if(column.type === 'residentAvatarWithType')
                         name = 'adminResidentsEdit';
                     else if(column.type === 'residentNameAndType')
-                        name = 'adminResidentsView';
+                        name = 'adminResidentsEdit';
                     else if(column.type === 'assigneesName') {
                         if(item.type === 'manager')
                             name = 'adminPropertyManagersEdit';
@@ -502,7 +504,7 @@
                     else if(column.type === 'buildingName')
                         name = 'adminBuildingsEdit';
                     else if(column.type === 'residentName')
-                        name = 'adminResidentsView';
+                        name = 'adminResidentsEdit';
                     else if(column.type === 'serviceName')
                         name = 'adminServicesEdit';
                 });
@@ -529,6 +531,18 @@
                 display: block;
                 max-height: 270px;
                 overflow-y: auto;
+                &::-webkit-scrollbar{
+                    width: 8px;
+                }
+                &::-webkit-scrollbar-thumb{
+                    background-color: var(--color-text-placeholder);
+                    border: 1px solid transparent;
+                    border-radius: 11px;
+                    background-clip: content-box;
+                }
+                &::-webkit-scrollbar * {
+                    background: transparent;
+                }
             }
         }
         :global(.el-table__header-wrapper) {

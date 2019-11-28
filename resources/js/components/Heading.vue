@@ -126,9 +126,9 @@
             display: flex;
         }
         .el-dropdown {
-            margin-left: 5px;
+            //margin-left: 5px;
             :global(.el-button) {
-                padding: 7.5px 0;
+                //padding: 7.5px 0;
                 &:hover {
                     background-color: var(--background-color-base);
                     border-color: transparent;

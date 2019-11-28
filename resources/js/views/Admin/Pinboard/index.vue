@@ -1,34 +1,51 @@
 <template>
-    <div class="pinboard">
+    <div class="pinboard list-view">
         <heading :title="$t('models.pinboard.title')"
                  icon="icon-megaphone-1"
                  shadow="heavy"
                  :searchBar="true"
                  @search-change="search=$event">
-            <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
-            </template>
             <template v-if="$can($permissions.create.pinboard)">
                 <el-button 
                     @click="add" 
                     icon="ti-plus" 
                     size="mini" 
-                    class="transparent-button"
+                    class="el-button--transparent"
                 >
                     {{$t('models.pinboard.add')}}
                 </el-button>
             </template>
-            <template v-if="$can($permissions.delete.pinboard)">
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
+            </template>
+            <template>
+                <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
+                    <el-button size="mini" class="el-button--transparent">
+                        <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item
+                                v-if="$can($permissions.delete.pinboard)"
+                                :disabled="!selectedItems.length"
+                                icon="ti-trash"
+                                command="delete"
+                        >
+                            {{$t('general.actions.delete')}}
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </template>
+            <!-- <template v-if="$can($permissions.delete.pinboard)">
                 <el-button 
                     :disabled="!selectedItems.length" 
                     @click="batchDeleteWithIds" 
                     icon="ti-trash" 
                     size="mini"
-                    class="transparent-button"
+                    class="el-button--transparent"
                 >
                     {{$t('general.actions.delete')}}
                 </el-button>
-            </template>
+            </template> -->
         </heading>
         <list-table
             :fetchMore="fetchMore"
@@ -192,6 +209,10 @@
         },
         methods: {
             ...mapActions(['changePinboardPublish', 'updatePinboard', 'getBuildings', 'getResidents']),
+            handleMenuClick(command) {
+                if(command == 'delete')
+                    this.batchDeleteWithIds();
+            },
             async fetchRemoteQuarters(search = '') {
                 const quarters = await this.getQuarters({get_all: true, search});
 
