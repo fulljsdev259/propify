@@ -553,6 +553,16 @@
         :global(.heading .menu-button) {
             margin-right: 20px;
         }
+        .list-view {
+            :global(.heading .el-button) {
+                &:hover {
+                    background-color: var(--background-color-base);
+                    color: var(--color-text-regular);
+                    border-color: transparent;
+                    box-shadow: 0 0 5px lightgrey;
+                }
+            }
+        }
     }
 
     .el-container {

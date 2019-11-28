@@ -1,5 +1,5 @@
 <template>
-    <div class="pinboard">
+    <div class="pinboard list-view">
         <heading :title="$t('models.pinboard.title')"
                  icon="icon-megaphone-1"
                  shadow="heavy"

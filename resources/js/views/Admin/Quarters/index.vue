@@ -1,5 +1,5 @@
 <template>
-    <div class="quarters">
+    <div class="quarters list-view">
         <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
                 <list-check-box />
