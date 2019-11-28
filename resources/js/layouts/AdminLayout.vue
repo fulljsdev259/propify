@@ -196,62 +196,11 @@
                         route: {
                             name: 'adminRequests'
                         }
-                        /*,children: [{
-                            title: this.$t('general.admin_menu.all_requests'),
-                            permission: this.$permissions.list.request,
-                            value: this.all_request_count,
-                            route: {
-                                name: 'adminRequests'
-                            }
-                        },  {
-                            title: this.$t('general.admin_menu.my_requests'),
-                            permission: this.$permissions.list.request,
-                            value: this.my_request_count,
-                            route: {
-                                name: 'adminMyRequests'
-                            }
-                        },  {
-                            title: this.$t('general.admin_menu.my_pending_requests'),
-                            permission: this.$permissions.list.request,
-                            value: this.my_pending_count,
-                            route: {
-                                name: 'adminMypendingRequests'
-                            }
-                        },  {
-                            title: this.$t('general.admin_menu.not_assigned'),
-                            permission: this.$permissions.list.request,
-                            value: this.all_unassigned_count,
-                            route: {
-                                name: 'adminUnassignedRequests'
-                            }
-                        },  {
-                            title: this.$t('general.admin_menu.all_pending_requests'),
-                            permission: this.$permissions.list.request,
-                            value: this.all_pending_count,
-                            route: {
-                                name: 'adminAllpendingRequests'
-                            }
-                        }]*/
                     },
                     "managerRequests": {
                         icon: 'icon-chat-empty',
                         title: this.$t('general.admin_menu.requests'),
                         permission: this.$permissions.list.request,
-                        children: [{
-                            title: this.$t('general.admin_menu.all_requests'),
-                            permission: this.$permissions.list.request,
-                            value: this.all_request_count,
-                            route: {
-                                name: 'adminRequests'
-                            }
-                        },  {
-                            title: this.$t('general.admin_menu.my_requests'),
-                            permission: this.$permissions.list.request,
-                            value: this.my_request_count,
-                            route: {
-                                name: 'adminMyRequests'
-                            }
-                        }]
                     },
                     // "activity": {
                     //     icon: 'icon-gauge-1',
