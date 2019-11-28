@@ -460,7 +460,7 @@
                 </div>
             </el-tab-pane>
         </el-tabs>
-        <ui-drawer :visible.sync="main_drawer" :z-index="1" direction="right" docked>
+        <ui-drawer :visible.sync="main_drawer" :z-index="2" direction="right" docked>
             <el-tabs type="card" stretch>
                 <el-tab-pane  name="iframe" v-if="Iframe_drawer_val">
                     <div slot="label"><i class="icon-cog"></i> <label class="switcher__label">{{$t('settings.iframe_enable')}}</label> </div>

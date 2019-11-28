@@ -340,7 +340,7 @@
                 </el-col>
             </el-row>
         </div>
-        <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
+        <ui-drawer :visible.sync="visibleDrawer" :z-index="2" direction="right" docked>
             <template v-if="editingRelation || isAddRelation">
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} </ui-divider>
                 <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} {{ editingRelation ? '[' + editingRelation.relation_format + ']' : '' }} </ui-divider> -->
