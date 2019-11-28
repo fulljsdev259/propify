@@ -500,7 +500,7 @@ return [
         'prop_title' => 'Titel',
         'category' => 'Anfrage-Typ',
         'edit_title' => 'Anfrage bearbeiten',
-        'add_title' => 'Anfrage hinzufügen',
+        'add_title' => 'Hinzufügen',
         'mass_edit' => [
             'label' => 'Massenbearbeitung',
             'options' => [

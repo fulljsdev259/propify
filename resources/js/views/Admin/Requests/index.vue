@@ -11,6 +11,9 @@
                     {{$t('models.request.add_title')}}
                 </el-button>
             </template>
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
+            </template>
             <!-- <template v-if="$can($permissions.assign.manager)">
                 <el-dropdown split-button 
                             :disabled="!selectedItems.length" 

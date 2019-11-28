@@ -329,7 +329,7 @@
                         <div>
                             <strong>{{scope.row.creator.name}}</strong>                    
                         </div>
-                        <span>{{    (scope.row.created_at)}}</span>
+                        <span>{{(scope.row.created_at.split(" "))[0]}}</span>
                     </div>
                     <div v-else-if="column.i18n">
                         {{column.i18n(scope.row[column.prop])}}
