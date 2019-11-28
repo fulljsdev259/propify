@@ -333,24 +333,6 @@
                         key: 'search'
                     },
                     {
-                        name: this.$t('general.filters.categories'),
-                        type: 'select',
-                        key: 'category_id',
-                        data: this.categories,
-                    },
-                    {
-                        name: this.$t('models.request.status.label'),
-                        type: 'select',
-                        key: 'status',
-                        data: this.prepareFilters("status"),
-                    },
-                    // {
-                    //     name: this.$t('models.request.internal_priority.label'),
-                    //     type: 'select',
-                    //     key: 'internal_priority',
-                    //     data: this.prepareFilters("internal_priority"),
-                    // },
-                    {
                         name: this.$t('general.filters.quarters'),
                         type: 'select',
                         key: 'quarter_id',
@@ -363,10 +345,22 @@
                         data: this.buildings,
                     },
                     {
+                        name: this.$t('models.request.status.label'),
+                        type: 'select',
+                        key: 'status',
+                        data: this.prepareFilters("status"),
+                    },
+                    {
                         name: this.$t('general.filters.property_managers'),
                         type: 'select',
                         key: 'property_manager_id',
                         data: this.propertyManagers,
+                    },
+                    {
+                        name: this.$t('general.filters.categories'),
+                        type: 'select',
+                        key: 'category_id',
+                        data: this.categories,
                     },
                     {
                         name: this.$t('general.filters.services'),
@@ -374,11 +368,35 @@
                         key: 'service_provider_id',
                         data: this.services,
                     },
+                    // {
+                    //     name: this.$t('models.request.internal_priority.label'),
+                    //     type: 'select',
+                    //     key: 'internal_priority',
+                    //     data: this.prepareFilters("internal_priority"),
+                    // },
+                    // {
+                    //     name: this.$t('general.filters.resident'),
+                    //     type: 'select',
+                    //     key: 'resident_id',
+                    //     data: this.residents,
+                    // },
                     {
-                        name: this.$t('general.filters.resident'),
-                        type: 'select',
-                        key: 'resident_id',
-                        data: this.residents,
+                        name: this.$t('general.filters.created_from'),
+                        type: 'date',
+                        key: 'created_from',
+                        format: 'dd.MM.yyyy'
+                    },
+                    // {
+                    //     name: this.$t('general.filters.created_to'),
+                    //     type: 'date',
+                    //     key: 'created_to',
+                    //     format: 'dd.MM.yyyy'
+                    // },
+                    {
+                        name: this.$t('models.request.closed_date'),
+                        type: 'date',
+                        key: 'solved_date',
+                        format: 'dd.MM.yyyy'
                     },
                     {
                         name: this.$t('general.filters.phase'),
@@ -387,23 +405,11 @@
                         data: this.prepareFilters("capture_phase"),
                     },
                     {
-                        name: this.$t('general.filters.created_from'),
-                        type: 'date',
-                        key: 'created_from',
-                        format: 'dd.MM.yyyy'
-                    },
-                    {
-                        name: this.$t('general.filters.created_to'),
-                        type: 'date',
-                        key: 'created_to',
-                        format: 'dd.MM.yyyy'
-                    },
-                    {
-                        name: this.$t('models.request.closed_date'),
-                        type: 'date',
-                        key: 'solved_date',
-                        format: 'dd.MM.yyyy'
-                    },
+                        name: this.$t('general.filters.more_filters'),
+                        type: 'select',
+                        key: 'saved_filter',
+                        data: []
+                    }
                 ];
                 if(this.routeName == 'adminUnassignedRequests') {
                     filters.splice(6, 2);

@@ -97,7 +97,7 @@ return [
         'type' => 'Type',
         'language' => 'Language',
         'phase' => 'Phase',
-        'saved_filters' => 'Saved Filters',
+        'more_filters' => 'Saved Filters',
         'fields' => 'Fields',
         'my_filters' => 'My Filter',
     ],    

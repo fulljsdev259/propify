@@ -96,7 +96,7 @@ return [
         'type' => 'Modello',
         'language' => 'Lingua',   
         'phase' => 'Fase',
-        'saved_filters' => 'Filtri salvati',   
+        'more_filters' => 'Filtri salvati',   
         'fields' => 'I campi', 
     ],    
     "no" => "No",

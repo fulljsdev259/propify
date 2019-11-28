@@ -216,7 +216,7 @@
                         key: 'user_ids',
                         data: this.roles
                     },{
-                        name: this.$t('general.filters.saved_filters'),
+                        name: this.$t('general.filters.more_filters'),
                         type: 'select',
                         key: 'saved_filter',
                         data: []
