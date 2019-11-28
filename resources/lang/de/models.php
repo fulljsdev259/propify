@@ -742,8 +742,8 @@ return [
             'address'=>'Objekt',
         ],
         'pictures_of' => 'Fotos des Anliegens',
-        'go_to_building' => 'Zum Objekt gehen'
-
+        'go_to_building' => 'Zum Objekt gehen',
+        'visible' => 'Sichtbar'
     ],
     'request_category' => [
         'title' => 'Anfrage Kategorien',
