@@ -262,6 +262,7 @@
                         label: 'models.request.created_by',
                         prop: 'creator.name',
                         withRequestCreator: true,
+                        width: 200
                     }, {
                         label: 'models.request.visible',
                         withRequestVisible: true,
@@ -270,7 +271,7 @@
                     }, {
                         label: 'models.unit.appendix',
                         withRequestAppendix: true,
-                        width: 85,
+                        width: 120,
                         align: 'center'
                     }
                 ],
@@ -456,8 +457,8 @@
                 return this.categories;
             },
             async getFilterServices() {
-                const services = await this.getServices({get_all: true});
-
+                let services = await this.getServices({get_all: true});
+                services.data.map(service => service.name = service.first_name + ' ' + service.last_name)
                 return services.data;
             },
             async fetchRemoteQuarters(search = '') {
@@ -481,7 +482,8 @@
                 });
             },
             async fetchRemoteServices(search = '') {
-                const services = await this.getServices({get_all: true, search});
+                let services = await this.getServices({get_all: true, search});
+                services.data.map(service => service.name = service.first_name + ' ' + service.last_name)
 
                 return services.data;
             },
