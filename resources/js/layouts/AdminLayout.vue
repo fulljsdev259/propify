@@ -193,7 +193,10 @@
                         icon: 'icon-chat-empty',
                         title: this.$t('general.admin_menu.requests'),
                         permission: this.$permissions.list.request,
-                        children: [{
+                        route: {
+                            name: 'adminRequests'
+                        }
+                        /*,children: [{
                             title: this.$t('general.admin_menu.all_requests'),
                             permission: this.$permissions.list.request,
                             value: this.all_request_count,
@@ -228,7 +231,7 @@
                             route: {
                                 name: 'adminAllpendingRequests'
                             }
-                        }]
+                        }]*/
                     },
                     "managerRequests": {
                         icon: 'icon-chat-empty',
