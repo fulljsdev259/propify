@@ -98,7 +98,7 @@ return [
         'type' => 'Typ',
         'language' => 'Sprache',
         'phase' => 'Phase',
-        'more_filters' => 'Mehr Filters',
+        'saved_filters' => 'Mehr Filters',
         'fields' => 'Felder',
         'my_filters' => 'Meine Filter',
     ],

@@ -96,7 +96,7 @@ return [
         'type' => 'Type',
         'language' => 'Langue',
         'phase' => 'Phase',
-        'more_filters' => 'Filtres enregistrés',
+        'saved_filters' => 'Filtres enregistrés',
         'fields' => 'Domaines',
     ],
     'no' => 'Non',
