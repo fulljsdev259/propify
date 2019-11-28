@@ -557,7 +557,7 @@
             :global(.heading .el-button) {
                 &:hover {
                     background-color: var(--background-color-base);
-                    color: var(--color-text-regular);
+                    color: var(--color-text-primary);
                 }
             }
         }
