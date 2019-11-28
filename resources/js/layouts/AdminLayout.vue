@@ -548,11 +548,6 @@
         }
         :global(.heading .el-button) {
             font-family: 'Radikal';
-            // &:hover {
-            //     background-color: var(--background-color-base);
-            //     color: var(--color-text-regular);
-            //     border-color: transparent;
-            // }
             //margin-right: 10px;
         }
         :global(.heading .menu-button) {
