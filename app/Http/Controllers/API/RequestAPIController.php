@@ -479,28 +479,33 @@ class RequestAPIController extends AppBaseController
             $this->requestRepository->massAssign($requests, 'providers', $providers, $sentEmail);
         }
 
-        if ($sentEmail && $providers) {
+        if ($sentEmail && $providers->isNotEmpty() && $requests->isNotEmpty()) {
 
             $users = $providers->load('user')->pluck('user');
-        	foreach ($users as $user) {
-        		$data = [];
-				foreach ($requests as $request) {
-					$r = $this->requestRepository->findWithoutFail($request->id);
-					
-					$data['datas'][]=$this->getPdfAllData($r);
-					
-				}
-				$this->requestRepository->findWithoutFail($requests[0]->id)->setDownloadAllPdf($this->settingsRepository->first(),$data);
-		
-				$pdfName = $this->getAllPdfFileName($this->requestRepository->findWithoutFail($requests[0]->id));
-				
-				if (!\Storage::disk('request_downloads')->exists($pdfName)) {
-					return $this->sendError('Request file not found!');
-				}
-				
-				$mail = (new SentEmailPdf($pdfName))->onQueue('high');
-				Mail::to($user->user->email)->queue($mail);
-				
+            $settings = $this->settingsRepository->first();
+
+            $data = [];
+            $requests->load([
+                'media',
+                'resident',
+                'relation'
+            ]);
+            foreach ($requests as $request) {
+                /** @var $request Request */
+                $data['datas'][] = $request->getDownloadAllPdfData();
+            }
+
+            // $request is income in foreach
+            $request->setDownloadAllPdf($data, $settings);
+            $pdfName = $request->pdfFileName();
+
+            if (!\Storage::disk('request_downloads')->exists($pdfName)) {
+                return $this->sendError('Request file not found!');
+            }
+            $mail = (new SentEmailPdf($pdfName))->onQueue('high');
+
+            foreach ($users as $user) {
+                Mail::to($user->email)->queue($mail);
 			}
    
 		}
@@ -533,20 +538,6 @@ class RequestAPIController extends AppBaseController
 
         return $this->sendResponse($response, __('models.request.saved'));
     }
-    
-    public function getPdfAllData (Request $request)
-	{
-		$settings = $this->settingsRepository->first();
-		$data=$request->setDownloadAllPdfData($settings);
-		
-		return $data ;
-	}
-	
-	public function getAllPdfFileName (Request $request)
-	{
-		$pdfName=$request->pdfFileName();
-		return $pdfName;
-	}
 
     /**
      * @SWG\Post(
