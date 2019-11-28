@@ -72,7 +72,6 @@
     import getFilterStates from 'mixins/methods/getFilterStates';
     import getFilterQuarters from 'mixins/methods/getFilterQuarters';
 
-
     const mixin = ListTableMixin({
         actions: {
             get: 'getResidents',

@@ -304,6 +304,46 @@
                     <div v-else-if="column.withResidentTypes">
                         {{ showResidentTypes(scope.row[column.prop]) }}
                     </div>
+                    <div v-else-if="column.withReuqestIDAndTitle">
+                        <div class="request-format">
+                            <strong>{{scope.row.request_format}}</strong>                    
+                        </div>
+                        <span>{{scope.row.title}}</span>
+                    </div>
+                    <div v-else-if="column.withRequestStatusSign">
+                        <el-tooltip
+                            :content="`${$t(`models.request.status.${$constants.requests.status[scope.row[column.prop]]}`)}`"
+                            class="item"
+                            effect="light" placement="top"
+                        >
+                            <avatar 
+                                :background-color="$constants.requests.status_colorcode[scope.row[column.prop]]"
+                                :initials="''"
+                                :size="30"
+                                :style="{'z-index': (800 - index)}"
+                                :username="''"
+                            />
+                        </el-tooltip>
+                    </div>
+                    <div v-else-if="column.withRequestCreator">
+                        <div>
+                            <strong>{{scope.row.creator.name}}</strong>                    
+                        </div>
+                        <span>{{(scope.row.created_at.split(" "))[0]}}</span>
+                    </div>
+                    <div v-else-if="column.i18n">
+                        {{column.i18n(scope.row[column.prop])}}
+                    </div>
+                    <div v-else-if="column.withRequestVisible">
+                        <span class="icon-container">
+                             <i class="icon-eye"></i>
+                        </span>
+                    </div>
+                    <div v-else-if="column.withRequestAppendix">
+                        <span class="icon-container">
+                             <i class="icon-doc-text"></i>
+                        </span>
+                    </div>
                     <div v-else-if="column.withIcon">
                         <span class="icon-container">
                              <i class="el-icon-document"></i>
@@ -452,6 +492,7 @@
     import SelectLanguage from 'components/SelectLanguage';
     import ListTableSelect from 'components/ListTableSelect';
     import ListFilterSelect from 'components/ListFilterSelect';
+    import FormatDateTimeMixin from 'mixins/formatDateTimeMixin';
     import globalFunction from "helpers/globalFunction";
 
 
@@ -466,6 +507,7 @@
             SelectLanguage,
             ListTableSelect,
             ListFilterSelect,
+            FormatDateTimeMixin
         },
         mixins: [globalFunction],
         props: {
@@ -882,6 +924,7 @@
                 }
             });
 
+            console.log(this.$route.params.subMenu)
             this.subMenu = this.$route.params.subMenu;
             if(this.subMenu != undefined && this.subMenu.children != undefined) {
                 this.subMenu = this.subMenu.children;
@@ -968,6 +1011,10 @@
             :global(.el-button) {
                 font-family: inherit;
             }
+        }
+
+        .request-format {
+            color:var(--primary-color);
         }
 
     }

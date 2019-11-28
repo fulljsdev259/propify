@@ -570,5 +570,6 @@ return [
     'notification_residents_sent' => 'Eine Benachrichtigung vie E-Mail wurde am {date} um {time} Uhr an {number} Bewohner gesendet.',
     'edit_close_message' => 'Möchten Sie die Änderungen vor dem Schliessen speichern?',
     'request_status' => 'Anliegen-Status',
-    'login_success'=>'Willkommen zurück'
+    'login_success'=>'Willkommen zurück',
+    'category' => 'Kategorie',
 ];
