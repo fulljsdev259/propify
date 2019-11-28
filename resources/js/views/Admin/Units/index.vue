@@ -9,7 +9,6 @@
                     @click="add" 
                     icon="ti-plus" 
                     size="mini"
-                    type="primary"
                     class="el-button--transparent mr-0"
                 >
                     {{$t('models.unit.add')}}
