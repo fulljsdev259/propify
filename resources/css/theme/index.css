@@ -12529,9 +12529,9 @@ input.el-input__inner[type=number]{
     box-shadow: none
 } */
 
-.el-button--transparent span{
+/* .el-button--transparent span{
     padding-left: 5px;
-}
+} */
 
 .el-button--assign, .el-button--assign.is-disabled {
     background-color: #3D3F41;
