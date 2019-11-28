@@ -924,7 +924,6 @@
                 }
             });
 
-            console.log(this.$route.params.subMenu)
             this.subMenu = this.$route.params.subMenu;
             if(this.subMenu != undefined && this.subMenu.children != undefined) {
                 this.subMenu = this.subMenu.children;
