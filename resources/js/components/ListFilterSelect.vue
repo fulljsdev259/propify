@@ -61,9 +61,6 @@
                             @click="selectItem(index)"
                             v-for="(item, index) in items" 
                         >
-                            {{item.name}}
-                            {{item.id}}
-                            {{index}}
                             <span v-if="type !== 'language'" v-html="filterSearch(getLanguageStr(item.name))"></span>
                             <span v-else><span :class="item.flag"></span>&nbsp;&nbsp;{{ $t(`general.languages.`+item.symbol) }}</span>
                             <span class="el-icon-check"></span>
