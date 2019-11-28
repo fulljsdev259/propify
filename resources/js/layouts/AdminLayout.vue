@@ -201,6 +201,9 @@
                         icon: 'icon-chat-empty',
                         title: this.$t('general.admin_menu.requests'),
                         permission: this.$permissions.list.request,
+                        route: {
+                            name: 'adminRequests'
+                        }
                     },
                     // "activity": {
                     //     icon: 'icon-gauge-1',
