@@ -7,9 +7,9 @@
             <el-button
                     @click="downloadPDF"
                     size="mini"
-                    type="primary"
-                    round
-                    class="download-pdf"
+                    type="danger"
+                    icon="icon-file-pdf"
+                    class="download-pdf el-button--transparent"
             >
                 {{ $t('models.request.download_pdf.title') }}
             </el-button>

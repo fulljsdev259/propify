@@ -8,7 +8,7 @@
         <!-- <el-button @click="goToListing" size="mini" type="warning" class="el-button--transparent"> {{this.$t('general.actions.close')}}
         </el-button> -->
         <el-button v-if="editMode" @click="$emit('edit-mode')" size="mini" icon="el-icon-close" type="info" circle class="el-button--transparent"></el-button>
-        <el-button v-if="!editMode && deleteAction !== undefined" @click="$emit('edit-mode') " size="mini" icon="el-icon-edit" type="primary" class="el-button--transparent"> {{this.$t('general.actions.update')}}</el-button>
+        <el-button v-if="!editMode && deleteAction !== undefined" @click="$emit('edit-mode') " size="mini" icon="el-icon-edit" type="danger" class="el-button--transparent"> {{this.$t('general.actions.update')}}</el-button>
         <el-button v-if="!editMode" @click="goToListing" size="mini" icon="el-icon-close" type="info" circle class="el-button--transparent"></el-button>
     </div>
 </template>
