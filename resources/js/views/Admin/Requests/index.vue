@@ -248,7 +248,7 @@
                         width: 150
                     }, {
                         label: 'models.request.assigned_property_managers',
-                        withUsers: true,
+                        withRequestPMs: true,
                         prop: 'property_managers'
                     }, {
                         label: 'general.category',
