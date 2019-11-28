@@ -1,7 +1,7 @@
 <template>
     <div class="list-field-filter">
         <el-dropdown placement="bottom" size="medium" trigger="click">
-            <el-button type="primary" size="mini" class="el-button--transparent">
+            <el-button size="mini" class="el-button--transparent">
                 {{ $t('general.filters.fields') }}
             </el-button>
             <el-dropdown-menu slot="dropdown">

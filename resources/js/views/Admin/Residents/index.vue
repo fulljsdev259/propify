@@ -10,7 +10,6 @@
                     @click="add" 
                     icon="ti-plus" 
                     size="mini"
-                    type="primary"
                     class="el-button--transparent"
                 >
                     {{$t('models.resident.add')}}
