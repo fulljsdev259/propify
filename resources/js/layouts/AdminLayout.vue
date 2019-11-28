@@ -554,7 +554,7 @@
             margin-right: 20px;
         }
         .list-view {
-            :global(.el-button) {
+            :global(.heading .el-button) {
                 &:hover {
                     background-color: var(--background-color-base);
                     color: var(--color-text-regular);
