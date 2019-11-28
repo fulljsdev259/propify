@@ -262,6 +262,7 @@
                         label: 'models.request.created_by',
                         prop: 'creator.name',
                         withRequestCreator: true,
+                        width: 200
                     }, {
                         label: 'models.request.visible',
                         withRequestVisible: true,
@@ -270,7 +271,7 @@
                     }, {
                         label: 'models.unit.appendix',
                         withRequestAppendix: true,
-                        width: 85,
+                        width: 120,
                         align: 'center'
                     }
                 ],
