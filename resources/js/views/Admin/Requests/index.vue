@@ -1,17 +1,17 @@
 <template>  
-    <div class="services" v-loading.fullscreen.lock="isDownloading">
+    <div class="services list-view" v-loading.fullscreen.lock="isDownloading">
         <heading :title="$t('models.request.title')" icon="icon-chat-empty" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template v-if="$can($permissions.create.request)">
                 <el-button 
                     @click="add" 
                     icon="ti-plus" 
                     size="mini"
-                    class="transparent-button"
+                    class="el-button--transparent"
                 >
                     {{$t('models.request.add_title')}}
                 </el-button>
             </template>
-            <template v-if="$can($permissions.assign.manager)">
+            <!-- <template v-if="$can($permissions.assign.manager)">
                 <el-dropdown split-button 
                             :disabled="!selectedItems.length" 
                             size="mini"
@@ -21,27 +21,47 @@
                             @command="handleCommand">
                     {{$t('models.request.mass_edit.label')}}
                     <el-dropdown-menu slot="dropdown">
+                        
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </template> -->
+            <template>
+                <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
+                    <el-button size="mini" class="el-button--transparent">
+                        <i class="el-icon-more" style="transform: rotate(90deg)"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item 
                             :disabled="!selectedItems.length" 
-                            :command="option"
-                            :key="option"
+                            :command="option.key"
+                            :key="option.key"
+                            :icon="option.icon"
                             v-for="option in massEditOptions">
-                            {{$t('models.request.mass_edit.options.' + option)}}
+                            {{$t('models.request.mass_edit.options.' + option.key)}}
+                        </el-dropdown-item>
+                        <el-dropdown-item
+                                v-if="$can($permissions.delete.request)"
+                                :disabled="!selectedItems.length"
+                                icon="ti-trash"
+                                command="delete"
+                        >
+                            {{$t('general.actions.delete')}}
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </template>
-            <template v-if="$can($permissions.delete.request)">
+            <!-- <template v-if="$can($permissions.delete.request)">
                 <el-button 
                     :disabled="!selectedItems.length" 
                     @click="batchDeleteWithIds" 
                     icon="ti-trash" 
                     size="mini"
-                    class="transparent-button"
+                    class="el-button--transparent"
                 >
                     {{$t('general.actions.delete')}}
                 </el-button>
-            </template>
+            </template> -->
+
         </heading>
         <request-list-table
             :fetchMore="fetchMore"
@@ -64,8 +84,8 @@
                    v-loading="processAssignment" width="30%">
             <span slot="title">
                 <template v-for="option in massEditOptions">
-                    <span :key="option" v-if="activeMassEditOption == option">
-                        {{$t('models.request.mass_edit.' + option + '.modal.heading_title')}}
+                    <span :key="option.key" v-if="activeMassEditOption == option.key">
+                        {{$t('models.request.mass_edit.' + option.key + '.modal.heading_title')}}
                     </span>
                 </template>
             </span>
@@ -149,13 +169,13 @@
                 <template
                         v-for="option in massEditOptions">
                     <el-button 
-                            v-if="activeMassEditOption == option" 
-                            @click="massEditAction(option)" 
+                            v-if="activeMassEditOption == option.key" 
+                            @click="massEditAction(option.key)" 
                             size="mini" 
                             type="primary"
-                            :key="option"
+                            :key="option.key"
                             >
-                        {{$t('models.request.mass_edit.' + option + '.modal.footer_button')}}
+                        {{$t('models.request.mass_edit.' + option.key + '.modal.footer_button')}}
                     </el-button>
                 </template>
             </span>
@@ -222,9 +242,18 @@
                 activeMassEditOption: 'service_provider',
                 massStatus: '',
                 massEditOptions : [
-                    'service_provider',
-                    'property_manager',
-                    'change_status'
+                    {
+                        key : 'service_provider',
+                        icon : 'icon-tools'
+                    },
+                    {
+                        key : 'property_manager',
+                        icon : 'icon-users'
+                    },
+                    {
+                        key : 'change_status',
+                        icon : 'icon-publish'
+                    }
                 ]
             }
         },
@@ -342,6 +371,16 @@
         },
         methods: {
             ...mapActions(['updateRequest', 'getQuarters', 'getServices', 'getBuildings', 'getResidents', 'downloadRequestPDF', 'getServices', 'getPropertyManagers', 'massEdit']),
+            handleMenuClick(command) {
+                if(command == 'delete')
+                    this.batchDeleteWithIds();
+                else  {
+                    this.massStatus = ''
+                    this.resetToAssignList();
+                    this.activeMassEditOption = command
+                    this.batchEditVisible = true
+                }
+            },
             async getFilterBuildings() {
                 const buildings = await this.getBuildings({
                     get_all: true
@@ -486,20 +525,14 @@
                 this.toAssignList = [];
                 this.massStatus = ''
             },
-            handleCommand( option ) {
-                this.massStatus = ''
-                this.resetToAssignList();
-                this.activeMassEditOption = option
-                this.batchEditVisible = true
-            },
-            async massEditAction( option ) {
-                if(option == 'service_provider') {
+            async massEditAction( command ) {
+                if(command == 'service_provider') {
                     this.massAssignProviders()
                 }
-                else if(option == 'property_manager') {
+                else if(command == 'property_manager') {
                     this.massAssignManagers()
                 }
-                else if(option == 'change_status') {
+                else if(command == 'change_status') {
                     this.massChangeStatus()
                 }
             },

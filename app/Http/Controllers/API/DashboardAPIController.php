@@ -441,6 +441,7 @@ class DashboardAPIController extends AppBaseController
         $resident = $this->residentRepo
             ->scope('allRequestStatusCount')
             ->withCount('requests')
+            ->with('requests')
             ->findWithoutFail($id);
 
         if (empty($resident)) {
@@ -449,16 +450,16 @@ class DashboardAPIController extends AppBaseController
 
         $response = [
             'requests_count' => $this->thousandsFormat($resident->requests_count),
-            'opened_requests_count' => $this->thousandsFormat($resident->requests_received_count),
+            'opened_requests_count' => $this->thousandsFormat($resident->requests_new_count),
             'pending_requests_count' => $this->thousandsFormat($resident->requests_in_processing_count),
             'done_requests_count' => $this->thousandsFormat($resident->requests_done_count),
             'archived_requests_count' => $this->thousandsFormat($resident->requests_archived_count),
 
-            'requests' => $this->thousandsFormat($resident->requests),
-            'opened_requests' => $this->thousandsFormat($resident->requestsNew),
-            'pending_requests' => $this->thousandsFormat($resident->requestsInProcessing),
-            'done_requests' => $this->thousandsFormat($resident->requestsDone),
-            'archived_requests' => $this->thousandsFormat($resident->requestsArchived),
+            'requests' => $resident->requests,
+            'opened_requests' => $resident->requests->where('status', Request::StatusNew),
+            'pending_requests' => $resident->requests->where('status', Request::StatusPending),
+            'done_requests' => $resident->requests->where('status', Request::StatusDone),
+            'archived_requests' => $resident->requests->where('status', Request::StatusArchived),
         ];
 
         return $this->sendResponse($response, 'Resident statistics retrieved successfully');

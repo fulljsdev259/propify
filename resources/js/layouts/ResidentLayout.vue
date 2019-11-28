@@ -93,7 +93,7 @@
                     <router-view class="view" ref="routeComponent"/>
                 </transition>
             </div>
-            <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked  :class="{'fixed-sidebar': sidebarDirection==='horizontal'}" :is-resident="true">
+            <ui-drawer :visible.sync="visibleDrawer" :z-index="2" direction="right" docked  :class="{'fixed-sidebar': sidebarDirection==='horizontal'}" :is-resident="true">
                 <el-tabs v-model="drawerTabsModel" type="card" stretch>
                     <el-tab-pane name="notifications">
                         <div slot="label"><i class="icon-bell"></i> {{$t('resident.notification_label')}}</div>

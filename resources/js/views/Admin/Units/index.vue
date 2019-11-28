@@ -1,5 +1,5 @@
 <template>
-    <div class="units">
+    <div class="units list-view">
         <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
                 <list-check-box />
@@ -9,7 +9,7 @@
                     @click="add" 
                     icon="ti-plus" 
                     size="mini"
-                    class="transparent-button mr-0"
+                    class="el-button--transparent mr-0"
                 >
                     {{$t('models.unit.add')}}
                 </el-button>
@@ -19,7 +19,7 @@
             </template>
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <el-button size="mini" class="transparent-button menu-button">
+                    <el-button size="mini" class="el-button--transparent">
                         <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">

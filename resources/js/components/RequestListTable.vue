@@ -41,7 +41,7 @@
 
                                 </list-filter-select>
                             </el-form-item>
-                            <el-form-item
+                            <!-- <el-form-item
                                 v-else-if="filter.type === filterTypes.text || filter.type === filterTypes.number">
                                 <el-input
                                     v-if="filter.key == 'search'"
@@ -62,7 +62,7 @@
                                     @change="filterChanged(filter)"
                                     v-model="filterModel[filter.key]">
                                 </el-input>
-                            </el-form-item>
+                            </el-form-item> -->
                             <el-form-item v-else-if="filter.type === filterTypes.date">
                                 <!-- <el-date-picker
                                     :format="filter.format"
@@ -844,9 +844,9 @@
         }
     }
     .list-table-search {
-        position: fixed;
-        right: 40px;
-        top: 30px;
+        // position: fixed;
+        // right: 40px;
+        // top: 30px;
         z-index: 99;
         width: 250px;
         &.el-input {

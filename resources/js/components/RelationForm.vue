@@ -465,13 +465,13 @@
         <!-- <ui-divider style="margin-top: 16px;"></ui-divider> -->
         <div class="relation-form-actions">
             <div class="button-group">
-                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-relation', edit_index)" icon="ti-trash" class="btn-delete" >
+                <el-button type="danger" v-if="edit_index != undefined" @click="$emit('delete-relation', edit_index)" icon="ti-trash" >
                     {{$t('general.actions.delete')}}
                 </el-button>
-                <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save" class="new-design-btn-save" >
+                <el-button type="primary" v-if="resident_id == undefined" @click="submit" icon="ti-save">
                     {{ edit_index == undefined ? $t('general.actions.add') : $t('general.actions.edit')}}
                 </el-button>
-                <el-button type="primary" v-else @click="submit" icon="ti-save" class="new-design-btn-save" >{{$t('general.actions.save')}}</el-button>
+                <el-button type="primary" v-else @click="submit" icon="ti-save" >{{$t('general.actions.save')}}</el-button>
             </div>
         </div>
         
@@ -1267,22 +1267,6 @@ c
         }
     }
 
-    .btn-save {
-        background-color: #878810;
-        border: none;
-        &:hover {
-            color: var(--color-white);
-            box-shadow: 0 0 5px #878810;
-        }
-    }
-    .btn-delete {
-        background-color: #848484;
-        border: none;
-        &:hover {
-            color: var(--color-white);
-            box-shadow: 0 0 5px #848484 ;
-        }
-    }
 
     .media-box {
         margin-top: 30px;

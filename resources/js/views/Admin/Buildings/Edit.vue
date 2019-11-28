@@ -472,7 +472,7 @@
             :deleteSelectedBuilding="deleteSelectedBuilding"
         />
         </div>
-        <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
+        <ui-drawer :visible.sync="visibleDrawer" :z-index="2" direction="right" docked>
             <template v-if="editingRelation || isAddRelation">
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} </ui-divider>
                 <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} {{ editingRelation ? '[' + editingRelation.relation_format + ']' : '' }} </ui-divider> -->
@@ -695,7 +695,7 @@
                     width: 120,
                     label: 'models.request.status.label'
                 }],
-                requestActions: [{
+                requestActions: [/*{
                     width: 70,
                     buttons: [{
                         icon: 'ti-search',
@@ -703,7 +703,7 @@
                         onClick: this.requestEditView,
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 assignmentsProviderColumns: [{
                 //     type: 'assignProviderManagerAvatars',
                 //     width: 70,

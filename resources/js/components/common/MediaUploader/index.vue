@@ -51,7 +51,7 @@
                 </el-button>
             </el-button-group>
             <template slot="footer" v-else-if="isGridLayout">
-                <el-button key="media-trigger" class="media-upload-trigger" @click="selectFiles()" v-if="!uploadOptions.hideSelectFilesButton">
+                <el-button key="media-trigger" class="media-upload-trigger el-button--transparent" @click="selectFiles()" v-if="!uploadOptions.hideSelectFilesButton">
                     <div class="icon-plus"></div>
                     <!-- <template v-if="uploadOptions.drop">
                         {{$t('general.components.common.media.buttons.select_files.with_drop')}}
