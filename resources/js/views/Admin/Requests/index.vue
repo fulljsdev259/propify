@@ -1,5 +1,5 @@
 <template>  
-    <div class="services" v-loading.fullscreen.lock="isDownloading">
+    <div class="services list-view" v-loading.fullscreen.lock="isDownloading">
         <heading :title="$t('models.request.title')" icon="icon-chat-empty" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template v-if="$can($permissions.create.request)">
                 <el-button 

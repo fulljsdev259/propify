@@ -1,5 +1,5 @@
 <template>
-    <div class="services">
+    <div class="services list-view">
         <heading icon="icon-user" :title="$t('general.admin_menu.admins')" shadow="heavy" class="padding-right-300">  
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event"></list-field-filter>

@@ -1,5 +1,5 @@
 <template>
-    <div class="services">
+    <div class="services list-view">
         <heading :title="$t('models.service.title')"
                  icon="icon-tools"
                  shadow="heavy"

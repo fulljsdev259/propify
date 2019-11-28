@@ -1,5 +1,5 @@
 <template>
-    <div class="listings">
+    <div class="listings list-view">
         <heading :title="$t('models.listing.title')" icon="icon-basket" shadow="heavy">
             <!--<el-button @click="add" icon="ti-plus" round type="primary">-->
             <!--{{$t('models.listing.add')}}-->

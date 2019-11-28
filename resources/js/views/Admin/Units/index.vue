@@ -1,5 +1,5 @@
 <template>
-    <div class="units">
+    <div class="units list-view">
         <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
                 <list-check-box />

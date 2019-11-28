@@ -1,5 +1,5 @@
 <template>
-    <div class="residents">
+    <div class="residents list-view">
         <heading :title="$t('general.resident')" 
                     icon="icon-group" 
                     shadow="heavy" 

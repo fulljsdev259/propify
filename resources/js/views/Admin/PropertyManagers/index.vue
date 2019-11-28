@@ -1,5 +1,5 @@
 <template>
-    <div class="property-managers">
+    <div class="property-managers list-view">
         <heading :title="$t('models.property_manager.title')" 
                 icon="icon-users" 
                 shadow="heavy" 
