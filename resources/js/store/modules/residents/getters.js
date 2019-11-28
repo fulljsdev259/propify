@@ -7,12 +7,7 @@ export default {
             resident.birth_date = format(new Date(resident.birth_date), 'DD.MM.YYYY');
             resident.user_email = resident.user.email;
 
-            if (resident.building && resident.building.address) {
-                resident.building_address_row = `${resident.building.address.street} ${resident.building.address.house_num}`;
-                resident.building_address_zip = `${resident.building.address.zip} ${resident.building.address.city}`;
-            }
-
-            resident.building_names = resident.relations.map(item => item.building && item.address ? { 
+            resident.building_names = resident.relations.map(item => item.address ? { 
                             row : item.address.street + " " + item.address.house_num ,  
                             zip : item.address.zip + " " + item.address.city  } : { row : '', zip : ''} )
             resident.unit_names = resident.relations.map(item => item.unit ? item.unit.name : '')
@@ -21,7 +16,7 @@ export default {
         });
     },
     latestResidents(data, getters, { application: { constants } }) {
-        return data.residents.map(resident => {
+        return data.latestResidents.map(resident => {
             resident.name = `${resident.first_name} ${resident.last_name}`;
             resident.status_label = `models.resident.status.${constants.residents.status[resident.status]}`;
             resident.address = ''
