@@ -50,6 +50,8 @@ return [
         'pinboard' => 'Pinboard',
         'listings' => 'Listings',
         'company' => 'Company name',
+        'request' => 'Request',
+        'pinboard_contribution' => 'Pinboard Contribution',
         'quarter' => [
             'name' => 'Quarter',
         ],

@@ -531,6 +531,18 @@
                 display: block;
                 max-height: 270px;
                 overflow-y: auto;
+                &::-webkit-scrollbar{
+                    width: 8px;
+                }
+                &::-webkit-scrollbar-thumb{
+                    background-color: var(--color-text-placeholder);
+                    border: 1px solid transparent;
+                    border-radius: 11px;
+                    background-clip: content-box;
+                }
+                &::-webkit-scrollbar * {
+                    background: transparent;
+                }
             }
         }
         :global(.el-table__header-wrapper) {

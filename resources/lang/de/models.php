@@ -48,6 +48,8 @@ return [
         'private_phone' => 'Telefon privat',
         'created_date' => 'Erstelldatum',
         'pinboard' => 'Beiträge',
+        'request' => 'Anliegen',
+        'pinboard_contribution' => 'Pinnwand-Beitrage',
         'listings' => 'Marktplatz',
         'company' => 'Firmenname',
         'quarter' => [
