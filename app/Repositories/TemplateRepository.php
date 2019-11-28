@@ -92,6 +92,20 @@ class TemplateRepository extends BaseRepository
     }
 
     /**
+     * @param User $user
+     * @return array
+     */
+    public function getMassRequestsNotificationServiceProviderTemplate(User $user): array
+    {
+        $template = $this->getByCategoryName('mass_requests_notification_service_provider');
+        $context = [
+            'user' => $user,
+        ];
+        $tags = $this->getTags($template->category->tag_map, $context);
+        return $this->getParsedTemplateData($template, $tags);
+    }
+
+    /**
      * @param $templateName
      * @return mixed
      */
