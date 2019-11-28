@@ -5,6 +5,7 @@ return [
     'it' => 'IT',
     'de' => 'DE',
     'yes' => 'Ja',
+    'invalid_operation' => 'Ungültige Operation',
     'timestamps' => [
         'hours' => 'Stunden',
         'days' => 'Tage',

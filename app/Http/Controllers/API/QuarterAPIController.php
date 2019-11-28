@@ -623,24 +623,18 @@ class QuarterAPIController extends AppBaseController
             return $this->sendError(__('models.user.errors.not_found'));
         }
 
-        if (in_array($role, ['manager', 'administrator'])) {
+        if ($user->resident) {
+            return $this->sendError(__('general.invalid_operation'));
+        }
+
+        if (in_array($role, PropertyManager::Type)) {
             $propertyManagerId = PropertyManager::where('user_id', $user->id)->value('id');
-            if (empty($propertyManagerId)) {
-                $assigneeId = $userId;
-                $assigneeType = get_morph_type_of(User::class);
-            } else {
-                $assigneeId = $propertyManagerId;
-                $assigneeType = get_morph_type_of(PropertyManager::class);
-            }
+            $assigneeId = $propertyManagerId;
+            $assigneeType = get_morph_type_of(PropertyManager::class);
         } else {
             $serviceProviderId = ServiceProvider::where('user_id', $user->id)->value('id');
-            if (empty($serviceProviderId)) {
-                $assigneeId = $userId;
-                $assigneeType = get_morph_type_of(User::class);
-            } else {
-                $assigneeId = $serviceProviderId;
-                $assigneeType = get_morph_type_of(ServiceProvider::class);
-            }
+            $assigneeId = $serviceProviderId;
+            $assigneeType = get_morph_type_of(ServiceProvider::class);
         }
 
         return QuarterAssignee::updateOrCreate([
