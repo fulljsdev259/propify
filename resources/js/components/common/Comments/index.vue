@@ -140,7 +140,7 @@
                         sortedBy: 'desc',
                         orderBy: 'created_at',
                         commentable: this.type,
-                        request_id: this.type == 'internalNotices' ? this.id : '',
+                        request_id: this.type == 'internalNotices' || this.type == 'conversation' ? this.id : '',
                         ...params
                     })
 

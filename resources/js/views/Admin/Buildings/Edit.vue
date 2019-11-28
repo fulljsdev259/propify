@@ -673,7 +673,7 @@
                     label: 'general.resident',
                     type: 'unitResidentAvatar',
                 }],
-                unitActions: [{
+                unitActions: [/*{
                     width: 70,
                     buttons: [{
                         title: 'general.actions.edit',
@@ -681,7 +681,7 @@
                         tooltipMode: true,
                         icon: 'ti-search'
                     }]
-                }],
+                }*/],
                 requestColumns: [{
                     type: 'requestResidentAvatar',
                     width: 90,

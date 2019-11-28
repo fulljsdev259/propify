@@ -36,7 +36,7 @@ export default {
         return new Promise((resolve, reject) =>
             axios.get(buildFetchUrl('residents/latest', payload))
                 .then(({data: r}) => {
-                    commit('SET_RESIDENTS', r.data);
+                    commit('SET_LATEST_RESIDENTS', r.data);
                     
                     resolve(r)
                 })
