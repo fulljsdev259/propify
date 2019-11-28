@@ -3,8 +3,8 @@
         
         <!-- <el-button @click="saveAndClose" size="mini" type="primary" class="el-button--transparent"> {{ this.$t('general.actions.save_and_close') }}
         </el-button> -->
-        <el-button v-if="(deleteAction || undefined) && editMode"  @click="deleteAndClose" size="mini" type="danger" icon="ti-trash"  class="el-button--transparent"> {{this.$t('general.actions.delete')}}</el-button>
-        <el-button v-if="editMode || deleteAction === undefined" @click="SaveAndEdit" size="mini" type="primary" class="el-button--transparent"> {{this.$t('general.actions.save')}}</el-button>
+        <el-button v-if="(deleteAction || undefined) && editMode"  @click="deleteAndClose" size="mini" type="danger" icon="ti-trash" class="el-button--transparent"> {{this.$t('general.actions.delete')}}</el-button>
+        <el-button v-if="editMode || deleteAction === undefined" @click="SaveAndEdit" size="mini" type="primary" icon="icon-floppy" class="el-button--transparent"> {{this.$t('general.actions.save')}}</el-button>
         <!-- <el-button @click="goToListing" size="mini" type="warning" class="el-button--transparent"> {{this.$t('general.actions.close')}}
         </el-button> -->
         <el-button v-if="editMode" @click="$emit('edit-mode')" size="mini" icon="el-icon-close" type="info" circle class="el-button--transparent"></el-button>

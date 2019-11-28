@@ -1215,7 +1215,7 @@
     .add-workflow-btn {
         // border-radius: 5px;
         // padding: 3px;
-        padding: 12px 15px;
+        //padding: 12px 15px;
     }
 
     .assign-button {
