@@ -136,6 +136,9 @@ class QuarterAPIController extends AppBaseController
                 }
             ])
             ->scope('allRequestStatusCount')
+            ->when($request->orderBy == 'requests_count', function ($q) {
+                $q->withCount('requests');
+            })
             ->paginate($perPage);
         $response = (new QuarterTransformer)->transformPaginator($quarters, 'transformWithStatistics');
         return $this->sendResponse($response, 'Quarters retrieved successfully');
