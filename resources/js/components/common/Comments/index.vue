@@ -249,7 +249,6 @@
             }
         },
         async mounted() {
-            console.log(this.id)
             if (this.data) {
                 this.comments = this.data;
             } else {

@@ -299,7 +299,6 @@
                                     <el-option v-for="relation in relations" 
                                                 :key="relation.id" 
                                                 :label="relation.building_room_floor_unit" 
-                                                class="a"
                                                 :value="relation.id" >
                                             <!-- <span class="status-icon" :style="{ background: constants.relations.status_colorcode[relation.status], border: '2px solid ' + getLightenDarkenColor(constants.relations.status_colorcode[relation.status], 200) + '59' }" >&nbsp;</span> -->
                                             <span class="status-icon" :style="{ background: constants.relations.status_colorcode[relation.status], border: '2px solid #ffffffe7'}" >&nbsp;</span>
