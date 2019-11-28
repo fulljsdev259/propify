@@ -3,7 +3,6 @@
         <el-button 
             size="mini" 
             icon="el-icon-connection" 
-            type="primary" 
             :class="{'checked': value}"
             @click="handleClick"
         >
