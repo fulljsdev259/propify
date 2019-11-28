@@ -466,30 +466,24 @@ class RequestAPIController extends AppBaseController
     {
         //get in MassEditRequest validation class
         $requests = $massEditRequest->requests;
-
         $managers = $massEditRequest->managers;
-        
-        $sent_email = $massEditRequest->send_email_service_provider;
+        $sentEmail = $massEditRequest->send_email_service_provider;
         
         if ($managers) {
-        	$managers->sent_email=$sent_email;
-            $this->requestRepository->massAssign($requests, 'managers', $managers);
+            $this->requestRepository->massAssign($requests, 'managers', $managers, $sentEmail);
         }
 
         //get in MassEditRequest validation class
         $providers = $massEditRequest->providers;
         if ($providers) {
-        	$providers->sent_email=$sent_email;
-            $this->requestRepository->massAssign($requests, 'providers', $providers);
+            $this->requestRepository->massAssign($requests, 'providers', $providers, $sentEmail);
         }
-        
-        
-        
-        if ($sent_email && $providers) {
-	
-			$users=ServiceProvider::find($providers)->load('user');
+
+        if ($sentEmail && $providers) {
+
+            $users = $providers->load('user')->pluck('user');
         	foreach ($users as $user) {
-        		$data=[];
+        		$data = [];
 				foreach ($requests as $request) {
 					$r = $this->requestRepository->findWithoutFail($request->id);
 					

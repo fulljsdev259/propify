@@ -343,12 +343,13 @@ class RequestRepository extends BaseRepository
      * @param $requests
      * @param $relation
      * @param $items
+     * @param $sentEmail
      */
-    public function massAssign($requests, $relation, $items)
+    public function massAssign($requests, $relation, $items, $sentEmail)
     {
         foreach ($requests as $request) {
             foreach ($items as $item) {
-                $request->{$relation}()->sync([$item->id => ['created_at' => now(),'sent_email'=>$items->sent_email]], false);
+                $request->{$relation}()->sync([$item->id => ['created_at' => now(),'sent_email' => $sentEmail]], false);
             }
         }
     }

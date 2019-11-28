@@ -61,7 +61,7 @@ class MassEditRequest extends BaseRequest
                 'required_without_all:status,property_manager_ids',
                 'array',
                 function ($attribute, $value, $fails) {
-                    $providers = ServiceProvider::whereIn('id', $value)->get(['id']);
+                    $providers = ServiceProvider::whereIn('id', $value)->get(['id', 'user_id']);
 
                     if(count($value) != $providers->count()) {
                         return $fails('One of selected service_providers is not valid');
