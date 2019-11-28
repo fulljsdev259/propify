@@ -548,7 +548,7 @@
         }
         :global(.heading .el-button) {
             font-family: 'Radikal';
-            margin-right: 10px;
+            //margin-right: 10px;
         }
         :global(.heading .menu-button) {
             margin-right: 20px;
@@ -792,22 +792,8 @@
             font-size: 16px !important;
         }
     }
-    .el-button--primary:focus, .el-button--primary:hover {
-        background: var(--primary-color-lighter);
-        border-color: var(--primary-color-lighter);
-        color: var(--primary-color);
-    }
+
     
-    .el-button--default:hover {
-        background: var(--primary-color-lighter);
-        border-color: var(--primary-color-lighter);
-        color: var(--primary-color);
-    }
-    .el-button--default:active {
-        background: var(--primary-color-lighter);
-        border-color: var(--primary-color-lighter);
-        color: var(--primary-color);
-    } 
 </style>
 
 <style lang="scss">

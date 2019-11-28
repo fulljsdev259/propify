@@ -185,7 +185,7 @@
                                         icon="icon-plus" 
                                         size="mini" 
                                         :disabled="model.type == ''"
-                                        class="transparent-button">
+                                        class="el-button--transparent">
                                         {{ $t('models.resident.relation.add') }}
                                     </el-button>
                                 </template>
@@ -228,7 +228,7 @@
                 </el-form>
             </div>
         </div>
-        <!-- <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
+        <!-- <ui-drawer :visible.sync="visibleDrawer" :z-index="2" direction="right" docked>
             <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }}</ui-divider>
             <div class="content" v-if="visibleDrawer">
                 <relation-form v-if="editingRelation" 

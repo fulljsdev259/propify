@@ -330,8 +330,8 @@
                 <!-- <ui-divider style="margin-top: 16px;"></ui-divider> -->
                 <div class="relation-form-actions">
                     <div class="button-group">
-                        <el-button type="default" @click="closeMediaDialog" icon="icon-cancel" class="new-design-btn-close" >{{$t('general.actions.close')}}</el-button>
-                        <el-button type="primary" @click="uploadMedia" icon="icon-floppy" class="new-design-btn-save">{{$t('general.actions.save')}}</el-button>
+                        <el-button type="default" @click="closeMediaDialog" icon="icon-cancel"  >{{$t('general.actions.close')}}</el-button>
+                        <el-button type="primary" @click="uploadMedia" icon="icon-floppy">{{$t('general.actions.save')}}</el-button>
                         
                     </div>
                 </div>
@@ -999,18 +999,6 @@
         /deep/ .el-dialog {
             width: 70% !important;
         }
-    }
-
-    .btn-save {
-        background-color: #878810;
-        border: none;
-        &:hover {
-            color: var(--color-white);
-            box-shadow: 0 0 5px #878810;
-        }
-    }
-    .btn-close {
-        border: none;
     }
 
     .media-box {

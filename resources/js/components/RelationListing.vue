@@ -250,6 +250,7 @@
                         :key="button.title"
                         :style="button.style"
                         :type="button.type"
+                        :class="button.class"
                         @click="button.onClick(scope.row)"
                         size="mini"
                         round
@@ -267,6 +268,7 @@
                             :icon="button.icon"
                             :style="button.style"
                             :type="button.type"
+                            :class="button.class"
                             @click="button.onClick(scope.row)"
                             v-if="button.view == 'request' && scope.row.type == 'provider' && scope.row.sent_email == false"
                             size="mini"

@@ -9,7 +9,8 @@
                     @click="add" 
                     icon="ti-plus" 
                     size="mini"
-                    class="transparent-button mr-0"
+                    type="primary"
+                    class="el-button--transparent mr-0"
                 >
                     {{$t('models.quarter.add')}}
                 </el-button>
@@ -20,7 +21,7 @@
            
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <el-button size="mini" class="transparent-button">
+                    <el-button size="mini" class="el-button--transparent">
                         <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">

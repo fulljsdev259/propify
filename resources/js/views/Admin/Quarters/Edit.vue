@@ -262,7 +262,7 @@
                                     </el-select>
                                 </el-col> -->
                                 <el-col id="managerAssignBtn">
-                                    <el-button :disabled="!toAssign.length" @click="assignUsers" class="full-button assign-button"
+                                    <el-button :disabled="!toAssign.length" @click="assignUsers" class="full-button el-button--assign"
                                                 icon="ti-save">
                                         &nbsp;{{$t('general.assign')}}
                                     </el-button>
@@ -283,15 +283,7 @@
                                 {{ $t('models.quarter.workflow.label') }}
                                 <!-- <el-badge :value="workflowCount" :max="99" class="admin-layout">{{ $t('models.quarter.workflow.label') }} </el-badge> -->
                             </span>
-                            <div class="workflow-button-bar">
-                                <el-button 
-                                        type="primary" 
-                                        @click="showAddWorkflow" 
-                                        icon="icon-plus" 
-                                        size="mini" 
-                                        class="add-workflow-btn">
-                                </el-button>
-                            </div>
+                            
                             
                             <workflow-form v-if="isAddWorkflow"
                                 mode="add" 
@@ -365,17 +357,28 @@
                                             </el-button> -->
 
                                             <el-button 
-                                                type="primary" 
+                                                type="danger" 
                                                 @click="showEditWorkflow($index)"
                                                 icon="icon-pencil" 
                                                 size="mini" 
-                                                class="round-btn new-design-btn-edit">
+                                                class="round-btn">
                                                 {{ $t('models.quarter.workflow.edit') }}
                                             </el-button>
                                         </el-col>
                                     </el-row>
                                 </el-collapse-item>
                             </el-collapse>
+
+                            <div class="workflow-button-bar">
+                                <el-button 
+                                        type="primary" 
+                                        @click="showAddWorkflow" 
+                                        icon="icon-plus" 
+                                        size="mini" 
+                                        class="add-workflow-btn">
+                                    {{ $t('models.quarter.workflow.add') }}
+                                </el-button>
+                            </div>
                         </el-tab-pane>
                         <!-- <el-tab-pane name="residents">                        
                             <span slot="label">
@@ -431,7 +434,7 @@
                 </el-col>
             </el-row>
         </div>
-        <ui-drawer :visible.sync="visibleDrawer" :z-index="1" direction="right" docked>
+        <ui-drawer :visible.sync="visibleDrawer" :z-index="2" direction="right" docked>
             <template v-if="editingRelation || isAddRelation">
                 <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} </ui-divider>
                 <!-- <ui-divider content-position="left"><i class="icon-handshake-o ti-user icon"></i> &nbsp;&nbsp;{{ $t('models.resident.relation.title') }} {{ editingRelation ? '[' + editingRelation.relation_format + ']' : '' }} </ui-divider> -->
@@ -582,7 +585,7 @@
                     width: 120,
                     label: 'models.request.status.label'
                 }],
-                requestActions: [{
+                requestActions: [/*{
                     width: 70,
                     buttons: [{
                         icon: 'ti-search',
@@ -590,7 +593,7 @@
                         onClick: this.requestEditView,
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 assigneesActions: [{
                     width: 70,
                     buttons: [ {
@@ -603,11 +606,12 @@
                 }],
                  assigneesColumns: [{
                     type: 'assignProviderManagerAvatars',
-                    width: 70,
+                    width: 40,
                 }, {
                     type: 'assigneesName',
                     prop: 'name',
-                    label: 'general.name'
+                    label: 'general.name',
+                    width: 150,
                 }, {
                     type: 'companyName',
                     prop: 'company_name',
@@ -1165,19 +1169,11 @@
     .workflow-button-bar {
         display: flex;
         justify-content: flex-end;
-        margin-bottom: 10px;
+        margin-top: 40px;
 
-        &.edit {
-            padding-top: 40px;
-            .el-button.btn-edit {
-                background-color: #848484;
-                border: none;
-                &:hover {
-                    box-shadow: 0 0 5px #848484;
-                    color: var(--color-white);
-                }
-            }
-        }
+        // &.edit {
+        //     padding-top: 40px;
+        // }
     }
 
     .el-tag {
@@ -1217,8 +1213,9 @@
     }
 
     .add-workflow-btn {
-        border-radius: 5px;
-        padding: 3px;
+        // border-radius: 5px;
+        // padding: 3px;
+        padding: 12px 15px;
     }
 
     .assign-button {
