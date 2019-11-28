@@ -16,16 +16,14 @@ class MassRequestsNotificationServiceProviderTemplateSeeder extends Seeder
             'parent_id' => 5,
             'system' => 1,
             'name' => 'mass_requests_notification_service_provider',
-            'description' => 'Email sent to property managers(receptionist) when resident creates a new request.',
+            'description' => 'Email sent to service providers',
             'tag_map' => [
                 'salutation' => 'user.title',
                 'name' => 'user.name',
                 'subjectSalutation' => 'subject.title',
                 'subjectName' => 'subject.name',
-                'title' => 'request.title',
-                'description' => 'request.description',
             ],
-            'subject' => 'New Resident request: {{title}}',
+            'subject' => 'Mass Request Assignment',
             'body' => <<<HTML
 <p>Hello {{salutation}} {{name}},</p>
 <p>Title: {{title}}.</p>

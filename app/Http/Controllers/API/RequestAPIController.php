@@ -502,10 +502,10 @@ class RequestAPIController extends AppBaseController
             if (!\Storage::disk('request_downloads')->exists($pdfName)) {
                 return $this->sendError('Request file not found!');
             }
-            $mail = (new SentEmailPdf($pdfName))->onQueue('high');
 
             foreach ($users as $user) {
-                Mail::to($user->email)->queue($mail);
+                $mail = (new SentEmailPdf($user, $pdfName));//->onQueue('high');
+                Mail::to($user->email)->send($mail);
 			}
    
 		}
