@@ -35,6 +35,40 @@ class IncludeForOrderCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
+        $raw = 'SELECT
+    COUNT(u.id)
+FROM
+    (
+    SELECT TYPE
+        ,
+        id,
+        deleted_at
+    FROM
+        `units`
+    WHERE
+        quarter_id = 10
+    UNION ALL
+SELECT TYPE
+    ,
+    id,
+    deleted_at
+FROM
+    `units`
+WHERE
+    building_id IN(
+    SELECT
+        id
+    FROM
+        buildings
+    WHERE
+        quarter_id = 10 AND deleted_at IS NULL
+)
+) AS u
+WHERE TYPE
+    = 1 AND deleted_at IS NULL
+ORDER BY
+    `u`.`id` ASC';
+
         $model->when($this->request->orderBy == 'requests_count', function ($q) {
                 $q->withCount('requests');
             })
