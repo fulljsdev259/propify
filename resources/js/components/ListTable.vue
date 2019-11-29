@@ -325,37 +325,6 @@
                             />
                         </el-tooltip>
                     </div>
-                    <div v-else-if="column.withRequestPMs">
-                        <div class="avatars-wrapper">
-                            <span :key="uuid()" v-if="user.type == 1 || user.type == 3" v-for="(user, index) in scope.row[column.prop]">
-                                <el-tooltip
-                                    :content="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
-                                    class="item"
-                                    effect="light" placement="top">
-                                    <template v-if="user.user">
-                                        <avatar :size="28"
-                                                :username="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
-                                                backgroundColor="rgb(205, 220, 57)"
-                                                color="#fff"
-                                                v-if="!user.user.avatar"></avatar>
-                                        <avatar :size="28" :src="`/${user.user.avatar}`" v-else></avatar>
-                                    </template>
-                                    <template v-else>
-                                        <avatar :size="28"
-                                                :username="user.first_name ? `${user.first_name} ${user.last_name}`: `${user.name}`"
-                                                backgroundColor="rgb(205, 220, 57)"
-                                                color="#fff"
-                                                v-if="!user.avatar"></avatar>
-                                        <avatar :size="28" :src="`/${user.avatar}`" v-else></avatar>
-                                    </template>
-                                </el-tooltip>
-
-                            </span>
-                            <avatar class="avatar-count" :size="28" :username="`+ ${scope.row[column.prop].length-2}`"
-                                    color="#fff"
-                                    v-if="scope.row[column.prop].length>2"></avatar>
-                        </div>
-                    </div>
                     <div v-else-if="column.withRequestCreator">
                         <div>
                             <strong>{{scope.row.creator.name}}</strong>                    

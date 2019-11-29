@@ -39,6 +39,7 @@ export default (config = {}) => {
                     capture_phase: '',
                     action: null,
                     cost_impact: null,
+                    percentage: '',
                     component: '',
                     keyword: '',
                     keywords: [],
@@ -627,7 +628,7 @@ export default (config = {}) => {
                         this.showRoom = resp.data.sub_category && resp.data.sub_category.room == 1 ? true : false;
                         this.showAction =  resp.data.category.action == 1 || (resp.data.sub_category && resp.data.sub_category.action == 1) ? true : false;
                         this.showCostImpact =  resp.data.category.cost_impact == 1 || (resp.data.sub_category && resp.data.sub_category.cost_impact == 1) ? true : false;
-                        this.showPercent = this.showCostImpact && resp.data.category.cost_impact == 3 ? true : false;
+                        this.showPercent = this.showCostImpact && resp.data.cost_impact == 3 ? true : false;
                         this.showCapturePhase =  resp.data.category.capture_phase == 1 || (resp.data.sub_category && resp.data.sub_category.capture_phase == 1) ? true : false;
                         this.showComponent =  resp.data.category.component == 1 || (resp.data.sub_category && resp.data.sub_category.component == 1) ? true : false;
                         

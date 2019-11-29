@@ -960,6 +960,36 @@
             border:none;
             box-shadow: 0 0 5px #848484
         }
+        .el-button--warning{
+            color:#FFF;
+            background-color:var(--color-warning);
+            border-color:var(--color-warning)
+        }
+        .el-button--warning:focus,.el-button--warning:hover{
+            background:#ebb563;
+            border-color:#ebb563;
+            color:#FFF
+        }
+        .el-button--warning.is-active,.el-button--warning:active{
+            background:#cf9236;
+            border-color:#cf9236;
+            color:#FFF
+        }
+        .el-button--info{
+            color:#FFF;
+            background-color:var(--color-info);
+            border-color:var(--color-info)
+        }
+        .el-button--info:focus,.el-button--info:hover{
+            background:#a6a9ad;
+            border-color:#a6a9ad;
+            color:#FFF
+        }
+        .el-button--info.is-active,.el-button--info:active{
+            background:#82848a;
+            border-color:#82848a;
+            color:#FFF
+        }
         .el-button--transparent{
             background-color: transparent;
             border: none;
