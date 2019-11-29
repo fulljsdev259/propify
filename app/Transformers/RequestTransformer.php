@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\PropertyManager;
 use App\Models\Request;
 
 /**
@@ -54,29 +55,26 @@ class RequestTransformer extends BaseTransformer
             $response['solved_date'] = $model->solved_date->format('Y-m-d');
         }
 
-        $assignedUsers = $model->newCollection();
+        $response['assignedUsers'] = [];
+
         if ($model->relationExists('providers')) {
-            $assignedUsers = $assignedUsers->merge($model->providers->pluck('user'));
             $response['service_providers'] = (new ServiceProviderTransformer)->transformCollection($model->providers);
         }
 
         if ($model->relationExists('managers')) {
-            $usersCollection = $model->newCollection($model->managers->pluck('user')->all());
-            $assignedUsers = $assignedUsers->merge($usersCollection);
-
             $response['property_managers'] = (new PropertyManagerTransformer())->transformCollection($model->managers);
         }
 
         if ($model->relationExists('users')) {
-            $assignedUsers = $assignedUsers->merge($model->users);
             $response['users'] = (new UserTransformer())->transformCollection($model->users);
+            $users = collect($response['users']);
+            $propertyManager = $users->whereIn('roles.0.name', PropertyManager::Type)->all();
+            $response['property_managers_new'] = $propertyManager;
+
+            $serviceProviders = $users->where('roles.0.name', 'provider')->all();
+            $response['service_providers_new'] = $serviceProviders;
         }
 
-        if ($assignedUsers->count()) {
-            $response['assignedUsers'] = (new UserTransformer)->transformCollection($assignedUsers);
-        } else {
-            $response['assignedUsers'] = [];
-        }
 
         if ($model->category_id) {
             $response['category'] = get_category_details($model->category_id);

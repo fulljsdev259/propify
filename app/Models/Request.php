@@ -760,7 +760,7 @@ class Request extends AuditableModel implements HasMedia
 
     public function users()
     {
-        return $this->morphedByMany(User::class, 'assignee', 'request_assignees', 'request_id');
+        return $this->belongsToMany(User::class, 'request_assignees');
     }
 
     public function assignees()
