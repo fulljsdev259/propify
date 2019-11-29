@@ -213,10 +213,6 @@ class BuildingAPIController extends AppBaseController
      *                          type="integer",
      *                      ),
      *                      @SWG\Property(
-     *                          property="name",
-     *                          type="string"
-     *                      ),
-     *                      @SWG\Property(
      *                          property="units_count",
      *                          type="integer"
      *                      ),
@@ -242,7 +238,7 @@ class BuildingAPIController extends AppBaseController
     {
         $limit = $request->get('limit', 5);
         $model = $this->buildingRepository->getModel();
-        $buildings = $model->select(['id', 'name'])->orderByDesc('id')->limit($limit)->withCount([
+        $buildings = $model->select(['id'])->orderByDesc('id')->limit($limit)->withCount([
             'units',
             'relations' => function ($q) {
                 $q->with('building.address', 'unit', 'resident.user');
@@ -261,7 +257,6 @@ class BuildingAPIController extends AppBaseController
         $columns = [
             'id',
             'address_id',
-            'name',
             'latitude',
             'longitude'
         ];
