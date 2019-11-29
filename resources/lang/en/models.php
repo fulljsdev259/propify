@@ -740,7 +740,8 @@ return [
             'address'=>'Object'
         ],
         'pictures_of' => 'Photos of the request',
-        'go_to_building' => 'go to building'
+        'go_to_building' => 'go to building',
+        'visible' => 'Visible'
     ],
     'request_category' => [
         'title' => 'Request categories',

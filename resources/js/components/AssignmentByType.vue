@@ -105,6 +105,7 @@
 <style lang="less" scoped>
     #assignment_type {
         display: flex;
+        margin-bottom: 20px;
         #type {
             .custom-select {
                 width: 100%;

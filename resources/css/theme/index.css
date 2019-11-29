@@ -10366,37 +10366,20 @@ input.el-input__inner[type=number]{
     border-radius:50%;
     padding:12px
 }
-.el-button--default{
-    background-color: lightgrey;
-    color:var(--color-text-regular);
-    border: none
-}
-.el-button--default:focus,.el-button--default:hover{
-    color:var(--color-text-regular);
-    background-color:lightgrey;
-    border:none;
-    box-shadow:0 0 5px lightgrey
-}
-.el-button--default.is-active,.el-button--default:active{
-    color:var(--color-text-regular);
-    background-color:lightgrey;
-    border:none;
-}
 .el-button--primary{
-    color:var(--color-white);
-    background-color:#878810;
-    border:none
+    color:#FFF;
+    background-color:var(--primary-color);
+    border-color:var(--primary-color)
 }
 .el-button--primary:focus,.el-button--primary:hover{
-    color:var(--color-white);
-    background-color:#878810;
-    border:none;
-    box-shadow:0 0 5px #878810
+    background:var(--primary-color-lighter);
+    border-color:var(--primary-color-lighter);
+    color:var(--primary-color);
 }
 .el-button--primary.is-active,.el-button--primary:active{
-    color:var(--color-white);
-    background-color:#878810;
-    border:none
+    background:var(--primary-color);
+    border-color:var(--primary-color);
+    color:#FFF;
 }
 .el-button--primary:active{
     outline:0
@@ -10428,20 +10411,19 @@ input.el-input__inner[type=number]{
     border-color:#e1f2e2
 }
 .el-button--success{
-    color:var(--color-white);
-    background-color:#878810;
-    border:none
+    color:#FFF;
+    background-color:var(--primary-color);
+    border-color:var(--primary-color)
 }
 .el-button--success:focus,.el-button--success:hover{
-    color:var(--color-white);
-    background-color:#878810;
-    border:none;
-    box-shadow:0 0 5px #878810
+    color:var(--primary-color);
+    background:var(--primary-color-lighter);
+    border-color:var(--primary-color-lighter);
 }
 .el-button--success.is-active,.el-button--success:active{
-    color:var(--color-white);
-    background-color:#878810;
-    border:none
+    background:var(--primary-color-lighter);
+    border-color:var(--primary-color-lighter);
+    color:#FFF
 }
 .el-button--success:active{
     outline:0
@@ -10517,21 +10499,19 @@ input.el-input__inner[type=number]{
     border-color:#faecd8
 }
 .el-button--danger{
-    background-color:#848484;
-    color:white;
-    border:none
+    color:#FFF;
+    background-color:var(--color-danger);
+    border-color:var(--color-danger)
 }
 .el-button--danger:focus,.el-button--danger:hover{
-    background-color:#848484;
-    color: var(--color-white);
-    border:none;
-    box-shadow: 0 0 5px #848484
+    background:#f78989;
+    border-color:#f78989;
+    color:#FFF
 }
 .el-button--danger.is-active,.el-button--danger:active{
-    background-color:#848484;
-    color: var(--color-white);
-    border:none;
-    box-shadow: 0 0 5px #848484
+    background:#dd6161;
+    border-color:#dd6161;
+    color:#FFF
 }
 .el-button--danger:active{
     outline:0
@@ -12516,23 +12496,76 @@ input.el-input__inner[type=number]{
 .el-drawer-fade-leave-active{
     animation:el-drawer-fade-in 225ms cubic-bezier(0,0,.2,1) 0s reverse
 }
+/* .el-button--default{
+    background-color: lightgrey;
+    color:var(--color-text-regular);
+    border: none
+}
+.el-button--default:focus,.el-button--default:hover{
+    color:var(--color-text-regular);
+    background-color:lightgrey;
+    border:none;
+    box-shadow:0 0 5px lightgrey
+}
+.el-button--default.is-active,.el-button--default:active{
+    color:var(--color-text-regular);
+    background-color:lightgrey;
+    border:none;
+}
+.el-button--primary{
+    color:var(--color-white);
+    background-color:#878810;
+    border:none
+}
+.el-button--primary:focus,.el-button--primary:hover{
+    color:var(--color-white);
+    background-color:#878810;
+    border:none;
+    box-shadow:0 0 5px #878810
+}
+.el-button--primary.is-active,.el-button--primary:active{
+    color:var(--color-white);
+    background-color:#878810;
+    border:none
+}
+.el-button--success{
+    color:var(--color-white);
+    background-color:#878810;
+    border:none
+}
+.el-button--success:focus,.el-button--success:hover{
+    color:var(--color-white);
+    background-color:#878810;
+    border:none;
+    box-shadow:0 0 5px #878810
+}
+.el-button--success.is-active,.el-button--success:active{
+    color:var(--color-white);
+    background-color:#878810;
+    border:none
+}
+.el-button--danger{
+    background-color:#848484;
+    color:white;
+    border:none
+}
+.el-button--danger:focus,.el-button--danger:hover{
+    background-color:#848484;
+    color: var(--color-white);
+    border:none;
+    box-shadow: 0 0 5px #848484
+}
+.el-button--danger.is-active,.el-button--danger:active{
+    background-color:#848484;
+    color: var(--color-white);
+    border:none;
+    box-shadow: 0 0 5px #848484
+}
 .el-button--transparent{
     background-color: transparent;
     border: none;
     color: var(--color-text-secondary)
 }
-
-/* .el-button--transparent:focus{
-    background-color: transparent;
-    border: none;
-    color: var(--color-text-secondary);
-    box-shadow: none
-} */
-
-/* .el-button--transparent span{
-    padding-left: 5px;
-} */
-
 .el-button--assign, .el-button--assign.is-disabled {
     background-color: #3D3F41;
     color: var(--color-white);
@@ -12540,4 +12573,4 @@ input.el-input__inner[type=number]{
 
 .el-button--assign:focus, .el-button--assign:hover {
     background-color: var(--background-color-base);
-}
+} */

@@ -11,6 +11,9 @@
                     {{$t('models.request.add_title')}}
                 </el-button>
             </template>
+            <template>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
+            </template>
             <!-- <template v-if="$can($permissions.assign.manager)">
                 <el-dropdown split-button 
                             :disabled="!selectedItems.length" 
@@ -63,7 +66,7 @@
             </template> -->
 
         </heading>
-        <request-list-table
+        <!-- <request-list-table
             :fetchMore="fetchMore"
             :filters="filters"
             :filtersHeader="filtersHeader"
@@ -78,7 +81,20 @@
             @selectionChanged="selectionChanged"
             @pdf-download="downloadPDF($event)"
         >
-        </request-list-table>
+        </request-list-table> -->
+        <list-table
+            :fetchMore="fetchMore"
+            :filters="filters"
+            :filtersHeader="filtersHeader"
+            :header="headerFilter"
+            :items="formattedItems"
+            :loading="{state: loading}"
+            :pagination="{total, currPage, currSize}"
+            :withSearch="false"
+            :searchText="search"
+            @selectionChanged="selectionChanged"
+        >
+        </list-table>
         <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
                    :visible.sync="batchEditVisible"
                    v-loading="processAssignment" width="30%">
@@ -193,7 +209,6 @@
     import getFilterQuarters from 'mixins/methods/getFilterQuarters';
     import RequestListTable from 'components/RequestListTable';
 
-
     const mixin = ListTableMixin({
         actions: {
             get: 'getRequests',
@@ -214,13 +229,52 @@
         },
         data() {
             return {
-                header: [{
-                    label: '',
-                    withOneCol: true,
-                    editAction: this.edit,
-                    onChange: this.listingSelectChangedNotify,
-                    downloadPDF: this.downloadPDF
-                }],
+                // header: [{
+                //     label: '',
+                //     withOneCol: true,
+                //     editAction: this.edit,
+                //     onChange: this.listingSelectChangedNotify,
+                //     downloadPDF: this.downloadPDF
+                // }],
+                header: [ 
+                    {
+                        label: 'general.id',
+                        withReuqestIDAndTitle: true
+                    },
+                    {
+                        label: 'general.filters.status',
+                        withRequestStatusSign: true,
+                        prop: 'status',
+                        width: 150
+                    }, {
+                        label: 'models.request.assigned_property_managers',
+                        withUsers: true,
+                        prop: 'property_managers'
+                    }, {
+                        label: 'general.category',
+                        prop: 'category',
+                        i18n: this.translateCategory
+                    }, {
+                        label: 'general.filters.services',
+                        withUsers: true,
+                        prop: 'service_providers'
+                    }, {
+                        label: 'models.request.created_by',
+                        prop: 'creator.name',
+                        withRequestCreator: true,
+                        width: 200
+                    }, {
+                        label: 'models.request.visible',
+                        withRequestVisible: true,
+                        width: 85,
+                        align: 'center'
+                    }, {
+                        label: 'models.unit.appendix',
+                        withRequestAppendix: true,
+                        width: 120,
+                        align: 'center'
+                    }
+                ],
                 search: '',
                 categories:[],
                 quarters:[],
@@ -280,24 +334,6 @@
                         key: 'search'
                     },
                     {
-                        name: this.$t('general.filters.categories'),
-                        type: 'select',
-                        key: 'category_id',
-                        data: this.categories,
-                    },
-                    {
-                        name: this.$t('models.request.status.label'),
-                        type: 'select',
-                        key: 'status',
-                        data: this.prepareFilters("status"),
-                    },
-                    // {
-                    //     name: this.$t('models.request.internal_priority.label'),
-                    //     type: 'select',
-                    //     key: 'internal_priority',
-                    //     data: this.prepareFilters("internal_priority"),
-                    // },
-                    {
                         name: this.$t('general.filters.quarters'),
                         type: 'select',
                         key: 'quarter_id',
@@ -310,10 +346,22 @@
                         data: this.buildings,
                     },
                     {
+                        name: this.$t('models.request.status.label'),
+                        type: 'select',
+                        key: 'status',
+                        data: this.prepareFilters("status"),
+                    },
+                    {
                         name: this.$t('general.filters.property_managers'),
                         type: 'select',
                         key: 'property_manager_id',
                         data: this.propertyManagers,
+                    },
+                    {
+                        name: this.$t('general.filters.categories'),
+                        type: 'select',
+                        key: 'category_id',
+                        data: this.categories,
                     },
                     {
                         name: this.$t('general.filters.services'),
@@ -321,11 +369,35 @@
                         key: 'service_provider_id',
                         data: this.services,
                     },
+                    // {
+                    //     name: this.$t('models.request.internal_priority.label'),
+                    //     type: 'select',
+                    //     key: 'internal_priority',
+                    //     data: this.prepareFilters("internal_priority"),
+                    // },
+                    // {
+                    //     name: this.$t('general.filters.resident'),
+                    //     type: 'select',
+                    //     key: 'resident_id',
+                    //     data: this.residents,
+                    // },
                     {
-                        name: this.$t('general.filters.resident'),
-                        type: 'select',
-                        key: 'resident_id',
-                        data: this.residents,
+                        name: this.$t('general.filters.created_from'),
+                        type: 'date',
+                        key: 'created_from',
+                        format: 'dd.MM.yyyy'
+                    },
+                    // {
+                    //     name: this.$t('general.filters.created_to'),
+                    //     type: 'date',
+                    //     key: 'created_to',
+                    //     format: 'dd.MM.yyyy'
+                    // },
+                    {
+                        name: this.$t('models.request.closed_date'),
+                        type: 'date',
+                        key: 'solved_date',
+                        format: 'dd.MM.yyyy'
                     },
                     {
                         name: this.$t('general.filters.phase'),
@@ -334,23 +406,11 @@
                         data: this.prepareFilters("capture_phase"),
                     },
                     {
-                        name: this.$t('general.filters.created_from'),
-                        type: 'date',
-                        key: 'created_from',
-                        format: 'dd.MM.yyyy'
-                    },
-                    {
-                        name: this.$t('general.filters.created_to'),
-                        type: 'date',
-                        key: 'created_to',
-                        format: 'dd.MM.yyyy'
-                    },
-                    {
-                        name: this.$t('models.request.closed_date'),
-                        type: 'date',
-                        key: 'solved_date',
-                        format: 'dd.MM.yyyy'
-                    },
+                        name: this.$t('general.filters.saved_filters'),
+                        type: 'select',
+                        key: 'saved_filter',
+                        data: []
+                    }
                 ];
                 if(this.routeName == 'adminUnassignedRequests') {
                     filters.splice(6, 2);
@@ -381,6 +441,9 @@
                     this.batchEditVisible = true
                 }
             },
+            translateCategory(category) {
+                return this.$t(`models.request.category_list.${category.name}`)
+            },
             async getFilterBuildings() {
                 const buildings = await this.getBuildings({
                     get_all: true
@@ -394,8 +457,8 @@
                 return this.categories;
             },
             async getFilterServices() {
-                const services = await this.getServices({get_all: true});
-
+                let services = await this.getServices({get_all: true});
+                services.data.map(service => service.name = service.first_name + ' ' + service.last_name)
                 return services.data;
             },
             async fetchRemoteQuarters(search = '') {
@@ -419,7 +482,8 @@
                 });
             },
             async fetchRemoteServices(search = '') {
-                const services = await this.getServices({get_all: true, search});
+                let services = await this.getServices({get_all: true, search});
+                services.data.map(service => service.name = service.first_name + ' ' + service.last_name)
 
                 return services.data;
             },

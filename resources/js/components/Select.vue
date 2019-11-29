@@ -1,15 +1,19 @@
 <template>
-    <div class="custom-select">
+    <div class="custom-select" ref="multiSelect">
        <el-dropdown trigger="click" placement="bottom" @visible-change="handleVisibleChange">
-            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]" :disabled="disabled">
+            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count}]" :style="{'background-color':findSelectedOne.count?bgColor:'#f6f5f7'}" :disabled="disabled">
                 <span v-if="findSelectedOne.count === 0">{{ name }}</span>
                 <el-tag 
                     v-else-if="type !== 'language'"
+                    :key="item.id"
                     size="mini"
-                    :closable="findSelectedOne.count !== 1"
-                    @close="selectItem(findSelectedOne.index, true)"
+                    :style="{'background-color': tagColor}"
+                    :closable="!disabled"
+                    @close="selectItem(item.index, true)"
+                    v-for="(item, index) in findSelectedOne.items"
                 >
-                    <span v-if="items.length && name> 1">{{ `${name}: ` }}</span>{{ `${getLanguageStr(findSelectedOne.label)}` }}
+                    <span v-if="items.length > 1 && name && !showMultiTag">{{ `${name}: ` }}</span>
+                    {{ ` ${getLanguageStr(item.name)}` }}
                 </el-tag>
                 <el-tag 
                     v-else
@@ -21,15 +25,16 @@
                     <span :class="items[findSelectedOne.index].flag" ></span>
                 </el-tag>
                 <el-tag
-                    v-if="findSelectedOne.count > 1"
+                    v-if="findSelectedOne.count > findSelectedOne.items.length"
                     size="mini"    
                     class="select-count"
-                >
-                    +{{ findSelectedOne.count - 1 }}
+                    :style="{'background-color': tagColor}"
+                    >
+                        +{{ findSelectedOne.count - findSelectedOne.items.length }}
                 </el-tag>
             </el-button>
             <el-button 
-                v-if="findSelectedOne.count != 0" 
+                v-if="findSelectedOne.count != 0 && !showMultiTag" 
                 icon="el-icon-close"
                 class="close-button" 
                 @click.prevent.stop="handleReset(true)">
@@ -55,7 +60,7 @@
                     </el-input>
                     <div class="dropdown-container" v-if="items.length">
                         <div
-                            :key="`${name}${item.name}${item.id}${index}selected`"
+                            :key="`${name}${item.name}${item.id}${index}selected` + index"
                             class="dropdown-item" 
                             :class="[{'selected': item.selected == true, 'hide-unmatching': !isContained(getLanguageStr(item.name))}]"
                             @click="selectItem(index)"
@@ -76,6 +81,7 @@
                 </template>
             </el-dropdown-menu>
         </el-dropdown>
+        <span :id="type + name" style="visibility: hidden" ></span>
     </div>
 </template>
 <script>
@@ -88,7 +94,8 @@
                search: '',
                selecting: false,
                items: [],
-               options: ''
+               options: [],
+               forceRecompute: false,
             }
         },
         props: {
@@ -112,9 +119,24 @@
               type: Boolean,
               default: () => true
           },
+          maxSelect: {
+              type: Number
+          },
           disabled: {
               type: Boolean,
               default: () => false,
+          },
+          tagColor: {
+              type: String,
+              default: () => ''
+          },
+          bgColor: {
+              type: String,
+              default: () => ''
+          },
+          showMultiTag: {
+              type: Boolean,
+              default: () => false
           }
         },
         components: {
@@ -125,29 +147,38 @@
                 return this.options.filter((option) => this.search ==='' || this.search !== '' && option.name.includes(this.search));
             },
             findSelectedOne() {
-                let first_item = null;
+                let result = [];
                 let count = 0;
-                let idx = -1;
+                let totalWidth = 0;
+                this.forceRecompute;
                 this.items.forEach((item, index) => {
                     if(item.selected) {
+                        let label = this.getLanguageStr(item.name);
+                        let width = this.getTextWidth(label);
                         count ++;
-                        if(count == 1) {
-                            first_item = item;
-                            idx = index;
+                        if(!this.showMultiTag && count <= 1) {
+                            result.push({
+                                index: index,
+                                name:label
+                            });
+                        } else if(this.showMultiTag && this.$refs.multiSelect !== undefined && (width + totalWidth < this.$refs.multiSelect.clientWidth)) {
+                            result.push({
+                                index: index,
+                                name:label
+                            });
+                            totalWidth += width;
                         }
                     }
                 });
                 return { 
-                    label:first_item?first_item.name:null,
-                    index: idx, 
+                    items: result.length >0?result:[],
                     count: count
                 };
             },
         },
         methods: {
             isContained(str) {
-                if(str)
-                    return str.toLowerCase().includes(this.search.toLowerCase());
+                return str.toLowerCase().includes(this.search.toLowerCase());
             },
             handleDropdownClick() {
                 this.clearSearch();
@@ -191,7 +222,14 @@
                 return result;
             },
             selectItem(index, notifyChange = false) {
-                this.items[index].selected = !this.items[index].selected;
+                if(this.maxSelect) {
+                    this.items.map(item => item.selected = false)
+                    this.items[index].selected = true
+                    if(notifyChange)
+                        this.items[index].selected = false
+                }
+                else
+                    this.items[index].selected = !this.items[index].selected;
                 if(notifyChange)
                     this.handleSelect();
             },
@@ -232,6 +270,27 @@
                     result = this.$t(`models.request.category_list.${str}`);
                 } 
                 return result;
+            },
+            getTextWidth(text) { 
+  
+                var spanText = document.getElementById(this.type + this.name);
+                var width = 0;
+                if(spanText && spanText !== undefined) {
+                    spanText.style.position = 'absolute'; 
+                    spanText.style.left = '0';
+                    spanText.style.whiteSpace = 'no-wrap'; 
+                    spanText.innerHTML = text; 
+        
+                    width = Math.ceil(spanText.clientWidth) + 26; 
+                } 
+                return width;
+            },
+            fitWidth() {
+                this.column.select.data.map((item) => {
+                    if(this.vModel == item.id) {
+                        this.maxWidth = this.getTextWidth(item.name);
+                    }
+                });
             },
             initFilter() {
                 this.items = [];
@@ -284,9 +343,16 @@
         created() {
             this.initFilter();
         },
+        mounted() {
+            this.forceRecompute = true;
+            this.$forceUpdate();
+        },
         updated() {
             if((JSON.stringify(this.options) !== JSON.stringify(this.data)) )
                 this.initFilter();
+            else if((JSON.stringify(this.originSelectedOptions) !== JSON.stringify(this.selectedOptions)) )
+                this.initFilter();
+            
             
         }
     }
@@ -297,7 +363,7 @@
         position: relative;
         height: 40px;
         .el-button {
-            padding: 0 10px;
+            padding: 0 5px;
             width: 100%;
             text-align: left;
             color: var(--color-text-primary);
@@ -316,10 +382,15 @@
             }
 
             span.el-tag {
-                padding: 0 !important;
-                background-color: transparent;
+                padding: 0 5px!important;
+                &:not(:last-of-type) {
+                    margin-right: 5px;
+                }
                 border-color: transparent;
+                background-color: var(--color-primary);
                 color: var(--color-white);
+                line-height: 30px;
+                height: 30px;
                 :global(i.el-tag__close) {
                     right: 0;
                     line-height: 1.4;
@@ -334,6 +405,14 @@
                 }
                 &.select-count {
                     padding: 0 4px !important;
+                    text-align: center;
+                    border-radius: 4px;
+                    border: 1px solid var(--color-white);
+                }
+                &.select-count {
+                    position: absolute;
+                    right: 5px;
+                    padding: 0 7px !important;
                     text-align: center;
                     border-radius: 4px;
                     border: 1px solid var(--color-white);

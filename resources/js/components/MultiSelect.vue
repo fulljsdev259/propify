@@ -79,7 +79,8 @@
                search: '',
                selecting: false,
                items: [],
-               options: ''
+               options: '',
+               originSelectedOptions: [],
             }
         },
         props: {
@@ -283,21 +284,27 @@
                         })
                     });
                 }
+                this.originSelectedOptions = _.clone(this.selectedOptions, true);
             }
         },
         created() {
             this.initFilter();
         },
-        updated() {
+        updated() {    
+            if((JSON.stringify(this.options) !== JSON.stringify(this.data)) )
+                this.initFilter();
+            else if((JSON.stringify(this.originSelectedOptions) !== JSON.stringify(this.selectedOptions)) )
+                this.initFilter();
+            
         },
-        watch: {
-            selectedOptions() {
-                this.initFilter();
-            },
-            data() {
-                this.initFilter();
-            }
-        }
+        // watch: {
+        //     selectedOptions() {
+        //         this.initFilter();
+        //     },
+        //     data() {
+        //         this.initFilter();
+        //     }
+        // }
     }
 </script>
 <style lang="scss" scoped>

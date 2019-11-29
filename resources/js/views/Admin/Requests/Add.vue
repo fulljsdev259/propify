@@ -133,11 +133,11 @@
                         <el-col :md="12" v-if="this.showPercent == true">
                             <el-form-item 
                                 :label="$t('models.request.category_options.payer_percent')"
-                                :rules="validationRules.payer_percent"
-                                prop="payer_percent">
+                                :rules="validationRules.percentage"
+                                prop="percentage">
                                 <el-input 
                                     type="number"
-                                    v-model="model.payer_percent" 
+                                    v-model="model.percentage" 
                                 >
                                     <template slot="prepend">%</template>
                                 </el-input>
@@ -299,7 +299,6 @@
                                     <el-option v-for="relation in relations" 
                                                 :key="relation.id" 
                                                 :label="relation.building_room_floor_unit" 
-                                                class="a"
                                                 :value="relation.id" >
                                             <!-- <span class="status-icon" :style="{ background: constants.relations.status_colorcode[relation.status], border: '2px solid ' + getLightenDarkenColor(constants.relations.status_colorcode[relation.status], 200) + '59' }" >&nbsp;</span> -->
                                             <span class="status-icon" :style="{ background: constants.relations.status_colorcode[relation.status], border: '2px solid #ffffffe7'}" >&nbsp;</span>
@@ -510,7 +509,7 @@
     }
 </style>
 <style>
-    .el-button > i {
+    /* .el-button > i {
         margin-right: 5px;
-    }
+    } */
 </style>
