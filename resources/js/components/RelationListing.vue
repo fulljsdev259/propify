@@ -105,12 +105,12 @@
                                     :username="scope.row.user.first_name ? `${scope.row.user.first_name} ${scope.row.user.last_name}`: `${scope.row.user.name}`"
                                     v-if="!scope.row.user.avatar"></avatar>
                         </el-tooltip>
-                        <span>{{column.translate(scope.row.type)}}</span>
+                        <span>{{column.translate(scope.row.types)}}</span>
                     </div>
 
                     <div v-else-if="column.type === 'residentNameAndType'" class="normal">
                         {{scope.row.name}}
-                        <div class="type">{{column.translate(scope.row.type)}}</div>
+                        <div class="type">{{column.translate(scope.row.types)}}</div>
                     </div>
 
                     <div v-else-if="column.type === 'residentRelation'">
