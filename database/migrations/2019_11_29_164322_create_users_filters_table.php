@@ -18,7 +18,7 @@ class CreateUsersFiltersTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('title');
             $table->string('menu');
-            $table->string('options_url')->nullable();
+            $table->text('options_url')->nullable();
             $table->text('fields_data')->nullable();
             $table->timestamps();
         });
