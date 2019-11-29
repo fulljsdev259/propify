@@ -21,7 +21,7 @@
                                             {{ $t(`models.resident.status.${status.text}`) }}
                                         </el-tag>
                                     </div>
-                                    <div class="image-container">
+                                    <div class="image-container" :class="{'hide-action-icon': !editMode}">
                                         <cropper
                                             v-if="model.title"
                                             :boundary="{
@@ -191,7 +191,6 @@
                                     @delete-relation="deleteRelation">
                             </relation-list-table>
                             <el-button
-                                v-if="editMode" 
                                 style="float:right" 
                                 type="primary" 
                                 @click="showRelationDialog" 
@@ -217,7 +216,6 @@
                                 @delete-media="deleteMedia"
                             />
                             <el-button 
-                                v-if="editMode"
                                 style="float:right" 
                                 type="primary" 
                                 @click="showMediaDialog" 
@@ -669,7 +667,7 @@
         }
     
         .el-card {
-            margin: 0 10px;
+            margin: 0 10px 40px;
             box-shadow: none !important;
             border: 1px solid var(--border-color-base);
             border-radius: 6px;
@@ -705,10 +703,12 @@
                 .edit-name-input {
                     margin: 0px;
                     .el-input__inner {
-                        font-size: 24px;
+                        font-size: 32px;
+                        font-family: 'Radikal';
                     }
                     &:nth-type-of(1) {
-                      margin-bottom: 40px;  
+                        margin-top: 10px !important;
+                        margin-bottom: 40px;  
                     }
                 }
                 .last_name {
@@ -738,7 +738,7 @@
             }
             .status {
                 margin-bottom: 40px;
-                margin-left: 15px;
+                margin-left: 10px;
                 .el-tag {
                     font-weight: 700;
                     border: transparent;
@@ -749,7 +749,7 @@
                 }
             }
             .type {
-                margin-left: 15px;
+                margin-left: 10px;
                 margin-top: 10px;
                 font-size: 16px;
                 color: var(--color-text-secondary);
@@ -844,6 +844,11 @@
                     top: 0;
                     z-index: 999;
                 }
+                &.hide-action-icon {
+                    :global(.avatar-box__btn) {
+                        display: none;
+                    }
+                }
                 /deep/ .avatar-box {
                     width: 120px;
                     height: 120px;
@@ -924,7 +929,12 @@
         .el-tab-pane {
             height: 300px;
             :global(.el-table .el-table__body) {
-                max-height: 235px;
+                max-height: 250px;
+            }
+            &.view-mode {
+                :global(.el-table .el-table__body) {
+                    max-height: 300px;
+                }
             }
             & > div {
                 &::-webkit-scrollbar{

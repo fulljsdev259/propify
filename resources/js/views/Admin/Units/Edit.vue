@@ -15,230 +15,255 @@
             </heading>
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
-                    <el-tabs type="border-card" v-model="activeTab1">
-                        <el-tab-pane :label="$t('general.box_titles.details')" name="details">
-                            <el-form :model="model" label-position="top" label-width="192px" ref="form"  class="edit-details-form">
-                                <el-row :gutter="20">
-                                    <el-col :md="12">
-                                        <el-form-item :label="$t('models.building.quarter')" 
-                                                :rules="validationRules.quarter_id" 
-                                                prop="quarter_id">
-                                            <el-select
-                                                    :loading="remoteLoading"
-                                                    :placeholder="$t('general.placeholders.search')"
-                                                    :remote-method="remoteSearchQuarters"
-                                                    filterable
-                                                    remote
-                                                    reserve-keyword
-                                                    style="width: 100%;"
-                                                    :disabled="!editMode"
-                                                    @change="changeQuarter"
-                                                    v-model="model.quarter_id">
-                                                <el-option
-                                                        :key="quarter.id"
-                                                        :label="quarter.name"
-                                                        :value="quarter.id"
-                                                        v-for="quarter in quarters"/>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="12">
-                                        <el-form-item :label="$t('models.unit.building')" 
-                                                    :rules="validationRules.building_id"
-                                                    prop="building_id">
-                                            <el-select
+                    <el-card class="unit-details">
+                        <el-form :model="model" label-position="top" label-width="192px" ref="form"  class="edit-details-form">
+                            <el-row :gutter="20">
+                                <el-col :md="12" class="left-pane">
+                                    <img :src="require('img/default_img_object.png')"/>
+
+                                    <div v-if="!editId" class="quarter-id">
+                                        <span @dblclick="editId=editMode">{{ model.internal_quarter_id }}</span>
+                                    </div>
+                                    <el-form-item 
+                                        v-if="editMode && editId" 
+                                        :rules="validationRules.internal_quarter_id"
+                                        prop="internal_quarter_id" 
+                                        class='quarter-id'
+                                    >
+                                        <el-input type="text" v-model="model.internal_quarter_id" ></el-input>
+                                    </el-form-item>
+
+                                    <span v-if="!editName" class="quarter-name" @dblclick="editName=editMode">{{ model.name }}</span>
+                                    <el-form-item v-if="editMode && editName" :rules="validationRules.name"
+                                                prop="name">
+                                        <el-input type="text" v-model="model.name"  />
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="12">
+                                    <el-form-item :label="$t('models.building.quarter')" 
+                                            :rules="validationRules.quarter_id" 
+                                            prop="quarter_id">
+                                        <el-select
                                                 :loading="remoteLoading"
                                                 :placeholder="$t('general.placeholders.search')"
-                                                :remote-method="remoteSearchBuildings"
-                                                filterable 
+                                                :remote-method="remoteSearchQuarters"
+                                                filterable
                                                 remote
                                                 reserve-keyword
                                                 style="width: 100%;"
                                                 :disabled="!editMode"
-                                                v-model="model.building_id">
-                                                <el-option
-                                                    :key="building.id"
-                                                    :label="building.name"
-                                                    :value="building.id"
-                                                    v-for="building in buildings"/>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    
-                                </el-row>
-                                <el-row :gutter="20">
-
-                                    <el-col :md="12">
-                                        <el-form-item :label="$t('models.unit.type.label')" :rules="validationRules.type"
-                                                    prop="type">
-                                            <el-select
-                                                filterable 
-                                                :placeholder="$t('models.unit.type.label')" 
-                                                class="w100p"
-                                                style="width: 100%;"
-                                                :disabled="!editMode"
-                                                v-model="model.type"
-                                            >
-                                                <el-option
-                                                        :key="key"
-                                                        :label="$t('models.unit.type.' + value )"
-                                                        :value="+key"
-                                                        v-for="(value, key) in $constants.units.type">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="6">
-                                        <el-form-item :label="$t('models.unit.name')" :rules="validationRules.name" prop="name">
-                                            <el-input autocomplete="off" type="text" v-model="model.name" :disabled="!editMode"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="6">
-                                        <el-form-item :label="$t('models.unit.floor')" :rules="validationRules.floor" prop="floor">
-                                            <el-input autocomplete="off" type="number" v-model="model.floor" min="-3" :disabled="!editMode"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-
-                                    <el-col :md="12" v-if="model.type >= 3">
-                                        <el-form-item :label="$t('general.monthly_rent_net')"
-                                                    :rules="validationRules.monthly_rent_net"
-                                                    prop="monthly_rent_net">
-                                            <el-input 
-                                                autocomplete="off" 
-                                                step="0.01" 
-                                                type="number"
-                                                v-model="model.monthly_rent_net" 
-                                                :disabled="!editMode"
-                                            >
-                                                <template slot="prepend">CHF</template>
-                                            </el-input>
-                                        </el-form-item>
-                                    </el-col>
-
-                                    <el-col :md="24" v-if="model.type < 3">
-                                        <div class="el-table el-table--fit el-table--enable-row-hover el-table--enable-row-transition monthly-rent-data" 
-                                                style="width: 100%;">
-                                            <div class="el-table__header-wrapper">
-                                                <table cellspacing="0" cellpadding="0" border="0" class="el-table__header">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="data is-leaf">
-                                                                <div class="cell">{{$t('general.monthly_rent_net')}}</div>
-                                                            </th>
-                                                            <th class="symbol is-leaf">
-                                                                <div class="cell"></div>
-                                                            </th>
-                                                            <th class="data is-leaf">
-                                                                <div class="cell">{{$t('general.maintenance')}}</div>
-                                                            </th>
-                                                            <th class="symbol is-leaf">
-                                                                <div class="cell"></div>
-                                                            </th>
-                                                            <th class="data is-leaf">
-                                                                <div class="cell">{{$t('general.gross_rent')}}</div>
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
-                                            </div>
-                                            <div class="el-table__body-wrapper is-scrolling-none">
-                                                <table cellspacing="0" cellpadding="0" border="0" class="el-table__body">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="data">
-                                                                <div class="cell">
-                                                                    <el-form-item 
-                                                                        :rules="validationRules.monthly_rent_net"
-                                                                        prop="monthly_rent_net">
-                                                                        <el-input 
-                                                                            type="number"
-                                                                            v-model="model.monthly_rent_net"  
-                                                                            :disabled="!editMode"
-                                                                        >
-                                                                            <template slot="prepend">CHF</template>
-                                                                        </el-input>
-                                                                    </el-form-item>
-                                                                </div>
-                                                            </td>
-                                                            <td class="symbol">
-                                                                <div class="cell">
-                                                                    +
-                                                                </div>
-                                                            </td>
-                                                            <td class="data">
-                                                                <div class="cell">
-                                                                    <el-form-item 
-                                                                        :rules="validationRules.monthly_maintenance"
-                                                                        prop="monthly_maintenance">
-                                                                        <el-input 
-                                                                            type="number"
-                                                                            v-model="model.monthly_maintenance"  
-                                                                            :disabled="!editMode"
-                                                                        >
-                                                                            <template slot="prepend">CHF</template>
-                                                                        </el-input>
-                                                                    </el-form-item>
-                                                                </div>
-                                                            </td>
-                                                            <td class="symbol">
-                                                                <div class="cell">
-                                                                    =
-                                                                </div>
-                                                            </td>
-                                                            <td class="data">
-                                                                <div class="cell">
-                                                                    <el-form-item 
-                                                                        prop="monthly_rent_net">
-                                                                        {{( Number(model.monthly_rent_net) + Number(model.monthly_maintenance) ).toFixed(2)}}
-                                                                    </el-form-item>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </el-col>
-
-                                </el-row>
-                                <el-row class="last-form-row" :gutter="20">
-                                    <el-col :md="8" v-if="model.type === 1">
-                                        <el-form-item :label="$t('models.unit.room_no')" :rules="validationRules.room_no"
-                                                    prop="room_no"
+                                                @change="changeQuarter"
+                                                v-model="model.quarter_id">
+                                            <el-option
+                                                    :key="quarter.id"
+                                                    :label="quarter.name"
+                                                    :value="quarter.id"
+                                                    v-for="quarter in quarters"/>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item :label="$t('models.unit.building')" 
+                                                :rules="validationRules.building_id"
+                                                prop="building_id">
+                                        <el-select
+                                            :loading="remoteLoading"
+                                            :placeholder="$t('general.placeholders.search')"
+                                            :remote-method="remoteSearchBuildings"
+                                            filterable 
+                                            remote
+                                            reserve-keyword
+                                            style="width: 100%;"
+                                            :disabled="!editMode"
+                                            v-model="model.building_id">
+                                            <el-option
+                                                :key="building.id"
+                                                :label="building.name"
+                                                :value="building.id"
+                                                v-for="building in buildings"/>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item :label="$t('models.unit.type.label')" :rules="validationRules.type"
+                                                prop="type">
+                                        <el-select
+                                            filterable 
+                                            :placeholder="$t('models.unit.type.label')" 
+                                            class="w100p"
+                                            style="width: 100%;"
+                                            :disabled="!editMode"
+                                            v-model="model.type"
                                         >
-                                            <el-select :placeholder="$t('general.placeholders.select')" class="w100p"
-                                                    style="width: 100%;"
-                                                    v-model="model.room_no" :disabled="!editMode">
-                                                <el-option :key="room.value"
-                                                        :label="room.label"
-                                                        :value="room.value"
-                                                        v-for="room in rooms"/>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
+                                            <el-option
+                                                    :key="key"
+                                                    :label="$t('models.unit.type.' + value )"
+                                                    :value="+key"
+                                                    v-for="(value, key) in $constants.units.type">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item :label="$t('models.unit.name')" :rules="validationRules.name" prop="name">
+                                        <el-input autocomplete="off" type="text" v-model="model.name" :disabled="!editMode"></el-input>
+                                    </el-form-item>
+                                    <el-form-item :label="$t('models.unit.floor')" :rules="validationRules.floor" prop="floor">
+                                        <el-input autocomplete="off" type="number" v-model="model.floor" min="-3" :disabled="!editMode"></el-input>
+                                    </el-form-item>
+                                    <el-form-item v-if="model.type >= 3" :label="$t('general.monthly_rent_net')"
+                                                :rules="validationRules.monthly_rent_net"
+                                                prop="monthly_rent_net">
+                                        <el-input 
+                                            autocomplete="off" 
+                                            step="0.01" 
+                                            type="number"
+                                            v-model="model.monthly_rent_net" 
+                                            :disabled="!editMode"
+                                        >
+                                            <template slot="prepend">CHF</template>
+                                        </el-input>
+                                    </el-form-item>
+                                    <div  v-if="model.type < 3" class="el-table el-table--fit el-table--enable-row-hover el-table--enable-row-transition monthly-rent-data" 
+                                            style="width: 100%;">
+                                        <div class="el-table__header-wrapper">
+                                            <table cellspacing="0" cellpadding="0" border="0" class="el-table__header">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="data is-leaf">
+                                                            <div class="cell">{{$t('general.monthly_rent_net')}}</div>
+                                                        </th>
+                                                        <th class="symbol is-leaf">
+                                                            <div class="cell"></div>
+                                                        </th>
+                                                        <th class="data is-leaf">
+                                                            <div class="cell">{{$t('general.maintenance')}}</div>
+                                                        </th>
+                                                        <th class="symbol is-leaf">
+                                                            <div class="cell"></div>
+                                                        </th>
+                                                        <th class="data is-leaf">
+                                                            <div class="cell">{{$t('general.gross_rent')}}</div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                        <div class="el-table__body-wrapper is-scrolling-none">
+                                            <table cellspacing="0" cellpadding="0" border="0" class="el-table__body">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="data">
+                                                            <div class="cell">
+                                                                <el-form-item 
+                                                                    :rules="validationRules.monthly_rent_net"
+                                                                    prop="monthly_rent_net">
+                                                                    <el-input 
+                                                                        type="number"
+                                                                        v-model="model.monthly_rent_net"  
+                                                                        :disabled="!editMode"
+                                                                    >
+                                                                        <template slot="prepend">CHF</template>
+                                                                    </el-input>
+                                                                </el-form-item>
+                                                            </div>
+                                                        </td>
+                                                        <td class="symbol">
+                                                            <div class="cell">
+                                                                +
+                                                            </div>
+                                                        </td>
+                                                        <td class="data">
+                                                            <div class="cell">
+                                                                <el-form-item 
+                                                                    :rules="validationRules.monthly_maintenance"
+                                                                    prop="monthly_maintenance">
+                                                                    <el-input 
+                                                                        type="number"
+                                                                        v-model="model.monthly_maintenance"  
+                                                                        :disabled="!editMode"
+                                                                    >
+                                                                        <template slot="prepend">CHF</template>
+                                                                    </el-input>
+                                                                </el-form-item>
+                                                            </div>
+                                                        </td>
+                                                        <td class="symbol">
+                                                            <div class="cell">
+                                                                =
+                                                            </div>
+                                                        </td>
+                                                        <td class="data">
+                                                            <div class="cell">
+                                                                <el-form-item 
+                                                                    prop="monthly_rent_net">
+                                                                    {{( Number(model.monthly_rent_net) + Number(model.monthly_maintenance) ).toFixed(2)}}
+                                                                </el-form-item>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <el-form-item v-if="model.type === 1" :label="$t('models.unit.room_no')" :rules="validationRules.room_no"
+                                                prop="room_no"
+                                    >
+                                        <el-select :placeholder="$t('general.placeholders.select')" class="w100p"
+                                                style="width: 100%;"
+                                                v-model="model.room_no" :disabled="!editMode">
+                                            <el-option :key="room.value"
+                                                    :label="room.label"
+                                                    :value="room.value"
+                                                    v-for="room in rooms"/>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item
+                                        v-if="model.type >=1 && model.type <= 4" 
+                                        :label="$t('models.unit.sq_meter')" 
+                                        prop="sq_meter">
 
-                                    <el-col :md="8">
-                                        <el-form-item
-                                            v-if="model.type >=1 && model.type <= 4" 
-                                            :label="$t('models.unit.sq_meter')" 
-                                            prop="sq_meter">
+                                        <el-input autocomplete="off" type="number" min="0" v-model="model.sq_meter" :disabled="!editMode">
+                                            <template slot="prepend">m2</template>
+                                        </el-input>
+                                    </el-form-item>
+                                    <el-form-item v-if="hasAttic(model.building_id) && (model.type == 1 || model.type == 2)" :rules="validationRules.attic" >
+                                        <label class="attic-label">{{ $t('models.unit.attic') }}</label>
+                                        <el-switch v-model="model.attic" :disabled="!editMode"/>
+                                    </el-form-item>
+                                </el-col>
 
-                                            <el-input autocomplete="off" type="number" min="0" v-model="model.sq_meter" :disabled="!editMode">
-                                                <template slot="prepend">m2</template>
-                                            </el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="8" v-if="hasAttic(model.building_id) && (model.type == 1 || model.type == 2)">
-                                        <el-form-item :rules="validationRules.attic" >
-                                            <label class="attic-label">{{ $t('models.unit.attic') }}</label>
-                                            <el-switch v-model="model.attic" :disabled="!editMode"/>
-                                        </el-form-item>
-                                    </el-col>
-
-                                </el-row>
-                            </el-form>
+                            </el-row>
+                        </el-form>
+                    </el-card>
+                </el-col>
+                <el-col :md="12">
+                    <el-tabs type="border-card" v-model="activeRightTab">
+                        <el-tab-pane name="residents">
+                            <span slot="label">
+                                <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.residents') }}</el-badge>
+                            </span>
+                            <relation-list
+                                    :actions="assigneesActions"
+                                    :columns="assigneesColumns"
+                                    :filterValue="false"
+                                    :fetchAction="false"
+                                    :filter="false"
+                                    :fetchStatus="false"
+                                    :addedAssigmentList="addedAssigmentList"
+                                    ref="assigneesList"
+                                    v-if="addedAssigmentList"
+                            />
                         </el-tab-pane>
-                        <el-tab-pane name="files">
+                        <!-- <el-tab-pane name="relations">
+                            <span slot="label">
+                                <el-badge :value="relationCount" :max="99" class="admin-layout">{{ $t('general.relations') }}</el-badge>
+                            </span>
+
+                            <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.relation.add')}}</el-button>    
+                            <relation-list-table
+                                    :items="model.relations"
+                                    :hide-building="true"
+                                    :hide-unit="true"
+                                    @edit-relation="editRelation"
+                                    @delete-relation="deleteRelation">
+                            </relation-list-table>
+                        </el-tab-pane> -->
+                            <el-tab-pane name="files">
                             <span slot="label">
                                 <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge>
                             </span>
@@ -277,41 +302,6 @@
                                 
                             </div>
                         </el-tab-pane>
-
-                    </el-tabs>
-                </el-col>
-                <el-col :md="12">
-                    <el-tabs type="border-card" v-model="activeRightTab">
-                        <el-tab-pane name="residents">
-                            <span slot="label">
-                                <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.residents') }}</el-badge>
-                            </span>
-                            <relation-list
-                                    :actions="assigneesActions"
-                                    :columns="assigneesColumns"
-                                    :filterValue="false"
-                                    :fetchAction="false"
-                                    :filter="false"
-                                    :fetchStatus="false"
-                                    :addedAssigmentList="addedAssigmentList"
-                                    ref="assigneesList"
-                                    v-if="addedAssigmentList"
-                            />
-                        </el-tab-pane>
-                        <!-- <el-tab-pane name="relations">
-                            <span slot="label">
-                                <el-badge :value="relationCount" :max="99" class="admin-layout">{{ $t('general.relations') }}</el-badge>
-                            </span>
-
-                            <el-button style="float:right" type="primary" @click="toggleDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.relation.add')}}</el-button>    
-                            <relation-list-table
-                                    :items="model.relations"
-                                    :hide-building="true"
-                                    :hide-unit="true"
-                                    @edit-relation="editRelation"
-                                    @delete-relation="deleteRelation">
-                            </relation-list-table>
-                        </el-tab-pane> -->
                     </el-tabs>
 
                     <el-tabs type="border-card" v-model="activeRequestTab">
@@ -509,6 +499,8 @@
                 isAddRelation: false,
                 editingRelationIndex: -1,
                 editMode: false,
+                editName: false,
+                editId: false,
                 visibleDialog: false,
             }
         },
