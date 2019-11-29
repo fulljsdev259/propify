@@ -42,6 +42,11 @@ use Illuminate\Notifications\Notifiable;
  *          type="string"
  *      ),
  *      @SWG\Property(
+ *          property="status",
+ *          description="status",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
  *          property="title",
  *          description="title",
  *          type="string"
@@ -151,6 +156,13 @@ class ServiceProvider extends AuditableModel
         self::TitleMrs,
     ];
 
+    const StatusActive = 1;
+    const StatusInActive = 2;
+    const Status = [
+        self::StatusActive => 'active',
+        self::StatusInActive => 'in_active',
+    ];
+
     const CategoryElectrician = 1;
     const CategoryHeatingCompany = 2;
     const CategoryLift = 3;
@@ -193,6 +205,7 @@ class ServiceProvider extends AuditableModel
         'email',
         'phone',
         'type',
+        'status',
         'mobile_phone',
     ];
     protected $dates = ['deleted_at'];
@@ -206,6 +219,7 @@ class ServiceProvider extends AuditableModel
         'address_id' => 'integer',
         'category' => 'string',
         'type' => 'integer',
+        'status' => 'integer',
         'title' => 'string',
         'first_name' => 'string',
         'last_name' => 'string',

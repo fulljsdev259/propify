@@ -420,6 +420,10 @@ return [
             'architect' => 'Architect',
             'external_real_estate_company' => 'External Real Estate Company',
         ],
+        'status' => [
+            'active' => 'Active',
+            'in_active' => 'Inactive',
+        ],
         'contact_details' => 'Contact details',
         'user_credentials' => 'User credentials',
         "company_name" => "Company name",
