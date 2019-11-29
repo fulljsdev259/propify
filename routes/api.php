@@ -330,6 +330,13 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/admin/heatMapByDatePeriod', 'DashboardAPIController@heatMapByDatePeriod');
     Route::get('/admin/chartLoginDevice', 'DashboardAPIController@chartLoginDevice');
     Route::get('/admin/chartResidentLanguage', 'DashboardAPIController@chartResidentLanguage');
+
+    // UserFilters
+    Route::get('/userFilters', 'UserFilterAPIController@index')->name('user-filters');
+    Route::get('/userFilters/{id}', 'UserFilterAPIController@show')->name('user-filters.show');
+    Route::post('/userFilters', 'UserFilterAPIController@store')->name('user-filters.store');
+    Route::put('/userFilters/{id}', 'UserFilterAPIController@update')->name('user-filters.update');
+    Route::delete('/userFilters/{id}', 'UserFilterAPIController@destroy')->name('user-filters.destroy');
 });
 
 
