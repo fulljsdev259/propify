@@ -39,6 +39,7 @@ export default (config = {}) => {
                     capture_phase: '',
                     action: null,
                     cost_impact: null,
+                    percentage: '',
                     component: '',
                     keyword: '',
                     keywords: [],
@@ -47,6 +48,7 @@ export default (config = {}) => {
                     sub_category_id: null,
                     relation_id: ''
                 },
+                old_model: {},
                 validationRules: {
                     category: [{
                         required: true,
@@ -627,7 +629,7 @@ export default (config = {}) => {
                         this.showRoom = resp.data.sub_category && resp.data.sub_category.room == 1 ? true : false;
                         this.showAction =  resp.data.category.action == 1 || (resp.data.sub_category && resp.data.sub_category.action == 1) ? true : false;
                         this.showCostImpact =  resp.data.category.cost_impact == 1 || (resp.data.sub_category && resp.data.sub_category.cost_impact == 1) ? true : false;
-                        this.showPercent = this.showCostImpact && resp.data.category.cost_impact == 3 ? true : false;
+                        this.showPercent = this.showCostImpact && resp.data.cost_impact == 3 ? true : false;
                         this.showCapturePhase =  resp.data.category.capture_phase == 1 || (resp.data.sub_category && resp.data.sub_category.capture_phase == 1) ? true : false;
                         this.showComponent =  resp.data.category.component == 1 || (resp.data.sub_category && resp.data.sub_category.component == 1) ? true : false;
                         
@@ -679,7 +681,7 @@ export default (config = {}) => {
                                         newTags.push(keyword);
                                     }
                                 })
-                                
+                                this.old_model = this.model;
                                 const requestTags = await this.createRequestTags({
                                     id: this.$route.params.id,
                                     tag_ids: existingsKeys,
@@ -706,7 +708,7 @@ export default (config = {}) => {
                                     //this.model.media = [...this.model.media, ...this.media]
                                     this.media = [];
 
-                                    await this.fetchCurrentRequest();
+                                    //await this.fetchCurrentRequest();
                                     //this.$set(this.model, 'service_providers', resp.data.service_providers);
                                     //this.$set(this.model, 'media', resp.data.media);
                                     //this.$set(this.model, 'property_managers', resp.data.property_managers);
