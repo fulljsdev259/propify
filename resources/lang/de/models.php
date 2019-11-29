@@ -579,11 +579,11 @@ return [
             'general' => ' Allg. Anliegen',
             'malfunction' => 'Fehlfunktion',
             'deficiency' => 'Mangel',
-            'open_issue' => 'Offene Ausgabe',
+            'open_issue' => 'Pendenz',
         ],
         'sub_category' => [
             'inside_of_apartment' => 'Innerhalb der Wohnung',
-            'outside_of_apartment' => 'Außerhalb der Wohnung',
+            'outside_of_apartment' => 'Ausserhalb der Wohnung',
         ],
         'qualification_category' => [
             'normal_wear' => 'Normaler Verschleiß',
