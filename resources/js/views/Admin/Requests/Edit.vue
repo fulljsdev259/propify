@@ -945,15 +945,22 @@
     }
 
 
-    .el-card__body {
-        .el-col:nth-child(even) {
-            padding-right: 0 !important;
-        }
+    .edit-details-form {
+        .el-card__body {
+            .el-row {
+                .el-col:nth-child(even) {
+                    padding-right: 0 !important;
+                }
 
-        .el-col:nth-child(odd) {
-            padding-left: 0 !important;
+                .el-col:nth-child(odd) {
+                    padding-left: 0 !important;
+                    padding-right: 10px !important;
+                }
+            }
         }
     }
+
+    
     .el-tag + .el-tag {
         margin-left: 10px;
     }
