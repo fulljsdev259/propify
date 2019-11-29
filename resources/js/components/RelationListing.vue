@@ -195,7 +195,21 @@
                         </div>
                         
                     </div>
-
+                    <div v-else-if="column.type === 'residentStatusSign'">
+                        <el-tooltip
+                            :content="`${$t(`models.resident.relation.status.${$constants.relations.status[scope.row[column.prop]]}`)}`"
+                            class="item"
+                            effect="light" placement="top"
+                        >
+                            <avatar 
+                                :background-color="$constants.status_colorcode[scope.row[column.prop]]"
+                                :initials="''"
+                                :size="30"
+                                :style="{'z-index': (800 - index)}"
+                                :username="''"
+                            />
+                        </el-tooltip>
+                    </div>
                     <div v-else-if="column.type === 'assigneesName'" class="normal">
                         {{scope.row.name}}
                     </div>

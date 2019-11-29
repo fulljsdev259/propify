@@ -504,10 +504,10 @@
                     type: 'residentRelation',
                     label: 'models.resident.relation.title'
                 }, {
+                    type: 'residentStatusSign',
+                    label: 'models.resident.status.label',
                     prop: 'status',
-                    i18n: this.residentStatusLabel,
-                    withBadge: this.residentStatusBadge,
-                    label: 'models.resident.status.label'
+                    width: 70
                 }],
                 assigneesActions: [
                     /*{
