@@ -142,8 +142,8 @@ class AuditRepository extends BaseRepository
             elseif(($auditable_type == 'request') && ($fieldname == 'category_id')){
                 return __('models.request.category_list.' . Request::Category[$fieldvalue]);
             }
-            elseif(($auditable_type == 'request') && ($fieldname == 'sub_category_id')){
-                return __('models.request.sub_category.' . Request::SubCategory[$fieldvalue]);
+            elseif(($auditable_type == 'request') && ($fieldname == 'sub_category_id')) {
+                return __('models.request.sub_category.' . (Request::SubCategory[$fieldvalue] ?? ''));
             }
             elseif(($auditable_type == 'request') && ($fieldname == 'location')){
                 return __('models.request.location.' . Request::Location[$fieldvalue]);
