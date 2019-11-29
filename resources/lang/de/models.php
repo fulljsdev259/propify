@@ -585,6 +585,13 @@ return [
             'inside_of_apartment' => 'Innerhalb der Wohnung',
             'outside_of_apartment' => 'Außerhalb der Wohnung',
         ],
+        'qualification_category' => [
+            'normal_wear' => 'Normaler Verschleiß',
+            'deficiency' => 'Mangel',
+            're-cleaning' => 'Nachreinigung',
+            'non-existent' => 'Nicht vorhanden',
+            'okay' =>'Okay'
+        ],
         'media' => [
             'added' => 'Mediendatei hinzugefügt',
             'removed' => 'Mediendatei entfernt.',

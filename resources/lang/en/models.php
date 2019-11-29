@@ -583,6 +583,13 @@ return [
             'inside_of_apartment' => 'Inside of apartment',
             'outside_of_apartment' => 'Outside of Apartment',
         ],
+        'qualification_category' => [
+            'normal_wear' => 'Normal wear',
+            'deficiency' => 'Deficiency',
+            're-cleaning' => 'Re-Cleaning',
+            'non-existent' => 'Non-Existent',
+            'okay' =>'Okay'
+        ],
         'media'  => [
             'added' => 'Document added',
             'removed' => 'Document removed',

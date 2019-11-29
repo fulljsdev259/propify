@@ -442,6 +442,7 @@ class Request extends AuditableModel implements HasMedia
     const ComponentAttr = 'component';
     const ActionAttr = 'action';
     const CostImpactAttr = 'cost_impact';
+    const SubQualificationCategoryAttr = 'qualification_category';
     const SubCategories = 'sub_categories';
     const Attributes = 'attributes';
 
@@ -459,6 +460,7 @@ class Request extends AuditableModel implements HasMedia
             self::ActionAttr,
             self::CapturePhaseAttr,
             self::ComponentAttr,
+            self::SubQualificationCategoryAttr,
         ],
         self::CategoryOpenIssue => [
             self::CostImpactAttr,
@@ -503,6 +505,20 @@ class Request extends AuditableModel implements HasMedia
             self::SubCategoryInsideOfApartment,
             self::SubCategoryOutsideOfApartment,
         ],
+    ];
+
+    const QualificationCategoryCategoryNormalWear = 1;
+    const QualificationCategoryCategoryDeficiency = 2;
+    const QualificationCategoryCategoryReCleaning = 3;
+    const QualificationCategoryCategoryNonExistent = 4;
+    const QualificationCategoryCategoryOkay = 5;
+
+    const QualificationCategoryCategory = [
+        self::QualificationCategoryCategoryNormalWear => 'normal_wear',
+        self::QualificationCategoryCategoryDeficiency => 'deficiency',
+        self::QualificationCategoryCategoryReCleaning => 're-cleaning',
+        self::QualificationCategoryCategoryNonExistent => 'non-existent',
+        self::QualificationCategoryCategoryOkay => 'okay',
     ];
 
     const Fillable = [

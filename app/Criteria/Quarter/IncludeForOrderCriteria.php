@@ -67,7 +67,7 @@ WHERE
 WHERE TYPE
     = 1 AND deleted_at IS NULL
 ORDER BY
-    `u`.`id` ASC';
+    `u`.`id` ASC'; // @TODO delete $raw
 
         $model->when($this->request->orderBy == 'requests_count', function ($q) {
                 $q->withCount('requests');

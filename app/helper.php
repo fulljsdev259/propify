@@ -156,6 +156,7 @@ function get_category_details($categoryId)
             'action' => get_category_attribute(\App\Models\Request::ActionAttr, $values, $categoryId),
             'capture_phase' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $categoryId),
             'component' => get_category_attribute(\App\Models\Request::ComponentAttr, $values, $categoryId),
+            'qualification_category' => get_category_attribute(\App\Models\Request::SubQualificationCategoryAttr, $values, $categoryId),
         ];
     }
 
@@ -168,6 +169,7 @@ function get_category_details($categoryId)
         'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $categoryId),
         'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $categoryId),
         'component' => get_category_attribute(\App\Models\Request::ComponentAttr, $values, $categoryId),
+        'qualification_category' => get_category_attribute(\App\Models\Request::SubQualificationCategoryAttr, $values, $categoryId),
     ];
 }
 
