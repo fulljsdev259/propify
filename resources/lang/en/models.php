@@ -586,8 +586,8 @@ return [
         'qualification_category' => [
             'normal_wear' => 'Normal wear',
             'deficiency' => 'Deficiency',
-            're-cleaning' => 'Re-Cleaning',
-            'non-existent' => 'Non-Existent',
+            're_cleaning' => 'Re-Cleaning',
+            'non_existent' => 'Non-Existent',
             'okay' =>'Okay'
         ],
         'media'  => [

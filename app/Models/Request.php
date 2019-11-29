@@ -507,18 +507,18 @@ class Request extends AuditableModel implements HasMedia
         ],
     ];
 
-    const QualificationCategoryCategoryNormalWear = 1;
-    const QualificationCategoryCategoryDeficiency = 2;
-    const QualificationCategoryCategoryReCleaning = 3;
-    const QualificationCategoryCategoryNonExistent = 4;
-    const QualificationCategoryCategoryOkay = 5;
+    const QualificationCategoryNormalWear = 1;
+    const QualificationCategoryDeficiency = 2;
+    const QualificationCategoryReCleaning = 3;
+    const QualificationCategoryNonExistent = 4;
+    const QualificationCategoryOkay = 5;
 
-    const QualificationCategoryCategory = [
-        self::QualificationCategoryCategoryNormalWear => 'normal_wear',
-        self::QualificationCategoryCategoryDeficiency => 'deficiency',
-        self::QualificationCategoryCategoryReCleaning => 're-cleaning',
-        self::QualificationCategoryCategoryNonExistent => 'non-existent',
-        self::QualificationCategoryCategoryOkay => 'okay',
+    const QualificationCategory = [
+        self::QualificationCategoryNormalWear => 'normal_wear',
+        self::QualificationCategoryDeficiency => 'deficiency',
+        self::QualificationCategoryReCleaning => 're_cleaning',
+        self::QualificationCategoryNonExistent => 'non_existent',
+        self::QualificationCategoryOkay => 'okay',
     ];
 
     const Fillable = [

@@ -588,8 +588,8 @@ return [
         'qualification_category' => [
             'normal_wear' => 'Normaler Verschleiß',
             'deficiency' => 'Mangel',
-            're-cleaning' => 'Nachreinigung',
-            'non-existent' => 'Nicht vorhanden',
+            're_cleaning' => 'Nachreinigung',
+            'non_existent' => 'Nicht vorhanden',
             'okay' =>'Okay'
         ],
         'media' => [
