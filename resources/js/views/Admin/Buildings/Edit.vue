@@ -634,7 +634,7 @@
                 }, {
                     type: 'residentNameAndType',
                     label: 'general.name',
-                    translate: this.translateResidentType
+                    translate: this.translateResidentTypes
                 }, {
                 //     prop: 'name',
                 //     label: 'general.name',
@@ -642,7 +642,7 @@
                 // }, {
                 //     prop: 'type',
                 //     label: 'models.resident.relation.type.label',
-                //     i18n: this.translateResidentType
+                //     i18n: this.translateResidentTypes
                 // }, {
                     type: 'residentRelation',
                     label: 'models.resident.relation.title'
@@ -652,7 +652,7 @@
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
                 }],
-                residentActions: [{
+                residentActions: [/*{
                     width: 70,
                     buttons: [{
                         title: 'models.resident.view',
@@ -660,7 +660,7 @@
                         icon: 'el-icon-user',
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 assigneesColumns: [{
                     type: 'assignProviderManagerAvatars',
                     width: 70,
@@ -802,8 +802,11 @@
             translateType(type) {
                 return this.$t(`general.assignment_types.${type}`);
             },
-            translateResidentType(type) {
-                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
+            translateResidentTypes(types) {
+                if(types.constructor === Array){
+                    let translatedTypes = types.map(type => this.$t(`models.resident.relation.type.${this.$constants.relations.type[type]}`))
+                    return translatedTypes.join(', ')
+                }
             },
             translateAssignmentType(types) {
                 let translatedTypes = []

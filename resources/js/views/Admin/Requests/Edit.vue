@@ -536,7 +536,7 @@
                         </template>
                         <!--                    v-if="(!$can($permissions.update.serviceRequest)) || ($can($permissions.update.serviceRequest) && (media.length || (model.media && model.media.length)))"-->
                         
-                        <el-tabs id="comments-card" v-if="model.id" class="mt15"  type="border-card" v-model="activeTab2">
+                        <el-tabs id="comments-card" v-if="model.id" type="border-card" v-model="activeTab2">
                             <el-tab-pane name="comments">
                                 <span slot="label">
                                     <el-badge :value="requestCommentCount" :max="99" class="admin-layout">{{ $t('models.request.comments') }}</el-badge>

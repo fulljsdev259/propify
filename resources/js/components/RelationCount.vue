@@ -1,8 +1,9 @@
 <template>
     <div class="avatars-wrapper square-avatars">
-        <span :key="index" v-for="(count, index) in counts">
+        <span :key="index" v-for="(count, index) in counts" >
+
             <el-tooltip
-                :content="`${count.label}: ${countsData[count.prop]}`"
+                :content="`${$t(count.label)}: ${countsData[count.prop]}`"
                 class="item"
                 effect="light" placement="top"
                 v-if="countsData[count.prop]"
@@ -21,29 +22,30 @@
 </template>
 <script>
     import {Avatar} from 'vue-avatar';
+    import {mapGetters} from 'vuex'
 
     export default {
         name: 'RelationCount',
         data() {
             return {
-                counts: [
-                {
-                    prop: 'total_relations_count',
-                    background: '#aaa',
-                    color: '#fff',
-                    label: this.$t('models.resident.relation.status_count.total')
-                }, {
-                    prop: 'active_relations_count',
-                    background: '#5fad64',
-                    color: '#fff',
-                    label: this.$t('models.resident.relation.status_count.active')
-                }, {
-                    prop: 'inactive_relations_count',
-                    background: '#dd6161',
-                    color: '#fff',
-                    label: this.$t('models.resident.relation.status_count.inactive')
-                }
-                ]
+                // counts: [
+                // {
+                //     prop: 'total_relations_count',
+                //     background: '#aaa',
+                //     color: '#fff',
+                //     label: this.$t('models.resident.relation.status_count.total')
+                // }, {
+                //     prop: 'active_relations_count',
+                //     background: '#5fad64',
+                //     color: '#fff',
+                //     label: this.$t('models.resident.relation.status_count.active')
+                // }, {
+                //     prop: 'inactive_relations_count',
+                //     background: '#dd6161',
+                //     color: '#fff',
+                //     label: this.$t('models.resident.relation.status_count.inactive')
+                // }
+                // ]
             }
         },
         props: {
@@ -52,7 +54,23 @@
                 default: () => {
                     return null;
                 }
-            },
+            }
+        },
+        computed: {
+            ...mapGetters('application', {
+                constants: 'constants'
+            }),
+            counts() {
+                if(this.constants.relations) {
+                    return Object.entries(this.constants.relations.status).map(([value, label]) => ({
+                        prop: label + '_relations_count',
+                        background: this.constants.relations.status_colorcode[value],
+                        color: '#fff',
+                        label: `models.resident.relation.status.${label}`
+                    }))
+                }
+                return []
+            }
         },
         components: {
             Avatar
