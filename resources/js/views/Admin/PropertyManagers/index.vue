@@ -223,12 +223,7 @@
                         key: 'role',
                         data: this.roles
                     },
-                    {
-                        name: this.$t('general.filters.language'),
-                        type: 'select',
-                        key: 'language',
-                        data: []
-                    }
+
                 ];
             }
         },

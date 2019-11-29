@@ -5,6 +5,7 @@ namespace App\Criteria\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
@@ -45,6 +46,14 @@ class FilterByRolesCriteria implements CriteriaInterface
 
         if (is_array($roles)) {
             $model->withRoles($roles);
+        }
+        $excludeRoles = $this->request->exclude_roles;
+        if ($excludeRoles) {
+            $excludeRoles = Arr::wrap($excludeRoles);
+
+            $model->whereHas('roles', function ($query) use ($excludeRoles) {
+                $query->whereNotIn('name', $excludeRoles);
+            });
         }
 
         return $model;
