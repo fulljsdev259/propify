@@ -424,6 +424,10 @@ return [
             'architect' => 'Architekt',
             'external_real_estate_company' => 'Verwaltung',
         ],
+        'status' => [
+            'active' => 'Aktiv',
+            'in_active' => 'Inaktiv',
+        ],
         'contact_details' => 'Kontaktdaten',
         'user_credentials' => 'Logindaten',
         "company_name" => "Firmenname",
