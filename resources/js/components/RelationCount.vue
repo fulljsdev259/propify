@@ -1,6 +1,7 @@
 <template>
     <div class="avatars-wrapper square-avatars">
-        <span :key="index" v-for="(count, index) in counts" v-if="count.prop != 'canceled_relations_count'">
+        <span :key="index" v-for="(count, index) in counts" >
+
             <el-tooltip
                 :content="`${$t(count.label)}: ${countsData[count.prop]}`"
                 class="item"

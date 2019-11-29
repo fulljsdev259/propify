@@ -205,7 +205,6 @@
                                 :background-color="$constants.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
                                 :size="30"
-                                :style="{'z-index': (800 - index)}"
                                 :username="''"
                             />
                         </el-tooltip>
