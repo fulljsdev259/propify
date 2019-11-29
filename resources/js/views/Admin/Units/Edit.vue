@@ -491,7 +491,7 @@
                 }, {
                     type: 'residentNameAndType',
                     label: 'general.name',
-                    translate: this.translateResidentType
+                    translate: this.translateResidentTypes
                 }, {
                 //     prop: 'name',
                 //     label: 'general.name',
@@ -499,32 +499,32 @@
                 // }, {
                 //     prop: 'type',
                 //     label: 'models.resident.relation.type.label',
-                //     i18n: this.translateResidentType
+                //     i18n: this.translateResidentTypes
                 // }, {
                     type: 'residentRelation',
                     label: 'models.resident.relation.title'
                 }, {
+                    type: 'residentStatusSign',
+                    label: 'models.resident.status.label',
                     prop: 'status',
-                    i18n: this.residentStatusLabel,
-                    withBadge: this.residentStatusBadge,
-                    label: 'models.resident.status.label'
+                    width: 70
                 }],
                 assigneesActions: [
-                    {
+                    /*{
                     width: 70,
                     buttons: [{
                         title: 'models.resident.view',
                         onClick: this.residentEditView,
                         icon: 'el-icon-user',
                         tooltipMode: true
-                    }/*, {
+                    }, {
                         title: 'general.unassign',
                         tooltipMode: true,
                         type: 'danger',
                         icon: 'el-icon-close',
                         onClick: this.notifyUnassignment
-                    }*/]
-                }
+                    }]
+                }*/
                 ],
                 multiple: false,
                 visibleDrawer: false,
@@ -565,8 +565,11 @@
                     }
                 }
             },
-            translateResidentType(type) {
-                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
+            translateResidentTypes(types) {
+                if(types.constructor === Array){
+                    let translatedTypes = types.map(type => this.$t(`models.resident.relation.type.${this.$constants.relations.type[type]}`))
+                    return translatedTypes.join(', ')
+                }
             },
             toggleDrawer() {
                 this.visibleDrawer = true;
