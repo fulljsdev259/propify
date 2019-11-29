@@ -526,6 +526,7 @@ class Request extends AuditableModel implements HasMedia
         'reminder_user_ids',
         'category_id',
         'sub_category_id',
+        'qualification_category',
         'subject_id',
         'resident_id',
         'relation_id',
@@ -569,6 +570,8 @@ class Request extends AuditableModel implements HasMedia
      */
     protected $casts = [
         'category_id' => 'integer',
+        'sub_category_id' => 'integer',
+        'qualification_category' => 'integer',
         'creator_user_id' => 'integer',
         'reminder_user_ids' => 'array',
         'resident_id' => 'integer',
