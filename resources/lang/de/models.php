@@ -184,7 +184,7 @@ return [
         'units' => 'Einheiten',
         'saved' => 'Objekt wurde gespeichert.',
         'floors' => 'Etagen',
-        'under_floor' => 'Untergeschoss',
+        'under_floor' => 'Untergeschosse',
         'ground_floor' => 'Erdgeschoss',
         'basement' => 'Erdgeschoss',
         'attic' => 'Attikageschoss',
