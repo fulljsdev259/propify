@@ -146,7 +146,8 @@
         },
         methods: {
             isContained(str) {
-                return str.toLowerCase().includes(this.search.toLowerCase());
+                if(str)
+                    return str.toLowerCase().includes(this.search.toLowerCase());
             },
             handleDropdownClick() {
                 this.clearSearch();

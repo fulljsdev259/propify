@@ -15,7 +15,7 @@ return [
 	'failed'   => 'Diese Kombination aus Zugangsdaten wurde nicht in unserer Datenbank gefunden.',
 	'throttle' => 'Zu viele Loginversuche. Versuchen Sie es bitte in :seconds Sekunden nochmal.',
 	'login_welcome' => 'Willkommen zurück, bitte melden Sie sich mit Ihrem Konto an.',
-	'title' => 'Ihr Zuhause immer mit dabei. ',
+	'title' => 'Ihr Zuhause immer mit dabei ',
 	'intro' => 'Mit der Plattform my home by fortimo haben die Bewohner unserer Wohnungen die Möglichkeit, das Geschehen in und rund um ihr Zuhause aktiv zu verfolgen. Die digitale Plattform vereinfacht die Kommunikation zwischen Bewohnern, Verwaltung, Hauswartung und Eigentümer. Dokumente wie Mietvertrag, Stockwerksbegründungen, Grundriss u.v.m. stehen den Nutzern in einem abgesicherten, persönlichen Bereich jederzeit zur Verfügung. Mit my home by fortimo fühlen Sie sich auch unterwegs fast zuhause.',
 	'benefit_1' => [
 		'title' => 'Ihr Online Mieter-Dossier',

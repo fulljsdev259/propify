@@ -500,7 +500,7 @@ return [
         'prop_title' => 'Titel',
         'category' => 'Anfrage-Typ',
         'edit_title' => 'Anfrage bearbeiten',
-        'add_title' => 'Anfrage hinzufügen',
+        'add_title' => 'Hinzufügen',
         'mass_edit' => [
             'label' => 'Massenbearbeitung',
             'options' => [
@@ -742,8 +742,8 @@ return [
             'address'=>'Objekt',
         ],
         'pictures_of' => 'Fotos des Anliegens',
-        'go_to_building' => 'Zum Objekt gehen'
-
+        'go_to_building' => 'Zum Objekt gehen',
+        'visible' => 'Sichtbar'
     ],
     'request_category' => [
         'title' => 'Anfrage Kategorien',

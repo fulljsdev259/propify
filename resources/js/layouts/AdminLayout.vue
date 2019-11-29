@@ -193,62 +193,17 @@
                         icon: 'icon-chat-empty',
                         title: this.$t('general.admin_menu.requests'),
                         permission: this.$permissions.list.request,
-                        children: [{
-                            title: this.$t('general.admin_menu.all_requests'),
-                            permission: this.$permissions.list.request,
-                            value: this.all_request_count,
-                            route: {
-                                name: 'adminRequests'
-                            }
-                        },  {
-                            title: this.$t('general.admin_menu.my_requests'),
-                            permission: this.$permissions.list.request,
-                            value: this.my_request_count,
-                            route: {
-                                name: 'adminMyRequests'
-                            }
-                        },  {
-                            title: this.$t('general.admin_menu.my_pending_requests'),
-                            permission: this.$permissions.list.request,
-                            value: this.my_pending_count,
-                            route: {
-                                name: 'adminMypendingRequests'
-                            }
-                        },  {
-                            title: this.$t('general.admin_menu.not_assigned'),
-                            permission: this.$permissions.list.request,
-                            value: this.all_unassigned_count,
-                            route: {
-                                name: 'adminUnassignedRequests'
-                            }
-                        },  {
-                            title: this.$t('general.admin_menu.all_pending_requests'),
-                            permission: this.$permissions.list.request,
-                            value: this.all_pending_count,
-                            route: {
-                                name: 'adminAllpendingRequests'
-                            }
-                        }]
+                        route: {
+                            name: 'adminRequests'
+                        }
                     },
                     "managerRequests": {
                         icon: 'icon-chat-empty',
                         title: this.$t('general.admin_menu.requests'),
                         permission: this.$permissions.list.request,
-                        children: [{
-                            title: this.$t('general.admin_menu.all_requests'),
-                            permission: this.$permissions.list.request,
-                            value: this.all_request_count,
-                            route: {
-                                name: 'adminRequests'
-                            }
-                        },  {
-                            title: this.$t('general.admin_menu.my_requests'),
-                            permission: this.$permissions.list.request,
-                            value: this.my_request_count,
-                            route: {
-                                name: 'adminMyRequests'
-                            }
-                        }]
+                        route: {
+                            name: 'adminRequests'
+                        }
                     },
                     // "activity": {
                     //     icon: 'icon-gauge-1',
@@ -936,6 +891,97 @@
                 font-size: 16px;
                 line-height: 30px;
             }
+        }
+    }
+
+    .admin-layout {
+        .el-button--default{
+            background-color: lightgrey;
+            color:var(--color-text-regular);
+            border: none
+        }
+        .el-button--default:focus,.el-button--default:hover{
+            color:var(--color-text-regular);
+            background-color:lightgrey;
+            border:none;
+            box-shadow:0 0 5px lightgrey
+        }
+        .el-button--default.is-active,.el-button--default:active{
+            color:var(--color-text-regular);
+            background-color:lightgrey;
+            border:none;
+        }
+        .el-button--primary{
+            color:var(--color-white);
+            background-color:#878810;
+            border:none
+        }
+        .el-button--primary:focus,.el-button--primary:hover{
+            color:var(--color-white);
+            background-color:#878810;
+            border:none;
+            box-shadow:0 0 5px #878810
+        }
+        .el-button--primary.is-active,.el-button--primary:active{
+            color:var(--color-white);
+            background-color:#878810;
+            border:none
+        }
+        .el-button--success{
+            color:var(--color-white);
+            background-color:#878810;
+            border:none
+        }
+        .el-button--success:focus,.el-button--success:hover{
+            color:var(--color-white);
+            background-color:#878810;
+            border:none;
+            box-shadow:0 0 5px #878810
+        }
+        .el-button--success.is-active,.el-button--success:active{
+            color:var(--color-white);
+            background-color:#878810;
+            border:none
+        }
+        .el-button--danger{
+            background-color:#848484;
+            color:white;
+            border:none
+        }
+        .el-button--danger:focus,.el-button--danger:hover{
+            background-color:#848484;
+            color: var(--color-white);
+            border:none;
+            box-shadow: 0 0 5px #848484
+        }
+        .el-button--danger.is-active,.el-button--danger:active{
+            background-color:#848484;
+            color: var(--color-white);
+            border:none;
+            box-shadow: 0 0 5px #848484
+        }
+        .el-button--transparent{
+            background-color: transparent;
+            border: none;
+            color: var(--color-text-secondary)
+        }
+        /* .el-button--transparent:focus{
+            background-color: transparent;
+            border: none;
+            color: var(--color-text-secondary);
+            box-shadow: none
+        } */
+
+        /* .el-button--transparent span{
+            padding-left: 5px;
+        } */
+        .el-button--assign, .el-button--assign.is-disabled {
+            background-color: #3D3F41;
+            color: var(--color-white);
+        }
+
+        .el-button--assign:focus, .el-button--assign:hover {
+            background-color: var(--background-color-base);
         }
     }
 </style>

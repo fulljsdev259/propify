@@ -822,34 +822,23 @@ class Request extends AuditableModel implements HasMedia
         ], $providers->all(), $this->users->all()) ;
     }
 
-    public function setDownloadPdf($settings = null){
-        $media = $this->media->reject(function($m){
-            return  ($m->mime_type != config('filesystems.mime_types.jpeg') && $m->mime_type != config('filesystems.mime_types.png'));
-        })->map(function($m){
-            return ['title' => $m->name, 'file_path' => $m->getPath()];
-        });
+    public function setDownloadPdf($settings = null)
+    {
         $data = [
         	'datas'=>[
-				[
-					'category' => get_category_details($this->category_id),
-					'subCategory' => get_sub_category_details($this->sub_category_id),
-					'request' => $this,
-					'resident' => $this->resident,
-					'relation' => $this->relation,
-					'media' => $media,
-				]
+				$this->getDownloadAllPdfData()
 			]
         ];
 	
-			$data['logo'] = $settings->logo ?? null;
-            $data['blank_pdf'] = $settings->blank_pdf;
-            $data['pdf_font_family'] = $settings->pdf_font_family;
+        $data['logo'] = $settings->logo ?? null;
+        $data['blank_pdf'] = $settings->blank_pdf;
+        $data['pdf_font_family'] = $settings->pdf_font_family;
         $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('pdfs.request.requestDownloadPdf', $data);
-
+        
         return Storage::disk('request_downloads')->put($this->pdfFileName(), $pdf->output());
     }
     
-    public function setDownloadAllPdfData ($settings = null)
+    public function getDownloadAllPdfData ()
 	{
 		$media = $this->media->reject(function($m){
 			return  ($m->mime_type != config('filesystems.mime_types.jpeg') && $m->mime_type != config('filesystems.mime_types.png'));
@@ -869,11 +858,11 @@ class Request extends AuditableModel implements HasMedia
 		return $data;
 	}
 	
-	public function setDownloadAllPdf ($settings = null, $data)
+	public function setDownloadAllPdf ($data, $settings = null)
 	{
 		$data['logo'] = $settings->logo ?? null;;
 		$data['blank_pdf']=false;
-		$data['pdf_font_family']=$settings->pdf_font_family;
+		$data['pdf_font_family']= $settings->pdf_font_family ?? '';
 		$pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('pdfs.request.requestDownloadPdf', $data);
 		
 		return Storage::disk('request_downloads')->put($this->pdfFileName(), $pdf->output());

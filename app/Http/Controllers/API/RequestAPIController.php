@@ -466,47 +466,46 @@ class RequestAPIController extends AppBaseController
     {
         //get in MassEditRequest validation class
         $requests = $massEditRequest->requests;
-
         $managers = $massEditRequest->managers;
-        
-        $sent_email = $massEditRequest->send_email_service_provider;
+        $sentEmail = $massEditRequest->send_email_service_provider;
         
         if ($managers) {
-        	$managers->sent_email=$sent_email;
-            $this->requestRepository->massAssign($requests, 'managers', $managers);
+            $this->requestRepository->massAssign($requests, 'managers', $managers, $sentEmail);
         }
 
         //get in MassEditRequest validation class
         $providers = $massEditRequest->providers;
         if ($providers) {
-        	$providers->sent_email=$sent_email;
-            $this->requestRepository->massAssign($requests, 'providers', $providers);
+            $this->requestRepository->massAssign($requests, 'providers', $providers, $sentEmail);
         }
-        
-        
-        
-        if ($sent_email && $providers) {
-	
-			$users=ServiceProvider::find($providers)->load('user');
-        	foreach ($users as $user) {
-        		$data=[];
-				foreach ($requests as $request) {
-					$r = $this->requestRepository->findWithoutFail($request->id);
-					
-					$data['datas'][]=$this->getPdfAllData($r);
-					
-				}
-				$this->requestRepository->findWithoutFail($requests[0]->id)->setDownloadAllPdf($this->settingsRepository->first(),$data);
-		
-				$pdfName = $this->getAllPdfFileName($this->requestRepository->findWithoutFail($requests[0]->id));
-				
-				if (!\Storage::disk('request_downloads')->exists($pdfName)) {
-					return $this->sendError('Request file not found!');
-				}
-				
-				$mail = (new SentEmailPdf($pdfName))->onQueue('high');
-				Mail::to($user->user->email)->queue($mail);
-				
+
+        if ($sentEmail && $providers->isNotEmpty() && $requests->isNotEmpty()) {
+
+            $users = $providers->load('user')->pluck('user');
+            $settings = $this->settingsRepository->first();
+
+            $data = [];
+            $requests->load([
+                'media',
+                'resident',
+                'relation'
+            ]);
+            foreach ($requests as $request) {
+                /** @var $request Request */
+                $data['datas'][] = $request->getDownloadAllPdfData();
+            }
+
+            // $request is income in foreach
+            $request->setDownloadAllPdf($data, $settings);
+            $pdfName = $request->pdfFileName();
+
+            if (!\Storage::disk('request_downloads')->exists($pdfName)) {
+                return $this->sendError('Request file not found!');
+            }
+
+            foreach ($users as $user) {
+                $mail = (new SentEmailPdf($user, $pdfName));//->onQueue('high');
+                Mail::to($user->email)->send($mail);
 			}
    
 		}
@@ -539,20 +538,6 @@ class RequestAPIController extends AppBaseController
 
         return $this->sendResponse($response, __('models.request.saved'));
     }
-    
-    public function getPdfAllData (Request $request)
-	{
-		$settings = $this->settingsRepository->first();
-		$data=$request->setDownloadAllPdfData($settings);
-		
-		return $data ;
-	}
-	
-	public function getAllPdfFileName (Request $request)
-	{
-		$pdfName=$request->pdfFileName();
-		return $pdfName;
-	}
 
     /**
      * @SWG\Post(

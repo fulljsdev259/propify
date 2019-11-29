@@ -5,6 +5,7 @@ return [
     'it' => 'IT',
     'de' => 'DE',
     'yes' => 'Yes',
+    'invalid_operation' => 'Invalid Operation',
     'timestamps' => [
         'hours' => 'Hours',
         'days' => 'Days',
@@ -568,5 +569,6 @@ return [
     'notification_residents_sent' => 'Notification was sent to {number} residents at {time} on {date}.',
     'edit_close_message' => 'Would you like to save the changes before closing?',
     'request_status' => 'Request Status',
-    'login_success'=>'Welcome back'
+    'login_success'=>'Welcome back',
+    'category' => 'Category',
 ];
