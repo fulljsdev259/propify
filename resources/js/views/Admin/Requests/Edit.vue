@@ -282,7 +282,7 @@
                                 </el-col> -->
                             </el-row>
 
-                            <el-tabs type="card" v-model="activeTab1">
+                            <el-tabs type="border-card" v-model="activeTab1">
 
                                 <el-tab-pane :label="$t('models.request.request_details')" name="request_details">
                                     <el-form-item :label="$t('models.request.prop_title')" :rules="validationRules.title"
@@ -507,7 +507,33 @@
                                 </el-tab-pane>
                             </el-tabs>
                         
-                            <card class="mt15 request" :header="$t('models.request.assignment')">
+                            <el-tabs id="comments-card" v-if="model.id" type="border-card" value="assignment">
+                                <el-tab-pane name="assignment">
+                                    <span slot="label">
+                                        {{ $t('models.request.assignment') }}
+                                    </span>
+                                    <assignment-by-type
+                                        :resetToAssignList="resetToAssignList"
+                                        :assignmentType.sync="assignmentType"
+                                        :toAssign.sync="toAssign"
+                                        :assignmentTypes="assignmentTypes"
+                                        :assign="assignUser"
+                                        :toAssignList="toAssignList"
+                                        :remoteLoading="remoteLoading"
+                                        :remoteSearch="remoteSearchAssignees"
+                                    />
+                                    <relation-list
+                                        :actions="assigneesActions"
+                                        :columns="assigneesColumns"
+                                        :filterValue="model.id"
+                                        fetchAction="getAssignees"
+                                        filter="request_id"
+                                        ref="assigneesList"
+                                        v-if="model.id"
+                                    />
+                                </el-tab-pane>
+                            </el-tabs>
+                            <!-- <card class="mt15 request" :header="$t('models.request.assignment')">
                                 <assignment-by-type
                                     :resetToAssignList="resetToAssignList"
                                     :assignmentType.sync="assignmentType"
@@ -527,7 +553,7 @@
                                     ref="assigneesList"
                                     v-if="model.id"
                                 />
-                            </card>
+                            </card> -->
                         </template>
                         <!--                    v-if="(!$can($permissions.update.serviceRequest)) || ($can($permissions.update.serviceRequest) && (media.length || (model.media && model.media.length)))"-->
                         
