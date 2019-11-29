@@ -121,13 +121,13 @@
                                     <span>{{ $t('general.zip') }} / {{ $t('general.city') }}</span>
                                     <span>{{ model.address.zip }} {{ model.address.city }}</span>
                                 </div>
-                                <el-col :span="7">
+                                <el-col :span="7" class="pl-0">
                                     <el-form-item v-if="editMode" :label="$t('general.zip')" :rules="validationRules.zip"
                                                     prop="address.zip">
                                         <el-input :disabled="!editMode" type="text" v-model="model.address.zip"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :span="17">
+                                <el-col :span="17" class="pr-0">
                                     <el-form-item v-if="editMode" :label="$t('general.city')" :rules="validationRules.city"
                                                     prop="address.city">
                                         <el-input :disabled="!editMode" type="text" v-model="model.address.city"></el-input>
@@ -158,7 +158,7 @@
                                     <span>{{ model.phone }}</span>
                                 </div>
                                 <el-form-item v-if="editMode" :label="$t('general.phone')" prop="phone">
-                                    <el-input :disabled="!editMode" type="text" v-model="model.phone"/>
+                                    <el-input prefix-icon="el-icon-plus"  :disabled="!editMode" type="text" v-model="model.phone"/>
                                 </el-form-item>
 
                                 <div v-if="!editMode" class="service-info-item">
@@ -166,7 +166,7 @@
                                     <span>{{ model.mobile_phone }}</span>
                                 </div>
                                 <el-form-item v-if="editMode" :label="$t('general.mobile_phone')" prop="mobile_phone">
-                                    <el-input :disabled="!editMode" type="text" v-model="model.mobile_phone"/>
+                                    <el-input prefix-icon="el-icon-plus"  :disabled="!editMode" type="text" v-model="model.mobile_phone"/>
                                 </el-form-item>
 
                         <!-- <el-row class="last-form-row" :gutter="20">
@@ -505,6 +505,14 @@
             .el-col:last-child {
                 padding: 30px 20px 20px !important;
                 background-color: var(--color-white);
+                
+                .el-input__prefix {
+                    left: 11px;
+                    font-weight: 900;
+                    font-size: 9px;
+                    color: var(--color-black);
+
+                }
             }
             .service-info-item {
                 display: flex;

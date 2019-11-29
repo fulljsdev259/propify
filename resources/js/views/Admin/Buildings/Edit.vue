@@ -47,7 +47,7 @@
                                     </el-form-item>
 
                                     <span v-if="!editName" class="quarter-name" @dblclick="editName=editMode">{{ quarterName }}</span>
-                                     <el-form-item  prop="quarter_id" v-if="editMode && editName">
+                                     <el-form-item  prop="quarter_id" v-if="editMode && editName" class="edit-name-input">
                                         <el-select
                                                 :loading="remoteLoading"
                                                 :placeholder="$t('general.placeholders.search')"
@@ -1318,6 +1318,23 @@
                         font-family: 'Radikal Bold';
                         letter-spacing: 1.2px;
                         color: var(--text-color);
+                    }
+                    /deep/ .edit-name-input {
+                        margin: 0px;
+                        .el-input__inner {
+                            font-size: 24px;
+                            font-family: 'Radikal';
+                            font-weight: 700;
+                            color: var(--text-color);
+                            &::-webkit-input-placeholder {
+                                color: var(--text-color);
+                                font-weight: bold;
+                            }
+                        }
+                        &:nth-type-of(1) {
+                            margin-top: 10px !important;
+                            margin-bottom: 40px;  
+                        }
                     }
                 }
 
