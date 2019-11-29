@@ -380,7 +380,7 @@
                     <el-col :md="12">
                         <template v-if="$can($permissions.assign.request)">
  
-                            <el-tabs class="action-tabs" type="border-card"  v-model="activeActionTab">
+                            <el-tabs class="action-tabs" type="border-card" v-model="activeActionTab">
                                 <el-tab-pane :label="$t('models.request.actions')" name="actions" >
                                     <el-row :gutter="10">                                    
                                         <el-col :md="12">
@@ -530,29 +530,29 @@
                             </card>
                         </template>
                         <!--                    v-if="(!$can($permissions.update.serviceRequest)) || ($can($permissions.update.serviceRequest) && (media.length || (model.media && model.media.length)))"-->
-                        <card class="mt15" v-if="model.id" id="comments">
-                            <el-tabs id="comments-card" v-model="activeTab2" >
-                                <el-tab-pane name="comments">
-                                    <span slot="label">
-                                        <el-badge :value="requestCommentCount" :max="99" class="admin-layout">{{ $t('models.request.comments') }}</el-badge>
-                                    </span>
-                                    <chat :id="model.id" type="request" show-templates />
-                                </el-tab-pane>
-                                <el-tab-pane name="internal-notices">
-                                    <span slot="label">
-                                        <el-badge :value="noticeCommentCount" :max="99" class="admin-layout">{{ $t('models.request.internal_notices') }}</el-badge>
-                                    </span>
-                                    <chat :id="model.id" type="internalNotices" />
-                                </el-tab-pane>
-                                <el-tab-pane name="audit" style="height: 400px;overflow:auto;">
-                                    <span slot="label">
-                                        {{ $t('general.audits') }}
-                                        <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
-                                    </span>
-                                    <audit v-if="model.id" :id="model.id" type="request" ref="auditList" showFilter/>
-                                </el-tab-pane>
-                            </el-tabs>
-                        </card>
+                        
+                        <el-tabs id="comments-card" v-if="model.id" class="mt15"  type="border-card" v-model="activeTab2">
+                            <el-tab-pane name="comments">
+                                <span slot="label">
+                                    <el-badge :value="requestCommentCount" :max="99" class="admin-layout">{{ $t('models.request.comments') }}</el-badge>
+                                </span>
+                                <chat :id="model.id" type="request" show-templates />
+                            </el-tab-pane>
+                            <el-tab-pane name="internal-notices">
+                                <span slot="label">
+                                    <el-badge :value="noticeCommentCount" :max="99" class="admin-layout">{{ $t('models.request.internal_notices') }}</el-badge>
+                                </span>
+                                <chat :id="model.id" type="internalNotices" />
+                            </el-tab-pane>
+                            <el-tab-pane name="audit" style="height: 400px;overflow:auto;">
+                                <span slot="label">
+                                    {{ $t('general.audits') }}
+                                    <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
+                                </span>
+                                <audit v-if="model.id" :id="model.id" type="request" ref="auditList" showFilter/>
+                            </el-tab-pane>
+                        </el-tabs>
+                    
                     </el-col>
                 </el-row>
             </el-form>
