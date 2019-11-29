@@ -25,6 +25,16 @@ return [
             'deleted' => "Fehler beim Löschen durch den Benutzer: ",
         ],        
     ],
+    'userFilter' => [
+        'saved' => 'Benutzer Filter erfolgreich gespeichert.',
+        'deleted' => 'Benutzer Filter erfolgreich gelöscht.',
+        'not_found' => 'Benutzer Filter nicht gefunden.',
+        'errors' => [
+            'not_found' => "Benutzer Filter nicht gefunden",
+            'create' => "Benutzerfilter nicht erstellt",
+            'update' => "Benutzerfilter nicht aktualisiert",
+        ],
+    ],
     'resident' => [
         'view' => 'Öffnen',
         'name' => 'Bewohner',
