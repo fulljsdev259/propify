@@ -421,6 +421,7 @@ return [
             'external_real_estate_company' => 'External Real Estate Company',
         ],
         'status' => [
+            'label' => 'Status',
             'active' => 'Active',
             'in_active' => 'Inactive',
         ],
