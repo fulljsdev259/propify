@@ -143,6 +143,23 @@
                                 </el-input>
                             </el-form-item>
                         </el-col>
+                        <el-col :md="12" v-if="this.showQualification == true">
+                            <el-form-item :label="$t('models.request.category_options.qualification_category')">
+                                <el-select 
+                                    :disabled="$can($permissions.update.serviceRequest) || !editMode"
+                                    :placeholder="$t(`general.placeholders.select`)"
+                                    class="custom-select"
+                                    v-model="model.qualification_category"
+                                >
+                                    <el-option
+                                        :key="qualification.value"
+                                        :label="qualification.name"
+                                        :value="qualification.value"
+                                        v-for="qualification in qualification_categories">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
                         <!-- <el-col :md="6" v-if="this.showPayer == true">
                             <el-form-item 
                                 :label="$t('models.request.category_options.payer_percent')"

@@ -17,7 +17,7 @@
                 <template #title>
                     <ui-avatar :src="request.resident.user.avatar" :size="36" :name="request.resident.user.name" />
                     <div class="content">
-                        <div class="category">{{ request.category.name }}</div>
+                        <div class="category">{{$t(`models.request.category_list.${request.category.name}`)}}</div>
                         <div class="title">
                             {{request.title}}
                         </div>

@@ -684,6 +684,7 @@ return [
             'payer_percent' => 'Pay by resident in %',
             'payer_amount' => 'Amount',
             'keywords' => 'Keywords',
+            'qualification_category' => 'Qualification'
         ],
         'placeholders' => [
             'category' => 'Select category',
