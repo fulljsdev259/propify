@@ -174,6 +174,7 @@ class RequestRepository extends BaseRepository
             $attr = self::fixNeededData($attr, $attributes, 'is_public');
             $attr = self::fixNeededData($attr, $attributes, 'room');
             $attr = self::fixNeededData($attr, $attributes, 'percentage');
+            $attr = self::fixNeededData($attr, $attributes, 'qualification_category');
             $attr = self::fixNeededData($attr, $attributes, 'amount');
 
             // @TODO maybe need
@@ -223,7 +224,7 @@ class RequestRepository extends BaseRepository
             $attr['category_id'] = $attributes['category_id'];
             $attr['sub_category_id'] = $attributes['sub_category_id'];
             $attr['status'] = $attributes['status'];
-
+            $attr = self::fixNeededData($attr, $attributes, 'qualification_category');
             return $attr;
         }
 
