@@ -25,7 +25,6 @@ class CreateRequest extends BaseRequest
     public function rules()
     {
         return [
-            'name' => 'required',
             'floor_nr' => 'required',
             'under_floor' => 'numeric|between:0,3',
             'types' => [
