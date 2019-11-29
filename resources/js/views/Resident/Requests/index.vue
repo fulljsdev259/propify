@@ -373,8 +373,6 @@
                 
                 let {category, sub_category, ...params} = this.changingRequest
                 
-                console.log('params', params)
-
                 params.status = status == 'done' ? 4 : 5;
                 
                 

@@ -161,11 +161,6 @@
                     label: 'models.building.units',
                     prop: 'units_count'
                 }, {
-                    label: 'general.box_titles.managers',
-                    withUsers: true,
-                    prop: 'users',
-                    count: 'managerscount'
-                }, {
                     label: 'models.building.request_status',
                     withCounts: true,
                     width: 230,
@@ -178,6 +173,12 @@
                     label: 'general.filters.status',
                     withStatus: true,
                     prop: 'status'
+                },{
+                    label: 'general.box_titles.managers',
+                    withUsers: true,
+                    prop: 'users',
+                    count: 'managerscount',
+                    defaultHide: true
                 },
                 // {
                 //     width: 150,

@@ -790,7 +790,6 @@
                 })
             },
             handleSelectChange(val, filter) {
-                console.log(val, filter)
                 if(filter == 'unit') {
                     this.model.unit_id = val
                 } else if(filter == 'quarter') {
@@ -1020,8 +1019,6 @@
                 this.isFuture = start_date > today
                 
                 this.original_unit_id = this.data.unit_id
-
-                console.log(this.model)
 
                 if( !this.hideBuildingAndUnits ) {
                     if( this.model.unit )

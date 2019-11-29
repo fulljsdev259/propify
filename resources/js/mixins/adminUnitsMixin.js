@@ -51,6 +51,10 @@ export default (config = {}) => {
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.unit.room_no')})
                     }],
+                    attic: [{
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('models.unit.attic')})
+                    }],
                     monthly_rent_net: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('general.gross_rent')})

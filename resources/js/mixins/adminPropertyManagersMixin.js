@@ -137,6 +137,7 @@ export default (config = {}) => {
                 remoteLoading: false,
                 isFormSubmission: false,
                 user: {},
+                old_model: {},
             };
         },
         computed: {
@@ -413,12 +414,13 @@ export default (config = {}) => {
                                     params.buildings = params.building_ids;
                                     this.model.building_ids = params.building_ids;
                                     const resp = await this.updatePropertyManager(params);
-
+                                    
                                     if (resp.data.user && resp.data.user.id) {
                                         await this.uploadAvatarIfNeeded(resp.data.user.id);
                                     }
-
+                                    
                                     this.model = Object.assign({}, this.model, resp.data);                                    
+                                    this.old_model =  _.clone(this.model, true); 
                                     if(this.$refs.auditList){
                                         this.$refs.auditList.fetch();
                                     }
