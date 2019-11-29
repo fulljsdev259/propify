@@ -9,7 +9,7 @@
                     <el-col :md="12">
                         <card :header="$t('models.service.company_details')">
                             <el-row :gutter="20">
-                                <el-col :md="12">
+                                <el-col :md="8">
                                     <el-form-item class="label-block" :label="$t('general.function')" :rules="validationRules.category" prop="category">
                                         <el-select :placeholder="$t('general.function')" style="display: block;"
                                                    v-model="model.category">
@@ -22,7 +22,22 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12">
+                                <el-col :md="8">
+                                    <el-form-item class="label-block" :label="$t('general.status.label')"
+                                                        :rules="validationRules.status"
+                                                        prop="status">
+                                        <el-select :placeholder="$t('general.placeholders.select')" style="display: block"
+                                                v-model="model.status">
+                                            <el-option
+                                                    :key="k"
+                                                    :label="$t(`general.status.${status}`)"
+                                                    :value="parseInt(k)"
+                                                    v-for="(status, k) in $constants.serviceProviders.status">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="8">
                                     <el-form-item :label="$t('models.service.company_name')" :rules="validationRules.company_name" prop="company_name">
                                         <el-input type="text" v-model="model.company_name"/>
                                     </el-form-item>

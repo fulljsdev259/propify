@@ -420,11 +420,6 @@ return [
             'architect' => 'Architect',
             'external_real_estate_company' => 'External Real Estate Company',
         ],
-        'status' => [
-            'label' => 'Status',
-            'active' => 'Active',
-            'in_active' => 'Inactive',
-        ],
         'contact_details' => 'Contact details',
         'user_credentials' => 'User credentials',
         "company_name" => "Company name",
@@ -808,11 +803,6 @@ return [
             'building_already_assign' => "Building already assigned through quarter",
             'building_assign_deleted_property_manager' => "You cannot assign buildings to an deleted Property Manager",
             'deleted' => "Property Manager deleted error: ",
-        ],
-        'status' => [
-            'label' => 'Status',
-	        'active' => 'Active',
-            'inactive' => 'Inactive',
         ],
     ],
     // 'house_owner' => [

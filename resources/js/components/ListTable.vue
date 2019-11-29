@@ -250,7 +250,7 @@
                     </div>
                     <div v-else-if="column.withPMStatusSign">
                         <el-tooltip
-                            :content="`${$t(`models.property_manager.status.${$constants.propertyManager.status[scope.row[column.prop]]}`)}`"
+                            :content="`${$t(`general.status.${$constants.propertyManager.status[scope.row[column.prop]]}`)}`"
                             class="item"
                             effect="light" placement="top"
                         >

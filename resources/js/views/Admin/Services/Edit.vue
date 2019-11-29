@@ -177,6 +177,25 @@
                             </el-col>
                         </el-row> -->
                                 <div v-if="!editMode" class="service-info-item">
+                                    <span>{{ $t('general.status.label') }}</span>
+                                    <span>{{ $t(`general.status.${$constants.serviceProviders.status[model.status]}`) }}</span>
+                                </div>
+                                <el-form-item v-if="editMode" class="label-block" :label="$t('general.status.label')"
+                                                :rules="validationRules.status"
+                                                prop="status">
+                                    <el-select :placeholder="$t('general.placeholders.select')"
+                                            style="display: block"
+                                            v-model="model.status">
+                                        <el-option
+                                                :key="k"
+                                                :label="$t(`general.status.${status}`)"
+                                                :value="parseInt(k)"
+                                                v-for="(status, k) in $constants.serviceProviders.status">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                
+                                <div v-if="!editMode" class="service-info-item">
                                     <span>{{ $t('general.email') }}</span>
                                     <span>{{ model.email }}</span>
                                 </div>
