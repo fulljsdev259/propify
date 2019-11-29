@@ -349,7 +349,7 @@
                                         </el-col>
                                     </el-row>
                                     <el-row v-if="!isEditingWorkflow[$index]">
-                                        <el-col :md="24" class="edit workflow-button-bar">
+                                        <el-col :md="24" class="edit workflow-button-bar" v-if="editMode">
                                             <!-- <el-button 
                                                 type="danger" 
                                                 @click="deleteWorkflow($index)"

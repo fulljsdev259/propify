@@ -158,7 +158,7 @@
                                     <span>{{ model.phone }}</span>
                                 </div>
                                 <el-form-item v-if="editMode" :label="$t('general.phone')" prop="phone">
-                                    <el-input prefix-icon="el-icon-plus"  :disabled="!editMode" type="text" v-model="model.phone"/>
+                                    <el-input  :disabled="!editMode" type="text" v-model="model.phone"/>
                                 </el-form-item>
 
                                 <div v-if="!editMode" class="service-info-item">
@@ -166,7 +166,7 @@
                                     <span>{{ model.mobile_phone }}</span>
                                 </div>
                                 <el-form-item v-if="editMode" :label="$t('general.mobile_phone')" prop="mobile_phone">
-                                    <el-input prefix-icon="el-icon-plus"  :disabled="!editMode" type="text" v-model="model.mobile_phone"/>
+                                    <el-input  :disabled="!editMode" type="text" v-model="model.mobile_phone"/>
                                 </el-form-item>
 
                         <!-- <el-row class="last-form-row" :gutter="20">

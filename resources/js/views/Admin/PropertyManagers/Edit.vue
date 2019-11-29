@@ -99,7 +99,7 @@
                                         <span>{{ model.phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('general.phone')" prop="phone">
-                                        <el-input prefix-icon="el-icon-plus" type="text" v-model="model.phone"/>
+                                        <el-input type="text" v-model="model.phone"/>
                                     </el-form-item>
 
                                     <div v-if="!editMode" class="propertymanager-info-item">
@@ -107,7 +107,7 @@
                                         <span>{{ model.mobile_phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('general.mobile')" prop="mobile_phone">
-                                        <el-input prefix-icon="el-icon-plus" type="text" v-model="model.mobile_phone"/>
+                                        <el-input type="text" v-model="model.mobile_phone"/>
                                     </el-form-item>
 
                                     <div v-if="!editMode" class="propertymanager-info-item">
