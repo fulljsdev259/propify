@@ -419,21 +419,21 @@ class Request extends AuditableModel implements HasMedia
     const CategoryGeneral = 1;
     const CategoryMalfunction = 2;
     const CategoryDeficiency = 3;
+    const CategoryOpenIssue = 4;
 
     const Category = [
         self::CategoryGeneral => 'general',
         self::CategoryMalfunction => 'malfunction',
         self::CategoryDeficiency => 'deficiency',
+        self::CategoryOpenIssue => 'open_issue',
     ];
 
-    const SubCategorySurrounding = 4;
-    const SubCategoryRealEstate = 5;
-    const SubCategoryFlat = 6;
+    const SubCategoryInsideOfApartment = 5;
+    const SubCategoryOutsideOfApartment = 6;
 
     const SubCategory = [
-        self::SubCategorySurrounding => 'surrounding',
-        self::SubCategoryRealEstate => 'real_estate',
-        self::SubCategoryFlat => 'flat',
+        self::SubCategoryInsideOfApartment => 'inside_of_apartment',
+        self::SubCategoryOutsideOfApartment => 'outside_of_apartment',
     ];
 
     const RoomAttr = 'room';
@@ -442,6 +442,7 @@ class Request extends AuditableModel implements HasMedia
     const ComponentAttr = 'component';
     const ActionAttr = 'action';
     const CostImpactAttr = 'cost_impact';
+    const SubQualificationCategoryAttr = 'qualification_category';
     const SubCategories = 'sub_categories';
     const Attributes = 'attributes';
 
@@ -449,19 +450,35 @@ class Request extends AuditableModel implements HasMedia
         self::CategoryGeneral => [
         ],
         self::CategoryMalfunction => [
+            self::CostImpactAttr,
+            self::ActionAttr,
+            self::CapturePhaseAttr,
+            self::ComponentAttr,
         ],
         self::CategoryDeficiency => [
+            self::CostImpactAttr,
+            self::ActionAttr,
+            self::CapturePhaseAttr,
+            self::ComponentAttr,
+            self::SubQualificationCategoryAttr,
+        ],
+        self::CategoryOpenIssue => [
+            self::CostImpactAttr,
+            self::ActionAttr,
+            self::CapturePhaseAttr,
+            self::ComponentAttr,
         ],
     ];
 
     const SubCategoryAttributes = [
-        self::SubCategorySurrounding => [
+        self::SubCategoryInsideOfApartment => [
             self::CostImpactAttr,
             self::ActionAttr,
 	        self::CapturePhaseAttr,
 	        self::ComponentAttr,
+	        self::RoomAttr,
         ],
-        self::SubCategoryRealEstate => [
+        self::SubCategoryOutsideOfApartment => [
             self::CostImpactAttr,
             self::ActionAttr,
 	        self::CapturePhaseAttr,
@@ -469,29 +486,39 @@ class Request extends AuditableModel implements HasMedia
             self::ComponentAttr,
 
         ],
-        self::SubCategoryFlat => [
-	        self::CostImpactAttr,
-            self::ActionAttr,
-	        self::CapturePhaseAttr,
-            self::RoomAttr,
-            self::ComponentAttr,
-        ],
     ];
 
     const CategorySubCategory = [
         self::CategoryGeneral => [
-
+            self::SubCategoryInsideOfApartment,
+            self::SubCategoryOutsideOfApartment,
         ],
         self::CategoryMalfunction => [
-            self::SubCategorySurrounding,
-            self::SubCategoryRealEstate,
-            self::SubCategoryFlat
+            self::SubCategoryInsideOfApartment,
+            self::SubCategoryOutsideOfApartment,
         ],
         self::CategoryDeficiency => [
-            self::SubCategorySurrounding,
-            self::SubCategoryRealEstate,
-            self::SubCategoryFlat
+            self::SubCategoryInsideOfApartment,
+            self::SubCategoryOutsideOfApartment,
         ],
+        self::CategoryOpenIssue => [
+            self::SubCategoryInsideOfApartment,
+            self::SubCategoryOutsideOfApartment,
+        ],
+    ];
+
+    const QualificationCategoryNormalWear = 1;
+    const QualificationCategoryDeficiency = 2;
+    const QualificationCategoryReCleaning = 3;
+    const QualificationCategoryNonExistent = 4;
+    const QualificationCategoryOkay = 5;
+
+    const QualificationCategory = [
+        self::QualificationCategoryNormalWear => 'normal_wear',
+        self::QualificationCategoryDeficiency => 'deficiency',
+        self::QualificationCategoryReCleaning => 're_cleaning',
+        self::QualificationCategoryNonExistent => 'non_existent',
+        self::QualificationCategoryOkay => 'okay',
     ];
 
     const Fillable = [

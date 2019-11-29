@@ -70,6 +70,7 @@ class RequestAssignee extends Assignee
     public $fillable = [
         'request_id',
         'assignee_id',
+        'user_id',
         'assignee_type',
         'sent_email',
         'created_at',

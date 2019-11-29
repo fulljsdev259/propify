@@ -578,12 +578,19 @@ return [
         'category_list' => [
             'general' => ' Allg. Anliegen',
             'malfunction' => 'Fehlfunktion',
-            'deficiency' => 'Mangel'
+            'deficiency' => 'Mangel',
+            'open_issue' => 'Offene Ausgabe',
         ],
         'sub_category' => [
-            'surrounding' => 'Umgebung',
-            'real_estate' => 'Liegenschaft',
-            'flat' => 'Wohnung',
+            'inside_of_apartment' => 'Innerhalb der Wohnung',
+            'outside_of_apartment' => 'Außerhalb der Wohnung',
+        ],
+        'qualification_category' => [
+            'normal_wear' => 'Normaler Verschleiß',
+            'deficiency' => 'Mangel',
+            're_cleaning' => 'Nachreinigung',
+            'non_existent' => 'Nicht vorhanden',
+            'okay' =>'Okay'
         ],
         'media' => [
             'added' => 'Mediendatei hinzugefügt',

@@ -105,4 +105,15 @@ abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepositor
 
         return $this->parserResult($model);
     }
+
+    /**
+     * @param $condition
+     * @param $callback
+     * @return $this
+     */
+    public function when($condition, $callback)
+    {
+         $this->model->when($condition, $callback);
+         return $this;
+    }
 }

@@ -65,10 +65,10 @@ class ResidentTransformer extends BaseTransformer
             $response['relations'] = (new RelationTransformer())->transformCollection($model->relations);
 
             $allCount = $model->relations->count();
-            $activeCount = $model->relations->where('status', Relation::StatusActive)->count();
 
-            $response['active_relations_count'] = $activeCount;
-            $response['inactive_relations_count'] = $allCount - $activeCount;
+            foreach (Relation::Status as $const => $status) {
+                $response[$status . '_relations_count'] = $model->relations->where('status', $const)->count();;
+            }
             $response['total_relations_count'] = $allCount;
 
             if ([Relation::StatusInActive] == collect($response['relations'])->pluck('status')->all()) {
