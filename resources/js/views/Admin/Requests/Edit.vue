@@ -13,7 +13,7 @@
             >
                 {{ $t('models.request.download_pdf.title') }}
             </el-button>
-            <edit-actions :saveAction="submit" :deleteAction="deleteRequest" route="adminRequests"/>
+            <edit-actions :saveAction="submit" :deleteAction="deleteRequest" route="adminRequests" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
         </heading>
         <div class="crud-view" id="edit_request">
             <el-form :model="model" label-position="top" label-width="192px" ref="form">
@@ -26,7 +26,7 @@
                                                   :rules="validationRules.category"
                                                   prop="category_id">
                                         <el-select
-                                            :disabled="$can($permissions.update.serviceRequest)"
+                                            :disabled="$can($permissions.update.serviceRequest) || !editMode"
                                             :placeholder="$t('models.request.placeholders.category')"
                                             class="custom-select"
                                             v-model="model.category_id"
@@ -47,7 +47,7 @@
                                                 :rules="validationRules.sub_category"
                                                 prop="sub_category_id">
                                         <el-select
-                                            :disabled="$can($permissions.update.serviceRequest)"
+                                            :disabled="$can($permissions.update.serviceRequest) || !editMode"
                                             :placeholder="$t(`general.placeholders.select`)"
                                             class="custom-select"
                                             v-model="model.sub_category_id"
@@ -66,7 +66,7 @@
                                         v-if="this.showSubCategory == true && this.showLocation == true">
                                     <el-form-item :label="$t('models.request.category_options.range')">
                                         <el-select 
-                                            :disabled="$can($permissions.update.serviceRequest)"
+                                            :disabled="$can($permissions.update.serviceRequest) || !editMode"
                                             :placeholder="$t(`general.placeholders.select`)"
                                             class="custom-select"
                                             v-model="model.location"
@@ -84,7 +84,7 @@
                                         v-if="this.showSubCategory == true && this.showRoom == true">
                                     <el-form-item :label="$t('models.request.category_options.room')">
                                         <el-select 
-                                            :disabled="$can($permissions.update.serviceRequest)"
+                                            :disabled="$can($permissions.update.serviceRequest) || !editMode"
                                             :placeholder="$t(`general.placeholders.select`)"
                                             class="custom-select"
                                             v-model="model.room"
@@ -101,7 +101,7 @@
                                 <el-col :md="12" v-if="this.showCapturePhase == true">
                                     <el-form-item :label="$t('models.request.category_options.capture_phase')">
                                         <el-select 
-                                            :disabled="$can($permissions.update.serviceRequest)"
+                                            :disabled="$can($permissions.update.serviceRequest) || !editMode"
                                             :placeholder="$t(`general.placeholders.select`)"
                                             class="custom-select"
                                             v-model="model.capture_phase"
@@ -117,7 +117,7 @@
                                 </el-col>
                                 <el-col :md="12" v-if="this.showComponent == true">
                                     <el-form-item :label="$t('models.request.category_options.component')">
-                                        <el-input v-model="model.component"></el-input>
+                                        <el-input v-model="model.component" :disabled="!editMode"></el-input>
                                     </el-form-item>
                                 </el-col>
                                 
@@ -125,7 +125,7 @@
                                         v-if="this.showAction == true">
                                     <el-form-item :label="$t('models.request.action.label')"
                                                   prop="action">
-                                        <el-select :disabled="$can($permissions.update.serviceRequest)"
+                                        <el-select :disabled="$can($permissions.update.serviceRequest) || !editMode"
                                                    :placeholder="$t('models.request.placeholders.action')"
                                                    class="custom-select"
                                                    v-model="model.action">
@@ -141,7 +141,7 @@
                                 <el-col :md="12" v-if="this.showCostImpact == true">
                                     <el-form-item :label="$t('models.request.cost_impact.label')"
                                                   prop="cost_impact">
-                                        <el-select :disabled="$can($permissions.update.serviceRequest)"
+                                        <el-select :disabled="$can($permissions.update.serviceRequest) || !editMode"
                                                    :placeholder="$t('models.request.placeholders.cost_impact')"
                                                    class="custom-select"
                                                    v-model="model.cost_impact"
@@ -163,6 +163,7 @@
                                         <el-input 
                                             type="number"
                                             v-model="model.percentage" 
+                                            :disabled="!editMode"
                                         >
                                             <template slot="prepend">%</template>
                                         </el-input>
@@ -205,6 +206,7 @@
                                             @remove-tag="deleteTag"
                                             style="display:block"
                                             @change="changeTags"
+                                            :disabled="!editMode"
                                             >
                                             <el-option
                                                 v-for="item in tags"
@@ -285,8 +287,10 @@
                                 <el-tab-pane :label="$t('models.request.request_details')" name="request_details">
                                     <el-form-item :label="$t('models.request.prop_title')" :rules="validationRules.title"
                                                   prop="title">
-                                        <el-input :disabled="$can($permissions.update.serviceRequest)" type="text"
-                                                  v-model="model.title"/>
+                                        <el-input 
+                                                :disabled="$can($permissions.update.serviceRequest) || !editMode" 
+                                                type="text"
+                                                v-model="model.title"/>
                                     </el-form-item>
                                     <el-form-item :label="$t('general.description')" :rules="validationRules.description"
                                                   prop="description"
@@ -385,6 +389,7 @@
                                                         prop="status">
                                                 <el-select :placeholder="$t('models.request.placeholders.status')"
                                                         class="custom-select"
+                                                        :disabled="!editMode"
                                                         v-model="model.status">
                                                     <el-option
                                                         :key="k"
@@ -425,7 +430,7 @@
                                                 </template>
                                                 
                                                 <el-date-picker
-                                                    :disabled="$can($permissions.update.serviceRequest)"
+                                                    :disabled="$can($permissions.update.serviceRequest) || !editMode"
                                                     :placeholder="$t('models.request.placeholders.due_date')"
                                                     format="dd.MM.yyyy"
                                                     style="width: 100%"
@@ -603,6 +608,7 @@
         },
         data() {
             return {
+                editMode: false,
                 requestCommentCount: 0,
                 auditCount: 0,
                 noticeCommentCount: 0,
@@ -707,6 +713,18 @@
         },
         methods: {
             ...mapActions(['unassignAssignee', 'deleteRequest', 'downloadRequestPDF']),
+            handleChangeEditMode() {
+                if(!this.editMode) {
+                    this.editMode = !this.editMode;
+                    this.old_model = _.clone(this.model, true);
+                } else {
+                    if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
+                        this.visibleDialog = true;
+                    } else {
+                        this.editMode = !this.editMode;
+                    }
+                }
+            },
             translateType(type) {
                 return this.$t(`general.roles.${type}`);
             },

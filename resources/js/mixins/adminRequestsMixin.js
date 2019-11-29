@@ -48,6 +48,7 @@ export default (config = {}) => {
                     sub_category_id: null,
                     relation_id: ''
                 },
+                old_model: {},
                 validationRules: {
                     category: [{
                         required: true,
@@ -680,7 +681,7 @@ export default (config = {}) => {
                                         newTags.push(keyword);
                                     }
                                 })
-                                
+                                this.old_model = this.model;
                                 const requestTags = await this.createRequestTags({
                                     id: this.$route.params.id,
                                     tag_ids: existingsKeys,
