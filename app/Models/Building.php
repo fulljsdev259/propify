@@ -15,17 +15,12 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  *
  * @SWG\Definition (
  *      definition="Building",
- *      required={"name", "floor_nr"},
+ *      required={"floor_nr"},
  *      @SWG\Property(
  *          property="id",
  *          description="id",
  *          type="integer",
  *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="name",
- *          description="name",
- *          type="string"
  *      ),
  *      @SWG\Property(
  *          property="description",
@@ -93,7 +88,6 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  * @property float|null $latitude
  * @property float|null $longitude
  * @property int $contact_enable
- * @property string $name
  * @property string|null $description
  * @property string|null $label
  * @property int $floor_nr
@@ -199,7 +193,6 @@ class Building extends AuditableModel implements HasMedia
     protected $dates = ['deleted_at'];
 
     public $fillable = [
-        'name',
         'description',
         'label',
         'address_id',
@@ -223,7 +216,6 @@ class Building extends AuditableModel implements HasMedia
      * @var array
      */
     protected $casts = [
-        'name' => 'string',
         'description' => 'string',
         'label' => 'string',
         'address_id' => 'integer',

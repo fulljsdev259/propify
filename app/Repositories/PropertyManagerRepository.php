@@ -97,25 +97,19 @@ class PropertyManagerRepository extends BaseRepository
 
     public function assignments(PropertyManager $propertyManager)
     {
-        $buildings = Building::select(\DB::raw('buildings.id, buildings.name, "building" as type'))
-            ->join('building_assignees', 'building_id', '=', 'buildings.id')
-            ->where('assignee_type', get_morph_type_of(PropertyManager::class))
-            ->where('building_assignees.assignee_id',  $propertyManager->id);
-
         $quarters = Quarter::select(\DB::raw('quarters.id, quarters.name, "quarter" as type'))
             ->join('quarter_assignees', 'quarter_id', '=', 'quarters.id')
             ->where('assignee_type', get_morph_type_of(PropertyManager::class))
             ->where('quarter_assignees.assignee_id',  $propertyManager->id);
 
-        return $buildings->union($quarters)->orderBy('name');
+        return $quarters->orderBy('name');
     }
 
     public function assignmentsWithIds(array $ids)
     {
-        $buildings = Building::select(\DB::raw('buildings.id, buildings.name, "building" as type'))
-            ->join('building_assignees', 'building_id', '=', 'buildings.id')
+        return Quarter::select(\DB::raw('quarters.id, quarters.name, "quarter" as type'))
+            ->join('quarter_assignees', 'quarter_id', '=', 'quarters.id')
             ->where('assignee_type', get_morph_type_of(PropertyManager::class))
-            ->whereIn('building_assignees.assignee_id', $ids);
-        return $buildings;
+            ->whereIn('quarter_assignees.assignee_id', $ids);
     }
 }
