@@ -160,7 +160,7 @@ class ServiceProvider extends AuditableModel
     const StatusInActive = 2;
     const Status = [
         self::StatusActive => 'active',
-        self::StatusInActive => 'in_active',
+        self::StatusInActive => 'inactive',
     ];
 
     const CategoryElectrician = 1;
