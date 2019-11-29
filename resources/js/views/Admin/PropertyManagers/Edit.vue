@@ -1,151 +1,27 @@
 <template>
-    <div class="services-edit" v-loading.fullscreen.lock="loading.state">
-        <heading :title="$t('models.property_manager.edit_title')" icon="icon-users" shadow="heavy">
+    <div class="propertymanager-edit" v-loading.fullscreen.lock="loading.state">
+        <heading :title="$t('models.property_manager.edit_title')" icon="icon-users" shadow="heavy" bgClass="bg-transparent">
             <template slot="description" v-if="model.property_manager_format">
                 <div class="subtitle">{{model.property_manager_format}}</div>
             </template>
-            <edit-actions :saveAction="submit" :deleteAction="deletePropertyManager" route="adminPropertyManagers" :editMode="editMode" @edit-mode="handleChangeEditMode"/>
+            <edit-actions :saveAction="submit" :deleteAction="deletePropertyManager" route="adminPropertyManagers" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
         </heading>
         <div class="crud-view">
             <el-form :model="model" label-position="top" label-width="192px" ref="form">
                 <el-row :gutter="20">
                     <el-col :md="12">
-                        <el-tabs type="border-card" v-model="activeTab">
-                            <el-tab-pane :label="$t('models.property_manager.details_card')" name="details">
-                                <el-row :gutter="20">
-                                    <el-col :md="8">
-                                        <el-form-item :label="$t('general.salutation')" :rules="validationRules.title"
-                                                    prop="title">
-                                            <el-select style="display: block" v-model="model.title">
-                                                <el-option
-                                                    :key="title"
-                                                    :label="$t(`general.salutation_option.${title}`)"
-                                                    :value="title"
-                                                    v-for="title in titles">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="8">
-                                        <!-- <el-form-item :label="$t('general.language')" :rules="validationRules.language" 
-                                                prop="settings.language">
-                                            <select-language :activeLanguage.sync="model.settings.language"/>
-                                        </el-form-item> -->
-                                        <el-form-item class="label-block" :label="$t('models.property_manager.status.label')"
-                                                        :rules="validationRules.status"
-                                                        prop="status">
-                                            <el-select :placeholder="$t('general.placeholders.select')"
-                                                    style="display: block"
-                                                    v-model="model.status">
-                                                <el-option
-                                                        :key="k"
-                                                        :label="$t(`models.property_manager.status.${status}`)"
-                                                        :value="parseInt(k)"
-                                                        v-for="(status, k) in $constants.propertyManager.status">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="8">
-                                        <el-form-item :label="$t('models.property_manager.profession')"
-                                                      :rules="validationRules.profession"
-                                                      prop="profession">
-                                            <el-input type="text" v-model="model.profession"/>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-
-                                <el-row :gutter="20">
-                                    <el-col :md="8">
-                                        <el-form-item :label="$t('general.first_name')"
-                                                    :rules="validationRules.first_name"
-                                                    prop="first_name">
-                                            <el-input type="text" v-model="model.first_name"/>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="8">
-                                        <el-form-item :label="$t('general.last_name')"
-                                                    :rules="validationRules.last_name"
-                                                    prop="last_name">
-                                            <el-input type="text" v-model="model.last_name"/>
-                                        </el-form-item>
-                                    </el-col>
-                                   <el-col :md="8">
-                                        <el-form-item class="label-block" :label="$t('general.function')" :rules="validationRules.type"
-                                                        prop="type">
-                                            <el-select style="display: block" v-model="model.type" :placeholder="$t('general.placeholders.select')">
-                                                <el-option
-                                                        :key="k"
-                                                        :label="$t(`general.roles.${status}`)"
-                                                        :value="parseInt(k)"
-                                                        v-for="(status, k) in $constants.propertyManager.type">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-
-
-                                <el-row class="last-form-row" :gutter="20">
-                                    <el-col :md="8">
-                                        <el-form-item :label="$t('general.phone')" prop="phone">
-                                            <el-input type="text" v-model="model.phone"/>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="8">
-                                        <el-form-item :label="$t('general.mobile')" prop="mobile_phone">
-                                            <el-input type="text" v-model="model.mobile_phone"/>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="8">
-                                        <el-form-item :label="$t('general.email')"
-                                                      :rules="validationRules.email"
-                                                      prop="email">
-                                            <el-input type="email" v-model="model.email"/>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-
-                            </el-tab-pane>
-                            <el-tab-pane :label="$t('models.property_manager.profile_card')" name="profile">
-                                <el-row :gutter="20">
-                                    <el-col :md="24">
-                                        <el-form-item :label="$t('general.password')"
-                                                      :rules="validationRules.password"
-                                                      prop="password">
-                                            <el-input 
-                                                    type="password"
-                                                    autocomplete="off"
-                                                    v-model="model.password"
-                                                    class="dis-autofill"
-                                                    readonly
-                                                    onfocus="this.removeAttribute('readonly');"
-                                            />
-                                        </el-form-item>
-                                    </el-col>
-                                    <!-- <el-col :md="12">
-                                        <el-form-item :label="$t('general.confirm_password')"
-                                                      :rules="validationRules.password_confirmation"
-                                                      prop="password_confirmation">
-                                            <el-input 
-                                                type="password" 
-                                                v-model="model.password_confirmation"
-                                                autocomplete="off"
-                                                readonly
-                                                onfocus="this.removeAttribute('readonly');"
-                                            />
-                                        </el-form-item>
-                                    </el-col> -->
-                                </el-row>
-                                <el-form-item :label="$t('models.user.profile_image')">                                    
-                                    <cropper
+                        <el-card class="propertymanager-detail">
+                            <el-row :gutter="20">
+                                <el-col :span="12" class="propertymanager_avatar">
+                                    <div class="image-container" :class="{'hide-action-icon': !editMode}">
+                                        <cropper
                                             :boundary="{
-                                                width: 250,
-                                                height: 360
+                                                width: 150,
+                                                height: 150
                                             }"
                                             :viewport="{
-                                                width: 250,
-                                                height: 250
+                                                width: 150,
+                                                height: 150
                                             }"
                                             :resize="false"
                                             :defaultAvatarSrc="
@@ -159,43 +35,197 @@
                                             "
                                             :showCamera="model.avatar==null"
                                             @cropped="cropped"/>
-                                </el-form-item>
+                                    </div>
+                                    <div 
+                                        v-if="!editName" 
+                                        class="first_name"
+                                        @dblclick="editName=editMode"
+                                    >
+                                        {{ model.first_name }}
+                                    </div>
+                                    <el-form-item 
+                                        v-if="editMode && editName"
+                                        :rules="validationRules.first_name"
+                                        prop="first_name"
+                                        class="edit-name-input"
+                                    >
+                                        <el-input autocomplete="off" type="text" v-model="model.first_name" ></el-input>
+                                    </el-form-item>
+                                    <div 
+                                        v-if="!editName" 
+                                        class="last_name"
+                                        @dblclick="editName=editMode"
+                                    >
+                                        {{ model.last_name }}
+                                    </div>
+                                    <el-form-item 
+                                        v-if="editMode && editName"
+                                        :rules="validationRules.last_name"
+                                        prop="last_name"
+                                        class="edit-name-input"
+                                    >
+                                        <el-input autocomplete="off" type="text" v-model="model.last_name" ></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="12">
+                                    <div v-if="!editMode" class="propertymanager-info-item">
+                                        <span>{{ $t('models.property_manager.slogan') }}</span>
+                                        <span>{{ model.slogan }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" style="margin-bottom: 0;" :label="$t('models.property_manager.slogan')"
+                                                :rules="validationRules.slogan"
+                                                prop="slogan">
+                                        <el-input type="text" v-model="model.slogan"/>
+                                    </el-form-item>
+                                    
+                                    <div v-if="!editMode" class="propertymanager-info-item">
+                                        <span>{{ $t('general.salutation') }}</span>
+                                        <span>{{ $t(`general.salutation_option.${model.title}`) }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('general.salutation')" :rules="validationRules.title"
+                                                prop="title">
+                                        <el-select style="display: block" v-model="model.title">
+                                            <el-option
+                                                :key="title"
+                                                :label="$t(`general.salutation_option.${title}`)"
+                                                :value="title"
+                                                v-for="title in titles">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
 
-                                <el-form-item style="margin-bottom: 0;" :label="$t('models.property_manager.slogan')"
-                                              :rules="validationRules.slogan"
-                                              prop="slogan">
-                                    <el-input type="text" v-model="model.slogan"/>
-                                </el-form-item>
-                            </el-tab-pane>
-                            <el-tab-pane :label="$t('models.property_manager.social_card')" name="social">
-                                <el-row class="last-form-row" :gutter="20">
+                                    <div v-if="!editMode" class="propertymanager-info-item">
+                                        <span>{{ $t('general.phone') }}</span>
+                                        <span>{{ model.phone }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('general.phone')" prop="phone">
+                                        <el-input prefix-icon="el-icon-plus" type="text" v-model="model.phone"/>
+                                    </el-form-item>
 
-                                    <el-col :md="12">
-                                        <el-form-item :label="$t('models.property_manager.linkedin_url')"
-                                                      :rules="validationRules.linkedin_url"
-                                                      prop="linkedin_url">
-                                            <el-input type="text" v-model="model.linkedin_url">
-                                                <template slot="prepend"><i class="icon-linkedin"></i></template>
-                                            </el-input>
+                                    <div v-if="!editMode" class="propertymanager-info-item">
+                                        <span>{{ $t('general.mobile') }}</span>
+                                        <span>{{ model.mobile_phone }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('general.mobile')" prop="mobile_phone">
+                                        <el-input prefix-icon="el-icon-plus" type="text" v-model="model.mobile_phone"/>
+                                    </el-form-item>
+
+                                    <div v-if="!editMode" class="propertymanager-info-item">
+                                        <span>{{ $t('general.email') }}</span>
+                                        <span>{{ model.email }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('general.email')"
+                                                    :rules="validationRules.email"
+                                                    prop="email">
+                                        <el-input type="email" v-model="model.email"/>
+                                    </el-form-item>
+                                    <!-- <el-form-item :label="$t('general.language')" :rules="validationRules.language" 
+                                            prop="settings.language">
+                                        <select-language :activeLanguage.sync="model.settings.language"/>
+                                    </el-form-item> -->
+
+                                    <div v-if="!editMode" class="propertymanager-info-item">
+                                        <span>{{ $t('models.property_manager.status.label') }}</span>
+                                        <span>{{ propertyManagerStatus }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" class="label-block" :label="$t('models.property_manager.status.label')"
+                                                    :rules="validationRules.status"
+                                                    prop="status">
+                                        <el-select :placeholder="$t('general.placeholders.select')"
+                                                style="display: block"
+                                                v-model="model.status">
+                                            <el-option
+                                                    :key="k"
+                                                    :label="$t(`models.property_manager.status.${status}`)"
+                                                    :value="parseInt(k)"
+                                                    v-for="(status, k) in $constants.propertyManager.status">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+
+                                     <div v-if="!editMode" class="propertymanager-info-item">
+                                        <span>{{ $t('models.property_manager.profession') }}</span>
+                                        <span>{{ model.profession }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('models.property_manager.profession')"
+                                                    :rules="validationRules.profession"
+                                                    prop="profession">
+                                        <el-input type="text" v-model="model.profession"/>
+                                    </el-form-item>
+
+                                    <div v-if="!editMode" class="propertymanager-info-item">
+                                        <span>{{ $t('general.function') }}</span>
+                                        <span>{{ propertyManagerType }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" class="label-block" :label="$t('general.function')" :rules="validationRules.type"
+                                                    prop="type">
+                                        <el-select style="display: block" v-model="model.type" :placeholder="$t('general.placeholders.select')">
+                                            <el-option
+                                                    :key="k"
+                                                    :label="$t(`general.roles.${status}`)"
+                                                    :value="parseInt(k)"
+                                                    v-for="(status, k) in $constants.propertyManager.type">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <!-- <el-col :md="12">
+                                        <el-form-item :label="$t('general.confirm_password')"
+                                                      :rules="validationRules.password_confirmation"
+                                                      prop="password_confirmation">
+                                            <el-input 
+                                                type="password" 
+                                                v-model="model.password_confirmation"
+                                                autocomplete="off"
+                                                readonly
+                                                onfocus="this.removeAttribute('readonly');"
+                                            />
                                         </el-form-item>
-                                    </el-col>
-                                    <el-col :md="12">
-                                        <el-form-item :label="$t('models.property_manager.xing_url')"
-                                                      :rules="validationRules.xing_url"
-                                                      prop="xing_url">
-                                            <el-input type="text"
-                                                      v-model="model.xing_url"
-                                                      class="dis-autofill"
-                                                      readonly
-                                                      onfocus="this.removeAttribute('readonly');"
-                                            >
-                                                <template slot="prepend"><i class="icon-xing"></i></template>
-                                            </el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                            </el-tab-pane>
-                        </el-tabs>
+                                    </el-col> -->
+
+                                    <div v-if="!editMode" class="propertymanager-info-item">
+                                        <span>{{ $t('models.property_manager.linkedin_url') }}</span>
+                                        <span>{{ model.linkedin_url }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('models.property_manager.linkedin_url')"
+                                                    :rules="validationRules.linkedin_url"
+                                                    prop="linkedin_url">
+                                        <el-input type="text" v-model="model.linkedin_url">
+                                            <template slot="prepend"><i class="icon-linkedin"></i></template>
+                                        </el-input>
+                                    </el-form-item>
+
+                                    <div v-if="!editMode" class="propertymanager-info-item">
+                                        <span>{{ $t('models.property_manager.xing_url') }}</span>
+                                        <span>{{ model.xing_url }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('models.property_manager.xing_url')"
+                                                    :rules="validationRules.xing_url"
+                                                    prop="xing_url">
+                                        <el-input type="text"
+                                                    v-model="model.xing_url"
+                                                    class="dis-autofill"
+                                                    readonly
+                                                    onfocus="this.removeAttribute('readonly');"
+                                        >
+                                            <template slot="prepend"><i class="icon-xing"></i></template>
+                                        </el-input>
+                                    </el-form-item>
+
+                                    <el-form-item v-if="editMode" :label="$t('general.password')"
+                                                    :rules="validationRules.password"
+                                                    prop="password">
+                                        <el-input 
+                                                type="password"
+                                                autocomplete="off"
+                                                v-model="model.password"
+                                                class="dis-autofill"
+                                                readonly
+                                                onfocus="this.removeAttribute('readonly');"
+                                        />
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                        </el-card>
 
                         <!--<card class="mt15" :header="$t('general.box_titles.buildings_and_quarters')">
                             <assignment-by-type
@@ -241,7 +271,13 @@
                     </el-col>
                 </el-row>
             </el-form>
-        </div>
+        </div>       
+        <edit-close-dialog
+            :centerDialogVisible="visibleDialog"
+            @clickYes="visibleDialog=false, submit(true)"
+            @clickNo="visibleDialog=false, $refs.editActions.goToListing()"
+            @clickCancel="visibleDialog=false"
+        ></edit-close-dialog>
     </div>
 </template>
 
@@ -257,6 +293,7 @@
     import AssignmentByType from 'components/AssignmentByType';
     import RawGridStatisticsCard from 'components/RawGridStatisticsCard';
     import SelectLanguage from 'components/SelectLanguage';
+    import EditCloseDialog from 'components/EditCloseDialog';
 
     export default {
         name: 'AdminPropertyManagersEdit',
@@ -271,7 +308,8 @@
             EditActions,
             AssignmentByType,
             RawGridStatisticsCard,
-            SelectLanguage
+            SelectLanguage,
+            EditCloseDialog
         },
         data() {
             return {
@@ -317,6 +355,8 @@
                     }]
                 }],
                 editMode: false,
+                editName: false,
+                visibleDialog: false,
             }
         },
         methods: {
@@ -330,8 +370,10 @@
                         this.visibleDialog = true;
                     } else {
                         this.editMode = !this.editMode;
+                        this.editName = false;
                     }
                 }
+                console.log(this.editMode);
             },
             requestEditView(row) {
                 this.$router.push({
@@ -378,6 +420,22 @@
             }),
             requestStatusConstants() {
                 return this.constants.requests.status
+            },
+            propertyManagerStatus() {
+                let result = '';
+                for(let item in this.$constants.propertyManager.status) {
+                    if(item == this.model.status)
+                        result = this.$t(`models.property_manager.status.${this.$constants.propertyManager.status[item]}`);
+                }
+                return result;
+            },
+            propertyManagerType() {
+                let result = '';
+                for(let item in this.$constants.propertyManager.type) {
+                    if(item == this.model.type)
+                        result = this.$t(`general.roles.${this.$constants.propertyManager.type[item]}`);
+                }
+                return result;
             }
         }
     }
@@ -393,20 +451,194 @@
             border-radius: 6px 6px 0 0;
         }
     }
+
+    .propertymanager-edit {
+        .el-input .el-input-group__prepend {
+            border-color: transparent;
+        }
+        .el-card {
+            margin: 0 10px 40px;
+            box-shadow: none !important;
+            border: 1px solid var(--border-color-base);
+            border-radius: 6px;
+        }
+        .propertymanager-detail {
+            background-color: #f6f5f7;
+            
+            &.el-card {
+                border-radius: 6px;
+                .el-card__body {
+                    padding: 0 !important;
+                }
+            }
+            .el-col:first-child {
+                padding: 40px 10px 20px 40px !important;
+                .first_name, .last_name {
+                    margin-top: 20px;
+                    padding-left: 10px;
+                    text-transform: capitalize;
+                    font-size: 32px;
+                    font-weight: 900;
+                    color: var(--color-text-primary);
+                    line-height: 1;
+                }
+                .edit-name-input {
+                    margin: 0px;
+                    .el-input__inner {
+                        font-size: 32px;
+                        font-family: 'Radikal';
+                        font-weight: 700;
+                    }
+                    &:nth-type-of(1) {
+                        margin-top: 10px !important;
+                        margin-bottom: 40px;  
+                    }
+                }
+                .last_name {
+                    margin-top: 10px;
+                    margin-bottom: 20px;
+                }
+            }
+            .el-col:last-child {
+                padding: 30px 20px 20px !important;
+                background-color: var(--color-white);
+                
+                .el-input__prefix {
+                    left: 11px;
+                    font-weight: 900;
+                    font-size: 9px;
+                    color: var(--color-black);
+
+                }
+            }
+            .propertymanager-info-item {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 25px;
+                padding: 0 20px;
+                span {
+                    font-size: 15px;
+                    &:first-child {
+                        color: var(--color-text-secondary);
+                        text-align: left;
+                    }
+                    &:nth-child(2) {
+                        text-align: right;
+                    }
+                }
+            }
+            .status {
+                margin-bottom: 40px;
+                margin-left: 10px;
+                .el-tag {
+                    font-weight: 700;
+                    border: transparent;
+                    padding: 0 15px;
+                    font-size: 13px;
+                    height: 30px;
+                    line-height: 30px;
+                }
+            }
+            .type {
+                margin-left: 10px;
+                margin-top: 10px;
+                font-size: 16px;
+                color: var(--color-text-secondary);
+            }
+            .actions {
+                text-align: center;
+                margin-top: 100px;
+                margin-bottom: 40px;
+                .el-button {
+                    font-size: 20px;
+                    &:not(:last-of-type) {
+                        margin-right: 20px;
+                    }
+                }
+                .action-download {
+                    color: #8E8F26;
+                    background-color: rgba(#8e8f26, 0.2);
+                }
+                .action-email {
+                    color: #317085;
+                    background-color: rgba(#317085, 0.2);
+                }
+                .action-chat {
+                    color: #640032;
+                    background-color: rgba(#640032, 0.2);
+                }
+            }
+        } 
+    }
 </style>
 <style lang="scss" scoped>
     .last-form-row {
         margin-bottom: -22px;
     }
 
-    .services-edit {
+    .propertymanager-edit {
         .heading {
-            margin-bottom: 20px;
+            margin-bottom: 40px;
         }
 
         .crud-view {
             > .el-form > .el-row > .el-col {
                 margin-bottom: 1em;
+            }
+        }
+
+        .propertymanager_avatar {
+            .image-container {
+                position: relative;
+                display: inline-block;
+                
+                .edit-icon {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    z-index: 999;
+                }
+                &.hide-action-icon {
+                    :global(.avatar-box__btn) {
+                        display: none;
+                    }
+                }
+                /deep/ .avatar-box {
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 50%;
+
+                    .el-avatar {
+                        width: 120px !important;
+                        height: 120px !important;
+                        line-height: 120px !important;
+                        border-radius: 50%;
+                        img {
+                            border-radius: 50%;
+                        }
+                    }
+                    .avatar-box__btn {
+                        right: 0;
+                        top: 0;
+                        left: unset;
+                        width: 20px;
+                        height: 20px;
+                        border-radius: 50%;
+                        border: 4px solid var(--color-white);
+                        background-color: var(--color-text-primary);
+
+                        .el-icon-camera-solid {
+                            position: absolute;
+                            right: 2px;
+                            top: 2px;
+                            transform: rotate(90deg);
+                            font-size: 16px;
+                            &:before {
+                                content: "\270E" !important;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
