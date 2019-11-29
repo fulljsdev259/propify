@@ -570,7 +570,12 @@
             @send="sendServiceMail"
             v-if="model.id && ((model.service_providers && model.service_providers.length) || (model.property_managers && model.property_managers.length))"
         />
-
+        <edit-close-dialog
+                :centerDialogVisible="visibleDialog"
+                @clickYes="submit(), visibleDialog=false, $refs.editActions.goToListing()"
+                @clickNo="visibleDialog=false, $refs.editActions.goToListing()"
+                @clickCancel="visibleDialog=false"
+        ></edit-close-dialog>
     </div>
 </template>
 
@@ -589,6 +594,7 @@
     import Vue from 'vue';
     import { EventBus } from '../../../event-bus.js';
     import EditorConfig from 'mixins/adminEditorConfig';
+    import EditCloseDialog from 'components/EditCloseDialog';
 
     export default {
         name: 'AdminRequestsEdit',
@@ -605,10 +611,12 @@
             EditActions,
             Avatar,            
             AssignmentByType,
+            EditCloseDialog
         },
         data() {
             return {
                 editMode: false,
+                visibleDialog: false,
                 requestCommentCount: 0,
                 auditCount: 0,
                 noticeCommentCount: 0,

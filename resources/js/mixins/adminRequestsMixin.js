@@ -708,7 +708,7 @@ export default (config = {}) => {
                                     //this.model.media = [...this.model.media, ...this.media]
                                     this.media = [];
 
-                                    await this.fetchCurrentRequest();
+                                    //await this.fetchCurrentRequest();
                                     //this.$set(this.model, 'service_providers', resp.data.service_providers);
                                     //this.$set(this.model, 'media', resp.data.media);
                                     //this.$set(this.model, 'property_managers', resp.data.property_managers);
