@@ -230,7 +230,7 @@
         :global(.el-table__body-wrapper) {
             :global(table) {
                 display: block;
-                max-height: 235px;
+                max-height: 300px;
                 overflow-y: auto;
                 &::-webkit-scrollbar{
                     width: 8px;

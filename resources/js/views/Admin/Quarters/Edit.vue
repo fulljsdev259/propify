@@ -10,60 +10,71 @@
             </heading>
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
-                    <el-tabs type="border-card" v-model="activeTab1">
-                        <el-tab-pane :label="$t('models.quarter.details')" name="details">
-                            <el-form :model="model" ref="form"  class="edit-details-form">
-                                <el-row :gutter="20">
-                                     <el-col :md="12">
-                                        <el-form-item :label="$t('general.internal_quarter_id')" :rules="validationRules.internal_quarter_id"
-                                                        prop="internal_quarter_id">
-                                            <el-input type="text" v-model="model.internal_quarter_id" :disabled="!editMode"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="12">
-                                        <el-form-item :label="$t('general.name')" :rules="validationRules.name"
-                                                    prop="name">
-                                            <el-input type="text" v-model="model.name"  :disabled="!editMode"/>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                <el-row :gutter="20">
-                                    <el-col :md="12">
-                                        <el-form-item :label="$t('models.quarter.url')" :rules="validationRules.url"
-                                                        prop="url">
-                                            <el-input type="text" v-model="model.url" :disabled="!editMode"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="12">
-                                        <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.type"
-                                                class="label-block"
-                                                prop="types">
-                                            <!-- <el-select
-                                                    :placeholder="$t('general.placeholders.select')"
-                                                    style="display: block"
-                                                    v-model="model.types"
-                                                    multiple
-                                                    :disabled="!editMode"
-                                                    filterable>
-                                                <el-option
-                                                        :key="type.value"
-                                                        :label="type.name"
-                                                        :value="type.value"
-                                                        v-for="type in types">
-                                                </el-option>
-                                            </el-select> -->
-                                            <multi-select
-                                                :name="$t('general.placeholders.select')"
-                                                :data="types"
+                    <el-card class="quarter-details">
+                        <el-form :model="model" ref="form"  class="edit-details-form">
+                            <el-row :gutter="20">
+                                <el-col :md="12" class="left-pane">
+                                    <img :src="require('img/default_img_object.png')"/>
+
+                                    <div v-if="!editId" class="quarter-id">
+                                        <span @dblclick="editId=editMode">{{ model.internal_quarter_id }}</span>
+                                    </div>
+                                    <el-form-item 
+                                        v-if="editMode && editId" 
+                                        :rules="validationRules.internal_quarter_id"
+                                        prop="internal_quarter_id" 
+                                        class='quarter-id'
+                                    >
+                                        <el-input type="text" v-model="model.internal_quarter_id" ></el-input>
+                                    </el-form-item>
+
+                                    <span v-if="!editName" class="quarter-name" @dblclick="editName=editMode">{{ model.name }}</span>
+                                    <el-form-item v-if="editMode && editName" :rules="validationRules.name"
+                                                prop="name">
+                                        <el-input type="text" v-model="model.name"  />
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="12" class="right-pane">
+                                    <div v-if="!editMode" class="quarter-detail-item">
+                                        <span>{{ $t('models.quarter.url') }}</span>
+                                        <span>{{ model.url }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('models.quarter.url')" :rules="validationRules.url"
+                                                    prop="url">
+                                        <el-input type="text" v-model="model.url" ></el-input>
+                                    </el-form-item>
+
+                                    <div v-if="!editMode" class="quarter-detail-item">
+                                        <span>{{ $t('models.quarter.types.label') }}</span>
+                                        <span>{{ quarterTypes }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :label="$t('models.quarter.types.label')" :rules="validationRules.type"
+                                            class="label-block" 
+                                            prop="types">
+                                        <!-- <el-select
+                                                :placeholder="$t('general.placeholders.select')"
+                                                style="display: block"
+                                                v-model="model.types"
+                                                multiple
                                                 :disabled="!editMode"
-                                                :selectedOptions="model.types"
-                                                tagColor="#9E9FA0"
-                                                @select-changed="model.types=$event"
-                                            ></multi-select>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                    
+                                                filterable>
+                                            <el-option
+                                                    :key="type.value"
+                                                    :label="type.name"
+                                                    :value="type.value"
+                                                    v-for="type in types">
+                                            </el-option>
+                                        </el-select> -->
+                                        <custom-select
+                                            :name="$t('general.placeholders.select')"
+                                            :data="types"
+                                            :selectedOptions="model.types"
+                                            tagColor="#9E9FA0"
+                                            showMultiTag
+                                            @select-changed="model.types=$event"
+                                        ></custom-select>
+                                    </el-form-item>
+                                
                                     <!-- <el-col :md="12">
                                         <el-form-item class="label-block" :label="$t('models.quarter.count_of_buildings')"
                                                     prop="title">
@@ -78,58 +89,50 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col> -->
-                                <el-row :gutter="20">
-                                    <el-col :md="6">
-                                        <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
+                                
+                                    <div v-if="!editMode" class="quarter-detail-item">
+                                        <span>{{ $t('general.zip') }} / {{ $t('general.city') }}</span>
+                                        <span>{{ model.zip }} {{ model.city }}</span>
+                                    </div>
+                                    <el-col :span="7">
+                                        <el-form-item v-if="editMode" :label="$t('general.zip')" :rules="validationRules.zip"
                                                     prop="zip">
-                                            <el-input type="text" v-model="model.zip" :disabled="!editMode"/>
+                                            <el-input type="text" v-model="model.zip"/>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :md="12">
-                                        <el-form-item :label="$t('general.city')" :rules="validationRules.city"
+                                    <el-col :span="17">
+                                        <el-form-item v-if="editMode" :label="$t('general.city')" :rules="validationRules.city"
                                                     prop="city">
-                                            <el-input type="text" v-model="model.city"  :disabled="!editMode"/>
+                                            <el-input type="text" v-model="model.city" />
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :md="6">
-                                        <el-form-item 
-                                            :label="$t('general.state')"
-                                            :rules="validationRules.state_id"
-                                            prop="state_id"
-                                            class="label-block"
-                                        >
-                                            <el-select 
-                                                clearable
-                                                filterable
-                                                :placeholder="$t('general.state')" 
-                                                style="display: block"
-                                                v-model="model.state_id"
-                                                :disabled="!editMode"
-                                            >
-                                                <el-option :key="state.id" :label="state.name" :value="state.id"
-                                                        v-for="state in states"></el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col> 
-                                </el-row>
-                            </el-form>
-                        </el-tab-pane>
-                        <el-tab-pane name="buildings">
-                            <span slot="label">
-                                {{ $t('general.box_titles.buildings') }}
-                                <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge>
-                            </span>
-                            <relation-list
-                                :actions="quarterActions"
-                                :columns="quarterColumns"
-                                :filterValue="model.id"
-                                fetchAction="getBuildings"
-                                filter="quarter_id"
-                                v-if="model.id"
-                            />
-                        </el-tab-pane>
 
-                    </el-tabs>
+                                    <div v-if="!editMode" class="quarter-detail-item">
+                                        <span>{{ $t('general.state') }}</span>
+                                        <span>{{ quarterState }}</span>
+                                    </div>
+                                    <el-form-item  
+                                        v-if="editMode"
+                                        :label="$t('general.state')"
+                                        :rules="validationRules.state_id"
+                                        prop="state_id"
+                                        class="label-block"
+                                    >
+                                        <el-select 
+                                            clearable
+                                            filterable
+                                            :placeholder="$t('general.state')" 
+                                            style="display: block"
+                                            v-model="model.state_id"
+                                        >
+                                            <el-option :key="state.id" :label="state.name" :value="state.id"
+                                                    v-for="state in states"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col> 
+                            </el-row>
+                        </el-form>
+                    </el-card>
 
                     <el-tabs type="border-card" v-model="activeTab2">
                         <el-tab-pane name="audit" style="height: 400px;overflow:auto;">
@@ -406,6 +409,20 @@
                                     @delete-relation="deleteRelation">
                             </relation-list-table>
                         </el-tab-pane> -->
+                        <el-tab-pane name="buildings">
+                            <span slot="label">
+                                {{ $t('general.box_titles.buildings') }}
+                                <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge>
+                            </span>
+                            <relation-list
+                                :actions="quarterActions"
+                                :columns="quarterColumns"
+                                :filterValue="model.id"
+                                fetchAction="getBuildings"
+                                filter="quarter_id"
+                                v-if="model.id"
+                            />
+                        </el-tab-pane>
                     </el-tabs>
                     
                     <el-tabs type="border-card" v-model="activeRequestTab">
@@ -545,6 +562,7 @@
     import EditCloseDialog from 'components/EditCloseDialog';
     import ListFilterSelect from 'components/ListFilterSelect';
     import MultiSelect from 'components/MultiSelect';
+    import CustomSelect from 'components/Select';
 
     export default {
         name: 'AdminRequestsEdit',
@@ -569,6 +587,7 @@
             EditCloseDialog,
             ListFilterSelect,
             MultiSelect,
+            CustomSelect,
         },
         data() {
             return {
@@ -705,6 +724,8 @@
                 activeDrawerTab: "emergency",
                 workflows: [],
                 editMode: false,
+                editId: false,
+                editName: false,
                 visibleDialog: false,
             }
         },
@@ -728,6 +749,8 @@
                         this.visibleDialog = true;
                     } else {
                         this.editMode = !this.editMode;
+                        this.editId = false;
+                        this.editName = false;
                     }
                 }
             },
@@ -932,6 +955,25 @@
             used_units() {
                 return this.model.relations.map(item => item.unit_id)
             },
+            quarterTypes() {
+                let result = '';
+                this.types.forEach((type) => {
+                    if(this.model.types && this.model.types.indexOf(type.value) !== -1) {
+                        if(result !== '')
+                            result = `${result}, `;
+                        result =  `${result}${type.name}`;
+                    }
+                });
+                return result;
+            },
+            quarterState() {
+                let result = '';
+                this.states.forEach((state) => {
+                    if(state.id == this.model.state_id)
+                        result = state.name;
+                });
+                return result;
+            }
         },
         mounted() {
 
@@ -1005,6 +1047,8 @@
         margin-bottom: -22px;
     }
 
+    
+
     .quarters-edit {
         overflow: hidden;
         flex: 1;
@@ -1013,6 +1057,87 @@
             overflow-x: hidden;
             overflow-y: scroll;
             height: 100%;
+        }
+
+        .crud-view {
+            .el-card.quarter-details {
+                padding: 0;
+                margin: 0px 10px 40px;
+                box-shadow: none !important;
+                border-color: var(--border-color-base);
+                border-radius: 6px;
+                background-color: #f6f5f7;
+
+                .el-row {
+                    display: flex;
+                }
+
+                :global(.el-card__body) {
+                    padding: 0px;
+                    background-color: inherit;
+                }
+
+                .left-pane, .right-pane {
+                    padding: 20px !important;
+                    .el-col {
+                        &:nth-of-type(1) {
+                            padding-left: 0px !important;
+                        }
+                        &:nth-of-type(2) {
+                            padding-right: 0px !important;
+                        }
+                    }
+                }
+
+                .left-pane {
+                    img {
+                        width: 100%;
+                        margin-bottom: 15px;
+                    }
+                    .quarter-id {
+                        position: absolute;
+                        top: 35px;
+                        left: 35px;
+                        span {
+                            padding: 3px 15px;
+                            background-color: rgba(#fff, 0.7);
+                            border-radius: 2px;
+                            color: var(--color-primary);
+                            font-size: 13px;
+                            font-weight: 600;
+                        }
+                    }
+                    .quarter-name {
+                        font-weight: 900;
+                        font-size: 24px;
+                        font-family: 'Radikal Bold';
+                        letter-spacing: 1.2px;
+                        color: var(--text-color);
+                    }
+                }
+
+                .right-pane {
+                    background-color: var(--color-white);
+
+                    .el-form-item {
+                        margin-bottom: 10px !important;
+                    }
+
+                    .quarter-detail-item {
+                        margin-bottom: 25px;
+                        display: flex;
+                        justify-content: space-between;
+                        span:first-child {
+                            text-align: left;
+                            font-weight: 600;
+                            color: var(--text-color);
+                        }
+                        span:first-child {
+                            text-align: right;
+                        }
+                    }
+                }
+            }
         }
 
 
@@ -1192,7 +1317,7 @@
         border-bottom: 0;
 
         /deep/ .el-collapse-item__header {
-            padding-left: 10px;
+            padding-left: 15px;
             background: #f6f5f7;
             border-radius: 6px;
         }
