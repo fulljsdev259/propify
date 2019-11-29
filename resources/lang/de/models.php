@@ -184,7 +184,7 @@ return [
         'units' => 'Einheiten',
         'saved' => 'Objekt wurde gespeichert.',
         'floors' => 'Etagen',
-        'under_floor' => 'Untergeschoss',
+        'under_floor' => 'Untergeschosse',
         'ground_floor' => 'Erdgeschoss',
         'basement' => 'Erdgeschoss',
         'attic' => 'Attikageschoss',
@@ -579,11 +579,11 @@ return [
             'general' => ' Allg. Anliegen',
             'malfunction' => 'Fehlfunktion',
             'deficiency' => 'Mangel',
-            'open_issue' => 'Offene Ausgabe',
+            'open_issue' => 'Pendenz',
         ],
         'sub_category' => [
             'inside_of_apartment' => 'Innerhalb der Wohnung',
-            'outside_of_apartment' => 'Außerhalb der Wohnung',
+            'outside_of_apartment' => 'Ausserhalb der Wohnung',
         ],
         'qualification_category' => [
             'normal_wear' => 'Normaler Verschleiß',
@@ -686,6 +686,7 @@ return [
             'payer_percent' => 'Bewohneranteil in %',
             'payer_amount' => 'Betrag',
             'keywords' => 'Tags',
+            'qualification_category' => 'Qualifizierung'
         ],
         'placeholders' => [
             'category' => 'Kategorie wählen',
