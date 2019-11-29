@@ -421,11 +421,11 @@
                                                         :rules="validationRules.due_date">
                                                 <template slot="label" class="el-form-item__label">
                                                     {{$t('models.request.due_date')}}
-                                                    <div class="reminder-box">
+                                                    <div class="reminder-box" v-if="editMode">
                                                         <label class="switcher__label">
                                                             {{$t('models.request.active_reminder_switcher')}}
                                                         </label>
-                                                        <el-switch v-model="model.active_reminder"/>
+                                                        <el-switch  v-model="model.active_reminder"/>
                                                     </div>
                                                 </template>
                                                 
@@ -448,7 +448,7 @@
                                         <el-col :md="12" v-if="model.active_reminder">
                                             <el-form-item :label="$t('models.request.days_left')"
                                                         prop="days_left_due_date">
-                                                <el-input v-model="model.days_left_due_date" type="number"></el-input>
+                                                <el-input v-model="model.days_left_due_date" :disabled="!editMode" type="number"></el-input>
                                             </el-form-item>
                                         </el-col>
                                         <el-col :md="12" v-if="model.active_reminder">
@@ -462,6 +462,7 @@
                                                     multiple
                                                     remote
                                                     reserve-keyword
+                                                    :disabled="!editMode"
                                                     style="width: 100%;"
                                                     v-model="model.reminder_user_ids ">
                                                     <el-option
@@ -475,9 +476,9 @@
                                     </el-row>
                                 </el-tab-pane>
                                 <el-tab-pane :label="$t('models.request.is_public')" name="is_public">
-                                    <div class="switch-wrapper">
+                                    <div class="switch-wrapper" v-if="editMode">
                                         <el-form-item :label="$t('models.request.public_title')" prop="is_public">
-                                            <el-switch v-model="model.is_public"/>
+                                            <el-switch v-model="model.is_public" />
                                         </el-form-item>
                                         <div class="switcher__desc">
                                             {{ $t('models.request.public_desc') }}
@@ -489,13 +490,13 @@
                                             <span class="switcher__desc">{{$t('models.request.visibility_desc')}}</span>
                                         </label>
                                         <div>
-                                            <el-select v-model="model.visibility">
+                                            <el-select v-model="model.visibility" :disabled="!editMode">
                                                 <el-option :key="k" :label="$t(`models.request.visibility.${visibility}`)" :value="parseInt(k)" v-for="(visibility, k) in $constants.requests.visibility">
                                                 </el-option>
                                             </el-select>
                                         </div>
                                     </el-form-item>
-                                    <div v-if="model.is_public" class="switch-wrapper">
+                                    <div v-if="model.is_public && editMode" class="switch-wrapper">
                                         <el-form-item :label="$t('models.request.send_notification_title')" prop="send_notification">
                                             <el-switch v-model="model.send_notification"/>
                                         </el-form-item>

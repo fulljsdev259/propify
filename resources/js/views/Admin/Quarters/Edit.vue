@@ -375,6 +375,7 @@
                                         @click="showAddWorkflow" 
                                         icon="icon-plus" 
                                         size="mini" 
+                                        v-if="editMode"
                                         class="add-workflow-btn">
                                     {{ $t('models.quarter.workflow.add') }}
                                 </el-button>
