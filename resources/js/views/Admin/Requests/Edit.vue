@@ -16,7 +16,7 @@
             <edit-actions :saveAction="submit" :deleteAction="deleteRequest" route="adminRequests" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
         </heading>
         <div class="crud-view" id="edit_request">
-            <el-form :model="model" label-position="top" label-width="192px" ref="form">
+            <el-form :model="model" label-position="top" label-width="192px" ref="form" class="edit-details-form">
                 <el-row :gutter="20">
                     <el-col :md="12">
                         <card  :header="$t('models.request.request_details')" id="request_details">
