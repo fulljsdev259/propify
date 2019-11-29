@@ -686,6 +686,7 @@ return [
             'payer_percent' => 'Bewohneranteil in %',
             'payer_amount' => 'Betrag',
             'keywords' => 'Tags',
+            'qualification_category' => 'Qualifizierung'
         ],
         'placeholders' => [
             'category' => 'Kategorie wählen',

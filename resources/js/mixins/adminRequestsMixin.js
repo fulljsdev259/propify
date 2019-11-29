@@ -39,6 +39,7 @@ export default (config = {}) => {
                     capture_phase: '',
                     action: null,
                     cost_impact: null,
+                    qualification_category: null,
                     percentage: '',
                     component: '',
                     keyword: '',
@@ -109,6 +110,7 @@ export default (config = {}) => {
                 showPayer: false,
                 showLocation: false,
                 showCapturePhase: false,
+                showQualification: false,
                 showRoom: false,
                 showAction: false,
                 showCostImpact: false,
@@ -365,6 +367,7 @@ export default (config = {}) => {
                 this.showAction = p_category.action == 1 ? true : false;
                 this.showCostImpact = p_category.cost_impact == 1 ? true : false;
                 this.showComponent = p_category.component == 1 ? true : false;
+                this.showQualification = p_category.qualification_category == 1 ? true : false;
                 
 
                 if(this.showSubCategory) {
@@ -372,10 +375,8 @@ export default (config = {}) => {
 
                     if(this.model.sub_category_id != null) {
                         let sub_category = this.sub_categories.find(category => { return category.id == this.model.sub_category_id});
-                        this.showAction = sub_category.action == 1 ? true : false;
-                        this.showCostImpact = sub_category.cost_impact == 1 ? true : false;
-                        this.showCapturePhase =  sub_category.capture_phase == 1 ? true : false;
-                        this.showComponent =  sub_category.component == 1 ? true : false;
+                        this.showRoom = sub_category.room == 1 ? true : false;
+                        this.showLocation = sub_category.location == 1 ? true : false;
                     }
                 }
                 this.showPercent = this.showCostImpact && this.model.cost_impact == 3 ? true : false;
@@ -391,11 +392,6 @@ export default (config = {}) => {
                 this.model.location = null;
                 this.showRoom = sub_category.room == 1 ? true : false;
                 this.showLocation = sub_category.location == 1 ? true : false;
-                this.showAction = sub_category.action == 1 ? true : false;
-                this.showCostImpact = sub_category.cost_impact == 1 ? true : false;
-                this.showPercent = this.showCostImpact && this.model.cost_impact == 3 ? true : false;
-                this.showCapturePhase = sub_category.capture_phase == 1 ? true : false;
-                this.showComponent = sub_category.component == 1 ? true : false;
             },
             changeCostImpact() {
                 this.showPercent = this.showCostImpact && this.model.cost_impact == 3 ? true : false;
@@ -407,6 +403,8 @@ export default (config = {}) => {
                 this.capture_phases = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
                 this.actions = Object.entries(this.$constants.requests.action).map(([value, label]) => ({value: +value, name: this.$t(`models.request.action.${label}`)}))
                 this.cost_impacts = Object.entries(this.$constants.requests.cost_impact).map(([value, label]) => ({value: +value, name: this.$t(`models.request.cost_impact.${label}`)}))
+                this.qualification_categories = Object.entries(this.$constants.requests.qualification_category).map(([value, label]) => ({value: +value, name: this.$t(`models.request.qualification_category.${label}`)}))
+                
                 this.categories = this.$constants.requests.categories_data.tree
 
                 if(this.model.category_id)
@@ -627,11 +625,16 @@ export default (config = {}) => {
                         this.showSubCategory = resp.data.sub_category ? true : false;
                         this.showLocation = resp.data.sub_category && resp.data.sub_category.location == 1 ? true : false;
                         this.showRoom = resp.data.sub_category && resp.data.sub_category.room == 1 ? true : false;
-                        this.showAction =  resp.data.category.action == 1 || (resp.data.sub_category && resp.data.sub_category.action == 1) ? true : false;
-                        this.showCostImpact =  resp.data.category.cost_impact == 1 || (resp.data.sub_category && resp.data.sub_category.cost_impact == 1) ? true : false;
+
+                        this.showAction = resp.data.category.action == 1 ? true : false;
+                        this.showCapturePhase =  resp.data.category.capture_phase == 1 ? true : false;
+                        this.showComponent =  resp.data.category.component == 1 ? true : false;
+                        this.showCostImpact = resp.data.category.cost_impact == 1 ? true : false;
                         this.showPercent = this.showCostImpact && resp.data.cost_impact == 3 ? true : false;
-                        this.showCapturePhase =  resp.data.category.capture_phase == 1 || (resp.data.sub_category && resp.data.sub_category.capture_phase == 1) ? true : false;
-                        this.showComponent =  resp.data.category.component == 1 || (resp.data.sub_category && resp.data.sub_category.component == 1) ? true : false;
+                        this.showQualification = resp.data.category.qualification_category == 1 ? true : false;
+                        
+                        
+                        //this.showComponent =  resp.data.category.component == 1 || (resp.data.sub_category && resp.data.sub_category.component == 1) ? true : false;
                         
                         const data = resp.data;
 
