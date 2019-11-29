@@ -7,6 +7,7 @@ use App\Criteria\Common\WhereInCriteria;
 use App\Criteria\Request\FilterByInternalFieldsCriteria;
 use App\Criteria\Request\FilterByPermissionsCriteria;
 use App\Criteria\Request\FilterByRelatedFieldsCriteria;
+use App\Criteria\Request\FilterCreatorCriteria;
 use App\Criteria\Request\FilterNotAssignedCriteria;
 use App\Criteria\Request\FilterPendingCriteria;
 use App\Criteria\Request\FilterPublicCriteria;
@@ -137,6 +138,7 @@ class RequestAPIController extends AppBaseController
         $this->requestRepository->pushCriteria(new FilterByRelatedFieldsCriteria($listRequest));
         $this->requestRepository->pushCriteria(new FilterPendingCriteria($listRequest));
         $this->requestRepository->pushCriteria(new FilterNotAssignedCriteria($listRequest));
+        $this->requestRepository->pushCriteria(new FilterCreatorCriteria($listRequest));
 
         $getAll = $listRequest->get('get_all', false);
         if ($getAll) {
