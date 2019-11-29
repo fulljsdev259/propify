@@ -146,7 +146,7 @@
                         <el-col :md="12" v-if="this.showQualification == true">
                             <el-form-item :label="$t('models.request.category_options.qualification_category')">
                                 <el-select 
-                                    :disabled="$can($permissions.update.serviceRequest) || !editMode"
+                                    :disabled="$can($permissions.update.serviceRequest)"
                                     :placeholder="$t(`general.placeholders.select`)"
                                     class="custom-select"
                                     v-model="model.qualification_category"
