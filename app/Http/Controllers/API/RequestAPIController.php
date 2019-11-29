@@ -159,7 +159,9 @@ class RequestAPIController extends AppBaseController
                 'providers.address:id,country_id,state_id,city,street,zip',
                 'providers.user',
                 'managers.user',
-                'users',
+                'users' => function ($q) {
+                    $q->select('users.id', 'users.avatar', 'users.name')->with('roles:roles.id,name');
+                },
                 'creator'
             ])->paginate($perPage);
 
