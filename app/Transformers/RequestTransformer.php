@@ -20,6 +20,7 @@ class RequestTransformer extends BaseTransformer
         $response = [
             'id' => $model->id,
             'request_format' => $model->request_format,
+            'action' => $model->action,
             'title' => $model->title,
             'description' => $model->description,
             'status' => $model->status,
