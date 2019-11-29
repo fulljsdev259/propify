@@ -299,52 +299,7 @@
                                 </el-col> -->
                             </el-row>
 
-                            <el-tabs type="border-card" v-model="activeTab1">
-
-                                <el-tab-pane :label="$t('models.request.request_details')" name="request_details">
-                                    <el-form-item :label="$t('models.request.prop_title')" :rules="validationRules.title"
-                                                  prop="title">
-                                        <el-input 
-                                                :disabled="$can($permissions.update.serviceRequest) || !editMode" 
-                                                type="text"
-                                                v-model="model.title"/>
-                                    </el-form-item>
-                                    <el-form-item :label="$t('general.description')" :rules="validationRules.description"
-                                                  prop="description"
-                                                  :key="editorKey">
-                                        <yimo-vue-editor
-                                                :config="editorConfig"
-                                                v-model="model.description"/>
-                                    </el-form-item>
-                                </el-tab-pane>
-
-                                <el-tab-pane name="request_images">
-                                    <span slot="label">
-                                        <el-badge :value="mediaCount" :max="99" class="admin-layout">{{ $t('models.request.images') }}</el-badge>
-                                    </span>
-                                    <!-- <el-alert
-                                        v-if="( !media || media.length == 0) && mediaCount == 0"
-                                        :title="$t('models.request.no_images_message')"
-                                        type="info"
-                                        show-icon
-                                        :closable="false"
-                                    >
-                                    </el-alert> -->
-
-                                    <span class="image-tab-title">Files</span>
-                                    <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex" :show-description="false"/>
-                                    <span class="image-tab-title">Upload</span>
-                                    <el-alert
-                                        :title="$t('general.upload_all_desc')"
-                                        type="info"
-                                        show-icon
-                                        :closable="false"
-                                    >
-                                    </el-alert>
-                                    <media-uploader ref="media" :id="request_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
-                                </el-tab-pane>
-
-                            </el-tabs>
+                            
 
                             <!--                            <el-form-item-->
                             <!--                                :label="$t('models.request.is_public')"-->
@@ -361,6 +316,53 @@
                             <!--                            </el-form-item>-->
                             <!--                            <small>{{$t('models.request.public_legend')}}</small>-->
                         </card>
+
+                        <el-tabs type="border-card" v-model="activeTab1">
+
+                            <el-tab-pane :label="$t('models.request.request_details')" name="request_details">
+                                <el-form-item :label="$t('models.request.prop_title')" :rules="validationRules.title"
+                                                prop="title">
+                                    <el-input 
+                                            :disabled="$can($permissions.update.serviceRequest) || !editMode" 
+                                            type="text"
+                                            v-model="model.title"/>
+                                </el-form-item>
+                                <el-form-item :label="$t('general.description')" :rules="validationRules.description"
+                                                prop="description"
+                                                :key="editorKey">
+                                    <yimo-vue-editor
+                                            :config="editorConfig"
+                                            v-model="model.description"/>
+                                </el-form-item>
+                            </el-tab-pane>
+
+                            <el-tab-pane name="request_images">
+                                <span slot="label">
+                                    <el-badge :value="mediaCount" :max="99" class="admin-layout">{{ $t('models.request.images') }}</el-badge>
+                                </span>
+                                <!-- <el-alert
+                                    v-if="( !media || media.length == 0) && mediaCount == 0"
+                                    :title="$t('models.request.no_images_message')"
+                                    type="info"
+                                    show-icon
+                                    :closable="false"
+                                >
+                                </el-alert> -->
+
+                                <span class="image-tab-title">Files</span>
+                                <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex" :show-description="false"/>
+                                <span class="image-tab-title">Upload</span>
+                                <el-alert
+                                    :title="$t('general.upload_all_desc')"
+                                    type="info"
+                                    show-icon
+                                    :closable="false"
+                                >
+                                </el-alert>
+                                <media-uploader ref="media" :id="request_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
+                            </el-tab-pane>
+
+                        </el-tabs>
                         <template v-if="$can($permissions.update.serviceRequest)">
                             <card class="mt15" v-if="model.id">
                                 <el-divider class="column-divider" content-position="left">
@@ -1034,6 +1036,12 @@
             .el-tabs__nav-wrap.is-top {
                 border-radius: 6px 6px 0 0;
             }
+        }
+
+        .el-card.is-always-shadow {
+            margin-right: 10px;
+            margin-left: 10px;
+            margin-bottom: 40px;
         }
         #pane-is_public {
 

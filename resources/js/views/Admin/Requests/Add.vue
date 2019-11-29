@@ -493,7 +493,7 @@
         }
 
         .el-select__tags {
-            top: 70% !important;
+            //top: 70% !important;
         }
 
         .switch-wrapper {
