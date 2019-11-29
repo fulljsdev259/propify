@@ -25,6 +25,16 @@ return [
             'deleted' => "User deleted error: ",
         ],        
     ],
+    'userFilter' => [
+        'saved' => 'User Filter saved successfully',
+        'deleted' => 'User Filter deleted',
+        'not_found' => 'User Filter not found',
+        'errors' => [
+            'not_found' => "User Filter not found",
+            'create' => "User Filter not created",
+            'update' => "User Filter not updated",
+        ],
+    ],
     'resident' => [
         'view' => 'View',
         'name' => 'Resident',
