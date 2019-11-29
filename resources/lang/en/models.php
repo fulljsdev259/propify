@@ -576,12 +576,12 @@ return [
         'category_list' => [
             'general' => 'General concerns',
             'malfunction' => 'Malfunction',
-            'deficiency' => 'Deficiency'
+            'deficiency' => 'Deficiency',
+            'open_issue' => 'Open Issue',
         ],
         'sub_category' => [
-            'surrounding' => 'Surrounding',
-            'real_estate' => 'Real Estate',
-            'flat' => 'Flat',
+            'inside_of_apartment' => 'Inside of apartment',
+            'outside_of_apartment' => 'Outside of Apartment',
         ],
         'media'  => [
             'added' => 'Document added',

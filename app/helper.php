@@ -152,6 +152,10 @@ function get_category_details($categoryId)
         return [
             'id' => $categoryId,
             'name' => \App\Models\Request::Category[$categoryId] ?? 'not exists',
+            'cost_impact' => get_category_attribute(\App\Models\Request::CostImpactAttr, $values, $categoryId),
+            'action' => get_category_attribute(\App\Models\Request::ActionAttr, $values, $categoryId),
+            'capture_phase' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $categoryId),
+            'component' => get_category_attribute(\App\Models\Request::ComponentAttr, $values, $categoryId),
         ];
     }
 
@@ -188,12 +192,8 @@ function get_sub_category_details($subCategoryId)
         'id' => $subCategoryId,
         'parent_id' => $parentId,
         'name' => \App\Models\Request::SubCategory[$subCategoryId] ?? 'not exists',
-		'capture_phase' => get_category_attribute(\App\Models\Request::CapturePhaseAttr, $values, $subCategoryId),
-        'cost_impact' => get_category_attribute(\App\Models\Request::CostImpactAttr, $values, $subCategoryId),
-        'action' => get_category_attribute(\App\Models\Request::ActionAttr, $values, $subCategoryId),
         'location' => get_category_attribute(\App\Models\Request::LocationAttr, $values, $subCategoryId),
         'room' => get_category_attribute(\App\Models\Request::RoomAttr, $values, $subCategoryId),
-        'component' => get_category_attribute(\App\Models\Request::ComponentAttr, $values, $subCategoryId),
     ];
 }
 
