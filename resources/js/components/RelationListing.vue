@@ -32,10 +32,10 @@
                         </div>
                         <div class="category">
                             <span>
-                                {{scope.row.category.name}}
+                                {{$t(`models.request.category_list.${scope.row.category.name}`)}}
                             </span>
                             <span v-if="scope.row.sub_category">
-                                &nbsp;>&nbsp; {{scope.row.sub_category.name}} 
+                                &nbsp;>&nbsp; {{$t(`models.request.sub_category.${scope.row.sub_category.name}`)}}
                             </span>
                         </div>
                     </div>
