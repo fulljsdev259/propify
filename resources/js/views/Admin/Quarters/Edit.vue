@@ -672,7 +672,7 @@
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
                 }],
-                residentActions: [{
+                residentActions: [/*{
                     width: 70,
                     buttons: [{
                         title: 'models.resident.view',
@@ -680,7 +680,7 @@
                         icon: 'el-icon-user',
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 visibleDrawer: false,
                 auditCount: 0,
                 fileCount: 0,
