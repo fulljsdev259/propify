@@ -249,21 +249,6 @@
                                         </el-option>
                                     </el-select>
                                 </el-col>
-                                <!-- <el-col>
-                                    <el-select
-                                            :placeholder="$t('general.placeholders.select')"
-                                            style="display: block"
-                                            multiple
-                                            v-model="userAssignmentType"
-                                            filterable>
-                                        <el-option
-                                                :key="type.value"
-                                                :label="type.name"
-                                                :value="type.value"
-                                                v-for="type in assignment_types">
-                                        </el-option>
-                                    </el-select>
-                                </el-col> -->
                                 <el-col id="managerAssignBtn">
                                     <el-button :disabled="!toAssign.length" @click="assignUsers" class="full-button el-button--assign"
                                                 icon="ti-save">

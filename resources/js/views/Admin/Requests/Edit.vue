@@ -531,7 +531,46 @@
                                     <span slot="label">
                                         {{ $t('models.request.assignment') }}
                                     </span>
-                                    <assignment-by-type
+                                    <el-row id="managerAssignBox">
+                                        <el-col id="managerSelect">
+                                            <el-select
+                                                clearable
+                                                :loading="remoteLoading"
+                                                :placeholder="$t('general.placeholders.search')"
+                                                :remote-method="remoteSearchAssignees"
+                                                class="custom-remote-select"
+                                                filterable
+                                                remote
+                                                multiple
+                                                reserve-keyword
+                                                style="width: 100%;"
+                                                v-model="toAssign"
+                                            >
+                                                <div class="custom-prefix-wrapper" slot="prefix">
+                                                    <i class="el-icon-search custom-icon"></i>
+                                                </div>
+                                                <el-option
+                                                        :key="assignee.id"
+                                                        :label="assignee.name"
+                                                        :value="assignee.id"
+                                                        v-for="assignee in toAssignList">
+                                                    <span style="float: left">{{ assignee.name }}</span>
+                                                    <span style="float: right; color: #8492a6; font-size: 13px">
+                                                        {{assignee.roles[0].name == "provider" ? $t(`models.service.category.${assignee.function}`)  : ''}}
+                                                        {{assignee.roles[0].name != "provider" ? $t(`general.roles.${assignee.function}`) : ''}} 
+                                                    </span>
+                                                </el-option>
+                                            </el-select>
+                                        </el-col>
+                                        
+                                        <el-col id="managerAssignBtn">
+                                            <el-button :disabled="!toAssign.length" @click="assignUsers" class="full-button el-button--assign"
+                                                        icon="ti-save">
+                                                &nbsp;{{$t('general.assign')}}
+                                            </el-button>
+                                        </el-col>
+                                    </el-row>
+                                    <!-- <assignment-by-type
                                         :resetToAssignList="resetToAssignList"
                                         :assignmentType.sync="assignmentType"
                                         :toAssign.sync="toAssign"
@@ -540,7 +579,7 @@
                                         :toAssignList="toAssignList"
                                         :remoteLoading="remoteLoading"
                                         :remoteSearch="remoteSearchAssignees"
-                                    />
+                                    /> -->
                                     <relation-list
                                         :actions="assigneesActions"
                                         :columns="assigneesColumns"
@@ -658,10 +697,12 @@
                     type: 'assigneesName',
                     prop: 'name',
                     label: 'general.name'
-                }, {
+                }/*, {
                     prop: 'role',
                     label: 'general.roles.label',
                     i18n: this.translateType
+                }*/, {
+                    type: 'assignProviderManagerFunctions',
                 }],
                 assigneesActions: [{
                     width: 120,
@@ -883,6 +924,20 @@
 
     .ui-media-gallery {
         margin-bottom: 10px;
+    }
+
+    #managerAssignBox {
+        display: flex;
+        margin-bottom: 20px;
+
+        #managerSelect {
+            width: 100%;
+            margin-right: 20px;
+        }
+
+        #managerAssignBtn {
+            flex: 1;
+        }
     }
 
 </style>

@@ -96,11 +96,9 @@ export default (config = {}) => {
                 categories: [],
                 sub_categories: [],
                 residents: [],
-                toAssignList: [],
                 media: [],
-                assignmentTypes: ['managers', 'services'],
-                assignmentType: 'managers',
-                toAssign: '',
+                toAssign: [],
+                toAssignList: [],
                 conversations: [],
                 address: {},
                 locations: [],
@@ -605,8 +603,69 @@ export default (config = {}) => {
             case 'edit':
                 mixin.methods = {
                     ...mixin.methods,
-                    ...mapActions(['getRequest', 'updateRequest', 'getResident', 'getRequestConversations', 'getAddress', 'getRequestTags',
-                'createRequestTags', 'getTags', 'deleteRequestTag']),
+                    ...mapActions([
+                        'getRequest', 
+                        'updateRequest', 
+                        'getResident', 
+                        'getRequestConversations', 
+                        'getAddress', 
+                        'getAllAdminsForRequest',
+                        'assignUsersToRequest',
+                        'getRequestTags',
+                        'createRequestTags', 
+                        'getTags', 
+                        'deleteRequestTag'
+                    ]),
+                    resetToAssignList() {
+                        this.toAssignList = [];
+                        //this.toAssign = '';
+                        this.toAssign = [];
+                    },
+                    async assignUsers() {
+                        if (!this.toAssign || !this.model.id) {
+                            return false;
+                        }
+                        let resp;
+        
+                        let user_params = []
+        
+                        this.toAssign.forEach(id => {
+                            let assign_user = this.toAssignList.find(item => item.id == id )
+                            user_params.push({user_id: id, role: assign_user.roles[0].name})
+                        })
+                        
+        
+                        resp = await this.assignUsersToRequest({
+                                    id: this.model.id,
+                                    user_params: user_params
+                                });
+        
+                        if (resp && resp.data) {
+                            displaySuccess(resp)                           
+                            this.resetToAssignList();
+                            this.$refs.assigneesList.fetch();    
+                            if(this.$refs.auditList){
+                                this.$refs.auditList.fetch();
+                            }
+                        }
+                    },
+                    async remoteSearchAssignees(search) {
+                
+                        if (search === '') {
+                            this.resetToAssignList();
+                        } else {
+                            this.remoteLoading = true;
+                            
+                            try {
+                                const resp = await this.getAllAdminsForRequest({quarter_id: this.$route.params.id, is_get_function: true, search})
+                                this.toAssignList = resp;
+                            } catch (err) {
+                                displayError(err);
+                            } finally {
+                                this.remoteLoading = false;
+                            }
+                        }
+                    },
                     async fetchCurrentRequest() {
                         
                         const resp = await this.getRequest({id: this.$route.params.id});
@@ -644,7 +703,9 @@ export default (config = {}) => {
                         if(data.sub_category)
                             this.$set(this.model, 'sub_category_id', data.sub_category.id);
                         this.$set(this.model, 'created_by', data.created_by);
-                        this.$set(this.model, 'building', data.relation.building.name);
+
+                        //@TODO : check relation.building after api is fixed
+                        //this.$set(this.model, 'building', data.relation.building.address.street + data.relation.building.address.house_num);
                         this.address = data.relation.address
                         //this.relations = resp.data.resident.relations.filter(item => item.status == 1)
                         this.model.relation_id = data.relation.id

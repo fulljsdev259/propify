@@ -94,6 +94,20 @@ export default {
             }).catch(({response: {data: err}}) => reject(err))
         });
     },
+    getAllAdminsForRequest(_, {quarter_id, is_get_function, search}) {
+        return new Promise((resolve, reject) =>
+            axios.get(buildFetchUrl(`alladmins`, {exclude_assignees_request_id: quarter_id, function: is_get_function, search: search}))
+                .then(({data: r}) => resolve(r.data))
+                .catch(({response: {data: err}}) => reject(err)));
+    },
+    assignUsersToRequest({}, {id, ...payload}) {
+        return new Promise((resolve, reject) => {
+            axios.post(`requests/${id}/users/mass-assign`, payload.user_params)
+                .then((resp) => {
+                    resolve(resp.data);
+                }).catch(({response: {data: err}}) => reject(err))
+        });
+    },
     assignManager({}, payload) {
         return new Promise((resolve, reject) => {
             axios.post(`requests/${payload.request}/managers/${payload.toAssignId}`, {}).then((resp) => {

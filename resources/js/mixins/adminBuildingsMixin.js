@@ -125,100 +125,10 @@ export default (config = {}) => {
             };
         },
         methods: {
-            ...mapActions(['getStates', 'getPropertyManagers','getAllAdminsForBuilding','assignUserToBuilding','getQuarters','getUsers','getServices','assignProviderToBuilding','unassignProviderToBuilding']),
-            async remoteSearchAssignees(search) {
-
-                // if (!this.$can(this.$permissions.assign.request)) {
-                //     return false;
-                // }
-
-                if (search === '') {
-                    this.resetToAssignList();
-                } else {
-                    this.remoteLoading = true;
-                    
-                    try {
-                        // let resp = [];
-                        // const buildingAssignee = await this.getBuildingAssignees({building_id: this.$route.params.id});                        
-                        // let exclude_ids = [];
-                        // if (this.assignmentType === 'managers') {
-                        //     buildingAssignee.data.data.map(item => {
-                        //         if(item.type === 'manager'){
-                        //             exclude_ids.push(item.edit_id);
-                        //         }                                
-                        //     })
-                        //     resp = await this.getPropertyManagers({
-                        //         get_all: true,
-                        //         search,
-                        //         exclude_ids: exclude_ids.join(',')
-                        //     });
-                        // } else if(this.assignmentType === 'administrator'){
-                        //     buildingAssignee.data.data.map(item => {
-                        //         if(item.type === 'user'){                                    
-                        //             exclude_ids.push(item.edit_id);
-                        //         }                                
-                        //     })
-                        //     resp = await this.getUsers({
-                        //         get_all: true,
-                        //         search,
-                        //         exclude_ids: exclude_ids.join(','),
-                        //         role: 'administrator'
-                        //     });
-                        // }
-                                                     
-                        // this.toAssignList = resp.data;
-
-                        const resp = await this.getAllAdminsForBuilding({building_id: this.$route.params.id, search})
-                        
-                        this.toAssignList = resp
-                    } catch (err) {
-                        displayError(err);
-                    } finally {
-                        this.remoteLoading = false;
-                    }
-                }
-            },            
-            resetToAssignList() {
-                this.toAssignList = [];
-                this.toAssign = '';
-            },
-            async assignUser() {
-                if (!this.toAssign || !this.model.id) {
-                    return false;
-                }
-                let resp;
-
-                // if (this.assignmentType === 'managers') {
-                //     resp = await this.assignManagerToBuilding({
-                //         id: this.model.id,
-                //         toAssignId: this.toAssign   
-                //     });
-                // } else if (this.assignmentType === 'administrator') {
-                //     resp = await this.assignUsersToBuilding({
-                //         id: this.model.id,
-                //         toAssignId: this.toAssign
-                //     });
-                // }
-
-                let assign_user = this.toAssignList.find(item => item.id == this.toAssign )
-
-                resp = await this.assignUserToBuilding({
-                            id: this.model.id,
-                            user_id: this.toAssign,
-                            role: assign_user.roles[0].name,
-                            assignment_types: this.userAssignmentType
-                        });
-
-                if (resp && resp.data) {             
-                    displaySuccess(resp)                           
-                    this.resetToAssignList();
-                    this.$refs.assigneesList.fetch();    
-                    if(this.$refs.auditList){
-                        this.$refs.auditList.fetch();
-                    }
-                    this.userAssignmentType = null
-                }
-            },
+            ...mapActions([
+                'getStates', 
+                'getQuarters'
+            ]),
             async remoteSearchQuarters(search) {
                 if (search === '') {
                     this.quarters = [];
@@ -235,73 +145,6 @@ export default (config = {}) => {
                         this.remoteLoading = false;
                     }
                 }
-            },
-            resetToAssignProviderList() {
-                this.toAssignProviderList = [];
-                this.toAssignProvider = '';
-            },
-            async remoteSearchProviders(search) {
-                if (search === '') {
-                    this.resetToAssignProviderList();
-                } else {
-                    this.remoteLoading = true;
-
-                    try {
-                        const buildingAssignedProviders = await this.getServices({building_id: this.$route.params.id});
-                        let exclude_ids = [];
-
-                        buildingAssignedProviders.data.data.map(item => {
-                            exclude_ids.push(item.id);
-                        });
-
-                        const resp = await this.getServices({
-                            get_all: true,
-                            search,
-                            exclude_ids: exclude_ids.join(',')
-                        });
-
-                        this.toAssignProviderList = resp.data;
-                    } catch (err) {
-                        displayError(err);
-                    } finally {
-                        this.remoteLoading = false;
-                    }
-                }
-            },
-            attachProvider() {
-                return new Promise(async (resolve, reject) => {
-                    if (!this.toAssignProvider || (!this.model.id && config.mode === 'edit')) {
-                        reject(false);
-                        return false;
-                    }
-
-                    try {
-
-                        const resp = await this.assignProviderToBuilding({
-                            id: this.model.id,
-                            toAssignId: this.toAssignProvider
-                        });
-
-                        if (resp && resp.data && config.mode === 'edit') {   
-                            if(this.$refs.auditList){
-                                this.$refs.auditList.fetch();
-                            }                         
-                            this.$refs.assignmentsProviderList.fetch(); 
-                            if(this.$refs.auditList){
-                                this.$refs.auditList.fetch();
-                            }
-                            this.resetToAssignProviderList();
-                            this.serviceCount++;
-                            displaySuccess(resp.data)                            
-                        }
-
-                        resolve(true);
-
-                    } catch (e) {                        
-                        displayError(e);
-                        reject(false);
-                    }
-                })
             },
             async getTypes() {
                 this.types = [];
@@ -369,8 +212,6 @@ export default (config = {}) => {
 
                 mixin.created = async function () {
                     await this.getStates();
-                    // const {data} = await this.getServicesGroupedByCategory();
-                    // this.allServices = data;
                 };
 
                 break;
@@ -427,9 +268,6 @@ export default (config = {}) => {
 
                         await this.getStates();
                         this.assignment_types = Object.entries(this.$constants.quarters.assignment_type).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.assignment_types.${label}`)}))
-
-                        // const {data} = await this.getServicesGroupedByCategory();
-                        // this.allServices = data;
                         const {
                             address: {
                                 state: {
