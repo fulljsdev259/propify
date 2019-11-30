@@ -389,23 +389,31 @@
                     //     data: this.residents,
                     // },
                     {
-                        name: this.$t('general.filters.created_from'),
-                        type: 'date',
-                        key: 'created_from',
+                        name_from: this.$t('general.filters.created_from'),
+                        name_to: this.$t('models.request.closed_date'),
+                        type: 'daterange',
+                        key_from: 'created_from',
+                        key_to: 'solved_date',
                         format: 'dd.MM.yyyy'
                     },
+                    // {
+                    //     name: this.$t('general.filters.created_from'),
+                    //     type: 'date',
+                    //     key: 'created_from',
+                    //     format: 'dd.MM.yyyy'
+                    // },
                     // {
                     //     name: this.$t('general.filters.created_to'),
                     //     type: 'date',
                     //     key: 'created_to',
                     //     format: 'dd.MM.yyyy'
                     // },
-                    {
-                        name: this.$t('models.request.closed_date'),
-                        type: 'date',
-                        key: 'solved_date',
-                        format: 'dd.MM.yyyy'
-                    },
+                    // {
+                    //     name: this.$t('models.request.closed_date'),
+                    //     type: 'date',
+                    //     key: 'solved_date',
+                    //     format: 'dd.MM.yyyy'
+                    // },
                     {
                         name: this.$t('general.filters.phase'),
                         type: 'select',
@@ -504,7 +512,6 @@
             },
             async fetchRemoteCreators(search = '') {
                 let creators = await this.getUsers({get_all: true, exclude_roles: ['provider']});
-                console.log('creators', creators)
 
                 return creators.data;
             },
