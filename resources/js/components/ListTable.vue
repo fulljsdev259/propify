@@ -744,32 +744,11 @@
                     picker.$emit('pick', [start, end]);
                     }
                 }
-                if (this.rangeType == 'day') {
-                    return {
+                
+                return {
                     shortcuts: [last7Days, last14Days, last30Days, lastWeek, lastMonth, last3Months]
-                    };
-                }
-                else if (this.rangeType == 'week') {
-                    return {
-                    shortcuts: [lastWeek, lastMonth, last3Months, last6Months, lastYear]
-                    };
-                }
-                else if (this.rangeType == 'month') {
-                    return {
-                    shortcuts: [lastMonth, last3Months, last6Months, lastYear, last2Years, allTime]
-                    };
-                }
-                else if (this.rangeType == 'all') {
-                    return {
-                    shortcuts: [last7Days, last14Days, last30Days, lastWeek, lastMonth, last3Months, last6Months, lastYear, last2Years, allTime]
-                    };
-                }
-                else {
-                    return {
-                    shortcuts: [lastYear, last2Years, allTime]
-                    };
-                }
-                },
+                };
+            },
         },
         methods: {
             rowClicked(row) {
