@@ -79,8 +79,7 @@ export default (config = {}) => {
             ]),
             resetToAssignList() {
                 this.toAssignList = [];
-                //this.toAssign = '';
-                this.toAssign = [];
+                // this.toAssign = [];
             },
             async assignUser() {
                 if (!this.toAssign || !this.model.id) {

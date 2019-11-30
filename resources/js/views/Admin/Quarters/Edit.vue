@@ -185,20 +185,6 @@
                         </el-tab-pane>
 
                     </el-tabs>
-                    <!-- <card :loading="loading" :header="$t('general.requests')" class="mt15">
-                        <div slot="header" style="width: 100%;">
-                            {{$t('general.requests')}}
-                            <span style="float:right" class="icon-cog" @click="toggleDrawer"></span>
-                        </div>
-                        <relation-list
-                                :actions="requestActions"
-                                :columns="requestColumns"
-                                :filterValue="model.id"
-                                fetchAction="getRequests"
-                                filter="quarter_id"
-                                v-if="model.id"
-                        />
-                    </card> -->
 
                 </el-col>
                 <el-col :md="12">
@@ -208,16 +194,6 @@
                                 {{ $t('general.box_titles.managers') }}
                                 <!-- <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge> -->
                             </span>
-                            <!-- <assignment-by-type
-                                :resetToAssignList="resetToAssignList"
-                                :assignmentType.sync="assignmentType"
-                                :toAssign.sync="toAssign"
-                                :assignmentTypes="assignmentTypes"
-                                :assign="assignUser"
-                                :toAssignList="toAssignList"
-                                :remoteLoading="remoteLoading"
-                                :remoteSearch="remoteSearchAssignees"
-                            /> -->
                             <el-row id="managerAssignBox">
                                 <el-col id="managerSelect">
                                     <el-select

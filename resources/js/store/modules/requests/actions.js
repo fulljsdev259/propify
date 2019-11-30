@@ -108,27 +108,6 @@ export default {
                 }).catch(({response: {data: err}}) => reject(err))
         });
     },
-    assignManager({}, payload) {
-        return new Promise((resolve, reject) => {
-            axios.post(`requests/${payload.request}/managers/${payload.toAssignId}`, {}).then((resp) => {
-                resolve(resp);
-            }).catch(({response: {data: err}}) => reject(err))
-        });
-    },
-    assignProvider({}, payload) {
-        return new Promise((resolve, reject) => {
-            axios.post(`requests/${payload.request}/providers/${payload.toAssignId}`, {}).then((resp) => {
-                resolve(resp);
-            }).catch(({response: {data: err}}) => reject(err))
-        });
-    },
-    assignAdministrator({}, payload) {
-        return new Promise((resolve, reject) => {
-            axios.post(`requests/${payload.request}/users/${payload.toAssignId}`, {}).then((resp) => {
-                resolve(resp);
-            }).catch(({response: {data: err}}) => reject(err))
-        });
-    },
     massEdit({}, payload) {
         return new Promise((resolve, reject) => {
             axios.put(`requests/massedit`, payload).then((resp) => {

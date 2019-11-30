@@ -146,7 +146,14 @@ export default (config = {}) => {
             }
         },
         methods: {
-            ...mapActions(['getResidents', 'getServices', 'uploadRequestMedia', 'deleteRequestMedia', 'getPropertyManagers', 'assignProvider', 'assignManager', 'getUsers', 'assignAdministrator','getAssignees']),
+            ...mapActions([
+                'getResidents', 
+                'getServices', 
+                'uploadRequestMedia', 
+                'deleteRequestMedia', 
+                'getPropertyManagers', 
+                'getUsers', 
+                'getAssignees']),
             async remoteSearchResidents(search) {
                 if (search === '') {
                     this.residents = [];
@@ -190,103 +197,6 @@ export default (config = {}) => {
                     } finally {
                         this.remoteLoading = false;
                     }
-                }
-            },
-            async remoteSearchAssignees(search) {
-
-                if (!this.$can(this.$permissions.assign.request)) {
-                    return false;
-                }
-
-                if (search === '') {
-                    this.resetToAssignList();
-                } else {
-                    this.remoteLoading = true;
-                    
-                    try {
-                        let resp = [];
-                        const respAssignee = await this.getAssignees({request_id: this.$route.params.id});                        
-                        let exclude_ids = [];                                                
-                        if (this.assignmentType === 'managers') {
-                            respAssignee.data.data.map(item => {
-                                if(item.type === 'manager'){
-                                    exclude_ids.push(item.edit_id);
-                                }                                
-                            })
-                            resp = await this.getPropertyManagers({
-                                get_all: true,
-                                search,
-                                exclude_ids: exclude_ids.join(',')
-                            });
-                        } else if(this.assignmentType === 'administrator'){
-                            respAssignee.data.data.map(item => {
-                                if(item.type === 'user'){                                    
-                                    exclude_ids.push(item.edit_id);
-                                }                                
-                            })
-                            resp = await this.getUsers({
-                                get_all: true,
-                                search,
-                                exclude_ids: exclude_ids.join(','),
-                                role: 'administrator'
-                            });
-                        }
-                        else if(this.assignmentType === 'services') {
-                            respAssignee.data.data.map(item => {
-                                if(item.type === 'provider'){
-                                    exclude_ids.push(item.edit_id);
-                                }                                
-                            })
-                            resp = await this.getServices({
-                                get_all: true, 
-                                search,
-                                exclude_ids: exclude_ids.join(',')
-                            });
-                        }
-
-                        this.toAssignList = resp.data;
-                    } catch (err) {
-                        displayError(err);
-                    } finally {
-                        this.remoteLoading = false;
-                    }
-                }
-            },
-            resetToAssignList() {
-                this.toAssignList = [];
-                this.toAssign = '';
-            },
-            async assignUser() {
-                if (!this.toAssign || !this.model.id) {
-                    return false;
-                }
-                let resp;
-
-                if (this.assignmentType === 'managers') {
-                    resp = await this.assignManager({
-                        request: this.model.id,
-                        toAssignId: this.toAssign
-                    });
-                } else if (this.assignmentType === 'administrator') {
-                    resp = await this.assignAdministrator({
-                        request: this.model.id,
-                        toAssignId: this.toAssign
-                    });
-                }else {
-                    resp = await this.assignProvider({
-                        request: this.model.id,
-                        toAssignId: this.toAssign
-                    });
-                }
-
-                if (resp && resp.data) {
-                    await this.fetchCurrentRequest();
-                    this.toAssign = '';
-                    this.$refs.assigneesList.fetch();
-                    if(this.$refs.auditList){
-                        this.$refs.auditList.fetch();
-                    }
-                    displaySuccess(resp.data)
                 }
             },
             uploadFiles(file) {
@@ -618,8 +528,7 @@ export default (config = {}) => {
                     ]),
                     resetToAssignList() {
                         this.toAssignList = [];
-                        //this.toAssign = '';
-                        this.toAssign = [];
+                        //this.toAssign = [];
                     },
                     async assignUsers() {
                         if (!this.toAssign || !this.model.id) {
