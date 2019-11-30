@@ -727,21 +727,10 @@
                 const last2Years = {
                     text: this.$t('general.date_range.last_2_years'),
                     onClick(picker) {
-                    const end = new Date();
-                    const start = new Date();
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 730);
-                    picker.$emit('pick', [start, end]);
-                    }
-                }
-
-                const that = this;
-
-                const allTime = {
-                    text: this.$t('general.date_range.all_time'),
-                    onClick(picker) {
-                    const end = new Date();
-                    const start = new Date(that.startDate);
-                    picker.$emit('pick', [start, end]);
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 730);
+                        picker.$emit('pick', [start, end]);
                     }
                 }
                 
