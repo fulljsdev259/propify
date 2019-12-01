@@ -887,20 +887,6 @@
         margin-bottom: 10px;
     }
 
-    #managerAssignBox {
-        display: flex;
-        margin-bottom: 20px;
-
-        #managerSelect {
-            width: 100%;
-            margin-right: 20px;
-        }
-
-        #managerAssignBtn {
-            flex: 1;
-        }
-    }
-
 </style>
 
 <style lang="scss">

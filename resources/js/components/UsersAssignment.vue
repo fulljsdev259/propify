@@ -59,28 +59,6 @@
             remoteSearch: {
                 type: Function 
             }
-        },
-        data() {
-            return {
-                innerBtnWidth: null,
-            }
-        },
-        computed: {
-            BtnWidth() {
-                return this.innerBtnWidth;
-            }
-        },
-        methods: {
-            getBtnWidth() {
-                this.innerBtnWidth = this.$refs.innerBtn.clientWidth;
-            }
-        },
-        mounted() {
-            //this.getBtnWidth();
-        },
-        created() {            
-            //this.resetToAssignList();
-            //this.assign();
         }
     }
 </script>

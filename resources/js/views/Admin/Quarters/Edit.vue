@@ -1111,20 +1111,6 @@
         float: right;
     }
     
-    #managerAssignBox {
-        display: flex;
-        margin-bottom: 20px;
-
-        #managerSelect {
-            width: 100%;
-            margin-right: 20px;
-        }
-
-        #managerAssignBtn {
-            flex: 1;
-        }
-    }
-    
     .ui-drawer {
         .el-tabs {
             height: 100%;
