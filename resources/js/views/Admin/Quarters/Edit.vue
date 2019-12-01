@@ -16,25 +16,28 @@
                                 <el-col :md="12" class="left-pane">
                                     <img :src="require('img/default_img_object.png')"/>
 
-                                    <div v-if="!editId" class="quarter-id">
-                                        <span @dblclick="editId=editMode">{{ model.internal_quarter_id }}</span>
+                                    <div v-if="!editMode" class="quarter-id">
+                                        <span v-if="!editMode" @dblclick="editId=editMode">{{ model.internal_quarter_id }}</span>
                                     </div>
+
+                                    <span v-if="!editMode" class="quarter-name" @dblclick="editName=editMode">{{ model.name }}</span>
+                                    
+                                </el-col>
+                                <el-col :md="12" class="right-pane">
+                                    
                                     <el-form-item 
-                                        v-if="editMode && editId" 
+                                        v-if="editMode" 
+                                        :label="$t('general.internal_quarter_id')"
                                         :rules="validationRules.internal_quarter_id"
                                         prop="internal_quarter_id" 
                                         class='quarter-id'
                                     >
                                         <el-input type="text" v-model="model.internal_quarter_id" ></el-input>
                                     </el-form-item>
-
-                                    <span v-if="!editName" class="quarter-name" @dblclick="editName=editMode">{{ model.name }}</span>
-                                    <el-form-item v-if="editMode && editName" :rules="validationRules.name"
+                                    <el-form-item v-if="editMode" :label="$t('general.name')" :rules="validationRules.name"
                                                 prop="name">
                                         <el-input type="text" v-model="model.name"  />
                                     </el-form-item>
-                                </el-col>
-                                <el-col :md="12" class="right-pane">
                                     <div v-if="!editMode" class="quarter-detail-item">
                                         <span>{{ $t('models.quarter.url') }}</span>
                                         <span>{{ model.url }}</span>
@@ -94,13 +97,13 @@
                                         <span>{{ $t('general.zip') }} / {{ $t('general.city') }}</span>
                                         <span>{{ model.zip }} {{ model.city }}</span>
                                     </div>
-                                    <el-col :span="7">
+                                    <el-col :span="7" class="pl-0">
                                         <el-form-item v-if="editMode" :label="$t('general.zip')" :rules="validationRules.zip"
                                                     prop="zip">
                                             <el-input type="text" v-model="model.zip"/>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :span="17">
+                                    <el-col :span="17" class="pr-0">
                                         <el-form-item v-if="editMode" :label="$t('general.city')" :rules="validationRules.city"
                                                     prop="city">
                                             <el-input type="text" v-model="model.city" />
