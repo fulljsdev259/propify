@@ -194,44 +194,14 @@
                                 {{ $t('general.box_titles.managers') }}
                                 <!-- <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge> -->
                             </span>
-                            <el-row id="managerAssignBox">
-                                <el-col id="managerSelect">
-                                    <el-select
-                                        clearable
-                                        :loading="remoteLoading"
-                                        :placeholder="$t('general.placeholders.search')"
-                                        :remote-method="remoteSearchAssignees"
-                                        class="custom-remote-select"
-                                        filterable
-                                        remote
-                                        multiple
-                                        reserve-keyword
-                                        style="width: 100%;"
-                                        v-model="toAssign"
-                                    >
-                                        <div class="custom-prefix-wrapper" slot="prefix">
-                                            <i class="el-icon-search custom-icon"></i>
-                                        </div>
-                                        <el-option
-                                                :key="assignee.id"
-                                                :label="assignee.name"
-                                                :value="assignee.id"
-                                                v-for="assignee in toAssignList">
-                                            <span style="float: left">{{ assignee.name }}</span>
-                                            <span style="float: right; color: #8492a6; font-size: 13px">
-                                                {{assignee.roles[0].name == "provider" ? $t(`models.service.category.${assignee.function}`)  : ''}}
-                                                {{assignee.roles[0].name != "provider" ? $t(`general.roles.${assignee.function}`) : ''}} 
-                                            </span>
-                                        </el-option>
-                                    </el-select>
-                                </el-col>
-                                <el-col id="managerAssignBtn">
-                                    <el-button :disabled="!toAssign.length" @click="assignUsers" class="full-button el-button--assign"
-                                                icon="ti-save">
-                                        &nbsp;{{$t('general.assign')}}
-                                    </el-button>
-                                </el-col>
-                            </el-row>
+                            <users-assignment
+                                    :resetToAssignList="resetToAssignList"
+                                    :toAssign.sync="toAssign"
+                                    :assign="assignUsers"
+                                    :toAssignList="toAssignList"
+                                    :remoteLoading="remoteLoading"
+                                    :remoteSearch="remoteSearchAssignees"
+                            ></users-assignment>
                             <relation-list
                                 :actions="assigneesActions"
                                 :columns="assigneesColumns"
@@ -510,7 +480,7 @@
     import EditActions from 'components/EditViewActions';
     import {mapActions, mapGetters} from 'vuex';
     import RelationList from 'components/RelationListing';
-    import AssignmentByType from 'components/AssignmentByType';
+    import UsersAssignment from 'components/UsersAssignment';
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
     import EmailReceptionistForm from 'components/EmailReceptionistForm';
     import WorkflowForm from 'components/WorkflowForm';
@@ -536,7 +506,7 @@
             Card,
             EditActions,
             RelationList,
-            AssignmentByType,
+            UsersAssignment,
             EmergencySettingsForm,
             EmailReceptionistForm,
             WorkflowForm,

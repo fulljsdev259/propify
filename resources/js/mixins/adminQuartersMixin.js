@@ -79,31 +79,31 @@ export default (config = {}) => {
             ]),
             resetToAssignList() {
                 this.toAssignList = [];
-                // this.toAssign = [];
+                this.toAssign = [];
             },
-            async assignUser() {
-                if (!this.toAssign || !this.model.id) {
-                    return false;
-                }
-                let resp;
+            // async assignUser() {
+            //     if (!this.toAssign || !this.model.id) {
+            //         return false;
+            //     }
+            //     let resp;
 
-                let assign_user = this.toAssignList.find(item => item.id == this.toAssign )
+            //     let assign_user = this.toAssignList.find(item => item.id == this.toAssign )
 
-                resp = await this.assignUserToQuarter({
-                            id: this.model.id,
-                            user_id: this.toAssign,
-                            role: assign_user.roles[0].name,
-                        });
+            //     resp = await this.assignUserToQuarter({
+            //                 id: this.model.id,
+            //                 user_id: this.toAssign,
+            //                 role: assign_user.roles[0].name,
+            //             });
 
-                if (resp && resp.data) {
-                    displaySuccess(resp)                           
-                    this.resetToAssignList();
-                    this.$refs.assigneesList.fetch();    
-                    if(this.$refs.auditList){
-                        this.$refs.auditList.fetch();
-                    }
-                }
-            },
+            //     if (resp && resp.data) {
+            //         displaySuccess(resp)                           
+            //         this.resetToAssignList();
+            //         this.$refs.assigneesList.fetch();    
+            //         if(this.$refs.auditList){
+            //             this.$refs.auditList.fetch();
+            //         }
+            //     }
+            // },
             async assignUsers() {
                 if (!this.toAssign || !this.model.id) {
                     return false;
@@ -139,7 +139,7 @@ export default (config = {}) => {
                 }*/
 
                 if (search === '') {
-                    this.resetToAssignList();
+                    this.toAssignList = [];
                 } else {
                     this.remoteLoading = true;
                     

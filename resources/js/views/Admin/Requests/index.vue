@@ -14,20 +14,6 @@
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
             </template>
-            <!-- <template v-if="$can($permissions.assign.manager)">
-                <el-dropdown split-button 
-                            :disabled="!selectedItems.length" 
-                            size="mini"
-                            type="info" 
-                            trigger="click" 
-                            class="round mass-edit-dropdown"
-                            @command="handleCommand">
-                    {{$t('models.request.mass_edit.label')}}
-                    <el-dropdown-menu slot="dropdown">
-                        
-                    </el-dropdown-menu>
-                </el-dropdown>
-            </template> -->
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
                     <el-button size="mini" class="el-button--transparent">
@@ -53,17 +39,6 @@
                     </el-dropdown-menu>
                 </el-dropdown>
             </template>
-            <!-- <template v-if="$can($permissions.delete.request)">
-                <el-button 
-                    :disabled="!selectedItems.length" 
-                    @click="batchDeleteWithIds" 
-                    icon="ti-trash" 
-                    size="mini"
-                    class="el-button--transparent"
-                >
-                    {{$t('general.actions.delete')}}
-                </el-button>
-            </template> -->
 
         </heading>
         <!-- <request-list-table

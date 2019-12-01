@@ -528,7 +528,7 @@ export default (config = {}) => {
                     ]),
                     resetToAssignList() {
                         this.toAssignList = [];
-                        //this.toAssign = [];
+                        this.toAssign = [];
                     },
                     async assignUsers() {
                         if (!this.toAssign || !this.model.id) {
@@ -561,7 +561,7 @@ export default (config = {}) => {
                     async remoteSearchAssignees(search) {
                 
                         if (search === '') {
-                            this.resetToAssignList();
+                            this.toAssignList = [];
                         } else {
                             this.remoteLoading = true;
                             
