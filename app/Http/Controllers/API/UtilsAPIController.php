@@ -281,6 +281,7 @@ class UtilsAPIController extends AppBaseController
             'category' => ServiceProvider::Category,
             'type' => ServiceProvider::Type,
             'title' => ServiceProvider::Title,
+            'status' => ServiceProvider::Status,
         ];
 
         return $result;

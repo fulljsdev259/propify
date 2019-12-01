@@ -191,12 +191,6 @@
                     //     key: 'quarter_id',
                     //     data: this.quarters,
                     // },
-                    {
-                        name: this.$t('general.filters.language'),
-                        type: 'select',
-                        key: 'language',
-                        data: []
-                    }
                 ]
             },
         },

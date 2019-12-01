@@ -1,25 +1,28 @@
 <?php
 
-namespace App\Criteria\User;
+namespace App\Criteria\UserFilter;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FilterByRolesCriteria
- * @package Prettus\Repository\Criteria
+ * Class FilterByMenuCriteria
+ * @package App\Criteria\UserFilter
  */
-class FilterByRolesCriteria implements CriteriaInterface
+class FilterByUserCriteria implements CriteriaInterface
 {
     /**
      * @var \Illuminate\Http\Request
      */
     protected $request;
 
+    /**
+     * FilterByUserCriteria constructor.
+     * @param Request $request
+     */
     public function __construct(Request $request)
     {
         $this->request = $request;
@@ -37,23 +40,9 @@ class FilterByRolesCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $role = $this->request->get('role', null);
-        $roles = $this->request->roles;
-
-        if ($role) {
-            $model->withRole($role);
-        }
-
-        if (is_array($roles)) {
-            $model->withRoles($roles);
-        }
-        $excludeRoles = $this->request->exclude_roles;
-        if ($excludeRoles) {
-            $excludeRoles = Arr::wrap($excludeRoles);
-
-            $model->whereHas('roles', function ($query) use ($excludeRoles) {
-                $query->whereNotIn('name', $excludeRoles);
-            });
+        $userId = $this->request->user_id;
+        if ($userId) {
+            $model->where('user_id', $userId);
         }
 
         return $model;

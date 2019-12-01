@@ -26,6 +26,7 @@ class ServiceProviderTransformer extends BaseTransformer
             'id' => $model->id,
             'category' => $model->category,
             'type' => $model->type,
+            'status' => $model->status,
             'title' => $model->title,
             'first_name' => $model->first_name,
             'last_name' => $model->last_name,

@@ -25,6 +25,16 @@ return [
             'deleted' => "User deleted error: ",
         ],        
     ],
+    'userFilter' => [
+        'saved' => 'User Filter saved successfully',
+        'deleted' => 'User Filter deleted',
+        'not_found' => 'User Filter not found',
+        'errors' => [
+            'not_found' => "User Filter not found",
+            'create' => "User Filter not created",
+            'update' => "User Filter not updated",
+        ],
+    ],
     'resident' => [
         'view' => 'View',
         'name' => 'Resident',
@@ -409,6 +419,11 @@ return [
             'tu-gu' => 'TU/GU',
             'architect' => 'Architect',
             'external_real_estate_company' => 'External Real Estate Company',
+        ],
+        'status' => [
+            'label' => 'Status',
+            'active' => 'Active',
+            'in_active' => 'Inactive',
         ],
         'contact_details' => 'Contact details',
         'user_credentials' => 'User credentials',
