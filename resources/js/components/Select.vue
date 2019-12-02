@@ -1,7 +1,7 @@
 <template>
     <div class="custom-select" ref="multiSelect">
        <el-dropdown trigger="click" placement="bottom" @visible-change="handleVisibleChange">
-            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count && !showMultiTag, 'multi-tag': showMultiTag}]" :style="{'background-color':findSelectedOne.count?bgColor:'#f6f5f7'}" :disabled="disabled">
+            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count && !showMultiTag}]" :style="{'background-color':findSelectedOne.count?bgColor:'#f6f5f7'}" :disabled="disabled">
                 <span v-if="findSelectedOne.count === 0">{{ name }}</span>
                 <el-tag 
                     v-else-if="type !== 'language'"
