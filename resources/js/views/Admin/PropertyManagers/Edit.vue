@@ -36,6 +36,20 @@
                                             :showCamera="model.avatar==null"
                                             @cropped="cropped"/>
                                     </div>
+                                    <div v-if="!editMode" class="salutation">
+                                        <span>{{ $t(`general.salutation_option.${model.title}`) }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" :rules="validationRules.title"
+                                                prop="title" class="salutation-select">
+                                        <el-select style="display: block" v-model="model.title">
+                                            <el-option
+                                                :key="title"
+                                                :label="$t(`general.salutation_option.${title}`)"
+                                                :value="title"
+                                                v-for="title in titles">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
                                     <div 
                                         v-if="!editName" 
                                         class="first_name"
@@ -68,7 +82,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="12">
-                                    <div v-if="!editMode" class="propertymanager-info-item">
+                                    <!-- <div v-if="!editMode" class="propertymanager-info-item">
                                         <span>{{ $t('models.property_manager.slogan') }}</span>
                                         <span>{{ model.slogan }}</span>
                                     </div>
@@ -77,30 +91,52 @@
                                                 prop="slogan">
                                         <el-input type="text" v-model="model.slogan"/>
                                     </el-form-item>
-                                    
-                                    <div v-if="!editMode" class="propertymanager-info-item">
-                                        <span>{{ $t('general.salutation') }}</span>
-                                        <span>{{ $t(`general.salutation_option.${model.title}`) }}</span>
+                                     -->
+                                  <div v-if="!editMode" class="propertymanager-info-item">
+                                        <span>{{ $t('general.status.label') }}</span>
+                                        <span>{{ propertyManagerStatus }}</span>
                                     </div>
-                                    <el-form-item v-if="editMode" :label="$t('general.salutation')" :rules="validationRules.title"
-                                                prop="title">
-                                        <el-select style="display: block" v-model="model.title">
+                                    <el-form-item v-if="editMode" class="label-block" :label="$t('general.status.label')"
+                                                    :rules="validationRules.status"
+                                                    prop="status">
+                                        <el-select :placeholder="$t('general.placeholders.select')"
+                                                style="display: block"
+                                                v-model="model.status">
                                             <el-option
-                                                :key="title"
-                                                :label="$t(`general.salutation_option.${title}`)"
-                                                :value="title"
-                                                v-for="title in titles">
+                                                    :key="k"
+                                                    :label="$t(`general.status.${status}`)"
+                                                    :value="parseInt(k)"
+                                                    v-for="(status, k) in $constants.propertyManager.status">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
 
-                                    <div v-if="!editMode" class="propertymanager-info-item">
+                                      <div v-if="!editMode" class="propertymanager-info-item">
+                                        <span>{{ $t('general.function') }}</span>
+                                        <span>{{ propertyManagerType }}</span>
+                                    </div>
+                                    <el-form-item v-if="editMode" class="label-block" :label="$t('general.function')" :rules="validationRules.type"
+                                                    prop="type">
+                                        <el-select style="display: block" v-model="model.type" :placeholder="$t('general.placeholders.select')">
+                                            <el-option
+                                                    :key="k"
+                                                    :label="$t(`general.roles.${status}`)"
+                                                    :value="parseInt(k)"
+                                                    v-for="(status, k) in $constants.propertyManager.type">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    
+                                    
+
+                                   
+                                    <!-- <div v-if="!editMode" class="propertymanager-info-item">
                                         <span>{{ $t('general.phone') }}</span>
                                         <span>{{ model.phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('general.phone')" prop="phone">
                                         <el-input type="text" v-model="model.phone"/>
-                                    </el-form-item>
+                                    </el-form-item> -->
 
                                     <div v-if="!editMode" class="propertymanager-info-item">
                                         <span>{{ $t('general.mobile') }}</span>
@@ -124,26 +160,9 @@
                                         <select-language :activeLanguage.sync="model.settings.language"/>
                                     </el-form-item> -->
 
-                                    <div v-if="!editMode" class="propertymanager-info-item">
-                                        <span>{{ $t('general.status.label') }}</span>
-                                        <span>{{ propertyManagerStatus }}</span>
-                                    </div>
-                                    <el-form-item v-if="editMode" class="label-block" :label="$t('general.status.label')"
-                                                    :rules="validationRules.status"
-                                                    prop="status">
-                                        <el-select :placeholder="$t('general.placeholders.select')"
-                                                style="display: block"
-                                                v-model="model.status">
-                                            <el-option
-                                                    :key="k"
-                                                    :label="$t(`general.status.${status}`)"
-                                                    :value="parseInt(k)"
-                                                    v-for="(status, k) in $constants.propertyManager.status">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
+  
 
-                                     <div v-if="!editMode" class="propertymanager-info-item">
+                                     <!-- <div v-if="!editMode" class="propertymanager-info-item">
                                         <span>{{ $t('models.property_manager.profession') }}</span>
                                         <span>{{ model.profession }}</span>
                                     </div>
@@ -151,23 +170,9 @@
                                                     :rules="validationRules.profession"
                                                     prop="profession">
                                         <el-input type="text" v-model="model.profession"/>
-                                    </el-form-item>
+                                    </el-form-item> -->
 
-                                    <div v-if="!editMode" class="propertymanager-info-item">
-                                        <span>{{ $t('general.function') }}</span>
-                                        <span>{{ propertyManagerType }}</span>
-                                    </div>
-                                    <el-form-item v-if="editMode" class="label-block" :label="$t('general.function')" :rules="validationRules.type"
-                                                    prop="type">
-                                        <el-select style="display: block" v-model="model.type" :placeholder="$t('general.placeholders.select')">
-                                            <el-option
-                                                    :key="k"
-                                                    :label="$t(`general.roles.${status}`)"
-                                                    :value="parseInt(k)"
-                                                    v-for="(status, k) in $constants.propertyManager.type">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
+                                    
                                     <!-- <el-col :md="12">
                                         <el-form-item :label="$t('general.confirm_password')"
                                                       :rules="validationRules.password_confirmation"
@@ -182,7 +187,7 @@
                                         </el-form-item>
                                     </el-col> -->
 
-                                    <div v-if="!editMode" class="propertymanager-info-item">
+                                    <!-- <div v-if="!editMode" class="propertymanager-info-item">
                                         <span>{{ $t('models.property_manager.linkedin_url') }}</span>
                                         <span>{{ model.linkedin_url }}</span>
                                     </div>
@@ -192,9 +197,9 @@
                                         <el-input type="text" v-model="model.linkedin_url">
                                             <template slot="prepend"><i class="icon-linkedin"></i></template>
                                         </el-input>
-                                    </el-form-item>
+                                    </el-form-item> -->
 
-                                    <div v-if="!editMode" class="propertymanager-info-item">
+                                    <!-- <div v-if="!editMode" class="propertymanager-info-item">
                                         <span>{{ $t('models.property_manager.xing_url') }}</span>
                                         <span>{{ model.xing_url }}</span>
                                     </div>
@@ -209,7 +214,7 @@
                                         >
                                             <template slot="prepend"><i class="icon-xing"></i></template>
                                         </el-input>
-                                    </el-form-item>
+                                    </el-form-item> -->
 
                                     <el-form-item v-if="editMode" :label="$t('general.password')"
                                                     :rules="validationRules.password"
@@ -462,6 +467,9 @@
             border: 1px solid var(--border-color-base);
             border-radius: 6px;
         }
+        .el-row {
+            display: flex;
+        }
         .propertymanager-detail {
             background-color: #f6f5f7;
             
@@ -473,8 +481,18 @@
             }
             .el-col:first-child {
                 padding: 40px 10px 20px 40px !important;
+                .salutation {
+                    padding-left: 10px;
+                    margin: 20px 0 5px;
+                    font-size: 20px;
+                }
+                .salutation-select {
+                    margin-bottom: 5px;
+                    & .el-input__inner {
+                        font-size: 20px;
+                    }
+                }
                 .first_name, .last_name {
-                    margin-top: 20px;
                     padding-left: 10px;
                     text-transform: capitalize;
                     font-size: 32px;
