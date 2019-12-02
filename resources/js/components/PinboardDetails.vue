@@ -13,7 +13,7 @@
                 <el-col :md="6" :sm="12" v-if="pinboard.resident.building">
                     <p class="pinboard-label">{{$t('models.resident.building.name')}}</p>
                     <p>
-                        {{pinboard.resident.building.address.street + pinboard.resident.building.address.house_num}}
+                        {{pinboard.resident.building.address.street + ' ' + pinboard.resident.building.address.house_num}}
                     </p>
                 </el-col>
             </template>

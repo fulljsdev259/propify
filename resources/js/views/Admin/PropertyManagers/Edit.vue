@@ -425,7 +425,7 @@
                 let result = '';
                 for(let item in this.$constants.propertyManager.status) {
                     if(item == this.model.status)
-                        result = this.$t(`models.property_manager.status.${this.$constants.propertyManager.status[item]}`);
+                        result = this.$t(`general.status.${this.$constants.propertyManager.status[item]}`);
                 }
                 return result;
             },
