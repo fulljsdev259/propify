@@ -283,8 +283,8 @@
                             </span>
                             <div align="right" style="margin-bottom: 15px">
                                 <el-button @click="visiblePlanDrawer = true">show Plan Drawer</el-button>
-                                <el-button @click="demo.file = '/storage/units/house_rules/26/floor-plan.jpg', visiblePlanModal = true">show IMG</el-button>
-                                <el-button @click="demo.file = '/storage/units/house_rules/26/floor-plan-2.pdf', visiblePlanModal = true">show PDF</el-button>
+                                <el-button @click="demo.file = '/storage/floor-plan.jpg', visiblePlanModal = true">show IMG</el-button>
+                                <el-button @click="demo.file = '/storage/floor-plan-2.pdf', visiblePlanModal = true">show PDF</el-button>
                             </div>
                         </el-tab-pane>
 
@@ -421,7 +421,7 @@
                                 :closable="false"
                         >
                         </el-alert>
-                        <upload-document @fileUploaded="setUploadedFile" class="drag-custom" drag multiple
+                        <upload-document @fileUploaded="" class="drag-custom" drag multiple
                                          ref="pdfUpload"
                                          accept-type=".pdf, .doc, .docx, .xls, .xlsx"/>
                     </el-form-item>
