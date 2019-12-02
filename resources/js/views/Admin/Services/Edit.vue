@@ -33,6 +33,21 @@
                                         :showCamera="model.avatar==null"
                                         @cropped="cropped"/>
                                 </div>
+                                <div v-if="!editMode" class="salutation">
+                                    <span>{{ serviceTitle }}</span>
+                                </div>
+                                <el-form-item v-if="editMode" :rules="validationRules.title"
+                                              prop="title"
+                                              class="label-block salutation-select">
+                                    <el-select :disabled="!editMode" :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.title">
+                                        <el-option
+                                                :key="title.value"
+                                                :label="title.name"
+                                                :value="title.value"
+                                                v-for="title in titles">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
                                 <div 
                                         v-if="!editName" 
                                         class="first_name"
@@ -90,23 +105,7 @@
                                     <el-input :disabled="!editMode" type="text" v-model="model.company_name"/>
                                 </el-form-item>
 
-                                <div v-if="!editMode" class="service-info-item">
-                                    <span>{{ $t('general.salutation') }}</span>
-                                    <span>{{ serviceTitle }}</span>
-                                </div>
-                                <el-form-item v-if="editMode" :rules="validationRules.title"
-                                              :label="$t('general.salutation')"
-                                              prop="title"
-                                              class="label-block">
-                                    <el-select :disabled="!editMode" :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.title">
-                                        <el-option
-                                                :key="title.value"
-                                                :label="title.name"
-                                                :value="title.value"
-                                                v-for="title in titles">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
+                                
                                 
                                 <div v-if="!editMode" class="service-info-item">
                                     <span>{{ $t('general.street') }}</span>
@@ -496,8 +495,18 @@
             }
             .el-col:first-child {
                 padding: 40px 10px 20px 40px !important;
+                .salutation {
+                    padding-left: 10px;
+                    margin: 20px 0 5px;
+                    font-size: 20px;
+                }
+                .salutation-select {
+                    margin-bottom: 5px;
+                    & .el-input__inner {
+                        font-size: 20px;
+                    }
+                }
                 .first_name, .last_name {
-                    margin-top: 20px;
                     padding-left: 10px;
                     text-transform: capitalize;
                     font-size: 32px;
