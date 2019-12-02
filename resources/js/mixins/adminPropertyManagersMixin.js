@@ -176,6 +176,8 @@ export default (config = {}) => {
                                 search,
                                 exclude_ids: exclude_ids.join(',')
                             });
+
+                            resp.data.map(building => building.name = building.address.street + ' ' + building.address.house_num)
                         } else {
                             config.mode == 'add'
                                 ? exclude_ids = this.alreadyAssigned.quarters
