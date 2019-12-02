@@ -95,6 +95,13 @@ class QuarterAPIController extends AppBaseController
      */
     public function index(ListRequest $request)
     {
+        if ($request->orderBy == 'count_of_apartments_units') {
+            $request->merge([
+                'orderBy' => RequestCriteria::NoOrder,
+                'orderByRaw' => 'count_of_apartments_units',
+            ]);
+        }
+
         $this->quarterRepository->pushCriteria(new RequestCriteria($request));
         $this->quarterRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->quarterRepository->pushCriteria(new FilterByStateCriteria($request));
