@@ -65,7 +65,7 @@
                                             :name="$t('models.building.type')"
                                             :data="types"
                                             tagColor="#9E9FA0"
-                                            bgColor="#f6f5f7"
+                                            showMultiTag
                                             @select-changed="model.types=$event"
                                         ></multi-select>
                                     </el-form-item>
@@ -183,8 +183,7 @@
     import Card from 'components/Card';
     import BuildingsMixin from 'mixins/adminBuildingsMixin';
     import AddActions from 'components/EditViewActions';
-    import ListFilterSelect from 'components/ListFilterSelect';
-    import MultiSelect from 'components/MultiSelect';
+    import MultiSelect from 'components/Select';
 
     export default {
         mixins: [BuildingsMixin({
