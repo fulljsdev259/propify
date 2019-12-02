@@ -5,94 +5,97 @@
             title="Floor preview"
             class="pdf-preview-modal"
             :fullscreen="true">
-        <div class="zoom-top" v-if="visible">
-            <div class="zoom-top__left">
-                <el-button @click="zoomIn()"><i class="el-icon-zoom-in"></i></el-button>
-                <el-button @click="zoomOut()"><i class="el-icon-zoom-out"></i></el-button>
+        <div v-loading="loading">
+            <div class="zoom-top" v-if="visible">
+                <div class="zoom-top__left">
+                    <el-button @click="zoomIn()"><i class="el-icon-zoom-in"></i></el-button>
+                    <el-button @click="zoomOut()"><i class="el-icon-zoom-out"></i></el-button>
+                </div>
+
+<!--                <div class="zoom-top__info">-->
+<!--                    <el-tag v-if="addMarkerMode" effect="plain">-->
+<!--                        click on img to set marker-->
+<!--                    </el-tag>-->
+<!--                </div>-->
+
+                <transition-group name="fade">
+                    <div key="1" v-if="dragmode" class="zoom-top__right">
+                        <el-button :disabled="!(currentDragstop.left && currentDragstop.top)"
+                                   @click="saveDragstop(), stopAllMarkersDrag()">Save position</el-button>
+                        <el-button @click="stopAllMarkersDrag(), markersKey += 1">Cancel</el-button>
+                    </div>
+                    <div key="2" v-else class="zoom-top__right">
+                        <el-button @click="putMarkerOnBlock()">add marker</el-button>
+                    </div>
+                </transition-group>
             </div>
+            <panZoom style="overflow: hidden; max-height: 100vh;"
+                     class="pan-zoom"
+                     ref="panzoom"
+                     selector=".scene"
+                     :options="{
+                            smoothScroll: false,
+                            transformOrigin: {x: 0.5, y: 0.5},
+                            boundsPadding: 0.6,
+                            minZoom: 1,
+                            maxZoom: 3,
+                         }"
+                     @init="onInit"
+                     @zoom="currentZoom = panzoomInstance.getTransform().scale"
+            >
+                <div class="scene"
+                     style="width:100%; height: 100%; margin:0 auto;">
+                    <vue-drag-resize v-for="(item, index) in markers"
+                                     :key="index + markersKey"
+                                     :class="`marker ${item.isDraggable
+                                                        ? 'marker_draggable'
+                                                        : dragmode
+                                                            ? 'marker_disabled'
+                                                            : ''}`"
+                                     :isActive="true"
+                                     :parentLimitation="true"
+                                     :parentScaleX="currentZoom"
+                                     :parentScaleY="currentZoom"
+                                     :x="item.left"
+                                     :y="item.top"
+                                     :w="40"
+                                     :h="40"
+                                     :z="1"
+                                     :isResizable="false"
+                                     :isDraggable="item.isDraggable"
+                                     @dragstop="onDragstop">
+                        <div v-if="!dragmode" @click="delMarker(index)" class="el-icon-close marker__close"></div>
+                        <el-popover
+                                placement="bottom"
+                                :title="`Marker id: ${item.id}`"
+                                width="auto"
+                                trigger="click"
+                                :disabled="dragmode">
+                            <div slot="reference" class="marker__icon">
+                                <i class="el-icon-location"></i>
+                            </div>
+                            <div>
+                                <el-button @click="dragmode = true, item.isDraggable = true">Change position</el-button>
+                            </div>
+                        </el-popover>
+                    </vue-drag-resize>
 
-<!--                    <div class="zoom-top__info">-->
-<!--                        <el-tag v-if="addMarkerMode" effect="plain">-->
-<!--                            click on img to set marker-->
-<!--                        </el-tag>-->
-<!--                    </div>-->
+                    <pdf v-if="isPdf"
+                         class="scene__item"
+                         :src="pdfFile"
+                         :resize="false"
+                         :text="false">
+                        <template slot="loading">
+                            <div class="pdf-loading">
+                                Loading PDF...
+                            </div>
+                        </template>
+                    </pdf>
 
-            <transition-group name="fade">
-                <div key="1" v-if="dragmode" class="zoom-top__right">
-                    <el-button :disabled="!(currentDragstop.left && currentDragstop.top)"
-                               @click="saveDragstop(), stopAllMarkersDrag()">Save position</el-button>
-                    <el-button @click="stopAllMarkersDrag(), markersKey += 1">Cancel</el-button>
+                    <img v-else :src="fileUrl" @load="stopLoading" alt="plan" class="scene__item">
                 </div>
-                <div key="2" v-else class="zoom-top__right">
-                    <el-button @click="putMarkerOnBlock()">add marker</el-button>
-                </div>
-            </transition-group>
+            </panZoom>
         </div>
-        <panZoom style="overflow: hidden; max-height: 100vh;"
-                 class="pan-zoom"
-                 ref="panzoom"
-                 selector=".scene"
-                 :options="{
-                        smoothScroll: false,
-                        transformOrigin: {x: 0.5, y: 0.5},
-                        boundsPadding: 0.5,
-                        minZoom: 1,
-                        maxZoom: 3,
-                     }"
-                 @init="onInit"
-                 @zoom="currentZoom = panzoomInstance.getTransform().scale"
-        >
-            <div class="scene"
-                 style="width:100%; height: 100%; margin:0 auto;">
-                <vue-drag-resize v-for="(item, index) in markers"
-                                 :key="index + markersKey"
-                                 :class="`marker ${item.isDraggable
-                                                    ? 'marker_draggable'
-                                                    : dragmode
-                                                        ? 'marker_disabled'
-                                                        : ''}`"
-                                 :isActive="true"
-                                 :parentLimitation="true"
-                                 :parentScaleX="currentZoom"
-                                 :parentScaleY="currentZoom"
-                                 :x="item.left"
-                                 :y="item.top"
-                                 :w="40"
-                                 :h="40"
-                                 :z="1"
-                                 :isResizable="false"
-                                 :isDraggable="item.isDraggable"
-                                 @dragstop="onDragstop">
-                    <div v-if="!dragmode" @click="delMarker(index)" class="el-icon-close marker__close"></div>
-                    <el-popover
-                            placement="bottom"
-                            :title="`Marker id: ${item.id}`"
-                            width="auto"
-                            trigger="click"
-                            :disabled="dragmode">
-                        <div slot="reference" class="marker__icon">
-                            <i class="el-icon-location"></i>
-                        </div>
-                        <div>
-                            <el-button @click="dragmode = true, item.isDraggable = true">Change position</el-button>
-                        </div>
-                    </el-popover>
-                </vue-drag-resize>
-
-                <pdf v-if="isPdf"
-                     class="scene__item"
-                     :src="pdfFile"
-                     style="width:100%;margin:0 auto;"
-                     :resize="true"
-                     :text="false">
-                    <template slot="loading" align="center">
-                        loading...
-                    </template>
-                </pdf>
-
-                <img v-else :src="fileUrl" alt="plan" class="scene__item">
-            </div>
-        </panZoom>
 
 <!--        <div style="display: flex; margin-top: 30px;" v-for="(item, index) in markers">-->
 <!--            {{item.id}}: {{'x:'+item.left}}/{{'y:'+item.top}}-->
@@ -132,6 +135,7 @@
         },
         data(){
             return {
+                loading: true,
                 isPdf: null,
                 markers: [],
                 panzoomInstance: null,
@@ -256,7 +260,11 @@
                     });
                 }
             },
-
+            stopLoading() {
+                setTimeout(() => {
+                    this.loading = false;
+                }, 500);
+            },
             setPdfFile(fileUrl) {
                 this.pdfFile = pdfvuer.createLoadingTask({
                     url: fileUrl,
@@ -264,17 +272,17 @@
                     cMapPacked: true
                 });
                 this.pdfFile.promise.then(pdf => {
-                    // this.visible = true;
+                    this.stopLoading();
                 });
 
             }
         },
-        computed: {
-        },
         mounted() {
             this.isPdf = this.fileUrl.split('.')[this.fileUrl.split('.').length - 1] === 'pdf';
 
-            this.isPdf ? this.setPdfFile(this.fileUrl) : '';
+            this.isPdf
+                ? this.setPdfFile(this.fileUrl)
+                : '';
         }
     }
 </script>
@@ -334,7 +342,7 @@
         background: #eee;
         .scene {
             height: 700px !important;
-            img {
+            &__item {
                 width: 100%;
             }
         }
@@ -377,9 +385,6 @@
     }
 
     .pdf-preview-modal {
-        .el-dialog {
-            z-index: 9999;
-        }
         .page {
             width: 100% !important;
             height: auto !important;
@@ -392,5 +397,11 @@
                 }
             }
         }
+    }
+    .pdf-loading {
+        display: flex;
+        height: 500px;
+        align-items: center;
+        justify-content: center;
     }
 </style>
