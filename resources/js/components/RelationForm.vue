@@ -62,6 +62,7 @@
                         :name="quarterFilter.name"
                         :data="quarterFilter.data"
                         :maxSelect="1"
+                        :showMultiTag="true"
                         :selectedOptions="[model.quarter_id]"
                         @select-changed="handleSelectChange($event, 'quarter')"
                     >
@@ -82,7 +83,7 @@
                         @select-changed="handleSelectChange($event, 'unit')"
                     >
                     </multi-select> -->
-                    <el-select :placeholder="$t('models.resident.search_unit')" 
+                    <!-- <el-select :placeholder="$t('models.resident.search_unit')" 
                             style="display: block"
                             v-model="model.unit_id"
                             filterable 
@@ -104,8 +105,20 @@
                                 
                             </el-option>
                         </el-option-group>
-                        
-                    </el-select>
+                    </el-select> -->
+                    <multi-select 
+                        :key="units.length"
+                        :type="unitFilter.key"
+                        :name="unitFilter.name"
+                        :data="unitFilter.data"
+                        showMultiTag
+                        showGroup
+                        :maxSelect="1"
+                        :selectedOptions="[model.unit_id]"
+                        @select-changed="model.unit_id=$event, changeRelationUnit()"
+                    >
+
+                    </multi-select>
                 </el-form-item>
                 <el-form-item v-if="mode == 'edit'"
                             :label="$t('models.resident.unit.name')"
@@ -120,7 +133,7 @@
                         @select-changed="handleSelectChange($event, 'unit')"
                     >
                     </multi-select> -->
-                    <el-select :placeholder="$t('models.resident.search_unit')" 
+                    <!-- <el-select :placeholder="$t('models.resident.search_unit')" 
                             style="display: block"
                             v-model="model.unit_id"
                             @change="changeRelationUnit">
@@ -137,7 +150,20 @@
                                 <span style="float: right">{{ translateUnitType(item.type) }}</span>
                             </el-option>
                         </el-option-group>
-                    </el-select>
+                    </el-select> -->
+                    <multi-select 
+                        :key="units.length"
+                        :type="unitFilter.key"
+                        :name="unitFilter.name"
+                        :data="unitFilter.data"
+                        showMultiTag
+                        showGroup
+                        :maxSelect="1"
+                        :selectedOptions="[model.unit_id]"
+                        @select-changed="model.unit_id=$event, changeRelationUnit()"
+                    >
+
+                    </multi-select>
                 </el-form-item>
             </el-col>
             
@@ -486,7 +512,7 @@
     import UploadRelation from 'components/UploadRelation';
     import RelationCount from 'components/RelationCount';
     import {mapActions, mapGetters} from 'vuex';
-    import MultiSelect from 'components/MultiSelect';
+    import MultiSelect from 'components/Select';
     import globalFunction from "helpers/globalFunction";
 
     export default {
@@ -1042,10 +1068,10 @@
         },
         mounted() {
             this.$refs.form.$el.focus()
-        }
+        },
     }
 </script>
-c
+
 <style lang="scss" scoped>
 
     .el-form {
@@ -1255,15 +1281,6 @@ c
         font-weight: 700;
         color: var(--color-white);
     }
-
-    /deep/ .el-dropdown {
-        .el-button.selected-button {
-            background-color: #f6f5f7 !important;
-            padding: 0 2.5px;
-            height: 100%;
-        }
-    }
-
 
     .media-box {
         margin-top: 30px;

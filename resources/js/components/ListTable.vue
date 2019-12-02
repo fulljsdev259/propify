@@ -9,10 +9,12 @@
                 v-model="search"
             >
                 <template slot="suffix" v-if="search.length">
-                    <el-button @click="clearSearch()"   
-                               circle
-                               icon="ti-close"
-                               size="mini"/>
+                    <el-button 
+                        @click="clearSearch()"   
+                        circle
+                        icon="ti-close"
+                        size="mini"
+                    />
                 </template>
             </el-input>
             <div class="sub-menu" key="sub-menu">
@@ -46,8 +48,8 @@
                                 <list-filter-select
                                     :type="filter.key"
                                     :name="filter.name"
-                                    :searchBox="filter.searchBox"
                                     :data="filter.data"
+                                    :searchBox="filter.searchBox"
                                     :selectedOptions="filterModel[filter.key]"
                                     @select-changed="handleSelectChange($event, filter)"
                                 >
@@ -490,8 +492,7 @@
     import tableAvatar from 'components/Avatar';
     import RequestDetailCard from 'components/RequestDetailCard';
     import SelectLanguage from 'components/SelectLanguage';
-    import ListTableSelect from 'components/ListTableSelect';
-    import ListFilterSelect from 'components/ListFilterSelect';
+    import ListFilterSelect from 'components/Select';
     import FormatDateTimeMixin from 'mixins/formatDateTimeMixin';
     import globalFunction from "helpers/globalFunction";
 
@@ -505,7 +506,6 @@
             'table-avatar': tableAvatar,
             RequestDetailCard,
             SelectLanguage,
-            ListTableSelect,
             ListFilterSelect,
             FormatDateTimeMixin
         },

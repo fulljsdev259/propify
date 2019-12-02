@@ -68,14 +68,14 @@
                                                     v-for="type in types">
                                             </el-option>
                                         </el-select> -->
-                                        <custom-select
+                                        <multi-select
                                             :name="$t('general.placeholders.select')"
                                             :data="types"
                                             :selectedOptions="model.types"
                                             tagColor="#9E9FA0"
                                             showMultiTag
                                             @select-changed="model.types=$event"
-                                        ></custom-select>
+                                        ></multi-select>
                                     </el-form-item>
                                 
                                     <!-- <el-col :md="12">
@@ -563,9 +563,7 @@
     import RelationListTable from 'components/RelationListTable';
     import BuildingFileListTable from 'components/BuildingFileListTable';
     import EditCloseDialog from 'components/EditCloseDialog';
-    import ListFilterSelect from 'components/ListFilterSelect';
-    import MultiSelect from 'components/MultiSelect';
-    import CustomSelect from 'components/Select';
+    import MultiSelect from 'components/Select';
 
     export default {
         name: 'AdminRequestsEdit',
@@ -588,9 +586,7 @@
             RelationListTable,
             BuildingFileListTable,
             EditCloseDialog,
-            ListFilterSelect,
             MultiSelect,
-            CustomSelect,
         },
         data() {
             return {

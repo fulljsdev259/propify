@@ -100,7 +100,7 @@
                                             :disabled="!editMode"
                                             :selectedOptions="model.types"
                                             tagColor="#9E9FA0"
-                                            bgColor="#f6f5f7"
+                                            showMultiTag
                                             @select-changed="model.types=$event"
                                         ></multi-select>
                                     </el-form-item>
@@ -573,7 +573,7 @@
     import BuildingFileListTable from 'components/BuildingFileListTable';
     import EditCloseDialog from 'components/EditCloseDialog';
     import EditActions from 'components/EditViewActions';
-    import MultiSelect from 'components/MultiSelect';
+    import MultiSelect from 'components/Select';
 
     export default {
         mixins: [globalFunction, BuildingsMixin({
