@@ -294,6 +294,7 @@
                 }
             }),
             formattedItems() {
+                console.log(this.items)
                 return this.items.map((request) => {
                     return request;
                 });
@@ -446,7 +447,9 @@
                 const buildings = await this.getBuildings({
                     get_all: true
                 });
-
+                buildings.data.map(building => {
+                    building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                })
                 return buildings.data;
             },
             async getFilterCategories() {
@@ -466,7 +469,9 @@
             },
             async fetchRemoteBuildings(search = '') {
                 const buildings = await this.getBuildings({get_all: true, search});
-
+                buildings.data.map(building => {
+                    building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                })
                 return buildings.data
             },
             async fetchRemoteManagers(search = '') {
