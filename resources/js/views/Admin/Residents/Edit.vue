@@ -195,7 +195,8 @@
                                 type="primary" 
                                 @click="showRelationDialog" 
                                 icon="icon-plus" 
-                                size="mini" >
+                                size="mini" 
+                                v-if="editMode">
                                 {{ $t('models.resident.relation.add') }}
                             </el-button>
                         </el-tab-pane>
@@ -220,7 +221,8 @@
                                 type="primary" 
                                 @click="showMediaDialog" 
                                 icon="icon-plus" 
-                                size="mini" >
+                                size="mini" 
+                                v-if="editMode">
                                 {{ $t('models.resident.relation.add_files') }}
                             </el-button>
                         </el-tab-pane>
