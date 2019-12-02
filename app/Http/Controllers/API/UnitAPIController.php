@@ -210,10 +210,10 @@ class UnitAPIController extends AppBaseController
         }
 
         $unit->load([
-            'building',
+            'building.address',
             'quarter',
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'resident.user');
+                $q->with('quarter.address', 'unit', 'resident.user');
             },
             'media'
         ]);
@@ -270,10 +270,10 @@ class UnitAPIController extends AppBaseController
         }
 
         $unit->load([
-            'building',
+            'building.address',
             'quarter',
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'resident.user');
+                $q->with('quarter.address', 'unit', 'resident.user');
             },
             'media'
         ]);
@@ -349,10 +349,10 @@ class UnitAPIController extends AppBaseController
         }
 
         $unit->load([
-            'building',
+            'building.address',
             'quarter',
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'resident.user');
+                $q->with('quarter.address', 'unit', 'resident.user');
             },
             'media'
         ]);
