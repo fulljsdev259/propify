@@ -303,7 +303,7 @@
             },
             async openEditWithRelation(quarter) {
                 this.loading = true;
-                const buildingsResp = await this.getBuildings({get_all: true, quarter_id: quarter.id});
+                let buildingsResp = await this.getBuildings({get_all: true, quarter_id: quarter.id});
                 buildingsResp.data.map(building => {
                     building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
                 })
@@ -363,7 +363,7 @@
                 return quarters.data
             },
             async fetchRemoteBuildings(search = '') {
-                const buildings = await this.getBuildings({get_all: true, search});
+                let buildings = await this.getBuildings({get_all: true, search});
 
                 buildings.data.map(building => {
                     building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''

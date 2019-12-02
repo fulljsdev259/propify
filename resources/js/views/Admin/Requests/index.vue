@@ -294,7 +294,6 @@
                 }
             }),
             formattedItems() {
-                console.log(this.items)
                 return this.items.map((request) => {
                     return request;
                 });
@@ -444,7 +443,7 @@
                 return this.$t(`models.request.category_list.${category.name}`)
             },
             async getFilterBuildings() {
-                const buildings = await this.getBuildings({
+                let buildings = await this.getBuildings({
                     get_all: true
                 });
                 buildings.data.map(building => {

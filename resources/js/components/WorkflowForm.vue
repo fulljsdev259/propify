@@ -334,7 +334,7 @@
                 
             },
             async fetchRemoteBuildings(search = '') {
-                const buildings = await this.getBuildings({get_all: true, quarter_id: this.quarter_id, search});
+                let buildings = await this.getBuildings({get_all: true, quarter_id: this.quarter_id, search});
 
                 buildings.data.map(building => {
                     building.name = building.address.street + ' ' + building.address.house_num
