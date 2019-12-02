@@ -217,7 +217,7 @@
                     </div>
                     <div v-else-if="column.type === 'buildingName'" class="normal">
                         asdfasdfasdf             
-                        {{scope.row.name}}                
+                        {{scope.row.address ? scope.row.address.street + ' ' + scope.row.address.house_num : ''}}                
                     </div>
                     <div v-else-if="column.type === 'residentName'" class="normal"> 
                         {{scope.row.name}}
