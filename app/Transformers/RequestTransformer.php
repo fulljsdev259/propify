@@ -68,10 +68,10 @@ class RequestTransformer extends BaseTransformer
         if ($model->relationExists('users')) {
             $response['users'] = (new UserTransformer())->transformCollection($model->users);
             $users = collect($response['users']);
-            $propertyManager = $users->whereIn('roles.0.name', PropertyManager::Type)->all();
+            $propertyManager = $users->whereIn('roles.0.name', PropertyManager::Type)->values()->all();
             $response['property_managers_new'] = $propertyManager;
 
-            $serviceProviders = $users->where('roles.0.name', 'provider')->all();
+            $serviceProviders = $users->where('roles.0.name', 'provider')->values()->all();
             $response['service_providers_new'] = $serviceProviders;
         }
 
