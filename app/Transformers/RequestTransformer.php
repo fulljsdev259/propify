@@ -55,26 +55,14 @@ class RequestTransformer extends BaseTransformer
             $response['solved_date'] = $model->solved_date->format('Y-m-d');
         }
 
-        $response['assignedUsers'] = [];
-
-        if ($model->relationExists('providers')) {
-            $response['service_providers'] = (new ServiceProviderTransformer)->transformCollection($model->providers);
-        }
-
-        if ($model->relationExists('managers')) {
-            $response['property_managers'] = (new PropertyManagerTransformer())->transformCollection($model->managers);
-        }
-
         if ($model->relationExists('users')) {
-            $response['users'] = (new UserTransformer())->transformCollection($model->users);
-            $users = collect($response['users']);
+            $users = collect((new UserTransformer())->transformCollection($model->users));
             $propertyManager = $users->whereIn('roles.0.name', PropertyManager::Type)->values()->all();
-            $response['property_managers_new'] = $propertyManager;
+            $response['property_managers'] = $propertyManager;
 
             $serviceProviders = $users->where('roles.0.name', 'provider')->values()->all();
-            $response['service_providers_new'] = $serviceProviders;
+            $response['service_providers'] = $serviceProviders;
         }
-
 
         if ($model->category_id) {
             $response['category'] = get_category_details($model->category_id);
