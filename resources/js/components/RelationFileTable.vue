@@ -31,10 +31,6 @@
 </template>
 
 <script>
-
-    import uuid from 'uuid/v1'
-    import {mapActions, mapGetters} from 'vuex';
-
     export default {
         name: 'RelationFileTable',
         props: {
@@ -44,21 +40,6 @@
                     return [];
                 }
             },
-        },
-        data() {
-            return {
-                // showItems: [],
-                totalLength: 0,
-                showLength: 0,
-            }
-        },
-        computed: {
-            ...mapGetters('application', {
-                constants: 'constants'
-            }),
-        },
-        methods: {
-            
         }
     }
 </script>
