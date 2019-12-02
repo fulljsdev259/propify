@@ -277,6 +277,16 @@
                                 
                             </div>
                         </el-tab-pane>
+                        <el-tab-pane name="plan">
+                            <span slot="label">
+                                Plan
+                            </span>
+                            <div align="right" style="margin-bottom: 15px">
+                                <el-button @click="visiblePlanDrawer = true">show Plan Drawer</el-button>
+                                <el-button @click="demo.file = '/storage/units/house_rules/26/floor-plan.jpg', visiblePlanModal = true">show IMG</el-button>
+                                <el-button @click="demo.file = '/storage/units/house_rules/26/floor-plan-2.pdf', visiblePlanModal = true">show PDF</el-button>
+                            </div>
+                        </el-tab-pane>
 
                     </el-tabs>
                 </el-col>
@@ -388,6 +398,56 @@
             @clickNo="model=_.clone(old_model, true), editMode=!editMode, visibleDialog=false"
             @clickCancel="visibleDialog=false"
         ></edit-close-dialog>
+
+        <FloorPreviewModal v-if="demo.file && visiblePlanModal"
+                           :visible.sync="visiblePlanModal"
+                           :initialMarkers="initialMarkers"
+                           :fileUrl="demo.file"/>
+
+        <el-drawer
+                title="Add Plan"
+                :visible.sync="visiblePlanDrawer"
+                direction="rtl"
+                custom-class="plan-drawer"
+                ref="pdfDrawer"
+        >
+            <div class="plan-drawer__content">
+                <el-form>
+                    <el-form-item>
+                        <el-alert
+                                :title="$t('general.upload_file_desc')"
+                                type="info"
+                                show-icon
+                                :closable="false"
+                        >
+                        </el-alert>
+                        <upload-document @fileUploaded="setUploadedFile" class="drag-custom" drag multiple
+                                         ref="pdfUpload"
+                                         accept-type=".pdf, .doc, .docx, .xls, .xlsx"/>
+                    </el-form-item>
+                    <el-form-item label="Name">
+                        <el-input autocomplete="off"
+                                  v-model="demo.name">
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="Desc">
+                        <el-input
+                                :autosize="{minRows: 4}"
+                                type="textarea"
+                                v-model="demo.desc">
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-checkbox v-model="demo.is_primary">Is primary</el-checkbox>
+                    </el-form-item>
+                </el-form>
+                <div class="plan-drawer__footer">
+<!--                    <el-button type="primary" @click="() => {uploadFiles(demo.file); $refs.pdfDrawer.closeDrawer()}">Save</el-button>-->
+                    <el-button type="primary" @click="$refs.pdfDrawer.closeDrawer()">Save</el-button>
+                    <el-button @click="visiblePlanDrawer = false">Cancel</el-button>
+                </div>
+            </div>
+        </el-drawer>
     </div>
 </template>
 <script>
@@ -407,7 +467,7 @@
     import {displayError, displaySuccess} from "helpers/messages";
     import { EventBus } from '../../../event-bus.js';
     import EditCloseDialog from 'components/EditCloseDialog';
-    
+    import FloorPreviewModal from 'components/FloorPreviewModal';
 
     export default {
         mixins: [UnitsMixin({
@@ -426,10 +486,33 @@
             RelationForm,
             RelationListTable,
             BuildingFileListTable,
-            EditCloseDialog
+            EditCloseDialog,
+            FloorPreviewModal,
         },
         data() {
             return {
+                initialMarkers: [{
+                    id: 'mark1',
+                    left: 100,
+                    top: 150,
+                }, {
+                    id: 'mark2',
+                    left: 150,
+                    top: 200,
+                }, {
+                    id: 'mark3',
+                    left: 200,
+                    top: 250,
+                }],
+                demo: {
+                    name: '',
+                    desc: '',
+                    is_primary: false,
+                    file: '',
+                },
+                visiblePlanDrawer: false,
+                visiblePlanModal: false,
+
                 selectedFileCategory: 'house_rules',
                 requestColumns: [{
                     type: 'requestResidentAvatar',
@@ -698,7 +781,10 @@
             }
         }
     }
-    
+
+    .plan-drawer__content {
+        padding: 0 20px;
+    }
 </style>
 <style lang="scss" scoped>
 
