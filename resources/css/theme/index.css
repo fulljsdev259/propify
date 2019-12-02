@@ -10087,6 +10087,11 @@
     transition:border-color .2s cubic-bezier(.645,.045,.355,1);
     width:100%
 }
+.admin-layout .el-input__inner {
+    background-color: #f6f5f7;
+    border: 1px solid #f6f5f7;
+    color: var(--text-color);
+}
 
 input.el-input__inner[type=number]{
     padding: 5px;

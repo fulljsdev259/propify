@@ -59,12 +59,13 @@
                     :rules="validationRules.required"
                     prop="selectedWorkflowBuilding"
                     class="label-block"
-                    >
+                >
                     <multi-select
                         :type="buildingFilter.key"
                         :name="buildingFilter.name"
                         :data="buildingFilter.data"
                         :bgColor="'#DABFCD'"
+                        showMultiTag
                         :selectedOptions="model.selectedWorkflowBuilding"
                         @select-changed="handleSelectChange($event, 'building')"
                     >
@@ -128,13 +129,15 @@
         <el-row :gutter="20" style="margin-left: 0; margin-right: 0">
             <el-col :md="12">
                 <el-form-item 
-                            :rules="validationRules.required"
-                            prop="selectedWorkflowToUser">
+                    :rules="validationRules.required"
+                    prop="selectedWorkflowToUser"
+                >
                     <multi-select
                         :type="toUserFilter.key"
                         :name="toUserFilter.name"
                         :data="toUserFilter.data"
                         :bgColor="'#DABFCD'"
+                        showMultiTag
                         :selectedOptions="model.selectedWorkflowToUser"
                         @select-changed="handleSelectChange($event, 'to_user')"
                     >
@@ -151,6 +154,7 @@
                         :name="ccUserFilter.name"
                         :data="ccUserFilter.data"
                         :bgColor="'#DABFCD'"
+                        showMultiTag
                         :selectedOptions="model.selectedWorkflowCcUser"
                         @select-changed="handleSelectChange($event, 'cc_user')"
                     >
@@ -178,7 +182,7 @@
 <script>
     import {displayError, displaySuccess} from "../helpers/messages";
     import {mapActions, mapGetters} from 'vuex';
-    import MultiSelect from 'components/MultiSelect';
+    import MultiSelect from 'components/Select';
 
     export default {
         name: "WorkflowForm",

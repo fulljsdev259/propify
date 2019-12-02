@@ -48,8 +48,8 @@
                                     <multi-select
                                         :name="$t('general.placeholders.select')"
                                         :data="types"
+                                        showMultiTag
                                         tagColor="#9E9FA0"
-                                        bgColor="#f6f5f7"
                                         @select-changed="model.types=$event"
                                     ></multi-select>
                                 </el-form-item>
@@ -112,8 +112,7 @@
     import QuartersMixin from 'mixins/adminQuartersMixin';
     import {displayError} from "helpers/messages";
     import AddActions from 'components/EditViewActions';
-    import ListFilterSelect from 'components/ListFilterSelect';
-    import MultiSelect from 'components/MultiSelect';
+    import MultiSelect from 'components/Select';
 
 
     export default {
@@ -125,7 +124,6 @@
             Heading,
             Card,
             AddActions,
-            ListFilterSelect,
             MultiSelect
         },
     };
