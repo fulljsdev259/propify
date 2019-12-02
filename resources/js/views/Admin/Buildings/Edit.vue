@@ -286,175 +286,6 @@
                             
                         </div>
                     </el-tab-pane>
-                    
-
-                    
-                    <!-- <el-tab-pane name="relations">
-                        <span slot="label">
-                            <el-badge :value="relationCount" :max="99" class="admin-layout">{{ $t('general.relations') }}</el-badge>
-                        </span>
-                        
-                        <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.relation.add')}}</el-button>    
-                        <relation-list-table
-                                    :items="model.relations"
-                                    :hide-building="true"
-                                    @edit-relation="editRelation"
-                                    @delete-relation="deleteRelation">
-                        </relation-list-table>
-                    </el-tab-pane> -->
-                    <!-- <el-tab-pane name="managers">
-                        <span slot="label">
-                            <el-badge :value="managerCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
-                        </span>
-                        <assignment-by-type
-                            :resetToAssignList="resetToAssignList"
-                            :assignmentType.sync="assignmentType"
-                            :toAssign.sync="toAssign"
-                            :assignmentTypes="assignmentTypes"
-                            :assign="assignUser"
-                            :toAssignList="toAssignList"
-                            :remoteLoading="remoteLoading"
-                            :remoteSearch="remoteSearchAssignees"
-                        />
-                        <relation-list
-                            :actions="assigneesActions"
-                            :columns="assigneesColumns"
-                            :filterValue="model.id"
-                            fetchAction="getBuildingAssignees"
-                            filter="building_id"
-                            ref="assigneesList"
-                            v-if="model.id"
-                        />
-                    </el-tab-pane> -->
-                    <!-- <el-tab-pane name="providers">
-                        <span slot="label">
-                            <el-badge :value="serviceCount" :max="99" class="admin-layout">{{ $t('models.building.providers') }}</el-badge>
-                        </span>                         -->
-                        <!-- <label class="card-label">{{$t('settings.contact_enable.label')}}</label>
-                        <el-select
-                                placeholder="Chose"
-                                style="width: 100%;"
-                                v-model="model.contact_enable"
-                        >
-                            <el-option
-                                    :key="contactEnableValue.id"
-                                    :label="contactEnableValue.label"
-                                    :value="contactEnableValue.value"
-                                    v-for="contactEnableValue in contactEnableValues"/>
-                        </el-select>
-                        <el-divider class="mt15" /> -->
-                        <!-- <assignment-by-type
-                            :resetToAssignList="resetToAssignProviderList"
-                            :assignmentType.sync="assignmentType"
-                            :toAssign.sync="toAssignProvider"
-                            :assignmentTypes="serviceAssignmentTypes"
-                            :assign="attachProvider"
-                            :toAssignList="toAssignProviderList"
-                            :remoteLoading="remoteLoading"
-                            :remoteSearch="remoteSearchProviders"
-                        /> -->
-                        <!-- <el-row :gutter="10" id="providerAssignBox">
-                            <el-col id="providerSelect">
-                                <el-select
-                                    clearable
-                                    :loading="remoteLoading"
-                                    :placeholder="$t('general.placeholders.search')"
-                                    :remote-method="remoteSearchProviders"
-                                    class="custom-remote-select"
-                                    filterable
-                                    remote
-                                    reserve-keyword
-                                    style="width: 100%;"
-                                    v-model="toAssignProvider"
-                                >
-                                    <div class="custom-prefix-wrapper" slot="prefix">
-                                        <i class="el-icon-search custom-icon"></i>
-                                    </div>
-                                    <el-option
-                                        :key="provider.id"
-                                        :label="provider.name"
-                                        :value="provider.id"
-                                        v-for="provider in toAssignProviderList"/>
-                                </el-select>
-                            </el-col>
-                            <el-col id="providerAssignBtn">
-                                <el-button :disabled="!toAssignProvider" @click="attachProvider" class="full-button"
-                                            icon="ti-save" type="primary">
-                                    &nbsp;{{$t('general.assign')}}
-                                </el-button>
-                            </el-col>
-                        </el-row> -->
-                        <!-- <relation-list
-                            :actions="assignmentsProviderActions"
-                            :columns="assignmentsProviderColumns"
-                            :filterValue="model.id"
-                            fetchAction="getServices"
-                            filter="building_id"
-                            ref="assignmentsProviderList"
-                            v-if="model.id"
-                        /> -->
-                    <!-- </el-tab-pane> -->
-                    
-                    <!--<el-tab-pane name="assignees">
-                        <span slot="label">
-                            <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
-                        </span>
-                        <el-row :gutter="10" id="managerAssignBox">
-                            <el-col id="managerSelect">
-                                <el-select
-                                    clearable
-                                    :loading="remoteLoading"
-                                    :placeholder="$t('general.placeholders.search')"
-                                    :remote-method="remoteSearchAssignees"
-                                    class="custom-remote-select"
-                                    filterable
-                                    remote
-                                    reserve-keyword
-                                    style="width: 100%;"
-                                    v-model="toAssign"
-                                >
-                                    <div class="custom-prefix-wrapper" slot="prefix">
-                                        <i class="el-icon-search custom-icon"></i>
-                                    </div>
-                                    <el-option
-                                            :key="assignee.id"
-                                            :label="assignee.name"
-                                            :value="assignee.id"
-                                            v-for="assignee in toAssignList"/>
-                                </el-select>
-                            </el-col>
-                             <el-col>
-                                <el-select
-                                        :placeholder="$t('general.placeholders.select')"
-                                        style="display: block"
-                                        multiple
-                                        v-model="userAssignmentType"
-                                        filterable>
-                                    <el-option
-                                            :key="type.value"
-                                            :label="type.name"
-                                            :value="type.value"
-                                            v-for="type in assignment_types">
-                                    </el-option>
-                                </el-select>
-                            </el-col>
-                            <el-col id="managerAssignBtn">
-                                <el-button :disabled="!toAssign || !userAssignmentType || userAssignmentType.length == 0" @click="assignUser" class="full-button"
-                                            icon="ti-save" type="primary">
-                                    &nbsp;{{$t('general.assign')}}
-                                </el-button>
-                            </el-col>
-                        </el-row>
-                        <relation-list
-                            :actions="assigneesActions"
-                            :columns="assigneesColumns"
-                            :filterValue="model.id"
-                            fetchAction="getBuildingAssignees"
-                            filter="building_id"
-                            ref="assigneesList"
-                            v-if="model.id"
-                        />
-                    </el-tab-pane>-->
                 </el-tabs>
                 
                 <el-tabs type="border-card" v-model="activeRequestTab">
@@ -636,14 +467,6 @@
                     label: 'general.name',
                     translate: this.translateResidentTypes
                 }, {
-                //     prop: 'name',
-                //     label: 'general.name',
-                //     type: 'residentName'
-                // }, {
-                //     prop: 'type',
-                //     label: 'models.resident.relation.type.label',
-                //     i18n: this.translateResidentTypes
-                // }, {
                     type: 'residentRelation',
                     label: 'models.resident.relation.title'
                 }, {
@@ -661,29 +484,7 @@
                         tooltipMode: true
                     }]
                 }*/],
-                assigneesColumns: [{
-                    type: 'assignProviderManagerAvatars',
-                    width: 70,
-                }, {
-                    type: 'assigneesName',
-                    prop: 'name',
-                    label: 'general.name'
-                }, {
-                    prop: 'assignment_types',
-                    label: 'general.assignment_types.label',
-                    i18n: this.translateAssignmentType
-                }],
-                assigneesActions: [{
-                    width: 70,
-                    buttons: [{
-                        title: 'models.building.unassign_manager',
-                        type: 'danger',
-                        onClick: this.unassignBuilding,
-                        tooltipMode: true,
-                        icon: 'el-icon-close',
-                        view: 'building'
-                    }]
-                }],
+                
                 unitColumns: [{
                     prop: 'name',
                     label: 'models.unit.name'
@@ -726,24 +527,6 @@
                         tooltipMode: true
                     }]
                 }*/],
-                assignmentsProviderColumns: [{
-                //     type: 'assignProviderManagerAvatars',
-                //     width: 70,
-                // }, {
-                    prop: 'name',
-                    label: 'general.name',
-                    type: 'serviceName'
-                }],
-                assignmentsProviderActions: [{
-                    width: 70,
-                    buttons: [{
-                        icon: 'el-icon-close',
-                        title: 'general.unassign',
-                        type: 'danger',
-                        onClick: this.notifyProviderUnassignment,
-                        tooltipMode: true
-                    }]
-                }],                
                 remoteLoading: false,
                 deleteBuildingVisible: false,
                 multiple: true,
@@ -772,12 +555,7 @@
             ...mapActions([
                 'getSettings',
                 "uploadBuildingFile",
-                "deleteBuildingFile",                
-                "getBuildingAssignees",
-                "assignManagerToBuilding",
-                "unassignBuildingAssignee",
-                "assignUsersToBuilding",
-                "unassignUserToBuilding",
+                "deleteBuildingFile",
                 "deleteBuilding",
                 'deleteBuildingWithIds', 
                 'checkUnitRequestWidthIds'
@@ -1045,40 +823,7 @@
                 this.visibleDrawer = true
                 this.isAddRelation = true
             },
-             notifyProviderUnassignment(row) {
-                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
-                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
-                    type: 'warning'
-                }).then(async () => {
-                    try {
-                        this.loading.status = true;
-
-                        await this.unassignProvider(row);
-
-                    } catch (err) {
-                        displayError(err);
-                    } finally {
-                        this.loading.status = false;
-                    }
-                }).catch(async () => {
-                    this.loading.status = false;
-                });
-            },
-            async unassignProvider(toUnassign) {
-                const resp = await this.unassignProviderToBuilding({
-                    id: this.model.id,
-                    toAssignId: toUnassign.id
-                });
-
-                this.$refs.assignmentsProviderList.fetch(); 
-                if(this.$refs.auditList){
-                    this.$refs.auditList.fetch();
-                }
-                this.resetToAssignProviderList();
-                this.serviceCount--;
-                displaySuccess(resp.data)
-            },
+            
             addRelation (data) {
                 this.model.relations.push(data);
                 this.relationCount ++;

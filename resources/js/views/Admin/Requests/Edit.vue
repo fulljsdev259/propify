@@ -531,16 +531,14 @@
                                     <span slot="label">
                                         {{ $t('models.request.assignment') }}
                                     </span>
-                                    <assignment-by-type
-                                        :resetToAssignList="resetToAssignList"
-                                        :assignmentType.sync="assignmentType"
-                                        :toAssign.sync="toAssign"
-                                        :assignmentTypes="assignmentTypes"
-                                        :assign="assignUser"
-                                        :toAssignList="toAssignList"
-                                        :remoteLoading="remoteLoading"
-                                        :remoteSearch="remoteSearchAssignees"
-                                    />
+                                    <users-assignment
+                                            :resetToAssignList="resetToAssignList"
+                                            :toAssign.sync="toAssign"
+                                            :assign="assignUsers"
+                                            :toAssignList="toAssignList"
+                                            :remoteLoading="remoteLoading"
+                                            :remoteSearch="remoteSearchAssignees"
+                                    ></users-assignment>
                                     <relation-list
                                         :actions="assigneesActions"
                                         :columns="assigneesColumns"
@@ -620,6 +618,7 @@
     import { EventBus } from '../../../event-bus.js';
     import EditorConfig from 'mixins/adminEditorConfig';
     import EditCloseDialog from 'components/EditCloseDialog';
+    import UsersAssignment from 'components/UsersAssignment';
 
     export default {
         name: 'AdminRequestsEdit',
@@ -636,7 +635,8 @@
             EditActions,
             Avatar,            
             AssignmentByType,
-            EditCloseDialog
+            EditCloseDialog,
+            UsersAssignment
         },
         data() {
             return {
@@ -658,10 +658,12 @@
                     type: 'assigneesName',
                     prop: 'name',
                     label: 'general.name'
-                }, {
+                }/*, {
                     prop: 'role',
                     label: 'general.roles.label',
                     i18n: this.translateType
+                }*/, {
+                    type: 'assignProviderManagerFunctions',
                 }],
                 assigneesActions: [{
                     width: 120,

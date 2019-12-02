@@ -47,6 +47,7 @@ export default (config = {}) => {
                     password_confirmation: '',
                     avatar: '',
                     id: '',
+                    status: ''
                 },
                 statistics: {
                     raw: [{
@@ -419,6 +420,7 @@ export default (config = {}) => {
                         this.model.email = data.email;
                         this.model.phone = data.phone;
                         this.model.mobile_phone = data.mobile_phone;
+                        this.model.status = data.status;
                         this.model.category = +data.category;
                         
                         this.model.user.avatar = data.user.avatar;

@@ -185,20 +185,6 @@
                         </el-tab-pane>
 
                     </el-tabs>
-                    <!-- <card :loading="loading" :header="$t('general.requests')" class="mt15">
-                        <div slot="header" style="width: 100%;">
-                            {{$t('general.requests')}}
-                            <span style="float:right" class="icon-cog" @click="toggleDrawer"></span>
-                        </div>
-                        <relation-list
-                                :actions="requestActions"
-                                :columns="requestColumns"
-                                :filterValue="model.id"
-                                fetchAction="getRequests"
-                                filter="quarter_id"
-                                v-if="model.id"
-                        />
-                    </card> -->
 
                 </el-col>
                 <el-col :md="12">
@@ -208,69 +194,14 @@
                                 {{ $t('general.box_titles.managers') }}
                                 <!-- <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge> -->
                             </span>
-                            <!-- <assignment-by-type
-                                :resetToAssignList="resetToAssignList"
-                                :assignmentType.sync="assignmentType"
-                                :toAssign.sync="toAssign"
-                                :assignmentTypes="assignmentTypes"
-                                :assign="assignUser"
-                                :toAssignList="toAssignList"
-                                :remoteLoading="remoteLoading"
-                                :remoteSearch="remoteSearchAssignees"
-                            /> -->
-                            <el-row id="managerAssignBox">
-                                <el-col id="managerSelect">
-                                    <el-select
-                                        clearable
-                                        :loading="remoteLoading"
-                                        :placeholder="$t('general.placeholders.search')"
-                                        :remote-method="remoteSearchAssignees"
-                                        class="custom-remote-select"
-                                        filterable
-                                        remote
-                                        multiple
-                                        reserve-keyword
-                                        style="width: 100%;"
-                                        v-model="toAssign"
-                                    >
-                                        <div class="custom-prefix-wrapper" slot="prefix">
-                                            <i class="el-icon-search custom-icon"></i>
-                                        </div>
-                                        <el-option
-                                                :key="assignee.id"
-                                                :label="assignee.name"
-                                                :value="assignee.id"
-                                                v-for="assignee in toAssignList">
-                                            <span style="float: left">{{ assignee.name }}</span>
-                                            <span style="float: right; color: #8492a6; font-size: 13px">
-                                                {{assignee.roles[0].name == "provider" ? $t(`models.service.category.${assignee.function}`)  : ''}}
-                                                {{assignee.roles[0].name != "provider" ? $t(`general.roles.${assignee.function}`) : ''}} 
-                                            </span>
-                                        </el-option>
-                                    </el-select>
-                                </el-col>
-                                <!-- <el-col>
-                                    <el-select
-                                            :placeholder="$t('general.placeholders.select')"
-                                            style="display: block"
-                                            multiple
-                                            v-model="userAssignmentType"
-                                            filterable>
-                                        <el-option
-                                                :key="type.value"
-                                                :label="type.name"
-                                                :value="type.value"
-                                                v-for="type in assignment_types">
-                                        </el-option>
-                                    </el-select>
-                                </el-col> -->
-                                <el-col id="managerAssignBtn">
-                                    <el-button :disabled="!toAssign.length" @click="assignUsers" class="full-button el-button--assign"
-                                                icon="ti-save">
-                                        &nbsp;{{$t('general.assign')}}
-                                    </el-button>
-                                </el-col>
-                            </el-row>
+                            <users-assignment
+                                    :resetToAssignList="resetToAssignList"
+                                    :toAssign.sync="toAssign"
+                                    :assign="assignUsers"
+                                    :toAssignList="toAssignList"
+                                    :remoteLoading="remoteLoading"
+                                    :remoteSearch="remoteSearchAssignees"
+                            ></users-assignment>
                             <relation-list
                                 :actions="assigneesActions"
                                 :columns="assigneesColumns"
@@ -349,7 +280,7 @@
                                         </el-col>
                                     </el-row>
                                     <el-row v-if="!isEditingWorkflow[$index]">
-                                        <el-col :md="24" class="edit workflow-button-bar">
+                                        <el-col :md="24" class="edit workflow-button-bar" v-if="editMode">
                                             <!-- <el-button 
                                                 type="danger" 
                                                 @click="deleteWorkflow($index)"
@@ -549,7 +480,7 @@
     import EditActions from 'components/EditViewActions';
     import {mapActions, mapGetters} from 'vuex';
     import RelationList from 'components/RelationListing';
-    import AssignmentByType from 'components/AssignmentByType';
+    import UsersAssignment from 'components/UsersAssignment';
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
     import EmailReceptionistForm from 'components/EmailReceptionistForm';
     import WorkflowForm from 'components/WorkflowForm';
@@ -575,7 +506,7 @@
             Card,
             EditActions,
             RelationList,
-            AssignmentByType,
+            UsersAssignment,
             EmergencySettingsForm,
             EmailReceptionistForm,
             WorkflowForm,
@@ -1178,20 +1109,6 @@
     span.icon-cog {
         cursor: pointer;
         float: right;
-    }
-    
-    #managerAssignBox {
-        display: flex;
-        margin-bottom: 20px;
-
-        #managerSelect {
-            width: 100%;
-            margin-right: 20px;
-        }
-
-        #managerAssignBtn {
-            flex: 1;
-        }
     }
     
     .ui-drawer {

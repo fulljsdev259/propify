@@ -66,18 +66,10 @@ export default {
                     resolve(resp.data);
                 }).catch(({response: {data: err}}) => reject(err))
         });
-    },    
-    assignUsersToQuarter({}, payload) {
-        return new Promise((resolve, reject) => {
-            axios.post(`quarters/${payload.id}/users`, {userIds: [payload.toAssignId]})
-                .then((resp) => {
-                    resolve(resp.data);
-                }).catch(({response: {data: err}}) => reject(err))
-        });
     },
-    getAllAdminsForQuarter(_, {quarter_id, function_val, search}) {
+    getAllAdminsForQuarter(_, {quarter_id, is_get_function, search}) {
         return new Promise((resolve, reject) =>
-            axios.get(buildFetchUrl(`alladmins`, {exclude_assignees_quarter_id: quarter_id, function: function_val, search: search}))
+            axios.get(buildFetchUrl(`alladmins`, {exclude_assignees_quarter_id: quarter_id, function: is_get_function, search: search}))
                 .then(({data: r}) => resolve(r.data))
                 .catch(({response: {data: err}}) => reject(err)));
     },

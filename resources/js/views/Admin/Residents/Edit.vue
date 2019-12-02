@@ -87,7 +87,7 @@
                                         <span>+{{ model.mobile_phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('models.resident.mobile_phone')" prop="mobile_phone">
-                                        <el-input prefix-icon="el-icon-plus" autocomplete="off" type="text"
+                                        <el-input autocomplete="off" type="text"
                                                 v-model="model.mobile_phone"></el-input>
                                     </el-form-item>
                                     <div v-if="!editMode" class="user-info-item">
@@ -95,7 +95,7 @@
                                         <span>+{{ model.private_phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('models.resident.private_phone')" prop="private_phone">
-                                        <el-input prefix-icon="el-icon-plus" autocomplete="off" type="text"
+                                        <el-input autocomplete="off" type="text"
                                                 v-model="model.private_phone"></el-input>
                                     </el-form-item>
                                     <div v-if="!editMode" class="user-info-item">
@@ -195,7 +195,8 @@
                                 type="primary" 
                                 @click="showRelationDialog" 
                                 icon="icon-plus" 
-                                size="mini" >
+                                size="mini" 
+                                v-if="editMode">
                                 {{ $t('models.resident.relation.add') }}
                             </el-button>
                         </el-tab-pane>
@@ -220,7 +221,8 @@
                                 type="primary" 
                                 @click="showMediaDialog" 
                                 icon="icon-plus" 
-                                size="mini" >
+                                size="mini" 
+                                v-if="editMode">
                                 {{ $t('models.resident.relation.add_files') }}
                             </el-button>
                         </el-tab-pane>

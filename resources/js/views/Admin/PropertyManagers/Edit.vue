@@ -99,7 +99,7 @@
                                         <span>{{ model.phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('general.phone')" prop="phone">
-                                        <el-input prefix-icon="el-icon-plus" type="text" v-model="model.phone"/>
+                                        <el-input type="text" v-model="model.phone"/>
                                     </el-form-item>
 
                                     <div v-if="!editMode" class="propertymanager-info-item">
@@ -107,7 +107,7 @@
                                         <span>{{ model.mobile_phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('general.mobile')" prop="mobile_phone">
-                                        <el-input prefix-icon="el-icon-plus" type="text" v-model="model.mobile_phone"/>
+                                        <el-input type="text" v-model="model.mobile_phone"/>
                                     </el-form-item>
 
                                     <div v-if="!editMode" class="propertymanager-info-item">
@@ -125,10 +125,10 @@
                                     </el-form-item> -->
 
                                     <div v-if="!editMode" class="propertymanager-info-item">
-                                        <span>{{ $t('models.property_manager.status.label') }}</span>
+                                        <span>{{ $t('general.status.label') }}</span>
                                         <span>{{ propertyManagerStatus }}</span>
                                     </div>
-                                    <el-form-item v-if="editMode" class="label-block" :label="$t('models.property_manager.status.label')"
+                                    <el-form-item v-if="editMode" class="label-block" :label="$t('general.status.label')"
                                                     :rules="validationRules.status"
                                                     prop="status">
                                         <el-select :placeholder="$t('general.placeholders.select')"
@@ -136,7 +136,7 @@
                                                 v-model="model.status">
                                             <el-option
                                                     :key="k"
-                                                    :label="$t(`models.property_manager.status.${status}`)"
+                                                    :label="$t(`general.status.${status}`)"
                                                     :value="parseInt(k)"
                                                     v-for="(status, k) in $constants.propertyManager.status">
                                             </el-option>
