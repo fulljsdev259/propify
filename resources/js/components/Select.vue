@@ -1,7 +1,7 @@
 <template>
     <div class="custom-select" ref="multiSelect">
        <el-dropdown trigger="click" placement="bottom" @visible-change="handleVisibleChange">
-            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count && !showMultiTag}]" :style="{'background-color':findSelectedOne.count?bgColor:'#f6f5f7'}" :disabled="disabled">
+            <el-button @click="handleDropdownClick" :class="[{'selected-button': findSelectedOne.count && !showMultiTag, 'multi-tag': showMultiTag}]" :style="{'background-color':findSelectedOne.count?bgColor:'#f6f5f7'}" :disabled="disabled">
                 <span v-if="findSelectedOne.count === 0">{{ name }}</span>
                 <el-tag 
                     v-else-if="type !== 'language'"
@@ -423,7 +423,7 @@
         position: relative;
         height: 40px;
         .el-button {
-            padding: 0 5px;
+            padding: 0 15px;
             width: 100%;
             text-align: left;
             color: var(--color-text-primary);
@@ -465,6 +465,7 @@
                 }
                 &.select-count {
                     padding: 0 4px !important;
+                    margin-right: 5px;
                     height: 20px;
                     line-height: 20px;
                     text-align: center;
@@ -476,6 +477,7 @@
                     right: 5px;
                     top: 5px;
                     padding: 0 7px !important;
+                    margin-right: 0px;
                     height: 30px;
                     line-height: 30px;
                     text-align: center;
@@ -483,9 +485,15 @@
                     border: 1px solid var(--color-white);
                 }
             }
+            &.multi-tag {
+                padding: 0 5px;
+            }
             &.selected-button {
                 background-color: var(--color-primary);
-                padding-right: 45px;
+                padding: 0 45px 0 5px;
+                .el-tag {
+                    padding: 0px;
+                }
             }
 
         }
@@ -495,7 +503,7 @@
             top: 0;
             width: auto;
             margin: 0;
-            padding: 0 7px;
+            padding: 0 10px;
             font-size: 20px;
             border-radius: 0 4px 4px 0;
             border-left: 1px solid var(--color-white);
