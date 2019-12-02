@@ -756,7 +756,7 @@
                     if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
                         this.visibleDialog = true;
                     } else {
-                        this.editMode = !this.editMode;
+                        this.$refs.editActions.goToListing();
                     }
                 }
             },
