@@ -56,7 +56,8 @@ class RequestTransformer extends BaseTransformer
         }
 
         if ($model->relationExists('users')) {
-            $users = collect((new UserTransformer())->transformCollection($model->users));
+            $response['assignedUsers'] = (new UserTransformer())->transformCollection($model->users);
+            $users = collect($response['assignedUsers']);
             $propertyManager = $users->whereIn('roles.0.name', PropertyManager::Type)->values()->all();
             $response['property_managers'] = $propertyManager;
 

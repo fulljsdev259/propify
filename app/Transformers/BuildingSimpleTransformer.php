@@ -33,6 +33,10 @@ class BuildingSimpleTransformer extends BaseTransformer
             'created_at' => $model->created_at ? $model->created_at->format('Y-m-d') : '',
         ];
 
+        $response = $this->includeRelationIfExists($model, $response, [
+            'address' => AddressTransformer::class,
+        ]);
+
         if ($model->relationExists('quarter')) {
             $response['quarter'] = (new QuarterTransformer)->transform($model->quarter);
         }
