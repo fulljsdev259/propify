@@ -85,8 +85,8 @@ return [
         'tag' => 'Tag wurde entfernt',
     ],
     'filters' => [
-        'quarters' => 'Projekte',
-        'buildings' => 'Objekte',
+        'quarters' => 'Projekt',
+        'buildings' => 'Objekt',
         'requests' => 'Anfragen',
         'open_requests' => 'Offene Anfragen',
         'units' => 'Einheiten',
