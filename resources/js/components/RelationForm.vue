@@ -392,36 +392,8 @@
 
                 <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF" drag multiple/>
                 
-                <el-table
-                    :data="model.media"
-                    v-if="model.media.length"
-                    class="relation-file-table"
-                    :show-header="false"
-                    >
-                    <el-table-column
-                        :label="$t('models.resident.relation.filename')"
-                        prop="name"
-                    >
-                        <template slot-scope="scope">
-                            <a v-if="scope.row.url" :href="scope.row.url" class="normal" target="_blank"><strong>{{scope.row.name}}</strong></a>
-                            <span v-else ><strong>{{scope.row.name}}</strong></span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        align="right"
-                        width="30"
-                    >
-                        <template slot-scope="scope">
-                            <el-tooltip
-                                :content="$t('general.actions.delete')"
-                                class="item" effect="light" 
-                                placement="top-end">
-                                    <el-button @click="deletePDFfromRelation(scope.$index)" icon="ti-trash" size="mini" />
-                            </el-tooltip>
-                        </template>
-                    </el-table-column>
-                </el-table>
-
+                <relation-file-table :media="model.media" @delete="deletePDFfromRelation"></relation-file-table>
+                
                 </el-form-item>
             </el-col>
             <!-- <el-col :md="12">
@@ -464,6 +436,7 @@
 <script>
     import {displayError} from "../helpers/messages";
     import UploadRelation from 'components/UploadRelation';
+    import RelationFileTable from 'components/RelationFileTable';
     import RelationCount from 'components/RelationCount';
     import {mapActions, mapGetters} from 'vuex';
     import MultiSelect from 'components/MultiSelect';
@@ -474,6 +447,7 @@
         components: {
             UploadRelation,
             RelationCount,
+            RelationFileTable,
             MultiSelect
         },
         mixins: [globalFunction],
@@ -1159,35 +1133,6 @@ c
                 }
             }
         }
-        
-    }
-
-    /deep/ .relation-file-table {
-        margin-bottom: 10px;
-        padding-left: 10px;
-
-        &::before {
-            height: 0;
-        }
-
-        table {
-            width: 100%;
-            td, th {
-                padding: 4px 0;
-            }
-        }
-
-        
-
-
-        .el-button.el-button--default {
-            border: none;
-            &:hover {
-                background: none;
-                border: none;
-            }
-        }
-
         
     }
 
