@@ -5,8 +5,6 @@ namespace App\Models;
 use App\Traits\BuildingRelation;
 use App\Traits\RequestRelation;
 use App\Traits\UniqueIDFormat;
-use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
-use Chelout\RelationshipEvents\Concerns\HasMorphedByManyEvents;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -43,26 +41,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          description="first_name",
  *          type="string"
  *      ),
- *     @SWG\Property(
- *          property="profession",
- *          description="profession",
- *          type="string"
- *      ),
- *     @SWG\Property(
- *          property="slogan",
- *          description="slogan",
- *          type="string"
- *      ),
- *     @SWG\Property(
- *          property="xing_url",
- *          description="xing_url",
- *          type="string"
- *      ),
- *     @SWG\Property(
- *          property="linkedin_url",
- *          description="linkedin_url",
- *          type="string"
- *      ),
  *      @SWG\Property(
  *          property="created_at",
  *          description="created_at",
@@ -83,13 +61,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $description
  * @property string $title
  * @property string $status
- * @property string $mobile_phone
  * @property string $first_name
  * @property string $last_name
- * @property string|null $profession
- * @property string|null $slogan
- * @property string|null $xing_url
- * @property string|null $linkedin_url
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -116,15 +89,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereLastName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereLinkedinUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereProfession($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager wherePropertyManagerFormat($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereSlogan($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PropertyManager whereXingUrl($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\PropertyManager withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\PropertyManager withoutTrashed()
  * @mixin \Eloquent
@@ -191,13 +160,8 @@ class PropertyManager extends AuditableModel
         'type',
         'title',
         'status',
-        'mobile_phone',
         'first_name',
         'last_name',
-        'profession',
-        'slogan',
-        'xing_url',
-        'linkedin_url',
         'property_manager_format',
     ];
 
@@ -232,13 +196,8 @@ class PropertyManager extends AuditableModel
         'type' => 'integer',
         'title' => 'string',
         'status' => 'integer',
-        'mobile_phone' => 'string',
         'first_name' => 'string',
         'last_name' => 'string',
-        'profession' => 'string',
-        'slogan' => 'string',
-        'xing_url' => 'string',
-        'linkedin_url' => 'string',
         'property_manager_format' => 'string',
     ];
 

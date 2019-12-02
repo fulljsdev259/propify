@@ -27,13 +27,8 @@ class PropertyManagerTransformer extends BaseTransformer
             'description' => $model->description,
             'title' => $model->title,
             'status' => $model->status,
-            'mobile_phone'=>$model->mobile_phone,
             'first_name' => $model->first_name,
             'last_name' => $model->last_name,
-            'profession' => $model->profession,
-            'slogan' => $model->slogan,
-            'xing_url' => $model->xing_url,
-            'linkedin_url' => $model->linkedin_url,
         ];
 
         $withCount = $model->getStatusRelationCounts();
@@ -75,7 +70,6 @@ class PropertyManagerTransformer extends BaseTransformer
     {
         return [
             'id' => $model->id,
-            'slogan' => $model->slogan,
             'first_name' => $model->first_name,
             'last_name' => $model->last_name,
             'email' => $model->user->email ?? '',
