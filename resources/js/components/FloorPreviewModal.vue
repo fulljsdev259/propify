@@ -17,14 +17,16 @@
 <!--                        </el-tag>-->
 <!--                    </div>-->
 
-            <div v-if="dragmode" class="zoom-top__right">
-                <el-button :disabled="!(currentDragstop.left && currentDragstop.top)"
-                           @click="saveDragstop(), stopAllMarkersDrag()">Save position</el-button>
-                <el-button @click="stopAllMarkersDrag(), markersKey += 1">Cancel</el-button>
-            </div>
-            <div v-else class="zoom-top__right">
-                <el-button @click="putMarkerOnBlock()">add marker</el-button>
-            </div>
+            <transition-group name="fade">
+                <div key="1" v-if="dragmode" class="zoom-top__right">
+                    <el-button :disabled="!(currentDragstop.left && currentDragstop.top)"
+                               @click="saveDragstop(), stopAllMarkersDrag()">Save position</el-button>
+                    <el-button @click="stopAllMarkersDrag(), markersKey += 1">Cancel</el-button>
+                </div>
+                <div key="2" v-else class="zoom-top__right">
+                    <el-button @click="putMarkerOnBlock()">add marker</el-button>
+                </div>
+            </transition-group>
         </div>
         <panZoom style="overflow: hidden; max-height: 100vh;"
                  class="pan-zoom"
@@ -83,7 +85,7 @@
                      style="width:100%;margin:0 auto;"
                      :resize="true"
                      :text="false">
-                    <template slot="loading">
+                    <template slot="loading" align="center">
                         loading...
                     </template>
                 </pdf>
@@ -146,9 +148,6 @@
             }
         },
         methods: {
-            dd(...val) {
-                console.log(...val)
-            },
             stopAllMarkersDrag() {
                 this.markers.forEach(element => {
                     element.isDraggable = false;
@@ -176,9 +175,9 @@
 
                 let rect = document.querySelector('.scene__item').getBoundingClientRect();
 
-                let targetNode = document.querySelector('.vue-pan-zoom-scene');
-                let centerX = targetNode.offsetLeft + targetNode.offsetWidth / 2 - 20;
-                let centerY = targetNode.offsetTop + targetNode.offsetHeight / 2 - 20;
+                let targetNode = document.querySelector('.pan-zoom');
+                let centerX = (targetNode.offsetLeft + targetNode.offsetWidth / 2) - 20;
+                let centerY = (targetNode.offsetTop + targetNode.offsetHeight / 2) - 40;
 
                 let left = (centerX - rect.left)/scale,
                     top = (centerY - rect.top)/scale;
@@ -266,7 +265,6 @@
                 });
                 this.pdfFile.promise.then(pdf => {
                     // this.visible = true;
-                    // this.dd('this.pdfFile', this.pdfFile);
                 });
 
             }
@@ -288,17 +286,24 @@
             z-index: 1;
             position: relative;
             font-size: 40px;
-            color: green;
+            line-height: 1;
+            color: var(--color-success);
         }
         &__close {
             cursor: pointer;
             opacity: 0;
+            z-index: 9;
+            padding: 2px;
             position: absolute;
-            top: -4px;
-            right: -4px;
+            top: -6px;
+            right: -6px;
             font-size: 12px;
-            color: red;
+            color: var(--color-text-regular);
             transition: all 0.3s;
+            &:hover {
+                color: var(--color-danger);
+                font-weight: 700;
+            }
         }
         &:before {
             outline: none !important;
@@ -319,6 +324,8 @@
     }
 
     .pan-zoom {
+        z-index: 9;
+        position: relative;
         margin: 0 auto;
         width: 865px !important;
     }
@@ -334,34 +341,18 @@
     }
 
     .zoom-top {
+        z-index: 10;
         position: relative;
         margin: 0 auto;
         width: 100%;
         max-width: 865px;
-        &__left {
+        &__left,
+        &__right{
             display: flex;
             flex-direction: column;
             z-index: 9;
             position: absolute;
-            top: 30px;
-            left: 10px;
-            .el-button:nth-child(2) {
-                margin: 10px 0 0;
-            }
-        }
-        &__info {
-            z-index: 9;
-            position: absolute;
-            top: 30px;
-            left: 90px;
-        }
-        &__right {
-            display: flex;
-            flex-direction: column;
-            z-index: 9;
-            position: absolute;
-            top: 30px;
-            right: 10px;
+            top: 10px;
             .el-button {
                 &:disabled {
                     opacity: 0.7;
@@ -370,6 +361,18 @@
                     margin: 10px 0 0;
                 }
             }
+        }
+        &__left {
+            left: 10px;
+        }
+        &__right {
+            right: 10px;
+        }
+        &__info {
+            z-index: 9;
+            position: absolute;
+            top: 30px;
+            left: 90px;
         }
     }
 
