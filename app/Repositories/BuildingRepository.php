@@ -21,7 +21,6 @@ class BuildingRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
-        'name' => 'like',
         'description' => 'like',
         'label' => 'like',
         'floor_nr' => 'like',

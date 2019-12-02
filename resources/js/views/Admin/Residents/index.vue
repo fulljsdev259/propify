@@ -127,16 +127,6 @@
                     withMultipleProps: true,
                     props: ['user_email', 'private_phone']
                 }*//*, {
-                    label: 'models.resident.building.name',
-                    withCollapsables: true,
-                    width: 200,
-                    props: ['building_names']
-                }, {
-                    label: 'models.resident.unit.name',
-                    withCollapsables: true,
-                    width: 150,
-                    props: ['unit_names']
-                }*//*, {
                     label: 'models.resident.relation.title',
                     withCounts: true,
                     counts: [

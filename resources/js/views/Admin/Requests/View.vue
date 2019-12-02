@@ -425,27 +425,7 @@
                                 </el-tab-pane>
                             </el-tabs>
                         
-                            <card class="mt15 request" :header="$t('models.request.assignment')">
-                                <assignment-by-type
-                                    :resetToAssignList="resetToAssignList"
-                                    :assignmentType.sync="assignmentType"
-                                    :toAssign.sync="toAssign"
-                                    :assignmentTypes="assignmentTypes"
-                                    :assign="assignUser"
-                                    :toAssignList="toAssignList"
-                                    :remoteLoading="remoteLoading"
-                                    :remoteSearch="remoteSearchAssignees"
-                                />
-                                <relation-list
-                                    :actions="assigneesActions"
-                                    :columns="assigneesColumns"
-                                    :filterValue="model.id"
-                                    fetchAction="getAssignees"
-                                    filter="request_id"
-                                    ref="assigneesList"
-                                    v-if="model.id"
-                                />
-                            </card>
+                            
                         </template>
                         <!--                    v-if="(!$can($permissions.update.serviceRequest)) || ($can($permissions.update.serviceRequest) && (media.length || (model.media && model.media.length)))"-->
                         <card class="mt15" v-if="model.id" id="comments">

@@ -44,12 +44,6 @@
                 prop="relation_format"
             >
             </el-table-column> -->
-            <!-- <el-table-column
-                :label="$t('models.resident.building.name')"
-                v-if="!hideBuilding"
-                prop="building.name"
-            >
-            </el-table-column> -->
             <el-table-column
                 :label="$t('models.resident.relation.type.label')"
                 prop="type"

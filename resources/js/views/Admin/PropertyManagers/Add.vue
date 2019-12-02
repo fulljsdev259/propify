@@ -24,14 +24,14 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="8">
-                                    <el-form-item class="label-block" :label="$t('models.property_manager.status.label')"
+                                    <el-form-item class="label-block" :label="$t('general.status.label')"
                                                         :rules="validationRules.status"
                                                         prop="status">
                                         <el-select :placeholder="$t('general.placeholders.select')" style="display: block"
                                                 v-model="model.status">
                                             <el-option
                                                     :key="k"
-                                                    :label="$t(`models.property_manager.status.${status}`)"
+                                                    :label="$t(`general.status.${status}`)"
                                                     :value="parseInt(k)"
                                                     v-for="(status, k) in $constants.propertyManager.status">
                                             </el-option>

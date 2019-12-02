@@ -2,26 +2,6 @@
     <el-form :model="model" :rules="validationRules" label-position="top"  ref="form" v-loading="loading">
 
         <el-row :gutter="20">
-            <!-- <el-col :md="12" v-if="!hideBuildingAndUnits && !hideBuilding">
-                <el-form-item prop="building_id" :label="$t('models.resident.building.name')" class="label-block">
-                    <el-select
-                            :loading="remoteLoading"
-                            :placeholder="$t('models.resident.search_building')"
-                            :remote-method="remoteRelationSearchBuildings"
-                            @change="searchRelationUnits(false)"
-                            filterable
-                            remote
-                            reserve-keyword
-                            style="width: 100%;"
-                            v-model="model.building_id">
-                        <el-option
-                                :key="building.id"
-                                :label="building.name"
-                                :value="building.id"
-                                v-for="building in buildings"/>
-                    </el-select>
-                </el-form-item>
-            </el-col> -->
             <el-col :md="24">
                 <el-form-item :label="$t('models.resident.relation.type.label')"
                             prop="type"
@@ -438,36 +418,8 @@
 
                 <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF" drag multiple/>
                 
-                <el-table
-                    :data="model.media"
-                    v-if="model.media.length"
-                    class="relation-file-table"
-                    :show-header="false"
-                    >
-                    <el-table-column
-                        :label="$t('models.resident.relation.filename')"
-                        prop="name"
-                    >
-                        <template slot-scope="scope">
-                            <a v-if="scope.row.url" :href="scope.row.url" class="normal" target="_blank"><strong>{{scope.row.name}}</strong></a>
-                            <span v-else ><strong>{{scope.row.name}}</strong></span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        align="right"
-                        width="30"
-                    >
-                        <template slot-scope="scope">
-                            <el-tooltip
-                                :content="$t('general.actions.delete')"
-                                class="item" effect="light" 
-                                placement="top-end">
-                                    <el-button @click="deletePDFfromRelation(scope.$index)" icon="ti-trash" size="mini" />
-                            </el-tooltip>
-                        </template>
-                    </el-table-column>
-                </el-table>
-
+                <relation-file-table :media="model.media" @delete="deletePDFfromRelation"></relation-file-table>
+                
                 </el-form-item>
             </el-col>
             <!-- <el-col :md="12">
@@ -510,6 +462,7 @@
 <script>
     import {displayError} from "../helpers/messages";
     import UploadRelation from 'components/UploadRelation';
+    import RelationFileTable from 'components/RelationFileTable';
     import RelationCount from 'components/RelationCount';
     import {mapActions, mapGetters} from 'vuex';
     import MultiSelect from 'components/Select';
@@ -520,6 +473,7 @@
         components: {
             UploadRelation,
             RelationCount,
+            RelationFileTable,
             MultiSelect
         },
         mixins: [globalFunction],
@@ -561,9 +515,6 @@
             quarter_id: {
                 type: Number
             },
-            building_id: {
-                type: Number
-            },
             unit_id: {
                 type: Number
             },
@@ -597,7 +548,6 @@
                     deposit_status: 1,
                     monthly_rent_gross: 0,
                     unit_id: (this.mode == 'add' ? [] : ''),
-                    building_id: '',
                     quarter_id: '',
                     media: [],
                     buildings: [],
@@ -607,10 +557,6 @@
                     quarter_id: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('models.resident.quarter.name')})
-                    }],
-                    building_id: [{
-                        required: true,
-                        message: this.$t('validation.required',{attribute: this.$t('models.resident.building.name')})
                     }],
                     unit_id: [{
                         required: true,
@@ -763,8 +709,6 @@
                             else if(end_date && end_date < today)
                                 params.status = 3
 
-                            //params.building = this.buildings.find(item => item.id == this.model.building_id)
-
                             params.quarter = this.quarters.find(item => item.id == this.model.quarter_id)
                             
                             if (this.mode == "add") {
@@ -794,7 +738,6 @@
                                 if(found)
                                     params.unit = found
                             })
-                            //params.building = this.buildings.find(item => item.id == this.model.building_id)
                             params.quarter = this.quarters.find(item => item.id == this.model.quarter_id)
 
                             params.status = 1
@@ -1216,35 +1159,6 @@
                 }
             }
         }
-        
-    }
-
-    /deep/ .relation-file-table {
-        margin-bottom: 10px;
-        padding-left: 10px;
-
-        &::before {
-            height: 0;
-        }
-
-        table {
-            width: 100%;
-            td, th {
-                padding: 4px 0;
-            }
-        }
-
-        
-
-
-        .el-button.el-button--default {
-            border: none;
-            &:hover {
-                background: none;
-                border: none;
-            }
-        }
-
         
     }
 

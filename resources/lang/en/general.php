@@ -16,6 +16,11 @@ return [
     ],
     'choose_language' => 'Choose Language',
     'language' => "Language",
+    'status' => [
+        'label' => 'Status',
+        'active' => 'Active',
+        'inactive' => 'Inactive',
+    ],
     'languages' => [
         'fr' => 'Français',
         'it' => 'Italiano',

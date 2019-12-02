@@ -158,7 +158,7 @@
                                     <span>{{ model.phone }}</span>
                                 </div>
                                 <el-form-item v-if="editMode" :label="$t('general.phone')" prop="phone">
-                                    <el-input prefix-icon="el-icon-plus"  :disabled="!editMode" type="text" v-model="model.phone"/>
+                                    <el-input  :disabled="!editMode" type="text" v-model="model.phone"/>
                                 </el-form-item>
 
                                 <div v-if="!editMode" class="service-info-item">
@@ -166,7 +166,7 @@
                                     <span>{{ model.mobile_phone }}</span>
                                 </div>
                                 <el-form-item v-if="editMode" :label="$t('general.mobile_phone')" prop="mobile_phone">
-                                    <el-input prefix-icon="el-icon-plus"  :disabled="!editMode" type="text" v-model="model.mobile_phone"/>
+                                    <el-input  :disabled="!editMode" type="text" v-model="model.mobile_phone"/>
                                 </el-form-item>
 
                         <!-- <el-row class="last-form-row" :gutter="20">
@@ -176,6 +176,26 @@
                                 </el-form-item>
                             </el-col>
                         </el-row> -->
+                                <div v-if="!editMode && model.status" class="service-info-item">
+                                    <span>{{ $t('general.status.label') }}</span>
+                                    {{ $constants.serviceProviders.status[model.status] }}
+                                    <span>{{ $t(`general.status.${$constants.serviceProviders.status[model.status]}`) }}</span>
+                                </div>
+                                <el-form-item v-if="editMode" class="label-block" :label="$t('general.status.label')"
+                                                :rules="validationRules.status"
+                                                prop="status">
+                                    <el-select :placeholder="$t('general.placeholders.select')"
+                                            style="display: block"
+                                            v-model="model.status">
+                                        <el-option
+                                                :key="k"
+                                                :label="$t(`general.status.${status}`)"
+                                                :value="parseInt(k)"
+                                                v-for="(status, k) in $constants.serviceProviders.status">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                
                                 <div v-if="!editMode" class="service-info-item">
                                     <span>{{ $t('general.email') }}</span>
                                     <span>{{ model.email }}</span>

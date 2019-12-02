@@ -14,20 +14,6 @@
             <template>
                 <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
             </template>
-            <!-- <template v-if="$can($permissions.assign.manager)">
-                <el-dropdown split-button 
-                            :disabled="!selectedItems.length" 
-                            size="mini"
-                            type="info" 
-                            trigger="click" 
-                            class="round mass-edit-dropdown"
-                            @command="handleCommand">
-                    {{$t('models.request.mass_edit.label')}}
-                    <el-dropdown-menu slot="dropdown">
-                        
-                    </el-dropdown-menu>
-                </el-dropdown>
-            </template> -->
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
                     <el-button size="mini" class="el-button--transparent">
@@ -53,17 +39,6 @@
                     </el-dropdown-menu>
                 </el-dropdown>
             </template>
-            <!-- <template v-if="$can($permissions.delete.request)">
-                <el-button 
-                    :disabled="!selectedItems.length" 
-                    @click="batchDeleteWithIds" 
-                    icon="ti-trash" 
-                    size="mini"
-                    class="el-button--transparent"
-                >
-                    {{$t('general.actions.delete')}}
-                </el-button>
-            </template> -->
 
         </heading>
         <!-- <request-list-table
@@ -282,6 +257,7 @@
                 propertyManagers:[],
                 residents: [],
                 services: [],
+                creators: [],
                 isLoadingFilters: false,
                 isDownloading: false,
                 batchEditVisible: false,
@@ -369,6 +345,12 @@
                         key: 'service_provider_id',
                         data: this.services,
                     },
+                    {
+                        name: this.$t('models.request.created_by'),
+                        type: 'select',
+                        key: 'creator_user_id',
+                        data: this.creators,
+                    },
                     // {
                     //     name: this.$t('models.request.internal_priority.label'),
                     //     type: 'select',
@@ -382,23 +364,31 @@
                     //     data: this.residents,
                     // },
                     {
-                        name: this.$t('general.filters.created_from'),
-                        type: 'date',
-                        key: 'created_from',
+                        name_from: this.$t('general.filters.created_from'),
+                        name_to: this.$t('models.request.closed_date'),
+                        type: 'daterange',
+                        key_from: 'created_from',
+                        key_to: 'solved_date',
                         format: 'dd.MM.yyyy'
                     },
+                    // {
+                    //     name: this.$t('general.filters.created_from'),
+                    //     type: 'date',
+                    //     key: 'created_from',
+                    //     format: 'dd.MM.yyyy'
+                    // },
                     // {
                     //     name: this.$t('general.filters.created_to'),
                     //     type: 'date',
                     //     key: 'created_to',
                     //     format: 'dd.MM.yyyy'
                     // },
-                    {
-                        name: this.$t('models.request.closed_date'),
-                        type: 'date',
-                        key: 'solved_date',
-                        format: 'dd.MM.yyyy'
-                    },
+                    // {
+                    //     name: this.$t('models.request.closed_date'),
+                    //     type: 'date',
+                    //     key: 'solved_date',
+                    //     format: 'dd.MM.yyyy'
+                    // },
                     {
                         name: this.$t('general.filters.phase'),
                         type: 'select',
@@ -430,7 +420,15 @@
             }
         },
         methods: {
-            ...mapActions(['updateRequest', 'getQuarters', 'getServices', 'getBuildings', 'getResidents', 'downloadRequestPDF', 'getServices', 'getPropertyManagers', 'massEdit']),
+            ...mapActions(['updateRequest', 
+                'getQuarters', 
+                'getServices', 
+                'getBuildings', 
+                'getResidents', 
+                'downloadRequestPDF', 
+                'getUsers', 
+                'getPropertyManagers',
+                'massEdit']),
             handleMenuClick(command) {
                 if(command == 'delete')
                     this.batchDeleteWithIds();
@@ -486,6 +484,11 @@
                 services.data.map(service => service.name = service.first_name + ' ' + service.last_name)
 
                 return services.data;
+            },
+            async fetchRemoteCreators(search = '') {
+                let creators = await this.getUsers({get_all: true, exclude_roles: ['provider']});
+
+                return creators.data;
             },
             async fetchRemoteResidents(search = '') {
                 const residents = await this.getResidents({get_all: true, search});
@@ -728,8 +731,9 @@
             this.propertyManagers = await this.fetchRemoteManagers();
             this.services = await this.fetchRemoteServices();
             this.residents = await this.fetchRemoteResidents();
+            this.creators = await this.fetchRemoteCreators();
             
-        },
+        },  
         watch: {
             selectedItems: function(items) {   
                 this.disableMassEditButton(items.length == 0)

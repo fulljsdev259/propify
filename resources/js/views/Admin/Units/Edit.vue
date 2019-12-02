@@ -522,7 +522,6 @@
                     this.editMode = !this.editMode;
                     this.old_model = _.clone(this.model, true);
                 } else {
-                    console.log(this.old_model, this.model);
                     if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
                         this.visibleDialog = true;
                     } else {
