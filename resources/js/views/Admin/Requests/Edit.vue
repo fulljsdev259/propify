@@ -667,6 +667,7 @@
                 }],
                 assigneesActions: [{
                     width: 120,
+                    align: 'right',
                     buttons: [{
                         title: 'models.request.notify',
                         tooltipMode: true,

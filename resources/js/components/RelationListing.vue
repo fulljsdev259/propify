@@ -255,6 +255,7 @@
                 :key="index"
                 :width="action.width"
                 align="right"
+                class-name="action-buttons"
                 v-for="(action, index) in actions"
             >
                 <template slot-scope="scope">
@@ -535,7 +536,15 @@
     .el-table .cell, .el-table th div{
         overflow: hidden;
         text-overflow: unset;
-    }    
+    }
+
+    .action-buttons {
+        .cell {
+            text-align: right;
+            float: right;
+        }
+        
+    }
 </style>
 <style lang="scss" scoped>    
     .listing {
