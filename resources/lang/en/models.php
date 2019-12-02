@@ -25,6 +25,16 @@ return [
             'deleted' => "User deleted error: ",
         ],        
     ],
+    'userFilter' => [
+        'saved' => 'User Filter saved successfully',
+        'deleted' => 'User Filter deleted',
+        'not_found' => 'User Filter not found',
+        'errors' => [
+            'not_found' => "User Filter not found",
+            'create' => "User Filter not created",
+            'update' => "User Filter not updated",
+        ],
+    ],
     'resident' => [
         'view' => 'View',
         'name' => 'Resident',
@@ -576,12 +586,19 @@ return [
         'category_list' => [
             'general' => 'General concerns',
             'malfunction' => 'Malfunction',
-            'deficiency' => 'Deficiency'
+            'deficiency' => 'Deficiency',
+            'open_issue' => 'Open Issue',
         ],
         'sub_category' => [
-            'surrounding' => 'Surrounding',
-            'real_estate' => 'Real Estate',
-            'flat' => 'Flat',
+            'inside_of_apartment' => 'Inside of apartment',
+            'outside_of_apartment' => 'Outside of Apartment',
+        ],
+        'qualification_category' => [
+            'normal_wear' => 'Normal wear',
+            'deficiency' => 'Deficiency',
+            're_cleaning' => 'Re-Cleaning',
+            'non_existent' => 'Non-Existent',
+            'okay' =>'Okay'
         ],
         'media'  => [
             'added' => 'Document added',
@@ -677,6 +694,7 @@ return [
             'payer_percent' => 'Pay by resident in %',
             'payer_amount' => 'Amount',
             'keywords' => 'Keywords',
+            'qualification_category' => 'Qualification'
         ],
         'placeholders' => [
             'category' => 'Select category',
@@ -785,11 +803,6 @@ return [
             'building_already_assign' => "Building already assigned through quarter",
             'building_assign_deleted_property_manager' => "You cannot assign buildings to an deleted Property Manager",
             'deleted' => "Property Manager deleted error: ",
-        ],
-        'status' => [
-            'label' => 'Status',
-	        'active' => 'Active',
-            'inactive' => 'Inactive',
         ],
     ],
     // 'house_owner' => [

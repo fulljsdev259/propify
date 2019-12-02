@@ -28,26 +28,20 @@
         <el-row :gutter="20" class="crud-view">
             
             <el-col :md="12">
-                    <el-card class="building-details">
+                <el-tabs type="border-card" v-model="activeTab">
+                    <el-tab-pane :label="$t('general.box_titles.details')" name="details">
                         <el-form :model="model" label-position="top" label-width="192px" ref="form" class="edit-details-form">
                             <el-row :gutter="20">
-                                <el-col :span="12" class="left-pane">
-                                    <img :src="require('img/default_img_object.png')"/>
-
-                                    <div v-if="!editId" class="quarter-id">
-                                        <span @dblclick="editId=editMode">{{ model.internal_building_id }}</span>
-                                    </div>
-                                    <el-form-item 
-                                        v-if="editMode && editId" 
-                                        :rules="validationRules.internal_building_id"
-                                        prop="internal_building_id" 
-                                        class='quarter-id'
-                                    >
-                                        <el-input type="text" v-model="model.internal_building_id" ></el-input>
+                                <el-col :md="12">
+                                    <el-form-item :label="$t('models.building.building_number')"
+                                                  :rules="validationRules.internal_building_id"
+                                                  prop="internal_building_id" style="max-width: 512px;">
+                                        <el-input type="text" v-model="model.internal_building_id" :disabled="!editMode"></el-input>
                                     </el-form-item>
-
-                                    <span v-if="!editName" class="quarter-name" @dblclick="editName=editMode">{{ quarterName }}</span>
-                                     <el-form-item  prop="quarter_id" v-if="editMode && editName" class="edit-name-input">
+                                </el-col>
+                                <el-col :md="12">
+                                    <el-form-item :label="$t('models.building.quarter')" prop="quarter_id"
+                                                  style="max-width: 512px;">
                                         <el-select
                                                 :loading="remoteLoading"
                                                 :placeholder="$t('general.placeholders.search')"
@@ -56,6 +50,7 @@
                                                 remote
                                                 reserve-keyword
                                                 style="width: 100%;"
+                                                :disabled="!editMode"
                                                 v-model="model.quarter_id">
                                             <el-option
                                                     :label="$t('general.none')"
@@ -69,170 +64,119 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :span="12" class='right-pane'>
-                                   <div v-if="!editMode" class="detail-item">
-                                        <span>{{ $t('general.street') }} / {{ $t('models.building.house_num') }}</span>
-                                        <span>{{ model.street }} {{ model.house_num }}</span>
-                                    </div>
-                                    <el-col :span="12">
-                                        <el-form-item v-if="editMode" :label="$t('general.street')" :rules="validationRules.street"
-                                                    prop="street"
-                                                    style="max-width: 512px;">
-                                            <el-input type="text" v-model="model.street" v-on:change="setBuildingName" ></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="12">
-                                        <el-form-item v-if="editMode" :label="$t('models.building.house_num')"
-                                                    :rules="validationRules.house_num"
-                                                    prop="house_num" style="max-width: 512px;">
-                                            <el-input type="text" v-model="model.house_num" v-on:change="setBuildingName"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <!-- <el-col :md="10">
-                                        <el-form-item :label="$t('general.name')" :rules="validationRules.name"
-                                                    prop="name"
-                                                    style="max-width: 512px;">
-                                            <el-input type="text" v-model="model.name"  :disabled="!editMode"></el-input>
-                                        </el-form-item>
-                                    </el-col> -->
-                                    
-                                   <div v-if="!editMode" class="detail-item">
-                                        <span>{{ $t('models.building.type') }}</span>
-                                        <span>{{ buildingTypes }}</span>
-                                    </div>
-                                    <el-form-item v-if="editMode" :label="$t('models.building.type')"
-                                                class="label-block"
-                                                :rules="validationRules.types"
-                                                prop="types">
-                                        <multi-select
+                            </el-row>
+                            <el-row :gutter="20">
+                                <el-col :md="12">
+                                    <el-form-item :label="$t('general.street')" :rules="validationRules.street"
+                                                  prop="street"
+                                                  style="max-width: 512px;">
+                                        <el-input type="text" v-model="model.street" v-on:change="setBuildingName"  :disabled="!editMode"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="12">
+                                    <el-form-item :label="$t('models.building.house_num')"
+                                                  :rules="validationRules.house_num"
+                                                  prop="house_num" style="max-width: 512px;">
+                                        <el-input type="text" v-model="model.house_num" v-on:change="setBuildingName" :disabled="!editMode"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <!-- <el-col :md="10">
+                                    <el-form-item :label="$t('general.name')" :rules="validationRules.name"
+                                                  prop="name"
+                                                  style="max-width: 512px;">
+                                        <el-input type="text" v-model="model.name"  :disabled="!editMode"></el-input>
+                                    </el-form-item>
+                                </el-col> -->
+                            </el-row>
+                            <el-row :gutter="20">
+                                <el-col :md="6">
+                                    <el-form-item :label="$t('models.building.type')"
+                                                  class="label-block"
+                                                  :rules="validationRules.types"
+                                                  prop="types">
+                                       <multi-select
                                             :name="$t('models.building.type')"
                                             :data="types"
+                                            :disabled="!editMode"
                                             :selectedOptions="model.types"
                                             tagColor="#9E9FA0"
-                                            bgColor="#f6f5f7"
                                             showMultiTag
                                             @select-changed="model.types=$event"
                                         ></multi-select>
                                     </el-form-item>
-
-                                    <div v-if="!editMode" class="detail-item">
-                                        <span>{{ $t('general.zip') }} / {{ $t('general.city') }}</span>
-                                        <span>{{ model.zip }} {{ model.city }}</span>
-                                    </div>
-                                    <el-col :md="7" v-if="editMode" class="pl-0">
-                                        <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
-                                                    prop="zip"
-                                                    style="max-width: 512px;">
-                                            <el-input type="text" v-model="model.zip" ></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="17" v-if="editMode" class="pr-0">
-                                        <el-form-item :label="$t('general.city')" :rules="validationRules.city"
-                                                    prop="city"
-                                                    style="max-width: 512px;">
-                                            <el-input type="text" v-model="model.city"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-
-                                    <div v-if="!editMode" class="detail-item">
-                                        <span>{{ $t('general.state') }}</span>
-                                        <span>{{ buildingState }}</span>
-                                    </div>
-                                    <el-form-item v-if="editMode" :label="$t('general.state')"
-                                                :rules="validationRules.state_id"
-                                                prop="state_id">
+                                </el-col>
+                                <el-col :md="6">
+                                    <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
+                                                  prop="zip"
+                                                  style="max-width: 512px;">
+                                        <el-input type="text" v-model="model.zip" :disabled="!editMode"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="6">
+                                    <el-form-item :label="$t('general.city')" :rules="validationRules.city"
+                                                  prop="city"
+                                                  style="max-width: 512px;">
+                                        <el-input type="text" v-model="model.city" :disabled="!editMode"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="6">
+                                    <el-form-item :label="$t('general.state')"
+                                                  :rules="validationRules.state_id"
+                                                  prop="state_id" style="max-width: 512px;">
                                         <el-select
                                             filterable
                                             clearable 
                                             :placeholder="$t('general.state')"
                                             style="display: block"
                                             v-model="model.state_id"
+                                            :disabled="!editMode"
                                         >
                                             <el-option :key="state.id" :label="state.name" :value="state.id"
-                                                    v-for="state in states"></el-option>
+                                                       v-for="state in states"></el-option>
                                         </el-select>
                                     </el-form-item>
-                                    
-                                    <div v-if="!editMode" class="detail-item">
-                                        <span>{{ $t('models.building.floor_nr') }}</span>
-                                        <span>{{ model.floor_nr }}</span>
-                                    </div>
-                                    <div v-if="!editMode" class="detail-item">
-                                        <span>{{ $t('models.building.under_floor') }}</span>
-                                        <span>{{ model.under_floor }}</span>
-                                    </div>
-                                    <el-col :md="12" v-if="editMode" class="pl-0">
-                                        <el-form-item :label="$t('models.building.floor_nr')"
-                                                    :rules="validationRules.floor_nr"
-                                                    prop="floor_nr" style="max-width: 512px;">
-                                            <el-input type="number" v-model="model.floor_nr" ></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="12" v-if="editMode" class="pr-0">
-                                        <el-form-item :label="$t('models.building.under_floor')"
-                                                    :rules="validationRules.under_floor"
-                                                    prop="under_floor">
-                                            <el-input type="number"
-                                                    :min="0"
-                                                    :max="3"
-                                                    v-model.number="model.under_floor"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-
-                                    <div v-if="!editMode" class="detail-item">
-                                        <span>{{ $t('models.unit.attic') }}</span>
-                                        <span>{{ model.attic?$t('general.yes'):$t('general.no') }}</span>
-                                    </div>
-                                    <el-form-item v-if="editMode" :rules="validationRules.attic" class="detail-attic">
-                                        <label class="attic-label">{{ $t('models.unit.attic') }}</label>
-                                        <el-switch v-model="model.attic" />
-                                    </el-form-item>
-                                    <!-- <el-col :span="12">
-                                        <el-form-item :label="$t('models.building.under_floor.title')"
-                                                    :rules="validationRules.floor"
-                                                    :prop="'floor.' + 0">
-                                            <el-input type="number"
-                                                    :min="0"
-                                                    v-model.number="model.floor"></el-input>
-                                        </el-form-item>
-                                    </el-col> -->
                                 </el-col>
                             </el-row>
+                            <el-row class="last-form-row" :gutter="20">
+                                
+                                <el-col :md="8">
+                                    <el-form-item :label="$t('models.building.floor_nr')"
+                                                  :rules="validationRules.floor_nr"
+                                                  prop="floor_nr" style="max-width: 512px;">
+                                        <el-input type="number" v-model="model.floor_nr"  :disabled="!editMode"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="8">
+                                    <el-form-item :rules="validationRules.attic">
+                                        <label class="attic-label">{{ $t('models.unit.attic') }}</label>
+                                        <el-switch v-model="model.attic" :disabled="!editMode"/>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="8">
+                                    <el-form-item :label="$t('models.building.under_floor')"
+                                                  :rules="validationRules.under_floor"
+                                                  prop="under_floor">
+                                        <el-input type="number"
+                                                :min="0"
+                                                :max="3"
+                                                v-model.number="model.under_floor"
+                                                :disabled="!editMode"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                
+                                <!-- <el-col :span="12">
+                                    <el-form-item :label="$t('models.building.under_floor.title')"
+                                                  :rules="validationRules.floor"
+                                                  :prop="'floor.' + 0">
+                                        <el-input type="number"
+                                                  :min="0"
+                                                  v-model.number="model.floor"></el-input>
+                                    </el-form-item>
+                                </el-col> -->
+                                
+                            </el-row>
                         </el-form>
-                    </el-card>
-                <!-- <div>
-                    <raw-grid-statistics-card :cols="8" :data="statistics.raw"/>
-                </div>
-                <el-row :gutter="15" type="flex">
-                    <el-col :span="12">
-                        <circular-progress-statistics-card
-                            :percentage="+statistics.percentage.occupied_units"
-                            :title="$t('models.building.occupied_units')"
-                            :color="getUnitsCountColor('occupied_units', 'name')"/>
-                    </el-col>
-                    <el-col :span="12">
-                        <circular-progress-statistics-card
-                            :percentage="+statistics.percentage.free_units"
-                            :title="$t('models.building.free_units')"
-                            :color="getUnitsCountColor('free_units', 'name')"/>
-                    </el-col>
-                </el-row> -->
-            </el-col>
-            <el-col :md="12">
-                <el-tabs type="border-card" v-model="activeRightTab">
-                    <el-tab-pane name="residents">                        
-                        <span slot="label">
-                            <el-badge :value="residentCount" :max="99" class="admin-layout">{{ $t('general.residents') }}</el-badge>
-                        </span>
-                        <relation-list
-                            :actions="residentActions"
-                            :columns="residentColumns"
-                            :filterValue="model.id"
-                            fetchAction="getResidents"
-                            filter="building_id"
-                            v-if="model.id"
-                        />
-                    </el-tab-pane>                    
+                    </el-tab-pane>
                     <el-tab-pane name="units" >
                         <span slot="label">
                             <el-badge :value="unitCount" :max="99" class="admin-layout">{{ $t('models.building.units') }}</el-badge>
@@ -286,175 +230,6 @@
                             
                         </div>
                     </el-tab-pane>
-                    
-
-                    
-                    <!-- <el-tab-pane name="relations">
-                        <span slot="label">
-                            <el-badge :value="relationCount" :max="99" class="admin-layout">{{ $t('general.relations') }}</el-badge>
-                        </span>
-                        
-                        <el-button style="float:right" type="primary" @click="toggleAddDrawer" icon="icon-plus" size="mini" round>{{$t('models.resident.relation.add')}}</el-button>    
-                        <relation-list-table
-                                    :items="model.relations"
-                                    :hide-building="true"
-                                    @edit-relation="editRelation"
-                                    @delete-relation="deleteRelation">
-                        </relation-list-table>
-                    </el-tab-pane> -->
-                    <!-- <el-tab-pane name="managers">
-                        <span slot="label">
-                            <el-badge :value="managerCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
-                        </span>
-                        <assignment-by-type
-                            :resetToAssignList="resetToAssignList"
-                            :assignmentType.sync="assignmentType"
-                            :toAssign.sync="toAssign"
-                            :assignmentTypes="assignmentTypes"
-                            :assign="assignUser"
-                            :toAssignList="toAssignList"
-                            :remoteLoading="remoteLoading"
-                            :remoteSearch="remoteSearchAssignees"
-                        />
-                        <relation-list
-                            :actions="assigneesActions"
-                            :columns="assigneesColumns"
-                            :filterValue="model.id"
-                            fetchAction="getBuildingAssignees"
-                            filter="building_id"
-                            ref="assigneesList"
-                            v-if="model.id"
-                        />
-                    </el-tab-pane> -->
-                    <!-- <el-tab-pane name="providers">
-                        <span slot="label">
-                            <el-badge :value="serviceCount" :max="99" class="admin-layout">{{ $t('models.building.providers') }}</el-badge>
-                        </span>                         -->
-                        <!-- <label class="card-label">{{$t('settings.contact_enable.label')}}</label>
-                        <el-select
-                                placeholder="Chose"
-                                style="width: 100%;"
-                                v-model="model.contact_enable"
-                        >
-                            <el-option
-                                    :key="contactEnableValue.id"
-                                    :label="contactEnableValue.label"
-                                    :value="contactEnableValue.value"
-                                    v-for="contactEnableValue in contactEnableValues"/>
-                        </el-select>
-                        <el-divider class="mt15" /> -->
-                        <!-- <assignment-by-type
-                            :resetToAssignList="resetToAssignProviderList"
-                            :assignmentType.sync="assignmentType"
-                            :toAssign.sync="toAssignProvider"
-                            :assignmentTypes="serviceAssignmentTypes"
-                            :assign="attachProvider"
-                            :toAssignList="toAssignProviderList"
-                            :remoteLoading="remoteLoading"
-                            :remoteSearch="remoteSearchProviders"
-                        /> -->
-                        <!-- <el-row :gutter="10" id="providerAssignBox">
-                            <el-col id="providerSelect">
-                                <el-select
-                                    clearable
-                                    :loading="remoteLoading"
-                                    :placeholder="$t('general.placeholders.search')"
-                                    :remote-method="remoteSearchProviders"
-                                    class="custom-remote-select"
-                                    filterable
-                                    remote
-                                    reserve-keyword
-                                    style="width: 100%;"
-                                    v-model="toAssignProvider"
-                                >
-                                    <div class="custom-prefix-wrapper" slot="prefix">
-                                        <i class="el-icon-search custom-icon"></i>
-                                    </div>
-                                    <el-option
-                                        :key="provider.id"
-                                        :label="provider.name"
-                                        :value="provider.id"
-                                        v-for="provider in toAssignProviderList"/>
-                                </el-select>
-                            </el-col>
-                            <el-col id="providerAssignBtn">
-                                <el-button :disabled="!toAssignProvider" @click="attachProvider" class="full-button"
-                                            icon="ti-save" type="primary">
-                                    &nbsp;{{$t('general.assign')}}
-                                </el-button>
-                            </el-col>
-                        </el-row> -->
-                        <!-- <relation-list
-                            :actions="assignmentsProviderActions"
-                            :columns="assignmentsProviderColumns"
-                            :filterValue="model.id"
-                            fetchAction="getServices"
-                            filter="building_id"
-                            ref="assignmentsProviderList"
-                            v-if="model.id"
-                        /> -->
-                    <!-- </el-tab-pane> -->
-                    
-                    <!--<el-tab-pane name="assignees">
-                        <span slot="label">
-                            <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge>
-                        </span>
-                        <el-row :gutter="10" id="managerAssignBox">
-                            <el-col id="managerSelect">
-                                <el-select
-                                    clearable
-                                    :loading="remoteLoading"
-                                    :placeholder="$t('general.placeholders.search')"
-                                    :remote-method="remoteSearchAssignees"
-                                    class="custom-remote-select"
-                                    filterable
-                                    remote
-                                    reserve-keyword
-                                    style="width: 100%;"
-                                    v-model="toAssign"
-                                >
-                                    <div class="custom-prefix-wrapper" slot="prefix">
-                                        <i class="el-icon-search custom-icon"></i>
-                                    </div>
-                                    <el-option
-                                            :key="assignee.id"
-                                            :label="assignee.name"
-                                            :value="assignee.id"
-                                            v-for="assignee in toAssignList"/>
-                                </el-select>
-                            </el-col>
-                             <el-col>
-                                <el-select
-                                        :placeholder="$t('general.placeholders.select')"
-                                        style="display: block"
-                                        multiple
-                                        v-model="userAssignmentType"
-                                        filterable>
-                                    <el-option
-                                            :key="type.value"
-                                            :label="type.name"
-                                            :value="type.value"
-                                            v-for="type in assignment_types">
-                                    </el-option>
-                                </el-select>
-                            </el-col>
-                            <el-col id="managerAssignBtn">
-                                <el-button :disabled="!toAssign || !userAssignmentType || userAssignmentType.length == 0" @click="assignUser" class="full-button"
-                                            icon="ti-save" type="primary">
-                                    &nbsp;{{$t('general.assign')}}
-                                </el-button>
-                            </el-col>
-                        </el-row>
-                        <relation-list
-                            :actions="assigneesActions"
-                            :columns="assigneesColumns"
-                            :filterValue="model.id"
-                            fetchAction="getBuildingAssignees"
-                            filter="building_id"
-                            ref="assigneesList"
-                            v-if="model.id"
-                        />
-                    </el-tab-pane>-->
                 </el-tabs>
                 
                 <el-tabs type="border-card" v-model="activeRequestTab">
@@ -572,7 +347,6 @@
         ></edit-close-dialog>
     </div>
 </template>
-
 <script>
     import {mapActions, mapGetters} from 'vuex';
     import {displayError, displaySuccess} from "helpers/messages";
@@ -636,14 +410,6 @@
                     label: 'general.name',
                     translate: this.translateResidentType
                 }, {
-                //     prop: 'name',
-                //     label: 'general.name',
-                //     type: 'residentName'
-                // }, {
-                //     prop: 'type',
-                //     label: 'models.resident.relation.type.label',
-                //     i18n: this.translateResidentType
-                // }, {
                     type: 'residentRelation',
                     label: 'models.resident.relation.title'
                 }, {
@@ -661,29 +427,7 @@
                         tooltipMode: true
                     }]
                 }],
-                assigneesColumns: [{
-                    type: 'assignProviderManagerAvatars',
-                    width: 70,
-                }, {
-                    type: 'assigneesName',
-                    prop: 'name',
-                    label: 'general.name'
-                }, {
-                    prop: 'assignment_types',
-                    label: 'general.assignment_types.label',
-                    i18n: this.translateAssignmentType
-                }],
-                assigneesActions: [{
-                    width: 70,
-                    buttons: [{
-                        title: 'models.building.unassign_manager',
-                        type: 'danger',
-                        onClick: this.unassignBuilding,
-                        tooltipMode: true,
-                        icon: 'el-icon-close',
-                        view: 'building'
-                    }]
-                }],
+                
                 unitColumns: [{
                     prop: 'name',
                     label: 'models.unit.name'
@@ -695,7 +439,7 @@
                     label: 'general.resident',
                     type: 'unitResidentAvatar',
                 }],
-                unitActions: [/*{
+                unitActions: [{
                     width: 70,
                     buttons: [{
                         title: 'general.actions.edit',
@@ -703,7 +447,7 @@
                         tooltipMode: true,
                         icon: 'ti-search'
                     }]
-                }*/],
+                }],
                 requestColumns: [{
                     type: 'requestResidentAvatar',
                     width: 90,
@@ -726,24 +470,6 @@
                         tooltipMode: true
                     }]
                 }*/],
-                assignmentsProviderColumns: [{
-                //     type: 'assignProviderManagerAvatars',
-                //     width: 70,
-                // }, {
-                    prop: 'name',
-                    label: 'general.name',
-                    type: 'serviceName'
-                }],
-                assignmentsProviderActions: [{
-                    width: 70,
-                    buttons: [{
-                        icon: 'el-icon-close',
-                        title: 'general.unassign',
-                        type: 'danger',
-                        onClick: this.notifyProviderUnassignment,
-                        tooltipMode: true
-                    }]
-                }],                
                 remoteLoading: false,
                 deleteBuildingVisible: false,
                 multiple: true,
@@ -763,8 +489,6 @@
                 editingRelationIndex: -1,
                 activeDrawerTab: "emergency",
                 editMode: false,
-                editId: false,
-                editName: false,
                 visibleDialog: false,
             };
         },
@@ -772,12 +496,7 @@
             ...mapActions([
                 'getSettings',
                 "uploadBuildingFile",
-                "deleteBuildingFile",                
-                "getBuildingAssignees",
-                "assignManagerToBuilding",
-                "unassignBuildingAssignee",
-                "assignUsersToBuilding",
-                "unassignUserToBuilding",
+                "deleteBuildingFile",
                 "deleteBuilding",
                 'deleteBuildingWithIds', 
                 'checkUnitRequestWidthIds'
@@ -791,8 +510,6 @@
                         this.visibleDialog = true;
                     } else {
                         this.editMode = !this.editMode;
-                        this.editId = false;
-                        this.editName = false;
                     }
                 }
             },
@@ -1042,40 +759,7 @@
                 this.visibleDrawer = true
                 this.isAddRelation = true
             },
-             notifyProviderUnassignment(row) {
-                this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
-                    confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
-                    cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
-                    type: 'warning'
-                }).then(async () => {
-                    try {
-                        this.loading.status = true;
-
-                        await this.unassignProvider(row);
-
-                    } catch (err) {
-                        displayError(err);
-                    } finally {
-                        this.loading.status = false;
-                    }
-                }).catch(async () => {
-                    this.loading.status = false;
-                });
-            },
-            async unassignProvider(toUnassign) {
-                const resp = await this.unassignProviderToBuilding({
-                    id: this.model.id,
-                    toAssignId: toUnassign.id
-                });
-
-                this.$refs.assignmentsProviderList.fetch(); 
-                if(this.$refs.auditList){
-                    this.$refs.auditList.fetch();
-                }
-                this.resetToAssignProviderList();
-                this.serviceCount--;
-                displaySuccess(resp.data)
-            },
+            
             addRelation (data) {
                 this.model.relations.push(data);
                 this.relationCount ++;
@@ -1154,33 +838,6 @@
                 
                 return this.model.relations.map(item => item.unit_id)
             },
-            quarterName() {
-                let result = '';
-                this.quarters.forEach((item) => {
-                    if(item.id == this.model.quarter_id)
-                        result = item.name;
-                });
-                return result;
-            },
-            buildingTypes() {
-                let result = '';
-                this.types.forEach((type) => {
-                    if(this.model.types && this.model.types.indexOf(type.id) !== -1) {
-                        if(result !== '')
-                            result = `${result}, `;
-                        result =  `${result}${type.name}`;
-                    }
-                });
-                return result;
-            },
-            buildingState() {
-                let result = '';
-                this.states.forEach((state) => {
-                    if(state.id == this.model.state_id)
-                        result = state.name;
-                });
-                return result;
-            }
         },
         watch: {
             'visibleDrawer': {
@@ -1196,7 +853,6 @@
         },
     }
 </script>
-
 <style lang="scss">
     .el-tabs--border-card {
         border-radius: 6px;
@@ -1260,116 +916,7 @@
             //         cursor: pointer;
             //     }
             // }
-            .el-card.building-details {
-                padding: 0;
-                border-color: var(--border-color-base);
-                border-radius: 6px;
-                background-color: #f6f5f7;
 
-                .pr-0 {
-                    padding-right: 0px !important;
-                }
-                .pl-0 {
-                    padding-left: 0px !important;
-                }
-
-                .el-row {
-                    display: flex;
-                }
-
-                :global(.el-card__body) {
-                    padding: 0px;
-                    background-color: inherit;
-                }
-
-                .left-pane, .right-pane {
-                    padding: 20px !important;
-                    .el-col {
-                        &:nth-of-type(1) {
-                            padding-left: 0px !important;
-                        }
-                        &:nth-of-type(2) {
-                            padding-right: 0px !important;
-                        }
-                    }
-                }
-
-                .left-pane {
-                    img {
-                        width: 100%;
-                        margin-bottom: 15px;
-                    }
-                    .quarter-id {
-                        position: absolute;
-                        top: 35px;
-                        left: 35px;
-                        span {
-                            padding: 3px 15px;
-                            background-color: rgba(#fff, 0.7);
-                            border-radius: 2px;
-                            color: var(--color-primary);
-                            font-size: 13px;
-                            font-weight: 600;
-                        }
-                    }
-                    .quarter-name {
-                        font-weight: 900;
-                        font-size: 24px;
-                        font-family: 'Radikal Bold';
-                        letter-spacing: 1.2px;
-                        color: var(--text-color);
-                    }
-                    /deep/ .edit-name-input {
-                        margin: 0px;
-                        .el-input__inner {
-                            font-size: 24px;
-                            font-family: 'Radikal';
-                            font-weight: 700;
-                            color: var(--text-color);
-                            &::-webkit-input-placeholder {
-                                color: var(--text-color);
-                                font-weight: bold;
-                            }
-                        }
-                        &:nth-type-of(1) {
-                            margin-top: 10px !important;
-                            margin-bottom: 40px;  
-                        }
-                    }
-                }
-
-                .right-pane {
-                    background-color: var(--color-white);
-                    .el-form-item {
-                        margin-bottom: 10px !important;
-                    }
-                    .detail-item {
-                        margin-bottom: 25px;
-                        display: flex;
-                        justify-content: space-between;
-                        span:first-child {
-                            text-align: left;
-                            font-weight: 600;
-                            color: var(--text-color);
-                        }
-                        span:first-child {
-                            text-align: right;
-                        }
-                    }
-                    .el-form-item.detail-attic {
-                        clear: both;
-                        :global(.el-form-item__content) {
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            width: 100%;
-                            label {
-                                flex: 1;
-                            }
-                        }
-                    }
-                }
-            }
             .crud-view > .el-col {
                 margin-bottom: 1em;
             }

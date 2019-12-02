@@ -6,6 +6,7 @@ use App\Criteria\Quarter\FilterByCityCriteria;
 use App\Criteria\Quarter\FilterByStateCriteria;
 use App\Criteria\Quarter\FilterByTypeCriteria;
 use App\Criteria\Quarter\FilterByUserRoleCriteria;
+use App\Criteria\Quarter\IncludeForOrderCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Quarter\AssignUserRequest;
 use App\Http\Requests\API\Quarter\CreateRequest;
@@ -22,6 +23,7 @@ use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
 use App\Models\ServiceProvider;
+use App\Models\Unit;
 use App\Models\User;
 use App\Repositories\AddressRepository;
 use App\Repositories\QuarterRepository;
@@ -99,6 +101,7 @@ class QuarterAPIController extends AppBaseController
         $this->quarterRepository->pushCriteria(new FilterByCityCriteria($request));
         $this->quarterRepository->pushCriteria(new FilterByUserRoleCriteria($request));
         $this->quarterRepository->pushCriteria(new FilterByTypeCriteria($request));
+        $this->quarterRepository->pushCriteria(new IncludeForOrderCriteria($request));
 
         $getAll = $request->get('get_all', false);
         if ($getAll) {

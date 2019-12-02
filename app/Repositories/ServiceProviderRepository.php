@@ -105,14 +105,9 @@ class ServiceProviderRepository extends BaseRepository
     {
         // Cannot use $sp->buildings() and $sp->quarters() because of a bug
         // related to different number of columns in union
-        $spbs = Building::select(\DB::raw('id, name, "building" as type'))
-            ->join('building_service_provider', 'building_service_provider.building_id', '=', 'id')
-            ->where('building_service_provider.service_provider_id', $sp->id);
-        $spds = Quarter::select(\DB::raw('id, name, "quarter" as type'))
+        return Quarter::select(\DB::raw('id, name, "quarter" as type'))
             ->join('quarter_service_provider', 'quarter_service_provider.quarter_id', '=', 'id')
             ->where('quarter_service_provider.service_provider_id', $sp->id);
-
-        return $spbs->union($spds);
     }
 
 }

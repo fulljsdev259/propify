@@ -9,10 +9,12 @@
                 v-model="search"
             >
                 <template slot="suffix" v-if="search.length">
-                    <el-button @click="clearSearch()"   
-                               circle
-                               icon="ti-close"
-                               size="mini"/>
+                    <el-button 
+                        @click="clearSearch()"   
+                        circle
+                        icon="ti-close"
+                        size="mini"
+                    />
                 </template>
             </el-input>
             <div class="sub-menu" key="sub-menu">
@@ -46,8 +48,8 @@
                                 <list-filter-select
                                     :type="filter.key"
                                     :name="filter.name"
-                                    :searchBox="filter.searchBox"
                                     :data="filter.data"
+                                    :searchBox="filter.searchBox"
                                     :selectedOptions="filterModel[filter.key]"
                                     @select-changed="handleSelectChange($event, filter)"
                                 >
@@ -80,11 +82,28 @@
                                 <el-date-picker
                                     :format="filter.format"
                                     :placeholder="filter.name"
-                                    :value-format="filter.format"
+                                         :value-format="filter.format"
                                     @change="filterChanged(filter)"
                                     style="width: 100%"
                                     type="date"
                                     v-model="filterModel[filter.key]"
+                                >
+                                </el-date-picker>
+                            </el-form-item>
+                            <el-form-item v-else-if="filter.type === filterTypes.daterange">
+                                <el-date-picker
+                                    v-model="dateRange"
+                                    type="daterange"
+                                    align="right"
+                                    unlink-panels
+                                    :range-separator="$t('general.date_range.range_separator')"
+                                    :start-placeholder="filter.name_from"
+                                    :end-placeholder="filter.name_to"
+                                    format="dd.MM.yyyy"
+                                    value-format="dd.MM.yyyy"
+                                    :picker-options="pickerOptions"
+                                    popper-class="custom-picker-panel"
+                                    @change="dateRangeChanged(filter)"
                                 >
                                 </el-date-picker>
                             </el-form-item>
@@ -250,7 +269,7 @@
                     </div>
                     <div v-else-if="column.withPMStatusSign">
                         <el-tooltip
-                            :content="`${$t(`models.property_manager.status.${$constants.propertyManager.status[scope.row[column.prop]]}`)}`"
+                            :content="`${$t(`general.status.${$constants.propertyManager.status[scope.row[column.prop]]}`)}`"
                             class="item"
                             effect="light" placement="top"
                         >
@@ -490,11 +509,9 @@
     import tableAvatar from 'components/Avatar';
     import RequestDetailCard from 'components/RequestDetailCard';
     import SelectLanguage from 'components/SelectLanguage';
-    import ListTableSelect from 'components/ListTableSelect';
-    import ListFilterSelect from 'components/ListFilterSelect';
+    import ListFilterSelect from 'components/Select';
     import FormatDateTimeMixin from 'mixins/formatDateTimeMixin';
     import globalFunction from "helpers/globalFunction";
-
 
     export default {
         name: 'ListTable',
@@ -505,9 +522,8 @@
             'table-avatar': tableAvatar,
             RequestDetailCard,
             SelectLanguage,
-            ListTableSelect,
             ListFilterSelect,
-            FormatDateTimeMixin
+            FormatDateTimeMixin,
         },
         mixins: [globalFunction],
         props: {
@@ -590,6 +606,7 @@
                     text: 'text',
                     number: 'number',
                     date: 'date',
+                    daterange: 'daterange',
                     language: 'language',
                     role: 'role'
                 },
@@ -597,6 +614,7 @@
                 uuid,
                 selectedItems: [],
                 subMenu: [],
+                dateRange: ''
             }
         },
         computed: {
@@ -630,7 +648,96 @@
             },
             filterColSize() {
                 return 4;
-            }
+            },
+            pickerOptions: function() {
+                const lastWeek = {
+                    text: this.$t('general.date_range.last_week'),
+                    onClick(picker) {
+                    let end = subDays(new Date(), 7);
+                    const start = startOfWeek(end);
+                    end = lastDayOfWeek(end);
+
+                    picker.$emit('pick', [start, end]);
+                    }
+                };
+                const last7Days = {
+                    text: this.$t('general.date_range.last_7_days'),
+                    onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                    picker.$emit('pick', [start, end]);
+                    }
+                };
+                const last14Days = {
+                    text: this.$t('general.date_range.last_14_days'),
+                    onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 14);
+                    picker.$emit('pick', [start, end]);
+                    }
+                };
+                const last30Days = {
+                    text: this.$t('general.date_range.last_30_days'),
+                    onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                    picker.$emit('pick', [start, end]);
+                    }
+                };
+                const lastMonth = {
+                    text: this.$t('general.date_range.last_month'),
+                    onClick(picker) {
+                    let end = subMonths(new Date(), 1);
+                    const start = startOfMonth(end);
+                    end = lastDayOfMonth(end);
+
+                    picker.$emit('pick', [start, end]);
+                    }
+                };
+                const last3Months = {
+                    text: this.$t('general.date_range.last_3_months'),
+                    onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                    picker.$emit('pick', [start, end]);
+                    }
+                };
+                const last6Months = {
+                    text: this.$t('general.date_range.last_6_months'),
+                    onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 183);
+                    picker.$emit('pick', [start, end]);
+                    }
+                };
+                const lastYear = {
+                    text: this.$t('general.date_range.last_year'),
+                    onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
+                    picker.$emit('pick', [start, end]);
+                    }
+                };
+                const last2Years = {
+                    text: this.$t('general.date_range.last_2_years'),
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 730);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }
+                
+                return {
+                    shortcuts: [last7Days, last14Days, last30Days, lastWeek, lastMonth, last3Months]
+                };
+            },
         },
         methods: {
             rowClicked(row) {
@@ -795,6 +902,17 @@
                 if (filter.type == this.filterTypes.language) {
                     this.updatePage();
                 }
+            },
+            dateRangeChanged(filter) {
+                if(this.dateRange) {
+                    this.filterModel[filter.key_from] = this.dateRange[0]
+                    this.filterModel[filter.key_to] = this.dateRange[1]
+                }
+                else {
+                    this.filterModel[filter.key_from] = ''
+                    this.filterModel[filter.key_to] = ''
+                }
+                this.updatePage();
             },
             isDisabled(select, selected, status) {
                 if (select.withDisabled) {

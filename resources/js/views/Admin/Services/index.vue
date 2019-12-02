@@ -91,9 +91,9 @@
             return {
                 header: [{
                     label: 'general.filters.status',
-                    width: 100,
-                    withStatusSign: true,
+                    withPMStatusSign: true,
                     prop: 'status',
+                    width: 100,
                 }, {
                     label: 'models.service.company_name',
                     prop: 'company_name'
@@ -191,12 +191,6 @@
                     //     key: 'quarter_id',
                     //     data: this.quarters,
                     // },
-                    {
-                        name: this.$t('general.filters.language'),
-                        type: 'select',
-                        key: 'language',
-                        data: []
-                    }
                 ]
             },
         },

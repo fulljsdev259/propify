@@ -45,7 +45,7 @@
                                         v-model="model.building_id">
                                         <el-option
                                             :key="building.id"
-                                            :label="building.name"
+                                            :label="building.address.street + ' ' + building.address.house_num"
                                             :value="building.id"
                                             v-for="building in buildings"/>
                                     </el-select>

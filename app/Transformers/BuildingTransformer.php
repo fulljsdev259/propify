@@ -24,7 +24,6 @@ class BuildingTransformer extends BaseTransformer
     {
         $response = $this->getAttributesIfExists($model, [
             'id',
-            'name',
             'building_format',
             'types',
             'label',

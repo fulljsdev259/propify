@@ -281,6 +281,7 @@ class UtilsAPIController extends AppBaseController
             'category' => ServiceProvider::Category,
             'type' => ServiceProvider::Type,
             'title' => ServiceProvider::Title,
+            'status' => ServiceProvider::Status,
         ];
 
         return $result;
@@ -329,6 +330,7 @@ class UtilsAPIController extends AppBaseController
             'location' => Request::Location,
             'room' => Request::Room,
             'capture_phase' => Request::CapturePhase,
+            'qualification_category' => Request::QualificationCategory,
             'categories_data' =>  [
                 'categories' => Request::Category,
                 'sub_categories' => Request::SubCategory,

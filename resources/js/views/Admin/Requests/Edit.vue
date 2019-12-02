@@ -16,7 +16,7 @@
             <edit-actions :saveAction="submit" :deleteAction="deleteRequest" route="adminRequests" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
         </heading>
         <div class="crud-view" id="edit_request">
-            <el-form :model="model" label-position="top" label-width="192px" ref="form">
+            <el-form :model="model" label-position="top" label-width="192px" ref="form" class="edit-details-form">
                 <el-row :gutter="20">
                     <el-col :md="12">
                         <card  :header="$t('models.request.request_details')" id="request_details">
@@ -169,6 +169,23 @@
                                         </el-input>
                                     </el-form-item>
                                 </el-col>
+                                <el-col :md="12" v-if="this.showQualification == true">
+                                    <el-form-item :label="$t('models.request.category_options.qualification_category')">
+                                        <el-select 
+                                            :disabled="$can($permissions.update.serviceRequest) || !editMode"
+                                            :placeholder="$t(`general.placeholders.select`)"
+                                            class="custom-select"
+                                            v-model="model.qualification_category"
+                                        >
+                                            <el-option
+                                                :key="qualification.value"
+                                                :label="qualification.name"
+                                                :value="qualification.value"
+                                                v-for="qualification in qualification_categories">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
                                 <!-- <el-col :md="6" v-if="this.showPayer == true">
                                     <el-form-item 
                                         :label="$t('models.request.category_options.payer_percent')"
@@ -282,52 +299,7 @@
                                 </el-col> -->
                             </el-row>
 
-                            <el-tabs type="border-card" v-model="activeTab1">
-
-                                <el-tab-pane :label="$t('models.request.request_details')" name="request_details">
-                                    <el-form-item :label="$t('models.request.prop_title')" :rules="validationRules.title"
-                                                  prop="title">
-                                        <el-input 
-                                                :disabled="$can($permissions.update.serviceRequest) || !editMode" 
-                                                type="text"
-                                                v-model="model.title"/>
-                                    </el-form-item>
-                                    <el-form-item :label="$t('general.description')" :rules="validationRules.description"
-                                                  prop="description"
-                                                  :key="editorKey">
-                                        <yimo-vue-editor
-                                                :config="editorConfig"
-                                                v-model="model.description"/>
-                                    </el-form-item>
-                                </el-tab-pane>
-
-                                <el-tab-pane name="request_images">
-                                    <span slot="label">
-                                        <el-badge :value="mediaCount" :max="99" class="admin-layout">{{ $t('models.request.images') }}</el-badge>
-                                    </span>
-                                    <!-- <el-alert
-                                        v-if="( !media || media.length == 0) && mediaCount == 0"
-                                        :title="$t('models.request.no_images_message')"
-                                        type="info"
-                                        show-icon
-                                        :closable="false"
-                                    >
-                                    </el-alert> -->
-
-                                    <span class="image-tab-title">Files</span>
-                                    <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex" :show-description="false"/>
-                                    <span class="image-tab-title">Upload</span>
-                                    <el-alert
-                                        :title="$t('general.upload_all_desc')"
-                                        type="info"
-                                        show-icon
-                                        :closable="false"
-                                    >
-                                    </el-alert>
-                                    <media-uploader ref="media" :id="request_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
-                                </el-tab-pane>
-
-                            </el-tabs>
+                            
 
                             <!--                            <el-form-item-->
                             <!--                                :label="$t('models.request.is_public')"-->
@@ -344,6 +316,53 @@
                             <!--                            </el-form-item>-->
                             <!--                            <small>{{$t('models.request.public_legend')}}</small>-->
                         </card>
+
+                        <el-tabs type="border-card" v-model="activeTab1">
+
+                            <el-tab-pane :label="$t('models.request.request_details')" name="request_details">
+                                <el-form-item :label="$t('models.request.prop_title')" :rules="validationRules.title"
+                                                prop="title">
+                                    <el-input 
+                                            :disabled="$can($permissions.update.serviceRequest) || !editMode" 
+                                            type="text"
+                                            v-model="model.title"/>
+                                </el-form-item>
+                                <el-form-item :label="$t('general.description')" :rules="validationRules.description"
+                                                prop="description"
+                                                :key="editorKey">
+                                    <yimo-vue-editor
+                                            :config="editorConfig"
+                                            v-model="model.description"/>
+                                </el-form-item>
+                            </el-tab-pane>
+
+                            <el-tab-pane name="request_images">
+                                <span slot="label">
+                                    <el-badge :value="mediaCount" :max="99" class="admin-layout">{{ $t('models.request.images') }}</el-badge>
+                                </span>
+                                <!-- <el-alert
+                                    v-if="( !media || media.length == 0) && mediaCount == 0"
+                                    :title="$t('models.request.no_images_message')"
+                                    type="info"
+                                    show-icon
+                                    :closable="false"
+                                >
+                                </el-alert> -->
+
+                                <span class="image-tab-title">Files</span>
+                                <ui-media-gallery :files="model.media.map(({url}) => url)" @delete-media="deleteMediaByIndex" :show-description="false"/>
+                                <span class="image-tab-title">Upload</span>
+                                <el-alert
+                                    :title="$t('general.upload_all_desc')"
+                                    type="info"
+                                    show-icon
+                                    :closable="false"
+                                >
+                                </el-alert>
+                                <media-uploader ref="media" :id="request_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
+                            </el-tab-pane>
+
+                        </el-tabs>
                         <template v-if="$can($permissions.update.serviceRequest)">
                             <card class="mt15" v-if="model.id">
                                 <el-divider class="column-divider" content-position="left">
@@ -512,16 +531,14 @@
                                     <span slot="label">
                                         {{ $t('models.request.assignment') }}
                                     </span>
-                                    <assignment-by-type
-                                        :resetToAssignList="resetToAssignList"
-                                        :assignmentType.sync="assignmentType"
-                                        :toAssign.sync="toAssign"
-                                        :assignmentTypes="assignmentTypes"
-                                        :assign="assignUser"
-                                        :toAssignList="toAssignList"
-                                        :remoteLoading="remoteLoading"
-                                        :remoteSearch="remoteSearchAssignees"
-                                    />
+                                    <users-assignment
+                                            :resetToAssignList="resetToAssignList"
+                                            :toAssign.sync="toAssign"
+                                            :assign="assignUsers"
+                                            :toAssignList="toAssignList"
+                                            :remoteLoading="remoteLoading"
+                                            :remoteSearch="remoteSearchAssignees"
+                                    ></users-assignment>
                                     <relation-list
                                         :actions="assigneesActions"
                                         :columns="assigneesColumns"
@@ -536,7 +553,7 @@
                         </template>
                         <!--                    v-if="(!$can($permissions.update.serviceRequest)) || ($can($permissions.update.serviceRequest) && (media.length || (model.media && model.media.length)))"-->
                         
-                        <el-tabs id="comments-card" v-if="model.id" class="mt15"  type="border-card" v-model="activeTab2">
+                        <el-tabs id="comments-card" v-if="model.id" type="border-card" v-model="activeTab2">
                             <el-tab-pane name="comments">
                                 <span slot="label">
                                     <el-badge :value="requestCommentCount" :max="99" class="admin-layout">{{ $t('models.request.comments') }}</el-badge>
@@ -601,6 +618,7 @@
     import { EventBus } from '../../../event-bus.js';
     import EditorConfig from 'mixins/adminEditorConfig';
     import EditCloseDialog from 'components/EditCloseDialog';
+    import UsersAssignment from 'components/UsersAssignment';
 
     export default {
         name: 'AdminRequestsEdit',
@@ -617,7 +635,8 @@
             EditActions,
             Avatar,            
             AssignmentByType,
-            EditCloseDialog
+            EditCloseDialog,
+            UsersAssignment
         },
         data() {
             return {
@@ -639,10 +658,12 @@
                     type: 'assigneesName',
                     prop: 'name',
                     label: 'general.name'
-                }, {
+                }/*, {
                     prop: 'role',
                     label: 'general.roles.label',
                     i18n: this.translateType
+                }*/, {
+                    type: 'assignProviderManagerFunctions',
                 }],
                 assigneesActions: [{
                     width: 120,
@@ -926,7 +947,22 @@
     }
 
 
+    .edit-details-form {
+        .el-card__body {
+            .el-row {
+                .el-col:nth-child(even) {
+                    padding-right: 0 !important;
+                }
 
+                .el-col:nth-child(odd) {
+                    padding-left: 0 !important;
+                    padding-right: 10px !important;
+                }
+            }
+        }
+    }
+
+    
     .el-tag + .el-tag {
         margin-left: 10px;
     }
@@ -1017,6 +1053,12 @@
             .el-tabs__nav-wrap.is-top {
                 border-radius: 6px 6px 0 0;
             }
+        }
+
+        .el-card.is-always-shadow {
+            margin-right: 10px;
+            margin-left: 10px;
+            margin-bottom: 40px;
         }
         #pane-is_public {
 

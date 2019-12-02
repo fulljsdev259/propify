@@ -39,6 +39,7 @@ export default (config = {}) => {
                     capture_phase: '',
                     action: null,
                     cost_impact: null,
+                    qualification_category: null,
                     percentage: '',
                     component: '',
                     keyword: '',
@@ -95,11 +96,9 @@ export default (config = {}) => {
                 categories: [],
                 sub_categories: [],
                 residents: [],
-                toAssignList: [],
                 media: [],
-                assignmentTypes: ['managers', 'services'],
-                assignmentType: 'managers',
-                toAssign: '',
+                toAssign: [],
+                toAssignList: [],
                 conversations: [],
                 address: {},
                 locations: [],
@@ -109,6 +108,7 @@ export default (config = {}) => {
                 showPayer: false,
                 showLocation: false,
                 showCapturePhase: false,
+                showQualification: false,
                 showRoom: false,
                 showAction: false,
                 showCostImpact: false,
@@ -146,7 +146,14 @@ export default (config = {}) => {
             }
         },
         methods: {
-            ...mapActions(['getResidents', 'getServices', 'uploadRequestMedia', 'deleteRequestMedia', 'getPropertyManagers', 'assignProvider', 'assignManager', 'getUsers', 'assignAdministrator','getAssignees']),
+            ...mapActions([
+                'getResidents', 
+                'getServices', 
+                'uploadRequestMedia', 
+                'deleteRequestMedia', 
+                'getPropertyManagers', 
+                'getUsers', 
+                'getAssignees']),
             async remoteSearchResidents(search) {
                 if (search === '') {
                     this.residents = [];
@@ -190,103 +197,6 @@ export default (config = {}) => {
                     } finally {
                         this.remoteLoading = false;
                     }
-                }
-            },
-            async remoteSearchAssignees(search) {
-
-                if (!this.$can(this.$permissions.assign.request)) {
-                    return false;
-                }
-
-                if (search === '') {
-                    this.resetToAssignList();
-                } else {
-                    this.remoteLoading = true;
-                    
-                    try {
-                        let resp = [];
-                        const respAssignee = await this.getAssignees({request_id: this.$route.params.id});                        
-                        let exclude_ids = [];                                                
-                        if (this.assignmentType === 'managers') {
-                            respAssignee.data.data.map(item => {
-                                if(item.type === 'manager'){
-                                    exclude_ids.push(item.edit_id);
-                                }                                
-                            })
-                            resp = await this.getPropertyManagers({
-                                get_all: true,
-                                search,
-                                exclude_ids: exclude_ids.join(',')
-                            });
-                        } else if(this.assignmentType === 'administrator'){
-                            respAssignee.data.data.map(item => {
-                                if(item.type === 'user'){                                    
-                                    exclude_ids.push(item.edit_id);
-                                }                                
-                            })
-                            resp = await this.getUsers({
-                                get_all: true,
-                                search,
-                                exclude_ids: exclude_ids.join(','),
-                                role: 'administrator'
-                            });
-                        }
-                        else if(this.assignmentType === 'services') {
-                            respAssignee.data.data.map(item => {
-                                if(item.type === 'provider'){
-                                    exclude_ids.push(item.edit_id);
-                                }                                
-                            })
-                            resp = await this.getServices({
-                                get_all: true, 
-                                search,
-                                exclude_ids: exclude_ids.join(',')
-                            });
-                        }
-
-                        this.toAssignList = resp.data;
-                    } catch (err) {
-                        displayError(err);
-                    } finally {
-                        this.remoteLoading = false;
-                    }
-                }
-            },
-            resetToAssignList() {
-                this.toAssignList = [];
-                this.toAssign = '';
-            },
-            async assignUser() {
-                if (!this.toAssign || !this.model.id) {
-                    return false;
-                }
-                let resp;
-
-                if (this.assignmentType === 'managers') {
-                    resp = await this.assignManager({
-                        request: this.model.id,
-                        toAssignId: this.toAssign
-                    });
-                } else if (this.assignmentType === 'administrator') {
-                    resp = await this.assignAdministrator({
-                        request: this.model.id,
-                        toAssignId: this.toAssign
-                    });
-                }else {
-                    resp = await this.assignProvider({
-                        request: this.model.id,
-                        toAssignId: this.toAssign
-                    });
-                }
-
-                if (resp && resp.data) {
-                    await this.fetchCurrentRequest();
-                    this.toAssign = '';
-                    this.$refs.assigneesList.fetch();
-                    if(this.$refs.auditList){
-                        this.$refs.auditList.fetch();
-                    }
-                    displaySuccess(resp.data)
                 }
             },
             uploadFiles(file) {
@@ -365,6 +275,7 @@ export default (config = {}) => {
                 this.showAction = p_category.action == 1 ? true : false;
                 this.showCostImpact = p_category.cost_impact == 1 ? true : false;
                 this.showComponent = p_category.component == 1 ? true : false;
+                this.showQualification = p_category.qualification_category == 1 ? true : false;
                 
 
                 if(this.showSubCategory) {
@@ -372,10 +283,8 @@ export default (config = {}) => {
 
                     if(this.model.sub_category_id != null) {
                         let sub_category = this.sub_categories.find(category => { return category.id == this.model.sub_category_id});
-                        this.showAction = sub_category.action == 1 ? true : false;
-                        this.showCostImpact = sub_category.cost_impact == 1 ? true : false;
-                        this.showCapturePhase =  sub_category.capture_phase == 1 ? true : false;
-                        this.showComponent =  sub_category.component == 1 ? true : false;
+                        this.showRoom = sub_category.room == 1 ? true : false;
+                        this.showLocation = sub_category.location == 1 ? true : false;
                     }
                 }
                 this.showPercent = this.showCostImpact && this.model.cost_impact == 3 ? true : false;
@@ -391,11 +300,6 @@ export default (config = {}) => {
                 this.model.location = null;
                 this.showRoom = sub_category.room == 1 ? true : false;
                 this.showLocation = sub_category.location == 1 ? true : false;
-                this.showAction = sub_category.action == 1 ? true : false;
-                this.showCostImpact = sub_category.cost_impact == 1 ? true : false;
-                this.showPercent = this.showCostImpact && this.model.cost_impact == 3 ? true : false;
-                this.showCapturePhase = sub_category.capture_phase == 1 ? true : false;
-                this.showComponent = sub_category.component == 1 ? true : false;
             },
             changeCostImpact() {
                 this.showPercent = this.showCostImpact && this.model.cost_impact == 3 ? true : false;
@@ -407,6 +311,8 @@ export default (config = {}) => {
                 this.capture_phases = Object.entries(this.$constants.requests.capture_phase).map(([value, label]) => ({value: +value, name: this.$t(`models.request.capture_phase.${label}`)}))
                 this.actions = Object.entries(this.$constants.requests.action).map(([value, label]) => ({value: +value, name: this.$t(`models.request.action.${label}`)}))
                 this.cost_impacts = Object.entries(this.$constants.requests.cost_impact).map(([value, label]) => ({value: +value, name: this.$t(`models.request.cost_impact.${label}`)}))
+                this.qualification_categories = Object.entries(this.$constants.requests.qualification_category).map(([value, label]) => ({value: +value, name: this.$t(`models.request.qualification_category.${label}`)}))
+                
                 this.categories = this.$constants.requests.categories_data.tree
 
                 if(this.model.category_id)
@@ -607,8 +513,68 @@ export default (config = {}) => {
             case 'edit':
                 mixin.methods = {
                     ...mixin.methods,
-                    ...mapActions(['getRequest', 'updateRequest', 'getResident', 'getRequestConversations', 'getAddress', 'getRequestTags',
-                'createRequestTags', 'getTags', 'deleteRequestTag']),
+                    ...mapActions([
+                        'getRequest', 
+                        'updateRequest', 
+                        'getResident', 
+                        'getRequestConversations', 
+                        'getAddress', 
+                        'getAllAdminsForRequest',
+                        'assignUsersToRequest',
+                        'getRequestTags',
+                        'createRequestTags', 
+                        'getTags', 
+                        'deleteRequestTag'
+                    ]),
+                    resetToAssignList() {
+                        this.toAssignList = [];
+                        this.toAssign = [];
+                    },
+                    async assignUsers() {
+                        if (!this.toAssign || !this.model.id) {
+                            return false;
+                        }
+                        let resp;
+        
+                        let user_params = []
+        
+                        this.toAssign.forEach(id => {
+                            let assign_user = this.toAssignList.find(item => item.id == id )
+                            user_params.push({user_id: id, role: assign_user.roles[0].name})
+                        })
+                        
+        
+                        resp = await this.assignUsersToRequest({
+                                    id: this.model.id,
+                                    user_params: user_params
+                                });
+        
+                        if (resp && resp.data) {
+                            displaySuccess(resp)                           
+                            this.resetToAssignList();
+                            this.$refs.assigneesList.fetch();    
+                            if(this.$refs.auditList){
+                                this.$refs.auditList.fetch();
+                            }
+                        }
+                    },
+                    async remoteSearchAssignees(search) {
+                
+                        if (search === '') {
+                            this.toAssignList = [];
+                        } else {
+                            this.remoteLoading = true;
+                            
+                            try {
+                                const resp = await this.getAllAdminsForRequest({quarter_id: this.$route.params.id, is_get_function: true, search})
+                                this.toAssignList = resp;
+                            } catch (err) {
+                                displayError(err);
+                            } finally {
+                                this.remoteLoading = false;
+                            }
+                        }
+                    },
                     async fetchCurrentRequest() {
                         
                         const resp = await this.getRequest({id: this.$route.params.id});
@@ -627,11 +593,16 @@ export default (config = {}) => {
                         this.showSubCategory = resp.data.sub_category ? true : false;
                         this.showLocation = resp.data.sub_category && resp.data.sub_category.location == 1 ? true : false;
                         this.showRoom = resp.data.sub_category && resp.data.sub_category.room == 1 ? true : false;
-                        this.showAction =  resp.data.category.action == 1 || (resp.data.sub_category && resp.data.sub_category.action == 1) ? true : false;
-                        this.showCostImpact =  resp.data.category.cost_impact == 1 || (resp.data.sub_category && resp.data.sub_category.cost_impact == 1) ? true : false;
+
+                        this.showAction = resp.data.category.action == 1 ? true : false;
+                        this.showCapturePhase =  resp.data.category.capture_phase == 1 ? true : false;
+                        this.showComponent =  resp.data.category.component == 1 ? true : false;
+                        this.showCostImpact = resp.data.category.cost_impact == 1 ? true : false;
                         this.showPercent = this.showCostImpact && resp.data.cost_impact == 3 ? true : false;
-                        this.showCapturePhase =  resp.data.category.capture_phase == 1 || (resp.data.sub_category && resp.data.sub_category.capture_phase == 1) ? true : false;
-                        this.showComponent =  resp.data.category.component == 1 || (resp.data.sub_category && resp.data.sub_category.component == 1) ? true : false;
+                        this.showQualification = resp.data.category.qualification_category == 1 ? true : false;
+                        
+                        
+                        //this.showComponent =  resp.data.category.component == 1 || (resp.data.sub_category && resp.data.sub_category.component == 1) ? true : false;
                         
                         const data = resp.data;
 
@@ -641,7 +612,9 @@ export default (config = {}) => {
                         if(data.sub_category)
                             this.$set(this.model, 'sub_category_id', data.sub_category.id);
                         this.$set(this.model, 'created_by', data.created_by);
-                        this.$set(this.model, 'building', data.relation.building.name);
+
+                        //@TODO : check relation.building after api is fixed
+                        //this.$set(this.model, 'building', data.relation.building.address.street + ' ' + data.relation.building.address.house_num);
                         this.address = data.relation.address
                         //this.relations = resp.data.resident.relations.filter(item => item.status == 1)
                         this.model.relation_id = data.relation.id

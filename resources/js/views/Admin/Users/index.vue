@@ -75,7 +75,7 @@
                     prop: 'phone'
                 }, {
                     width: 120,
-                    actions: [{
+                    actions: [/*{
                         type: '',
                         icon: 'ti-search',
                         title: 'general.actions.edit',
@@ -84,7 +84,7 @@
                         permissions: [
                             this.$permissions.update.user
                         ]
-                    }]
+                    }*/]
                 }],
             }
         },

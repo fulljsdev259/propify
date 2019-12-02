@@ -251,15 +251,19 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::post('/requests/{id}/download-pdf', 'RequestAPIController@downloadPdf');
 
     Route::get('/requests/{id}/tags', 'RequestAPIController@getTags');
-    Route::get('/requests/{id}/assignees', 'RequestAPIController@getAssignees');
-    Route::post('/requests/{id}/users/{user_id}', 'RequestAPIController@assignUser'); // @TODO delete
-    Route::post('/requests/{id}/providers/{provider_id}', 'RequestAPIController@assignProvider');
-    Route::post('/requests/{id}/managers/{manager_id}', 'RequestAPIController@assignManager');
     Route::post('/requests/{id}/tags', 'RequestAPIController@assignManyTags')->name('request.assign.many-tags');
     Route::post('/requests/{id}/tags/{tag_id}', 'RequestAPIController@assignTag');
     Route::delete('/requests/{id}/tags', 'RequestAPIController@unassignManyTags')->name('request.unassign.many-tags');
     Route::delete('/requests/{id}/tags/{tag_id}', 'RequestAPIController@unassignTag');
+
+    Route::get('/requests/{id}/assignees', 'RequestAPIController@getAssignees');
+    Route::post('/requests/{id}/users/mass-assign', 'RequestAPIController@massAssignUsers')->name('requests.mass.assign.users');
     Route::delete('/requests-assignees/{requests_assignee_id}', 'RequestAPIController@deleteRequestAssignee');
+
+    // @TODO delete
+    Route::post('/requests/{id}/users/{user_id}', 'RequestAPIController@assignUser'); // @TODO delete
+    Route::post('/requests/{id}/providers/{provider_id}', 'RequestAPIController@assignProvider');
+    Route::post('/requests/{id}/managers/{manager_id}', 'RequestAPIController@assignManager');
 
     Route::get('/requests/{id}/communicationTemplates', 'RequestAPIController@getCommunicationTemplates');
     Route::get('/requests/{id}/serviceCommunicationTemplates', 'RequestAPIController@getServiceCommunicationTemplates');
@@ -326,6 +330,13 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/admin/heatMapByDatePeriod', 'DashboardAPIController@heatMapByDatePeriod');
     Route::get('/admin/chartLoginDevice', 'DashboardAPIController@chartLoginDevice');
     Route::get('/admin/chartResidentLanguage', 'DashboardAPIController@chartResidentLanguage');
+
+    // UserFilters
+    Route::get('/userFilters', 'UserFilterAPIController@index')->name('user-filters');
+    Route::get('/userFilters/{id}', 'UserFilterAPIController@show')->name('user-filters.show');
+    Route::post('/userFilters', 'UserFilterAPIController@store')->name('user-filters.store');
+    Route::put('/userFilters/{id}', 'UserFilterAPIController@update')->name('user-filters.update');
+    Route::delete('/userFilters/{id}', 'UserFilterAPIController@destroy')->name('user-filters.destroy');
 });
 
 

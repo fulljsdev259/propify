@@ -53,7 +53,7 @@ class RelationTransformer extends BaseTransformer
         }
 
         if ($model->relationExists('requests')) {
-            $response['requests'] = (new ResidentTransformer())->transform($model->requests);
+            $response['requests'] = (new RequestTransformer())->transform($model->requests);
         }
 
         if ($model->relationExists('quarter')) {

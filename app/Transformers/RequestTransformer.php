@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\PropertyManager;
 use App\Models\Request;
 
 /**
@@ -20,11 +21,13 @@ class RequestTransformer extends BaseTransformer
         $response = [
             'id' => $model->id,
             'request_format' => $model->request_format,
+            'action' => $model->action,
             'title' => $model->title,
             'description' => $model->description,
             'status' => $model->status,
             'category_id' => $model->category_id,
             'sub_category_id' => $model->sub_category_id,
+            'qualification_category' => $model->qualification_category,
             //'priority' => $model->priority,
             //'internal_priority' => $model->internal_priority,
             'is_public' => $model->is_public,
@@ -52,28 +55,14 @@ class RequestTransformer extends BaseTransformer
             $response['solved_date'] = $model->solved_date->format('Y-m-d');
         }
 
-        $assignedUsers = $model->newCollection();
-        if ($model->relationExists('providers')) {
-            $assignedUsers = $assignedUsers->merge($model->providers->pluck('user'));
-            $response['service_providers'] = (new ServiceProviderTransformer)->transformCollection($model->providers);
-        }
-
-        if ($model->relationExists('managers')) {
-            $usersCollection = $model->newCollection($model->managers->pluck('user')->all());
-            $assignedUsers = $assignedUsers->merge($usersCollection);
-
-            $response['property_managers'] = (new PropertyManagerTransformer())->transformCollection($model->managers);
-        }
-
         if ($model->relationExists('users')) {
-            $assignedUsers = $assignedUsers->merge($model->users);
-            $response['users'] = (new UserTransformer())->transformCollection($model->users);
-        }
+            $response['assignedUsers'] = (new UserTransformer())->transformCollection($model->users);
+            $users = collect($response['assignedUsers']);
+            $propertyManager = $users->whereIn('roles.0.name', PropertyManager::Type)->values()->all();
+            $response['property_managers'] = $propertyManager;
 
-        if ($assignedUsers->count()) {
-            $response['assignedUsers'] = (new UserTransformer)->transformCollection($assignedUsers);
-        } else {
-            $response['assignedUsers'] = [];
+            $serviceProviders = $users->where('roles.0.name', 'provider')->values()->all();
+            $response['service_providers'] = $serviceProviders;
         }
 
         if ($model->category_id) {

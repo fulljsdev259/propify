@@ -57,9 +57,6 @@ export default (config = {}) => {
                 remoteLoading: false,
                 toAssign: [],
                 toAssignList: [],
-                assignmentTypes: ['managers'],
-                assignmentType: 'managers',
-                userAssignmentType: null,
                 old_model: null,
             }
         },
@@ -82,46 +79,31 @@ export default (config = {}) => {
             ]),
             resetToAssignList() {
                 this.toAssignList = [];
-                //this.toAssign = '';
                 this.toAssign = [];
             },
-            async assignUser() {
-                if (!this.toAssign || !this.model.id) {
-                    return false;
-                }
-                let resp;
+            // async assignUser() {
+            //     if (!this.toAssign || !this.model.id) {
+            //         return false;
+            //     }
+            //     let resp;
 
-                // if (this.assignmentType === 'managers') {
-                //     resp = await this.assignManagerToQuarter({
-                //         id: this.model.id,
-                //         toAssignId: this.toAssign   
-                //     });
-                // } else if (this.assignmentType === 'administrator') {
-                //     resp = await this.assignUsersToQuarter({
-                //         id: this.model.id,
-                //         toAssignId: this.toAssign
-                //     });
-                // }
+            //     let assign_user = this.toAssignList.find(item => item.id == this.toAssign )
 
-                let assign_user = this.toAssignList.find(item => item.id == this.toAssign )
+            //     resp = await this.assignUserToQuarter({
+            //                 id: this.model.id,
+            //                 user_id: this.toAssign,
+            //                 role: assign_user.roles[0].name,
+            //             });
 
-                resp = await this.assignUserToQuarter({
-                            id: this.model.id,
-                            user_id: this.toAssign,
-                            role: assign_user.roles[0].name,
-                            assignment_types: this.userAssignmentType
-                        });
-
-                if (resp && resp.data) {
-                    displaySuccess(resp)                           
-                    this.resetToAssignList();
-                    this.$refs.assigneesList.fetch();    
-                    if(this.$refs.auditList){
-                        this.$refs.auditList.fetch();
-                    }
-                    this.userAssignmentType = null
-                }
-            },
+            //     if (resp && resp.data) {
+            //         displaySuccess(resp)                           
+            //         this.resetToAssignList();
+            //         this.$refs.assigneesList.fetch();    
+            //         if(this.$refs.auditList){
+            //             this.$refs.auditList.fetch();
+            //         }
+            //     }
+            // },
             async assignUsers() {
                 if (!this.toAssign || !this.model.id) {
                     return false;
@@ -157,52 +139,12 @@ export default (config = {}) => {
                 }*/
 
                 if (search === '') {
-                    this.resetToAssignList();
+                    this.toAssignList = [];
                 } else {
                     this.remoteLoading = true;
                     
                     try {
-                        //let resp = [];
-
-                        //const quarterAssignee = await this.getQuarterAssignees({get_all: true, quarter_id: this.$route.params.id});
-
-                        // let exclude_ids = [];
-                        // if (this.assignmentType === 'managers') {
-                        //     quarterAssignee.data.map(item => {
-                        //         if(item.type === 'manager'){
-                        //             exclude_ids.push(item.edit_id);
-                        //         }                                
-                        //     })
-                        //     /
-                        //     const resp = await this.getUsers({
-                        //         get_all: true,
-                        //         get_role: true,
-                        //         search,
-                        //         exclude_ids: exclude_ids.join(','),
-                        //         roles: ['manager', 'administrator', 'provider']
-                        //     });
-                        // } else if(this.assignmentType === 'administrator'){
-                        //     quarterAssignee.data.map(item => {
-                        //         if(item.type === 'user'){                                    
-                        //             exclude_ids.push(item.edit_id);
-                        //         }                                
-                        //     })
-                        //     resp = await this.getUsers({
-                        //         get_all: true,
-                        //         search,
-                        //         exclude_ids: exclude_ids.join(','),
-                        //         role: 'administrator'
-                        //     });
-                        // }
-
-                        //    exclude_assignees_quarter_id: this.$route.params.id,
-                        // const resp = await this.getUsers({
-                        //             get_all: true,
-                        //             get_role: true,
-                        //             search,
-                        //             roles: ['manager', 'administrator', 'provider']
-                        //         });
-                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id, function_val: true, search})
+                        const resp = await this.getAllAdminsForQuarter({quarter_id: this.$route.params.id, is_get_function: true, search})
                         this.toAssignList = resp;
                     } catch (err) {
                         displayError(err);

@@ -87,7 +87,7 @@
                                         <span>+{{ model.mobile_phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('models.resident.mobile_phone')" prop="mobile_phone">
-                                        <el-input prefix-icon="el-icon-plus" autocomplete="off" type="text"
+                                        <el-input autocomplete="off" type="text"
                                                 v-model="model.mobile_phone"></el-input>
                                     </el-form-item>
                                     <div v-if="!editMode" class="user-info-item">
@@ -95,7 +95,7 @@
                                         <span>+{{ model.private_phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('models.resident.private_phone')" prop="private_phone">
-                                        <el-input prefix-icon="el-icon-plus" autocomplete="off" type="text"
+                                        <el-input autocomplete="off" type="text"
                                                 v-model="model.private_phone"></el-input>
                                     </el-form-item>
                                     <div v-if="!editMode" class="user-info-item">
@@ -195,7 +195,8 @@
                                 type="primary" 
                                 @click="showRelationDialog" 
                                 icon="icon-plus" 
-                                size="mini" >
+                                size="mini" 
+                                v-if="editMode">
                                 {{ $t('models.resident.relation.add') }}
                             </el-button>
                         </el-tab-pane>
@@ -220,7 +221,8 @@
                                 type="primary" 
                                 @click="showMediaDialog" 
                                 icon="icon-plus" 
-                                size="mini" >
+                                size="mini" 
+                                v-if="editMode">
                                 {{ $t('models.resident.relation.add_files') }}
                             </el-button>
                         </el-tab-pane>
@@ -295,35 +297,8 @@
                 <div class="media-box">
                     <upload-relation @fileUploaded="addPDFtoRelation" class="upload-custom" acceptType=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF" drag multiple/>
 
-                    <el-table
-                        :data="new_media"
-                        style="width: 100%"
-                        v-if="new_media.length"
-                        :show-header="false"
-                        class="relation-file-table"
-                        >
-                        <el-table-column
-                            :label="$t('models.resident.relation.filename')"
-                            prop="name"
-                        >
-                            <template slot-scope="scope">
-                                <span class="normal"><strong>{{scope.row.name}}</strong></span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            align="right"
-                            width="30"
-                        >
-                            <template slot-scope="scope">
-                                <el-tooltip
-                                    :content="$t('general.actions.delete')"
-                                    class="item" effect="light" 
-                                    placement="top-end">
-                                        <el-button @click="deletePDFfromRelation(scope.$index)" icon="ti-trash" size="mini" />
-                                </el-tooltip>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+                    <relation-file-table :media="model.media" @delete="deletePDFfromRelation"></relation-file-table>
+                   
                 </div>
                 <!-- <ui-divider style="margin-top: 16px;"></ui-divider> -->
                 <div class="relation-form-actions">
@@ -368,6 +343,8 @@
     import UploadRelation from 'components/UploadRelation';
     import { EventBus } from '../../../event-bus.js';
     import EditCloseDialog from 'components/EditCloseDialog';
+    import RelationFileTable from 'components/RelationFileTable';
+
     import {
         format, parse
     } from 'date-fns';
@@ -392,7 +369,8 @@
             RelationListTable,
             RelationList,
             UploadRelation,
-            EditCloseDialog
+            EditCloseDialog,
+            RelationFileTable
         },
         data() {
             return {
@@ -1015,39 +993,7 @@
         display: flex;
     }
 
-    /deep/ .relation-file-table {
-        margin-bottom: 10px;
-        padding-left: 10px;
-
-        &::before {
-            height: 0;
-        }
-
-        table {
-            width: 100%;
-            td, th {
-                padding: 4px 0;
-            }
-        }
-
-        .el-button.el-button--default {
-            border: none;
-            &:hover {
-                background: none;
-                border: none;
-            }
-        }
-
-        .normal {
-            text-decoration: none;
-            color: var(--primary-color);
-
-            &:hover {
-                color: var(--primary-color-lighter);
-            }
-        }
-    }
-
+    
     /deep/ .relation-form-actions {
         margin-top: 30px;
 

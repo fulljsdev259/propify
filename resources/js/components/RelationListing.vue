@@ -32,10 +32,10 @@
                         </div>
                         <div class="category">
                             <span>
-                                {{scope.row.category.name}}
+                                {{$t(`models.request.category_list.${scope.row.category.name}`)}}
                             </span>
                             <span v-if="scope.row.sub_category">
-                                &nbsp;>&nbsp; {{scope.row.sub_category.name}} 
+                                &nbsp;>&nbsp; {{$t(`models.request.sub_category.${scope.row.sub_category.name}`)}}
                             </span>
                         </div>
                     </div>
@@ -105,12 +105,12 @@
                                     :username="scope.row.user.first_name ? `${scope.row.user.first_name} ${scope.row.user.last_name}`: `${scope.row.user.name}`"
                                     v-if="!scope.row.user.avatar"></avatar>
                         </el-tooltip>
-                        <span>{{column.translate(scope.row.type)}}</span>
+                        <span>{{column.translate(scope.row.types)}}</span>
                     </div>
 
                     <div v-else-if="column.type === 'residentNameAndType'" class="normal">
                         {{scope.row.name}}
-                        <div class="type">{{column.translate(scope.row.type)}}</div>
+                        <div class="type">{{column.translate(scope.row.types)}}</div>
                     </div>
 
                     <div v-else-if="column.type === 'residentRelation'">
@@ -195,7 +195,20 @@
                         </div>
                         
                     </div>
-
+                    <div v-else-if="column.type === 'residentStatusSign'">
+                        <el-tooltip
+                            :content="`${$t(`models.resident.relation.status.${$constants.relations.status[scope.row[column.prop]]}`)}`"
+                            class="item"
+                            effect="light" placement="top"
+                        >
+                            <avatar 
+                                :background-color="$constants.status_colorcode[scope.row[column.prop]]"
+                                :initials="''"
+                                :size="30"
+                                :username="''"
+                            />
+                        </el-tooltip>
+                    </div>
                     <div v-else-if="column.type === 'assigneesName'" class="normal">
                         {{scope.row.name}}
                     </div>

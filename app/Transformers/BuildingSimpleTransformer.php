@@ -23,7 +23,6 @@ class BuildingSimpleTransformer extends BaseTransformer
         $response = [
             'id' => $model->id,
             'building_format' => $model->building_format,
-            'name' => $model->name,
             'label' => $model->label,
             'description' => $model->description,
             'floor_nr' => $model->floor_nr,
@@ -33,6 +32,10 @@ class BuildingSimpleTransformer extends BaseTransformer
             'internal_building_id' => $model->internal_building_id,
             'created_at' => $model->created_at ? $model->created_at->format('Y-m-d') : '',
         ];
+
+        $response = $this->includeRelationIfExists($model, $response, [
+            'address' => AddressTransformer::class,
+        ]);
 
         if ($model->relationExists('quarter')) {
             $response['quarter'] = (new QuarterTransformer)->transform($model->quarter);

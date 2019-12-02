@@ -163,7 +163,7 @@
     import RequestCount from 'components/RequestCount.vue';
     import tableAvatar from 'components/Avatar';
     import RequestDetailCard from 'components/RequestDetailCard';
-    import ListFilterSelect from 'components/ListFilterSelect';
+    import ListFilterSelect from 'components/Select';
     import ListFilterDatePicker from 'components/ListFilterDatePicker';
     import filters from 'components/Filters';
     

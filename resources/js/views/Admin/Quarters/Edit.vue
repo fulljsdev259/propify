@@ -16,25 +16,28 @@
                                 <el-col :md="12" class="left-pane">
                                     <img :src="require('img/default_img_object.png')"/>
 
-                                    <div v-if="!editId" class="quarter-id">
-                                        <span @dblclick="editId=editMode">{{ model.internal_quarter_id }}</span>
+                                    <div v-if="!editMode" class="quarter-id">
+                                        <span v-if="!editMode" @dblclick="editId=editMode">{{ model.internal_quarter_id }}</span>
                                     </div>
+
+                                    <span v-if="!editMode" class="quarter-name" @dblclick="editName=editMode">{{ model.name }}</span>
+                                    
+                                </el-col>
+                                <el-col :md="12" class="right-pane">
+                                    
                                     <el-form-item 
-                                        v-if="editMode && editId" 
+                                        v-if="editMode" 
+                                        :label="$t('general.internal_quarter_id')"
                                         :rules="validationRules.internal_quarter_id"
                                         prop="internal_quarter_id" 
                                         class='quarter-id'
                                     >
                                         <el-input type="text" v-model="model.internal_quarter_id" ></el-input>
                                     </el-form-item>
-
-                                    <span v-if="!editName" class="quarter-name" @dblclick="editName=editMode">{{ model.name }}</span>
-                                    <el-form-item v-if="editMode && editName" :rules="validationRules.name"
+                                    <el-form-item v-if="editMode" :label="$t('general.name')" :rules="validationRules.name"
                                                 prop="name">
                                         <el-input type="text" v-model="model.name"  />
                                     </el-form-item>
-                                </el-col>
-                                <el-col :md="12" class="right-pane">
                                     <div v-if="!editMode" class="quarter-detail-item">
                                         <span>{{ $t('models.quarter.url') }}</span>
                                         <span>{{ model.url }}</span>
@@ -65,14 +68,14 @@
                                                     v-for="type in types">
                                             </el-option>
                                         </el-select> -->
-                                        <custom-select
+                                        <multi-select
                                             :name="$t('general.placeholders.select')"
                                             :data="types"
                                             :selectedOptions="model.types"
                                             tagColor="#9E9FA0"
                                             showMultiTag
                                             @select-changed="model.types=$event"
-                                        ></custom-select>
+                                        ></multi-select>
                                     </el-form-item>
                                 
                                     <!-- <el-col :md="12">
@@ -94,13 +97,13 @@
                                         <span>{{ $t('general.zip') }} / {{ $t('general.city') }}</span>
                                         <span>{{ model.zip }} {{ model.city }}</span>
                                     </div>
-                                    <el-col :span="7">
+                                    <el-col :span="7" class="pl-0">
                                         <el-form-item v-if="editMode" :label="$t('general.zip')" :rules="validationRules.zip"
                                                     prop="zip">
                                             <el-input type="text" v-model="model.zip"/>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :span="17">
+                                    <el-col :span="17" class="pr-0">
                                         <el-form-item v-if="editMode" :label="$t('general.city')" :rules="validationRules.city"
                                                     prop="city">
                                             <el-input type="text" v-model="model.city" />
@@ -185,20 +188,6 @@
                         </el-tab-pane>
 
                     </el-tabs>
-                    <!-- <card :loading="loading" :header="$t('general.requests')" class="mt15">
-                        <div slot="header" style="width: 100%;">
-                            {{$t('general.requests')}}
-                            <span style="float:right" class="icon-cog" @click="toggleDrawer"></span>
-                        </div>
-                        <relation-list
-                                :actions="requestActions"
-                                :columns="requestColumns"
-                                :filterValue="model.id"
-                                fetchAction="getRequests"
-                                filter="quarter_id"
-                                v-if="model.id"
-                        />
-                    </card> -->
 
                 </el-col>
                 <el-col :md="12">
@@ -208,69 +197,14 @@
                                 {{ $t('general.box_titles.managers') }}
                                 <!-- <el-badge :value="assigneeCount" :max="99" class="admin-layout">{{ $t('general.box_titles.managers') }}</el-badge> -->
                             </span>
-                            <!-- <assignment-by-type
-                                :resetToAssignList="resetToAssignList"
-                                :assignmentType.sync="assignmentType"
-                                :toAssign.sync="toAssign"
-                                :assignmentTypes="assignmentTypes"
-                                :assign="assignUser"
-                                :toAssignList="toAssignList"
-                                :remoteLoading="remoteLoading"
-                                :remoteSearch="remoteSearchAssignees"
-                            /> -->
-                            <el-row id="managerAssignBox">
-                                <el-col id="managerSelect">
-                                    <el-select
-                                        clearable
-                                        :loading="remoteLoading"
-                                        :placeholder="$t('general.placeholders.search')"
-                                        :remote-method="remoteSearchAssignees"
-                                        class="custom-remote-select"
-                                        filterable
-                                        remote
-                                        multiple
-                                        reserve-keyword
-                                        style="width: 100%;"
-                                        v-model="toAssign"
-                                    >
-                                        <div class="custom-prefix-wrapper" slot="prefix">
-                                            <i class="el-icon-search custom-icon"></i>
-                                        </div>
-                                        <el-option
-                                                :key="assignee.id"
-                                                :label="assignee.name"
-                                                :value="assignee.id"
-                                                v-for="assignee in toAssignList">
-                                            <span style="float: left">{{ assignee.name }}</span>
-                                            <span style="float: right; color: #8492a6; font-size: 13px">
-                                                {{assignee.roles[0].name == "provider" ? $t(`models.service.category.${assignee.function}`)  : ''}}
-                                                {{assignee.roles[0].name != "provider" ? $t(`general.roles.${assignee.function}`) : ''}} 
-                                            </span>
-                                        </el-option>
-                                    </el-select>
-                                </el-col>
-                                <!-- <el-col>
-                                    <el-select
-                                            :placeholder="$t('general.placeholders.select')"
-                                            style="display: block"
-                                            multiple
-                                            v-model="userAssignmentType"
-                                            filterable>
-                                        <el-option
-                                                :key="type.value"
-                                                :label="type.name"
-                                                :value="type.value"
-                                                v-for="type in assignment_types">
-                                        </el-option>
-                                    </el-select>
-                                </el-col> -->
-                                <el-col id="managerAssignBtn">
-                                    <el-button :disabled="!toAssign.length" @click="assignUsers" class="full-button el-button--assign"
-                                                icon="ti-save">
-                                        &nbsp;{{$t('general.assign')}}
-                                    </el-button>
-                                </el-col>
-                            </el-row>
+                            <users-assignment
+                                    :resetToAssignList="resetToAssignList"
+                                    :toAssign.sync="toAssign"
+                                    :assign="assignUsers"
+                                    :toAssignList="toAssignList"
+                                    :remoteLoading="remoteLoading"
+                                    :remoteSearch="remoteSearchAssignees"
+                            ></users-assignment>
                             <relation-list
                                 :actions="assigneesActions"
                                 :columns="assigneesColumns"
@@ -349,7 +283,7 @@
                                         </el-col>
                                     </el-row>
                                     <el-row v-if="!isEditingWorkflow[$index]">
-                                        <el-col :md="24" class="edit workflow-button-bar">
+                                        <el-col :md="24" class="edit workflow-button-bar" v-if="editMode">
                                             <!-- <el-button 
                                                 type="danger" 
                                                 @click="deleteWorkflow($index)"
@@ -549,7 +483,7 @@
     import EditActions from 'components/EditViewActions';
     import {mapActions, mapGetters} from 'vuex';
     import RelationList from 'components/RelationListing';
-    import AssignmentByType from 'components/AssignmentByType';
+    import UsersAssignment from 'components/UsersAssignment';
     import EmergencySettingsForm from 'components/EmergencySettingsForm';
     import EmailReceptionistForm from 'components/EmailReceptionistForm';
     import WorkflowForm from 'components/WorkflowForm';
@@ -560,9 +494,7 @@
     import RelationListTable from 'components/RelationListTable';
     import BuildingFileListTable from 'components/BuildingFileListTable';
     import EditCloseDialog from 'components/EditCloseDialog';
-    import ListFilterSelect from 'components/ListFilterSelect';
-    import MultiSelect from 'components/MultiSelect';
-    import CustomSelect from 'components/Select';
+    import MultiSelect from 'components/Select';
 
     export default {
         name: 'AdminRequestsEdit',
@@ -575,7 +507,7 @@
             Card,
             EditActions,
             RelationList,
-            AssignmentByType,
+            UsersAssignment,
             EmergencySettingsForm,
             EmailReceptionistForm,
             WorkflowForm,
@@ -585,9 +517,7 @@
             RelationListTable,
             BuildingFileListTable,
             EditCloseDialog,
-            ListFilterSelect,
             MultiSelect,
-            CustomSelect,
         },
         data() {
             return {
@@ -673,7 +603,7 @@
                 }, {
                     type: 'residentNameAndType',
                     label: 'general.name',
-                    translate: this.translateResidentType
+                    translate: this.translateResidentTypes
                 }, {
                 //     prop: 'name',
                 //     label: 'general.name',
@@ -681,7 +611,7 @@
                 // }, {
                 //     prop: 'type',
                 //     label: 'models.resident.relation.type.label',
-                //     i18n: this.translateResidentType
+                //     i18n: this.translateResidentTypes
                 // }, {
                     type: 'residentRelation',
                     label: 'models.resident.relation.title'
@@ -691,7 +621,7 @@
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
                 }],
-                residentActions: [{
+                residentActions: [/*{
                     width: 70,
                     buttons: [{
                         title: 'models.resident.view',
@@ -699,7 +629,7 @@
                         icon: 'el-icon-user',
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 visibleDrawer: false,
                 auditCount: 0,
                 fileCount: 0,
@@ -757,8 +687,11 @@
             translateType(type) {
                 return this.$t(`general.roles.${type}`);
             },
-            translateResidentType(type) {
-                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
+            translateResidentTypes(types) {
+                if(types.constructor === Array){
+                    let translatedTypes = types.map(type => this.$t(`models.resident.relation.type.${this.$constants.relations.type[type]}`))
+                    return translatedTypes.join(', ')
+                }
             },
             translateAssignmentType(types) {
                 let translatedTypes = []
@@ -1175,20 +1108,6 @@
     span.icon-cog {
         cursor: pointer;
         float: right;
-    }
-    
-    #managerAssignBox {
-        display: flex;
-        margin-bottom: 20px;
-
-        #managerSelect {
-            width: 100%;
-            margin-right: 20px;
-        }
-
-        #managerAssignBtn {
-            flex: 1;
-        }
     }
     
     .ui-drawer {

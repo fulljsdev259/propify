@@ -7,10 +7,12 @@ use App\Criteria\Common\WhereInCriteria;
 use App\Criteria\Request\FilterByInternalFieldsCriteria;
 use App\Criteria\Request\FilterByPermissionsCriteria;
 use App\Criteria\Request\FilterByRelatedFieldsCriteria;
+use App\Criteria\Request\FilterCreatorCriteria;
 use App\Criteria\Request\FilterNotAssignedCriteria;
 use App\Criteria\Request\FilterPendingCriteria;
 use App\Criteria\Request\FilterPublicCriteria;
 use App\Http\Controllers\AppBaseController;
+use App\Http\Requests\API\Quarter\MassAssignUsersRequest;
 use App\Http\Requests\API\Request\AssignRequest;
 use App\Http\Requests\API\Request\ChangePriorityRequest;
 use App\Http\Requests\API\Request\ChangeStatusRequest;
@@ -136,6 +138,7 @@ class RequestAPIController extends AppBaseController
         $this->requestRepository->pushCriteria(new FilterByRelatedFieldsCriteria($listRequest));
         $this->requestRepository->pushCriteria(new FilterPendingCriteria($listRequest));
         $this->requestRepository->pushCriteria(new FilterNotAssignedCriteria($listRequest));
+        $this->requestRepository->pushCriteria(new FilterCreatorCriteria($listRequest));
 
         $getAll = $listRequest->get('get_all', false);
         if ($getAll) {
@@ -158,7 +161,9 @@ class RequestAPIController extends AppBaseController
                 'providers.address:id,country_id,state_id,city,street,zip',
                 'providers.user',
                 'managers.user',
-                'users',
+                'users' => function ($q) {
+                    $q->select('users.id', 'users.avatar', 'users.name')->with('roles:roles.id,name');
+                },
                 'creator'
             ])->paginate($perPage);
 
@@ -1347,6 +1352,70 @@ class RequestAPIController extends AppBaseController
 
         $response = (new RequestAssigneeTransformer())->transformPaginator($assignees) ;
         return $this->sendResponse($response, 'Assignees retrieved successfully');
+    }
+
+    /**
+     * @param int $id
+     * @param MassAssignUsersRequest $massAssignUsersRequest
+     * @return mixed
+     * @throws \Exception
+     */
+    public function massAssignUsers(int $id, MassAssignUsersRequest $massAssignUsersRequest)
+    {
+        /** @var Request $request */
+        $request = $this->requestRepository->findWithoutFail($id);
+        if (empty($request)) {
+            return $this->sendError(__('models.request.errors.not_found'));
+        }
+
+        $data  = $massAssignUsersRequest->toArray();
+        $assigneeData = collect();
+        foreach ($data as $single) {
+            $newAssignee = $this->assignSingleUserToRequest($id, $single['user_id'], $single['role']);
+            $assigneeData->push($newAssignee);
+        }
+
+        $request->newMassAssignmentAudit($assigneeData);
+
+        $response = (new RequestTransformer)->transform($request);
+        return $this->sendResponse($response, __('general.attached.manager'));
+    }
+
+    /**
+     * @param $requestId
+     * @param $userId
+     * @param $role
+     * @return RequestAssignee|\Illuminate\Database\Eloquent\Model|mixed
+     */
+    protected function assignSingleUserToRequest($requestId, $userId, $role)
+    {
+        $user = User::find($userId);
+        if (empty($user)) {
+            return $this->sendError(__('models.user.errors.not_found'));
+        }
+
+        if ($user->resident) {
+            return $this->sendError(__('general.invalid_operation'));
+        }
+
+        if (in_array($role, PropertyManager::Type)) {
+            $propertyManagerId = PropertyManager::where('user_id', $user->id)->value('id');
+            $assigneeId = $propertyManagerId;
+            $assigneeType = get_morph_type_of(PropertyManager::class);
+        } else {
+            $serviceProviderId = ServiceProvider::where('user_id', $user->id)->value('id');
+            $assigneeId = $serviceProviderId;
+            $assigneeType = get_morph_type_of(ServiceProvider::class);
+        }
+
+        return RequestAssignee::updateOrCreate([
+            'request_id' => $requestId,
+            'user_id' => $userId,
+            'assignee_id' => $assigneeId,
+            'assignee_type' => $assigneeType,
+        ], [
+            'created_at' => now()
+        ]);
     }
 
     /**

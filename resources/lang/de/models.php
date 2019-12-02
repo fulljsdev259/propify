@@ -25,6 +25,16 @@ return [
             'deleted' => "Fehler beim Löschen durch den Benutzer: ",
         ],        
     ],
+    'userFilter' => [
+        'saved' => 'Benutzer Filter erfolgreich gespeichert.',
+        'deleted' => 'Benutzer Filter erfolgreich gelöscht.',
+        'not_found' => 'Benutzer Filter nicht gefunden.',
+        'errors' => [
+            'not_found' => "Benutzer Filter nicht gefunden",
+            'create' => "Benutzerfilter nicht erstellt",
+            'update' => "Benutzerfilter nicht aktualisiert",
+        ],
+    ],
     'resident' => [
         'view' => 'Öffnen',
         'name' => 'Bewohner',
@@ -184,7 +194,7 @@ return [
         'units' => 'Einheiten',
         'saved' => 'Objekt wurde gespeichert.',
         'floors' => 'Etagen',
-        'under_floor' => 'Untergeschoss',
+        'under_floor' => 'Untergeschosse',
         'ground_floor' => 'Erdgeschoss',
         'basement' => 'Erdgeschoss',
         'attic' => 'Attikageschoss',
@@ -578,12 +588,19 @@ return [
         'category_list' => [
             'general' => ' Allg. Anliegen',
             'malfunction' => 'Fehlfunktion',
-            'deficiency' => 'Mangel'
+            'deficiency' => 'Mangel',
+            'open_issue' => 'Pendenz',
         ],
         'sub_category' => [
-            'surrounding' => 'Umgebung',
-            'real_estate' => 'Liegenschaft',
-            'flat' => 'Wohnung',
+            'inside_of_apartment' => 'Innerhalb der Wohnung',
+            'outside_of_apartment' => 'Ausserhalb der Wohnung',
+        ],
+        'qualification_category' => [
+            'normal_wear' => 'Normaler Verschleiß',
+            'deficiency' => 'Mangel',
+            're_cleaning' => 'Nachreinigung',
+            'non_existent' => 'Nicht vorhanden',
+            'okay' =>'Okay'
         ],
         'media' => [
             'added' => 'Mediendatei hinzugefügt',
@@ -679,6 +696,7 @@ return [
             'payer_percent' => 'Bewohneranteil in %',
             'payer_amount' => 'Betrag',
             'keywords' => 'Tags',
+            'qualification_category' => 'Qualifizierung'
         ],
         'placeholders' => [
             'category' => 'Kategorie wählen',
@@ -787,11 +805,6 @@ return [
             'building_already_assign' => "Der Mitarbeiter ist bereits diesem Objekt zugewiesen.",
             'building_assign_deleted_property_manager' => "Sie können einem gelöschten Mitarbeiter keine Objekte zuordnen.",
             'deleted' => "Mitarbeiter Fehler beim Löschen: ",
-        ],
-        'status' => [
-            'label' => 'Status',
-	        'active' => 'Aktiv',
-            'inactive' => 'Inaktiv',
         ],
     ],
     // 'house_owner' => [
