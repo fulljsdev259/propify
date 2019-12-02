@@ -43,12 +43,25 @@
                                     </el-form-item> -->
                                 </el-col>
                                 <el-col :md="8">
+                                    <el-form-item class="label-block" :label="$t('general.function')" :rules="validationRules.type"
+                                                    prop="type">
+                                        <el-select style="display: block" v-model="model.type" :placeholder="$t('general.placeholders.select')">
+                                            <el-option
+                                                    :key="k"
+                                                    :label="$t(`general.roles.${status}`)"
+                                                    :value="parseInt(k)"
+                                                    v-for="(status, k) in $constants.propertyManager.type">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                                <!-- <el-col :md="8">
                                     <el-form-item :label="$t('models.property_manager.profession')"
                                                   :rules="validationRules.profession"
                                                   prop="profession">
                                         <el-input type="text" v-model="model.profession"/>
                                     </el-form-item>
-                                </el-col>
+                                </el-col> -->
                             </el-row>
 
                             <el-row :gutter="20">
@@ -65,41 +78,29 @@
                                         <el-input type="text" v-model="model.last_name"/>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="8">
-                                    <el-form-item class="label-block" :label="$t('general.function')" :rules="validationRules.type"
-                                                    prop="type">
-                                        <el-select style="display: block" v-model="model.type" :placeholder="$t('general.placeholders.select')">
-                                            <el-option
-                                                    :key="k"
-                                                    :label="$t(`general.roles.${status}`)"
-                                                    :value="parseInt(k)"
-                                                    v-for="(status, k) in $constants.propertyManager.type">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-
-                            <el-row :gutter="20">
-                                <el-col :md="8">
-                                    <el-form-item :label="$t('general.phone')" prop="phone">
-                                        <el-input type="text" v-model="model.phone"/>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :md="8">
-                                    <el-form-item :label="$t('general.mobile')" prop="mobile_phone">
-                                        <el-input type="text" v-model="model.mobile_phone"/>
-                                    </el-form-item>
-                                </el-col>
+                                
                                 <el-col :md="8">
                                     <el-form-item :rules="validationRules.email" label="Email" prop="email">
                                         <el-input type="email" v-model="model.email"/>
                                     </el-form-item>
                                 </el-col>
                             </el-row>
+
+                            <el-row :gutter="20">
+                                <!-- <el-col :md="8">
+                                    <el-form-item :label="$t('general.phone')" prop="phone">
+                                        <el-input type="text" v-model="model.phone"/>
+                                    </el-form-item>
+                                </el-col> -->
+                                <el-col :md="8">
+                                    <el-form-item :label="$t('general.mobile')" prop="mobile_phone">
+                                        <el-input type="text" v-model="model.mobile_phone"/>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
                         </card>
 
-                        <card class="mt15" :header="$t('models.property_manager.social_card')">
+                        <!-- <card class="mt15" :header="$t('models.property_manager.social_card')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.property_manager.linkedin_url')"
@@ -123,7 +124,7 @@
                                     </el-form-item>
                                 </el-col>
                             </el-row>
-                        </card>
+                        </card> -->
                     </el-col>
                     <el-col :md="12">
                         <card :header="$t('models.property_manager.profile_card')">
@@ -161,10 +162,10 @@
                                         @cropped="cropped"/>
                             </el-form-item>
 
-                            <el-form-item :label="$t('models.property_manager.slogan')" :rules="validationRules.slogan"
+                            <!-- <el-form-item :label="$t('models.property_manager.slogan')" :rules="validationRules.slogan"
                                           prop="slogan">
                                 <el-input type="text" v-model="model.slogan"/>
-                            </el-form-item>
+                            </el-form-item> -->
                         </card>
 
                         <!--<card class="mt15" :header="$t('general.box_titles.buildings_and_quarters')">

@@ -10087,9 +10087,19 @@
     transition:border-color .2s cubic-bezier(.645,.045,.355,1);
     width:100%
 }
-.admin-layout .el-input__inner {
+.admin-layout .el-input .el-input__inner {
     background-color: #f6f5f7;
-    border: 1px solid #f6f5f7;
+    border-color: transparent;
+    color: var(--text-color);
+}
+.admin-layout .el-input .el-input__inner:disabled {
+    background-color: #f6f5f7;
+    border-color: transparent;
+    color: var(--text-color); 
+}
+.admin-layout .el-input.is-disabled .el-input-group__prepend {
+    background-color: #f6f5f7 ;
+    border-color: transparent;
     color: var(--text-color);
 }
 
@@ -10294,6 +10304,9 @@ input.el-input__inner[type=number]{
     padding:12px 20px;
     font-size:14px;
     border-radius:4px
+}
+.admin-layout .el-button {
+    background: #f6f5f7;
 }
 .el-button+.el-button{
     margin-left:10px
