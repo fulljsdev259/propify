@@ -503,11 +503,14 @@
         }
         :global(.heading .el-button) {
             font-family: 'Radikal';
-            //margin-right: 10px;
+            padding: 0px;
+            margin-right: 40px !important;
         }
-        :global(.heading .el-button.el-button--mini) {
-            padding: 7.5px 6px;
-            margin-right: 5px;
+        :global(.heading .list-checkbox .el-button) {
+            padding: 2px 2px;
+        }
+        :global(.heading .el-button.more-actions) {
+            margin-right: 18px !important;
         }
         :global(.heading .menu-button) {
             margin-right: 20px;
@@ -515,9 +518,13 @@
         .list-view {
             :global(.heading .el-button) {
                 &:hover {
-                    background-color: var(--background-color-base);
+                    background-color: transparent;
                     color: var(--color-text-primary);
+                    font-weight: 700;
                     box-shadow: none;
+                    :global(i) {
+                        font-weight: 700;
+                    }
                 }
             }
         }
