@@ -27,8 +27,12 @@
             >
                 <template slot-scope="scope">
                     <div v-if="column.type === 'requestTitleWithDesc'">
-                        <div class="request-title normal">
-                            {{scope.row.title}}                         
+                        <div class="request-title">
+                            <span class="normal">
+                                #{{scope.row.request_format}}
+                            </span> 
+                            <span>{{$t(`models.request.category_list.${scope.row.category.name}`)}}:</span> 
+                            {{scope.row.title}}          
                         </div>
                         <div class="category">
                             <span>
@@ -648,6 +652,12 @@
 
         .type {
             color: var(--color-text-regular);
+        }
+    }
+
+    .request-title {
+        .normal {
+            color:var(--primary-color);
         }
     }
 </style>

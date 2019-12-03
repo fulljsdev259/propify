@@ -148,12 +148,14 @@ export default (config = {}) => {
             },
             async getTypes() {
                 this.types = [];
-                for(let item in this.$constants.buildings.type) {
-                    this.types.push({
-                        id: item,
-                        name: this.$t(`models.quarter.types.${this.$constants.buildings.type[item]}`),
-                    })
-                }
+                this.types = Object.entries(this.$constants.buildings.type).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.types.${label}`)}))
+
+                // for(let item in this.$constants.buildings.type) {
+                //     this.types.push({
+                //         id: item,
+                //         name: this.$t(`models.quarter.types.${this.$constants.buildings.type[item]}`),
+                //     })
+                // }
             },
         },
         computed: {
@@ -161,7 +163,15 @@ export default (config = {}) => {
                 return this.$refs.form;
             },
             ...mapGetters(['states'])
-        }
+        },
+        watch: {
+            "$i18n.locale": {
+                immediate: true,
+                handler(val) {
+                    this.getTypes();
+                }
+            }
+        },
     };
 
     if (config.mode) {
@@ -300,6 +310,8 @@ export default (config = {}) => {
                         this.model.residents = this.model.residents.filter((item, index) => {
                             return this.model.residents.indexOf(item) === index
                         })
+
+                        console.log(this.model)
   
 
                         if (this.model.quarter) {

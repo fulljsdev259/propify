@@ -74,14 +74,14 @@
                                 
                             </el-row>
                             <el-row :gutter="20">
-                                <el-col :md="6">
+                                <el-col :md="4">
                                     <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
                                                   prop="zip"
                                                   style="max-width: 512px;">
                                         <el-input type="text" v-model="model.zip" :disabled="!editMode"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="6">
+                                <el-col :md="8">
                                     <el-form-item :label="$t('general.city')" :rules="validationRules.city"
                                                   prop="city"
                                                   style="max-width: 512px;">
@@ -819,6 +819,8 @@
             // this.fileCount = this.model.media.length;
 
             this.getTypes();
+
+            console.log(this.types, this.model.types)
         },
         computed: {
             ...mapGetters('application', {
