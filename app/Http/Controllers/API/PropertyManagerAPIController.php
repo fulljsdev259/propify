@@ -447,8 +447,17 @@ class PropertyManagerAPIController extends AppBaseController
             return $this->sendError(__('models.property_manager.errors.quarter_not_found'));
         }
 
-        $propertyManager->quarters()->sync([$quarter->id => ['created_at' => now()]], false);
-        $propertyManager->load('quarters', 'buildings');
+        $propertyManager->quarters()
+            ->sync(
+                [
+                    $quarter->id => [
+                        'created_at' => now(),
+                        'user_id' => $propertyManager->user_id
+                    ]
+                ],
+                false
+            );
+            $propertyManager->load('quarters', 'buildings');
 
         return $this->sendResponse($propertyManager, __('general.attached.quarter'));
     }
@@ -556,7 +565,15 @@ class PropertyManagerAPIController extends AppBaseController
             return $this->sendError(__('models.property_manager.errors.building_already_assign'));
         }
 
-        $propertyManager->buildings()->sync([$building->id => ['created_at' => now()]], false);
+        $propertyManager->buildings()->sync(
+            [
+                $building->id => [
+                    'created_at' => now(),
+                    'user_id' => $propertyManager->user_id
+                ]
+            ],
+            false
+        );
         $propertyManager->load('quarters', 'buildings');
 
         return $this->sendResponse($propertyManager, __('general.attached.building'));

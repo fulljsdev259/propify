@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BuildingRelation;
 use App\Traits\RequestRelation;
 use App\Traits\UniqueIDFormat;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -146,6 +147,7 @@ class ServiceProvider extends AuditableModel
     use SoftDeletes;
     use UniqueIDFormat;
     use RequestRelation;
+    use BuildingRelation;
 
     public $table = 'service_providers';
 
@@ -262,14 +264,6 @@ class ServiceProvider extends AuditableModel
     public function address()
     {
         return $this->hasOne(Address::class, 'id', 'address_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     **/
-    public function buildings()
-    {
-        return $this->belongsToMany(Building::class, 'building_service_provider', 'service_provider_id', 'building_id');
     }
 
     /**
