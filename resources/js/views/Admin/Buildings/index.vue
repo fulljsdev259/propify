@@ -165,15 +165,15 @@
                     withCounts: true,
                     width: 230,
                     prop: 'request_count'
-                },  {
-                    label: 'models.building.active_residents_count',
+                }, {
+                    label: 'models.building.count_of_apartments_units',
                     prop: 'count_of_apartments_units',
                     align: 'center'
-                },{
+                }, {
                     label: 'general.filters.status',
                     withStatus: true,
                     prop: 'status'
-                },{
+                }, {
                     label: 'general.box_titles.managers',
                     withUsers: true,
                     prop: 'users',
