@@ -28,6 +28,7 @@ class ServiceProvidersTableSeeder extends Seeder
 
         $providerCount = 200;
         $categoryCount = floor($providerCount / count($serviceCategories));
+        $quarters = \App\Models\Quarter::inRandomOrder()->limit($providerCount)->get();
         foreach ($serviceCategories as $category) {
             for ($i  = 0; $i < $categoryCount; $i++) {
                 $email = $faker->email;
@@ -59,7 +60,12 @@ class ServiceProvidersTableSeeder extends Seeder
                 $date = $this->getRandomTime($address->created_at);
                 $attr = array_merge($attr, $this->getDateColumns($date));
 
-                factory(App\Models\ServiceProvider::class)->create($attr);
+                $serviceProvider = factory(App\Models\ServiceProvider::class)->create($attr);
+                $quarter = $quarters->random();
+                $serviceProvider->quarters()->attach([$quarter->id => [
+                    'created_at' => now(),
+                    'user_id' => $user->id
+                ]]);
             }
         }
     }

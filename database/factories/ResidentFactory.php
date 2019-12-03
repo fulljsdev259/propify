@@ -10,7 +10,6 @@ $factory->define(App\Models\Resident::class, function (Faker $faker) {
     if ($title == 'company') {
         $company = $faker->company;
     }
-
     return [
         'user_id' => 1,
         'title' => $title,
@@ -21,7 +20,9 @@ $factory->define(App\Models\Resident::class, function (Faker $faker) {
         'mobile_phone' => $faker->phoneNumber,
         'private_phone' => $faker->phoneNumber,
         'work_phone' => $faker->phoneNumber,
-        'status' => $faker->numberBetween(Resident::StatusActive, Resident::StatusInActive),
+        'review' => $faker->sentence,
+        'rating' => random_int(1, 6) - 1,
+        'status' => array_rand(Resident::Status),
         'nation' => \App\Models\Country::inRandomOrder()->first()->id
     ];
 });

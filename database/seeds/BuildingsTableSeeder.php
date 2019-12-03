@@ -29,7 +29,7 @@ class BuildingsTableSeeder extends Seeder
             $data['address_id'] = $address->id;
             $geoData = $this->getGeoDataByAddress($address);
             $data = array_merge($data, $geoData);
-
+            $data['types'] = [array_rand(\App\Models\Building::Type)];
             $building = factory(Building::class)->create($data);
         }
     }
