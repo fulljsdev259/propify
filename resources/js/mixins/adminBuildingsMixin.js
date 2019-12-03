@@ -1,11 +1,10 @@
 import {mapGetters, mapActions} from 'vuex';
 import {displayError, displaySuccess} from 'helpers/messages';
-import ServicesTypes from 'mixins/methods/servicesTypes';
 import { EventBus } from '../event-bus.js';
 
 export default (config = {}) => {
     let mixin = {
-        mixins: [ServicesTypes],
+        mixins: [],
         props: {
             title: {
                 type: String,

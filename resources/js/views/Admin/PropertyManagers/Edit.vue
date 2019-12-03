@@ -43,7 +43,7 @@
                                                 :key="title"
                                                 :label="$t(`general.salutation_option.${title}`)"
                                                 :value="title"
-                                                v-for="title in titles">
+                                                v-for="title in $constants.propertyManager.title">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
@@ -424,18 +424,14 @@
             },
             propertyManagerStatus() {
                 let result = '';
-                for(let item in this.$constants.propertyManager.status) {
-                    if(item == this.model.status)
-                        result = this.$t(`general.status.${this.$constants.propertyManager.status[item]}`);
-                }
+                if(this.$constants.propertyManager.status.hasOwnProperty(this.model.status))
+                        result = this.$t(`general.status.${this.$constants.propertyManager.status[this.model.status]}`);
                 return result;
             },
             propertyManagerType() {
                 let result = '';
-                for(let item in this.$constants.propertyManager.type) {
-                    if(item == this.model.type)
-                        result = this.$t(`general.roles.${this.$constants.propertyManager.type[item]}`);
-                }
+                if(this.$constants.propertyManager.type.hasOwnProperty(this.model.type))
+                        result = this.$t(`general.roles.${this.$constants.propertyManager.type[this.model.type]}`);
                 return result;
             }
         }
