@@ -25,6 +25,7 @@ use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\BuildingAssignee;
 use App\Models\PropertyManager;
+use App\Models\Relation;
 use App\Models\ServiceProvider;
 use App\Models\Unit;
 use App\Models\User;
@@ -139,6 +140,16 @@ class BuildingAPIController extends AppBaseController
                 ]);
             }
         }
+
+        foreach (Relation::Status as $status => $value) {
+            if ($request->orderBy == Relation::Status[$status] . '_units_count') {
+                $request->merge([
+                    'orderBy' => RequestCriteria::NoOrder,
+                    'orderByRaw' => Relation::Status[$status] . '_units_count',
+                ]);
+            }
+        }
+
         $this->buildingRepository->pushCriteria(new RequestCriteria($request));
         $this->buildingRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
