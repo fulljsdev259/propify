@@ -577,15 +577,15 @@
                 buildingColumns: [{
                     type: 'buildingHouseName',
                     prop: 'address.house_num',
-                    label: 'models.building.house_num'
+                    label: 'models.building.building_no'
                 }, {
                     type: 'buildingTypes',
                     prop: 'types',
-                    label: 'general.filters.type'
+                    label: 'models.building.type'
                 }, {
                     align: 'center',
                     prop: 'count_of_apartments_units',
-                    label: 'dashboard.buildings.total_units'
+                    label: 'models.building.active_residents_count'
                 }/*, {
                     type: 'buildingResidentAvatars',
                     prop: 'residents',
