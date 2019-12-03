@@ -215,8 +215,13 @@
                     <div v-else-if="column.type === 'companyName'" class="normal">
                         {{scope.row.company_name}}
                     </div>
-                    <div v-else-if="column.type === 'buildingName'" class="normal">           
-                        {{scope.row.address ? scope.row.address.street + ' ' + scope.row.address.house_num : ''}}                
+                    <div v-else-if="column.type === 'buildingHouseName'" class="normal">           
+                        <!-- {{scope.row.address ? scope.row.address.street + ' ' + scope.row.address.house_num : ''}}                 -->
+                        {{scope.row.address ? scope.row.address.house_num : ''}}
+                    </div>
+                    <div v-else-if="column.type === 'buildingTypes'" class="normal">           
+                        <!-- {{scope.row.address ? scope.row.address.street + ' ' + scope.row.address.house_num : ''}}                 -->
+                        {{ ( scope.row.types.map(type => $t(`models.quarter.types.${$constants.buildings.type[type]}`)) ).join(", ") }}
                     </div>
                     <div v-else-if="column.type === 'residentName'" class="normal"> 
                         {{scope.row.name}}
@@ -386,7 +391,7 @@
             },
             showHeader: {
                 type: Boolean,
-                default: true
+                default: false
             },
         },
         data() {
@@ -515,12 +520,14 @@
 
                         id = item.edit_id;
                     }
-                    else if(column.type === 'buildingName')
+                    else if(column.type === 'buildingHouseName')
                         name = 'adminBuildingsEdit';
                     else if(column.type === 'residentName')
                         name = 'adminResidentsEdit';
                     else if(column.type === 'serviceName')
                         name = 'adminServicesEdit';
+                    else if(column.type === 'unitColumn')
+                        name = 'adminUnitsEdit';
                 });
                 if(name !== '') {
                     this.$router.push({
@@ -567,9 +574,9 @@
                 }
             }
         }
-        :global(.el-table__header-wrapper) {
-            display: none;
-        }
+        // :global(.el-table__header-wrapper) {
+        //     display: none;
+        // }
     }
     .el-button--default {
         border-radius: 20px;
