@@ -135,7 +135,7 @@
                                     </el-form-item>
                                     <div v-if="!editMode" class="user-info-item">
                                         <span>{{ $t('models.resident.nation') }}</span>
-                                        <span>{{ state }}</span>
+                                        <span>{{ nation }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('models.resident.nation')"
                                                 prop="nation">
@@ -567,19 +567,24 @@
                 return this.constants.requests.status
             },
             status() {
-                let result = 'not_active';
-                let role = '';
+                let result = '';
+                let role = [];
+                
+                result = this.model.relations.find((relation) => {
+                    return relation.status === 1;
+                });
+                if(result === undefined)
+                    result = 'not_active';
+                else
+                    result = 'active';
+
                 this.model.relations.forEach((item) => {
                     let type = this.$t(`models.resident.relation.type.${this.constants.relations.type[item.type]}`);
-                    if(item.status == 1) {
-                        result = 'active';
-                    }
                     if(!role.includes(type)) {
-                        if(role != '')
-                            role = `${role}, `;
-                        role = `${role}${type}`;
+                        role.push(type);
                     }
                 });
+                role = role.join(', ');
                 return {
                     text: result,
                     index: result === 'active'?1:2,
@@ -589,13 +594,15 @@
             birthDate() {
                 return format(new Date(this.model.birth_date), 'DD.MM.YYYY')
             },
-            state() {
-                let result = 'None'
-                this.countries.forEach((country) => {
-                    if(country.id == this.model.nation) {
-                        result = country.name;
-                    }
+            nation() {
+                let result = '';
+                result = this.countries.find((country) => {
+                    return country.id === this.model.nation;
                 });
+                if(result === undefined)
+                    result = '';
+                else    
+                    result = result.name;
                 return result;
             }
             
