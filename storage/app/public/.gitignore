@@ -2,3 +2,6 @@
 !avatar/
 !favicon/
 !.gitignore
+
+!floor-plan.jpg
+!floor-plan-2.pdf
