@@ -18,7 +18,7 @@
                                                     :key="title"
                                                     :label="$t(`general.salutation_option.${title}`)"
                                                     :value="title"
-                                                    v-for="title in titles">
+                                                    v-for="title in $constants.propertyManager.title">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
