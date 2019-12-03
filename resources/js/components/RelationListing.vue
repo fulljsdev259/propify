@@ -520,7 +520,7 @@
 
                         id = item.edit_id;
                     }
-                    else if(column.type === 'buildingName')
+                    else if(column.type === 'buildingHouseName')
                         name = 'adminBuildingsEdit';
                     else if(column.type === 'residentName')
                         name = 'adminResidentsEdit';
