@@ -1,7 +1,7 @@
 <template>
     <div id="pinboard-edit-view" class="units-edit mb20" v-loading.fullscreen.lock="loading.state">
         <heading :title="$t('models.pinboard.edit_title')" icon="icon-megaphone-1" shadow="heavy" style="margin-bottom: 20px;">
-            <edit-actions :saveAction="submit" :deleteAction="deletePinboard" route="adminPinboard"/>
+            <edit-actions :saveAction="submit" :deleteAction="deletePinboard" :editMode="editMode" @edit-mode="handleChangeEditMode" route="adminPinboard" ref="editActions"/>
         </heading>
         <el-row :gutter="20" class="crud-view">
             <el-form :model="model" label-position="top" label-width="192px" ref="form">
@@ -18,7 +18,9 @@
                                             v-for="(type, key) in pinboardConstants.type">
                                         </el-option>
                                     </el-select> -->
-                                    <el-select style="display: block" v-model="model.type">
+                                    <el-select style="display: block"
+                                               v-model="model.type"
+                                               :disabled="!editMode">
                                         <el-option
                                             :label="$t(`models.pinboard.type.post`)"
                                             :value="1"
@@ -40,7 +42,9 @@
                             </el-col>
                             <el-col :lg="8">
                                 <el-form-item :label="$t('models.pinboard.status.label')">
-                                    <el-select style="display: block" v-model="model.status">
+                                    <el-select style="display: block"
+                                               v-model="model.status"
+                                               :disabled="!editMode">
                                         <el-option
                                             :key="key"
                                             :label="$t(`models.pinboard.status.${status}`)"
@@ -52,7 +56,10 @@
                             </el-col>
                             <el-col v-if="model.type == 3" :lg="8">
                                 <el-form-item :label="$t('models.pinboard.sub_type.label')">
-                                    <el-select style="display: block" v-model="model.sub_type" @change="changeSubType">
+                                    <el-select style="display: block"
+                                               v-model="model.sub_type"
+                                               @change="changeSubType"
+                                               :disabled="!editMode">
                                         <el-option
                                                 :key="key"
                                                 :label="$t(`models.pinboard.sub_type.${subtype}`)"
@@ -64,7 +71,9 @@
                             </el-col>
                             <el-col :lg="8" v-if="model.type == 3 && model.sub_type == 3">
                                 <el-form-item :label="$t('models.pinboard.category.label')">
-                                    <el-select style="display: block" v-model="model.category">
+                                    <el-select style="display: block"
+                                               v-model="model.category"
+                                               :disabled="!editMode">
                                         <el-option
                                                 :key="key"
                                                 :label="$t(`models.pinboard.category.${category}`)"
@@ -76,7 +85,9 @@
                             </el-col>
                             <el-col :lg="8" v-if="model.type != 3">
                                 <el-form-item :label="$t('models.pinboard.visibility.label')">
-                                    <el-select style="display: block" v-model="model.visibility">
+                                    <el-select style="display: block"
+                                               v-model="model.visibility"
+                                               :disabled="!editMode">
                                         <el-option
                                             :key="key"
                                             :label="$t(`models.pinboard.visibility.${visibility}`)"
@@ -92,7 +103,7 @@
                             <el-tab-pane :label="$t('general.box_titles.details')" name="details">
                                 <el-form-item :label="$t('models.pinboard.title_label')" :rules="validationRules.title"
                                             prop="title">
-                                    <el-input type="text" v-model="model.title"></el-input>
+                                    <el-input :disabled="!editMode" type="text" v-model="model.title"></el-input>
                                 </el-form-item>
                                 <el-form-item :label="$t('general.content')" :rules="validationRules.content"
                                               prop="content"
@@ -152,7 +163,7 @@
                                     :closable="false"
                                 >
                                 </el-alert>
-                                <media-uploader ref="media" :id="pinboard_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
+                                <media-uploader :disabled="!editMode" ref="media" :id="pinboard_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
                                 
                             </el-tab-pane>
                             <el-tab-pane name="comments">
@@ -202,7 +213,7 @@
                                     :closable="false"
                                 >
                                 </el-alert>
-                                <media-uploader ref="media" :id="pinboard_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
+                                <media-uploader :disabled="!editMode" ref="media" :id="pinboard_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
                             </el-form-item>
                         </template>                        
                     </el-card>
@@ -308,7 +319,8 @@
                                 <el-form-item :label="$t('models.pinboard.execution_period.label')">
                                     <el-select style="display: block"
                                                v-model="model.execution_period"
-                                               @change="model.execution_end = null">
+                                               @change="model.execution_end = null"
+                                               :disabled="!editMode">
                                         <el-option
                                                 :key="key"
                                                 :label="$t(`models.pinboard.execution_period.${period}`)"
@@ -325,7 +337,8 @@
                                                    @change="() => {
                                                     !model.is_execution_time ? resetExecutionTime() : '';
                                                     reinitDatePickers();
-                                                   }"/>
+                                                   }"
+                                                   :disabled="!editMode"/>
                                     </el-form-item>
                                     <div class="switcher__desc">
                                         {{$t('models.pinboard.specify_time_description')}}
@@ -347,6 +360,7 @@
                                             v-model="model.execution_start"
                                             @change="model.is_execution_time ? setExecutionDateTime() : ''"
                                             value-format="yyyy-MM-dd HH:mm:ss"
+                                            :disabled="!editMode"
                                     >
                                     </el-date-picker>
                                 </el-form-item>
@@ -364,7 +378,8 @@
                                                               selectableRange: '00:00:00 - '+executionEndTime
                                                             }"
                                                     :format="'HH:mm'"
-                                                    value-format="HH:mm:00">
+                                                    value-format="HH:mm:00"
+                                                    :disabled="!editMode">
                                             </el-time-picker>
                                         </el-form-item>
                                     </el-col>
@@ -379,7 +394,8 @@
                                                               selectableRange: executionStartTime+' - 23:59:00'
                                                             }"
                                                     :format="'HH:mm'"
-                                                    value-format="HH:mm:00">
+                                                    value-format="HH:mm:00"
+                                                    :disabled="!editMode">
                                             </el-time-picker>
                                         </el-form-item>
                                     </el-col>
@@ -402,6 +418,7 @@
                                         :type="model.is_execution_time ? 'datetime' : 'date'"
                                         v-model="model.execution_start"
                                         value-format="yyyy-MM-dd HH:mm:ss"
+                                        :disabled="!editMode"
                                     >
                                     </el-date-picker>
                                 </el-form-item>
@@ -421,6 +438,7 @@
                                         :type="model.is_execution_time ? 'datetime' : 'date'"
                                         v-model="model.execution_end"
                                         value-format="yyyy-MM-dd HH:mm:ss"
+                                        :disabled="!editMode"
                                     >
                                     </el-date-picker>
                                 </el-form-item>
@@ -445,7 +463,8 @@
 
                             <div class="switch-wrapper">
                                 <el-form-item :label="$t('models.pinboard.notify_email')" prop="notify_email">
-                                    <el-switch :disabled="onload_notify_email" v-model="model.notify_email"/>
+                                    <el-switch v-model="model.notify_email"
+                                               :disabled="onload_notify_email || !editMode"/>
                                 </el-form-item>
                                 <div class="switcher__desc">
                                     {{$t('models.pinboard.notify_email_description')}}
@@ -489,6 +508,12 @@
             </el-form>
         </el-row>
 
+        <edit-close-dialog
+                :centerDialogVisible="visibleDialog"
+                @clickYes="visibleDialog=false, submit(true)"
+                @clickNo="visibleDialog=false, $refs.editActions.goToListing()"
+                @clickCancel="visibleDialog=false"
+        ></edit-close-dialog>
     </div>
 </template>
 
@@ -503,6 +528,7 @@
     import AssignmentByType from 'components/AssignmentByType';
     import { EventBus } from '../../../event-bus.js';
     import EditorConfig from 'mixins/adminEditorConfig';
+    import EditCloseDialog from 'components/EditCloseDialog';
 
     const mixin = PinboardMixin({mode: 'edit'});
 
@@ -513,6 +539,7 @@
             RelationList,
             Avatar,
             AssignmentByType,
+            EditCloseDialog,
         },
         data() {
             return {
@@ -545,6 +572,8 @@
                     align: 'left',
                 }],
                 activeTab1: "details",
+                editMode: false,
+                visibleDialog: false,
             }
         },
         mounted() {
@@ -561,6 +590,18 @@
         },
         methods: {
             ...mapActions(['unassignPinboardBuilding', 'unassignPinboardQuarter', 'unassignPinboardProvider', 'deletePinboard']),
+            handleChangeEditMode() {
+                if(!this.editMode) {
+                    this.editMode = !this.editMode;
+                    this.old_model = _.clone(this.model, true);
+                } else {
+                    if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
+                        this.visibleDialog = true;
+                    } else {
+                        this.$refs.editActions.goToListing();
+                    }
+                }
+            },
             disabledExecutionStart(date) {
                 const d = new Date(date).getTime();
                 const executionEnd = new Date(this.model.execution_end).getTime();

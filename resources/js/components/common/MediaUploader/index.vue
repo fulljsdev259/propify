@@ -1,6 +1,6 @@
 <template>
     <div :class="['media', {[`media-${layout}-layout`]: true}]">
-        <uploader ref="uploader" class="media-uploader" v-bind="uploaderProps" :value="value" :input-id="`upload-${$_uid}`" :headers="headers" :custom-action="customAction" @input="value => $emit('input', value)" @input-filter="onUploadFilter" />
+        <uploader ref="uploader" class="media-uploader" v-bind="uploaderProps" :disabled="disabled" :value="value" :input-id="`upload-${$_uid}`" :headers="headers" :custom-action="customAction" @input="value => $emit('input', value)" @input-filter="onUploadFilter" />
         <gallery :images="galleryImages" :index="galleryIndex" :options="galleryOptions" />
         <draggable class="media-list" tag="transition-group" :componentData="{type: 'transition', name: 'flip-list', mode: 'out-in'}" ghost-class="is-ghost" :list="value" :handle="draggableHandler" :animation="240" :disabled="isDraggableDisabled" :move="onDraggableMove">
             <div :class="['media-item', {'is-draggable': uploadOptions.draggable && value.length && !$refs.uploader.uploaded}, $refs.uploader.active && {'is-active': +file.progress && !file.success, 'is-pending': !+file.progress}, {'is-success': file.success, 'is-failed': file.error}]" v-for="(file, idx) in value" :key="file.id" :style="{'transition-delay': `calc(0.16 * ${idx}s)`}">
@@ -89,6 +89,7 @@
             id: {
                 type: Number
             },
+            disabled: Boolean,
             audit_id: {
                 type: Number
             },
