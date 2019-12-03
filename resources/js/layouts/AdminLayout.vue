@@ -503,8 +503,7 @@
         }
         :global(.heading .el-button) {
             font-family: 'Radikal';
-            padding: 0px;
-            margin-right: 40px !important;
+            margin-right: 15px !important;
         }
         :global(.heading .list-checkbox .el-button) {
             padding: 2px 2px;
