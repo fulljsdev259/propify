@@ -2,6 +2,7 @@
 
 namespace App\Criteria\Building;
 
+use App\Models\Relation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -53,6 +54,18 @@ class IncludeForOrderCriteria implements CriteriaInterface
                   ) 
                   and `units`.`deleted_at` is null
                   and units.building_id = buildings.id) ' . $sortedBy);
+            }
+        }
+
+        foreach (Relation::Status as $status => $value) {
+            if ($this->request->orderByRaw == Relation::Status[$status] . '_units_count') {
+                $model->orderByRaw('(SELECT COUNT(*) FROM `units` WHERE 
+                        deleted_at IS NULL 
+                        and (
+                        (select status from relations where relations.unit_id = units.id order by relations.id desc limit 1) = ' . $status
+                    . ($status == Relation::StatusInActive ? ' or (select status from relations where relations.unit_id = units.id order by relations.id desc limit 1) IS NULL' : '')
+                    . ') and building_id = buildings.id) ' . $sortedBy
+                );
             }
         }
 

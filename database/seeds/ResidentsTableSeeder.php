@@ -77,8 +77,6 @@ class ResidentsTableSeeder extends Seeder
     protected function saveRelations($resident)
     {
         $data['resident_id'] = $resident->id;
-        $data['status'] = \App\Models\Relation::StatusActive;
-
         $relation = factory(App\Models\Relation::class)->create($data);
         $resident->default_relation_id = $relation->id;
         $resident->save();
