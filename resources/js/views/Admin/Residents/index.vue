@@ -241,8 +241,10 @@
                 return quarters.data
             },
             async fetchRemoteBuildings(search = '') {
-                const buildings = await this.getBuildings({get_all: true, search});
-
+                let buildings = await this.getBuildings({get_all: true, search});
+                buildings.data.map(building => {
+                    building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                })
                 return buildings.data
             },
             async fetchRemoteUnits(search = '') {

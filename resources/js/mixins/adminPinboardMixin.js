@@ -204,6 +204,11 @@ export default (config = {}) => {
                                 exclude_ids: this.model.building_ids.join(),
                                 exclude_quarter_ids: this.model.quarter_ids.join()
                             });
+
+                            resp.data.map(building => {
+                                building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                            })
+
                         } else {
                             resp = await this.getQuarters({
                                 get_all: true,

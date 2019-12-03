@@ -200,6 +200,10 @@ export default (config = {}) => {
                                 search,
                                 exclude_ids: exclude_ids.join(',')
                             });
+
+                            resp.data.map(building => {
+                                building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                            })
                         } else {
                             serviceAssignments.data.data.map(item => {
                                 if(item.assignmentType === 'quarter'){
