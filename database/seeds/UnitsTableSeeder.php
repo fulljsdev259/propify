@@ -17,7 +17,7 @@ class UnitsTableSeeder extends Seeder
         if (App::environment('local')) {
             $count = 0;
 
-            $buildings = Building::inRandomOrder()->get(['id', 'created_at', 'quarter_id']);
+            $buildings = Building::inRandomOrder()->get(['id', 'created_at', 'quarter_id', 'attic', 'basement']);
             foreach ($buildings as $building) {
 
                 for ($i = 1; $i <= random_int(1, 4); $i++) {
@@ -37,6 +37,8 @@ class UnitsTableSeeder extends Seeder
                         }
                     } else {
                         $attr['building_id'] = $building->id;
+                        $attr['attic'] = $building->attic ? 1 : 0;
+                        $attr['basement'] = $building->basement ? 1 : 0;
                     }
 
                     $date = $this->getRandomTime($building->created_at);
