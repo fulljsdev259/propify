@@ -33,6 +33,10 @@ class CreateRequest extends BaseRequest
             'phone' => 'required|string|max:255',
             'user' => 'required',
             'address' => 'required',
+            'status' => [
+                'required',
+                $this->getInRuleByClassConstants(ServiceProvider::Status),
+            ],
             'type' => [
                 'nullable',
                 $this->getInRuleByClassConstants(ServiceProvider::Type),
