@@ -29,7 +29,7 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :md="12">
-                                <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.type"
+                                <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.types"
                                         class="label-block"
                                         prop="type">
                                     <!-- <el-select

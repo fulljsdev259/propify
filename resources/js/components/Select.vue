@@ -301,8 +301,6 @@
                         result.push(item.id);
                     } 
                 });
-                if(this.showGroup)
-                    result = result[0];
                 this.$emit('select-changed', result);
             },
             getLanguageStr(str) {

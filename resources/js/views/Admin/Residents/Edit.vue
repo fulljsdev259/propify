@@ -47,6 +47,18 @@
                                             :showCamera="model.avatar==null"
                                             @cropped="cropped"/>
                                     </div>
+                                     <el-form-item v-if="editMode" :rules="validationRules.title"
+                                              prop="title"
+                                              class="label-block salutation-select">
+                                        <el-select :disabled="!editMode" :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.title">
+                                            <el-option
+                                                    :key="title.value"
+                                                    :label="title.name"
+                                                    :value="title.value"
+                                                    v-for="title in titles">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
                                     <div 
                                         v-if="!editName" 
                                         class="first_name"
@@ -195,7 +207,6 @@
                                 type="primary" 
                                 @click="showRelationDialog" 
                                 icon="icon-plus" 
-                                v-if="editMode"
                                 size="mini" >
                                 {{ $t('models.resident.relation.add') }}
                             </el-button>
@@ -220,8 +231,7 @@
                                 style="float:right" 
                                 type="primary" 
                                 @click="showMediaDialog" 
-                                icon="icon-plus" 
-                                v-if="editMode"
+                                icon="icon-plus"
                                 size="mini" >
                                 {{ $t('models.resident.relation.add_files') }}
                             </el-button>
@@ -558,23 +568,18 @@
             },
             status() {
                 let result = 'not_active';
-                let role = '', inactive_role = '';
+                let role = '';
                 this.model.relations.forEach((item) => {
                     let type = this.$t(`models.resident.relation.type.${this.constants.relations.type[item.type]}`);
-                    if(item.status == 1 && !role.includes(type)) {
+                    if(item.status == 1) {
                         result = 'active';
+                    }
+                    if(!role.includes(type)) {
                         if(role != '')
                             role = `${role}, `;
                         role = `${role}${type}`;
                     }
-                    if(!inactive_role.includes(type)) {
-                        if(inactive_role != '')
-                            inactive_role = `${inactive_role}, `;
-                        inactive_role = `${inactive_role}${type}`;
-                    }
                 });
-                if(role === '')
-                    role = inactive_role;
                 return {
                     text: result,
                     index: result === 'active'?1:2,
@@ -668,8 +673,18 @@
             background-color: #f6f5f7;
             .el-col:first-child {
                 padding: 40px 10px 20px 40px !important;
+                
+                .image-container {
+                    margin-bottom: 15px;
+                }
+                .salutation-select {
+                    margin: 0 0 3px;
+                    & .el-input__inner {
+                        font-size: 20px;
+                        color: var(--color-text-primary);
+                    }
+                }
                 .first_name, .last_name {
-                    margin-top: 20px;
                     padding-left: 10px;
                     text-transform: capitalize;
                     font-size: 32px;
