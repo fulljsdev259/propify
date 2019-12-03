@@ -230,7 +230,7 @@
                         </el-card>
 
                         <card class="mt15" :header="$t('general.box_titles.buildings_and_quarters')">
-                            <assignment-by-type
+                            <!-- <assignment-by-type
                                     :resetToAssignList="resetToAssignList"
                                     :assignmentType.sync="assignmentType"
                                     :toAssign.sync="toAssign"
@@ -239,7 +239,7 @@
                                     :toAssignList="toAssignList"
                                     :remoteLoading="remoteLoading"
                                     :remoteSearch="remoteSearchBuildings"
-                            />
+                            /> -->
                             <relation-list
                                     :actions="assignmentsActions"
                                     :columns="assignmentsColumns"
@@ -350,7 +350,7 @@
                     label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
-                assignmentsActions: [{
+                assignmentsActions: [/*{
                     width: 70,
                     buttons: [{
                         title: 'general.unassign',
@@ -359,7 +359,7 @@
                         tooltipMode: true,
                         icon: 'el-icon-close',                
                     }]
-                }],
+                }*/],
                 editMode: false,
                 editName: false,
                 visibleDialog: false,
