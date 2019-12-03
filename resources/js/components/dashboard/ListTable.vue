@@ -120,9 +120,21 @@
                     >
                         {{ $t(scope.row[column.prop]) }}
                     </el-tag>
-                    <div v-if="column.type == 'icon-circle'">
-                        <i :class="`icon-dot-circled ${iconCircleClass(scope.row['status'])}`"></i>
-                        {{ $t(scope.row[column.prop]) }}
+                    <div v-if="column.type == 'resident-status'">
+                        <!-- <i :class="`icon-dot-circled ${iconCircleClass(scope.row['status'])}`"></i>
+                        {{ $t(scope.row[column.prop]) }} -->
+                        <el-tooltip
+                            :content="`${$t(`models.resident.relation.status.${$constants.relations.status[scope.row[column.prop]]}`)}`"
+                            class="item"
+                            effect="light" placement="top"
+                        >
+                            <avatar 
+                                :background-color="$constants.status_colorcode[scope.row[column.prop]]"
+                                :initials="''"
+                                :size="30"
+                                :username="''"
+                            />
+                        </el-tooltip>
                     </div>
 
                     <el-select

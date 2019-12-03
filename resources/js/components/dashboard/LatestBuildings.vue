@@ -68,7 +68,7 @@
         methods: {
             ...mapActions(["getBuildings"]),
             async fetchData() {
-                const buildings = await this.getBuildings({
+                let buildings = await this.getBuildings({
                     page : 1,
                     per_page : 5
                 });

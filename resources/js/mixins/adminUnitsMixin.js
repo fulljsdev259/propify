@@ -133,15 +133,26 @@ export default (config = {}) => {
 
                     try {
                         if(this.model.quarter_id) {
-                            const {data} = await this.getBuildings({get_all: true,quarter_id: this.model.quarter_id, search});
+                            let {data} = await this.getBuildings({get_all: true,quarter_id: this.model.quarter_id, search});
+
+                            data.map(building => {
+                                building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                            })
 
                             this.buildings = data;
                         }
                         else {
-                            const {data} = await this.getBuildings({get_all: true, search});
+                            let {data} = await this.getBuildings({get_all: true, search});
 
+                            data.map(building => {
+                                building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                            })
                             this.buildings = data;
                         }
+
+                        this.buildings.map(building => {
+                            building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                        })
                         
                     } catch (err) {
                         displayError(err);

@@ -147,6 +147,10 @@ export default (config = {}) => {
                                 search,
                             });
 
+                            resp.data.map(building => {
+                                building.name = building.address.street + ' ' + building.address.house_num
+                            })
+
                             resp.data = resp.data.filter((building) => {
                                 return !this.alreadyAssigned.buildings.includes(building.id)
                             });

@@ -334,8 +334,11 @@
                 
             },
             async fetchRemoteBuildings(search = '') {
-                const buildings = await this.getBuildings({get_all: true, quarter_id: this.quarter_id, search});
+                let buildings = await this.getBuildings({get_all: true, quarter_id: this.quarter_id, search});
 
+                buildings.data.map(building => {
+                    building.name = building.address.street + ' ' + building.address.house_num
+                })
                 return buildings.data
             },
             async fetchRemoteUsers(search = '') {
@@ -350,11 +353,16 @@
                     this.remoteLoading = true;
 
                     try {
-                        const resp = await this.getBuildings({
+                        let resp = await this.getBuildings({
                             get_all: true,
                             quarter_id: this.quarter_id,
                             search
                         });
+
+                        resp.data.map(building => {
+                            building.name = building.address.street + ' ' + building.address.house_num
+                        })
+                        
 
                         this.model.workflowBuildingList = resp.data;
                     } catch (err) {

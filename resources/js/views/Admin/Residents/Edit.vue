@@ -195,6 +195,7 @@
                                 type="primary" 
                                 @click="showRelationDialog" 
                                 icon="icon-plus" 
+                                v-if="editMode"
                                 size="mini" >
                                 {{ $t('models.resident.relation.add') }}
                             </el-button>
@@ -220,6 +221,7 @@
                                 type="primary" 
                                 @click="showMediaDialog" 
                                 icon="icon-plus" 
+                                v-if="editMode"
                                 size="mini" >
                                 {{ $t('models.resident.relation.add_files') }}
                             </el-button>

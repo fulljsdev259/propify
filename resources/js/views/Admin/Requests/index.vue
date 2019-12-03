@@ -443,10 +443,12 @@
                 return this.$t(`models.request.category_list.${category.name}`)
             },
             async getFilterBuildings() {
-                const buildings = await this.getBuildings({
+                let buildings = await this.getBuildings({
                     get_all: true
                 });
-
+                buildings.data.map(building => {
+                    building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                })
                 return buildings.data;
             },
             async getFilterCategories() {
@@ -466,7 +468,9 @@
             },
             async fetchRemoteBuildings(search = '') {
                 const buildings = await this.getBuildings({get_all: true, search});
-
+                buildings.data.map(building => {
+                    building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                })
                 return buildings.data
             },
             async fetchRemoteManagers(search = '') {

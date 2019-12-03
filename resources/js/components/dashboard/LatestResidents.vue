@@ -43,12 +43,11 @@
                     label: 'general.address',
                     prop: 'address',
                     width: 300,
-                },{
-                    type: 'icon-circle',
-                    label: 'models.resident.status.label',
+                }, {
+                    type: 'resident-status',
+                    label: 'general.filters.status',
                     width: 130,
-                    prop: 'status_label',
-                    classSuffix: 'status_class_suffix',
+                    prop: 'status',
                 }, {
                     type: 'actions',
                     label: 'dashboard.actions',
