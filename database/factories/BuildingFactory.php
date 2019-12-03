@@ -6,7 +6,6 @@ $factory->define(App\Models\Building::class, function (Faker $faker) {
     $address = factory(\App\Models\Address::class)->create();
     $quarterId = $faker->boolean ?  \App\Models\Quarter::inRandomOrder()->first()->id : null;
     return [
-        'name' => sprintf('%s %s', $address->street, $address->house_num),
         'description' => $faker->sentence(5),
         'label' => $faker->sentence(3),
         'address_id' => $address->id,
