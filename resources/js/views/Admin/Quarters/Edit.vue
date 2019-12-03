@@ -346,7 +346,7 @@
                         <el-tab-pane name="buildings">
                             <span slot="label">
                                 {{ $t('general.box_titles.buildings') }}
-                                <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge>
+                                <!-- <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge> -->
                             </span>
                             <relation-list
                                 :actions="buildingActions"
@@ -354,6 +354,7 @@
                                 :filterValue="model.id"
                                 fetchAction="getBuildings"
                                 filter="quarter_id"
+                                :show-header="true"
                                 v-if="model.id"
                             />
                         </el-tab-pane>
@@ -574,20 +575,24 @@
                     i18n: this.translateAssignmentType
                 }*/],
                 buildingColumns: [{
-                    type: 'buildingName',
-                    prop: 'name',
-                    label: 'general.name'
+                    type: 'buildingHouseName',
+                    prop: 'address.house_num',
+                    label: 'models.building.house_num'
+                }, {
+                    type: 'buildingTypes',
+                    prop: 'types',
+                    label: 'general.filters.type'
                 }, {
                     align: 'center',
-                    prop: 'units_count',
+                    prop: 'count_of_apartments_units',
                     label: 'dashboard.buildings.total_units'
-                }, {
+                }/*, {
                     type: 'buildingResidentAvatars',
                     prop: 'residents',
                     propLimit: 2,
                     count: 'residents_count',
                     label: 'general.residents'
-                }],
+                }*/],
                 buildingActions: [/*{
                     width: 70,
                     buttons: [{
