@@ -468,7 +468,12 @@ return [
                         'building_unassigned' => ':buildingName buiding unassigned.',
                         'notifications_sent' => 'Notification has been sent for this :auditable_type.',
                         'new_resident_pinboard_created' => 'New neighbour added for user :userName.',
-                        'avatar_uploaded' => 'Profile image uploaded for :auditable_type.',
+                        'avatar_uploaded' => [
+                            'default' => 'Profile image uploaded for :auditable_type.',
+                            'resident' => 'Profile image uploaded for :auditable_type.',
+                            'provider' => 'Profile image uploaded for :auditable_type.',
+                            'manager' => 'Profile image uploaded for :auditable_type.',
+                        ],
                         'relation_created' => 'Relation created for resident :userName.',
                         'workflow_created' => 'Workflow created for this quarter',
                         'update_no_fieldvalue' => 'The :fieldname changed.',

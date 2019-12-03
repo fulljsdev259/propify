@@ -468,7 +468,12 @@ return [
                         'building_unassigned' => 'hat das Objekt :buildingName entfernt.',
                         'notifications_sent' => 'hat für :auditable_type eine Benachrichtigung gesendet.',
                         'new_resident_pinboard_created' => "hat den Benutzer :userName hinzugefügt.",
-                        'avatar_uploaded' => 'hat das Profil-Bild hochgeladen für :auditable_type.',
+                        'avatar_uploaded' => [
+                            'default' => 'hat das Profil-Bild hochgeladen für :auditable_type.',
+                            'resident' => 'hat das Profil-Bild hochgeladen für :auditable_type.',
+                            'provider' => 'hat das Profil-Bild hochgeladen für :auditable_type.',
+                            'manager' => 'hat das Profil-Bild hochgeladen für :auditable_type.',
+                        ],
                         'relation_created' => 'hat eine Beziehung erstellt.',
                         'workflow_created' => 'hat einen Workflow für dieses Projekt erstellt',
                         'update_no_fieldvalue' => 'das :fieldname geändert.',
