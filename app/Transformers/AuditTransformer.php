@@ -4,6 +4,7 @@ namespace App\Transformers;
 
 use App\Helpers\Helper;
 use App\Models\AuditableModel;
+use App\Models\Building;
 use App\Models\Pinboard;
 use App\Models\PropertyManager;
 use App\Models\Quarter;
@@ -194,15 +195,19 @@ class AuditTransformer extends BaseTransformer
             $response['statement'] = $this->translate_audit("quarter_assigned",['quarterName' => $quarterNames]);
         }
         elseif($model->event == 'quarter_unassigned'){
-            $ids = $model->new_values['ids'] ?? [];
+            $ids = $model->old_values['ids'] ?? [];
             $quarterNames = $this->getAssigneesName(Quarter::class, $ids, 'name', ['name']);
             $response['statement'] = $this->translate_audit("quarter_unassigned",['quarterName' => $quarterNames]);
         }
         elseif($model->event == 'building_assigned'){
-            $response['statement'] = $this->translate_audit("building_assigned",['buildingName' => $model->new_values['building_name']]);
+            $ids = $model->new_values['ids'] ?? [];
+            $buildingNames = $this->getAssigneesName(Building::class, $ids, 'internal_building_id', ['internal_building_id']);
+            $response['statement'] = $this->translate_audit("building_assigned",['buildingName' => $buildingNames]);
         }
         elseif($model->event == 'building_unassigned'){
-            $response['statement'] = $this->translate_audit("building_unassigned",['buildingName' => $model->old_values['building_name']]);
+            $ids = $model->old_values['ids'] ?? [];
+            $buildingNames = $this->getAssigneesName(Building::class, $ids, 'internal_building_id', ['internal_building_id']);
+            $response['statement'] = $this->translate_audit("building_unassigned",['buildingName' => $buildingNames]);
         }
         elseif($model->event == 'notifications_sent'){
             $response['statement'] = $this->translate_audit("notifications_sent",['auditable_type' => $model->auditable_type]);
