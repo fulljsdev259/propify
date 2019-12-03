@@ -183,6 +183,7 @@ class PropertyManagerAPIController extends AppBaseController
         }
 
         $propertyManager->load('buildings', 'quarters');
+        unset($user->phone);
         $propertyManager->setRelation('user', $user);
         $propertyManager->addDataInAudit(AuditableModel::MergeInMainData, $user);
 
@@ -239,7 +240,11 @@ class PropertyManagerAPIController extends AppBaseController
             return $this->sendError(__('models.property_manager.errors.not_found'));
         }
 
-        $propertyManager->load(['user', 'buildings', 'quarters'])
+        $propertyManager->load([
+                'user:id,name,email,avatar',
+                'buildings',
+                'quarters'
+            ])
             ->loadCount('requests', 'solvedRequests', 'pendingRequests', 'buildings');
         $response = (new PropertyManagerTransformer)->transform($propertyManager);
         return $this->sendResponse($response, 'Property Manager retrieved successfully');
@@ -334,7 +339,12 @@ class PropertyManagerAPIController extends AppBaseController
             return $this->sendError(__('models.property_manager.errors.update') . $e->getMessage());
         }
 
-        $propertyManager->load('user', 'buildings', 'quarters', 'settings');
+        $propertyManager->load([
+            'user:id,name,email,avatar',
+            'buildings',
+            'quarters',
+            'settings'
+        ]);
         $response = (new PropertyManagerTransformer)->transform($propertyManager);
         return $this->sendResponse($response, __('models.property_manager.saved'));
     }
