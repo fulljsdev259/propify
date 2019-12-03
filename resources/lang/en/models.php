@@ -298,7 +298,19 @@ return [
             'underground_parking_space_cs' => 'Underground parking space with charging station E-mobile',
             'underground_parking_space_sr' => 'Underground parking spaces with storage room',
             'double_parking' => 'Double parking',
-            'scheduling_parking' => 'Scheduling space'
+            'scheduling_parking' => 'Scheduling space',
+            'attic' => 'Attic',
+            'facility' => 'Facility',
+            'studio' => 'Studio',
+            'office' => 'Office',
+            'bl' => 'BL',
+            'visitor_parking' => 'VisitorParking',
+            'penthouse' => 'Penthouse',
+            'efh' => 'EFH',
+            'holidays' => 'Holidays',
+            'loft' => 'Loft',
+            'mfh' => 'MFH',
+            'XL_underground_parking_space' => 'XL underground parking space'
         ],
         'errors' => [
             'not_found' => "Unit not found",
