@@ -6,6 +6,7 @@ use App\Traits\HasCategoryMediaTrait;
 use App\Traits\RelationRelation;
 use App\Traits\RequestRelation;
 use App\Traits\UniqueIDFormat;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 
@@ -260,6 +261,11 @@ class Unit extends AuditableModel implements HasMedia
         return $this->belongsTo(Quarter::class, 'quarter_id', 'id');
     }
 
+    public function plans(): HasMany
+    {
+        return $this->hasMany(UnitPlan::class);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
@@ -305,8 +311,6 @@ class Unit extends AuditableModel implements HasMedia
         if (key_exists('attic', $newValues)) {
             $newValues['attic'] = (int)$newValues['attic'];
         }
-
-
 
 
         $data['old_values'] = $oldValues;
