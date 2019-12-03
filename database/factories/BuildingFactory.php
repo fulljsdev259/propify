@@ -6,7 +6,6 @@ $factory->define(App\Models\Building::class, function (Faker $faker) {
     $address = factory(\App\Models\Address::class)->create();
     $quarterId = $faker->boolean ?  \App\Models\Quarter::inRandomOrder()->first()->id : null;
     return [
-        'name' => sprintf('%s %s', $address->street, $address->house_num),
         'description' => $faker->sentence(5),
         'label' => $faker->sentence(3),
         'address_id' => $address->id,
@@ -17,5 +16,6 @@ $factory->define(App\Models\Building::class, function (Faker $faker) {
         'attic' => $faker->numberBetween(0, 1),
         'contact_enable' => array_rand(\App\Models\Building::BuildingContactEnables),
         'internal_building_id' => $faker->word,
+        'under_floor' => random_int(1, 4) - 1,
     ];
 });
