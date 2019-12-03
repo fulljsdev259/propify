@@ -301,8 +301,19 @@ return [
             'underground_parking_space_cs' => 'Tiefgaragenplatz mit Ladestation E-Mobil',
             'underground_parking_space_sr' => 'Tiefgaragenplätze mit Abstellraum',
             'double_parking' => 'Doppelparkplatz',
-            'scheduling_parking' => 'Disponibelraum'
-
+            'scheduling_parking' => 'Disponibelraum',
+            'attic' => 'Attika',
+            'facility' => 'Anlage',
+            'studio' => 'Atelier',
+            'office' => 'Büro',
+            'bl' => 'BL',
+            'visitor_parking' => 'Besucherparkplatz',
+            'penthouse' => 'Dachwohnung',
+            'efh' => 'EFH',
+            'holidays' => 'Ferien',
+            'loft' => 'Loft',
+            'mfh' => 'MFH',
+            'XL_underground_parking_space' => 'XL-Tiefgaragenplatz'
         ],
         'errors' => [
             'not_found' => "Einheit nicht gefunden",
