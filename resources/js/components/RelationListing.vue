@@ -26,26 +26,45 @@
                 v-if="!column.i18n"
             >
                 <template slot-scope="scope">
-                    <div v-if="column.type === 'requestTitleWithDesc'">
+                    <div v-if="column.type === 'requestIcon'">
+                        <span class="request-icon icon-chat-empty"></span>
+                    </div>
+                    <div v-else-if="column.type === 'requestTitleWithDesc'">
                         <div class="request-title">
                             <span class="normal">
                                 #{{scope.row.request_format}}
                             </span> 
-                            <span>{{$t(`models.request.category_list.${scope.row.category.name}`)}}:</span> 
+                            <span class="black">{{$t(`models.request.category_list.${scope.row.category.name}`)}}:</span> 
                             {{scope.row.title}}          
                         </div>
-                        <div class="category">
+                        <div class="request-title">
+                            {{$t(`general.on`)}} {{scope.row.created_at.slice(0, -3)}}
+                        </div>
+                        <!-- <div class="category">
                             <span>
                                 {{$t(`models.request.category_list.${scope.row.category.name}`)}}
                             </span>
                             <span v-if="scope.row.sub_category">
                                 &nbsp;>&nbsp; {{$t(`models.request.sub_category.${scope.row.sub_category.name}`)}}
                             </span>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div v-else-if="column.type === 'requestStatus'">
-                        {{$t(`models.request.status.${$constants.requests.status[scope.row.status]}`)}}
+                        <el-tooltip
+                            :content="`${$t(`models.request.status.${$constants.requests.status[scope.row.status]}`)}`"
+                            class="item"
+                            effect="light" placement="top"
+                        >
+                            <span class="status-icon" :style="{ background: $constants.requests.status_colorcode[scope.row.status], border: '2px solid #ffffffe7'}" >&nbsp;</span>
+                            <!-- <avatar 
+                                :background-color="$constants.requests.status_colorcode[scope.row.status]"
+                                :initials="''"
+                                :size="30"
+                                :style="{'z-index': (800 - index)}"
+                                :username="''"
+                            /> -->
+                        </el-tooltip>
                     </div>
 
                     <div v-else-if="column.type === 'requestResidentAvatar'">
@@ -655,9 +674,22 @@
         }
     }
 
+    .request-icon {
+        font-size: 30px;
+    }
     .request-title {
         .normal {
             color:var(--primary-color);
         }
+
+        .black {
+            color:black;
+        }
+    }
+    .status-icon {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        display: block;
     }
 </style>

@@ -643,4 +643,5 @@ return [
     'request_status' => 'Request Status',
     'login_success'=>'Welcome back',
     'category' => 'Category',
+    'on' => 'on'
 ];
