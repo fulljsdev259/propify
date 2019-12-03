@@ -408,7 +408,7 @@
                 }, {
                     type: 'residentNameAndType',
                     label: 'general.name',
-                    translate: this.translateResidentType
+                    translate: this.translateResidentTypes
                 }, {
                     type: 'residentRelation',
                     label: 'models.resident.relation.title'
@@ -418,7 +418,7 @@
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
                 }],
-                residentActions: [{
+                residentActions: [/*{
                     width: 70,
                     buttons: [{
                         title: 'models.resident.view',
@@ -426,12 +426,14 @@
                         icon: 'el-icon-user',
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 
                 unitColumns: [{
+                    type: 'unitColumn',
                     prop: 'name',
                     label: 'models.unit.name'
                 },{
+                    type: 'unitColumn',
                     prop: 'typeLabel',
                     label: 'models.unit.type.label'
                 },{
@@ -439,7 +441,7 @@
                     label: 'general.resident',
                     type: 'unitResidentAvatar',
                 }],
-                unitActions: [{
+                unitActions: [/*{
                     width: 70,
                     buttons: [{
                         title: 'general.actions.edit',
@@ -447,7 +449,7 @@
                         tooltipMode: true,
                         icon: 'ti-search'
                     }]
-                }],
+                }*/],
                 requestColumns: [{
                     type: 'requestResidentAvatar',
                     width: 90,
@@ -519,8 +521,11 @@
             translateType(type) {
                 return this.$t(`general.assignment_types.${type}`);
             },
-            translateResidentType(type) {
-                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
+            translateResidentTypes(types) {
+                if(types.constructor === Array){
+                    let translatedTypes = types.map(type => this.$t(`models.resident.relation.type.${this.$constants.relations.type[type]}`))
+                    return translatedTypes.join(', ')
+                }
             },
             translateAssignmentType(types) {
                 let translatedTypes = []
