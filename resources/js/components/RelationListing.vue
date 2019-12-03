@@ -244,7 +244,7 @@
                     </div>
                     <div v-else-if="column.type === 'buildingTypes'" class="normal">           
                         <!-- {{scope.row.address ? scope.row.address.street + ' ' + scope.row.address.house_num : ''}}                 -->
-                        {{ ( scope.row.types.map(type => $t(`models.quarter.types.${$constants.buildings.type[type]}`)) ).join(", ") }}
+                        {{ scope.row.types ? (  scope.row.types.map(type => $t(`models.quarter.types.${$constants.buildings.type[type]}`)) ).join(", ") : ''}}
                     </div>
                     <div v-else-if="column.type === 'residentName'" class="normal"> 
                         {{scope.row.name}}
