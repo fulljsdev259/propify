@@ -252,7 +252,7 @@
                         </card>
                     </el-col>
                     <el-col :md="12">
-                        <raw-grid-statistics-card :cols="8" :data="statistics.raw"/>
+                        <!-- <raw-grid-statistics-card :cols="8" :data="statistics.raw"/> -->
 
                         <card class="mt15" :header="$t('general.requests')">
                             <relation-list

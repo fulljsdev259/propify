@@ -38,7 +38,7 @@
                             {{scope.row.title}}          
                         </div>
                         <div class="request-title">
-                            {{$t(`general.on`)}} {{scope.row.created_at.slice(0, -3)}}
+                            {{$t(`general.on`)}} {{scope.row.created_at.slice(0, 10)}}, {{scope.row.created_at.slice(10, -3)}}
                         </div>
                         <!-- <div class="category">
                             <span>

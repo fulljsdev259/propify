@@ -184,7 +184,12 @@
                         type: 'select',
                         key: 'category',
                         data: this.categories,
-                    },
+                    }, {
+                        name: this.$t('general.filters.status'),
+                        type: 'select',
+                        key: 'status',
+                        data: this.statuses,
+                    }
                     // {
                     //     name: this.$t('general.filters.quarters'),
                     //     type: 'select',
@@ -243,6 +248,13 @@
             this.states = states.data.data;
 
             this.categories = await this.getFilterCategories()
+
+            this.statuses = Object.keys(this.$constants.serviceProviders.status).map((id) => {
+                return {
+                    id: parseInt(id),
+                    name: this.$t(`general.status.${this.$constants.serviceProviders.status[id]}`)
+                };
+            });
 
             this.buildings = await this.fetchRemoteBuildings();
         },
