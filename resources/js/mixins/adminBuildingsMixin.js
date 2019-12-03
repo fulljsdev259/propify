@@ -151,7 +151,7 @@ export default (config = {}) => {
                 for(let item in this.$constants.buildings.type) {
                     this.types.push({
                         id: item,
-                        name: this.$t(`models.quarter.types.${this.$constants.quarters.type[item]}`),
+                        name: this.$t(`models.quarter.types.${this.$constants.buildings.type[item]}`),
                     })
                 }
             },

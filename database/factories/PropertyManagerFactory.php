@@ -14,10 +14,8 @@ $factory->define(App\Models\PropertyManager::class, function (Faker $faker, arra
         'title' => $title,
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
-        'profession' => $faker->jobTitle,
-        'slogan' => $faker->paragraph,
-        'xing_url' => $faker->url,
-        'linkedin_url' => $faker->url,
+        'mobile_phone' => $faker->phoneNumber,
+        'status' => array_rand(\App\Models\PropertyManager::Status)
     ];
 });
 

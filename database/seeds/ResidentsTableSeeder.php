@@ -26,6 +26,7 @@ class ResidentsTableSeeder extends Seeder
         $totalResidents = 200;
         $faker = Faker::create();
         $units = Unit::inRandomOrder()->with('building')->limit($totalResidents)->get();
+        $residentRole = Role::where('name', 'resident')->first();
 
         for($i = 0; $i < $totalResidents; $i++) {
 
@@ -57,7 +58,6 @@ class ResidentsTableSeeder extends Seeder
             ];
             $userData = array_merge($userData, $this->getDateColumns($date));
 
-            $residentRole = Role::where('name', 'resident')->first();
             $user = factory(User::class)->create($userData);
             $user->attachRole($residentRole);
             $settings = $this->getSettings();

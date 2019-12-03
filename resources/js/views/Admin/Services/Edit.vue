@@ -174,7 +174,6 @@
                         </el-row> -->
                                 <div v-if="!editMode && model.status" class="service-info-item">
                                     <span>{{ $t('general.status.label') }}</span>
-                                    {{ $constants.serviceProviders.status[model.status] }}
                                     <span>{{ $t(`general.status.${$constants.serviceProviders.status[model.status]}`) }}</span>
                                 </div>
                                 <el-form-item v-if="editMode" class="label-block" :label="$t('general.status.label')"

@@ -22,8 +22,8 @@ use App\Models\AuditableModel;
 use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
+use App\Models\Relation;
 use App\Models\ServiceProvider;
-use App\Models\Unit;
 use App\Models\User;
 use App\Repositories\AddressRepository;
 use App\Repositories\QuarterRepository;
@@ -95,6 +95,21 @@ class QuarterAPIController extends AppBaseController
      */
     public function index(ListRequest $request)
     {
+        if ($request->orderBy == 'count_of_apartments_units') {
+            $request->merge([
+                'orderBy' => RequestCriteria::NoOrder,
+                'orderByRaw' => 'count_of_apartments_units',
+            ]);
+        }
+        foreach (Relation::Status as $status => $value) {
+            if ($request->orderBy == Relation::Status[$status] . '_units_count') {
+                $request->merge([
+                    'orderBy' => RequestCriteria::NoOrder,
+                    'orderByRaw' => Relation::Status[$status] . '_units_count',
+                ]);
+            }
+        }
+
         $this->quarterRepository->pushCriteria(new RequestCriteria($request));
         $this->quarterRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->quarterRepository->pushCriteria(new FilterByStateCriteria($request));

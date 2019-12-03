@@ -56,12 +56,19 @@ class RequestsTableSeeder extends Seeder
                 $request->save();
                 $providers = ServiceProvider::inRandomOrder()->take(2)->get();
                 foreach ($providers as $p) {
-                    $request->providers()->sync([$p->id => ['created_at' => now()]]);
+                    $request->providers()->sync([$p->id => [
+                        'created_at' => now(),
+                        'user_id' => $p->user_id
+                    ]]);
                 }
 
                 $managers = \App\Models\PropertyManager::inRandomOrder()->take(2)->get();
                 foreach ($managers as $m) {
-                    $request->managers()->sync([$m->id => ['created_at' => now()]]);
+                    $request->managers()->sync([
+                        $m->id => [
+                            'created_at' => now(),
+                            'user_id' => $m->user_id
+                        ]]);
                 }
                 foreach ($providers as $prov) {
                     foreach ($admins as $admin) {

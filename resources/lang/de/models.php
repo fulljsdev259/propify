@@ -205,7 +205,7 @@ return [
         'building_format' => 'Projektnr.',
         'building_no' => 'Objektnr.',
 	    'building_number'=>'Objektnummer',
-        'active_residents_count' => 'Wohnungen',
+        'count_of_apartments_units' => 'Wohnungen',
         'request_status' => 'Anliegen-Status',
         'type' => 'Objektart',
         'city' => 'Objekort',
@@ -301,8 +301,19 @@ return [
             'underground_parking_space_cs' => 'Tiefgaragenplatz mit Ladestation E-Mobil',
             'underground_parking_space_sr' => 'Tiefgaragenplätze mit Abstellraum',
             'double_parking' => 'Doppelparkplatz',
-            'scheduling_parking' => 'Disponibelraum'
-
+            'scheduling_parking' => 'Disponibelraum',
+            'attic' => 'Attika',
+            'facility' => 'Anlage',
+            'studio' => 'Atelier',
+            'office' => 'Büro',
+            'bl' => 'BL',
+            'visitor_parking' => 'Besucherparkplatz',
+            'penthouse' => 'Dachwohnung',
+            'efh' => 'EFH',
+            'holidays' => 'Ferien',
+            'loft' => 'Loft',
+            'mfh' => 'MFH',
+            'XL_underground_parking_space' => 'XL-Tiefgaragenplatz'
         ],
         'errors' => [
             'not_found' => "Einheit nicht gefunden",
@@ -592,13 +603,13 @@ return [
             'open_issue' => 'Pendenz',
         ],
         'sub_category' => [
-            'inside_of_apartment' => 'Innerhalb der Wohnung',
-            'outside_of_apartment' => 'Ausserhalb der Wohnung',
+            'inside_of_apartment' => 'innerhalb der Wohnung',
+            'outside_of_apartment' => 'ausserhalb der Wohnung',
         ],
         'qualification_category' => [
-            'normal_wear' => 'Normaler Verschleiß',
+            'normal_wear' => 'Normal abgenutzt',
             'deficiency' => 'Mangel',
-            're_cleaning' => 'Nachreinigung',
+            're_cleaning' => 'Nachreinigen',
             'non_existent' => 'Nicht vorhanden',
             'okay' =>'Okay'
         ],
