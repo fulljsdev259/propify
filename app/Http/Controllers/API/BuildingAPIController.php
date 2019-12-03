@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Building\FilterByRelatedFieldsCriteria;
 use App\Criteria\Building\FilterByUserRoleCriteria;
+use App\Criteria\Building\IncludeForOrderCriteria;
 use App\Criteria\Common\HasRequestCriteria;
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Building\FilterByCityCriteria;
@@ -24,6 +25,7 @@ use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\BuildingAssignee;
 use App\Models\PropertyManager;
+use App\Models\Relation;
 use App\Models\ServiceProvider;
 use App\Models\Unit;
 use App\Models\User;
@@ -129,12 +131,32 @@ class BuildingAPIController extends AppBaseController
     public function index(ListRequest $request)
     {
         $request->merge(['model' => 'buildings']);
+        foreach (\App\Models\Request::Status as $status => $value) {
+            $requestStatusCount = 'requests_' . $value . '_count';
+            if ($request->orderBy == $requestStatusCount) {
+                $request->merge([
+                    'orderBy' => RequestCriteria::NoOrder,
+                    'orderByRaw' => $requestStatusCount,
+                ]);
+            }
+        }
+
+        foreach (Relation::Status as $status => $value) {
+            if ($request->orderBy == Relation::Status[$status] . '_units_count') {
+                $request->merge([
+                    'orderBy' => RequestCriteria::NoOrder,
+                    'orderByRaw' => Relation::Status[$status] . '_units_count',
+                ]);
+            }
+        }
+
         $this->buildingRepository->pushCriteria(new RequestCriteria($request));
         $this->buildingRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByCityCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByUserRoleCriteria($request));
+        $this->buildingRepository->pushCriteria(new IncludeForOrderCriteria($request));
 
         $hasRequest = $request->get('has_req', false);
         if ($hasRequest) {

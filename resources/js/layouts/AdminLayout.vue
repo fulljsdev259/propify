@@ -503,14 +503,15 @@
         }
         :global(.heading .el-button) {
             font-family: 'Radikal';
-            padding: 0px;
-            margin-right: 40px !important;
+            margin-right: 15px !important;
         }
         :global(.heading .list-checkbox .el-button) {
             padding: 2px 2px;
+            margin-right: 23px !important;;
         }
         :global(.heading .el-button.more-actions) {
-            margin-right: 18px !important;
+            margin-right: 0px !important;
+            padding: 7.5px 18px 7.5px 7px;
         }
         :global(.heading .menu-button) {
             margin-right: 20px;

@@ -369,20 +369,15 @@
                 }
                 return result;
             },
-            serviceTitle() {
-                let result = '';
-                this.titles.forEach((item) => {
-                    if(item.value === this.model.title)
-                        result = item.name;
-                });
-                return result;
-            },
             serviceState() {
                 let result = '';
-                this.states.forEach((item) => {
-                    if(item.id === this.model.address.state_id)
-                        result = item.name;
+                result = this.states.find((state) => {
+                    return state.id === this.model.address.state_id;
                 });
+                if(result === undefined)
+                    result = '';
+                else   
+                    result = result.name;
                 return result;
             }
         },

@@ -106,7 +106,8 @@ export default (config = {}) => {
                 },
                 pinboard_id: null,
                 audit_id: null,
-                onload_notify_email: null
+                onload_notify_email: null,
+                old_model: null,
             }
         },
         computed: {
@@ -496,7 +497,7 @@ export default (config = {}) => {
                 mixin.methods = {
                     ...mixin.methods,
                     ...mapActions(['getPinboard', 'updatePinboard']),
-                    submit() {
+                    submit(goToListing = false) {
                         return new Promise((resolve, reject) => {
                             this.form.validate(async valid => {
                                 if (!valid) {
@@ -516,6 +517,8 @@ export default (config = {}) => {
                                     this.model = Object.assign({}, this.model, resp.data);
                                     this.media = [];
 
+                                    this.old_model = this.model;
+
                                     displaySuccess(resp);
                                     if(this.$refs.auditList){
                                         this.$refs.auditList.fetch();
@@ -526,6 +529,10 @@ export default (config = {}) => {
                                     resolve(false);
                                 } finally {
                                     this.loading.state = false;
+
+                                    if(goToListing) {
+                                        this.$refs.editActions.goToListing()
+                                    }
                                 }
                             });
                         });

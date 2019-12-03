@@ -51,7 +51,7 @@
                                         <span>{{ $t('models.quarter.types.label') }}</span>
                                         <span>{{ quarterTypes }}</span>
                                     </div>
-                                    <el-form-item v-if="editMode" :label="$t('models.quarter.types.label')" :rules="validationRules.type"
+                                    <el-form-item v-if="editMode" :label="$t('models.quarter.types.label')" :rules="validationRules.types"
                                             class="label-block" 
                                             prop="types">
                                         <!-- <el-select
