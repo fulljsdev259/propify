@@ -566,18 +566,26 @@ class ServiceProviderAPIController extends AppBaseController
      */
     public function assignQuarter(int $id, int $did, QuarterRepository $qRepo, AssignRequest $r)
     {
-        $sp = $this->serviceProviderRepository->findWithoutFail($id);
-        if (empty($sp)) {
+        $serviceProvider = $this->serviceProviderRepository->findWithoutFail($id);
+        if (empty($serviceProvider)) {
             return $this->sendError(__('models.service.errors.not_found'));
         }
-        $d = $qRepo->findWithoutFail($did);
-        if (empty($d)) {
+        $quarter = $qRepo->findWithoutFail($did);
+        if (empty($quarter)) {
             return $this->sendError(__('models.service.errors.quarter_not_found'));
         }
 
-        $sp->quarters()->sync($d, false);
-        $sp->load('user', 'address:id,country_id,state_id,city,street,zip', 'quarters', 'buildings');
-        $ret = (new ServiceProviderTransformer)->transform($sp);
+        $serviceProvider->quarters()->sync(
+            [
+                $quarter->id => [
+                    'created_at' => now(),
+                    'user_id' => $serviceProvider->user_id
+                ]
+            ],
+            false
+        );
+        $serviceProvider->load('user', 'address:id,country_id,state_id,city,street,zip', 'quarters', 'buildings');
+        $ret = (new ServiceProviderTransformer)->transform($serviceProvider);
 
         return $this->sendResponse($ret, __('general.attached.quarter'));
     }
@@ -670,23 +678,31 @@ class ServiceProviderAPIController extends AppBaseController
      */
     public function assignBuilding(int $id, int $bid, BuildingRepository $bRepo, AssignRequest $r)
     {
-        $sp = $this->serviceProviderRepository->findWithoutFail($id);
-        if (empty($sp)) {
+        $serviceProvider = $this->serviceProviderRepository->findWithoutFail($id);
+        if (empty($serviceProvider)) {
             return $this->sendError(__('models.service.errors.not_found'));
         }
-        $b = $bRepo->findWithoutFail($bid);
-        if (empty($b)) {
+        $building = $bRepo->findWithoutFail($bid);
+        if (empty($building)) {
             return $this->sendError(__('models.service.errors.building_not_found'));
         }
-        if ($b->quarter) {
-            if ($sp->quarters->contains($b->quarter)) {
+        if ($building->quarter) {
+            if ($serviceProvider->quarters->contains($building->quarter)) {
                 return $this->sendError(__('models.service.errors.building_already_assign'));
             }
         }
 
-        $sp->buildings()->sync($b, false);
-        $sp->load('user', 'address:id,country_id,state_id,city,street,zip', 'quarters', 'buildings');
-        $ret = (new ServiceProviderTransformer)->transform($sp);
+        $serviceProvider->buildings()->sync(
+            [
+                $building->id => [
+                    'created_at' => now(),
+                    'user_id' => $serviceProvider->user_id
+                ]
+            ],
+            false
+        );
+        $serviceProvider->load('user', 'address:id,country_id,state_id,city,street,zip', 'quarters', 'buildings');
+        $ret = (new ServiceProviderTransformer)->transform($serviceProvider);
 
         return $this->sendResponse($ret, __('general.attached.building'));
     }

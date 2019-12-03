@@ -565,7 +565,7 @@ class PropertyManagerAPIController extends AppBaseController
             return $this->sendError(__('models.property_manager.errors.building_already_assign'));
         }
 
-        $propertyManager->buildings() ->sync(
+        $propertyManager->buildings()->sync(
             [
                 $building->id => [
                     'created_at' => now(),
