@@ -349,8 +349,8 @@
                                 <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge>
                             </span>
                             <relation-list
-                                :actions="quarterActions"
-                                :columns="quarterColumns"
+                                :actions="buildingActions"
+                                :columns="buildingColumns"
                                 :filterValue="model.id"
                                 fetchAction="getBuildings"
                                 filter="quarter_id"
@@ -573,7 +573,7 @@
                     label: 'general.assignment_types.label',
                     i18n: this.translateAssignmentType
                 }*/],
-                quarterColumns: [{
+                buildingColumns: [{
                     type: 'buildingName',
                     prop: 'name',
                     label: 'general.name'
@@ -588,7 +588,7 @@
                     count: 'residents_count',
                     label: 'general.residents'
                 }],
-                quarterActions: [/*{
+                buildingActions: [/*{
                     width: 70,
                     buttons: [{
                         icon: 'ti-search',
@@ -678,9 +678,7 @@
                     if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
                         this.visibleDialog = true;
                     } else {
-                        this.editMode = !this.editMode;
-                        this.editId = false;
-                        this.editName = false;
+                        this.$refs.editActions.goToListing();
                     }
                 }
             },

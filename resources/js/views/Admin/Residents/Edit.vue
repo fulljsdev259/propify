@@ -195,8 +195,8 @@
                                 type="primary" 
                                 @click="showRelationDialog" 
                                 icon="icon-plus" 
-                                size="mini" 
-                                v-if="editMode">
+                                v-if="editMode"
+                                size="mini" >
                                 {{ $t('models.resident.relation.add') }}
                             </el-button>
                         </el-tab-pane>
@@ -221,8 +221,8 @@
                                 type="primary" 
                                 @click="showMediaDialog" 
                                 icon="icon-plus" 
-                                size="mini" 
-                                v-if="editMode">
+                                v-if="editMode"
+                                size="mini" >
                                 {{ $t('models.resident.relation.add_files') }}
                             </el-button>
                         </el-tab-pane>
@@ -410,8 +410,7 @@
                     if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
                         this.visibleDialog = true;
                     } else {
-                        this.editMode = !this.editMode;
-                        this.editName = false;
+                        this.$refs.editActions.goToListing();
                     }
                 }
             },

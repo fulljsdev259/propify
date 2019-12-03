@@ -845,6 +845,10 @@
                             resp = await this.getBuildings({get_all: true, search});
                         }
 
+                        resp.data.map(building => {
+                            building.name = building.address.street + ' ' + building.address.house_num
+                        })
+                        
                         this.buildings = resp.data;
                     } catch (err) {
                         displayError(err);

@@ -169,9 +169,13 @@
             ...mapActions(['changeListingPublish', 'getBuildings', 'getResidents']),
             async getFilterBuildings() {
                 this.loading = true;
-                const buildings = await this.getBuildings({
+                let buildings = await this.getBuildings({
                     get_all: true
                 });
+
+                buildings.data.map(building => {
+                    building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                })
                 this.loading = false;
 
                 return buildings.data;

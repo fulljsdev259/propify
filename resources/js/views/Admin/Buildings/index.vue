@@ -30,7 +30,7 @@
             </template> -->
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <el-button size="mini" class="el-button--transparent">
+                    <el-button size="mini" class="el-button--transparent more-actions">
                         <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
@@ -212,7 +212,7 @@
                     }, {
                         name: this.$t('general.filters.quarters'),
                         type: 'select',
-                        key: 'ids',
+                        key: 'quarter_ids',
                         data: this.quarters,
                     },{
                         name: this.$t('models.building.city'),
