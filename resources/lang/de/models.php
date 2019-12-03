@@ -205,7 +205,7 @@ return [
         'building_format' => 'Projektnr.',
         'building_no' => 'Objektnr.',
 	    'building_number'=>'Objektnummer',
-        'active_residents_count' => 'Wohnungen',
+        'count_of_apartments_units' => 'Wohnungen',
         'request_status' => 'Anliegen-Status',
         'type' => 'Objektart',
         'city' => 'Objekort',

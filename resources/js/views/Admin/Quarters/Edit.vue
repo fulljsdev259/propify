@@ -585,7 +585,7 @@
                 }, {
                     align: 'center',
                     prop: 'count_of_apartments_units',
-                    label: 'models.building.active_residents_count'
+                    label: 'models.building.count_of_apartments_units'
                 }/*, {
                     type: 'buildingResidentAvatars',
                     prop: 'residents',

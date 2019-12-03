@@ -204,7 +204,7 @@ return [
         'building_format' => 'Project No.',
         'building_no' => 'Building No.',
         'building_number'=>'Building Number',
-        'active_residents_count' => 'Living',
+        'count_of_apartments_units' => 'Living',
         'request_status' => 'Request Status',
         'type' => 'Building Type',
         'city' => 'City',
