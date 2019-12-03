@@ -341,8 +341,8 @@
         </ui-drawer>
         <edit-close-dialog 
             :centerDialogVisible="visibleDialog"
-            @clickYes="submit(), editMode=!editMode, visibleDialog=false"
-            @clickNo="model=_.clone(old_model, true), editMode=!editMode, visibleDialog=false"
+            @clickYes="visibleDialog=false, submit(true), $refs.editActions.goToListing()"
+            @clickNo="visibleDialog=false, $refs.editActions.goToListing()"
             @clickCancel="visibleDialog=false"
         ></edit-close-dialog>
     </div>
@@ -509,7 +509,7 @@
                     if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
                         this.visibleDialog = true;
                     } else {
-                        this.editMode = !this.editMode;
+                        this.$refs.editActions.goToListing();
                     }
                 }
             },

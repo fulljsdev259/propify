@@ -8,7 +8,7 @@
         </heading>
         <el-row :gutter="20" class="crud-view">
             <el-col :md="12">
-                <el-form :model="model" label-position="top" label-width="192px" ref="form" class="edit-details-form">
+                <el-form :model="model" label-position="top" label-width="192px" ref="form">
                     <el-card class="service-detail">
                         <el-row class="last-form-row" :gutter="20">
                             <el-col :md="12" class='service_avatar'>
@@ -32,9 +32,6 @@
                                         "
                                         :showCamera="model.avatar==null"
                                         @cropped="cropped"/>
-                                </div>
-                                <div v-if="!editMode" class="salutation">
-                                    <span>{{ serviceTitle }}</span>
                                 </div>
                                 <el-form-item v-if="editMode" :rules="validationRules.title"
                                               prop="title"
@@ -400,8 +397,7 @@
                     if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
                         this.visibleDialog = true;
                     } else {
-                        this.editMode = !this.editMode;
-                        this.editName = false;
+                        this.$refs.editActions.goToListing();
                     }
                 }
             },
@@ -495,15 +491,14 @@
             }
             .el-col:first-child {
                 padding: 40px 10px 20px 40px !important;
-                .salutation {
-                    padding-left: 10px;
-                    margin: 20px 0 5px;
-                    font-size: 20px;
+                .image-container {
+                    margin-bottom: 15px;
                 }
                 .salutation-select {
-                    margin-bottom: 5px;
+                    margin: 0 0 3px;
                     & .el-input__inner {
                         font-size: 20px;
+                        color: var(--color-text-primary);
                     }
                 }
                 .first_name, .last_name {

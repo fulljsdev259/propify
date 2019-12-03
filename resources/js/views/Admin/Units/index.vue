@@ -228,7 +228,7 @@
                     }, {
                         name: this.$t('general.filters.quarters'),
                         type: 'select',
-                        key: 'ids',
+                        key: 'quarter_ids',
                         data: this.quarters,
                     },{
                         name: this.$t('general.filters.buildings'),

@@ -505,6 +505,10 @@
             font-family: 'Radikal';
             //margin-right: 10px;
         }
+        :global(.heading .el-button.el-button--mini) {
+            padding: 7.5px 6px;
+            margin-right: 5px;
+        }
         :global(.heading .menu-button) {
             margin-right: 20px;
         }
