@@ -163,10 +163,13 @@
         methods: {
             ...mapActions(["remoteSearchManagers", "batchDeleteHouseOwners", "getBuildings", "getIDsAssignmentsCount"]),
             async getFilterBuildings() {
-                const buildings = await this.getBuildings({
+                let buildings = await this.getBuildings({
                     get_all: true
                 });
 
+                buildings.data.map(building => {
+                    building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                })
                 return buildings.data;
             },
             add() {

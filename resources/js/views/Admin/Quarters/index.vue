@@ -2,7 +2,8 @@
     <div class="quarters list-view">
         <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
-                <list-check-box />
+                <list-check-box 
+                    @clicked="localStorage.setItem('')"/>
             </template>
             <template v-if="$can($permissions.create.quarter)">
                 <el-button 
@@ -20,7 +21,7 @@
            
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <el-button size="mini" class="el-button--transparent">
+                    <el-button size="mini" class="el-button--transparent more-actions">
                         <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
@@ -222,7 +223,7 @@
                         data: []
                     },{
                         name: this.$t('general.filters.my_filters'),
-                        type: 'select',
+                        type: 'popover',
                         key: 'my_filter',
                         data: []
                     }
@@ -303,7 +304,10 @@
             },
             async openEditWithRelation(quarter) {
                 this.loading = true;
-                const buildingsResp = await this.getBuildings({get_all: true, quarter_id: quarter.id});
+                let buildingsResp = await this.getBuildings({get_all: true, quarter_id: quarter.id});
+                buildingsResp.data.map(building => {
+                    building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                })
                 await this.openEdit(quarter);
                 this.$set(this.model, 'buildings', buildingsResp.data);
                 this.loading = false;
@@ -360,10 +364,16 @@
                 return quarters.data
             },
             async fetchRemoteBuildings(search = '') {
-                const buildings = await this.getBuildings({get_all: true, search});
+                let buildings = await this.getBuildings({get_all: true, search});
 
+                buildings.data.map(building => {
+                    building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                })
                 return buildings.data
             },
+            selectionChanged(items) {
+                this.selectedItems = items;
+            }
         },
         async created() {
             this.getRoles();

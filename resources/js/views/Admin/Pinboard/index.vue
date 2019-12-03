@@ -20,7 +20,7 @@
             </template>
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
-                    <el-button size="mini" class="el-button--transparent">
+                    <el-button size="mini" class="el-button--transparent more-actions">
                         <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
@@ -219,8 +219,11 @@
                 return quarters.data
             },
             async fetchRemoteBuildings(search = '') {
-                const buildings = await this.getBuildings({get_all: true, search});
+                let buildings = await this.getBuildings({get_all: true, search});
 
+                buildings.data.map(building => {
+                    building.name = building.address ? building.address.street + ' ' + building.address.house_num : ''
+                })
                 return buildings.data
             },
             checkPinboardType(pinboard) {

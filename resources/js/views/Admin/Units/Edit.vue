@@ -394,8 +394,8 @@
         </ui-drawer>
         <edit-close-dialog 
             :centerDialogVisible="visibleDialog"
-            @clickYes="submit(), editMode=!editMode, visibleDialog=false"
-            @clickNo="model=_.clone(old_model, true), editMode=!editMode, visibleDialog=false"
+            @clickYes="submit(), visibleDialog=false, $refs.editActions.goToListing()"
+            @clickNo="visibleDialog=false, $refs.editActions.goToListing()"
             @clickCancel="visibleDialog=false"
         ></edit-close-dialog>
 
@@ -542,7 +542,7 @@
                 }, {
                     type: 'residentNameAndType',
                     label: 'general.name',
-                    translate: this.translateResidentType
+                    translate: this.translateResidentTypes
                 }, {
                 //     prop: 'name',
                 //     label: 'general.name',
@@ -561,21 +561,21 @@
                     label: 'models.resident.status.label'
                 }],
                 assigneesActions: [
-                    {
-                    width: 70,
-                    buttons: [{
-                        title: 'models.resident.view',
-                        onClick: this.residentEditView,
-                        icon: 'el-icon-user',
-                        tooltipMode: true
-                    }/*, {
-                        title: 'general.unassign',
-                        tooltipMode: true,
-                        type: 'danger',
-                        icon: 'el-icon-close',
-                        onClick: this.notifyUnassignment
-                    }*/]
-                }
+                    // {
+                    // width: 70,
+                    // buttons: [{
+                    //     title: 'models.resident.view',
+                    //     onClick: this.residentEditView,
+                    //     icon: 'el-icon-user',
+                    //     tooltipMode: true
+                    // }, {
+                    //     title: 'general.unassign',
+                    //     tooltipMode: true,
+                    //     type: 'danger',
+                    //     icon: 'el-icon-close',
+                    //     onClick: this.notifyUnassignment
+                    // }]
+                    // }
                 ],
                 multiple: false,
                 visibleDrawer: false,
@@ -608,12 +608,15 @@
                     if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
                         this.visibleDialog = true;
                     } else {
-                        this.editMode = !this.editMode;
+                        this.$refs.editActions.goToListing();
                     }
                 }
             },
-            translateResidentType(type) {
-                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
+            translateResidentTypes(types) {
+                if(types.constructor === Array){
+                    let translatedTypes = types.map(type => this.$t(`models.resident.relation.type.${this.$constants.relations.type[type]}`))
+                    return translatedTypes.join(', ')
+                }
             },
             toggleDrawer() {
                 this.visibleDrawer = true;

@@ -215,8 +215,13 @@
                     <div v-else-if="column.type === 'companyName'" class="normal">
                         {{scope.row.company_name}}
                     </div>
-                    <div v-else-if="column.type === 'buildingName'" class="normal">                    
-                        {{scope.row.name}}                
+                    <div v-else-if="column.type === 'buildingHouseName'" class="normal">           
+                        <!-- {{scope.row.address ? scope.row.address.street + ' ' + scope.row.address.house_num : ''}}                 -->
+                        {{scope.row.address ? scope.row.address.house_num : ''}}
+                    </div>
+                    <div v-else-if="column.type === 'buildingTypes'" class="normal">           
+                        <!-- {{scope.row.address ? scope.row.address.street + ' ' + scope.row.address.house_num : ''}}                 -->
+                        {{ ( scope.row.types.map(type => $t(`models.quarter.types.${$constants.buildings.type[type]}`)) ).join(", ") }}
                     </div>
                     <div v-else-if="column.type === 'residentName'" class="normal"> 
                         {{scope.row.name}}
@@ -255,6 +260,7 @@
                 :key="index"
                 :width="action.width"
                 align="right"
+                class-name="action-buttons"
                 v-for="(action, index) in actions"
             >
                 <template slot-scope="scope">
@@ -385,7 +391,7 @@
             },
             showHeader: {
                 type: Boolean,
-                default: true
+                default: false
             },
         },
         data() {
@@ -514,12 +520,14 @@
 
                         id = item.edit_id;
                     }
-                    else if(column.type === 'buildingName')
+                    else if(column.type === 'buildingHouseName')
                         name = 'adminBuildingsEdit';
                     else if(column.type === 'residentName')
                         name = 'adminResidentsEdit';
                     else if(column.type === 'serviceName')
                         name = 'adminServicesEdit';
+                    else if(column.type === 'unitColumn')
+                        name = 'adminUnitsEdit';
                 });
                 if(name !== '') {
                     this.$router.push({
@@ -535,7 +543,15 @@
     .el-table .cell, .el-table th div{
         overflow: hidden;
         text-overflow: unset;
-    }    
+    }
+
+    .action-buttons {
+        .cell {
+            text-align: right;
+            float: right;
+        }
+        
+    }
 </style>
 <style lang="scss" scoped>    
     .listing {
@@ -558,9 +574,9 @@
                 }
             }
         }
-        :global(.el-table__header-wrapper) {
-            display: none;
-        }
+        // :global(.el-table__header-wrapper) {
+        //     display: none;
+        // }
     }
     .el-button--default {
         border-radius: 20px;

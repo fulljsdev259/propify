@@ -32,7 +32,7 @@
                 <div class="category">
                     {{ $t(`models.request.category_list.${data.category.name}`) }}
                     {{ data.sub_category ? " > " + $t(`models.request.sub_category.${data.sub_category.name}`) : ""}}
-                </div>                
+                </div>
                 <div class="title" @click="$emit('toggle-drawer')">{{data.title}}</div>
                 <ui-readmore class="description" :text="data.description" :max="512" />
                 <div class="assignees" v-if="assignees.length" v-resize:debounce="onResize">

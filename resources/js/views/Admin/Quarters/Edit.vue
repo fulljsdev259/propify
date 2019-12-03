@@ -346,14 +346,15 @@
                         <el-tab-pane name="buildings">
                             <span slot="label">
                                 {{ $t('general.box_titles.buildings') }}
-                                <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge>
+                                <!-- <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge> -->
                             </span>
                             <relation-list
-                                :actions="quarterActions"
-                                :columns="quarterColumns"
+                                :actions="buildingActions"
+                                :columns="buildingColumns"
                                 :filterValue="model.id"
                                 fetchAction="getBuildings"
                                 filter="quarter_id"
+                                :show-header="true"
                                 v-if="model.id"
                             />
                         </el-tab-pane>
@@ -573,22 +574,26 @@
                     label: 'general.assignment_types.label',
                     i18n: this.translateAssignmentType
                 }*/],
-                quarterColumns: [{
-                    type: 'buildingName',
-                    prop: 'name',
-                    label: 'general.name'
+                buildingColumns: [{
+                    type: 'buildingHouseName',
+                    prop: 'address.house_num',
+                    label: 'models.building.building_no'
+                }, {
+                    type: 'buildingTypes',
+                    prop: 'types',
+                    label: 'models.building.type'
                 }, {
                     align: 'center',
-                    prop: 'units_count',
-                    label: 'dashboard.buildings.total_units'
-                }, {
+                    prop: 'count_of_apartments_units',
+                    label: 'models.building.active_residents_count'
+                }/*, {
                     type: 'buildingResidentAvatars',
                     prop: 'residents',
                     propLimit: 2,
                     count: 'residents_count',
                     label: 'general.residents'
-                }],
-                quarterActions: [/*{
+                }*/],
+                buildingActions: [/*{
                     width: 70,
                     buttons: [{
                         icon: 'ti-search',
@@ -678,9 +683,7 @@
                     if(JSON.stringify(this.old_model) !== JSON.stringify(this.model)) {
                         this.visibleDialog = true;
                     } else {
-                        this.editMode = !this.editMode;
-                        this.editId = false;
-                        this.editName = false;
+                        this.$refs.editActions.goToListing();
                     }
                 }
             },

@@ -31,6 +31,10 @@ class UpdateRequest extends BaseRequest
            'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'phone' => 'required|string|max:255',
+            'status' => [
+                'required',
+                $this->getInRuleByClassConstants(ServiceProvider::Status),
+            ],
             'type' => [
                 'nullable',
                 $this->getInRuleByClassConstants(ServiceProvider::Type),
