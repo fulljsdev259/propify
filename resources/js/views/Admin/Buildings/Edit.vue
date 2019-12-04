@@ -3,7 +3,7 @@
         <div class="main-content">
         <heading :title="$t('models.building.edit_title')" icon="icon-commerical-building" shadow="heavy" bgClass="bg-transparent">
             <template slot="description" v-if="model.building_format">
-                <div class="subtitle">{{`${model.building_format} > ${model.name}`}}</div>
+                <div class="subtitle">{{`${model.building_format} > ${model.street} ${model.house_num}`}}</div>
             </template>
             <edit-actions :saveAction="submit" :deleteAction="batchDeleteBuilding" route="adminBuildings" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
             <!-- <template>
@@ -168,6 +168,7 @@
                                        <multi-select
                                             :name="$t('models.building.type')"
                                             :data="types"
+                                            :disabled="!editMode"
                                             :selectedOptions="model.types"
                                             tagColor="#9E9FA0"
                                             showMultiTag

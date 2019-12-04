@@ -407,6 +407,7 @@
             this.initFilter();
         },
         mounted() {
+            console.log(this.selectedOptions)
             this.forceRecompute = true;
         },
         updated() {
