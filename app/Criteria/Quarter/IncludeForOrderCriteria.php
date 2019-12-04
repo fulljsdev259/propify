@@ -60,34 +60,24 @@ class IncludeForOrderCriteria implements CriteriaInterface
                         quarter_id
                     ) = quarters.id) ' . $sortedBy
                 );
+            }) ->when($this->request->orderByRaw == 'units_count', function ($q) use ($sortedBy) {
+                $q->orderByRaw('(SELECT COUNT(*) FROM `units` WHERE 
+                    deleted_at IS NULL 
+                    and IF(
+                        quarter_id IS NULL,
+                        (
+                            SELECT
+                                quarter_id
+                            FROM
+                                buildings
+                            WHERE
+                                buildings.id = units.`building_id`
+                        ),
+                        quarter_id
+                    ) = quarters.id) ' . $sortedBy
+                );
             });
 
-            $statusCodes = Relation::StatusColorCode;
-            foreach ($statusCodes as $status => $color) {
-                if ($this->request->orderByRaw == Relation::Status[$status] . '_units_count') {
-                    $model->orderByRaw('(SELECT COUNT(*) FROM `units` WHERE 
-                        deleted_at IS NULL 
-                        and (
-                        (select status from relations where relations.unit_id = units.id order by relations.id desc limit 1) = ' . $status
-                         . ($status == Relation::StatusInActive ? ' or (select status from relations where relations.unit_id = units.id order by relations.id desc limit 1) IS NULL' : '')
-                        . '
-                            
-                        )
-                        and IF(
-                            quarter_id IS NULL,
-                            (
-                                SELECT
-                                    quarter_id
-                                FROM
-                                    buildings
-                                WHERE
-                                    buildings.id = units.`building_id`
-                            ),
-                            quarter_id
-                        ) = quarters.id) ' . $sortedBy
-                    );
-                }
-            }
 
         return $model;
     }

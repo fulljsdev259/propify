@@ -101,13 +101,17 @@ class QuarterAPIController extends AppBaseController
                 'orderByRaw' => 'count_of_apartments_units',
             ]);
         }
-        foreach (Relation::Status as $status => $value) {
-            if ($request->orderBy == Relation::Status[$status] . '_units_count') {
-                $request->merge([
-                    'orderBy' => RequestCriteria::NoOrder,
-                    'orderByRaw' => Relation::Status[$status] . '_units_count',
-                ]);
-            }
+        if ($request->orderBy == 'units_count') {
+            $request->merge([
+                'orderBy' => RequestCriteria::NoOrder,
+                'orderByRaw' => 'units_count',
+            ]);
+        }
+
+        if ($request->orderBy == 'city') {
+            $request->merge([
+                'orderBy' => 'loc_addresses:address_id|city',
+            ]);
         }
 
         $this->quarterRepository->pushCriteria(new RequestCriteria($request));

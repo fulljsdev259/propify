@@ -230,7 +230,7 @@
                         </el-card>
 
                         <card class="mt15" :header="$t('general.box_titles.buildings_and_quarters')">
-                            <assignment-by-type
+                            <!-- <assignment-by-type
                                     :resetToAssignList="resetToAssignList"
                                     :assignmentType.sync="assignmentType"
                                     :toAssign.sync="toAssign"
@@ -239,7 +239,7 @@
                                     :toAssignList="toAssignList"
                                     :remoteLoading="remoteLoading"
                                     :remoteSearch="remoteSearchBuildings"
-                            />
+                            /> -->
                             <relation-list
                                     :actions="assignmentsActions"
                                     :columns="assignmentsColumns"
@@ -252,7 +252,7 @@
                         </card>
                     </el-col>
                     <el-col :md="12">
-                        <raw-grid-statistics-card :cols="8" :data="statistics.raw"/>
+                        <!-- <raw-grid-statistics-card :cols="8" :data="statistics.raw"/> -->
 
                         <card class="mt15" :header="$t('general.requests')">
                             <relation-list
@@ -316,17 +316,21 @@
         data() {
             return {
                 activeTab: "details",
-                requestColumns: [{
+                requestColumns: [/*{
                     type: 'requestResidentAvatar',
                     width: 90,
                     prop: 'resident',
                     label: 'general.resident'
+                },*/{
+                    type: 'requestIcon',
+                    label: 'models.request.prop_title',
+                    width: 60,
                 }, {
                     type: 'requestTitleWithDesc',
                     label: 'models.request.prop_title'
                 }, {
                     type: 'requestStatus',
-                    width: 120,
+                    width: 50,
                     label: 'models.request.status.label'
                 }],
                 requestActions: [/*{
@@ -346,7 +350,7 @@
                     label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
-                assignmentsActions: [{
+                assignmentsActions: [/*{
                     width: 70,
                     buttons: [{
                         title: 'general.unassign',
@@ -355,7 +359,7 @@
                         tooltipMode: true,
                         icon: 'el-icon-close',                
                     }]
-                }],
+                }*/],
                 editMode: false,
                 editName: false,
                 visibleDialog: false,
