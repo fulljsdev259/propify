@@ -442,7 +442,7 @@ return [
                         'media_uploaded' => [
                             'default' => 'Media uploaded.',
                             'quarter' => 'Media uploaded.',
-                            'building' => 'Media uploaded.',
+                            'building' => 'Media uploaded a document in :category.',
                             'unit' => 'Media uploaded.',
                             'request' => 'Media uploaded.',
                             'resident' => 'Media uploaded.',

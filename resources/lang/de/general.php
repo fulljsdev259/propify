@@ -442,7 +442,7 @@ return [
                         'media_uploaded' => [
                             'default' => 'hat ein Dokument hinaufgeladen.',
                             'quarter' => 'hat ein Dokument hinaufgeladen.',
-                            'building' => 'hat ein Dokument hinaufgeladen.',
+                            'building' => 'hat ein Dokument hinaufgeladen :category.',
                             'unit' => 'hat ein Dokument hinaufgeladen.',
                             'request' => 'hat ein Dokument hinaufgeladen.',
                             'resident' => 'hat ein Dokument hinaufgeladen.',
