@@ -22,7 +22,6 @@ use App\Models\AuditableModel;
 use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
-use App\Models\Relation;
 use App\Models\ServiceProvider;
 use App\Models\User;
 use App\Repositories\AddressRepository;
