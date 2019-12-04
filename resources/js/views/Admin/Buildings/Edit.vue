@@ -168,7 +168,6 @@
                                        <multi-select
                                             :name="$t('models.building.type')"
                                             :data="types"
-                                            :disabled="!editMode"
                                             :selectedOptions="model.types"
                                             tagColor="#9E9FA0"
                                             showMultiTag
@@ -819,7 +818,6 @@
 
             this.getTypes();
 
-            console.log(this.types, this.model.types)
         },
         computed: {
             ...mapGetters('application', {

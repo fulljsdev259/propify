@@ -310,8 +310,7 @@ export default (config = {}) => {
                             return this.model.residents.indexOf(item) === index
                         })
 
-                        console.log(this.model)
-  
+                          
 
                         if (this.model.quarter) {
                             this.$set(this.model, 'quarter_id', this.model.quarter.id);
@@ -327,6 +326,7 @@ export default (config = {}) => {
                             }
                         } = await this.getBuildingStatistics({id: this.$route.params.id});
 
+                        console.log(this.model.types)
 
                         this.statistics.percentage.occupied_units = occupied_units;
                         this.statistics.percentage.free_units = free_units;
