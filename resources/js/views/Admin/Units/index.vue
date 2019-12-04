@@ -254,15 +254,15 @@
                         name: this.$t('general.roles.manager'),
                         type: 'select',
                         key: 'user_ids',
+                        hidden: true,
                         data: this.roles
                     },{
-                        name: this.$t('general.filters.saved_filters'),
-                        type: 'select',
+                        name: this.$t('general.filters.more_filters'),
+                        type: 'toggle',
                         key: 'saved_filter',
-                        data: []
                     },{
                         name: this.$t('general.filters.my_filters'),
-                        type: 'select',
+                        type: 'popover',
                         key: 'my_filter',
                         data: []
                     }
