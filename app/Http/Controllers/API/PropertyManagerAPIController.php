@@ -6,6 +6,7 @@ use App\Criteria\Common\RequestCriteria;
 use App\Criteria\PropertyManager\FilterByRelatedFieldsCriteria;
 use App\Criteria\PropertyManager\FilterByTypeCriteria;
 use App\Criteria\PropertyManager\HasRequestCriteria;
+use App\Criteria\PropertyManager\IncludeForOrderCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\PropertyManager\AssignRequest;
 use App\Http\Requests\API\PropertyManager\BatchDeleteRequest;
@@ -87,10 +88,14 @@ class PropertyManagerAPIController extends AppBaseController
      */
     public function index(ListRequest $request)
     {
+        if ($request->orderBy == 'email') {
+            $request->merge(['orderBy' => 'users:id|email']);
+        }
         $this->propertyManagerRepository->pushCriteria(new RequestCriteria($request, 'concat(first_name, " ", last_name)'));
         $this->propertyManagerRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->propertyManagerRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
         $this->propertyManagerRepository->pushCriteria(new FilterByTypeCriteria($request));
+        $this->propertyManagerRepository->pushCriteria(new IncludeForOrderCriteria($request));
 
         $hasRequest = $request->get('has_req', false);
         if ($hasRequest) {
