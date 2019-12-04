@@ -326,7 +326,6 @@ export default (config = {}) => {
                             }
                         } = await this.getBuildingStatistics({id: this.$route.params.id});
 
-                        console.log(this.model.types)
 
                         this.statistics.percentage.occupied_units = occupied_units;
                         this.statistics.percentage.free_units = free_units;

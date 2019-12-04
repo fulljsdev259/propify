@@ -25,7 +25,7 @@
                 {{$t('models.building.warning_bar.title')}}
             </div>
         </div> -->
-        <el-row :gutter="20" class="crud-view">
+        <el-row :gutter="20" class="crud-view" v-if="model.id">
             
             <el-col :md="12">
                 <el-tabs type="border-card" v-model="activeTab">
