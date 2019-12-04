@@ -760,7 +760,12 @@ class PropertyManagerAPIController extends AppBaseController
         }
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        $assignments = $this->propertyManagerRepository->assignments($propertyManager)->paginate($perPage);
+        $assignments = $propertyManager->quarters()->paginate($perPage, ['quarters.id', 'quarters.name']);
+        $assignments->transform(function ($assignee) {
+            unset($assignee->pivot);
+            $assignee->type = 'quarter';
+            return $assignee;
+        });
         return $this->sendResponse($assignments, 'Assignments retrieved successfully');
     }
 

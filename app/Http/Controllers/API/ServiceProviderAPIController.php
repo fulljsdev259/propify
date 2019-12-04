@@ -801,13 +801,18 @@ class ServiceProviderAPIController extends AppBaseController
      */
     public function getLocations(int $id, ViewRequest $request)
     {
-        $sp = $this->serviceProviderRepository->findWithoutFail($id);
-        if (empty($sp)) {
+        $serviceProvider = $this->serviceProviderRepository->findWithoutFail($id);
+        if (empty($serviceProvider)) {
             return $this->sendError(__('models.service.errors.not_found'));
         }
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        $locations = $this->serviceProviderRepository->locations($sp)->paginate($perPage);
+        $locations = $serviceProvider->quarters()->paginate($perPage, ['quarters.id', 'quarters.name']);
+        $locations->transform(function ($assignee) {
+            unset($assignee->pivot);
+            $assignee->type = 'quarter';
+            return $assignee;
+        });
         return $this->sendResponse($locations, 'Locations retrieved successfully');
     }
 }
