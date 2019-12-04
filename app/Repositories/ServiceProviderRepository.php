@@ -101,13 +101,4 @@ class ServiceProviderRepository extends BaseRepository
         return parent::updateExisting($model, $attributes);
     }
 
-    public function locations(ServiceProvider $sp)
-    {
-        // Cannot use $sp->buildings() and $sp->quarters() because of a bug
-        // related to different number of columns in union
-        return Quarter::select(\DB::raw('id, name, "quarter" as type'))
-            ->join('quarter_service_provider', 'quarter_service_provider.quarter_id', '=', 'id')
-            ->where('quarter_service_provider.service_provider_id', $sp->id);
-    }
-
 }
