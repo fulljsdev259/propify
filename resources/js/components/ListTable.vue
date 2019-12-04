@@ -462,7 +462,7 @@
                                                 reserve-keyword
                                                 style="width: 50%;"
                                                 @change="val => handleQuickAssign(scope.row.id, val)"
-                                                v-model="quick_assignee">
+                                                v-model="assignee">
                                             <el-option
                                                     :key="assignee.id"
                                                     :label="assignee.name"
@@ -706,7 +706,7 @@
                 dateRange: '',
                 showFilters: false,
                 assignees: [],
-                quick_assignee: '',
+                assignee: '',
                 remoteLoading: false,
                 isVisible: false
             }
@@ -841,8 +841,20 @@
             handleVisibleChange(isVisible) {
                 this.isVisible = isVisible
             },
-            handleQuickAssign(assignee_id, request_id) {
-                console.log('QUICK ASSIGN', assignee_id)
+            async handleQuickAssign(request_id, assignee_id) {
+                let assignee = this.assignees.find(item => item.id == assignee_id)
+                let user_params = [{user_id: assignee_id, role: assignee.roles[0].name}]
+
+                let resp = await this.assignUsersToRequest({
+                            id: request_id,
+                            user_params: user_params
+                        });
+
+                if (resp && resp.data) {
+                    displaySuccess(resp)                           
+                    this.assignees = []
+                    this.assignee = ''
+                }
             },
             async handleAssignMe(request_id) {
                 let loggedinUser = this.$store.getters.loggedInUser
@@ -1099,10 +1111,8 @@
                     try {
                         const data = await this.getAllAdminsForRequest({request_id: request_id, is_get_function: true, search})
 
-                        console.log(data)
                         this.assignees = data;
 
-                        console.log(this.assignees)
                     } catch (err) {
                         displayError(err);
                     } finally {
