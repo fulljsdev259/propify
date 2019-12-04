@@ -422,7 +422,6 @@
         height: 40px;
         .el-button {
             padding: 0 15px;
-            padding-left: 5px;
             width: 100%;
             text-align: left;
             color: var(--color-text-primary);
