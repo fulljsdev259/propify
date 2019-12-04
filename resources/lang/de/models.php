@@ -519,8 +519,8 @@ return [
         'created' => 'Erstellt',
         'saved' => 'Anfrage gespeichert',
         'prop_title' => 'Titel',
-        'category' => 'Anfrage-Typ',
-        'edit_title' => 'Anfrage bearbeiten',
+        'category' => 'Kategorie',
+        'edit_title' => 'Anliegen bearbeiten',
         'add_title' => 'Hinzufügen',
         'mass_edit' => [
             'label' => 'Massenbearbeitung',
@@ -704,10 +704,10 @@ return [
             'range' => 'Bereich',
             'component' => 'Bauteil',
             'capture_phase' => 'Erfassungsphase',
-            'payer_percent' => 'Bewohneranteil in %',
+            'payer_percent' => 'Bewohneranteil',
             'payer_amount' => 'Betrag',
             'keywords' => 'Tags',
-            'qualification_category' => 'Qualifizierung'
+            'qualification_category' => 'Subkategorie'
         ],
         'placeholders' => [
             'category' => 'Kategorie wählen',
