@@ -211,15 +211,16 @@
                         data: this.types,
                         searchBox: true,
                     },{
-                        name: this.$t('general.roles.manager'),
-                        type: 'select',
-                        key: 'user_ids',
-                        data: this.roles
-                    },{
                         name: this.$t('general.filters.saved_filters'),
-                        type: 'select',
+                        type: 'hidden',
                         key: 'saved_filter',
-                        data: []
+                        data: [{
+                                name: this.$t('general.roles.manager'),
+                                type: 'select',
+                                key: 'user_ids',
+                                data: this.roles
+                            }, 
+                        ]
                     },{
                         name: this.$t('general.filters.my_filters'),
                         type: 'popover',
