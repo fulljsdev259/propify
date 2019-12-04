@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Criteria\Building;
+namespace App\Criteria\ServiceProvider;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -9,13 +9,13 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FilterByUserRoleCriteria
- * @package App\Criteria\Quarter
+ * Class FilterByStatusCriteria
+ * @package App\Criteria\ServiceProvider
  */
-class IncludeForOrderCriteria implements CriteriaInterface
+class FilterByStatusCriteria implements CriteriaInterface
 {
     /**
-     * @var Request
+     * @var \Illuminate\Http\Request
      */
     protected $request;
 
@@ -24,10 +24,11 @@ class IncludeForOrderCriteria implements CriteriaInterface
         $this->request = $request;
     }
 
+
     /**
      * Apply criteria in query repository
      *
-     * @param Builder|Model $model
+     * @param         Builder|Model     $model
      * @param RepositoryInterface $repository
      *
      * @return mixed
@@ -35,9 +36,11 @@ class IncludeForOrderCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $model->when($this->request->orderBy == 'requests_count', function ($q) {
-            $q->withCount('requests');
-        });
+        $status = $this->request->get('status', null);
+        if ($status) {
+            $model = $model->where('status', $status);
+        }
+
         return $model;
     }
 }

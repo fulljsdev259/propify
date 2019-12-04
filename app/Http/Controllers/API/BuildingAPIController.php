@@ -130,15 +130,13 @@ class BuildingAPIController extends AppBaseController
     public function index(ListRequest $request)
     {
         $request->merge(['model' => 'buildings']);
-        foreach (\App\Models\Request::Status as $status => $value) {
-            $requestStatusCount = 'requests_' . $value . '_count';
-            if ($request->orderBy == $requestStatusCount) {
-                $request->merge([
-                    'orderBy' => RequestCriteria::NoOrder,
-                    'orderByRaw' => $requestStatusCount,
-                ]);
-            }
+        if ($request->orderBy == 'internal_quarter_id') {
+            $request->merge(['orderBy' => 'quarters:id|internal_quarter_id']);
         }
+        if ($request->orderBy == 'house_num') {
+            $request->merge(['orderBy' => 'loc_addresses:address_id|house_num']);
+        }
+
         $this->buildingRepository->pushCriteria(new RequestCriteria($request));
         $this->buildingRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));

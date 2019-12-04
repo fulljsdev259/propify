@@ -22,7 +22,6 @@ use App\Models\AuditableModel;
 use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
-use App\Models\Relation;
 use App\Models\ServiceProvider;
 use App\Models\User;
 use App\Repositories\AddressRepository;
@@ -101,13 +100,17 @@ class QuarterAPIController extends AppBaseController
                 'orderByRaw' => 'count_of_apartments_units',
             ]);
         }
-        foreach (Relation::Status as $status => $value) {
-            if ($request->orderBy == Relation::Status[$status] . '_units_count') {
-                $request->merge([
-                    'orderBy' => RequestCriteria::NoOrder,
-                    'orderByRaw' => Relation::Status[$status] . '_units_count',
-                ]);
-            }
+        if ($request->orderBy == 'units_count') {
+            $request->merge([
+                'orderBy' => RequestCriteria::NoOrder,
+                'orderByRaw' => 'units_count',
+            ]);
+        }
+
+        if ($request->orderBy == 'city') {
+            $request->merge([
+                'orderBy' => 'loc_addresses:address_id|city',
+            ]);
         }
 
         $this->quarterRepository->pushCriteria(new RequestCriteria($request));

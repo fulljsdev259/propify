@@ -8,6 +8,7 @@ use App\Criteria\Resident\FilterByRelationRelatedCriteria;
 use App\Criteria\Common\FilterByLanguageCriteria;
 use App\Criteria\Resident\FilterByRequestCriteria;
 use App\Criteria\Resident\FilterByStatusCriteria;
+use App\Criteria\Resident\IncludeForOrderCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Resident\AddReviewRequest;
 use App\Http\Requests\API\Resident\CheckHasRequestOrRelationRequest;
@@ -111,6 +112,9 @@ class ResidentAPIController extends AppBaseController
         $request->merge([
             'model' => (new Resident)->getTable(),
         ]);
+        if ($request->orderBy == 'email') {
+            $request->merge(['orderBy' => 'users:id|email']);
+        }
 
         $this->residentRepository->pushCriteria(new RequestCriteria($request, 'concat(first_name, " ", last_name)'));
         $this->residentRepository->pushCriteria(new FilterByRelationRelatedCriteria($request));
@@ -118,6 +122,7 @@ class ResidentAPIController extends AppBaseController
         $this->residentRepository->pushCriteria(new FilterByStatusCriteria($request));
         $this->residentRepository->pushCriteria(new FilterByLanguageCriteria($request));
         $this->residentRepository->pushCriteria(new LimitOffsetCriteria($request));
+        $this->residentRepository->pushCriteria(new IncludeForOrderCriteria($request));
 
         $getAll = $request->get('get_all', false);
         if ($getAll) {

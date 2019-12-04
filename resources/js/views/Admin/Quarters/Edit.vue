@@ -51,7 +51,7 @@
                                         <span>{{ $t('models.quarter.types.label') }}</span>
                                         <span>{{ quarterTypes }}</span>
                                     </div>
-                                    <el-form-item v-if="editMode" :label="$t('models.quarter.types.label')" :rules="validationRules.type"
+                                    <el-form-item v-if="editMode" :label="$t('models.quarter.types.label')" :rules="validationRules.types"
                                             class="label-block" 
                                             prop="types">
                                         <!-- <el-select
@@ -524,16 +524,15 @@
             return {
                 selectedFileCategory: 'house_rules',
                 requestColumns: [{
-                    type: 'requestResidentAvatar',
-                    width: 100,
-                    prop: 'resident',
-                    label: 'general.resident'
+                    type: 'requestIcon',
+                    label: 'models.request.prop_title',
+                    width: 60,
                 }, {
                     type: 'requestTitleWithDesc',
                     label: 'models.request.prop_title'
                 }, {
                     type: 'requestStatus',
-                    width: 120,
+                    width: 50,
                     label: 'models.request.status.label'
                 }],
                 requestActions: [/*{

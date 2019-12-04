@@ -503,27 +503,36 @@
         }
         :global(.heading .el-button) {
             font-family: 'Radikal';
-            padding: 0px;
-            margin-right: 40px !important;
+            margin-right: 15px !important;
+            padding: 9px 15px;
         }
         :global(.heading .list-checkbox .el-button) {
             padding: 2px 2px;
+            margin-right: 23px !important;;
         }
         :global(.heading .el-button.more-actions) {
-            margin-right: 18px !important;
+            margin-right: 12px !important;
+            padding: 9px 6px;
         }
         :global(.heading .menu-button) {
             margin-right: 20px;
         }
+        /deep/ .heading .el-button.is-circle {
+            padding: 5px 6.5px !important;
+            margin-right: 0px !important;
+            i.el-icon-close {
+                font-size: 17px;
+            }
+        }
         .list-view {
             :global(.heading .el-button) {
                 &:hover {
-                    background-color: transparent;
+                    background-color: #f6f5f7 !important;
                     color: var(--color-text-primary);
-                    font-weight: 700;
+                    font-weight: 500;
                     box-shadow: none;
                     :global(i) {
-                        font-weight: 700;
+                        font-weight: 500;
                     }
                 }
             }
@@ -827,8 +836,21 @@
             color: var(--text-color) !important;
         }
     } 
+    .el-textarea {
+        .el-textarea__inner {
+            background-color: #f6f5f7;
+            border-color: transparent;
+            color: var(--text-color);
+            
+            &:disabled {
+               background-color: #f6f5f7 !important;
+                border-color: transparent !important;
+                color: var(--text-color) !important; 
+            }
+        }
+    }
     :global(.edit-details-form .el-row .el-col .el-form-item) {
-        .el-input .el-input__inner, .el-input .el-input-group__prepend {
+        .el-input .el-input__inner, .el-input .el-textarea__inner, .el-input .el-input-group__prepend {
             background-color: var(--border-color-lighter);
             border-color: transparent;
             color: var(--color-text-regular);
@@ -842,7 +864,7 @@
         }
     }
     :global(.add-form .el-row .el-col .el-form-item) {
-        .el-input .el-input__inner, .el-input .el-input-group__prepend {
+        .el-input .el-input__inner, .el-input .el-input-group__prepend, .el-input .el-textarea__inner {
             border-color: transparent;
         }    
     }
@@ -881,12 +903,6 @@
     }
     .el-tabs--border-card>.el-tabs__content {
         padding: 20px;
-    }
-    .heading .el-button.is-circle {
-        padding: 5px;
-        i.el-icon-close {
-            font-size: 17px;
-        }
     }
     .list-table-search {
         width: 250px;

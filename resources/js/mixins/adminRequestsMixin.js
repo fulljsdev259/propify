@@ -47,7 +47,9 @@ export default (config = {}) => {
                     property_managers: [],
                     media: [],
                     sub_category_id: null,
-                    relation_id: ''
+                    relation_id: '',
+                    creator: { name:'' },
+                    created_at: '',
                 },
                 old_model: {},
                 validationRules: {
@@ -607,6 +609,7 @@ export default (config = {}) => {
                         const data = resp.data;
 
                         this.model = Object.assign({}, this.model, data);
+                        console.log(this.model);
 
                         this.$set(this.model, 'category_id', data.category.id);
                         if(data.sub_category)

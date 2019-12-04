@@ -4,8 +4,10 @@ namespace App\Transformers;
 
 use App\Helpers\Helper;
 use App\Models\AuditableModel;
+use App\Models\Building;
 use App\Models\Pinboard;
 use App\Models\PropertyManager;
+use App\Models\Quarter;
 use App\Models\Resident;
 use App\Models\Listing;
 use App\Models\Request;
@@ -24,6 +26,8 @@ use Lang;
  */
 class AuditTransformer extends BaseTransformer
 {
+    protected $currentModel;
+
     /**
      * Transform the Audit entity.
      *
@@ -33,6 +37,7 @@ class AuditTransformer extends BaseTransformer
      */
     public function transform(Audit $model)
     {
+        $this->currentModel = $model;
         $locale = app()->getLocale();
         $fieldMapToLanguage = Helper::mapAuditFieldToLanguage();
         $response = [
@@ -185,16 +190,24 @@ class AuditTransformer extends BaseTransformer
             $response['statement'] = $this->translate_audit("provider_notified",['providerName' => $providerName]);
         }  
         elseif($model->event == 'quarter_assigned'){
-            $response['statement'] = $this->translate_audit("quarter_assigned",['quarterName' => $model->new_values['quarter_name']]);
+            $ids = $model->new_values['ids'] ?? [];
+            $quarterNames = $this->getAssigneesName(Quarter::class, $ids, 'name', ['name']);
+            $response['statement'] = $this->translate_audit("quarter_assigned",['quarterName' => $quarterNames]);
         }
         elseif($model->event == 'quarter_unassigned'){
-            $response['statement'] = $this->translate_audit("quarter_unassigned",['quarterName' => $model->old_values['quarter_name']]);
+            $ids = $model->old_values['ids'] ?? [];
+            $quarterNames = $this->getAssigneesName(Quarter::class, $ids, 'name', ['name']);
+            $response['statement'] = $this->translate_audit("quarter_unassigned",['quarterName' => $quarterNames]);
         }
         elseif($model->event == 'building_assigned'){
-            $response['statement'] = $this->translate_audit("building_assigned",['buildingName' => $model->new_values['building_name']]);
+            $ids = $model->new_values['ids'] ?? [];
+            $buildingNames = $this->getAssigneesName(Building::class, $ids, 'internal_building_id', ['internal_building_id']);
+            $response['statement'] = $this->translate_audit("building_assigned",['buildingName' => $buildingNames]);
         }
         elseif($model->event == 'building_unassigned'){
-            $response['statement'] = $this->translate_audit("building_unassigned",['buildingName' => $model->old_values['building_name']]);
+            $ids = $model->old_values['ids'] ?? [];
+            $buildingNames = $this->getAssigneesName(Building::class, $ids, 'internal_building_id', ['internal_building_id']);
+            $response['statement'] = $this->translate_audit("building_unassigned",['buildingName' => $buildingNames]);
         }
         elseif($model->event == 'notifications_sent'){
             $response['statement'] = $this->translate_audit("notifications_sent",['auditable_type' => $model->auditable_type]);
@@ -317,16 +330,22 @@ class AuditTransformer extends BaseTransformer
         return Relation::getMorphedModel($alias) ?? $alias;
     }
 
-    protected function getAssigneesName($class, $ids)
+    protected function getAssigneesName($class, $ids, $pluck = 'name', $columns = ['first_name', 'last_name'])
     {
         // @TODO here used many queries need optimize
-        $items = $class::whereIn('id', $ids)->get(['first_name', 'last_name']);
-        return $items->pluck('name')->implode(', ');
+        $items = $class::whereIn('id', $ids)->get($columns);
+        return $items->pluck($pluck)->implode(', ');
     }
 
     protected function translate_audit($key, $replace = [], $locale = null)
     {
         $key = 'general.components.common.audit.content.general.' . $key;
-        return __($key, $replace, $locale);
+        $value =  __($key, $replace, $locale);
+
+        if (is_array($value)) {
+            return $value[$this->currentModel->auditable_type] ?? $value['default'] ?? '';
+        }
+
+        return $value;
     }
 }

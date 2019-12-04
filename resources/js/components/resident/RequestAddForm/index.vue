@@ -118,7 +118,6 @@
 
 <script>
     import {MEDIA_UPLOAD_MAX_SIZE} from '@/config'
-    import ServicesTypes from 'mixins/methods/servicesTypes'
     import {displaySuccess, displayError} from 'helpers/messages'
     import PQueue from 'p-queue'
     import globalFunction from "helpers/globalFunction";
@@ -126,7 +125,6 @@
     export default {
         name: 'p-request-add-form',
         mixins: [
-            ServicesTypes,
             globalFunction
         ],
         props: {

@@ -42,12 +42,12 @@
                                 </el-col>
                             </el-row>
                             <el-row :gutter="20">
-                                <el-col :md="6">
+                                <el-col :md="4">
                                     <el-form-item :label="$t('general.zip')" :rules="validationRules.zip" prop="zip">
                                         <el-input type="text" v-model="model.zip"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="6">
+                                <el-col :md="8">
                                     <el-form-item :label="$t('general.city')" :rules="validationRules.city" prop="city">
                                         <el-input type="text" v-model="model.city"></el-input>
                                     </el-form-item>

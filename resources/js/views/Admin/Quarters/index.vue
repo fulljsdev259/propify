@@ -2,8 +2,7 @@
     <div class="quarters list-view">
         <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
-                <list-check-box 
-                    @clicked="localStorage.setItem('')"/>
+                <list-check-box />
             </template>
             <template v-if="$can($permissions.create.quarter)">
                 <el-button 
@@ -212,15 +211,16 @@
                         data: this.types,
                         searchBox: true,
                     },{
-                        name: this.$t('general.roles.manager'),
-                        type: 'select',
-                        key: 'user_ids',
-                        data: this.roles
-                    },{
                         name: this.$t('general.filters.saved_filters'),
-                        type: 'select',
+                        type: 'hidden',
                         key: 'saved_filter',
-                        data: []
+                        data: [{
+                                name: this.$t('general.roles.manager'),
+                                type: 'select',
+                                key: 'user_ids',
+                                data: this.roles
+                            }, 
+                        ]
                     },{
                         name: this.$t('general.filters.my_filters'),
                         type: 'popover',
