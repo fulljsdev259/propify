@@ -9,6 +9,7 @@ use App\Criteria\Unit\FilterByQuarterCriteria;
 use App\Criteria\Unit\FilterByRelatedFieldsCriteria;
 use App\Criteria\Unit\FilterByTypeCriteria;
 use App\Criteria\Unit\FilterByUserRoleCriteria;
+use App\Criteria\Unit\IncludeForOrderCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Unit\AssignRequest;
 use App\Http\Requests\API\Unit\CreateRequest;
@@ -94,6 +95,15 @@ class UnitAPIController extends AppBaseController
      */
     public function index(ListRequest $request)
     {
+        if ($request->orderBy == 'internal_quarter_id') {
+            $request->merge(['orderBy' => 'quarters:id|internal_quarter_id']);
+        }
+        if ($request->orderBy == 'status') {
+            $request->merge([
+                'orderBy' => RequestCriteria::NoOrder,
+                'orderByRaw' => 'status',
+            ]);
+        }
         $this->unitRepository->pushCriteria(new RequestCriteria($request));
         $this->unitRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->unitRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
@@ -101,7 +111,7 @@ class UnitAPIController extends AppBaseController
         $this->unitRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->unitRepository->pushCriteria(new FilterByCityCriteria($request));
         $this->unitRepository->pushCriteria(new FilterByUserRoleCriteria($request));
-
+        $this->unitRepository->pushCriteria(new IncludeForOrderCriteria($request));
 
         if ($request->group_by_building) {
             $units = $this->unitRepository->with('building.address')->get();

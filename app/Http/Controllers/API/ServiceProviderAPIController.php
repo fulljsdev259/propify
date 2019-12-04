@@ -9,6 +9,8 @@ use App\Criteria\Common\FilterByLanguageCriteria;
 use App\Criteria\Common\FilterByPinboardCriteria;
 use App\Criteria\Common\HasRequestCriteria;
 use App\Criteria\Common\FilterByStateCriteria;
+use App\Criteria\ServiceProvider\FilterByStatusCriteria;
+use App\Criteria\ServiceProvider\IncludeForOrderCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\ServiceProvider\AssignRequest;
 use App\Http\Requests\API\ServiceProvider\CreateRequest;
@@ -100,6 +102,9 @@ class ServiceProviderAPIController extends AppBaseController
      */
     public function index(ListRequest $request)
     {
+        if ($request->orderBy == 'email') {
+            $request->merge(['orderBy' => 'users:id|email']);
+        }
         $this->serviceProviderRepository->pushCriteria(new RequestCriteria($request));
         $this->serviceProviderRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->serviceProviderRepository->pushCriteria(new FilterByPinboardCriteria($request));
@@ -107,6 +112,8 @@ class ServiceProviderAPIController extends AppBaseController
         $this->serviceProviderRepository->pushCriteria(new FilterByCategoryCriteria($request));
         $this->serviceProviderRepository->pushCriteria(new FilterByStateCriteria($request));
         $this->serviceProviderRepository->pushCriteria(new FilterByManyBuildingCriteria($request));
+        $this->serviceProviderRepository->pushCriteria(new FilterByStatusCriteria($request));
+        $this->serviceProviderRepository->pushCriteria(new IncludeForOrderCriteria($request));
 
         $getAll = $request->get('get_all', false);
 
@@ -794,13 +801,18 @@ class ServiceProviderAPIController extends AppBaseController
      */
     public function getLocations(int $id, ViewRequest $request)
     {
-        $sp = $this->serviceProviderRepository->findWithoutFail($id);
-        if (empty($sp)) {
+        $serviceProvider = $this->serviceProviderRepository->findWithoutFail($id);
+        if (empty($serviceProvider)) {
             return $this->sendError(__('models.service.errors.not_found'));
         }
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        $locations = $this->serviceProviderRepository->locations($sp)->paginate($perPage);
+        $locations = $serviceProvider->quarters()->paginate($perPage, ['quarters.id', 'quarters.name']);
+        $locations->transform(function ($assignee) {
+            unset($assignee->pivot);
+            $assignee->type = 'quarter';
+            return $assignee;
+        });
         return $this->sendResponse($locations, 'Locations retrieved successfully');
     }
 }

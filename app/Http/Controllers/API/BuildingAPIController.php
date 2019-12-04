@@ -25,7 +25,6 @@ use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\BuildingAssignee;
 use App\Models\PropertyManager;
-use App\Models\Relation;
 use App\Models\ServiceProvider;
 use App\Models\Unit;
 use App\Models\User;
@@ -131,23 +130,11 @@ class BuildingAPIController extends AppBaseController
     public function index(ListRequest $request)
     {
         $request->merge(['model' => 'buildings']);
-        foreach (\App\Models\Request::Status as $status => $value) {
-            $requestStatusCount = 'requests_' . $value . '_count';
-            if ($request->orderBy == $requestStatusCount) {
-                $request->merge([
-                    'orderBy' => RequestCriteria::NoOrder,
-                    'orderByRaw' => $requestStatusCount,
-                ]);
-            }
+        if ($request->orderBy == 'internal_quarter_id') {
+            $request->merge(['orderBy' => 'quarters:id|internal_quarter_id']);
         }
-
-        foreach (Relation::Status as $status => $value) {
-            if ($request->orderBy == Relation::Status[$status] . '_units_count') {
-                $request->merge([
-                    'orderBy' => RequestCriteria::NoOrder,
-                    'orderByRaw' => Relation::Status[$status] . '_units_count',
-                ]);
-            }
+        if ($request->orderBy == 'house_num') {
+            $request->merge(['orderBy' => 'loc_addresses:address_id|house_num']);
         }
 
         $this->buildingRepository->pushCriteria(new RequestCriteria($request));

@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Criteria\Building;
+namespace App\Criteria\PropertyManager;
 
+use App\Models\Relation;
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -35,9 +37,11 @@ class IncludeForOrderCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $model->when($this->request->orderBy == 'requests_count', function ($q) {
-            $q->withCount('requests');
+        $sortedBy = strtolower($this->request->sortedBy) == 'asc' ? 'asc' : 'desc';
+        $model->when($this->request->orderBy == 'requests_count', function ($q) use ($sortedBy) {
+           $q->withCount('requests');
         });
+
         return $model;
     }
 }
