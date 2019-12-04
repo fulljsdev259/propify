@@ -40,7 +40,7 @@
                 v-loading="isLoadingFilters.state"
             >
                 <el-row :gutter="10">
-                    <el-col :key="`${key}key${filter.data && filter.data.length}`" :span="filterColSize" v-for="(filter, key) in filters">
+                    <el-col :key="`${key}key${filter.data && filter.data.length}`" :span="filterColSize" v-for="(filter, key) in filters" v-if="filter.hidden === undefined || showFilters">
                         <template v-if="!filter.parentKey || filterModel[filter.parentKey]">
                             <el-form-item
                                 v-if="filter.type === filterTypes.select && filter.data">
@@ -107,15 +107,15 @@
                                 >
                                 </el-date-picker>
                             </el-form-item>
-                             <el-form-item v-else-if="filter.type === filterTypes.language">
-                                <!-- <select-language
-                                    class="label-block"
-                                    :role="'settings.language'"
-                                    :activeLanguage.sync="filterModel['language']"
-                                    @change="filterChanged(filter)"
-                                    :isTable="true"
-                                /> -->
+                             <el-form-item v-else-if="filter.type === filterTypes.toggle">
+                                <el-button
+                                    class="toggle-filter-button"
+                                    @click="toggleFilters"
+                                >
+                                    {{ !showFilters? $t('general.filters.more_filters'):$t('general.filters.less_filters') }}
+                                </el-button>
                             </el-form-item>
+                            
                         </template>
 
                     </el-col>
@@ -608,13 +608,15 @@
                     date: 'date',
                     daterange: 'daterange',
                     language: 'language',
-                    role: 'role'
+                    role: 'role',
+                    toggle: 'toggle',
                 },
                 filterModel: {},
                 uuid,
                 selectedItems: [],
                 subMenu: [],
-                dateRange: ''
+                dateRange: '',
+                showFilters: false,
             }
         },
         computed: {
@@ -740,6 +742,9 @@
             },
         },
         methods: {
+            toggleFilters() {
+                this.showFilters = !this.showFilters;
+            },
             rowClicked(row) {
                 this.$refs.tableData.toggleRowExpansion(row);
             },
@@ -1132,6 +1137,12 @@
 
         .request-format {
             color:var(--primary-color);
+        }
+
+        .toggle-filter-button {
+            border-radius: 6px;
+            padding: 13px 15px;
+            background-color: #f6f5f7;
         }
 
     }

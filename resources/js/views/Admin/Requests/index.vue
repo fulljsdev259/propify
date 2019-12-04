@@ -396,8 +396,8 @@
                         data: this.prepareFilters("capture_phase"),
                     },
                     {
-                        name: this.$t('general.filters.saved_filters'),
-                        type: 'select',
+                        name: this.$t('general.filters.more_filters'),
+                        type: 'toggle',
                         key: 'saved_filter',
                         data: []
                     }

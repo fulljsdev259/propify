@@ -16,7 +16,7 @@
             <edit-actions :saveAction="submit" :deleteAction="deleteRequest" route="adminRequests" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
         </heading>
         <div class="crud-view" id="edit_request">
-            <el-form :model="model" label-position="top" label-width="192px" ref="form" class="edit-details-form">
+            <el-form :model="model" label-position="top" label-width="192px" ref="form">
                 <el-row :gutter="20">
                     <el-col :md="12">
                         <el-tabs type="border-card" v-model="activeTab0">
@@ -128,42 +128,6 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :md="12"
-                                            v-if="this.showSubCategory == true && this.showLocation == true">
-                                        <el-form-item :label="$t('models.request.category_options.range')">
-                                            <el-select 
-                                                :disabled="$can($permissions.update.serviceRequest) || !editMode"
-                                                :placeholder="$t(`general.placeholders.select`)"
-                                                class="custom-select"
-                                                v-model="model.location"
-                                            >
-                                                <el-option
-                                                    :key="location.value"
-                                                    :label="location.name"
-                                                    :value="location.value"
-                                                    v-for="location in locations">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="12"
-                                            v-if="this.showSubCategory == true && this.showRoom == true">
-                                        <el-form-item :label="$t('models.request.category_options.room')">
-                                            <el-select 
-                                                :disabled="$can($permissions.update.serviceRequest) || !editMode"
-                                                :placeholder="$t(`general.placeholders.select`)"
-                                                class="custom-select"
-                                                v-model="model.room"
-                                            >
-                                                <el-option
-                                                    :key="room.value"
-                                                    :value="room.value"
-                                                    :label="room.name"
-                                                    v-for="room in rooms">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
                                     <el-col :md="12" v-if="this.showCapturePhase == true">
                                         <el-form-item :label="$t('models.request.category_options.capture_phase')">
                                             <el-select 
@@ -179,60 +143,6 @@
                                                     v-for="phase in capture_phases">
                                                 </el-option>
                                             </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="12" v-if="this.showComponent == true">
-                                        <el-form-item :label="$t('models.request.category_options.component')">
-                                            <el-input v-model="model.component" :disabled="!editMode"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    
-                                    <el-col :md="12"
-                                            v-if="this.showAction == true">
-                                        <el-form-item :label="$t('models.request.action.label')"
-                                                    prop="action">
-                                            <el-select :disabled="$can($permissions.update.serviceRequest) || !editMode"
-                                                    :placeholder="$t('models.request.placeholders.action')"
-                                                    class="custom-select"
-                                                    v-model="model.action">
-                                                <el-option
-                                                        :key="action.value"
-                                                        :label="action.name"
-                                                        :value="action.value"
-                                                        v-for="action in actions">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="12" v-if="this.showCostImpact == true">
-                                        <el-form-item :label="$t('models.request.cost_impact.label')"
-                                                    prop="cost_impact">
-                                            <el-select :disabled="$can($permissions.update.serviceRequest) || !editMode"
-                                                    :placeholder="$t('models.request.placeholders.cost_impact')"
-                                                    class="custom-select"
-                                                    v-model="model.cost_impact"
-                                                    @change="changeCostImpact">
-                                                <el-option
-                                                        :key="cost_impact.value"
-                                                        :label="cost_impact.name"
-                                                        :value="cost_impact.value"
-                                                        v-for="cost_impact in cost_impacts">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :md="12" v-if="this.showPercent == true">
-                                        <el-form-item 
-                                            :label="$t('models.request.category_options.payer_percent')"
-                                            :rules="validationRules.percentage"
-                                            prop="percentage">
-                                            <el-input 
-                                                type="number"
-                                                v-model="model.percentage" 
-                                                :disabled="!editMode"
-                                            >
-                                                <template slot="prepend">%</template>
-                                            </el-input>
                                         </el-form-item>
                                     </el-col>
                                    
@@ -395,15 +305,77 @@
                         <el-tabs type="border-card" v-model="activeTab1">
                             <el-tab-pane label="Standort" name="request_details">
                                 <el-col :md="12">
-                                     <!-- <el-form-item :label="$t('models.request.prop_title')" :rules="validationRules.title"
+                                    <el-form-item :label="$t('models.request.prop_title')" :rules="validationRules.title"
                                                     prop="title">
                                         <el-input 
                                                 :disabled="$can($permissions.update.serviceRequest) || !editMode" 
                                                 type="text"
-                                                v-model="model.resident_id"/>
-                                    </el-form-item> -->
+                                                value="resident_name"/>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="6">
+                                    <el-form-item :label="$t('models.resident.quarter.name')" :rules="validationRules.title"
+                                                    prop="title">
+                                        <el-input 
+                                                :disabled="$can($permissions.update.serviceRequest) || !editMode" 
+                                                type="text"
+                                                value="quarter_id"/>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="6">
+                                    <el-form-item :label="$t('models.resident.unit.name')" :rules="validationRules.title"
+                                                    prop="title">
+                                        <el-input 
+                                                :disabled="$can($permissions.update.serviceRequest) || !editMode" 
+                                                type="text"
+                                                value="unit_id"/>
+                                    </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
+                                    <img :src="require('img/default_img_object.png')" style="width: 100%"/>
+                                </el-col>
+                                <el-col :md="12">
+                                    <el-col :md="24" class="pl-0 pr-0"
+                                            v-if="this.showSubCategory == true && this.showLocation == true">
+                                        <el-form-item :label="$t('models.request.category_options.range')">
+                                            <el-select 
+                                                :disabled="$can($permissions.update.serviceRequest) || !editMode"
+                                                :placeholder="$t(`general.placeholders.select`)"
+                                                class="custom-select"
+                                                v-model="model.location"
+                                            >
+                                                <el-option
+                                                    :key="location.value"
+                                                    :label="location.name"
+                                                    :value="location.value"
+                                                    v-for="location in locations">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :md="24" class="pl-0 pr-0"
+                                            v-if="this.showSubCategory == true && this.showRoom == true">
+                                        <el-form-item :label="$t('models.request.category_options.room')">
+                                            <el-select 
+                                                :disabled="$can($permissions.update.serviceRequest) || !editMode"
+                                                :placeholder="$t(`general.placeholders.select`)"
+                                                class="custom-select"
+                                                v-model="model.room"
+                                            >
+                                                <el-option
+                                                    :key="room.value"
+                                                    :value="room.value"
+                                                    :label="room.name"
+                                                    v-for="room in rooms">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :md="24" v-if="this.showComponent == true" class="pr-0 pl-0">
+                                        <el-form-item :label="$t('models.request.category_options.component')">
+                                            <el-input v-model="model.component" :disabled="!editMode"></el-input>
+                                        </el-form-item>
+                                    </el-col>
                                 </el-col>
                             </el-tab-pane>
 
@@ -445,6 +417,57 @@
                     </el-col>
                     <el-col :md="12">
                         <template v-if="$can($permissions.assign.request)">
+                        
+                            <el-tabs id="comments-card" v-if="model.id" type="border-card" value="assignment">
+                                <el-tab-pane name="assignment">
+                                    <span slot="label">
+                                        {{ $t('models.request.assignment') }}
+                                    </span>
+                                    <el-col :md="24">
+                                        <users-assignment
+                                                :resetToAssignList="resetToAssignList"
+                                                :toAssign.sync="toAssign"
+                                                :assign="assignUsers"
+                                                :toAssignList="toAssignList"
+                                                :remoteLoading="remoteLoading"
+                                                :remoteSearch="remoteSearchAssignees"
+                                        ></users-assignment>
+                                        <relation-list
+                                            :actions="assigneesActions"
+                                            :columns="assigneesColumns"
+                                            :filterValue="model.id"
+                                            fetchAction="getAssignees"
+                                            filter="request_id"
+                                            ref="assigneesList"
+                                            v-if="model.id"
+                                        />
+                                    </el-col>
+                                </el-tab-pane>
+                                <el-tab-pane name="assignment1">
+                                    <span slot="label">
+                                        Verantwortlich
+                                    </span>
+                                    <el-col :md="24">
+                                        <users-assignment
+                                                :resetToAssignList="resetToAssignList"
+                                                :toAssign.sync="toAssign"
+                                                :assign="assignUsers"
+                                                :toAssignList="toAssignList"
+                                                :remoteLoading="remoteLoading"
+                                                :remoteSearch="remoteSearchAssignees"
+                                        ></users-assignment>
+                                        <relation-list
+                                            :actions="assigneesActions"
+                                            :columns="assigneesColumns"
+                                            :filterValue="model.id"
+                                            fetchAction="getAssignees"
+                                            filter="request_id"
+                                            ref="assigneesList"
+                                            v-if="model.id"
+                                        />
+                                    </el-col>
+                                </el-tab-pane>
+                            </el-tabs>
  
                             <el-tabs class="action-tabs" type="border-card" v-model="activeActionTab">
                                 <el-tab-pane :label="$t('models.request.actions')" name="actions" >
@@ -462,6 +485,23 @@
                                                         :label="$t(`models.request.status.${status}`)"
                                                         :value="parseInt(k)"
                                                         v-for="(status, k) in constants.requests.status">
+                                                    </el-option>
+                                                </el-select>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :md="12"
+                                            v-if="this.showAction == true">
+                                            <el-form-item :label="$t('models.request.action.label')"
+                                                        prop="action">
+                                                <el-select :disabled="$can($permissions.update.serviceRequest) || !editMode"
+                                                        :placeholder="$t('models.request.placeholders.action')"
+                                                        class="custom-select"
+                                                        v-model="model.action">
+                                                    <el-option
+                                                            :key="action.value"
+                                                            :label="action.name"
+                                                            :value="action.value"
+                                                            v-for="action in actions">
                                                     </el-option>
                                                 </el-select>
                                             </el-form-item>
@@ -507,8 +547,39 @@
                                                 >
                                                 </el-date-picker>
                                             </el-form-item>
-                                            
                                         </el-col>
+                                        <el-col :md="12" v-if="this.showCostImpact == true">
+                                        <el-form-item :label="$t('models.request.cost_impact.label')"
+                                                    prop="cost_impact">
+                                                <el-select :disabled="$can($permissions.update.serviceRequest) || !editMode"
+                                                        :placeholder="$t('models.request.placeholders.cost_impact')"
+                                                        class="custom-select"
+                                                        v-model="model.cost_impact"
+                                                        @change="changeCostImpact">
+                                                    <el-option
+                                                            :key="cost_impact.value"
+                                                            :label="cost_impact.name"
+                                                            :value="cost_impact.value"
+                                                            v-for="cost_impact in cost_impacts">
+                                                    </el-option>
+                                                </el-select>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :md="12" v-if="this.showPercent == true">
+                                            <el-form-item 
+                                                :label="$t('models.request.category_options.payer_percent')"
+                                                :rules="validationRules.percentage"
+                                                prop="percentage">
+                                                <el-input 
+                                                    type="number"
+                                                    v-model="model.percentage" 
+                                                    :disabled="!editMode"
+                                                >
+                                                    <template slot="prepend">%</template>
+                                                </el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                        
                                     </el-row>
                                     <el-row :gutter="10"> 
                                         <el-col :md="12" v-if="model.active_reminder">
@@ -570,31 +641,6 @@
                                             {{ $t('models.request.send_notification_desc') }}
                                         </div>
                                     </div>
-                                </el-tab-pane>
-                            </el-tabs>
-                        
-                            <el-tabs id="comments-card" v-if="model.id" type="border-card" value="assignment">
-                                <el-tab-pane name="assignment">
-                                    <span slot="label">
-                                        {{ $t('models.request.assignment') }}
-                                    </span>
-                                    <users-assignment
-                                            :resetToAssignList="resetToAssignList"
-                                            :toAssign.sync="toAssign"
-                                            :assign="assignUsers"
-                                            :toAssignList="toAssignList"
-                                            :remoteLoading="remoteLoading"
-                                            :remoteSearch="remoteSearchAssignees"
-                                    ></users-assignment>
-                                    <relation-list
-                                        :actions="assigneesActions"
-                                        :columns="assigneesColumns"
-                                        :filterValue="model.id"
-                                        fetchAction="getAssignees"
-                                        filter="request_id"
-                                        ref="assigneesList"
-                                        v-if="model.id"
-                                    />
                                 </el-tab-pane>
                             </el-tabs>
                         </template>
@@ -706,11 +752,10 @@
                     type: 'assigneesName',
                     prop: 'name',
                     label: 'general.name'
-                }/*, {
-                    prop: 'role',
+                }, {
+                    prop: 'company_name',
                     label: 'general.roles.label',
-                    i18n: this.translateType
-                }*/, {
+                }, {
                     type: 'assignProviderManagerFunctions',
                 }],
                 assigneesActions: [{
@@ -719,14 +764,14 @@
                     buttons: [{
                         title: 'models.request.notify',
                         tooltipMode: true,
-                        icon: 'icon-chat-empty',
+                        icon: 'el-icon-position',
                         view: 'request',
                         onClick: this.openNotifyProvider
                     }, {
                         title: 'general.unassign',
                         tooltipMode: true,
                         type: 'danger',
-                        icon: 'el-icon-close',
+                        icon: 'el-icon-delete',
                         onClick: this.notifyUnassignment
                     }]
                 }],
@@ -909,7 +954,7 @@
             margin-bottom: 20px;
         }
         .crud-view {
-            padding: 0 30px;
+            padding: 0 20px;
             .created-date {
                 position: absolute;
                 right: 20px;
@@ -1004,17 +1049,10 @@
     }
 
 
-    .edit-details-form {
-        .el-row {
-            .el-col {
-                padding-right: 10px !important;
-                padding-left: 10px !important;
-                &:first-child {
-                    .el-form-item {
-                        padding-left: 10px;
-                    }
-                }
-            }
+    .edit-details-form .el-tabs .el-row {
+        .el-col {
+            padding-right: 10px !important;
+            padding-left: 10px !important;
         }
     }
 
