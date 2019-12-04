@@ -3,7 +3,7 @@
         <div class="main-content">
         <heading :title="$t('models.building.edit_title')" icon="icon-commerical-building" shadow="heavy" bgClass="bg-transparent">
             <template slot="description" v-if="model.building_format">
-                <div class="subtitle">{{`${model.building_format} > ${model.name}`}}</div>
+                <div class="subtitle">{{`${model.building_format} > ${model.street} ${model.house_num}`}}</div>
             </template>
             <edit-actions :saveAction="submit" :deleteAction="batchDeleteBuilding" route="adminBuildings" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
             <!-- <template>
@@ -25,7 +25,7 @@
                 {{$t('models.building.warning_bar.title')}}
             </div>
         </div> -->
-        <el-row :gutter="20" class="crud-view">
+        <el-row :gutter="20" class="crud-view" v-if="model.id">
             
             <el-col :md="12">
                 <el-tabs type="border-card" v-model="activeTab">
@@ -74,14 +74,14 @@
                                 
                             </el-row>
                             <el-row :gutter="20">
-                                <el-col :md="6">
+                                <el-col :md="4">
                                     <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
                                                   prop="zip"
                                                   style="max-width: 512px;">
                                         <el-input type="text" v-model="model.zip" :disabled="!editMode"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="6">
+                                <el-col :md="8">
                                     <el-form-item :label="$t('general.city')" :rules="validationRules.city"
                                                   prop="city"
                                                   style="max-width: 512px;">
@@ -455,16 +455,15 @@
                     }]
                 }*/],
                 requestColumns: [{
-                    type: 'requestResidentAvatar',
-                    width: 90,
-                    prop: 'resident',
-                    label: 'general.resident'
+                    type: 'requestIcon',
+                    label: 'models.request.prop_title',
+                    width: 60,
                 }, {
                     type: 'requestTitleWithDesc',
                     label: 'models.request.prop_title'
                 }, {
                     type: 'requestStatus',
-                    width: 120,
+                    width: 50,
                     label: 'models.request.status.label'
                 }],
                 requestActions: [/*{
@@ -819,6 +818,7 @@
             // this.fileCount = this.model.media.length;
 
             this.getTypes();
+
         },
         computed: {
             ...mapGetters('application', {
