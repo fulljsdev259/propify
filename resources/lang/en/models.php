@@ -564,6 +564,8 @@ return [
         'send_notification_title' => 'Notify residents',
         'send_notification_desc' => 'You can inform the concerned residents via email about this public request.',
         'comments' => 'Comments',
+        'or' => 'or',
+        'assign_me' => 'Assign me',
         'assigned_to' => 'Assigned to',
         'assign_providers' => 'Assign providers',
         'assign_managers' => 'Assign managers',

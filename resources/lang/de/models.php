@@ -566,6 +566,8 @@ return [
         'send_notification_title' => 'Benachrichtigung der Bewohner',
         'send_notification_desc' => 'Sie können die betroffenen Bewohner per E-Mail über diese öffentliche Anfrage informieren.',
         'comments' => 'Mieter-Chat',
+        'or' => 'oder',
+        'assign_me' => 'Mir zuweisen',
         'assigned_to' => 'Zuständig',
         'assign_providers' => 'Zuweisen',
         'assign_managers' => 'Zuweisen',

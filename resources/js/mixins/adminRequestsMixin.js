@@ -568,7 +568,7 @@ export default (config = {}) => {
                             this.remoteLoading = true;
                             
                             try {
-                                const resp = await this.getAllAdminsForRequest({quarter_id: this.$route.params.id, is_get_function: true, search})
+                                const resp = await this.getAllAdminsForRequest({request_id: this.$route.params.id, is_get_function: true, search})
                                 this.toAssignList = resp;
                             } catch (err) {
                                 displayError(err);

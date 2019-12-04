@@ -644,5 +644,5 @@ return [
     'request_status' => 'Anliegen-Status',
     'login_success'=>'Willkommen zurück',
     'category' => 'Kategorie',
-    'on' => 'am'
+    'on' => 'am',
 ];

@@ -146,6 +146,7 @@
                 :label="$t(column.label)"
                 :width="column.width"
                 :min-width="column.minWidth"
+                :class-name="column.withRequestUsers ? 'request-users' : ''"
                 :align="column.align"
                 v-for="(column, index) in computedHeader">
                 
@@ -399,6 +400,89 @@
                                     v-if="scope.row[column.prop].length>2"></avatar>
                         </div>
                     </div>
+                    <div v-else-if="column.withRequestUsers">
+                        <div class="avatars-wrapper">
+                            <span :key="uuid()" v-if="index<2" v-for="(user, index) in scope.row[column.prop]">
+                                <el-tooltip
+                                    :content="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
+                                    class="item"
+                                    effect="light" placement="top">
+                                    <template v-if="user.user">
+                                        <avatar :size="28"
+                                                :username="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
+                                                backgroundColor="rgb(205, 220, 57)"
+                                                color="#fff"
+                                                v-if="!user.user.avatar"></avatar>
+                                        <avatar :size="28" :src="`/${user.user.avatar}`" v-else></avatar>
+                                    </template>
+                                    <template v-else>
+                                        <avatar :size="28"
+                                                :username="user.first_name ? `${user.first_name} ${user.last_name}`: `${user.name}`"
+                                                backgroundColor="rgb(205, 220, 57)"
+                                                color="#fff"
+                                                v-if="!user.avatar"></avatar>
+                                        <avatar :size="28" :src="`/${user.avatar}`" v-else></avatar>
+                                    </template>
+                                </el-tooltip>
+                            </span>
+                            <avatar class="avatar-count" :size="28" :username="`+ ${scope.row[column.prop].length-2}`"
+                                    color="#fff"
+                                    v-if="scope.row[column.prop].length>2"></avatar>
+                        </div>
+                        
+                        <div class="quick-add-avatar"> 
+                            <el-dropdown placement="bottom" trigger="click">
+                                <el-button size="mini" class="more-actions" >
+                                    <i class="el-icon-user"></i>
+                                </el-button>
+                                
+                                <el-dropdown-menu slot="dropdown" class="quick-assign-dropdown" :visible-change="handleVisibleChange">
+                                    
+                                    <el-dropdown-item
+                                            command="quick-assign"
+                                    >
+                                        <div><strong>{{$t('models.request.assigned_property_managers')}}</strong></div>
+                                        <!-- <multi-select
+                                            :type="quarterFilter.key"
+                                            :name="quarterFilter.name"
+                                            :data="quarterFilter.data"
+                                            :maxSelect="1"
+                                            :showMultiTag="true"
+                                            :selectedOptions="[model.quarter_id]"
+                                            @select-changed="handleSelectChange($event, 'quarter')"
+                                        >
+                                        </multi-select> -->
+                                        <div>
+                                        <el-select
+                                                :loading="remoteLoading"
+                                                :placeholder="$t('general.placeholders.search')"
+                                                :remote-method="search =>remoteSearchAssignees(search, scope.row.id)"
+                                                filterable
+                                                remote
+                                                reserve-keyword
+                                                style="width: 50%;"
+                                                @change="val => handleQuickAssign(scope.row.id, val)"
+                                                v-model="quick_assignee">
+                                            <el-option
+                                                    :key="assignee.id"
+                                                    :label="assignee.name"
+                                                    :value="assignee.id"
+                                                    v-for="assignee in assignees"/>
+                                        </el-select>
+
+                                        {{$t('models.request.or')}}
+                                        
+                                        <el-button @click="() => handleAssignMe(scope.row.id)">
+                                            {{$t('models.request.assign_me')}}
+                                        </el-button>
+                                        </div>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+                        
+                            
+                        </div>
+                    </div>
                     <template v-else-if="column.withBadges">
                         <el-button v-if="scope.row[column.prop] == 'low'" class="btn-priority-badge btn-badge" :size="column.size" round>{{ scope.row[column.prop] }}</el-button>
                         <el-button v-else-if="scope.row[column.prop] == 'normal'" plain type="warning" class="btn-priority-badge btn-badge" :size="column.size" round>{{ scope.row[column.prop] }}</el-button>
@@ -512,6 +596,9 @@
     import ListFilterSelect from 'components/Select';
     import FormatDateTimeMixin from 'mixins/formatDateTimeMixin';
     import globalFunction from "helpers/globalFunction";
+    import {displayError, displaySuccess} from "helpers/messages";
+    import MultiSelect from 'components/Select';
+    import {mapGetters, mapActions} from 'vuex';
 
     export default {
         name: 'ListTable',
@@ -524,6 +611,7 @@
             SelectLanguage,
             ListFilterSelect,
             FormatDateTimeMixin,
+            MultiSelect
         },
         mixins: [globalFunction],
         props: {
@@ -617,6 +705,10 @@
                 subMenu: [],
                 dateRange: '',
                 showFilters: false,
+                assignees: [],
+                quick_assignee: '',
+                remoteLoading: false,
+                isVisible: false
             }
         },
         computed: {
@@ -742,6 +834,32 @@
             },
         },
         methods: {
+            ...mapActions([ 
+                'getAllAdminsForRequest',
+                'assignUsersToRequest'
+            ]),
+            handleVisibleChange(isVisible) {
+                this.isVisible = isVisible
+            },
+            handleQuickAssign(assignee_id, request_id) {
+                console.log('QUICK ASSIGN', assignee_id)
+            },
+            async handleAssignMe(request_id) {
+                let loggedinUser = this.$store.getters.loggedInUser
+                console.log('this.$store.getters.loggedInUser', this.$store.getters.loggedInUser)
+                let user_params = [{user_id: loggedinUser.id, role: loggedinUser.roles[0].name}]
+
+                let resp = await this.assignUsersToRequest({
+                            id: request_id,
+                            user_params: user_params
+                        });
+
+                if (resp && resp.data) {
+                    displaySuccess(resp)                           
+                    this.assignees = []
+                    this.assignee = ''
+                }
+            },
             toggleFilters() {
                 this.showFilters = !this.showFilters;
             },
@@ -971,7 +1089,27 @@
                 } finally {
                     filter.remoteSearch = false;
                 }
-            }
+            },
+            async remoteSearchAssignees(search, request_id) {
+                if (search === '') {
+                    this.assignees = [];
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const data = await this.getAllAdminsForRequest({request_id: request_id, is_get_function: true, search})
+
+                        console.log(data)
+                        this.assignees = data;
+
+                        console.log(this.assignees)
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
         },
         watch: {
             search(text) {
@@ -1146,6 +1284,11 @@
         }
 
     }
+
+    .quick-assign-dropdown .el-dropdown-menu__item:not(.is-disabled):hover {
+        background-color: transparent
+    }
+
     .remote-select {
         width: 100%;
         :global(input) {
@@ -1366,6 +1509,44 @@
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
+            }
+        }
+    }
+
+    .request-users {
+        
+        .quick-add-avatar {
+            display: none;
+
+            .el-dropdown {
+                width : 30px;
+                height: 30px;
+            }
+            .more-actions {
+                padding: 0;
+                background: transparent;
+                border-radius: 50%;
+                border: 1px dashed black; 
+                width: 100%;
+                height: 0;
+                padding-top: 100%;
+                position: relative;
+
+                /deep/ span {
+                    position: absolute;
+                    top: 8px;
+                    left: 8px;
+                }
+            }
+        }
+
+        &:hover {
+
+            .avatars-wrapper {
+                display: none;
+            }
+            .quick-add-avatar {
+                display: flex;
             }
         }
     }
