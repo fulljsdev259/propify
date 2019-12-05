@@ -1324,16 +1324,20 @@
             .content-box {
                 display: flex;
                 padding-right: 20px;
-                // > *:not(span) {
-                //     flex: 1;
-                // }
-                
+
                 > span {
                     padding: 0 10px;
                     color : var(--color-text-regular);
                 }
 
-                > .el-select, > .el-button {
+                > .el-select {
+                    border-radius: 10px;
+                    /deep/ div, /deep/ input {
+                        border-radius: 10px;
+                    }
+                }
+
+                > .el-button {
                     border-radius: 10px;
                 }
             }
