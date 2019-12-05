@@ -284,7 +284,7 @@
                             <div align="right" style="margin-bottom: 15px">
                                 <el-button @click="visiblePlanDrawer = true">show Plan Drawer</el-button>
                                 <el-button @click="demo.file = '/storage/floor-plan.jpg', visiblePlanModal = true">show IMG</el-button>
-                                <el-button @click="demo.file = '/storage/floor-plan-2.pdf', visiblePlanModal = true">show PDF</el-button>
+                                <el-button @click="demo.file = '/storage/Ansicht-1-6.pdf', visiblePlanModal = true">show PDF</el-button>
                             </div>
                         </el-tab-pane>
 
