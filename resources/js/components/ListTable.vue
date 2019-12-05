@@ -115,6 +115,12 @@
                                     {{ !showFilters? $t('general.filters.more_filters'):$t('general.filters.less_filters') }}
                                 </el-button>
                             </el-form-item>
+                             <el-form-item v-else-if="filter.type === filterTypes.popover">
+                                <el-popover placement="bottom-end" trigger="click" :width="192" style="float:right">
+                                    <el-button slot="reference" class="filter-button">{{ filter.name }}</el-button>
+                                    <el-button class="popover-button" @click="visibleSaveDialog=true">{{ $t('general.actions.save') }}</el-button>
+                                </el-popover>
+                            </el-form-item>
                             
                         </template>
 
@@ -122,7 +128,17 @@
                 </el-row>
             </el-card>
         </el-form>
-
+        <el-dialog
+            :visible.sync="visibleSaveDialog"
+            width="30%"
+            center
+        >
+            <el-input v-model="saveTitle"/>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="danger" @click="visibleSaveDialog = false">{{ $t('general.cancel') }}</el-button>
+                <el-button type="primary" @click="saveFilter" :disabled="saveTitle===''">{{ $t('general.actions.save') }}</el-button>
+            </span>
+        </el-dialog>
         <!--        <div class="pull-right">-->
         <!--            <el-button :disabled="!selectedItems.length" @click="batchDelete" size="mini" type="danger">-->
         <!--                {{ $t('general.actions.delete')}}-->
@@ -701,6 +717,7 @@
                     language: 'language',
                     role: 'role',
                     toggle: 'toggle',
+                    popover: 'popover',
                 },
                 filterModel: {},
                 uuid,
@@ -712,10 +729,14 @@
                 assignee: '',
                 remoteLoading: false,
                 isVisible: false,
-                queries: [],
+                saveTitle: '',
+                visibleSaveDialog: false,
             }
         },
         computed: {
+            ...mapGetters({
+                user: 'loggedInUser',
+            }),
             emptyText() {
                 return this.loading.state ?  ' ' : (this.items.length > 0) ? '' : this.$t('general.no_data_available');
             },
@@ -842,8 +863,17 @@
                 'getAllAdminsForRequest',
                 'assignUsersToRequest'
             ]),
+            saveFilter() {
+                this.visibleSaveDialog = false;
+                console.log(this.user);
+                this.axios.post('/userFilters', {
+                    user_id: this.user.id,
+                    title: this.saveTitle,
+                    menu: this.$route.name,
+                    options_url: this.$route.fullPath
+                });
+            },
             makeFilterQuery(pathName) {
-                
                 let query = {};
                 let quarter_ids = localStorage.getItem('quarter_ids');
                 let building_ids = localStorage.getItem('building_ids');
@@ -1422,9 +1452,16 @@
     }
 
     .el-button {
-        border-radius: 20px;
-        padding: 8.65px 15px;
         font-family: inherit;
+    }
+    .popover-button {
+        width: 100%;
+        border: none;
+        background-color: var(--border-color-base);
+    }
+    .filter-button {
+        height: 40px;
+        background-color: #f6f5f7;
     }
     
     .el-input {
