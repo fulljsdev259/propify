@@ -861,7 +861,6 @@
             },
             async handleAssignMe(request_id) {
                 let loggedinUser = this.$store.getters.loggedInUser
-                console.log('this.$store.getters.loggedInUser', this.$store.getters.loggedInUser)
                 let user_params = [{user_id: loggedinUser.id, role: loggedinUser.roles[0].name}]
 
                 let resp = await this.assignUsersToRequest({
