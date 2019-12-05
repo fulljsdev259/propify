@@ -71,7 +71,7 @@ class AuditTransformer extends BaseTransformer
         }        
         if($model->event == 'updated'){            
             $statement = "";
-            foreach($model->new_values as $field => $fieldvalue){                
+            foreach($model->new_values as $field => $fieldvalue){
                 if(in_array($field,['internal_priority', 'priority','notifications','avatar'])){
                     continue;
                 }
@@ -100,6 +100,10 @@ class AuditTransformer extends BaseTransformer
                 if(in_array($field, ['content','description'])){
                     $old_value = ($old_value) ? Helper::shortenString($old_value) : "";
                     $new_value = ($new_value) ? Helper::shortenString($new_value) : "";
+                }
+                elseif(in_array($model->auditable_type,['quarter','building']) && $field == 'types'){
+                    $old_value = ($old_value) ? (AuditRepository::getDataFromField($field, $old_value, $model->auditable_type)) : "";
+                    $new_value = ($new_value) ? (AuditRepository::getDataFromField($field, $new_value, $model->auditable_type)) : "";
                 }
                 elseif(in_array($model->auditable_type,['manager','resident']) && $field == 'title'){
                     $old_value = ($old_value) ? __('general.salutation_option.'.$old_value) : "";
@@ -176,10 +180,17 @@ class AuditTransformer extends BaseTransformer
             $assigneeNames = $this->getAssigneesName(ServiceProvider::class, $ids);
             $response['statement'] = $this->translate_audit("provider_unassigned",['assignee' => $assigneeNames]);
         }
-        elseif($model->event == 'media_uploaded'){            
-            $response['statement'] = $this->translate_audit("media_uploaded");
+        elseif($model->event == 'media_uploaded'){
+            $data = [];
+            if ($model->auditable_type == 'building') {
+                $disk = $model->new_values['disk'] ?? '';
+                $disk = str_replace('buildings_', '', $disk);
+//                MediaFileCategories
+                $data['category'] = __('models.building.media_category.' . $disk);
+            }
+            $response['statement'] = $this->translate_audit("media_uploaded", $data);
         }
-        elseif($model->event == 'media_deleted'){            
+        elseif($model->event == 'media_deleted'){
             $response['statement'] = $this->translate_audit("media_deleted");
         }
         elseif($model->event == 'avatar_uploaded'){            
@@ -247,8 +258,9 @@ class AuditTransformer extends BaseTransformer
             }
             $response['statement'] = $this->translate_audit("mass_assigned", ['users' => implode(', ', $users)]);
         } else {
-//            dd($model->event);
+            $response['statement'] = 'TODO';
         }
+
         return $response;
     }
 

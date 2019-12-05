@@ -775,6 +775,10 @@
             border-bottom: 1px solid #EBEEF5 !important;
             font-size: 16px !important;
         }
+
+        .el-dropdown .el-button {
+            padding-left: 5px !important;
+        }
     }
 
     
@@ -866,6 +870,7 @@
     :global(.add-form .el-row .el-col .el-form-item) {
         .el-input .el-input__inner, .el-input .el-input-group__prepend, .el-input .el-textarea__inner {
             border-color: transparent;
+            background-color: #f6f5f7 !important;
         }    
     }
     :global(.edit-details-form .el-row .el-col), :global(.add-form .el-row .el-col) {

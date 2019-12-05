@@ -102,7 +102,8 @@ return [
         'type' => 'Type',
         'language' => 'Language',
         'phase' => 'Phase',
-        'saved_filters' => 'Saved Filters',
+        'more_filters' => 'More Filters',
+        'less_filters' => 'Less Filters',
         'fields' => 'Fields',
         'my_filters' => 'My Filter',
     ],    
@@ -442,7 +443,7 @@ return [
                         'media_uploaded' => [
                             'default' => 'Media uploaded.',
                             'quarter' => 'Media uploaded.',
-                            'building' => 'Media uploaded.',
+                            'building' => 'Media uploaded a document in :category.',
                             'unit' => 'Media uploaded.',
                             'request' => 'Media uploaded.',
                             'resident' => 'Media uploaded.',
@@ -643,5 +644,5 @@ return [
     'request_status' => 'Request Status',
     'login_success'=>'Welcome back',
     'category' => 'Category',
-    'on' => 'on'
+    'on' => 'on',
 ];

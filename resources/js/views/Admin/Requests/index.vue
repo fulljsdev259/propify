@@ -68,6 +68,7 @@
             :withSearch="false"
             :searchText="search"
             @selectionChanged="selectionChanged"
+            @update-row="updateRow"
         >
         </list-table>
         <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
@@ -223,7 +224,7 @@
                         width: 150
                     }, {
                         label: 'models.request.assigned_property_managers',
-                        withUsers: true,
+                        withRequestUsers: true,
                         prop: 'property_managers'
                     }, {
                         label: 'general.category',
@@ -231,7 +232,7 @@
                         i18n: this.translateCategory
                     }, {
                         label: 'general.filters.services',
-                        withUsers: true,
+                        withRequestUsers: true,
                         prop: 'service_providers'
                     }, {
                         label: 'models.request.created_by',
@@ -396,8 +397,8 @@
                         data: this.prepareFilters("capture_phase"),
                     },
                     {
-                        name: this.$t('general.filters.saved_filters'),
-                        type: 'select',
+                        name: this.$t('general.filters.more_filters'),
+                        type: 'toggle',
                         key: 'saved_filter',
                         data: []
                     }
@@ -503,6 +504,9 @@
                         id: resident.id
                     };
                 });
+            },
+            updateRow(index, data) {
+                // this.$set(this.items, index, data)
             },
             add() {
                 this.$router.push({

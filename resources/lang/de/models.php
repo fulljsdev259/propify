@@ -352,7 +352,7 @@ return [
         'notify_email_description' => "Mit dieser Option können Sie die E-Mail-Benachrichtigung aktivieren.",
         'announcement_to' => 'Ankündigung',
         'comments' => 'Kommentare',
-        'images' => 'Fotos und Dokumente',
+        'images' => 'Dokumente',
         'attachments' => 'Anhänge',
         'category_default_image_label' => 'Möchten Sie dieses Bild verwenden?',
         'placeholders' => [            
@@ -519,8 +519,8 @@ return [
         'created' => 'Erstellt',
         'saved' => 'Anfrage gespeichert',
         'prop_title' => 'Titel',
-        'category' => 'Anfrage-Typ',
-        'edit_title' => 'Anfrage bearbeiten',
+        'category' => 'Kategorie',
+        'edit_title' => 'Anliegen bearbeiten',
         'add_title' => 'Hinzufügen',
         'mass_edit' => [
             'label' => 'Massenbearbeitung',
@@ -566,6 +566,9 @@ return [
         'send_notification_title' => 'Benachrichtigung der Bewohner',
         'send_notification_desc' => 'Sie können die betroffenen Bewohner per E-Mail über diese öffentliche Anfrage informieren.',
         'comments' => 'Mieter-Chat',
+        'or' => 'oder',
+        'assign_me' => 'Mir zuweisen',
+        'name_or_email' => 'Name oder E-Mail-Adresse',
         'assigned_to' => 'Zuständig',
         'assign_providers' => 'Zuweisen',
         'assign_managers' => 'Zuweisen',
@@ -581,7 +584,7 @@ return [
         'open_conversation' => 'Offen',
         'other_recipients' => 'Weitere Empfänger',
         'recipients' => 'Empfänger',
-        'images' => 'Fotos und Dokumente',
+        'images' => 'Dokumente',
         'no_images_message' => 'Bislang keine Dateien hochgeladen',
         'request_details' => 'Beschreibung',
         'internal_notices' => 'Interne Notizen',
@@ -704,10 +707,10 @@ return [
             'range' => 'Bereich',
             'component' => 'Bauteil',
             'capture_phase' => 'Erfassungsphase',
-            'payer_percent' => 'Bewohneranteil in %',
+            'payer_percent' => 'Bewohneranteil',
             'payer_amount' => 'Betrag',
             'keywords' => 'Tags',
-            'qualification_category' => 'Qualifizierung'
+            'qualification_category' => 'Subkategorie'
         ],
         'placeholders' => [
             'category' => 'Kategorie wählen',
@@ -770,7 +773,7 @@ return [
             'blank_pdf'=>'Nach der Mängelerledigung bitte, das beiliegende Formular umgehend unterzeichnet der Bauleitung retournieren.',
             'address'=>'Objekt',
         ],
-        'pictures_of' => 'Fotos des Anliegens',
+        'pictures_of' => 'Dokumente des Anliegens',
         'go_to_building' => 'Zum Objekt gehen',
         'visible' => 'Sichtbar'
     ],

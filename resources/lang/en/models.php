@@ -564,6 +564,9 @@ return [
         'send_notification_title' => 'Notify residents',
         'send_notification_desc' => 'You can inform the concerned residents via email about this public request.',
         'comments' => 'Comments',
+        'or' => 'or',
+        'assign_me' => 'Assign me',
+        'name_or_email' => 'Name or Email Address',
         'assigned_to' => 'Assigned to',
         'assign_providers' => 'Assign providers',
         'assign_managers' => 'Assign managers',
@@ -703,7 +706,7 @@ return [
             'range' => 'Range',
             'component' => 'Component',
             'capture_phase' => 'Capture Phase',
-            'payer_percent' => 'Pay by resident in %',
+            'payer_percent' => 'Pay by resident',
             'payer_amount' => 'Amount',
             'keywords' => 'Keywords',
             'qualification_category' => 'Qualification'

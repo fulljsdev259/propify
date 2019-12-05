@@ -95,16 +95,6 @@ class PropertyManagerRepository extends BaseRepository
         return $deleted;
     }
 
-    public function assignments(PropertyManager $propertyManager)
-    {
-        $quarters = Quarter::select(\DB::raw('quarters.id, quarters.name, "quarter" as type'))
-            ->join('quarter_assignees', 'quarter_id', '=', 'quarters.id')
-            ->where('assignee_type', get_morph_type_of(PropertyManager::class))
-            ->where('quarter_assignees.assignee_id',  $propertyManager->id);
-
-        return $quarters->orderBy('name');
-    }
-
     public function assignmentsWithIds(array $ids)
     {
         return Quarter::select(\DB::raw('quarters.id, quarters.name, "quarter" as type'))

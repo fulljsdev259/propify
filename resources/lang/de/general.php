@@ -102,7 +102,8 @@ return [
         'type' => 'Typ',
         'language' => 'Sprache',
         'phase' => 'Phase',
-        'saved_filters' => 'Mehr Filters',
+        'more_filters' => 'Mehr Filters',
+        'less_filters' => 'Weniger Filters',
         'fields' => 'Felder',
         'my_filters' => 'Meine Filter',
     ],
@@ -442,7 +443,7 @@ return [
                         'media_uploaded' => [
                             'default' => 'hat ein Dokument hinaufgeladen.',
                             'quarter' => 'hat ein Dokument hinaufgeladen.',
-                            'building' => 'hat ein Dokument hinaufgeladen.',
+                            'building' => 'hat ein Dokument hinaufgeladen :category.',
                             'unit' => 'hat ein Dokument hinaufgeladen.',
                             'request' => 'hat ein Dokument hinaufgeladen.',
                             'resident' => 'hat ein Dokument hinaufgeladen.',
@@ -643,5 +644,5 @@ return [
     'request_status' => 'Anliegen-Status',
     'login_success'=>'Willkommen zurück',
     'category' => 'Kategorie',
-    'on' => 'am'
+    'on' => 'am',
 ];
