@@ -719,8 +719,6 @@
                 assignee: '',
                 remoteLoading: false,
                 isVisible: false,
-                saveTitle: '',
-                visibleSaveDialog: false,
             }
         },
         computed: {
