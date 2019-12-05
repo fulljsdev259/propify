@@ -775,6 +775,10 @@
             border-bottom: 1px solid #EBEEF5 !important;
             font-size: 16px !important;
         }
+
+        .el-dropdown .el-button {
+            padding-left: 5px !important;
+        }
     }
 
     

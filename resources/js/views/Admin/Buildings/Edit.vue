@@ -164,6 +164,7 @@
                                     <el-form-item :label="$t('models.building.type')"
                                                   class="label-block"
                                                   :rules="validationRules.types"
+                                                  style="max-width: 512px;"
                                                   prop="types">
                                        <multi-select
                                             :name="$t('models.building.type')"
