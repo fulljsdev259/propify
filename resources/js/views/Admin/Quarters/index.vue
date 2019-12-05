@@ -2,7 +2,7 @@
     <div class="quarters list-view">
         <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
-                <list-check-box />
+                <list-check-box @clicked="handleQuickFilterClick(true)" @unclicked="handleQuickFilterClick(false)"/>
             </template>
             <template v-if="$can($permissions.create.quarter)">
                 <el-button 
@@ -245,6 +245,17 @@
         },
         methods: {
             ...mapActions(['getBuildings', 'assignManagerToBuilding', 'getPropertyManagers']),
+            handleQuickFilterClick(checked) {
+                if(checked === true) {
+                    let quarter_ids = [];
+                    quarter_ids = this.selectedItems.map((item) => {
+                        return item.id;
+                    });
+                    localStorage.setItem('quarter_ids', JSON.stringify(quarter_ids));
+                } else {
+                    localStorage.setItem('quarter_ids', null);
+                }
+            },
             batchAssignManagers() {
                 this.assignManagersVisible = true;
             },
@@ -376,6 +387,7 @@
             }
         },
         async created() {
+            localStorage.setItem('quarter_ids', null);
             this.getRoles();
             this.getTypes();
             this.getCities();

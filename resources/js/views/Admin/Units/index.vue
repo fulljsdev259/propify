@@ -1,9 +1,6 @@
 <template>
     <div class="units list-view">
         <heading :title="$t('models.unit.title')" icon="icon-unit" shadow="heavy" :searchBar="true" @search-change="search=$event">
-            <template>
-                <list-check-box />
-            </template>
             <template v-if="$can($permissions.create.unit)">
                 <el-button 
                     @click="add" 
