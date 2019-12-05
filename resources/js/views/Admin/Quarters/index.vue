@@ -220,7 +220,8 @@
                         name: this.$t('general.filters.more_filters'),
                         type: 'toggle',
                         key: 'saved_filter',
-                    },{
+                    },
+                    {
                         name: this.$t('general.filters.my_filters'),
                         type: 'popover',
                         key: 'my_filter',

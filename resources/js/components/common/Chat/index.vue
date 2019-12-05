@@ -1,7 +1,7 @@
 <template>
     <div class="chat">        
-        <comments ref="comments" :id="id" :type="type" :limit="limit" reversed with-scroller :show-children="false" :style="{height: height, maxHeight: maxHeight}" />
-        <add-comment ref="addComment" :id="id" :type="type" :show-templates="showTemplates" />
+        <comments ref="comments" :newStyle="newStyle" :id="id" :type="type" :limit="limit" reversed with-scroller :show-children="false" :style="{height: height, maxHeight: maxHeight}" />
+        <add-comment ref="addComment" :id="id" :type="type" :show-templates="showTemplates" :newStyle="newStyle"/>
     </div>
 </template>
 
@@ -38,6 +38,10 @@
             showTemplates: {
                 type: Boolean,
                 default: false
+            },
+            newStyle: {
+                type: Boolean,
+                default: false,
             }
         },
         data () {

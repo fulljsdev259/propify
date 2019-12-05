@@ -13,7 +13,14 @@
                         <el-row class="last-form-row" :gutter="20">
                             <el-col :md="12" class='service_avatar'>
                                 <div class="image-container" :class="{'hide-action-icon': !editMode}">
+                                    <img v-if="!editMode" 
+                                        :src="!avatar.length && user.avatar
+                                                ? '/'+user.avatar_variations[3]
+                                                : model.avatar==null
+                                                    ? '/images/company.png'
+                                                    : ''"/>
                                     <cropper
+                                        v-if="editMode"
                                         :boundary="{
                                             width: 150,
                                             height: 150
@@ -617,6 +624,12 @@
             .image-container {
                 position: relative;
                 display: inline-block;
+
+                img {
+                    border-radius: 50%;
+                    width: 120px;
+                    height: 120px;
+                }
                 
                 .edit-icon {
                     position: absolute;
