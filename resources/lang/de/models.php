@@ -352,7 +352,7 @@ return [
         'notify_email_description' => "Mit dieser Option können Sie die E-Mail-Benachrichtigung aktivieren.",
         'announcement_to' => 'Ankündigung',
         'comments' => 'Kommentare',
-        'images' => 'Fotos und Dokumente',
+        'images' => 'Dokumente',
         'attachments' => 'Anhänge',
         'category_default_image_label' => 'Möchten Sie dieses Bild verwenden?',
         'placeholders' => [            
@@ -581,7 +581,7 @@ return [
         'open_conversation' => 'Offen',
         'other_recipients' => 'Weitere Empfänger',
         'recipients' => 'Empfänger',
-        'images' => 'Fotos und Dokumente',
+        'images' => 'Dokumente',
         'no_images_message' => 'Bislang keine Dateien hochgeladen',
         'request_details' => 'Beschreibung',
         'internal_notices' => 'Interne Notizen',
@@ -770,7 +770,7 @@ return [
             'blank_pdf'=>'Nach der Mängelerledigung bitte, das beiliegende Formular umgehend unterzeichnet der Bauleitung retournieren.',
             'address'=>'Objekt',
         ],
-        'pictures_of' => 'Fotos des Anliegens',
+        'pictures_of' => 'Dokumente des Anliegens',
         'go_to_building' => 'Zum Objekt gehen',
         'visible' => 'Sichtbar'
     ],
