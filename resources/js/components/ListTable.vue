@@ -430,7 +430,7 @@
                                     v-if="scope.row[column.prop].length>2"></avatar>
                         </div>
                         
-                        <div class="quick-add-avatar"> 
+                        <div class="quick-assign-avatar"> 
                             <el-dropdown placement="bottom" trigger="click">
                                 <el-button size="mini" class="more-actions" >
                                     <i class="el-icon-user"></i>
@@ -441,7 +441,10 @@
                                     <el-dropdown-item
                                             command="quick-assign"
                                     >
-                                        <div><strong>{{$t('models.request.assigned_property_managers')}}</strong></div>
+                                        <div class="header-box">
+                                            <strong>{{$t(column.label)}}</strong>
+                                            <i class="el-icon el-icon-close"></i>
+                                        </div>
                                         <!-- <multi-select
                                             :type="quarterFilter.key"
                                             :name="quarterFilter.name"
@@ -1525,7 +1528,7 @@
 
     .request-users {
         
-        .quick-add-avatar {
+        .quick-assign-avatar {
             display: none;
 
             .el-dropdown {
@@ -1548,6 +1551,12 @@
                     left: 8px;
                 }
             }
+            
+            .header-box {
+                i {
+                    float: right;
+                }
+            }
         }
 
         &:hover {
@@ -1555,7 +1564,7 @@
             .avatars-wrapper {
                 display: none;
             }
-            .quick-add-avatar {
+            .quick-assign-avatar {
                 display: flex;
             }
         }
