@@ -4,7 +4,7 @@
             v-on:update:visible="$emit('update:visible', $event)"
             title="Floor preview"
             class="pdf-preview-modal"
-            :fullscreen="true">
+            width="1140px">
         <div v-loading="loading">
             <div class="zoom-top" v-if="visible">
                 <div class="zoom-top__left">
@@ -21,24 +21,27 @@
                 <transition-group name="fade">
                     <div key="1" v-if="dragmode" class="zoom-top__right">
                         <el-button :disabled="!(currentDragstop.left && currentDragstop.top)"
+                                   icon="icon-floppy"
                                    @click="saveDragstop(), stopAllMarkersDrag()">Save position</el-button>
-                        <el-button @click="stopAllMarkersDrag(), markersKey += 1">Cancel</el-button>
+                        <el-button icon="el-icon-close"
+                                   @click="stopAllMarkersDrag(), markersKey += 1">Cancel</el-button>
                     </div>
                     <div key="2" v-else class="zoom-top__right">
-                        <el-button @click="putMarkerOnBlock()">add marker</el-button>
+                        <el-button icon="el-icon-plus"
+                                   @click="putMarkerOnBlock()">add marker</el-button>
                     </div>
                 </transition-group>
             </div>
             <panZoom style="overflow: hidden; max-height: 100vh;"
+                     ref="panZoom"
                      class="pan-zoom"
-                     ref="panzoom"
                      selector=".scene"
                      :options="{
                             smoothScroll: false,
                             transformOrigin: {x: 0.5, y: 0.5},
-                            boundsPadding: 0.6,
-                            minZoom: 1,
-                            maxZoom: 3,
+                            bounds: true,
+                            minZoom: 0.25,
+                            maxZoom: 2,
                          }"
                      @init="onInit"
                      @zoom="currentZoom = panzoomInstance.getTransform().scale"
@@ -139,7 +142,7 @@
                 isPdf: null,
                 markers: [],
                 panzoomInstance: null,
-                zoomLevels: [1, 1.25, 1.5, 1.75, 2, 2.5, 3],
+                zoomLevels: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
                 currentZoomLevel: 1,
                 pdfFile: null,
                 currentZoom: null,
@@ -251,7 +254,17 @@
 
             onInit(panzoomInstance, id) {
                 this.panzoomInstance = panzoomInstance;
-                this.currentZoom = panzoomInstance.getTransform().scale;
+            },
+            initStartPosition() {
+                const wrapper = this.$refs.panZoom.$el;
+                const scene = this.$refs.panZoom.scene;
+                const k = 4/3; // 1.33
+
+                const x = wrapper.offsetWidth/2 - wrapper.offsetWidth/4/2;
+                const y = wrapper.offsetHeight/2 - scene.offsetHeight/4/2;
+
+                this.panzoomInstance.zoomAbs(x * k, y * k, 0.25);
+                this.currentZoom = this.panzoomInstance.getTransform().scale;
 
                 if(this.initialMarkers.length > 0) {
                     this.markers = this.initialMarkers;
@@ -262,6 +275,7 @@
             },
             stopLoading() {
                 setTimeout(() => {
+                    this.initStartPosition();
                     this.loading = false;
                 }, 500);
             },
@@ -277,13 +291,13 @@
 
             }
         },
-        mounted() {
+        created() {
             this.isPdf = this.fileUrl.split('.')[this.fileUrl.split('.').length - 1] === 'pdf';
 
             this.isPdf
                 ? this.setPdfFile(this.fileUrl)
                 : '';
-        }
+        },
     }
 </script>
 
@@ -335,15 +349,19 @@
         z-index: 9;
         position: relative;
         margin: 0 auto;
-        width: 865px !important;
+        width: 1100px !important;
+        height: 750px;
     }
     .vue-pan-zoom-scene {
+        height: 100%;
         outline: none;
         background: #eee;
         .scene {
-            height: 700px !important;
+            height: auto !important;
             &__item {
+                margin: 0 auto;
                 width: 100%;
+                max-height: 100%;
             }
         }
     }
@@ -353,14 +371,14 @@
         position: relative;
         margin: 0 auto;
         width: 100%;
-        max-width: 865px;
+        max-width: 1100px;
         &__left,
         &__right{
             display: flex;
             flex-direction: column;
             z-index: 9;
             position: absolute;
-            top: 10px;
+            top: 20px;
             .el-button {
                 &:disabled {
                     opacity: 0.7;
@@ -371,10 +389,10 @@
             }
         }
         &__left {
-            left: 10px;
+            left: 20px;
         }
         &__right {
-            right: 10px;
+            right: 20px;
         }
         &__info {
             z-index: 9;
@@ -388,12 +406,15 @@
         .page {
             width: 100% !important;
             height: auto !important;
+            max-height: 100%;
             .canvasWrapper {
                 width: 100% !important;
                 height: auto !important;
+                max-height: 100%;
                 canvas {
                     width: 100% !important;
                     height: auto !important;
+                    max-height: 100%;
                 }
             }
         }
