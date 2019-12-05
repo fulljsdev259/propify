@@ -981,7 +981,10 @@
         },
         watch: {
             'model.percentage' (newVal, oldVal) {
-                this.model.percentage = parseInt(newVal);
+                if(newVal === '')
+                    this.model.percentage = 0;
+                else
+                    this.model.percentage = parseInt(newVal);
             }
         }
     };
