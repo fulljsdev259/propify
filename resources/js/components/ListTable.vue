@@ -455,29 +455,28 @@
                                             @select-changed="handleSelectChange($event, 'quarter')"
                                         >
                                         </multi-select> -->
-                                        <div>
-                                        <el-select
-                                                :loading="remoteLoading"
-                                                :placeholder="$t('general.placeholders.search')"
-                                                :remote-method="search =>remoteSearchAssignees(search, scope.row.id)"
-                                                filterable
-                                                remote
-                                                reserve-keyword
-                                                style="width: 50%;"
-                                                @change="val => handleQuickAssign(scope.row.id, val)"
-                                                v-model="assignee">
-                                            <el-option
-                                                    :key="assignee.id"
-                                                    :label="assignee.name"
-                                                    :value="assignee.id"
-                                                    v-for="assignee in assignees"/>
-                                        </el-select>
+                                        <div class="content-box">
+                                            <el-select
+                                                    :loading="remoteLoading"
+                                                    :placeholder="$t('general.placeholders.search')"
+                                                    :remote-method="search =>remoteSearchAssignees(search, scope.row.id)"
+                                                    filterable
+                                                    remote
+                                                    reserve-keyword
+                                                    @change="val => handleQuickAssign(scope.row.id, val)"
+                                                    v-model="assignee">
+                                                <el-option
+                                                        :key="assignee.id"
+                                                        :label="assignee.name"
+                                                        :value="assignee.id"
+                                                        v-for="assignee in assignees"/>
+                                            </el-select>
 
-                                        {{$t('models.request.or')}}
-                                        
-                                        <el-button @click="() => handleAssignMe(scope.row.id)">
-                                            {{$t('models.request.assign_me')}}
-                                        </el-button>
+                                            <span>{{$t('models.request.or')}}</span>
+                                            
+                                            <el-button @click="() => handleAssignMe(scope.row.id)">
+                                                {{$t('models.request.assign_me')}}
+                                            </el-button>
                                         </div>
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
@@ -1298,10 +1297,37 @@
 
     }
 
-    .quick-assign-dropdown .el-dropdown-menu__item:not(.is-disabled):hover {
-        background-color: transparent
-    }
+    .quick-assign-dropdown {
+        .el-dropdown-menu__item {
+            padding-right: 5px;
 
+            &:not(.is-disabled):hover {
+                background-color: transparent
+            }
+
+            .header-box {
+                display: flex;
+                /deep/ i{
+                    flex-grow: 1;
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: top;
+                }
+            }
+
+            .content-box {
+                display: flex;
+                padding-right: 20px;
+                // > *:not(span) {
+                //     flex: 1;
+                // }
+                > span {
+                    padding: 0 10px;
+                }
+            }
+        }
+        
+    }
     .remote-select {
         width: 100%;
         :global(input) {
@@ -1534,12 +1560,13 @@
             .el-dropdown {
                 width : 30px;
                 height: 30px;
+                border-radius: 50%;
+                border: 1px dashed black; 
             }
             .more-actions {
                 padding: 0;
                 background: transparent;
-                border-radius: 50%;
-                border: 1px dashed black; 
+                
                 width: 100%;
                 height: 0;
                 padding-top: 100%;
@@ -1547,16 +1574,13 @@
 
                 /deep/ span {
                     position: absolute;
-                    top: 8px;
-                    left: 8px;
+                    font-size: 18px;
+                    top: 6px;
+                    left: 5.5px;
                 }
             }
             
-            .header-box {
-                i {
-                    float: right;
-                }
-            }
+            
         }
 
         &:hover {
