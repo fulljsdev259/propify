@@ -1327,9 +1327,14 @@
                 // > *:not(span) {
                 //     flex: 1;
                 // }
+                
                 > span {
                     padding: 0 10px;
                     color : var(--color-text-regular);
+                }
+
+                > .el-select, > .el-button {
+                    border-radius: 10px;
                 }
             }
         }
