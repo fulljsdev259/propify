@@ -18,15 +18,15 @@
                 </template>
             </el-input>
             <div class="sub-menu" key="sub-menu">
-                <router-link 
+                <a
                     :key="link.title + key"
                     v-for="(link, key) in subMenu"
                     v-if="$can(link.permission) || !link.permission"
                     :class="{'is-active': link.route.name == $route.name}"
-                    :to="{name: link.route.name}"
+                    @click="makeFilterQuery(link.route.name)"
                 >
                     <span class="title">{{ link.title }}</span>
-                </router-link>
+                </a>
             </div>
             <el-card 
                 v-if="this.filters.length"
@@ -711,7 +711,8 @@
                 assignees: [],
                 assignee: '',
                 remoteLoading: false,
-                isVisible: false
+                isVisible: false,
+                queries: [],
             }
         },
         computed: {
@@ -841,6 +842,31 @@
                 'getAllAdminsForRequest',
                 'assignUsersToRequest'
             ]),
+            makeFilterQuery(pathName) {
+                
+                let query = {};
+                let quarter_ids = localStorage.getItem('quarter_ids');
+                let building_ids = localStorage.getItem('building_ids');
+
+                if(quarter_ids !== undefined && quarter_ids) {
+                    quarter_ids = JSON.parse(quarter_ids);
+                } else 
+                    quarter_ids = null;
+                if(building_ids !== undefined && building_ids)
+                    building_ids = JSON.parse(building_ids);
+                else
+                    building_ids = null;
+
+                if((pathName == 'adminBuildings' || pathName == 'adminUnits') && quarter_ids !== null) 
+                    query.quarter_ids = quarter_ids;
+                if(pathName == 'adminUnits' && building_ids !== null)
+                    query.building_id = building_ids;
+
+                this.$router.push({
+                    name: pathName,
+                    query: query
+                });
+            },
             handleVisibleChange(isVisible) {
                 this.isVisible = isVisible
             },
