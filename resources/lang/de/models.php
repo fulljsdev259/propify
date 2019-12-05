@@ -223,7 +223,7 @@ return [
         'managers' => 'Mitarbeiter',
         'house_num' => 'Nr.',
         'assign_managers' => 'Mitarbeiter zuweisen',
-	    'assign_persons'=> 'Verantwortliche zuweisen',
+	    'assign_persons'=> 'Verantwortliche Person zuweisen',
         'unassign_manager' => 'Entfernen',
         'managers_assigned' => 'Mitarbeiter zugewiesen',
         'occupied_units' => 'Vermietete Einheiten',
@@ -504,7 +504,7 @@ return [
                 'title' => 'Workflow benennen',
                 'category' => 'Kategorie auswählen',
                 'building' => 'Objekt auswählen',
-                'to_user' => 'Verantwortlichen auswählen',
+                'to_user' => 'Verantwortliche Person auswählen',
                 'cc_user' => 'CC auswählen',
             ],
             'tooltips' => [
@@ -557,7 +557,7 @@ return [
         'solved_date' => 'Erledigt Datum',
         'closed_date' => 'Erledigt am',
         'service' => 'Dienstleister',
-        'created_by' => 'Erstellt durch',
+        'created_by' => 'Erstellt von',
         'is_public' => 'Öffentlich machen',
         'public_title' => 'Anfrage öffentlich machen',
         'public_desc' => 'Sie können diese Anfrage als öffentlich markieren und für weitere Personen in der Liegenschaft oder innerhalb des Projekts sichtbar machen.',
@@ -590,7 +590,7 @@ return [
         'internal_notices' => 'Interne Notizen',
         'status_changed' => 'Status wurde geändert',
         'priority_changed' => 'Priorität wurde geändert',
-        'assignment' => 'Zuständigkeit',        
+        'assignment' => 'Zuständig',        
         'active_reminder_switcher' => 'Erinnerung',
         'days_left' => 'Wie viele Tage vorher?',
         'days_left_due_date' => 'Verbleibende Tage vor Fälligkeitsdatum',
@@ -994,3 +994,4 @@ return [
         ]
     ],
 ];
+
