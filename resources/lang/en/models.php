@@ -566,6 +566,7 @@ return [
         'comments' => 'Comments',
         'or' => 'or',
         'assign_me' => 'Assign me',
+        'name_or_email' => 'Name or Email Address',
         'assigned_to' => 'Assigned to',
         'assign_providers' => 'Assign providers',
         'assign_managers' => 'Assign managers',

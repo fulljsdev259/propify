@@ -458,7 +458,7 @@
                                         <div class="content-box">
                                             <el-select
                                                     :loading="remoteLoading"
-                                                    :placeholder="$t('general.placeholders.search')"
+                                                    :placeholder="$t('models.request.name_or_email')"
                                                     :remote-method="search =>remoteSearchAssignees(search, scope.row.id)"
                                                     filterable
                                                     remote
@@ -1307,11 +1307,17 @@
 
             .header-box {
                 display: flex;
-                /deep/ i{
+                color : var(--color-text-regular);
+
+
+                i{
                     flex-grow: 1;
                     display: flex;
                     justify-content: flex-end;
                     align-items: top;
+                    &:hover {
+                        color : var(--primary-color);
+                    }
                 }
             }
 
@@ -1323,6 +1329,7 @@
                 // }
                 > span {
                     padding: 0 10px;
+                    color : var(--color-text-regular);
                 }
             }
         }

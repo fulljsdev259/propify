@@ -568,6 +568,7 @@ return [
         'comments' => 'Mieter-Chat',
         'or' => 'oder',
         'assign_me' => 'Mir zuweisen',
+        'name_or_email' => 'Name oder E-Mail-Adresse',
         'assigned_to' => 'Zuständig',
         'assign_providers' => 'Zuweisen',
         'assign_managers' => 'Zuweisen',
