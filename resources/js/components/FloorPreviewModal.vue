@@ -8,8 +8,8 @@
         <div v-loading="loading">
             <div class="zoom-top" v-if="visible">
                 <div class="zoom-top__left">
-                    <el-button @click="zoomIn()"><i class="el-icon-zoom-in"></i></el-button>
-                    <el-button @click="zoomOut()"><i class="el-icon-zoom-out"></i></el-button>
+                    <el-button :disabled="currentZoom === maxZoom" @click="zoomIn()"><i class="el-icon-zoom-in"></i></el-button>
+                    <el-button :disabled="currentZoom === minZoom" @click="zoomOut()"><i class="el-icon-zoom-out"></i></el-button>
                 </div>
 
 <!--                <div class="zoom-top__info">-->
@@ -20,7 +20,7 @@
 
                 <transition-group name="fade">
                     <div key="1" v-if="dragmode" class="zoom-top__right">
-                        <el-button :disabled="!(currentDragstop.left && currentDragstop.top)"
+                        <el-button :disabled="isNaN(currentDragstop.left) && isNaN(currentDragstop.top)"
                                    icon="icon-floppy"
                                    @click="saveDragstop(), stopAllMarkersDrag()">Save position</el-button>
                         <el-button icon="el-icon-close"
@@ -40,8 +40,9 @@
                             smoothScroll: false,
                             transformOrigin: {x: 0.5, y: 0.5},
                             bounds: true,
-                            minZoom: 0.25,
-                            maxZoom: 2,
+                            boundsPadding: 0.1,
+                            minZoom: minZoom,
+                            maxZoom: maxZoom,
                          }"
                      @init="onInit"
                      @zoom="currentZoom = panzoomInstance.getTransform().scale"
@@ -141,9 +142,11 @@
                 loading: true,
                 isPdf: null,
                 markers: [],
+                minZoom: 0.25,
+                maxZoom: 2,
                 panzoomInstance: null,
                 zoomLevels: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
-                currentZoomLevel: 1,
+                currentZoomLevel: 0.25,
                 pdfFile: null,
                 currentZoom: null,
                 dragmode: false,
@@ -180,14 +183,29 @@
             putMarkerOnBlock() {
                 let scale = this.panzoomInstance.getTransform().scale;
 
-                let rect = document.querySelector('.scene__item').getBoundingClientRect();
+                let sceneRect = document.querySelector('.scene__item').getBoundingClientRect();
+                let panZoomRect = document.querySelector('.pan-zoom').getBoundingClientRect();
 
-                let targetNode = document.querySelector('.pan-zoom');
-                let centerX = (targetNode.offsetLeft + targetNode.offsetWidth / 2) - 20;
-                let centerY = (targetNode.offsetTop + targetNode.offsetHeight / 2) - 40;
+                let panZoom = document.querySelector('.pan-zoom');
+                let centerX = (panZoomRect.x + panZoom.offsetWidth / 2);
+                let centerY = (panZoomRect.y + panZoom.offsetHeight / 2);
 
-                let left = (centerX - rect.left)/scale,
-                    top = (centerY - rect.top)/scale;
+                let left = (centerX - sceneRect.left)/scale - 20,
+                    top = (centerY - sceneRect.top)/scale - 40;
+
+                left < 0
+                    ? left = 0
+                    : '';
+                left > sceneRect.width / this.currentZoom
+                    ? left = sceneRect.width / this.currentZoom - 40
+                    : '';
+
+                top < 0
+                    ? top = 0
+                    : '';
+                top > sceneRect.height / this.currentZoom
+                    ? top = sceneRect.height / this.currentZoom - 40
+                    : '';
 
                 this.markers.push({
                     id: 'marker_' + (this.markers.length + 1),
@@ -222,6 +240,10 @@
                 }
             },
             zoomIn() {
+                this.currentZoomLevel = this.zoomLevels.reduce((prev, curr) => {
+                    return (Math.abs(curr - this.currentZoom) < Math.abs(prev - this.currentZoom) ? curr : prev);
+                });
+
                 const idx = this.zoomLevels.indexOf(this.currentZoomLevel);
 
                 // If next element exists
@@ -237,6 +259,10 @@
                 }
             },
             zoomOut() {
+                this.currentZoomLevel = this.zoomLevels.reduce((prev, curr) => {
+                    return (Math.abs(curr - this.currentZoom) < Math.abs(prev - this.currentZoom) ? curr : prev);
+                });
+
                 const idx = this.zoomLevels.indexOf(this.currentZoomLevel);
 
                 //if previous element exists
@@ -260,10 +286,10 @@
                 const scene = this.$refs.panZoom.scene;
                 const k = 4/3; // 1.33
 
-                const x = wrapper.offsetWidth/2 - wrapper.offsetWidth/4/2;
-                const y = wrapper.offsetHeight/2 - scene.offsetHeight/4/2;
+                const x = wrapper.offsetWidth / 2 - wrapper.offsetWidth * this.minZoom / 2;
+                const y = wrapper.offsetHeight / 2 - scene.offsetHeight * this.minZoom / 2;
 
-                this.panzoomInstance.zoomAbs(x * k, y * k, 0.25);
+                this.panzoomInstance.zoomAbs(x * k, y * k, this.minZoom);
                 this.currentZoom = this.panzoomInstance.getTransform().scale;
 
                 if(this.initialMarkers.length > 0) {
