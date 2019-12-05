@@ -1310,6 +1310,7 @@
                 color: var(--color-text-secondary);
                 position: relative;
                 font-family: 'Radikal Thin';
+                cursor: pointer;
                 &:hover, &.is-active {
                     color: var(--color-text-primary);
                     font-weight: 900px;
