@@ -143,12 +143,27 @@
 
             <el-table-column
                 :key="'header' + index"
-                :label="$t(column.label)"
                 :width="column.width"
                 :min-width="column.minWidth"
                 :class-name="column.withRequestUsers ? 'request-users' : ''"
                 :align="column.align"
                 v-for="(column, index) in computedHeader">
+
+                <template slot="header">
+                    <div v-if="column.sortBy" class="header-filter">
+                        <span @click="makeHeaderFilterQuery(column.sortBy)"
+                              :class="`header-filter__text ${$route.query.orderBy === column.sortBy ? 'active' : ''}`">
+                            {{$t(column.label)}}
+                        </span>
+                        <span v-if="$route.query.orderBy === column.sortBy">
+                            <i v-if="$route.query.sortedBy === 'desc'" class="el-icon-arrow-down"></i>
+                            <i v-else-if="$route.query.sortedBy === 'asc'" class="el-icon-arrow-up"></i>
+                        </span>
+                    </div>
+                    <div v-else>
+                        {{$t(column.label)}}
+                    </div>
+                </template>
                 
                 <template slot-scope="scope">
                     <div v-if="column.withAvatars" class="avatars-wrapper">
@@ -842,6 +857,22 @@
                 'getAllAdminsForRequest',
                 'assignUsersToRequest'
             ]),
+            makeHeaderFilterQuery(orderBy) {
+                let sortedByVal = this.$route.query.orderBy !== orderBy
+                    ? 'desc'
+                    : this.$route.query.sortedBy === 'desc'
+                        ? 'asc'
+                        : 'desc';
+                let query = {
+                    ...this.$route.query,
+                    orderBy: orderBy,
+                    sortedBy: sortedByVal,
+                };
+                this.$router.replace({
+                    name: this.$route.name,
+                    query
+                });
+            },
             makeFilterQuery(pathName) {
                 
                 let query = {};
@@ -1279,6 +1310,18 @@
 </script>
 
 <style lang="scss" scoped>
+    .header-filter {
+        &__text {
+            cursor: pointer;
+            &:hover {
+                color: var(--color-black);
+            }
+            &.active {
+                font-family: 'Radikal Bold';
+            }
+        }
+    }
+
     .list-table {
         position: relative;
         :global(.el-card.filter-right .el-card__body) {

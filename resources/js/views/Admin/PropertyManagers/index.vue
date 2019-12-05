@@ -143,6 +143,7 @@
                     label: 'general.filters.status',
                     withPMStatusSign: true,
                     prop: 'status',
+                    sortBy: 'status',
                     width: 130
                 }, /*{
                     label: 'general.name',
@@ -150,16 +151,20 @@
                 }, */{
                     label: 'general.name',
                     withAvatars: true,
-                    props: ['user']
+                    props: ['user'],
+                    sortBy: 'first_name',
                 }, {
                     label: 'general.email',
-                    prop: 'user.email'
+                    prop: 'user.email',
+                    sortBy: 'email',
                 }, {
                     label: 'general.mobile',
-                    prop: 'mobile_phone'
+                    prop: 'mobile_phone',
+                    sortBy: 'mobile_phone',
                 }, {
                     label: 'general.roles.label',
                     prop: 'type',
+                    sortBy: 'type',
                     roles: true
                 }, {
                     label: 'resident.building',
@@ -167,6 +172,7 @@
                     prop: 'internal_quarter_ids'
                 }, {
                     label: 'general.request_status',
+                    sortBy: 'requests_count',
                     withCounts: true,
                 }, 
                 /*{

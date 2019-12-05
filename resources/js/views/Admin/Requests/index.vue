@@ -212,15 +212,17 @@
                 //     onChange: this.listingSelectChangedNotify,
                 //     downloadPDF: this.downloadPDF
                 // }],
-                header: [ 
+                header: [
                     {
                         label: 'general.id',
-                        withReuqestIDAndTitle: true
+                        withReuqestIDAndTitle: true,
+                        sortBy: 'request_format'
                     },
                     {
                         label: 'general.filters.status',
                         withRequestStatusSign: true,
                         prop: 'status',
+                        sortBy: 'status',
                         width: 150
                     }, {
                         label: 'models.request.assigned_property_managers',
@@ -229,6 +231,7 @@
                     }, {
                         label: 'general.category',
                         prop: 'category',
+                        sortBy: 'category_id',
                         i18n: this.translateCategory
                     }, {
                         label: 'general.filters.services',
@@ -237,11 +240,13 @@
                     }, {
                         label: 'models.request.created_by',
                         prop: 'creator.name',
+                        sortBy: 'created_at',
                         withRequestCreator: true,
                         width: 200
                     }, {
                         label: 'models.request.visible',
                         withRequestVisible: true,
+                        sortBy: 'visibility',
                         width: 85,
                         align: 'center'
                     }, {

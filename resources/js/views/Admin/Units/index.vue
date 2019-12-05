@@ -92,10 +92,12 @@
                 search: '',
                 header: [{
                     label: 'models.quarter.quarter_format',
-                    prop: 'internal_quarter_id'
+                    prop: 'internal_quarter_id',
+                    sortBy: 'internal_quarter_id',
                 }, {
                     label: 'models.unit.unit_id',
-                    prop: 'name'
+                    prop: 'name',
+                    sortBy: 'name',
                 }, {
                     label: 'general.filters.status',
                     withStatusSign: true,
@@ -107,14 +109,17 @@
                     label: 'models.unit.location',
                     withTranslatedFloor: true,
                     prop: 'floor',
+                    sortBy: 'floor',
                 },{
                     label: 'models.unit.room_no',
-                    prop: 'room_no'
+                    prop: 'room_no',
+                    sortBy: 'room_no',
                 }, {
                     label: 'models.building.request_status',
                     withCounts: true,
                     width: 300,
-                    prop: 'request_count'
+                    prop: 'request_count',
+                    sortBy: 'request_count',
                 }, {
                     label: 'models.unit.appendix',
                     withIcon: true,

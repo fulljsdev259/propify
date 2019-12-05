@@ -134,7 +134,8 @@
                 i18nName: 'quarter',
                 header: [{
                     label: 'models.quarter.quarter_format',
-                    prop: 'internal_quarter_id'
+                    prop: 'internal_quarter_id',
+                    sortBy: 'internal_quarter_id',
                 }, 
                 // {
                 //     label: 'models.quarter.count_of_buildings',
@@ -142,10 +143,12 @@
                 // }, 
                 {
                     label: 'models.quarter.url',
-                    prop: 'url'
+                    prop: 'url',
+                    sortBy: 'url',
                 },  {
                     label: 'models.quarter.project_ort',
-                    prop: 'city'
+                    prop: 'city',
+                    sortBy: 'city',
                 }, {
                     label: 'models.quarter.types.label',
                     prop: 'types'
@@ -153,13 +156,16 @@
                     label: 'models.building.request_status',
                     withCounts: true,
                     width: 230,
-                    prop: 'request_count'
+                    prop: 'request_count',
+                    sortBy: 'request_count',
                 },{
                     label: 'models.quarter.buildings_count',
-                    prop: 'buildings_count'
+                    prop: 'buildings_count',
+                    sortBy: 'buildings_count',
                 }, {
                     label: 'models.quarter.total_units_count',
-                    prop: 'count_of_apartments_units'
+                    prop: 'count_of_apartments_units',
+                    sortBy: 'count_of_apartments_units',
                 }, {
                     label: 'general.filters.status',
                     withStatus: true,
