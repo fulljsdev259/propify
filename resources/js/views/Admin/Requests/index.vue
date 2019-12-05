@@ -68,6 +68,7 @@
             :withSearch="false"
             :searchText="search"
             @selectionChanged="selectionChanged"
+            @update-row="updateRow"
         >
         </list-table>
         <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
@@ -503,6 +504,9 @@
                         id: resident.id
                     };
                 });
+            },
+            updateRow(index, data) {
+                // this.$set(this.items, index, data)
             },
             add() {
                 this.$router.push({

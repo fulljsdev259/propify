@@ -428,9 +428,7 @@
                             <avatar class="avatar-count" :size="28" :username="`+ ${scope.row[column.prop].length-2}`"
                                     color="#fff"
                                     v-if="scope.row[column.prop].length>2"></avatar>
-                        </div>
-                        
-                        <div class="quick-assign-avatar"> 
+                            <div class="quick-assign-avatar"> 
                             <el-dropdown placement="bottom" trigger="click">
                                 <el-button size="mini" class="more-actions" >
                                     <i class="el-icon-user"></i>
@@ -484,6 +482,9 @@
                         
                             
                         </div>
+                        </div>
+                        
+                        
                     </div>
                     <template v-else-if="column.withBadges">
                         <el-button v-if="scope.row[column.prop] == 'low'" class="btn-priority-badge btn-badge" :size="column.size" round>{{ scope.row[column.prop] }}</el-button>
@@ -851,12 +852,23 @@
                             id: request_id,
                             user_params: user_params
                         });
-
+                console.log(resp)
                 if (resp && resp.data) {
-                    displaySuccess(resp)                           
+                    displaySuccess(resp) 
+                    
+                    let current_index = -1
+
+                    this.items.map((item, index) => {
+                        if(item.id == resp.data.id)
+                            current_index = index
+                    })
+                    
+                    if(current_index != -1) {
+                        this.$emit('update-row', current_index, resp.data)
+                    }
+                    
                     this.assignees = []
                     this.assignee = ''
-                    this.fetch()
                 }
             },
             async handleAssignMe(request_id) {
@@ -869,10 +881,20 @@
                         });
 
                 if (resp && resp.data) {
-                    displaySuccess(resp)                           
+                    displaySuccess(resp)
+                    let current_index = -1
+
+                    this.items.map((item, index) => {
+                        if(item.id == resp.data.id)
+                            current_index = index
+                    })
+                    
+                    if(current_index != -1) {
+                        this.$emit('update-row', current_index, resp.data)
+                    }
+                        
                     this.assignees = []
                     this.assignee = ''
-                    this.fetch()
                 }
             },
             toggleFilters() {
@@ -1365,6 +1387,7 @@
     }
     .avatar-count{
         min-width: 28px;
+        margin-right: 2px;
     }
     .el-divider.el-divider--horizontal {
         width: 90%;
@@ -1602,9 +1625,9 @@
 
         &:hover {
 
-            .avatars-wrapper {
-                display: none;
-            }
+            // .avatars-wrapper {
+            //     display: none;
+            // }
             .quick-assign-avatar {
                 display: flex;
             }
