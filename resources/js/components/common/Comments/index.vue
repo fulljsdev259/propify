@@ -20,21 +20,21 @@
                 <template v-slot="{item, index, active}">
                     <dynamic-scroller-item :item="item" :active="active" :data-index="index" :size-dependencies="[item]">
                         <comment
-                            v-if="item.managers === undefined"
+                            :newStyle="newStyle"
                             v-bind="commentComponentProps" 
                             v-on="commentComponentListeners" 
                             :show-children="showChildren" 
                             :data="item" 
                             :reversed="isCommentReversed(item)"
                             v-resize:debounce="onResize" />
-                        <internal-notices-comment
+                        <!-- <internal-notices-comment
                             v-else 
                             v-bind="commentComponentProps" 
                             v-on="commentComponentListeners" 
                             :show-children="showChildren" 
                             :data="item" 
                             :reversed="isCommentReversed(item)"
-                            v-resize:debounce="onResize" />
+                            v-resize:debounce="onResize" /> -->
                     </dynamic-scroller-item>
                 </template>
             </dynamic-scroller>
@@ -90,6 +90,10 @@
                 type: Boolean,
                 default: true
             },            
+            newStyle: {
+                type: Boolean,
+                default: false,
+            }
         },
         directives: {
             resize

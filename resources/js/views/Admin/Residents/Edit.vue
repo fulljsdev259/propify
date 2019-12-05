@@ -22,8 +22,18 @@
                                         </el-tag>
                                     </div>
                                     <div class="image-container" :class="{'hide-action-icon': !editMode}">
+                                        <img v-if="!editMode" 
+                                            :src="!avatar.length && user.avatar
+                                                    ? '/'+user.avatar_variations[3]
+                                                    : model.avatar==null && model.title == 'mr'
+                                                        ? '/images/man.png'
+                                                        : model.avatar==null && model.title == 'mrs'
+                                                            ? '/images/woman.png'
+                                                            : model.avatar==null && model.title == 'company'
+                                                                ? '/images/company.png'
+                                                                : ''"/>
                                         <cropper
-                                            v-if="model.title"
+                                            v-if="model.title && editMode"
                                             :boundary="{
                                                 width: 150,
                                                 height: 160
@@ -191,18 +201,19 @@
                 </el-col>
                 <el-col :span="12">
                     <el-tabs type="border-card" v-model="activeTab1">
-                        <el-tab-pane name="relation">
+                        <el-tab-pane name="relation" :class="{'view-mode': !editMode}">
                             <span slot="label">
                                 {{ $t('general.relations') }}
                                 <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
                             </span>
                             <relation-list-table
-                                    :items="model.relations"
-                                    :hide-avatar="true"
-                                    @edit-relation="editRelation"
-                                    @delete-relation="deleteRelation">
+                                :items="model.relations"
+                                :hide-avatar="true"
+                                @edit-relation="editRelation"
+                                @delete-relation="deleteRelation">
                             </relation-list-table>
                             <el-button
+                                v-if="editMode"
                                 style="float:right" 
                                 type="primary" 
                                 @click="showRelationDialog" 
@@ -211,7 +222,7 @@
                                 {{ $t('models.resident.relation.add') }}
                             </el-button>
                         </el-tab-pane>
-                        <el-tab-pane name="files">
+                        <el-tab-pane name="files" :class="{'view-mode': !editMode}">
                             <span slot="label">
                                 {{ $t('general.box_titles.files') }}
                                 <!-- <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge> -->
@@ -228,6 +239,7 @@
                                 @delete-media="deleteMedia"
                             />
                             <el-button 
+                                v-if="editMode"
                                 style="float:right" 
                                 type="primary" 
                                 @click="showMediaDialog" 
@@ -836,6 +848,12 @@
             .image-container {
                 position: relative;
                 display: inline-block;
+
+                img {
+                    border-radius: 50%;
+                    width: 120px;
+                    height: 120px;
+                }
                 
                 .edit-icon {
                     position: absolute;

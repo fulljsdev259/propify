@@ -706,7 +706,7 @@ return [
             'range' => 'Range',
             'component' => 'Component',
             'capture_phase' => 'Capture Phase',
-            'payer_percent' => 'Pay by resident in %',
+            'payer_percent' => 'Pay by resident',
             'payer_amount' => 'Amount',
             'keywords' => 'Keywords',
             'qualification_category' => 'Qualification'

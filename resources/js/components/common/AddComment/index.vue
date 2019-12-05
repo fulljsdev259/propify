@@ -1,14 +1,15 @@
 <template>
-<div style="width: 100%;" v-resize:debounce="keyHandler">
-    <div :class="['add-comment', {'with-templates': showTemplates}]">
-        <el-tooltip :content="user.name" effect="dark" placement="top-start">
+<div style="width: 100%;" v-resize:debounce="keyHandler" :class="{'add-comment-container': newStyle}">
+    <div :class="['add-comment', {'with-templates': showTemplates, 'new-style': newStyle},]">
+        <el-tooltip v-if="!newStyle" :content="user.name" effect="dark" placement="top-start">
             <ui-avatar :name="user.name" :size="32" :src="user.avatar" />
         </el-tooltip>
+        <i v-if="newStyle" class="icon-paper-clip action-buttons"></i>
         <div class="content">
             <el-input 
                 autosize 
                 ref="content" 
-                :class="{'is-focused': focused}" 
+                :class="[{'is-focused': focused, }, newStyle?'new-style':'old-style']" 
                 type="textarea" 
                 resize="none" 
                 v-model="content" 
@@ -21,7 +22,7 @@
                 @keydown="keyHandler($event)"
                 @keydown.native.alt.enter.exact="save" />
 
-            <el-dropdown class="templates" size="small" placement="top-end" trigger="click" @command="onTemplateSelected" @visible-change="onDropdownVisibility" v-if="showTemplates">
+            <el-dropdown v-if="!newStyle && showTemplates" class="templates" size="small" placement="top-end" trigger="click" @command="onTemplateSelected" @visible-change="onDropdownVisibility">
                 <el-tooltip ref="templates-button-tooltip" :content="type == 'internalNotices' ? 'Choose Property maneger and Admin' : $t('general.components.common.add_comment.tooltip_templates')" placement="top-end">
                     <el-button ref="templates-button" type="text" class="el-dropdown-link" :disabled="loading">
                         <i class="icon-ellipsis-vert"></i>
@@ -43,7 +44,8 @@
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
-        <el-tooltip :content="$t('general.components.common.add_comment.save_shortcut', {shortcut: saveKeysShortcut})" placement="top-end">
+        <i v-if="newStyle" class="el-icon-microphone action-buttons"></i>
+        <el-tooltip v-if="!newStyle" :content="$t('general.components.common.add_comment.save_shortcut', {shortcut: saveKeysShortcut})" placement="top-end">
             <el-button circle icon="icon-paper-plane" size="small" :disabled="!content" :loading="loading" @click="save" />
         </el-tooltip>
     </div>
@@ -100,6 +102,10 @@
             showTemplates: {
                 type: Boolean,
                 default: false
+            },
+            newStyle: {
+                type: Boolean,
+                default: false,
             }
         },
         data() {
@@ -272,7 +278,11 @@
     }
 </style>
 <style lang="scss" scoped>
-    
+    .add-comment-container {
+        margin-left: -20px;
+        margin-bottom: -15px;
+        width: calc(100% + 40px) !important;
+    }
     .add-comment {
         width: 100%;
         display: flex;
@@ -281,59 +291,78 @@
         position: relative;
         box-sizing: border-box;
 
+        &.new-style {
+            align-items: center;
+            border-top: 1px solid #f6f5f7;
+            padding: 10px 0;
+        }
+        .action-buttons {
+            font-size: 18px;
+            padding: 0 20px;
+        }
+
         .content {
             position: relative;
             flex: auto;
 
             .el-textarea {
                 position: relative;
-                margin-left: 8px;
+                
+                &.old-style {
+                    margin-left: 8px;
 
-                &:before,
-                &:after {
-                    content: '';
-                    position: absolute;
-                    width: 0;
-                    height: 0;
-                    border-width: 0;
-                    border-style: solid;
-                    border-color: transparent;
-                    border-width: 0 0 8px 6px;
-                    transition: border-bottom-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+                    &:before,
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        width: 0;
+                        height: 0;
+                        border-width: 0;
+                        border-style: solid;
+                        border-color: transparent;
+                        border-width: 0 0 8px 6px;
+                        transition: border-bottom-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+                    }
+
+                    &:before {
+                        left: -6px;
+                        bottom: 0;
+                    }
+
+                    &:after {
+                        left: -4px;
+                        bottom: 1px;
+                    }
+
+                    &.is-disabled:before {
+                        border-bottom-color: #E4E7ED;
+                    }
+
+                    &.is-disabled:after {
+                        border-bottom-color: #F5F7FB;
+                    }
+
+                    &:not(.is-disabled):after {
+                        border-bottom-color: #fff;
+                    }
+
+                    &:not(.is-disabled).is-focused:before {
+                        border-bottom-color: var(--primary-color);
+                    }
+
+                    &:not(.is-disabled):not(.is-focused):before {
+                        border-bottom-color: #DCDFE6;
+                    }
+
+                    &:not(.is-disabled):not(.is-focused):hover:before {
+                        border-bottom-color: #C0C4CC;
+                    }
                 }
 
-                &:before {
-                    left: -6px;
-                    bottom: 0;
-                }
-
-                &:after {
-                    left: -4px;
-                    bottom: 1px;
-                }
-
-                &.is-disabled:before {
-                    border-bottom-color: #E4E7ED;
-                }
-
-                &.is-disabled:after {
-                    border-bottom-color: #F5F7FB;
-                }
-
-                &:not(.is-disabled):after {
-                    border-bottom-color: #fff;
-                }
-
-                &:not(.is-disabled).is-focused:before {
-                    border-bottom-color: var(--primary-color);
-                }
-
-                &:not(.is-disabled):not(.is-focused):before {
-                    border-bottom-color: #DCDFE6;
-                }
-
-                &:not(.is-disabled):not(.is-focused):hover:before {
-                    border-bottom-color: #C0C4CC;
+                &.new-style {
+                    :global(.el-textarea__inner) {
+                        background-color: transparent !important;
+                    }
                 }
 
                 & + .el-dropdown {
