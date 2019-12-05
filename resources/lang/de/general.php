@@ -391,14 +391,14 @@ return [
                     'general' => [
                         'created' => [
                             'default' => 'hat diese/n :auditable_type erstellt.',
-                            'quarter' => 'hat diese/n :auditable_type erstellt.',
-                            'building' => 'hat diese/n :auditable_type erstellt.',
-                            'unit' => 'hat diese/n :auditable_type erstellt.',
+                            'quarter' => 'hat das Projekt erstellt.',
+                            'building' => 'hat das Objekt erstellt.',
+                            'unit' => 'hat die Einheit erstellt.',
                             'request' => 'hat diese/n :auditable_type erstellt.',
-                            'resident' => 'hat diese/n :auditable_type erstellt.',
-                            'manager' => 'hat diese/n :auditable_type erstellt.',
-                            'provider' => 'hat diese/n :auditable_type erstellt.',
-                            'pinboard' => 'hat diese/n :auditable_type erstellt.',
+                            'resident' => 'hat das Anliegen erstellt.',
+                            'manager' => 'hat das Teammitglied erstellt.',
+                            'provider' => 'hat den Dienstleister erstellt.',
+                            'pinboard' => 'hat den Pinnwand-Eintrag erstellt.',
                         ],
                         'updated' => [
                             'default' => 'hat das Feld :fieldname von :old zu :new geändert.',
@@ -423,12 +423,12 @@ return [
                             'pinboard' => ':userName hat :auditable_type gelöscht.',
                         ],
                         'mass_assigned' => [
-                            'default' => 'hat :users als Verantwortlichen zugewiesen',
-                            'quarter' => 'hat :users als Verantwortlichen zugewiesen',
-                            'request' => 'hat :users als Verantwortlichen zugewiesen',
+                            'default' => 'hat :users als verantwortliche Person zugewiesen',
+                            'quarter' => 'hat :users als verantwortliche Person zugewiesen',
+                            'request' => 'hat :users als verantwortliche Person zugewiesen',
                         ],
 //                        'provider_assigned' => 'hat den Dienstleister :assignee zugewiesen.',
-//                        'manager_assigned' => 'hat :assignee als Verantwortlichen zugewiesen.',
+//                        'manager_assigned' => 'hat :assignee als verantwortliche Person zugewiesen.',
 //                        'user_assigned' => 'hat :userName zugewiesen.',
                         'provider_unassigned' => [
                             'default' => 'hat den Dienstleister :assignee entfernt.',
@@ -443,7 +443,7 @@ return [
                         'media_uploaded' => [
                             'default' => 'hat ein Dokument hinaufgeladen.',
                             'quarter' => 'hat ein Dokument hinaufgeladen.',
-                            'building' => 'hat ein Dokument hinaufgeladen :category.',
+                            'building' => 'hat ein Dokument hinaufgeladen',
                             'unit' => 'hat ein Dokument hinaufgeladen.',
                             'request' => 'hat ein Dokument hinaufgeladen.',
                             'resident' => 'hat ein Dokument hinaufgeladen.',
