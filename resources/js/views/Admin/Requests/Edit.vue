@@ -565,13 +565,12 @@
                                                 </el-date-picker>
                                             </el-form-item>
                                         </el-col>
-                                        <el-col :md="showPercent?8:12" v-if="this.showCostImpact == true" :class="{'pr-0': showPercent}">
+                                        <el-col :md="showPercent?8:12" v-if="this.showCostImpact == true">
                                              <el-form-item :label="$t('models.request.cost_impact.label')"
                                                     prop="cost_impact">
                                                 <el-select :disabled="$can($permissions.update.serviceRequest) || !editMode"
                                                         :placeholder="$t('models.request.placeholders.cost_impact')"
                                                         class="custom-select"
-                                                        :class="{' right-border-radius-0': showPercent}"
                                                         v-model="model.cost_impact"
                                                         @change="changeCostImpact">
                                                     <el-option
@@ -583,7 +582,7 @@
                                                 </el-select>
                                             </el-form-item>
                                         </el-col>
-                                        <el-col :md="4" v-if="this.showPercent == true" class="pl-0">
+                                        <el-col :md="4" v-if="this.showPercent == true">
                                             <el-form-item 
                                                 :label="$t('models.request.category_options.payer_percent')"
                                                 :rules="validationRules.percentage"
@@ -1045,10 +1044,12 @@
                     padding: 2px 8px 0;
                     font-weight: 600;
                     border: none;
-                    border-top-left-radius: 0px;
-                    border-bottom-left-radius: 0px;
                     background-color: #f6f5f7 !important;
                 }
+            }
+            .el-input.el-input-group.border-left-radious-0 {
+                    border-top-left-radius: 0px;
+                    border-bottom-left-radius: 0px;
             }
             .el-select.right-border-radius-0 .el-input__inner {
                 border-top-right-radius: 0px;

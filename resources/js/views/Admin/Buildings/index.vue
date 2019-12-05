@@ -2,7 +2,7 @@
     <div class="buildings list-view">
         <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
-                <list-check-box />
+                <list-check-box @clicked="handleQuickFilterClick(true)" @unclicked="handleQuickFilterClick(false)"/>
             </template>
             <template v-if="$can($permissions.create.building)">
                 <el-button 
@@ -259,6 +259,21 @@
         },
         methods: {
             ...mapActions(['getPropertyManagers', 'assignManagerToBuilding', 'deleteBuildingWithIds', 'checkUnitRequestWidthIds', 'getQuarters']),
+            
+            handleQuickFilterClick(checked) {
+                if(checked) {
+                    let building_ids = [];
+                    building_ids = this.selectedItems.map((item) => {
+                        return item.id;
+                    });
+                    localStorage.setItem('building_ids', JSON.stringify(building_ids));
+                } else {
+                    localStorage.setItem('building_ids', null);
+                }
+            },
+            selectionChanged(items) {
+                this.selectedItems = items;
+            },
             handleMenuClick(command) {
                 if(command == 'delete')
                     this.batchDeleteBuilding();
@@ -431,6 +446,8 @@
             },            
         },
         async created() {
+            localStorage.setItem('building_ids', null);
+
             this.isLoadingFilters = true;
             this.getRoles();
             this.getTypes();
@@ -438,6 +455,7 @@
             this.isLoadingFilters = false;
             this.quarters = await this.fetchRemoteQuarters();
             this.propertyManagers = await this.fetchRemotePropertyManagers();
+            
         }
     };
 </script>
