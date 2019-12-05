@@ -856,6 +856,7 @@
                     displaySuccess(resp)                           
                     this.assignees = []
                     this.assignee = ''
+                    this.fetch()
                 }
             },
             async handleAssignMe(request_id) {
@@ -872,6 +873,7 @@
                     displaySuccess(resp)                           
                     this.assignees = []
                     this.assignee = ''
+                    this.fetch()
                 }
             },
             toggleFilters() {
