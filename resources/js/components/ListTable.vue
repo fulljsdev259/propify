@@ -855,6 +855,7 @@
                 console.log(resp)
                 if (resp && resp.data) {
                     displaySuccess(resp) 
+                    
                     let current_index = -1
 
                     this.items.map((item, index) => {
@@ -862,8 +863,10 @@
                             current_index = index
                     })
                     
-                    if(current_index)
-                        this.$set(this.items, current_index, resp.data)
+                    if(current_index != -1) {
+                        this.$emit('update-row', current_index, resp.data)
+                    }
+                    
                     this.assignees = []
                     this.assignee = ''
                 }
@@ -879,6 +882,17 @@
 
                 if (resp && resp.data) {
                     displaySuccess(resp)
+                    let current_index = -1
+
+                    this.items.map((item, index) => {
+                        if(item.id == resp.data.id)
+                            current_index = index
+                    })
+                    
+                    if(current_index != -1) {
+                        this.$emit('update-row', current_index, resp.data)
+                    }
+                        
                     this.assignees = []
                     this.assignee = ''
                 }
