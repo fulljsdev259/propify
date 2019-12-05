@@ -598,6 +598,7 @@ return [
         'sort' => 'Sort',
         'reset_sort' => 'Reset Sort',
         'creation_date' => 'Creation Date',
+        'save_filter' => 'Save Filter',
         'category_list' => [
             'general' => 'General concerns',
             'malfunction' => 'Malfunction',

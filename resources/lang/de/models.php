@@ -599,6 +599,7 @@ return [
         'sort' => 'Sortierung',
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',
+        'save_filter' => 'Speicherfilter',
         'category_list' => [
             'general' => ' Allg. Anliegen',
             'malfunction' => 'Fehlfunktion',
