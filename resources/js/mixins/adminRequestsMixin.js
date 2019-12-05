@@ -50,6 +50,9 @@ export default (config = {}) => {
                     relation_id: '',
                     creator: { name:'' },
                     created_at: '',
+                    name: '',
+                    unit_id: '',
+                    quarter_id: '',
                 },
                 old_model: {},
                 validationRules: {
@@ -150,6 +153,8 @@ export default (config = {}) => {
         methods: {
             ...mapActions([
                 'getResidents', 
+                'getQuarters',
+                'getUnits',
                 'getServices', 
                 'uploadRequestMedia', 
                 'deleteRequestMedia', 
@@ -609,7 +614,13 @@ export default (config = {}) => {
                         const data = resp.data;
 
                         this.model = Object.assign({}, this.model, data);
-                        console.log(this.model);
+                        this.model.name = `${this.model.resident.first_name} ${this.model.resident.last_name}`;
+                        this.model.unit_id = this.model.resident.relations.length>0?this.model.resident.relations[0].unit_id:'';
+                        this.model.quarter_id = this.model.resident.relations.length>0?this.model.resident.relations[0].quarter_id:'';
+                        if(this.model.quarter_id === 0)
+                            this.model.quarter_id = ''
+                        if(this.model.unit_id === 0)
+                            this.model.unit_id = ''
 
                         this.$set(this.model, 'category_id', data.category.id);
                         if(data.sub_category)

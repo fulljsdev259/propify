@@ -19,7 +19,7 @@
             <el-form :model="model" label-position="top" label-width="192px" ref="form">
                 <el-row :gutter="20">
                     <el-col :md="12">
-                        <el-tabs type="border-card" v-model="activeTab0">
+                        <el-tabs type="border-card" v-model="activeTab0" class="edit-tab">
                             <el-tab-pane  :label="$t('models.request.request_details')" id="request_details" name="request_details_pane">
                                 <el-row :gutter="20">
                                     <el-col :md="12">
@@ -69,7 +69,7 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :md="12">
-                                        <el-form-item :label="$t('models.request.prop_title')" >
+                                        <el-form-item :label="$t('models.request.created_by')" >
                                             <el-input 
                                                     :disabled="!editMode" 
                                                     type="text"
@@ -81,7 +81,6 @@
                                     
                                     <el-col :md="24">
                                         <el-form-item 
-                                            v-if="!editMode"
                                             :label="$t('general.description')" :rules="validationRules.description"
                                             prop="description"
                                             :key="editorKey"
@@ -89,23 +88,14 @@
                                             <el-input
                                                 :disabled="!editMode"
                                                 type="textarea"
-                                                :rows="3"
+                                                :rows="4"
                                                 placeholder="Please input"
                                                 v-model="model.description">
                                             </el-input>
 
 
                                         </el-form-item>
-                                        <el-form-item 
-                                            v-if="editMode"
-                                            :label="$t('general.description')" :rules="validationRules.description"
-                                            prop="description"
-                                            :key="editorKey"
-                                        >
-                                            <yimo-vue-editor
-                                                    :config="editorConfig"
-                                                    v-model="model.description"/>
-                                        </el-form-item>
+                                       
                                     </el-col>
                                     <el-col :md="12"
                                             v-if="this.showSubCategory == true">
@@ -128,23 +118,7 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :md="12" v-if="this.showCapturePhase == true">
-                                        <el-form-item :label="$t('models.request.category_options.capture_phase')">
-                                            <el-select 
-                                                :disabled="$can($permissions.update.serviceRequest) || !editMode"
-                                                :placeholder="$t(`general.placeholders.select`)"
-                                                class="custom-select"
-                                                v-model="model.capture_phase"
-                                            >
-                                                <el-option
-                                                    :key="phase.value"
-                                                    :label="phase.name"
-                                                    :value="phase.value"
-                                                    v-for="phase in capture_phases">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
+                                   
                                    
                                     <!-- <el-col :md="6" v-if="this.showPayer == true">
                                         <el-form-item 
@@ -195,7 +169,7 @@
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
-                                <el-row :gutter="20" class="summary-row" style="margin-bottom: 0;padding-bottom: 0;">
+                                <!-- <el-row :gutter="20" class="summary-row" style="margin-bottom: 0;padding-bottom: 0;">
                                     <el-col :md="8" class="summary-item" id="resident">
                                         <el-form-item v-if="model.resident">
                                             <label slot="label">
@@ -225,8 +199,8 @@
                                             <strong>{{this.model.created_at}}</strong>
                                         </el-form-item>
                                     </el-col>
-                                </el-row>
-                                <el-row :gutter="20" class="summary-row">
+                                </el-row> -->
+                                <!-- <el-row :gutter="20" class="summary-row"> -->
                                     <!-- <el-col :md="8" class="summary-item">
                                         <el-form-item :label="$t('models.request.priority.label')">
                                             <strong v-if="$constants.requests.priority[model.priority]">{{$t(`models.request.priority.${$constants.requests.priority[model.priority]}`)}}</strong>
@@ -257,7 +231,7 @@
                                             <strong>{{$constants.requests.visibility[model.visibility]}}</strong>
                                         </el-form-item>
                                     </el-col> -->
-                                </el-row>
+                                <!-- </el-row> -->
 
                                 
 
@@ -276,7 +250,7 @@
                                 <!--                            </el-form-item>-->
                                 <!--                            <small>{{$t('models.request.public_legend')}}</small>-->
                             </el-tab-pane>
-                            <el-tab-pane name="request_images">
+                            <el-tab-pane name="request_images" class="px-10">
                                 <span slot="label">
                                     <el-badge :value="mediaCount" :max="99" class="admin-layout">{{ $t('models.request.images') }}</el-badge>
                                 </span>
@@ -302,33 +276,48 @@
                                 <media-uploader ref="media" :id="request_id" :audit_id="audit_id" type="requests" layout="grid" v-model="media" :upload-options="uploadOptions" />
                             </el-tab-pane>
                         </el-tabs>
-                        <el-tabs type="border-card" v-model="activeTab1">
+                        <el-tabs type="border-card" v-model="activeTab1"  class="edit-tab">
                             <el-tab-pane label="Standort" name="request_details">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.request.prop_title')" :rules="validationRules.title"
-                                                    prop="title">
+                                    <el-form-item :label="$t('models.request.resident.name')">
                                         <el-input 
                                                 :disabled="$can($permissions.update.serviceRequest) || !editMode" 
                                                 type="text"
-                                                value="resident_name"/>
+                                                v-model="model.name"/>
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="6">
-                                    <el-form-item :label="$t('models.resident.quarter.name')" :rules="validationRules.title"
-                                                    prop="title">
-                                        <el-input 
-                                                :disabled="$can($permissions.update.serviceRequest) || !editMode" 
-                                                type="text"
-                                                value="quarter_id"/>
+                                    <el-form-item :label="$t('models.resident.quarter.name')" >
+                                        <el-select 
+                                                :disabled="!editMode"
+                                                :placeholder="$t(`general.placeholders.select`)"
+                                                class="custom-select"
+                                                v-model="model.quarter_id"
+                                            >
+                                                <el-option
+                                                    :key="quarter.id"
+                                                    :label="quarter.name"
+                                                    :value="quarter.id"
+                                                    v-for="quarter in quarters">
+                                                </el-option>
+                                            </el-select>
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="6">
-                                    <el-form-item :label="$t('models.resident.unit.name')" :rules="validationRules.title"
-                                                    prop="title">
-                                        <el-input 
-                                                :disabled="$can($permissions.update.serviceRequest) || !editMode" 
-                                                type="text"
-                                                value="unit_id"/>
+                                    <el-form-item :label="$t('models.resident.unit.name')">
+                                        <el-select 
+                                                :disabled="!editMode"
+                                                :placeholder="$t(`general.placeholders.select`)"
+                                                class="custom-select"
+                                                v-model="model.unit_id"
+                                            >
+                                                <el-option
+                                                    :key="unit.id"
+                                                    :label="unit.name"
+                                                    :value="unit.id"
+                                                    v-for="unit in units">
+                                                </el-option>
+                                            </el-select>
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="12">
@@ -378,8 +367,25 @@
                                     </el-col>
                                 </el-col>
                             </el-tab-pane>
-
-                            
+                            <el-tab-pane label="Zusatzinformationen" name="addinatonal_info">
+                                 <el-col :md="12" v-if="this.showCapturePhase == true">
+                                    <el-form-item :label="$t('models.request.category_options.capture_phase')">
+                                        <el-select 
+                                            :disabled="$can($permissions.update.serviceRequest) || !editMode"
+                                            :placeholder="$t(`general.placeholders.select`)"
+                                            class="custom-select"
+                                            v-model="model.capture_phase"
+                                        >
+                                            <el-option
+                                                :key="phase.value"
+                                                :label="phase.name"
+                                                :value="phase.value"
+                                                v-for="phase in capture_phases">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                            </el-tab-pane>
 
                         </el-tabs>
                         <template v-if="$can($permissions.update.serviceRequest)">
@@ -418,7 +424,7 @@
                     <el-col :md="12">
                         <template v-if="$can($permissions.assign.request)">
                         
-                            <el-tabs id="comments-card" v-if="model.id" type="border-card" value="assignment">
+                            <el-tabs id="comments-card" v-if="model.id" type="border-card" value="assignment" class="edit-tab">
                                 <el-tab-pane name="assignment">
                                     <span slot="label">
                                         {{ $t('models.request.assignment') }}
@@ -432,7 +438,7 @@
                                                 :remoteLoading="remoteLoading"
                                                 :remoteSearch="remoteSearchAssignees"
                                         ></users-assignment>
-                                        <relation-list
+                                        <!-- <relation-list
                                             :actions="assigneesActions"
                                             :columns="assigneesColumns"
                                             :filterValue="model.id"
@@ -440,6 +446,17 @@
                                             filter="request_id"
                                             ref="assigneesList"
                                             v-if="model.id"
+                                        /> -->
+                                        <el-button @click="expandRelationList=!expandRelationList" class="relation-expand-button">Expand</el-button>
+                                        <relation-list
+                                            class="relation-expand-list"
+                                            :actions="assigneesActions"
+                                            :columns="assigneesColumns"
+                                            :filterValue="model.id"
+                                            fetchAction="getAssignees"
+                                            filter="request_id"
+                                            ref="assigneesList"
+                                            v-if="model.id && expandRelationList"
                                         />
                                     </el-col>
                                 </el-tab-pane>
@@ -469,9 +486,9 @@
                                 </el-tab-pane>
                             </el-tabs>
  
-                            <el-tabs class="action-tabs" type="border-card" v-model="activeActionTab">
-                                <el-tab-pane :label="$t('models.request.actions')" name="actions" >
-                                    <el-row :gutter="10">                                    
+                            <el-tabs class="action-tabs edit-tab" type="border-card" v-model="activeActionTab">
+                                <el-tab-pane :label="$t('models.request.actions')" name="actions">
+                                    <el-row :gutter="20">                                    
                                         <el-col :md="12">
                                             <el-form-item :label="$t('models.request.status.label')"
                                                         :rules="validationRules.status"
@@ -548,12 +565,13 @@
                                                 </el-date-picker>
                                             </el-form-item>
                                         </el-col>
-                                        <el-col :md="12" v-if="this.showCostImpact == true">
-                                        <el-form-item :label="$t('models.request.cost_impact.label')"
+                                        <el-col :md="showPercent?8:12" v-if="this.showCostImpact == true" :class="{'pr-0': showPercent}">
+                                             <el-form-item :label="$t('models.request.cost_impact.label')"
                                                     prop="cost_impact">
                                                 <el-select :disabled="$can($permissions.update.serviceRequest) || !editMode"
                                                         :placeholder="$t('models.request.placeholders.cost_impact')"
                                                         class="custom-select"
+                                                        :class="{' right-border-radius-0': showPercent}"
                                                         v-model="model.cost_impact"
                                                         @change="changeCostImpact">
                                                     <el-option
@@ -565,7 +583,7 @@
                                                 </el-select>
                                             </el-form-item>
                                         </el-col>
-                                        <el-col :md="12" v-if="this.showPercent == true">
+                                        <el-col :md="4" v-if="this.showPercent == true" class="pl-0">
                                             <el-form-item 
                                                 :label="$t('models.request.category_options.payer_percent')"
                                                 :rules="validationRules.percentage"
@@ -651,13 +669,13 @@
                                 <span slot="label">
                                     <el-badge :value="requestCommentCount" :max="99" class="admin-layout">{{ $t('models.request.comments') }}</el-badge>
                                 </span>
-                                <chat :id="model.id" type="request" show-templates />
+                                <chat :id="model.id" type="request" show-templates :newStyle="true"/>
                             </el-tab-pane>
                             <el-tab-pane name="internal-notices">
                                 <span slot="label">
                                     <el-badge :value="noticeCommentCount" :max="99" class="admin-layout">{{ $t('models.request.internal_notices') }}</el-badge>
                                 </span>
-                                <chat :id="model.id" type="internalNotices" />
+                                <chat :id="model.id" type="internalNotices" :newStyle="true"/>
                             </el-tab-pane>
                             <el-tab-pane name="audit" style="height: 400px;overflow:auto;">
                                 <span slot="label">
@@ -778,6 +796,9 @@
                 rolename: null,
                 inputVisible: false,
                 editMode: false,
+                expandRelationList: false,
+                units: [],
+                quarters: [],
             }
         },
         computed: {
@@ -940,8 +961,22 @@
                 } finally {
                     this.loading.state = false;
                 }
-            }
+            },
+            async fetchRemoteQuarters(search = '') {
+                const quarters = await this.getQuarters({get_all: true, search});
+
+                return quarters.data
+            },
+            async fetchRemoteUnits(search = '') {
+                const units = await this.getUnits({get_all: true, search});
+
+                return units.data
+            },
         },
+        async created() {
+            this.units = await this.fetchRemoteUnits();
+            this.quarters = await this.fetchRemoteQuarters();
+        }
     };
 </script>
 <style lang="scss" scoped>
@@ -959,6 +994,17 @@
                 position: absolute;
                 right: 20px;
             }
+        }
+        .relation-expand-button {
+            background-color: transparent;
+            padding: 0px;
+            &:hover {
+                box-shadow: none;
+                font-weight: 700;
+            }
+        }
+        .relation-expand-list {
+            padding: 5px 50px;
         }
     }
 
@@ -992,13 +1038,21 @@
 </style>
 
 <style lang="scss">
-    #request_details {
+    .request-edit {
         .el-form-item__content {
             .el-input.el-input-group {
                 .el-input-group__prepend {
                     padding: 2px 8px 0;
                     font-weight: 600;
+                    border: none;
+                    border-top-left-radius: 0px;
+                    border-bottom-left-radius: 0px;
+                    background-color: #f6f5f7 !important;
                 }
+            }
+            .el-select.right-border-radius-0 .el-input__inner {
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
             }
         }
         // .el-input {
@@ -1116,6 +1170,10 @@
     }
 
     #edit_request {
+        .px-10 {
+            padding-right: 10px !important;
+            padding-left: 10px !important;
+        }
         .el-form > .el-row > .el-col {
             margin-bottom: 1em;
         }
@@ -1125,14 +1183,6 @@
         }
         .el-form-item {
             margin-bottom: 16px;
-        }
-        .el-card__body {
-            padding: 16px 16px 0px 16px !important;
-        }
-        .request {
-            .el-card__body {
-                padding: 16px !important;
-            }
         }
         #comments {
             .el-card__body {
@@ -1144,8 +1194,8 @@
             .el-tabs__header {
                 border-radius: 6px 6px 0 0;
             }
-            .el-tabs__content {
-                padding: 20px 10px;
+            &.edit-tab .el-tabs__content {
+                padding: 20px 10px !important;
             }
             .el-tabs__nav-wrap.is-top {
                 border-radius: 6px 6px 0 0;

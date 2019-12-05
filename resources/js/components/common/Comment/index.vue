@@ -1,17 +1,17 @@
 <template>
-    <div :class="['comment', {'is-reversed': reversed}]">
+    <div :class="['comment', {'is-reversed': reversed}, newStyle?'new-style':'old-style']">
         <el-tooltip :content="data.user.name" :placement="reversed ? 'top-end':'top-start'" effect="dark">
             <template slot="content">
                 {{data.user.name}}
                 <small style="display: block;">{{ago(data.created_at, $i18n.locale)}}</small>
             </template>
-            <ui-avatar ref="avatar" :name="data.user.name" :size="32" :src="data.user.avatar" />
+            <ui-avatar ref="avatar" :name="data.user.name" :size="newStyle?28:32" :src="data.user.avatar" />
         </el-tooltip>
         <div ref="container" class="container">
             <el-input ref="content" :class="{'is-focused': idState.focused}" type="textarea" resize="none" v-if="idState.editing" v-model="comment" autosize :disabled="idState.loading._isVue && idState.loading.visible" :validate-event="false" @blur="idState.focused = false" @focus="idState.focused = true" @keydown.native.enter="$emit('size-hanged')" @keydown.native.alt.enter.exact="update" @keydown.native.stop.esc.exact="cancelEdit" />
             <div class="content" :class="{'empty': !comment, 'disabled': idState.loading._isVue && idState.loading.visible}" v-else>
-                <div class="text">{{comment || $t('general.components.common.comment.deleted_comment_placeholder')}}<div class="tag"></div><div class="border"></div></div>                
-                <div class="actions" v-if="hasActions">                                    
+                <div class="text" :class="newStyle?'new-style':'old-style'">{{comment || $t('general.components.common.comment.deleted_comment_placeholder')}}<div class="tag"></div><div class="border"></div></div>                
+                <div class="actions" v-if="hasActions && !newStyle">                                    
                     <el-button type="text" @click="enterEdit" v-if="data.comment">
                         <i class="icon-pencil"></i>
                     </el-button>
@@ -93,6 +93,10 @@
             showChildren: {
                 type: Boolean,
                 default: false
+            },
+            newStyle: {
+                type: Boolean,
+                default: false,
             }
         },
         idState () {
@@ -284,6 +288,10 @@
         font-size: 14px;
         position: relative;
 
+        &.new-style {
+            align-items: flex-start;
+        }
+
         .container {
             display: flex;
             flex-wrap: wrap;
@@ -416,6 +424,14 @@
                     word-break: break-word;
                     margin: 2px 0;
 
+                    &.new-style {
+                        background-color: #f6f5f7;
+                        border: none;
+                        margin: 0 0 10px;
+                        border-radius: 18px;
+                        padding: 12px;
+                    }
+
                     &:before,
                     &:after {
                         content: '';
@@ -496,10 +512,11 @@
                         color: lighten(#6AC06F, 16%);
                     }
 
-                    .text {
+                    .text.old-style {
                         border-color: var(--primary-color);
                         background-color: var(--primary-color-lighter);
                         border-bottom-right-radius: 0;
+
 
                         &:before,
                         &:after {
@@ -549,6 +566,10 @@
                             border-bottom: 1px solid var(--primary-color);
                         }
                     }
+                    .text.new-style {
+                        background-color: #974C72;
+                        color: var(--color-white);
+                    }
                 }
             }
 
@@ -582,7 +603,7 @@
                         color: darken(#fff, 40%);
                     }
 
-                    .text {
+                    .text.old-style {
                         border-color: darken(#fff, 5%);
                         border-bottom-left-radius: 0;
 

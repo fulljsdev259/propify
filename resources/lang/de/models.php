@@ -704,7 +704,7 @@ return [
             'range' => 'Bereich',
             'component' => 'Bauteil',
             'capture_phase' => 'Erfassungsphase',
-            'payer_percent' => 'Bewohneranteil in %',
+            'payer_percent' => 'Bewohneranteil',
             'payer_amount' => 'Betrag',
             'keywords' => 'Tags',
             'qualification_category' => 'Qualifizierung'
