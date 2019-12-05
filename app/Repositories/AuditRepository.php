@@ -74,8 +74,11 @@ class AuditRepository extends BaseRepository
         }
 
         if($fieldname == 'quarter_id'){
+            if (empty($fieldvalue)) {
+                return __('general.empty');
+            }
             $model = Quarter::find($fieldvalue);
-            return ($model) ? $model->name : "";
+            return ($model) ? $model->name : '';
         }
 
         if($fieldname == 'unit_id'){
@@ -205,7 +208,8 @@ class AuditRepository extends BaseRepository
             foreach ($types as $type) {
                 $response[] = ($auditable_type == 'quarter')
                     ? __('models.quarter.types.' . (Quarter::Type[$type] ?? ''))
-                    : __('models.building.types.' . (Building::Type[$type] ?? ''));
+                    : __('models.quarter.types.' . (Building::Type[$type] ?? '')); // @TODO delete
+//                    : __('models.building.types.' . (Building::Type[$type] ?? ''));
             }
 
             return implode(', ', $response);

@@ -180,10 +180,17 @@ class AuditTransformer extends BaseTransformer
             $assigneeNames = $this->getAssigneesName(ServiceProvider::class, $ids);
             $response['statement'] = $this->translate_audit("provider_unassigned",['assignee' => $assigneeNames]);
         }
-        elseif($model->event == 'media_uploaded'){            
-            $response['statement'] = $this->translate_audit("media_uploaded");
+        elseif($model->event == 'media_uploaded'){
+            $data = [];
+            if ($model->auditable_type == 'building') {
+                $disk = $model->new_values['disk'] ?? '';
+                $disk = str_replace('buildings_', '', $disk);
+//                MediaFileCategories
+                $data['category'] = __('models.building.media_category.' . $disk);
+            }
+            $response['statement'] = $this->translate_audit("media_uploaded", $data);
         }
-        elseif($model->event == 'media_deleted'){            
+        elseif($model->event == 'media_deleted'){
             $response['statement'] = $this->translate_audit("media_deleted");
         }
         elseif($model->event == 'avatar_uploaded'){            
@@ -251,8 +258,9 @@ class AuditTransformer extends BaseTransformer
             }
             $response['statement'] = $this->translate_audit("mass_assigned", ['users' => implode(', ', $users)]);
         } else {
-//            dd($model->event);
+            $response['statement'] = 'TODO';
         }
+
         return $response;
     }
 

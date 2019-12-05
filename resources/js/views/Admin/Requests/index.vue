@@ -223,7 +223,7 @@
                         width: 150
                     }, {
                         label: 'models.request.assigned_property_managers',
-                        withUsers: true,
+                        withRequestUsers: true,
                         prop: 'property_managers'
                     }, {
                         label: 'general.category',
@@ -231,7 +231,7 @@
                         i18n: this.translateCategory
                     }, {
                         label: 'general.filters.services',
-                        withUsers: true,
+                        withRequestUsers: true,
                         prop: 'service_providers'
                     }, {
                         label: 'models.request.created_by',
