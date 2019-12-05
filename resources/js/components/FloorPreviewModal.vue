@@ -4,6 +4,7 @@
             v-on:update:visible="$emit('update:visible', $event)"
             title="Floor preview"
             class="pdf-preview-modal"
+            :fullscreen="true"
             width="1140px">
         <div v-loading="loading">
             <div class="zoom-top" v-if="visible">
