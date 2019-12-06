@@ -318,6 +318,19 @@ class RequestAPIController extends AppBaseController
             'relation' => function ($q) {
                 $q->with('quarter.address', 'unit');
             },
+            'assignees' => function ($q) {
+                // TODO make more optional query for find each type only one assignee
+                $q->select('id', 'type', 'user_id', 'request_id')
+                    ->with([
+                        'user' => function ($q) {
+                            $q->select('users.id', 'users.avatar', 'users.name')
+                                ->with('roles:roles.id,name');
+                        }
+                    ])
+//                        ->groupBy('request_assignees.type')
+//                        ->groupBy('request_assignees.request_id')
+                    ->orderBy('request_assignees.id', 'desc');
+            },
             'creator'
         ]);
         $response = (new RequestTransformer)->transform($request);
@@ -1357,10 +1370,10 @@ class RequestAPIController extends AppBaseController
      * )
      *
      * @param int $id
-     * @param ViewRequest $request
+     * @param ViewRequest $viewRequest
      * @return mixed
      */
-    public function getAssignees(int $id, ViewRequest $request)
+    public function getAssignees(int $id, ViewRequest $viewRequest)
     {
         // @TODO permissions
         $request = $this->requestRepository->findWithoutFail($id);
@@ -1368,8 +1381,8 @@ class RequestAPIController extends AppBaseController
             return $this->sendError(__('models.request.errors.not_found'));
         }
 
-        $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        $type = $request->type;
+        $perPage = $viewRequest->get('per_page', env('APP_PAGINATE', 10));
+        $type = $viewRequest->type;
         $assignees = $request->assignees()
             ->orderBy('id', 'desc')
             ->when($type, function ($q) use ($type) {
