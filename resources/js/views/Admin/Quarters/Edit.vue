@@ -1216,7 +1216,9 @@
     .workflow-button-bar {
         display: flex;
         justify-content: flex-end;
-        margin-top: 40px;
+        .el-button {
+            margin-top: 40px;
+        }
 
         // &.edit {
         //     padding-top: 40px;

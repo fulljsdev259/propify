@@ -96,7 +96,8 @@
                     withResidentStatusSign: true,
                     prop: 'status',
                     sortBy: 'status',
-                    width: 130
+                    width: 118,
+                    align: 'center',
                 }, {
                     label: 'general.first_name',
                     prop: 'first_name',
