@@ -115,6 +115,12 @@
                                     {{ !showFilters? $t('general.filters.more_filters'):$t('general.filters.less_filters') }}
                                 </el-button>
                             </el-form-item>
+                             <el-form-item v-else-if="filter.type === filterTypes.popover">
+                                <el-popover placement="bottom-end" trigger="click" :width="192" style="float:right">
+                                    <el-button slot="reference" class="filter-button">{{ filter.name }}</el-button>
+                                    <!-- <el-button class="popover-button" @click="visibleSaveDialog=true">{{ $t('general.actions.save') }}</el-button> -->
+                                </el-popover>
+                            </el-form-item>
                             
                         </template>
 
@@ -122,7 +128,7 @@
                 </el-row>
             </el-card>
         </el-form>
-
+        
         <!--        <div class="pull-right">-->
         <!--            <el-button :disabled="!selectedItems.length" @click="batchDelete" size="mini" type="danger">-->
         <!--                {{ $t('general.actions.delete')}}-->
@@ -701,6 +707,7 @@
                     language: 'language',
                     role: 'role',
                     toggle: 'toggle',
+                    popover: 'popover',
                 },
                 filterModel: {},
                 uuid,
@@ -712,10 +719,12 @@
                 assignee: '',
                 remoteLoading: false,
                 isVisible: false,
-                queries: [],
             }
         },
         computed: {
+            ...mapGetters({
+                user: 'loggedInUser',
+            }),
             emptyText() {
                 return this.loading.state ?  ' ' : (this.items.length > 0) ? '' : this.$t('general.no_data_available');
             },
@@ -843,7 +852,6 @@
                 'assignUsersToRequest'
             ]),
             makeFilterQuery(pathName) {
-                
                 let query = {};
                 let quarter_ids = localStorage.getItem('quarter_ids');
                 let building_ids = localStorage.getItem('building_ids');
@@ -1310,6 +1318,7 @@
                 color: var(--color-text-secondary);
                 position: relative;
                 font-family: 'Radikal Thin';
+                cursor: pointer;
                 &:hover, &.is-active {
                     color: var(--color-text-primary);
                     font-weight: 900px;
@@ -1421,9 +1430,16 @@
     }
 
     .el-button {
-        border-radius: 20px;
-        padding: 8.65px 15px;
         font-family: inherit;
+    }
+    .popover-button {
+        width: 100%;
+        border: none;
+        background-color: var(--border-color-base);
+    }
+    .filter-button {
+        height: 40px;
+        background-color: #f6f5f7;
     }
     
     .el-input {
