@@ -833,6 +833,8 @@ class RequestAPIController extends AppBaseController
      */
     public function assignProvider(int $id, int $pid, ServiceProviderRepository $serviceProviderRepository, AssignRequest $assignRequest)
     {
+
+        // @TODO delete
         $request = $this->requestRepository->findWithoutFail($id);
         if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
@@ -897,6 +899,8 @@ class RequestAPIController extends AppBaseController
      */
     public function assignUser(int $id, int $uid, UserRepository $uRepo, AssignRequest $r)
     {
+
+        // @TODO delete
         $request = $this->requestRepository->findWithoutFail($id);
         if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
@@ -960,6 +964,8 @@ class RequestAPIController extends AppBaseController
      */
     public function assignManager(int $id, int $pmid, UserRepository $uRepo, AssignRequest $r)
     {
+        // @TODO delete
+
         $request = $this->requestRepository->findWithoutFail($id);
         if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
@@ -1357,14 +1363,14 @@ class RequestAPIController extends AppBaseController
     public function getAssignees(int $id, ViewRequest $request)
     {
         // @TODO permissions
-        $sr = $this->requestRepository->findWithoutFail($id);
-        if (empty($sr)) {
+        $request = $this->requestRepository->findWithoutFail($id);
+        if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
         }
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $type = $request->type;
-        $assignees = $sr->assignees()
+        $assignees = $request->assignees()
             ->orderBy('id', 'desc')
             ->when($type, function ($q) use ($type) {
                 $q->where('type', $type);
@@ -1399,8 +1405,17 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->newMassAssignmentAudit($assigneeData);
+        $perPage = $massAssignUsersRequest->get('per_page', env('APP_PAGINATE', 10));
 
-        $response = (new RequestTransformer)->transform($request);
+        $assignees = $request->assignees()
+            ->orderBy('id', 'desc')
+            ->when($type, function ($q) use ($type) {
+                $q->where('type', $type);
+            })
+            ->paginate($perPage);
+        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
+
+        $response = (new RequestAssigneeTransformer())->transformPaginator($assignees) ;
         return $this->sendResponse($response, __('general.attached.manager'));
     }
 
