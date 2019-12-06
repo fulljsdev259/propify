@@ -103,7 +103,13 @@ class ServiceProviderAPIController extends AppBaseController
     public function index(ListRequest $request)
     {
         if ($request->orderBy == 'email') {
-            $request->merge(['orderBy' => 'users:id|email']);
+            $request->merge(['orderBy' => 'users|email']);
+        }
+        if ($request->orderBy == 'name') {
+            $request->merge([
+                'orderBy' => RequestCriteria::NoOrder,
+                'orderByRaw' => 'name',
+            ]);
         }
         $this->serviceProviderRepository->pushCriteria(new RequestCriteria($request));
         $this->serviceProviderRepository->pushCriteria(new LimitOffsetCriteria($request));
@@ -247,9 +253,6 @@ class ServiceProviderAPIController extends AppBaseController
             $input['user']['name'] = $input['first_name'] . ' ' . $input['last_name'];
         }
 
-        if (!isset($input['user']['phone'])) {
-            $input['user']['phone'] = $input['phone'];
-        }
         $input['user']['role'] = 'provider';
 
         $validator = Validator::make($input['user'], User::$rules);

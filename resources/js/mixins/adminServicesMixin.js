@@ -77,14 +77,14 @@ export default (config = {}) => {
                     }
                 },
                 validationRules: {
-                    company_name: [{
-                        required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('models.service.company_name')})
-                    }],
-                    phone: [{
-                        required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('general.phone')})
-                    }],
+                    // company_name: [{
+                    //     required: true,
+                    //     message: this.$t('validation.required', {attribute: this.$t('models.service.company_name')})
+                    // }],
+                    // phone: [{
+                    //     required: true,
+                    //     message: this.$t('validation.required', {attribute: this.$t('general.phone')})
+                    // }],
                     email: [{
                         required: true,
                         message: this.$t('validation.required', {attribute: this.$t('general.email')})
@@ -117,10 +117,10 @@ export default (config = {}) => {
                         required: true,
                         message: this.$t('validation.required', {attribute: this.$t('general.status.label')})
                     }],
-                    state_id: [{
-                        required: true,
-                        message: this.$t('validation.required', {attribute: this.$t('general.state')})
-                    }],
+                    // state_id: [{
+                    //     required: true,
+                    //     message: this.$t('validation.required', {attribute: this.$t('general.state')})
+                    // }],
                     city: [{
                         required: true,
                         message: this.$t('validation.required', {attribute: this.$t('general.city')})

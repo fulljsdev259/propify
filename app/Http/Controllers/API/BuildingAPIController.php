@@ -131,7 +131,7 @@ class BuildingAPIController extends AppBaseController
     {
         $request->merge(['model' => 'buildings']);
         if ($request->orderBy == 'internal_quarter_id') {
-            $request->merge(['orderBy' => 'quarters:id|internal_quarter_id']);
+            $request->merge(['orderBy' => 'quarters|internal_quarter_id']);
         }
         if ($request->orderBy == 'house_num') {
             $request->merge(['orderBy' => 'loc_addresses:address_id|house_num']);
@@ -161,7 +161,7 @@ class BuildingAPIController extends AppBaseController
                 'address.state',
 //                'service_providers',
                 'relations' => function ($q) {
-                    $q->with('building.address', 'unit', 'resident.user');
+                    $q->with('unit', 'resident.user');
                 },
 //                'propertyManagers',
 //                'users',
@@ -250,7 +250,7 @@ class BuildingAPIController extends AppBaseController
         $buildings = $model->select(['id'])->orderByDesc('id')->limit($limit)->withCount([
             'units',
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'resident.user');
+                $q->with('unit', 'resident.user');
             },
         ])->get();
         return $this->sendResponse($buildings->toArray(), 'Buildings retrieved successfully');
@@ -282,7 +282,7 @@ class BuildingAPIController extends AppBaseController
                 'units',
                 'propertyManagers',
                 'relations' => function ($q) {
-                    $q->with('building.address', 'unit', 'resident.user');
+                    $q->with('unit', 'resident.user');
                 },
                 'users'
             ])->allRequestStatusCount()
@@ -358,7 +358,7 @@ class BuildingAPIController extends AppBaseController
 
         $building->load([
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'resident.user');
+                $q->with('unit', 'resident.user');
             },
         ]);
 
@@ -429,7 +429,7 @@ class BuildingAPIController extends AppBaseController
                 'address.state',
                 'service_providers',
                 'relations' => function ($q) {
-                    $q->with('building.address', 'unit', 'resident.user');
+                    $q->with('unit', 'resident.user');
                 },
                 'propertyManagers',
                 'media',
@@ -543,7 +543,7 @@ class BuildingAPIController extends AppBaseController
             'media',
             'service_providers',
             'relations' => function ($q) {
-                $q->with('building.address', 'unit', 'resident.user');
+                $q->with('unit', 'resident.user');
             },
         ]);
 

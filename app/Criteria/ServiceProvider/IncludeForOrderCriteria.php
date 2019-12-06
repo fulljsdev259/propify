@@ -40,6 +40,8 @@ class IncludeForOrderCriteria implements CriteriaInterface
         $sortedBy = strtolower($this->request->sortedBy) == 'asc' ? 'asc' : 'desc';
         $model->when($this->request->orderBy == 'requests_count', function ($q) use ($sortedBy) {
            $q->withCount('requests');
+        })->when($this->request->orderByRaw == 'name', function ($q) use ($sortedBy) {
+           $q->orderByRaw('Concat(first_name, " ", last_name) ' . $sortedBy);
         });
 
         return $model;

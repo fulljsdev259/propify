@@ -630,7 +630,7 @@
                                         </el-col>
                                     </el-row>
                                 </el-tab-pane>
-                                <el-tab-pane :label="$t('models.request.is_public')" name="is_public">
+                                <el-tab-pane :label="$t('models.request.visibility.label')" name="is_public">
                                     <div class="switch-wrapper" v-if="editMode">
                                         <el-form-item :label="$t('models.request.public_title')" prop="is_public">
                                             <el-switch v-model="model.is_public" />
@@ -674,7 +674,7 @@
                             </el-tab-pane>
                             <el-tab-pane name="internal-notices">
                                 <span slot="label">
-                                    {{ $t('models.request.internal_notices') }}
+                                    {{ $t('models.request.internal_chat') }}
                                     <!-- <el-badge :value="noticeCommentCount" :max="99" class="admin-layout">{{ $t('models.request.internal_notices') }}</el-badge> -->
                                 </span>
                                 <chat :id="model.id" type="internalNotices" :newStyle="true"/>
