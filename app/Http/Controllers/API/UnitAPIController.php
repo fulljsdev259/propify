@@ -159,7 +159,7 @@ class UnitAPIController extends AppBaseController
                 'quarter',
                 'media',
                 'relations' => function ($q) {
-                    $q->with('building.address', 'unit', 'resident.user');
+                    $q->with('unit', 'resident.user');
                 },
             ])
             ->scope('allRequestStatusCount')
@@ -226,7 +226,7 @@ class UnitAPIController extends AppBaseController
             'building.address',
             'quarter',
             'relations' => function ($q) {
-                $q->with('quarter.address', 'unit', 'resident.user');
+                $q->with('unit', 'resident.user');
             },
             'media'
         ]);
@@ -286,7 +286,7 @@ class UnitAPIController extends AppBaseController
             'building.address',
             'quarter',
             'relations' => function ($q) {
-                $q->with('quarter.address', 'unit', 'resident.user');
+                $q->with('unit', 'resident.user');
             },
             'media'
         ]);
@@ -365,7 +365,7 @@ class UnitAPIController extends AppBaseController
             'building.address',
             'quarter',
             'relations' => function ($q) {
-                $q->with('quarter.address', 'unit', 'resident.user');
+                $q->with('unit', 'resident.user');
             },
             'media'
         ]);

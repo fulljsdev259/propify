@@ -79,18 +79,9 @@ class UnitTransformer extends BaseTransformer
         if ($model->relationExists('relations')) {
             $response['relations'] = (new RelationTransformer())->transformCollection($model->relations);
 
-            $residents = [];
-            foreach ($response['relations'] as $relationData) {
-                if (!empty($relationData['resident'])) {
-                    $residents[] = $relationData['resident'];
-                }
-            }
-
-
-            // @TODO delete
-            if ($residents) {
-                $response['residents'] = $residents;
-            }
+            $relations = collect($response['relations']);
+            $response['residents'] = $relations->pluck('resident')->all();
+            $response['activeResidents'] = $relations->where('status', Relation::StatusActive)->pluck('resident')->all();
         }
 
         return $response;
