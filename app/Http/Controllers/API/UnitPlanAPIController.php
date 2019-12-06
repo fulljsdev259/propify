@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\AppBaseController;
+use App\Http\Requests\API\Unit\UpdateRequest;
+use App\Http\Requests\API\UnitPlan\CreateRequest;
 use App\Repositories\UnitPlanRepository;
 use App\Repositories\UnitRepository;
 use App\Transformers\UnitPlanTransformer;
@@ -111,11 +113,11 @@ class UnitPlanAPIController extends AppBaseController
      *
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param CreateRequest $request
      * @param int $unitId
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, int $unitId)
+    public function store(CreateRequest $request, int $unitId)
     {
         $request['unit_id'] = $unitId;
 
@@ -192,8 +194,12 @@ class UnitPlanAPIController extends AppBaseController
     {
         $unitPlan = $this
             ->unitPlanRepository
-            ->findWithoutFail($planId)
-            ->load(['media']);
+            ->with('media')
+            ->findWithoutFail($planId);
+
+        if (!$unitPlan) {
+            return $this->sendError(__('models.unit_plans.errors.not_found'));
+        }
 
         $response = (new UnitPlanTransformer)->transform($unitPlan);
 
@@ -244,18 +250,22 @@ class UnitPlanAPIController extends AppBaseController
      *
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param UpdateRequest $request
      * @param int $unitId
      * @param int $planId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, int $unitId, int $planId)
+    public function update(UpdateRequest $request, int $unitId, int $planId)
     {
         $request['unit_id'] = $unitId;
 
         $unitPlan = $this
             ->unitPlanRepository
             ->findWithoutFail($planId);
+
+        if (!$unitPlan) {
+            return $this->sendError(__('models.unit_plans.errors.not_found'));
+        }
 
         try {
             $unitPlan->update($request->all());
@@ -323,15 +333,19 @@ class UnitPlanAPIController extends AppBaseController
      * @param int $unitId
      * @param int $planId
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(int $unitId, int $planId)
     {
-        $this
+        $unitPlan = $this
             ->unitPlanRepository
-            ->deleteWhere([
-                'unit_id' => $unitId,
-                'id' => $planId,
-            ]);
+            ->findWithoutFail($planId);
+
+        if (!$unitPlan) {
+            return $this->sendError(__('models.unit_plans.errors.not_found'));
+        }
+
+        $unitPlan->delete();
 
         return $this->sendResponse($planId, __('models.unit_plans.deleted'));
     }

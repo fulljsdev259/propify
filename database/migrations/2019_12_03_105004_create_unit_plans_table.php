@@ -20,6 +20,7 @@ class CreateUnitPlansTable extends Migration
             $table->boolean('primary')->default(false);
             $table->unsignedInteger('unit_id')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

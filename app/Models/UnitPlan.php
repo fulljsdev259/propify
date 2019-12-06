@@ -5,12 +5,15 @@ namespace App\Models;
 use App\Traits\HasMediaTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 
 class UnitPlan extends Model implements HasMedia
 {
-    use HasMediaTrait;
+    use
+        SoftDeletes,
+        HasMediaTrait;
 
     /**
      * The table associated with the model.
@@ -34,6 +37,8 @@ class UnitPlan extends Model implements HasMedia
     protected $casts = [
         'primary' => 'boolean',
     ];
+
+    protected $dates = ['deleted_at'];
 
     public function unit(): BelongsTo
     {
