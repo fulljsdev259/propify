@@ -96,7 +96,10 @@ class UnitAPIController extends AppBaseController
     public function index(ListRequest $request)
     {
         if ($request->orderBy == 'internal_quarter_id') {
-            $request->merge(['orderBy' => 'quarters:id|internal_quarter_id']);
+            $request->merge([
+                'orderBy' => RequestCriteria::NoOrder,
+                'orderByRaw' => 'internal_quarter_id',
+            ]);
         }
         if ($request->orderBy == 'status') {
             $request->merge([
@@ -156,7 +159,7 @@ class UnitAPIController extends AppBaseController
                 'quarter',
                 'media',
                 'relations' => function ($q) {
-                    $q->with('building.address', 'unit', 'resident.user');
+                    $q->with('unit', 'resident.user');
                 },
             ])
             ->scope('allRequestStatusCount')
@@ -223,7 +226,7 @@ class UnitAPIController extends AppBaseController
             'building.address',
             'quarter',
             'relations' => function ($q) {
-                $q->with('quarter.address', 'unit', 'resident.user');
+                $q->with('unit', 'resident.user');
             },
             'media'
         ]);
@@ -283,7 +286,7 @@ class UnitAPIController extends AppBaseController
             'building.address',
             'quarter',
             'relations' => function ($q) {
-                $q->with('quarter.address', 'unit', 'resident.user');
+                $q->with('unit', 'resident.user');
             },
             'media'
         ]);
@@ -362,7 +365,7 @@ class UnitAPIController extends AppBaseController
             'building.address',
             'quarter',
             'relations' => function ($q) {
-                $q->with('quarter.address', 'unit', 'resident.user');
+                $q->with('unit', 'resident.user');
             },
             'media'
         ]);

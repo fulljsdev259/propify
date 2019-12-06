@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Criteria\Common\RequestCriteria;
-use App\Criteria\Common\WhereCriteria;
-use App\Criteria\UserFilter\FilterByUserCriteria;
+use App\Criteria\UserFilter\FilterByLoggedUserCriteria;
 use App\Criteria\UserFilter\FilterByMenuCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\UserFilter\CreateRequest;
@@ -16,6 +15,7 @@ use App\Models\UserFilter;
 use App\Repositories\UserFilterRepository;
 use App\Transformers\UserFilterTransformer;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 
 /**
@@ -73,8 +73,8 @@ class UserFilterAPIController extends AppBaseController
     {
         $this->userFilterRepository->pushCriteria(new RequestCriteria($request));
         $this->userFilterRepository->pushCriteria(new LimitOffsetCriteria($request));
+        $this->userFilterRepository->pushCriteria(new FilterByLoggedUserCriteria($request));
         $this->userFilterRepository->pushCriteria(new FilterByMenuCriteria($request));
-        $this->userFilterRepository->pushCriteria(new FilterByUserCriteria($request));
 
         $getAll = $request->get('get_all', false);
         if ($getAll) {
@@ -131,7 +131,7 @@ class UserFilterAPIController extends AppBaseController
     public function store(CreateRequest $request)
     {
         $input = $request->all();
-        $input['sq_meter'] = $input['sq_meter'] ?? 0;
+        $input['user_id'] = Auth::id();
         try {
             $userFilter = $this->userFilterRepository->create($input);
         } catch (\Exception $e) {
@@ -242,6 +242,7 @@ class UserFilterAPIController extends AppBaseController
     public function update($id, UpdateRequest $request)
     {
         $input = $request->all();
+        unset($input['user_id']);// for not permit malicious actions
         /** @var UserFilter $userFilter */
         $userFilter = $this->userFilterRepository->findWithoutFail($id);
         if (empty($userFilter)) {

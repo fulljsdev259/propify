@@ -89,7 +89,7 @@ class PropertyManagerAPIController extends AppBaseController
     public function index(ListRequest $request)
     {
         if ($request->orderBy == 'email') {
-            $request->merge(['orderBy' => 'users:id|email']);
+            $request->merge(['orderBy' => 'users|email']);
         }
         $this->propertyManagerRepository->pushCriteria(new RequestCriteria($request, 'concat(first_name, " ", last_name)'));
         $this->propertyManagerRepository->pushCriteria(new LimitOffsetCriteria($request));

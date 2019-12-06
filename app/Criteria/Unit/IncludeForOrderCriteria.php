@@ -43,6 +43,12 @@ class IncludeForOrderCriteria implements CriteriaInterface
                 WHERE units.id = relations.unit_id
                 order by id desc limit 1) ' . $sortedBy
             );
+        })->when($this->request->orderByRaw == 'internal_quarter_id', function ($q) use ($sortedBy) {
+           $q->orderByRaw('IF (
+                building_id IS NULL, 
+                (select internal_quarter_id from quarters where quarters.id = units.quarter_id),
+                (select internal_quarter_id from quarters where quarters.id = (select quarter_id from buildings where buildings.id = units.building_id))
+                ) ' . $sortedBy);
         })->when($this->request->orderBy == 'requests_count', function ($q) use ($sortedBy) {
            $q->withCount('requests');
         });

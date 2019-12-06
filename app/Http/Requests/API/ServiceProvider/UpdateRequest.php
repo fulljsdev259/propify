@@ -26,11 +26,11 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         $rules = [
-           'company_name' => 'required|string|max:255',
-           'first_name' => 'required|string|max:255',
-           'last_name' => 'required|string|max:255',
+            'company_name' => 'string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
-            'phone' => 'required|string|max:255',
+            'phone' => 'string|max:255',
             'status' => [
                 'required',
                 $this->getInRuleByClassConstants(ServiceProvider::Status),
