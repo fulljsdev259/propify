@@ -243,7 +243,8 @@
                         withRequestStatusSign: true,
                         prop: 'status',
                         sortBy: 'status',
-                        width: 150
+                        width: 90,
+                        align: 'center',
                     }, {
                         label: 'models.request.assigned_property_managers',
                         withRequestUsers: true,
@@ -254,7 +255,7 @@
                         sortBy: 'category_id',
                         i18n: this.translateCategory
                     }, {
-                        label: 'general.filters.services',
+                        label: 'models.request.assignment',
                         withRequestUsers: true,
                         prop: 'service_providers'
                     }, {

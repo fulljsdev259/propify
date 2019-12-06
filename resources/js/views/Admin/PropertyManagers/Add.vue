@@ -11,24 +11,11 @@
 
                             <el-row :gutter="20">
                                 <el-col :md="8">
-                                    <el-form-item class="label-block" :label="$t('general.salutation')" :rules="validationRules.title"
-                                                  prop="title">
-                                        <el-select style="display: block" v-model="model.title" :placeholder="$t('general.placeholders.select')">
-                                            <el-option
-                                                    :key="title"
-                                                    :label="$t(`general.salutation_option.${title}`)"
-                                                    :value="title"
-                                                    v-for="title in $constants.propertyManager.title">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :md="8">
                                     <el-form-item class="label-block" :label="$t('general.status.label')"
-                                                        :rules="validationRules.status"
-                                                        prop="status">
+                                                  :rules="validationRules.status"
+                                                  prop="status">
                                         <el-select :placeholder="$t('general.placeholders.select')" style="display: block"
-                                                v-model="model.status">
+                                                   v-model="model.status">
                                             <el-option
                                                     :key="k"
                                                     :label="$t(`general.status.${status}`)"
@@ -41,6 +28,19 @@
                                                   prop="settings.language">
                                         <select-language :activeLanguage.sync="model.settings.language"/>
                                     </el-form-item> -->
+                                </el-col>
+                                <el-col :md="8">
+                                    <el-form-item class="label-block" :label="$t('general.salutation')" :rules="validationRules.title"
+                                                  prop="title">
+                                        <el-select style="display: block" v-model="model.title" :placeholder="$t('general.placeholders.select')">
+                                            <el-option
+                                                    :key="title"
+                                                    :label="$t(`general.salutation_option.${title}`)"
+                                                    :value="title"
+                                                    v-for="title in $constants.propertyManager.title">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
                                 </el-col>
                                 <el-col :md="8">
                                     <el-form-item class="label-block" :label="$t('general.function')" :rules="validationRules.type"
@@ -129,7 +129,7 @@
                     <el-col :md="12">
                         <card :header="$t('models.property_manager.profile_card')">
                             <el-row :gutter="20">
-                                <el-col :md="24">
+                                <el-col :md="12">
                                     <el-form-item :label="$t('general.password')" :rules="validationRules.password" autocomplete="off"
                                                   prop="password">
                                         <el-input type="password"
@@ -140,6 +140,21 @@
                                         />
                                     </el-form-item>
                                 </el-col>
+                                <el-col :md="12">
+                                    <el-form-item :label="$t('models.user.profile_image')">
+                                        <cropper
+                                                :boundary="{
+                                                width: 250,
+                                                height: 360
+                                            }"
+                                                :viewport="{
+                                                width: 250,
+                                                height: 250
+                                            }"
+                                                :resize="false"
+                                                @cropped="cropped"/>
+                                    </el-form-item>
+                                </el-col>
                                 <!-- <el-col :md="12">
                                     <el-form-item :label="$t('general.confirm_password')" :rules="validationRules.password_confirmation"
                                                   prop="password_confirmation">
@@ -147,20 +162,6 @@
                                     </el-form-item>
                                 </el-col> -->
                             </el-row>
-
-                            <el-form-item :label="$t('models.user.profile_image')">
-                                <cropper
-                                        :boundary="{
-                                            width: 250,
-                                            height: 360
-                                        }"
-                                        :viewport="{
-                                            width: 250,
-                                            height: 250
-                                        }"
-                                        :resize="false"
-                                        @cropped="cropped"/>
-                            </el-form-item>
 
                             <!-- <el-form-item :label="$t('models.property_manager.slogan')" :rules="validationRules.slogan"
                                           prop="slogan">

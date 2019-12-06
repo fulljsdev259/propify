@@ -91,21 +91,27 @@
                                 </el-date-picker>
                             </el-form-item>
                             <el-form-item v-else-if="filter.type === filterTypes.daterange">
-                                <el-date-picker
-                                    v-model="dateRange"
-                                    type="daterange"
-                                    align="right"
-                                    unlink-panels
-                                    :range-separator="$t('general.date_range.range_separator')"
-                                    :start-placeholder="filter.name_from"
-                                    :end-placeholder="filter.name_to"
-                                    format="dd.MM.yyyy"
-                                    value-format="dd.MM.yyyy"
-                                    :picker-options="pickerOptions"
-                                    popper-class="custom-picker-panel"
-                                    @change="dateRangeChanged(filter)"
-                                >
-                                </el-date-picker>
+                                <el-button v-if="!visibleFilterDateRange"
+                                           @click="visibleFilterDateRange = true"
+                                           class="filter-button">{{$t('models.request.closed_date')}}</el-button>
+                                <transition name="fade">
+                                    <el-date-picker
+                                            v-if="visibleFilterDateRange"
+                                            v-model="dateRange"
+                                            type="daterange"
+                                            align="right"
+                                            unlink-panels
+                                            :range-separator="$t('general.date_range.range_separator')"
+                                            :start-placeholder="''"
+                                            :end-placeholder="''"
+                                            format="dd.MM.yyyy"
+                                            value-format="dd.MM.yyyy"
+                                            :picker-options="pickerOptions"
+                                            popper-class="custom-picker-panel"
+                                            @change="dateRangeChanged(filter)"
+                                    >
+                                    </el-date-picker>
+                                </transition>
                             </el-form-item>
                              <el-form-item v-else-if="filter.type === filterTypes.toggle">
                                 <el-button
@@ -284,7 +290,7 @@
                             <span v-if="scope.row[column.prop].length > 3" class="internal-quarter internal-quarter_count">+{{scope.row[column.prop].length - 3}}</span>
                         </div>
                     </div>
-                    <div v-else-if="column.withStatusSign">
+                    <div v-else-if="column.withStatusSign" class="status-cell">
                         <el-tooltip
                             :content="`${$t(`models.unit.status.${$constants.relations.status[scope.row[column.prop]]}`)}`"
                             class="item"
@@ -293,13 +299,13 @@
                             <avatar
                                 :background-color="$constants.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
-                                :size="30"
+                                :size="14"
                                 :style="{'z-index': (800 - index)}"
                                 :username="''"
                             />
                         </el-tooltip>
                     </div>
-                    <div v-else-if="column.withPMStatusSign">
+                    <div v-else-if="column.withPMStatusSign" class="status-cell">
                         <el-tooltip
                             :content="`${$t(`general.status.${$constants.propertyManager.status[scope.row[column.prop]]}`)}`"
                             class="item"
@@ -308,14 +314,15 @@
                             <avatar
                                 :background-color="$constants.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
-                                :size="30"
+                                :size="14"
                                 :style="{'z-index': (800 - index)}"
                                 :username="''"
                             />
                         </el-tooltip>
                     </div>
-                    <div v-else-if="column.withResidentStatusSign">
+                    <div v-else-if="column.withResidentStatusSign" class="status-cell">
                         <el-tooltip
+                            style="display: inline-flex;"
                             :content="`${$t(`models.resident.relation.status.${$constants.relations.status[scope.row[column.prop]]}`)}`"
                             class="item"
                             effect="light" placement="top"
@@ -323,7 +330,7 @@
                             <avatar
                                 :background-color="$constants.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
-                                :size="30"
+                                :size="14"
                                 :style="{'z-index': (800 - index)}"
                                 :username="''"
                             />
@@ -361,7 +368,7 @@
                         </div>
                         <span>{{scope.row.title}}</span>
                     </div>
-                    <div v-else-if="column.withRequestStatusSign">
+                    <div v-else-if="column.withRequestStatusSign" class="status-cell">
                         <el-tooltip
                             :content="`${$t(`models.request.status.${$constants.requests.status[scope.row[column.prop]]}`)}`"
                             class="item"
@@ -370,7 +377,7 @@
                             <avatar
                                 :background-color="$constants.requests.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
-                                :size="30"
+                                :size="14"
                                 :style="{'z-index': (800 - index)}"
                                 :username="''"
                             />
@@ -745,6 +752,7 @@
                 remoteLoading: false,
                 isVisible: false,
                 savedFilterSearch: '',
+                visibleFilterDateRange: false,
             }
         },
         computed: {
@@ -1798,6 +1806,21 @@
 </style>
 
 <style lang="scss">
+    .el-picker-panel [slot=sidebar],
+    .el-picker-panel__sidebar {
+        width: 140px;
+    }
+    .el-picker-panel [slot=sidebar]+.el-picker-panel__body,
+    .el-picker-panel__sidebar+.el-picker-panel__body {
+        margin-left: 140px;
+    }
+
+    .status-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .list-table {
         .el-checkbox__input {
             .el-checkbox__inner {

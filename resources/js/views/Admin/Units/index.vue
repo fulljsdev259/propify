@@ -100,6 +100,8 @@
                     sortBy: 'name',
                 }, {
                     label: 'general.filters.status',
+                    width: 90,
+                    align: 'center',
                     withStatusSign: true,
                     prop: 'status',
                 }, {
