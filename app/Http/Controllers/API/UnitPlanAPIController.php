@@ -37,7 +37,8 @@ class UnitPlanAPIController extends AppBaseController
         $unitPlans = $this
             ->unitRepository
             ->findWithoutFail($unitId)
-            ->plans;
+            ->plans
+            ->load('media');
 
         $response = (new UnitPlanTransformer)->transformCollection($unitPlans);
 
@@ -63,6 +64,10 @@ class UnitPlanAPIController extends AppBaseController
             return $this->sendError(__('models.unit_plans.errors.create') . $e->getMessage());
         }
 
+        $unitPlan
+            ->addMedia($request['media'])
+            ->toMediaCollection('unit_plan', 'units_plans');
+
         $response = (new UnitPlanTransformer)->transform($unitPlan);
 
         return $this->sendResponse($response, __('models.unit_plans.saved'));
@@ -71,12 +76,20 @@ class UnitPlanAPIController extends AppBaseController
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $unitId
+     * @param int $planId
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $unitId, int $planId)
     {
-        //
+        $unitPlan = $this
+            ->unitPlanRepository
+            ->findWithoutFail($planId)
+            ->load(['media']);
+
+        $response = (new UnitPlanTransformer)->transform($unitPlan);
+
+        return $this->sendResponse($response, "Unit retrieved successfully");
     }
 
     /**
@@ -93,12 +106,19 @@ class UnitPlanAPIController extends AppBaseController
 
         $unitPlan = $this
             ->unitPlanRepository
-            ->findWithoutFail($planId);
+            ->findWithoutFail($planId)
+            ->load('media');
 
         try {
             $unitPlan->update($request->all());
         } catch (\Exception $e) {
             return $this->sendError(__('models.unit_plans.errors.update') . $e->getMessage());
+        }
+
+        if ($request->has('media')) {
+            $unitPlan
+                ->addMedia($request['media'])
+                ->toMediaCollection('unit_plan', 'units_plans');
         }
 
         $response = (new UnitPlanTransformer)->transform($unitPlan);

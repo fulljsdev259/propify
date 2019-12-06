@@ -21,7 +21,7 @@ class UnitPlanTransformer extends BaseTransformer
      */
     public function transform(UnitPlan $model)
     {
-        return [
+        $response = [
             'id' => (int)$model->id,
             'name' => $model->name,
             'description' => $model->description,
@@ -29,5 +29,11 @@ class UnitPlanTransformer extends BaseTransformer
             'unit_id' => (int)$model->unit_id,
             'created_at' => $model->created_at,
         ];
+
+        if ($model->relationLoaded('media')) {
+            $response['media'] = (new MediaTransformer())->transformCollection($model->media);
+        }
+
+        return $response;
     }
 }

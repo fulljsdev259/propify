@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\HasMediaTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 
 class UnitPlan extends Model implements HasMedia
@@ -43,6 +44,9 @@ class UnitPlan extends Model implements HasMedia
     {
         $this
             ->addMediaCollection('unit_plan')
-            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'application/pdf']);
+            ->acceptsFile(function (File $file) {
+                return in_array($file->mimeType, ['image/jpeg', 'image/png', 'application/pdf']);
+            })
+            ->singleFile();
     }
 }

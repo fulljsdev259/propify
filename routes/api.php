@@ -138,9 +138,10 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     // Plans
     Route::get('/units/{unitId}/plans', 'UnitPlanAPIController@index')->name('unit_plans.index');
     Route::post('/units/{unitId}/plans', 'UnitPlanAPIController@store')->name('unit_plans.store');
+    Route::get('/units/{unitId}/plans/{planId}', 'UnitPlanAPIController@show')->name('unit_plans.show');
     Route::put('/units/{unitId}/plans/{planId}', 'UnitPlanAPIController@update')->name('unit_plans.update');
     Route::delete('/units/{unitId}/plans/{planId}', 'UnitPlanAPIController@destroy')->name('unit_plans.destroy');
-    // Route::post('/units/{id}/plans/media', 'UploadUnitPlanAPIController@store')->name('upload_unit_plans.store');
+    // Route::post('/units/{unitId}/plans/{planId}/media', 'UploadUnitPlanAPIController@store')->name('upload_unit_plans.store');
 
     // @TODO delete
     Route::post('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@assignResident');
@@ -288,7 +289,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 //    Route::post('listings/{id}/publish', 'ListingAPIController@publish')->name('listings.publish');
 
 
-
     // Property Manager
     Route::get('propertyManagers', 'PropertyManagerAPIController@index')->name('propertyManagers');
     Route::get('propertyManagers/{id}', 'PropertyManagerAPIController@show')->name('propertyManagers.show');
@@ -307,7 +307,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     Route::post('/propertyManagers/{id}/buildings/{building_id}', 'PropertyManagerAPIController@assignBuilding');
     Route::delete('/propertyManagers/{id}/buildings/{building_id}', 'PropertyManagerAPIController@unassignBuilding');
-
 
 
     // Templates
