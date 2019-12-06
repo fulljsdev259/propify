@@ -132,6 +132,7 @@ class UnitPlanAPIController extends AppBaseController
         if ($request->has('media')) {
             $unitPlan
                 ->addMedia($request['media'])
+                ->usingFileName('unit_plan_' . $unitPlan->id)
                 ->toMediaCollection('unit_plan', 'units_plans');
         }
 
