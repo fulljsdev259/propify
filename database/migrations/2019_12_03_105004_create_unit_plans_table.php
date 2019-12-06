@@ -17,7 +17,7 @@ class CreateUnitPlansTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->text('description');
-            $table->boolean('primary')->default(0);
+            $table->boolean('primary')->default(false);
             $table->unsignedInteger('unit_id')->nullable();
             $table->timestamps();
         });

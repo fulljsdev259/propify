@@ -64,9 +64,13 @@ class UnitPlanAPIController extends AppBaseController
             return $this->sendError(__('models.unit_plans.errors.create') . $e->getMessage());
         }
 
-        $unitPlan
-            ->addMedia($request['media'])
-            ->toMediaCollection('unit_plan', 'units_plans');
+        if ($request->has('media')) {
+            $unitPlan
+                ->addMedia($request['media'])
+                ->toMediaCollection('unit_plan', 'units_plans');
+        }
+
+        $unitPlan->load('media');
 
         $response = (new UnitPlanTransformer)->transform($unitPlan);
 
@@ -89,7 +93,7 @@ class UnitPlanAPIController extends AppBaseController
 
         $response = (new UnitPlanTransformer)->transform($unitPlan);
 
-        return $this->sendResponse($response, "Unit retrieved successfully");
+        return $this->sendResponse($response, "Unit's plan retrieved successfully");
     }
 
     /**
@@ -106,8 +110,7 @@ class UnitPlanAPIController extends AppBaseController
 
         $unitPlan = $this
             ->unitPlanRepository
-            ->findWithoutFail($planId)
-            ->load('media');
+            ->findWithoutFail($planId);
 
         try {
             $unitPlan->update($request->all());
@@ -120,6 +123,8 @@ class UnitPlanAPIController extends AppBaseController
                 ->addMedia($request['media'])
                 ->toMediaCollection('unit_plan', 'units_plans');
         }
+
+        $unitPlan->load('media');
 
         $response = (new UnitPlanTransformer)->transform($unitPlan);
 

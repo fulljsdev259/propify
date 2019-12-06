@@ -141,7 +141,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/units/{unitId}/plans/{planId}', 'UnitPlanAPIController@show')->name('unit_plans.show');
     Route::put('/units/{unitId}/plans/{planId}', 'UnitPlanAPIController@update')->name('unit_plans.update');
     Route::delete('/units/{unitId}/plans/{planId}', 'UnitPlanAPIController@destroy')->name('unit_plans.destroy');
-    // Route::post('/units/{unitId}/plans/{planId}/media', 'UploadUnitPlanAPIController@store')->name('upload_unit_plans.store');
 
     // @TODO delete
     Route::post('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@assignResident');

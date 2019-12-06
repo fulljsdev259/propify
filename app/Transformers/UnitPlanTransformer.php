@@ -25,7 +25,7 @@ class UnitPlanTransformer extends BaseTransformer
             'id' => (int)$model->id,
             'name' => $model->name,
             'description' => $model->description,
-            'primary' => $model->primary,
+            'primary' => (boolean)$model->primary,
             'unit_id' => (int)$model->unit_id,
             'created_at' => $model->created_at,
         ];

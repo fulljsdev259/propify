@@ -32,7 +32,7 @@ class UnitPlan extends Model implements HasMedia
     ];
 
     protected $casts = [
-        'primary' => 'bool',
+        'primary' => 'boolean',
     ];
 
     public function unit(): BelongsTo
