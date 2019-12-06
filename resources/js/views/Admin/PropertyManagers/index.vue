@@ -144,7 +144,8 @@
                     withPMStatusSign: true,
                     prop: 'status',
                     sortBy: 'status',
-                    width: 130
+                    width: 118,
+                    align: 'center',
                 }, /*{
                     label: 'general.name',
                     prop: 'user.name'

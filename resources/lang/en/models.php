@@ -586,7 +586,7 @@ return [
         'images' => 'Photos and documents',
         'no_images_message' => 'No files uploaded',
         'request_details' => 'Request details',
-        'internal_notices' => 'Internal notices',
+        'internal_chat' => 'Internal chat',
         'status_changed' => 'Status changed',
         'priority_changed' => 'Priority changed',
         'assignment' => 'Managers/service providers',        
