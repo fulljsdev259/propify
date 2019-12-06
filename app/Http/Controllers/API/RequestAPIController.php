@@ -171,14 +171,6 @@ class RequestAPIController extends AppBaseController
 //                        ->groupBy('request_assignees.request_id')
                         ->orderBy('request_assignees.id', 'desc');
                 },
-                'users' => function ($q) {
-                    $q->select('users.id', 'users.avatar', 'users.name')
-                        ->with('roles:roles.id,name')
-                        ->withPivot('type')
-                        ->groupBy('request_assignees.type')
-                        ->groupBy('request_assignees.request_id')
-                        ->orderBy('request_assignees.id', 'desc');
-                },
                 'creator'
             ])->paginate($perPage);
 
@@ -261,7 +253,6 @@ class RequestAPIController extends AppBaseController
                 $q->with('quarter.address', 'unit');
             },
             'comments.user',
-            'users',
             'creator'
         ]);
         $response = (new RequestTransformer)->transform($request);
@@ -320,7 +311,6 @@ class RequestAPIController extends AppBaseController
         $request->load([
             'media',
             'resident.user',
-            'users',
             'comments.user',
             'resident.relations' => function ($q) {
                 $q->with('quarter.address', 'unit');
@@ -404,7 +394,6 @@ class RequestAPIController extends AppBaseController
             'relation' => function ($q) {
                 $q->with('quarter.address', 'unit');
             },
-            'users',
             'resident.relations' => function ($q) {
                 $q->with('quarter.address', 'unit');
             },
@@ -534,7 +523,6 @@ class RequestAPIController extends AppBaseController
                 'relation' => function ($q) {
                     $q->with('quarter.address', 'unit');
                 },
-                'users',
                 'resident.relations' => function ($q) {
                     $q->with('quarter.address', 'unit');
                 },
@@ -855,8 +843,11 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->providers()->sync([$pid => ['created_at' => now()]], false);
-        $request->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
+        $request->load([
+            'media',
+            'resident.user',
+            'comments.user',
+        ]);
 
         foreach ($request->managers as $manager) {
             if ($manager->user) {
@@ -918,8 +909,11 @@ class RequestAPIController extends AppBaseController
         // @TODO check admin or super admin
 
         $request->users()->sync([$uid => ['created_at' => now()]], false);
-        $request->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
+        $request->load([
+            'media',
+            'resident.user',
+            'comments.user',
+        ]);
 
         foreach ($request->providers as $p) {
             $request->conversationFor($p->user, $u);
@@ -978,8 +972,11 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->managers()->sync([$pmid => ['created_at' => now()]], false);
-        $request->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
+        $request->load([
+            'media',
+            'resident.user',
+            'comments.user',
+        ]);
 
         foreach ($request->providers as $p) {
             $request->conversationFor($p->user, $manager->user);
@@ -1084,8 +1081,12 @@ class RequestAPIController extends AppBaseController
 
         $sr->tags()->sync($tag, false);
         $sr->touch();
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
+        $sr->load([
+            'media',
+            'resident.user',
+            'comments.user',
+            'tags'
+        ]);
 
         return $this->sendResponse($sr, __('general.attached.tag'));
     }
@@ -1170,8 +1171,12 @@ class RequestAPIController extends AppBaseController
             $sr->touch();
         }
 
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
+        $sr->load([
+            'media',
+            'resident.user',
+            'comments.user',
+            'tags'
+        ]);
 
         return $this->sendResponse($sr, __('general.attached.tag'));
     }
@@ -1248,8 +1253,12 @@ class RequestAPIController extends AppBaseController
             $sr->touch();
         }
 
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
+        $sr->load([
+            'media',
+            'resident.user',
+            'comments.user',
+            'tags'
+        ]);
 
         return $this->sendResponse($sr, __('general.detached.tag'));
     }
@@ -1302,8 +1311,12 @@ class RequestAPIController extends AppBaseController
 
         $sr->tags()->detach($tag);
         $sr->touch();
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
+        $sr->load([
+            'media',
+            'resident.user',
+            'comments.user',
+            'tags'
+        ]);
 
         return $this->sendResponse($sr, __('general.detached.tag'));
     }
