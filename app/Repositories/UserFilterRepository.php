@@ -16,6 +16,13 @@ use App\Models\UserFilter;
 class UserFilterRepository extends BaseRepository
 {
     /**
+     * @var array
+     */
+    protected $fieldSearchable = [
+        'title' => 'like',
+    ];
+
+    /**
      * Configure the Model
      **/
     public function model()
