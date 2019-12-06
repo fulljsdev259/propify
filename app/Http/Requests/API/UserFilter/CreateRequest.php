@@ -24,7 +24,6 @@ class CreateRequest extends BaseRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|integer|exists:users,id',
             'title' => 'required|string',
             'menu' => 'required|string',
             'options_url' => 'required|string',

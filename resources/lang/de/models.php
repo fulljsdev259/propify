@@ -205,7 +205,7 @@ return [
         'building_format' => 'Projektnr.',
         'building_no' => 'Objektnr.',
 	    'building_number'=>'Objektnummer',
-        'active_residents_count' => 'Wohnungen',
+        'count_of_apartments_units' => 'Wohnungen',
         'request_status' => 'Anliegen-Status',
         'type' => 'Objektart',
         'city' => 'Objekort',
@@ -223,7 +223,7 @@ return [
         'managers' => 'Mitarbeiter',
         'house_num' => 'Nr.',
         'assign_managers' => 'Mitarbeiter zuweisen',
-	    'assign_persons'=> 'Verantwortliche zuweisen',
+	    'assign_persons'=> 'Verantwortliche Person zuweisen',
         'unassign_manager' => 'Entfernen',
         'managers_assigned' => 'Mitarbeiter zugewiesen',
         'occupied_units' => 'Vermietete Einheiten',
@@ -301,8 +301,19 @@ return [
             'underground_parking_space_cs' => 'Tiefgaragenplatz mit Ladestation E-Mobil',
             'underground_parking_space_sr' => 'Tiefgaragenplätze mit Abstellraum',
             'double_parking' => 'Doppelparkplatz',
-            'scheduling_parking' => 'Disponibelraum'
-
+            'scheduling_parking' => 'Disponibelraum',
+            'attic' => 'Attika',
+            'facility' => 'Anlage',
+            'studio' => 'Atelier',
+            'office' => 'Büro',
+            'bl' => 'BL',
+            'visitor_parking' => 'Besucherparkplatz',
+            'penthouse' => 'Dachwohnung',
+            'efh' => 'EFH',
+            'holidays' => 'Ferien',
+            'loft' => 'Loft',
+            'mfh' => 'MFH',
+            'XL_underground_parking_space' => 'XL-Tiefgaragenplatz'
         ],
         'errors' => [
             'not_found' => "Einheit nicht gefunden",
@@ -341,7 +352,7 @@ return [
         'notify_email_description' => "Mit dieser Option können Sie die E-Mail-Benachrichtigung aktivieren.",
         'announcement_to' => 'Ankündigung',
         'comments' => 'Kommentare',
-        'images' => 'Fotos und Dokumente',
+        'images' => 'Dokumente',
         'attachments' => 'Anhänge',
         'category_default_image_label' => 'Möchten Sie dieses Bild verwenden?',
         'placeholders' => [            
@@ -493,7 +504,7 @@ return [
                 'title' => 'Workflow benennen',
                 'category' => 'Kategorie auswählen',
                 'building' => 'Objekt auswählen',
-                'to_user' => 'Verantwortlichen auswählen',
+                'to_user' => 'Verantwortliche Person auswählen',
                 'cc_user' => 'CC auswählen',
             ],
             'tooltips' => [
@@ -508,8 +519,8 @@ return [
         'created' => 'Erstellt',
         'saved' => 'Anfrage gespeichert',
         'prop_title' => 'Titel',
-        'category' => 'Anfrage-Typ',
-        'edit_title' => 'Anfrage bearbeiten',
+        'category' => 'Kategorie',
+        'edit_title' => 'Anliegen bearbeiten',
         'add_title' => 'Hinzufügen',
         'mass_edit' => [
             'label' => 'Massenbearbeitung',
@@ -546,7 +557,7 @@ return [
         'solved_date' => 'Erledigt Datum',
         'closed_date' => 'Erledigt am',
         'service' => 'Dienstleister',
-        'created_by' => 'Erstellt durch',
+        'created_by' => 'Erstellt von',
         'is_public' => 'Öffentlich machen',
         'public_title' => 'Anfrage öffentlich machen',
         'public_desc' => 'Sie können diese Anfrage als öffentlich markieren und für weitere Personen in der Liegenschaft oder innerhalb des Projekts sichtbar machen.',
@@ -555,6 +566,9 @@ return [
         'send_notification_title' => 'Benachrichtigung der Bewohner',
         'send_notification_desc' => 'Sie können die betroffenen Bewohner per E-Mail über diese öffentliche Anfrage informieren.',
         'comments' => 'Mieter-Chat',
+        'or' => 'oder',
+        'assign_me' => 'Mir zuweisen',
+        'name_or_email' => 'Name oder E-Mail-Adresse',
         'assigned_to' => 'Zuständig',
         'assign_providers' => 'Zuweisen',
         'assign_managers' => 'Zuweisen',
@@ -570,13 +584,13 @@ return [
         'open_conversation' => 'Offen',
         'other_recipients' => 'Weitere Empfänger',
         'recipients' => 'Empfänger',
-        'images' => 'Fotos und Dokumente',
+        'images' => 'Dokumente',
         'no_images_message' => 'Bislang keine Dateien hochgeladen',
         'request_details' => 'Beschreibung',
         'internal_notices' => 'Interne Notizen',
         'status_changed' => 'Status wurde geändert',
         'priority_changed' => 'Priorität wurde geändert',
-        'assignment' => 'Zuständigkeit',        
+        'assignment' => 'Zuständig',        
         'active_reminder_switcher' => 'Erinnerung',
         'days_left' => 'Wie viele Tage vorher?',
         'days_left_due_date' => 'Verbleibende Tage vor Fälligkeitsdatum',
@@ -585,6 +599,7 @@ return [
         'sort' => 'Sortierung',
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',
+        'save_filter' => 'Speicherfilter',
         'category_list' => [
             'general' => ' Allg. Anliegen',
             'malfunction' => 'Fehlfunktion',
@@ -592,13 +607,13 @@ return [
             'open_issue' => 'Pendenz',
         ],
         'sub_category' => [
-            'inside_of_apartment' => 'Innerhalb der Wohnung',
-            'outside_of_apartment' => 'Ausserhalb der Wohnung',
+            'inside_of_apartment' => 'innerhalb der Wohnung',
+            'outside_of_apartment' => 'ausserhalb der Wohnung',
         ],
         'qualification_category' => [
-            'normal_wear' => 'Normaler Verschleiß',
+            'normal_wear' => 'Normal abgenutzt',
             'deficiency' => 'Mangel',
-            're_cleaning' => 'Nachreinigung',
+            're_cleaning' => 'Nachreinigen',
             'non_existent' => 'Nicht vorhanden',
             'okay' =>'Okay'
         ],
@@ -693,10 +708,10 @@ return [
             'range' => 'Bereich',
             'component' => 'Bauteil',
             'capture_phase' => 'Erfassungsphase',
-            'payer_percent' => 'Bewohneranteil in %',
+            'payer_percent' => 'Bewohneranteil',
             'payer_amount' => 'Betrag',
             'keywords' => 'Tags',
-            'qualification_category' => 'Qualifizierung'
+            'qualification_category' => 'Subkategorie'
         ],
         'placeholders' => [
             'category' => 'Kategorie wählen',
@@ -759,7 +774,7 @@ return [
             'blank_pdf'=>'Nach der Mängelerledigung bitte, das beiliegende Formular umgehend unterzeichnet der Bauleitung retournieren.',
             'address'=>'Objekt',
         ],
-        'pictures_of' => 'Fotos des Anliegens',
+        'pictures_of' => 'Dokumente des Anliegens',
         'go_to_building' => 'Zum Objekt gehen',
         'visible' => 'Sichtbar'
     ],
@@ -980,3 +995,4 @@ return [
         ]
     ],
 ];
+

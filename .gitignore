@@ -27,6 +27,7 @@ yarn-error.log
 /public/resident
 /public/vendors*
 /public/*.js
+/public/*.map
 
 /resources/js/lang/i18n/de.js
 /resources/js/lang/i18n/en.js

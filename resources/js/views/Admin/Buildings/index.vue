@@ -2,7 +2,7 @@
     <div class="buildings list-view">
         <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
-                <list-check-box />
+                <list-check-box @clicked="handleQuickFilterClick(true)" @unclicked="handleQuickFilterClick(false)"/>
             </template>
             <template v-if="$can($permissions.create.building)">
                 <el-button 
@@ -151,29 +151,34 @@
                 header: [{
                     label: 'models.building.building_format',
                     prop: 'internal_quarter_id',
+                    sortBy: 'internal_quarter_id',
                 }, {
                     label: 'models.building.building_no',
-                    prop: 'address.house_num'
+                    prop: 'address.house_num',
+                    sortBy: 'house_num',
                 }, {
                     label: 'models.building.type',
                     prop: 'types'
                 }, {
                     label: 'models.building.units',
-                    prop: 'units_count'
+                    prop: 'units_count',
+                    sortBy: 'units_count',
                 }, {
                     label: 'models.building.request_status',
                     withCounts: true,
                     width: 230,
-                    prop: 'request_count'
-                },  {
-                    label: 'models.building.active_residents_count',
+                    prop: 'request_count',
+                    sortBy: 'requests_count',
+                }, {
+                    label: 'models.building.count_of_apartments_units',
                     prop: 'count_of_apartments_units',
+                    sortBy: 'count_of_apartments_units',
                     align: 'center'
-                },{
+                }, {
                     label: 'general.filters.status',
                     withStatus: true,
                     prop: 'status'
-                },{
+                }, {
                     label: 'general.box_titles.managers',
                     withUsers: true,
                     prop: 'users',
@@ -228,15 +233,15 @@
                         name: this.$t('general.roles.manager'),
                         type: 'select',
                         key: 'user_ids',
+                        hidden: true,
                         data: this.roles
                     },{
-                        name: this.$t('general.filters.saved_filters'),
-                        type: 'select',
+                        name: this.$t('general.filters.more_filters'),
+                        type: 'toggle',
                         key: 'saved_filter',
-                        data: []
                     },{
                         name: this.$t('general.filters.my_filters'),
-                        type: 'select',
+                        type: 'popover',
                         key: 'my_filter',
                         data: []
                     }
@@ -259,6 +264,21 @@
         },
         methods: {
             ...mapActions(['getPropertyManagers', 'assignManagerToBuilding', 'deleteBuildingWithIds', 'checkUnitRequestWidthIds', 'getQuarters']),
+            
+            handleQuickFilterClick(checked) {
+                if(checked) {
+                    let building_ids = [];
+                    building_ids = this.selectedItems.map((item) => {
+                        return item.id;
+                    });
+                    localStorage.setItem('building_ids', JSON.stringify(building_ids));
+                } else {
+                    localStorage.setItem('building_ids', null);
+                }
+            },
+            selectionChanged(items) {
+                this.selectedItems = items;
+            },
             handleMenuClick(command) {
                 if(command == 'delete')
                     this.batchDeleteBuilding();
@@ -431,6 +451,8 @@
             },            
         },
         async created() {
+            localStorage.setItem('building_ids', null);
+
             this.isLoadingFilters = true;
             this.getRoles();
             this.getTypes();
@@ -438,6 +460,7 @@
             this.isLoadingFilters = false;
             this.quarters = await this.fetchRemoteQuarters();
             this.propertyManagers = await this.fetchRemotePropertyManagers();
+            
         }
     };
 </script>

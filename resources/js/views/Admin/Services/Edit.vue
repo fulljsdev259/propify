@@ -13,7 +13,14 @@
                         <el-row class="last-form-row" :gutter="20">
                             <el-col :md="12" class='service_avatar'>
                                 <div class="image-container" :class="{'hide-action-icon': !editMode}">
+                                    <img v-if="!editMode" 
+                                        :src="!avatar.length && user.avatar
+                                                ? '/'+user.avatar_variations[3]
+                                                : model.avatar==null
+                                                    ? '/images/company.png'
+                                                    : ''"/>
                                     <cropper
+                                        v-if="editMode"
                                         :boundary="{
                                             width: 150,
                                             height: 150
@@ -231,7 +238,7 @@
 <!--                <raw-grid-statistics-card :cols="8" :data="statistics.raw"/>-->
                <card class="mt15" :header="$t('general.box_titles.buildings_and_quarters')">
             
-                    <assignment-by-type
+                    <!-- <assignment-by-type
                         :resetToAssignList="resetToAssignList"
                         :assignmentType.sync="assignmentType"
                         :toAssign.sync="toAssign"
@@ -240,7 +247,7 @@
                         :toAssignList="toAssignList"
                         :remoteLoading="remoteLoading"
                         :remoteSearch="remoteSearchBuildings"
-                    />
+                    /> -->
                     <relation-list
                         :actions="assignmentsActions"
                         :columns="assignmentsColumns"
@@ -314,16 +321,15 @@
         data() {
             return {
                 requestColumns: [{
-                    type: 'requestResidentAvatar',
-                    width: 90,
-                    prop: 'resident',
-                    label: 'general.resident'
+                    type: 'requestIcon',
+                    label: 'models.request.prop_title',
+                    width: 60,
                 }, {
                     type: 'requestTitleWithDesc',
                     label: 'models.request.prop_title'
                 }, {
                     type: 'requestStatus',
-                    width: 120,
+                    width: 50,
                     label: 'models.request.status.label'
                 }],
                 requestActions: [/*{
@@ -344,7 +350,7 @@
                     label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
-                assignmentsActions: [{
+                assignmentsActions: [/*{
                     width: 70,
                     buttons: [{
                         title: 'general.unassign',
@@ -353,7 +359,7 @@
                         onClick: this.notifyUnassignment,
                         tooltipMode: true,
                     }]
-                }],
+                }*/],
                 editMode: false,
                 editName: false,
                 visibleDialog: false,
@@ -369,20 +375,15 @@
                 }
                 return result;
             },
-            serviceTitle() {
-                let result = '';
-                this.titles.forEach((item) => {
-                    if(item.value === this.model.title)
-                        result = item.name;
-                });
-                return result;
-            },
             serviceState() {
                 let result = '';
-                this.states.forEach((item) => {
-                    if(item.id === this.model.address.state_id)
-                        result = item.name;
+                result = this.states.find((state) => {
+                    return state.id === this.model.address.state_id;
                 });
+                if(result === undefined)
+                    result = '';
+                else   
+                    result = result.name;
                 return result;
             }
         },
@@ -623,6 +624,12 @@
             .image-container {
                 position: relative;
                 display: inline-block;
+
+                img {
+                    border-radius: 50%;
+                    width: 120px;
+                    height: 120px;
+                }
                 
                 .edit-icon {
                     position: absolute;

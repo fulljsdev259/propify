@@ -14,7 +14,16 @@
                             <el-row :gutter="20">
                                 <el-col :span="12" class="propertymanager_avatar">
                                     <div class="image-container" :class="{'hide-action-icon': !editMode}">
+                                        <img v-if="!editMode" 
+                                            :src="!avatar.length && user.avatar
+                                                    ? '/'+user.avatar_variations[3]
+                                                    : model.avatar==null && model.title == 'mr'
+                                                        ? '/images/man.png'
+                                                        : model.avatar==null && model.title == 'mrs'
+                                                            ? '/images/woman.png'
+                                                            : ''"/>
                                         <cropper
+                                            v-if="editMode"
                                             :boundary="{
                                                 width: 150,
                                                 height: 150
@@ -43,7 +52,7 @@
                                                 :key="title"
                                                 :label="$t(`general.salutation_option.${title}`)"
                                                 :value="title"
-                                                v-for="title in titles">
+                                                v-for="title in $constants.propertyManager.title">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
@@ -230,7 +239,7 @@
                         </el-card>
 
                         <card class="mt15" :header="$t('general.box_titles.buildings_and_quarters')">
-                            <assignment-by-type
+                            <!-- <assignment-by-type
                                     :resetToAssignList="resetToAssignList"
                                     :assignmentType.sync="assignmentType"
                                     :toAssign.sync="toAssign"
@@ -239,7 +248,7 @@
                                     :toAssignList="toAssignList"
                                     :remoteLoading="remoteLoading"
                                     :remoteSearch="remoteSearchBuildings"
-                            />
+                            /> -->
                             <relation-list
                                     :actions="assignmentsActions"
                                     :columns="assignmentsColumns"
@@ -252,7 +261,7 @@
                         </card>
                     </el-col>
                     <el-col :md="12">
-                        <raw-grid-statistics-card :cols="8" :data="statistics.raw"/>
+                        <!-- <raw-grid-statistics-card :cols="8" :data="statistics.raw"/> -->
 
                         <card class="mt15" :header="$t('general.requests')">
                             <relation-list
@@ -316,17 +325,21 @@
         data() {
             return {
                 activeTab: "details",
-                requestColumns: [{
+                requestColumns: [/*{
                     type: 'requestResidentAvatar',
                     width: 90,
                     prop: 'resident',
                     label: 'general.resident'
+                },*/{
+                    type: 'requestIcon',
+                    label: 'models.request.prop_title',
+                    width: 60,
                 }, {
                     type: 'requestTitleWithDesc',
                     label: 'models.request.prop_title'
                 }, {
                     type: 'requestStatus',
-                    width: 120,
+                    width: 50,
                     label: 'models.request.status.label'
                 }],
                 requestActions: [/*{
@@ -346,7 +359,7 @@
                     label: 'general.assignment_types.label',
                     i18n: this.translateType
                 }],
-                assignmentsActions: [{
+                assignmentsActions: [/*{
                     width: 70,
                     buttons: [{
                         title: 'general.unassign',
@@ -355,7 +368,7 @@
                         tooltipMode: true,
                         icon: 'el-icon-close',                
                     }]
-                }],
+                }*/],
                 editMode: false,
                 editName: false,
                 visibleDialog: false,
@@ -424,18 +437,14 @@
             },
             propertyManagerStatus() {
                 let result = '';
-                for(let item in this.$constants.propertyManager.status) {
-                    if(item == this.model.status)
-                        result = this.$t(`general.status.${this.$constants.propertyManager.status[item]}`);
-                }
+                if(this.$constants.propertyManager.status.hasOwnProperty(this.model.status))
+                        result = this.$t(`general.status.${this.$constants.propertyManager.status[this.model.status]}`);
                 return result;
             },
             propertyManagerType() {
                 let result = '';
-                for(let item in this.$constants.propertyManager.type) {
-                    if(item == this.model.type)
-                        result = this.$t(`general.roles.${this.$constants.propertyManager.type[item]}`);
-                }
+                if(this.$constants.propertyManager.type.hasOwnProperty(this.model.type))
+                        result = this.$t(`general.roles.${this.$constants.propertyManager.type[this.model.type]}`);
                 return result;
             }
         }
@@ -604,6 +613,12 @@
             .image-container {
                 position: relative;
                 display: inline-block;
+                
+                img {
+                    border-radius: 50%;
+                    width: 120px;
+                    height: 120px;
+                }
                 
                 .edit-icon {
                     position: absolute;

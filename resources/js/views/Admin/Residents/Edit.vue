@@ -22,8 +22,18 @@
                                         </el-tag>
                                     </div>
                                     <div class="image-container" :class="{'hide-action-icon': !editMode}">
+                                        <img v-if="!editMode" 
+                                            :src="!avatar.length && user.avatar
+                                                    ? '/'+user.avatar_variations[3]
+                                                    : model.avatar==null && model.title == 'mr'
+                                                        ? '/images/man.png'
+                                                        : model.avatar==null && model.title == 'mrs'
+                                                            ? '/images/woman.png'
+                                                            : model.avatar==null && model.title == 'company'
+                                                                ? '/images/company.png'
+                                                                : ''"/>
                                         <cropper
-                                            v-if="model.title"
+                                            v-if="model.title && editMode"
                                             :boundary="{
                                                 width: 150,
                                                 height: 160
@@ -47,6 +57,18 @@
                                             :showCamera="model.avatar==null"
                                             @cropped="cropped"/>
                                     </div>
+                                     <el-form-item v-if="editMode" :rules="validationRules.title"
+                                              prop="title"
+                                              class="label-block salutation-select">
+                                        <el-select :disabled="!editMode" :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.title">
+                                            <el-option
+                                                    :key="title.value"
+                                                    :label="title.name"
+                                                    :value="title.value"
+                                                    v-for="title in titles">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
                                     <div 
                                         v-if="!editName" 
                                         class="first_name"
@@ -84,7 +106,7 @@
                                 <el-col :span="12">
                                     <div v-if="!editMode" class="user-info-item">
                                         <span>{{ $t('models.resident.mobile_phone') }}</span>
-                                        <span>+{{ model.mobile_phone }}</span>
+                                        <span>{{ model.mobile_phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('models.resident.mobile_phone')" prop="mobile_phone">
                                         <el-input autocomplete="off" type="text"
@@ -92,7 +114,7 @@
                                     </el-form-item>
                                     <div v-if="!editMode" class="user-info-item">
                                         <span>{{ $t('models.resident.private_phone') }}</span>
-                                        <span>+{{ model.private_phone }}</span>
+                                        <span>{{ model.private_phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('models.resident.private_phone')" prop="private_phone">
                                         <el-input autocomplete="off" type="text"
@@ -123,7 +145,7 @@
                                     </el-form-item>
                                     <div v-if="!editMode" class="user-info-item">
                                         <span>{{ $t('models.resident.nation') }}</span>
-                                        <span>{{ state }}</span>
+                                        <span>{{ nation }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('models.resident.nation')"
                                                 prop="nation">
@@ -179,28 +201,28 @@
                 </el-col>
                 <el-col :span="12">
                     <el-tabs type="border-card" v-model="activeTab1">
-                        <el-tab-pane name="relation">
+                        <el-tab-pane name="relation" :class="{'view-mode': !editMode}">
                             <span slot="label">
                                 {{ $t('general.relations') }}
                                 <!-- <el-badge :value="auditCount" :max="99" class="admin-layout">{{ $t('general.audits') }}</el-badge> -->
                             </span>
                             <relation-list-table
-                                    :items="model.relations"
-                                    :hide-avatar="true"
-                                    @edit-relation="editRelation"
-                                    @delete-relation="deleteRelation">
+                                :items="model.relations"
+                                :hide-avatar="true"
+                                @edit-relation="editRelation"
+                                @delete-relation="deleteRelation">
                             </relation-list-table>
                             <el-button
+                                v-if="editMode"
                                 style="float:right" 
                                 type="primary" 
                                 @click="showRelationDialog" 
                                 icon="icon-plus" 
-                                v-if="editMode"
                                 size="mini" >
                                 {{ $t('models.resident.relation.add') }}
                             </el-button>
                         </el-tab-pane>
-                        <el-tab-pane name="files">
+                        <el-tab-pane name="files" :class="{'view-mode': !editMode}">
                             <span slot="label">
                                 {{ $t('general.box_titles.files') }}
                                 <!-- <el-badge :value="fileCount" :max="99" class="admin-layout">{{ $t('general.box_titles.files') }}</el-badge> -->
@@ -217,11 +239,11 @@
                                 @delete-media="deleteMedia"
                             />
                             <el-button 
+                                v-if="editMode"
                                 style="float:right" 
                                 type="primary" 
                                 @click="showMediaDialog" 
-                                icon="icon-plus" 
-                                v-if="editMode"
+                                icon="icon-plus"
                                 size="mini" >
                                 {{ $t('models.resident.relation.add_files') }}
                             </el-button>
@@ -233,6 +255,14 @@
                             <span slot="label">
                                 {{ $t('models.resident.request') }}
                             </span>
+                            <relation-list
+                                :actions="requestActions"
+                                :columns="requestColumns"
+                                :filterValue="model.id"
+                                fetchAction="getRequests"
+                                filter="resident_id"
+                                v-if="model && model.id"
+                            />
                         </el-tab-pane>
                         <el-tab-pane name="tab_3_2">
                             <span slot="label">
@@ -395,7 +425,20 @@
                         key: 'delete-media',
                         title: 'general.actions.delete'
                     }],
-                }]
+                }],
+                requestColumns: [{
+                    type: 'requestIcon',
+                    label: 'models.request.prop_title',
+                    width: 60,
+                }, {
+                    type: 'requestTitleWithDesc',
+                    label: 'models.request.prop_title'
+                }, {
+                    type: 'requestStatus',
+                    width: 50,
+                    label: 'models.request.status.label'
+                }],
+                requestActions: [],
             }
         },
         methods: { 
@@ -557,24 +600,24 @@
                 return this.constants.requests.status
             },
             status() {
-                let result = 'not_active';
-                let role = '', inactive_role = '';
+                let result = '';
+                let role = [];
+                
+                result = this.model.relations.find((relation) => {
+                    return relation.status === 1;
+                });
+                if(result === undefined)
+                    result = 'not_active';
+                else
+                    result = 'active';
+
                 this.model.relations.forEach((item) => {
                     let type = this.$t(`models.resident.relation.type.${this.constants.relations.type[item.type]}`);
-                    if(item.status == 1 && !role.includes(type)) {
-                        result = 'active';
-                        if(role != '')
-                            role = `${role}, `;
-                        role = `${role}${type}`;
-                    }
-                    if(!inactive_role.includes(type)) {
-                        if(inactive_role != '')
-                            inactive_role = `${inactive_role}, `;
-                        inactive_role = `${inactive_role}${type}`;
+                    if(!role.includes(type)) {
+                        role.push(type);
                     }
                 });
-                if(role === '')
-                    role = inactive_role;
+                role = role.join(', ');
                 return {
                     text: result,
                     index: result === 'active'?1:2,
@@ -584,13 +627,15 @@
             birthDate() {
                 return format(new Date(this.model.birth_date), 'DD.MM.YYYY')
             },
-            state() {
-                let result = 'None'
-                this.countries.forEach((country) => {
-                    if(country.id == this.model.nation) {
-                        result = country.name;
-                    }
+            nation() {
+                let result = '';
+                result = this.countries.find((country) => {
+                    return country.id === this.model.nation;
                 });
+                if(result === undefined)
+                    result = '';
+                else    
+                    result = result.name;
                 return result;
             }
             
@@ -668,8 +713,18 @@
             background-color: #f6f5f7;
             .el-col:first-child {
                 padding: 40px 10px 20px 40px !important;
+                
+                .image-container {
+                    margin-bottom: 15px;
+                }
+                .salutation-select {
+                    margin: 0 0 3px;
+                    & .el-input__inner {
+                        font-size: 20px;
+                        color: var(--color-text-primary);
+                    }
+                }
                 .first_name, .last_name {
-                    margin-top: 20px;
                     padding-left: 10px;
                     text-transform: capitalize;
                     font-size: 32px;
@@ -814,6 +869,12 @@
             .image-container {
                 position: relative;
                 display: inline-block;
+
+                img {
+                    border-radius: 50%;
+                    width: 120px;
+                    height: 120px;
+                }
                 
                 .edit-icon {
                     position: absolute;

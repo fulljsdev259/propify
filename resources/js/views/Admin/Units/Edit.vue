@@ -284,7 +284,7 @@
                             <div align="right" style="margin-bottom: 15px">
                                 <el-button @click="visiblePlanDrawer = true">show Plan Drawer</el-button>
                                 <el-button @click="demo.file = '/storage/floor-plan.jpg', visiblePlanModal = true">show IMG</el-button>
-                                <el-button @click="demo.file = '/storage/floor-plan-2.pdf', visiblePlanModal = true">show PDF</el-button>
+                                <el-button @click="demo.file = '/storage/Ansicht-1-6.pdf', visiblePlanModal = true">show PDF</el-button>
                             </div>
                         </el-tab-pane>
 
@@ -515,16 +515,15 @@
 
                 selectedFileCategory: 'house_rules',
                 requestColumns: [{
-                    type: 'requestResidentAvatar',
-                    width: 100,
-                    prop: 'resident',
-                    label: 'general.resident'
+                    type: 'requestIcon',
+                    label: 'models.request.prop_title',
+                    width: 60,
                 }, {
                     type: 'requestTitleWithDesc',
                     label: 'models.request.prop_title'
                 }, {
                     type: 'requestStatus',
-                    width: 120,
+                    width: 50,
                     label: 'models.request.status.label'
                 }],
                 requestActions: [/*{
@@ -542,7 +541,7 @@
                 }, {
                     type: 'residentNameAndType',
                     label: 'general.name',
-                    translate: this.translateResidentType
+                    translate: this.translateResidentTypes
                 }, {
                 //     prop: 'name',
                 //     label: 'general.name',
@@ -561,21 +560,21 @@
                     label: 'models.resident.status.label'
                 }],
                 assigneesActions: [
-                    {
-                    width: 70,
-                    buttons: [{
-                        title: 'models.resident.view',
-                        onClick: this.residentEditView,
-                        icon: 'el-icon-user',
-                        tooltipMode: true
-                    }/*, {
-                        title: 'general.unassign',
-                        tooltipMode: true,
-                        type: 'danger',
-                        icon: 'el-icon-close',
-                        onClick: this.notifyUnassignment
-                    }*/]
-                }
+                    // {
+                    // width: 70,
+                    // buttons: [{
+                    //     title: 'models.resident.view',
+                    //     onClick: this.residentEditView,
+                    //     icon: 'el-icon-user',
+                    //     tooltipMode: true
+                    // }, {
+                    //     title: 'general.unassign',
+                    //     tooltipMode: true,
+                    //     type: 'danger',
+                    //     icon: 'el-icon-close',
+                    //     onClick: this.notifyUnassignment
+                    // }]
+                    // }
                 ],
                 multiple: false,
                 visibleDrawer: false,
@@ -612,8 +611,11 @@
                     }
                 }
             },
-            translateResidentType(type) {
-                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
+            translateResidentTypes(types) {
+                if(types.constructor === Array){
+                    let translatedTypes = types.map(type => this.$t(`models.resident.relation.type.${this.$constants.relations.type[type]}`))
+                    return translatedTypes.join(', ')
+                }
             },
             toggleDrawer() {
                 this.visibleDrawer = true;

@@ -51,7 +51,7 @@
                                         <span>{{ $t('models.quarter.types.label') }}</span>
                                         <span>{{ quarterTypes }}</span>
                                     </div>
-                                    <el-form-item v-if="editMode" :label="$t('models.quarter.types.label')" :rules="validationRules.type"
+                                    <el-form-item v-if="editMode" :label="$t('models.quarter.types.label')" :rules="validationRules.types"
                                             class="label-block" 
                                             prop="types">
                                         <!-- <el-select
@@ -346,7 +346,7 @@
                         <el-tab-pane name="buildings">
                             <span slot="label">
                                 {{ $t('general.box_titles.buildings') }}
-                                <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge>
+                                <!-- <el-badge :value="buildingCount" :max="99" class="admin-layout">{{ $t('general.box_titles.buildings') }}</el-badge> -->
                             </span>
                             <relation-list
                                 :actions="buildingActions"
@@ -354,6 +354,7 @@
                                 :filterValue="model.id"
                                 fetchAction="getBuildings"
                                 filter="quarter_id"
+                                :show-header="true"
                                 v-if="model.id"
                             />
                         </el-tab-pane>
@@ -523,16 +524,15 @@
             return {
                 selectedFileCategory: 'house_rules',
                 requestColumns: [{
-                    type: 'requestResidentAvatar',
-                    width: 100,
-                    prop: 'resident',
-                    label: 'general.resident'
+                    type: 'requestIcon',
+                    label: 'models.request.prop_title',
+                    width: 60,
                 }, {
                     type: 'requestTitleWithDesc',
                     label: 'models.request.prop_title'
                 }, {
                     type: 'requestStatus',
-                    width: 120,
+                    width: 50,
                     label: 'models.request.status.label'
                 }],
                 requestActions: [/*{
@@ -574,20 +574,24 @@
                     i18n: this.translateAssignmentType
                 }*/],
                 buildingColumns: [{
-                    type: 'buildingName',
-                    prop: 'name',
-                    label: 'general.name'
+                    type: 'buildingHouseName',
+                    prop: 'address.house_num',
+                    label: 'models.building.building_no'
+                }, {
+                    type: 'buildingTypes',
+                    prop: 'types',
+                    label: 'models.building.type'
                 }, {
                     align: 'center',
-                    prop: 'units_count',
-                    label: 'dashboard.buildings.total_units'
-                }, {
+                    prop: 'count_of_apartments_units',
+                    label: 'models.building.count_of_apartments_units'
+                }/*, {
                     type: 'buildingResidentAvatars',
                     prop: 'residents',
                     propLimit: 2,
                     count: 'residents_count',
                     label: 'general.residents'
-                }],
+                }*/],
                 buildingActions: [/*{
                     width: 70,
                     buttons: [{

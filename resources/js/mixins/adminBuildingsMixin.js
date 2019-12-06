@@ -1,11 +1,10 @@
 import {mapGetters, mapActions} from 'vuex';
 import {displayError, displaySuccess} from 'helpers/messages';
-import ServicesTypes from 'mixins/methods/servicesTypes';
 import { EventBus } from '../event-bus.js';
 
 export default (config = {}) => {
     let mixin = {
-        mixins: [ServicesTypes],
+        mixins: [],
         props: {
             title: {
                 type: String,
@@ -148,12 +147,14 @@ export default (config = {}) => {
             },
             async getTypes() {
                 this.types = [];
-                for(let item in this.$constants.buildings.type) {
-                    this.types.push({
-                        id: item,
-                        name: this.$t(`models.quarter.types.${this.$constants.quarters.type[item]}`),
-                    })
-                }
+                this.types = Object.entries(this.$constants.buildings.type).map(([value, label]) => ({value: +value, name: this.$t(`models.quarter.types.${label}`)}))
+
+                // for(let item in this.$constants.buildings.type) {
+                //     this.types.push({
+                //         id: item,
+                //         name: this.$t(`models.quarter.types.${this.$constants.buildings.type[item]}`),
+                //     })
+                // }
             },
         },
         computed: {
@@ -161,7 +162,15 @@ export default (config = {}) => {
                 return this.$refs.form;
             },
             ...mapGetters(['states'])
-        }
+        },
+        watch: {
+            "$i18n.locale": {
+                immediate: true,
+                handler(val) {
+                    this.getTypes();
+                }
+            }
+        },
     };
 
     if (config.mode) {
@@ -217,7 +226,7 @@ export default (config = {}) => {
                 break;
             case 'edit':
                 mixin.methods = {
-                    submit() {
+                    submit(goToListing = false) {
                         return new Promise((resolve, reject) => {
                             this.form.validate(async valid => {
                                 if (!valid) {
@@ -253,6 +262,10 @@ export default (config = {}) => {
                                     resolve(false);
                                 } finally {
                                     this.loading.state = false;
+
+                                    if(goToListing) {
+                                        this.$refs.editActions.goToListing()
+                                    }
                                 }
                             });
                         });
@@ -296,7 +309,8 @@ export default (config = {}) => {
                         this.model.residents = this.model.residents.filter((item, index) => {
                             return this.model.residents.indexOf(item) === index
                         })
-  
+
+                          
 
                         if (this.model.quarter) {
                             this.$set(this.model, 'quarter_id', this.model.quarter.id);

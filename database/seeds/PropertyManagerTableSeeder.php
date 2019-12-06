@@ -24,14 +24,14 @@ class PropertyManagerTableSeeder extends Seeder
         }
 
         $faker = Faker::create();
-        $managerRole = Role::where('name', 'manager')->first();
         $settings = $this->getSettings();
 
         $totalManagers = 200;
 //        $buildings = Building::inRandomOrder()->limit($totalManagers)->get();        // @TODO DELETE
         $quarters = \App\Models\Quarter::inRandomOrder()->limit($totalManagers)->get();
-
+        $managerRoles = Role::whereIn('name', PropertyManager::Type)->get();
         for ($i = 0; $i < $totalManagers; $i++) {
+            $managerRole = $managerRoles->random();
             $managerData = factory(PropertyManager::class)->make()->toArray();
             $email = $faker->email;
             $attr = [

@@ -26,6 +26,10 @@ $factory->define(App\Models\ServiceProvider::class, function (Faker $faker, arra
         'last_name' => $faker->lastName,
         'email' => $faker->email,
         'phone' => $faker->phoneNumber,
+        'mobile_phone' => $faker->phoneNumber,
+        'title' => \Illuminate\Support\Arr::random(\App\Models\ServiceProvider::Title),
+        'status' => array_rand(\App\Models\ServiceProvider::Status),
+        'type' => array_rand(\App\Models\ServiceProvider::Type),
     ];
 });
  

@@ -179,6 +179,18 @@ class Unit extends AuditableModel implements HasMedia
     const TypeUndergroundParkingSpaceSR = 9;
     const TypeDoubleParking = 10;
     const TypeSchedulingSpace = 11;
+    const TypeAttic = 12;
+    const TypeFacility = 13;
+    const TypeStudio = 14;
+    const TypeOffice = 15;
+    const TypeBL = 16;
+    const TypeVisitorParking = 17;
+    const TypePenthouse = 18;
+    const TypeEFH = 19;
+    const TypeHolidays = 20;
+    const TypeLoft = 21;
+    const TypeMFH = 22;
+    const TypeXLUndergroundParkingSpace = 23;
 
 
     const Type = [
@@ -193,6 +205,18 @@ class Unit extends AuditableModel implements HasMedia
         self::TypeUndergroundParkingSpaceSR => 'underground_parking_space_sr',
         self::TypeDoubleParking => 'double_parking',
         self::TypeSchedulingSpace => 'scheduling_parking',
+        self::TypeAttic => 'attic',
+        self::TypeFacility => 'facility',
+        self::TypeStudio => 'studio',
+        self::TypeOffice => 'office',
+        self::TypeBL => 'bl',
+        self::TypeVisitorParking => 'visitor_parking',
+        self::TypePenthouse => 'penthouse',
+        self::TypeEFH => 'efh',
+        self::TypeHolidays => 'holidays',
+        self::TypeLoft => 'loft',
+        self::TypeMFH => 'mfh',
+        self::TypeXLUndergroundParkingSpace => 'XL_underground_parking_space',
 
 
     ];

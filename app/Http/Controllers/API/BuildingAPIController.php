@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Criteria\Building\FilterByRelatedFieldsCriteria;
 use App\Criteria\Building\FilterByUserRoleCriteria;
+use App\Criteria\Building\IncludeForOrderCriteria;
 use App\Criteria\Common\HasRequestCriteria;
 use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Building\FilterByCityCriteria;
@@ -129,12 +130,20 @@ class BuildingAPIController extends AppBaseController
     public function index(ListRequest $request)
     {
         $request->merge(['model' => 'buildings']);
+        if ($request->orderBy == 'internal_quarter_id') {
+            $request->merge(['orderBy' => 'quarters:id|internal_quarter_id']);
+        }
+        if ($request->orderBy == 'house_num') {
+            $request->merge(['orderBy' => 'loc_addresses:address_id|house_num']);
+        }
+
         $this->buildingRepository->pushCriteria(new RequestCriteria($request));
         $this->buildingRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByRelatedFieldsCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByCityCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByTypeCriteria($request));
         $this->buildingRepository->pushCriteria(new FilterByUserRoleCriteria($request));
+        $this->buildingRepository->pushCriteria(new IncludeForOrderCriteria($request));
 
         $hasRequest = $request->get('has_req', false);
         if ($hasRequest) {

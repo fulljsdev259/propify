@@ -32,6 +32,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="int32"
  *      ),
  *      @SWG\Property(
+ *          property="mobile_phone",
+ *          description="mobile_phone",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
  *          property="title",
  *          description="title",
  *          type="string"
@@ -59,6 +64,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $type
  * @property string $property_manager_format
  * @property string|null $description
+ * @property string $mobile_phone
  * @property string $title
  * @property string $status
  * @property string $first_name
@@ -158,6 +164,7 @@ class PropertyManager extends AuditableModel
         'description',
         'user_id',
         'type',
+        'mobile_phone',
         'title',
         'status',
         'first_name',
@@ -194,6 +201,7 @@ class PropertyManager extends AuditableModel
         'description' => 'string',
         'user_id' => 'integer',
         'type' => 'integer',
+        'mobile_phone' => 'string',
         'title' => 'string',
         'status' => 'integer',
         'first_name' => 'string',

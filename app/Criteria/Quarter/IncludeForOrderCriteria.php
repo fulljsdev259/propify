@@ -2,6 +2,8 @@
 
 namespace App\Criteria\Quarter;
 
+use App\Models\Relation;
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -35,46 +37,47 @@ class IncludeForOrderCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $raw = 'SELECT
-    COUNT(u.id)
-FROM
-    (
-    SELECT TYPE
-        ,
-        id,
-        deleted_at
-    FROM
-        `units`
-    WHERE
-        quarter_id = 10
-    UNION ALL
-SELECT TYPE
-    ,
-    id,
-    deleted_at
-FROM
-    `units`
-WHERE
-    building_id IN(
-    SELECT
-        id
-    FROM
-        buildings
-    WHERE
-        quarter_id = 10 AND deleted_at IS NULL
-)
-) AS u
-WHERE TYPE
-    = 1 AND deleted_at IS NULL
-ORDER BY
-    `u`.`id` ASC'; // @TODO delete $raw
-
+        $sortedBy = strtolower($this->request->sortedBy) == 'asc' ? 'asc' : 'desc';
         $model->when($this->request->orderBy == 'requests_count', function ($q) {
                 $q->withCount('requests');
             })
             ->when($this->request->orderBy == 'buildings_count', function ($q) {
                 $q->withCount('buildings');
+            })->when($this->request->orderByRaw == 'count_of_apartments_units', function ($q) use ($sortedBy) {
+                $q->orderByRaw('(SELECT COUNT(*) FROM `units` WHERE 
+                    deleted_at IS NULL 
+                    and type = ' .  Unit::TypeApartment. '
+                    and IF(
+                        quarter_id IS NULL,
+                        (
+                            SELECT
+                                quarter_id
+                            FROM
+                                buildings
+                            WHERE
+                                buildings.id = units.`building_id`
+                        ),
+                        quarter_id
+                    ) = quarters.id) ' . $sortedBy
+                );
+            }) ->when($this->request->orderByRaw == 'units_count', function ($q) use ($sortedBy) {
+                $q->orderByRaw('(SELECT COUNT(*) FROM `units` WHERE 
+                    deleted_at IS NULL 
+                    and IF(
+                        quarter_id IS NULL,
+                        (
+                            SELECT
+                                quarter_id
+                            FROM
+                                buildings
+                            WHERE
+                                buildings.id = units.`building_id`
+                        ),
+                        quarter_id
+                    ) = quarters.id) ' . $sortedBy
+                );
             });
+
 
         return $model;
     }

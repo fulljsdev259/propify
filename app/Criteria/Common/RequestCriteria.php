@@ -21,6 +21,8 @@ class RequestCriteria extends ReqCriteria
     protected $request;
     protected $searchInRaw;
 
+    const NoOrder = 'no_order';
+
     public function __construct(Request $request, $searchInRaw = '')
     {
         $orderByDefault = 'id';
@@ -30,6 +32,7 @@ class RequestCriteria extends ReqCriteria
         }
 
         $orderBy = $request->get('orderBy', $orderByDefault);
+        $orderBy = self::NoOrder == $orderBy ? null : $orderBy;
         $sortedBy = $request->get('sortedBy', 'desc');
         $request->merge([
             'orderBy' => $orderBy,

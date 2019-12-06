@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Criteria\UserFilter;
+namespace App\Criteria\Building;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -9,30 +9,25 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FilterByMenuCriteria
- * @package App\Criteria\UserFilter
+ * Class FilterByUserRoleCriteria
+ * @package App\Criteria\Quarter
  */
-class FilterByUserCriteria implements CriteriaInterface
+class IncludeForOrderCriteria implements CriteriaInterface
 {
     /**
-     * @var \Illuminate\Http\Request
+     * @var Request
      */
     protected $request;
 
-    /**
-     * FilterByUserCriteria constructor.
-     * @param Request $request
-     */
     public function __construct(Request $request)
     {
         $this->request = $request;
     }
 
-
     /**
      * Apply criteria in query repository
      *
-     * @param         Builder|Model     $model
+     * @param Builder|Model $model
      * @param RepositoryInterface $repository
      *
      * @return mixed
@@ -40,11 +35,9 @@ class FilterByUserCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $userId = $this->request->user_id;
-        if ($userId) {
-            $model->where('user_id', $userId);
-        }
-
+        $model->when($this->request->orderBy == 'requests_count', function ($q) {
+            $q->withCount('requests');
+        });
         return $model;
     }
 }

@@ -96,21 +96,25 @@
                     width: 100,
                 }, {
                     label: 'models.service.company_name',
-                    prop: 'company_name'
+                    prop: 'company_name',
+                    sortBy: 'company_name',
                 }, {
                     label: 'general.name',
                     withMultiplePropsString: true,
-                    props: ['first_name', 'last_name']
+                    props: ['first_name', 'last_name'],
+                    sortBy: 'first_name',
                 }, {
                     label: 'general.email',
-                    prop: 'email'
+                    prop: 'email',
+                    sortBy: 'email',
                 }, {
                     label: 'general.mobile_phone',
                     prop: 'mobile_phone'
                 }, {
                     label: 'general.function',
                     withServiceCategory: true,
-                    prop: 'category'
+                    prop: 'category',
+                    sortBy: 'category',
                 }, {
                     label: 'resident.building',
                     withInternalQuarterIds: true,
@@ -119,6 +123,7 @@
                     label: 'models.building.request_status',
                     withCounts: true,
                     width: 230,
+                    sortBy: 'requests_count',
                     counts: [{
                         prop: 'requests_new_count',
                         background: this.$constants.relations.status_colorcode[1],
@@ -149,8 +154,7 @@
                         background: this.$constants.relations.status_colorcode[6],
                         color: '#fff',
                         label: this.$t('models.request.status.archived')
-                    }
-                    ]
+                    }]
                 }],
                 states: [],
                 quarters: [],
@@ -184,7 +188,12 @@
                         type: 'select',
                         key: 'category',
                         data: this.categories,
-                    },
+                    }, {
+                        name: this.$t('general.filters.status'),
+                        type: 'select',
+                        key: 'status',
+                        data: this.statuses,
+                    }
                     // {
                     //     name: this.$t('general.filters.quarters'),
                     //     type: 'select',
@@ -243,6 +252,13 @@
             this.states = states.data.data;
 
             this.categories = await this.getFilterCategories()
+
+            this.statuses = Object.keys(this.$constants.serviceProviders.status).map((id) => {
+                return {
+                    id: parseInt(id),
+                    name: this.$t(`general.status.${this.$constants.serviceProviders.status[id]}`)
+                };
+            });
 
             this.buildings = await this.fetchRemoteBuildings();
         },

@@ -20,7 +20,13 @@
                         <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item 
+                        <el-dropdown-item
+                            command="save_filter"
+                            icon="el-icon-plus"
+                        >
+                            {{ $t('models.request.save_filter') }}
+                        </el-dropdown-item>
+                        <el-dropdown-item
                             :disabled="!selectedItems.length" 
                             :command="option.key"
                             :key="option.key"
@@ -68,6 +74,7 @@
             :withSearch="false"
             :searchText="search"
             @selectionChanged="selectionChanged"
+            @update-row="updateRow"
         >
         </list-table>
         <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
@@ -171,11 +178,23 @@
                 </template>
             </span>
         </el-dialog>
+        <el-dialog
+            :visible.sync="visibleSaveDialog"
+            width="30%"
+            center
+        >
+            <h4 class="filter-title">{{ $t('validation.attributes.title') }}</h4>
+            <el-input v-model="saveTitle"/>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="danger" @click="visibleSaveDialog = false">{{ $t('general.cancel') }}</el-button>
+                <el-button type="primary" @click="saveFilter" :disabled="saveTitle===''">{{ $t('general.actions.save') }}</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-    import {mapActions, mapState} from 'vuex';
+    import {mapActions, mapState, mapGetters} from 'vuex';
     import {displayError, displaySuccess} from 'helpers/messages';
     import Heading from 'components/Heading';
     import ListTableMixin from 'mixins/ListTableMixin';
@@ -191,7 +210,8 @@
         },
         getters: {
             items: 'requests',
-            pagination: 'requestsMeta'
+            pagination: 'requestsMeta',
+            user: ''
         }
     });
 
@@ -211,43 +231,50 @@
                 //     onChange: this.listingSelectChangedNotify,
                 //     downloadPDF: this.downloadPDF
                 // }],
-                header: [ 
+                header: [
                     {
                         label: 'general.id',
-                        withReuqestIDAndTitle: true
+                        withReuqestIDAndTitle: true,
+                        sortBy: 'request_format'
                     },
                     {
                         label: 'general.filters.status',
                         withRequestStatusSign: true,
                         prop: 'status',
+                        sortBy: 'status',
                         width: 150
                     }, {
                         label: 'models.request.assigned_property_managers',
-                        withUsers: true,
+                        withRequestUsers: true,
                         prop: 'property_managers'
                     }, {
                         label: 'general.category',
                         prop: 'category',
+                        sortBy: 'category_id',
                         i18n: this.translateCategory
                     }, {
                         label: 'general.filters.services',
-                        withUsers: true,
+                        withRequestUsers: true,
                         prop: 'service_providers'
                     }, {
                         label: 'models.request.created_by',
                         prop: 'creator.name',
+                        sortBy: 'created_at',
                         withRequestCreator: true,
                         width: 200
                     }, {
                         label: 'models.request.visible',
                         withRequestVisible: true,
+                        sortBy: 'visibility',
                         width: 85,
-                        align: 'center'
+                        align: 'center',
+                        prop: 'visibility'
                     }, {
                         label: 'models.unit.appendix',
                         withRequestAppendix: true,
                         width: 120,
-                        align: 'center'
+                        align: 'center',
+                        prop: 'appendix'
                     }
                 ],
                 search: '',
@@ -264,6 +291,8 @@
                 processAssignment: false,
                 toAssignList: '',
                 toAssign: [],
+                saveTitle: '',
+                visibleSaveDialog: false,
                 send_email_service_provider: true,
                 remoteLoading: false,
                 managersForm: {},
@@ -288,6 +317,9 @@
             }
         },
         computed: {
+            ...mapGetters({
+                user: 'loggedInUser',
+            }),
             ...mapState("application", {
                 requestConstants(state) {
                     return state.constants.requests;
@@ -396,8 +428,8 @@
                         data: this.prepareFilters("capture_phase"),
                     },
                     {
-                        name: this.$t('general.filters.saved_filters'),
-                        type: 'select',
+                        name: this.$t('general.filters.more_filters'),
+                        type: 'toggle',
                         key: 'saved_filter',
                         data: []
                     }
@@ -432,12 +464,28 @@
             handleMenuClick(command) {
                 if(command == 'delete')
                     this.batchDeleteWithIds();
+                else if(command == 'save_filter')
+                    this.visibleSaveDialog = true;
                 else  {
                     this.massStatus = ''
                     this.resetToAssignList();
                     this.activeMassEditOption = command
                     this.batchEditVisible = true
                 }
+            },
+            saveFilter() {
+                this.visibleSaveDialog = false;
+                let fields_data = {};
+                this.header.forEach((item) => {
+                    fields_data[item.label] = !this.fields.includes(item.label);
+                });
+                this.axios.post('/userFilters', {
+                    user_id: this.user.id,
+                    title: this.saveTitle,
+                    menu: this.$route.name,
+                    options_url: this.$route.fullPath,
+                    fields_data: fields_data,
+                });
             },
             translateCategory(category) {
                 return this.$t(`models.request.category_list.${category.name}`)
@@ -503,6 +551,9 @@
                         id: resident.id
                     };
                 });
+            },
+            updateRow(index, data) {
+                // this.$set(this.items, index, data)
             },
             add() {
                 this.$router.push({
@@ -825,5 +876,10 @@
                 font-size: 0.9em;
             }
         }
+    }
+
+    .filter-title {
+        padding: 0 15px;
+        margin-bottom: 10px !important;
     }
 </style>

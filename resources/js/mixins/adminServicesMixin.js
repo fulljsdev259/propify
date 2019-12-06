@@ -113,6 +113,10 @@ export default (config = {}) => {
                         required: true,
                         message: this.$t('validation.general.required')
                     }],
+                    status: [{
+                        required: true,
+                        message: this.$t('validation.required', {attribute: this.$t('general.status.label')})
+                    }],
                     state_id: [{
                         required: true,
                         message: this.$t('validation.required', {attribute: this.$t('general.state')})

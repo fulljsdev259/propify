@@ -18,15 +18,15 @@
                 </template>
             </el-input>
             <div class="sub-menu" key="sub-menu">
-                <router-link 
+                <a
                     :key="link.title + key"
                     v-for="(link, key) in subMenu"
                     v-if="$can(link.permission) || !link.permission"
                     :class="{'is-active': link.route.name == $route.name}"
-                    :to="{name: link.route.name}"
+                    @click="makeFilterQuery(link.route.name)"
                 >
                     <span class="title">{{ link.title }}</span>
-                </router-link>
+                </a>
             </div>
             <el-card 
                 v-if="this.filters.length"
@@ -40,7 +40,7 @@
                 v-loading="isLoadingFilters.state"
             >
                 <el-row :gutter="10">
-                    <el-col :key="`${key}key${filter.data && filter.data.length}`" :span="filterColSize" v-for="(filter, key) in filters">
+                    <el-col :key="`${key}key${filter.data && filter.data.length}`" :span="filterColSize" v-for="(filter, key) in filters" v-if="filter.hidden === undefined || showFilters">
                         <template v-if="!filter.parentKey || filterModel[filter.parentKey]">
                             <el-form-item
                                 v-if="filter.type === filterTypes.select && filter.data">
@@ -107,15 +107,21 @@
                                 >
                                 </el-date-picker>
                             </el-form-item>
-                             <el-form-item v-else-if="filter.type === filterTypes.language">
-                                <!-- <select-language
-                                    class="label-block"
-                                    :role="'settings.language'"
-                                    :activeLanguage.sync="filterModel['language']"
-                                    @change="filterChanged(filter)"
-                                    :isTable="true"
-                                /> -->
+                             <el-form-item v-else-if="filter.type === filterTypes.toggle">
+                                <el-button
+                                    class="toggle-filter-button"
+                                    @click="toggleFilters"
+                                >
+                                    {{ !showFilters? $t('general.filters.more_filters'):$t('general.filters.less_filters') }}
+                                </el-button>
                             </el-form-item>
+                             <el-form-item v-else-if="filter.type === filterTypes.popover">
+                                <el-popover placement="bottom-end" trigger="click" :width="192" style="float:right">
+                                    <el-button slot="reference" class="filter-button">{{ filter.name }}</el-button>
+                                    <!-- <el-button class="popover-button" @click="visibleSaveDialog=true">{{ $t('general.actions.save') }}</el-button> -->
+                                </el-popover>
+                            </el-form-item>
+
                         </template>
 
                     </el-col>
@@ -143,12 +149,28 @@
 
             <el-table-column
                 :key="'header' + index"
-                :label="$t(column.label)"
                 :width="column.width"
                 :min-width="column.minWidth"
+                :class-name="column.withRequestUsers ? 'request-users' : ''"
                 :align="column.align"
                 v-for="(column, index) in computedHeader">
-                
+
+                <template slot="header">
+                    <div v-if="column.sortBy" class="header-filter">
+                        <span @click="makeHeaderFilterQuery(column.sortBy)"
+                              :class="`header-filter__text ${$route.query.orderBy === column.sortBy ? 'active' : ''}`">
+                            {{$t(column.label)}}
+                        </span>
+                        <span v-if="$route.query.orderBy === column.sortBy">
+                            <i v-if="$route.query.sortedBy === 'desc'" class="el-icon-arrow-down"></i>
+                            <i v-else-if="$route.query.sortedBy === 'asc'" class="el-icon-arrow-up"></i>
+                        </span>
+                    </div>
+                    <div v-else>
+                        {{$t(column.label)}}
+                    </div>
+                </template>
+
                 <template slot-scope="scope">
                     <div v-if="column.withAvatars" class="avatars-wrapper">
                         <div class="user-details" v-if="scope.row['user']">
@@ -158,8 +180,8 @@
                             <div class="title">
                                 {{ scope.row['user'].name }}
                             </div>
-                        </div> 
-                    </div> 
+                        </div>
+                    </div>
                     <div v-else-if="column.withAvatarsAndProps" class="avatar-with-multiprops">
                         <table-avatar :src="scope.row['user'].avatar" :name="scope.row['user'].name" :size="33" />
                         <div class="avatar-info">
@@ -258,7 +280,7 @@
                             class="item"
                             effect="light" placement="top"
                         >
-                            <avatar 
+                            <avatar
                                 :background-color="$constants.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
                                 :size="30"
@@ -273,7 +295,7 @@
                             class="item"
                             effect="light" placement="top"
                         >
-                            <avatar 
+                            <avatar
                                 :background-color="$constants.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
                                 :size="30"
@@ -288,7 +310,7 @@
                             class="item"
                             effect="light" placement="top"
                         >
-                            <avatar 
+                            <avatar
                                 :background-color="$constants.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
                                 :size="30"
@@ -308,7 +330,7 @@
                                     class="item"
                                     effect="light" placement="top"
                                 >
-                                    <avatar 
+                                    <avatar
                                         :background-color="$constants.relations.status_colorcode[index]"
                                         color="#fff"
                                         :initials="`${scope.row[`${status}_units_count`]}`"
@@ -325,7 +347,7 @@
                     </div>
                     <div v-else-if="column.withReuqestIDAndTitle">
                         <div class="request-format">
-                            <strong>{{scope.row.request_format}}</strong>                    
+                            <strong>{{scope.row.request_format}}</strong>
                         </div>
                         <span>{{scope.row.title}}</span>
                     </div>
@@ -335,7 +357,7 @@
                             class="item"
                             effect="light" placement="top"
                         >
-                            <avatar 
+                            <avatar
                                 :background-color="$constants.requests.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
                                 :size="30"
@@ -346,7 +368,7 @@
                     </div>
                     <div v-else-if="column.withRequestCreator">
                         <div>
-                            <strong>{{scope.row.creator.name}}</strong>                    
+                            <strong>{{scope.row.creator.name}}</strong>
                         </div>
                         <span>{{(scope.row.created_at.split(" "))[0]}}</span>
                     </div>
@@ -399,6 +421,92 @@
                                     v-if="scope.row[column.prop].length>2"></avatar>
                         </div>
                     </div>
+                    <div v-else-if="column.withRequestUsers">
+                        <div class="avatars-wrapper">
+                            <span :key="uuid()" v-if="index<2" v-for="(user, index) in scope.row[column.prop]">
+                                <el-tooltip
+                                    :content="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
+                                    class="item"
+                                    effect="light" placement="top">
+                                    <template v-if="user.user">
+                                        <avatar :size="28"
+                                                :username="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
+                                                backgroundColor="rgb(205, 220, 57)"
+                                                color="#fff"
+                                                v-if="!user.user.avatar"></avatar>
+                                        <avatar :size="28" :src="`/${user.user.avatar}`" v-else></avatar>
+                                    </template>
+                                    <template v-else>
+                                        <avatar :size="28"
+                                                :username="user.first_name ? `${user.first_name} ${user.last_name}`: `${user.name}`"
+                                                backgroundColor="rgb(205, 220, 57)"
+                                                color="#fff"
+                                                v-if="!user.avatar"></avatar>
+                                        <avatar :size="28" :src="`/${user.avatar}`" v-else></avatar>
+                                    </template>
+                                </el-tooltip>
+                            </span>
+                            <avatar class="avatar-count" :size="28" :username="`+ ${scope.row[column.prop].length-2}`"
+                                    color="#fff"
+                                    v-if="scope.row[column.prop].length>2"></avatar>
+                            <div class="quick-assign-avatar">
+                            <el-dropdown placement="bottom" trigger="click">
+                                <el-button size="mini" class="more-actions" >
+                                    <i class="el-icon-user"></i>
+                                </el-button>
+
+                                <el-dropdown-menu slot="dropdown" class="quick-assign-dropdown" :visible-change="handleVisibleChange">
+
+                                    <el-dropdown-item
+                                            command="quick-assign"
+                                    >
+                                        <div class="header-box">
+                                            <strong>{{$t(column.label)}}</strong>
+                                            <i class="el-icon el-icon-close"></i>
+                                        </div>
+                                        <!-- <multi-select
+                                            :type="quarterFilter.key"
+                                            :name="quarterFilter.name"
+                                            :data="quarterFilter.data"
+                                            :maxSelect="1"
+                                            :showMultiTag="true"
+                                            :selectedOptions="[model.quarter_id]"
+                                            @select-changed="handleSelectChange($event, 'quarter')"
+                                        >
+                                        </multi-select> -->
+                                        <div class="content-box">
+                                            <el-select
+                                                    :loading="remoteLoading"
+                                                    :placeholder="$t('models.request.name_or_email')"
+                                                    :remote-method="search =>remoteSearchAssignees(search, scope.row.id)"
+                                                    filterable
+                                                    remote
+                                                    reserve-keyword
+                                                    @change="val => handleQuickAssign(scope.row.id, val)"
+                                                    v-model="assignee">
+                                                <el-option
+                                                        :key="assignee.id"
+                                                        :label="assignee.name"
+                                                        :value="assignee.id"
+                                                        v-for="assignee in assignees"/>
+                                            </el-select>
+
+                                            <span>{{$t('models.request.or')}}</span>
+
+                                            <el-button @click="() => handleAssignMe(scope.row.id)">
+                                                {{$t('models.request.assign_me')}}
+                                            </el-button>
+                                        </div>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+
+
+                        </div>
+                        </div>
+
+
+                    </div>
                     <template v-else-if="column.withBadges">
                         <el-button v-if="scope.row[column.prop] == 'low'" class="btn-priority-badge btn-badge" :size="column.size" round>{{ scope.row[column.prop] }}</el-button>
                         <el-button v-else-if="scope.row[column.prop] == 'normal'" plain type="warning" class="btn-priority-badge btn-badge" :size="column.size" round>{{ scope.row[column.prop] }}</el-button>
@@ -417,7 +525,7 @@
                                 <i class="icon-dot-circled" :class="item.id == 1 ? 'icon-success':'icon-danger'"  v-if="column.ShowCircleIcon"></i> {{item.name}}
                             </el-option>
                         </el-select>
-                    
+
                     </template>
                     <template v-else-if="column.actions">
                         <span
@@ -443,7 +551,7 @@
                                             <i class="ti-search"></i>
                                             <span>{{ $t('general.actions.edit') }}</span>
                                         </el-button>
-                                    </router-link>      
+                                    </router-link>
                                 </template>
                                 <el-button
                                     v-else
@@ -454,17 +562,17 @@
                                 >
                                     <template v-if="action.isTemplateEdit != undefined">
                                         <i class="ti-search"></i>
-                                        <span>{{ $t('general.actions.edit') }}</span>    
+                                        <span>{{ $t('general.actions.edit') }}</span>
                                     </template>
                                     <template v-else-if="action.title.indexOf('edit') !== -1">
                                         <router-link :to="{name: 'adminPropertyManagersEdit',  params: { id:scope.row['id']}}" class="el-menu-item-link">
                                             <i class="ti-search"></i>
                                             <span>{{ $t('general.actions.edit') }}</span>
-                                        </router-link>      
+                                        </router-link>
                                     </template>
                                     <template v-else-if="action.title == 'Delete'">
                                         <i class="ti-close"></i>
-                                        <span>{{$t(action.title)}}</span>    
+                                        <span>{{$t(action.title)}}</span>
                                     </template>
                                     <template v-else>
                                         <i class="ti-search"></i>
@@ -477,7 +585,7 @@
                     <span v-else>
                         {{ _.get(scope.row, column.prop) }}
                     </span>
-                    
+
                 </template>
             </el-table-column>
 
@@ -512,6 +620,9 @@
     import ListFilterSelect from 'components/Select';
     import FormatDateTimeMixin from 'mixins/formatDateTimeMixin';
     import globalFunction from "helpers/globalFunction";
+    import {displayError, displaySuccess} from "helpers/messages";
+    import MultiSelect from 'components/Select';
+    import {mapGetters, mapActions} from 'vuex';
 
     export default {
         name: 'ListTable',
@@ -524,6 +635,7 @@
             SelectLanguage,
             ListFilterSelect,
             FormatDateTimeMixin,
+            MultiSelect
         },
         mixins: [globalFunction],
         props: {
@@ -608,16 +720,26 @@
                     date: 'date',
                     daterange: 'daterange',
                     language: 'language',
-                    role: 'role'
+                    role: 'role',
+                    toggle: 'toggle',
+                    popover: 'popover',
                 },
                 filterModel: {},
                 uuid,
                 selectedItems: [],
                 subMenu: [],
-                dateRange: ''
+                dateRange: '',
+                showFilters: false,
+                assignees: [],
+                assignee: '',
+                remoteLoading: false,
+                isVisible: false,
             }
         },
         computed: {
+            ...mapGetters({
+                user: 'loggedInUser',
+            }),
             emptyText() {
                 return this.loading.state ?  ' ' : (this.items.length > 0) ? '' : this.$t('general.no_data_available');
             },
@@ -733,13 +855,116 @@
                         picker.$emit('pick', [start, end]);
                     }
                 }
-                
+
                 return {
                     shortcuts: [last7Days, last14Days, last30Days, lastWeek, lastMonth, last3Months]
                 };
             },
         },
         methods: {
+            ...mapActions([
+                'getAllAdminsForRequest',
+                'assignUsersToRequest'
+            ]),
+            makeHeaderFilterQuery(orderBy) {
+                let sortedByVal = this.$route.query.orderBy !== orderBy
+                    ? 'desc'
+                    : this.$route.query.sortedBy === 'desc'
+                        ? 'asc'
+                        : 'desc';
+                let query = {
+                    ...this.$route.query,
+                    orderBy: orderBy,
+                    sortedBy: sortedByVal,
+                };
+                this.$router.replace({
+                    name: this.$route.name,
+                    query
+                });
+            },
+            makeFilterQuery(pathName) {
+                let query = {};
+                let quarter_ids = localStorage.getItem('quarter_ids');
+                let building_ids = localStorage.getItem('building_ids');
+
+                if(quarter_ids !== undefined && quarter_ids) {
+                    quarter_ids = JSON.parse(quarter_ids);
+                } else
+                    quarter_ids = null;
+                if(building_ids !== undefined && building_ids)
+                    building_ids = JSON.parse(building_ids);
+                else
+                    building_ids = null;
+
+                if((pathName == 'adminBuildings' || pathName == 'adminUnits') && quarter_ids !== null)
+                    query.quarter_ids = quarter_ids;
+                if(pathName == 'adminUnits' && building_ids !== null)
+                    query.building_id = building_ids;
+
+                this.$router.push({
+                    name: pathName,
+                    query: query
+                });
+            },
+            handleVisibleChange(isVisible) {
+                this.isVisible = isVisible
+            },
+            async handleQuickAssign(request_id, assignee_id) {
+                let assignee = this.assignees.find(item => item.id == assignee_id)
+                let user_params = [{user_id: assignee_id, role: assignee.roles[0].name}]
+
+                let resp = await this.assignUsersToRequest({
+                            id: request_id,
+                            user_params: user_params
+                        });
+                console.log(resp)
+                if (resp && resp.data) {
+                    displaySuccess(resp)
+
+                    let current_index = -1
+
+                    this.items.map((item, index) => {
+                        if(item.id == resp.data.id)
+                            current_index = index
+                    })
+
+                    if(current_index != -1) {
+                        this.$emit('update-row', current_index, resp.data)
+                    }
+
+                    this.assignees = []
+                    this.assignee = ''
+                }
+            },
+            async handleAssignMe(request_id) {
+                let loggedinUser = this.$store.getters.loggedInUser
+                let user_params = [{user_id: loggedinUser.id, role: loggedinUser.roles[0].name}]
+
+                let resp = await this.assignUsersToRequest({
+                            id: request_id,
+                            user_params: user_params
+                        });
+
+                if (resp && resp.data) {
+                    displaySuccess(resp)
+                    let current_index = -1
+
+                    this.items.map((item, index) => {
+                        if(item.id == resp.data.id)
+                            current_index = index
+                    })
+
+                    if(current_index != -1) {
+                        this.$emit('update-row', current_index, resp.data)
+                    }
+
+                    this.assignees = []
+                    this.assignee = ''
+                }
+            },
+            toggleFilters() {
+                this.showFilters = !this.showFilters;
+            },
             rowClicked(row) {
                 this.$refs.tableData.toggleRowExpansion(row);
             },
@@ -815,8 +1040,8 @@
                     if((this.filterModel[filter] == '' || this.filterModel[filter] == null) && (query[filter] != undefined || query[filter] == null))
                     {
                         delete query[filter];
-                        
-                    }     
+
+                    }
                 }
                 /*if(this.$route.name=='adminUsers') {
                     query = {roles: ['administrator'], ...query};
@@ -825,14 +1050,14 @@
                     else
                         delete query.role;
                 }*/
-                
+
                 try {
                     this.$router.replace({name: this.$route.name, query, params}).catch(err => {})
                 }
                 catch (err) {
 
                 }
-            },  
+            },
             updatePage(page, size) {
                 let {currPage, currSize} = this.page;
 
@@ -894,7 +1119,7 @@
 
                 if(this.filterModel[filter.key] == '')
                     this.filterModel[filter.key] = null
-                    
+
                 if ((!filter.parentKey && filter.fetch && init && this.filterModel[filter.key]) || !init) {
                     this.updatePage();
                 }
@@ -966,7 +1191,25 @@
                 } finally {
                     filter.remoteSearch = false;
                 }
-            }
+            },
+            async remoteSearchAssignees(search, request_id) {
+                if (search === '') {
+                    this.assignees = [];
+                } else {
+                    this.remoteLoading = true;
+
+                    try {
+                        const data = await this.getAllAdminsForRequest({request_id: request_id, is_get_function: true, search})
+
+                        this.assignees = data;
+
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
         },
         watch: {
             search(text) {
@@ -992,7 +1235,7 @@
 
                         return this.syncUrl();
                     }
-                    
+
                     page = parseInt(page);
                     per_page = parseInt(per_page);
 
@@ -1000,9 +1243,9 @@
                     this.page.currSize = per_page < 1 ? this.pagination.currSize : per_page;
 
                     prevQuery && this.syncUrl();
-                    
+
                     this.fetch(this.page.currPage, this.page.currSize);
-                    
+
                 }
             },
         },
@@ -1013,7 +1256,7 @@
 
             _.each(this.filters, (filter) => {
                 let queryFilterValue = this.$route.query[filter.key];
-                
+
                 const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
                 let value;
 
@@ -1021,7 +1264,7 @@
                     value = [queryFilterValue];
                 else
                     value = queryFilterValue;
-                    
+
                 if(!Array.isArray(value))
                     value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
                 else if(filter.key !== 'cities')
@@ -1075,6 +1318,18 @@
 </script>
 
 <style lang="scss" scoped>
+    .header-filter {
+        &__text {
+            cursor: pointer;
+            &:hover {
+                color: var(--color-black);
+            }
+            &.active {
+                font-family: 'Radikal Bold';
+            }
+        }
+    }
+
     .list-table {
         position: relative;
         :global(.el-card.filter-right .el-card__body) {
@@ -1106,6 +1361,7 @@
                 color: var(--color-text-secondary);
                 position: relative;
                 font-family: 'Radikal Thin';
+                cursor: pointer;
                 &:hover, &.is-active {
                     color: var(--color-text-primary);
                     font-weight: 900px;
@@ -1134,6 +1390,60 @@
             color:var(--primary-color);
         }
 
+        .toggle-filter-button {
+            border-radius: 6px;
+            padding: 13px 15px;
+            background-color: #f6f5f7;
+        }
+
+    }
+
+    .quick-assign-dropdown {
+        .el-dropdown-menu__item {
+            padding-right: 5px;
+
+            &:not(.is-disabled):hover {
+                background-color: transparent
+            }
+
+            .header-box {
+                display: flex;
+                color : var(--color-text-regular);
+
+
+                i{
+                    flex-grow: 1;
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: top;
+                    &:hover {
+                        color : var(--primary-color);
+                    }
+                }
+            }
+
+            .content-box {
+                display: flex;
+                padding-right: 20px;
+
+                > span {
+                    padding: 0 10px;
+                    color : var(--color-text-regular);
+                }
+
+                > .el-select {
+                    border-radius: 10px;
+                    /deep/ div, /deep/ input {
+                        border-radius: 10px;
+                    }
+                }
+
+                > .el-button {
+                    border-radius: 10px;
+                }
+            }
+        }
+
     }
     .remote-select {
         width: 100%;
@@ -1155,6 +1465,7 @@
     }
     .avatar-count{
         min-width: 28px;
+        margin-right: 2px;
     }
     .el-divider.el-divider--horizontal {
         width: 90%;
@@ -1162,9 +1473,16 @@
     }
 
     .el-button {
-        border-radius: 20px;
-        padding: 8.65px 15px;
         font-family: inherit;
+    }
+    .popover-button {
+        width: 100%;
+        border: none;
+        background-color: var(--border-color-base);
+    }
+    .filter-button {
+        height: 40px;
+        background-color: #f6f5f7;
     }
     
     .el-input {
@@ -1355,6 +1673,48 @@
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
+            }
+        }
+    }
+
+    .request-users {
+        
+        .quick-assign-avatar {
+            display: none;
+
+            .el-dropdown {
+                width : 30px;
+                height: 30px;
+                border-radius: 50%;
+                border: 1px dashed black; 
+            }
+            .more-actions {
+                padding: 0;
+                background: transparent;
+                
+                width: 100%;
+                height: 0;
+                padding-top: 100%;
+                position: relative;
+
+                /deep/ span {
+                    position: absolute;
+                    font-size: 18px;
+                    top: 6px;
+                    left: 5.5px;
+                }
+            }
+            
+            
+        }
+
+        &:hover {
+
+            // .avatars-wrapper {
+            //     display: none;
+            // }
+            .quick-assign-avatar {
+                display: flex;
             }
         }
     }

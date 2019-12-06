@@ -26,6 +26,7 @@ class ResidentsTableSeeder extends Seeder
         $totalResidents = 200;
         $faker = Faker::create();
         $units = Unit::inRandomOrder()->with('building')->limit($totalResidents)->get();
+        $residentRole = Role::where('name', 'resident')->first();
 
         for($i = 0; $i < $totalResidents; $i++) {
 
@@ -57,7 +58,6 @@ class ResidentsTableSeeder extends Seeder
             ];
             $userData = array_merge($userData, $this->getDateColumns($date));
 
-            $residentRole = Role::where('name', 'resident')->first();
             $user = factory(User::class)->create($userData);
             $user->attachRole($residentRole);
             $settings = $this->getSettings();
@@ -77,8 +77,6 @@ class ResidentsTableSeeder extends Seeder
     protected function saveRelations($resident)
     {
         $data['resident_id'] = $resident->id;
-        $data['status'] = \App\Models\Relation::StatusActive;
-
         $relation = factory(App\Models\Relation::class)->create($data);
         $resident->default_relation_id = $relation->id;
         $resident->save();

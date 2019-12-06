@@ -3,7 +3,7 @@
         <div class="main-content">
         <heading :title="$t('models.building.edit_title')" icon="icon-commerical-building" shadow="heavy" bgClass="bg-transparent">
             <template slot="description" v-if="model.building_format">
-                <div class="subtitle">{{`${model.building_format} > ${model.name}`}}</div>
+                <div class="subtitle">{{`${model.building_format} > ${model.street} ${model.house_num}`}}</div>
             </template>
             <edit-actions :saveAction="submit" :deleteAction="batchDeleteBuilding" route="adminBuildings" :editMode="editMode" @edit-mode="handleChangeEditMode" ref="editActions"/>
             <!-- <template>
@@ -25,20 +25,13 @@
                 {{$t('models.building.warning_bar.title')}}
             </div>
         </div> -->
-        <el-row :gutter="20" class="crud-view">
+        <el-row :gutter="20" class="crud-view" v-if="model.id">
             
             <el-col :md="12">
                 <el-tabs type="border-card" v-model="activeTab">
                     <el-tab-pane :label="$t('general.box_titles.details')" name="details">
                         <el-form :model="model" label-position="top" label-width="192px" ref="form" class="edit-details-form">
                             <el-row :gutter="20">
-                                <el-col :md="12">
-                                    <el-form-item :label="$t('models.building.building_number')"
-                                                  :rules="validationRules.internal_building_id"
-                                                  prop="internal_building_id" style="max-width: 512px;">
-                                        <el-input type="text" v-model="model.internal_building_id" :disabled="!editMode"></el-input>
-                                    </el-form-item>
-                                </el-col>
                                 <el-col :md="12">
                                     <el-form-item :label="$t('models.building.quarter')" prop="quarter_id"
                                                   style="max-width: 512px;">
@@ -64,62 +57,38 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
-                            </el-row>
-                            <el-row :gutter="20">
-                                <el-col :md="12">
+                                <el-col :md="8">
                                     <el-form-item :label="$t('general.street')" :rules="validationRules.street"
                                                   prop="street"
                                                   style="max-width: 512px;">
                                         <el-input type="text" v-model="model.street" v-on:change="setBuildingName"  :disabled="!editMode"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="12">
+                                <el-col :md="4">
                                     <el-form-item :label="$t('models.building.house_num')"
                                                   :rules="validationRules.house_num"
                                                   prop="house_num" style="max-width: 512px;">
                                         <el-input type="text" v-model="model.house_num" v-on:change="setBuildingName" :disabled="!editMode"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <!-- <el-col :md="10">
-                                    <el-form-item :label="$t('general.name')" :rules="validationRules.name"
-                                                  prop="name"
-                                                  style="max-width: 512px;">
-                                        <el-input type="text" v-model="model.name"  :disabled="!editMode"></el-input>
-                                    </el-form-item>
-                                </el-col> -->
+                                
                             </el-row>
                             <el-row :gutter="20">
-                                <el-col :md="6">
-                                    <el-form-item :label="$t('models.building.type')"
-                                                  class="label-block"
-                                                  :rules="validationRules.types"
-                                                  prop="types">
-                                       <multi-select
-                                            :name="$t('models.building.type')"
-                                            :data="types"
-                                            :disabled="!editMode"
-                                            :selectedOptions="model.types"
-                                            tagColor="#9E9FA0"
-                                            showMultiTag
-                                            @select-changed="model.types=$event"
-                                        ></multi-select>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :md="6">
+                                <el-col :md="4">
                                     <el-form-item :label="$t('general.zip')" :rules="validationRules.zip"
                                                   prop="zip"
                                                   style="max-width: 512px;">
                                         <el-input type="text" v-model="model.zip" :disabled="!editMode"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="6">
+                                <el-col :md="8">
                                     <el-form-item :label="$t('general.city')" :rules="validationRules.city"
                                                   prop="city"
                                                   style="max-width: 512px;">
                                         <el-input type="text" v-model="model.city" :disabled="!editMode"></el-input>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :md="6">
+                                <el-col :md="12">
                                     <el-form-item :label="$t('general.state')"
                                                   :rules="validationRules.state_id"
                                                   prop="state_id" style="max-width: 512px;">
@@ -136,8 +105,16 @@
                                         </el-select>
                                     </el-form-item>
                                 </el-col>
+                                <!-- <el-col :md="10">
+                                    <el-form-item :label="$t('general.name')" :rules="validationRules.name"
+                                                  prop="name"
+                                                  style="max-width: 512px;">
+                                        <el-input type="text" v-model="model.name"  :disabled="!editMode"></el-input>
+                                    </el-form-item>
+                                </el-col> -->
                             </el-row>
-                            <el-row class="last-form-row" :gutter="20">
+                            
+                            <el-row :gutter="20">
                                 
                                 <el-col :md="8">
                                     <el-form-item :label="$t('models.building.floor_nr')"
@@ -175,6 +152,34 @@
                                 </el-col> -->
                                 
                             </el-row>
+                            <el-row class="last-form-row" :gutter="20">
+                                <el-col :md="6">
+                                    <el-form-item :label="$t('models.building.building_number')"
+                                                  :rules="validationRules.internal_building_id"
+                                                  prop="internal_building_id" style="max-width: 512px;">
+                                        <el-input type="text" v-model="model.internal_building_id" :disabled="!editMode"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="6">
+                                    <el-form-item :label="$t('models.building.type')"
+                                                  class="label-block"
+                                                  :rules="validationRules.types"
+                                                  style="max-width: 512px;"
+                                                  prop="types">
+                                       <multi-select
+                                            :name="$t('models.building.type')"
+                                            :data="types"
+                                            :disabled="!editMode"
+                                            :selectedOptions="model.types"
+                                            tagColor="#9E9FA0"
+                                            showMultiTag
+                                            @select-changed="model.types=$event"
+                                        ></multi-select>
+                                    </el-form-item>
+                                </el-col>
+                                
+                                
+                            </el-row>
                         </el-form>
                     </el-tab-pane>
                     <el-tab-pane name="units" >
@@ -187,6 +192,7 @@
                             :filterValue="model.id"
                             fetchAction="getUnitsWithResidents"
                             filter="building_id"
+                            :show-header="true"
                             v-if="model.id"
                         />
                     </el-tab-pane>
@@ -341,7 +347,7 @@
         </ui-drawer>
         <edit-close-dialog 
             :centerDialogVisible="visibleDialog"
-            @clickYes="visibleDialog=false, submit(true), $refs.editActions.goToListing()"
+            @clickYes="visibleDialog=false, submit(true)"
             @clickNo="visibleDialog=false, $refs.editActions.goToListing()"
             @clickCancel="visibleDialog=false"
         ></edit-close-dialog>
@@ -408,7 +414,7 @@
                 }, {
                     type: 'residentNameAndType',
                     label: 'general.name',
-                    translate: this.translateResidentType
+                    translate: this.translateResidentTypes
                 }, {
                     type: 'residentRelation',
                     label: 'models.resident.relation.title'
@@ -418,7 +424,7 @@
                     withBadge: this.residentStatusBadge,
                     label: 'models.resident.status.label'
                 }],
-                residentActions: [{
+                residentActions: [/*{
                     width: 70,
                     buttons: [{
                         title: 'models.resident.view',
@@ -426,12 +432,14 @@
                         icon: 'el-icon-user',
                         tooltipMode: true
                     }]
-                }],
+                }*/],
                 
                 unitColumns: [{
+                    type: 'unitColumn',
                     prop: 'name',
                     label: 'models.unit.name'
                 },{
+                    type: 'unitColumn',
                     prop: 'typeLabel',
                     label: 'models.unit.type.label'
                 },{
@@ -439,7 +447,7 @@
                     label: 'general.resident',
                     type: 'unitResidentAvatar',
                 }],
-                unitActions: [{
+                unitActions: [/*{
                     width: 70,
                     buttons: [{
                         title: 'general.actions.edit',
@@ -447,18 +455,17 @@
                         tooltipMode: true,
                         icon: 'ti-search'
                     }]
-                }],
+                }*/],
                 requestColumns: [{
-                    type: 'requestResidentAvatar',
-                    width: 90,
-                    prop: 'resident',
-                    label: 'general.resident'
+                    type: 'requestIcon',
+                    label: 'models.request.prop_title',
+                    width: 60,
                 }, {
                     type: 'requestTitleWithDesc',
                     label: 'models.request.prop_title'
                 }, {
                     type: 'requestStatus',
-                    width: 120,
+                    width: 50,
                     label: 'models.request.status.label'
                 }],
                 requestActions: [/*{
@@ -519,8 +526,11 @@
             translateType(type) {
                 return this.$t(`general.assignment_types.${type}`);
             },
-            translateResidentType(type) {
-                return this.$t(`models.resident.relation.type.${this.constants.relations.type[type]}`);
+            translateResidentTypes(types) {
+                if(types.constructor === Array){
+                    let translatedTypes = types.map(type => this.$t(`models.resident.relation.type.${this.$constants.relations.type[type]}`))
+                    return translatedTypes.join(', ')
+                }
             },
             translateAssignmentType(types) {
                 let translatedTypes = []
@@ -810,6 +820,7 @@
             // this.fileCount = this.model.media.length;
 
             this.getTypes();
+
         },
         computed: {
             ...mapGetters('application', {

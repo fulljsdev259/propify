@@ -26,22 +26,45 @@
                 v-if="!column.i18n"
             >
                 <template slot-scope="scope">
-                    <div v-if="column.type === 'requestTitleWithDesc'">
-                        <div class="request-title normal">
-                            {{scope.row.title}}                         
+                    <div v-if="column.type === 'requestIcon'">
+                        <span class="request-icon icon-chat-empty"></span>
+                    </div>
+                    <div v-else-if="column.type === 'requestTitleWithDesc'">
+                        <div class="request-title">
+                            <span class="normal">
+                                #{{scope.row.request_format}}
+                            </span> 
+                            <span class="black">{{$t(`models.request.category_list.${scope.row.category.name}`)}}:</span> 
+                            {{scope.row.title}}          
                         </div>
-                        <div class="category">
+                        <div class="request-title">
+                            {{$t(`general.on`)}} {{scope.row.created_at.slice(0, 10)}}, {{scope.row.created_at.slice(10, -3)}}
+                        </div>
+                        <!-- <div class="category">
                             <span>
                                 {{$t(`models.request.category_list.${scope.row.category.name}`)}}
                             </span>
                             <span v-if="scope.row.sub_category">
                                 &nbsp;>&nbsp; {{$t(`models.request.sub_category.${scope.row.sub_category.name}`)}}
                             </span>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div v-else-if="column.type === 'requestStatus'">
-                        {{$t(`models.request.status.${$constants.requests.status[scope.row.status]}`)}}
+                        <el-tooltip
+                            :content="`${$t(`models.request.status.${$constants.requests.status[scope.row.status]}`)}`"
+                            class="item"
+                            effect="light" placement="top"
+                        >
+                            <span class="status-icon" :style="{ background: $constants.requests.status_colorcode[scope.row.status], border: '2px solid #ffffffe7'}" >&nbsp;</span>
+                            <!-- <avatar 
+                                :background-color="$constants.requests.status_colorcode[scope.row.status]"
+                                :initials="''"
+                                :size="30"
+                                :style="{'z-index': (800 - index)}"
+                                :username="''"
+                            /> -->
+                        </el-tooltip>
                     </div>
 
                     <div v-else-if="column.type === 'requestResidentAvatar'">
@@ -215,8 +238,13 @@
                     <div v-else-if="column.type === 'companyName'" class="normal">
                         {{scope.row.company_name}}
                     </div>
-                    <div v-else-if="column.type === 'buildingName'" class="normal">           
-                        {{scope.row.address ? scope.row.address.street + ' ' + scope.row.address.house_num : ''}}                
+                    <div v-else-if="column.type === 'buildingHouseName'" class="normal">           
+                        <!-- {{scope.row.address ? scope.row.address.street + ' ' + scope.row.address.house_num : ''}}                 -->
+                        {{scope.row.address ? scope.row.address.house_num : ''}}
+                    </div>
+                    <div v-else-if="column.type === 'buildingTypes'" class="normal">           
+                        <!-- {{scope.row.address ? scope.row.address.street + ' ' + scope.row.address.house_num : ''}}                 -->
+                        {{ scope.row.types ? (  scope.row.types.map(type => $t(`models.quarter.types.${$constants.buildings.type[type]}`)) ).join(", ") : ''}}
                     </div>
                     <div v-else-if="column.type === 'residentName'" class="normal"> 
                         {{scope.row.name}}
@@ -386,7 +414,7 @@
             },
             showHeader: {
                 type: Boolean,
-                default: true
+                default: false
             },
         },
         data() {
@@ -515,12 +543,14 @@
 
                         id = item.edit_id;
                     }
-                    else if(column.type === 'buildingName')
+                    else if(column.type === 'buildingHouseName')
                         name = 'adminBuildingsEdit';
                     else if(column.type === 'residentName')
                         name = 'adminResidentsEdit';
                     else if(column.type === 'serviceName')
                         name = 'adminServicesEdit';
+                    else if(column.type === 'unitColumn')
+                        name = 'adminUnitsEdit';
                 });
                 if(name !== '') {
                     this.$router.push({
@@ -567,9 +597,9 @@
                 }
             }
         }
-        :global(.el-table__header-wrapper) {
-            display: none;
-        }
+        // :global(.el-table__header-wrapper) {
+        //     display: none;
+        // }
     }
     .el-button--default {
         border-radius: 20px;
@@ -642,5 +672,24 @@
         .type {
             color: var(--color-text-regular);
         }
+    }
+
+    .request-icon {
+        font-size: 30px;
+    }
+    .request-title {
+        .normal {
+            color:var(--primary-color);
+        }
+
+        .black {
+            color:black;
+        }
+    }
+    .status-icon {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        display: block;
     }
 </style>

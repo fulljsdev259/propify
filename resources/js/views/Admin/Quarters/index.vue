@@ -2,8 +2,7 @@
     <div class="quarters list-view">
         <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
-                <list-check-box 
-                    @clicked="localStorage.setItem('')"/>
+                <list-check-box @clicked="handleQuickFilterClick(true)" @unclicked="handleQuickFilterClick(false)"/>
             </template>
             <template v-if="$can($permissions.create.quarter)">
                 <el-button 
@@ -135,7 +134,8 @@
                 i18nName: 'quarter',
                 header: [{
                     label: 'models.quarter.quarter_format',
-                    prop: 'internal_quarter_id'
+                    prop: 'internal_quarter_id',
+                    sortBy: 'internal_quarter_id',
                 }, 
                 // {
                 //     label: 'models.quarter.count_of_buildings',
@@ -143,10 +143,12 @@
                 // }, 
                 {
                     label: 'models.quarter.url',
-                    prop: 'url'
+                    prop: 'url',
+                    sortBy: 'url',
                 },  {
                     label: 'models.quarter.project_ort',
-                    prop: 'city'
+                    prop: 'city',
+                    sortBy: 'city',
                 }, {
                     label: 'models.quarter.types.label',
                     prop: 'types'
@@ -154,13 +156,16 @@
                     label: 'models.building.request_status',
                     withCounts: true,
                     width: 230,
-                    prop: 'request_count'
+                    prop: 'request_count',
+                    sortBy: 'request_count',
                 },{
                     label: 'models.quarter.buildings_count',
-                    prop: 'buildings_count'
+                    prop: 'buildings_count',
+                    sortBy: 'buildings_count',
                 }, {
                     label: 'models.quarter.total_units_count',
-                    prop: 'count_of_apartments_units'
+                    prop: 'count_of_apartments_units',
+                    sortBy: 'count_of_apartments_units',
                 }, {
                     label: 'general.filters.status',
                     withStatus: true,
@@ -215,13 +220,14 @@
                         name: this.$t('general.roles.manager'),
                         type: 'select',
                         key: 'user_ids',
+                        hidden: true,
                         data: this.roles
                     },{
-                        name: this.$t('general.filters.saved_filters'),
-                        type: 'select',
+                        name: this.$t('general.filters.more_filters'),
+                        type: 'toggle',
                         key: 'saved_filter',
-                        data: []
-                    },{
+                    },
+                    {
                         name: this.$t('general.filters.my_filters'),
                         type: 'popover',
                         key: 'my_filter',
@@ -245,6 +251,17 @@
         },
         methods: {
             ...mapActions(['getBuildings', 'assignManagerToBuilding', 'getPropertyManagers']),
+            handleQuickFilterClick(checked) {
+                if(checked === true) {
+                    let quarter_ids = [];
+                    quarter_ids = this.selectedItems.map((item) => {
+                        return item.id;
+                    });
+                    localStorage.setItem('quarter_ids', JSON.stringify(quarter_ids));
+                } else {
+                    localStorage.setItem('quarter_ids', null);
+                }
+            },
             batchAssignManagers() {
                 this.assignManagersVisible = true;
             },
@@ -376,6 +393,7 @@
             }
         },
         async created() {
+            localStorage.setItem('quarter_ids', null);
             this.getRoles();
             this.getTypes();
             this.getCities();

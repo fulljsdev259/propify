@@ -2,7 +2,6 @@ import {mapActions} from 'vuex';
 import {displayError, displaySuccess} from 'helpers/messages';
 import PasswordValidatorMixin from './passwordValidatorMixin';
 import UploadUserAvatarMixin from './adminUploadUserAvatarMixin';
-import PropertyManagerTitlesMixin from './methods/propertyManagerTitleTypes';
 import axios from '@/axios';
 export default (config = {}) => {
     let mixin = {
@@ -330,7 +329,7 @@ export default (config = {}) => {
         switch (config.mode) {
             case 'add':
                 mixin.mixins = [PasswordValidatorMixin({
-                }), UploadUserAvatarMixin, PropertyManagerTitlesMixin];
+                }), UploadUserAvatarMixin, ];
 
                 mixin.methods = {
                     submit(afterValid = false) {
@@ -387,7 +386,7 @@ export default (config = {}) => {
             case 'edit':
                 mixin.mixins = [PasswordValidatorMixin({
                     required: false,
-                }), UploadUserAvatarMixin, PropertyManagerTitlesMixin];
+                }), UploadUserAvatarMixin,];
 
                 mixin.methods = {
                     submit() {
