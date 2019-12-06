@@ -252,7 +252,8 @@
                             </el-tab-pane>
                             <el-tab-pane name="request_images" class="px-10">
                                 <span slot="label">
-                                    <el-badge :value="mediaCount" :max="99" class="admin-layout">{{ $t('models.request.images') }}</el-badge>
+                                    {{ $t('models.request.images') }}
+                                    <!-- <el-badge :value="mediaCount" :max="99" class="admin-layout">{{ $t('models.request.images') }}</el-badge> -->
                                 </span>
                                 <!-- <el-alert
                                     v-if="( !media || media.length == 0) && mediaCount == 0"
@@ -544,12 +545,12 @@
                                                         :rules="validationRules.due_date">
                                                 <template slot="label" class="el-form-item__label">
                                                     {{$t('models.request.due_date')}}
-                                                    <div class="reminder-box" v-if="editMode">
+                                                    <!-- <div class="reminder-box" v-if="editMode">
                                                         <label class="switcher__label">
                                                             {{$t('models.request.active_reminder_switcher')}}
                                                         </label>
                                                         <el-switch  v-model="model.active_reminder"/>
-                                                    </div>
+                                                    </div> -->
                                                 </template>
                                                 
                                                 <el-date-picker
@@ -565,13 +566,12 @@
                                                 </el-date-picker>
                                             </el-form-item>
                                         </el-col>
-                                        <el-col :md="showPercent?8:12" v-if="this.showCostImpact == true" :class="{'pr-0': showPercent}">
+                                        <el-col :md="showPercent?8:12" v-if="this.showCostImpact == true">
                                              <el-form-item :label="$t('models.request.cost_impact.label')"
                                                     prop="cost_impact">
                                                 <el-select :disabled="$can($permissions.update.serviceRequest) || !editMode"
                                                         :placeholder="$t('models.request.placeholders.cost_impact')"
                                                         class="custom-select"
-                                                        :class="{' right-border-radius-0': showPercent}"
                                                         v-model="model.cost_impact"
                                                         @change="changeCostImpact">
                                                     <el-option
@@ -583,17 +583,17 @@
                                                 </el-select>
                                             </el-form-item>
                                         </el-col>
-                                        <el-col :md="4" v-if="this.showPercent == true" class="pl-0">
+                                        <el-col :md="4" v-if="this.showPercent == true">
                                             <el-form-item 
                                                 :label="$t('models.request.category_options.payer_percent')"
                                                 :rules="validationRules.percentage"
                                                 prop="percentage">
                                                 <el-input 
-                                                    type="number"
+                                                    type="text"
                                                     v-model="model.percentage" 
                                                     :disabled="!editMode"
                                                 >
-                                                    <template slot="prepend">%</template>
+                                                    <template slot="append">%</template>
                                                 </el-input>
                                             </el-form-item>
                                         </el-col>
@@ -667,13 +667,15 @@
                         <el-tabs id="comments-card" v-if="model.id" type="border-card" v-model="activeTab2">
                             <el-tab-pane name="comments">
                                 <span slot="label">
-                                    <el-badge :value="requestCommentCount" :max="99" class="admin-layout">{{ $t('models.request.comments') }}</el-badge>
+                                    {{ $t('models.request.comments') }}
+                                    <!-- <el-badge :value="requestCommentCount" :max="99" class="admin-layout">{{ $t('models.request.comments') }}</el-badge> -->
                                 </span>
                                 <chat :id="model.id" type="request" show-templates :newStyle="true"/>
                             </el-tab-pane>
                             <el-tab-pane name="internal-notices">
                                 <span slot="label">
-                                    <el-badge :value="noticeCommentCount" :max="99" class="admin-layout">{{ $t('models.request.internal_notices') }}</el-badge>
+                                    {{ $t('models.request.internal_notices') }}
+                                    <!-- <el-badge :value="noticeCommentCount" :max="99" class="admin-layout">{{ $t('models.request.internal_notices') }}</el-badge> -->
                                 </span>
                                 <chat :id="model.id" type="internalNotices" :newStyle="true"/>
                             </el-tab-pane>
@@ -827,7 +829,7 @@
                 } else {
                     return 0;
                 }
-            }
+            },
         },
         async mounted() {
             this.rolename = this.$store.getters.loggedInUser.roles[0].name;
@@ -976,6 +978,14 @@
         async created() {
             this.units = await this.fetchRemoteUnits();
             this.quarters = await this.fetchRemoteQuarters();
+        },
+        watch: {
+            'model.percentage' (newVal, oldVal) {
+                if(newVal === '')
+                    this.model.percentage = 0;
+                else
+                    this.model.percentage = parseInt(newVal);
+            }
         }
     };
 </script>
@@ -1041,14 +1051,16 @@
     .request-edit {
         .el-form-item__content {
             .el-input.el-input-group {
-                .el-input-group__prepend {
+                .el-input-group__append {
                     padding: 2px 8px 0;
                     font-weight: 600;
                     border: none;
-                    border-top-left-radius: 0px;
-                    border-bottom-left-radius: 0px;
                     background-color: #f6f5f7 !important;
                 }
+            }
+            .el-input.el-input-group.border-left-radious-0 {
+                    border-top-left-radius: 0px;
+                    border-bottom-left-radius: 0px;
             }
             .el-select.right-border-radius-0 .el-input__inner {
                 border-top-right-radius: 0px;

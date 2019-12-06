@@ -527,7 +527,7 @@
         .list-view {
             :global(.heading .el-button) {
                 &:hover {
-                    background-color: #f6f5f7 !important;
+                    background-color: #f6f5f7;
                     color: var(--color-text-primary);
                     font-weight: 500;
                     box-shadow: none;
