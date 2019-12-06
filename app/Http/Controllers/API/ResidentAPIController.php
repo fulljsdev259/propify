@@ -113,7 +113,7 @@ class ResidentAPIController extends AppBaseController
             'model' => (new Resident)->getTable(),
         ]);
         if ($request->orderBy == 'email') {
-            $request->merge(['orderBy' => 'users:id|email']);
+            $request->merge(['orderBy' => 'users|email']);
         }
 
         $this->residentRepository->pushCriteria(new RequestCriteria($request, 'concat(first_name, " ", last_name)'));

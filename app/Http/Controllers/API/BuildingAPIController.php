@@ -131,7 +131,7 @@ class BuildingAPIController extends AppBaseController
     {
         $request->merge(['model' => 'buildings']);
         if ($request->orderBy == 'internal_quarter_id') {
-            $request->merge(['orderBy' => 'quarters:id|internal_quarter_id']);
+            $request->merge(['orderBy' => 'quarters|internal_quarter_id']);
         }
         if ($request->orderBy == 'house_num') {
             $request->merge(['orderBy' => 'loc_addresses:address_id|house_num']);

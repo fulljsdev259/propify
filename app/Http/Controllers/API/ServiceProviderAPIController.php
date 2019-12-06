@@ -103,7 +103,7 @@ class ServiceProviderAPIController extends AppBaseController
     public function index(ListRequest $request)
     {
         if ($request->orderBy == 'email') {
-            $request->merge(['orderBy' => 'users:id|email']);
+            $request->merge(['orderBy' => 'users|email']);
         }
         $this->serviceProviderRepository->pushCriteria(new RequestCriteria($request));
         $this->serviceProviderRepository->pushCriteria(new LimitOffsetCriteria($request));

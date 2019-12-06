@@ -96,7 +96,10 @@ class UnitAPIController extends AppBaseController
     public function index(ListRequest $request)
     {
         if ($request->orderBy == 'internal_quarter_id') {
-            $request->merge(['orderBy' => 'quarters:id|internal_quarter_id']);
+            $request->merge([
+                'orderBy' => RequestCriteria::NoOrder,
+                'orderByRaw' => 'internal_quarter_id',
+            ]);
         }
         if ($request->orderBy == 'status') {
             $request->merge([
