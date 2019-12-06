@@ -121,14 +121,14 @@
                                     <!-- <el-button class="popover-button" @click="visibleSaveDialog=true">{{ $t('general.actions.save') }}</el-button> -->
                                 </el-popover>
                             </el-form-item>
-                            
+
                         </template>
 
                     </el-col>
                 </el-row>
             </el-card>
         </el-form>
-        
+
         <!--        <div class="pull-right">-->
         <!--            <el-button :disabled="!selectedItems.length" @click="batchDelete" size="mini" type="danger">-->
         <!--                {{ $t('general.actions.delete')}}-->
@@ -149,13 +149,28 @@
 
             <el-table-column
                 :key="'header' + index"
-                :label="$t(column.label)"
                 :width="column.width"
                 :min-width="column.minWidth"
                 :class-name="column.withRequestUsers ? 'request-users' : ''"
                 :align="column.align"
                 v-for="(column, index) in computedHeader">
-                
+
+                <template slot="header">
+                    <div v-if="column.sortBy" class="header-filter">
+                        <span @click="makeHeaderFilterQuery(column.sortBy)"
+                              :class="`header-filter__text ${$route.query.orderBy === column.sortBy ? 'active' : ''}`">
+                            {{$t(column.label)}}
+                        </span>
+                        <span v-if="$route.query.orderBy === column.sortBy">
+                            <i v-if="$route.query.sortedBy === 'desc'" class="el-icon-arrow-down"></i>
+                            <i v-else-if="$route.query.sortedBy === 'asc'" class="el-icon-arrow-up"></i>
+                        </span>
+                    </div>
+                    <div v-else>
+                        {{$t(column.label)}}
+                    </div>
+                </template>
+
                 <template slot-scope="scope">
                     <div v-if="column.withAvatars" class="avatars-wrapper">
                         <div class="user-details" v-if="scope.row['user']">
@@ -165,8 +180,8 @@
                             <div class="title">
                                 {{ scope.row['user'].name }}
                             </div>
-                        </div> 
-                    </div> 
+                        </div>
+                    </div>
                     <div v-else-if="column.withAvatarsAndProps" class="avatar-with-multiprops">
                         <table-avatar :src="scope.row['user'].avatar" :name="scope.row['user'].name" :size="33" />
                         <div class="avatar-info">
@@ -265,7 +280,7 @@
                             class="item"
                             effect="light" placement="top"
                         >
-                            <avatar 
+                            <avatar
                                 :background-color="$constants.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
                                 :size="30"
@@ -280,7 +295,7 @@
                             class="item"
                             effect="light" placement="top"
                         >
-                            <avatar 
+                            <avatar
                                 :background-color="$constants.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
                                 :size="30"
@@ -295,7 +310,7 @@
                             class="item"
                             effect="light" placement="top"
                         >
-                            <avatar 
+                            <avatar
                                 :background-color="$constants.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
                                 :size="30"
@@ -315,7 +330,7 @@
                                     class="item"
                                     effect="light" placement="top"
                                 >
-                                    <avatar 
+                                    <avatar
                                         :background-color="$constants.relations.status_colorcode[index]"
                                         color="#fff"
                                         :initials="`${scope.row[`${status}_units_count`]}`"
@@ -332,7 +347,7 @@
                     </div>
                     <div v-else-if="column.withReuqestIDAndTitle">
                         <div class="request-format">
-                            <strong>{{scope.row.request_format}}</strong>                    
+                            <strong>{{scope.row.request_format}}</strong>
                         </div>
                         <span>{{scope.row.title}}</span>
                     </div>
@@ -342,7 +357,7 @@
                             class="item"
                             effect="light" placement="top"
                         >
-                            <avatar 
+                            <avatar
                                 :background-color="$constants.requests.status_colorcode[scope.row[column.prop]]"
                                 :initials="''"
                                 :size="30"
@@ -353,7 +368,7 @@
                     </div>
                     <div v-else-if="column.withRequestCreator">
                         <div>
-                            <strong>{{scope.row.creator.name}}</strong>                    
+                            <strong>{{scope.row.creator.name}}</strong>
                         </div>
                         <span>{{(scope.row.created_at.split(" "))[0]}}</span>
                     </div>
@@ -434,14 +449,14 @@
                             <avatar class="avatar-count" :size="28" :username="`+ ${scope.row[column.prop].length-2}`"
                                     color="#fff"
                                     v-if="scope.row[column.prop].length>2"></avatar>
-                            <div class="quick-assign-avatar"> 
+                            <div class="quick-assign-avatar">
                             <el-dropdown placement="bottom" trigger="click">
                                 <el-button size="mini" class="more-actions" >
                                     <i class="el-icon-user"></i>
                                 </el-button>
-                                
+
                                 <el-dropdown-menu slot="dropdown" class="quick-assign-dropdown" :visible-change="handleVisibleChange">
-                                    
+
                                     <el-dropdown-item
                                             command="quick-assign"
                                     >
@@ -477,7 +492,7 @@
                                             </el-select>
 
                                             <span>{{$t('models.request.or')}}</span>
-                                            
+
                                             <el-button @click="() => handleAssignMe(scope.row.id)">
                                                 {{$t('models.request.assign_me')}}
                                             </el-button>
@@ -485,12 +500,12 @@
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
-                        
-                            
+
+
                         </div>
                         </div>
-                        
-                        
+
+
                     </div>
                     <template v-else-if="column.withBadges">
                         <el-button v-if="scope.row[column.prop] == 'low'" class="btn-priority-badge btn-badge" :size="column.size" round>{{ scope.row[column.prop] }}</el-button>
@@ -510,7 +525,7 @@
                                 <i class="icon-dot-circled" :class="item.id == 1 ? 'icon-success':'icon-danger'"  v-if="column.ShowCircleIcon"></i> {{item.name}}
                             </el-option>
                         </el-select>
-                    
+
                     </template>
                     <template v-else-if="column.actions">
                         <span
@@ -536,7 +551,7 @@
                                             <i class="ti-search"></i>
                                             <span>{{ $t('general.actions.edit') }}</span>
                                         </el-button>
-                                    </router-link>      
+                                    </router-link>
                                 </template>
                                 <el-button
                                     v-else
@@ -547,17 +562,17 @@
                                 >
                                     <template v-if="action.isTemplateEdit != undefined">
                                         <i class="ti-search"></i>
-                                        <span>{{ $t('general.actions.edit') }}</span>    
+                                        <span>{{ $t('general.actions.edit') }}</span>
                                     </template>
                                     <template v-else-if="action.title.indexOf('edit') !== -1">
                                         <router-link :to="{name: 'adminPropertyManagersEdit',  params: { id:scope.row['id']}}" class="el-menu-item-link">
                                             <i class="ti-search"></i>
                                             <span>{{ $t('general.actions.edit') }}</span>
-                                        </router-link>      
+                                        </router-link>
                                     </template>
                                     <template v-else-if="action.title == 'Delete'">
                                         <i class="ti-close"></i>
-                                        <span>{{$t(action.title)}}</span>    
+                                        <span>{{$t(action.title)}}</span>
                                     </template>
                                     <template v-else>
                                         <i class="ti-search"></i>
@@ -570,7 +585,7 @@
                     <span v-else>
                         {{ _.get(scope.row, column.prop) }}
                     </span>
-                    
+
                 </template>
             </el-table-column>
 
@@ -840,17 +855,33 @@
                         picker.$emit('pick', [start, end]);
                     }
                 }
-                
+
                 return {
                     shortcuts: [last7Days, last14Days, last30Days, lastWeek, lastMonth, last3Months]
                 };
             },
         },
         methods: {
-            ...mapActions([ 
+            ...mapActions([
                 'getAllAdminsForRequest',
                 'assignUsersToRequest'
             ]),
+            makeHeaderFilterQuery(orderBy) {
+                let sortedByVal = this.$route.query.orderBy !== orderBy
+                    ? 'desc'
+                    : this.$route.query.sortedBy === 'desc'
+                        ? 'asc'
+                        : 'desc';
+                let query = {
+                    ...this.$route.query,
+                    orderBy: orderBy,
+                    sortedBy: sortedByVal,
+                };
+                this.$router.replace({
+                    name: this.$route.name,
+                    query
+                });
+            },
             makeFilterQuery(pathName) {
                 let query = {};
                 let quarter_ids = localStorage.getItem('quarter_ids');
@@ -858,14 +889,14 @@
 
                 if(quarter_ids !== undefined && quarter_ids) {
                     quarter_ids = JSON.parse(quarter_ids);
-                } else 
+                } else
                     quarter_ids = null;
                 if(building_ids !== undefined && building_ids)
                     building_ids = JSON.parse(building_ids);
                 else
                     building_ids = null;
 
-                if((pathName == 'adminBuildings' || pathName == 'adminUnits') && quarter_ids !== null) 
+                if((pathName == 'adminBuildings' || pathName == 'adminUnits') && quarter_ids !== null)
                     query.quarter_ids = quarter_ids;
                 if(pathName == 'adminUnits' && building_ids !== null)
                     query.building_id = building_ids;
@@ -888,19 +919,19 @@
                         });
                 console.log(resp)
                 if (resp && resp.data) {
-                    displaySuccess(resp) 
-                    
+                    displaySuccess(resp)
+
                     let current_index = -1
 
                     this.items.map((item, index) => {
                         if(item.id == resp.data.id)
                             current_index = index
                     })
-                    
+
                     if(current_index != -1) {
                         this.$emit('update-row', current_index, resp.data)
                     }
-                    
+
                     this.assignees = []
                     this.assignee = ''
                 }
@@ -922,11 +953,11 @@
                         if(item.id == resp.data.id)
                             current_index = index
                     })
-                    
+
                     if(current_index != -1) {
                         this.$emit('update-row', current_index, resp.data)
                     }
-                        
+
                     this.assignees = []
                     this.assignee = ''
                 }
@@ -1009,8 +1040,8 @@
                     if((this.filterModel[filter] == '' || this.filterModel[filter] == null) && (query[filter] != undefined || query[filter] == null))
                     {
                         delete query[filter];
-                        
-                    }     
+
+                    }
                 }
                 /*if(this.$route.name=='adminUsers') {
                     query = {roles: ['administrator'], ...query};
@@ -1019,14 +1050,14 @@
                     else
                         delete query.role;
                 }*/
-                
+
                 try {
                     this.$router.replace({name: this.$route.name, query, params}).catch(err => {})
                 }
                 catch (err) {
 
                 }
-            },  
+            },
             updatePage(page, size) {
                 let {currPage, currSize} = this.page;
 
@@ -1088,7 +1119,7 @@
 
                 if(this.filterModel[filter.key] == '')
                     this.filterModel[filter.key] = null
-                    
+
                 if ((!filter.parentKey && filter.fetch && init && this.filterModel[filter.key]) || !init) {
                     this.updatePage();
                 }
@@ -1204,7 +1235,7 @@
 
                         return this.syncUrl();
                     }
-                    
+
                     page = parseInt(page);
                     per_page = parseInt(per_page);
 
@@ -1212,9 +1243,9 @@
                     this.page.currSize = per_page < 1 ? this.pagination.currSize : per_page;
 
                     prevQuery && this.syncUrl();
-                    
+
                     this.fetch(this.page.currPage, this.page.currSize);
-                    
+
                 }
             },
         },
@@ -1225,7 +1256,7 @@
 
             _.each(this.filters, (filter) => {
                 let queryFilterValue = this.$route.query[filter.key];
-                
+
                 const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
                 let value;
 
@@ -1233,7 +1264,7 @@
                     value = [queryFilterValue];
                 else
                     value = queryFilterValue;
-                    
+
                 if(!Array.isArray(value))
                     value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
                 else if(filter.key !== 'cities')
@@ -1287,6 +1318,18 @@
 </script>
 
 <style lang="scss" scoped>
+    .header-filter {
+        &__text {
+            cursor: pointer;
+            &:hover {
+                color: var(--color-black);
+            }
+            &.active {
+                font-family: 'Radikal Bold';
+            }
+        }
+    }
+
     .list-table {
         position: relative;
         :global(.el-card.filter-right .el-card__body) {
@@ -1400,7 +1443,7 @@
                 }
             }
         }
-        
+
     }
     .remote-select {
         width: 100%;
