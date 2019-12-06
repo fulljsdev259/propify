@@ -106,7 +106,7 @@
                                 <el-col :span="12">
                                     <div v-if="!editMode" class="user-info-item">
                                         <span>{{ $t('models.resident.mobile_phone') }}</span>
-                                        <span>+{{ model.mobile_phone }}</span>
+                                        <span>{{ model.mobile_phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('models.resident.mobile_phone')" prop="mobile_phone">
                                         <el-input autocomplete="off" type="text"
@@ -114,7 +114,7 @@
                                     </el-form-item>
                                     <div v-if="!editMode" class="user-info-item">
                                         <span>{{ $t('models.resident.private_phone') }}</span>
-                                        <span>+{{ model.private_phone }}</span>
+                                        <span>{{ model.private_phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('models.resident.private_phone')" prop="private_phone">
                                         <el-input autocomplete="off" type="text"
