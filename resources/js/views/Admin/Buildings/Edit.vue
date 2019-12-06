@@ -192,6 +192,7 @@
                             :filterValue="model.id"
                             fetchAction="getUnitsWithResidents"
                             filter="building_id"
+                            :show-header="true"
                             v-if="model.id"
                         />
                     </el-tab-pane>

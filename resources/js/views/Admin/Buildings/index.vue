@@ -151,23 +151,28 @@
                 header: [{
                     label: 'models.building.building_format',
                     prop: 'internal_quarter_id',
+                    sortBy: 'internal_quarter_id',
                 }, {
                     label: 'models.building.building_no',
-                    prop: 'address.house_num'
+                    prop: 'address.house_num',
+                    sortBy: 'house_num',
                 }, {
                     label: 'models.building.type',
                     prop: 'types'
                 }, {
                     label: 'models.building.units',
-                    prop: 'units_count'
+                    prop: 'units_count',
+                    sortBy: 'units_count',
                 }, {
                     label: 'models.building.request_status',
                     withCounts: true,
                     width: 230,
-                    prop: 'request_count'
+                    prop: 'request_count',
+                    sortBy: 'requests_count',
                 }, {
                     label: 'models.building.count_of_apartments_units',
                     prop: 'count_of_apartments_units',
+                    sortBy: 'count_of_apartments_units',
                     align: 'center'
                 }, {
                     label: 'general.filters.status',
