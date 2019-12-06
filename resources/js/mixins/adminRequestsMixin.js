@@ -631,7 +631,7 @@ export default (config = {}) => {
                         //this.$set(this.model, 'building', data.relation.building.address.street + ' ' + data.relation.building.address.house_num);
                         // this.address = data.relation.address
                         //this.relations = resp.data.resident.relations.filter(item => item.status == 1)
-                        this.model.relation_id = data.relation.id
+                        // this.model.relation_id = data.relation.id
                         await this.getConversations();
                         
                         if (data.resident) {
