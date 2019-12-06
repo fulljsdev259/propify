@@ -1298,12 +1298,13 @@ class ResidentAPIController extends AppBaseController
     {
         $resident = Auth::user()->resident;
         $relations = $resident->relations()
-            ->select('building_id')
-            ->where('status', Relation::StatusActive)
+            ->select('unit_id')
+            ->where('status', '!=', Relation::StatusInActive)
             ->with([
-                'building:id',
-                'building.relations' => function ($q) use ($resident) {
-                    $q->select('building_id', 'resident_id')
+                'unit:id',
+                'unit.relations' => function ($q) use ($resident) {
+                    $q->select('unit_id', 'resident_id')
+                        ->where('status', '!=', Relation::StatusInActive)
                         ->where('resident_id', '!=', $resident->id)
                         ->with([
                             'resident' => function ($q) {
@@ -1313,8 +1314,7 @@ class ResidentAPIController extends AppBaseController
                         ]);
                 },
             ])->get();
-
-        $residents = $relations->pluck('building.relations.*.resident')->collapse()->unique();
+        $residents = $relations->pluck('unit.relations.*.resident')->collapse()->unique();
         $response = (new ResidentTransformer())->transformCollectionBy($residents, 'myNeighbours');
         return $this->sendResponse($response, 'my neighbours');
     }
