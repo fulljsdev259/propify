@@ -12,7 +12,7 @@ use App\Criteria\Request\FilterNotAssignedCriteria;
 use App\Criteria\Request\FilterPendingCriteria;
 use App\Criteria\Request\FilterPublicCriteria;
 use App\Http\Controllers\AppBaseController;
-use App\Http\Requests\API\Quarter\MassAssignUsersRequest;
+use App\Http\Requests\API\Request\MassAssignUsersRequest;
 use App\Http\Requests\API\Request\AssignRequest;
 use App\Http\Requests\API\Request\ChangePriorityRequest;
 use App\Http\Requests\API\Request\ChangeStatusRequest;
@@ -1364,10 +1364,11 @@ class RequestAPIController extends AppBaseController
             return $this->sendError(__('models.request.errors.not_found'));
         }
 
-        $data  = $massAssignUsersRequest->toArray();
+        $data  = $massAssignUsersRequest->data;
         $assigneeData = collect();
         foreach ($data as $single) {
-            $newAssignee = $this->assignSingleUserToRequest($id, $single['user_id'], $single['role']);
+            $type = $single['type'] ?? RequestAssignee::TypeCompetent; // @TODO delete
+            $newAssignee = $this->assignSingleUserToRequest($id, $single['user_id'], $single['role'], $type);
             $assigneeData->push($newAssignee);
         }
 
@@ -1383,7 +1384,7 @@ class RequestAPIController extends AppBaseController
      * @param $role
      * @return RequestAssignee|\Illuminate\Database\Eloquent\Model|mixed
      */
-    protected function assignSingleUserToRequest($requestId, $userId, $role)
+    protected function assignSingleUserToRequest($requestId, $userId, $role, $type)
     {
         $user = User::find($userId);
         if (empty($user)) {
@@ -1409,6 +1410,7 @@ class RequestAPIController extends AppBaseController
             'user_id' => $userId,
             'assignee_id' => $assigneeId,
             'assignee_type' => $assigneeType,
+            'type' => $type,
         ], [
             'created_at' => now()
         ]);
