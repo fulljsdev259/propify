@@ -10,6 +10,21 @@
                         <card :header="$t('models.service.company_details')">
                             <el-row :gutter="20">
                                 <el-col :md="8">
+                                    <el-form-item class="label-block" :label="$t('general.status.label')"
+                                                  :rules="validationRules.status"
+                                                  prop="status">
+                                        <el-select :placeholder="$t('general.placeholders.select')" style="display: block"
+                                                   v-model="model.status">
+                                            <el-option
+                                                    :key="k"
+                                                    :label="$t(`general.status.${status}`)"
+                                                    :value="parseInt(k)"
+                                                    v-for="(status, k) in $constants.serviceProviders.status">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="8">
                                     <el-form-item class="label-block" :label="$t('general.function')" :rules="validationRules.category" prop="category">
                                         <el-select :placeholder="$t('general.function')" style="display: block;"
                                                    v-model="model.category">
@@ -23,22 +38,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :md="8">
-                                    <el-form-item class="label-block" :label="$t('general.status.label')"
-                                                        :rules="validationRules.status"
-                                                        prop="status">
-                                        <el-select :placeholder="$t('general.placeholders.select')" style="display: block"
-                                                v-model="model.status">
-                                            <el-option
-                                                    :key="k"
-                                                    :label="$t(`general.status.${status}`)"
-                                                    :value="parseInt(k)"
-                                                    v-for="(status, k) in $constants.serviceProviders.status">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :md="8">
-                                    <el-form-item :label="$t('models.service.company_name')" :rules="validationRules.company_name" prop="company_name">
+                                    <el-form-item :label="$t('models.service.company_name')" prop="company_name">
                                         <el-input type="text" v-model="model.company_name"/>
                                     </el-form-item>
                                 </el-col>
@@ -75,6 +75,29 @@
                         <card class="mt15" :header="$t('models.service.user_credentials')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
+                                    <el-form-item :label="$t('general.email')" :rules="validationRules.email" prop="email">
+                                        <el-input type="email"
+                                                  v-model="model.email"
+                                                  class="dis-autofill"
+                                                  readonly
+                                                  onfocus="this.removeAttribute('readonly');"
+                                        />
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :md="12">
+                                    <el-form-item :label="$t('general.password')" :rules="validationRules.password" autocomplete="off"
+                                                  prop="password">
+                                        <el-input type="password"
+                                                  v-model="model.password"
+                                                  class="dis-autofill"
+                                                  readonly
+                                                  onfocus="this.removeAttribute('readonly');"
+                                        />
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <el-row :gutter="20">
+                                <el-col :md="12">
                                     <el-form-item :label="$t('models.user.profile_image')">
                                         <cropper
                                                 :boundary="{
@@ -89,29 +112,6 @@
                                                 :defaultAvatarSrc="'/images/company.png'"
                                                 :showCamera="model.avatar==''"
                                                 @cropped="cropped"/>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :md="12">
-                                    <el-form-item :label="$t('general.email')" :rules="validationRules.email" prop="email">
-                                        <el-input type="email"
-                                                  v-model="model.email"
-                                                  class="dis-autofill"
-                                                  readonly
-                                                  onfocus="this.removeAttribute('readonly');"
-                                        />
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-                            <el-row :gutter="20">
-                                <el-col :md="12">
-                                    <el-form-item :label="$t('general.password')" :rules="validationRules.password" autocomplete="off"
-                                                  prop="password">
-                                        <el-input type="password"
-                                                  v-model="model.password"
-                                                  class="dis-autofill"
-                                                  readonly
-                                                  onfocus="this.removeAttribute('readonly');"
-                                        />
                                     </el-form-item>
                                 </el-col>
                                 <!-- <el-col :md="12">
@@ -147,7 +147,7 @@
                             </el-row>
                             <el-row :gutter="20">
                                 <el-col :md="8">
-                                    <el-form-item class="label-block" :label="$t('general.state')" :rules="validationRules.state_id" prop="address.state_id">
+                                    <el-form-item class="label-block" :label="$t('general.state')" prop="address.state_id">
                                         <el-select
                                             filterable
                                              clearable 

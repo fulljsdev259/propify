@@ -93,7 +93,8 @@
                     label: 'general.filters.status',
                     withPMStatusSign: true,
                     prop: 'status',
-                    width: 100,
+                    width: 118,
+                    align: 'center',
                 }, {
                     label: 'models.service.company_name',
                     prop: 'company_name',
