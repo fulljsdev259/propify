@@ -7,6 +7,7 @@ use App\Repositories\UnitPlanRepository;
 use App\Repositories\UnitRepository;
 use App\Transformers\UnitPlanTransformer;
 use Illuminate\Http\Request;
+use Swagger\Annotations as SWG;
 
 class UnitPlanAPIController extends AppBaseController
 {
@@ -27,6 +28,34 @@ class UnitPlanAPIController extends AppBaseController
     }
 
     /**
+     * @SWG\Get(
+     *     path="/units/{unitId}/plans"
+     *     summary="Display the list of Unit's plans"
+     *     tags={Unit_Plan}
+     *     description="Get all Unit's plans",
+     *     produces={"application/json"},
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  type="array",
+     *                  @SWG\Items(ref="#/definitions/Unit_Plans")
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     *
      * Display a listing of the resource.
      *
      * @param $unitId
@@ -46,6 +75,40 @@ class UnitPlanAPIController extends AppBaseController
     }
 
     /**
+     * @SWG\Post(
+     *      path="/units/{unitId}/plans",
+     *      summary="Store a newly created Unit Plan in storage",
+     *      tags={"Unit_Plan"},
+     *      description="Store Unit Plan",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="body",
+     *          in="body",
+     *          description="Unit Plan that should be stored",
+     *          required=false,
+     *          @SWG\Schema(ref="#/definitions/Unit_Plans")
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  ref="#/definitions/Unit_Plans"
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     *
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -78,6 +141,47 @@ class UnitPlanAPIController extends AppBaseController
     }
 
     /**
+     * @SWG\Get(
+     *      path="/units/{unitId}/plans/{planId}",
+     *      summary="Display the specified Unit Plan based on a Unit",
+     *      tags={"Unit_Plan"},
+     *      description="Get Unit Plan based on a Unit",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="unitId",
+     *          description="id of Unit",
+     *          type="integer",
+     *          required=true,
+     *          in="path"
+     *      ),
+     *      @SWG\Parameter(
+     *          name="planId",
+     *          description="id of Plan",
+     *          type="integer",
+     *          required=true,
+     *          in="path"
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  ref="#/definitions/Unit_Plans"
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     *
      * Display the specified resource.
      *
      * @param int $unitId
@@ -97,6 +201,47 @@ class UnitPlanAPIController extends AppBaseController
     }
 
     /**
+     * @SWG\Put(
+     *      path="/units/{unitId}/plans/{planId}",
+     *      summary="Update the specified Unit Plan in storage",
+     *      tags={"Unit_Plan"},
+     *      description="Update Unit Plan",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="unitId",
+     *          description="id of Unit",
+     *          type="integer",
+     *          required=true,
+     *          in="path"
+     *      ),
+     *      @SWG\Parameter(
+     *          name="planId",
+     *          description="id of Plan",
+     *          type="integer",
+     *          required=true,
+     *          in="path"
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  ref="#/definitions/Unit_Plans"
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     *
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -132,6 +277,47 @@ class UnitPlanAPIController extends AppBaseController
     }
 
     /**
+     * @SWG\Delete(
+     *      path="/units/{unitId}/plans/{planId}",
+     *      summary="Remove the specified Unit Plan from storage",
+     *      tags={"Unit_Plan"},
+     *      description="Delete Unit Plan",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="unitId",
+     *          description="id of Unit",
+     *          type="integer",
+     *          required=true,
+     *          in="path"
+     *      ),
+     *      @SWG\Parameter(
+     *          name="planId",
+     *          description="id of Plan",
+     *          type="integer",
+     *          required=true,
+     *          in="path"
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  type="string"
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     *
      * Remove the specified resource from storage.
      *
      * @param int $unitId
