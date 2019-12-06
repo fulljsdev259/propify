@@ -103,7 +103,7 @@
                     label: 'general.name',
                     withMultiplePropsString: true,
                     props: ['first_name', 'last_name'],
-                    sortBy: 'first_name',
+                    sortBy: 'name',
                 }, {
                     label: 'general.email',
                     prop: 'email',

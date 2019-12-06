@@ -172,14 +172,15 @@
                 v-for="(column, index) in computedHeader">
 
                 <template slot="header">
-                    <div v-if="column.sortBy" class="header-filter">
-                        <span @click="makeHeaderFilterQuery(column.sortBy)"
-                              :class="`header-filter__text ${$route.query.orderBy === column.sortBy ? 'active' : ''}`">
+                    <div v-if="column.sortBy" :class="`header-filter ${$route.query.orderBy === column.sortBy ? 'active' : ''}`">
+                        <span class="header-filter__text">
                             {{$t(column.label)}}
                         </span>
-                        <span v-if="$route.query.orderBy === column.sortBy">
-                            <i v-if="$route.query.sortedBy === 'desc'" class="el-icon-arrow-down"></i>
-                            <i v-else-if="$route.query.sortedBy === 'asc'" class="el-icon-arrow-up"></i>
+                        <span
+                              class="header-filter__icon"
+                              @click="makeHeaderFilterQuery(column.sortBy)">
+                            <i v-if="$route.query.sortedBy === 'asc'" class="el-icon-arrow-up"></i>
+                            <i v-else class="el-icon-arrow-down"></i>
                         </span>
                     </div>
                     <div v-else>
@@ -1341,14 +1342,22 @@
 
 <style lang="scss" scoped>
     .header-filter {
-        &__text {
+        &__icon {
+            opacity: 0;
             cursor: pointer;
-            &:hover {
-                color: var(--color-black);
-            }
-            &.active {
-                font-family: 'Radikal Bold';
-            }
+        }
+        &:hover &__text {
+            color: var(--color-black);
+        }
+        &:hover &__icon {
+            opacity: 1;
+        }
+        &.active &__text {
+            font-family: 'Radikal Bold';
+            color: var(--color-black);
+        }
+        &.active &__icon {
+            opacity: 1;
         }
     }
 
@@ -1706,29 +1715,21 @@
             display: none;
 
             .el-dropdown {
-                width : 30px;
-                height: 30px;
+                width : 28px;
+                height: 28px;
                 border-radius: 50%;
                 border: 1px dashed black; 
             }
             .more-actions {
                 padding: 0;
                 background: transparent;
-                
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 width: 100%;
-                height: 0;
-                padding-top: 100%;
-                position: relative;
-
-                /deep/ span {
-                    position: absolute;
-                    font-size: 18px;
-                    top: 6px;
-                    left: 5.5px;
-                }
+                height: 100%;
+                font-size: 18px;
             }
-            
-            
         }
 
         &:hover {
