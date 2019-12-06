@@ -160,9 +160,6 @@ class BuildingAPIController extends AppBaseController
         $buildings = $this->buildingRepository->with([
                 'address.state',
 //                'service_providers',
-                'relations' => function ($q) {
-                    $q->with('unit', 'resident.user');
-                },
 //                'propertyManagers',
 //                'users',
                 'quarter' => function ($q) {
@@ -249,9 +246,6 @@ class BuildingAPIController extends AppBaseController
         $model = $this->buildingRepository->getModel();
         $buildings = $model->select(['id'])->orderByDesc('id')->limit($limit)->withCount([
             'units',
-            'relations' => function ($q) {
-                $q->with('unit', 'resident.user');
-            },
         ])->get();
         return $this->sendResponse($buildings->toArray(), 'Buildings retrieved successfully');
     }
@@ -275,21 +269,18 @@ class BuildingAPIController extends AppBaseController
                     $q->select('id', 'country_id', 'state_id', 'city', 'street', 'house_num', 'zip')
                         ->with(['state', 'country']);
                 },
-                'relations' => function ($q) {
-                    $q->select('building_id', 'resident_id');
+                'units' =>  function ($q) {
+                    $q->with('relations:unit_id,resident_id');
                 }
             ])->withCount([
                 'units',
                 'propertyManagers',
-                'relations' => function ($q) {
-                    $q->with('unit', 'resident.user');
-                },
                 'users'
             ])->allRequestStatusCount()
             ->get();
 
         foreach ($buildings as $building) {
-            $relations = $building->relations;
+            $relations = $building->units->pluck('relations')->collapse();
             unset($building->relations);
             $building->residents_count = $relations->pluck('resident_id')->unique()->count();
         }
@@ -356,12 +347,6 @@ class BuildingAPIController extends AppBaseController
         $floorData = $request->get('floor', []);
         $building = $this->buildingRepository->saveManyUnit($building, $floorData, $address->house_num);
 
-        $building->load([
-            'relations' => function ($q) {
-                $q->with('unit', 'resident.user');
-            },
-        ]);
-
         if ($building->global_email_receptionist) {
             $building->setAttribute('has_email_receptionists', true);
         } else {
@@ -427,14 +412,11 @@ class BuildingAPIController extends AppBaseController
         $building
             ->load([
                 'address.state',
-                'service_providers',
-                'relations' => function ($q) {
-                    $q->with('unit', 'resident.user');
-                },
-                'propertyManagers',
+//                'service_providers',
+//                'propertyManagers',
                 'media',
                 'quarter',
-                'users'
+//                'users'
             ]);
 
         if ($building->global_email_receptionist) {
@@ -541,10 +523,7 @@ class BuildingAPIController extends AppBaseController
         $building->load([
             'address.state',
             'media',
-            'service_providers',
-            'relations' => function ($q) {
-                $q->with('unit', 'resident.user');
-            },
+//            'service_providers',
         ]);
 
         if ($building->global_email_receptionist) {
