@@ -106,7 +106,7 @@
                                 <el-col :span="12">
                                     <div v-if="!editMode" class="user-info-item">
                                         <span>{{ $t('models.resident.mobile_phone') }}</span>
-                                        <span>+{{ model.mobile_phone }}</span>
+                                        <span>{{ model.mobile_phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('models.resident.mobile_phone')" prop="mobile_phone">
                                         <el-input autocomplete="off" type="text"
@@ -114,7 +114,7 @@
                                     </el-form-item>
                                     <div v-if="!editMode" class="user-info-item">
                                         <span>{{ $t('models.resident.private_phone') }}</span>
-                                        <span>+{{ model.private_phone }}</span>
+                                        <span>{{ model.private_phone }}</span>
                                     </div>
                                     <el-form-item v-if="editMode" :label="$t('models.resident.private_phone')" prop="private_phone">
                                         <el-input autocomplete="off" type="text"
@@ -255,6 +255,14 @@
                             <span slot="label">
                                 {{ $t('models.resident.request') }}
                             </span>
+                            <relation-list
+                                :actions="requestActions"
+                                :columns="requestColumns"
+                                :filterValue="model.id"
+                                fetchAction="getRequests"
+                                filter="resident_id"
+                                v-if="model && model.id"
+                            />
                         </el-tab-pane>
                         <el-tab-pane name="tab_3_2">
                             <span slot="label">
@@ -417,7 +425,20 @@
                         key: 'delete-media',
                         title: 'general.actions.delete'
                     }],
-                }]
+                }],
+                requestColumns: [{
+                    type: 'requestIcon',
+                    label: 'models.request.prop_title',
+                    width: 60,
+                }, {
+                    type: 'requestTitleWithDesc',
+                    label: 'models.request.prop_title'
+                }, {
+                    type: 'requestStatus',
+                    width: 50,
+                    label: 'models.request.status.label'
+                }],
+                requestActions: [],
             }
         },
         methods: { 

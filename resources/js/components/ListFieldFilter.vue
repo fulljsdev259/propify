@@ -67,7 +67,7 @@
                 let result = [];
                 this.selected.forEach((item, index) => {
                     if(item === false)
-                        result.push(this.fields[index].prop);
+                        result.push(this.fields[index].label);
                 });
                 this.$emit('field-changed', result);
             },
