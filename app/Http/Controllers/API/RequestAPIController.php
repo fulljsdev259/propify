@@ -1347,7 +1347,13 @@ class RequestAPIController extends AppBaseController
         }
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        $assignees = $sr->assignees()->orderBy('id', 'desc')->paginate($perPage);
+        $type = $request->type;
+        $assignees = $sr->assignees()
+            ->orderBy('id', 'desc')
+            ->when($type, function ($q) use ($type) {
+                $q->where('type', $type);
+            })
+            ->paginate($perPage);
         $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
 
         $response = (new RequestAssigneeTransformer())->transformPaginator($assignees) ;
