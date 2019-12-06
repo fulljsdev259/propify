@@ -158,6 +158,19 @@ class RequestAPIController extends AppBaseController
                     $q->with('quarter.address', 'unit');
                 },
                 'comments.user',
+                'assignees' => function ($q) {
+                    // TODO make more optional query for find each type only one assignee
+                    $q->select('id', 'type', 'user_id', 'request_id')
+                        ->with([
+                            'user' => function ($q) {
+                                $q->select('users.id', 'users.avatar', 'users.name')
+                                    ->with('roles:roles.id,name');
+                            }
+                        ])
+//                        ->groupBy('request_assignees.type')
+//                        ->groupBy('request_assignees.request_id')
+                        ->orderBy('request_assignees.id', 'desc');
+                },
                 'users' => function ($q) {
                     $q->select('users.id', 'users.avatar', 'users.name')
                         ->with('roles:roles.id,name')

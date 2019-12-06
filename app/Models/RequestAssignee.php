@@ -104,4 +104,12 @@ class RequestAssignee extends Assignee
         $data['event'] = $event;
         return $data;
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

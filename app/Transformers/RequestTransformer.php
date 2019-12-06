@@ -56,15 +56,17 @@ class RequestTransformer extends BaseTransformer
             $response['solved_date'] = $model->solved_date->format('Y-m-d');
         }
 
-        if ($model->relationExists('users')) {
-            $accountableUser = $model->users->where('pivot.type', RequestAssignee::TypeAccountable)->first();
+        if ($model->relationExists('assignees')) {
+            $accountableUser = $model->assignees->where('type', RequestAssignee::TypeAccountable)->pluck('user')->first();
             $response['accountable_user'] = $accountableUser ? (new UserTransformer())->transform($accountableUser) : null;
 
-            $competentUser = $model->users->where('pivot.type', RequestAssignee::TypeCompetent)->first();
+            $competentUser = $model->assignees->where('type', RequestAssignee::TypeCompetent)->pluck('user')->first();
             $response['competent_user'] = $competentUser ? (new UserTransformer())->transform($competentUser) : null;
-
-            $response['assignedUsers'] = (new UserTransformer())->transformCollection($model->users);
+            // @TODO delete
+            $users = $model->assignees->pluck('user');
+            $response['assignedUsers'] = (new UserTransformer())->transformCollection($users);
             $users = collect($response['assignedUsers']);
+
             $propertyManager = $users->whereIn('roles.0.name', PropertyManager::Type)->values()->all();
             $response['property_managers'] = $propertyManager;
 
