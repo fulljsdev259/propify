@@ -93,7 +93,6 @@
                         :data="unitFilter.data"
                         showMultiTag
                         showGroup
-                        :maxSelect="1"
                         :selectedOptions="[model.unit_id]"
                         @select-changed="model.unit_id=$event, changeRelationUnit()"
                     >
