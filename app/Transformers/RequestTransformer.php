@@ -4,6 +4,7 @@ namespace App\Transformers;
 
 use App\Models\PropertyManager;
 use App\Models\Request;
+use App\Models\RequestAssignee;
 
 /**
  * Class RequestTransformer
@@ -56,6 +57,12 @@ class RequestTransformer extends BaseTransformer
         }
 
         if ($model->relationExists('users')) {
+            $accountableUser = $model->users->where('pivot.type', RequestAssignee::TypeAccountable)->first();
+            $response['accountable_user'] = $accountableUser ? (new UserTransformer())->transform($accountableUser) : null;
+
+            $competentUser = $model->users->where('pivot.type', RequestAssignee::TypeCompetent)->first();
+            $response['competent_user'] = $competentUser ? (new UserTransformer())->transform($competentUser) : null;
+
             $response['assignedUsers'] = (new UserTransformer())->transformCollection($model->users);
             $users = collect($response['assignedUsers']);
             $propertyManager = $users->whereIn('roles.0.name', PropertyManager::Type)->values()->all();

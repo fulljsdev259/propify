@@ -158,11 +158,13 @@ class RequestAPIController extends AppBaseController
                     $q->with('quarter.address', 'unit');
                 },
                 'comments.user',
-                'providers.address:id,country_id,state_id,city,street,zip',
-                'providers.user',
-                'managers.user',
                 'users' => function ($q) {
-                    $q->select('users.id', 'users.avatar', 'users.name')->with('roles:roles.id,name');
+                    $q->select('users.id', 'users.avatar', 'users.name')
+                        ->with('roles:roles.id,name')
+                        ->withPivot('type')
+                        ->groupBy('request_assignees.type')
+                        ->groupBy('request_assignees.request_id')
+                        ->orderBy('request_assignees.id', 'desc');
                 },
                 'creator'
             ])->paginate($perPage);
@@ -246,9 +248,6 @@ class RequestAPIController extends AppBaseController
                 $q->with('quarter.address', 'unit');
             },
             'comments.user',
-            'providers.address:id,country_id,state_id,city,street,zip',
-            'providers.user',
-            'managers.user',
             'users',
             'creator'
         ]);
@@ -308,11 +307,8 @@ class RequestAPIController extends AppBaseController
         $request->load([
             'media',
             'resident.user',
-            'managers',
             'users',
             'comments.user',
-            'providers.address:id,country_id,state_id,city,street,zip',
-            'providers',
             'resident.relations' => function ($q) {
                 $q->with('quarter.address', 'unit');
             },
@@ -395,14 +391,11 @@ class RequestAPIController extends AppBaseController
             'relation' => function ($q) {
                 $q->with('quarter.address', 'unit');
             },
-            'managers.user',
             'users',
             'resident.relations' => function ($q) {
                 $q->with('quarter.address', 'unit');
             },
             'comments.user',
-            'providers.address:id,country_id,state_id,city,street,zip',
-            'providers.user',
             'creator'
         ]);
         $response = (new RequestTransformer)->transform($updatedRequest);
@@ -528,14 +521,11 @@ class RequestAPIController extends AppBaseController
                 'relation' => function ($q) {
                     $q->with('quarter.address', 'unit');
                 },
-                'managers.user',
                 'users',
                 'resident.relations' => function ($q) {
                     $q->with('quarter.address', 'unit');
                 },
                 'comments.user',
-                'providers.address:id,country_id,state_id,city,street,zip',
-                'providers.user',
                 'creator'
             ]);
             $response[] = (new RequestTransformer)->transform($request);
