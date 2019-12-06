@@ -778,6 +778,13 @@ return [
         'go_to_building' => 'Zum Objekt gehen',
         'visible' => 'Sichtbar'
     ],
+    'request_assignee' => [
+        'type' => [
+            'label' => 'Type',
+            'competent' => 'Zuständig',
+            'accountable' => 'verantwortlich',
+        ],
+    ],
     'request_category' => [
         'title' => 'Anfrage Kategorien',
         'add' => 'Kategorie hinzufügen',

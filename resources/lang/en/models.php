@@ -777,6 +777,13 @@ return [
         'go_to_building' => 'go to building',
         'visible' => 'Visible'
     ],
+    'request_assignee' => [
+        'type' => [
+            'label' => 'Type',
+            'competent' => 'Competent',
+            'accountable' => 'Accountable',
+        ],
+    ],
     'request_category' => [
         'title' => 'Request categories',
         'add' => 'Add category',
