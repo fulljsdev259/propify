@@ -5,14 +5,15 @@ namespace App\Criteria\UserFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class FilterByMenuCriteria
+ * Class FilterByLoggedUserCriteria
  * @package App\Criteria\UserFilter
  */
-class FilterByUserCriteria implements CriteriaInterface
+class FilterByLoggedUserCriteria implements CriteriaInterface
 {
     /**
      * @var \Illuminate\Http\Request
@@ -40,10 +41,7 @@ class FilterByUserCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $userId = $this->request->user_id;
-        if ($userId) {
-            $model->where('user_id', $userId);
-        }
+        $model->where('user_id', Auth::id());
 
         return $model;
     }
