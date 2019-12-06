@@ -1328,16 +1328,16 @@ class ResidentAPIController extends AppBaseController
     {
         $resident = Auth::user()->resident;
         $relations = $resident->relations()
-            ->select('building_id')
+            ->select('quarter_id')
             ->where('status', Relation::StatusActive)
             ->with([
-                'building.property_managers' => function ($q) {
+                'quarter.property_managers' => function ($q) {
                     $q->select('property_managers.id', 'property_managers.user_id', 'property_managers.first_name', 'property_managers.last_name')
                         ->with('user:id,avatar,phone,email');
                 },
             ])->get();
 
-        $propertyManagers = $relations->pluck('building.property_managers')->collapse()->keyBy('id')->values();
+        $propertyManagers = $relations->pluck('quarter.property_managers')->collapse()->keyBy('id')->values();
         $response = (new PropertyManagerTransformer())->transformCollectionBy($propertyManagers, 'residentPropertyManagers');
         return $this->sendResponse($response, 'my property managers');
     }
