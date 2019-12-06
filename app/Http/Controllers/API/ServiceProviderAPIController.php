@@ -247,9 +247,6 @@ class ServiceProviderAPIController extends AppBaseController
             $input['user']['name'] = $input['first_name'] . ' ' . $input['last_name'];
         }
 
-        if (!isset($input['user']['phone'])) {
-            $input['user']['phone'] = $input['phone'];
-        }
         $input['user']['role'] = 'provider';
 
         $validator = Validator::make($input['user'], User::$rules);
