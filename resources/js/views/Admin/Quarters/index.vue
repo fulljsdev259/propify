@@ -157,7 +157,7 @@
                     withCounts: true,
                     width: 230,
                     prop: 'request_count',
-                    sortBy: 'request_count',
+                    sortBy: 'requests_count',
                 },{
                     label: 'models.quarter.buildings_count',
                     prop: 'buildings_count',
