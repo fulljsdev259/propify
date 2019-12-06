@@ -112,16 +112,20 @@
                     prop: 'preview'
                 }, {
                     label: 'general.email',
-                    prop: 'user.email'
+                    prop: 'user.email',
+                    sortBy: 'email',
                 }, {
                     label: 'models.pinboard.type.label',
-                    prop: 'formatted_type_label'
+                    prop: 'formatted_type_label',
+                    sortBy: 'type',
                 }, {
                     label: 'models.pinboard.visibility.label',
-                    prop: 'formatted_visibility_label'
+                    prop: 'formatted_visibility_label',
+                    sortBy: 'visibility',
                 }, {
                     label: 'models.pinboard.status.label',
                     prop: 'status',
+                    sortBy: 'status',
                     i18nPath: 'models.pinboard.status',
                     class: 'rounded-select',
                     select: {

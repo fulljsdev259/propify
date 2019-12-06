@@ -95,21 +95,26 @@
                     label: 'general.filters.status',
                     withResidentStatusSign: true,
                     prop: 'status',
+                    sortBy: 'status',
                     width: 130
                 }, {
                     label: 'general.first_name',
                     prop: 'first_name',
+                    sortBy: 'first_name',
                     width: 200
                 }, {
                     label: 'general.last_name',
                     prop: 'last_name',
+                    sortBy: 'last_name',
                     width: 200
                 }, {
                     label: 'general.email',
                     prop: 'user.email',
+                    sortBy: 'email',
                 }, {
                     label: 'general.mobile',
                     prop: 'mobile_phone',
+                    sortBy: 'mobile_phone',
                 }, {
                     label: 'models.resident.business_relation',
                     withResidentTypes: true,
@@ -151,7 +156,8 @@
                     label: 'general.request_status',
                     withCounts: true,
                     width: 230,
-                    prop: 'request_count'
+                    prop: 'request_count',
+                    sortBy: 'requests_count',
                 },/*, {
                     label: 'models.resident.status.label',
                     prop: 'status',
