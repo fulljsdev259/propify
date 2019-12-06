@@ -10,7 +10,11 @@
         <div ref="container" class="container">
             <el-input ref="content" :class="{'is-focused': idState.focused}" type="textarea" resize="none" v-if="idState.editing" v-model="comment" autosize :disabled="idState.loading._isVue && idState.loading.visible" :validate-event="false" @blur="idState.focused = false" @focus="idState.focused = true" @keydown.native.enter="$emit('size-hanged')" @keydown.native.alt.enter.exact="update" @keydown.native.stop.esc.exact="cancelEdit" />
             <div class="content" :class="{'empty': !comment, 'disabled': idState.loading._isVue && idState.loading.visible}" v-else>
-                <div class="text" :class="newStyle?'new-style':'old-style'">{{comment || $t('general.components.common.comment.deleted_comment_placeholder')}}<div class="tag"></div><div class="border"></div></div>                
+                <div class="text" :class="newStyle?'new-style':'old-style'">
+                    <span class="name" v-if="newStyle">{{ data.user.name }}</span>
+                    {{comment || $t('general.components.common.comment.deleted_comment_placeholder')}}<div class="tag"></div><div class="border"></div>
+                    <span class="time" v-if="newStyle">{{ data.updated_at.slice(11, 16) }}</span>
+                </div>                
                 <div class="actions" v-if="hasActions && !newStyle">                                    
                     <el-button type="text" @click="enterEdit" v-if="data.comment">
                         <i class="icon-pencil"></i>
@@ -426,10 +430,21 @@
 
                     &.new-style {
                         background-color: #f6f5f7;
+                        min-width: 400px;
                         border: none;
                         margin: 0 0 10px;
-                        border-radius: 18px;
-                        padding: 12px;
+                        border-radius: 20px;
+                        padding: 8px 40px 8px 15px;
+                        .name {
+                            color: #974C72;
+                            font-weight: 700;
+                        }
+                        .time {
+                            font-family: 'Radikal Thin';
+                            position: absolute;
+                            right: 12px;
+                            bottom: 5px;
+                        }
                     }
 
                     &:before,
@@ -569,6 +584,9 @@
                     .text.new-style {
                         background-color: #974C72;
                         color: var(--color-white);
+                        .name {
+                            color: #6D0339;
+                        }
                     }
                 }
             }

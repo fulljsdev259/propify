@@ -120,7 +120,7 @@
                                         {{ $t('general.filter') }}
                                     <el-dropdown-menu slot="dropdown" class="save-filters">
                                         <span class="title">{{ $t('general.filters.saved_filters') }}</span>
-                                        <el-input v-model="savedFilterSearch" prefix-icon="el-icon-search" placeholder="Searh saved filters"></el-input>
+                                        <el-input v-model="savedFilterSearch" prefix-icon="el-icon-search" placeholder="Searh saved filters" @change="filter.fetchSearchFilter"></el-input>
                                         <el-dropdown-item
                                             :key="item.name"
                                             :command="item"

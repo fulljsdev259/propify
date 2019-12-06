@@ -438,7 +438,8 @@
                         name: this.$t('general.filters.my_filters'),
                         type: 'popover',
                         key: 'my_filter',
-                        data: this.savedFilters
+                        data: this.savedFilters,
+                        fetchSearchFilter: this.getSavedFilters
                     }
                 ];
                 if(this.routeName == 'adminUnassignedRequests') {
@@ -487,8 +488,8 @@
                     this.batchEditVisible = true
                 }
             },
-            getSavedFilters() {
-                this.axios.get('userFilters')
+            getSavedFilters(search='') {
+                this.axios.get(`userFilters?search=${search}`)
                 .then(res => {
                     this.savedFilters = res.data.data.data;
                     console.log(this.savedFilters);
