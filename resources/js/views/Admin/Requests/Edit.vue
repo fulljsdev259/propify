@@ -97,7 +97,7 @@
                                         </el-form-item>
                                        
                                     </el-col>
-                                    <el-col :md="12"
+                                    <!-- <el-col :md="12"
                                             v-if="this.showSubCategory == true">
                                         <el-form-item :label="$t('models.request.defect_location.label')"
                                                     :rules="validationRules.sub_category"
@@ -117,7 +117,7 @@
                                                 </el-option>
                                             </el-select>
                                         </el-form-item>
-                                    </el-col>
+                                    </el-col> -->
                                    
                                    
                                     <!-- <el-col :md="6" v-if="this.showPayer == true">
@@ -146,7 +146,7 @@
                                             </el-input>
                                         </el-form-item>
                                     </el-col> -->
-                                    <el-col :md="12">
+                                    <!-- <el-col :md="12">
                                         <el-form-item :label="$t('models.request.category_options.keywords')">
                                             <el-select
                                                 v-model="model.keywords"
@@ -167,7 +167,7 @@
                                                 </el-option>
                                             </el-select>
                                         </el-form-item>
-                                    </el-col>
+                                    </el-col> -->
                                 </el-row>
                                 <!-- <el-row :gutter="20" class="summary-row" style="margin-bottom: 0;padding-bottom: 0;">
                                     <el-col :md="8" class="summary-item" id="resident">
