@@ -105,6 +105,12 @@ class ServiceProviderAPIController extends AppBaseController
         if ($request->orderBy == 'email') {
             $request->merge(['orderBy' => 'users|email']);
         }
+        if ($request->orderBy == 'name') {
+            $request->merge([
+                'orderBy' => RequestCriteria::NoOrder,
+                'orderByRaw' => 'name',
+            ]);
+        }
         $this->serviceProviderRepository->pushCriteria(new RequestCriteria($request));
         $this->serviceProviderRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->serviceProviderRepository->pushCriteria(new FilterByPinboardCriteria($request));
