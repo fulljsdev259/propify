@@ -169,6 +169,7 @@
                 }, {
                     label: 'general.filters.status',
                     withStatus: true,
+                    sortBy: 'units_count',
                     prop: 'status'
                 }, {
                     label: 'models.request.assigned_property_managers',
