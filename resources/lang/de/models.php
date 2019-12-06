@@ -600,6 +600,11 @@ return [
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',
         'save_filter' => 'Speicherfilter',
+        'assignee_type' => [
+            'label' => 'Type',
+            'competent' => 'Zuständig',
+            'accountable' => 'verantwortlich',
+        ],
         'category_list' => [
             'general' => ' Allg. Anliegen',
             'malfunction' => 'Fehlfunktion',
@@ -777,13 +782,6 @@ return [
         'pictures_of' => 'Dokumente des Anliegens',
         'go_to_building' => 'Zum Objekt gehen',
         'visible' => 'Sichtbar'
-    ],
-    'request_assignee' => [
-        'type' => [
-            'label' => 'Type',
-            'competent' => 'Zuständig',
-            'accountable' => 'verantwortlich',
-        ],
     ],
     'request_category' => [
         'title' => 'Anfrage Kategorien',

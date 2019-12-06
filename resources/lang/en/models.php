@@ -599,6 +599,11 @@ return [
         'reset_sort' => 'Reset Sort',
         'creation_date' => 'Creation Date',
         'save_filter' => 'Save Filter',
+        'assignee_type' => [
+            'label' => 'Type',
+            'competent' => 'Competent',
+            'accountable' => 'Accountable',
+        ],
         'category_list' => [
             'general' => 'General concerns',
             'malfunction' => 'Malfunction',
@@ -776,13 +781,6 @@ return [
         'pictures_of' => 'Photos of the request',
         'go_to_building' => 'go to building',
         'visible' => 'Visible'
-    ],
-    'request_assignee' => [
-        'type' => [
-            'label' => 'Type',
-            'competent' => 'Competent',
-            'accountable' => 'Accountable',
-        ],
     ],
     'request_category' => [
         'title' => 'Request categories',
