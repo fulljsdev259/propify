@@ -12,14 +12,6 @@ use League\Fractal\TransformerAbstract;
  */
 class AddressTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = [
-        'state'
-    ];
-
-    protected $defaultIncludes = [
-        'state'
-    ];
-
     /**
      * @param Address $model
      * @return array
@@ -30,11 +22,14 @@ class AddressTransformer extends TransformerAbstract
             'id' => $model->id,
             'country_id' => $model->country_id,
             'country' => 'Switzerland',
-            'state' => (new StateTransformer)->transform($model->state),
             'city' => $model->city,
             'street' => $model->street,
             'zip' => $model->zip,
         ];
+
+        if ($model->relationExists('state') || $model->state) { // @TODO delete $model->state and each case if need select also state
+            $response['state'] = (new StateTransformer)->transform($model->state);
+        }
 
         if (key_exists('house_num', $model->getAttributes())) {
             $response['house_num'] =  $model->house_num;
@@ -63,15 +58,4 @@ class AddressTransformer extends TransformerAbstract
         return $address;
     }
 
-    /**
-     * Include State
-     *
-     * @return \League\Fractal\Resource\Item
-     */
-    public function includeState(Address $address)
-    {
-        $state = $address->state;
-
-        return $this->item($state, new StateTransformer);
-    }
 }

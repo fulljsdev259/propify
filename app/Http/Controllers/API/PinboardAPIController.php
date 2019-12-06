@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Pinboard\FeedCriteria;
 use App\Criteria\Pinboard\FilterByBuildingCriteria;
 use App\Criteria\Pinboard\FilterByQuarterCriteria;
@@ -106,8 +107,9 @@ class PinboardAPIController extends AppBaseController
     public function index(ListRequest $request)
     {
         if ($request->orderBy == 'email') {
-            $request->merge(['orderBy' => 'users:id|email']);
+            $request->merge(['orderBy' => 'users|email']);
         }
+        $this->pinboardRepository->pushCriteria(new RequestCriteria($request));
         $this->pinboardRepository->pushCriteria(new LimitOffsetCriteria($request));
         $this->pinboardRepository->pushCriteria(new FeedCriteria($request));
         $this->pinboardRepository->pushCriteria(new FilterByStatusCriteria($request));
