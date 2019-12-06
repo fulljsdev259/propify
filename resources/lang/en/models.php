@@ -599,6 +599,11 @@ return [
         'reset_sort' => 'Reset Sort',
         'creation_date' => 'Creation Date',
         'save_filter' => 'Save Filter',
+        'assignee_type' => [
+            'label' => 'Type',
+            'competent' => 'Competent',
+            'accountable' => 'Accountable',
+        ],
         'category_list' => [
             'general' => 'General concerns',
             'malfunction' => 'Malfunction',

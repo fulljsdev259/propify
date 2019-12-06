@@ -20,6 +20,8 @@ class RequestAssigneeTransformer extends AssigneeTransformer
      */
     public function transform(RequestAssignee $model)
     {
-        return $this->transformAssignee($model);
+        $response =  $this->transformAssignee($model);
+        $response['assignee_type'] = $model->type;
+        return $response;
     }
 }
