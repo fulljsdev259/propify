@@ -116,10 +116,20 @@
                                 </el-button>
                             </el-form-item>
                              <el-form-item v-else-if="filter.type === filterTypes.popover">
-                                <el-popover placement="bottom-end" trigger="click" :width="192" style="float:right">
-                                    <el-button slot="reference" class="filter-button">{{ filter.name }}</el-button>
-                                    <!-- <el-button class="popover-button" @click="visibleSaveDialog=true">{{ $t('general.actions.save') }}</el-button> -->
-                                </el-popover>
+                                <el-dropdown class="bg-primary" split-button placement="bottom" trigger="click" @command="handleSelectFilters">
+                                        {{ $t('general.filter') }}
+                                    <el-dropdown-menu slot="dropdown" class="save-filters">
+                                        <span class="title">{{ $t('general.filters.saved_filters') }}</span>
+                                        <el-input v-model="savedFilterSearch" prefix-icon="el-icon-search" placeholder="Searh saved filters"></el-input>
+                                        <el-dropdown-item
+                                            :key="item.name"
+                                            :command="item"
+                                            v-for="item in filter.data"
+                                        >
+                                            {{ item.title }}
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </el-dropdown>
                             </el-form-item>
                             
                         </template>
@@ -719,6 +729,7 @@
                 assignee: '',
                 remoteLoading: false,
                 isVisible: false,
+                savedFilterSearch: '',
             }
         },
         computed: {
@@ -851,6 +862,9 @@
                 'getAllAdminsForRequest',
                 'assignUsersToRequest'
             ]),
+            handleSelectFilters(savedFilter) {
+                this.$emit('searchFilterChanged', savedFilter);
+            },
             makeFilterQuery(pathName) {
                 let query = {};
                 let quarter_ids = localStorage.getItem('quarter_ids');
@@ -1431,6 +1445,7 @@
 
     .el-button {
         font-family: inherit;
+        font-size: 14px;
     }
     .popover-button {
         width: 100%;
@@ -1759,6 +1774,12 @@
                 height: 3px;
             }
         }
+        .bg-primary {
+            .el-button {
+                color: var(--color-white);
+                background-color: #2BA7FF;
+            }
+        }
     }
     .label-block .el-form-item__label {
         display: block;
@@ -1853,5 +1874,33 @@
 
     .el-select-dropdown__item.selected {
         color: #606266 !important;
+    }
+
+    
+    .el-dropdown-menu.save-filters {
+        width: 320px;
+        padding-top: 30px;
+        .title {
+            font-size: 16px;
+            margin: 30px;
+            font-weight: 700;
+        }
+        .el-input {
+            margin: 20px 30px 15px;
+            width: calc(100% - 60px);
+            .el-input__inner {
+                background-color: var(--color-white);
+                border: 2px solid var(--border-color-base);
+                border-radius: 10px;
+            }
+        }
+        .el-dropdown-menu__item {
+            padding: 0 30px 0 40px;
+            font-weight: 700;
+            &:hover {
+                background-color: lighten(#2BA7FF, 10%);
+                color: var(--color-text-regular);
+            }
+        }
     }
 </style>

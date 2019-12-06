@@ -75,6 +75,7 @@
             :searchText="search"
             @selectionChanged="selectionChanged"
             @update-row="updateRow"
+            @filterSearchChanged="handleFilterChange"
         >
         </list-table>
         <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
@@ -295,6 +296,7 @@
                 statusForm: {},
                 activeMassEditOption: 'service_provider',
                 massStatus: '',
+                savedFilters: [],
                 massEditOptions : [
                     {
                         key : 'service_provider',
@@ -427,6 +429,11 @@
                         type: 'toggle',
                         key: 'saved_filter',
                         data: []
+                    },{
+                        name: this.$t('general.filters.my_filters'),
+                        type: 'popover',
+                        key: 'my_filter',
+                        data: this.savedFilters
                     }
                 ];
                 if(this.routeName == 'adminUnassignedRequests') {
@@ -456,6 +463,13 @@
                 'getUsers', 
                 'getPropertyManagers',
                 'massEdit']),
+            handleFilterChange(savedFilter) {
+                console.log(savedFilter);
+                let tHeader, tFields = [];
+                savedFilter.fields_data.forEach((field) => {
+                    console.log(field);
+                });
+            },
             handleMenuClick(command) {
                 if(command == 'delete')
                     this.batchDeleteWithIds();
@@ -467,6 +481,13 @@
                     this.activeMassEditOption = command
                     this.batchEditVisible = true
                 }
+            },
+            getSavedFilters() {
+                this.axios.get('userFilters')
+                .then(res => {
+                    this.savedFilters = res.data.data.data;
+                    console.log(this.savedFilters);
+                }).catch(err => console.log(err));
             },
             saveFilter() {
                 this.visibleSaveDialog = false;
@@ -782,6 +803,7 @@
             this.services = await this.fetchRemoteServices();
             this.residents = await this.fetchRemoteResidents();
             this.creators = await this.fetchRemoteCreators();
+            this.getSavedFilters();
             
         },  
         watch: {
