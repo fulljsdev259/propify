@@ -172,13 +172,14 @@
                 v-for="(column, index) in computedHeader">
 
                 <template slot="header">
-                    <span v-if="column.sortBy" :class="`header-filter ${$route.query.orderBy === column.sortBy ? 'active' : ''}`">
+                    <span v-if="column.sortBy"
+                          :class="`header-filter ${$route.query.orderBy === column.sortBy ? 'active' : ''}`"
+                          @click="makeHeaderFilterQuery(column.sortBy)">
                         <span class="header-filter__text">
                             {{$t(column.label)}}
                         </span>
                         <span
-                              class="header-filter__icon"
-                              @click="makeHeaderFilterQuery(column.sortBy)">
+                              class="header-filter__icon">
                             <i v-if="$route.query.sortedBy === 'asc' && $route.query.orderBy === column.sortBy" class="el-icon-arrow-up"></i>
                             <i v-else class="el-icon-arrow-down"></i>
                         </span>
@@ -1342,12 +1343,12 @@
 
 <style lang="scss" scoped>
     .header-filter {
-        display: flex;
+        display: inline-flex;
         align-items: center;
+        cursor: pointer;
         &__icon {
             margin: 0 0 0 4px;
             opacity: 0;
-            cursor: pointer;
         }
         &:hover &__text {
             color: var(--color-black);
@@ -1724,6 +1725,7 @@
             }
             .more-actions {
                 padding: 0;
+                border-radius: 50%;
                 background: transparent;
                 display: flex;
                 align-items: center;
