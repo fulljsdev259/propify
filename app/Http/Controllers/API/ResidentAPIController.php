@@ -1298,12 +1298,13 @@ class ResidentAPIController extends AppBaseController
     {
         $resident = Auth::user()->resident;
         $relations = $resident->relations()
-            ->select('building_id')
-            ->where('status', Relation::StatusActive)
+            ->select('unit_id')
+            ->where('status', '!=', Relation::StatusInActive)
             ->with([
-                'building:id',
-                'building.relations' => function ($q) use ($resident) {
-                    $q->select('building_id', 'resident_id')
+                'unit:id',
+                'unit.relations' => function ($q) use ($resident) {
+                    $q->select('unit_id', 'resident_id')
+                        ->where('status', '!=', Relation::StatusInActive)
                         ->where('resident_id', '!=', $resident->id)
                         ->with([
                             'resident' => function ($q) {
@@ -1313,8 +1314,7 @@ class ResidentAPIController extends AppBaseController
                         ]);
                 },
             ])->get();
-
-        $residents = $relations->pluck('building.relations.*.resident')->collapse()->unique();
+        $residents = $relations->pluck('unit.relations.*.resident')->collapse()->unique();
         $response = (new ResidentTransformer())->transformCollectionBy($residents, 'myNeighbours');
         return $this->sendResponse($response, 'my neighbours');
     }
@@ -1328,16 +1328,16 @@ class ResidentAPIController extends AppBaseController
     {
         $resident = Auth::user()->resident;
         $relations = $resident->relations()
-            ->select('building_id')
+            ->select('quarter_id')
             ->where('status', Relation::StatusActive)
             ->with([
-                'building.property_managers' => function ($q) {
+                'quarter.property_managers' => function ($q) {
                     $q->select('property_managers.id', 'property_managers.user_id', 'property_managers.first_name', 'property_managers.last_name')
                         ->with('user:id,avatar,phone,email');
                 },
             ])->get();
 
-        $propertyManagers = $relations->pluck('building.property_managers')->collapse()->keyBy('id')->values();
+        $propertyManagers = $relations->pluck('quarter.property_managers')->collapse()->keyBy('id')->values();
         $response = (new PropertyManagerTransformer())->transformCollectionBy($propertyManagers, 'residentPropertyManagers');
         return $this->sendResponse($response, 'my property managers');
     }
