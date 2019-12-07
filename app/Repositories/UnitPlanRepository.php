@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\UnitPlan;
+use App\Traits\SaveMediaUploads;
 
 /**
  * Class UnitPlan
@@ -16,6 +17,8 @@ use App\Models\UnitPlan;
  */
 class UnitPlanRepository extends BaseRepository
 {
+    use SaveMediaUploads;
+
     /**
      * Configure the Model
      **/

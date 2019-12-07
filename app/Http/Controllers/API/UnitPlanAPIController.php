@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\AppBaseController;
-use App\Http\Requests\API\Unit\UpdateRequest;
+use App\Http\Requests\API\UnitPlan\UpdateRequest;
 use App\Http\Requests\API\UnitPlan\CreateRequest;
 use App\Repositories\UnitPlanRepository;
 use App\Repositories\UnitRepository;
 use App\Transformers\UnitPlanTransformer;
-use Illuminate\Http\Request;
 use Swagger\Annotations as SWG;
 
 class UnitPlanAPIController extends AppBaseController
@@ -116,6 +115,7 @@ class UnitPlanAPIController extends AppBaseController
      * @param CreateRequest $request
      * @param int $unitId
      * @return \Illuminate\Http\Response
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function store(CreateRequest $request, int $unitId)
     {
@@ -130,10 +130,9 @@ class UnitPlanAPIController extends AppBaseController
         }
 
         if ($request->has('media')) {
-            $unitPlan
-                ->addMedia($request['media'])
-                ->usingFileName('unit_plan_' . $unitPlan->id)
-                ->toMediaCollection('unit_plan', 'units_plans');
+            $this
+                ->unitPlanRepository
+                ->uploadFile('media', $request['media'], $unitPlan);
         }
 
         $unitPlan->load('media');
@@ -198,7 +197,7 @@ class UnitPlanAPIController extends AppBaseController
             ->with('media')
             ->findWithoutFail($planId);
 
-        if (!$unitPlan) {
+        if (empty($unitPlan)) {
             return $this->sendError(__('models.unit_plans.errors.not_found'));
         }
 
@@ -255,6 +254,7 @@ class UnitPlanAPIController extends AppBaseController
      * @param int $unitId
      * @param int $planId
      * @return \Illuminate\Http\Response
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function update(UpdateRequest $request, int $unitId, int $planId)
     {
@@ -264,7 +264,7 @@ class UnitPlanAPIController extends AppBaseController
             ->unitPlanRepository
             ->findWithoutFail($planId);
 
-        if (!$unitPlan) {
+        if (empty($unitPlan)) {
             return $this->sendError(__('models.unit_plans.errors.not_found'));
         }
 
@@ -275,9 +275,9 @@ class UnitPlanAPIController extends AppBaseController
         }
 
         if ($request->has('media')) {
-            $unitPlan
-                ->addMedia($request['media'])
-                ->toMediaCollection('unit_plan', 'units_plans');
+            $this
+                ->unitPlanRepository
+                ->uploadFile('media', $request['media'], $unitPlan);
         }
 
         $unitPlan->load('media');
@@ -342,9 +342,15 @@ class UnitPlanAPIController extends AppBaseController
             ->unitPlanRepository
             ->findWithoutFail($planId);
 
-        if (!$unitPlan) {
+        if (empty($unitPlan)) {
             return $this->sendError(__('models.unit_plans.errors.not_found'));
         }
+
+        $media = $unitPlan->media();
+        if (empty($media)) {
+            return $this->sendError(__('general.media_not_found'));
+        }
+        $media->delete();
 
         $unitPlan->delete();
 

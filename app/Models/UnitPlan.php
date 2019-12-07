@@ -3,13 +3,11 @@
 namespace App\Models;
 
 use App\Traits\HasMediaTrait;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 
-class UnitPlan extends Model implements HasMedia
+class UnitPlan extends AuditableModel implements HasMedia
 {
     use
         SoftDeletes,
@@ -40,7 +38,20 @@ class UnitPlan extends Model implements HasMedia
 
     protected $dates = ['deleted_at'];
 
-    public function unit(): BelongsTo
+    /**
+     * @var array
+     */
+    protected $permittedExtensions = [
+        'pdf',
+        'png',
+        'jpg',
+        'jpeg'
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function unit()
     {
         return $this->belongsTo(Unit::class);
     }
@@ -48,7 +59,7 @@ class UnitPlan extends Model implements HasMedia
     public function registerMediaCollections()
     {
         $this
-            ->addMediaCollection('unit_plan')
+            ->addMediaCollection('media')
             ->acceptsFile(function (File $file) {
                 return in_array($file->mimeType, ['image/jpeg', 'image/png', 'application/pdf']);
             })
