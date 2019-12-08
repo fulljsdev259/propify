@@ -15,7 +15,7 @@
                 </el-button>
             </template>
             <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="headerOrder=$event" :headerOrder="headerOrder" :hiddenFields="fields"></list-field-filter>
             </template>
             <!-- <template v-if="$can($permissions.assign.manager)">
                 <el-button 
@@ -35,6 +35,12 @@
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item
+                            command="save_filter"
+                            icon="el-icon-plus"
+                        >
+                            {{ $t('models.request.save_filter') }}
+                        </el-dropdown-item>
+                        <el-dropdown-item
                             v-if="$can($permissions.delete.building)"
                             :disabled="!selectedItems.length" 
                             icon="ti-trash" 
@@ -47,6 +53,7 @@
             </template>
         </heading>
         <list-table
+            ref="listtable"
             :fetchMore="fetchMore"
             :filters="filters"
             :filtersHeader="filtersHeader"
@@ -58,6 +65,8 @@
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
             @selectionChanged="selectionChanged"
+            @searchFilterChanged="headerOrder=$event.header, fields=$event.fields"
+            @saveFilter="saveFilter($event)"
         >
         </list-table>
         <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
@@ -282,6 +291,8 @@
             handleMenuClick(command) {
                 if(command == 'delete')
                     this.batchDeleteBuilding();
+                else if(command == 'save_filter')
+                    this.$refs.listtable.visibleSaveDialog = true;
             },
             async getCities() {
                 const cities = await this.axios.get('cities?get_all=true&buildings=true');

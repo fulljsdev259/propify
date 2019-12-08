@@ -23,11 +23,11 @@ export default ({
     data() {
         return {
             items: [],
-            header: [],
             loading: false,
             filtersHeader: '',
             selectedItems: [],
             fields: [],
+            headerOrder: null,
         };
     },
     methods: {
@@ -101,7 +101,33 @@ export default ({
                 .catch(err => displayError(err));                
             }).catch(() => {
             });
-        }
+        },  
+        async saveFilter(filter = {}) {
+            let fields_data = {};
+            if(!this.headerOrder)
+                this.header.forEach((item) => {
+                    fields_data[item.label] = !this.fields.includes(item.label);
+                });
+            else
+                this.headerOrder.forEach((item) => {
+                    fields_data[item] = !this.fields.includes(item);
+                });
+            if(!filter.id)
+                await this.axios.post('/userFilters', {
+                    title: filter.title,
+                    menu: this.$route.name,
+                    options_url: JSON.stringify(this.$route.query),
+                    fields_data: [JSON.stringify(fields_data)],
+                });
+            else
+                await this.axios.put('/userFilters/' + filter.id, {
+                    title: filter.title,
+                    menu: this.$route.name,
+                    options_url: JSON.stringify(this.$route.query),
+                    fields_data: [JSON.stringify(fields_data)],
+                });
+            this.$refs.listtable.getSavedFilters();
+        },
     },
     computed: {
         ...mapGetters([items, pagination]),
@@ -118,9 +144,14 @@ export default ({
             return parseInt(this[pagination].current_page);
         },
         headerFilter() {
-            return this.header.filter((item, index) => {
-                return !this.fields.includes(item.label);
-            });
+            let result = [];
+            if(!this.headerOrder)
+                result = this.header;
+            else
+                this.headerOrder.forEach((val) => {
+                    result.push(this.header.find(item => item.label === val));
+                });
+            return result.filter(item => !this.fields.includes(item.label));
         }
     },
     watch: {

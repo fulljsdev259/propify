@@ -15,7 +15,7 @@
                 </el-button>
             </template>
             <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event"  @order-changed="header=$event"></list-field-filter>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="headerOrder=$event" :headerOrder="headerOrder" :hiddenFields="fields"></list-field-filter>
             </template>
            
             <template>
@@ -24,6 +24,12 @@
                         <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item
+                            command="save_filter"
+                            icon="el-icon-plus"
+                        >
+                            {{ $t('models.request.save_filter') }}
+                        </el-dropdown-item>
                         <el-dropdown-item 
                             v-if="$can($permissions.assign.manager)" 
                             icon="ti-user"
@@ -45,6 +51,7 @@
             </template>
         </heading>
         <list-table
+            ref="listtable"
             :fetchMore="fetchMore"
             :filters="filters"
             :filtersHeader="filtersHeader"
@@ -55,6 +62,8 @@
             :withSearch="false"
             :searchText="search"
             @selectionChanged="selectionChanged"
+            @searchFilterChanged="headerOrder=$event.header, fields=$event.fields"
+            @saveFilter="saveFilter($event)"
         >
         </list-table>
         <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_persons')"
@@ -316,6 +325,8 @@
             handleMenuClick(command) {
                 if(command == 'assign')
                     this.batchAssignManagers();
+                else if(command == 'save_filter')
+                    this.$refs.listtable.visibleSaveDialog = true;
                 else if(command == 'delete')
                     this.batchDeleteWithIds();
             },

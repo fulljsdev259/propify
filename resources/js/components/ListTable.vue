@@ -46,6 +46,7 @@
                                 v-if="filter.type === filterTypes.select && filter.data">
                         
                                 <list-filter-select
+                                    :key="JSON.stringify(filterModel[filter.key])"
                                     :type="filter.key"
                                     :name="filter.name"
                                     :data="filter.data"
@@ -126,13 +127,18 @@
                                         {{ $t('general.filter') }}
                                     <el-dropdown-menu slot="dropdown" class="save-filters">
                                         <span class="title">{{ $t('general.filters.saved_filters') }}</span>
-                                        <el-input v-model="savedFilterSearch" prefix-icon="el-icon-search" placeholder="Searh saved filters" @change="filter.fetchSearchFilter"></el-input>
+                                        <el-input v-model="savedFilterSearch" prefix-icon="el-icon-search" placeholder="Searh saved filters" @input="handleFilterSearch($event, filter)"></el-input>
                                         <el-dropdown-item
-                                            :key="item.name"
+                                            :key="`${item.menu}${index}${savedFilters.length}`"
                                             :command="item"
-                                            v-for="item in filter.data"
+                                            :class="{'active':item.id === selectedFilter}"
+                                            v-for="(item, index) in savedFilters"
                                         >
-                                            {{ item.title }}
+                                            <span>{{ item.title }}</span>
+                                            <span>
+                                                <i class="icon-pencil" @click.stop="editSavedFilter(item, index)"></i>
+                                                <i class="icon-trash-empty" @click.stop="deleteSavedFilter(item, index)"></i>
+                                            </span>
                                         </el-dropdown-item>
                                     </el-dropdown-menu>
                                 </el-dropdown>
@@ -145,6 +151,18 @@
             </el-card>
         </el-form>
 
+        <el-dialog
+            :visible.sync="visibleSaveDialog"
+            width="30%"
+            center
+        >
+            <h4 class="filter-title">{{ $t('validation.attributes.title') }}</h4>
+            <el-input v-model="saveTitle"/>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="danger" @click="visibleSaveDialog = false">{{ $t('general.cancel') }}</el-button>
+                <el-button type="primary" @click="saveFilter" :disabled="saveTitle===''">{{ $t('general.actions.save') }}</el-button>
+            </span>
+        </el-dialog>
         <!--        <div class="pull-right">-->
         <!--            <el-button :disabled="!selectedItems.length" @click="batchDelete" size="mini" type="danger">-->
         <!--                {{ $t('general.actions.delete')}}-->
@@ -366,7 +384,7 @@
                         <div class="request-format">
                             <strong>{{scope.row.request_format}}</strong>
                         </div>
-                        <span>{{scope.row.title}}</span>
+                        <div class="request-format-title">{{scope.row.title}}</div>
                     </div>
                     <div v-else-if="column.withRequestStatusSign" class="status-cell">
                         <el-tooltip
@@ -753,6 +771,11 @@
                 isVisible: false,
                 savedFilterSearch: '',
                 visibleFilterDateRange: false,
+                savedFilters: [],
+                visibleSaveDialog: false,
+                saveTitle: '',
+                saveFilterId: null,
+                selectedFilter: '',
             }
         },
         computed: {
@@ -885,8 +908,48 @@
                 'getAllAdminsForRequest',
                 'assignUsersToRequest'
             ]),
+            async getSavedFilters(search='') {
+                let res = await this.axios.get(`userFilters?menu=${this.$route.name}&search=${search}`);
+                this.savedFilters = res.data.data.data;
+            },
+            saveFilter() {
+                this.visibleSaveDialog = false;
+                this.$emit('saveFilter', {title:this.saveTitle, id:this.saveFilterId});
+                this.saveTitle = '';
+                this.saveFilterId = null;
+            },
+            async deleteSavedFilter(savedFilter, index) {
+                if(this.selectedFilter === index)
+                    this.selectedFilter = '';
+                this.savedFilters.splice(index, 1);
+                await this.axios.delete(`userFilters/${savedFilter.id}`);
+            },
+            async editSavedFilter(savedFilter) {
+                this.visibleSaveDialog = true;
+                this.saveTitle = savedFilter.title;
+                this.saveFilterId = savedFilter.id;
+
+            },
+            handleFilterSearch(val, filter) {
+                this.getSavedFilters(val);
+            },
             handleSelectFilters(savedFilter) {
-                this.$emit('searchFilterChanged', savedFilter);
+                for(let filter in this.filterModel)
+                    delete this.filterModel[filter];
+                this.selectedFilter = savedFilter.id;
+                this.handleFilterChange(savedFilter);
+            },
+            handleFilterChange(savedFilter) {
+                let tHeader = [], tFields = [];
+                let data = JSON.parse(savedFilter.fields_data[0]);
+                for(let item in data) {
+                    if(!data[item])
+                        tFields.push(item);
+                   
+                    tHeader.push(item);
+                };
+                this.$emit('searchFilterChanged', {header: tHeader, fields: tFields});
+                this.$router.push({query: JSON.parse(savedFilter.options_url)});
             },
             makeHeaderFilterQuery(orderBy) {
                 let sortedByVal = this.$route.query.orderBy !== orderBy
@@ -1232,6 +1295,39 @@
                     }
                 }
             },
+            initializeFilters() {
+                _.each(this.filters, (filter) => {
+                    let queryFilterValue = this.$route.query[filter.key];
+
+                    const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
+                    let value;
+
+                    if((filter.key !== 'search') && queryFilterValue !== undefined && !Array.isArray(queryFilterValue))
+                        value = [queryFilterValue];
+                    else
+                        value = queryFilterValue;
+
+                    if(!Array.isArray(value))
+                        value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
+                    else if(filter.key !== 'cities')
+                        for(let i = 0; i < value.length; i ++)
+                            value[i] = parseInt(value[i]);
+
+                    this.$set(this.filterModel, filter.key, value);
+                    if(filter.key == "search") {
+                        this.$set(this.filterModel, 'search', queryFilterValue);
+                    }
+
+                    if (!this.filterModel[filter.key]) {
+                        delete this.filterModel[filter.key];
+                    }
+
+                    if (this.filterModel[filter.key] || (!filter.parentKey && filter.fetch)) {
+                        this.filterChanged(filter, true);
+                    }
+                });
+                this.$forceUpdate();
+            }
         },
         watch: {
             search(text) {
@@ -1248,7 +1344,6 @@
                     if(this.$route.name == "login") {
                         return;
                     }
-
 
                     if (!page || !per_page && prevQuery) {
                         this.page.currPage = 1;
@@ -1268,10 +1363,11 @@
 
                     this.fetch(this.page.currPage, this.page.currSize);
 
+                    this.initializeFilters();
                 }
             },
         },
-        created() {
+        async created() {
             if (this.$route.query.search) {
                 this.search = this.$route.query.search;
             }
@@ -1329,6 +1425,8 @@
                 this.$forceUpdate();
             }
             this.search = this.searchText;
+
+            await this.getSavedFilters();
         },
         updated() {
             if(this.search !== this.searchText) {
@@ -1410,6 +1508,12 @@
 
         .request-format {
             color:var(--primary-color);
+        }
+
+        .request-format-title {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .toggle-filter-button {
@@ -1963,9 +2067,25 @@
         .el-dropdown-menu__item {
             padding: 0 30px 0 40px;
             font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            &.active {
+                background-color: lighten(#2BA7FF, 35%)
+            }
             &:hover {
-                background-color: lighten(#2BA7FF, 10%);
+                background: lighten(#2BA7FF, 30%);
                 color: var(--color-text-regular);
+                span i{
+                    display: inline;
+                }
+            }
+            span i{
+                display: none;
+                line-height: 35px;
+                &:hover {
+                    color: var(--color-black);
+                }
             }
         }
     }
