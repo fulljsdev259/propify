@@ -3,7 +3,6 @@
 namespace App\Http\Requests\API\Quarter;
 
 use App\Http\Requests\BaseRequest;
-use App\Models\Quarter;
 
 class MassAssignUsersRequest extends BaseRequest
 {

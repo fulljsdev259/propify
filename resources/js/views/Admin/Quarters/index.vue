@@ -166,7 +166,7 @@
                     withCounts: true,
                     width: 230,
                     prop: 'request_count',
-                    sortBy: 'request_count',
+                    sortBy: 'requests_count',
                 },{
                     label: 'models.quarter.buildings_count',
                     prop: 'buildings_count',
@@ -178,6 +178,7 @@
                 }, {
                     label: 'general.filters.status',
                     withStatus: true,
+                    sortBy: 'units_count',
                     prop: 'status'
                 }, {
                     label: 'models.request.assigned_property_managers',

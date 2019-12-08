@@ -186,7 +186,8 @@
                 }, {
                     label: 'general.filters.status',
                     withStatus: true,
-                    prop: 'status'
+                    prop: 'status',
+                    sortBy: 'units_count',
                 }, {
                     label: 'general.box_titles.managers',
                     withUsers: true,
