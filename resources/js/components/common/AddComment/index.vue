@@ -4,7 +4,7 @@
         <el-tooltip v-if="!newStyle" :content="user.name" effect="dark" placement="top-start">
             <ui-avatar :name="user.name" :size="32" :src="user.avatar" />
         </el-tooltip>
-        <i v-if="newStyle" class="icon-toggle-off action-buttons"></i>
+        <i v-if="newStyle" class="icon-attach action-buttons"></i>
         <div class="content">
             <el-input 
                 autosize 
