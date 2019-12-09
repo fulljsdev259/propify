@@ -11,7 +11,8 @@
 export default {
    components: {
        auth1,
-       auth2,auth3
+       auth2,
+       auth3
    }
 }
 </script>

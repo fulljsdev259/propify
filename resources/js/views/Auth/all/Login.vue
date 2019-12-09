@@ -11,7 +11,8 @@
     export default {
         components: {
             login1,
-            login2,login3
+            login2,
+            login3
         }
     }
 </script>
