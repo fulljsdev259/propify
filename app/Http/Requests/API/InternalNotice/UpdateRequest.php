@@ -29,6 +29,9 @@ class UpdateRequest extends BaseRequest
      */
     public function rules()
     {
-        return InternalNotice::$rules;
+        return [
+            'request_id' => 'required',
+            'comment' => 'required'
+        ];
     }
 }

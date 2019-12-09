@@ -39,7 +39,10 @@ class FilterByAdminCriteria implements CriteriaInterface
         $getAdmins = $this->request->get_admins;
         if ($getAdmins) {
             $model->where(function ($q) {
-                $q->has('property_manager')->orHas('service_provider');
+                $companyName = $this->request->company_name;
+                $q->has('property_manager')->orWhereHas('service_provider', function ($q) use ($companyName) {
+                    $q->where('company_name', 'like', '%' . $companyName . '%');
+                });
             });
         }
 
