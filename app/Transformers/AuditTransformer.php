@@ -61,14 +61,24 @@ class AuditTransformer extends BaseTransformer
         if ($model->user) {
             $response['user'] = (new UserTransformer())->transform($model->user);
         } else {
-            $response['user'] = [
-                'id' => $model->user_id,
-                'name' => 'Deleted user',
-                'email' => 'dummy@email.com',
-                'phone' => '',
-                'avatar' => null,
-            ];
-        }        
+            if (SystemUserId == $model->user_id) {
+                $response['user'] = [
+                    'id' => $model->user_id,
+                    'name' => 'System',
+                    'email' => 'dummy@email.com', // @TODO need system email or not
+                    'phone' => '',
+                    'avatar' => null,
+                ];
+            } else {
+                $response['user'] = [
+                    'id' => $model->user_id,
+                    'name' => 'Deleted user',
+                    'email' => 'dummy@email.com',
+                    'phone' => '',
+                    'avatar' => null,
+                ];
+            }
+        }
         if($model->event == 'updated'){            
             $statement = "";
             foreach($model->new_values as $field => $fieldvalue){

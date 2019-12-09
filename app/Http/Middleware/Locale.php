@@ -16,7 +16,9 @@ class Locale
         }        
         elseif ($request->user() && $request->user()->settings) {
             App::setLocale($request->user()->settings->language);
-        }        
+        }
+
+//        App::setLocale('en');
         return $next($request);
     }
  }
