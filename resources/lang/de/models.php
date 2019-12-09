@@ -329,7 +329,17 @@ return [
 	        'inactive' => 'Frei',
 	        'canceled' => 'Gekündigt'
         ],
-    ],   
+    ],
+    'unit_plans' => [
+        'deleted' => 'Einheitenplan gelöscht',
+        'saved' => 'Einheitenplan gespeichert',
+        'errors' => [
+            'not_found' => "Einheitenplan nicht gefunden",
+            'create' => "Einheit Plan erstellen Fehler: ",
+            'update' => "Aktualisierungsfehler des Geräteplans: ",
+            'deleted' => "Einheit Plan gelöschter Fehler: ",
+        ],
+    ],
     'pinboard' => [
         'title' => 'Pinnwand',
         'title_label' => 'Betreff',
