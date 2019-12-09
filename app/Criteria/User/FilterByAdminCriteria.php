@@ -36,26 +36,24 @@ class FilterByAdminCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $getAdmins = $this->request->get_admins;
-        if ($getAdmins) {
-            $name = $this->request->name;
-            if ($name) {
-                $model->whereHas('property_manager', function ($q) use ($name) {
-                    $q->whereRaw('Concat(first_name, " ", last_name) like ?' ,   '%' . $name . '%');
-                })->orWhereHas('service_provider', function ($q) use ($name) {
-                    $q->where(function ($q) use ($name) {
-                        $q->whereRaw('Concat(first_name, " ", last_name) like ?' ,   '%' . $name . '%')
-                            ->orWhere('company_name', 'like', '%' . $name . '%');
-                    });
-                });
+        $orderBy = $this->request->get(config('repository.criteria.params.orderBy', 'orderBy'), 'id');
+        $sortedBy = $this->request->get(config('repository.criteria.params.sortedBy', 'sortedBy'), 'desc');
+        $model = $model->orderBy($orderBy, $sortedBy);
+        $search = $this->request->search;
 
-            } else {
-                $model->where(function ($q) {
-                    $q->has('property_manager')->orHas('service_provider');
+        $model->whereHas('property_manager', function ($q) use ($search) {
+            $q->when($search, function ($q) use ($search) {
+                $q->whereRaw('Concat(first_name, " ", last_name) like ?' ,   '%' . $search . '%');
+            });
+        })->orWhereHas('service_provider', function ($q) use ($search) {
+            $q->when($search, function ($q) use ($search) {
+                $q->where(function ($q) use ($search) {
+                    $q->whereRaw('Concat(first_name, " ", last_name) like ?' ,   '%' . $search . '%')
+                        ->orWhere('company_name', 'like', '%' . $search . '%');
                 });
-            }
+            });
+        });
 
-        }
 
         return $model;
     }
