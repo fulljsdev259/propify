@@ -38,12 +38,23 @@ class FilterByAdminCriteria implements CriteriaInterface
     {
         $getAdmins = $this->request->get_admins;
         if ($getAdmins) {
-            $model->where(function ($q) {
-                $companyName = $this->request->company_name;
-                $q->has('property_manager')->orWhereHas('service_provider', function ($q) use ($companyName) {
-                    $q->where('company_name', 'like', '%' . $companyName . '%');
+            $name = $this->request->name;
+            if ($name) {
+                $model->whereHas('property_manager', function ($q) use ($name) {
+                    $q->whereRaw('Concat(first_name, " ", last_name) like ?' ,   '%' . $name . '%');
+                })->orWhereHas('service_provider', function ($q) use ($name) {
+                    $q->where(function ($q) use ($name) {
+                        $q->whereRaw('Concat(first_name, " ", last_name) like ?' ,   '%' . $name . '%')
+                            ->orWhere('company_name', 'like', '%' . $name . '%');
+                    });
                 });
-            });
+
+            } else {
+                $model->where(function ($q) {
+                    $q->has('property_manager')->orHas('service_provider');
+                });
+            }
+
         }
 
         return $model;

@@ -96,7 +96,16 @@ class UserAPIController extends AppBaseController
                 $this->userRepository->with('roles');
             }
             $users = $this->userRepository->get();
-            if ($request->function) {
+            if ($request->show_company_name) {
+                $serviceProviders = ServiceProvider::whereIn('user_id', $users->pluck('id'))->pluck('company_name', 'user_id');
+                $companyName = Settings::value('name');
+                $response = [];
+                foreach ($users as $user) {
+                    $singleData = $user->toArray();
+                    $singleData['company_name'] = $serviceProviders[$user->id] ?? $companyName;
+                    $response[] = $singleData;
+                }
+            } elseif ($request->function) {
                 $serviceProviders = ServiceProvider::whereIn('user_id', $users->pluck('id'))->get(['id', 'category', 'user_id']);
                 $response = [];
                 foreach ($users as $user) {
