@@ -43,6 +43,14 @@
             fields: {
                 type: Array,
                 default: () => []
+            },
+            hiddenFields: {
+                type: Array,
+                default:() => []
+            },
+            headerOrder: {
+                type: Array,
+                default: () => []
             }
         },
         components: {
@@ -60,15 +68,21 @@
         },
         methods: {
             onEnd() {
-                this.$emit('order-changed', this.data);
+                this.$emit('order-changed', this.data.map(item => item.label));
             },
             handleChange(value, index) {
                 this.selected[index] = value;
                 let result = [];
-                this.selected.forEach((item, index) => {
-                    if(item === false)
-                        result.push(this.fields[index].label);
-                });
+                if(!this.headerOrder)
+                    this.selected.forEach((item, index) => {
+                        if(item === false)
+                            result.push(this.fields[index].label);
+                    });
+                else
+                    this.selected.forEach((item, index) => {
+                        if(item === false)
+                            result.push(this.headerOrder[index]);
+                    });
                 this.$emit('field-changed', result);
             },
             getLabel(item) {
@@ -77,19 +91,35 @@
                         return this.$t(item.actions[0].title);
                 }
                 return this.$t(item.label);
+            },
+            initialize() {
+                this.selected = [];
+                this.data = [];
+                if(!this.headerOrder)
+                    this.data = this.fields;
+                else
+                    this.headerOrder.forEach((val) => {
+                        this.data.push(this.fields.find(item => item.label === val));
+                    });
+                this.data.forEach((item, index) => {
+                    if(item.defaultHide !== undefined && item.defaultHide === true) {
+                        this.selected.push(false);
+                    }  else
+                        this.selected.push(!this.hiddenFields.includes(item.label));
+                });
             }
         },
-        mounted() {
-            this.selected = [];
-            this.data = this.fields;
-            this.fields.forEach((item, index) => {
-                if(item.defaultHide !== undefined && item.defaultHide === true) {
-                    this.selected.push(false);
-                    this.handleChange(false, index);
-                 }  else
-                    this.selected.push(true);
-            });
+        created() {
+            this.initialize();
         },
+        watch: {
+            headerOrder() {
+                this.initialize();
+            },
+            hiddenFields() {
+                this.initialize();
+            }
+        }
     }
 </script>
 <style lang="scss" scoped>

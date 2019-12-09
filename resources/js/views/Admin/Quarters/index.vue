@@ -2,7 +2,10 @@
     <div class="quarters list-view">
         <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
-                <list-check-box @clicked="handleQuickFilterClick(true)" @unclicked="handleQuickFilterClick(false)"/>
+                <list-check-box 
+                    :checked="quick_search_clicked" 
+                    @clicked="handleQuickFilterClick(true)" 
+                    @unclicked="handleQuickFilterClick(false)"/>
             </template>
             <template v-if="$can($permissions.create.quarter)">
                 <el-button 
@@ -15,7 +18,7 @@
                 </el-button>
             </template>
             <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event"  @order-changed="header=$event"></list-field-filter>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="headerOrder=$event" :headerOrder="headerOrder" :hiddenFields="fields"></list-field-filter>
             </template>
            
             <template>
@@ -24,6 +27,12 @@
                         <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item
+                            command="save_filter"
+                            icon="el-icon-plus"
+                        >
+                            {{ $t('models.request.save_filter') }}
+                        </el-dropdown-item>
                         <el-dropdown-item 
                             v-if="$can($permissions.assign.manager)" 
                             icon="ti-user"
@@ -45,6 +54,7 @@
             </template>
         </heading>
         <list-table
+            ref="listtable"
             :fetchMore="fetchMore"
             :filters="filters"
             :filtersHeader="filtersHeader"
@@ -55,6 +65,8 @@
             :withSearch="false"
             :searchText="search"
             @selectionChanged="selectionChanged"
+            @searchFilterChanged="headerOrder=$event.header, fields=$event.fields"
+            @saveFilter="saveFilter($event)"
         >
         </list-table>
         <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_persons')"
@@ -190,6 +202,7 @@
                         message: this.$t('models.quarter.required')
                     }],
                 },
+                quick_search_clicked : false,
             };
         },
         computed: {
@@ -253,15 +266,25 @@
         methods: {
             ...mapActions(['getBuildings', 'assignManagerToBuilding', 'getPropertyManagers']),
             handleQuickFilterClick(checked) {
+                localStorage.setItem('building_ids', null);
                 if(checked === true) {
                     let quarter_ids = [];
                     quarter_ids = this.selectedItems.map((item) => {
                         return item.id;
                     });
                     localStorage.setItem('quarter_ids', JSON.stringify(quarter_ids));
+                    localStorage.quick_search_clicked = true;
                 } else {
                     localStorage.setItem('quarter_ids', null);
+                    localStorage.quick_search_clicked = false;
+                    this.$router.push({query: []});
                 }
+            },
+            selectionChanged(items) {
+                this.selectedItems = items;
+                
+                if(localStorage.quick_search_clicked !== undefined && localStorage.quick_search_clicked === 'true')
+                    this.handleQuickFilterClick(true);
             },
             batchAssignManagers() {
                 this.assignManagersVisible = true;
@@ -317,6 +340,8 @@
             handleMenuClick(command) {
                 if(command == 'assign')
                     this.batchAssignManagers();
+                else if(command == 'save_filter')
+                    this.$refs.listtable.visibleSaveDialog = true;
                 else if(command == 'delete')
                     this.batchDeleteWithIds();
             },
@@ -389,12 +414,11 @@
                 })
                 return buildings.data
             },
-            selectionChanged(items) {
-                this.selectedItems = items;
-            }
         },
         async created() {
-            localStorage.setItem('quarter_ids', null);
+            if(localStorage.quick_search_clicked !== undefined && localStorage.quick_search_clicked === 'true')
+                this.quick_search_clicked = true;
+
             this.getRoles();
             this.getTypes();
             this.getCities();

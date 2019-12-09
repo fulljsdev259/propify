@@ -45,17 +45,6 @@
                                             :showCamera="model.avatar==null"
                                             @cropped="cropped"/>
                                     </div>
-                                    <el-form-item v-if="editMode" :rules="validationRules.title"
-                                                prop="title" class="salutation-select">
-                                        <el-select style="display: block" v-model="model.title">
-                                            <el-option
-                                                :key="title"
-                                                :label="$t(`general.salutation_option.${title}`)"
-                                                :value="title"
-                                                v-for="title in $constants.propertyManager.title">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
                                     <div 
                                         v-if="!editName" 
                                         class="first_name"
@@ -98,7 +87,19 @@
                                         <el-input type="text" v-model="model.slogan"/>
                                     </el-form-item>
                                      -->
-                                  <div v-if="!editMode" class="propertymanager-info-item">
+                                     
+                                    <el-form-item v-if="editMode" :rules="validationRules.title" :label="$t('general.salutation')"
+                                                prop="title">
+                                        <el-select style="display: block" v-model="model.title">
+                                            <el-option
+                                                :key="title"
+                                                :label="$t(`general.salutation_option.${title}`)"
+                                                :value="title"
+                                                v-for="title in $constants.propertyManager.title">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <div v-if="!editMode" class="propertymanager-info-item">
                                         <span>{{ $t('general.status.label') }}</span>
                                         <span>{{ propertyManagerStatus }}</span>
                                     </div>

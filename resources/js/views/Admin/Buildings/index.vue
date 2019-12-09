@@ -2,7 +2,10 @@
     <div class="buildings list-view">
         <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
-                <list-check-box @clicked="handleQuickFilterClick(true)" @unclicked="handleQuickFilterClick(false)"/>
+                <list-check-box 
+                    :checked="quick_search_clicked" 
+                    @clicked="handleQuickFilterClick(true)" 
+                    @unclicked="handleQuickFilterClick(false)"/>
             </template>
             <template v-if="$can($permissions.create.building)">
                 <el-button 
@@ -15,7 +18,7 @@
                 </el-button>
             </template>
             <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="headerOrder=$event" :headerOrder="headerOrder" :hiddenFields="fields"></list-field-filter>
             </template>
             <!-- <template v-if="$can($permissions.assign.manager)">
                 <el-button 
@@ -35,6 +38,12 @@
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item
+                            command="save_filter"
+                            icon="el-icon-plus"
+                        >
+                            {{ $t('models.request.save_filter') }}
+                        </el-dropdown-item>
+                        <el-dropdown-item
                             v-if="$can($permissions.delete.building)"
                             :disabled="!selectedItems.length" 
                             icon="ti-trash" 
@@ -47,6 +56,7 @@
             </template>
         </heading>
         <list-table
+            ref="listtable"
             :fetchMore="fetchMore"
             :filters="filters"
             :filtersHeader="filtersHeader"
@@ -58,6 +68,8 @@
             :pagination="{total, currPage, currSize}"
             :withSearch="false"
             @selectionChanged="selectionChanged"
+            @searchFilterChanged="headerOrder=$event.header, fields=$event.fields"
+            @saveFilter="saveFilter($event)"
         >
         </list-table>
         <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
@@ -199,7 +211,8 @@
                 //         ]
                 //     }]
                 // }
-                ]
+                ],
+                quick_search_clicked : false,
             };
         },
         computed: {
@@ -273,16 +286,24 @@
                         return item.id;
                     });
                     localStorage.setItem('building_ids', JSON.stringify(building_ids));
+                    localStorage.quick_search_clicked = true;
                 } else {
                     localStorage.setItem('building_ids', null);
+                    localStorage.setItem('quarter_ids', null);
+                    localStorage.quick_search_clicked = false;
+                    this.$router.push({query: null});
                 }
             },
             selectionChanged(items) {
                 this.selectedItems = items;
+                if(localStorage.quick_search_clicked !== undefined && localStorage.quick_search_clicked === 'true')
+                    this.handleQuickFilterClick(true);
             },
             handleMenuClick(command) {
                 if(command == 'delete')
                     this.batchDeleteBuilding();
+                else if(command == 'save_filter')
+                    this.$refs.listtable.visibleSaveDialog = true;
             },
             async getCities() {
                 const cities = await this.axios.get('cities?get_all=true&buildings=true');
@@ -452,7 +473,8 @@
             },            
         },
         async created() {
-            localStorage.setItem('building_ids', null);
+            if(localStorage.quick_search_clicked !== undefined && localStorage.quick_search_clicked === 'true')
+                this.quick_search_clicked = true;
 
             this.isLoadingFilters = true;
             this.getRoles();

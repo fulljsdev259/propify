@@ -463,7 +463,7 @@
                                 </el-tab-pane>
                                 <el-tab-pane name="assignment1">
                                     <span slot="label">
-                                        Verantwortlich
+                                        {{ $t('assigned_property_managers') }}
                                     </span>
                                     <el-col :md="24">
                                         <users-assignment
@@ -631,7 +631,23 @@
                                     </el-row>
                                 </el-tab-pane>
                                 <el-tab-pane :label="$t('models.request.visibility.label')" name="is_public">
-                                    <div class="switch-wrapper" v-if="editMode">
+                                    <el-col :md="12">
+                                        <el-form-item :label="$t('models.request.visibility.label')"
+                                                    prop="visibility">
+                                            <el-select :disabled="!editMode"
+                                                    :placeholder="$t('models.request.public_desc')"
+                                                    class="custom-select"
+                                                    v-model="model.visibility">
+                                                <el-option
+                                                        :key="item"
+                                                        :label="$t(`models.request.visibility.${item}`)"
+                                                        :value="parseInt(index)"
+                                                        v-for="(item, index) in $constants.requests.visibility">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <!-- <div class="switch-wrapper" v-if="editMode">
                                         <el-form-item :label="$t('models.request.public_title')" prop="is_public">
                                             <el-switch v-model="model.is_public" />
                                         </el-form-item>
@@ -658,7 +674,7 @@
                                         <div class="switcher__desc">
                                             {{ $t('models.request.send_notification_desc') }}
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </el-tab-pane>
                             </el-tabs>
                         </template>
