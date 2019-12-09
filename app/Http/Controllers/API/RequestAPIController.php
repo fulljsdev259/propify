@@ -12,7 +12,7 @@ use App\Criteria\Request\FilterNotAssignedCriteria;
 use App\Criteria\Request\FilterPendingCriteria;
 use App\Criteria\Request\FilterPublicCriteria;
 use App\Http\Controllers\AppBaseController;
-use App\Http\Requests\API\Quarter\MassAssignUsersRequest;
+use App\Http\Requests\API\Request\MassAssignUsersRequest;
 use App\Http\Requests\API\Request\AssignRequest;
 use App\Http\Requests\API\Request\ChangePriorityRequest;
 use App\Http\Requests\API\Request\ChangeStatusRequest;
@@ -158,11 +158,18 @@ class RequestAPIController extends AppBaseController
                     $q->with('quarter.address', 'unit');
                 },
                 'comments.user',
-                'providers.address:id,country_id,state_id,city,street,zip',
-                'providers.user',
-                'managers.user',
-                'users' => function ($q) {
-                    $q->select('users.id', 'users.avatar', 'users.name')->with('roles:roles.id,name');
+                'assignees' => function ($q) {
+                    // TODO make more optional query for find each type only one assignee
+                    $q->select('id', 'type', 'user_id', 'request_id')
+                        ->with([
+                            'user' => function ($q) {
+                                $q->select('users.id', 'users.avatar', 'users.name')
+                                    ->with('roles:roles.id,name');
+                            }
+                        ])
+//                        ->groupBy('request_assignees.type')
+//                        ->groupBy('request_assignees.request_id')
+                        ->orderBy('request_assignees.id', 'desc');
                 },
                 'creator'
             ])->paginate($perPage);
@@ -246,10 +253,6 @@ class RequestAPIController extends AppBaseController
                 $q->with('quarter.address', 'unit');
             },
             'comments.user',
-            'providers.address:id,country_id,state_id,city,street,zip',
-            'providers.user',
-            'managers.user',
-            'users',
             'creator'
         ]);
         $response = (new RequestTransformer)->transform($request);
@@ -308,16 +311,25 @@ class RequestAPIController extends AppBaseController
         $request->load([
             'media',
             'resident.user',
-            'managers',
-            'users',
             'comments.user',
-            'providers.address:id,country_id,state_id,city,street,zip',
-            'providers',
             'resident.relations' => function ($q) {
                 $q->with('quarter.address', 'unit');
             },
             'relation' => function ($q) {
                 $q->with('quarter.address', 'unit');
+            },
+            'assignees' => function ($q) {
+                // TODO make more optional query for find each type only one assignee
+                $q->select('id', 'type', 'user_id', 'request_id')
+                    ->with([
+                        'user' => function ($q) {
+                            $q->select('users.id', 'users.avatar', 'users.name')
+                                ->with('roles:roles.id,name');
+                        }
+                    ])
+//                        ->groupBy('request_assignees.type')
+//                        ->groupBy('request_assignees.request_id')
+                    ->orderBy('request_assignees.id', 'desc');
             },
             'creator'
         ]);
@@ -395,14 +407,10 @@ class RequestAPIController extends AppBaseController
             'relation' => function ($q) {
                 $q->with('quarter.address', 'unit');
             },
-            'managers.user',
-            'users',
             'resident.relations' => function ($q) {
                 $q->with('quarter.address', 'unit');
             },
             'comments.user',
-            'providers.address:id,country_id,state_id,city,street,zip',
-            'providers.user',
             'creator'
         ]);
         $response = (new RequestTransformer)->transform($updatedRequest);
@@ -528,14 +536,10 @@ class RequestAPIController extends AppBaseController
                 'relation' => function ($q) {
                     $q->with('quarter.address', 'unit');
                 },
-                'managers.user',
-                'users',
                 'resident.relations' => function ($q) {
                     $q->with('quarter.address', 'unit');
                 },
                 'comments.user',
-                'providers.address:id,country_id,state_id,city,street,zip',
-                'providers.user',
                 'creator'
             ]);
             $response[] = (new RequestTransformer)->transform($request);
@@ -842,6 +846,8 @@ class RequestAPIController extends AppBaseController
      */
     public function assignProvider(int $id, int $pid, ServiceProviderRepository $serviceProviderRepository, AssignRequest $assignRequest)
     {
+
+        // @TODO delete
         $request = $this->requestRepository->findWithoutFail($id);
         if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
@@ -852,8 +858,11 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->providers()->sync([$pid => ['created_at' => now()]], false);
-        $request->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
+        $request->load([
+            'media',
+            'resident.user',
+            'comments.user',
+        ]);
 
         foreach ($request->managers as $manager) {
             if ($manager->user) {
@@ -903,6 +912,8 @@ class RequestAPIController extends AppBaseController
      */
     public function assignUser(int $id, int $uid, UserRepository $uRepo, AssignRequest $r)
     {
+
+        // @TODO delete
         $request = $this->requestRepository->findWithoutFail($id);
         if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
@@ -915,8 +926,11 @@ class RequestAPIController extends AppBaseController
         // @TODO check admin or super admin
 
         $request->users()->sync([$uid => ['created_at' => now()]], false);
-        $request->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
+        $request->load([
+            'media',
+            'resident.user',
+            'comments.user',
+        ]);
 
         foreach ($request->providers as $p) {
             $request->conversationFor($p->user, $u);
@@ -963,6 +977,8 @@ class RequestAPIController extends AppBaseController
      */
     public function assignManager(int $id, int $pmid, UserRepository $uRepo, AssignRequest $r)
     {
+        // @TODO delete
+
         $request = $this->requestRepository->findWithoutFail($id);
         if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
@@ -975,8 +991,11 @@ class RequestAPIController extends AppBaseController
         }
 
         $request->managers()->sync([$pmid => ['created_at' => now()]], false);
-        $request->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user');
+        $request->load([
+            'media',
+            'resident.user',
+            'comments.user',
+        ]);
 
         foreach ($request->providers as $p) {
             $request->conversationFor($p->user, $manager->user);
@@ -1081,8 +1100,12 @@ class RequestAPIController extends AppBaseController
 
         $sr->tags()->sync($tag, false);
         $sr->touch();
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
+        $sr->load([
+            'media',
+            'resident.user',
+            'comments.user',
+            'tags'
+        ]);
 
         return $this->sendResponse($sr, __('general.attached.tag'));
     }
@@ -1167,8 +1190,12 @@ class RequestAPIController extends AppBaseController
             $sr->touch();
         }
 
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
+        $sr->load([
+            'media',
+            'resident.user',
+            'comments.user',
+            'tags'
+        ]);
 
         return $this->sendResponse($sr, __('general.attached.tag'));
     }
@@ -1245,8 +1272,12 @@ class RequestAPIController extends AppBaseController
             $sr->touch();
         }
 
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
+        $sr->load([
+            'media',
+            'resident.user',
+            'comments.user',
+            'tags'
+        ]);
 
         return $this->sendResponse($sr, __('general.detached.tag'));
     }
@@ -1299,8 +1330,12 @@ class RequestAPIController extends AppBaseController
 
         $sr->tags()->detach($tag);
         $sr->touch();
-        $sr->load('media', 'resident.user', 'comments.user', 'users',
-            'providers.address:id,country_id,state_id,city,street,zip', 'providers.user', 'managers.user', 'tags');
+        $sr->load([
+            'media',
+            'resident.user',
+            'comments.user',
+            'tags'
+        ]);
 
         return $this->sendResponse($sr, __('general.detached.tag'));
     }
@@ -1335,19 +1370,25 @@ class RequestAPIController extends AppBaseController
      * )
      *
      * @param int $id
-     * @param ViewRequest $request
+     * @param ViewRequest $viewRequest
      * @return mixed
      */
-    public function getAssignees(int $id, ViewRequest $request)
+    public function getAssignees(int $id, ViewRequest $viewRequest)
     {
         // @TODO permissions
-        $sr = $this->requestRepository->findWithoutFail($id);
-        if (empty($sr)) {
+        $request = $this->requestRepository->findWithoutFail($id);
+        if (empty($request)) {
             return $this->sendError(__('models.request.errors.not_found'));
         }
 
-        $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        $assignees = $sr->assignees()->paginate($perPage);
+        $perPage = $viewRequest->get('per_page', env('APP_PAGINATE', 10));
+        $type = $viewRequest->type;
+        $assignees = $request->assignees()
+            ->orderBy('id', 'desc')
+            ->when($type, function ($q) use ($type) {
+                $q->where('type', $type);
+            })
+            ->paginate($perPage);
         $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
 
         $response = (new RequestAssigneeTransformer())->transformPaginator($assignees) ;
@@ -1368,16 +1409,26 @@ class RequestAPIController extends AppBaseController
             return $this->sendError(__('models.request.errors.not_found'));
         }
 
-        $data  = $massAssignUsersRequest->toArray();
+        $data  = $massAssignUsersRequest->data;
         $assigneeData = collect();
         foreach ($data as $single) {
-            $newAssignee = $this->assignSingleUserToRequest($id, $single['user_id'], $single['role']);
+            $type = $single['type'] ?? RequestAssignee::TypeCompetent; // @TODO delete
+            $newAssignee = $this->assignSingleUserToRequest($id, $single['user_id'], $single['role'], $type);
             $assigneeData->push($newAssignee);
         }
 
         $request->newMassAssignmentAudit($assigneeData);
+        $perPage = $massAssignUsersRequest->get('per_page', env('APP_PAGINATE', 10));
 
-        $response = (new RequestTransformer)->transform($request);
+        $assignees = $request->assignees()
+            ->orderBy('id', 'desc')
+            ->when($type, function ($q) use ($type) {
+                $q->where('type', $type);
+            })
+            ->paginate($perPage);
+        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
+
+        $response = (new RequestAssigneeTransformer())->transformPaginator($assignees) ;
         return $this->sendResponse($response, __('general.attached.manager'));
     }
 
@@ -1387,7 +1438,7 @@ class RequestAPIController extends AppBaseController
      * @param $role
      * @return RequestAssignee|\Illuminate\Database\Eloquent\Model|mixed
      */
-    protected function assignSingleUserToRequest($requestId, $userId, $role)
+    protected function assignSingleUserToRequest($requestId, $userId, $role, $type)
     {
         $user = User::find($userId);
         if (empty($user)) {
@@ -1413,6 +1464,7 @@ class RequestAPIController extends AppBaseController
             'user_id' => $userId,
             'assignee_id' => $assigneeId,
             'assignee_type' => $assigneeType,
+            'type' => $type,
         ], [
             'created_at' => now()
         ]);

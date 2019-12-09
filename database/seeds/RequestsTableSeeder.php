@@ -19,64 +19,71 @@ class RequestsTableSeeder extends Seeder
     public function run()
     {
         $this->faker = Faker::create();
-        if (App::environment('local')) {
-            $admins = User::whereHas('roles', function ($query) {
-                $query->where('name', 'administrator');
-            })->get();
+        if (! App::environment('local')) {
+            return;
+        }
 
-            $requests = [];
-            for ($i = 0; $i < 500; $i++) {
-                $date = $this->getRandomTime();
-                $data = factory(App\Models\Request::class)->make()->toArray();
-                $data = array_merge($data, $this->getDateColumns($date));
+        $admins = User::whereHas('roles', function ($query) {
+            $query->where('name', 'administrator');
+        })->get();
 
-                if (Request::StatusDone == $data['status']) {
-                    $data['resolution_time'] = $data['updated_at']->diffInSeconds($data['created_at']);
-                    $data['solved_date'] = $data['updated_at'];
-                }
+        $requests = [];
+        for ($i = 0; $i < 500; $i++) {
+            $date = $this->getRandomTime();
+            $data = factory(App\Models\Request::class)->make()->toArray();
+            $data = array_merge($data, $this->getDateColumns($date));
 
-                $requests[] = App\Models\Request::create($data);
+            if (Request::StatusDone == $data['status']) {
+                $data['resolution_time'] = $data['updated_at']->diffInSeconds($data['created_at']);
+                $data['solved_date'] = $data['updated_at'];
             }
 
-            $user = App\Models\User::where('email', 'resident@example.com')->first();
-            foreach ($requests as $key => $request) {
-                $this->addRequestComments($request);
-                if ($key < 3) {
-                    continue;
-                }
+            $requests[] = App\Models\Request::create($data);
+        }
 
-                $request->resident_id = $user->resident->id;
-                $request->status = array_rand(Request::Status);
-                if ($request->status == Request::StatusDone) {
-                    $request->solved_date = now();
-                    $request->resolution_time = now()->diffInSeconds($request->created_at);
+        $user = App\Models\User::where('email', 'resident@example.com')->first();
 
-                }
+        $allProviders = ServiceProvider::get(['id', 'user_id']);
+        $allManagers = \App\Models\PropertyManager::get(['id', 'user_id']);
+        foreach ($requests as $key => $request) {
+            $this->addRequestComments($request);
+            if ($key < 3) {
+                continue;
+            }
 
-                $request->save();
-                $providers = ServiceProvider::inRandomOrder()->take(2)->get();
-                foreach ($providers as $p) {
-                    $request->providers()->sync([$p->id => [
+            $request->resident_id = $user->resident->id;
+            $request->status = array_rand(Request::Status);
+            if ($request->status == Request::StatusDone) {
+                $request->solved_date = now();
+                $request->resolution_time = now()->diffInSeconds($request->created_at);
+
+            }
+            $providers = $allProviders->random(2);
+            $managers = $allManagers->random(2);
+
+            $request->save();
+            foreach ($providers as $p) {
+                $request->providers()->sync([$p->id => [
+                    'created_at' => now(),
+                    'user_id' => $p->user_id,
+                    'type' => array_rand(\App\Models\RequestAssignee::Type)
+                ]]);
+            }
+
+            foreach ($managers as $m) {
+                $request->managers()->sync([
+                    $m->id => [
                         'created_at' => now(),
-                        'user_id' => $p->user_id
+                        'user_id' => $m->user_id,
+                        'type' => array_rand(\App\Models\RequestAssignee::Type)
                     ]]);
-                }
-
-                $managers = \App\Models\PropertyManager::inRandomOrder()->take(2)->get();
-                foreach ($managers as $m) {
-                    $request->managers()->sync([
-                        $m->id => [
-                            'created_at' => now(),
-                            'user_id' => $m->user_id
-                        ]]);
-                }
-                foreach ($providers as $prov) {
-                    foreach ($admins as $admin) {
-                        $c = $request->conversationFor($admin, $prov->user);
-                        $c->commentAsUser($admin, "Knock Knock!");
-                        usleep(1000);
-                        $c->commentAsUser($prov->user, "Who's there?");
-                    }
+            }
+            foreach ($providers as $prov) {
+                foreach ($admins as $admin) {
+                    $c = $request->conversationFor($admin, $prov->user);
+                    $c->commentAsUser($admin, "Knock Knock!");
+                    usleep(1000);
+                    $c->commentAsUser($prov->user, "Who's there?");
                 }
             }
         }

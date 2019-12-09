@@ -267,11 +267,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::post('/requests/{id}/users/mass-assign', 'RequestAPIController@massAssignUsers')->name('requests.mass.assign.users');
     Route::delete('/requests-assignees/{requests_assignee_id}', 'RequestAPIController@deleteRequestAssignee');
 
-    // @TODO delete
-    Route::post('/requests/{id}/users/{user_id}', 'RequestAPIController@assignUser'); // @TODO delete
-    Route::post('/requests/{id}/providers/{provider_id}', 'RequestAPIController@assignProvider');
-    Route::post('/requests/{id}/managers/{manager_id}', 'RequestAPIController@assignManager');
-
     Route::get('/requests/{id}/communicationTemplates', 'RequestAPIController@getCommunicationTemplates');
     Route::get('/requests/{id}/serviceCommunicationTemplates', 'RequestAPIController@getServiceCommunicationTemplates');
     Route::get('/requests/{id}/serviceEmailTemplates', 'RequestAPIController@getServiceEmailTemplates');

@@ -12,7 +12,7 @@
                 </el-button>
             </template>
             <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="headerOrder=$event" :headerOrder="headerOrder" :hiddenFields="fields"></list-field-filter>
             </template>
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
@@ -64,6 +64,7 @@
         >
         </request-list-table> -->
         <list-table
+            ref="listtable"
             :fetchMore="fetchMore"
             :filters="filters"
             :filtersHeader="filtersHeader"
@@ -75,6 +76,8 @@
             :searchText="search"
             @selectionChanged="selectionChanged"
             @update-row="updateRow"
+            @searchFilterChanged="headerOrder=$event.header, fields=$event.fields"
+            @saveFilter="saveFilter($event)"
         >
         </list-table>
         <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
@@ -178,18 +181,7 @@
                 </template>
             </span>
         </el-dialog>
-        <el-dialog
-            :visible.sync="visibleSaveDialog"
-            width="30%"
-            center
-        >
-            <h4 class="filter-title">{{ $t('validation.attributes.title') }}</h4>
-            <el-input v-model="saveTitle"/>
-            <span slot="footer" class="dialog-footer">
-                <el-button type="danger" @click="visibleSaveDialog = false">{{ $t('general.cancel') }}</el-button>
-                <el-button type="primary" @click="saveFilter" :disabled="saveTitle===''">{{ $t('general.actions.save') }}</el-button>
-            </span>
-        </el-dialog>
+        
     </div>
 </template>
 
@@ -292,8 +284,6 @@
                 processAssignment: false,
                 toAssignList: '',
                 toAssign: [],
-                saveTitle: '',
-                visibleSaveDialog: false,
                 send_email_service_provider: true,
                 remoteLoading: false,
                 managersForm: {},
@@ -433,6 +423,11 @@
                         type: 'toggle',
                         key: 'saved_filter',
                         data: []
+                    },{
+                        name: this.$t('general.filters.my_filters'),
+                        type: 'popover',
+                        key: 'my_filter',
+                        data: [],
                     }
                 ];
                 if(this.routeName == 'adminUnassignedRequests') {
@@ -462,11 +457,12 @@
                 'getUsers', 
                 'getPropertyManagers',
                 'massEdit']),
+            
             handleMenuClick(command) {
                 if(command == 'delete')
                     this.batchDeleteWithIds();
                 else if(command == 'save_filter')
-                    this.visibleSaveDialog = true;
+                    this.$refs.listtable.visibleSaveDialog = true;
                 else  {
                     this.massStatus = ''
                     this.resetToAssignList();
@@ -474,20 +470,7 @@
                     this.batchEditVisible = true
                 }
             },
-            saveFilter() {
-                this.visibleSaveDialog = false;
-                let fields_data = {};
-                this.header.forEach((item) => {
-                    fields_data[item.label] = !this.fields.includes(item.label);
-                });
-                this.axios.post('/userFilters', {
-                    user_id: this.user.id,
-                    title: this.saveTitle,
-                    menu: this.$route.name,
-                    options_url: this.$route.fullPath,
-                    fields_data: fields_data,
-                });
-            },
+            
             translateCategory(category) {
                 return this.$t(`models.request.category_list.${category.name}`)
             },

@@ -46,6 +46,7 @@
                                 v-if="filter.type === filterTypes.select && filter.data">
                         
                                 <list-filter-select
+                                    :key="JSON.stringify(filterModel[filter.key])"
                                     :type="filter.key"
                                     :name="filter.name"
                                     :data="filter.data"
@@ -122,10 +123,25 @@
                                 </el-button>
                             </el-form-item>
                              <el-form-item v-else-if="filter.type === filterTypes.popover">
-                                <el-popover placement="bottom-end" trigger="click" :width="192" style="float:right">
-                                    <el-button slot="reference" class="filter-button">{{ filter.name }}</el-button>
-                                    <!-- <el-button class="popover-button" @click="visibleSaveDialog=true">{{ $t('general.actions.save') }}</el-button> -->
-                                </el-popover>
+                                <el-dropdown placement="bottom" trigger="click" @command="handleSelectFilters">
+                                    <el-button class="toggle-filter-button"> {{ $t('general.filter') }}</el-button>
+                                    <el-dropdown-menu slot="dropdown" class="save-filters">
+                                        <span class="title">{{ $t('general.filters.saved_filters') }}</span>
+                                        <el-input v-model="savedFilterSearch" prefix-icon="el-icon-search" placeholder="Searh saved filters" @input="handleFilterSearch($event, filter)"></el-input>
+                                        <el-dropdown-item
+                                            :key="`${item.menu}${index}${savedFilters.length}`"
+                                            :command="item"
+                                            :class="{'active':item.id === selectedFilter}"
+                                            v-for="(item, index) in savedFilters"
+                                        >
+                                            <span>{{ item.title }}</span>
+                                            <span>
+                                                <i class="icon-pencil" @click.stop="editSavedFilter(item, index)"></i>
+                                                <i class="icon-trash-empty" @click.stop="deleteSavedFilter(item, index)"></i>
+                                            </span>
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </el-dropdown>
                             </el-form-item>
 
                         </template>
@@ -135,6 +151,18 @@
             </el-card>
         </el-form>
 
+        <el-dialog
+            :visible.sync="visibleSaveDialog"
+            width="30%"
+            center
+        >
+            <h4 class="filter-title">{{ $t('validation.attributes.title') }}</h4>
+            <el-input v-model="saveTitle"/>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="danger" @click="visibleSaveDialog = false">{{ $t('general.cancel') }}</el-button>
+                <el-button type="primary" @click="saveFilter" :disabled="saveTitle===''">{{ $t('general.actions.save') }}</el-button>
+            </span>
+        </el-dialog>
         <!--        <div class="pull-right">-->
         <!--            <el-button :disabled="!selectedItems.length" @click="batchDelete" size="mini" type="danger">-->
         <!--                {{ $t('general.actions.delete')}}-->
@@ -162,19 +190,21 @@
                 v-for="(column, index) in computedHeader">
 
                 <template slot="header">
-                    <div v-if="column.sortBy" class="header-filter">
-                        <span @click="makeHeaderFilterQuery(column.sortBy)"
-                              :class="`header-filter__text ${$route.query.orderBy === column.sortBy ? 'active' : ''}`">
+                    <span v-if="column.sortBy"
+                          :class="`header-filter ${$route.query.orderBy === column.sortBy ? 'active' : ''}`"
+                          @click="makeHeaderFilterQuery(column.sortBy)">
+                        <span class="header-filter__text">
                             {{$t(column.label)}}
                         </span>
-                        <span v-if="$route.query.orderBy === column.sortBy">
-                            <i v-if="$route.query.sortedBy === 'desc'" class="el-icon-arrow-down"></i>
-                            <i v-else-if="$route.query.sortedBy === 'asc'" class="el-icon-arrow-up"></i>
+                        <span
+                              class="header-filter__icon">
+                            <i v-if="$route.query.sortedBy === 'asc' && $route.query.orderBy === column.sortBy" class="el-icon-arrow-up"></i>
+                            <i v-else class="el-icon-arrow-down"></i>
                         </span>
-                    </div>
-                    <div v-else>
+                    </span>
+                    <span v-else>
                         {{$t(column.label)}}
-                    </div>
+                    </span>
                 </template>
 
                 <template slot-scope="scope">
@@ -356,7 +386,7 @@
                         <div class="request-format">
                             <strong>{{scope.row.request_format}}</strong>
                         </div>
-                        <span>{{scope.row.title}}</span>
+                        <div class="request-format-title">{{scope.row.title}}</div>
                     </div>
                     <div v-else-if="column.withRequestStatusSign" class="status-cell">
                         <el-tooltip
@@ -741,7 +771,13 @@
                 assignee: '',
                 remoteLoading: false,
                 isVisible: false,
+                savedFilterSearch: '',
                 visibleFilterDateRange: false,
+                savedFilters: [],
+                visibleSaveDialog: false,
+                saveTitle: '',
+                saveFilterId: null,
+                selectedFilter: '',
             }
         },
         computed: {
@@ -874,6 +910,49 @@
                 'getAllAdminsForRequest',
                 'assignUsersToRequest'
             ]),
+            async getSavedFilters(search='') {
+                let res = await this.axios.get(`userFilters?menu=${this.$route.name}&search=${search}`);
+                this.savedFilters = res.data.data.data;
+            },
+            saveFilter() {
+                this.visibleSaveDialog = false;
+                this.$emit('saveFilter', {title:this.saveTitle, id:this.saveFilterId});
+                this.saveTitle = '';
+                this.saveFilterId = null;
+            },
+            async deleteSavedFilter(savedFilter, index) {
+                if(this.selectedFilter === index)
+                    this.selectedFilter = '';
+                this.savedFilters.splice(index, 1);
+                await this.axios.delete(`userFilters/${savedFilter.id}`);
+            },
+            async editSavedFilter(savedFilter) {
+                this.visibleSaveDialog = true;
+                this.saveTitle = savedFilter.title;
+                this.saveFilterId = savedFilter.id;
+
+            },
+            handleFilterSearch(val, filter) {
+                this.getSavedFilters(val);
+            },
+            handleSelectFilters(savedFilter) {
+                for(let filter in this.filterModel)
+                    delete this.filterModel[filter];
+                this.selectedFilter = savedFilter.id;
+                this.handleFilterChange(savedFilter);
+            },
+            handleFilterChange(savedFilter) {
+                // let tHeader = [], tFields = [];
+                // let data = JSON.parse(savedFilter.fields_data[0]);
+                // for(let item in data) {
+                //     if(!data[item])
+                //         tFields.push(item);
+                   
+                //     tHeader.push(item);
+                // };
+                // this.$emit('searchFilterChanged', {header: tHeader, fields: tFields});
+                this.$router.push({query: JSON.parse(savedFilter.options_url)});
+            },
             makeHeaderFilterQuery(orderBy) {
                 let sortedByVal = this.$route.query.orderBy !== orderBy
                     ? 'desc'
@@ -892,22 +971,22 @@
             },
             makeFilterQuery(pathName) {
                 let query = {};
-                let quarter_ids = localStorage.getItem('quarter_ids');
-                let building_ids = localStorage.getItem('building_ids');
+                // let quarter_ids = localStorage.getItem('quarter_ids');
+                // let building_ids = localStorage.getItem('building_ids');
 
-                if(quarter_ids !== undefined && quarter_ids) {
-                    quarter_ids = JSON.parse(quarter_ids);
-                } else
-                    quarter_ids = null;
-                if(building_ids !== undefined && building_ids)
-                    building_ids = JSON.parse(building_ids);
-                else
-                    building_ids = null;
+                // if(localStorage.quick_search_clicked && quarter_ids !== undefined && quarter_ids) {
+                //     quarter_ids = JSON.parse(quarter_ids);
+                // } else
+                //     quarter_ids = null;
+                // if(localStorage.quick_search_clicked && building_ids !== undefined && building_ids)
+                //     building_ids = JSON.parse(building_ids);
+                // else
+                //     building_ids = null;
 
-                if((pathName == 'adminBuildings' || pathName == 'adminUnits') && quarter_ids !== null)
-                    query.quarter_ids = quarter_ids;
-                if(pathName == 'adminUnits' && building_ids !== null)
-                    query.building_id = building_ids;
+                // if((pathName == 'adminBuildings' || pathName == 'adminUnits') && quarter_ids !== null)
+                //     query.quarter_ids = quarter_ids;
+                // if(pathName == 'adminUnits' && building_ids !== null)
+                //     query.building_id = building_ids;
 
                 this.$router.push({
                     name: pathName,
@@ -1218,6 +1297,39 @@
                     }
                 }
             },
+            initializeFilters() {
+                _.each(this.filters, (filter) => {
+                    let queryFilterValue = this.$route.query[filter.key];
+
+                    const dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/;
+                    let value;
+
+                    if((filter.key !== 'search') && queryFilterValue !== undefined && !Array.isArray(queryFilterValue))
+                        value = [queryFilterValue];
+                    else
+                        value = queryFilterValue;
+
+                    if(!Array.isArray(value))
+                        value = queryFilterValue && ( queryFilterValue.match(dateReg) || filter.key == 'search') ? queryFilterValue : parseInt(queryFilterValue); // due to parseInt 0007 becomes 7
+                    else if(filter.key !== 'cities')
+                        for(let i = 0; i < value.length; i ++)
+                            value[i] = parseInt(value[i]);
+
+                    this.$set(this.filterModel, filter.key, value);
+                    if(filter.key == "search") {
+                        this.$set(this.filterModel, 'search', queryFilterValue);
+                    }
+
+                    if (!this.filterModel[filter.key]) {
+                        delete this.filterModel[filter.key];
+                    }
+
+                    if (this.filterModel[filter.key] || (!filter.parentKey && filter.fetch)) {
+                        this.filterChanged(filter, true);
+                    }
+                });
+                this.$forceUpdate();
+            }
         },
         watch: {
             search(text) {
@@ -1234,7 +1346,6 @@
                     if(this.$route.name == "login") {
                         return;
                     }
-
 
                     if (!page || !per_page && prevQuery) {
                         this.page.currPage = 1;
@@ -1254,12 +1365,39 @@
 
                     this.fetch(this.page.currPage, this.page.currSize);
 
+                    this.initializeFilters();
                 }
             },
         },
-        created() {
+        async created() {
             if (this.$route.query.search) {
                 this.search = this.$route.query.search;
+            }
+            //Quick Searh Init
+            if(localStorage.quick_search_clicked !== undefined && localStorage.quick_search_clicked === 'true') {
+                let quarter_ids = localStorage.getItem('quarter_ids');
+                let building_ids = localStorage.getItem('building_ids');
+                let pathName = this.$route.name;
+
+                if(localStorage.quick_search_clicked && quarter_ids !== undefined && quarter_ids) {
+                    quarter_ids = JSON.parse(quarter_ids);
+                } else
+                    quarter_ids = null;
+                if(localStorage.quick_search_clicked && building_ids !== undefined && building_ids)
+                    building_ids = JSON.parse(building_ids);
+                else
+                    building_ids = null;
+
+                if(pathName == 'adminBuildings' && quarter_ids)
+                    this.$router.push({query: {'quarter_ids':quarter_ids}});
+                if(pathName == 'adminUnits') {
+                    if(quarter_ids && building_ids)
+                        this.$router.push({query: {'building_id': building_ids, 'quarter_ids': quarter_ids}});
+                    else if(quarter_ids)
+                        this.$router.push({query: {'quarter_ids':quarter_ids}});
+                    else
+                         this.$router.push({query: {'building_id': building_ids}});
+                }
             }
 
             _.each(this.filters, (filter) => {
@@ -1315,6 +1453,8 @@
                 this.$forceUpdate();
             }
             this.search = this.searchText;
+
+            await this.getSavedFilters();
         },
         updated() {
             if(this.search !== this.searchText) {
@@ -1327,14 +1467,24 @@
 
 <style lang="scss" scoped>
     .header-filter {
-        &__text {
-            cursor: pointer;
-            &:hover {
-                color: var(--color-black);
-            }
-            &.active {
-                font-family: 'Radikal Bold';
-            }
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+        &__icon {
+            margin: 0 0 0 4px;
+            opacity: 0;
+        }
+        &:hover &__text {
+            color: var(--color-black);
+        }
+        &:hover &__icon {
+            opacity: 1;
+        }
+        &.active &__text {
+            color: var(--color-black);
+        }
+        &.active &__icon {
+            opacity: 1;
         }
     }
 
@@ -1396,6 +1546,12 @@
 
         .request-format {
             color:var(--primary-color);
+        }
+
+        .request-format-title {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .toggle-filter-button {
@@ -1482,6 +1638,7 @@
 
     .el-button {
         font-family: inherit;
+        font-size: 14px;
     }
     .popover-button {
         width: 100%;
@@ -1691,29 +1848,22 @@
             display: none;
 
             .el-dropdown {
-                width : 30px;
-                height: 30px;
+                width : 28px;
+                height: 28px;
                 border-radius: 50%;
                 border: 1px dashed black; 
             }
             .more-actions {
                 padding: 0;
+                border-radius: 50%;
                 background: transparent;
-                
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 width: 100%;
-                height: 0;
-                padding-top: 100%;
-                position: relative;
-
-                /deep/ span {
-                    position: absolute;
-                    font-size: 18px;
-                    top: 6px;
-                    left: 5.5px;
-                }
+                height: 100%;
+                font-size: 18px;
             }
-            
-            
         }
 
         &:hover {
@@ -1825,6 +1975,12 @@
                 height: 3px;
             }
         }
+        .bg-primary {
+            .el-button {
+                color: var(--color-white);
+                background-color: #2BA7FF;
+            }
+        }
     }
     .label-block .el-form-item__label {
         display: block;
@@ -1919,5 +2075,49 @@
 
     .el-select-dropdown__item.selected {
         color: #606266 !important;
+    }
+
+    
+    .el-dropdown-menu.save-filters {
+        width: 320px;
+        padding-top: 30px;
+        .title {
+            font-size: 16px;
+            margin: 30px;
+            font-weight: 700;
+        }
+        .el-input {
+            margin: 20px 30px 15px;
+            width: calc(100% - 60px);
+            .el-input__inner {
+                background-color: var(--color-white);
+                border: 2px solid var(--border-color-base);
+                border-radius: 10px;
+            }
+        }
+        .el-dropdown-menu__item {
+            padding: 0 30px 0 40px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            &.active {
+                background-color: lighten(#2BA7FF, 35%)
+            }
+            &:hover {
+                background: lighten(#2BA7FF, 30%);
+                color: var(--color-text-regular);
+                span i{
+                    display: inline;
+                }
+            }
+            span i{
+                display: none;
+                line-height: 35px;
+                &:hover {
+                    color: var(--color-black);
+                }
+            }
+        }
     }
 </style>
