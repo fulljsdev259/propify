@@ -57,18 +57,7 @@
                                             :showCamera="model.avatar==null"
                                             @cropped="cropped"/>
                                     </div>
-                                     <el-form-item v-if="editMode" :rules="validationRules.title"
-                                              prop="title"
-                                              class="label-block salutation-select">
-                                        <el-select :disabled="!editMode" :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.title">
-                                            <el-option
-                                                    :key="title.value"
-                                                    :label="title.name"
-                                                    :value="title.value"
-                                                    v-for="title in titles">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
+                                     
                                     <div 
                                         v-if="!editName" 
                                         class="first_name"
@@ -104,6 +93,18 @@
                                 
                                 </el-col>
                                 <el-col :span="12">
+                                    <el-form-item v-if="editMode" :rules="validationRules.title" :label="$t('general.salutation')"
+                                            prop="title"
+                                            class="label-block">
+                                        <el-select :disabled="!editMode" :placeholder="$t('general.placeholders.select')" style="display: block" v-model="model.title">
+                                            <el-option
+                                                    :key="title.value"
+                                                    :label="title.name"
+                                                    :value="title.value"
+                                                    v-for="title in titles">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
                                     <div v-if="!editMode" class="user-info-item">
                                         <span>{{ $t('models.resident.mobile_phone') }}</span>
                                         <span>{{ model.mobile_phone }}</span>

@@ -2,7 +2,10 @@
     <div class="buildings list-view">
         <heading :title="$t('models.building.title')" icon="icon-commerical-building" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
-                <list-check-box @clicked="handleQuickFilterClick(true)" @unclicked="handleQuickFilterClick(false)"/>
+                <list-check-box 
+                    :checked="quick_search_clicked" 
+                    @clicked="handleQuickFilterClick(true)" 
+                    @unclicked="handleQuickFilterClick(false)"/>
             </template>
             <template v-if="$can($permissions.create.building)">
                 <el-button 
@@ -208,7 +211,8 @@
                 //         ]
                 //     }]
                 // }
-                ]
+                ],
+                quick_search_clicked : false,
             };
         },
         computed: {
@@ -282,12 +286,18 @@
                         return item.id;
                     });
                     localStorage.setItem('building_ids', JSON.stringify(building_ids));
+                    localStorage.quick_search_clicked = true;
                 } else {
                     localStorage.setItem('building_ids', null);
+                    localStorage.setItem('quarter_ids', null);
+                    localStorage.quick_search_clicked = false;
+                    this.$router.push({query: null});
                 }
             },
             selectionChanged(items) {
                 this.selectedItems = items;
+                if(localStorage.quick_search_clicked !== undefined && localStorage.quick_search_clicked === 'true')
+                    this.handleQuickFilterClick(true);
             },
             handleMenuClick(command) {
                 if(command == 'delete')
@@ -463,7 +473,8 @@
             },            
         },
         async created() {
-            localStorage.setItem('building_ids', null);
+            if(localStorage.quick_search_clicked !== undefined && localStorage.quick_search_clicked === 'true')
+                this.quick_search_clicked = true;
 
             this.isLoadingFilters = true;
             this.getRoles();

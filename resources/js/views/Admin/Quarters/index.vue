@@ -2,7 +2,10 @@
     <div class="quarters list-view">
         <heading :title="$t('models.quarter.title')" icon="icon-share" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template>
-                <list-check-box @clicked="handleQuickFilterClick(true)" @unclicked="handleQuickFilterClick(false)"/>
+                <list-check-box 
+                    :checked="quick_search_clicked" 
+                    @clicked="handleQuickFilterClick(true)" 
+                    @unclicked="handleQuickFilterClick(false)"/>
             </template>
             <template v-if="$can($permissions.create.quarter)">
                 <el-button 
@@ -199,6 +202,7 @@
                         message: this.$t('models.quarter.required')
                     }],
                 },
+                quick_search_clicked : false,
             };
         },
         computed: {
@@ -262,15 +266,25 @@
         methods: {
             ...mapActions(['getBuildings', 'assignManagerToBuilding', 'getPropertyManagers']),
             handleQuickFilterClick(checked) {
+                localStorage.setItem('building_ids', null);
                 if(checked === true) {
                     let quarter_ids = [];
                     quarter_ids = this.selectedItems.map((item) => {
                         return item.id;
                     });
                     localStorage.setItem('quarter_ids', JSON.stringify(quarter_ids));
+                    localStorage.quick_search_clicked = true;
                 } else {
                     localStorage.setItem('quarter_ids', null);
+                    localStorage.quick_search_clicked = false;
+                    this.$router.push({query: []});
                 }
+            },
+            selectionChanged(items) {
+                this.selectedItems = items;
+                
+                if(localStorage.quick_search_clicked !== undefined && localStorage.quick_search_clicked === 'true')
+                    this.handleQuickFilterClick(true);
             },
             batchAssignManagers() {
                 this.assignManagersVisible = true;
@@ -400,12 +414,11 @@
                 })
                 return buildings.data
             },
-            selectionChanged(items) {
-                this.selectedItems = items;
-            }
         },
         async created() {
-            localStorage.setItem('quarter_ids', null);
+            if(localStorage.quick_search_clicked !== undefined && localStorage.quick_search_clicked === 'true')
+                this.quick_search_clicked = true;
+
             this.getRoles();
             this.getTypes();
             this.getCities();

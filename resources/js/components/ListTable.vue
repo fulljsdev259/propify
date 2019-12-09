@@ -123,8 +123,8 @@
                                 </el-button>
                             </el-form-item>
                              <el-form-item v-else-if="filter.type === filterTypes.popover">
-                                <el-dropdown class="bg-primary" split-button placement="bottom" trigger="click" @command="handleSelectFilters">
-                                        {{ $t('general.filter') }}
+                                <el-dropdown placement="bottom" trigger="click" @command="handleSelectFilters">
+                                    <el-button class="toggle-filter-button"> {{ $t('general.filter') }}</el-button>
                                     <el-dropdown-menu slot="dropdown" class="save-filters">
                                         <span class="title">{{ $t('general.filters.saved_filters') }}</span>
                                         <el-input v-model="savedFilterSearch" prefix-icon="el-icon-search" placeholder="Searh saved filters" @input="handleFilterSearch($event, filter)"></el-input>
@@ -942,15 +942,15 @@
                 this.handleFilterChange(savedFilter);
             },
             handleFilterChange(savedFilter) {
-                let tHeader = [], tFields = [];
-                let data = JSON.parse(savedFilter.fields_data[0]);
-                for(let item in data) {
-                    if(!data[item])
-                        tFields.push(item);
+                // let tHeader = [], tFields = [];
+                // let data = JSON.parse(savedFilter.fields_data[0]);
+                // for(let item in data) {
+                //     if(!data[item])
+                //         tFields.push(item);
                    
-                    tHeader.push(item);
-                };
-                this.$emit('searchFilterChanged', {header: tHeader, fields: tFields});
+                //     tHeader.push(item);
+                // };
+                // this.$emit('searchFilterChanged', {header: tHeader, fields: tFields});
                 this.$router.push({query: JSON.parse(savedFilter.options_url)});
             },
             makeHeaderFilterQuery(orderBy) {
@@ -971,22 +971,22 @@
             },
             makeFilterQuery(pathName) {
                 let query = {};
-                let quarter_ids = localStorage.getItem('quarter_ids');
-                let building_ids = localStorage.getItem('building_ids');
+                // let quarter_ids = localStorage.getItem('quarter_ids');
+                // let building_ids = localStorage.getItem('building_ids');
 
-                if(quarter_ids !== undefined && quarter_ids) {
-                    quarter_ids = JSON.parse(quarter_ids);
-                } else
-                    quarter_ids = null;
-                if(building_ids !== undefined && building_ids)
-                    building_ids = JSON.parse(building_ids);
-                else
-                    building_ids = null;
+                // if(localStorage.quick_search_clicked && quarter_ids !== undefined && quarter_ids) {
+                //     quarter_ids = JSON.parse(quarter_ids);
+                // } else
+                //     quarter_ids = null;
+                // if(localStorage.quick_search_clicked && building_ids !== undefined && building_ids)
+                //     building_ids = JSON.parse(building_ids);
+                // else
+                //     building_ids = null;
 
-                if((pathName == 'adminBuildings' || pathName == 'adminUnits') && quarter_ids !== null)
-                    query.quarter_ids = quarter_ids;
-                if(pathName == 'adminUnits' && building_ids !== null)
-                    query.building_id = building_ids;
+                // if((pathName == 'adminBuildings' || pathName == 'adminUnits') && quarter_ids !== null)
+                //     query.quarter_ids = quarter_ids;
+                // if(pathName == 'adminUnits' && building_ids !== null)
+                //     query.building_id = building_ids;
 
                 this.$router.push({
                     name: pathName,
@@ -1372,6 +1372,32 @@
         async created() {
             if (this.$route.query.search) {
                 this.search = this.$route.query.search;
+            }
+            //Quick Searh Init
+            if(localStorage.quick_search_clicked !== undefined && localStorage.quick_search_clicked === 'true') {
+                let quarter_ids = localStorage.getItem('quarter_ids');
+                let building_ids = localStorage.getItem('building_ids');
+                let pathName = this.$route.name;
+
+                if(localStorage.quick_search_clicked && quarter_ids !== undefined && quarter_ids) {
+                    quarter_ids = JSON.parse(quarter_ids);
+                } else
+                    quarter_ids = null;
+                if(localStorage.quick_search_clicked && building_ids !== undefined && building_ids)
+                    building_ids = JSON.parse(building_ids);
+                else
+                    building_ids = null;
+
+                if(pathName == 'adminBuildings' && quarter_ids)
+                    this.$router.push({query: {'quarter_ids':quarter_ids}});
+                if(pathName == 'adminUnits') {
+                    if(quarter_ids && building_ids)
+                        this.$router.push({query: {'building_id': building_ids, 'quarter_ids': quarter_ids}});
+                    else if(quarter_ids)
+                        this.$router.push({query: {'quarter_ids':quarter_ids}});
+                    else
+                         this.$router.push({query: {'building_id': building_ids}});
+                }
             }
 
             _.each(this.filters, (filter) => {
