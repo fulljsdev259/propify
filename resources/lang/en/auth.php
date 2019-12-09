@@ -12,6 +12,7 @@ return [
 	|
 	*/
 
+	'welcome_login' => 'Welcome to the Residential Platform of Fortimo.',
 	'failed' => 'These credentials do not match our records.',
 	'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 	'login_welcome' => 'Welcome back, please login to your account.',

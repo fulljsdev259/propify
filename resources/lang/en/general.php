@@ -151,6 +151,10 @@ return [
     'reset_password_mail_sent' => 'We have sent you an e-mail with further instructions. Please check your inbox.',
     'back_to_login' => 'Go back to login',
     'forgot_password' => 'Forgot password',
+    'agree' => 'By logging in, you agree with ours',
+    'protection' => 'Privacy Policy',
+    'agreed' => 'Agree',
+    'registeemr' => 'Register',
     'forgot_password_info' => "Enter the email address by which you're registered here. We will send you an email with a link to reset your password.",
     'email_not_registered' => "The e-mail address you entered is not associated with an active account. Try a different email address.",
     'remember_me' => 'Remember me',
@@ -178,7 +182,7 @@ return [
     'comment_not_found' => "Comment not found",
     'comment_created' => "Comment created",
     'comment_updated' => "Comment updated",
-    'comment_deleted' => "Comment deleted",
+    'comment_deleted' => "Comment deleted",    
     'created_at' => "Created at",
     'password_validation' => [
         'required' => 'Password is required',
@@ -206,6 +210,8 @@ return [
         'buildings_and_quarters' => 'Buildings/quarters',
         'relations' => 'Relations'
     ],
+    'stay_logged_in' => 'Stay logged in',
+    'email-' => 'E-Mail-Address',
     'email' => 'Email',
     'email_validation' => [
         'required' => 'Email is required',

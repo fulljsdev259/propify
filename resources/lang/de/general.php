@@ -151,6 +151,10 @@ return [
     'reset_password_mail_sent' => 'Wir haben Ihnen eine E-Mail mit weiteren Anweisungen gesendet. Bitte prüfen Sie Ihren Posteingang.',
     'back_to_login' => 'Zurück zum Login',
     'forgot_password' => 'Passwort vergessen',
+    'register' => 'Registreren',
+    'agree' => 'Mit dem einloggen erklaren Sie sich mit unseren',
+    'protection' => 'Datenschutzerklarung',
+    'agreed' => 'einverstanden',
     'forgot_password_info' => "Geben Sie Ihre E-Mail-Adresse, mit der Sie sich registriert haben, an. Wir senden Ihnen dann eine E-Mail mit einem Link, mit dem Sie Ihr Passwort zurücksetzen können.",
     'email_not_registered' => "Die E-Mail-Adresse, die Sie eingegeben haben, ist keinem aktiven Konto zugeordnet. Versuchen Sie es mit einer anderen E-Mail-Adresse.",
     'remember_me' => 'Angemeldet bleiben',
@@ -206,6 +210,8 @@ return [
         'buildings_and_quarters' => 'Objekte/bearbeiten',
         'relations' => 'Beziehungen'
     ],
+    'stay_logged_in' => 'Eingeloggt bleiben',
+    'email-' => 'E-Mail-Adresse',
     'email' => 'E-Mail',
     'email_validation' => [
         'required' => 'E-Mail ist obligatorisch',
