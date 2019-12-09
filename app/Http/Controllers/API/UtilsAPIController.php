@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Models\Pinboard;
 use App\Models\Listing;
 use App\Models\PropertyManager;
+use App\Models\RequestAssignee;
 use App\Models\ServiceProvider;
 use App\Models\Request;
 use App\Models\TemplateCategory;
@@ -331,6 +332,7 @@ class UtilsAPIController extends AppBaseController
             'room' => Request::Room,
             'capture_phase' => Request::CapturePhase,
             'qualification_category' => Request::QualificationCategory,
+            'assignee_type' => RequestAssignee::Type,
             'categories_data' =>  [
                 'categories' => Request::Category,
                 'sub_categories' => Request::SubCategory,
