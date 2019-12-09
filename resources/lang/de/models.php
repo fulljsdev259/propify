@@ -599,7 +599,7 @@ return [
         'sort' => 'Sortierung',
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',
-        'save_filter' => 'Speicherfilter',
+        'save_filter' => 'Filter speichern',
         'assignee_type' => [
             'label' => 'Type',
             'competent' => 'Zuständig',
