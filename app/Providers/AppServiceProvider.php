@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Jobs\Notify\NotifyNewRequestInternalNotice;
 use App\Mails\NewRequestForReceptionist;
 use App\Mails\NotifyServiceProvider;
 use App\Models\Building;
@@ -17,6 +18,8 @@ use App\Models\Resident;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\Workflow;
+use App\Notifications\NewInternalNotice;
+use App\Notifications\NewRequestAccountableInternalNotice;
 use App\Notifications\NewResidentInNeighbour;
 use App\Notifications\NewResidentPinboard;
 use App\Notifications\NewResidentRequest;
@@ -88,6 +91,8 @@ class AppServiceProvider extends ServiceProvider
             'pinboard_commented' => PinboardCommented::class,
             'resident_credentials' => ResidentCredentials::class,
             'notify_service_provider' => NotifyServiceProvider::class,
+            'new_internal_notice' => NewInternalNotice::class,
+            'new_request_accountable_internal_notice' => NewRequestAccountableInternalNotice::class,
         ]);
 
         if (!Collection::hasMacro('paginate')) {

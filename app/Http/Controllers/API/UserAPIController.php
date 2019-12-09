@@ -86,7 +86,6 @@ class UserAPIController extends AppBaseController
     {
         $this->userRepository->pushCriteria(new RequestCriteria($request));
         $this->userRepository->pushCriteria(new FilterByRolesCriteria($request));
-        $this->userRepository->pushCriteria(new FilterByAdminCriteria($request));
         $this->userRepository->pushCriteria(new FilterByExcludeAssigneesCriteria($request));
         $this->userRepository->pushCriteria(new LimitOffsetCriteria($request));
 
@@ -128,12 +127,66 @@ class UserAPIController extends AppBaseController
      */
     public function allAdmins(ListRequest $request)
     {
-        $request->merge([
-            'get_admins' => true,
-            'get_all' => true,
-            'get_role' => true,
-        ]);
-        return $this->index($request);
+        $this->userRepository->pushCriteria(new FilterByRolesCriteria($request));
+        $this->userRepository->pushCriteria(new FilterByAdminCriteria($request));
+        $this->userRepository->pushCriteria(new FilterByExcludeAssigneesCriteria($request));
+        $this->userRepository->pushCriteria(new LimitOffsetCriteria($request));
+
+        $users = $this->userRepository->with('roles')->get();
+        if (empty($request->show_company_name) &&  empty($request->function)) {
+            $response = $users->toArray();
+            return $this->sendResponse($response, 'Users retrieved successfully');
+        }
+
+        if ($request->show_company_name &&  $request->function) {
+            $serviceProviders = ServiceProvider::whereIn('user_id', $users->pluck('id'))->get('company_name', 'user_id', 'category');
+            $serviceProviderNames = $serviceProviders->pluck('company_name', 'user_id');
+            $companyName = Settings::value('name');
+
+            foreach ($users as $user) {
+                $singleData = $user->toArray();
+                $singleData['company_name'] = $serviceProviderNames[$user->id] ?? $companyName;
+                $serviceProvider = $serviceProviders->where('user_id', $user->id)->first();
+
+                if ($serviceProvider) {
+                    $category = ServiceProvider::Category[$serviceProvider->category] ?? '';
+                    $singleData['function'] = $category;
+                } else {
+                    $singleData['function'] =  $user->roles->first()->name ?? 'unknown role'; //unknown role must be not happen
+                }
+
+                $response[] = $singleData;
+            }
+            return $this->sendResponse($response, 'Users retrieved successfully');
+        }
+        
+        if ($request->show_company_name) {
+            $serviceProviders = ServiceProvider::whereIn('user_id', $users->pluck('id'))->pluck('company_name', 'user_id');
+            $companyName = Settings::value('name');
+            $response = [];
+            foreach ($users as $user) {
+                $singleData = $user->toArray();
+                $singleData['company_name'] = $serviceProviders[$user->id] ?? $companyName;
+                $response[] = $singleData;
+            }
+            return $this->sendResponse($response, 'Users retrieved successfully');
+        }
+
+        $serviceProviders = ServiceProvider::whereIn('user_id', $users->pluck('id'))->get(['id', 'category', 'user_id']);
+        $response = [];
+        foreach ($users as $user) {
+            $singleData = $user->toArray();
+            $serviceProvider = $serviceProviders->where('user_id', $user->id)->first();
+            if ($serviceProvider) {
+                $category = ServiceProvider::Category[$serviceProvider->category] ?? '';
+                $singleData['function'] = $category;
+            } else {
+                $singleData['function'] =  $user->roles->first()->name ?? 'unknown role'; //unknown role must be not happen
+            }
+            $response[] = $singleData;
+        }
+
+        return $this->sendResponse($response, 'Users retrieved successfully');
     }
 
     /**

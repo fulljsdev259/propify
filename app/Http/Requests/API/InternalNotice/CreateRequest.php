@@ -3,8 +3,6 @@
 namespace App\Http\Requests\API\InternalNotice;
 
 use App\Http\Requests\BaseRequest;
-use App\Models\InternalNotice;
-use Illuminate\Support\Facades\Auth;
 
 class CreateRequest extends BaseRequest
 {
@@ -25,6 +23,9 @@ class CreateRequest extends BaseRequest
      */
     public function rules()
     {
-        return InternalNotice::$rules;
+        return [
+            'request_id' => 'required',
+            'comment' => 'required'
+        ];
     }
 }

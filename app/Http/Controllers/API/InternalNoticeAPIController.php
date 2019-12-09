@@ -10,6 +10,7 @@ use App\Http\Requests\API\InternalNotice\UpdateRequest;
 use App\Http\Requests\API\InternalNotice\ViewRequest;
 use App\Models\InternalNotice;
 use App\Models\PropertyManager;
+use App\Models\User;
 use App\Repositories\InternalNoticeRepository;
 use App\Transformers\InternalNotesTransformer;
 use App\Http\Controllers\AppBaseController;
@@ -148,7 +149,7 @@ class InternalNoticeAPIController extends AppBaseController
 
         $internalNotice = $this->internalNoticeRepository->create($input);
         $internalNotice->load('user');
-        $this->loadPropertyManagersForSingle($internalNotice);
+        $this->loadUsersForSingle($internalNotice);
         $response = (new InternalNotesTransformer())->transform($internalNotice);
 
         return $this->sendResponse($response, __('models.request.internal_notice_saved'));
@@ -203,7 +204,7 @@ class InternalNoticeAPIController extends AppBaseController
         }
 
         $internalNotice->load('user');
-        $this->loadPropertyManagersForSingle($internalNotice);
+        $this->loadUsersForSingle($internalNotice);
         $response = (new InternalNotesTransformer())->transform($internalNotice);
 
         return $this->sendResponse($response, 'Internal Notice retrieved successfully');
@@ -269,7 +270,7 @@ class InternalNoticeAPIController extends AppBaseController
 
         $internalNotice = $this->internalNoticeRepository->update($input, $id);
         $internalNotice->load('user');
-        $this->loadPropertyManagersForSingle($internalNotice);
+        $this->loadUsersForSingle($internalNotice);
 
         return $this->sendResponse($internalNotice->toArray(), __('models.request.internal_notice_updated'));
     }
@@ -331,10 +332,13 @@ class InternalNoticeAPIController extends AppBaseController
     /**
      * @param $internalNotices
      */
-    protected function loadPropertyManagersForSingle($internalNotice)
+    protected function loadUsersForSingle($internalNotice)
     {
-        $managers = PropertyManager::whereIn('id', $internalNotice->manager_ids)->with('user')->get();
-        $internalNotice->setRelation('managers', $managers);
+        if (empty($internalNotice->user_ids)) {
+            return $internalNotice;
+        }
+        $users = User::whereIn('id', $internalNotice->user_ids)->get();
+        $internalNotice->setRelation('users', $users);
     }
 
     /**
