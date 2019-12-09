@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\CleanifyRequest;
 use App\Models\Comment;
+use App\Models\InternalNotice;
 use App\Models\PasswordReset;
 use App\Models\Pinboard;
 use App\Models\Listing;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules\In;
 use Spatie\MediaLibrary\Models\Media;
 
 /**
@@ -70,6 +72,40 @@ class TemplateRepository extends BaseRepository
         $context = [
             'user' => $user,
             'subject' => $subject,
+        ];
+        $tags = $this->getTags($template->category->tag_map, $context);
+        return $this->getParsedTemplateData($template, $tags);
+    }
+
+    /**
+     * @param User $user
+     * @param InternalNotice $internalNotice
+     * @return array
+     */
+    public function getNewRequestAccountableInternalNoticeTemplate(User $user, InternalNotice $internalNotice): array
+    {
+        $template = $this->getByCategoryName('request_accountable_internal_notice');
+
+        $context = [
+            'user' => $user,
+            'internalNotice' => $internalNotice,
+        ];
+        $tags = $this->getTags($template->category->tag_map, $context);
+        return $this->getParsedTemplateData($template, $tags);
+    }
+
+    /**
+     * @param User $user
+     * @param InternalNotice $internalNotice
+     * @return array
+     */
+    public function getNewInternalNoticeTemplate(User $user, InternalNotice $internalNotice): array
+    {
+        $template = $this->getByCategoryName('new_internal_notice');
+
+        $context = [
+            'user' => $user,
+            'internalNotice' => $internalNotice,
         ];
         $tags = $this->getTags($template->category->tag_map, $context);
         return $this->getParsedTemplateData($template, $tags);

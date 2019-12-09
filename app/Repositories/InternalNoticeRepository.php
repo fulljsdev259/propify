@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Jobs\Notify\NotifyNewRequestInternalNotice;
 use App\Models\InternalNotice;
 
 /**
@@ -35,5 +36,12 @@ class InternalNoticeRepository extends BaseRepository
     public function model()
     {
         return InternalNotice::class;
+    }
+
+    public function create(array $attributes)
+    {
+        $model = parent::create($attributes);
+        dispatch_now(new NotifyNewRequestInternalNotice($model));
+        return $model;
     }
 }
