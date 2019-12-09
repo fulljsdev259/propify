@@ -26,4 +26,20 @@ class UnitPlanRepository extends BaseRepository
     {
         return UnitPlan::class;
     }
+
+    /**
+     * @param array $attributes
+     * @return mixed
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
+    public function create(array $attributes)
+    {
+        $unitPlan = parent::create($attributes);
+
+        if (!empty($attributes['media'])) {
+            $this->saveMediaUploads($unitPlan, $attributes);
+        }
+
+        return $unitPlan;
+    }
 }

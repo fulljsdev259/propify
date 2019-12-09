@@ -129,12 +129,6 @@ class UnitPlanAPIController extends AppBaseController
             return $this->sendError(__('models.unit_plans.errors.create') . $e->getMessage());
         }
 
-        if ($request->has('media')) {
-            $this
-                ->unitPlanRepository
-                ->uploadFile('media', $request['media'], $unitPlan);
-        }
-
         $unitPlan->load('media');
 
         $response = (new UnitPlanTransformer)->transform($unitPlan);
