@@ -4,7 +4,7 @@
             <p>{{ $t('auth.welcome_login') }}</p>
         </div>
         <el-form :model="model" ref="form">
-            <el-form-item prop="email" :label="$t('general.email-')" :rules="validationRules.email" class="email_input" id="email_input">
+            <el-form-item prop="email" :label="$t('general.email-')" :rules="validationRules.email" v-bind:class="[emailfocus, email_input]" id="email_input">
                 <el-input
                     type="email" 
                     v-model="model.email" 
@@ -12,10 +12,10 @@
                     @keyup.enter.native="submit"
                     @focus="focus('email')"
                     @blur="blur('email')"
-                    v-bind:class="[emailfocus, emailshow]"
+                    v-bind:class="emailshow"
                 ></el-input>
             </el-form-item>
-            <el-form-item prop="password" :label="$t('general.password')" :rules="validationRules.password" class="pwd_input" id="pwd_input">
+            <el-form-item prop="password" :label="$t('general.password')" :rules="validationRules.password" v-bind:class="[pwdfocus, pwd_input]" id="pwd_input">
                 <el-input
                     type="password" 
                     v-model="model.password" 
@@ -23,7 +23,7 @@
                     @keyup.enter.native="submit"
                     @focus="focus('pwd')"
                     @blur="blur('pwd')"
-                    v-bind:class="[pwdfocus, pwdshow]"
+                    v-bind:class="pwdshow"
                 ></el-input>
             </el-form-item>
             <el-form-item>
@@ -67,6 +67,8 @@
                 emailfocus: "",
                 pwdfocus: "",
                 emailshow: 'input_hide',
+	            email_input: 'email_input',
+                pwd_input: 'pwd_input',
                 pwdshow: 'input_hide'
             }
         },
@@ -216,7 +218,7 @@
     }
     .input_focus{
         border-left: 3px solid #6B0036 !important;
-        margin-left: -2px !important;
+        margin-left: 0px !important;
         width: 99% !important;
     }
     .el-checkbox__inner{
@@ -275,4 +277,8 @@
             }
         }
     }
+	.el-checkbox__inner::after{
+		top: 3px !important;
+		left: 6px !important;
+	}
 </style>
