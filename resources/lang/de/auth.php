@@ -12,6 +12,7 @@ return [
 	|
 	*/
 
+	'welcome_login' => 'Willkomen auf der Bewohnerplattform von Fortimo.',
 	'failed'   => 'Diese Kombination aus Zugangsdaten wurde nicht in unserer Datenbank gefunden.',
 	'throttle' => 'Zu viele Loginversuche. Versuchen Sie es bitte in :seconds Sekunden nochmal.',
 	'login_welcome' => 'Willkommen zurück, bitte melden Sie sich mit Ihrem Konto an.',
