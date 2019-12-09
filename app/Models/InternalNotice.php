@@ -29,8 +29,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="manager_ids",
- *          description="manager_ids",
+ *          property="user_ids",
+ *          description="user_ids",
  *          type="string"
  *      ),
  *      @SWG\Property(
@@ -54,7 +54,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property int $request_id
  * @property int $user_id
- * @property array|null $manager_ids
+ * @property array|null $user_ids
  * @property string $comment
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -78,20 +78,27 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\InternalNotice withoutTrashed()
  * @mixin \Eloquent
  */
-class InternalNotice extends Model
+class InternalNotice extends AuditableModel
 {
     use SoftDeletes;
 
-    public $table = 'internal_notices';
-    
+    /**
+     * @var string
+     */
+    protected $table = 'internal_notices';
 
+    /**
+     * @var array
+     */
     protected $dates = ['deleted_at'];
 
-
+    /**
+     * @var array
+     */
     public $fillable = [
         'request_id',
         'user_id',
-        'manager_ids',
+        'user_ids',
         'comment'
     ];
 
@@ -105,19 +112,12 @@ class InternalNotice extends Model
         'request_id' => 'integer',
         'user_id' => 'integer',
         'comment' => 'string',
-        'manager_ids' => 'array'
+        'user_ids' => 'array'
     ];
 
     /**
-     * Validation rules
-     *
-     * @var array
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public static $rules = [
-        'request_id' => 'required',
-        'comment' => 'required'
-    ];
-
     public function user()
     {
         return $this->belongsTo(User::class);
