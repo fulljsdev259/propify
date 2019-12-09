@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Relation;
 use App\Models\Resident;
 use App\Models\Unit;
 use App\Models\Request;
@@ -61,6 +62,11 @@ class AuditRepository extends BaseRepository
         if($fieldname == 'resident_id'){
             $model = Resident::find($fieldvalue);
             return ($model) ? $model->first_name . ' ' . $model->last_name : "";
+        }
+
+        if($fieldname == 'default_relation_id'){
+            $model = Relation::find($fieldvalue, ['relation_format']);
+            return ($model) ? $model->relation_format : "";
         }
 
         if($fieldname == 'address_id'){

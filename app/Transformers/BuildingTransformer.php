@@ -101,21 +101,7 @@ class BuildingTransformer extends BaseTransformer
 //            $response['assignedUsers'] = [];
 //        }
 
-        // @TODO fix now building is not directly assigned relations
-        if ($model->relationExists('relations')) {
-            $response['relations'] = (new RelationTransformer())->transformCollection($model->relations);
-            $residents = collect($response['relations'])->pluck('resident')->unique();
-
-
-            // @TODO delete
-            if ($residents->isNotEmpty()) {
-                $response['residents'] = $residents->all();
-                $response['residents_count'] = $residents->count();
-                $response['active_residents_count'] = $residents->where('status', Resident::StatusActive)->count();
-                $response['in_active_residents_count'] = $residents->where('status', Resident::StatusInActive)->count();
-            }
-        }
-
+        $response['relations'] = []; // @TODO delete
         return $response;
     }
 

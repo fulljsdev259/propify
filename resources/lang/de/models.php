@@ -600,6 +600,11 @@ return [
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',
         'save_filter' => 'Speicherfilter',
+        'assignee_type' => [
+            'label' => 'Type',
+            'competent' => 'Zuständig',
+            'accountable' => 'verantwortlich',
+        ],
         'category_list' => [
             'general' => ' Allg. Anliegen',
             'malfunction' => 'Fehlfunktion',

@@ -25,6 +25,7 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         return [
+            'quarter_id' => 'required|exists:quarters,id',
             'floor_nr' => 'required',
             'under_floor' => 'numeric|between:0,3',
             'types' => [

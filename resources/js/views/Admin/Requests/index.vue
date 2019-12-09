@@ -12,7 +12,7 @@
                 </el-button>
             </template>
             <template>
-                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="header=$event"></list-field-filter>
+                <list-field-filter :fields="header" @field-changed="fields=$event" @order-changed="headerOrder=$event" :headerOrder="headerOrder" :hiddenFields="fields"></list-field-filter>
             </template>
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
@@ -64,6 +64,7 @@
         >
         </request-list-table> -->
         <list-table
+            ref="listtable"
             :fetchMore="fetchMore"
             :filters="filters"
             :filtersHeader="filtersHeader"
@@ -75,7 +76,8 @@
             :searchText="search"
             @selectionChanged="selectionChanged"
             @update-row="updateRow"
-            @filterSearchChanged="handleFilterChange"
+            @searchFilterChanged="headerOrder=$event.header, fields=$event.fields"
+            @saveFilter="saveFilter($event)"
         >
         </list-table>
         <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
@@ -179,18 +181,7 @@
                 </template>
             </span>
         </el-dialog>
-        <el-dialog
-            :visible.sync="visibleSaveDialog"
-            width="30%"
-            center
-        >
-            <h4 class="filter-title">{{ $t('validation.attributes.title') }}</h4>
-            <el-input v-model="saveTitle"/>
-            <span slot="footer" class="dialog-footer">
-                <el-button type="danger" @click="visibleSaveDialog = false">{{ $t('general.cancel') }}</el-button>
-                <el-button type="primary" @click="saveFilter" :disabled="saveTitle===''">{{ $t('general.actions.save') }}</el-button>
-            </span>
-        </el-dialog>
+        
     </div>
 </template>
 
@@ -293,8 +284,6 @@
                 processAssignment: false,
                 toAssignList: '',
                 toAssign: [],
-                saveTitle: '',
-                visibleSaveDialog: false,
                 send_email_service_provider: true,
                 remoteLoading: false,
                 managersForm: {},
@@ -302,7 +291,6 @@
                 statusForm: {},
                 activeMassEditOption: 'service_provider',
                 massStatus: '',
-                savedFilters: [],
                 massEditOptions : [
                     {
                         key : 'service_provider',
@@ -439,8 +427,7 @@
                         name: this.$t('general.filters.my_filters'),
                         type: 'popover',
                         key: 'my_filter',
-                        data: this.savedFilters,
-                        fetchSearchFilter: this.getSavedFilters
+                        data: [],
                     }
                 ];
                 if(this.routeName == 'adminUnassignedRequests') {
@@ -470,18 +457,12 @@
                 'getUsers', 
                 'getPropertyManagers',
                 'massEdit']),
-            handleFilterChange(savedFilter) {
-                console.log(savedFilter);
-                let tHeader, tFields = [];
-                savedFilter.fields_data.forEach((field) => {
-                    console.log(field);
-                });
-            },
+            
             handleMenuClick(command) {
                 if(command == 'delete')
                     this.batchDeleteWithIds();
                 else if(command == 'save_filter')
-                    this.visibleSaveDialog = true;
+                    this.$refs.listtable.visibleSaveDialog = true;
                 else  {
                     this.massStatus = ''
                     this.resetToAssignList();
@@ -489,27 +470,7 @@
                     this.batchEditVisible = true
                 }
             },
-            getSavedFilters(search='') {
-                this.axios.get(`userFilters?search=${search}`)
-                .then(res => {
-                    this.savedFilters = res.data.data.data;
-                    console.log(this.savedFilters);
-                }).catch(err => console.log(err));
-            },
-            saveFilter() {
-                this.visibleSaveDialog = false;
-                let fields_data = {};
-                this.header.forEach((item) => {
-                    fields_data[item.label] = !this.fields.includes(item.label);
-                });
-                this.axios.post('/userFilters', {
-                    user_id: this.user.id,
-                    title: this.saveTitle,
-                    menu: this.$route.name,
-                    options_url: this.$route.fullPath,
-                    fields_data: fields_data,
-                });
-            },
+            
             translateCategory(category) {
                 return this.$t(`models.request.category_list.${category.name}`)
             },
@@ -810,7 +771,6 @@
             this.services = await this.fetchRemoteServices();
             this.residents = await this.fetchRemoteResidents();
             this.creators = await this.fetchRemoteCreators();
-            this.getSavedFilters();
             
         },  
         watch: {

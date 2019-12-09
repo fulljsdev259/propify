@@ -73,6 +73,12 @@ $config =  [
             'visibility' => 'public',
         ],
 
+        'unit_plans_media' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/units/plans'),
+            'url' => env('APP_URL') . '/storage/units/plans',
+            'visibility' => 'public',
+        ],
 
         's3' => [
             'driver' => 's3',

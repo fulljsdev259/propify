@@ -135,6 +135,13 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::post('/units/{id}/media', 'MediaAPIController@unitUpload')->name('units.media.upload');
     Route::delete('/units/{unit_id}/media/{media_id}', 'MediaAPIController@unitDestroy')->name('units.media.destroy');
 
+    // Plans
+    Route::get('/units/{unitId}/plans', 'UnitPlanAPIController@index')->name('unit_plans.index');
+    Route::post('/units/{unitId}/plans', 'UnitPlanAPIController@store')->name('unit_plans.store');
+    Route::get('/units/{unitId}/plans/{planId}', 'UnitPlanAPIController@show')->name('unit_plans.show');
+    Route::put('/units/{unitId}/plans/{planId}', 'UnitPlanAPIController@update')->name('unit_plans.update');
+    Route::delete('/units/{unitId}/plans/{planId}', 'UnitPlanAPIController@destroy')->name('unit_plans.destroy');
+
     // @TODO delete
     Route::post('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@assignResident');
     Route::delete('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@unassignResident');
@@ -260,11 +267,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::post('/requests/{id}/users/mass-assign', 'RequestAPIController@massAssignUsers')->name('requests.mass.assign.users');
     Route::delete('/requests-assignees/{requests_assignee_id}', 'RequestAPIController@deleteRequestAssignee');
 
-    // @TODO delete
-    Route::post('/requests/{id}/users/{user_id}', 'RequestAPIController@assignUser'); // @TODO delete
-    Route::post('/requests/{id}/providers/{provider_id}', 'RequestAPIController@assignProvider');
-    Route::post('/requests/{id}/managers/{manager_id}', 'RequestAPIController@assignManager');
-
     Route::get('/requests/{id}/communicationTemplates', 'RequestAPIController@getCommunicationTemplates');
     Route::get('/requests/{id}/serviceCommunicationTemplates', 'RequestAPIController@getServiceCommunicationTemplates');
     Route::get('/requests/{id}/serviceEmailTemplates', 'RequestAPIController@getServiceEmailTemplates');
@@ -279,7 +281,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 //    Route::post('/listings/deletewithids', 'ListingAPIController@destroyWithIds')->name('listings.destroyWithIds');
 //    Route::post('listings/{id}/comments', 'CommentAPIController@storeProductComment')->name('listings.store.comment');
 //    Route::post('listings/{id}/publish', 'ListingAPIController@publish')->name('listings.publish');
-
 
 
     // Property Manager
@@ -300,7 +301,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     Route::post('/propertyManagers/{id}/buildings/{building_id}', 'PropertyManagerAPIController@assignBuilding');
     Route::delete('/propertyManagers/{id}/buildings/{building_id}', 'PropertyManagerAPIController@unassignBuilding');
-
 
 
     // Templates

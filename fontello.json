@@ -533,6 +533,18 @@
       "css": "publish",
       "code": 59451,
       "src": "entypo"
+    },
+    {
+      "uid": "21115bb09fa242341cb91ed34710aa13",
+      "css": "attach",
+      "code": 59452,
+      "src": "websymbols"
+    },
+    {
+      "uid": "2a4e6c99b732a57da40e32fa2a7800a4",
+      "css": "toggle-off",
+      "code": 61956,
+      "src": "fontawesome"
     }
   ]
 }

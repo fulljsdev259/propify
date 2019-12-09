@@ -326,7 +326,17 @@ return [
 	        'inactive' => 'Free',
 	        'canceled' => 'Cancelled'
         ],
-    ],   
+    ],
+    'unit_plans' => [
+        'deleted' => 'Unit Plan deleted',
+        'saved' => 'Unit Plan saved',
+        'errors' => [
+            'not_found' => "Unit Plan not found",
+            'create' => "Unit Plan create error: ",
+            'update' => "Unit Plan update error: ",
+            'deleted' => "Unit Plan deleted error: ",
+        ],
+    ],
     'pinboard' => [
         'title' => 'Pinboard',
         'title_label' => 'Title',
@@ -599,6 +609,11 @@ return [
         'reset_sort' => 'Reset Sort',
         'creation_date' => 'Creation Date',
         'save_filter' => 'Save Filter',
+        'assignee_type' => [
+            'label' => 'Type',
+            'competent' => 'Competent',
+            'accountable' => 'Accountable',
+        ],
         'category_list' => [
             'general' => 'General concerns',
             'malfunction' => 'Malfunction',

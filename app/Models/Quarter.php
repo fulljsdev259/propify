@@ -270,4 +270,12 @@ class Quarter extends AuditableModel implements HasMedia
         return $this->hasManyThrough(Request::class, Relation::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function property_managers()
+    {
+        return $this->morphedByMany(PropertyManager::class, 'assignee', 'quarter_assignees', 'quarter_id');
+    }
+
 }
