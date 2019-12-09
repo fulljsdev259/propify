@@ -114,7 +114,7 @@ class UtilsAPIController extends AppBaseController
                 'resident_logo' => null,
             ];
             $login = [
-                'variation' => 3,
+                'variation' => 1,
                 'variation_2_slider' => true,
             ];
         }

@@ -1,7 +1,9 @@
 <template>
-    <auth1 v-if="this.$constants.login.variation == 1" />
-    <auth2 v-else-if="this.$constants.login.variation == 2" />
-    <auth3 v-else-if="this.$constants.login.variation == 3" />
+    <div class="all_wrap">
+        <auth3 v-if="this.$router.currentRoute.name == 'newlogin'" />
+        <auth1 v-if="this.$constants.login.variation == 1 && this.$router.currentRoute.name != 'newlogin'" />
+        <auth2 v-else-if="this.$constants.login.variation == 2 && this.$router.currentRoute.name != 'newlogin'" />
+    </div>
 </template>
 <script>
     import auth1 from 'layouts/Auth/1/Layout';
@@ -16,3 +18,8 @@ export default {
    }
 }
 </script>
+<style scoped>
+    .all_wrap {
+        height: 100%;
+    }
+</style>
