@@ -95,39 +95,6 @@ class CleanDB extends Command
             'relation' => (new User())->getTable(),
         ];
 
-
-
-        $buildingAssignees = $this->getMorphTable('assignee_id', 'assignee_type', [
-                User::class,
-                PropertyManager::class,
-            ]);
-        $buildingAssignees[] = [
-            'relation' => (new Building())->getTable(),
-        ];
-
-
-        $quarterAssignees = $this->getMorphTable('assignee_id', 'assignee_type', [
-            User::class,
-            PropertyManager::class,
-        ]);
-        $quarterAssignees[] = [
-            'relation' => (new Quarter())->getTable(),
-        ];
-
-
-
-        $requestAssignees = $this->getMorphTable('assignee_id', 'assignee_type', [
-            User::class,
-            PropertyManager::class,
-            ServiceProvider::class,
-        ]);
-        $requestAssignees[] = [
-            'relation' => (new Request())->getTable(),
-            'relation_id' => 'request_id'
-        ];
-
-
-
         $config = [
             'audits' => $audits,
             'autologins' => [
@@ -147,7 +114,9 @@ class CleanDB extends Command
             ],
             'conversations' => $conversations,
             'comments' => $comments,
-            'building_assignees' => $buildingAssignees,
+            'building_assignees' => [
+                'relation' => (new User())->getTable(),
+            ],
             'internal_notices' => [
                 [
                     'relation' => (new User())->getTable(),
@@ -164,8 +133,12 @@ class CleanDB extends Command
             'oauth_access_tokens' => [
                 'relation' => (new User())->getTable(),
             ],
-            'quarter_assignees' => $quarterAssignees,
-            'request_assignees' => $requestAssignees,
+            'quarter_assignees' => [
+                'relation' => (new User())->getTable(),
+            ],
+            'request_assignees' => [
+                'relation' => (new User())->getTable(),
+            ],
             'translations' => $translations
         ];
 
