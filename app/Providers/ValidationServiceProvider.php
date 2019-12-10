@@ -57,6 +57,7 @@ class ValidationServiceProvider extends ServiceProvider
                         $validator->customMessages['base_mimes'] = str_replace(':attribute', 'media', __('validation.string'));
                         return false;
                     }
+                    // @TODO validate also name
                     $value = $value['media'];
                 }
 
