@@ -7,7 +7,6 @@ use App\Models\Building;
 use App\Models\BuildingAssignee;
 use App\Models\CleanifyRequest;
 use App\Models\Comment;
-use App\Models\Conversation;
 use App\Models\Country;
 use App\Models\InternalNotice;
 use App\Models\Like;
@@ -73,7 +72,6 @@ class CleanDB extends Command
      */
     public function handle()
     {
-        $conversations = $this->getAllMorphTable('conversationable_id', 'conversationable_type', Conversation::class);
         $comments = $this->getAllMorphTable('commentable_id', 'commentable_type', Comment::class);
         $media = $this->getAllMorphTable('model_id', 'model_type', Media::class);
         $translations = $this->getAllMorphTable('object_id', 'object_type', [Translation::class,]);
@@ -112,7 +110,6 @@ class CleanDB extends Command
             'cleanify_requests' => [
                 'relation' => (new User())->getTable(),
             ],
-            'conversations' => $conversations,
             'comments' => $comments,
             'building_assignees' => [
                 'relation' => (new User())->getTable(),
@@ -220,7 +217,6 @@ class CleanDB extends Command
             BuildingAssignee::class,
             CleanifyRequest::class,
             Comment::class,
-            Conversation::class,
             Country::class,
             InternalNotice::class,
             Like::class,
