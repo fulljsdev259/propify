@@ -45,8 +45,8 @@
             </el-dropdown>
         </div>
         <i v-if="newStyle" class="el-icon-microphone action-buttons"></i>
-        <el-tooltip v-if="!newStyle" :content="$t('general.components.common.add_comment.save_shortcut', {shortcut: saveKeysShortcut})" placement="top-end">
-            <el-button circle icon="icon-paper-plane" size="small" :disabled="!content" :loading="loading" @click="save" />
+        <el-tooltip :content="$t('general.components.common.add_comment.save_shortcut', {shortcut: saveKeysShortcut})" placement="top-end">
+            <i class="icon-paper-plane action-buttons" :disabled="!content" :loading="loading" @click="save" />
         </el-tooltip>
     </div>
     <div v-if="type === 'internalNotices' && content" style="margin: 10px 41px 0 35px;">
@@ -294,11 +294,14 @@
         &.new-style {
             align-items: center;
             border-top: 1px solid #f6f5f7;
-            padding: 10px 0;
+            padding: 10px 20px;
         }
         .action-buttons {
             font-size: 18px;
-            padding: 0 20px;
+            padding-left: 5px;
+            &:first-of-type {
+                padding: 0px;
+            }
         }
 
         .content {
@@ -362,6 +365,7 @@
                 &.new-style {
                     :global(.el-textarea__inner) {
                         background-color: transparent !important;
+                        font-family: inherit;
                     }
                 }
 

@@ -124,7 +124,7 @@
                             </el-form-item>
                              <el-form-item v-else-if="filter.type === filterTypes.popover">
                                 <el-dropdown placement="bottom" trigger="click" @command="handleSelectFilters">
-                                    <el-button class="toggle-filter-button"> {{ $t('general.filter') }}</el-button>
+                                    <el-button class="toggle-filter-button"> {{ $t('general.filters.my_filters') }}</el-button>
                                     <el-dropdown-menu slot="dropdown" class="save-filters">
                                         <span class="title">{{ $t('general.filters.saved_filters') }}</span>
                                         <el-input v-model="savedFilterSearch" prefix-icon="el-icon-search" placeholder="Searh saved filters" @input="handleFilterSearch($event, filter)"></el-input>
@@ -182,7 +182,7 @@
             v-loading="loading.state">
 
             <el-table-column
-                :key="'header' + index"
+                :key="column.label + index"
                 :width="column.width"
                 :min-width="column.minWidth"
                 :class-name="column.withRequestUsers ? 'request-users' : ''"
@@ -508,7 +508,7 @@
                                                         filterable
                                                         remote
                                                         reserve-keyword
-                                                        @change="val => handleQuickAssign(scope.row.id, val, column.prop)"
+                                                        @change="val => handleQuickAssign(scope.row.id, column.prop)"
                                                         v-model="assignee">
                                                     <el-option
                                                             :key="assignee.id"
@@ -997,10 +997,9 @@
                     });
                 }
             },
-            async handleQuickAssign(request_id, assignee_id, prop) {
+            async handleQuickAssign(request_id, prop) {
                 let type = prop === 'competent_user' ? 1 : 2;
-                let assignee = this.assignees.find(item => item.id == assignee_id)
-                let user_params = [{type, user_id: assignee_id, role: assignee.roles[0].name}]
+                let user_params = [{type, user_id: assignee_id}];
 
                 let resp = await this.assignUsersToRequest({
                             id: request_id,
@@ -1033,8 +1032,8 @@
             },
             async handleAssignMe(request_id, prop) {
                 let type = prop === 'competent_user' ? 1 : 2;
-                let loggedinUser = this.$store.getters.loggedInUser
-                let user_params = [{type, user_id: loggedinUser.id, role: loggedinUser.roles[0].name}]
+                let loggedinUser = this.$store.getters.loggedInUser;
+                let user_params = [{type, user_id: loggedinUser.id}];
 
                 let resp = await this.assignUsersToRequest({
                             id: request_id,
@@ -2121,10 +2120,10 @@
             justify-content: space-between;
             align-items: center;
             &.active {
-                background-color: lighten(#2BA7FF, 35%)
+                background: var(--primary-color-lighter);
             }
             &:hover {
-                background: lighten(#2BA7FF, 30%);
+                background: var(--primary-color-lighter);
                 color: var(--color-text-regular);
                 span i{
                     display: inline;

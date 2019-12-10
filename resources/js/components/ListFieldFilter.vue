@@ -2,7 +2,7 @@
     <div class="list-field-filter">
         <el-dropdown placement="bottom" size="medium" trigger="click">
             <el-button size="mini" class="el-button--transparent">
-                {{ $t('general.filters.fields') }}
+                <i class="icon-toggle-off"></i>&ensp;{{ $t('general.filters.fields') }}
             </el-button>
             <el-dropdown-menu slot="dropdown">
                 <draggable v-model="data" v-bind="dragOptions" @end="onEnd" handle=".el-icon-rank">
@@ -18,8 +18,8 @@
                                 {{ getLabel(field) }}
                             </span>
                             <el-switch 
-                                v-model="selected[index]"
-                                @change="handleChange($event, index)"
+                                v-model="selected[field.label]"
+                                @change="handleChange($event, field.label)"
                             ></el-switch>
                         </div>    
                     </transition-group>
@@ -72,16 +72,19 @@
             },
             handleChange(value, index) {
                 this.selected[index] = value;
+                this.notifyChange();
+            },
+            notifyChange() {
                 let result = [];
                 if(!this.headerOrder)
-                    this.selected.forEach((item, index) => {
-                        if(item === false)
-                            result.push(this.fields[index].label);
+                    this.fields.forEach((item, index) => {
+                        if(this.selected[item.label] === false)
+                            result.push(item.label);
                     });
                 else
-                    this.selected.forEach((item, index) => {
-                        if(item === false)
-                            result.push(this.headerOrder[index]);
+                    this.headerOrder.forEach((item, index) => {
+                        if(this.selected[item] === false)
+                            result.push(item);
                     });
                 this.$emit('field-changed', result);
             },
@@ -92,7 +95,7 @@
                 }
                 return this.$t(item.label);
             },
-            initialize() {
+            initialize(first=false) {
                 this.selected = [];
                 this.data = [];
                 if(!this.headerOrder)
@@ -102,15 +105,17 @@
                         this.data.push(this.fields.find(item => item.label === val));
                     });
                 this.data.forEach((item, index) => {
-                    if(item.defaultHide !== undefined && item.defaultHide === true) {
-                        this.selected.push(false);
+                    if(item.defaultHide !== undefined && item.defaultHide === true && first) {
+                        this.selected[item.label] = false;
                     }  else
-                        this.selected.push(!this.hiddenFields.includes(item.label));
+                        this.selected[item.label] = !this.hiddenFields.includes(item.label);
                 });
+                if(first)
+                    this.notifyChange();
             }
         },
         created() {
-            this.initialize();
+            this.initialize(true);
         },
         watch: {
             headerOrder() {

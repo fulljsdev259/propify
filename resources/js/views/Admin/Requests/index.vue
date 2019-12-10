@@ -17,6 +17,23 @@
             <template>
                 <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
                     <el-button size="mini" class="el-button--transparent more-actions">
+                        {{ $t('models.request.mass_edit.label') }}
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item
+                            :disabled="!selectedItems.length" 
+                            :command="option.key"
+                            :key="option.key"
+                            :icon="option.icon"
+                            v-for="option in massEditOptions">
+                            {{$t('models.request.mass_edit.options.' + option.key)}}
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </template>
+            <template>
+                <el-dropdown placement="bottom" trigger="click" @command="handleMenuClick">
+                    <el-button size="mini" class="el-button--transparent more-actions">
                         <i class="el-icon-more" style="transform: rotate(90deg)"></i>
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
@@ -25,14 +42,6 @@
                             icon="el-icon-plus"
                         >
                             {{ $t('models.request.save_filter') }}
-                        </el-dropdown-item>
-                        <el-dropdown-item
-                            :disabled="!selectedItems.length" 
-                            :command="option.key"
-                            :key="option.key"
-                            :icon="option.icon"
-                            v-for="option in massEditOptions">
-                            {{$t('models.request.mass_edit.options.' + option.key)}}
                         </el-dropdown-item>
                         <el-dropdown-item
                                 v-if="$can($permissions.delete.request)"
