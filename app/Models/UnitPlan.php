@@ -7,6 +7,53 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 
+/**
+ * App\Models\UnitPlan
+ *
+ * @SWG\Definition (
+ *      definition="UnitPlan",
+ *      required={""},
+ *      @SWG\Property(
+ *          property="id",
+ *          description="id",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
+ *          property="name",
+ *          description="name",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="description",
+ *          description="description",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="primary",
+ *          description="primary",
+ *          type="boolean"
+ *      ),
+ *      @SWG\Property(
+ *          property="created_at",
+ *          description="created_at",
+ *          type="string",
+ *          format="date-time"
+ *      ),
+ *      @SWG\Property(
+ *          property="updated_at",
+ *          description="updated_at",
+ *          type="string",
+ *          format="date-time"
+ *      ),
+ *      @SWG\Property(
+ *          property="deleted_at",
+ *          description="deleted_at",
+ *          type="string",
+ *          format="date-time"
+ *      )
+ * )
+ */
 class UnitPlan extends AuditableModel implements HasMedia
 {
     use
