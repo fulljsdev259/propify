@@ -273,9 +273,7 @@ class AuditableModel extends Model implements Auditable
         $audit = $this->makeNewAudit(self::MassAssignments);
         $audit->new_values = $items->filter(function ($item) {
                 return $item->wasRecentlyCreated;
-            })->groupBy('assignee_type')->transform(function ($_items) {
-                return $_items->pluck('assignee_id')->all();
-            })->all();;
+            })->pluck('user_id')->all();
 
         $audit->save();
         return $audit;
