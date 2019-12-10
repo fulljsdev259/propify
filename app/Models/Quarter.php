@@ -219,7 +219,7 @@ class Quarter extends AuditableModel implements HasMedia
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'quarter_assignees', 'quarter_id', 'user_id', 'id', 'user_id');
+        return $this->belongsToMany(User::class, 'quarter_assignees', 'quarter_id', 'user_id', 'id', 'id');
     }
 
 

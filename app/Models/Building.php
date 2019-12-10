@@ -305,7 +305,7 @@ class Building extends AuditableModel implements HasMedia
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'building_assignees', 'building_id', 'user_id', 'id', 'user_id');
+        return $this->belongsToMany(User::class, 'building_assignees', 'building_id', 'user_id', 'id', 'id');
     }
 
     public function assignees()

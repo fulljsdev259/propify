@@ -71,7 +71,7 @@ class AssigneeTransformer extends BaseTransformer
             return $related->category ?? '';
         }
 
-        if ($related->service_provider->property_manager) {
+        if ($related->property_manager) {
             return 'manager';
         }
 
