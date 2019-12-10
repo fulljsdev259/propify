@@ -1,8 +1,10 @@
 <template>
     <div class="all_wrap">
-        <auth3 v-if="this.$router.currentRoute.name == 'newlogin'" />
-        <auth1 v-if="this.$constants.login.variation == 1 && this.$router.currentRoute.name != 'newlogin'" />
-        <auth2 v-else-if="this.$constants.login.variation == 2 && this.$router.currentRoute.name != 'newlogin'" />
+        <auth3 v-if="this.$router.currentRoute.name == 'newlogin' || this.$router.currentRoute.name == 'nwewActivateAccount' || this.$router.currentRoute.name == 'newForgot'" />
+        <div v-else>
+		    <auth1 v-if="this.$constants.login.variation == 1" />
+            <auth2 v-else-if="this.$constants.login.variation == 2" />
+	    </div>
     </div>
 </template>
 <script>

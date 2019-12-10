@@ -57,5 +57,23 @@ export default [{
         meta: {
             title: 'Activate Account',
         }
+    }, {
+        name: 'newForgot',
+        path: 'newForgot',
+        component: () =>
+            import ( /* webpackChunkName: "auth/1/forgotPassword" */ 'views/Auth/3/ForgotPassword'),
+        beforeEnter: VueRouterMultiguard([isGuestGuard]),
+        meta: {
+            title: 'Forgot Password'
+        }
+    }, {
+        path: 'newActivate',
+        component: () =>
+            import ( /* webpackChunkName: "auth/1/activateAccount" */ 'views/Auth/3/ActivateAccount'),
+        name: 'nwewActivateAccount',
+        beforeEnter: VueRouterMultiguard([isGuestGuard]),
+        meta: {
+            title: 'Activate Account',
+        }
     }]
 }]
