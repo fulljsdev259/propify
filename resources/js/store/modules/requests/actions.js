@@ -94,9 +94,9 @@ export default {
             }).catch(({response: {data: err}}) => reject(err))
         });
     },
-    getAllAdminsForRequest(_, {request_id, is_get_function, search}) {
+    getAllAdminsForRequest(_, {request_id, assign_type, is_get_function, search, }) {
         return new Promise((resolve, reject) =>
-            axios.get(buildFetchUrl(`alladmins`, {exclude_assignees_request_id: request_id, function: is_get_function, search: search}))
+            axios.get(buildFetchUrl(`alladmins`, {exclude_assignees_request_id: request_id, request_assign_type: assign_type, function: is_get_function, search: search}))
                 .then(({data: r}) => resolve(r.data))
                 .catch(({response: {data: err}}) => reject(err)));
     },
