@@ -239,6 +239,7 @@
                 'getPropertyManagers', 
                 'getBuildings',
                 'getAllAdminsForQuarter']),
+
             async submit () {
                 try {
                     const valid = await this.$refs.form.validate();
@@ -290,6 +291,7 @@
                             cc_user_ids: this.model.selectedWorkflowCcUser,
                             cc_users: cc_users
                         }
+                        console.log(payload);
 
                         if(this.id) 
                         {
@@ -322,6 +324,7 @@
                 }
             },
             handleSelectChange(val, filter) {
+                console.log(val, filter);
                 if(filter == 'building') {
                     this.model.selectedWorkflowBuilding = val
                 }
@@ -331,7 +334,6 @@
                 else if(filter == 'cc_user') {
                     this.model.selectedWorkflowCcUser = val
                 }
-                
             },
             async fetchRemoteBuildings(search = '') {
                 let buildings = await this.getBuildings({get_all: true, quarter_id: this.quarter_id, search});
@@ -466,12 +468,22 @@
             if(this.mode == 'edit') {
                 this.model.title = this.data.title
                 this.model.category_id = this.data.category_id
-                this.$set(this.model, 'selectedWorkflowBuilding', this.data.building_ids)
-                this.$set(this.model, 'selectedWorkflowToUser', this.data.to_user_ids)
-                this.$set(this.model, 'selectedWorkflowCcUser', this.data.cc_user_ids)
+                if(this.data.building_ides !== [])
+                    this.$set(this.model, 'selectedWorkflowBuilding', this.data.building_ids)
+                else
+                    this.$set(this.model, 'selectedWorkflowBuilding', '');
+                if(this.data.to_user_ids !== [])
+                    this.$set(this.model, 'selectedWorkflowToUser', this.data.to_user_ids)
+                else
+                    this.$set(this.model, 'selectedWorkflowToUser', '')
+                if(this.data.cc_user_ids !== [])
+                    this.$set(this.model, 'selectedWorkflowCcUser', this.data.cc_user_ids)
+                else
+                    this.$set(this.model, 'selectedWorkflowCcUser', '')
                 this.model.workflowBuildingList = this.data.buildings
                 this.model.workflowToUserList = this.data.to_users
                 this.model.workflowCcUserList = this.data.cc_users
+                console.log(this.model);
             }
             
             this.loading = false;

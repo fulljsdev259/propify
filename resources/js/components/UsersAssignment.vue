@@ -5,7 +5,7 @@
                 clearable
                 :loading="remoteLoading"
                 :placeholder="$t('general.placeholders.search')"
-                :remote-method="remoteSearch"
+                :remote-method="query => requestAssignType?remoteSearch(query, requestAssignType):remoteSearch(query)"
                 class="custom-remote-select"
                 filterable
                 remote
@@ -22,7 +22,7 @@
                         :label="assignee.name"
                         :value="assignee.id"
                         v-for="assignee in toAssignList">
-                    <span style="float: left">{{ assignee.name }}</span>
+                    <span style="float: left">{{ assignee.name }}, {{ assignee.company_name }}</span>
                     <span style="float: right; color: #8492a6; font-size: 13px">
                         {{assignee.roles[0].name == "provider" ? $t(`models.service.category.${assignee.function}`)  : ''}}
                         {{assignee.roles[0].name != "provider" ? $t(`general.roles.${assignee.function}`) : ''}} 
@@ -58,6 +58,10 @@
             },
             remoteSearch: {
                 type: Function 
+            },
+            requestAssignType: {
+                type: Number,
+                default: 0,
             }
         }
     }

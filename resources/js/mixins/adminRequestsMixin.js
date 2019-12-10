@@ -549,7 +549,6 @@ export default (config = {}) => {
                             let assign_user = this.toAssignList.find(item => item.id == id )
                             user_params.push({user_id: id, role: assign_user.roles[0].name})
                         })
-                        
         
                         resp = await this.assignUsersToRequest({
                                     id: this.model.id,
@@ -565,7 +564,7 @@ export default (config = {}) => {
                             }
                         }
                     },
-                    async remoteSearchAssignees(search) {
+                    async remoteSearchAssignees(search, assignType = 0) {
                 
                         if (search === '') {
                             this.toAssignList = [];
@@ -573,8 +572,10 @@ export default (config = {}) => {
                             this.remoteLoading = true;
                             
                             try {
-                                const resp = await this.getAllAdminsForRequest({request_id: this.$route.params.id, is_get_function: true, search})
+                                let query = {request_id: this.$route.params.id, is_get_function: true, search, assign_type: assignType};
+                                const resp = await this.getAllAdminsForRequest(query);
                                 this.toAssignList = resp;
+                                console.log(this.toAssignList);
                             } catch (err) {
                                 displayError(err);
                             } finally {

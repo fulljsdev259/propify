@@ -312,7 +312,7 @@
                             :type="button.type"
                             :class="button.class"
                             @click="button.onClick(scope.row)"
-                            v-if="button.view == 'request' && scope.row.type == 'provider' && scope.row.sent_email == false"
+                            v-if="button.view == 'request' && scope.row.sent_email == false"
                             size="mini"
                             round
                         >
@@ -364,7 +364,7 @@
                 </template>
             </el-table-column> -->
         </el-table>
-        <div v-if="meta.current_page < meta.last_page">
+        <div v-if="meta.current_page < meta.last_page && this.onlyLast !== undefined && !this.onlyLast">
             <el-button @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>
         </div>
     </div>
@@ -416,6 +416,13 @@
                 type: Boolean,
                 default: false
             },
+            request_assign_type : {
+                type: Number,
+                default: () => 0
+            },
+            onlyLast: {
+                type: Boolean
+            }
         },
         data() {
             return {
@@ -450,13 +457,16 @@
                 if (!this.fetchStatus) return;
                 this.loading = true;
                 try {
-                    const resp = await this.$store.dispatch(this.fetchAction, {
-                        [this.filter]: this.filterValue,
-                        per_page: 5,
-                        page
-                    });
+                    let query = {
+                            [this.filter]: this.filterValue,
+                            per_page: 5,
+                            page,
+                        };
+                    if(this.request_assign_type) {
+                        query.request_assign_type = this.request_assign_type;
+                    } 
 
-
+                    const resp = await this.$store.dispatch(this.fetchAction, query);
                     this.meta = _.omit(resp.data, 'data');
                     if(!resp.data) {
                         this.list = []
@@ -467,31 +477,39 @@
                                 this.list.push(...resp)
                         }
                     }
-                    else if (page === 1) {
+                    else {
+                        if (page === 1) {
                         
-                        if(this.fetchAction == "getBuildings") {
-                            resp.data.data.forEach(item => {
-                                item.residents = item.relations.map(relation => relation.resident)
-                                item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
-                            })
+                            if(this.fetchAction == "getBuildings") {
+                                resp.data.data.forEach(item => {
+                                    item.residents = item.relations.map(relation => relation.resident)
+                                    item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
+                                })
+                            }
+                            
+                            this.list = resp.data.data;
+                            if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
+                                this.unitsTypeLabelMap();
+                            }
+                            
+                        } else {
+                            if(this.fetchAction == "getBuildings") {
+                                resp.data.data.forEach(item => {
+                                    item.residents = item.relations.map(relation => relation.resident)
+                                    item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
+                                })
+                            }
+                            this.list.push(...resp.data.data);
+                            if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
+                                this.unitsTypeLabelMap();
+                            }
                         }
-                        
-                        this.list = resp.data.data;
-                        if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
-                            this.unitsTypeLabelMap();
-                        }
-                        
-                    } else {
-                        if(this.fetchAction == "getBuildings") {
-                            resp.data.data.forEach(item => {
-                                item.residents = item.relations.map(relation => relation.resident)
-                                item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
-                            })
-                        }
-                        this.list.push(...resp.data.data);
-                        if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
-                            this.unitsTypeLabelMap();
-                        }
+                        if(this.onlyLast !== undefined && this.list.length > 0 && this.filter=="request_id" && this.request_assign_type)
+                            if(this.onlyLast) {
+                                this.list = this.list.slice(0, 1);
+                            } else if(page == 1) {
+                                this.list.shift();
+                            }
                     }
                 } catch (e) {
                     this.list = []

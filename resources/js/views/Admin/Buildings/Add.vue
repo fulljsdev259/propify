@@ -10,7 +10,7 @@
                         <card :header="$t('models.property_manager.details_card')">
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.building.quarter')" prop="quarter_id">
+                                    <el-form-item :label="$t('models.building.quarter')"  :rules="validationRules.quarter_id" prop="quarter_id">
                                         <el-select
                                                 :loading="remoteLoading"
                                                 :placeholder="$t('general.placeholders.search')"
