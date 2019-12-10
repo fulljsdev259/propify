@@ -698,7 +698,7 @@ class QuarterAPIController extends AppBaseController
         }
         $quarterAssignee->delete();
 
-        return $this->sendResponse($id, __('general.detached.' . $quarterAssignee->assignee_type));
+        return $this->sendResponse($id, __('general.detached.user'));
     }
 
     /**

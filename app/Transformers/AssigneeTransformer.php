@@ -27,20 +27,33 @@ class AssigneeTransformer extends BaseTransformer
             $user = new User(['avatar' => $model->related->avatar]);
             $user->id = $model->related->user_id;
             $avatar = $user->avatar;
-        } else {
-            $avatar = 'incorrect relation';
+            $response = [
+                'id' => $model->id,
+                'edit_id' => $model->assignee_id, // @TODO correct need or not
+                'type' => $model->assignee_type, // @TODO correct need or not
+                'email' => $model->related->email,
+                'name' => $model->related->name,
+                'company_name' => $model->related->company_name,
+                'avatar' => $avatar,
+                'sent_email' => $model->sent_email ? true : false,
+                'role' => $model->related->role,
+                'function' => $this->getRoleFormatted($model)
+            ];
+
+            return $response;
+
         }
 
         $response = [
             'id' => $model->id,
-            'edit_id' => $model->assignee_id,
-            'type' => $model->assignee_type,
-            'email' => $model->related ? $model->related->email :  $model->assignee_type . ' deleted',
-            'name' => $model->related ? $model->related->name : $model->assignee_type . ' deleted',
-            'company_name' => $model->related ? $model->related->company_name : $model->assignee_type . ' deleted',
-            'avatar' => $avatar,
+            'edit_id' => $model->assignee_id, // @TODO correct need or not
+            'type' => $model->assignee_type, // @TODO correct need or not
+            'email' =>  'User deleted',
+            'name' => 'User deleted',
+            'company_name' => 'User deleted',
+            'avatar' => 'User deleted',
             'sent_email' => $model->sent_email ? true : false,
-            'role' => $model->related ? $model->related->role : $model->assignee_type . ' deleted',
+            'role' => 'User deleted',
             'function' => $this->getRoleFormatted($model)
         ];
 
@@ -51,14 +64,14 @@ class AssigneeTransformer extends BaseTransformer
     {
         $related = $model->related;
         if (empty($related)) {
-            return $model->assignee_type . ' deleted';
+            return 'User deleted';
         }
 
-        if ($model->assignee_type == get_morph_type_of(ServiceProvider::class)) {
+        if ($related->service_provider) {
             return $related->category ?? '';
         }
 
-        if ($model->assignee_type == get_morph_type_of(PropertyManager::class)) {
+        if ($related->service_provider->property_manager) {
             return 'manager';
         }
 

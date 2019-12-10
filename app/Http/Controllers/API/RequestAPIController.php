@@ -1503,17 +1503,11 @@ class RequestAPIController extends AppBaseController
             $request->touch();
         }
 
-        $type = $requestAssignee->assignee_type;
-        $class = Relation::$morphMap[$type] ?? $type;
-        if (class_exists($class)) {
-            $model = $class::find($requestAssignee->assignee_id);
-            if ($model) {
-                $model->touch();
-            }
-        }
+        $user = User::find($requestAssignee->user_id);
+        $user->touch();
         $requestAssignee->delete();
 
-        return $this->sendResponse($id, __('general.detached.' . $requestAssignee->assignee_type));
+        return $this->sendResponse($id, __('general.detached.user'));
     }
 
     /**
