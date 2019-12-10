@@ -760,9 +760,9 @@ return [
         ],
         'visibility' => [
             'label' => 'Sichtbarkeit',
-            'resident' => 'Nur ich',
-            'quarter' => 'Überbauung',
-            'building' => 'Liegenschaft',
+            'resident' => 'Bewohner',
+            'quarter' => 'Projekt',
+            'building' => 'Objekt',
         ],
         'errors' => [
             'not_found' => 'Anfrage nicht gefunden',
