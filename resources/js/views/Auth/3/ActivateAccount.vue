@@ -1,14 +1,14 @@
 <template>
     <div class="activate2-container">
         <el-form :model="model" ref="form">
-            <router-link :to="{name: 'login'}">
+            <router-link :to="{name: 'newlogin'}">
                 <el-button type="text">
                     <i class="el-icon-back"></i>{{$t('general.back')}}
                 </el-button>
             </router-link>
-            <h2>{{$t('general.activate_account')}}</h2>            
+            <h2 class="sub_title">{{$t('general.activate_account')}}</h2>            
             <p>{{$t('general.activate_info')}}</p>
-            <el-row type="flex">
+            <el-row type="flex" class="form_item1">
                 <el-col :span="12">
                     <el-form-item prop="email" :label="$t('general.email')" :rules="validationRules.email">
                         <el-input type="email" v-model="model.email" autocomplete="off"></el-input>
@@ -20,7 +20,7 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-row type="flex">
+            <el-row type="flex" class="form_item2">
                 <el-col :span="12">
                     <el-form-item prop="password" :label="$t('general.password')" :rules="validationRules.password">
                         <el-input autocomplete="off" type="password" v-model="model.password"></el-input>
@@ -33,10 +33,10 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-form-item prop="terms" :rules="validationRules.terms">
+            <el-form-item prop="terms" :rules="validationRules.terms" class="form_item3">
                 <el-checkbox v-model="model.terms"></el-checkbox><div>{{$t('general.activate_terms_condition_1')}}</div>
             </el-form-item>    
-            <el-form-item>
+            <el-form-item class="form_item4">
                 <el-button type="primary" class="text-center w100p" @click="submit">{{$t('general.activate')}}</el-button>
             </el-form-item>
         </el-form>
@@ -53,6 +53,7 @@
     }
 </script>
 <style lang="scss" scoped>
+    .login-pane{padding-top: 150px !important;}
     .activate2-container {
         width: 100%;
         .el-form .el-row {
@@ -111,6 +112,24 @@
     }
 </style>
 <style lang="scss">
+	body {
+		background-color: #fafafa;
+	}
+	.sub_title {
+		padding-top: 50px;padding-bottom: 10px;
+	}
+	.form_item1 {
+		margin-top: 30px;
+	}
+	.form_item2 {
+		margin-top: 20px;
+	}
+	.form_item3 {
+		margin-top: 20px;
+	}
+	.form_item4 {
+		margin-top: 50px !important;
+	}
     .activate2-container {
         .el-form-item {
             margin-bottom: 10px !important;
