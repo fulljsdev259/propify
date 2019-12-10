@@ -460,86 +460,74 @@
                     </div>
                     <div v-else-if="column.withRequestUsers">
                         <div class="avatars-wrapper">
-                            <span :key="uuid()" v-if="index<2" v-for="(user, index) in scope.row[column.prop]">
+                            <span v-if="scope.row[column.prop]">
                                 <el-tooltip
-                                    :content="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
+                                    :content="scope.row[column.prop].name"
                                     class="item"
                                     effect="light" placement="top">
-                                    <template v-if="user.user">
+                                    <template>
                                         <avatar :size="28"
-                                                :username="user.first_name ? `${user.first_name} ${user.last_name}`: (user.user ? `${user.user.name}`:`${user.name}`)"
+                                                :username="scope.row[column.prop].name"
                                                 backgroundColor="rgb(205, 220, 57)"
                                                 color="#fff"
-                                                v-if="!user.user.avatar"></avatar>
-                                        <avatar :size="28" :src="`/${user.user.avatar}`" v-else></avatar>
-                                    </template>
-                                    <template v-else>
-                                        <avatar :size="28"
-                                                :username="user.first_name ? `${user.first_name} ${user.last_name}`: `${user.name}`"
-                                                backgroundColor="rgb(205, 220, 57)"
-                                                color="#fff"
-                                                v-if="!user.avatar"></avatar>
-                                        <avatar :size="28" :src="`/${user.avatar}`" v-else></avatar>
+                                                v-if="!scope.row[column.prop].avatar"></avatar>
+                                        <avatar :size="28" :src="`/${scope.row[column.prop].avatar}`" v-else></avatar>
                                     </template>
                                 </el-tooltip>
                             </span>
-                            <avatar class="avatar-count" :size="28" :username="`+ ${scope.row[column.prop].length-2}`"
-                                    color="#fff"
-                                    v-if="scope.row[column.prop].length>2"></avatar>
-                            <div class="quick-assign-avatar">
-                            <el-dropdown placement="bottom" trigger="click">
-                                <el-button size="mini" class="more-actions" >
-                                    <i class="el-icon-user"></i>
-                                </el-button>
+                            <div class="quick-assign-avatar" ref="quickAssignAvatar">
+                                <el-dropdown placement="bottom" trigger="click" @visible-change="handleVisibleChange">
+                                    <el-button size="mini" class="more-actions" @click="handleClickedItem">
+                                        <i class="el-icon-user"></i>
+                                    </el-button>
 
-                                <el-dropdown-menu slot="dropdown" class="quick-assign-dropdown" :visible-change="handleVisibleChange">
+                                    <el-dropdown-menu slot="dropdown" class="quick-assign-dropdown">
 
-                                    <el-dropdown-item
-                                            command="quick-assign"
-                                    >
-                                        <div class="header-box">
-                                            <strong>{{$t(column.label)}}</strong>
-                                            <i class="el-icon el-icon-close"></i>
-                                        </div>
-                                        <!-- <multi-select
-                                            :type="quarterFilter.key"
-                                            :name="quarterFilter.name"
-                                            :data="quarterFilter.data"
-                                            :maxSelect="1"
-                                            :showMultiTag="true"
-                                            :selectedOptions="[model.quarter_id]"
-                                            @select-changed="handleSelectChange($event, 'quarter')"
+                                        <el-dropdown-item
+                                                command="quick-assign"
                                         >
-                                        </multi-select> -->
-                                        <div class="content-box">
-                                            <el-select
-                                                    :loading="remoteLoading"
-                                                    :placeholder="$t('models.request.name_or_email')"
-                                                    :remote-method="search =>remoteSearchAssignees(search, scope.row.id)"
-                                                    filterable
-                                                    remote
-                                                    reserve-keyword
-                                                    @change="val => handleQuickAssign(scope.row.id, val)"
-                                                    v-model="assignee">
-                                                <el-option
-                                                        :key="assignee.id"
-                                                        :label="assignee.name"
-                                                        :value="assignee.id"
-                                                        v-for="assignee in assignees"/>
-                                            </el-select>
+                                            <div class="header-box">
+                                                <strong>{{$t(column.label)}}</strong>
+                                                <i class="el-icon el-icon-close"></i>
+                                            </div>
+                                            <!-- <multi-select
+                                                :type="quarterFilter.key"
+                                                :name="quarterFilter.name"
+                                                :data="quarterFilter.data"
+                                                :maxSelect="1"
+                                                :showMultiTag="true"
+                                                :selectedOptions="[model.quarter_id]"
+                                                @select-changed="handleSelectChange($event, 'quarter')"
+                                            >
+                                            </multi-select> -->
+                                            <div class="content-box">
+                                                <el-select
+                                                        :loading="remoteLoading"
+                                                        :placeholder="$t('models.request.name_or_email')"
+                                                        :remote-method="search =>remoteSearchAssignees(search, scope.row.id, column.prop)"
+                                                        filterable
+                                                        remote
+                                                        reserve-keyword
+                                                        @change="val => handleQuickAssign(scope.row.id, val, column.prop)"
+                                                        v-model="assignee">
+                                                    <el-option
+                                                            :key="assignee.id"
+                                                            :label="assignee.name"
+                                                            :value="assignee.id"
+                                                            v-for="assignee in assignees"/>
+                                                </el-select>
 
-                                            <span>{{$t('models.request.or')}}</span>
+                                                <span v-if="$store.getters.loggedInUser.id != (scope.row[column.prop] ? scope.row[column.prop].id : false)">{{$t('models.request.or')}}</span>
 
-                                            <el-button @click="() => handleAssignMe(scope.row.id)">
-                                                {{$t('models.request.assign_me')}}
-                                            </el-button>
-                                        </div>
-                                    </el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
-
-
-                        </div>
+                                                <el-button v-if="$store.getters.loggedInUser.id != (scope.row[column.prop] ? scope.row[column.prop].id : false)"
+                                                           @click="() => handleAssignMe(scope.row.id, column.prop)">
+                                                    {{$t('models.request.assign_me')}}
+                                                </el-button>
+                                            </div>
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </el-dropdown>
+                            </div>
                         </div>
 
 
@@ -993,18 +981,38 @@
                     query: query
                 });
             },
-            handleVisibleChange(isVisible) {
-                this.isVisible = isVisible
+            handleClickedItem(event) {
+                setTimeout(() => {
+                    if (this.isVisible === true) {
+                        event.target.closest('.quick-assign-avatar').classList.add('active');
+                    }
+                }, 300)
             },
-            async handleQuickAssign(request_id, assignee_id) {
+            handleVisibleChange(event) {
+                this.isVisible = event;
+
+                if (this.isVisible === false) {
+                    this.$refs.quickAssignAvatar.forEach(item => {
+                        item.classList.remove('active')
+                    });
+                }
+            },
+            async handleQuickAssign(request_id, assignee_id, prop) {
+                let type = prop === 'competent_user' ? 1 : 2;
                 let assignee = this.assignees.find(item => item.id == assignee_id)
-                let user_params = [{user_id: assignee_id, role: assignee.roles[0].name}]
+                let user_params = [{type, user_id: assignee_id, role: assignee.roles[0].name}]
 
                 let resp = await this.assignUsersToRequest({
                             id: request_id,
                             user_params: user_params
                         });
-                console.log(resp)
+
+                this.items.forEach(item => {
+                    if (item.id === request_id) {
+                        item[prop] = resp.data.data[0];
+                    }
+                });
+
                 if (resp && resp.data) {
                     displaySuccess(resp)
 
@@ -1013,7 +1021,7 @@
                     this.items.map((item, index) => {
                         if(item.id == resp.data.id)
                             current_index = index
-                    })
+                    });
 
                     if(current_index != -1) {
                         this.$emit('update-row', current_index, resp.data)
@@ -1023,14 +1031,21 @@
                     this.assignee = ''
                 }
             },
-            async handleAssignMe(request_id) {
+            async handleAssignMe(request_id, prop) {
+                let type = prop === 'competent_user' ? 1 : 2;
                 let loggedinUser = this.$store.getters.loggedInUser
-                let user_params = [{user_id: loggedinUser.id, role: loggedinUser.roles[0].name}]
+                let user_params = [{type, user_id: loggedinUser.id, role: loggedinUser.roles[0].name}]
 
                 let resp = await this.assignUsersToRequest({
                             id: request_id,
                             user_params: user_params
                         });
+
+                this.items.forEach(item => {
+                    if (item.id === request_id) {
+                        item[prop] = resp.data.data[0];
+                    }
+                });
 
                 if (resp && resp.data) {
                     displaySuccess(resp)
@@ -1279,14 +1294,16 @@
                     filter.remoteSearch = false;
                 }
             },
-            async remoteSearchAssignees(search, request_id) {
+            async remoteSearchAssignees(search, request_id, prop) {
+                let type = prop === 'competent_user' ? 1 : 2;
+
                 if (search === '') {
                     this.assignees = [];
                 } else {
                     this.remoteLoading = true;
 
                     try {
-                        const data = await this.getAllAdminsForRequest({request_id: request_id, is_get_function: true, search})
+                        const data = await this.getAllAdminsForRequest({request_id: request_id, assign_type: type, is_get_function: true, search})
 
                         this.assignees = data;
 
@@ -1843,15 +1860,15 @@
     }
 
     .request-users {
-        
         .quick-assign-avatar {
-            display: none;
+            display: flex;
+            opacity: 0;
 
             .el-dropdown {
                 width : 28px;
                 height: 28px;
                 border-radius: 50%;
-                border: 1px dashed black; 
+                border: 1px dashed black;
             }
             .more-actions {
                 padding: 0;
@@ -1864,15 +1881,17 @@
                 height: 100%;
                 font-size: 18px;
             }
+            &.active {
+                opacity: 1;
+                .el-dropdown {
+                    border-style: solid;
+                }
+            }
         }
 
         &:hover {
-
-            // .avatars-wrapper {
-            //     display: none;
-            // }
             .quick-assign-avatar {
-                display: flex;
+                opacity: 1;
             }
         }
     }

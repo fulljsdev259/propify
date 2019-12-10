@@ -248,7 +248,7 @@
                     }, {
                         label: 'models.request.assigned_property_managers',
                         withRequestUsers: true,
-                        prop: 'property_managers'
+                        prop: 'accountable_user'
                     }, {
                         label: 'general.category',
                         prop: 'category',
@@ -257,7 +257,7 @@
                     }, {
                         label: 'models.request.assignment',
                         withRequestUsers: true,
-                        prop: 'service_providers'
+                        prop: 'competent_user'
                     }, {
                         label: 'models.request.created_by',
                         prop: 'creator.name',

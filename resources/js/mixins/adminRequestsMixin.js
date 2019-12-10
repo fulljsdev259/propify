@@ -573,7 +573,7 @@ export default (config = {}) => {
                             this.remoteLoading = true;
                             
                             try {
-                                let query = {request_id: this.$route.params.id, is_get_function: true, search, request_assign_type: assignType};
+                                let query = {request_id: this.$route.params.id, is_get_function: true, search, assign_type: assignType};
                                 const resp = await this.getAllAdminsForRequest(query);
                                 this.toAssignList = resp;
                                 console.log(this.toAssignList);

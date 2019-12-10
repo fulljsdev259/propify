@@ -4,26 +4,24 @@
             <p>{{ $t('auth.welcome_login') }}</p>
         </div>
         <el-form :model="model" ref="form">
-            <el-form-item prop="email" :label="$t('general.email-')" :rules="validationRules.email" class="email_input" id="email_input">
+            <el-form-item prop="email" :label="$t('general.email-')" :rules="validationRules.email" v-bind:class="[email_input, emailfocus, emailfocus1]" id="email_input">
                 <el-input
                     type="email" 
                     v-model="model.email" 
                     autocomplete="off"
                     @keyup.enter.native="submit"
                     @focus="focus('email')"
-                    @blur="blur('email')"
-                    v-bind:class="[emailfocus, emailshow]"
+                    v-bind:class="emailshow"
                 ></el-input>
             </el-form-item>
-            <el-form-item prop="password" :label="$t('general.password')" :rules="validationRules.password" class="pwd_input" id="pwd_input">
+            <el-form-item prop="password" :label="$t('general.password')" :rules="validationRules.password" v-bind:class="[pwd_input, pwdfocus, pwdfocus1]" id="pwd_input">
                 <el-input
                     type="password" 
                     v-model="model.password" 
                     autocomplete="off"
                     @keyup.enter.native="submit"
                     @focus="focus('pwd')"
-                    @blur="blur('pwd')"
-                    v-bind:class="[pwdfocus, pwdshow]"
+                    v-bind:class="pwdshow"
                 ></el-input>
             </el-form-item>
             <el-form-item>
@@ -32,7 +30,7 @@
                     <el-checkbox>{{$t('general.stay_logged_in')}}</el-checkbox>
                 </el-col>
                 <el-col :xl="12" :lg="12" :md="24" :sm="24" :xs="24" class="login-sidebar pwd_reset">
-                    <router-link :to="{name: 'forgot'}">
+                    <router-link :to="{name: 'newForgot'}">
                         <el-button type="text">
                             {{$t('general.forgot_password')}}
                         </el-button>
@@ -42,11 +40,13 @@
             </el-form-item>
             <el-form-item>
                 <el-row>
-                    <el-col :xl="7" :lg="12" :md="12" :sm="24" :xs="24" class="login-sidebar login_act">
+                    <el-col :xl="8" :lg="12" :md="12" :sm="24" :xs="24" class="login-sidebar login_act">
                         <el-button type="info" plain class="text-center w90p" @click="submit" ref="prev">{{$t('general.login')}}</el-button>
                     </el-col>
-                    <el-col :xl="7" :lg="12" :md="12" :sm="24" :xs="24" class="login-sidebar login_act register_act">
-                        <el-button type="info" plain class="text-center w90p" ref="prev">{{$t('general.register')}}</el-button>
+                    <el-col :xl="8" :lg="12" :md="12" :sm="24" :xs="24" class="login-sidebar login_act register_act">
+                        <router-link :to="{name: 'nwewActivateAccount'}" class="el-menu-item-link">
+                            <el-button type="info" plain class="text-center w90p" ref="prev">{{$t('general.register')}}</el-button>
+                        </router-link>
                     </el-col>
                 </el-row>
                 <div class="login_footer">
@@ -65,15 +65,27 @@
         data() {
             return {
                 emailfocus: "",
+                emailfocus1: "",
                 pwdfocus: "",
+                pwdfocus1: "",
                 emailshow: 'input_hide',
+	            email_input: 'email_input',
+                pwd_input: 'pwd_input',
                 pwdshow: 'input_hide'
             }
         },
         methods: {
             focus(obj) {
-                if (obj == 'email') this.emailfocus = 'input_focus';
-                else this.pwdfocus = 'input_focus';
+                if (obj == 'email') {
+                    this.emailfocus = 'input_focus';
+                    this.emailfocus1 = 'input_focus1';
+                    this.pwdfocus = '';
+                }
+                else {
+                    this.pwdfocus = 'input_focus_pwd';
+                    this.pwdfocus1 = 'input_focus_pwd1';
+                    this.emailfocus = '';
+                }
             },
             blur(obj) {
                 if (obj == 'email') this.emailfocus = '';
@@ -125,20 +137,17 @@
         border: 2px solid rgba(0, 0, 0, 0.2);
         border-top-right-radius: 10px;
         border-top-left-radius: 10px;
-        padding-top: 20px;
-        padding-bottom: 15px;
+        padding-top: 2px;
+        padding-bottom: 20px;
     }
     .pwd_input{
         border: 2px solid rgba(0, 0, 0, 0.2);
         border-bottom-right-radius: 10px;
         border-bottom-left-radius: 10px;
-        padding-top: 20px;
-        padding-bottom: 15px;
+        padding-bottom: 20px;
         border-top: none;
     }
     .el-form-item {
-        
-
         .el-form-item__label{
             padding-left: 30px;
             font-size: 16px;
@@ -186,6 +195,10 @@
    
 </style>
 <style lang="scss">
+    .el-form-item__label{
+        padding-top: 18px !important;
+    }
+    .login2-container{font-family: 'RadikalW03', sans-serif;}
     .subact_wrap{
         width: 100%;
     }
@@ -214,15 +227,60 @@
     .input_hide{
         display: none;
     }
+    .input_focus1 {
+        padding-bottom: 0 !important;
+    }
     .input_focus{
-        border-left: 3px solid #6B0036 !important;
-        margin-left: -2px !important;
-        width: 99% !important;
+        .el-form-item__content{
+            margin-bottom: -1.5px;
+            padding-bottom: 5px !important;
+            border-left: 3px solid #6B0036 !important;
+            border-top-left-radius: 3.5px;
+            margin-left: -1px !important;
+            width: 99.1% !important;
+            @media screen and (max-width: 768px) {
+                width: 98.3% !important;
+            }
+            @media screen and (max-width: 603px) {
+                width: 99% !important;
+            }
+            @media screen and (max-width: 460px) {
+                width: 98.7% !important;
+            }
+        }
+        
+    }
+    .el-input__inner{
+        border-radius: 10px;
+    }
+    .input_focus_pwd1 {
+        padding-bottom: 0 !important;
+    }
+    .input_focus_pwd{
+        .el-form-item__content{
+            margin-top: -1.5px;
+            padding-bottom: 5px !important;
+            border-left: 3px solid #6B0036 !important;
+            border-bottom-left-radius: 3.5px;
+            margin-left: -1px !important;
+            width: 99.1% !important;
+            @media screen and (max-width: 768px) {
+                width: 98.3% !important;
+            }
+            @media screen and (max-width: 603px) {
+                width: 99% !important;
+            }
+            @media screen and (max-width: 460px) {
+                width: 98.7% !important;
+            }
+        }
+        
     }
     .el-checkbox__inner{
-        width: 20px !important;
-        height: 20px !important;
-        border: 2px solid var(--border-color-base) !important;
+        width: 21px !important;
+        height: 21px !important;
+        border: 1px solid var(--border-color-base) !important;
+	border-radius: 6px !important;
     }
     .login2-container {
         position: relative;
@@ -231,7 +289,7 @@
         .el-form-item {
             margin-bottom: 0 !important;
             .el-form-item__label {
-                color: rgba(0, 0, 0, 0.6);
+                color: rgba(0, 0, 0, 0.8);
                 line-height: 24px;
                 font-size: 15px;
                 padding-left: 21px;
@@ -260,19 +318,30 @@
                 position: relative !important;
             }
             button {
-                width: 90%;
-                height: 60px;
-                color: rgba(0, 0, 0, 0.6);
+                width: 87%;
+                height: 55px;
+                color: rgba(0, 0, 0, 0.8);
                 background: white;
                 font-size: 16px;
                 font-weight: 700;
-                border-radius: 10px;
+                border-radius: 8px;
             }
             .el-checkbox__label{
-                font-size: 18px;
+                font-size: 17px;
                 color: rgba(0, 0, 0, 0.6);
                 font-weight: 700;
             }
+            .el-button--info.is-plain:focus, .el-button--info.is-plain:hover {
+                background: #3D3F41;
+                border-color: #3D3F41;
+                color: #FFF;
+            }
+            .pwd_reset button {color: rgba(0, 0, 0, 0.6) !important;}
         }
     }
+	.el-checkbox__inner::after{
+		top: 3px !important;
+		left: 7px !important;
+		height: 10px;
+	}
 </style>
