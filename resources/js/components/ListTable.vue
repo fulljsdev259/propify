@@ -124,7 +124,7 @@
                             </el-form-item>
                              <el-form-item v-else-if="filter.type === filterTypes.popover">
                                 <el-dropdown placement="bottom" trigger="click" @command="handleSelectFilters">
-                                    <el-button class="toggle-filter-button"> {{ $t('general.filter') }}</el-button>
+                                    <el-button class="toggle-filter-button"> {{ $t('general.filters.my_filters') }}</el-button>
                                     <el-dropdown-menu slot="dropdown" class="save-filters">
                                         <span class="title">{{ $t('general.filters.saved_filters') }}</span>
                                         <el-input v-model="savedFilterSearch" prefix-icon="el-icon-search" placeholder="Searh saved filters" @input="handleFilterSearch($event, filter)"></el-input>
@@ -182,7 +182,7 @@
             v-loading="loading.state">
 
             <el-table-column
-                :key="'header' + index"
+                :key="column.label + index"
                 :width="column.width"
                 :min-width="column.minWidth"
                 :class-name="column.withRequestUsers ? 'request-users' : ''"
@@ -2102,10 +2102,10 @@
             justify-content: space-between;
             align-items: center;
             &.active {
-                background-color: lighten(#2BA7FF, 35%)
+                background: var(--primary-color-lighter);
             }
             &:hover {
-                background: lighten(#2BA7FF, 30%);
+                background: var(--primary-color-lighter);
                 color: var(--color-text-regular);
                 span i{
                     display: inline;
