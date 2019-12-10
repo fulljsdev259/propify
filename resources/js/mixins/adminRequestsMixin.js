@@ -549,7 +549,6 @@ export default (config = {}) => {
                             let assign_user = this.toAssignList.find(item => item.id == id )
                             user_params.push({user_id: id, role: assign_user.roles[0].name})
                         })
-                        
         
                         resp = await this.assignUsersToRequest({
                                     id: this.model.id,
