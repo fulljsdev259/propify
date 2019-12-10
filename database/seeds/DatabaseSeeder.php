@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call(TranslationTableSeeder::class);
         $this->call(RequestEmailReceiverTemplateSeeder::class); // @TODO delete
         $this->call(MassRequestsNotificationServiceProviderTemplateSeeder::class); // @TODO delete
+        $this->call(NewInternalNoticeTemplateSeeder::class); // @TODO delete
+        $this->call(RequestAccountableInternalNoticeTemplateSeeder::class); // @TODO delete
 
         $this->call(CountriesTableSeeder::class);
         $this->call(StatesTableSeeder::class);

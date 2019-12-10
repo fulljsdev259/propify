@@ -1,5 +1,7 @@
 <?php
 
+const SystemUserId = 999999;
+
 class ConstantsHelpers
 {
     const MediaFileCategories = [

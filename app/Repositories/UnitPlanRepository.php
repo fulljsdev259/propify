@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Model;
 use App\Models\UnitPlan;
 use App\Traits\SaveMediaUploads;
 
@@ -25,5 +26,38 @@ class UnitPlanRepository extends BaseRepository
     public function model()
     {
         return UnitPlan::class;
+    }
+
+    /**
+     * @param array $attributes
+     * @return mixed
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
+    public function create(array $attributes)
+    {
+        $unitPlan = parent::create($attributes);
+
+        if (!empty($attributes['media'])) {
+            $this->saveMediaUploads($unitPlan, $attributes);
+        }
+
+        return $unitPlan;
+    }
+
+    /**
+     * @param Model $model
+     * @param $attributes
+     * @return Model|mixed
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function updateExisting(Model $model, $attributes)
+    {
+        $model = parent::updateExisting($model, $attributes);
+
+        if (!empty($attributes['media'])) {
+            $this->saveMediaUploads($model, $attributes);
+        }
+
+        return $model;
     }
 }

@@ -281,7 +281,45 @@ class AuditableModel extends Model implements Auditable
         return $audit;
     }
 
+    /**
+     * @param null $event
+     */
+    public function makeAuditAsSystem($event = null)
+    {
+        if ($this->audit) {
+            $this->audit->user_type = self::System;
+            $this->audit->user_id = SystemUserId;
+            if ($event) {
+                $this->audit->event = $event;
+            }
+            $this->audit->save();
+        }
+    }
 
+    /**
+     * @param null $event
+     * @param array $oldValues
+     * @param array $newValues
+     * @param bool $isSave
+     * @return Audit
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function makeNewSystemAudit($event = null, $oldValues = [], $newValues = [], $isSave = false)
+    {
+        $audit = $this->makeNewAudit($event);
+        $audit->user_type = self::System;
+        $audit->user_id = SystemUserId;
+        $audit->auditable_id = $audit->auditable_id ?? 0;
+        $audit->auditable_type = $audit->auditable_type ?? 'system';
+        $audit->new_values = $newValues;
+        $audit->old_values = $oldValues;
+
+        if ($isSave) {
+            $audit->save();
+        }
+
+        return $audit;
+    }
 
 
 
@@ -756,20 +794,6 @@ class AuditableModel extends Model implements Auditable
     }
 
     /**
-     * @param null $event
-     */
-    public function makeAuditAsSystem($event = null)
-    {
-        if ($this->audit) {
-            $this->audit->user_type = self::System;
-            if ($event) {
-                $this->audit->event = $event;
-            }
-            $this->audit->save();
-        }
-    }
-
-    /**
      * @param $old
      * @param $new
      * @param null $globalEmailReceptionist
@@ -831,7 +855,7 @@ class AuditableModel extends Model implements Auditable
      * @return Audit
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function makeNewAudit($event = null)
+    public function makeNewAudit($event = null, $oldValues = [], $newValues = [], $isSave = false)
     {
         $this->setAuditEvent(self::EventUpdated);
         $audit = new Audit($this->toAudit());
@@ -840,22 +864,17 @@ class AuditableModel extends Model implements Auditable
             $audit->event = $event;
         }
 
-        return $audit;
-    }
+        if ($newValues) {
+            $audit->new_values = $newValues;
+        }
 
-    /**
-     * @param null $event
-     * @return Audit
-     * @throws \OwenIt\Auditing\Exceptions\AuditingException
-     */
-    public function makeNewSystemAudit($event = null)
-    {
-        $audit = $this->makeNewAudit($event);
-        $audit->user_type = self::System;
-        $audit->auditable_id = $audit->auditable_id ?? 0;
-        $audit->auditable_type = $audit->auditable_id ? $audit->auditable_type  :  'system';
-        $audit->new_values = [];
-        $audit->old_values = [];
+        if ($oldValues) {
+            $audit->old_values = $oldValues;
+        }
+
+        if ($isSave) {
+            $audit->save();
+        }
 
         return $audit;
     }

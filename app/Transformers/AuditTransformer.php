@@ -61,14 +61,24 @@ class AuditTransformer extends BaseTransformer
         if ($model->user) {
             $response['user'] = (new UserTransformer())->transform($model->user);
         } else {
-            $response['user'] = [
-                'id' => $model->user_id,
-                'name' => 'Deleted user',
-                'email' => 'dummy@email.com',
-                'phone' => '',
-                'avatar' => null,
-            ];
-        }        
+            if (SystemUserId == $model->user_id) {
+                $response['user'] = [
+                    'id' => $model->user_id,
+                    'name' => 'System',
+                    'email' => 'dummy@email.com', // @TODO need system email or not
+                    'phone' => '',
+                    'avatar' => null,
+                ];
+            } else {
+                $response['user'] = [
+                    'id' => $model->user_id,
+                    'name' => 'Deleted user',
+                    'email' => 'dummy@email.com',
+                    'phone' => '',
+                    'avatar' => null,
+                ];
+            }
+        }
         if($model->event == 'updated'){            
             $statement = "";
             foreach($model->new_values as $field => $fieldvalue){
@@ -112,6 +122,10 @@ class AuditTransformer extends BaseTransformer
                 elseif(in_array($model->auditable_type,['manager','resident','provider']) && $field == 'language'){
                     $old_value = ($old_value) ? __('general.languages.'.$old_value) : "";
                     $new_value = ($new_value) ? __('general.languages.'.$new_value) : "";
+                }
+                elseif(in_array($field, ['default_relation_id',])) {
+                    $old_value = ($old_value) ? (AuditRepository::getDataFromField($field, $old_value, $model->auditable_type)) : __('general.empty');
+                    $new_value = ($new_value) ? (AuditRepository::getDataFromField($field, $new_value, $model->auditable_type)) : __('general.empty');
                 }
                 elseif(in_array($field, ['location','type','status','visibility','building_id','resident_id', 'quarter_id','unit_id','address_id','internal_priority','priority','is_public','category','nation','state_id','category_id','sub_category_id','sub_type','capture_phase','execution_period','reminder_user_ids'])){
                     $old_value = ($old_value) ? (AuditRepository::getDataFromField($field, $old_value, $model->auditable_type)) : "";

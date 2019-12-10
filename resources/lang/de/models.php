@@ -329,7 +329,17 @@ return [
 	        'inactive' => 'Frei',
 	        'canceled' => 'Gekündigt'
         ],
-    ],   
+    ],
+    'unit_plans' => [
+        'deleted' => 'Einheitenplan gelöscht',
+        'saved' => 'Einheitenplan gespeichert',
+        'errors' => [
+            'not_found' => "Einheitenplan nicht gefunden",
+            'create' => "Einheit Plan erstellen Fehler: ",
+            'update' => "Aktualisierungsfehler des Geräteplans: ",
+            'deleted' => "Einheit Plan gelöschter Fehler: ",
+        ],
+    ],
     'pinboard' => [
         'title' => 'Pinnwand',
         'title_label' => 'Betreff',
@@ -599,7 +609,7 @@ return [
         'sort' => 'Sortierung',
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',
-        'save_filter' => 'Speicherfilter',
+        'save_filter' => 'Filter speichern',
         'assignee_type' => [
             'label' => 'Type',
             'competent' => 'Zuständig',
