@@ -731,6 +731,20 @@
                 </el-row>
             </el-form>
         </div>
+        <ServiceDialog
+            :request_id="model.id"
+            :address="address"
+            :conversations="conversations"
+            :mailSending="mailSending"
+            :managers="model.property_managers"
+            :providers="model.service_providers"
+            :selectedServiceRequest="selectedServiceRequest"
+            :showServiceMailModal="showServiceMailModal"
+            :requestData="selectedRequestData"
+            @close="closeMailModal"
+            @send="sendServiceMail"
+            v-if="model.id && ((model.service_providers && model.service_providers.length) || (model.property_managers && model.property_managers.length))"
+        />
         <edit-close-dialog
                 :centerDialogVisible="visibleDialog"
                 @clickYes="submit(), visibleDialog=false, $refs.editActions.goToListing()"
