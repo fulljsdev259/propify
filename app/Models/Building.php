@@ -277,35 +277,35 @@ class Building extends AuditableModel implements HasMedia
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     **/
+     */
     public function service_providers()
     {
-        return $this->belongsToMany(ServiceProvider::class);
+        return $this->belongsToMany(ServiceProvider::class, 'building_assignees', 'building_id', 'user_id', 'id', 'user_id');
+
     }
 
     /**
-     * @TODO remove
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function propertyManagers()
     {
-        return $this->morphedByMany(PropertyManager::class, 'assignee', 'building_assignees', 'building_id');
+        return $this->belongsToMany(PropertyManager::class, 'building_assignees', 'building_id', 'user_id', 'id', 'user_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function property_managers()
     {
-        return $this->morphedByMany(PropertyManager::class, 'assignee', 'building_assignees', 'building_id');
+        return $this->belongsToMany(PropertyManager::class, 'building_assignees', 'building_id', 'user_id', 'id', 'user_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {
-        return $this->morphedByMany(User::class, 'assignee', 'building_assignees', 'building_id');
+        return $this->belongsToMany(User::class, 'building_assignees', 'building_id', 'user_id', 'id', 'user_id');
     }
 
     public function assignees()
