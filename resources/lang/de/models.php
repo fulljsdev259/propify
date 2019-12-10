@@ -609,7 +609,7 @@ return [
         'sort' => 'Sortierung',
         'reset_sort' => 'Sortierung zurücksetzen',
         'creation_date' => 'Erstellungsdatum',
-        'save_filter' => 'Speicherfilter',
+        'save_filter' => 'Filter speichern',
         'assignee_type' => [
             'label' => 'Type',
             'competent' => 'Zuständig',
@@ -760,9 +760,9 @@ return [
         ],
         'visibility' => [
             'label' => 'Sichtbarkeit',
-            'resident' => 'Nur ich',
-            'quarter' => 'Überbauung',
-            'building' => 'Liegenschaft',
+            'resident' => 'Bewohner',
+            'quarter' => 'Projekt',
+            'building' => 'Objekt',
         ],
         'errors' => [
             'not_found' => 'Anfrage nicht gefunden',

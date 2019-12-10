@@ -280,7 +280,7 @@
                         <el-tabs type="border-card" v-model="activeTab1"  class="edit-tab">
                             <el-tab-pane label="Standort" name="request_details">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.request.resident.name')">
+                                    <el-form-item :label="$t('models.resident.name')">
                                         <el-input 
                                                 :disabled="$can($permissions.update.serviceRequest) || !editMode" 
                                                 type="text"
@@ -463,7 +463,7 @@
                                 </el-tab-pane>
                                 <el-tab-pane name="assignment1">
                                     <span slot="label">
-                                        {{ $t('assigned_property_managers') }}
+                                        {{ $t('models.request.assigned_property_managers') }}
                                     </span>
                                     <el-col :md="24">
                                         <users-assignment
