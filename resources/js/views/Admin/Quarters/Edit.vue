@@ -234,7 +234,7 @@
                                         :key="'workflow' + $index + workflow.title"
                                         :label="`${workflow.name}`"
                                         :value="workflow.title"
-                                        :name="workflow.title"
+                                        :name="workflow.title + $index"
                                         v-for="(workflow, $index) in model.workflows">
                                     <template slot="title">
                                         {{workflow.title}}

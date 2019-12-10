@@ -33,7 +33,7 @@
                         <el-form :model="model" label-position="top" label-width="192px" ref="form" class="edit-details-form">
                             <el-row :gutter="20">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.building.quarter')" prop="quarter_id"
+                                    <el-form-item :label="$t('models.building.quarter')"  :rules="validationRules.quarter_id" prop="quarter_id"
                                                   style="max-width: 512px;">
                                         <el-select
                                                 :loading="remoteLoading"

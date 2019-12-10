@@ -88,6 +88,10 @@ export default (config = {}) => {
                             max: 3,
                         })
                     }],
+                    quarter_id: [{
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('general.internal_quarter_id')})
+                    }],
                     state_id: [{
                         required: true,
                         message: this.$t('validation.required',{attribute: this.$t('general.state')})
