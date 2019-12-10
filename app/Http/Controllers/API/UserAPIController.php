@@ -159,7 +159,7 @@ class UserAPIController extends AppBaseController
             }
             return $this->sendResponse($response, 'Users retrieved successfully');
         }
-        
+
         if ($request->show_company_name) {
             $serviceProviders = ServiceProvider::whereIn('user_id', $users->pluck('id'))->pluck('company_name', 'user_id');
             $companyName = Settings::value('name');
