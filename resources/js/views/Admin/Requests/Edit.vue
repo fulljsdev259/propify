@@ -280,7 +280,7 @@
                         <el-tabs type="border-card" v-model="activeTab1"  class="edit-tab">
                             <el-tab-pane label="Standort" name="request_details">
                                 <el-col :md="12">
-                                    <el-form-item :label="$t('models.request.resident.name')">
+                                    <el-form-item :label="$t('models.resident.name')">
                                         <el-input 
                                                 :disabled="$can($permissions.update.serviceRequest) || !editMode" 
                                                 type="text"
@@ -425,7 +425,7 @@
                     <el-col :md="12">
                         <template v-if="$can($permissions.assign.request)">
                         
-                            <el-tabs id="comments-card" v-if="model.id" type="border-card" value="assignment" class="edit-tab">
+                            <el-tabs id="assignment-card" v-if="model.id" type="border-card" value="assignment" class="edit-tab">
                                 <el-tab-pane name="assignment">
                                     <span slot="label">
                                         {{ $t('models.request.assignment') }}
@@ -438,32 +438,38 @@
                                                 :toAssignList="toAssignList"
                                                 :remoteLoading="remoteLoading"
                                                 :remoteSearch="remoteSearchAssignees"
+                                                :requestAssignType="1"
                                         ></users-assignment>
-                                        <!-- <relation-list
-                                            :actions="assigneesActions"
-                                            :columns="assigneesColumns"
-                                            :filterValue="model.id"
-                                            fetchAction="getAssignees"
-                                            filter="request_id"
-                                            ref="assigneesList"
-                                            v-if="model.id"
-                                        /> -->
-                                        <el-button @click="expandRelationList=!expandRelationList" class="relation-expand-button">Expand</el-button>
                                         <relation-list
+                                            v-if="model.id"
+                                            ref="lastCompetent"
                                             class="relation-expand-list"
                                             :actions="assigneesActions"
                                             :columns="assigneesColumns"
                                             :filterValue="model.id"
                                             fetchAction="getAssignees"
                                             filter="request_id"
-                                            ref="assigneesList"
+                                            :request_assign_type="1"
+                                            :onlyLast="true"
+                                        />
+                                        <el-button @click="expandRelationList=!expandRelationList" class="relation-expand-button">Expand</el-button>
+                                        <relation-list
                                             v-if="model.id && expandRelationList"
+                                            ref="assigneesList"
+                                            class="relation-expand-list"
+                                            :actions="assigneesActions"
+                                            :columns="assigneesColumns"
+                                            :filterValue="model.id"
+                                            fetchAction="getAssignees"
+                                            filter="request_id"
+                                            :request_assign_type="1"
+                                            :onlyLast="false"
                                         />
                                     </el-col>
                                 </el-tab-pane>
                                 <el-tab-pane name="assignment1">
                                     <span slot="label">
-                                        {{ $t('assigned_property_managers') }}
+                                        {{ $t('models.request.assigned_property_managers') }}
                                     </span>
                                     <el-col :md="24">
                                         <users-assignment
@@ -473,15 +479,32 @@
                                                 :toAssignList="toAssignList"
                                                 :remoteLoading="remoteLoading"
                                                 :remoteSearch="remoteSearchAssignees"
+                                                :requestAssignType="2"
                                         ></users-assignment>
                                         <relation-list
+                                            v-if="model.id"
+                                            ref="lastCompetent"
+                                            class="relation-expand-list"
                                             :actions="assigneesActions"
                                             :columns="assigneesColumns"
                                             :filterValue="model.id"
                                             fetchAction="getAssignees"
                                             filter="request_id"
+                                            :request_assign_type="2"
+                                            :onlyLast="true"
+                                        />
+                                        <el-button @click="expandRelationList=!expandRelationList" class="relation-expand-button">Expand</el-button>
+                                        <relation-list
+                                            v-if="model.id && expandRelationList"
                                             ref="assigneesList"
-                                            v-if="model.id"
+                                            class="relation-expand-list"
+                                            :actions="assigneesActions"
+                                            :columns="assigneesColumns"
+                                            :filterValue="model.id"
+                                            fetchAction="getAssignees"
+                                            filter="request_id"
+                                            :request_assign_type="2"
+                                            :onlyLast="false"
                                         />
                                     </el-col>
                                 </el-tab-pane>
@@ -800,14 +823,16 @@
                     buttons: [{
                         title: 'models.request.notify',
                         tooltipMode: true,
-                        icon: 'el-icon-position',
+                        icon: 'icon-paper-plane',
                         view: 'request',
-                        onClick: this.openNotifyProvider
+                        style: {backgroundColor: 'transparent', color: '#848484', boxShadow: 'none !important'},
+                        onClick: () => {}
                     }, {
                         title: 'general.unassign',
                         tooltipMode: true,
                         type: 'danger',
                         icon: 'el-icon-delete',
+                        style: {backgroundColor: 'transparent', color: '#848484', boxShadow: 'none !important'},
                         onClick: this.notifyUnassignment
                     }]
                 }],
@@ -817,6 +842,10 @@
                 expandRelationList: false,
                 units: [],
                 quarters: [],
+                lastAssignee: {
+                    competent: [],
+                    accountable: [],
+                }
             }
         },
         computed: {
@@ -1030,7 +1059,7 @@
             }
         }
         .relation-expand-list {
-            padding: 5px 50px;
+            padding: 5px 0;
         }
     }
 
