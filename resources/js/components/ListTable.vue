@@ -504,7 +504,7 @@
                                                 <el-select
                                                         :loading="remoteLoading"
                                                         :placeholder="$t('models.request.name_or_email')"
-                                                        :remote-method="search =>remoteSearchAssignees(search, scope.row.id)"
+                                                        :remote-method="search =>remoteSearchAssignees(search, scope.row.id, column.prop)"
                                                         filterable
                                                         remote
                                                         reserve-keyword
@@ -517,9 +517,10 @@
                                                             v-for="assignee in assignees"/>
                                                 </el-select>
 
-                                                <span>{{$t('models.request.or')}}</span>
+                                                <span v-if="$store.getters.loggedInUser.id != (scope.row[column.prop] ? scope.row[column.prop].id : false)">{{$t('models.request.or')}}</span>
 
-                                                <el-button @click="() => handleAssignMe(scope.row.id, column.prop)">
+                                                <el-button v-if="$store.getters.loggedInUser.id != (scope.row[column.prop] ? scope.row[column.prop].id : false)"
+                                                           @click="() => handleAssignMe(scope.row.id, column.prop)">
                                                     {{$t('models.request.assign_me')}}
                                                 </el-button>
                                             </div>
@@ -1293,14 +1294,16 @@
                     filter.remoteSearch = false;
                 }
             },
-            async remoteSearchAssignees(search, request_id) {
+            async remoteSearchAssignees(search, request_id, prop) {
+                let type = prop === 'competent_user' ? 1 : 2;
+
                 if (search === '') {
                     this.assignees = [];
                 } else {
                     this.remoteLoading = true;
 
                     try {
-                        const data = await this.getAllAdminsForRequest({request_id: request_id, is_get_function: true, search})
+                        const data = await this.getAllAdminsForRequest({request_id: request_id, assign_type: type, is_get_function: true, search})
 
                         this.assignees = data;
 
