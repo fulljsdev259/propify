@@ -30,9 +30,9 @@ class UnitPlanAPIController extends AppBaseController
 
     /**
      * @SWG\Get(
-     *     path="/units/{unitId}/plans"
-     *     summary="Display the list of Unit's plans"
-     *     tags={Unit_Plan}
+     *     path="/units/{unitId}/plans",
+     *     summary="Display the list of Unit's plans",
+     *     tags={Unit_Plan},
      *     description="Get all Unit's plans",
      *     produces={"application/json"},
      *      @SWG\Response(
@@ -115,7 +115,6 @@ class UnitPlanAPIController extends AppBaseController
      * @param CreateRequest $request
      * @param int $unitId
      * @return \Illuminate\Http\Response
-     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function store(CreateRequest $request, int $unitId)
     {
@@ -248,7 +247,6 @@ class UnitPlanAPIController extends AppBaseController
      * @param int $unitId
      * @param int $planId
      * @return \Illuminate\Http\Response
-     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function update(UpdateRequest $request, int $unitId, int $planId)
     {
