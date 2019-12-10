@@ -243,4 +243,12 @@ class PropertyManager extends AuditableModel
         }
         return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
     }
+
+    /**
+     * @return mixed
+     */
+    public function requests()
+    {
+        return $this->belongsToMany(Request::class, 'request_assignees', 'user_id', 'request_id', 'user_id');
+    }
 }

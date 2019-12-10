@@ -56,23 +56,6 @@ class AppBaseController extends Controller
         return Response::json(ResponseUtil::makeError($error), $code);
     }
 
-    /**
-     * get assignees related users
-     *
-     * @param $assignees
-     * @return mixed
-     */
-    public function getAssignedUsersBy($assignees)
-    {
-        $userType = get_morph_type_of(User::class);
-        $userIds = $assignees->where('assignee_type', $userType)->pluck('assignee_id');
-        $raw = DB::raw('(select `roles`.name from roles inner join role_user on roles.id = role_user.role_id where role_user.user_id = users.id) as role');
-        $users = User::select('id', 'name', 'email',$raw)
-            ->whereIn('id', $userIds)
-            ->get();
-
-        return [$userType => $users];
-    }
 
     /**
      * get assignees related property managers
@@ -83,20 +66,19 @@ class AppBaseController extends Controller
     public function getAssignedManagersBy($assignees)
     {
         $companyName = Settings::value('name');
-        $managerType = get_morph_type_of(PropertyManager::class);
-        $managerIds = $assignees->where('assignee_type', $managerType)->pluck('assignee_id');
+        $userIds = $assignees->pluck('user_id');
         $raw = DB::raw('(select email from users where users.id = property_managers.user_id) as email,
                 (select avatar from users where users.id = property_managers.user_id) as avatar, 
                 Concat(first_name, " ", last_name) as name, 
                 (select `roles`.name from roles inner join role_user on roles.id = role_user.role_id where role_user.user_id = property_managers.user_id) as role');
         $managers = PropertyManager::select('id', 'user_id', $raw)
-            ->whereIn('id', $managerIds)
+            ->whereIn('user_id', $userIds)
             ->get();
         $managers->map(function ($manager) use ($companyName) {
             $manager->company_name = $companyName;
         });
 
-        return [$managerType => $managers];
+        return $managers;
     }
 
     /**
@@ -107,15 +89,13 @@ class AppBaseController extends Controller
      */
     public function getAssignedProvidersBy($assignees)
     {
-        $providerType = get_morph_type_of(ServiceProvider::class);
-        $providerIds = $assignees->where('assignee_type', $providerType)->pluck('assignee_id');
+
+        $userIds = $assignees->pluck('user_id');
         $raw = DB::raw('(select avatar from users where users.id = service_providers.user_id) as avatar, 
                 (select `roles`.name from roles inner join role_user on roles.id = role_user.role_id where role_user.user_id = service_providers.user_id) as role');
-        $providers = ServiceProvider::select('id', 'email', 'company_name', 'category', DB::raw('Concat(first_name, " ", last_name) as name'), 'user_id', $raw)
-            ->whereIn('id', $providerIds)
+        return ServiceProvider::select('id', 'email', 'company_name', 'category', DB::raw('Concat(first_name, " ", last_name) as name'), 'user_id', $raw)
+            ->whereIn('user_id', $userIds)
             ->get();
-
-        return [ $providerType => $providers];
     }
 
     /**
@@ -127,27 +107,18 @@ class AppBaseController extends Controller
      */
     public function getAssigneesRelated($assignees, $classes)
     {
-        $data = [];
+        $items = collect();
 
         if (in_array(PropertyManager::class, $classes)) {
-            $data += $this->getAssignedManagersBy($assignees);
-        }
-
-        if (in_array(User::class, $classes)) {
-            $data += $this->getAssignedUsersBy($assignees);
+            $items = $items->merge($this->getAssignedManagersBy($assignees));
         }
 
         if (in_array(ServiceProvider::class, $classes)) {
-            $data += $this->getAssignedProvidersBy($assignees);
+            $items = $items->merge($this->getAssignedProvidersBy($assignees));
         }
 
         foreach ($assignees as $index => $assignee) {
-            $related = null;
-            if (key_exists($assignee->assignee_type, $data)) {
-                $items = $data[$assignee->assignee_type];
-                $related = $items->where('id', $assignee->assignee_id)->first();
-            }
-
+            $related = $items->where('user_id', $assignee->user_id)->first();
             $assignee->related = $related;
         }
         return $assignees;

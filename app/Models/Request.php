@@ -740,22 +740,22 @@ class Request extends AuditableModel implements HasMedia
 
     public function managers()
     {
-        return $this->morphedByMany(PropertyManager::class, 'assignee', 'request_assignees', 'request_id');
+        return $this->belongsToMany(User::class, 'request_assignees', 'request_id', 'user_id', 'request_id', 'user_id');
     }
 
     public function property_managers()
     {
-        return $this->morphedByMany(PropertyManager::class, 'assignee', 'request_assignees', 'request_id');
+        return $this->belongsToMany(User::class, 'request_assignees', 'request_id', 'user_id', 'request_id', 'user_id');
     }
 
     public function providers()
     {
-        return $this->morphedByMany(ServiceProvider::class, 'assignee', 'request_assignees', 'request_id');
+        return $this->belongsToMany(User::class, 'request_assignees', 'request_id', 'user_id', 'request_id', 'user_id');
     }
 
     public function service_providers()
     {
-        return $this->morphedByMany(ServiceProvider::class, 'assignee', 'request_assignees', 'request_id');
+        return $this->belongsToMany(User::class, 'request_assignees', 'request_id', 'user_id', 'request_id', 'user_id');
     }
 
     public function users()

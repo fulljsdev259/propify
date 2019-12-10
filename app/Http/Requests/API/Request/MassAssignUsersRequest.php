@@ -42,14 +42,6 @@ class MassAssignUsersRequest extends BaseRequest
                             return $fails($message);
                         }
                         if (empty($data['type'])) {
-                            $message = __('validation.required', ['attribute' => $this->getAttributeByKey($index, 'type')]);
-                            return $fails($message);
-                        }
-                        if (empty($data['role'])) {
-                            $message = __('validation.required', ['attribute' => $this->getAttributeByKey($index, 'role')]);
-                            return $fails($message);
-                        }
-                        if (empty($data['type'])) {
                             // @TODO uncomment
 //                            $message = __('validation.required', ['attribute' => $this->getAttributeByKey($index, 'type')]);
 //                            return $fails($message);
