@@ -4,25 +4,23 @@
             <p>{{ $t('auth.welcome_login') }}</p>
         </div>
         <el-form :model="model" ref="form">
-            <el-form-item prop="email" :label="$t('general.email-')" :rules="validationRules.email" v-bind:class="[emailfocus, email_input]" id="email_input">
+            <el-form-item prop="email" :label="$t('general.email-')" :rules="validationRules.email" v-bind:class="[email_input, emailfocus, emailfocus1]" id="email_input">
                 <el-input
                     type="email" 
                     v-model="model.email" 
                     autocomplete="off"
                     @keyup.enter.native="submit"
                     @focus="focus('email')"
-                    @blur="blur('email')"
                     v-bind:class="emailshow"
                 ></el-input>
             </el-form-item>
-            <el-form-item prop="password" :label="$t('general.password')" :rules="validationRules.password" v-bind:class="[pwdfocus, pwd_input]" id="pwd_input">
+            <el-form-item prop="password" :label="$t('general.password')" :rules="validationRules.password" v-bind:class="[pwd_input, pwdfocus, pwdfocus1]" id="pwd_input">
                 <el-input
                     type="password" 
                     v-model="model.password" 
                     autocomplete="off"
                     @keyup.enter.native="submit"
                     @focus="focus('pwd')"
-                    @blur="blur('pwd')"
                     v-bind:class="pwdshow"
                 ></el-input>
             </el-form-item>
@@ -67,7 +65,9 @@
         data() {
             return {
                 emailfocus: "",
+                emailfocus1: "",
                 pwdfocus: "",
+                pwdfocus1: "",
                 emailshow: 'input_hide',
 	            email_input: 'email_input',
                 pwd_input: 'pwd_input',
@@ -76,8 +76,16 @@
         },
         methods: {
             focus(obj) {
-                if (obj == 'email') this.emailfocus = 'input_focus';
-                else this.pwdfocus = 'input_focus';
+                if (obj == 'email') {
+                    this.emailfocus = 'input_focus';
+                    this.emailfocus1 = 'input_focus1';
+                    this.pwdfocus = '';
+                }
+                else {
+                    this.pwdfocus = 'input_focus_pwd';
+                    this.pwdfocus1 = 'input_focus_pwd1';
+                    this.emailfocus = '';
+                }
             },
             blur(obj) {
                 if (obj == 'email') this.emailfocus = '';
@@ -129,20 +137,17 @@
         border: 2px solid rgba(0, 0, 0, 0.2);
         border-top-right-radius: 10px;
         border-top-left-radius: 10px;
-        padding-top: 20px;
-        padding-bottom: 15px;
+        padding-top: 2px;
+        padding-bottom: 20px;
     }
     .pwd_input{
         border: 2px solid rgba(0, 0, 0, 0.2);
         border-bottom-right-radius: 10px;
         border-bottom-left-radius: 10px;
-        padding-top: 20px;
-        padding-bottom: 15px;
+        padding-bottom: 20px;
         border-top: none;
     }
     .el-form-item {
-        
-
         .el-form-item__label{
             padding-left: 30px;
             font-size: 16px;
@@ -190,6 +195,9 @@
    
 </style>
 <style lang="scss">
+    .el-form-item__label{
+        padding-top: 18px !important;
+    }
     .login2-container{font-family: 'RadikalW03', sans-serif;}
     .subact_wrap{
         width: 100%;
@@ -219,10 +227,54 @@
     .input_hide{
         display: none;
     }
+    .input_focus1 {
+        padding-bottom: 0 !important;
+    }
     .input_focus{
-        border-left: 3px solid #6B0036 !important;
-        margin-left: 0px !important;
-        width: 99% !important;
+        .el-form-item__content{
+            margin-bottom: -1.5px;
+            padding-bottom: 5px !important;
+            border-left: 3px solid #6B0036 !important;
+            border-top-left-radius: 3.5px;
+            margin-left: -1px !important;
+            width: 99.1% !important;
+            @media screen and (max-width: 768px) {
+                width: 98.3% !important;
+            }
+            @media screen and (max-width: 603px) {
+                width: 99% !important;
+            }
+            @media screen and (max-width: 460px) {
+                width: 98.7% !important;
+            }
+        }
+        
+    }
+    .el-input__inner{
+        border-radius: 10px;
+    }
+    .input_focus_pwd1 {
+        padding-bottom: 0 !important;
+    }
+    .input_focus_pwd{
+        .el-form-item__content{
+            margin-top: -1.5px;
+            padding-bottom: 5px !important;
+            border-left: 3px solid #6B0036 !important;
+            border-bottom-left-radius: 3.5px;
+            margin-left: -1px !important;
+            width: 99.1% !important;
+            @media screen and (max-width: 768px) {
+                width: 98.3% !important;
+            }
+            @media screen and (max-width: 603px) {
+                width: 99% !important;
+            }
+            @media screen and (max-width: 460px) {
+                width: 98.7% !important;
+            }
+        }
+        
     }
     .el-checkbox__inner{
         width: 21px !important;
