@@ -335,24 +335,9 @@ class ServiceProvider extends AuditableModel
     /**
      * @return mixed
      */
-    public function requests()
-    {
-        return $this->belongsToMany(Request::class, 'request_assignees', 'user_id', 'request_id', 'user_id');
-    }
-
-    /**
-     * @return mixed
-     */
     public function quarters()
     {
         return $this->belongsToMany(Quarter::class, 'quarter_assignees', 'user_id', 'quarter_id', 'user_id');
     }
 
-    /**
-     * @return mixed
-     */
-    public function buildings()
-    {
-        return $this->belongsToMany(Quarter::class, 'building_assignees', 'user_id', 'quarter_id', 'user_id');
-    }
 }

@@ -1067,7 +1067,7 @@ class BuildingAPIController extends AppBaseController
      * @return mixed
      * @throws \Exception
      */
-    public function deleteBuildingAssignee(int $id, UnAssignRequest $request)
+    public function deleteBuildingAssignee($id, UnAssignRequest $request)
     {
         $buildingAssignee = BuildingAssignee::find($id);
         if (empty($buildingAssignee)) {
@@ -1076,7 +1076,7 @@ class BuildingAPIController extends AppBaseController
         }
         $buildingAssignee->delete();
 
-        return $this->sendResponse($id, __('general.detached.' . $buildingAssignee->assignee_type));
+        return $this->sendResponse($id, __('general.detached.user'));
     }
 
     /**
@@ -1108,18 +1108,17 @@ class BuildingAPIController extends AppBaseController
      *      )
      * )
      *
-     * @param int $building_id
-     * @param int $manager_id
+     * @param int $buildingId
+     * @param int $managerId
      * @param UnAssignRequest $r
      * @return mixed
      * @throws \Exception
      */
-    public function unAssignPropertyManager(int $building_id, int $manager_id, UnAssignRequest $r)
+    public function unAssignPropertyManager(int $buildingId, int $managerId, UnAssignRequest $r)
     {
         $assigneeId = BuildingAssignee::where([
-                'building_id' => $building_id,
-                'assignee_id' => $manager_id,
-                'assignee_type' => get_morph_type_of(PropertyManager::class)
+                'building_id' => $buildingId,
+                'user_id' => PropertyManager::where('id', $managerId)->value('user_id'),
             ])->value('id');
         return $this->deleteBuildingAssignee($assigneeId, $r);
     }

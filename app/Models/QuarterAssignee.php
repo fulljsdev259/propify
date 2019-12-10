@@ -42,7 +42,6 @@ use Illuminate\Support\Str;
  * )
  * @property int $id
  * @property int $quarter_id
- * @property string $assignee_type
  * @property string|null $created_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read int|null $audits_count
