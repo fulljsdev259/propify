@@ -244,4 +244,15 @@ class PropertyManager extends AuditableModel
         return $this->belongsToMany(Quarter::class, 'quarter_assignees', 'user_id', 'quarter_id', 'user_id');
     }
 
+    public function getCompanyNameAttribute()
+    {
+        return \Cache::remember(
+            'company_name',
+            60,
+            function () {
+                return Settings::value('name');
+            }
+        );
+    }
+
 }

@@ -1415,7 +1415,16 @@ class RequestAPIController extends AppBaseController
                 $q->where('type', $type);
             })
             ->paginate($perPage);
-        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
+        $assignees->load([
+            'user' => function ($q) {
+                $q->select('id', 'name', 'email', 'avatar')
+                    ->with([
+                        'service_provider:id,user_id,company_name,category,first_name,last_name',
+                        'property_manager:id,user_id,type,first_name,last_name',
+                        'roles:id,name'
+                    ]);
+            }
+        ]);
         $response = (new RequestAssigneeTransformer())->transformPaginator($assignees) ;
         return $this->sendResponse($response, 'Assignees retrieved successfully');
     }

@@ -5,6 +5,7 @@ namespace App\Transformers;
 use App\Models\PropertyManager;
 use App\Models\RequestAssignee;
 use App\Models\ServiceProvider;
+use App\Models\Settings;
 use App\Models\User;
 
 /**
@@ -23,22 +24,19 @@ class AssigneeTransformer extends BaseTransformer
      */
     public function transformAssignee($model)
     {
-        if ($model->related) {
-            $user = new User(['avatar' => $model->related->avatar]);
-            $user->id = $model->related->user_id;
-            $avatar = $user->avatar;
-
+        $user = $model->user;
+        if ($user) {
             $response = [
                 'id' => $model->id,
-                'edit_id' => $model->related->id,
-                'type' => get_morph_type_of(get_class($model->related)),
-                'email' => $model->related->email,
-                'name' => $model->related->name,
-                'company_name' => $model->related->company_name,
-                'avatar' => $avatar,
+                'edit_id' => $user->property_manager->id ?? $user->service_provider->id ?? null,
+                'type' => get_morph_type_of(get_class($user)),
+                'email' => $user->email,
+                'name' => $user->name,
+                'company_name' => $this->getCompanyName($user),
+                'avatar' => $user->avatar,
                 'sent_email' => $model->sent_email ? true : false,
-                'role' => $model->related->role,
-                'function' => $this->getRoleFormatted($model)
+                'role' => $user->roles->first()->name ?? 'unknown',
+                'function' => $this->getRoleFormatted($user)
             ];
 
             return $response;
@@ -55,28 +53,36 @@ class AssigneeTransformer extends BaseTransformer
             'avatar' => 'User deleted',
             'sent_email' => $model->sent_email ? true : false,
             'role' => 'User deleted',
-            'function' => $this->getRoleFormatted($model)
+            'function' => 'User deleted',
         ];
 
         return $response;
     }
 
-    protected function getRoleFormatted($model)
+    /**
+     * @param $user
+     * @return mixed
+     */
+    protected function getCompanyName($user)
     {
-        $related = $model->related;
-        if (empty($related)) {
-            return 'User deleted';
+       return $user->service_provider->company_name ?? \Cache::remember(
+               'company_name',
+               60,
+                   function () {
+                       return Settings::value('name');
+                   }
+               );
+    }
+
+    /**
+     * @param $user
+     * @return string
+     */
+    protected function getRoleFormatted($user)
+    {
+        if ($user->service_provider) {
+            return ServiceProvider::Category[$user->service_provider->category] ?? '';
         }
-
-        if ($related->service_provider) {
-            return $related->category ?? '';
-        }
-
-        if ($related->property_manager) {
-            return 'manager';
-        }
-
-
-        return 'administrator';
+        return $user->roles->first()->name ?? 'unknown role'; //unknown role must be not happen
     }
 }
