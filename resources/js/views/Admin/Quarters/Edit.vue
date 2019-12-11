@@ -1238,10 +1238,6 @@
         margin-bottom: 10px;
     }
 
-    .collapse-edit-button {
-
-    }
-
     .el-collapse {
         border-top: 0;
         border-bottom: 0;
