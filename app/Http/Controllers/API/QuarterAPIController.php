@@ -866,7 +866,7 @@ class QuarterAPIController extends AppBaseController
                 'id',
                 'user_id',
                 DB::raw('MAX(created_at) as created_at'),
-                DB::raw('GROUP_CONCAT(building_assignees.id, ":", building_assignees.building_id) as parent_ids'),
+                DB::raw("CONCAT('{', GROUP_CONCAT('\"', building_assignees.id, '\":', building_assignees.building_id), '}') as parent_ids"),
                 DB::raw('"buildings" as type')
             )
             ->groupBy('user_id');
@@ -874,9 +874,9 @@ class QuarterAPIController extends AppBaseController
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $assignees = QuarterAssignee::where('quarter_id', $quarter->id)
             ->select('id', 'user_id', 'created_at', DB::raw('quarter_id as parent_ids, "quarter" as type'))
-            ->union($buildingQuery)->orderBy('created_at')
-            ->orderByDesc('created_at')->paginate($perPage);
-
+            ->union($buildingQuery)
+            ->orderByDesc('created_at')
+            ->paginate($perPage);
 
         $assignees->load([
             'user' => function ($q) {
@@ -892,14 +892,8 @@ class QuarterAPIController extends AppBaseController
         $buildingAssignees = $assignees->where('type', 'buildings');
         $buildingIds = [];
         foreach ($buildingAssignees as $item) {
-            $ids = explode(',',  $item->parent_ids);
-            $parentIds = [];
-            foreach ($ids as $_ids) {
-                $correspondIds = explode(':', $_ids);
-                $parentIds[$correspondIds[0]] = $correspondIds[1];
-                $buildingIds[] = $correspondIds[1];
-            }
-
+            $parentIds = json_decode($item->parent_ids, JSON_OBJECT_AS_ARRAY);
+            $buildingIds = array_merge($buildingIds, $parentIds);
             $item->parent_ids = $parentIds;
         };
 
