@@ -108,4 +108,9 @@ class RequestAssignee extends Assignee
     {
         return $this->belongsTo(User::class);
     }
+
+    public function request()
+    {
+        return $this->belongsTo(Request::class);
+    }
 }
