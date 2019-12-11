@@ -327,6 +327,22 @@
             }),
             formattedItems() {
                 return this.items.map((request) => {
+                    if(request.accountable_user) {
+                        let names = [];
+                        request.accountable_user.name.split(' ').forEach((str, index) => {
+                            if(index)
+                                str = str.charAt(0) + '.';
+                            names.push(str);
+                        });
+                        console.log(names);
+                        request.accountable_user.label = names.join(' ');
+                    }
+                    if(request.competent_user) {
+                        if(request.competent_user.company_name !== undefined && request.competent_user.company_name)
+                            request.competent_user.label = request.competent_user.company_name;
+                        else
+                            request.competent_user.label = request.competent_user.name;
+                    }
                     return request;
                 });
             },
