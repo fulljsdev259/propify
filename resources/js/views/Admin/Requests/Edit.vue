@@ -442,7 +442,7 @@
                                         ></users-assignment>
                                         <relation-list
                                             v-if="model.id"
-                                            ref="lastCompetent"
+                                            ref="competentList"
                                             class="relation-expand-list"
                                             :actions="assigneesActions"
                                             :columns="assigneesColumns"
@@ -450,20 +450,7 @@
                                             fetchAction="getAssignees"
                                             filter="request_id"
                                             :request_assign_type="1"
-                                            :onlyLast="true"
-                                        />
-                                        <el-button @click="expandRelationList=!expandRelationList" class="relation-expand-button">Expand</el-button>
-                                        <relation-list
-                                            v-if="model.id && expandRelationList"
-                                            ref="assigneesList"
-                                            class="relation-expand-list"
-                                            :actions="assigneesActions"
-                                            :columns="assigneesColumns"
-                                            :filterValue="model.id"
-                                            fetchAction="getAssignees"
-                                            filter="request_id"
-                                            :request_assign_type="1"
-                                            :onlyLast="false"
+                                            :showLastAssigned="true"
                                         />
                                     </el-col>
                                 </el-tab-pane>
@@ -483,7 +470,7 @@
                                         ></users-assignment>
                                         <relation-list
                                             v-if="model.id"
-                                            ref="lastCompetent"
+                                            ref="accountableList"
                                             class="relation-expand-list"
                                             :actions="assigneesActions"
                                             :columns="assigneesColumns"
@@ -491,20 +478,7 @@
                                             fetchAction="getAssignees"
                                             filter="request_id"
                                             :request_assign_type="2"
-                                            :onlyLast="true"
-                                        />
-                                        <el-button @click="expandRelationList=!expandRelationList" class="relation-expand-button">Expand</el-button>
-                                        <relation-list
-                                            v-if="model.id && expandRelationList"
-                                            ref="assigneesList"
-                                            class="relation-expand-list"
-                                            :actions="assigneesActions"
-                                            :columns="assigneesColumns"
-                                            :filterValue="model.id"
-                                            fetchAction="getAssignees"
-                                            filter="request_id"
-                                            :request_assign_type="2"
-                                            :onlyLast="false"
+                                            :showLastAssigned="true"
                                         />
                                     </el-col>
                                 </el-tab-pane>
@@ -703,7 +677,7 @@
                         </template>
                         <!--                    v-if="(!$can($permissions.update.serviceRequest)) || ($can($permissions.update.serviceRequest) && (media.length || (model.media && model.media.length)))"-->
                         
-                        <el-tabs id="comments-card" v-if="model.id" type="border-card" v-model="activeTab2">
+                        <el-tabs id="comments-card" v-if="model.id" type="border-card" v-model="activeTab2" class="chat-card">
                             <el-tab-pane name="comments">
                                 <span slot="label">
                                     {{ $t('models.request.comments') }}
@@ -825,7 +799,6 @@
                 rolename: null,
                 inputVisible: false,
                 editMode: false,
-                expandRelationList: false,
                 units: [],
                 quarters: [],
                 lastAssignee: {
@@ -1036,14 +1009,6 @@
                 right: 20px;
             }
         }
-        .relation-expand-button {
-            background-color: transparent;
-            padding: 0px;
-            &:hover {
-                box-shadow: none;
-                font-weight: 700;
-            }
-        }
         .relation-expand-list {
             padding: 5px 0;
         }
@@ -1239,6 +1204,9 @@
             }
             &.edit-tab .el-tabs__content {
                 padding: 20px 10px !important;
+            }
+            &.chat-card .el-tabs__content {
+                overflow: visible;
             }
             .el-tabs__nav-wrap.is-top {
                 border-radius: 6px 6px 0 0;
