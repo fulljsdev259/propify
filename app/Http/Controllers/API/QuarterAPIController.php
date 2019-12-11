@@ -19,6 +19,8 @@ use App\Http\Requests\API\Quarter\ViewRequest;
 use App\Http\Requests\API\Quarter\DeleteRequest;
 use App\Models\Address;
 use App\Models\AuditableModel;
+use App\Models\Building;
+use App\Models\BuildingAssignee;
 use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
@@ -855,8 +857,27 @@ class QuarterAPIController extends AppBaseController
      */
     protected function getAssigneesResponse($quarter, $request)
     {
+        $buildingQuery = BuildingAssignee::whereHas(
+            'building',
+                function ($q) use ($quarter) {
+                    $q->where('quarter_id', $quarter->id);
+                }
+            )->select(
+                'id',
+                'user_id',
+                DB::raw('MAX(created_at) as created_at'),
+                DB::raw("CONCAT('{', GROUP_CONCAT('\"', building_assignees.id, '\":', building_assignees.building_id), '}') as parent_ids"),
+                DB::raw('"buildings" as type')
+            )
+            ->groupBy('user_id');
+
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        $assignees = $quarter->assignees()->paginate($perPage);
+        $assignees = QuarterAssignee::where('quarter_id', $quarter->id)
+            ->select('id', 'user_id', 'created_at', DB::raw('quarter_id as parent_ids, "quarter" as type'))
+            ->union($buildingQuery)
+            ->orderByDesc('created_at')
+            ->paginate($perPage);
+
         $assignees->load([
             'user' => function ($q) {
                 $q->select('id', 'name', 'email', 'avatar')
@@ -867,6 +888,32 @@ class QuarterAPIController extends AppBaseController
                     ]);
             }
         ]);
+
+        $buildingAssignees = $assignees->where('type', 'buildings');
+        $buildingIds = [];
+        foreach ($buildingAssignees as $item) {
+            $parentIds = json_decode($item->parent_ids, JSON_OBJECT_AS_ARRAY);
+            $buildingIds = array_merge($buildingIds, $parentIds);
+            $item->parent_ids = $parentIds;
+        };
+
+        $buildings = Building::whereIn('id', $buildingIds)->select('id', 'address_id')
+            ->with('address:id,house_num')->get();
+        $assignees->each(function ($item) use ($buildings) {
+            if ($item->type == 'buildings') {
+                $places = [];
+                foreach ($item->parent_ids as $assigneeId => $buildingId) {
+                    $building = $buildings->where('id', $buildingId)->first();
+                    $places[$assigneeId] = $building ? $building->address->house_num : 'building deleted';
+                }
+                $item->places = $places;
+            } else {
+                $item->place = 'quarter';
+                $item->places = [
+                    $item->id => 'quarter'
+                ];
+            }
+        });
         $response = (new QuarterAssigneeTransformer())->transformPaginator($assignees) ;
         return $this->sendResponse($response, 'Assignees retrieved successfully');
     }
