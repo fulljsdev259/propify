@@ -229,8 +229,9 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/notifications', 'NotificationAPIController@index')->name('notifications');
     Route::post('/notifications', 'NotificationAPIController@markAllAsRead')->name('notifications.markAll');
     Route::post('/notifications/{id}', 'NotificationAPIController@markAsReadUnRead')->name('notifications.mark');
-    Route::get('/conversations', 'ConversationAPIController@index');
-    Route::post('/conversations/{id}/comments', 'ConversationAPIController@storeComment');
+    Route::get('/conversations', function (){
+        return [];
+    });
 
     // Cleanify Request
     Route::get('cleanify', 'CleanifyRequestAPIController@index');

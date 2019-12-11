@@ -92,20 +92,6 @@ class NotifyRequestProvider
         $auditData = compact('serviceProvider', 'propertyManager', 'mailDetails');
         $request->registerAuditEvent(AuditableModel::EventProviderNotified, $auditData);
 
-        $u = \Auth::user();
-
-        // @TODO new system audit for conversation
-        $conversation = $request->conversationFor($u, $serviceProvider->user);
-        $comment = $mailDetails['title'] . "\n\n" . strip_tags($mailDetails['body']);
-        $conversation->comment($comment);
-
-        if ($propertyManager && $propertyManager->user) {
-            $conversation = $request->conversationFor($u, $propertyManager->user);
-            if ($conversation) {
-                $conversation->comment($comment);
-            }
-        }
-
         $request->touch();
         $serviceProvider->touch();
 

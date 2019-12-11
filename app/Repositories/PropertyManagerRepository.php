@@ -95,11 +95,14 @@ class PropertyManagerRepository extends BaseRepository
         return $deleted;
     }
 
-    public function assignmentsWithIds(array $ids)
+    public function assignmentsWithIds(array $userIds)
     {
         return Quarter::select(\DB::raw('quarters.id, quarters.name, "quarter" as type'))
             ->join('quarter_assignees', 'quarter_id', '=', 'quarters.id')
-            ->where('assignee_type', get_morph_type_of(PropertyManager::class))
-            ->whereIn('quarter_assignees.assignee_id', $ids);
+            ->whereIn('quarter_assignees.user_id', $userIds)->union(
+                Building::select(\DB::raw('buildings.id, buildings.building_format as name, "building" as type'))
+                    ->join('building_assignees', 'building_id', '=', 'buildings.id')
+                    ->whereIn('building_assignees.user_id', $userIds)
+            );
     }
 }

@@ -94,8 +94,6 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @property-read int|null $buildings_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
  * @property-read int|null $clients_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Conversation[] $conversations
- * @property-read int|null $conversations_count
  * @property-read mixed $autologin_url
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
@@ -314,11 +312,6 @@ class User extends Authenticatable implements LikerContract, Commentator, Audita
         return $query->whereHas('roles', function ($query) use ($roles) {
             $query->whereIn('name', $roles);
         });
-    }
-
-    public function conversations()
-    {
-        return $this->belongsToMany(Conversation::class);
     }
 
     public function autologins()

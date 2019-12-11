@@ -75,8 +75,8 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
         }
 
         if ($providerIds) {
-            $model->whereHas('providers', function ($q) use ($providerIds) {
-                $q->whereIn('assignee_id', $providerIds);
+            $model->whereHas('service_providers', function ($q) use ($providerIds) {
+                $q->whereIn('service_providers.id', $providerIds);
             });
         }
 
@@ -87,8 +87,8 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
             $managerIds[] = $managerId;
         }
         if ($managerIds) {
-            $model->whereHas('managers', function ($q) use ($managerIds) {
-                $q->whereIn('assignee_id', $managerIds);
+            $model->whereHas('property_managers', function ($q) use ($managerIds) {
+                $q->whereIn('property_managers.id', $managerIds);
             });
         }
 

@@ -864,13 +864,6 @@ class RequestAPIController extends AppBaseController
             'comments.user',
         ]);
 
-        foreach ($request->managers as $manager) {
-            if ($manager->user) {
-                $request->conversationFor($manager->user, $sp->user);
-            }
-        }
-
-        $request->conversationFor(Auth::user(), $sp->user);
         $request->touch();
         $sp->touch();
         return $this->sendResponse($request, __('general.attached.provider'));
@@ -931,10 +924,6 @@ class RequestAPIController extends AppBaseController
             'resident.user',
             'comments.user',
         ]);
-
-        foreach ($request->providers as $p) {
-            $request->conversationFor($p->user, $u);
-        }
 
         $request->touch();
         $u->touch();
@@ -997,9 +986,6 @@ class RequestAPIController extends AppBaseController
             'comments.user',
         ]);
 
-        foreach ($request->providers as $p) {
-            $request->conversationFor($p->user, $manager->user);
-        }
         $request->touch();
         $manager->touch();
         return $this->sendResponse($request, __('general.attached.manager'));
@@ -1503,17 +1489,11 @@ class RequestAPIController extends AppBaseController
             $request->touch();
         }
 
-        $type = $requestAssignee->assignee_type;
-        $class = Relation::$morphMap[$type] ?? $type;
-        if (class_exists($class)) {
-            $model = $class::find($requestAssignee->assignee_id);
-            if ($model) {
-                $model->touch();
-            }
-        }
+        $user = User::find($requestAssignee->user_id);
+        $user->touch();
         $requestAssignee->delete();
 
-        return $this->sendResponse($id, __('general.detached.' . $requestAssignee->assignee_type));
+        return $this->sendResponse($id, __('general.detached.user'));
     }
 
     /**

@@ -226,14 +226,6 @@ class PropertyManager extends AuditableModel
     }
 
     /**
-     * @return mixed
-     */
-    public function quarters()
-    {
-        return $this->morphToMany(Quarter::class, 'assignee', 'quarter_assignees', 'assignee_id', 'quarter_id');
-    }
-
-    /**
      * @return string
      */
     public function getNameAttribute()
@@ -247,8 +239,9 @@ class PropertyManager extends AuditableModel
     /**
      * @return mixed
      */
-    public function requests()
+    public function quarters()
     {
-        return $this->belongsToMany(Request::class, 'request_assignees', 'user_id', 'request_id', 'user_id');
+        return $this->belongsToMany(Quarter::class, 'quarter_assignees', 'user_id', 'quarter_id', 'user_id');
     }
+
 }

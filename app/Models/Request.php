@@ -171,8 +171,6 @@ use Storage;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  * @property-read int|null $comments_count
  * @property-read \App\Models\Relation|null $relation
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Conversation[] $conversations
- * @property-read int|null $conversations_count
  * @property-read \App\Models\User|null $creator
  * @property-read mixed $all_people
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PropertyManager[] $managers
@@ -740,22 +738,22 @@ class Request extends AuditableModel implements HasMedia
 
     public function managers()
     {
-        return $this->belongsToMany(User::class, 'request_assignees', 'request_id', 'user_id', 'request_id', 'user_id');
+        return $this->belongsToMany(PropertyManager::class, 'request_assignees', 'request_id', 'user_id', 'id', 'user_id');
     }
 
     public function property_managers()
     {
-        return $this->belongsToMany(User::class, 'request_assignees', 'request_id', 'user_id', 'request_id', 'user_id');
+        return $this->belongsToMany(PropertyManager::class, 'request_assignees', 'request_id', 'user_id', 'id', 'user_id');
     }
 
     public function providers()
     {
-        return $this->belongsToMany(User::class, 'request_assignees', 'request_id', 'user_id', 'request_id', 'user_id');
+        return $this->belongsToMany(ServiceProvider::class, 'request_assignees', 'request_id', 'user_id', 'id', 'user_id');
     }
 
     public function service_providers()
     {
-        return $this->belongsToMany(User::class, 'request_assignees', 'request_id', 'user_id', 'request_id', 'user_id');
+        return $this->belongsToMany(ServiceProvider::class, 'request_assignees', 'request_id', 'user_id', 'id', 'user_id');
     }
 
     public function users()
@@ -768,37 +766,9 @@ class Request extends AuditableModel implements HasMedia
         return $this->hasMany(RequestAssignee::class, 'request_id');
     }
 
-    public function conversations()
-    {
-        return $this->morphMany(Conversation::class, 'conversationable');
-    }
-
     public function creator()
     {
         return $this->belongsTo(User::class, 'creator_user_id', 'id');
-    }
-
-    public function conversationFor($u1, $u2)
-    {
-        if ($u1->id == $u2->id) {
-            return null;
-        }
-
-        foreach ($this->conversations as $c) {
-            if (count($c->users) == 2 &&
-                $c->users->contains($u1->id) &&
-                $c->users->contains($u2->id))
-            {
-                return $c;
-            }
-        }
-
-        $conv = new Conversation();
-        $this->conversations()->save($conv);
-        $conv->users()->attach($u1);
-        $conv->users()->attach($u2);
-
-        return $conv;
     }
 
     public function requestsNew()
