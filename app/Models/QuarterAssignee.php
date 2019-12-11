@@ -65,10 +65,13 @@ class QuarterAssignee extends Assignee
         'created_at',
     ];
 
+    protected $dates = [
+        'created_at'
+    ];
+
     protected $casts = [
         'quarter_id' => 'int',
         'user_id' => 'int',
-        'created_at' => 'date',
     ];
 
     /**

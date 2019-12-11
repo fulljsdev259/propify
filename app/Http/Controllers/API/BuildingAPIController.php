@@ -12,6 +12,7 @@ use App\Criteria\Building\FilterByTypeCriteria;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\Building\CreateRequest;
 use App\Http\Requests\API\Building\EmailReceptionistRequest;
+use App\Http\Requests\API\Building\MassAssignBuildingsUsersRequest;
 use App\Http\Requests\API\Building\MassAssignUsersRequest;
 use App\Http\Requests\API\Building\UnAssignRequest;
 use App\Http\Requests\API\Building\DeleteRequest;
@@ -730,6 +731,31 @@ class BuildingAPIController extends AppBaseController
 
         $building->newMassAssignmentAudit($assigneeData);
         return $this->getAssigneesResponse($building, $massAssignUsersRequest);
+    }
+
+    /**
+     * @param MassAssignBuildingsUsersRequest $massAssignUsersRequest
+     * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function massAssignUsersToBuildings(MassAssignBuildingsUsersRequest $massAssignUsersRequest)
+    {
+        $buildings = $this->buildingRepository->findWhereIn('id', $massAssignUsersRequest->building_ids, ['id']);
+        if ($buildings->isEmpty()) {
+            return $this->sendError(__('models.building.errors.not_found'));
+        }
+
+        $userIds = $massAssignUsersRequest->user_ids;
+        $assigneeData = collect();
+        /** @var Building $building */
+        foreach ($buildings as $building) {
+            foreach ($userIds as $userId) {
+                $newAssignee = $this->assignSingleUserToBuilding($building->id, $userId);
+                $assigneeData->push($newAssignee);
+            }
+        }
+
+        return $this->sendResponse($assigneeData->toArray(), $massAssignUsersRequest);
     }
 
     /**

@@ -66,10 +66,13 @@ class BuildingAssignee extends Assignee
         'created_at',
     ];
 
+    protected $dates = [
+        'created_at'
+    ];
+
     protected $casts = [
         'building_id' => 'int',
         'user_id' => 'int',
-        'created_at' => 'date',
     ];
 
     /**
