@@ -4,7 +4,7 @@
             <template v-if="$can($permissions.create.unit)">
                 <el-button 
                     @click="add" 
-                    icon="ti-plus" 
+                    icon="icon-plus" 
                     size="mini"
                     class="el-button--transparent mr-0"
                 >
@@ -22,7 +22,7 @@
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item
                             command="save_filter"
-                            icon="el-icon-plus"
+                            icon="icon-plus"
                         >
                             {{ $t('models.request.save_filter') }}
                         </el-dropdown-item>

@@ -10,7 +10,7 @@
                         <filters ref="filters" layout="column" :data.sync="filters.data" :schema="filters.schema" @changed="onFiltersChanged" />
                         <el-button type="primary" size="small" icon="el-icon-sort-up" @click="resetFilters">{{$t('resident.reset_filters')}}</el-button>
                     </el-popover>
-                    <el-button @click="showAddRequest" class="fit-button desktop-show" type="primary" icon="ti-plus" round>
+                    <el-button @click="showAddRequest" class="fit-button desktop-show" type="primary" icon="icon-plus" round>
                         {{$t('resident.add_request')}}
                     </el-button>
                 </ui-heading>
@@ -19,7 +19,7 @@
                         <filters ref="filters" layout="column" :data.sync="filters.data" :schema="filters.schema" @changed="onFiltersChanged" />
                         <el-button type="primary" size="small" icon="el-icon-sort-up" @click="resetFilters">{{$t('resident.reset_filters')}}</el-button>
                     </el-popover>
-                    <el-button @click="showAddRequest" class="fit-button mobile-show" type="primary" icon="ti-plus" round>
+                    <el-button @click="showAddRequest" class="fit-button mobile-show" type="primary" icon="icon-plus" round>
                         {{$t('resident.add_request')}}
                     </el-button>
                 <ui-divider />
@@ -145,7 +145,7 @@
                         <media-upload ref="upload" v-model="uploadedMedia" :loading="uploadingMedia" :size="mediaUploadMaxSize" :allowed-types="['image/jpg', 'image/jpeg', 'image/png', 'application/pdf']" :cols="2" >
                             <template slot="trigger" slot-scope="scope">
                                 <el-tooltip key="trigger" content="Drop files or click here to select" effect="dark" placement="bottom" >
-                                    <el-button class="trigger" icon="el-icon-plus" :style="scope.mediaItemStyle" @click="scope.triggerSelect" :disabled="uploadingMedia" />
+                                    <el-button class="trigger" icon="icon-plus" :style="scope.mediaItemStyle" @click="scope.triggerSelect" :disabled="uploadingMedia" />
                                 </el-tooltip>
                             </template>
                         </media-upload>

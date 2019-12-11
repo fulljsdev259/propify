@@ -2,7 +2,7 @@
     <div class="listing">
         
         <el-button 
-            v-if="list !== undefined && list.length"
+            v-if="list !== undefined && list.length > 1 && showLastAssigned"
             @click="expandRelationList=!expandRelationList" 
             class="relation-expand-button"
         >
@@ -13,7 +13,7 @@
             :data="showLastAssigned && !expandRelationList? lastAssigned: list"
             :show-header="showHeader"
             style="width: 100%"
-            :class="{'new-style': showLastAssigned && list !== undefined && list.length, 'border-none': !expandRelationList}"
+            :class="{'new-style': showLastAssigned && list !== undefined && list.length > 1, 'border-none': !expandRelationList}"
             @row-dblclick="handleRowDblClick"
             >
             <div slot="empty">
