@@ -87,4 +87,14 @@ class QuarterAssignee extends Assignee
         $data['event'] = $event;
         return $data;
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function quarter()
+    {
+        return $this->belongsTo(Quarter::class);
+    }
 }

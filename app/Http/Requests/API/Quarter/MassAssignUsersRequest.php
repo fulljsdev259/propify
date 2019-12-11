@@ -4,6 +4,7 @@ namespace App\Http\Requests\API\Quarter;
 
 use App\Http\Requests\BaseRequest;
 use App\Models\BuildingAssignee;
+use App\Models\User;
 
 class MassAssignUsersRequest extends BaseRequest
 {
@@ -31,31 +32,41 @@ class MassAssignUsersRequest extends BaseRequest
         return [
             'data' => [
                 'required',
-                function ($attribute, $value, $fails) {
-                    foreach ($value as $index => $data) {
-                        if (! is_array($data)){
-                            $message = __('validation.array', ['attribute' => $index]);
-                            return $fails($message);
-                        }
-
-                        if (empty($data['user_id'])) {
-                            $message = __('validation.required', ['attribute' => $this->getAttributeByKey($index, 'user_id')]);
-                            return $fails($message);
-                        }
-                    }
-
-                    $userIds = collect($value)->pluck('user_id');
-                    $buildingAssignees = BuildingAssignee::whereIn('user_id', $userIds)
-                        ->select('user_id', 'building_id')
-                        ->with('user:id,name', 'building:id,building_format')
-                        ->whereHas('building', function ($q) {
-                            $q->where('quarter_id', $this->route('id'));
-                        })
-                        ->get();
-                    if ($buildingAssignees->isNotEmpty()) {
-                        return $fails($this->getAlreadyAssignedBuildingMessage($buildingAssignees));
-                    }
-                }
+//                function ($attribute, $value, $fails) {
+//                    foreach ($value as $index => $data) {
+//                        if (! is_array($data)){
+//                            $message = __('validation.array', ['attribute' => $index]);
+//                            return $fails($message);
+//                        }
+//
+//                        if (empty($data['user_id'])) {
+//                            $message = __('validation.required', ['attribute' => $this->getAttributeByKey($index, 'user_id')]);
+//                            return $fails($message);
+//                        }
+//                        if (! is_numeric($data['user_id'])) {
+//                            $message = __('validation.integer', ['attribute' => $this->getAttributeByKey($index, 'user_id')]);
+//                            return $fails($message);
+//                        }
+//                    }
+//
+//                    $userIds = collect($value)->pluck('user_id');
+//                    $userCount = User::whereIn('id', $userIds)->count();
+//
+//                    if ($userCount != $userIds->count()) {
+//                        return $fails('Latest one user is not valid. Please fix');
+//                    }
+//
+//                    $buildingAssignees = BuildingAssignee::whereIn('user_id', $userIds)
+//                        ->select('user_id', 'building_id')
+//                        ->with('user:id,name', 'building:id,building_format')
+//                        ->whereHas('building', function ($q) {
+//                            $q->where('quarter_id', $this->route('id'));
+//                        })
+//                        ->get();
+//                    if ($buildingAssignees->isNotEmpty()) {
+//                        return $fails($this->getAlreadyAssignedBuildingMessage($buildingAssignees));
+//                    }
+//                }
             ]
         ];
     }
