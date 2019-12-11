@@ -15,6 +15,7 @@ use App\Http\Requests\API\Building\BatchAssignManagers;
 use App\Http\Requests\API\Building\BatchAssignUsers;
 use App\Http\Requests\API\Building\CreateRequest;
 use App\Http\Requests\API\Building\EmailReceptionistRequest;
+use App\Http\Requests\API\Building\MassAssignUsersRequest;
 use App\Http\Requests\API\Building\UnAssignRequest;
 use App\Http\Requests\API\Building\DeleteRequest;
 use App\Http\Requests\API\Building\ListRequest;
@@ -25,7 +26,6 @@ use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\BuildingAssignee;
 use App\Models\PropertyManager;
-use App\Models\ServiceProvider;
 use App\Models\Unit;
 use App\Models\User;
 use App\Repositories\AddressRepository;
@@ -831,20 +831,7 @@ class BuildingAPIController extends AppBaseController
             return $this->sendError(__('models.building.errors.not_found'));
         }
 
-        $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        $assignees = $building->assignees()->paginate($perPage);
-        $assignees->load([
-            'user' => function ($q) {
-                $q->select('id', 'name', 'email', 'avatar')
-                    ->with([
-                        'service_provider:id,user_id,company_name,category',
-                        'property_manager:id,user_id,type',
-                        'roles:id,name'
-                    ]);
-            }
-        ]);
-        $response = (new BuildingAssigneeTransformer())->transformPaginator($assignees) ;
-        return $this->sendResponse($response, 'Assignees retrieved successfully');
+        return $this->getAssigneesResponse($building, $request);
     }
 
     /**
@@ -1038,8 +1025,81 @@ class BuildingAPIController extends AppBaseController
             'created_at' => now()
         ]);
 
-        $response = (new BuildingTransformer)->transform($building);
-        return $this->sendResponse($response, __('general.attached.manager'));
+        return $this->getAssigneesResponse($building, $request);
+    }
+    
+    /**
+     * @param int $id
+     * @param MassAssignUsersRequest $massAssignUsersRequest
+     * @return mixed
+     * @throws \Exception
+     */
+    public function massAssignUsers(int $id, MassAssignUsersRequest $massAssignUsersRequest)
+    {
+        /** @var Building $building */
+        $building = $this->buildingRepository->findWithoutFail($id);
+        if (empty($building)) {
+            return $this->sendError(__('models.building.errors.not_found'));
+        }
+
+        $data  = $massAssignUsersRequest->data;
+        $assigneeData = collect();
+        foreach ($data as $single) {
+            $newAssignee = $this->assignSingleUserToBuilding($id, $single['user_id']);
+            $assigneeData->push($newAssignee);
+        }
+
+        $building->newMassAssignmentAudit($assigneeData);
+        return $this->getAssigneesResponse($building, $massAssignUsersRequest);
+    }
+
+    /**
+     * @param $building
+     * @param $request
+     * @return mixed
+     */
+    protected function getAssigneesResponse($building, $request)
+    {
+        $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
+        $assignees = $building->assignees()->latest()->orderByDesc('id')->paginate($perPage);
+        $assignees->load([
+            'user' => function ($q) {
+                $q->select('id', 'name', 'email', 'avatar')
+                    ->with([
+                        'service_provider:id,user_id,company_name,category',
+                        'property_manager:id,user_id,type',
+                        'roles:id,name'
+                    ]);
+            }
+        ]);
+        $response = (new BuildingAssigneeTransformer())->transformPaginator($assignees) ;
+        return $this->sendResponse($response, 'Assignees retrieved successfully');
+    }
+
+
+    /**
+     * @param $buildingId
+     * @param $userId
+     * @param $role
+     * @return BuildingAssignee|\Illuminate\Database\Eloquent\Model|mixed
+     */
+    protected function assignSingleUserToBuilding($buildingId, $userId)
+    {
+        $user = User::find($userId);
+        if (empty($user)) {
+            return $this->sendError(__('models.user.errors.not_found'));
+        }
+
+        if ($user->resident) {
+            return $this->sendError(__('general.invalid_operation'));
+        }
+
+        return BuildingAssignee::updateOrCreate([
+            'building_id' => $buildingId,
+            'user_id' => $userId,
+        ], [
+            'created_at' => now()
+        ]);
     }
 
     /**
