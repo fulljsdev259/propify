@@ -425,8 +425,8 @@
                     <el-col :md="12">
                         <template v-if="$can($permissions.assign.request)">
                         
-                            <el-tabs id="assignment-card" v-if="model.id" type="border-card" value="assignment" class="edit-tab">
-                                <el-tab-pane name="assignment">
+                            <el-tabs id="assignment-card" v-model="activeAssignment" v-if="model.id" type="border-card" value="assignment" class="edit-tab">
+                                <el-tab-pane name="competentAssignment">
                                     <span slot="label">
                                         {{ $t('models.request.assignment') }}
                                     </span>
@@ -454,7 +454,7 @@
                                         />
                                     </el-col>
                                 </el-tab-pane>
-                                <el-tab-pane name="assignment1">
+                                <el-tab-pane name="accountableAssignment">
                                     <span slot="label">
                                         {{ $t('models.request.assigned_property_managers') }}
                                     </span>
@@ -760,6 +760,7 @@
                 activeTab0: 'request_details_pane',
                 activeTab1: 'request_details',
                 activeTab2: 'comments',
+                activeAssignment: 'competentAssignment',
                 activeActionTab: 'actions',
                 conversationVisible: false,
                 selectedConversation: {},
@@ -888,7 +889,7 @@
             isDisabled(status) {
                 return _.indexOf(this.constants.requests.statusByAgent[this.model.status], parseInt(status)) < 0
             },
-            notifyUnassignment(provider) {
+            notifyUnassignment(provider, requestAssignType = 0) {
                 this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
                     confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
                     cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
@@ -908,7 +909,12 @@
 
                         if (resp && resp.data) {
                             await this.fetchCurrentRequest();
-                            this.$refs.assigneesList.fetch();
+
+                            if(this.activeAssignment === 'competentAssignment')
+                                this.$refs.competentList.fetch();
+                            if(this.activeAssignment === 'accountableAssignment')
+                                this.$refs.accountableList.fetch();  
+
                             if(this.$refs.auditList){
 	                            this.$refs.auditList.fetch();
                             }

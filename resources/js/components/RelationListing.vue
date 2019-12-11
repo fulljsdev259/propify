@@ -476,7 +476,7 @@
                             page,
                         };
                     if(this.request_assign_type) {
-                        query.request_assign_type = this.request_assign_type;
+                        query.type = this.request_assign_type;
                     } 
 
                     const resp = await this.$store.dispatch(this.fetchAction, query);
