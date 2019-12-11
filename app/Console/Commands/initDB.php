@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -40,6 +41,7 @@ class initDB extends Command
     public function handle()
     {
         $bar = $this->output->createProgressBar(4);
+        Artisan::call('key:generate');
         $bar->setFormat('%bar%');
         $bar->start();
 

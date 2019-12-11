@@ -26,7 +26,6 @@ class AssignUserRequest extends BaseRequest
     {
         return [
             'user_id' => 'required|integer',
-            'role' => 'required|string|in:administrator,manager,provider',
         ];
     }
 }

@@ -58,7 +58,7 @@ class MassAssignUsersRequest extends BaseRequest
     public function messages()
     {
         return [
-            'data.required' => 'Need pass latest one array contains type, user_id, role keys'
+            'data.required' => 'Need pass latest one array contains type, user_id keys'
         ];
     }
 
