@@ -508,7 +508,7 @@
                                                         filterable
                                                         remote
                                                         reserve-keyword
-                                                        @change="val => handleQuickAssign(scope.row.id, val, column.prop)"
+                                                        @change="val => handleQuickAssign(scope.row.id, column.prop)"
                                                         v-model="assignee">
                                                     <el-option
                                                             :key="assignee.id"
@@ -997,10 +997,9 @@
                     });
                 }
             },
-            async handleQuickAssign(request_id, assignee_id, prop) {
+            async handleQuickAssign(request_id, prop) {
                 let type = prop === 'competent_user' ? 1 : 2;
-                let assignee = this.assignees.find(item => item.id == assignee_id)
-                let user_params = [{type, user_id: assignee_id, role: assignee.roles[0].name}]
+                let user_params = [{type, user_id: assignee_id}];
 
                 let resp = await this.assignUsersToRequest({
                             id: request_id,
@@ -1033,8 +1032,8 @@
             },
             async handleAssignMe(request_id, prop) {
                 let type = prop === 'competent_user' ? 1 : 2;
-                let loggedinUser = this.$store.getters.loggedInUser
-                let user_params = [{type, user_id: loggedinUser.id, role: loggedinUser.roles[0].name}]
+                let loggedinUser = this.$store.getters.loggedInUser;
+                let user_params = [{type, user_id: loggedinUser.id}];
 
                 let resp = await this.assignUsersToRequest({
                             id: request_id,

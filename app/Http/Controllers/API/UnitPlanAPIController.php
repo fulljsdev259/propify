@@ -8,7 +8,6 @@ use App\Http\Requests\API\UnitPlan\CreateRequest;
 use App\Repositories\UnitPlanRepository;
 use App\Repositories\UnitRepository;
 use App\Transformers\UnitPlanTransformer;
-use Swagger\Annotations as SWG;
 
 class UnitPlanAPIController extends AppBaseController
 {
@@ -30,9 +29,9 @@ class UnitPlanAPIController extends AppBaseController
 
     /**
      * @SWG\Get(
-     *     path="/units/{unitId}/plans"
-     *     summary="Display the list of Unit's plans"
-     *     tags={Unit_Plan}
+     *     path="/units/{unitId}/plans",
+     *     summary="Display the list of Unit's plans",
+     *     tags={"UnitPlan"},
      *     description="Get all Unit's plans",
      *     produces={"application/json"},
      *      @SWG\Response(
@@ -47,7 +46,7 @@ class UnitPlanAPIController extends AppBaseController
      *              @SWG\Property(
      *                  property="data",
      *                  type="array",
-     *                  @SWG\Items(ref="#/definitions/Unit_Plans")
+     *                  @SWG\Items(ref="#/definitions/UnitPlan")
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -79,7 +78,7 @@ class UnitPlanAPIController extends AppBaseController
      * @SWG\Post(
      *      path="/units/{unitId}/plans",
      *      summary="Store a newly created Unit Plan in storage",
-     *      tags={"Unit_Plan"},
+     *      tags={"UnitPlan"},
      *      description="Store Unit Plan",
      *      produces={"application/json"},
      *      @SWG\Parameter(
@@ -87,7 +86,7 @@ class UnitPlanAPIController extends AppBaseController
      *          in="body",
      *          description="Unit Plan that should be stored",
      *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Unit_Plans")
+     *          @SWG\Schema(ref="#/definitions/UnitPlan")
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -100,7 +99,7 @@ class UnitPlanAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Unit_Plans"
+     *                  ref="#/definitions/UnitPlan"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -115,7 +114,6 @@ class UnitPlanAPIController extends AppBaseController
      * @param CreateRequest $request
      * @param int $unitId
      * @return \Illuminate\Http\Response
-     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function store(CreateRequest $request, int $unitId)
     {
@@ -140,7 +138,7 @@ class UnitPlanAPIController extends AppBaseController
      * @SWG\Get(
      *      path="/units/{unitId}/plans/{planId}",
      *      summary="Display the specified Unit Plan based on a Unit",
-     *      tags={"Unit_Plan"},
+     *      tags={"UnitPlan"},
      *      description="Get Unit Plan based on a Unit",
      *      produces={"application/json"},
      *      @SWG\Parameter(
@@ -168,7 +166,7 @@ class UnitPlanAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Unit_Plans"
+     *                  ref="#/definitions/UnitPlan"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -204,7 +202,7 @@ class UnitPlanAPIController extends AppBaseController
      * @SWG\Put(
      *      path="/units/{unitId}/plans/{planId}",
      *      summary="Update the specified Unit Plan in storage",
-     *      tags={"Unit_Plan"},
+     *      tags={"UnitPlan"},
      *      description="Update Unit Plan",
      *      produces={"application/json"},
      *      @SWG\Parameter(
@@ -232,7 +230,7 @@ class UnitPlanAPIController extends AppBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Unit_Plans"
+     *                  ref="#/definitions/UnitPlan"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -248,7 +246,6 @@ class UnitPlanAPIController extends AppBaseController
      * @param int $unitId
      * @param int $planId
      * @return \Illuminate\Http\Response
-     * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
     public function update(UpdateRequest $request, int $unitId, int $planId)
     {
@@ -281,7 +278,7 @@ class UnitPlanAPIController extends AppBaseController
      * @SWG\Delete(
      *      path="/units/{unitId}/plans/{planId}",
      *      summary="Remove the specified Unit Plan from storage",
-     *      tags={"Unit_Plan"},
+     *      tags={"UnitPlan"},
      *      description="Delete Unit Plan",
      *      produces={"application/json"},
      *      @SWG\Parameter(

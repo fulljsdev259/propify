@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 class ValidationServiceProvider extends ServiceProvider
 {
 
+
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -50,6 +51,21 @@ class ValidationServiceProvider extends ServiceProvider
                 $permitted[] = $mineTypes[$extension]; // must be already filled in config all cases
             }
 
+            if (is_array($value)) {
+                if (!empty($value['media'])) {
+                    if (! is_string($value['media'])) {
+                        $validator->customMessages['base_mimes'] = str_replace(':attribute', 'media', __('validation.string'));
+                        return false;
+                    }
+                    // @TODO validate also name
+                    $value = $value['media'];
+                }
+
+            } elseif (! is_string($value)) {
+                $validator->customMessages['base_mimes'] = 'The' . $attribute . 'must be string or array';
+                return false;
+            }
+
             $file = finfo_open();
             $base64Decode = base64_decode($value);
             if (! $base64Decode) {
@@ -64,8 +80,11 @@ class ValidationServiceProvider extends ServiceProvider
         });
 
         Validator::replacer('base_mimes', function ($message, $attribute, $rule, $parameters) {
-            return str_replace([':attribute', ':values'], ['file', '.' . implode(', .', $parameters)], __('validation.mimes'));
+            if ('validation.base_mimes' == $message) {
+                return str_replace([':attribute', ':values'], ['file', '.' . implode(', .', $parameters)], __('validation.mimes'));
+            }
+
+            return $message;
         });
     }
-
 }

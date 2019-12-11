@@ -34,7 +34,7 @@ class CreateRequest extends BaseRequest
         if ($user->resident) {
             return [
                 'resident_id' => 'exists:residents,id',
-                'relation_id' => 'required|exists:relations,id',
+                'relation_id' => 'exists:relations,id',
                 'title' => 'required|string',
                 'description' => 'required|string',
                 'category_id' => 'required|integer',
@@ -47,7 +47,7 @@ class CreateRequest extends BaseRequest
 
         $rules = [
             'resident_id' => 'required|exists:residents,id',
-            'relation_id' => 'required|exists:relations,id',
+            'relation_id' => 'exists:relations,id',
             'title' => 'required|string',
             'description' => 'required|string',
 //        'priority' => 'required|integer',
