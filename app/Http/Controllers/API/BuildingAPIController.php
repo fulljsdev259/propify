@@ -10,11 +10,10 @@ use App\Criteria\Common\RequestCriteria;
 use App\Criteria\Building\FilterByCityCriteria;
 use App\Criteria\Building\FilterByTypeCriteria;
 use App\Http\Controllers\AppBaseController;
-use App\Http\Requests\API\Building\AssignRequest;
-use App\Http\Requests\API\Building\BatchAssignManagers;
-use App\Http\Requests\API\Building\BatchAssignUsers;
 use App\Http\Requests\API\Building\CreateRequest;
 use App\Http\Requests\API\Building\EmailReceptionistRequest;
+use App\Http\Requests\API\Building\MassAssignBuildingsUsersRequest;
+use App\Http\Requests\API\Building\MassAssignUsersRequest;
 use App\Http\Requests\API\Building\UnAssignRequest;
 use App\Http\Requests\API\Building\DeleteRequest;
 use App\Http\Requests\API\Building\ListRequest;
@@ -24,14 +23,11 @@ use App\Models\Address;
 use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\BuildingAssignee;
-use App\Models\PropertyManager;
-use App\Models\ServiceProvider;
 use App\Models\Unit;
 use App\Models\User;
 use App\Repositories\AddressRepository;
 use App\Repositories\BuildingRepository;
 use App\Repositories\PropertyManagerRepository;
-use App\Repositories\ServiceProviderRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UnitRepository;
 use App\Repositories\RequestRepository;
@@ -668,128 +664,6 @@ class BuildingAPIController extends AppBaseController
         }
     }
 
-
-    /**
-     * @SWG\Post(
-     *      path="/buildings/{id}/services/{service_id}",
-     *      summary="Assign the provided service provider to the building",
-     *      tags={"ServiceProvider", "Building"},
-     *      description="Assign the provided service provider to the building",
-     *      produces={"application/json"},
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Building"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     *
-     * @param int $id
-     * @param int $serviceProviderId
-     * @param ServiceProviderRepository $serviceProviderRepository
-     * @param AssignRequest $r
-     * @return mixed
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function assignService(
-        int $id,
-        int $serviceProviderId,
-        ServiceProviderRepository $serviceProviderRepository,
-        AssignRequest $r
-    )
-    {
-        $building = $this->buildingRepository->findWithoutFail($id);
-        if (empty($building)) {
-            return $this->sendError(__('models.building.errors.not_found'));
-        }
-        $serviceProvider = $serviceProviderRepository->findWithoutFail($serviceProviderId);
-        if (empty($serviceProvider)) {
-            return $this->sendError(__('models.service.errors.not_found'));
-        }
-
-        $building->service_providers()->sync($serviceProvider, false);
-
-        $building->load([
-            'address.state',
-            'media',
-            'service_providers',
-            'propertyManagers',
-            'users'
-        ]);
-        $response = (new BuildingTransformer)->transform($building);
-        return $this->sendResponse($response, __('models.building.service_assigned'));
-    }
-
-    /**
-     * @SWG\Delete(
-     *      path="/buildings/{id}/service/{service_id}",
-     *      summary="Remove the specified Service from storage",
-     *      tags={"Building"},
-     *      description="Delete Service",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of Service",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  type="string"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     *
-     * @param int $id
-     * @param int $service_id
-     * @param UnAssignRequest $r
-     * @return Response
-     */
-    public function unAssignService(int $id, int $service_id, UnAssignRequest $r)
-    {
-        /** @var Building $building */
-        $building = $this->buildingRepository->findWithoutFail($id);
-        if (empty($building)) {
-            return $this->sendError(__('models.building.errors.not_found'));
-        }
-
-        try {
-            $building->service_providers()->detach($service_id);
-        } catch (\Exception $e) {
-            return $this->sendError(__('models.building.errors.provider_deleted') . $e->getMessage());
-        }
-
-        return $this->sendResponse($id, __('models.building.service.deleted'));
-    }
-
     /**
      * @SWG\Get(
      *      path="/buildings/{id}/assignees",
@@ -831,207 +705,105 @@ class BuildingAPIController extends AppBaseController
             return $this->sendError(__('models.building.errors.not_found'));
         }
 
-        $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        $assignees = $building->assignees()->paginate($perPage);
-        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
+        return $this->getAssigneesResponse($building, $request);
+    }
 
+    /**
+     * @param int $id
+     * @param MassAssignUsersRequest $massAssignUsersRequest
+     * @return mixed
+     * @throws \Exception
+     */
+    public function massAssignUsers(int $id, MassAssignUsersRequest $massAssignUsersRequest)
+    {
+        /** @var Building $building */
+        $building = $this->buildingRepository->findWithoutFail($id);
+        if (empty($building)) {
+            return $this->sendError(__('models.building.errors.not_found'));
+        }
+
+        $data  = $massAssignUsersRequest->data;
+        $assigneeData = collect();
+        foreach ($data as $single) {
+            $newAssignee = $this->assignSingleUserToBuilding($id, $single['user_id']);
+            $assigneeData->push($newAssignee);
+        }
+
+        $building->newMassAssignmentAudit($assigneeData);
+        return $this->getAssigneesResponse($building, $massAssignUsersRequest);
+    }
+
+    /**
+     * @param MassAssignBuildingsUsersRequest $massAssignUsersRequest
+     * @return mixed
+     * @throws \OwenIt\Auditing\Exceptions\AuditingException
+     */
+    public function massAssignUsersToBuildings(MassAssignBuildingsUsersRequest $massAssignUsersRequest)
+    {
+        $buildings = $this->buildingRepository->findWhereIn('id', $massAssignUsersRequest->building_ids, ['id']);
+        if ($buildings->isEmpty()) {
+            return $this->sendError(__('models.building.errors.not_found'));
+        }
+
+        $userIds = $massAssignUsersRequest->user_ids;
+        $assigneeData = collect();
+        /** @var Building $building */
+        foreach ($buildings as $building) {
+            foreach ($userIds as $userId) {
+                $newAssignee = $this->assignSingleUserToBuilding($building->id, $userId);
+                $assigneeData->push($newAssignee);
+            }
+        }
+
+        return $this->sendResponse($assigneeData->toArray(), $massAssignUsersRequest);
+    }
+
+    /**
+     * @param $building
+     * @param $request
+     * @return mixed
+     */
+    protected function getAssigneesResponse($building, $request)
+    {
+        $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
+        $assignees = $building->assignees()->latest()->orderByDesc('id')->paginate($perPage);
+        $assignees->load([
+            'user' => function ($q) {
+                $q->select('id', 'name', 'email', 'avatar')
+                    ->with([
+                        'service_provider:id,user_id,company_name,category',
+                        'property_manager:id,user_id,type',
+                        'roles:id,name'
+                    ]);
+            }
+        ]);
         $response = (new BuildingAssigneeTransformer())->transformPaginator($assignees) ;
         return $this->sendResponse($response, 'Assignees retrieved successfully');
     }
 
     /**
-     * @SWG\Post(
-     *      path="/buildings/{id}/propertyManagers",
-     *      summary="Assign the provided propertyManagers to the Building",
-     *      tags={"Building"},
-     *      description=" <a href='http://dev.propify.ch/api/docs#/Building/pinboard_buildings__id__managers'>http://dev.propify.ch/api/docs#/Building/pinboard_buildings__id__managers</a>",
-     *      produces={"application/json"},
-     *      deprecated=true,
-     *      @SWG\Parameter(
-     *          name="managerIds",
-     *          description="ids of managers",
-     *          type="array",
-     *          required=true,
-     *          in="query",
-     *          @SWG\Items(
-     *              type="integer"
-     *          )
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Building"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     *
-     * @SWG\Post(
-     *      path="/buildings/{id}/managers",
-     *      summary="Assign the provided managers to the Building",
-     *      tags={"Building"},
-     *      description="Assign the provided managers to the Building",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="managerIds",
-     *          description="ids of managers",
-     *          type="array",
-     *          required=true,
-     *          in="query",
-     *          @SWG\Items(
-     *              type="integer"
-     *          )
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Building"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     *
-     * @param int $id
-     * @param BatchAssignManagers $request
-     * @return Response
+     * @param $buildingId
+     * @param $userId
+     * @param $role
+     * @return BuildingAssignee|\Illuminate\Database\Eloquent\Model|mixed
      */
-    /**
-     * @param int $id
-     * @param BatchAssignManagers $request
-     * @return mixed
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function assignManagers(int $id, BatchAssignManagers $request)
+    protected function assignSingleUserToBuilding($buildingId, $userId)
     {
-        /** @var Building $building */
-        $building = $this->buildingRepository->findWithoutFail($id);
-        if (empty($building)) {
-            return $this->sendError(__('models.building.errors.not_found'));
-        }
-
-        $managerIds = $request->get('managersIds') ?? $request->get('managerIds');
-        try {
-            $currentManagers = $building->propertyManagers()
-                ->whereIn('property_managers.id', $managerIds)
-                ->pluck('property_managers.id')
-                ->toArray();
-
-            $newManagers = array_diff($managerIds, $currentManagers);
-            $attachData  = [];
-            foreach ($newManagers as $manager) {
-                $attachData[$manager] = ['created_at' => now()];
-            }
-            $building->propertyManagers()->syncWithoutDetaching($attachData);
-        } catch (\Exception $e) {
-            return $this->sendError( __('models.building.errors.manager_assigned') . $e->getMessage());
-        }
-
-        $building->load([
-            'address.state',
-            'media',
-            'service_providers',
-            'propertyManagers',
-            'users'
-        ]);
-        $response = (new BuildingTransformer)->transform($building);
-        return $this->sendResponse($response, __('models.building.managers_assigned'));
-    }
-
-    /**
-     * @SWG\Post(
-     *      path="/buildings/{id}/users",
-     *      summary="Assign the provided users to the Building",
-     *      tags={"Building"},
-     *      description="Assign the provided users(administrator, super-administrator) to the Building",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="userIds",
-     *          description="ids of users",
-     *          type="array",
-     *          required=true,
-     *          in="query",
-     *          @SWG\Items(
-     *              type="integer"
-     *          )
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Building"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     *
-     * @param int $id
-     * @param BatchAssignUsers $request
-     * @return Response
-     */
-    /**
-     * @param int $id
-     * @param BatchAssignUsers $request
-     * @return mixed
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function assignUsers(int $id, BatchAssignUsers $request)
-    {
-        /** @var Building $building */
-        $building = $this->buildingRepository->findWithoutFail($id);
-        if (empty($building)) {
-            return $this->sendError(__('models.building.errors.not_found'));
-        }
-
-        $userId = $request->get('user_id');
         $user = User::find($userId);
         if (empty($user)) {
             return $this->sendError(__('models.user.errors.not_found'));
         }
 
-        BuildingAssignee::updateOrCreate([
-            'building_id' => $id,
+        if ($user->resident) {
+            return $this->sendError(__('general.invalid_operation'));
+        }
+
+        return BuildingAssignee::updateOrCreate([
+            'building_id' => $buildingId,
             'user_id' => $userId,
         ], [
             'created_at' => now()
         ]);
-
-        $response = (new BuildingTransformer)->transform($building);
-        return $this->sendResponse($response, __('general.attached.manager'));
     }
 
     /**
@@ -1077,50 +849,6 @@ class BuildingAPIController extends AppBaseController
         $buildingAssignee->delete();
 
         return $this->sendResponse($id, __('general.detached.user'));
-    }
-
-    /**
-     * @SWG\Delete(
-     *      path="/buildings/{building_id}/propertyManagers/{manager_id}",
-     *      summary="Unassign the provided property managerfrom the building ",
-     *      tags={"Building"},
-     *      deprecated=true,
-     *      description="<a href='http://dev.propify.ch/api/docs#/Building/delete_buildings_assignees__buildings_assignee_id_'>http://dev.propify.ch/api/docs#/Building/delete_buildings_assignees__buildings_assignee_id_</a>",
-     *      produces={"application/json"},
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Building"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
-     *
-     * @param int $buildingId
-     * @param int $managerId
-     * @param UnAssignRequest $r
-     * @return mixed
-     * @throws \Exception
-     */
-    public function unAssignPropertyManager(int $buildingId, int $managerId, UnAssignRequest $r)
-    {
-        $assigneeId = BuildingAssignee::where([
-                'building_id' => $buildingId,
-                'user_id' => PropertyManager::where('id', $managerId)->value('user_id'),
-            ])->value('id');
-        return $this->deleteBuildingAssignee($assigneeId, $r);
     }
 
     /**

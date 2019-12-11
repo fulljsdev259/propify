@@ -644,7 +644,6 @@ export default (config = {}) => {
                             this.model.relation_id = data.relation.id
                         }
                         //this.relations = resp.data.resident.relations.filter(item => item.status == 1)
-                        await this.getConversations();
                         
                         if (data.resident) {
                             this.model.resident_id = data.resident.id;

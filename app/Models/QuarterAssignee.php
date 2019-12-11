@@ -65,10 +65,13 @@ class QuarterAssignee extends Assignee
         'created_at',
     ];
 
+    protected $dates = [
+        'created_at'
+    ];
+
     protected $casts = [
         'quarter_id' => 'int',
         'user_id' => 'int',
-        'created_at' => 'date',
     ];
 
     /**
@@ -86,5 +89,15 @@ class QuarterAssignee extends Assignee
         $data['old_values'] = $olddata;
         $data['event'] = $event;
         return $data;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function quarter()
+    {
+        return $this->belongsTo(Quarter::class);
     }
 }

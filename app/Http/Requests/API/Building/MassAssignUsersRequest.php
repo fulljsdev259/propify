@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\API\Quarter;
+namespace App\Http\Requests\API\Building;
 
 use App\Http\Requests\BaseRequest;
 use App\Models\BuildingAssignee;
@@ -18,7 +18,7 @@ class MassAssignUsersRequest extends BaseRequest
         if (empty($this->data)) {
             $this->merge(['data' => $this->toArray()]);
         }
-        return $this->can('assign-quarter');
+        return $this->can('assign-building');
     }
 
 

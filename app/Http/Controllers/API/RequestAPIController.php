@@ -1367,18 +1367,9 @@ class RequestAPIController extends AppBaseController
             return $this->sendError(__('models.request.errors.not_found'));
         }
 
-        $perPage = $viewRequest->get('per_page', env('APP_PAGINATE', 10));
         $type = $viewRequest->type;
-        $assignees = $request->assignees()
-            ->orderBy('id', 'desc')
-            ->when($type, function ($q) use ($type) {
-                $q->where('type', $type);
-            })
-            ->paginate($perPage);
-        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
-
-        $response = (new RequestAssigneeTransformer())->transformPaginator($assignees) ;
-        return $this->sendResponse($response, 'Assignees retrieved successfully');
+        $perPage = $viewRequest->get('per_page', env('APP_PAGINATE', 10));
+        return $this->getAssigneesResponse($request, $type, $perPage);
     }
 
     /**
@@ -1397,6 +1388,7 @@ class RequestAPIController extends AppBaseController
 
         $data  = $massAssignUsersRequest->data;
         $assigneeData = collect();
+        $type = RequestAssignee::TypeCompetent; // for avoid error
         foreach ($data as $single) {
             $type = $single['type'] ?? RequestAssignee::TypeCompetent; // @TODO delete
             $newAssignee = $this->assignSingleUserToRequest($id, $single['user_id'], $type);
@@ -1406,16 +1398,36 @@ class RequestAPIController extends AppBaseController
         $request->newMassAssignmentAudit($assigneeData);
         $perPage = $massAssignUsersRequest->get('per_page', env('APP_PAGINATE', 10));
 
+        return $this->getAssigneesResponse($request, $type, $perPage);
+    }
+
+    /**
+     * @param $request
+     * @param $type
+     * @param $perPage
+     * @return mixed
+     */
+    protected function getAssigneesResponse($request, $type, $perPage)
+    {
         $assignees = $request->assignees()
-            ->orderBy('id', 'desc')
             ->when($type, function ($q) use ($type) {
                 $q->where('type', $type);
             })
+            ->latest()
+            ->orderBy('id', 'desc')
             ->paginate($perPage);
-        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
-
+        $assignees->load([
+            'user' => function ($q) {
+                $q->select('id', 'name', 'email', 'avatar')
+                    ->with([
+                        'service_provider:id,user_id,company_name,category,first_name,last_name',
+                        'property_manager:id,user_id,type,first_name,last_name',
+                        'roles:id,name'
+                    ]);
+            }
+        ]);
         $response = (new RequestAssigneeTransformer())->transformPaginator($assignees) ;
-        return $this->sendResponse($response, __('general.attached.manager'));
+        return $this->sendResponse($response, 'Assignees retrieved successfully');
     }
 
     /**

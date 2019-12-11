@@ -51,17 +51,17 @@ export default (config = {}) => {
                 },
                 statistics: {
                     raw: [{
-                        icon: 'ti-plus',
+                        icon: 'icon-plus',
                         color: '#003171',
                         value: 0,
                         description: 'dashboard.requests.total_request'
                     },{
-                        icon: 'ti-plus',
+                        icon: 'icon-plus',
                         color: '#26A65B',
                         value: 0,
                         description: 'models.request.status.solved'
                     },{
-                        icon: 'ti-plus',
+                        icon: 'icon-plus',
                         color: '#26A65B',
                         value: 0,
                         description: 'models.request.status.pending'
