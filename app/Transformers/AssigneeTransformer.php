@@ -29,7 +29,7 @@ class AssigneeTransformer extends BaseTransformer
             $response = [
                 'id' => $model->id,
                 'edit_id' => $user->property_manager->id ?? $user->service_provider->id ?? null,
-                'type' => get_morph_type_of(get_class($user)),
+                'type' => get_morph_type_of($user->service_provider ? ServiceProvider::class : PropertyManager::class),
                 'email' => $user->email,
                 'name' => $user->name,
                 'company_name' => $this->getCompanyName($user),
