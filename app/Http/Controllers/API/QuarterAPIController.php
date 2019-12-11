@@ -865,16 +865,17 @@ class QuarterAPIController extends AppBaseController
             )->select(
                 'id',
                 'user_id',
-                'created_at',
-                DB::raw('GROUP_CONCAT(building_assignees.id, ":", building_assignees.building_id) as parent_ids, "buildings" as type')
+                DB::raw('MAX(created_at) as created_at'),
+                DB::raw('GROUP_CONCAT(building_assignees.id, ":", building_assignees.building_id) as parent_ids'),
+                DB::raw('"buildings" as type')
             )
             ->groupBy('user_id');
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $assignees = QuarterAssignee::where('quarter_id', $quarter->id)
             ->select('id', 'user_id', 'created_at', DB::raw('quarter_id as parent_ids, "quarter" as type'))
-            ->limit(1)
-            ->union($buildingQuery)->orderBy('created_at')->paginate($perPage);
+            ->union($buildingQuery)->orderBy('created_at')
+            ->orderByDesc('created_at')->paginate($perPage);
 
 
         $assignees->load([
@@ -906,11 +907,17 @@ class QuarterAPIController extends AppBaseController
             ->with('address:id,house_num')->get();
         $assignees->each(function ($item) use ($buildings) {
             if ($item->type == 'buildings') {
-                $itemBuildings = $buildings->whereIn('id', $item->parent_ids);
-
-                $item->place = $itemBuildings->pluck('address.house_num')->implode(', ');
+                $places = [];
+                foreach ($item->parent_ids as $assigneeId => $buildingId) {
+                    $building = $buildings->where('id', $buildingId)->first();
+                    $places[$assigneeId] = $building ? $building->address->house_num : 'building deleted';
+                }
+                $item->places = $places;
             } else {
                 $item->place = 'quarter';
+                $item->places = [
+                    $item->id => 'quarter'
+                ];
             }
         });
         $response = (new QuarterAssigneeTransformer())->transformPaginator($assignees) ;
