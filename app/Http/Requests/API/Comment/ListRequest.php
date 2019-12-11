@@ -3,7 +3,6 @@
 namespace App\Http\Requests\API\Comment;
 
 use App\Http\Requests\BaseRequest;
-use App\Models\Conversation;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Validation\Rule;
 
@@ -19,10 +18,6 @@ class ListRequest extends BaseRequest
         // users can only see comments from own conversations
         if (empty(Relation::$morphMap[$this->commentable])) {
             return false;
-        }
-
-        if (Relation::$morphMap[$this->commentable] == Conversation::class) {
-            return Conversation::where('id', $this->id)->ofLoggedInUser()->exists();
         }
 
         // and comments from all other models

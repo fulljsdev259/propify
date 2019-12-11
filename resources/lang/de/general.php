@@ -448,6 +448,11 @@ return [
                             'quarter' => 'hat :assignee entfernt.',
                             'request' => 'hat :assignee entfernt.',
                         ],
+                        'user_unassigned' => [
+                            'default' => 'hat :assignee entfernt.',
+                            'quarter' => 'hat :assignee entfernt.',
+                            'request' => 'hat :assignee entfernt.',
+                        ],
                         'media_uploaded' => [
                             'default' => 'hat ein Dokument hinaufgeladen.',
                             'quarter' => 'hat ein Dokument hinaufgeladen.',

@@ -12,7 +12,7 @@ trait RequestRelation
      */
     public function requests()
     {
-        return $this->morphToMany(Request::class, 'assignee', 'request_assignees', 'assignee_id', 'request_id');
+        return $this->belongsToMany(Request::class, 'request_assignees', 'user_id', 'request_id', 'user_id');
     }
 
     /**
