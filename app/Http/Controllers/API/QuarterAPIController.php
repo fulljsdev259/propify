@@ -21,10 +21,8 @@ use App\Models\Address;
 use App\Models\AuditableModel;
 use App\Models\Building;
 use App\Models\BuildingAssignee;
-use App\Models\PropertyManager;
 use App\Models\Quarter;
 use App\Models\QuarterAssignee;
-use App\Models\ServiceProvider;
 use App\Models\User;
 use App\Repositories\AddressRepository;
 use App\Repositories\QuarterRepository;
@@ -876,6 +874,7 @@ class QuarterAPIController extends AppBaseController
             ->select('id', 'user_id', 'created_at', DB::raw('quarter_id as parent_ids, "quarter" as type'))
             ->union($buildingQuery)
             ->orderByDesc('created_at')
+            ->orderByDesc('id')
             ->paginate($perPage);
 
         $assignees->load([

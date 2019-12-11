@@ -48,6 +48,7 @@ class FilterByExcludeAssigneesCriteria implements CriteriaInterface
         if ($excludeAssigneesRequestId) {
             $requestAssignType = $this->request->request_assign_type;
             $userIds = RequestAssignee::when(
+                $requestAssignType,
                 function ($q) use ($excludeAssigneesRequestId, $requestAssignType) {
                     $q->where(function ($q) use ($excludeAssigneesRequestId, $requestAssignType) {
                         $q->where('request_id', $excludeAssigneesRequestId)
@@ -55,7 +56,7 @@ class FilterByExcludeAssigneesCriteria implements CriteriaInterface
                     });
                 },
                 function ($q) use ($excludeAssigneesRequestId) {
-                    $q->where('request_id', $excludeAssigneesRequestId);
+                    $q->orwhere('request_id', $excludeAssigneesRequestId);
                 })->pluck('user_id');
         }
 
