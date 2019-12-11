@@ -1,9 +1,19 @@
 <template>
     <div class="listing">
+        
+        <el-button 
+            v-if="list !== undefined && list.length > 1 && showLastAssigned"
+            @click="expandRelationList=!expandRelationList" 
+            class="relation-expand-button"
+        >
+            Expand
+        </el-button>
+
         <el-table
-            :data="list"
+            :data="showLastAssigned && !expandRelationList? lastAssigned: list"
             :show-header="showHeader"
             style="width: 100%"
+            :class="{'new-style': showLastAssigned && list !== undefined && list.length > 1, 'border-none': !expandRelationList}"
             @row-dblclick="handleRowDblClick"
             >
             <div slot="empty">
@@ -364,8 +374,8 @@
                 </template>
             </el-table-column> -->
         </el-table>
-        <div v-if="meta.current_page < meta.last_page && this.onlyLast !== undefined && !this.onlyLast">
-            <el-button @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>
+        <div v-if="meta.current_page < meta.last_page">
+            <el-button v-if="!lastAssigned || expandRelationList" @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>
         </div>
     </div>
 </template>
@@ -420,8 +430,9 @@
                 type: Number,
                 default: () => 0
             },
-            onlyLast: {
-                type: Boolean
+            showLastAssigned: {
+                type: Boolean,
+                default: false,
             }
         },
         data() {
@@ -430,6 +441,8 @@
                 meta: {},
                 loading: false,
                 uuid,
+                expandRelationList: false,
+                lastAssigned: [],
             }
         },
         async created() {
@@ -504,12 +517,8 @@
                                 this.unitsTypeLabelMap();
                             }
                         }
-                        if(this.onlyLast !== undefined && this.list.length > 0 && this.filter=="request_id" && this.request_assign_type)
-                            if(this.onlyLast) {
-                                this.list = this.list.slice(0, 1);
-                            } else if(page == 1) {
-                                this.list.shift();
-                            }
+                        if(this.showLastAssigned && this.list.length > 0 && this.filter=="request_id" && this.request_assign_type)
+                            this.lastAssigned = this.list.slice(0, 1);
                     }
                 } catch (e) {
                     this.list = []
@@ -591,11 +600,72 @@
             text-align: right;
             float: right;
         }
-        
+    }
+
+    .listing {
+        position: relative;
+        .relation-expand-button {
+            position: absolute;
+            top: 80px;
+            left: 10px;
+            z-index: 99;
+        }
+        .el-table.new-style {
+            margin-top: 120px;
+            position: unset;
+            &.border-none {
+                .el-table__body-wrapper table tbody tr {
+                    border-bottom: none !important;
+                }
+            }
+            .el-table__body-wrapper {
+                position: unset;
+                table {
+                    tbody {
+                        tr:first-of-type {
+                            position: absolute;
+                            top: 20px;
+                            display: flex;
+                            width: calc(100% + 40px);
+                            margin-left: -20px;
+                            border-bottom: 1px solid var(--border-color-lighter);
+                            td {
+                                padding-bottom: 50px;
+                                flex: 1;
+                                min-width: 200px;
+                                &:first-of-type {
+                                    max-width: 70px;
+                                    min-width: 70px;
+                                    margin-left: 20px;
+                                }
+                                &.action-buttons {
+                                    min-width: 53px;
+                                    margin-right: 20px;
+                                }
+                            }
+                        }
+                        tr {
+                            td {
+                                border: none !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 </style>
 <style lang="scss" scoped>    
     .listing {
+        
+        .relation-expand-button {
+            background-color: transparent;
+            padding: 0px;
+            &:hover {
+                box-shadow: none;
+                font-weight: 700;
+            }
+        }
         :global(.el-table__body-wrapper) {
             :global(table) {
                 display: block;

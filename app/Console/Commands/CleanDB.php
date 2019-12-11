@@ -7,7 +7,6 @@ use App\Models\Building;
 use App\Models\BuildingAssignee;
 use App\Models\CleanifyRequest;
 use App\Models\Comment;
-use App\Models\Conversation;
 use App\Models\Country;
 use App\Models\InternalNotice;
 use App\Models\Like;
@@ -73,7 +72,6 @@ class CleanDB extends Command
      */
     public function handle()
     {
-        $conversations = $this->getAllMorphTable('conversationable_id', 'conversationable_type', Conversation::class);
         $comments = $this->getAllMorphTable('commentable_id', 'commentable_type', Comment::class);
         $media = $this->getAllMorphTable('model_id', 'model_type', Media::class);
         $translations = $this->getAllMorphTable('object_id', 'object_type', [Translation::class,]);
@@ -95,39 +93,6 @@ class CleanDB extends Command
             'relation' => (new User())->getTable(),
         ];
 
-
-
-        $buildingAssignees = $this->getMorphTable('assignee_id', 'assignee_type', [
-                User::class,
-                PropertyManager::class,
-            ]);
-        $buildingAssignees[] = [
-            'relation' => (new Building())->getTable(),
-        ];
-
-
-        $quarterAssignees = $this->getMorphTable('assignee_id', 'assignee_type', [
-            User::class,
-            PropertyManager::class,
-        ]);
-        $quarterAssignees[] = [
-            'relation' => (new Quarter())->getTable(),
-        ];
-
-
-
-        $requestAssignees = $this->getMorphTable('assignee_id', 'assignee_type', [
-            User::class,
-            PropertyManager::class,
-            ServiceProvider::class,
-        ]);
-        $requestAssignees[] = [
-            'relation' => (new Request())->getTable(),
-            'relation_id' => 'request_id'
-        ];
-
-
-
         $config = [
             'audits' => $audits,
             'autologins' => [
@@ -145,9 +110,10 @@ class CleanDB extends Command
             'cleanify_requests' => [
                 'relation' => (new User())->getTable(),
             ],
-            'conversations' => $conversations,
             'comments' => $comments,
-            'building_assignees' => $buildingAssignees,
+            'building_assignees' => [
+                'relation' => (new User())->getTable(),
+            ],
             'internal_notices' => [
                 [
                     'relation' => (new User())->getTable(),
@@ -164,8 +130,12 @@ class CleanDB extends Command
             'oauth_access_tokens' => [
                 'relation' => (new User())->getTable(),
             ],
-            'quarter_assignees' => $quarterAssignees,
-            'request_assignees' => $requestAssignees,
+            'quarter_assignees' => [
+                'relation' => (new User())->getTable(),
+            ],
+            'request_assignees' => [
+                'relation' => (new User())->getTable(),
+            ],
             'translations' => $translations
         ];
 
@@ -247,7 +217,6 @@ class CleanDB extends Command
             BuildingAssignee::class,
             CleanifyRequest::class,
             Comment::class,
-            Conversation::class,
             Country::class,
             InternalNotice::class,
             Like::class,

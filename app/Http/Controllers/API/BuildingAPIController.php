@@ -833,8 +833,16 @@ class BuildingAPIController extends AppBaseController
 
         $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
         $assignees = $building->assignees()->paginate($perPage);
-        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
-
+        $assignees->load([
+            'user' => function ($q) {
+                $q->select('id', 'name', 'email', 'avatar')
+                    ->with([
+                        'service_provider:id,user_id,company_name,category',
+                        'property_manager:id,user_id,type',
+                        'roles:id,name'
+                    ]);
+            }
+        ]);
         $response = (new BuildingAssigneeTransformer())->transformPaginator($assignees) ;
         return $this->sendResponse($response, 'Assignees retrieved successfully');
     }
@@ -1023,34 +1031,10 @@ class BuildingAPIController extends AppBaseController
             return $this->sendError(__('models.user.errors.not_found'));
         }
 
-        $role = $request->role;
-        if (in_array($role, ['manager', 'administrator'])) {
-            $propertyManagerId = PropertyManager::where('user_id', $user->id)->value('id');
-            if (empty($propertyManagerId)) {
-                $assigneeId = $userId;
-                $assigneeType = get_morph_type_of(User::class);
-            } else {
-                $assigneeId = $propertyManagerId;
-                $assigneeType = get_morph_type_of(PropertyManager::class);
-            }
-        } else {
-            $serviceProviderId = ServiceProvider::where('user_id', $user->id)->value('id');
-            if (empty($serviceProviderId)) {
-                $assigneeId = $userId;
-                $assigneeType = get_morph_type_of(User::class);
-            } else {
-                $assigneeId = $serviceProviderId;
-                $assigneeType = get_morph_type_of(ServiceProvider::class);
-            }
-        }
-
         BuildingAssignee::updateOrCreate([
             'building_id' => $id,
             'user_id' => $userId,
-            'assignee_id' => $assigneeId,
-            'assignee_type' => $assigneeType,
         ], [
-            'assignment_types' => $request->assignment_types,
             'created_at' => now()
         ]);
 
@@ -1091,7 +1075,7 @@ class BuildingAPIController extends AppBaseController
      * @return mixed
      * @throws \Exception
      */
-    public function deleteBuildingAssignee(int $id, UnAssignRequest $request)
+    public function deleteBuildingAssignee($id, UnAssignRequest $request)
     {
         $buildingAssignee = BuildingAssignee::find($id);
         if (empty($buildingAssignee)) {
@@ -1100,7 +1084,7 @@ class BuildingAPIController extends AppBaseController
         }
         $buildingAssignee->delete();
 
-        return $this->sendResponse($id, __('general.detached.' . $buildingAssignee->assignee_type));
+        return $this->sendResponse($id, __('general.detached.user'));
     }
 
     /**
@@ -1132,18 +1116,17 @@ class BuildingAPIController extends AppBaseController
      *      )
      * )
      *
-     * @param int $building_id
-     * @param int $manager_id
+     * @param int $buildingId
+     * @param int $managerId
      * @param UnAssignRequest $r
      * @return mixed
      * @throws \Exception
      */
-    public function unAssignPropertyManager(int $building_id, int $manager_id, UnAssignRequest $r)
+    public function unAssignPropertyManager(int $buildingId, int $managerId, UnAssignRequest $r)
     {
         $assigneeId = BuildingAssignee::where([
-                'building_id' => $building_id,
-                'assignee_id' => $manager_id,
-                'assignee_type' => get_morph_type_of(PropertyManager::class)
+                'building_id' => $buildingId,
+                'user_id' => PropertyManager::where('id', $managerId)->value('user_id'),
             ])->value('id');
         return $this->deleteBuildingAssignee($assigneeId, $r);
     }

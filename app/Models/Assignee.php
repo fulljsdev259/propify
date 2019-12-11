@@ -26,16 +26,6 @@ class Assignee extends AuditableModel
     // @TODO make more good way
     protected function getAuditData()
     {
-        $model = Relation::$morphMap[$this->assignee_type] ?? $this->assignee_type;
-        if (! class_exists($model)) {
-            return [];
-        }
-        $eventConvig = [
-            User::class => AuditableModel::EventUserUnassigned,
-            ServiceProvider::class => AuditableModel::EventProviderUnassigned,
-            PropertyManager::class => AuditableModel::EventManagerUnassigned,
-        ];
-
-        return [$eventConvig[$model], ['ids' => [$this->assignee_id]]];
+        return [ AuditableModel::EventUserUnassigned, ['ids' => [$this->user_id]]];
     }
 }

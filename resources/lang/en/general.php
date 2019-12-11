@@ -447,6 +447,11 @@ return [
                             'quarter' => 'Manager :assignee has been unassigned.',
                             'request' => 'Manager :assignee has been unassigned.',
                         ],
+                        'user_unassigned' => [
+                            'default' => 'User :assignee has been unassigned.',
+                            'quarter' => 'User :assignee has been unassigned.',
+                            'request' => 'User :assignee has been unassigned.',
+                        ],
                         'media_uploaded' => [
                             'default' => 'Media uploaded.',
                             'quarter' => 'Media uploaded.',

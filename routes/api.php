@@ -115,6 +115,9 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
 
     // @TODO delete all building assignees
     Route::get('/buildings/{id}/assignees', 'BuildingAPIController@getAssignees');
+    Route::post('/buildings/users/mass-assign', 'BuildingAPIController@massAssignUsers')->name('buildings.mass.assign.users');
+    Route::post('/buildings/{id}/users/mass-assign', 'BuildingAPIController@massAssignUsersToBuildings')->name('buildings.mass.assign.users');
+
     Route::post('/buildings/{id}/users', 'BuildingAPIController@assignUsers')->name('buildings.assign.users');
     Route::delete('/buildings-assignees/{buildings_assignee_id}', 'BuildingAPIController@deleteBuildingAssignee');
 
@@ -229,8 +232,9 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::get('/notifications', 'NotificationAPIController@index')->name('notifications');
     Route::post('/notifications', 'NotificationAPIController@markAllAsRead')->name('notifications.markAll');
     Route::post('/notifications/{id}', 'NotificationAPIController@markAsReadUnRead')->name('notifications.mark');
-    Route::get('/conversations', 'ConversationAPIController@index');
-    Route::post('/conversations/{id}/comments', 'ConversationAPIController@storeComment');
+    Route::get('/conversations', function (){
+        return [];
+    });
 
     // Cleanify Request
     Route::get('cleanify', 'CleanifyRequestAPIController@index');

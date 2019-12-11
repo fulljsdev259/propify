@@ -537,7 +537,7 @@ export default (config = {}) => {
                         this.toAssignList = [];
                         this.toAssign = [];
                     },
-                    async assignUsers() {
+                    async assignUsers(requestAssignType = 0) {
                         if (!this.toAssign || !this.model.id) {
                             return false;
                         }
@@ -547,7 +547,13 @@ export default (config = {}) => {
         
                         this.toAssign.forEach(id => {
                             let assign_user = this.toAssignList.find(item => item.id == id )
-                            user_params.push({user_id: id, role: assign_user.roles[0].name})
+                            let query = {
+                                user_id: id,
+                                role: assign_user.roles[0].name,
+                            }
+                            if(requestAssignType)
+                                query.type = requestAssignType;
+                            user_params.push(query);
                         })
         
                         resp = await this.assignUsersToRequest({
@@ -558,7 +564,10 @@ export default (config = {}) => {
                         if (resp && resp.data) {
                             displaySuccess(resp)                           
                             this.resetToAssignList();
-                            this.$refs.assigneesList.fetch();    
+                            if(requestAssignType == 1)
+                                this.$refs.competentList.fetch();
+                            else if(requestAssignType == 2)
+                                this.$refs.accountableList.fetch();    
                             if(this.$refs.auditList){
                                 this.$refs.auditList.fetch();
                             }
@@ -635,7 +644,6 @@ export default (config = {}) => {
                             this.model.relation_id = data.relation.id
                         }
                         //this.relations = resp.data.resident.relations.filter(item => item.status == 1)
-                        await this.getConversations();
                         
                         if (data.resident) {
                             this.model.resident_id = data.resident.id;

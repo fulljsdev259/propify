@@ -229,12 +229,12 @@
                                 class="add-work-flow"
                                 @add-workflow="addWorkflow"
                                 @cancel-add-workflow="cancelAddWorkflow"/>
-                            <el-collapse accordion>
+                            <el-collapse accordion v-model="activeCollapse">
                                  <el-collapse-item
                                         :key="'workflow' + $index + workflow.title"
                                         :label="`${workflow.name}`"
                                         :value="workflow.title"
-                                        :name="workflow.title + $index"
+                                        :name="$index"
                                         v-for="(workflow, $index) in model.workflows">
                                     <template slot="title">
                                         {{workflow.title}}
@@ -293,20 +293,22 @@
                                                 {{ $t('models.quarter.workflow.delete') }}
                                             </el-button> -->
 
-                                            <el-button 
-                                                type="danger" 
-                                                @click="showEditWorkflow($index)"
-                                                icon="icon-pencil" 
-                                                size="mini" 
-                                                class="round-btn">
-                                                {{ $t('models.quarter.workflow.edit') }}
-                                            </el-button>
+                                            
                                         </el-col>
                                     </el-row>
                                 </el-collapse-item>
                             </el-collapse>
 
                             <div class="workflow-button-bar">
+                                <el-button 
+                                    v-if="activeCollapse !== '' && editMode"
+                                    type="danger" 
+                                    @click="showEditWorkflow(parseInt(activeCollapse))"
+                                    icon="icon-pencil" 
+                                    size="mini" 
+                                    class="round-btn collapse-edit-btn">
+                                    {{ $t('models.quarter.workflow.edit') }}
+                                </el-button>
                                 <el-button 
                                         type="primary" 
                                         @click="showAddWorkflow" 
@@ -661,6 +663,7 @@
                 editId: false,
                 editName: false,
                 visibleDialog: false,
+                activeCollapse: '',
             }
         },
         methods: {
@@ -862,7 +865,7 @@
                     this.model.workflows.splice(index, 1)
                     this.workflowCount --
                 }
-            }
+            },
         },
         computed: {
             ...mapGetters('application', {

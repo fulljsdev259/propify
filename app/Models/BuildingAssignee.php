@@ -42,8 +42,6 @@ use Illuminate\Support\Str;
  * )
  * @property int $id
  * @property int $building_id
- * @property int $assignee_id
- * @property string $assignee_type
  * @property string|null $created_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read int|null $audits_count
@@ -64,17 +62,13 @@ class BuildingAssignee extends Assignee
 
     public $fillable = [
         'building_id',
-        'assignee_id',
         'user_id',
-        'assignee_type',
         'created_at',
     ];
 
     protected $casts = [
         'building_id' => 'int',
-        'assignee_id' => 'int',
         'user_id' => 'int',
-        'assignee_type' => 'string',
         'created_at' => 'date',
     ];
 
@@ -93,6 +87,16 @@ class BuildingAssignee extends Assignee
         $data['old_values'] = $olddata;
         $data['event'] = $event;
         return $data;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function building()
+    {
+        return $this->belongsTo(Building::class);
     }
 
 }

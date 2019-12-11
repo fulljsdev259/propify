@@ -42,14 +42,6 @@ class MassAssignUsersRequest extends BaseRequest
                             return $fails($message);
                         }
                         if (empty($data['type'])) {
-                            $message = __('validation.required', ['attribute' => $this->getAttributeByKey($index, 'type')]);
-                            return $fails($message);
-                        }
-                        if (empty($data['role'])) {
-                            $message = __('validation.required', ['attribute' => $this->getAttributeByKey($index, 'role')]);
-                            return $fails($message);
-                        }
-                        if (empty($data['type'])) {
                             // @TODO uncomment
 //                            $message = __('validation.required', ['attribute' => $this->getAttributeByKey($index, 'type')]);
 //                            return $fails($message);
@@ -66,7 +58,7 @@ class MassAssignUsersRequest extends BaseRequest
     public function messages()
     {
         return [
-            'data.required' => 'Need pass latest one array contains type, user_id, role keys'
+            'data.required' => 'Need pass latest one array contains type, user_id keys'
         ];
     }
 

@@ -540,13 +540,7 @@ class QuarterAPIController extends AppBaseController
             return $this->sendError(__('models.quarter.errors.not_found'));
         }
 
-        $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
-        $assignees = $quarter->assignees()->paginate($perPage);
-        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
-
-        $response = (new QuarterAssigneeTransformer())->transformPaginator($assignees) ;
-
-        return $this->sendResponse($response, 'Assignees retrieved successfully');
+        return $this->getAssigneesResponse($quarter, $request);
     }
 
     /**
@@ -599,18 +593,17 @@ class QuarterAPIController extends AppBaseController
         if (empty($quarter)) {
             return $this->sendError(__('models.quarter.errors.not_found'));
         }
-        $this->assignSingleUserToQuarter($id, $request->user_id, $request->role);
-        $response = (new QuarterTransformer)->transform($quarter);
-        return $this->sendResponse($response, __('general.attached.manager'));
+        $this->assignSingleUserToQuarter($id, $request->user_id);
+        return $this->getAssigneesResponse($quarter, $request);
     }
 
     /**
      * @param int $id
-     * @param MassAssignUsersRequest $request
+     * @param MassAssignUsersRequest $massAssignUsersRequest
      * @return mixed
      * @throws \Exception
      */
-    public function massAssignUsers(int $id, MassAssignUsersRequest $request)
+    public function massAssignUsers(int $id, MassAssignUsersRequest $massAssignUsersRequest)
     {
         /** @var Quarter $quarter */
         $quarter = $this->quarterRepository->findWithoutFail($id);
@@ -618,17 +611,15 @@ class QuarterAPIController extends AppBaseController
             return $this->sendError(__('models.quarter.errors.not_found'));
         }
 
-        $data  = $request->toArray();
+        $data  = $massAssignUsersRequest->data;
         $assigneeData = collect();
         foreach ($data as $single) {
-            $newAssignee = $this->assignSingleUserToQuarter($id, $single['user_id'], $single['role']);
+            $newAssignee = $this->assignSingleUserToQuarter($id, $single['user_id']);
             $assigneeData->push($newAssignee);
         }
 
         $quarter->newMassAssignmentAudit($assigneeData);
-
-        $response = (new QuarterTransformer)->transform($quarter);
-        return $this->sendResponse($response, __('general.attached.manager'));
+        return $this->getAssigneesResponse($quarter, $massAssignUsersRequest);
     }
 
     /**
@@ -637,7 +628,7 @@ class QuarterAPIController extends AppBaseController
      * @param $role
      * @return QuarterAssignee|\Illuminate\Database\Eloquent\Model|mixed
      */
-    protected function assignSingleUserToQuarter($quarterId, $userId, $role)
+    protected function assignSingleUserToQuarter($quarterId, $userId)
     {
         $user = User::find($userId);
         if (empty($user)) {
@@ -648,21 +639,9 @@ class QuarterAPIController extends AppBaseController
             return $this->sendError(__('general.invalid_operation'));
         }
 
-        if (in_array($role, PropertyManager::Type)) {
-            $propertyManagerId = PropertyManager::where('user_id', $user->id)->value('id');
-            $assigneeId = $propertyManagerId;
-            $assigneeType = get_morph_type_of(PropertyManager::class);
-        } else {
-            $serviceProviderId = ServiceProvider::where('user_id', $user->id)->value('id');
-            $assigneeId = $serviceProviderId;
-            $assigneeType = get_morph_type_of(ServiceProvider::class);
-        }
-
         return QuarterAssignee::updateOrCreate([
             'quarter_id' => $quarterId,
             'user_id' => $userId,
-            'assignee_id' => $assigneeId,
-            'assignee_type' => $assigneeType,
         ], [
             'created_at' => now()
         ]);
@@ -710,7 +689,7 @@ class QuarterAPIController extends AppBaseController
         }
         $quarterAssignee->delete();
 
-        return $this->sendResponse($id, __('general.detached.' . $quarterAssignee->assignee_type));
+        return $this->sendResponse($id, __('general.detached.user'));
     }
 
     /**
@@ -867,5 +846,28 @@ class QuarterAPIController extends AppBaseController
         $response['quarter_id'] = $quarterId;
 
         return $this->sendResponse($response, __('Email Receptionists get successfully'));
+    }
+
+    /**
+     * @param $quarter
+     * @param $request
+     * @return mixed
+     */
+    protected function getAssigneesResponse($quarter, $request)
+    {
+        $perPage = $request->get('per_page', env('APP_PAGINATE', 10));
+        $assignees = $quarter->assignees()->paginate($perPage);
+        $assignees->load([
+            'user' => function ($q) {
+                $q->select('id', 'name', 'email', 'avatar')
+                    ->with([
+                        'service_provider:id,user_id,company_name,category',
+                        'property_manager:id,user_id,type',
+                        'roles:id,name'
+                    ]);
+            }
+        ]);
+        $response = (new QuarterAssigneeTransformer())->transformPaginator($assignees) ;
+        return $this->sendResponse($response, 'Assignees retrieved successfully');
     }
 }

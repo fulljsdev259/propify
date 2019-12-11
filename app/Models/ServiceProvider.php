@@ -267,14 +267,6 @@ class ServiceProvider extends AuditableModel
     }
 
     /**
-     * @return mixed
-     */
-    public function quarters()
-    {
-        return $this->morphToMany(Quarter::class, 'assignee', 'quarter_assignees', 'assignee_id', 'quarter_id');
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      **/
     public function pinboards()
@@ -339,4 +331,13 @@ class ServiceProvider extends AuditableModel
         }
         return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
     }
+
+    /**
+     * @return mixed
+     */
+    public function quarters()
+    {
+        return $this->belongsToMany(Quarter::class, 'quarter_assignees', 'user_id', 'quarter_id', 'user_id');
+    }
+
 }

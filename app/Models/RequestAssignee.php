@@ -48,8 +48,6 @@ use Illuminate\Support\Str;
  * )
  * @property int $id
  * @property int $request_id
- * @property int $assignee_id
- * @property string $assignee_type
  * @property string|null $created_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read int|null $audits_count
@@ -76,9 +74,7 @@ class RequestAssignee extends Assignee
 
     public $fillable = [
         'request_id',
-        'assignee_id',
         'user_id',
-        'assignee_type',
         'type',
         'sent_email',
         'created_at',
@@ -111,5 +107,10 @@ class RequestAssignee extends Assignee
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function request()
+    {
+        return $this->belongsTo(Request::class);
     }
 }

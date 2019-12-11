@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Jobs\Notify\NotifyNewRequestInternalNotice;
 use App\Mails\NewRequestForReceptionist;
 use App\Mails\NotifyServiceProvider;
 use App\Models\Building;
@@ -13,7 +12,6 @@ use App\Models\PropertyManager;
 use App\Models\Settings;
 use App\Models\Request;
 use App\Models\Template;
-use App\Models\Conversation;
 use App\Models\Resident;
 use App\Models\Unit;
 use App\Models\User;
@@ -73,7 +71,6 @@ class AppServiceProvider extends ServiceProvider
             'translation' => \App\Models\Translation::class,
             'provider' => \App\Models\ServiceProvider::class,
             'relation' => \App\Models\Relation::class,
-            'conversation' => Conversation::class,
             'workflow' => Workflow::class,
 
             'pinboard_published' => PinboardPublished::class,

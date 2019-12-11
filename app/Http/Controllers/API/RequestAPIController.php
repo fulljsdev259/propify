@@ -864,13 +864,6 @@ class RequestAPIController extends AppBaseController
             'comments.user',
         ]);
 
-        foreach ($request->managers as $manager) {
-            if ($manager->user) {
-                $request->conversationFor($manager->user, $sp->user);
-            }
-        }
-
-        $request->conversationFor(Auth::user(), $sp->user);
         $request->touch();
         $sp->touch();
         return $this->sendResponse($request, __('general.attached.provider'));
@@ -931,10 +924,6 @@ class RequestAPIController extends AppBaseController
             'resident.user',
             'comments.user',
         ]);
-
-        foreach ($request->providers as $p) {
-            $request->conversationFor($p->user, $u);
-        }
 
         $request->touch();
         $u->touch();
@@ -997,9 +986,6 @@ class RequestAPIController extends AppBaseController
             'comments.user',
         ]);
 
-        foreach ($request->providers as $p) {
-            $request->conversationFor($p->user, $manager->user);
-        }
         $request->touch();
         $manager->touch();
         return $this->sendResponse($request, __('general.attached.manager'));
@@ -1381,18 +1367,9 @@ class RequestAPIController extends AppBaseController
             return $this->sendError(__('models.request.errors.not_found'));
         }
 
-        $perPage = $viewRequest->get('per_page', env('APP_PAGINATE', 10));
         $type = $viewRequest->type;
-        $assignees = $request->assignees()
-            ->orderBy('id', 'desc')
-            ->when($type, function ($q) use ($type) {
-                $q->where('type', $type);
-            })
-            ->paginate($perPage);
-        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
-
-        $response = (new RequestAssigneeTransformer())->transformPaginator($assignees) ;
-        return $this->sendResponse($response, 'Assignees retrieved successfully');
+        $perPage = $viewRequest->get('per_page', env('APP_PAGINATE', 10));
+        return $this->getAssigneesResponse($request, $type, $perPage);
     }
 
     /**
@@ -1411,25 +1388,45 @@ class RequestAPIController extends AppBaseController
 
         $data  = $massAssignUsersRequest->data;
         $assigneeData = collect();
+        $type = RequestAssignee::TypeCompetent; // for avoid error
         foreach ($data as $single) {
             $type = $single['type'] ?? RequestAssignee::TypeCompetent; // @TODO delete
-            $newAssignee = $this->assignSingleUserToRequest($id, $single['user_id'], $single['role'], $type);
+            $newAssignee = $this->assignSingleUserToRequest($id, $single['user_id'], $type);
             $assigneeData->push($newAssignee);
         }
 
         $request->newMassAssignmentAudit($assigneeData);
         $perPage = $massAssignUsersRequest->get('per_page', env('APP_PAGINATE', 10));
 
+        return $this->getAssigneesResponse($request, $type, $perPage);
+    }
+
+    /**
+     * @param $request
+     * @param $type
+     * @param $perPage
+     * @return mixed
+     */
+    protected function getAssigneesResponse($request, $type, $perPage)
+    {
         $assignees = $request->assignees()
             ->orderBy('id', 'desc')
             ->when($type, function ($q) use ($type) {
                 $q->where('type', $type);
             })
             ->paginate($perPage);
-        $assignees = $this->getAssigneesRelated($assignees, [PropertyManager::class, User::class, ServiceProvider::class]);
-
+        $assignees->load([
+            'user' => function ($q) {
+                $q->select('id', 'name', 'email', 'avatar')
+                    ->with([
+                        'service_provider:id,user_id,company_name,category,first_name,last_name',
+                        'property_manager:id,user_id,type,first_name,last_name',
+                        'roles:id,name'
+                    ]);
+            }
+        ]);
         $response = (new RequestAssigneeTransformer())->transformPaginator($assignees) ;
-        return $this->sendResponse($response, __('general.attached.manager'));
+        return $this->sendResponse($response, 'Assignees retrieved successfully');
     }
 
     /**
@@ -1438,7 +1435,7 @@ class RequestAPIController extends AppBaseController
      * @param $role
      * @return RequestAssignee|\Illuminate\Database\Eloquent\Model|mixed
      */
-    protected function assignSingleUserToRequest($requestId, $userId, $role, $type)
+    protected function assignSingleUserToRequest($requestId, $userId, $type)
     {
         $user = User::find($userId);
         if (empty($user)) {
@@ -1449,21 +1446,9 @@ class RequestAPIController extends AppBaseController
             return $this->sendError(__('general.invalid_operation'));
         }
 
-        if (in_array($role, PropertyManager::Type)) {
-            $propertyManagerId = PropertyManager::where('user_id', $user->id)->value('id');
-            $assigneeId = $propertyManagerId;
-            $assigneeType = get_morph_type_of(PropertyManager::class);
-        } else {
-            $serviceProviderId = ServiceProvider::where('user_id', $user->id)->value('id');
-            $assigneeId = $serviceProviderId;
-            $assigneeType = get_morph_type_of(ServiceProvider::class);
-        }
-
         return RequestAssignee::updateOrCreate([
             'request_id' => $requestId,
             'user_id' => $userId,
-            'assignee_id' => $assigneeId,
-            'assignee_type' => $assigneeType,
             'type' => $type,
         ], [
             'created_at' => now()
@@ -1515,17 +1500,11 @@ class RequestAPIController extends AppBaseController
             $request->touch();
         }
 
-        $type = $requestAssignee->assignee_type;
-        $class = Relation::$morphMap[$type] ?? $type;
-        if (class_exists($class)) {
-            $model = $class::find($requestAssignee->assignee_id);
-            if ($model) {
-                $model->touch();
-            }
-        }
+        $user = User::find($requestAssignee->user_id);
+        $user->touch();
         $requestAssignee->delete();
 
-        return $this->sendResponse($id, __('general.detached.' . $requestAssignee->assignee_type));
+        return $this->sendResponse($id, __('general.detached.user'));
     }
 
     /**
@@ -1795,42 +1774,19 @@ class RequestAPIController extends AppBaseController
         ];
 
         $user = $seeRequestsCount->user();
-        if ($user->propertyManager()->exists()) {
-            $response = $this->getLoggedRequestCount($user->propertyManager->id, $response, 'propertyManager', 'managers');
-        } elseif ($user->serviceProvider()->exists()) {
-            $response = $this->getLoggedRequestCount($user->serviceProvider->id, $response, 'serviceProvider', 'providers');
-        } elseif ($user->hasRole('administrator')) {
-            $response = $this->getLoggedRequestCount($user->id, $response, 'users', 'users');
-        }
-
-        return $this->sendResponse($response, 'Request countes');
-    }
-
-    /**
-     * @param $relationId
-     * @param $response
-     * @param $userRelation
-     * @param $requestRelation
-     * @return mixed
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     */
-    protected function getLoggedRequestCount($relationId, $response, $userRelation, $requestRelation)
-    {
         $this->requestRepository->resetCriteria();
-        $this->requestRepository->whereHas($requestRelation, function ($q) use ($relationId) {
-            $q->where('assignee_id', $relationId);
+        $this->requestRepository->whereHas('users', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
         });
         $response['my_request_count'] = $this->requestRepository->count();
 
-
         $this->requestRepository->resetCriteria();
-        $this->requestRepository->whereHas($requestRelation, function ($q) use ($relationId) {
-            $q->where('assignee_id', $relationId);
+        $this->requestRepository->whereHas('users', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
         });
         $this->requestRepository->pushCriteria(new WhereInCriteria('status', Request::PendingStatuses));
         $response['my_pending_request_count'] = $this->requestRepository->count();
-
-        return $response;
+        return $this->sendResponse($response, 'Request countes');
     }
 
     /**

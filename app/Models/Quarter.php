@@ -199,11 +199,19 @@ class Quarter extends AuditableModel implements HasMedia
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function propertyManagers()
     {
-        return $this->morphedByMany(PropertyManager::class, 'assignee', 'quarter_assignees', 'quarter_id');
+        return $this->belongsToMany(PropertyManager::class, 'quarter_assignees', 'quarter_id', 'user_id', 'id', 'user_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function property_managers()
+    {
+        return $this->belongsToMany(PropertyManager::class, 'quarter_assignees', 'quarter_id', 'user_id', 'id', 'user_id');
     }
 
     /**
@@ -211,8 +219,9 @@ class Quarter extends AuditableModel implements HasMedia
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'quarter_assignees');
+        return $this->belongsToMany(User::class, 'quarter_assignees', 'quarter_id', 'user_id', 'id', 'id');
     }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -269,13 +278,4 @@ class Quarter extends AuditableModel implements HasMedia
     {
         return $this->hasManyThrough(Request::class, Relation::class);
     }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function property_managers()
-    {
-        return $this->morphedByMany(PropertyManager::class, 'assignee', 'quarter_assignees', 'quarter_id');
-    }
-
 }

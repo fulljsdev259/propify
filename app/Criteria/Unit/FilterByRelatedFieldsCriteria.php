@@ -66,8 +66,8 @@ class FilterByRelatedFieldsCriteria implements CriteriaInterface
         // @TODO correct need or not I think no need because now used user_id and it based on quarter
         $managerId = $this->request->get('manager_id', null);
         if ($managerId) {
-            return $model->whereHas('building.propertyManagers', function ($q) use ($managerId) {
-                $q->where('building_assignees.assignee_id', $managerId);
+            return $model->whereHas('building.property_managers', function ($q) use ($managerId) {
+                $q->where('property_managers.id', $managerId);
             });
         }
 

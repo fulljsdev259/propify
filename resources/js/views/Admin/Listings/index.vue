@@ -1,7 +1,7 @@
 <template>
     <div class="listings list-view">
         <heading :title="$t('models.listing.title')" icon="icon-basket" shadow="heavy">
-            <!--<el-button @click="add" icon="ti-plus" round type="primary">-->
+            <!--<el-button @click="add" icon="icon-plus" round type="primary">-->
             <!--{{$t('models.listing.add')}}-->
             <!--</el-button>-->
             <template v-if="$can($permissions.delete.listing)">

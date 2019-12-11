@@ -8,7 +8,7 @@
             <template v-if="$can($permissions.create.provider)">
                 <el-button
                         @click="add"
-                        icon="ti-plus"
+                        icon="icon-plus"
                         size="mini"
                         class="el-button--transparent"
                 >

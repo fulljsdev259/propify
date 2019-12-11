@@ -32,12 +32,12 @@ export default (config = {}) => {
                         value: 0,
                         description: 'dashboard.residents.total_residents'
                     }, {
-                        icon: 'ti-plus',
+                        icon: 'icon-plus',
                         color: '#26A65B',
                         value: 0,
                         description: 'models.resident.status.active'
                     },{
-                        icon: 'ti-plus',
+                        icon: 'icon-plus',
                         color: '#26A65B',
                         value: 0,
                         description: 'models.resident.status.not_active'
