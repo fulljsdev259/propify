@@ -1410,10 +1410,11 @@ class RequestAPIController extends AppBaseController
     protected function getAssigneesResponse($request, $type, $perPage)
     {
         $assignees = $request->assignees()
-            ->orderBy('id', 'desc')
             ->when($type, function ($q) use ($type) {
                 $q->where('type', $type);
             })
+            ->latest()
+            ->orderBy('id', 'desc')
             ->paginate($perPage);
         $assignees->load([
             'user' => function ($q) {
