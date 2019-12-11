@@ -166,7 +166,7 @@
                     if(this.autoSuggest.started && this.autoSuggest.index > 0) {
                         this.autoSuggest.index --;
                         if(this.$refs.autoSuggestList) {
-                            let curPos = (this.autoSuggest.index + 1) * 52;
+                            let curPos = this.autoSuggest.index * 52;
                             let top = this.$refs.autoSuggestList.scrollTop;
                             let height = this.$refs.autoSuggestList.clientHeight;
                             if(curPos < top )
