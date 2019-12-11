@@ -459,7 +459,7 @@
                         </div>
                     </div>
                     <div v-else-if="column.withRequestUsers">
-                        <div class="avatars-wrapper">
+                        <div class="avatars-wrapper with-request-users">
                             <span v-if="scope.row[column.prop]">
                                 <el-tooltip
                                     :content="scope.row[column.prop].name"
@@ -475,6 +475,7 @@
                                     </template>
                                 </el-tooltip>
                             </span>
+                            <span v-if="scope.row[column.prop]" class="name">{{ scope.row[column.prop].label }}</span>
                             <div class="quick-assign-avatar" ref="quickAssignAvatar">
                                 <el-dropdown placement="bottom" trigger="click" @visible-change="handleVisibleChange">
                                     <el-button size="mini" class="more-actions" @click="handleClickedItem">
@@ -1820,6 +1821,15 @@
 
         & > span {
             margin-right: 2px;
+        }
+
+        &.with-request-users {
+            span {
+                margin-right: 10px;
+                &.name {
+                    text-transform: capitalize;
+                }
+            }
         }
 
         .vue-avatar--wrapper {
