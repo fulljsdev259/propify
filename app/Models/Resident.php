@@ -187,15 +187,6 @@ class Resident extends AuditableModel implements HasMedia
         self::StatusInActive => 'not_active',
     ];
 
-    const TypeResident = 1;
-    const TypeOwner = 2;
-    const TypeFormerResident = 3;
-    const Type = [
-        self::TypeResident => 'tenant',
-        self::TypeOwner => 'owner',
-        self::TypeFormerResident => 'former_resident',
-    ];
-
     /**
      * Validation rules
      *
