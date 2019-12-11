@@ -31,7 +31,7 @@
                             <el-col :md="12">
                                 <el-form-item :label="$t('models.quarter.types.label')" :rules="validationRules.types"
                                         class="label-block"
-                                        prop="type">
+                                        prop="types">
                                     <!-- <el-select
                                             :placeholder="$t('general.placeholders.select')"
                                             style="display: block"

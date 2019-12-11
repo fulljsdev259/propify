@@ -428,6 +428,9 @@
             &:first-of-type {
                 padding: 0px;
             }
+            &.el-icon-microphone {
+                font-size: 24px;
+            }
         }
 
         .content {
