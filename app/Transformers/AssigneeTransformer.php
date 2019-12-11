@@ -27,10 +27,11 @@ class AssigneeTransformer extends BaseTransformer
             $user = new User(['avatar' => $model->related->avatar]);
             $user->id = $model->related->user_id;
             $avatar = $user->avatar;
+
             $response = [
                 'id' => $model->id,
-                'edit_id' => $model->assignee_id, // @TODO correct need or not
-                'type' => $model->assignee_type, // @TODO correct need or not
+                'edit_id' => $model->related->id,
+                'type' => get_morph_type_of(get_class($model->related)),
                 'email' => $model->related->email,
                 'name' => $model->related->name,
                 'company_name' => $model->related->company_name,
@@ -46,8 +47,8 @@ class AssigneeTransformer extends BaseTransformer
 
         $response = [
             'id' => $model->id,
-            'edit_id' => $model->assignee_id, // @TODO correct need or not
-            'type' => $model->assignee_type, // @TODO correct need or not
+            'edit_id' => null,
+            'type' => null,
             'email' =>  'User deleted',
             'name' => 'User deleted',
             'company_name' => 'User deleted',
