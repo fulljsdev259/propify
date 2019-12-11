@@ -31,7 +31,7 @@
             </el-select>
         </el-col>
         <el-col id="managerAssignBtn">
-            <el-button :disabled="!toAssign.length" @click="assign" class="full-button el-button--assign"
+            <el-button :disabled="!toAssign.length" @click="assign(requestAssignType)" class="full-button el-button--assign"
                         icon="ti-save">
                 &nbsp;{{$t('general.assign')}}
             </el-button>
