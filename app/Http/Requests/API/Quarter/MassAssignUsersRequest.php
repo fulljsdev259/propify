@@ -3,6 +3,7 @@
 namespace App\Http\Requests\API\Quarter;
 
 use App\Http\Requests\BaseRequest;
+use App\Models\BuildingAssignee;
 
 class MassAssignUsersRequest extends BaseRequest
 {
@@ -42,6 +43,18 @@ class MassAssignUsersRequest extends BaseRequest
                             return $fails($message);
                         }
                     }
+
+                    $userIds = collect($value)->pluck('user_id');
+                    $buildingAssignees = BuildingAssignee::whereIn('user_id', $userIds)
+                        ->select('user_id', 'building_id')
+                        ->with('user:id,name', 'building:id,building_format')
+                        ->whereHas('building', function ($q) {
+                            $q->where('quarter_id', $this->route('id'));
+                        })
+                        ->get();
+                    if ($buildingAssignees->isNotEmpty()) {
+                        return $fails($this->getAlreadyAssignedBuildingMessage($buildingAssignees));
+                    }
                 }
             ]
         ];
@@ -62,5 +75,17 @@ class MassAssignUsersRequest extends BaseRequest
     protected function getAttributeByKey($key, $name)
     {
         return $key . '.' . $name;
+    }
+
+    protected function getAlreadyAssignedBuildingMessage($buildingAssignees)
+    {
+        $messages = '';
+        foreach ($buildingAssignees->groupBy('building.building_format') as $buildingFormat => $items) {
+            $users = $items->pluck('user.name')->implode(', ');
+            $messages .= sprintf('In %s building already assigned %s users. ', $buildingFormat, $users);
+        }
+
+        $messages .= 'Please firstly unassign them in building and then again try assign to quarter';
+        return $messages;
     }
 }

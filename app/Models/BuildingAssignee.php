@@ -89,4 +89,14 @@ class BuildingAssignee extends Assignee
         return $data;
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function building()
+    {
+        return $this->belongsTo(Building::class);
+    }
+
 }
