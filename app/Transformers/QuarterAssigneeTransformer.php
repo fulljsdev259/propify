@@ -20,8 +20,11 @@ class QuarterAssigneeTransformer extends AssigneeTransformer
      */
     public function transform(QuarterAssignee $model)
     {
-        $response = $this->transformAssignee($model);;
+        $response = $this->transformAssignee($model);
+
         $response['user_id'] = $model->user_id;
+        $response['place'] = $model->place;
+        $response['assigned_in'] = $model->type;
         return $response;
     }
 }
