@@ -17,6 +17,7 @@ export default (config = {}) => {
                 buildings: [],
                 buildingId: '',
                 buildingName: '',
+                unit_plans: [],
                 model: {
                     quarter_id: '',
                     resident_id: '',
@@ -368,7 +369,7 @@ export default (config = {}) => {
                         });
                     },
                     ...mixin.methods,
-                    ...mapActions(['getUnit', 'updateUnit', 'getBuilding'])
+                    ...mapActions(['getUnit', 'updateUnit', 'getBuilding', 'getPlans'])
                 };
 
                 mixin.created = async function () {
@@ -376,7 +377,10 @@ export default (config = {}) => {
                         this.loading.state = true;
 
                         this.model = await this.getUnit({id: this.$route.params.id});
-                        
+
+                        let resp = await this.getPlans({unit_id: this.$route.params.id});
+                        this.unit_plans = resp.data;
+
                         this.quarters.push({id: this.model.quarter.id, name: this.model.quarter.name})
 
                         this.relationCount = this.model.relations.length
