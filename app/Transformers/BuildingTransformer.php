@@ -5,7 +5,6 @@ namespace App\Transformers;
 use App\Models\Building;
 use App\Models\Relation;
 use App\Models\Request;
-use App\Models\Resident;
 
 /**
  * Class BuildingTransformer.
@@ -37,8 +36,6 @@ class BuildingTransformer extends BaseTransformer
             'address_id',
             'internal_building_id',
             'units_count',
-            'global_email_receptionist',
-            'has_email_receptionists', // @TODO delete
             'count_of_apartments_units'
         ]);
 
