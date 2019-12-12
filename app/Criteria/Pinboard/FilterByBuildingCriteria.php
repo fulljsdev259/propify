@@ -41,7 +41,7 @@ class FilterByBuildingCriteria implements CriteriaInterface
         }
         $buildingIds = is_array($buildingId) ? $buildingId : [$buildingId];
 
-        // @TODO check residents can see only relation->buildings->pinboard or all
+        // @TODO check residents can see only relation->unit->buildings->pinboard or all
         $user = \Auth::user();
         if ($user->resident) {
             // @TODO fix relation related

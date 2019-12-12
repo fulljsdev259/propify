@@ -41,11 +41,6 @@ class FilterByResidentCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
         $resident_id = $this->request->get('resident_id', null);
-        // @TODO ask use this one or nested relation criteria
-//        $user_id = Resident::where('id', $resident_id)->value('user_id');
-//        if ($user_id) {
-//            $model->where('listings.user_id', $user_id);
-//        }
         if ($resident_id) {
             $model->whereHas('user', function($q) use ($resident_id) {
                 $q->whereHas('resident', function($q)  use ($resident_id) {
