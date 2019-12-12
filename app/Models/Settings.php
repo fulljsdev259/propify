@@ -125,14 +125,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          type="string"
  *      ),
  *      @SWG\Property(
- *          property="email_receptionist_ids",
- *          description="email_receptionist_ids",
- *          type="array",
- *          @SWG\Items(
- *              type="integer"
- *          )
- *      ),
- *      @SWG\Property(
  *          property="created_at",
  *          description="created_at",
  *          type="string",
@@ -180,7 +172,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $iframe_enable
  * @property bool $contact_enable
  * @property array|null $pinboard_receiver_ids
- * @property array|null $email_receptionist_ids
  * @property string|null $mail_host
  * @property int|null $mail_port
  * @property string|null $mail_username
@@ -276,7 +267,6 @@ class Settings extends AuditableModel
         'cleanify_enable',
         'cleanify_email',
         'pinboard_receiver_ids',
-        'email_receptionist_ids',
         'mail_host',
         'mail_port',
         'mail_username',
@@ -323,7 +313,6 @@ class Settings extends AuditableModel
         'iframe_enable' => 'boolean',
         'cleanify_email' => 'string',
         'pinboard_receiver_ids' => 'array',
-        'email_receptionist_ids' => 'array',
         'mail_host' => 'string',
         'mail_port' => 'integer',
         'mail_username' => 'string',
@@ -364,20 +353,6 @@ class Settings extends AuditableModel
                     }
                 }
             },
-            'email_receptionist_ids' => [
-                'nullable',
-                'array',
-                function($attr, $val, $fail) {
-                    if (empty($val)) {
-                        return;
-                    }
-
-                    $propertyManagers = PropertyManager::whereIn('id', $val)->count();
-                    if (count($val) != $propertyManagers) {
-                        $fail('One of email_receptionist_ids is not correct');
-                    }
-                },
-            ]
         ];
     }
 

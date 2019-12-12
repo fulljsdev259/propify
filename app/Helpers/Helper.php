@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Helpers;
+
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
@@ -24,7 +25,6 @@ class Helper
             'settings' => [
                 'name' => __('general.name'),
                 'iframe_enable' => __('settings.iframe'),
-                'email_receptionist_ids' => __('general.recipients'),
                 'email' => __('general.email'),
                 'phone' => __('general.phone'),
                 'blank_pdf' => __('settings.blank_pdf'),

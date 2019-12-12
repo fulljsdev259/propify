@@ -9,7 +9,6 @@ $factory->define(App\Models\Building::class, function (Faker $faker) {
         'label' => $faker->sentence(3),
         'address_id' => $address->id,
         'quarter_id' => \App\Models\Quarter::inRandomOrder()->value('id'),
-        'global_email_receptionist' => true,
         'floor_nr' => $faker->numberBetween(1, 30),
         'basement' => $faker->numberBetween(0, 1),
         'attic' => $faker->numberBetween(0, 1),
