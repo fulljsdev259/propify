@@ -191,6 +191,26 @@
             </span>
         </el-dialog>
         
+        <el-dialog
+            title="Warning"
+            :visible.sync="addRequestDialogVisible"
+            width="30%"
+            center
+            :modal="false"
+        >
+            <div class="dialog-body">
+                <span class="body-title">Neues Anliegen</span>
+                <div class="body-item">
+                    <i class="icon-chat-empty"></i>
+                    <span>Allg</span>
+                </div>
+                
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="addRequestDialogVisible = false">Confirm</el-button>
+            </div>
+        </el-dialog>
+
     </div>
 </template>
 
@@ -313,7 +333,8 @@
                         key : 'change_status',
                         icon : 'icon-publish'
                     }
-                ]
+                ],
+                addRequestDialogVisible: false,
             }
         },
         computed: {
@@ -334,7 +355,6 @@
                                 str = str.charAt(0) + '.';
                             names.push(str);
                         });
-                        console.log(names);
                         request.accountable_user.label = names.join(' ');
                     }
                     if(request.competent_user) {
@@ -805,9 +825,25 @@
         },
     }
 </script>
-<style>
+<style lang="scss">
     .vue-recycle-scroller__item-view {
         min-height: 41px !important;
+    }
+
+    :global(.el-dialog__wrapper) {
+        background-color: rgba(0, 0, 0, 0.1);
+        .el-dialog {
+            border-radius: 16px;
+            box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+            .el-dialog__body {
+                padding: 20px;
+            }
+            .el-dialog__footer {
+                .el-button {
+                    border-radius: 14px;
+                }
+            }
+        }
     }
 </style>
 
@@ -891,4 +927,6 @@
         padding: 0 15px;
         margin-bottom: 10px !important;
     }
+
+    
 </style>
