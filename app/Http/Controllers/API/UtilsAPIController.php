@@ -317,6 +317,8 @@ class UtilsAPIController extends AppBaseController
             $categoryTree[] = $data;
         }
 
+        $qualificationCategory = Request::QualificationCategory;
+        unset($qualificationCategory[Request::QualificationCategoryOkay]);
         $result = [
             'status' => Request::Status,
             'status_colorcode' => Request::StatusColorCode,
@@ -331,7 +333,7 @@ class UtilsAPIController extends AppBaseController
             'location' => Request::Location,
             'room' => Request::Room,
             'capture_phase' => Request::CapturePhase,
-            'qualification_category' => Request::QualificationCategory,
+            'qualification_category' => $qualificationCategory,
             'assignee_type' => RequestAssignee::Type,
             'categories_data' =>  [
                 'categories' => Request::Category,
