@@ -6,7 +6,6 @@ use App\Models\AnnouncementEmailReceptionist;
 use App\Models\Building;
 use App\Models\Quarter;
 use App\Models\Resident;
-use Illuminate\Support\Str;
 
 /**
  * Class AnnouncementEmailReceptionistTransformer.

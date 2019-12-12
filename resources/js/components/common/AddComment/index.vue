@@ -163,13 +163,32 @@
                 if(event.key == 'ArrowUp') {
                     if(this.autoSuggest.started)
                         event.preventDefault()
-                    if(this.autoSuggest.started && this.autoSuggest.index > 0)
-                            this.autoSuggest.index --;
+                    if(this.autoSuggest.started && this.autoSuggest.index > 0) {
+                        this.autoSuggest.index --;
+                        if(this.$refs.autoSuggestList) {
+                            let curPos = this.autoSuggest.index * 52;
+                            let top = this.$refs.autoSuggestList.scrollTop;
+                            let height = this.$refs.autoSuggestList.clientHeight;
+                            if(curPos < top )
+                                this.$refs.autoSuggestList.scrollBy(0, -52);
+                        } 
+                    }
                 } else if(event.key == 'ArrowDown') {
                     if(this.autoSuggest.started)
                         event.preventDefault()
-                    if(this.autoSuggest.started && this.autoSuggest.index < this.managerLists.length - 1)
-                            this.autoSuggest.index ++;
+                    if(this.autoSuggest.started && this.autoSuggest.index < this.managerLists.length - 1) {
+                        this.autoSuggest.index ++;
+
+                        if(this.$refs.autoSuggestList) {
+                            let curPos = (this.autoSuggest.index + 1) * 52;
+                            let top = this.$refs.autoSuggestList.scrollTop;
+                            let height = this.$refs.autoSuggestList.clientHeight;
+                            if(curPos > top + height)
+                                this.$refs.autoSuggestList.scrollBy(0, 52);
+                        } 
+
+                    }
+
                 } else if(event.key == 'Enter') {
                     if(this.autoSuggest.started) {
                         event.preventDefault();
@@ -207,7 +226,6 @@
                                 exclude_ids: exclude_ids.join(',')
                             });
                         this.managerLists = resp.data;
-                        console.log(this.managerLists);
                     } catch (err) {
                         displayError(err);
                     } finally {
@@ -379,7 +397,7 @@
                     }
                     this.autoSuggest.timer = setTimeout(() => {
                         this.remoteSearch(newStr.substring(this.autoSuggest.startPos, this.getEndOfStr(this.autoSuggest.startPos)));
-                    }, 150);
+                    }, 100);
                 }
 
                 // let curPosition = this.$refs.content.$el.querySelector('textarea').selectionStart;
