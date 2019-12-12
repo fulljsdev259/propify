@@ -106,6 +106,7 @@ return [
         'less_filters' => 'Weniger Filters',
         'fields' => 'Felder',
         'my_filters' => 'Meine Filter',
+        'filter_search' => 'Filter suchen',
         'saved_filters' => 'Gespeicherte Filter',
     ],
     'no' => 'Nein',

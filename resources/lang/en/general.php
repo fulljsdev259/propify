@@ -107,6 +107,7 @@ return [
         'fields' => 'Fields',
         'my_filters' => 'My Filter',
         'saved_filters' => 'Saved filters',
+        'filter_search' => 'Filter search',
     ],    
     'no' => 'No',
     'first_name' => 'First name',

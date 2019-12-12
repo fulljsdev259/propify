@@ -36,7 +36,7 @@
                     @click="handleSelectPM(item)"
                     v-for="(item, index) in managerLists"
                 >
-                    <ui-avatar :name="user.name" :size="32" :src="item.user.avatar" />
+                    <ui-avatar :name="item.user.name" :size="32" :src="item.user.avatar" />
                     <span class="name" v-html="filterSearch(item.name)"></span>
                     <span class="email" v-html="filterSearch(item.user.email)"></span>
                 </div>
@@ -194,6 +194,12 @@
                         event.preventDefault();
                         this.selectedManagerLists.push(this.managerLists[this.autoSuggest.index]);
                         this.insertName(this.autoSuggest.startPos, this.managerLists[this.autoSuggest.index].name);
+                    }
+                } else if(event.key == 'Escape') {
+                    if(this.autoSuggest.started) {
+                        event.preventDefault();
+                        this.resetAutoSuggest();
+                        console.log('esc');
                     }
                 }
             },
@@ -376,35 +382,36 @@
         watch: {
             content(newStr, oldStr) {
                 this.$emit('update-dynamic-scroller');
-
-                let elTextArea = this.$refs.content.$el.querySelector('textarea');
-                let curPos = elTextArea.selectionStart;
-                // let inputRect = elTextArea.getBoundingClientRect()
-                // this.autoSuggest.xPos = inputRect.left;
-                // this.autoSuggest.yPos = inputRect.top;
-                // let autoList = this.$el.querySelector('.auto-suggest-list');
-                // autoList.style.left = inputRect.left;
-                // autoList.style.top = inputRect.top ;
-                // console.log(inputRect.left, inputRect.top);
-                if(this.count(newStr) !== this.count(oldStr) && !this.autoSuggest.started && (curPos === 1 || curPos > 1 && newStr.charAt(curPos - 2) === ' ')) {
-                    this.autoSuggest.started = true;
-                    this.autoSuggest.startPos = curPos;
-                }
-                if(this.autoSuggest.started) {
-                    if(this.autoSuggest.timer) {
-                        clearTimeout(this.autoSuggest.timer);
-                        this.autoSuggest.timer = null;
+                if(this.type === 'internalNotices') {
+                    let elTextArea = this.$refs.content.$el.querySelector('textarea');
+                    let curPos = elTextArea.selectionStart;
+                    // let inputRect = elTextArea.getBoundingClientRect()
+                    // this.autoSuggest.xPos = inputRect.left;
+                    // this.autoSuggest.yPos = inputRect.top;
+                    // let autoList = this.$el.querySelector('.auto-suggest-list');
+                    // autoList.style.left = inputRect.left;
+                    // autoList.style.top = inputRect.top ;
+                    // console.log(inputRect.left, inputRect.top);
+                    if(this.count(newStr) !== this.count(oldStr) && !this.autoSuggest.started && (curPos === 1 || curPos > 1 && newStr.charAt(curPos - 2) === ' ')) {
+                        this.autoSuggest.started = true;
+                        this.autoSuggest.startPos = curPos;
                     }
-                    this.autoSuggest.timer = setTimeout(() => {
-                        this.remoteSearch(newStr.substring(this.autoSuggest.startPos, this.getEndOfStr(this.autoSuggest.startPos)));
-                    }, 100);
-                }
+                    if(this.autoSuggest.started) {
+                        if(this.autoSuggest.timer) {
+                            clearTimeout(this.autoSuggest.timer);
+                            this.autoSuggest.timer = null;
+                        }
+                        this.autoSuggest.timer = setTimeout(() => {
+                            this.remoteSearch(newStr.substring(this.autoSuggest.startPos, this.getEndOfStr(this.autoSuggest.startPos)));
+                        }, 100);
+                    }
 
-                // let curPosition = this.$refs.content.$el.querySelector('textarea').selectionStart;
-                // let phantom = document.querySelector('.phantom');
-                // phantom.innerHTML = this.content.substring(0, curPosition) + '<br>';
-                // this.content.substring(0, curPosition).forEach((val) => console.log(parseInt(val)));
-                // console.log(curPosition);
+                    // let curPosition = this.$refs.content.$el.querySelector('textarea').selectionStart;
+                    // let phantom = document.querySelector('.phantom');
+                    // phantom.innerHTML = this.content.substring(0, curPosition) + '<br>';
+                    // this.content.substring(0, curPosition).forEach((val) => console.log(parseInt(val)));
+                    // console.log(curPosition);
+                }
             }
         }
     }
@@ -580,14 +587,14 @@
                 bottom: 40px;
                 left: 10px;
                 z-index: 999;
-                width: 600px;
+                width: 450px;
                 max-height: 300px;
                 overflow: auto;
                 background-color: var(--color-white);
                 border: 1px solid var(--border-color-base);
                 border-radius: 8px 8px 5px 5px;
                 .list-item {
-                    padding: 10px 30px;
+                    padding: 10px 30px 10px 10px;
                     cursor: pointer;
 
                     &.selected {
@@ -599,10 +606,13 @@
                     .name {
                         margin-left: 15px;
                         color: var(--color-black);
+                        text-transform: capitalize;
+                        font-size: 15px;
                     }
                     .email {
                         margin-left: 15px;
-                        color: var(--color-text-primary)
+                        color: var(--color-text-primary);
+                        font-size: 12px;
                     }
                 }
             }

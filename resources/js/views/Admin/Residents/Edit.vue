@@ -409,7 +409,7 @@
                 editMode: false,
                 editName: false,
                 activeTab1: 'relation',
-                activeTab2: 'audit',
+                activeTab2: 'tab_3_1',
                 visibleDialog: false,
                 mediaColumns: [{
                     type: 'residentMediaName',
