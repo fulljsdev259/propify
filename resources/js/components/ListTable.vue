@@ -127,7 +127,7 @@
                                     <el-button class="toggle-filter-button"> {{ $t('general.filters.my_filters') }}</el-button>
                                     <el-dropdown-menu slot="dropdown" class="save-filters">
                                         <span class="title">{{ $t('general.filters.saved_filters') }}</span>
-                                        <el-input v-model="savedFilterSearch" prefix-icon="el-icon-search" placeholder="Searh saved filters" @input="handleFilterSearch($event, filter)"></el-input>
+                                        <el-input v-model="savedFilterSearch" prefix-icon="el-icon-search" :placeholder="$t('general.filters.filter_search')" @input="handleFilterSearch($event, filter)"></el-input>
                                         <el-dropdown-item
                                             :key="`${item.menu}${index}${savedFilters.length}`"
                                             :command="item"
