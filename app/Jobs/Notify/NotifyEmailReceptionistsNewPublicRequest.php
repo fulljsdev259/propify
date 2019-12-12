@@ -3,9 +3,7 @@
 namespace App\Jobs\Notify;
 
 use App\Mails\NewRequestForReceptionist;
-use App\Models\PropertyManager;
 use App\Models\Request;
-use App\Models\Settings;
 use App\Models\User;
 use App\Models\Workflow;
 use Illuminate\Bus\Queueable;
@@ -49,7 +47,7 @@ class NotifyEmailReceptionistsNewPublicRequest
      */
     public function handle()
     {
-        $this->request->load('relation:id,building_id,resident_id', 'relation.building:id,quarter_id,global_email_receptionist');
+        $this->request->load('relation:id,building_id,resident_id', 'relation.building:id,quarter_id');
         $building = $this->request->relation->building ?? null;
 
         if (empty($building)) {
@@ -90,77 +88,5 @@ class NotifyEmailReceptionistsNewPublicRequest
         }
 
         return $notificationsData;
-    }
-
-    /**
-     * @param $building
-     * @param $category
-     * @return \Illuminate\Support\Collection|mixed
-     */
-    protected function getReceptionistUsers($building, $category)
-    {
-        if (! $building->global_email_receptionist) {
-            return $this->getBuildingReceptionistUsers($building, $category);
-        }
-        $building->load('quarter:id');
-        if ($building->quarter) {
-            $users = $this->getQuarterReceptionistUsers($building->quarter, $category);
-            if ($users->isNotEmpty()) {
-                return $users;
-            }
-        }
-
-        $propertyManagerIds = Settings::first(['email_receptionist_ids'])->email_receptionist_ids ?? [];
-        if (empty($propertyManagerIds)) {
-            return collect();
-        }
-
-        $propertyManagers = PropertyManager::whereIn('id', $propertyManagerIds)
-            ->select('id', 'user_id')
-            ->with('user:id,name,email')
-            ->get();
-
-        return $propertyManagers;
-    }
-
-    /**
-     * @param $building
-     * @param $category
-     * @return mixed
-     */
-    public function getBuildingReceptionistUsers($building, $category)
-    {
-        $building->load(['email_receptionists' => function ($q) use ($category) {
-            $q->select('id', 'model_id', 'property_manager_id')
-                ->where('category', $category)
-                ->with(['property_manager' => function($q) {
-                    $q->select('id', 'user_id')->with('user:id,name,email');
-                }]);
-        }]);
-
-        return $building->email_receptionists->pluck('property_manager');
-    }
-
-    /**
-     * @param $quarter
-     * @param $category
-     * @return \Illuminate\Support\Collection
-     */
-    public function getQuarterReceptionistUsers($quarter, $category)
-    {
-        if (empty($quarter)) {
-            return collect();
-        }
-
-        $quarter->load(['email_receptionists' => function ($q) use ($category) {
-            $q->select('id', 'model_id', 'property_manager_id')
-                ->where('category', $category)
-                ->with(['property_manager' => function($q) {
-                    $q->select('id', 'user_id')->with('user:id,name,email');
-                }]);
-        }]);
-
-        $users = $quarter->email_receptionists->pluck('property_manager');
-        return $users->isNotEmpty() ? $users : collect();
     }
 }
