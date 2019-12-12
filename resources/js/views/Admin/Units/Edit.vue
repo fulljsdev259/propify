@@ -279,13 +279,15 @@
                         </el-tab-pane>
                         <el-tab-pane name="plan">
                             <span slot="label">
-                                Plan
+                                <el-badge :value="unit_plans.length" :max="99" class="admin-layout">Plan</el-badge>
                             </span>
                             <div align="right" style="margin-bottom: 15px">
-                                <el-button @click="visiblePlanDrawer = true">show Plan Drawer</el-button>
-                                <el-button @click="demo.file = '/storage/floor-plan.jpg', visiblePlanModal = true">show IMG</el-button>
-                                <el-button @click="demo.file = '/storage/Ansicht-1-6.pdf', visiblePlanModal = true">show PDF</el-button>
+                                <el-button @click="visiblePlanDrawer = true">add Plan</el-button>
                             </div>
+
+                            <unit-plan-list-table :items="unit_plans"
+                                                  @show-plan="showPlan"
+                                                  @delete-plan="removePlan"></unit-plan-list-table>
                         </el-tab-pane>
 
                     </el-tabs>
@@ -421,9 +423,9 @@
                                 :closable="false"
                         >
                         </el-alert>
-                        <upload-document @fileUploaded="" class="drag-custom" drag multiple
-                                         ref="pdfUpload"
-                                         accept-type=".pdf, .doc, .docx, .xls, .xlsx"/>
+                        <upload-document @fileUploaded="setPlanFile" class="drag-custom" drag
+                                         ref="planUpload"
+                                         accept-type=".pdf, .png, .jpg"/>
                     </el-form-item>
                     <el-form-item label="Name">
                         <el-input autocomplete="off"
@@ -442,8 +444,7 @@
                     </el-form-item>
                 </el-form>
                 <div class="plan-drawer__footer">
-<!--                    <el-button type="primary" @click="() => {uploadFiles(demo.file); $refs.pdfDrawer.closeDrawer()}">Save</el-button>-->
-                    <el-button type="primary" @click="$refs.pdfDrawer.closeDrawer()">Save</el-button>
+                    <el-button type="primary" @click="() => {uploadPlan(demo.file); $refs.pdfDrawer.closeDrawer()}">Save</el-button>
                     <el-button @click="visiblePlanDrawer = false">Cancel</el-button>
                 </div>
             </div>
@@ -468,6 +469,7 @@
     import { EventBus } from '../../../event-bus.js';
     import EditCloseDialog from 'components/EditCloseDialog';
     import FloorPreviewModal from 'components/FloorPreviewModal';
+    import UnitPlanListTable from 'components/UnitPlanListTable';
 
     export default {
         mixins: [UnitsMixin({
@@ -488,6 +490,7 @@
             BuildingFileListTable,
             EditCloseDialog,
             FloorPreviewModal,
+            UnitPlanListTable,
         },
         data() {
             return {
@@ -598,6 +601,8 @@
                 "deleteUnit",
                 "uploadUnitFile", 
                 "deleteUnitFile",
+                "addPlan",
+                "deletePlan",
             ]),
             handleChangeEditMode() {
                 if(!this.editMode) {
@@ -630,6 +635,46 @@
             },
             sortFiles() {
                 this.setOrder();
+            },
+            removePlan(plan_id) {
+                this.deletePlan({
+                    unit_id: this.model.id,
+                    plan_id: plan_id
+                }).then((resp) => {
+                    displaySuccess(resp);
+
+                    this.unit_plans = this.unit_plans.filter(plan => plan.id !== plan_id);
+                    // if(this.$refs.auditList){
+                    //     this.$refs.auditList.fetch();
+                    // }
+                }).catch((error) => {
+                    displayError(error);
+                })
+            },
+            showPlan(url) {
+                this.demo.file = url.substr(url.indexOf('/', 7));
+                this.visiblePlanModal = true;
+            },
+            setPlanFile(file) {
+                this.demo.file = file;
+            },
+            uploadPlan(file) {
+                this.addPlan({
+                    unit_id: this.model.id,
+                    name: this.demo.name,
+                    description: this.demo.desc,
+                    primary: this.demo.is_primary,
+                    media: file.src
+                }).then((resp) => {
+                    displaySuccess(resp);
+                    this.unit_plans.push(resp.data);
+
+                    // if(this.$refs.auditList){
+                    //     this.$refs.auditList.fetch();
+                    // }
+                }).catch((err) => {
+                    displayError(err);
+                });
             },
             uploadFiles(file) {
                 this.insertDocument(this.selectedFileCategory, file);
