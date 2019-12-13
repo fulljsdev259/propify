@@ -11,10 +11,6 @@ use App\Models\PropertyManager;
  */
 class PropertyManagerSimpleTransformer extends BaseTransformer
 {
-    protected $defaultIncludes = [
-//        'user',
-    ];
-
     /**
      * Transform the PropertyManager entity.
      *
@@ -24,26 +20,16 @@ class PropertyManagerSimpleTransformer extends BaseTransformer
      */
     public function transform(PropertyManager $model)
     {
-        $response = [
-            'id' => $model->id,
-            'type' => $model->type,
-            'property_manager_format' => $model->property_manager_format,
-        ];
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'type',
+            'property_manager_format',
+        ]);
 
-        if ($model->relationExists('user')) {
-            $response['user'] = (new UserTransformer)->transform($model->user);
-        }
+        $response = $this->includeRelationIfExists($model, $response, [
+            'user' => UserTransformer::class,
+        ]);
 
         return $response;
-    }
-
-    /**
-     * Include Address
-     *
-     * @return \League\Fractal\Resource\Item
-     */
-    public function includeUser(PropertyManager $model)
-    {
-        return $this->item($model->user, new UserTransformer);
     }
 }
