@@ -17,28 +17,26 @@ class RelationTransformer extends BaseTransformer
      */
     public function transform(Relation $model)
     {
-        $response = [
-            'id' => $model->id,
-            'resident_id' => $model->resident_id,
-            'unit_id' => $model->unit_id,
-            'quarter_id' => $model->quarter_id,
-            'type' => $model->type,
-            'status' => $model->status,
-            'relation_format' => $model->relation_format,
-            'deposit_type' => $model->deposit_type,
-            'deposit_status' => $model->deposit_status,
-            'deposit_amount' => $model->deposit_amount,
-            'start_date' => $model->start_date,
-            'end_date' => $model->end_date,
-            'monthly_rent_net' => $model->monthly_rent_net,
-            'monthly_rent_gross' => $model->monthly_rent_gross,
-            'monthly_maintenance' => $model->monthly_maintenance,
-        ];
-        $response['garant'] = 0;
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'resident_id',
+            'unit_id',
+            'quarter_id',
+            'type',
+            'status',
+            'relation_format',
+            'deposit_type',
+            'deposit_status',
+            'deposit_amount',
+            'start_date',
+            'end_date',
+            'monthly_rent_net',
+            'monthly_rent_gross',
+            'monthly_maintenance',
+            'requests_count'
+        ]);
 
-        if (! is_null($model->requests_count)) {
-            $response['requests_count'] = $model->requests_count;
-        }
+        $response['garant'] = 0;
 
         if ($model->start_date) {
             $response['start_date'] = $model->start_date->format('Y-m-d');
@@ -48,13 +46,11 @@ class RelationTransformer extends BaseTransformer
             $response['end_date'] = $model->end_date->format('Y-m-d');
         }
 
-        if ($model->relationExists('resident')) {
-            $response['resident'] = (new ResidentTransformer())->transform($model->resident);
-        }
-
-        if ($model->relationExists('requests')) {
-            $response['requests'] = (new RequestTransformer())->transform($model->requests);
-        }
+        $response = $this->includeRelationIfExists($model, $response, [
+            'resident' => ResidentTransformer::class,
+            'requests' => RequestTransformer::class,
+            'media' => MediaTransformer::class,
+        ]);
 
         if ($model->relationExists('quarter')) {
             $response['quarter'] = (new QuarterTransformer())->transform($model->quarter);
@@ -76,10 +72,6 @@ class RelationTransformer extends BaseTransformer
                 }
 
             }
-        }
-
-        if ($model->relationExists('media')) {
-            $response['media'] = (new MediaTransformer)->transformCollection($model->media);
         }
 
 //        if ($model->relationExists('garant_residents')) {
