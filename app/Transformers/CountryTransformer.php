@@ -17,7 +17,14 @@ class CountryTransformer extends BaseTransformer
      */
     public function transform(Country $model)
     {
-        $response = [
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'code',
+            'alpha_3',
+        ]);
+        $response['name'] = get_translated_filed($model, 'name');
+
+        $response1 = [
             'id' => $model->id,
             'code' => $model->code,
             'alpha_3' => $model->alpha_3,
