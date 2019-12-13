@@ -56,6 +56,7 @@ return [
     'enabled' => 'Enabled',
     'disabled' => 'Disabled',
     'salutation' => 'Salutation',
+    'next' => 'Next',
     'salutation_option' => [
         'mr' => 'Mr.',
         'mrs' => 'Mrs.',
@@ -107,6 +108,7 @@ return [
         'fields' => 'Fields',
         'my_filters' => 'My Filter',
         'saved_filters' => 'Saved filters',
+        'filter_search' => 'Filter search',
     ],    
     'no' => 'No',
     'first_name' => 'First name',
@@ -446,6 +448,11 @@ return [
                             'default' => 'Manager :assignee has been unassigned.',
                             'quarter' => 'Manager :assignee has been unassigned.',
                             'request' => 'Manager :assignee has been unassigned.',
+                        ],
+                        'user_unassigned' => [
+                            'default' => 'User :assignee has been unassigned.',
+                            'quarter' => 'User :assignee has been unassigned.',
+                            'request' => 'User :assignee has been unassigned.',
                         ],
                         'media_uploaded' => [
                             'default' => 'Media uploaded.',

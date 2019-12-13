@@ -7,7 +7,7 @@
             <template v-if="$can($permissions.create.propertyManager)">            
                 <el-button 
                     @click="add" 
-                    icon="ti-plus" 
+                    icon="icon-plus" 
                     size="mini"
                     class="el-button--transparent"
                 >

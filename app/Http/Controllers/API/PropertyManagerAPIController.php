@@ -781,7 +781,7 @@ class PropertyManagerAPIController extends AppBaseController
         if (empty($propertyManagerArray)) {
             return $this->sendError(__('models.property_manager.errors.not_found'));
         }
-        $assignments = $this->propertyManagerRepository->assignmentsWithIds($propertyManagerArray->pluck('id')->all())->count();
+        $assignments = $this->propertyManagerRepository->assignmentsWithIds($propertyManagerArray->pluck('user_id')->all())->count();
         return $this->sendResponse($assignments, 'Assignments retrieved successfully');
     }
 }

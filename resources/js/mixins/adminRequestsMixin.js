@@ -53,6 +53,8 @@ export default (config = {}) => {
                     name: '',
                     unit_id: '',
                     quarter_id: '',
+                    toAssign: [],
+                    toAssign1: [],
                 },
                 old_model: {},
                 validationRules: {
@@ -76,6 +78,10 @@ export default (config = {}) => {
                         required: true,
                         message: this.$t('validation.general.required')
                     }],
+                    resident_id: [{
+                        required: true,
+                        message: this.$t('validation.general.required')
+                    }],
                     visibility: [{
                         required: true,
                         message: this.$t('validation.general.required')
@@ -88,7 +94,11 @@ export default (config = {}) => {
                         required: true,
                         message: this.$t('validation.general.required')
                     }],
-                    description: [{
+                    assginment: [{
+                        required: true,
+                        message: this.$t('validation.general.required')
+                    }],
+                    action: [{
                         required: true,
                         message: this.$t('validation.general.required')
                     }],
@@ -103,6 +113,7 @@ export default (config = {}) => {
                 residents: [],
                 media: [],
                 toAssign: [],
+                toAssign1: [],
                 toAssignList: [],
                 conversations: [],
                 address: {},
@@ -135,6 +146,39 @@ export default (config = {}) => {
                 request_id: null,
                 audit_id: null,
                 relations: [],
+                requestAssignType: 0,
+                assigneesColumns: [{
+                    type: 'assignProviderManagerAvatars',
+                    width: 70,
+                }, {
+                    type: 'assigneesName',
+                    prop: 'name',
+                    label: 'general.name'
+                }, {
+                    prop: 'company_name',
+                    label: 'general.roles.label',
+                }, {
+                    type: 'assignProviderManagerFunctions',
+                }],
+                assigneesActions: [{
+                    width: 120,
+                    align: 'right',
+                    buttons: [{
+                        title: 'models.request.notify',
+                        tooltipMode: true,
+                        icon: 'icon-paper-plane',
+                        view: 'request',
+                        style: {backgroundColor: 'transparent', color: '#848484', boxShadow: 'none !important'},
+                        onClick: this.openNotifyProvider
+                    }, {
+                        title: 'general.unassign',
+                        tooltipMode: true,
+                        type: 'danger',
+                        icon: 'el-icon-delete',
+                        style: {backgroundColor: 'transparent', color: '#848484', boxShadow: 'none !important'},
+                        onClick: this.notifyUnassignment
+                    }]
+                }],
             };
         },
         computed: {
@@ -148,6 +192,12 @@ export default (config = {}) => {
                 handler(val) {
                     this.getLanguageI18n();
                 }
+            },
+            toAssign() {
+                this.model.toAssign = this.toAssign;
+            },
+            toAssign1() {
+                this.model.toAssign1 = this.toAssign1;
             }
         },
         methods: {
@@ -155,12 +205,17 @@ export default (config = {}) => {
                 'getResidents', 
                 'getQuarters',
                 'getUnits',
+                'getBuildings',
                 'getServices', 
                 'uploadRequestMedia', 
                 'deleteRequestMedia', 
                 'getPropertyManagers', 
                 'getUsers', 
+                'getAddress', 
+                'getAllAdminsForRequest',
+                'assignUsersToRequest',
                 'getAssignees']),
+
             async remoteSearchResidents(search) {
                 if (search === '') {
                     this.residents = [];
@@ -413,7 +468,75 @@ export default (config = {}) => {
                 if(this.relations.length == 1) {
                     this.model.relation_id = this.relations[0].id
                 }
-            }
+            },
+            async remoteSearchAssignees(search, assignType = 0) {
+        
+                if (search === '') {
+                    this.toAssignList = [];
+                    this.toAssign1 = [];
+                } else {
+                    this.remoteLoading = true;
+                    
+                    try {
+                        let query = {request_id: -1, is_get_function: true, search, assign_type: assignType};
+                        if(this.$route.params.id !== undefined)
+                            query.request_id = this.$route.params.id;
+                        const resp = await this.getAllAdminsForRequest(query);
+                        this.toAssignList = resp;
+                        console.log(this.toAssignList);
+                    } catch (err) {
+                        displayError(err);
+                    } finally {
+                        this.remoteLoading = false;
+                    }
+                }
+            },
+            async assignUsers(requestAssignType = 0) {
+                if (!this.toAssign || !this.model.id || requestAssignType == 2 && !this.toAssign1) {
+                    return false;
+                }
+                this.requestAssignType = requestAssignType;
+                let resp;
+
+                let user_params = []
+
+                let selected = this.toAssign;
+                if(requestAssignType == 2)
+                    selected = this.toAssign1;
+
+                selected.forEach(id => {
+                    let assign_user = this.toAssignList.find(item => item.id == id )
+                    let query = {
+                        user_id: id,
+                        role: assign_user.roles[0].name,
+                    }
+                    if(requestAssignType)
+                        query.type = requestAssignType;
+                    user_params.push(query);
+                })
+
+                resp = await this.assignUsersToRequest({
+                            id: this.model.id,
+                            user_params: user_params
+                        });
+
+                if (resp && resp.data) {
+                    displaySuccess(resp)                           
+                    this.resetToAssignList();
+                    if(requestAssignType == 1)
+                        this.$refs.competentList.fetch();
+                    else if(requestAssignType == 2)
+                        this.$refs.accountableList.fetch();    
+                    if(this.$refs.auditList){
+                        this.$refs.auditList.fetch();
+                    }
+                }
+            },
+            resetToAssignList() {
+                this.toAssignList = [];
+                this.toAssign = [];
+                this.toAssign1 = [];
+            },
         }
     };
 
@@ -503,8 +626,6 @@ export default (config = {}) => {
                         required: true,
                         message: this.$t('validation.general.required')
                     }];
-                    
-                    this.getLanguageI18n();
 
                     const tagsResp = await this.getTags({get_all: true, search: ''});
 
@@ -514,6 +635,8 @@ export default (config = {}) => {
                     }
 
                     this.loading.state = false;
+                    this.model.id = 1;
+
                 };
 
                 break;
@@ -525,63 +648,12 @@ export default (config = {}) => {
                         'updateRequest', 
                         'getResident', 
                         'getRequestConversations', 
-                        'getAddress', 
-                        'getAllAdminsForRequest',
-                        'assignUsersToRequest',
                         'getRequestTags',
                         'createRequestTags', 
                         'getTags', 
                         'deleteRequestTag'
                     ]),
-                    resetToAssignList() {
-                        this.toAssignList = [];
-                        this.toAssign = [];
-                    },
-                    async assignUsers() {
-                        if (!this.toAssign || !this.model.id) {
-                            return false;
-                        }
-                        let resp;
-        
-                        let user_params = []
-        
-                        this.toAssign.forEach(id => {
-                            let assign_user = this.toAssignList.find(item => item.id == id )
-                            user_params.push({user_id: id, role: assign_user.roles[0].name})
-                        })
-                        
-        
-                        resp = await this.assignUsersToRequest({
-                                    id: this.model.id,
-                                    user_params: user_params
-                                });
-        
-                        if (resp && resp.data) {
-                            displaySuccess(resp)                           
-                            this.resetToAssignList();
-                            this.$refs.assigneesList.fetch();    
-                            if(this.$refs.auditList){
-                                this.$refs.auditList.fetch();
-                            }
-                        }
-                    },
-                    async remoteSearchAssignees(search) {
-                
-                        if (search === '') {
-                            this.toAssignList = [];
-                        } else {
-                            this.remoteLoading = true;
-                            
-                            try {
-                                const resp = await this.getAllAdminsForRequest({request_id: this.$route.params.id, is_get_function: true, search})
-                                this.toAssignList = resp;
-                            } catch (err) {
-                                displayError(err);
-                            } finally {
-                                this.remoteLoading = false;
-                            }
-                        }
-                    },
+                    
                     async fetchCurrentRequest() {
                         
                         const resp = await this.getRequest({id: this.$route.params.id});
@@ -634,7 +706,6 @@ export default (config = {}) => {
                             this.model.relation_id = data.relation.id
                         }
                         //this.relations = resp.data.resident.relations.filter(item => item.status == 1)
-                        await this.getConversations();
                         
                         if (data.resident) {
                             this.model.resident_id = data.resident.id;

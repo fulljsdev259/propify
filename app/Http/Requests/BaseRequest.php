@@ -39,7 +39,6 @@ class BaseRequest extends APIRequest
             $requiredWithout = implode('_upload,', array_diff($categories, [$category])) . '_upload';
             $rules[$category . '_upload'] = [
                 'required_without_all:' . $requiredWithout,
-                'string',
                 'base_mimes:' . implode(',', $permittedExtensions)
             ];
         }
@@ -56,7 +55,6 @@ class BaseRequest extends APIRequest
         return [
             'media' => [
                 'required',
-                'string',
                 'base_mimes:' . implode(',', $permittedExtensions)
             ]
         ];

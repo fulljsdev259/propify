@@ -32,12 +32,12 @@ export default (config = {}) => {
                         value: 0,
                         description: 'dashboard.residents.total_residents'
                     }, {
-                        icon: 'ti-plus',
+                        icon: 'icon-plus',
                         color: '#26A65B',
                         value: 0,
                         description: 'models.resident.status.active'
                     },{
-                        icon: 'ti-plus',
+                        icon: 'icon-plus',
                         color: '#26A65B',
                         value: 0,
                         description: 'models.resident.status.not_active'
@@ -87,6 +87,10 @@ export default (config = {}) => {
                             min: 0,
                             max: 3,
                         })
+                    }],
+                    quarter_id: [{
+                        required: true,
+                        message: this.$t('validation.required',{attribute: this.$t('general.internal_quarter_id')})
                     }],
                     state_id: [{
                         required: true,

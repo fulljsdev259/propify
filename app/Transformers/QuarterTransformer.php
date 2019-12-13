@@ -4,7 +4,6 @@ namespace App\Transformers;
 
 use App\Models\Quarter;
 use App\Models\Relation;
-use App\Models\Request;
 use App\Models\Unit;
 
 /**
@@ -30,7 +29,6 @@ class QuarterTransformer extends BaseTransformer
             'url',
             'types',
             'assignment_type',
-            'has_email_receptionists' // @TODO kill
         ]);
 
         $withCount = $model->getStatusRelationCounts();

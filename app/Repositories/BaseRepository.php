@@ -13,16 +13,22 @@ abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepositor
 
     /**
      * @param string $collectionName
-     * @param string $dataBase64
+     * @param string $mediaData
      * @param Model $model
      * @param null $mergeInAudit
      * @param bool $disableAuditing
      * @return bool
      * @throws \OwenIt\Auditing\Exceptions\AuditingException
      */
-    public function uploadFile(string $collectionName, string $dataBase64, Model $model, $mergeInAudit = null, $disableAuditing = false)
+    public function uploadFile(string $collectionName, $mediaData, Model $model, $mergeInAudit = null, $disableAuditing = false)
     {
-        if (!$data = base64_decode($dataBase64)) {
+        if (is_array($mediaData)) {
+            $mediaDataBase64 = $mediaData['media'];
+        } else {
+            $mediaDataBase64 = $mediaData;
+        }
+
+        if (!$data = base64_decode($mediaDataBase64)) {
             return false;
         }
 
@@ -51,9 +57,9 @@ abstract class BaseRepository extends \Prettus\Repository\Eloquent\BaseRepositor
 
 
         $diskName = $model->getDiskPreName() . $collectionName;
-        $media = $model->addMediaFromBase64($dataBase64)
-            ->sanitizingFileName(function ($fileName) use ($extension) {
-                return sprintf('%s.%s', str_slug($fileName), $extension);
+        $media = $model->addMediaFromBase64($mediaDataBase64)
+            ->sanitizingFileName(function ($fileName) use ($extension, $mediaData) {
+                return $mediaData['name'] ?? sprintf('%s.%s', str_slug($fileName), $extension);
             })
             ->toMediaCollection($collectionName, $diskName);
 

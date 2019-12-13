@@ -63,11 +63,6 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="global_email_receptionist",
- *          description="global_email_receptionist",
- *          type="boolean",
- *      ),
- *      @SWG\Property(
  *          property="created_at",
  *          description="created_at",
  *          type="string",
@@ -206,7 +201,6 @@ class Building extends AuditableModel implements HasMedia
         'contact_enable',
         'internal_building_id',
         'under_floor',
-        'global_email_receptionist',
         'types'
     ];
 
@@ -228,7 +222,6 @@ class Building extends AuditableModel implements HasMedia
         'attic' => 'boolean',
         'building_format' => 'string',
         'internal_building_id' => 'string',
-        'global_email_receptionist' => 'boolean',
     ];
 
     protected $permittedExtensions = [
@@ -277,35 +270,35 @@ class Building extends AuditableModel implements HasMedia
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     **/
+     */
     public function service_providers()
     {
-        return $this->belongsToMany(ServiceProvider::class);
+        return $this->belongsToMany(ServiceProvider::class, 'building_assignees', 'building_id', 'user_id', 'id', 'user_id');
+
     }
 
     /**
-     * @TODO remove
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function propertyManagers()
     {
-        return $this->morphedByMany(PropertyManager::class, 'assignee', 'building_assignees', 'building_id');
+        return $this->belongsToMany(PropertyManager::class, 'building_assignees', 'building_id', 'user_id', 'id', 'user_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function property_managers()
     {
-        return $this->morphedByMany(PropertyManager::class, 'assignee', 'building_assignees', 'building_id');
+        return $this->belongsToMany(PropertyManager::class, 'building_assignees', 'building_id', 'user_id', 'id', 'user_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {
-        return $this->morphedByMany(User::class, 'assignee', 'building_assignees', 'building_id');
+        return $this->belongsToMany(User::class, 'building_assignees', 'building_id', 'user_id', 'id', 'id');
     }
 
     public function assignees()
@@ -327,14 +320,6 @@ class Building extends AuditableModel implements HasMedia
     public function relations()
     {
         return $this->hasMany(Relation::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function email_receptionists()
-    {
-        return $this->hasMany(EmailReceptionist::class, 'model_id')->where('model_type', get_morph_type_of($this));
     }
 
     /**

@@ -106,9 +106,11 @@ return [
         'less_filters' => 'Weniger Filters',
         'fields' => 'Felder',
         'my_filters' => 'Meine Filter',
+        'filter_search' => 'Filter suchen',
         'saved_filters' => 'Gespeicherte Filter',
     ],
     'no' => 'Nein',
+    'next' => 'Weiter',
     'first_name' => 'Vorname',
     'last_name' => 'Nachname',    
     'name' => "Name",
@@ -444,6 +446,11 @@ return [
                             'request' => 'hat den Dienstleister :assignee entfernt.',
                         ],
                         'manager_unassigned' => [
+                            'default' => 'hat :assignee entfernt.',
+                            'quarter' => 'hat :assignee entfernt.',
+                            'request' => 'hat :assignee entfernt.',
+                        ],
+                        'user_unassigned' => [
                             'default' => 'hat :assignee entfernt.',
                             'quarter' => 'hat :assignee entfernt.',
                             'request' => 'hat :assignee entfernt.',

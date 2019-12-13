@@ -174,6 +174,16 @@ class AuditTransformer extends BaseTransformer
         elseif($model->event == 'deleted'){
             $response['statement'] = $this->translate_audit("deleted",['userName' => $response['user']['name'],'auditable_type' => $model->auditable_type]);
         }
+        elseif($model->event == 'user_assigned'){
+            $ids = $model->new_values['ids'] ?? [];
+            $assigneeNames = $this->getAssigneesName(User::class, $ids, 'name', 'name');
+            $response['statement'] = $this->translate_audit("user_assigned",['assignee' => $assigneeNames]);
+        }
+        elseif($model->event == 'user_unassigned'){
+            $ids = $model->old_values['ids'] ?? [];
+            $assigneeNames = $this->getAssigneesName(User::class, $ids, 'name', 'name');
+            $response['statement'] = $this->translate_audit("user_unassigned", ['assignee' => $assigneeNames]);
+        }
         elseif($model->event == 'manager_assigned'){
             $ids = $model->new_values['ids'] ?? [];
             $assigneeNames = $this->getAssigneesName(PropertyManager::class, $ids);
@@ -261,14 +271,18 @@ class AuditTransformer extends BaseTransformer
             }
         } elseif(AuditableModel::MassAssignments == $model->event) {
             $users = [];
-            foreach ($model->new_values as $type => $ids) {
-                if($type == get_morph_type_of(PropertyManager::class)) {
-                    $users[] = $this->getAssigneesName(PropertyManager::class, $ids);
-                } elseif ($type == get_morph_type_of(ServiceProvider::class)) {
-                    $users[] = $this->getAssigneesName(ServiceProvider::class, $ids);
-                } else {
-                    // @TODO if need(now not need)
+            if (Arr::isAssoc($model->new_values)) {
+                foreach ($model->new_values as $type => $ids) {
+                    if($type == get_morph_type_of(PropertyManager::class)) {
+                        $users[] = $this->getAssigneesName(PropertyManager::class, $ids);
+                    } elseif ($type == get_morph_type_of(ServiceProvider::class)) {
+                        $users[] = $this->getAssigneesName(ServiceProvider::class, $ids);
+                    } else {
+                        // @TODO if need(now not need)
+                    }
                 }
+            } else {
+                $users[] = $this->getAssigneesName(User::class, $model->new_values, 'name', 'name');
             }
             $response['statement'] = $this->translate_audit("mass_assigned", ['users' => implode(', ', $users)]);
         } else {

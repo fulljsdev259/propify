@@ -1,9 +1,19 @@
 <template>
     <div class="listing">
+        
+        <el-button 
+            v-if="list !== undefined && list.length > 1 && showLastAssigned"
+            @click="expandRelationList=!expandRelationList" 
+            class="relation-expand-button"
+        >
+            Expand
+        </el-button>
+
         <el-table
-            :data="list"
+            :data="showLastAssigned && !expandRelationList? lastAssigned: list"
             :show-header="showHeader"
             style="width: 100%"
+            :class="{'new-style': showLastAssigned && list !== undefined && list.length > 1, 'border-none': !expandRelationList}"
             @row-dblclick="handleRowDblClick"
             >
             <div slot="empty">
@@ -312,7 +322,7 @@
                             :type="button.type"
                             :class="button.class"
                             @click="button.onClick(scope.row)"
-                            v-if="button.view == 'request' && scope.row.type == 'provider' && scope.row.sent_email == false"
+                            v-if="button.view == 'request' && scope.row.sent_email == false"
                             size="mini"
                             round
                         >
@@ -365,7 +375,7 @@
             </el-table-column> -->
         </el-table>
         <div v-if="meta.current_page < meta.last_page">
-            <el-button @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>
+            <el-button v-if="!lastAssigned || expandRelationList" @click="loadMore" size="mini" style="margin-top: 15px" type="text">{{$t('general.load_more')}}</el-button>
         </div>
     </div>
 </template>
@@ -416,6 +426,14 @@
                 type: Boolean,
                 default: false
             },
+            request_assign_type : {
+                type: Number,
+                default: () => 0
+            },
+            showLastAssigned: {
+                type: Boolean,
+                default: false,
+            }
         },
         data() {
             return {
@@ -423,6 +441,8 @@
                 meta: {},
                 loading: false,
                 uuid,
+                expandRelationList: false,
+                lastAssigned: [],
             }
         },
         async created() {
@@ -450,13 +470,16 @@
                 if (!this.fetchStatus) return;
                 this.loading = true;
                 try {
-                    const resp = await this.$store.dispatch(this.fetchAction, {
-                        [this.filter]: this.filterValue,
-                        per_page: 5,
-                        page
-                    });
+                    let query = {
+                            [this.filter]: this.filterValue,
+                            per_page: 5,
+                            page,
+                        };
+                    if(this.request_assign_type) {
+                        query.type = this.request_assign_type;
+                    } 
 
-
+                    const resp = await this.$store.dispatch(this.fetchAction, query);
                     this.meta = _.omit(resp.data, 'data');
                     if(!resp.data) {
                         this.list = []
@@ -467,31 +490,35 @@
                                 this.list.push(...resp)
                         }
                     }
-                    else if (page === 1) {
+                    else {
+                        if (page === 1) {
                         
-                        if(this.fetchAction == "getBuildings") {
-                            resp.data.data.forEach(item => {
-                                item.residents = item.relations.map(relation => relation.resident)
-                                item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
-                            })
+                            if(this.fetchAction == "getBuildings") {
+                                resp.data.data.forEach(item => {
+                                    item.residents = item.relations.map(relation => relation.resident)
+                                    item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
+                                })
+                            }
+                            
+                            this.list = resp.data.data;
+                            if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
+                                this.unitsTypeLabelMap();
+                            }
+                            
+                        } else {
+                            if(this.fetchAction == "getBuildings") {
+                                resp.data.data.forEach(item => {
+                                    item.residents = item.relations.map(relation => relation.resident)
+                                    item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
+                                })
+                            }
+                            this.list.push(...resp.data.data);
+                            if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
+                                this.unitsTypeLabelMap();
+                            }
                         }
-                        
-                        this.list = resp.data.data;
-                        if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
-                            this.unitsTypeLabelMap();
-                        }
-                        
-                    } else {
-                        if(this.fetchAction == "getBuildings") {
-                            resp.data.data.forEach(item => {
-                                item.residents = item.relations.map(relation => relation.resident)
-                                item.residents_count = item.residents.length > 2 ? (item.residents.length - 2) : 0;
-                            })
-                        }
-                        this.list.push(...resp.data.data);
-                        if(this.fetchAction == 'getUnits' || this.fetchAction == 'getUnitsWithResidents') {
-                            this.unitsTypeLabelMap();
-                        }
+                        if(this.showLastAssigned && this.list.length > 0 && this.filter=="request_id" && this.request_assign_type)
+                            this.lastAssigned = this.list.slice(0, 1);
                     }
                 } catch (e) {
                     this.list = []
@@ -573,11 +600,72 @@
             text-align: right;
             float: right;
         }
-        
+    }
+
+    .listing {
+        position: relative;
+        .relation-expand-button {
+            position: absolute;
+            top: 80px;
+            left: 10px;
+            z-index: 99;
+        }
+        .el-table.new-style {
+            margin-top: 120px;
+            position: unset;
+            &.border-none {
+                .el-table__body-wrapper table tbody tr {
+                    border-bottom: none !important;
+                }
+            }
+            .el-table__body-wrapper {
+                position: unset;
+                table {
+                    tbody {
+                        tr:first-of-type {
+                            position: absolute;
+                            top: 20px;
+                            display: flex;
+                            width: calc(100% + 40px);
+                            margin-left: -20px;
+                            border-bottom: 1px solid var(--border-color-lighter);
+                            td {
+                                padding-bottom: 50px;
+                                flex: 1;
+                                width: 200px;
+                                &:first-of-type {
+                                    max-width: 70px;
+                                    min-width: 70px;
+                                    margin-left: 20px;
+                                }
+                                &.action-buttons {
+                                    min-width: 53px;
+                                    margin-right: 20px;
+                                }
+                            }
+                        }
+                        tr {
+                            td {
+                                border: none !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 </style>
 <style lang="scss" scoped>    
     .listing {
+        
+        .relation-expand-button {
+            background-color: transparent;
+            padding: 0px;
+            &:hover {
+                box-shadow: none;
+                font-weight: 700;
+            }
+        }
         :global(.el-table__body-wrapper) {
             :global(table) {
                 display: block;

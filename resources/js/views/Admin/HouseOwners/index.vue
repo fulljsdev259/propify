@@ -2,7 +2,7 @@
     <div class="services list-view">
         <heading :title="$t('models.house_owner.title')" icon="icon-users" shadow="heavy">
             <template v-if="$can($permissions.create.propertyManager)">            
-                <el-button @click="add" icon="ti-plus" round size="mini" type="primary">
+                <el-button @click="add" icon="icon-plus" round size="mini" type="primary">
                     {{$t('models.house_owner.add')}}
                 </el-button>
             </template>

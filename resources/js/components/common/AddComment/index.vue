@@ -9,7 +9,7 @@
             <el-input 
                 autosize 
                 ref="content" 
-                :class="[{'is-focused': focused, }, newStyle?'new-style':'old-style']" 
+                :class="[{'is-focused': focused, }, newStyle?'new-style':'old-style', 'contentInput']" 
                 type="textarea" 
                 resize="none" 
                 v-model="content" 
@@ -19,8 +19,28 @@
                 v-resize:debounce="keyHandler"
                 @blur="focused = false" 
                 @focus="focused = true" 
-                @keydown="keyHandler($event)"
+                @keydown.native.exact="keyHandler"
                 @keydown.native.alt.enter.exact="save" />
+
+            <span class="phantom"></span>
+
+            <div 
+                v-if="autoSuggest.visible && managerLists.length" 
+                ref="autoSuggestList"
+                :key="autoSuggest.yPos" 
+                class="auto-suggest-list"
+            >
+                <div
+                    :key="item.name + index" 
+                    :class="['list-item', {'selected': index === autoSuggest.index}]"
+                    @click="handleSelectPM(item)"
+                    v-for="(item, index) in managerLists"
+                >
+                    <ui-avatar :name="item.user.name" :size="32" :src="item.user.avatar" />
+                    <span class="name" v-html="filterSearch(item.name)"></span>
+                    <span class="email" v-html="filterSearch(item.user.email)"></span>
+                </div>
+            </div>
 
             <el-dropdown v-if="!newStyle && showTemplates" class="templates" size="small" placement="top-end" trigger="click" @command="onTemplateSelected" @visible-change="onDropdownVisibility">
                 <el-tooltip ref="templates-button-tooltip" :content="type == 'internalNotices' ? 'Choose Property maneger and Admin' : $t('general.components.common.add_comment.tooltip_templates')" placement="top-end">
@@ -45,11 +65,11 @@
             </el-dropdown>
         </div>
         <i v-if="newStyle" class="el-icon-microphone action-buttons"></i>
-        <el-tooltip v-if="!newStyle" :content="$t('general.components.common.add_comment.save_shortcut', {shortcut: saveKeysShortcut})" placement="top-end">
-            <el-button circle icon="icon-paper-plane" size="small" :disabled="!content" :loading="loading" @click="save" />
+        <el-tooltip :content="$t('general.components.common.add_comment.save_shortcut', {shortcut: saveKeysShortcut})" placement="top-end">
+            <i class="icon-paper-plane action-buttons" :disabled="!content" :loading="loading" @click="save" />
         </el-tooltip>
     </div>
-    <div v-if="type === 'internalNotices' && content" style="margin: 10px 41px 0 35px;">
+    <!-- <div v-if="type === 'internalNotices' && content" style="margin: 10px 41px 0 35px;">
         <el-row :gutter="10">
             <el-col :span="24">
                 <el-form-item class="internal-notices-switch">
@@ -63,7 +83,7 @@
                 </el-select>
             </el-col>
         </el-row>
-    </div>
+    </div> -->
 </div>
 </template>
 
@@ -120,7 +140,17 @@
                 managerLists: [],
                 selectedManagerLists: [],
                 loadingList: false,
-                isManagerSelect: false
+                isManagerSelect: false,
+
+                autoSuggest: {
+                    startPos: 0,
+                    started: false,
+                    xPos: 0,
+                    yPos: 0,
+                    visible: false,
+                    index: 0,
+                    timer: null,
+                }
             }
         },
         methods: {
@@ -128,8 +158,55 @@
                 getTemplates: 'getRequestTemplates',
                 getPropertyManagers: 'getPropertyManagers',
             }),
-            keyHandler() {
+            keyHandler(event) {
                 this.$emit('update-dynamic-scroller');
+                if(event.key == 'ArrowUp') {
+                    if(this.autoSuggest.started)
+                        event.preventDefault()
+                    if(this.autoSuggest.started && this.autoSuggest.index > 0) {
+                        this.autoSuggest.index --;
+                        if(this.$refs.autoSuggestList) {
+                            let curPos = this.autoSuggest.index * 52;
+                            let top = this.$refs.autoSuggestList.scrollTop;
+                            let height = this.$refs.autoSuggestList.clientHeight;
+                            if(curPos < top )
+                                this.$refs.autoSuggestList.scrollBy(0, -52);
+                        } 
+                    }
+                } else if(event.key == 'ArrowDown') {
+                    if(this.autoSuggest.started)
+                        event.preventDefault()
+                    if(this.autoSuggest.started && this.autoSuggest.index < this.managerLists.length - 1) {
+                        this.autoSuggest.index ++;
+
+                        if(this.$refs.autoSuggestList) {
+                            let curPos = (this.autoSuggest.index + 1) * 52;
+                            let top = this.$refs.autoSuggestList.scrollTop;
+                            let height = this.$refs.autoSuggestList.clientHeight;
+                            if(curPos > top + height)
+                                this.$refs.autoSuggestList.scrollBy(0, 52);
+                        } 
+
+                    }
+
+                } else if(event.key == 'Enter') {
+                    if(this.autoSuggest.started) {
+                        event.preventDefault();
+                        this.selectedManagerLists.push(this.managerLists[this.autoSuggest.index]);
+                        this.insertName(this.autoSuggest.startPos, this.managerLists[this.autoSuggest.index].name);
+                    }
+                } else if(event.key == 'Escape') {
+                    if(this.autoSuggest.started) {
+                        event.preventDefault();
+                        this.resetAutoSuggest();
+                        console.log('esc');
+                    }
+                }
+            },
+            getEndOfStr(startPos) {
+                while(this.content.charAt(startPos) !== ' ' && startPos < this.content.length)
+                    startPos ++;
+                return startPos;
             },
             async remoteSearch(search) {
                 if (search === '') {
@@ -145,6 +222,10 @@
                                     exclude_ids.push(item.edit_id);
                                 }                                
                             })
+                            this.selectedManagerLists.forEach((item) => {
+                                if(this.content.includes('@' + item.name))
+                                    exclude_ids.push(item.id);
+                            });
                             resp = await this.getPropertyManagers({
                                 get_all: true,
                                 search,
@@ -156,12 +237,12 @@
                     } finally {
                         this.loadingList = false;
                     }
-                }           
+                }         
+                this.autoSuggest.visible = true;  
             },
             resetList(){
                 this.selectedManagerLists = []
             },
-
             focus () {
                 this.$refs.content.focus()
             },
@@ -186,6 +267,11 @@
                     this.loading = true
                     this.$refs.content.blur()
 
+                    let existingManagerLists = [];
+                    this.selectedManagerLists.forEach((item) => {
+                        if(this.content.includes('@' + item.name))
+                            existingManagerLists.push(item.id);
+                    });
                     let body = this.type !== 'internalNotices' ? {
                         id: this.id,
                         comment: this.content,
@@ -198,7 +284,7 @@
                         user_id: this.user.id,
                         comment: this.content,
                         commentable: this.type,
-                        manager_ids: this.selectedManagerLists
+                        manager_ids: existingManagerLists
                     }
 
                     await this.$store.dispatch('comments/create', body);                    
@@ -213,6 +299,41 @@
                     this.isManagerSelect = false
                     this.resetList();
                 }
+            },
+            insertName(startPos, name) {
+                this.content = this.content.substring(0, startPos - 1) + ' @' + name + ' ' + this.content.substring(this.getEndOfStr(startPos));
+                this.resetAutoSuggest();
+            },
+            resetAutoSuggest() {
+                this.managerLists = [];
+                this.autoSuggest.index = 0;
+                this.autoSuggest.started = false;
+                this.autoSuggest.visible = false;
+                this.focus();
+            },
+            handleSelectPM(pm) {
+                this.insertName(this.autoSuggest.startPos, pm.name);
+                this.selectedManagerLists.push(pm);
+            },
+            count(str) {
+                let matches = str.match(/@/g);
+                let count = 0;
+                if(matches)
+                    count = matches.length;
+                return count;
+            },
+            filterSearch(str) {
+                let result = str;
+                if(this.autoSuggest.started) {
+                    let search = this.content.substring(this.autoSuggest.startPos, this.getEndOfStr(this.autoSuggest.startPos));
+                    if(search !== '') {
+                        let pos = str.toLowerCase().indexOf(search.toLowerCase());
+                        if(pos !== -1) {
+                            result = `${str.slice(0, pos)}<b>${str.slice(pos, pos + search.length)}</b>${str.slice(pos + search.length)}`;
+                        }
+                    }
+                }
+                return result;
             },
         },
         computed: {
@@ -259,8 +380,38 @@
             }
         },
         watch: {
-            content() {
+            content(newStr, oldStr) {
                 this.$emit('update-dynamic-scroller');
+                if(this.type === 'internalNotices') {
+                    let elTextArea = this.$refs.content.$el.querySelector('textarea');
+                    let curPos = elTextArea.selectionStart;
+                    // let inputRect = elTextArea.getBoundingClientRect()
+                    // this.autoSuggest.xPos = inputRect.left;
+                    // this.autoSuggest.yPos = inputRect.top;
+                    // let autoList = this.$el.querySelector('.auto-suggest-list');
+                    // autoList.style.left = inputRect.left;
+                    // autoList.style.top = inputRect.top ;
+                    // console.log(inputRect.left, inputRect.top);
+                    if(this.count(newStr) !== this.count(oldStr) && !this.autoSuggest.started && (curPos === 1 || curPos > 1 && newStr.charAt(curPos - 2) === ' ')) {
+                        this.autoSuggest.started = true;
+                        this.autoSuggest.startPos = curPos;
+                    }
+                    if(this.autoSuggest.started) {
+                        if(this.autoSuggest.timer) {
+                            clearTimeout(this.autoSuggest.timer);
+                            this.autoSuggest.timer = null;
+                        }
+                        this.autoSuggest.timer = setTimeout(() => {
+                            this.remoteSearch(newStr.substring(this.autoSuggest.startPos, this.getEndOfStr(this.autoSuggest.startPos)));
+                        }, 100);
+                    }
+
+                    // let curPosition = this.$refs.content.$el.querySelector('textarea').selectionStart;
+                    // let phantom = document.querySelector('.phantom');
+                    // phantom.innerHTML = this.content.substring(0, curPosition) + '<br>';
+                    // this.content.substring(0, curPosition).forEach((val) => console.log(parseInt(val)));
+                    // console.log(curPosition);
+                }
             }
         }
     }
@@ -292,13 +443,19 @@
         box-sizing: border-box;
 
         &.new-style {
-            align-items: center;
             border-top: 1px solid #f6f5f7;
-            padding: 10px 0;
+            padding: 10px 20px;
         }
         .action-buttons {
             font-size: 18px;
-            padding: 0 20px;
+            padding-left: 5px;
+            margin-bottom: 5px;
+            &:first-of-type {
+                padding: 0px;
+            }
+            &.el-icon-microphone {
+                font-size: 24px;
+            }
         }
 
         .content {
@@ -362,6 +519,7 @@
                 &.new-style {
                     :global(.el-textarea__inner) {
                         background-color: transparent !important;
+                        font-family: inherit;
                     }
                 }
 
@@ -423,6 +581,41 @@
             & + .el-button {
                 margin-left: 16px;
             }
+
+            .auto-suggest-list {
+                position: absolute;
+                bottom: 40px;
+                left: 10px;
+                z-index: 999;
+                width: 450px;
+                max-height: 300px;
+                overflow: auto;
+                background-color: var(--color-white);
+                border: 1px solid var(--border-color-base);
+                border-radius: 8px 8px 5px 5px;
+                .list-item {
+                    padding: 10px 30px 10px 10px;
+                    cursor: pointer;
+
+                    &.selected {
+                        background-color: var(--border-color-lighter);
+                    }
+                    &:hover {
+                        background-color: var(--border-color-lighter);
+                    }
+                    .name {
+                        margin-left: 15px;
+                        color: var(--color-black);
+                        text-transform: capitalize;
+                        font-size: 15px;
+                    }
+                    .email {
+                        margin-left: 15px;
+                        color: var(--color-text-primary);
+                        font-size: 12px;
+                    }
+                }
+            }
         }
 
         &.with-templates {
@@ -434,6 +627,17 @@
                 }
             }
         }
+
+        .phantom {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -999;
+            padding: 6px 8px;
+        }
+
     }
 
 </style>

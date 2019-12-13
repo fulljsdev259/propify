@@ -12,6 +12,6 @@ trait BuildingRelation
      */
     public function buildings()
     {
-        return $this->morphToMany(Building::class, 'assignee', 'building_assignees', 'assignee_id', 'building_id');
+        return $this->belongsToMany(Building::class, 'building_assignees', 'user_id', 'building_id', 'user_id');
     }
 }

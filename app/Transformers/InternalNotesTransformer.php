@@ -23,8 +23,8 @@ class InternalNotesTransformer extends BaseTransformer
             'request_id' => $model->request_id,
             'user_id' => $model->user_id,
             'comment' => $model->comment,
-            'created_at'=> $model->created_at,
-            'updated_at'=> $model->updated_at,
+            'created_at'=> $model->created_at->toDateTimeString(),
+            'updated_at'=> $model->updated_at->toDateTimeString(),
         ];
         if ($model->relationExists('user')) {
             $response['user'] = (new UserTransformer())->transform($model->user);

@@ -78,14 +78,6 @@ class RequestsTableSeeder extends Seeder
                         'type' => array_rand(\App\Models\RequestAssignee::Type)
                     ]]);
             }
-            foreach ($providers as $prov) {
-                foreach ($admins as $admin) {
-                    $c = $request->conversationFor($admin, $prov->user);
-                    $c->commentAsUser($admin, "Knock Knock!");
-                    usleep(1000);
-                    $c->commentAsUser($prov->user, "Who's there?");
-                }
-            }
         }
     }
 

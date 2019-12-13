@@ -27,7 +27,7 @@
                                    @click="stopAllMarkersDrag(), markersKey += 1">Cancel</el-button>
                     </div>
                     <div key="2" v-else class="zoom-top__right">
-                        <el-button icon="el-icon-plus"
+                        <el-button icon="icon-plus"
                                    @click="putMarkerOnBlock()">add marker</el-button>
                     </div>
                 </transition-group>

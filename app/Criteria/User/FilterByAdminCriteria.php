@@ -41,19 +41,22 @@ class FilterByAdminCriteria implements CriteriaInterface
         $model = $model->orderBy($orderBy, $sortedBy);
         $search = $this->request->search;
 
-        $model->whereHas('property_manager', function ($q) use ($search) {
-            $q->when($search, function ($q) use ($search) {
-                $q->whereRaw('Concat(first_name, " ", last_name) like ?' ,   '%' . $search . '%');
-            });
-        })->orWhereHas('service_provider', function ($q) use ($search) {
-            $q->when($search, function ($q) use ($search) {
-                $q->where(function ($q) use ($search) {
-                    $q->whereRaw('Concat(first_name, " ", last_name) like ?' ,   '%' . $search . '%')
-                        ->orWhere('company_name', 'like', '%' . $search . '%');
+        $model->where(function ($q) use ($search) {
+            $q->whereHas('property_manager', function ($q) use ($search) {
+                $q->when($search, function ($q) use ($search) {
+                    $q->whereRaw('Concat(first_name, " ", last_name) like ?' ,   '%' . $search . '%');
                 });
+            })->orWhereHas('service_provider', function ($q) use ($search) {
+                $q->when($search, function ($q) use ($search) {
+                    $q->where(function ($q) use ($search) {
+                        $q->whereRaw('Concat(first_name, " ", last_name) like ?' ,   '%' . $search . '%')
+                            ->orWhere('company_name', 'like', '%' . $search . '%');
+                    });
+                });
+            })->when($search, function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search .'%');
             });
         });
-
 
         return $model;
     }

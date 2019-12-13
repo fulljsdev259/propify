@@ -124,10 +124,10 @@
                             </el-form-item>
                              <el-form-item v-else-if="filter.type === filterTypes.popover">
                                 <el-dropdown placement="bottom" trigger="click" @command="handleSelectFilters">
-                                    <el-button class="toggle-filter-button"> {{ $t('general.filter') }}</el-button>
+                                    <el-button class="toggle-filter-button"> {{ $t('general.filters.my_filters') }}</el-button>
                                     <el-dropdown-menu slot="dropdown" class="save-filters">
                                         <span class="title">{{ $t('general.filters.saved_filters') }}</span>
-                                        <el-input v-model="savedFilterSearch" prefix-icon="el-icon-search" placeholder="Searh saved filters" @input="handleFilterSearch($event, filter)"></el-input>
+                                        <el-input v-model="savedFilterSearch" prefix-icon="el-icon-search" :placeholder="$t('general.filters.filter_search')" @input="handleFilterSearch($event, filter)"></el-input>
                                         <el-dropdown-item
                                             :key="`${item.menu}${index}${savedFilters.length}`"
                                             :command="item"
@@ -182,7 +182,7 @@
             v-loading="loading.state">
 
             <el-table-column
-                :key="'header' + index"
+                :key="column.label + index"
                 :width="column.width"
                 :min-width="column.minWidth"
                 :class-name="column.withRequestUsers ? 'request-users' : ''"
@@ -459,7 +459,7 @@
                         </div>
                     </div>
                     <div v-else-if="column.withRequestUsers">
-                        <div class="avatars-wrapper">
+                        <div class="avatars-wrapper with-request-users">
                             <span v-if="scope.row[column.prop]">
                                 <el-tooltip
                                     :content="scope.row[column.prop].name"
@@ -475,6 +475,7 @@
                                     </template>
                                 </el-tooltip>
                             </span>
+                            <span v-if="scope.row[column.prop]" class="name">{{ scope.row[column.prop].label }}</span>
                             <div class="quick-assign-avatar" ref="quickAssignAvatar">
                                 <el-dropdown placement="bottom" trigger="click" @visible-change="handleVisibleChange">
                                     <el-button size="mini" class="more-actions" @click="handleClickedItem">
@@ -504,7 +505,7 @@
                                                 <el-select
                                                         :loading="remoteLoading"
                                                         :placeholder="$t('models.request.name_or_email')"
-                                                        :remote-method="search =>remoteSearchAssignees(search, scope.row.id)"
+                                                        :remote-method="search =>remoteSearchAssignees(search, scope.row.id, column.prop)"
                                                         filterable
                                                         remote
                                                         reserve-keyword
@@ -517,9 +518,10 @@
                                                             v-for="assignee in assignees"/>
                                                 </el-select>
 
-                                                <span>{{$t('models.request.or')}}</span>
+                                                <span v-if="$store.getters.loggedInUser.id != (scope.row[column.prop] ? scope.row[column.prop].id : false)">{{$t('models.request.or')}}</span>
 
-                                                <el-button @click="() => handleAssignMe(scope.row.id, column.prop)">
+                                                <el-button v-if="$store.getters.loggedInUser.id != (scope.row[column.prop] ? scope.row[column.prop].id : false)"
+                                                           @click="() => handleAssignMe(scope.row.id, column.prop)">
                                                     {{$t('models.request.assign_me')}}
                                                 </el-button>
                                             </div>
@@ -998,8 +1000,7 @@
             },
             async handleQuickAssign(request_id, assignee_id, prop) {
                 let type = prop === 'competent_user' ? 1 : 2;
-                let assignee = this.assignees.find(item => item.id == assignee_id)
-                let user_params = [{type, user_id: assignee_id, role: assignee.roles[0].name}]
+                let user_params = [{type, user_id: assignee_id}];
 
                 let resp = await this.assignUsersToRequest({
                             id: request_id,
@@ -1032,8 +1033,8 @@
             },
             async handleAssignMe(request_id, prop) {
                 let type = prop === 'competent_user' ? 1 : 2;
-                let loggedinUser = this.$store.getters.loggedInUser
-                let user_params = [{type, user_id: loggedinUser.id, role: loggedinUser.roles[0].name}]
+                let loggedinUser = this.$store.getters.loggedInUser;
+                let user_params = [{type, user_id: loggedinUser.id}];
 
                 let resp = await this.assignUsersToRequest({
                             id: request_id,
@@ -1293,14 +1294,16 @@
                     filter.remoteSearch = false;
                 }
             },
-            async remoteSearchAssignees(search, request_id) {
+            async remoteSearchAssignees(search, request_id, prop) {
+                let type = prop === 'competent_user' ? 1 : 2;
+
                 if (search === '') {
                     this.assignees = [];
                 } else {
                     this.remoteLoading = true;
 
                     try {
-                        const data = await this.getAllAdminsForRequest({request_id: request_id, is_get_function: true, search})
+                        const data = await this.getAllAdminsForRequest({request_id: request_id, assign_type: type, is_get_function: true, search})
 
                         this.assignees = data;
 
@@ -1713,6 +1716,9 @@
                 color: var(--color-text-primary);
                 &:first-of-type {
                     padding-left: 32px;
+                    :global(.cell) {
+                        min-width: 85px;
+                    }
                 }
             }
 
@@ -1720,6 +1726,9 @@
                 padding: 20px 4px;
                 &:first-of-type {
                     padding-left: 36px;
+                    :global(.cell) {
+                        min-width: 55px;
+                    }
                 }
             }
         }
@@ -1818,6 +1827,15 @@
 
         & > span {
             margin-right: 2px;
+        }
+
+        &.with-request-users {
+            span {
+                margin-right: 10px;
+                &.name {
+                    text-transform: capitalize;
+                }
+            }
         }
 
         .vue-avatar--wrapper {
@@ -2118,10 +2136,10 @@
             justify-content: space-between;
             align-items: center;
             &.active {
-                background-color: lighten(#2BA7FF, 35%)
+                background: var(--primary-color-lighter);
             }
             &:hover {
-                background: lighten(#2BA7FF, 30%);
+                background: var(--primary-color-lighter);
                 color: var(--color-text-regular);
                 span i{
                     display: inline;

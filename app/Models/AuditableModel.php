@@ -54,7 +54,6 @@ class AuditableModel extends Model implements Auditable
     const EventProviderNotified = 'provider_notified';
     const EventMediaUploaded = 'media_uploaded';
     const EventMediaDeleted = 'media_deleted';
-    const EventManageEmailReceptionists = 'manage_email_receptionists';
     const EventAvatarUploaded = 'avatar_uploaded';
     const BuildingUnitsCreated = 'building_units_created';
     const NewResidentPinboardCreated = 'new_resident_pinboard_created';
@@ -111,7 +110,6 @@ class AuditableModel extends Model implements Auditable
         self::EventProviderNotified,
         self::EventMediaUploaded,
         self::EventMediaDeleted,
-        self::EventManageEmailReceptionists,
         self::EventAvatarUploaded,
         self::BuildingUnitsCreated,
         self::NewResidentPinboardCreated,
@@ -273,9 +271,7 @@ class AuditableModel extends Model implements Auditable
         $audit = $this->makeNewAudit(self::MassAssignments);
         $audit->new_values = $items->filter(function ($item) {
                 return $item->wasRecentlyCreated;
-            })->groupBy('assignee_type')->transform(function ($_items) {
-                return $_items->pluck('assignee_id')->all();
-            })->all();;
+            })->pluck('user_id')->all();
 
         $audit->save();
         return $audit;
@@ -792,51 +788,6 @@ class AuditableModel extends Model implements Auditable
 
         return $data;
     }
-
-    /**
-     * @param $old
-     * @param $new
-     * @param null $globalEmailReceptionist
-     * @throws \OwenIt\Auditing\Exceptions\AuditingException
-     */
-    public function auditEmailReceptionists($old, $new, $globalEmailReceptionist = null)
-    {
-        $this->auditEvent = self::EventUpdated;
-        $audit = new Audit($this->toAudit());
-        $audit->event = self::EventManageEmailReceptionists;
-        $oldValues = $this->fixEmailReceptionists($old);
-        $newValues = $this->fixEmailReceptionists($new);
-
-        if (! is_null($globalEmailReceptionist)) {
-            $oldValues['global_email_receptionist'] = ! $globalEmailReceptionist;
-            $newValues['global_email_receptionist'] = $globalEmailReceptionist;
-        }
-
-        $audit->old_values = $oldValues;
-        $audit->new_values = $newValues;
-        if ($audit->old_values != $audit->new_values) {
-            $audit->save();
-        }
-    }
-
-    /**
-     * @param $items
-     * @return array
-     */
-    protected function fixEmailReceptionists($items)
-    {
-        $data = [];
-
-        foreach ($items->groupBy('category') as $category => $_item) {
-            $data['email_receptionists'][] = [
-                'category' => $category,
-                'property_manager_ids' => $_item->pluck('property_manager_id')->all()
-            ];
-        }
-
-        return $data;
-    }
-
 
 
 

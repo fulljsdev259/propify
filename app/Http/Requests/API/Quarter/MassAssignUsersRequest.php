@@ -3,6 +3,8 @@
 namespace App\Http\Requests\API\Quarter;
 
 use App\Http\Requests\BaseRequest;
+use App\Models\BuildingAssignee;
+use App\Models\User;
 
 class MassAssignUsersRequest extends BaseRequest
 {
@@ -13,8 +15,12 @@ class MassAssignUsersRequest extends BaseRequest
      */
     public function authorize()
     {
+        if (empty($this->data)) {
+            $this->merge(['data' => $this->toArray()]);
+        }
         return $this->can('assign-quarter');
     }
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -23,9 +29,74 @@ class MassAssignUsersRequest extends BaseRequest
      */
     public function rules()
     {
-        // @TODO validate
         return [
-
+            'data' => [
+                'required',
+//                function ($attribute, $value, $fails) {
+//                    foreach ($value as $index => $data) {
+//                        if (! is_array($data)){
+//                            $message = __('validation.array', ['attribute' => $index]);
+//                            return $fails($message);
+//                        }
+//
+//                        if (empty($data['user_id'])) {
+//                            $message = __('validation.required', ['attribute' => $this->getAttributeByKey($index, 'user_id')]);
+//                            return $fails($message);
+//                        }
+//                        if (! is_numeric($data['user_id'])) {
+//                            $message = __('validation.integer', ['attribute' => $this->getAttributeByKey($index, 'user_id')]);
+//                            return $fails($message);
+//                        }
+//                    }
+//
+//                    $userIds = collect($value)->pluck('user_id');
+//                    $userCount = User::whereIn('id', $userIds)->count();
+//
+//                    if ($userCount != $userIds->count()) {
+//                        return $fails('Latest one user is not valid. Please fix');
+//                    }
+//
+//                    $buildingAssignees = BuildingAssignee::whereIn('user_id', $userIds)
+//                        ->select('user_id', 'building_id')
+//                        ->with('user:id,name', 'building:id,building_format')
+//                        ->whereHas('building', function ($q) {
+//                            $q->where('quarter_id', $this->route('id'));
+//                        })
+//                        ->get();
+//                    if ($buildingAssignees->isNotEmpty()) {
+//                        return $fails($this->getAlreadyAssignedBuildingMessage($buildingAssignees));
+//                    }
+//                }
+            ]
         ];
+    }
+
+    public function messages()
+    {
+        return [
+            'data.required' => 'Need pass latest one array contains user_id key'
+        ];
+    }
+
+    /**
+     * @param $key
+     * @param $name
+     * @return string
+     */
+    protected function getAttributeByKey($key, $name)
+    {
+        return $key . '.' . $name;
+    }
+
+    protected function getAlreadyAssignedBuildingMessage($buildingAssignees)
+    {
+        $messages = '';
+        foreach ($buildingAssignees->groupBy('building.building_format') as $buildingFormat => $items) {
+            $users = $items->pluck('user.name')->implode(', ');
+            $messages .= sprintf('In %s building already assigned %s users. ', $buildingFormat, $users);
+        }
+
+        $messages .= 'Please firstly unassign them in building and then again try assign to quarter';
+        return $messages;
     }
 }

@@ -5,7 +5,7 @@
                 clearable
                 :loading="remoteLoading"
                 :placeholder="$t('general.placeholders.search')"
-                :remote-method="remoteSearch"
+                :remote-method="search => remoteSearch(search, requestAssignType)"
                 class="custom-remote-select"
                 filterable
                 remote
@@ -21,8 +21,8 @@
                         :key="assignee.id"
                         :label="assignee.name"
                         :value="assignee.id"
-                        v-for="assignee in toAssignList">
-                    <span style="float: left">{{ assignee.name }}</span>
+                        v-for="assignee in toAssignList" class="assign-list-item">
+                    <span style="float: left">{{ assignee.name }}, {{ assignee.company_name }}</span>
                     <span style="float: right; color: #8492a6; font-size: 13px">
                         {{assignee.roles[0].name == "provider" ? $t(`models.service.category.${assignee.function}`)  : ''}}
                         {{assignee.roles[0].name != "provider" ? $t(`general.roles.${assignee.function}`) : ''}} 
@@ -31,7 +31,7 @@
             </el-select>
         </el-col>
         <el-col id="managerAssignBtn">
-            <el-button :disabled="!toAssign.length" @click="assign" class="full-button el-button--assign"
+            <el-button :disabled="!toAssign.length" @click="assign(requestAssignType)" class="full-button el-button--assign"
                         icon="ti-save">
                 &nbsp;{{$t('general.assign')}}
             </el-button>
@@ -58,6 +58,10 @@
             },
             remoteSearch: {
                 type: Function 
+            },
+            requestAssignType: {
+                type: Number,
+                default: 0,
             }
         }
     }
@@ -75,5 +79,8 @@
         #managerAssignBtn {
             flex: 1;
         }
+    }
+    .assign-list-item {
+        justify-content: space-between;
     }
 </style>

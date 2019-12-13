@@ -89,7 +89,7 @@
                                                 :disabled="!editMode"
                                                 type="textarea"
                                                 :rows="4"
-                                                placeholder="Please input"
+                                                placeholder=""
                                                 v-model="model.description">
                                             </el-input>
 
@@ -425,8 +425,8 @@
                     <el-col :md="12">
                         <template v-if="$can($permissions.assign.request)">
                         
-                            <el-tabs id="comments-card" v-if="model.id" type="border-card" value="assignment" class="edit-tab">
-                                <el-tab-pane name="assignment">
+                            <el-tabs id="assignment-card" v-model="activeAssignment" v-if="model.id" type="border-card" value="assignment" class="edit-tab">
+                                <el-tab-pane name="competentAssignment">
                                     <span slot="label">
                                         {{ $t('models.request.assignment') }}
                                     </span>
@@ -438,30 +438,23 @@
                                                 :toAssignList="toAssignList"
                                                 :remoteLoading="remoteLoading"
                                                 :remoteSearch="remoteSearchAssignees"
+                                                :requestAssignType="1"
                                         ></users-assignment>
-                                        <!-- <relation-list
-                                            :actions="assigneesActions"
-                                            :columns="assigneesColumns"
-                                            :filterValue="model.id"
-                                            fetchAction="getAssignees"
-                                            filter="request_id"
-                                            ref="assigneesList"
-                                            v-if="model.id"
-                                        /> -->
-                                        <el-button @click="expandRelationList=!expandRelationList" class="relation-expand-button">Expand</el-button>
                                         <relation-list
+                                            v-if="model.id"
+                                            ref="competentList"
                                             class="relation-expand-list"
                                             :actions="assigneesActions"
                                             :columns="assigneesColumns"
                                             :filterValue="model.id"
                                             fetchAction="getAssignees"
                                             filter="request_id"
-                                            ref="assigneesList"
-                                            v-if="model.id && expandRelationList"
+                                            :request_assign_type="1"
+                                            :showLastAssigned="true"
                                         />
                                     </el-col>
                                 </el-tab-pane>
-                                <el-tab-pane name="assignment1">
+                                <el-tab-pane name="accountableAssignment">
                                     <span slot="label">
                                         {{ $t('models.request.assigned_property_managers') }}
                                     </span>
@@ -473,15 +466,19 @@
                                                 :toAssignList="toAssignList"
                                                 :remoteLoading="remoteLoading"
                                                 :remoteSearch="remoteSearchAssignees"
+                                                :requestAssignType="2"
                                         ></users-assignment>
                                         <relation-list
+                                            v-if="model.id"
+                                            ref="accountableList"
+                                            class="relation-expand-list"
                                             :actions="assigneesActions"
                                             :columns="assigneesColumns"
                                             :filterValue="model.id"
                                             fetchAction="getAssignees"
                                             filter="request_id"
-                                            ref="assigneesList"
-                                            v-if="model.id"
+                                            :request_assign_type="2"
+                                            :showLastAssigned="true"
                                         />
                                     </el-col>
                                 </el-tab-pane>
@@ -680,7 +677,7 @@
                         </template>
                         <!--                    v-if="(!$can($permissions.update.serviceRequest)) || ($can($permissions.update.serviceRequest) && (media.length || (model.media && model.media.length)))"-->
                         
-                        <el-tabs id="comments-card" v-if="model.id" type="border-card" v-model="activeTab2">
+                        <el-tabs id="comments-card" v-if="model.id" type="border-card" v-model="activeTab2" class="chat-card">
                             <el-tab-pane name="comments">
                                 <span slot="label">
                                     {{ $t('models.request.comments') }}
@@ -732,20 +729,20 @@
 </template>
 
 <script>
-    import Heading from 'components/Heading';
-    import Card from 'components/Card';
+    import Vue from 'vue';
+    import {mapActions} from 'vuex';
+    import {Avatar} from 'vue-avatar';    
+    import {displaySuccess, displayError} from "../../../helpers/messages";
     import RequestsMixin from 'mixins/adminRequestsMixin';
     import ServiceModalMixin from 'mixins/adminServiceModalMixin';
-    import {mapActions} from 'vuex';
+    import EditorConfig from 'mixins/adminEditorConfig';
+    import { EventBus } from '../../../event-bus.js';
+    import Heading from 'components/Heading';
+    import Card from 'components/Card';
     import RelationList from 'components/RelationListing';
     import EditActions from 'components/EditViewActions';
     import ServiceDialog from 'components/ServiceAttachModal';
-    import {displaySuccess, displayError} from "../../../helpers/messages";
-    import {Avatar} from 'vue-avatar';    
     import AssignmentByType from 'components/AssignmentByType';
-    import Vue from 'vue';
-    import { EventBus } from '../../../event-bus.js';
-    import EditorConfig from 'mixins/adminEditorConfig';
     import EditCloseDialog from 'components/EditCloseDialog';
     import UsersAssignment from 'components/UsersAssignment';
 
@@ -777,46 +774,22 @@
                 activeTab0: 'request_details_pane',
                 activeTab1: 'request_details',
                 activeTab2: 'comments',
+                activeAssignment: 'competentAssignment',
                 activeActionTab: 'actions',
                 conversationVisible: false,
                 selectedConversation: {},
                 constants: this.$constants,
-                assigneesColumns: [{
-                    type: 'assignProviderManagerAvatars',
-                    width: 70,
-                }, {
-                    type: 'assigneesName',
-                    prop: 'name',
-                    label: 'general.name'
-                }, {
-                    prop: 'company_name',
-                    label: 'general.roles.label',
-                }, {
-                    type: 'assignProviderManagerFunctions',
-                }],
-                assigneesActions: [{
-                    width: 120,
-                    align: 'right',
-                    buttons: [{
-                        title: 'models.request.notify',
-                        tooltipMode: true,
-                        icon: 'el-icon-position',
-                        view: 'request',
-                        onClick: this.openNotifyProvider
-                    }, {
-                        title: 'general.unassign',
-                        tooltipMode: true,
-                        type: 'danger',
-                        icon: 'el-icon-delete',
-                        onClick: this.notifyUnassignment
-                    }]
-                }],
+                
                 rolename: null,
                 inputVisible: false,
                 editMode: false,
-                expandRelationList: false,
                 units: [],
                 quarters: [],
+                lastAssignee: {
+                    competent: [],
+                    accountable: [],
+                },
+                showServiceMailModal: false,
             }
         },
         computed: {
@@ -900,7 +873,7 @@
             isDisabled(status) {
                 return _.indexOf(this.constants.requests.statusByAgent[this.model.status], parseInt(status)) < 0
             },
-            notifyUnassignment(provider) {
+            notifyUnassignment(provider, requestAssignType = 0) {
                 this.$confirm(this.$t(`general.swal.confirm_change.title`), this.$t('general.swal.confirm_change.warning'), {
                     confirmButtonText: this.$t(`general.swal.confirm_change.confirm_btn_text`),
                     cancelButtonText: this.$t(`general.swal.confirm_change.cancel_btn_text`),
@@ -920,7 +893,12 @@
 
                         if (resp && resp.data) {
                             await this.fetchCurrentRequest();
-                            this.$refs.assigneesList.fetch();
+
+                            if(this.activeAssignment === 'competentAssignment')
+                                this.$refs.competentList.fetch();
+                            if(this.activeAssignment === 'accountableAssignment')
+                                this.$refs.accountableList.fetch();  
+
                             if(this.$refs.auditList){
 	                            this.$refs.auditList.fetch();
                             }
@@ -1021,16 +999,8 @@
                 right: 20px;
             }
         }
-        .relation-expand-button {
-            background-color: transparent;
-            padding: 0px;
-            &:hover {
-                box-shadow: none;
-                font-weight: 700;
-            }
-        }
         .relation-expand-list {
-            padding: 5px 50px;
+            padding: 5px 0;
         }
     }
 
@@ -1224,6 +1194,9 @@
             }
             &.edit-tab .el-tabs__content {
                 padding: 20px 10px !important;
+            }
+            &.chat-card .el-tabs__content {
+                overflow: visible;
             }
             .el-tabs__nav-wrap.is-top {
                 border-radius: 6px 6px 0 0;
