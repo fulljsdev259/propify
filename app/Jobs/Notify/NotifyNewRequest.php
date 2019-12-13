@@ -50,6 +50,7 @@ class NotifyNewRequest
      */
     public function handle()
     {
+        return;
         $request = $this->request;
         $relation = $this->request->relation;
         if (empty($relation->building)) {

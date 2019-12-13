@@ -47,6 +47,8 @@ class NotifyEmailReceptionistsNewPublicRequest
      */
     public function handle()
     {
+
+        return;
         $this->request->load('relation:id,building_id,resident_id', 'relation.building:id,quarter_id');
         $building = $this->request->relation->building ?? null;
 

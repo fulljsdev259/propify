@@ -55,6 +55,7 @@ class NotifyRequestProvider
      */
     public function __construct(Request $request, ServiceProvider $serviceProvider, $propertyManager, $mailDetails, $saveSystemAudit = true)
     {
+        return;
         $this->request = $request;
         $this->serviceProvider = $serviceProvider;
         $this->propertyManager = $propertyManager;

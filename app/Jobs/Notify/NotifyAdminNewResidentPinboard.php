@@ -46,6 +46,8 @@ class NotifyAdminNewResidentPinboard
      */
     public function handle()
     {
+
+        return;
         $pinboard = $this->pinboard;
         $newResidentPinboard = get_morph_type_of(NewResidentPinboard::class);
         if (empty($pinboard->user->resident)) {
