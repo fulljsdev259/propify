@@ -10,8 +10,8 @@
             </heading>
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
-                    <el-card class="quarter-details">
-                        <el-form :model="model" ref="form"  class="edit-details-form">
+                    <el-card class="quarter-details dvsdvsd">
+                        <el-form :model="model" ref="form"  class="edit-details-form dvsdvsd sdvsd sdvs ">
                             <el-row :gutter="20">
                                 <el-col :md="12" class="left-pane">
                                     <img :src="require('img/default_img_object.png')"/>
@@ -754,7 +754,7 @@
                 file.order = this.model.media.length + 1;
                 this.uploadQuarterFile({
                     id: this.model.id,
-                    [`${prop}_upload`]: file.src
+                    [`${prop}_upload`]: {'media':file.src, 'name':file.name}
                 }).then((resp) => {
                     displaySuccess(resp);
                     this.model.media.push(resp.media);
