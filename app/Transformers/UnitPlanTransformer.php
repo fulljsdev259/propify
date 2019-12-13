@@ -21,16 +21,16 @@ class UnitPlanTransformer extends BaseTransformer
      */
     public function transform(UnitPlan $model)
     {
-        $response = [
-            'id' => (int)$model->id,
-            'name' => $model->name,
-            'unit_id' => (int)$model->unit_id,
-            'created_at' => $model->created_at,
-        ];
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'name',
+            'unit_id',
+            'created_at',
+        ]);
 
-        if ($model->relationLoaded('media')) {
-            $response['media'] = (new MediaTransformer())->transformCollection($model->media);
-        }
+        $response = $this->includeRelationIfExists($model, $response, [
+            'media' => MediaTransformer::class
+        ]);
 
         return $response;
     }
