@@ -3,7 +3,7 @@
         <heading :title="$t('models.request.title')" icon="icon-chat-empty" shadow="heavy" :searchBar="true" @search-change="search=$event">
             <template v-if="$can($permissions.create.request)">
                 <el-button 
-                    @click="add" 
+                    @click="addRequestDialogVisible=true" 
                     icon="icon-plus" 
                     size="mini"
                     class="el-button--transparent"
@@ -192,22 +192,50 @@
         </el-dialog>
         
         <el-dialog
-            title="Warning"
             :visible.sync="addRequestDialogVisible"
-            width="30%"
+            width="700px"
             center
             :modal="false"
         >
             <div class="dialog-body">
+                <el-steps class="choice-steps" :space="160" :active="1" align-center>
+                    <el-step></el-step>
+                    <el-step></el-step>
+                </el-steps>
                 <span class="body-title">Neues Anliegen</span>
-                <div class="body-item">
-                    <i class="icon-chat-empty"></i>
-                    <span>Allg</span>
+                <div class="body-content">
+                    <template v-for="(item, idx) in addRequestChoices">
+                        <div :key="idx" class="request-question-pane">
+                            <div class="question">{{ item.question }}</div>
+                            <div class="choice-pane">
+                                <div 
+                                    :key="choice.text + index" 
+                                    :class="{
+                                        'choice-item': true, 
+                                        'active': requestChoiceModel[item.model] === choice.key ,
+                                        'hide': item.model === 'type' && requestChoiceModel['category'] === 'malfunction' && choice.key === 'resident'
+                                    }" 
+                                    @click="handleSelectChoice(item.model, choice.key)"
+                                    v-for="(choice, index) in item.choices"
+                                >
+                                    <i :class="choice.icon"></i>
+                                    <span class="choice-text">{{ choice.text }}</span>
+                                    <span class="check"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
                 </div>
                 
             </div>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="addRequestDialogVisible = false">Confirm</el-button>
+                <el-button 
+                    type="primary" 
+                    @click="add"
+                    :disabled="!requestChoiceModel['category'] || !requestChoiceModel['type']"
+                >
+                    {{ $t('general.next') }}
+                </el-button>
             </div>
         </el-dialog>
 
@@ -334,7 +362,56 @@
                         icon : 'icon-publish'
                     }
                 ],
+                addRequestChoices: [
+                    {
+                        question: 'Um was fur Anliegen handelt es sich?',
+                        model: 'category',
+                        choices: [ {
+                                key: 'general',
+                                icon: 'icon-chat-empty',
+                                text: this.$t('models.request.category_list.general'),
+                            },{
+                                key: 'oepn_issue',
+                                icon: 'icon-contacts',
+                                text: this.$t('models.request.category_list.open_issue'),
+                            },{
+                                key: 'deficiency',
+                                icon: 'icon-chart',
+                                text: this.$t('models.request.category_list.deficiency'),
+                            },{
+                                key: 'malfunction',
+                                icon: 'icon-warning-empty',
+                                text: this.$t('models.request.category_list.malfunction'),
+                            },
+                        ],
+                    },{
+                        question: 'Auf welcher Stufe soll es registeriert werden?',
+                        model: 'type',
+                        choices: [ {
+                                key: 'quarter',
+                                icon: 'icon-th',
+                                text: this.$t('models.resident.quarter.name'),
+                            },{
+                                key: 'building',
+                                icon: 'icon-commerical-building',
+                                text: this.$t('models.resident.building.name'),
+                            },{
+                                key: 'unit',
+                                icon: 'icon-unit',
+                                text: this.$t('models.resident.unit.name'),
+                            },{
+                                key: 'resident',
+                                icon: 'icon-group',
+                                text: this.$t('models.resident.name'),
+                            },
+                        ],
+                    },
+                ],
                 addRequestDialogVisible: false,
+                requestChoiceModel: {
+                    type: '',
+                    category: '',
+                },
             }
         },
         computed: {
@@ -503,6 +580,12 @@
                 'getPropertyManagers',
                 'massEdit']),
             
+
+            handleSelectChoice(model, key) {
+                this.requestChoiceModel[model] = key;
+                if(model === 'category' && key === 'malfunction') 
+                    this.requestChoiceModel['type'] = '';
+            },
             handleMenuClick(command) {
                 if(command == 'delete')
                     this.batchDeleteWithIds();
@@ -585,8 +668,11 @@
                 // this.$set(this.items, index, data)
             },
             add() {
+                this.addRequestDialogVisible = false;
+                localStorage.setItem('category', this.requestChoiceModel['category']);
+                localStorage.setItem('type', this.requestChoiceModel['type']);
                 this.$router.push({
-                    name: 'adminRequestsAdd'
+                    name: 'adminRequestsAdd',
                 });
             },
             edit({id}) {
@@ -832,15 +918,137 @@
 
     :global(.el-dialog__wrapper) {
         background-color: rgba(0, 0, 0, 0.1);
-        .el-dialog {
+        .el-dialog {    
             border-radius: 16px;
             box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
             .el-dialog__body {
-                padding: 20px;
+                padding: 20px 50px !important;
+                .dialog-body {
+                    .el-steps.choice-steps {
+                        justify-content: center;
+                        margin-top: 10px;
+                        margin-bottom: 40px;
+
+                        .el-step__head {
+                            .el-step__icon {
+                                width: 30px;
+                                height: 30px;
+                            }
+                            &.is-finish {
+                                .el-step__line {
+                                    top: 14px;
+                                    height: 3px;
+                                }
+                                .el-step__icon {
+                                    background-color: var(--primary-color);
+                                    color: white;
+                                    i {
+                                        display: none;
+                                    }
+                                }
+                            }
+                            &.is-process {
+                                .el-step__icon {
+                                    color: var(--color-text-placeholder);
+                                    background-color: var(--color-text-placeholder);
+                                    border-color: var(--color-text-placeholder);
+                                }
+                            }
+                        }
+                    }
+                    .body-title {
+                        font-weight: 700;
+                    }
+                    .body-content {
+                        margin-top: 20px;
+                        .request-question-pane {
+                            .question {
+                                margin-bottom: 10px;
+                                font-size: 12px;
+                            }
+                            .choice-pane {
+                                display: flex;
+                                margin-bottom: 20px;
+                                .choice-item {
+                                    padding: 5px 15px;
+                                    position: relative;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    width: 100%;
+                                    background-color: #f6f5f7;
+                                    font-size: 16px;
+                                    border-radius: 4px;
+                                    border: 1px solid transparent;
+                                    cursor: pointer;
+
+                                    &:not(:last-child) {
+                                        margin-right: 10px;
+                                    }
+
+                                    &.hide {
+                                        visibility: hidden;
+                                    }
+
+                                    &.active {
+                                        color: var(--color-primary);
+                                        border: 1px solid var(--primary-color);
+                                        background-color: var(--primary-color-lighter);
+                                        
+                                        .check {
+                                            width: 18px;
+                                            height: 18px;
+                                            border-radius: 50%;
+                                            background-color: var(--primary-color);
+                                            &::after {
+                                                content: '';
+                                                position: absolute;
+                                                left: 6px;
+                                                top: 3px;
+                                                width: 3px;
+                                                height: 7px;
+                                                border: solid var(--color-white);
+                                                border-width: 0 2px 2px 0;
+                                                -webkit-transform: rotate(45deg);
+                                                -ms-transform: rotate(45deg);
+                                                transform: rotate(45deg);
+                                            }
+                                        }
+                                    }
+
+                                    i {
+                                        font-size: 25px;
+                                        &.icon-th {
+                                            font-size: 20px;
+                                        }
+                                    }
+                                    span.choice-text {
+                                        font-size: 12px;
+                                        font-weight: 700;
+                                        margin-left: 10px;
+                                    }
+                                    .check {
+                                        position: absolute;
+                                        top: -5px;
+                                        right: -5px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                }
             }
             .el-dialog__footer {
+                padding: 0 50px 20px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
                 .el-button {
-                    border-radius: 14px;
+                    padding: 12px 30px;
+                    border-radius: 12px;
+                    font-size: 12px;
+                    background-color: var(--color-primary);
                 }
             }
         }

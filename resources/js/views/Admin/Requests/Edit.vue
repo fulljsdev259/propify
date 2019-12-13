@@ -89,7 +89,7 @@
                                                 :disabled="!editMode"
                                                 type="textarea"
                                                 :rows="4"
-                                                placeholder="Please input"
+                                                placeholder=""
                                                 v-model="model.description">
                                             </el-input>
 
@@ -715,20 +715,20 @@
 </template>
 
 <script>
-    import Heading from 'components/Heading';
-    import Card from 'components/Card';
+    import Vue from 'vue';
+    import {mapActions} from 'vuex';
+    import {Avatar} from 'vue-avatar';    
+    import {displaySuccess, displayError} from "../../../helpers/messages";
     import RequestsMixin from 'mixins/adminRequestsMixin';
     import ServiceModalMixin from 'mixins/adminServiceModalMixin';
-    import {mapActions} from 'vuex';
+    import EditorConfig from 'mixins/adminEditorConfig';
+    import { EventBus } from '../../../event-bus.js';
+    import Heading from 'components/Heading';
+    import Card from 'components/Card';
     import RelationList from 'components/RelationListing';
     import EditActions from 'components/EditViewActions';
     import ServiceDialog from 'components/ServiceAttachModal';
-    import {displaySuccess, displayError} from "../../../helpers/messages";
-    import {Avatar} from 'vue-avatar';    
     import AssignmentByType from 'components/AssignmentByType';
-    import Vue from 'vue';
-    import { EventBus } from '../../../event-bus.js';
-    import EditorConfig from 'mixins/adminEditorConfig';
     import EditCloseDialog from 'components/EditCloseDialog';
     import UsersAssignment from 'components/UsersAssignment';
 
@@ -765,38 +765,7 @@
                 conversationVisible: false,
                 selectedConversation: {},
                 constants: this.$constants,
-                assigneesColumns: [{
-                    type: 'assignProviderManagerAvatars',
-                    width: 70,
-                }, {
-                    type: 'assigneesName',
-                    prop: 'name',
-                    label: 'general.name'
-                }, {
-                    prop: 'company_name',
-                    label: 'general.roles.label',
-                }, {
-                    type: 'assignProviderManagerFunctions',
-                }],
-                assigneesActions: [{
-                    width: 120,
-                    align: 'right',
-                    buttons: [{
-                        title: 'models.request.notify',
-                        tooltipMode: true,
-                        icon: 'icon-paper-plane',
-                        view: 'request',
-                        style: {backgroundColor: 'transparent', color: '#848484', boxShadow: 'none !important'},
-                        onClick: () => {}
-                    }, {
-                        title: 'general.unassign',
-                        tooltipMode: true,
-                        type: 'danger',
-                        icon: 'el-icon-delete',
-                        style: {backgroundColor: 'transparent', color: '#848484', boxShadow: 'none !important'},
-                        onClick: this.notifyUnassignment
-                    }]
-                }],
+                
                 rolename: null,
                 inputVisible: false,
                 editMode: false,

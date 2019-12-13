@@ -1716,6 +1716,9 @@
                 color: var(--color-text-primary);
                 &:first-of-type {
                     padding-left: 32px;
+                    :global(.cell) {
+                        min-width: 85px;
+                    }
                 }
             }
 
@@ -1723,6 +1726,9 @@
                 padding: 20px 4px;
                 &:first-of-type {
                     padding-left: 36px;
+                    :global(.cell) {
+                        min-width: 55px;
+                    }
                 }
             }
         }
