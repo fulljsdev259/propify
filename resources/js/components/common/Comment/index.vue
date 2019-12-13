@@ -14,6 +14,8 @@
                     <span class="name" v-if="newStyle">{{ data.user.name }}</span>
                     {{comment || $t('general.components.common.comment.deleted_comment_placeholder')}}<div class="tag"></div><div class="border"></div>
                     <span class="time" v-if="newStyle">{{ data.updated_at.slice(11, 16) }}</span>
+                    <div class="to-managers" >
+                    </div>
                 </div>                
                 <div class="actions" v-if="hasActions && !newStyle">                                    
                     <el-button type="text" @click="enterEdit" v-if="data.comment">

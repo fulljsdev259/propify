@@ -37,14 +37,14 @@ class FilterByQuarterCriteria implements CriteriaInterface
     {
         $quarterId = $this->request->get('quarter_id', null);
         if (!$quarterId) {
+            // @TODO check residents can see only relation->quarter->pinboard or all
             return $model;
         }
 
         $quarterIds = is_array($quarterId) ? $quarterId : [$quarterId];
-        // @TODO check residents can see only relation->buildings->quarter->pinboard or all
         $user = \Auth::user();
         if ($user->resident) {
-            $quarterIds = $user->resident->relations()->select('id', 'building_id')->with('building:id,quarter_id')->get()->pluck('building.quarter_id');
+            $quarterIds = $user->resident->relations()->pluck('quarter_id');
         }
 
         $model->whereHas('quarters', function ($query) use ($quarterIds) {

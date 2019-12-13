@@ -56,6 +56,7 @@ return [
     'enabled' => 'Enabled',
     'disabled' => 'Disabled',
     'salutation' => 'Salutation',
+    'next' => 'Next',
     'salutation_option' => [
         'mr' => 'Mr.',
         'mrs' => 'Mrs.',
@@ -177,6 +178,8 @@ return [
     "no_pinboard" => "No pinboard published yet.",
     "no_requests" => "No requests made so far.",
     "no_listings" => "No advertisements published so far.",
+    'hide_assignment_listing' => 'Hide history',
+    'no_matches_found' => 'No matches found',
     "no_data" => "No information.",
     'upload_error' => "Media upload error",
     'media_not_found' => "Media not found",

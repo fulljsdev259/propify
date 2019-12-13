@@ -25,14 +25,10 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
  *          type="string"
  *      ),
  *      @SWG\Property(
- *          property="description",
- *          description="description",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="primary",
- *          description="primary",
- *          type="boolean"
+ *          property="unit_id",
+ *          description="unit_id",
+ *          type="integer",
+ *          format="int32"
  *      ),
  *      @SWG\Property(
  *          property="created_at",
@@ -74,13 +70,7 @@ class UnitPlan extends AuditableModel implements HasMedia
      */
     protected $fillable = [
         'name',
-        'description',
-        'primary',
         'unit_id',
-    ];
-
-    protected $casts = [
-        'primary' => 'boolean',
     ];
 
     protected $dates = ['deleted_at'];

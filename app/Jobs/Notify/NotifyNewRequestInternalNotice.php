@@ -47,6 +47,7 @@ class NotifyNewRequestInternalNotice
      */
     public function handle()
     {
+        return;
         $requestAssignne = RequestAssignee::where('request_id', $this->internalNotice->request_id)
             ->where('type', RequestAssignee::TypeAccountable)
             ->latest()
@@ -55,7 +56,7 @@ class NotifyNewRequestInternalNotice
             ->first();
 
         $notificationsData = collect();
-        $accountableUser = $requestAssignne->user;
+        $accountableUser = $requestAssignne->user ?? null; // for prevent when user deleted not throw exception
         if ($accountableUser) {
             if ($accountableUser->id != \Auth::id()) {
                 $notify = (new NewRequestAccountableInternalNotice($accountableUser, $this->internalNotice));

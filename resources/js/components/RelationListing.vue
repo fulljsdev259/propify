@@ -6,7 +6,7 @@
             @click="expandRelationList=!expandRelationList" 
             class="relation-expand-button"
         >
-            Expand
+            {{ $t('general.hide_assignment_listing') }}
         </el-button>
 
         <el-table
@@ -607,7 +607,7 @@
         .relation-expand-button {
             position: absolute;
             top: 80px;
-            left: 10px;
+            left: 0px;
             z-index: 99;
         }
         .el-table.new-style {
@@ -632,7 +632,7 @@
                             td {
                                 padding-bottom: 50px;
                                 flex: 1;
-                                min-width: 200px;
+                                width: 200px;
                                 &:first-of-type {
                                     max-width: 70px;
                                     min-width: 70px;
@@ -657,11 +657,11 @@
 </style>
 <style lang="scss" scoped>    
     .listing {
-        
         .relation-expand-button {
+            font-family: 'Radikal'; 
             background-color: transparent;
             padding: 0px;
-            &:hover {
+            &:hover, &:focus {
                 box-shadow: none;
                 font-weight: 700;
             }

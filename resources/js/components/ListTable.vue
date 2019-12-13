@@ -155,6 +155,7 @@
             :visible.sync="visibleSaveDialog"
             width="30%"
             center
+            :modal="false"
         >
             <h4 class="filter-title">{{ $t('validation.attributes.title') }}</h4>
             <el-input v-model="saveTitle"/>
@@ -509,7 +510,7 @@
                                                         filterable
                                                         remote
                                                         reserve-keyword
-                                                        @change="val => handleQuickAssign(scope.row.id, column.prop)"
+                                                        @change="val => handleQuickAssign(scope.row.id, val, column.prop)"
                                                         v-model="assignee">
                                                     <el-option
                                                             :key="assignee.id"
@@ -998,7 +999,7 @@
                     });
                 }
             },
-            async handleQuickAssign(request_id, prop) {
+            async handleQuickAssign(request_id, assignee_id, prop) {
                 let type = prop === 'competent_user' ? 1 : 2;
                 let user_params = [{type, user_id: assignee_id}];
 
@@ -1483,6 +1484,17 @@
 </script>
 
 <style lang="scss" scoped>
+    :global(.el-dialog__wrapper) {
+        background-color: rgba(0, 0, 0, 0.1);
+        .el-dialog {    
+            border-radius: 16px;
+            box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+            .el-dialog__body {
+                padding: 20px 50px !important;
+            }
+        }
+        
+    }
     .header-filter {
         display: inline-flex;
         align-items: center;
@@ -1575,8 +1587,7 @@
             border-radius: 6px;
             padding: 13px 15px;
             background-color: #f6f5f7;
-        }
-
+        } 
     }
 
     .quick-assign-dropdown {
@@ -1716,6 +1727,9 @@
                 color: var(--color-text-primary);
                 &:first-of-type {
                     padding-left: 32px;
+                    :global(.cell) {
+                        min-width: 85px;
+                    }
                 }
             }
 
@@ -1723,6 +1737,9 @@
                 padding: 20px 4px;
                 &:first-of-type {
                     padding-left: 36px;
+                    :global(.cell) {
+                        min-width: 55px;
+                    }
                 }
             }
         }

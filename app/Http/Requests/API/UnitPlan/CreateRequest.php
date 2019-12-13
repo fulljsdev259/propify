@@ -25,7 +25,6 @@ class CreateRequest extends BaseRequest
     {
         return [
             'name' => 'required',
-            'description' => 'required',
         ];
     }
 }
