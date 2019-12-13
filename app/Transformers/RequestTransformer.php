@@ -20,34 +20,34 @@ class RequestTransformer extends BaseTransformer
      */
     public function transform(Request $model)
     {
-        $response = [
-            'id' => $model->id,
-            'request_format' => $model->request_format,
-            'action' => $model->action,
-            'title' => $model->title,
-            'description' => $model->description,
-            'status' => $model->status,
-            'category_id' => $model->category_id,
-            'sub_category_id' => $model->sub_category_id,
-            'qualification_category' => $model->qualification_category,
-            //'priority' => $model->priority,
-            //'internal_priority' => $model->internal_priority,
-            'is_public' => $model->is_public,
-            'notify_email' => $model->notify_email,
-            'room' => $model->room,
-            'capture_phase' => $model->capture_phase,
-            'component' => $model->component,
-            'location' => $model->location,
-            'created_at' => $model->created_at->format('d.m.Y H:i:s'),
-            'updated_at' => $model->updated_at->toDateTimeString(),
-            'visibility' => $model->visibility,
-            'active_reminder' => $model->active_reminder,
-            'reminder_user_ids' => $model->reminder_user_ids,
-            'days_left_due_date' => $model->days_left_due_date,
-            'sent_reminder_user_ids' => $model->sent_reminder_user_ids,
-            'percentage' => $model->percentage,
-            'cost_impact' => $model->cost_impact,
-        ];
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'request_format',
+            'action',
+            'title',
+            'description',
+            'status',
+            'category_id',
+            'sub_category_id',
+            'qualification_category',
+            //'priority',
+            //'internal_priority',
+            'is_public',
+            'notify_email',
+            'room',
+            'capture_phase',
+            'component',
+            'location',
+            'updated_at',
+            'visibility',
+            'active_reminder',
+            'reminder_user_ids',
+            'days_left_due_date',
+            'sent_reminder_user_ids',
+            'percentage',
+            'cost_impact',
+        ]);
+        $response['created_at'] = $model->created_at->format('d.m.Y H:i:s');
 
         if ($model->due_date) {
             $response['due_date'] = $model->due_date->format('Y-m-d');
@@ -62,12 +62,12 @@ class RequestTransformer extends BaseTransformer
             if ($accountableUser) {
                 $response['accountable_user'] = (new UserTransformer())->transform($accountableUser);
                 $response['accountable_user']['company_name'] = $accountableUser->service_provider->company_name ?? \Cache::remember(
-                    'company_name',
-                    60,
-                    function () {
-                        return Settings::value('name');
-                    }
-                );
+                        'company_name',
+                        60,
+                        function () {
+                            return Settings::value('name');
+                        }
+                    );
             } else {
                 $response['accountable_user'] = null;
             }
@@ -85,7 +85,6 @@ class RequestTransformer extends BaseTransformer
             } else {
                 $response['competent_user'] = null;
             }
-
 
             // @TODO delete
             $users = $model->assignees->pluck('user');
@@ -107,26 +106,14 @@ class RequestTransformer extends BaseTransformer
             $response['sub_category'] = get_sub_category_details($model->sub_category_id);
         }
 
-        if ($model->relationExists('resident')) {
-            $response['resident'] = (new ResidentTransformer)->transform($model->resident);
-        }
-
-        if ($model->relationExists('relation')) {
-            $response['relation'] = (new RelationTransformer())->transform($model->relation);
-        }
-
-        if ($model->relationExists('comments')) {
-            $response['comments'] = (new CommentTransformer)->transformCollection($model->comments);
-        }
-
-        if ($model->relationExists('creator')) {
-            $response['creator'] = (new UserTransformer())->transform($model->creator);
-        }
-
         $response['media'] = [];
-        if ($model->relationExists('media')) {
-            $response['media'] = (new MediaTransformer)->transformCollection($model->media);
-        }
+        $response = $this->includeRelationIfExists($model, $response, [
+            'resident' => ResidentTransformer::class,
+            'relation' => RelationTransformer::class,
+            'comments' => CommentTransformer::class,
+            'creator' => UserTransformer::class,
+            'media' => MediaTransformer::class,
+        ]);
 
         return $this->addAuditIdInResponseIfNeed($model, $response);
     }
