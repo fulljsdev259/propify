@@ -243,7 +243,7 @@ class Request extends AuditableModel implements HasMedia
     const StatusArchived = 5;
     const StatusWarrantyClaim = 6;
 //    const StatusAssigned = 3;
-//    const StatusReactivated = 5;
+    const StatusReactivated = 7;
 
     const VisibilityResident = 1;
     const VisibilityBuilding = 2;
@@ -253,7 +253,7 @@ class Request extends AuditableModel implements HasMedia
         self::StatusNew,
         self::StatusInProcessing,
 //        self::StatusAssigned,
-//        self::StatusReactivated,
+        self::StatusReactivated,
     ];
 
     const SolvedStatuses = [
@@ -268,7 +268,7 @@ class Request extends AuditableModel implements HasMedia
 //        self::StatusAssigned => 'assigned',
         self::StatusDone => 'done',
         self::StatusWarrantyClaim => 'warranty_claim',
-//        self::StatusReactivated => 'reactivated',
+        self::StatusReactivated => 'reactivated',
         self::StatusArchived => 'archived',
     ];
 
@@ -285,8 +285,8 @@ class Request extends AuditableModel implements HasMedia
         self::StatusNew => [self::StatusDone],
 //        self::StatusAssigned => [self::StatusDone, self::StatusArchived],
         self::StatusInProcessing => [self::StatusDone, self::StatusArchived],
-//        self::StatusDone => [self::StatusReactivated],
-//        self::StatusReactivated => [self::StatusDone],
+        self::StatusDone => [self::StatusReactivated],
+        self::StatusReactivated => [self::StatusDone],
         self::StatusArchived => [],
     ];
 
@@ -294,8 +294,8 @@ class Request extends AuditableModel implements HasMedia
         self::StatusNew => [],
         self::StatusInProcessing => [self::StatusDone],
 //        self::StatusAssigned => [self::StatusDone],
-//        self::StatusDone => [self::StatusReactivated],
-//        self::StatusReactivated => [self::StatusDone],
+        self::StatusDone => [self::StatusReactivated],
+        self::StatusReactivated => [self::StatusDone],
         self::StatusArchived => [],
     ];
 
@@ -303,9 +303,9 @@ class Request extends AuditableModel implements HasMedia
 //        self::StatusNew => [self::StatusAssigned],
 //        self::StatusAssigned => [self::StatusInProcessing, self::StatusDone, self::StatusArchived],
         self::StatusInProcessing => [self::StatusDone, self::StatusArchived],
-        self::StatusDone => [/*self::StatusReactivated,*/ self::StatusArchived],
-//        self::StatusReactivated => [self::StatusDone, self::StatusArchived],
-//        self::StatusArchived => [self::StatusReactivated],
+        self::StatusDone => [self::StatusReactivated, self::StatusArchived],
+        self::StatusReactivated => [self::StatusDone, self::StatusArchived],
+        self::StatusArchived => [self::StatusReactivated],
     ];
 
     const Visibility = [

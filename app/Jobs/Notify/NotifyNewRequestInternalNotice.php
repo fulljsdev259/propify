@@ -55,8 +55,8 @@ class NotifyNewRequestInternalNotice
             ->first();
 
         $notificationsData = collect();
-        if ($requestAssignne) {
-            $accountableUser = $requestAssignne->user;
+        $accountableUser = $requestAssignne->user ?? null; // for prevent when user deleted not throw exception
+        if ($accountableUser) {
             if ($accountableUser->id != \Auth::id()) {
                 $notify = (new NewRequestAccountableInternalNotice($accountableUser, $this->internalNotice));
                 $accountableUser->notify($notify);
