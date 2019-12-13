@@ -202,7 +202,7 @@ class PinboardRepository extends BaseRepository
     {
         // Cannot use $p->buildings() and $p->quarters() because of a bug
         // related to different number of columns in union
-        $pbs = Building::select(\DB::raw('id, name, "building" as type'))
+        $pbs = Building::select(\DB::raw('id, (select house_num from loc_addresses where loc_addresses.id = buildings.address_id) as name, "building" as type'))
             ->join('building_pinboard', 'building_pinboard.building_id', '=', 'id')
             ->where('building_pinboard.pinboard_id', $p->id);
         $pds = Quarter::select(\DB::raw('id, name, "quarter" as type'))
