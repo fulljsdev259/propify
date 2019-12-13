@@ -48,7 +48,6 @@ class NotifyPinboardNewComment
      */
     public function __construct(Pinboard $pinboard, Comment $comment, User $user, $saveSystemAudit = true)
     {
-        return;
         $this->pinboard = $pinboard;
         $this->user = $user;
         $this->comment = $comment;
@@ -61,6 +60,7 @@ class NotifyPinboardNewComment
      */
     public function handle()
     {
+        return collect();
         // if logged in user is resident and
         // author of pinboard is resident and
         // author of pinboard is different than commenter

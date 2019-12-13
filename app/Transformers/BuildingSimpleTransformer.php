@@ -20,26 +20,23 @@ class BuildingSimpleTransformer extends BaseTransformer
      */
     public function transform(Building $model)
     {
-        $response = [
-            'id' => $model->id,
-            'building_format' => $model->building_format,
-            'label' => $model->label,
-            'description' => $model->description,
-            'floor_nr' => $model->floor_nr,
-            'under_floor' => $model->under_floor,
-            'basement' => $model->basement,
-            'attic' => $model->attic,
-            'internal_building_id' => $model->internal_building_id,
-            'created_at' => $model->created_at ? $model->created_at->format('Y-m-d') : '',
-        ];
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'building_format',
+            'label',
+            'description',
+            'floor_nr',
+            'under_floor',
+            'basement',
+            'attic',
+            'internal_building_id',
+        ]);
+        $response['created_at'] = $model->created_at ? $model->created_at->format('Y-m-d') : '';
 
         $response = $this->includeRelationIfExists($model, $response, [
             'address' => AddressTransformer::class,
+            'quarter' => QuarterTransformer::class,
         ]);
-
-        if ($model->relationExists('quarter')) {
-            $response['quarter'] = (new QuarterTransformer)->transform($model->quarter);
-        }
 
         return $response;
     }

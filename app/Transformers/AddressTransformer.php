@@ -3,14 +3,13 @@
 namespace App\Transformers;
 
 use App\Models\Address;
-use League\Fractal\TransformerAbstract;
 
 /**
  * Class AddressTransformer.
  *
  * @package namespace App\Transformers;
  */
-class AddressTransformer extends TransformerAbstract
+class AddressTransformer extends BaseTransformer
 {
     /**
      * @param Address $model
@@ -18,22 +17,20 @@ class AddressTransformer extends TransformerAbstract
      */
     public function transform(Address $model)
     {
-        $response =  [
-            'id' => $model->id,
-            'country_id' => $model->country_id,
-            'country' => 'Switzerland',
-            'city' => $model->city,
-            'street' => $model->street,
-            'zip' => $model->zip,
-        ];
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'country_id',
+            'city',
+            'street',
+            'zip',
+            'house_num'
+        ]);
+        $response['country'] = 'Switzerland';
 
         if ($model->relationExists('state') || $model->state) { // @TODO delete $model->state and each case if need select also state
             $response['state'] = (new StateTransformer)->transform($model->state);
         }
 
-        if (key_exists('house_num', $model->getAttributes())) {
-            $response['house_num'] =  $model->house_num;
-        }
         return $response;
     }
 

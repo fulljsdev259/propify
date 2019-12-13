@@ -53,7 +53,7 @@ class NotifyRequestNewComment
      */
     public function handle()
     {
-        return;
+        return collect();
         $i = 0;
         $users  = collect($this->request->allPeople);
         foreach ($users as $person) {

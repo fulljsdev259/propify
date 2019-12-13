@@ -73,7 +73,7 @@ class ResidentTransformer extends BaseTransformer
             $response['types'] = collect($response['relations'])->pluck('type')->unique()->values()->all();
         }
 //
-//        if ( $model->relationExists('garant_relations')) { // @TODO delete reloading
+//        if ( $model->relationExists('garant_relations')) {
 //
 //
 //            $response['relations'] = $response['relations'] ?? [];

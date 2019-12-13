@@ -131,10 +131,6 @@ Route::middleware('auth:api', 'throttle:180,1', 'locale')->group(function () {
     Route::put('/units/{unitId}/plans/{planId}', 'UnitPlanAPIController@update')->name('unit_plans.update');
     Route::delete('/units/{unitId}/plans/{planId}', 'UnitPlanAPIController@destroy')->name('unit_plans.destroy');
 
-    // @TODO delete
-    Route::post('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@assignResident');
-    Route::delete('/units/{id}/assignees/{assignee_id}', 'UnitAPIController@unassignResident');
-
     // Settings
     Route::get('/settings', 'SettingsAPIController@show')->name('settings.show');
     Route::put('/settings', 'SettingsAPIController@update')->name('settings.update');

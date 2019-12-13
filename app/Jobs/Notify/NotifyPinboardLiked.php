@@ -52,7 +52,7 @@ class NotifyPinboardLiked
      */
     public function handle()
     {
-        return;
+        return collect();
         // if logged in user is resident and
         // author of pinboard is resident and
         // author of pinboard is different than liker

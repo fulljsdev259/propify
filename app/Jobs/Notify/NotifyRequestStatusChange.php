@@ -51,7 +51,7 @@ class NotifyRequestStatusChange
      */
     public function handle()
     {
-        return;
+        return collect();
 
         if ($this->originalRequest->status == $this->request->status) {
             return collect();

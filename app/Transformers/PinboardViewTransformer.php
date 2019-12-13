@@ -19,18 +19,18 @@ class PinboardViewTransformer extends BaseTransformer
      */
     public function transform(PinboardView $model)
     {
-        $ret = [
-            'id' => $model->id,
-            'views' => $model->views,
-            'created_at' => $model->created_at->toDateTimeString(),
-            'updated_at' => $model->updated_at->toDateTimeString(),
-            'resident_id' => $model->resident_id,
-        ];
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'views',
+            'created_at',
+            'updated_at',
+            'resident_id',
+        ]);
 
-        if ($model->relationExists('resident')) {
-            $ret['resident'] = (new ResidentTransformer())->transform($model->resident);
-        }
+        $response = $this->includeRelationIfExists($model, $response, [
+            'resident' => ResidentTransformer::class,
+        ]);
 
-        return $ret;
+        return $response;
     }
 }

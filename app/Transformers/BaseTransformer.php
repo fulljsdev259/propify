@@ -5,8 +5,6 @@ namespace App\Transformers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-//use League\Fractal\Manager;
-//use League\Fractal\Resource\Collection as FCollection;
 use League\Fractal\TransformerAbstract;
 
 /**
@@ -27,11 +25,6 @@ class BaseTransformer extends TransformerAbstract
         return $collection->map(function ($value) {
             return $this->transform($value);
         })->toArray();
-        // @TODO delete This is not needed because we are not using This package logic
-        // I can ask this package not needed here
-//        $manager = new Manager();
-//        $media = new FCollection($collection, $this);
-//        return $manager->createData($media)->toArray()['data'];
     }
 
     /**

@@ -50,7 +50,7 @@ class NotifyNewPinboard
      */
     public function handle()
     {
-        return;
+        return collect();
         $pinboard = $this->pinboard;
 
         if (empty($pinboard->notify_email)) {

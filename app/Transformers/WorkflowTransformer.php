@@ -21,15 +21,16 @@ class WorkflowTransformer extends BaseTransformer
     {
         // @TODO more clever way get all relations data for avoid many queries maybe use this package
         // https://github.com/staudenmeir/eloquent-json-relations
-        $response = [
-            'id' => $model->id,
-            'quarter_id' => $model->quarter_id,
-            'category_id' => $model->category_id,
-            'title' => $model->title,
-            'building_ids' => $model->building_ids,
-            'to_user_ids' => $model->to_user_ids,
-            'cc_user_ids' => $model->cc_user_ids ?? [],
-        ];
+
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'quarter_id',
+            'category_id',
+            'title',
+            'building_ids',
+            'to_user_ids',
+            'cc_user_ids',
+        ]);
 
         $toUserIds = $model->to_user_ids ?? [];
         $ccUserIds = $model->cc_user_ids ?? [];
