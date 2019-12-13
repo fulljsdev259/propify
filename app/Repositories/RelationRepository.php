@@ -57,7 +57,6 @@ class RelationRepository extends BaseRepository
             if ($mediaIds->isNotEmpty()) {
                 $model->media()->attach($mediaIds);
             }
-            $this->saveGarantResidents($model, $data);
             $this->checkNeedChangeResidentType($model);
         }
 
@@ -149,7 +148,6 @@ class RelationRepository extends BaseRepository
         if ($model) {
             $mediaIds = $this->getMediaFileIds($attributes);
             $model->media()->sync($mediaIds);
-            $this->saveGarantResidents($model, $attributes);
             $this->checkNeedChangeResidentType($model);
         }
 
@@ -188,29 +186,6 @@ class RelationRepository extends BaseRepository
         }
 
         return $attachedMedia->pluck('id');
-    }
-
-    /**
-     * @param $relation
-     * @param $data
-     * @return mixed
-     */
-    protected function saveGarantResidents(Relation $relation, $data)
-    {
-        return $relation; // @TMP disable garant_residents
-
-        $residentIds = $data['resident_ids'] ?? [];
-        if (empty($residentIds)) {
-            return $relation;
-        }
-
-        $relation->load('unit:id,type');
-        $unit = $relation->unit;
-        if (! in_array($unit->type, [Unit::TypeApartment, Unit::TypeBusiness])) {
-            return $relation;
-        }
-
-        $relation->garant_residents()->sync($residentIds);
     }
 
     /**

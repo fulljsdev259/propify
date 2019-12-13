@@ -72,17 +72,6 @@ class ResidentTransformer extends BaseTransformer
             $response['total_relations_count'] = $allCount;
             $response['types'] = collect($response['relations'])->pluck('type')->unique()->values()->all();
         }
-//
-//        if ( $model->relationExists('garant_relations')) {
-//
-//
-//            $response['relations'] = $response['relations'] ?? [];
-//            $garantRelationData = (new RelationTransformer())->transformCollection($model->garant_relations);
-//            foreach ($garantRelationData as $single) {
-//                $single['garant'] = 1;
-//                $response['relations'][] = $single;
-//            }
-//        }
 
         return $this->addAuditIdInResponseIfNeed($model, $response);
     }
