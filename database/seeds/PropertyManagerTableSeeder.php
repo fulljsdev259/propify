@@ -23,6 +23,8 @@ class PropertyManagerTableSeeder extends Seeder
             return;
         }
 
+        $this->make2AdminPropertyManagers();
+
         $faker = Faker::create();
         $settings = $this->getSettings();
 
@@ -40,10 +42,10 @@ class PropertyManagerTableSeeder extends Seeder
                 'phone' => $faker->phoneNumber,
                 'password' => bcrypt($email),
             ];
+
             $date = $this->getRandomTime();
             $attr = array_merge($attr, $this->getDateColumns($date));
-            $user = factory(User::class, 1)->create($attr)->first();
-
+            $user = factory(User::class)->create($attr);
             $user->attachRole($managerRole);
 
             $user->settings()->save($settings->replicate());
@@ -69,12 +71,56 @@ class PropertyManagerTableSeeder extends Seeder
         }
     }
 
+
+    protected function make2AdminPropertyManagers()
+    {
+        $superAdminRole = Role::where('name', 'administrator')->first();
+
+        $attr = [
+            'name' => 'Super Admin',
+            'email' => 'dev@example.com',
+            'phone' => '5296711335',
+            'password' => bcrypt('dev@example.com'),
+        ];
+        $user = factory(User::class, 1)->create($attr)->first();
+        $this->saveManager($user);
+
+        $settings = $this->getSettings();
+        $user->settings()->save($settings->replicate());
+        $user->attachRole($superAdminRole);
+
+        $attr = [
+            'name' => 'Propify',
+            'email' => 'admin@propify.ch',
+            'phone' => '5296711335',
+            'password' => bcrypt('adprop19-1'),
+        ];
+        $user = factory(User::class, 1)->create($attr)->first();
+        $this->saveManager($user);
+
+        $settings = $this->getSettings();
+        $user->settings()->save($settings->replicate());
+        $user->attachRole($superAdminRole);
+    }
+
+    protected function saveManager($user)
+    {
+        $nameParts = explode(' ' ,$user->name);
+        $firstName = array_shift($nameParts);
+        $lastName = implode(' ',$nameParts);
+        $manager = \App\Models\PropertyManager::create([
+            'first_name'  => $firstName,
+            'last_name' => $lastName,
+            'title' => $user->title,
+            'type' => \App\Models\PropertyManager::TypeAdministrator,
+            'user_id' => $user->id,
+        ]);
+    }
+
     private function getSettings()
     {
-        $languages = config('app.locales');
-
         $settings = new UserSettings();
-        $settings->language = array_rand($languages);
+        $settings->language = 'en';
         $settings->summary = 'daily';
         $settings->admin_notification = 1;
         $settings->pinboard_notification = 1;

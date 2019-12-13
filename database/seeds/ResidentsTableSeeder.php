@@ -27,7 +27,6 @@ class ResidentsTableSeeder extends Seeder
         $faker = Faker::create();
         $units = Unit::inRandomOrder()->with('building')->limit($totalResidents)->get();
         $residentRole = Role::where('name', 'resident')->first();
-
         for($i = 0; $i < $totalResidents; $i++) {
 
             $email = $faker->safeEmail;
