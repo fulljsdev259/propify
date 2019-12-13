@@ -169,7 +169,7 @@ export default (config = {}) => {
                         icon: 'icon-paper-plane',
                         view: 'request',
                         style: {backgroundColor: 'transparent', color: '#848484', boxShadow: 'none !important'},
-                        onClick: () => {}
+                        onClick: this.openNotifyProvider
                     }, {
                         title: 'general.unassign',
                         tooltipMode: true,
