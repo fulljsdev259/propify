@@ -47,7 +47,7 @@ class NotifyNewRequestInternalNotice
      */
     public function handle()
     {
-        return;
+        return collect();
         $requestAssignne = RequestAssignee::where('request_id', $this->internalNotice->request_id)
             ->where('type', RequestAssignee::TypeAccountable)
             ->latest()
