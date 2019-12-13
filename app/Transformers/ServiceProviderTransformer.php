@@ -22,55 +22,41 @@ class ServiceProviderTransformer extends BaseTransformer
      */
     public function transform(ServiceProvider $model)
     {
-        $response = [
-            'id' => $model->id,
-            'category' => $model->category,
-            'type' => $model->type,
-            'status' => $model->status,
-            'title' => $model->title,
-            'first_name' => $model->first_name,
-            'last_name' => $model->last_name,
-            'company_name' => $model->company_name,
-            'mobile_phone' => $model->mobile_phone,
-            'email' => $model->email,
-            'phone' => $model->phone,
-            'service_provider_format' => $model->service_provider_format,
-        ];
-
-        $relationCountAttributes = [
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'category',
+            'type',
+            'status',
+            'title',
+            'first_name',
+            'last_name',
+            'company_name',
+            'mobile_phone',
+            'email',
+            'phone',
+            'service_provider_format',
             'buildings_count',
             'requests_count',
             'solved_requests_count',
             'pending_requests_count',
-        ];
-
-        $attributes = $model->getAttributes();
-        foreach ($relationCountAttributes as $attribute) {
-            if (key_exists($attribute, $attributes)) {
-                $response[$attribute] = $attributes[$attribute];
-            }
-        }
+        ]);
 
         $withCount = $model->getStatusRelationCounts();
         $response = array_merge($response, $withCount);
 
-        if ($model->relationExists('user')) {
-            $response['user'] = (new UserTransformer)->transform($model->user);
-        }
+        $response = $this->includeRelationIfExists($model, $response, [
+            'user' => UserTransformer::class,
+            'address' => AddressTransformer::class,
+            'buildings' => BuildingTransformer::class,
+        ]);
+
         if ($model->relationExists('settings')) {
             $response['settings'] = $model->settings;
-        }
-
-        if ($model->relationExists('address')) {
-            $response['address'] = (new AddressTransformer)->transform($model->address);
         }
 
         if ($model->relationExists('quarters')) {
             $response['quarters'] = (new QuarterTransformer)->transformCollection($model->quarters);
             $response['internal_quarter_ids'] = collect($response['quarters'])->pluck('internal_quarter_id')->unique()->all();
-        }
-        if ($model->relationExists('buildings')) {
-            $response['buildings'] = (new BuildingTransformer)->transformCollection($model->buildings);
         }
 
         return $response;
