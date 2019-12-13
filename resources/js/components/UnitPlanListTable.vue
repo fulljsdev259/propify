@@ -10,13 +10,8 @@
                 <strong>{{scope.row.name}}</strong>
             </template>
         </el-table-column>
-        <el-table-column>
-            <template slot-scope="scope">
-                <strong>{{scope.row.description}}</strong>
-            </template>
-        </el-table-column>
         <el-table-column
-                width="120"
+                width="180"
                 align="right"
         >
             <template slot-scope="scope">
@@ -25,6 +20,12 @@
                         class="item" effect="light" placement="top-end"
                 >
                     <el-button icon="el-icon-view" round @click="showPlan(scope.row.media[0].url)" size="mini"/>
+                </el-tooltip>
+                <el-tooltip
+                        :content="$t('general.actions.edit')"
+                        class="item" effect="light" placement="top-end"
+                >
+                    <el-button icon="el-icon-edit" round @click="editPlan(scope.row.id)" size="mini"/>
                 </el-tooltip>
                 <el-tooltip
                         :content="$t('general.actions.delete')"
@@ -50,10 +51,13 @@
         },
         methods: {
             deletePlan(id) {
-                this.$emit('delete-plan', id)
+                this.$emit('delete-plan', id);
             },
             showPlan(url) {
-                this.$emit('show-plan', url)
+                this.$emit('show-plan', url);
+            },
+            editPlan(id) {
+                this.$emit('edit-plan', id);
             }
         }
     }

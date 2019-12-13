@@ -1,6 +1,7 @@
 <template>
     <div class="units-edit" v-loading.fullscreen.lock="loading.state">
-        <div class="main-content">
+        <div class="main-content"
+             :style="visiblePlanDrawer ? 'filter: blur(1px);' : ''">
             <heading :title="$t('models.unit.edit')" icon="icon-unit" style="margin-bottom: 20px;" shadow="heavy" bgClass="bg-transparent">
                 <template slot="description" v-if="model.unit_format">
                     <div class="subtitle">{{model.unit_format}}</div>
@@ -282,12 +283,18 @@
                                 <el-badge :value="unit_plans.length" :max="99" class="admin-layout">Plan</el-badge>
                             </span>
                             <div align="right" style="margin-bottom: 15px">
-                                <el-button @click="visiblePlanDrawer = true">add Plan</el-button>
+                                <el-button type="primary" size="mini" @click="visiblePlanDrawer = true">add Plan</el-button>
                             </div>
 
                             <unit-plan-list-table :items="unit_plans"
                                                   @show-plan="showPlan"
+                                                  @edit-plan="editPlan"
                                                   @delete-plan="removePlan"></unit-plan-list-table>
+
+                            <div align="right" style="margin-top: 15px">
+                                <el-button @click="plan.url= '/storage/floor-plan.jpg', visiblePlanModal = true">show IMG</el-button>
+                                <el-button @click="plan.url = '/storage/Ansicht-1-6.pdf', visiblePlanModal = true">show PDF</el-button>
+                            </div>
                         </el-tab-pane>
 
                     </el-tabs>
@@ -401,18 +408,22 @@
             @clickCancel="visibleDialog=false"
         ></edit-close-dialog>
 
-        <FloorPreviewModal v-if="demo.file && visiblePlanModal"
+        <FloorPreviewModal v-if="visiblePlanModal"
                            :visible.sync="visiblePlanModal"
                            :initialMarkers="initialMarkers"
-                           :fileUrl="demo.file"/>
+                           :fileUrl="plan.url"/>
 
-        <el-drawer
-                title="Add Plan"
-                :visible.sync="visiblePlanDrawer"
-                direction="rtl"
-                custom-class="plan-drawer"
-                ref="pdfDrawer"
-        >
+        <ui-drawer :visible.sync="visiblePlanDrawer"
+                   :z-index="2"
+                   direction="right"
+                   docked
+                   v-loading="editPlanDrawerMode ? planDrawerLoading : false">
+            <ui-divider v-if="editPlanDrawerMode" content-position="left">
+                <i class="el-icon-edit"></i>&nbsp; edit Plan
+            </ui-divider>
+            <ui-divider v-else content-position="left">
+                <i class="icon-plus"></i>&nbsp; add Plan
+            </ui-divider>
             <div class="plan-drawer__content">
                 <el-form>
                     <el-form-item>
@@ -423,32 +434,32 @@
                                 :closable="false"
                         >
                         </el-alert>
-                        <upload-document @fileUploaded="setPlanFile" class="drag-custom" drag
+                        <upload-document @fileUploaded="setPlanFile"
                                          ref="planUpload"
+                                         class="drag-custom"
+                                         drag
                                          accept-type=".pdf, .png, .jpg"/>
+                        <div v-if="editPlanDrawerMode && plan.media">
+                            {{plan.media[0].name}}
+                        </div>
+                        <div v-else-if="plan.file">
+                            {{plan.file.name}}
+                        </div>
                     </el-form-item>
+                    <div v-if="plan.media">{{plan.media.name}}</div>
                     <el-form-item label="Name">
                         <el-input autocomplete="off"
-                                  v-model="demo.name">
+                                  v-model="plan.name">
                         </el-input>
-                    </el-form-item>
-                    <el-form-item label="Desc">
-                        <el-input
-                                :autosize="{minRows: 4}"
-                                type="textarea"
-                                v-model="demo.desc">
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-checkbox v-model="demo.is_primary">Is primary</el-checkbox>
                     </el-form-item>
                 </el-form>
                 <div class="plan-drawer__footer">
-                    <el-button type="primary" @click="() => {uploadPlan(demo.file); $refs.pdfDrawer.closeDrawer()}">Save</el-button>
-                    <el-button @click="visiblePlanDrawer = false">Cancel</el-button>
+                    <el-button @click="() => {uploadPlan(plan.file); visiblePlanDrawer = false}" type="primary" icon="icon-floppy" class="round-btn">&nbsp;{{ $t('general.actions.save') }}</el-button>
+                    <el-button @click="visiblePlanDrawer = false, editPlanDrawerMode = false" type="default" icon="icon-cancel" class="round-btn">&nbsp;{{ $t('models.quarter.workflow.close') }}</el-button>
                 </div>
+
             </div>
-        </el-drawer>
+        </ui-drawer>
     </div>
 </template>
 <script>
@@ -507,12 +518,13 @@
                     left: 200,
                     top: 250,
                 }],
-                demo: {
+                plan: {
                     name: '',
-                    desc: '',
-                    is_primary: false,
                     file: '',
+                    url: '',
                 },
+                planDrawerLoading: false,
+                editPlanDrawerMode:false,
                 visiblePlanDrawer: false,
                 visiblePlanModal: false,
 
@@ -602,6 +614,7 @@
                 "uploadUnitFile", 
                 "deleteUnitFile",
                 "addPlan",
+                "getPlan",
                 "deletePlan",
             ]),
             handleChangeEditMode() {
@@ -652,18 +665,29 @@
                 })
             },
             showPlan(url) {
-                this.demo.file = url.substr(url.indexOf('/', 7));
+                this.plan.url = url.substr(url.indexOf('/', 7));
                 this.visiblePlanModal = true;
             },
+            editPlan(plan_id) {
+                this.planDrawerLoading = true;
+
+                this.getPlan({unit_id: this.model.id, plan_id: plan_id}).then((resp) => {
+                    this.plan = resp.data;
+                    this.planDrawerLoading = false;
+                }).catch((err) => {
+                    displayError(err);
+                });
+
+                this.visiblePlanDrawer = true;
+                this.editPlanDrawerMode = true;
+            },
             setPlanFile(file) {
-                this.demo.file = file;
+                this.plan.file = file;
             },
             uploadPlan(file) {
                 this.addPlan({
                     unit_id: this.model.id,
-                    name: this.demo.name,
-                    description: this.demo.desc,
-                    primary: this.demo.is_primary,
+                    name: this.plan.name,
                     media: file.src
                 }).then((resp) => {
                     displaySuccess(resp);
@@ -810,6 +834,14 @@
                     }
                 }
             },
+            'visiblePlanDrawer': {
+                handler(state) {
+                    if (!state) {
+                        this.editPlanDrawerMode = state;
+                        this.plan = {};
+                    }
+                }
+            },
         }
         
        
@@ -830,7 +862,7 @@
     }
 
     .plan-drawer__content {
-        padding: 0 20px;
+        padding: 20px;
     }
 </style>
 <style lang="scss" scoped>
