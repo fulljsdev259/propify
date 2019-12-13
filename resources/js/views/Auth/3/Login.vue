@@ -26,24 +26,22 @@
             </el-form-item>
             <el-form-item>
                 <el-row class="subact_wrap">
-                <el-col :xl="12" :lg="12" :md="24" :sm="24" :xs="24" class="login-sidebar">
+                <el-col :xl="12" :lg="12" :md="24" :sm="24" :xs="24" class="login-sidebar logged_in">
                     <el-checkbox>{{$t('general.stay_logged_in')}}</el-checkbox>
                 </el-col>
                 <el-col :xl="12" :lg="12" :md="24" :sm="24" :xs="24" class="login-sidebar pwd_reset">
                     <router-link :to="{name: 'newForgot'}">
-                        <el-button type="text">
-                            {{$t('general.forgot_password')}}
-                        </el-button>
+                        {{$t('general.forgot_password')}}
                     </router-link>
                 </el-col>
                 </el-row>
             </el-form-item>
             <el-form-item>
-                <el-row>
-                    <el-col :xl="8" :lg="12" :md="12" :sm="24" :xs="24" class="login-sidebar login_act">
+                <el-row :gutter="20">
+                    <el-col :xl="8" :lg="8" :md="12" :sm="24" :xs="24" class="login-sidebar login_act login-button">
                         <el-button type="info" plain class="text-center w90p" @click="submit" ref="prev">{{$t('general.login')}}</el-button>
                     </el-col>
-                    <el-col :xl="8" :lg="12" :md="12" :sm="24" :xs="24" class="login-sidebar login_act register_act">
+                    <el-col :xl="8" :lg="8" :md="12" :sm="24" :xs="24" class="login-sidebar login_act register_act login-button">
                         <router-link :to="{name: 'nwewActivateAccount'}" class="el-menu-item-link">
                             <el-button type="info" plain class="text-center w90p" ref="prev">{{$t('general.register')}}</el-button>
                         </router-link>
@@ -116,7 +114,7 @@
         margin-top: 90px;
         h5{
             margin: 0;
-            font-size: 16px;
+            font-size: 14px;
             color: rgba(0, 0, 0, 0.3);
             line-height: 1.2;
             a{
@@ -134,18 +132,20 @@
         font-size: 16px;
     }
     .email_input{
-        border: 2px solid rgba(0, 0, 0, 0.2);
+        border: 2px solid rgba(0, 0, 0, 0.1);
         border-top-right-radius: 10px;
         border-top-left-radius: 10px;
         padding-top: 2px;
         padding-bottom: 20px;
+        background-color: var(--color-white);
     }
     .pwd_input{
-        border: 2px solid rgba(0, 0, 0, 0.2);
+        border: 2px solid rgba(0, 0, 0, 0.1);
         border-bottom-right-radius: 10px;
         border-bottom-left-radius: 10px;
         padding-bottom: 20px;
         border-top: none;
+        background-color: var(--color-white);
     }
     .el-form-item {
         .el-form-item__label{
@@ -164,8 +164,11 @@
             margin-bottom: 14px;
         }
         p {
-            font-size: 32px;
+            margin-top: 20px;
+            font-family: 'Radikal Thin';
             font-weight: 700;
+            font-size: 26px;
+            color: var(--text-color);
         }
         @media screen and (max-width: 768px) {
             font-size: 25px !important;
@@ -174,7 +177,7 @@
     .el-form-item {
         &:nth-last-child(2) :global(.el-form-item__content) {
             margin-top: 50px;
-            margin-bottom: 35px;
+            margin-bottom: 40px;
             display: flex;
             align-items: center;
             :global(.el-checkbox) {
@@ -198,7 +201,7 @@
     .el-form-item__label{
         padding-top: 18px !important;
     }
-    .login2-container{font-family: 'RadikalW03', sans-serif;}
+    .login2-container{font-family: 'Radikal', sans-serif;}
     .subact_wrap{
         width: 100%;
     }
@@ -291,7 +294,7 @@
             .el-form-item__label {
                 color: rgba(0, 0, 0, 0.8);
                 line-height: 24px;
-                font-size: 15px;
+                font-size: 13px;
                 padding-left: 21px;
                 
             }
@@ -317,26 +320,34 @@
                 padding-bottom: 10px;
                 position: relative !important;
             }
-            button {
-                width: 87%;
-                height: 55px;
+            .el-button {
+                padding: 18px 20px;
+                width: 100%;
                 color: rgba(0, 0, 0, 0.8);
-                background: white;
-                font-size: 16px;
+                background: var(--color-white);
+                font-size: 14px;
                 font-weight: 700;
                 border-radius: 8px;
+                
+                &:not(:nth-of-type(1)) {
+                    margin-left: 25px;
+                }
             }
             .el-checkbox__label{
-                font-size: 17px;
-                color: rgba(0, 0, 0, 0.6);
-                font-weight: 700;
+                font-size: 14px;
+                color: var(--color-text-regular)
             }
             .el-button--info.is-plain:focus, .el-button--info.is-plain:hover {
                 background: #3D3F41;
                 border-color: #3D3F41;
                 color: #FFF;
             }
-            .pwd_reset button {color: rgba(0, 0, 0, 0.6) !important;}
+            .pwd_reset {
+                a {
+                    text-decoration: none;
+                    color: var(--color-text-regular);
+                }
+            }
         }
     }
 	.el-checkbox__inner::after{

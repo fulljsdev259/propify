@@ -98,7 +98,6 @@ return [
                 'label' => 'Type',
                 'tenant' => 'Tenant',
                 'owner' => 'Owner',
-                'former_resident' => 'Former Resident'
             ],
             'duration' => 'Duration',
             'durations' => [
@@ -712,7 +711,8 @@ return [
             'warranty_claim' => 'Warranty Claim',
             'archived' => 'Archived',
             'solved' => 'Solved',
-            'pending' => 'Pending'
+            'pending' => 'Pending',
+            'reactivated' => "Reactivated",
         ],
         'category_options' => [
             'disturbance' => 'Disturbance',

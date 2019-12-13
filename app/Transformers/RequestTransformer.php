@@ -5,6 +5,7 @@ namespace App\Transformers;
 use App\Models\PropertyManager;
 use App\Models\Request;
 use App\Models\RequestAssignee;
+use App\Models\Settings;
 
 /**
  * Class RequestTransformer
@@ -58,10 +59,34 @@ class RequestTransformer extends BaseTransformer
 
         if ($model->relationExists('assignees')) {
             $accountableUser = $model->assignees->where('type', RequestAssignee::TypeAccountable)->pluck('user')->first();
-            $response['accountable_user'] = $accountableUser ? (new UserTransformer())->transform($accountableUser) : null;
+            if ($accountableUser) {
+                $response['accountable_user'] = (new UserTransformer())->transform($accountableUser);
+                $response['accountable_user']['company_name'] = $accountableUser->service_provider->company_name ?? \Cache::remember(
+                    'company_name',
+                    60,
+                    function () {
+                        return Settings::value('name');
+                    }
+                );
+            } else {
+                $response['accountable_user'] = null;
+            }
 
             $competentUser = $model->assignees->where('type', RequestAssignee::TypeCompetent)->pluck('user')->first();
-            $response['competent_user'] = $competentUser ? (new UserTransformer())->transform($competentUser) : null;
+            if ($competentUser) {
+                $response['competent_user'] = (new UserTransformer())->transform($competentUser);
+                $response['competent_user']['company_name'] = $competentUser->service_provider->company_name ?? \Cache::remember(
+                        'company_name',
+                        60,
+                        function () {
+                            return Settings::value('name');
+                        }
+                    );
+            } else {
+                $response['competent_user'] = null;
+            }
+
+
             // @TODO delete
             $users = $model->assignees->pluck('user');
             $response['assignedUsers'] = (new UserTransformer())->transformCollection($users);

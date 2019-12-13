@@ -98,7 +98,6 @@ return [
                 'label' => 'Beziehung',
                 'tenant' => 'Mieter',
                 'owner' => 'Eigentümer',
-                'former_resident' => 'Ehemaliger Einwohner',
             ],
             'duration' => 'Vertragslaufzeit',
             'durations' => [
@@ -714,6 +713,7 @@ return [
             'archived' => 'Archiviert',
             'solved' => "Erledigt",
             'pending' => "Offen",
+            'reactivated' => "Reaktiviert",
         ],
         'category_options' => [
             'disturbance' => 'Störung',

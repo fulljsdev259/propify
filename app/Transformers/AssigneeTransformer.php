@@ -81,7 +81,7 @@ class AssigneeTransformer extends BaseTransformer
     protected function getRoleFormatted($user)
     {
         if ($user->service_provider) {
-            return ServiceProvider::Category[$user->service_provider->category] ?? '';
+            return $user->service_provider->category ?? '';
         }
         return $user->roles->first()->name ?? 'unknown role'; //unknown role must be not happen
     }

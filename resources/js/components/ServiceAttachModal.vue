@@ -91,11 +91,11 @@
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
-            <el-tab-pane :label="$t('models.request.conversation')" name="conversation"
+            <!-- <el-tab-pane :label="$t('models.request.conversation')" name="conversation"
                          v-if="model.provider && shouldFetchConversation">
                 <span slot="label"><i class="ti-comment"></i> {{$t('models.request.conversation')}}</span>
                 <chat :id="request_id" ref="chat" type="conversation" class="request-chat"/>
-            </el-tab-pane>
+            </el-tab-pane> -->
         </el-tabs>
 
         <span class="dialog-footer" slot="footer">
