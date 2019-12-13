@@ -711,7 +711,8 @@ return [
             'warranty_claim' => 'Warranty Claim',
             'archived' => 'Archived',
             'solved' => 'Solved',
-            'pending' => 'Pending'
+            'pending' => 'Pending',
+            'reactivated' => "Reactivated",
         ],
         'category_options' => [
             'disturbance' => 'Disturbance',

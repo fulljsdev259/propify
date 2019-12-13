@@ -713,6 +713,7 @@ return [
             'archived' => 'Archiviert',
             'solved' => "Erledigt",
             'pending' => "Offen",
+            'reactivated' => "Reaktiviert",
         ],
         'category_options' => [
             'disturbance' => 'Störung',
