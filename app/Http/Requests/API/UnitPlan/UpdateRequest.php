@@ -26,7 +26,6 @@ class UpdateRequest extends BaseRequest
     {
         return [
             'name' => 'required',
-            'description' => 'required',
         ];
     }
 }
