@@ -321,7 +321,7 @@
             }
             
             try {
-                this.categories = this.$constants.requests.categories_data.tree.filter(item => item.name != 'open_issue');
+                this.categories = this.$constants.requests.categories_data.tree.filter(item => item.id != 4);
                 
                 if(this.model.category_id)
                 {
