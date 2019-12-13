@@ -24,8 +24,6 @@ class UnitPlanTransformer extends BaseTransformer
         $response = [
             'id' => (int)$model->id,
             'name' => $model->name,
-            'description' => $model->description,
-            'primary' => (boolean)$model->primary,
             'unit_id' => (int)$model->unit_id,
             'created_at' => $model->created_at,
         ];
