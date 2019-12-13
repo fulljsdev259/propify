@@ -178,7 +178,6 @@ class RelationAPIController extends AppBaseController
             'unit.building.address',
             'unit',
             'media',
-//            'garant_residents:residents.id,residents.first_name,residents.last_name'
         ]);
         $response = (new RelationTransformer())->transform($relation);
         return $this->sendResponse($response, 'Resident Relation retrieved successfully');
@@ -239,7 +238,6 @@ class RelationAPIController extends AppBaseController
             'unit.building.address',
             'unit',
             'media',
-//            'garant_residents:residents.id,residents.first_name,residents.last_name'
         ]);
 
         $response = (new RelationTransformer())->transform($relation);
@@ -325,7 +323,6 @@ class RelationAPIController extends AppBaseController
             'unit.building.address',
             'unit',
             'media',
-//            'garant_residents:residents.id,residents.first_name,residents.last_name'
         ]);
         $response = (new RelationTransformer())->transform($relation);
         return $this->sendResponse($response, __('models.resident.saved'));

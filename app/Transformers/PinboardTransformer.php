@@ -53,7 +53,7 @@ class PinboardTransformer extends BaseTransformer
         ]);
 //        if (empty($response['announcement_email_receptionists'][0]['residents'])) {
 //            $response['announcement_email_receptionists'][0]['residents'] = [];
-//        } // uncomment it for vue js not show bug
+//        } // @TODO uncomment it for vue js not show bug
         $response['resident'] = $model->user->resident ? (new ResidentTransformer)->transform($model->user->resident) : null;
 
         if ($model->announcement) {
