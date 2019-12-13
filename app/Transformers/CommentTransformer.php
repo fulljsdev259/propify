@@ -3,9 +3,6 @@
 namespace App\Transformers;
 
 use App\Models\Comment;
-use Illuminate\Database\Eloquent\Collection;
-use League\Fractal\Resource\Collection as FCollection;
-use League\Fractal\Manager;
 
 /**
  * Class CommentTransformer.
@@ -25,19 +22,20 @@ class CommentTransformer extends BaseTransformer
      */
     public function transform(Comment $model)
     {
-        $ret = [
-            'id' => $model->id,
-            'user_id' => $model->user_id,
-            'comment' => $model->comment,
-            'created_at' => $model->created_at->toDateTimeString(),
-            'updated_at' => $model->updated_at->toDateTimeString(),
-            'children_count' => $model->children_count,
-        ];
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'user_id',
+            'comment',
+            'created_at',
+            'updated_at',
+            'children_count',
+        ]);
 
-        if ($model->relationExists('user')) {
-            $ret['user'] = (new UserTransformer())->transform($model->user);
-        }
+        $response['children_count'] = $model->children_count;
+        $response = $this->includeRelationIfExists($model, $response, [
+            'user' => UserTransformer::class,
+        ]);
 
-        return $ret;
+        return $response;
     }
 }

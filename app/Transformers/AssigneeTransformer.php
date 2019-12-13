@@ -3,10 +3,8 @@
 namespace App\Transformers;
 
 use App\Models\PropertyManager;
-use App\Models\RequestAssignee;
 use App\Models\ServiceProvider;
 use App\Models\Settings;
-use App\Models\User;
 
 /**
  * Class RequestTransformer

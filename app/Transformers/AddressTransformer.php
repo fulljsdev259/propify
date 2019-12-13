@@ -3,7 +3,6 @@
 namespace App\Transformers;
 
 use App\Models\Address;
-use League\Fractal\TransformerAbstract;
 
 /**
  * Class AddressTransformer.

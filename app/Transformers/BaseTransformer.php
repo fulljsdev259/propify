@@ -5,8 +5,6 @@ namespace App\Transformers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-//use League\Fractal\Manager;
-//use League\Fractal\Resource\Collection as FCollection;
 use League\Fractal\TransformerAbstract;
 
 /**
