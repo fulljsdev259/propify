@@ -683,7 +683,7 @@
                 file.order = this.model.media.length + 1;
                 this.uploadUnitFile({
                     id: this.model.id,
-                    [`${prop}_upload`]: file.src
+                    [`${prop}_upload`]: {'media':file.src, 'name':file.name}
                 }).then((resp) => {
                     displaySuccess(resp);
                     this.model.media.push(resp.media);
