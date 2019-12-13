@@ -65,13 +65,13 @@ class SettingsTransformer extends TransformerAbstract
             $response['mail_from_name'] = $model->mail_from_name;
         }
 
-        // @TODO check and use ->relationExists
-        if ($model->address) {
+        // @TODO remove $model->address
+        if ($model->relationExists('address') || $model->address) {
             $response['address'] = (new AddressTransformer)->transform($model->address);
         }
 
-        // @TODO check and use ->relationExists
-        if (isset($model->pinboard_receivers)) {
+        // @TODO remove  isset($model->pinboard_receivers)
+        if ($model->relationExists('pinboard_receivers') || isset($model->pinboard_receivers)) {
             $response['pinboard_receivers'] = (new UserTransformer)->transformCollection($model->pinboard_receivers);
         }
 
