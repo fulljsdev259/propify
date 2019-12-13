@@ -509,7 +509,7 @@
                                                         filterable
                                                         remote
                                                         reserve-keyword
-                                                        @change="val => handleQuickAssign(scope.row.id, column.prop)"
+                                                        @change="val => handleQuickAssign(scope.row.id, val, column.prop)"
                                                         v-model="assignee">
                                                     <el-option
                                                             :key="assignee.id"
@@ -998,7 +998,7 @@
                     });
                 }
             },
-            async handleQuickAssign(request_id, prop) {
+            async handleQuickAssign(request_id, assignee_id, prop) {
                 let type = prop === 'competent_user' ? 1 : 2;
                 let user_params = [{type, user_id: assignee_id}];
 

@@ -52,14 +52,17 @@ class ValidationServiceProvider extends ServiceProvider
             }
 
             if (is_array($value)) {
-                if (!empty($value['media'])) {
-                    if (! is_string($value['media'])) {
-                        $validator->customMessages['base_mimes'] = str_replace(':attribute', 'media', __('validation.string'));
-                        return false;
-                    }
-                    // @TODO validate also name
-                    $value = $value['media'];
+                if (empty($value['media'])) {
+                    $validator->customMessages['base_mimes'] = str_replace(':attribute', $attribute . '.media', __('validation.required'));
+                    return false;
+
                 }
+                if (! is_string($value['media'])) {
+                    $validator->customMessages['base_mimes'] = str_replace(':attribute', 'media', __('validation.string'));
+                    return false;
+                }
+                // @TODO validate also name
+                $value = $value['media'];
 
             } elseif (! is_string($value)) {
                 $validator->customMessages['base_mimes'] = 'The' . $attribute . 'must be string or array';

@@ -119,4 +119,44 @@ export default {
                 }).catch(({response: {data: err}}) => reject(err))
         });
     },
+    getPlans(_, payload) {
+        return new Promise((resolve, reject) => {
+            axios.get(`units/${payload.unit_id}/plans`, {...payload})
+                .then((resp) => {
+                    resolve(resp.data);
+                }).catch(({response: {data: err}}) => reject(err))
+        });
+    },
+    addPlan(_, payload) {
+        return new Promise((resolve, reject) => {
+            axios.post(`units/${payload.unit_id}/plans`, {...payload})
+                .then((resp) => {
+                    resolve(resp.data);
+                }).catch(({response: {data: err}}) => reject(err))
+        });
+    },
+    getPlan(_, payload) {
+        return new Promise((resolve, reject) => {
+            axios.get(`units/${payload.unit_id}/plans/${payload.plan_id}`)
+                .then((resp) => {
+                    resolve(resp.data);
+                }).catch(({response: {data: err}}) => reject(err))
+        });
+    },
+    updatePlan(_, payload) {
+        return new Promise((resolve, reject) => {
+            axios.put(`units/${payload.unit_id}/plans/${payload.plan_id}`)
+                .then((resp) => {
+                    resolve(resp.data);
+                }).catch(({response: {data: err}}) => reject(err))
+        });
+    },
+    deletePlan(_, payload) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`units/${payload.unit_id}/plans/${payload.plan_id}`)
+                .then((resp) => {
+                    resolve(resp.data);
+                }).catch(({response: {data: err}}) => reject(err))
+        });
+    },
 }
