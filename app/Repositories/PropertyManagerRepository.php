@@ -22,7 +22,6 @@ class PropertyManagerRepository extends BaseRepository
         'description' => 'like',
         'first_name' => 'like',
         'last_name' => 'like',
-        'company_name' => 'like',
         'property_manager_format' => 'like',
         'user.email' => 'like',
     ];
