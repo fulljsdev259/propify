@@ -48,6 +48,7 @@ class NotifyPinboardNewComment
      */
     public function __construct(Pinboard $pinboard, Comment $comment, User $user, $saveSystemAudit = true)
     {
+        return;
         $this->pinboard = $pinboard;
         $this->user = $user;
         $this->comment = $comment;

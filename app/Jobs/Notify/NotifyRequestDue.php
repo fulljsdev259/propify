@@ -44,6 +44,7 @@ class NotifyRequestDue
      */
     public function handle()
     {
+        return;
         $request = $this->request;
         $beforeHours = env('REQUEST_DUE_MAIL', 24);
         $providerUsers = $request->providers()->with('user')->get()->pluck('user');

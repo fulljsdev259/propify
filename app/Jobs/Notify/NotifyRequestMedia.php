@@ -64,6 +64,7 @@ class NotifyRequestMedia
      */
     public function handle()
     {
+        return;
         $i = 0;
         $users  = collect($this->request->allPeople);
         foreach ($users as $person) {
