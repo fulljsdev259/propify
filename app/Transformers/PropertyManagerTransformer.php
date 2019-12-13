@@ -20,17 +20,17 @@ class PropertyManagerTransformer extends BaseTransformer
      */
     public function transform(PropertyManager $model)
     {
-        $response = [
-            'id' => $model->id,
-            'type' => $model->type,
-            'property_manager_format' => $model->property_manager_format,
-            'description' => $model->description,
-            'mobile_phone' => $model->mobile_phone,
-            'title' => $model->title,
-            'status' => $model->status,
-            'first_name' => $model->first_name,
-            'last_name' => $model->last_name,
-        ];
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'type',
+            'property_manager_format',
+            'description',
+            'mobile_phone',
+            'title',
+            'status',
+            'first_name',
+            'last_name',
+        ]);
 
         $withCount = $model->getStatusRelationCounts();
         $response = array_merge($response, $withCount);
@@ -39,17 +39,13 @@ class PropertyManagerTransformer extends BaseTransformer
             $response['settings'] = $model->settings;
         }
 
-        if ($model->relationExists('user')) {
-            $response['user'] = (new UserTransformer)->transform($model->user);
-        }
+        $response = $this->includeRelationIfExists($model, $response, [
+            'user' => UserTransformer::class,
+        ]);
 
         if ($model->relationExists('buildings')) {
             $response['buildings'] = (new BuildingTransformer)->transformCollection($model->buildings);
             $response['buildings_count'] = $model->buildings->count();
-        }
-
-        if ($model->relationExists('quarters')) {
-            $response['quarters'] = (new QuarterTransformer)->transformCollection($model->quarters);
         }
 
         if ($model->relationExists('quarters')) {
