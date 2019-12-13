@@ -10,8 +10,8 @@
             </heading>
             <el-row :gutter="20" class="crud-view">
                 <el-col :md="12">
-                    <el-card class="quarter-details dvsdvsd">
-                        <el-form :model="model" ref="form"  class="edit-details-form dvsdvsd sdvsd sdvs ">
+                    <el-card class="quarter-details">
+                        <el-form :model="model" ref="form"  class="edit-details-form">
                             <el-row :gutter="20">
                                 <el-col :md="12" class="left-pane">
                                     <img :src="require('img/default_img_object.png')"/>
