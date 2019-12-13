@@ -55,8 +55,8 @@ class NotifyNewRequestInternalNotice
             ->first();
 
         $notificationsData = collect();
-        $accountableUser = $requestAssignne->user;
-        if ($accountableUser) {
+        if ($requestAssignne) {
+            $accountableUser = $requestAssignne->user;
             if ($accountableUser->id != \Auth::id()) {
                 $notify = (new NewRequestAccountableInternalNotice($accountableUser, $this->internalNotice));
                 $accountableUser->notify($notify);
