@@ -130,6 +130,8 @@ return [
     'none' => 'Nichts gewählt',
     'all' => 'Alle',    
     'load_more' => 'Weitere laden',
+    'hide_assignment_listing' => 'Zustandigkeits-History verbergen',
+    'no_matches_found' => 'Keine Treffer gefunden',
     'loading' => 'Ladet...',
     'load_more_count' => 'Weitere {count} laden',
     'account' => 'Konto',

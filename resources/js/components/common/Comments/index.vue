@@ -141,7 +141,7 @@
                         id: this.id,
                         page,
                         per_page: this.limit,
-                        sortedBy: 'desc',
+                        sortedBy: 'asc',
                         orderBy: 'created_at',
                         commentable: this.type,
                         request_id: this.type == 'internalNotices' || this.type == 'conversation' ? this.id : '',

@@ -89,9 +89,13 @@
             @saveFilter="saveFilter($event)"
         >
         </list-table>
-        <el-dialog :close-on-click-modal="false" :title="$t('models.building.assign_managers')"
-                   :visible.sync="batchEditVisible"
-                   v-loading="processAssignment" width="30%">
+        <el-dialog 
+            :close-on-click-modal="false" 
+            :title="$t('models.building.assign_managers')"
+            :visible.sync="batchEditVisible"
+            v-loading="processAssignment" 
+            width="30%"
+        >
             <span slot="title">
                 <template v-for="option in massEditOptions">
                     <span :key="option.key" v-if="activeMassEditOption == option.key">
@@ -196,6 +200,7 @@
             width="700px"
             center
             :modal="false"
+            class="request-add-dialog"
         >
             <div class="dialog-body">
                 <el-steps class="choice-steps" :space="160" :active="1" align-center>
@@ -915,8 +920,14 @@
     .vue-recycle-scroller__item-view {
         min-height: 41px !important;
     }
-
     :global(.el-dialog__wrapper) {
+        background-color: rgba(0, 0, 0, 0.1);
+        .el-dialog {    
+            border-radius: 16px;
+            box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+        }
+    }
+    :global(.el-dialog__wrapper.request-add-dialog) {
         background-color: rgba(0, 0, 0, 0.1);
         .el-dialog {    
             border-radius: 16px;
