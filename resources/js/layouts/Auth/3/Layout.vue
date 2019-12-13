@@ -71,6 +71,11 @@
             width: 100% !important;
         }
     }
+    .sub_container {
+        .el-button {
+            font-family: 'Radikal';
+        }
+    }
 </style>
 <style lang="scss" scoped>
     .sub_container{
@@ -99,6 +104,7 @@
     .el-container {
         height: 100%;
         position:relative;
+        font-family: 'Radikal';
         @media screen and (max-width: 768px) {
             .logo{
                 img{
@@ -178,12 +184,12 @@
                 height: 100%;
                 border-radius: 0;
                 width: 100% !important;
+                background-color: #fafafa;
 
                 @media screen and (max-height: 950px) {
                     padding-top: 0;
                     padding-bottom: 0;
                 }
-                background-color: #ffffff;
                 @media screen and (min-width: 554px) {
                     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
                     0 6px 6px rgba(0, 0, 0, 0.23);
@@ -203,16 +209,18 @@
                     }
                 }
                 .login-pane {
-                    padding: 100px;
+                    padding: 100px 130px 100px 90px;
 
                     flex: 1;
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     flex-direction: column;
+                    background-color: #FAFAFA;
                     .logo {
                         margin: 1em auto;
                         img {
+                            max-width: 200px;
                             @media screen and (max-width: 736px) {
                             }
                         }

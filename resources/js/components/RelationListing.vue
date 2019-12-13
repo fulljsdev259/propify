@@ -632,7 +632,7 @@
                             td {
                                 padding-bottom: 50px;
                                 flex: 1;
-                                min-width: 200px;
+                                width: 200px;
                                 &:first-of-type {
                                     max-width: 70px;
                                     min-width: 70px;

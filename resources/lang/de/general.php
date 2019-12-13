@@ -110,6 +110,7 @@ return [
         'saved_filters' => 'Gespeicherte Filter',
     ],
     'no' => 'Nein',
+    'next' => 'Weiter',
     'first_name' => 'Vorname',
     'last_name' => 'Nachname',    
     'name' => "Name",

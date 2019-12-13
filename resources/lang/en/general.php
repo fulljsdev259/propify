@@ -56,6 +56,7 @@ return [
     'enabled' => 'Enabled',
     'disabled' => 'Disabled',
     'salutation' => 'Salutation',
+    'next' => 'Next',
     'salutation_option' => [
         'mr' => 'Mr.',
         'mrs' => 'Mrs.',
