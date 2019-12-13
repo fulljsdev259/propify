@@ -24,13 +24,6 @@ class CountryTransformer extends BaseTransformer
         ]);
         $response['name'] = get_translated_filed($model, 'name');
 
-        $response1 = [
-            'id' => $model->id,
-            'code' => $model->code,
-            'alpha_3' => $model->alpha_3,
-            'name' => get_translated_filed($model, 'name'),
-        ];
-
         return $response;
     }
 }

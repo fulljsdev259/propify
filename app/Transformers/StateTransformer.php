@@ -20,13 +20,13 @@ class StateTransformer extends BaseTransformer
      */
     public function transform(State $model)
     {
-        $response = [
-            'id' => $model->id,
-            'country_id' => $model->country_id,
-            'code' => $model->code,
-            'name' => get_translated_filed($model, 'name'),
-            'abbreviation' => $model->abbreviation,
-        ];
+        $response = $this->getAttributesIfExists($model, [
+            'id',
+            'country_id',
+            'code',
+            'abbreviation',
+        ]);
+        $response['name'] = get_translated_filed($model, 'name');
 
         return $response;
     }
